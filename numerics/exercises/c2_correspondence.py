@@ -26,6 +26,7 @@ PRIM = BENCHMARK
 COLUMNS = ["r", "branch", "q_H", "q_L", "v", "e_H", "e_L", "E", "O_H", "R_T", "tau", "x_star", "pooling_exists",
            "pooling_unique_bound", "full_unique_bound", "existence_status", "uniqueness_status", "accepted",
            "multiplicity_found", "epsilon_P", "epsilon_e", "epsilon_q", "tail_bound", "unresolved_reason"]
+TANGENCY_OPEN = 1e-4  # |Psi| minima above this are resolved non-roots (marginal profits are O(1e-2))
 MIXED_COLUMNS = ["r", "branch", "state", "support_index", "q", "weight", "U(q)", "support_gap", "off_support_gain_bound", "accepted", "status"]
 
 
@@ -44,6 +45,15 @@ def strength_grid() -> list[str]:
     return sorted(pts, key=Decimal)
 
 
+def pure_label(u: float, v: float) -> str:
+    """Data label for a pure fixed point found by the best-response search (a label, not a selection)."""
+    if abs(u - 1.0) < 1e-6:
+        return "asymmetric"
+    if abs(u - v) < 1e-6:
+        return "symmetric_interior"
+    return "pure"
+
+
 def _row(rs: str, branch: str, cand, val, mg, existence: str, uniqueness: str, reason: str = "") -> dict:
     o = val.outcome
     return {"r": rs, "branch": branch, "q_H": cand.profile.q_H[0] if cand.profile.is_pure else "mixed",
@@ -56,7 +66,8 @@ def _row(rs: str, branch: str, cand, val, mg, existence: str, uniqueness: str, r
             "unresolved_reason": reason if reason else ("" if val.accepted else "; ".join(val.breaches))}
 
 
-def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = True, do_mixed: bool = True) -> tuple[list[dict], list[dict], dict]:
+def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = True, do_mixed: bool = True,
+               tie_at_ceiling: bool = False) -> tuple[list[dict], list[dict], dict]:
     r = float(rs)
     pay = payoffs_closed_form(PRIM, r)
     mg = node_margins(PRIM, pay)
@@ -75,6 +86,10 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
 
     # full orders ---------------------------------------------------------------
     cand = full_order_candidate(PRIM, pay)
+    if tie_at_ceiling:
+        from numerics.search import Candidate
+        sched_tie = make_schedule(PRIM, pay, OrderProfile.pure(1.0, -1.0), tie_at_ceiling=True)
+        cand = Candidate("full_orders", sched_tie.profile, sched_tie, cand.diagnostics)
     val = validate(cand.sched, CONTROLS)
     cover = derivative_cover(cand.sched, "H", CONTROLS.certificate_derivative_intervals) if val.accepted else {}
     if val.accepted:
@@ -87,7 +102,7 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
     else:
         ex = "rejected"
     un = "analytical ((1-1/b) rho m Delta_T > k)" if mg.low_cost_floor > 0 and mg.full_unique_bound > 0 else "not established"
-    rows.append(_row(rs, "full_orders", cand, val, mg, ex, un))
+    rows.append(_row(rs, "full_orders", cand, val, mg, ex + (" (tau = M treated symbolically; tie rule admits the upper plateau)" if tie_at_ceiling else ""), un))
     diag["full_J"] = cand.diagnostics
     diag["full_cover"] = cover
     if val.accepted:
@@ -95,7 +110,7 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
 
     # asymmetric (1, -v) --------------------------------------------------------
     extra = [tuple(float(x) for x in certified[rs])] if rs in certified else None
-    ar = asymmetric_roots(PRIM, pay, extra_brackets=extra)
+    ar = asymmetric_roots(PRIM, pay, extra_brackets=extra, v_hi=0.9999)
     diag["asym_roots"] = ar["roots"]
     diag["asym_tangencies"] = ar["tangencies"]
     for v in ar["roots"]:
@@ -115,10 +130,16 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
     for v, resid in ar["tangencies"]:
         cand = asymmetric_candidate(PRIM, pay, v)
         val = validate(cand.sched, CONTROLS)
-        rows.append(_row(rs, "asymmetric_tangency", cand, val, mg, "open" if not val.accepted else "numerical diagnostic",
-                         "not established", f"local |Psi| minimum {resid:.3e} without sign change; unresolved"))
         if val.accepted:
+            rows.append(_row(rs, "asymmetric", cand, val, mg, "numerical diagnostic", "not established",
+                             f"root located by |Psi| minimization ({resid:.3e}) rather than a sign change"))
             accepted_profiles.append((1.0, v))
+        elif resid < TANGENCY_OPEN:
+            rows.append(_row(rs, "asymmetric_tangency", cand, val, mg, "open", "not established",
+                             f"local |Psi| minimum {resid:.3e} without sign change; unresolved"))
+        else:
+            rows.append(_row(rs, "asymmetric_tangency", cand, val, mg, "rejected", "not established",
+                             f"local |Psi| minimum {resid:.3e} bounded away from zero: no root nearby"))
 
     # other pure profiles (u, -v) ------------------------------------------------
     if do_pure:
@@ -131,7 +152,9 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
             from numerics.search import Candidate
             cand = Candidate("pure", cand_sched.profile, cand_sched, {"init": init})
             val = validate(cand.sched, CONTROLS)
-            rows.append(_row(rs, "pure", cand, val, mg, "numerical diagnostic" if val.accepted else "rejected", "not established"))
+            label = pure_label(u, v)
+            rows.append(_row(rs, label, cand, val, mg, "numerical diagnostic" if val.accepted else "rejected", "not established",
+                             "" if val.accepted else "; ".join(val.breaches)))
             if val.accepted:
                 accepted_profiles.append((u, v))
         if fp["unconverged"]:
@@ -216,7 +239,8 @@ def run(workers: int = 8, quick: bool = False) -> bool:
     grid = strength_grid()
     if quick:
         grid = [g for g in grid if Decimal(g) % Decimal("0.1") == 0 or g in certified or g in BENCHMARK_STRENGTHS.values()]
-    tasks = [(rs, certified) for rs in grid]
+    rC = str(Decimal(repr(float(next(row["value"] for row in th if row["boundary"] == "high_cost_ceiling")))))
+    tasks = [(rs, certified, True, True, rs == rC) for rs in grid]
     rows, mixed_rows, diags = [], [], []
     with ProcessPoolExecutor(max_workers=workers) as ex:
         for rws, mrows, dg in ex.map(_worker, tasks, chunksize=2):
@@ -241,7 +265,7 @@ def run(workers: int = 8, quick: bool = False) -> bool:
     refine_nodes = sorted(refine_nodes, key=Decimal)
     if refine_nodes and not quick:
         with ProcessPoolExecutor(max_workers=workers) as ex:
-            for rws, mrows, dg in ex.map(_worker, [(rs, certified) for rs in refine_nodes], chunksize=2):
+            for rws, mrows, dg in ex.map(_worker, [(rs, certified, True, True, False) for rs in refine_nodes], chunksize=2):
                 rows += rws
                 mixed_rows += mrows
                 diags.append(dg)
@@ -279,6 +303,82 @@ def run(workers: int = 8, quick: bool = False) -> bool:
     return passed
 
 
+
+
+def postprocess_existing() -> bool:
+    """Apply the current labelling rules to an existing correspondence.csv and re-solve the r_C node with the tie rule.
+
+    Used after the first full sweep: labels (pure -> asymmetric / symmetric_interior), the tangency threshold, and the
+    symbolic tau = M treatment at r_C were introduced without re-running the hour-long sweep. Every change is recorded
+    in the manifest notes.
+    """
+    import json
+    import re
+    from numerics.io import MANIFEST_DIR, read_csv
+    rows = read_csv("numerics/correspondence.csv")
+    notes = []
+    th = compute_thresholds(PRIM)
+    rC = str(Decimal(repr(float(next(row["value"] for row in th if row["boundary"] == "high_cost_ceiling")))))
+    n_relabel = 0
+    for row in rows:
+        if row["branch"] == "pure" and row["q_H"] not in ("n/a", "mixed"):
+            new = pure_label(float(row["q_H"]), -float(row["q_L"]))
+            if new != "pure":
+                row["branch"] = new
+                n_relabel += 1
+        if row["branch"] == "asymmetric_tangency":
+            m = re.search(r"minimum ([0-9.e+-]+)", row["unresolved_reason"])
+            resid = float(m.group(1)) if m else float("nan")
+            if row["accepted"] == "true":
+                row["branch"] = "asymmetric"
+                row["existence_status"] = "numerical diagnostic"
+                row["unresolved_reason"] = f"root located by |Psi| minimization ({resid:.3e}) rather than a sign change"
+            elif resid >= TANGENCY_OPEN:
+                row["existence_status"] = "rejected"
+                row["unresolved_reason"] = f"local |Psi| minimum {resid:.3e} bounded away from zero: no root nearby"
+    notes.append(f"relabelled {n_relabel} pure fixed points by profile type (q_H = 1 -> asymmetric; q_H = -q_L -> symmetric_interior)")
+    notes.append(f"tangency rows with |Psi| minimum >= {TANGENCY_OPEN} reclassified from open to rejected (resolved non-roots)")
+    # re-solve the r_C node with the symbolic tie rule
+    certified = {r: (vl, vr) for r, vl, vr in CERTIFICATE_BRACKETS}
+    new_rows, new_mixed, _ = solve_node(rC, certified, tie_at_ceiling=True)
+    rows = [row for row in rows if row["r"] != rC] + [{k: fmt_cell(v) for k, v in row.items()} for row in new_rows]
+    mixed = [row for row in read_csv("numerics/mixed_supports.csv") if row["r"] != rC] + [{k: fmt_cell(v) for k, v in row.items()} for row in new_mixed]
+    notes.append(f"node r_C = {rC} re-solved with tau = M treated symbolically (tie rule admits the whole upper plateau)")
+    # multiplicity flags
+    by_r = {}
+    for row in rows:
+        by_r.setdefault(row["r"], []).append(row)
+    for rs, lst in by_r.items():
+        n_acc = sum(1 for row in lst if row["accepted"] == "true")
+        for row in lst:
+            row["multiplicity_found"] = "true" if n_acc >= 2 else "false"
+    rows.sort(key=lambda row: (Decimal(row["r"]), row["branch"]))
+    mixed.sort(key=lambda row: (Decimal(row["r"]), row["branch"], row["state"], int(row["support_index"])))
+    write_csv("numerics/correspondence.csv", COLUMNS, rows)
+    write_csv("numerics/mixed_supports.csv", MIXED_COLUMNS, mixed)
+    man = json.loads((MANIFEST_DIR / "c2_correspondence.json").read_text())
+    checks = man["checks"]
+    acc_at = lambda rs: sorted({row["branch"] for row in rows if row["r"] == rs and row["accepted"] == "true"})
+    for rs, want in (("1.2", "pooling"), ("3", "full_orders"), ("3.6", "full_orders")):
+        checks[f"declared_node_{rs}"] = {"accepted_branches": acc_at(rs), "pass": want in acc_at(rs)}
+    checks["r_C_node_tie_rule"] = {"accepted_branches": acc_at(rC), "pass": "full_orders" in acc_at(rC),
+                                   "E_full_orders": [row["E"] for row in rows if row["r"] == rC and row["branch"] == "full_orders"]}
+    checks["correspondence"]["open_rows"] = sum(1 for row in rows if row["existence_status"] == "open")
+    checks["correspondence"]["nodes_with_multiplicity"] = len({row["r"] for row in rows if row["multiplicity_found"] == "true"})
+    checks["correspondence"]["accepted_branch_labels"] = sorted({row["branch"] for row in rows if row["accepted"] == "true"})
+    passed = all(c.get("pass", c.get("accepted", True)) for c in checks.values())
+    write_manifest("c2_correspondence", man["inputs"], man["method"] + " Post-processing: " + "; ".join(notes), man["tolerances"],
+                   list(man["outputs"].keys()), checks, passed, man.get("notes", []) + notes)
+    print("C.2 postprocess", "passed" if passed else "FAILED", checks["correspondence"], checks["r_C_node_tie_rule"])
+    return passed
+
+
+def fmt_cell(v):
+    from numerics.io import fmt
+    return fmt(v)
+
+
 if __name__ == "__main__":
-    quick = "--quick" in sys.argv
-    sys.exit(0 if run(quick=quick) else 1)
+    if "--postprocess" in sys.argv:
+        sys.exit(0 if postprocess_existing() else 1)
+    sys.exit(0 if run(quick="--quick" in sys.argv) else 1)

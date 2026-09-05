@@ -1,0 +1,280 @@
+{
+ "exercise": "c2_correspondence",
+ "timestamp_utc": "2026-09-05T15:39:54.529837+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "mesh": [
+   "1.005",
+   "3.800",
+   "0.005"
+  ],
+  "offsets": [
+   "0.0001",
+   "0.001"
+  ],
+  "certificate_brackets": [
+   [
+    "1.55",
+    "0.46031618",
+    "0.46031620"
+   ],
+   [
+    "1.60",
+    "0.70747537",
+    "0.70747539"
+   ],
+   [
+    "1.65",
+    "0.90333198",
+    "0.90333201"
+   ]
+  ],
+  "grid_size": 581,
+  "quick": false
+ },
+ "method": "Exact boundaries from Proposition 3 with residual checks; interval certificates per Appendix B (mpmath iv, exact antiderivatives, uniform high-type cover over the root bracket, mesh 200 and 400); at each strength node pooling, full-order, asymmetric (1,-v) roots by sign-change bracketing plus |Psi| minimization, pure (u,-v) best-response fixed points from 9 initializations, and finite-support mixed search on meshes 0.05 and 0.025; every candidate validated independently; refinement to 0.001 where accepted branch sets change. Post-processing: relabelled 26 pure fixed points by profile type (q_H = 1 -> asymmetric; q_H = -q_L -> symmetric_interior); tangency rows with |Psi| minimum >= 0.0001 reclassified from open to rejected (resolved non-roots); node r_C = 3.592658518794662 re-solved with tau = M treated symbolically (tie rule admits the whole upper plateau)",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "outputs": {
+  "numerics/thresholds.csv": "7483ca9d8c286dc2516296d5e0204564e67019259155830f2d88ca50f489314a",
+  "numerics/certificates.csv": "a1057225886f42fdbf6b220b7e6792f2e4da226a015059a5788597764ced97fa",
+  "numerics/correspondence.csv": "77d46012372d7fc5607e358760be3ac34a441243b643c6c507bee093c17ca97a",
+  "numerics/mixed_supports.csv": "c709f2c3eab421bbd3edc14ca5c0239cbb760d5c2aeafcabdf4b3b114ae13c01"
+ },
+ "checks": {
+  "threshold_pooling_unique_sufficient": {
+   "value": 1.220997512422418,
+   "residual": 2.0816681711721685e-17,
+   "pass": true
+  },
+  "threshold_pooling_existence": {
+   "value": 1.7478775382679625,
+   "residual": -6.938893903907228e-18,
+   "pass": true
+  },
+  "threshold_full_orders_unique_sufficient": {
+   "value": 2.8374169640989404,
+   "residual": 0.0,
+   "pass": true
+  },
+  "threshold_high_cost_ceiling": {
+   "value": 3.592658518794662,
+   "residual": 8.881784197001252e-16,
+   "pass": true
+  },
+  "certificate_1.55": {
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.00022864750014175018
+  },
+  "certificate_1.60": {
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.0029289761054800915
+  },
+  "certificate_1.65": {
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.005692224080128024
+  },
+  "certified_entry_intervals_strictly_ordered": {
+   "pass": true
+  },
+  "correspondence": {
+   "nodes": 597,
+   "refined_nodes": 16,
+   "refinement_pairs": [
+    [
+     "1.505",
+     "1.51"
+    ],
+    [
+     "1.51",
+     "1.515"
+    ],
+    [
+     "1.675",
+     "1.68"
+    ],
+    [
+     "1.83",
+     "1.835"
+    ]
+   ],
+   "refinement_rule": "adjacent grid nodes whose accepted branch sets differ are refined to spacing 0.001",
+   "open_rows": 23,
+   "nodes_with_multiplicity": 85,
+   "asymmetric_accepted_nodes": [
+    "1.51",
+    "1.511",
+    "1.512",
+    "1.513",
+    "1.514",
+    "1.515",
+    "1.52",
+    "1.525",
+    "1.53",
+    "1.535",
+    "1.54",
+    "1.545",
+    "1.55",
+    "1.555",
+    "1.56",
+    "1.565",
+    "1.57",
+    "1.575",
+    "1.58",
+    "1.585",
+    "1.59",
+    "1.595",
+    "1.60",
+    "1.6",
+    "1.605",
+    "1.61",
+    "1.615",
+    "1.62",
+    "1.625",
+    "1.63",
+    "1.635",
+    "1.64",
+    "1.645",
+    "1.65",
+    "1.655",
+    "1.66",
+    "1.665",
+    "1.67",
+    "1.675",
+    "1.676",
+    "1.677"
+   ],
+   "accepted_branch_labels": [
+    "asymmetric",
+    "full_orders",
+    "pooling",
+    "symmetric_interior"
+   ]
+  },
+  "declared_node_1.2": {
+   "accepted_branches": [
+    "pooling"
+   ],
+   "pass": true
+  },
+  "declared_node_3": {
+   "accepted_branches": [
+    "full_orders"
+   ],
+   "pass": true
+  },
+  "declared_node_3.6": {
+   "accepted_branches": [
+    "full_orders"
+   ],
+   "pass": true
+  },
+  "certified_node_root_in_bracket_1.55": {
+   "pass": true,
+   "v": [
+    0.460316190847
+   ]
+  },
+  "certified_node_root_in_bracket_1.60": {
+   "pass": true,
+   "v": [
+    0.707475380096
+   ]
+  },
+  "certified_node_root_in_bracket_1.65": {
+   "pass": true,
+   "v": [
+    0.903331992461
+   ]
+  },
+  "r_C_node_tie_rule": {
+   "accepted_branches": [
+    "full_orders"
+   ],
+   "pass": true,
+   "E_full_orders": [
+    "0.5064773952196456"
+   ]
+  }
+ },
+ "passed": true,
+ "notes": [
+  "relabelled 26 pure fixed points by profile type (q_H = 1 -> asymmetric; q_H = -q_L -> symmetric_interior)",
+  "tangency rows with |Psi| minimum >= 0.0001 reclassified from open to rejected (resolved non-roots)",
+  "node r_C = 3.592658518794662 re-solved with tau = M treated symbolically (tie rule admits the whole upper plateau)"
+ ]
+}

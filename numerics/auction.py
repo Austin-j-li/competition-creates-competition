@@ -42,6 +42,8 @@ class AuctionPayoffs:
 
     def tau(self, c_H: float) -> float:
         """Expensive-entry posterior threshold (may fall outside (0,1))."""
+        if self.g_H == self.g_L:
+            return float("inf") if c_H > self.g_L else float("-inf")
         return (c_H - self.g_L) / (self.g_H - self.g_L)
 
 

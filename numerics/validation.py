@@ -122,6 +122,8 @@ def conditional_entry_cost_based(sched: Schedule, state: str) -> float:
         if not monotone:
             return _integrate_flow(sched, lambda x: sched.profile.a(prim.noise, prim.fb, x, state) * (pay.B(sched.mu(x)) >= c))
         xc = threshold_flow(sched, c)
+        if sched.tie_at_ceiling and c == prim.fc_H:
+            xc = min(xc, sched.hull()[1])  # symbolic tau = M: the entire upper plateau enters
         if xc == -np.inf:
             return 1.0
         if xc == np.inf:
@@ -164,7 +166,10 @@ def price_inverse(sched: Schedule, P_obs: float) -> float:
     return 0.5 * (lo + hi)
 
 
-def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extra: list[float] | None = None) -> Validation:
+def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extra: list[float] | None = None,
+             price_pools: bool = False) -> Validation:
+    """Validate a candidate schedule. With `price_pools`, zero-entry flows are allowed to pool at t_0 (C.6, OA.70):
+    the inversion check is restricted to positive-entry flows and the pooled posterior must itself imply zero entry."""
     prim, pay = sched.prim, sched.pay
     rho = prim.frho
     breaches: list[str] = []
@@ -185,7 +190,9 @@ def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extr
     g = lambda x: 0.5 * (sched.profile.a(prim.noise, prim.fb, x, "H") + sched.profile.a(prim.noise, prim.fb, x, "L"))
     paid = _integrate_flow(sched, lambda x: g(x) * expected_paid_cost_at_posterior(prim, pay, sched.public_posterior(x)))
     r, p = pay.r, pay.p
-    W = (r * r - p * p) / (2 * r) + 0.5 * (eH * (pay.g_H + p * p / r) + eL * (pay.g_L + p * p / r)) - paid
+    no_entry_alloc = (r * r - p * p) / (2 * r) if p < r else 0.0
+    p_term = p * min(p / r, 1.0)  # p * Pr(R < p)
+    W = no_entry_alloc + 0.5 * (eH * (pay.g_H + p_term) + eL * (pay.g_L + p_term)) - paid
 
     # --- identities ------------------------------------------------------------------
     ints = {s: _integrate_flow(sched, lambda x, s=s: sched.profile.a(prim.noise, prim.fb, x, s)) for s in "HL"}
@@ -223,9 +230,21 @@ def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extr
     if eps_e > controls.entry_optimality_acceptance:
         breaches.append(f"epsilon_e={eps_e:.3e}")
     inv_err = 0.0
+    pool_mass, pool_mu = 0.0, float("nan")
     if sched.regime == "feedback":
         sub = xs[:: max(1, len(xs) // 400)]
-        inv_err = max(abs(price_inverse(sched, float(sched.price(np.array([x]))[0])) - float(sched.mu(np.array([x]))[0])) for x in sub)
+        if price_pools:
+            sub = np.array([x for x in sub if float(sched.entry(np.array([x]))[0]) > 0])
+            # OA.70: pooled posterior over the zero-entry preimage of P = t_0
+            zero = lambda x: (sched.entry(x) <= 0).astype(float)
+            pool_mass = _integrate_flow(sched, lambda x: g(x) * zero(x))
+            if pool_mass > 1e-15:
+                num = _integrate_flow(sched, lambda x: sched.profile.a(prim.noise, prim.fb, x, "H") * zero(x))
+                pool_mu = num / (2 * pool_mass)
+                if float(entry_at_posterior(prim, pay, np.array([pool_mu]))[0]) > 0:
+                    breaches.append(f"no_entry_pool_inconsistent: pooled posterior {pool_mu:.6f} implies positive entry")
+        if len(sub):
+            inv_err = max(abs(price_inverse(sched, float(sched.price(np.array([x]))[0])) - float(sched.mu(np.array([x]))[0])) for x in sub)
         if inv_err > 1e-7:
             breaches.append(f"posterior_inversion_error={inv_err:.3e}")
 
@@ -256,4 +275,7 @@ def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extr
 
     mean_price = EP
     out = Outcome(eH, eL, E, O_H, R_T, W, paid, mean_price, tau, x_star)
-    return Validation(out, eps_P, eps_e, eps_q, eps_q_ref, identity_errors, entry_err, inv_err, tb, qerr, scans, breaches)
+    v = Validation(out, eps_P, eps_e, eps_q, eps_q_ref, identity_errors, entry_err, inv_err, tb, qerr, scans, breaches)
+    v.no_entry_price_mass = pool_mass
+    v.posterior_in_no_entry_pool = pool_mu
+    return v
