@@ -23,7 +23,8 @@
 
   var CCC = (window.CCC = window.CCC || {});
   var params = new URLSearchParams(window.location.search);
-  CCC.eager = params.get("eager") === "1";
+  CCC.eager = params.get("lazy") === "1" ? false : true; // charts mount eagerly unless ?lazy=1
+  CCC.openAll = params.get("eager") === "1";              // ?eager=1 also opens every <details>
   CCC.debug = params.get("debug") === "1";
   CCC.errors = errors;
 
@@ -216,7 +217,7 @@
     if (target.tagName === "DETAILS") target.open = true;
   }
   function initDetails() {
-    if (CCC.eager) {
+    if (CCC.openAll) {
       Array.prototype.forEach.call(document.querySelectorAll("details"), function (d) {
         if (!d.classList.contains("toc-drawer")) d.open = true;
       });

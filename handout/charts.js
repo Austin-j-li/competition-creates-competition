@@ -95,10 +95,10 @@
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
       font: { family: t.fontSans, color: t.ink, size: 13 },
-      margin: { l: 56, r: 16, t: 60, b: 52 },
+      margin: { l: 56, r: 16, t: 72, b: 52 },
       hoverlabel: { bgcolor: t.surface, bordercolor: t.line, namelength: -1,
         font: { family: t.fontMono, size: 12, color: t.ink } },
-      legend: { orientation: 'h', x: 0, xanchor: 'left', y: 1, yanchor: 'bottom',
+      legend: { orientation: 'h', x: 0, xanchor: 'left', y: 1.07, yanchor: 'bottom',
         font: { size: 12, color: t.ink }, bgcolor: 'rgba(0,0,0,0)', itemwidth: 30 },
       uirevision: 'ccc',
       showlegend: true,
@@ -115,7 +115,7 @@
     return {
       text: text, showarrow: false,
       xref: xaxisKey + ' domain', yref: yaxisKey + ' domain',
-      x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 16,
+      x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 4,
       font: { size: 13, color: t.ink }
     };
   }
@@ -418,9 +418,12 @@
   var pending = [];
   var FIGURE_NUMBER = { fig1: 1, fig2: 2, fig3: 3, fig4: 4 };
 
+  /* Charts mount eagerly by default: five small plots on inline data are cheap, and
+     lazy observers stall in background tabs. `?lazy=1` restores lazy mounting. */
   function isEager() {
-    if (typeof CCC.eager === 'boolean') return CCC.eager;
-    try { return /[?&]eager=1/.test(location.search); } catch (e) { return false; }
+    try { if (/[?&]lazy=1/.test(location.search)) return false; } catch (e) { /* ignore */ }
+    if (typeof CCC.eager === 'boolean' && CCC.eager === false) return false;
+    return true;
   }
 
   function notice(id) {
@@ -502,6 +505,25 @@
     io.observe(el);
   }
 
+  /* Scroll fallback: IntersectionObserver callbacks pause in background tabs, so also
+     mount anything near the viewport on scroll. */
+  function mountVisible() {
+    var vh = window.innerHeight || 800;
+    Object.keys(builders).forEach(function (id) {
+      if (mounted[id]) return;
+      var el = document.getElementById('chart-' + id);
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (r.bottom > -200 && r.top < vh + 200) mount(id);
+    });
+  }
+  var scrollTick = false;
+  window.addEventListener('scroll', function () {
+    if (scrollTick) return;
+    scrollTick = true;
+    window.setTimeout(function () { scrollTick = false; mountVisible(); }, 120);
+  }, { passive: true });
+
   function mountAll() {
     var ids = Object.keys(builders);
     ids.forEach(function (id) {
@@ -509,6 +531,7 @@
       if (!el || mounted[id]) return;
       if (isEager()) mount(id); else observe(id, el);
     });
+    if (!isEager()) window.setTimeout(mountVisible, 0);
     return Promise.all(pending.slice()).then(function () { return status(); });
   }
 

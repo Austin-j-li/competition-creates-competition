@@ -2,19 +2,15 @@
 <h2>The model</h2>
 
 <h3 id="sec-03-model-values">Values, preparation, and the sale</h3>
-<p>A listed target with standalone value normalized to zero is sold through a cash second-price auction with reserve \(p\); values and costs are per target share. The incumbent has already prepared. Its acquisition value \(R\) is uniform on \([0,r]\), so a higher \(r\) strengthens it in the sense of first-order stochastic dominance, and it knows \(R\) before bidding.</p>
-
-<p>The challenger has acquisition value \(\theta\in\{\ell,h\}\) with equal prior probabilities. The benchmark restricts values and the reserve to</p>
+<p>A listed target with standalone value zero is sold through a cash second-price auction with reserve \(p\); values and costs are per share. The incumbent has already prepared and knows its value \(R\), uniform on \([0,r]\); a higher \(r\) strengthens it in the first-order stochastic sense. The challenger has value \(\theta\in\{\ell,h\}\) with equal priors, does not know it, and after observing the stock price learns its preparation cost \(C\), equal to \(c_L\) with probability \(\rho\) and \(c_H\) otherwise; paying \(C\) reveals \(\theta\) and permits bidding. The benchmark restricts values and the reserve to</p>
 <div class="math-block">\[
 0\lt p\lt\ell\lt r\lt h.
 \tag{1}
 \]</div>
-<p>The challenger does not know its value at the start. After observing the stock price it privately learns its preparation cost \(C\), equal to \(c_L\) with probability \(\rho\) and \(c_H\) otherwise, with \(0\lt\rho\lt 1\) and \(0\le c_L\lt c_H\). Paying \(C\) reveals \(\theta\) and permits bidding; declining leaves the challenger outside the sale. Incumbent value, challenger value, preparation cost, and noise demand are independent.</p>
-
-<p>The seller commits to the auction before trading. The highest admissible bidder acquires the target and pays the larger of the reserve and the highest competing bid; bids are truthful and weakly dominant. A challenger indifferent about preparation enters. That tie rule matters in exactly one place, a posterior plateau that appears in the results.</p>
+<p>Bids are truthful and weakly dominant; the winner pays the larger of the reserve and the highest competing bid. A challenger indifferent about preparation enters, a tie rule that matters at exactly one posterior plateau in the results.</p>
 
 <h3 id="sec-03-model-trading">Trading and pricing</h3>
-<p>An investor observes \(\theta\) and submits an order \(q\in[-1,1]\) in a small reference unit with no control rights. It holds no initial position, cannot acquire the target, and pays a linear trading cost \(k|q|\). Its profit and aggregate order flow are</p>
+<p>An investor observes \(\theta\) and submits an order \(q\in[-1,1]\) in a small unit with no control rights, paying a linear trading cost \(k|q|\). Its profit and aggregate order flow are</p>
 <div class="math-block">\[
 \begin{gathered}
 q\{V_T-P(X)\}-k|q|,\qquad X=q+Z,\\
@@ -22,7 +18,7 @@ f(z)=\frac{1}{2b}e^{-|z|/b},\qquad b\gt 1,
 \end{gathered}
 \tag{2}
 \]</div>
-<p>where \(V_T\) is the terminal payoff of a target share and \(Z\) is independent noise demand with a Laplace density. The Laplace law has bounded likelihood ratios, which caps the information any order can reveal. Competitive market makers observe aggregate flow and set</p>
+<p>where \(V_T\) is the terminal payoff of a target share and \(Z\) is independent Laplace noise, whose bounded likelihood ratios cap what any order can reveal. Competitive market makers observe aggregate flow and set</p>
 <div class="math-block">\[
 P(X)=\mathbb E[V_T\mid X],
 \tag{3}
@@ -40,13 +36,10 @@ P(X)=\mathbb E[V_T\mid X],
 <li data-step><button type="button" class="step-btn">Payoffs</button><div class="step-note">Ownership changes hands and the target's shareholders receive the sale proceeds, which determine \(V_T\). The investor's position pays \(q(V_T-P)\) less its trading cost.</div></li>
 </ol>
 
-<h3 id="sec-03-model-equilibrium">Equilibrium</h3>
-<p>An equilibrium specifies conditional order distributions \(\sigma_H,\sigma_L\), a measurable price function, Bayesian beliefs conditional on the observed price, optimal preparation, and truthful bidding. The investor can mix and can deviate to any order in \([-1,1]\). Two comparisons should be kept apart: a unilateral deviation changes the distribution of order flow with the candidate equilibrium's pricing and preparation schedules held fixed, whereas a comparison across incumbent strengths re-solves those schedules.</p>
-
-<p>Notation. \(t_0\) is expected target proceeds without entry, \(t_H,t_L\) are proceeds conditional on entry and quality, and \(g_H,g_L\) are the challenger's corresponding gross acquisition profits. The target-payoff spread is \(\Delta_T=t_H-t_L\), and at belief \(\mu=\Pr(\theta=h)\) the challenger's expected gross profit is \(B_r(\mu)=g_L+\mu(g_H-g_L)\).</p>
+<h3 id="sec-03-model-equilibrium">Equilibrium and notation</h3>
+<p>An equilibrium specifies conditional order distributions \(\sigma_H,\sigma_L\), a measurable price function, beliefs given the price, optimal preparation, and truthful bidding; the investor can mix and can deviate to any order in \([-1,1]\). Write \(t_0\) for expected target proceeds without entry, \(t_H,t_L\) for proceeds given entry and quality, \(g_H,g_L\) for the challenger's gross profits, \(\Delta_T=t_H-t_L\) for the target-payoff spread, and \(B_r(\mu)=g_L+\mu(g_H-g_L)\) for expected gross profit at belief \(\mu=\Pr(\theta=h)\).</p>
 
 <h3 id="sec-03-model-benchmark">Benchmark parameters</h3>
-<p>Declared primitives, with three incumbent strengths in the roles of weak, strong, and very strong.</p>
 <dl class="params">
 <dt>\(h\)</dt><dd>[[base_h]]</dd>
 <dt>\(\ell\)</dt><dd>[[base_ell]]</dd>

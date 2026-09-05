@@ -2,7 +2,7 @@
 <h2>Two returns to information</h2>
 
 <h3 id="sec-04-two-returns-payoffs">Acquisition profits and target proceeds</h3>
-<p>The auction determines both the return to preparation and the claim the investor trades. A high-value challenger wins and pays \(\max\{p,R\}\); with a low-value challenger the target receives \(\max\{p,\min(R,\ell)\}\); without entry the incumbent pays the reserve if its value meets it. Integrating over the uniform incumbent gives</p>
+<p>A high-value challenger wins and pays \(\max\{p,R\}\); with a low-value challenger the target receives \(\max\{p,\min(R,\ell)\}\). Integrating over the uniform incumbent gives</p>
 <div class="math-block">\[
 \begin{aligned}
 t_0&amp;=p\left(1-\frac p r\right),&amp;
@@ -14,7 +14,7 @@ g_L&amp;=\frac{\ell^2-p^2}{2r},&amp;
 \end{aligned}
 \tag{4}
 \]</div>
-<p>The relevant derivatives are</p>
+<p>with derivatives</p>
 <div class="math-block">\[
 \begin{aligned}
 B_r(\mu)&amp;=g_L+\mu(g_H-g_L),\\
@@ -24,11 +24,14 @@ g_H'(r)&amp;=-\frac12+\frac{p^2}{2r^2}\lt 0,
 \end{aligned}
 \tag{5}
 \]</div>
-<p>A stronger incumbent lowers the challenger's acquisition profit at every fixed belief and makes target proceeds more sensitive to challenger quality. The first effect is the deterrence force of the preemptive-bidding literature; the second is the one an informed investor cares about. Proposition 1 frees the opposition from the uniform distribution.</p>
+<p>A stronger incumbent lowers the challenger's profit at every belief (deterrence) and makes target proceeds more sensitive to challenger quality (what an informed investor cares about).</p>
 
 <div class="prop" id="sec-04-two-returns-prop1">
 <p class="prop-title">Proposition 1 (competition and the two returns to information).</p>
 <div class="prop-body">
+<p><em>For any continuous incumbent distribution, a first-order stochastic strengthening weakly increases the spread of target proceeds between a high- and a low-value challenger and weakly decreases the challenger's gross acquisition profit at every fixed posterior.</em></p>
+<details class="fold">
+<summary>Full statement</summary>
 <p><em>Let the incumbent's value have a continuous distribution \(F\) on \([0,\bar r]\) with \(0\lt p\lt\ell\lt\bar r\lt h\), and extend \(F\) by unity above its support. A first-order stochastic strengthening of \(F\) weakly increases the spread of target proceeds between a high- and a low-value challenger and weakly decreases the challenger's gross acquisition profit at every fixed posterior, where</em></p>
 <div class="math-block">\[
 \begin{aligned}
@@ -40,10 +43,11 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 \tag{6}
 \]</div>
 <p><em>Both comparisons are strict when the change in \(F\) has positive integral over the corresponding range.</em></p>
+</details>
 </div>
 </div>
 
-<p>The result follows from the payment rule alone. If \(R\le\ell\), either challenger type outbids the incumbent and pays the same amount. If \(R\gt\ell\), a high-value challenger wins and pays \(R\), whereas a low-value challenger loses and the incumbent pays \(\ell\). The difference in target proceeds is therefore \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value, and a stronger incumbent raises its expectation while raising the payment the challenger needs to win. Deterrence models keep only the second half of this argument; the first half is what a second-price payment rule adds, and the bargaining institution below shows it can be switched off by paying the runner-up differently.</p>
+<p>The result follows from the payment rule alone. If \(R\gt\ell\), a high-value challenger wins and pays \(R\) while a low-value challenger loses and the incumbent pays \(\ell\), so the difference in target proceeds is \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value. A stronger incumbent raises its expectation and, at the same time, the payment the challenger needs to win. Deterrence models keep only the second half; the bargaining institution below shows the first half can be switched off by paying the runner-up differently.</p>
 
 <details class="proof">
 <summary>Proof sketch</summary>
@@ -53,7 +57,8 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 
 <figure class="chart" data-chart="fig1">
 <div class="chart-mount" id="chart-fig1" role="img" aria-label="Two panels against incumbent strength r: the target-payoff spread rising, and gross challenger profit at three beliefs falling."></div>
-<figcaption><span class="fig-label">Figure 1.</span> Competition and the two returns to information. Panel (a) plots the target-payoff spread \(\Delta_T(r)\); panel (b) plots gross challenger profit \(B_r(\mu)\) at the posterior bounds \(m,M\) and the prior \(1/2\). Benchmark values are \(h=[[base_h]]\), \(\ell=[[base_ell]]\), \(p=[[base_p]]\), and \(b=[[base_b]]\). Values are per target share. These are acquisition-stage payoffs, before solving trading and entry. Hover for exact values and the derivatives in (5).</figcaption>
+<figcaption><span class="fig-label">Figure 1.</span> Competition and the two returns to information. Panel (a) plots the target-payoff spread \(\Delta_T(r)\); panel (b) plots gross challenger profit \(B_r(\mu)\) at the posterior bounds \(m,M\) and the prior \(1/2\). Hover for exact values.
+<details class="fold"><summary>Notes</summary><p>Benchmark values are \(h=[[base_h]]\), \(\ell=[[base_ell]]\), \(p=[[base_p]]\), and \(b=[[base_b]]\). Values are per target share. These are acquisition-stage payoffs, before solving trading and entry.</p></details></figcaption>
 </figure>
 
 <h3 id="sec-04-two-returns-inference">What the challenger learns from the price</h3>
@@ -67,14 +72,16 @@ a_H(x)&amp;=\int f(x-q)\,d\sigma_H(q),\qquad
 \end{aligned}
 \tag{7}
 \]</div>
+<p>The Laplace likelihood ratios lie between \(e^{-2/b}\) and \(e^{2/b}\) for any two orders, so \(m\le\mu_X\le M\) and the price-based posterior inherits the bounds; at \(b=[[base_b]]\), \(m=[[base_m]]\) and \(M=[[base_M]]\). No equilibrium price can induce a belief above \(M\), so once \(B_r(M)\) falls below \(c_H\) no price justifies expensive preparation. When \(c_L\lt B_r(m)\), entry is at least \(\rho\) and the price is strictly increasing in the posterior, so the challenger reads the market maker's posterior straight off the price (Propositions A.1 and A.2).</p>
+
+<details class="fold">
+<summary>How the price reveals the posterior</summary>
 <p>For any two orders \(q,q'\in[-1,1]\) the Laplace density obeys</p>
 <div class="math-block">\[
 e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b},
 \tag{8}
 \]</div>
-<p>and integrating over the conditional order distributions preserves the inequalities, so \(m\le\mu_X\le M\); the price-based posterior is a conditional expectation of \(\mu_X\) and inherits the bounds. At \(b=[[base_b]]\) they are \(m=[[base_m]]\) and \(M=[[base_M]]\). No equilibrium price can induce a belief above \(M\), so deterrence eventually meets this ceiling: once \(B_r(M)\) falls below \(c_H\), no price justifies expensive preparation.</p>
-
-<p>Suppose \(c_L\lt B_r(m)\), so the low-cost challenger prepares at every feasible belief. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
+<p>and integrating over the conditional order distributions preserves the inequalities. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
 <div class="math-block">\[
 \begin{aligned}
 e_r(\mu)&amp;=\rho+(1-\rho)\mathbf 1\{B_r(\mu)\ge c_H\},\\
@@ -90,7 +97,8 @@ P&amp;=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\\
 \end{aligned}
 \tag{10}
 \]</div>
-<p>The positive denominator makes \(\mu_X\) a measurable function of \(P\), price atoms and entry jumps included (Propositions A.1 and A.2). The challenger reads the market maker's posterior straight off the price.</p>
+<p>and the positive denominator makes \(\mu_X\) a measurable function of \(P\).</p>
+</details>
 
 <h3 id="sec-04-two-returns-trading">Informed trading incentives</h3>
 <p>Rational pricing strips the anticipated increase in proceeds out of the investor's advantage; what remains depends on challenger quality. The residual advantages of buying in state \(H\) and selling in state \(L\) are</p>
@@ -102,9 +110,9 @@ A_L(x)&amp;=P(x)-\mathbb E[V_T\mid L,x]=e_r(\mu_X(x))\Delta_T\mu_X(x),\\
 \end{aligned}
 \tag{11}
 \]</div>
-<p>The investor's advantage is the entry probability times the target-payoff spread times the market's residual uncertainty. The lower bound uses the entry floor \(\rho\) and the posterior floor \(m\); the upper bound is \(\Delta_T\). Both hold for every candidate order distribution, so the main result can compare them with the trading cost before committing to any order profile. Uniqueness comes from a global bound, not from checking deviations around a conjectured equilibrium.</p>
+<p>The advantage is entry probability times spread times residual uncertainty. Both bounds hold for every candidate order distribution, so uniqueness will come from comparing them with the trading cost, not from checking deviations around a conjectured equilibrium.</p>
 
 <h3 id="sec-04-two-returns-explorer">Try the closed forms</h3>
-<p>The slider moves incumbent strength \(r\) with every other primitive held at the benchmark and recomputes the payoffs in (4), the bounds in (7), the full-order entry formulas in (12), the conditions of Proposition 2, and the boundaries of Proposition A.4.</p>
+<p>The slider moves \(r\) with every other primitive at the benchmark and recomputes (4), (7), (12), the conditions of Proposition 2, and the boundaries of Proposition A.4.</p>
 <div id="explorer" data-explorer></div>
 </section>

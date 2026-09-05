@@ -701,6 +701,9 @@ nav.toc { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 nav.toc::-webkit-scrollbar { width: 6px; }
 nav.toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 nav.toc::-webkit-scrollbar-track { background: transparent; }
+.prop details.fold summary, .prop details.fold p { font-style: normal; }
+figcaption details.fold { margin-top: 0.4rem; }
+figcaption details.fold summary { font-size: 0.82rem; }
 
 </style>
 </head>
@@ -716,7 +719,7 @@ nav.toc::-webkit-scrollbar-track { background: transparent; }
     <div class="status-line">
       <span>September 2026</span>
       <span class="dot" aria-hidden="true">·</span>
-      <span>about 15 minutes</span>
+      <span>about 10 minutes</span>
       <span class="dot" aria-hidden="true">·</span>
       <a href="main_filled.pdf">Manuscript (PDF)</a>
       <span class="dot" aria-hidden="true">·</span>
@@ -728,7 +731,7 @@ nav.toc::-webkit-scrollbar-track { background: transparent; }
 
 <div class="layout">
   <nav class="toc" id="toc" aria-label="Contents">
-    <ol class="toc-list"><li><a href="#sec-01-claim">The claim</a></li><li><a href="#sec-02-position">Where the decision sits</a><ol><li><a href="#sec-02-position-feedback">Feedback effects</a></li><li><a href="#sec-02-position-entry">Auction entry and information</a></li><li><a href="#sec-02-position-trading">Takeover models with trading</a></li></ol></li><li><a href="#sec-03-model">The model</a><ol><li><a href="#sec-03-model-values">Values, preparation, and the sale</a></li><li><a href="#sec-03-model-trading">Trading and pricing</a></li><li><a href="#sec-03-model-timing">Timing</a></li><li><a href="#sec-03-model-equilibrium">Equilibrium</a></li><li><a href="#sec-03-model-benchmark">Benchmark parameters</a></li></ol></li><li><a href="#sec-04-two-returns">Two returns to information</a><ol><li><a href="#sec-04-two-returns-payoffs">Acquisition profits and target proceeds</a></li><li><a href="#sec-04-two-returns-inference">What the challenger learns from the price</a></li><li><a href="#sec-04-two-returns-trading">Informed trading incentives</a></li><li><a href="#sec-04-two-returns-explorer">Try the closed forms</a></li></ol></li><li><a href="#sec-05-results">Competition creates competition</a><ol><li><a href="#sec-05-results-prop2">Proposition 2</a></li><li><a href="#sec-05-results-benchmark">The benchmark and its information controls</a></li><li><a href="#sec-05-results-prop3">Coexisting equilibria at intermediate strength</a></li></ol></li><li><a href="#sec-06-robustness">What survives</a><ol><li><a href="#sec-06-robustness-noise">Noise and preparation costs</a></li><li><a href="#sec-06-robustness-values">Acquisition values</a></li><li><a href="#sec-06-robustness-signals">Complementary private information</a></li></ol></li><li><a href="#sec-07-welfare">Welfare and sale terms</a><ol><li><a href="#sec-07-welfare-access">Access to prices</a></li><li><a href="#sec-07-welfare-bargaining">The payment rule</a></li><li><a href="#sec-07-welfare-reserve">Reserve comparisons</a></li></ol></li><li><a href="#sec-08-statics">Comparative statics at a glance</a></li><li><a href="#sec-09-outlook">Conclusion and next steps</a><ol><li><a href="#sec-09-outlook-theory">Theory</a></li><li><a href="#sec-09-outlook-empirics">Empirics</a></li></ol></li><li><a href="#sec-appendix">Appendix propositions</a></li></ol>
+    <ol class="toc-list"><li><a href="#sec-01-claim">The claim</a></li><li><a href="#sec-02-position">Where the decision sits</a></li><li><a href="#sec-03-model">The model</a><ol><li><a href="#sec-03-model-values">Values, preparation, and the sale</a></li><li><a href="#sec-03-model-trading">Trading and pricing</a></li><li><a href="#sec-03-model-timing">Timing</a></li><li><a href="#sec-03-model-equilibrium">Equilibrium and notation</a></li><li><a href="#sec-03-model-benchmark">Benchmark parameters</a></li></ol></li><li><a href="#sec-04-two-returns">Two returns to information</a><ol><li><a href="#sec-04-two-returns-payoffs">Acquisition profits and target proceeds</a></li><li><a href="#sec-04-two-returns-inference">What the challenger learns from the price</a></li><li><a href="#sec-04-two-returns-trading">Informed trading incentives</a></li><li><a href="#sec-04-two-returns-explorer">Try the closed forms</a></li></ol></li><li><a href="#sec-05-results">Competition creates competition</a><ol><li><a href="#sec-05-results-prop2">Proposition 2</a></li><li><a href="#sec-05-results-benchmark">The benchmark and its information controls</a></li><li><a href="#sec-05-results-prop3">Coexisting equilibria at intermediate strength</a></li></ol></li><li><a href="#sec-06-robustness">What survives</a><ol><li><a href="#sec-06-robustness-noise">Noise and preparation costs</a></li><li><a href="#sec-06-robustness-values">Acquisition values</a></li><li><a href="#sec-06-robustness-signals">Complementary private information</a></li></ol></li><li><a href="#sec-07-welfare">Welfare and sale terms</a><ol><li><a href="#sec-07-welfare-access">Access to prices</a></li><li><a href="#sec-07-welfare-bargaining">The payment rule</a></li><li><a href="#sec-07-welfare-reserve">Reserve comparisons</a></li></ol></li><li><a href="#sec-08-statics">Comparative statics at a glance</a></li><li><a href="#sec-09-outlook">Conclusion and next steps</a><ol><li><a href="#sec-09-outlook-theory">Theory</a></li><li><a href="#sec-09-outlook-empirics">Empirics</a></li></ol></li><li><a href="#sec-appendix">Appendix propositions</a></li></ol>
   </nav>
   <main id="main">
     <section class="sec" id="sec-01-claim">
@@ -736,9 +739,7 @@ nav.toc::-webkit-scrollbar-track { background: transparent; }
 
 <p>A stronger incumbent bidder can attract a challenger. I study a takeover auction in which a prospective buyer observes the target's stock price before paying to learn its own acquisition value. Stronger competition lowers that buyer's acquisition profit at every belief, but it also raises the sensitivity of target proceeds to the buyer's value, and that second effect makes informed trading in target shares worth its cost. On an open set of parameters, strengthening the incumbent switches the unique equilibrium from an uninformative price to an informative one, and entry rises.</p>
 
-<p>The received wisdom runs the other way. A challenger must pay to prepare before it can submit an executable offer, and a stronger prepared rival lowers the expected return to preparing (Fishman 1988; Hirshleifer and Png 1989). That force is present in my model and never switches off. What changes is what the challenger knows when it decides.</p>
-
-<p>A high-value challenger wins and pays the incumbent's bid. A low-value challenger loses to a strong incumbent, which then pays the challenger's bid. A stronger incumbent therefore widens the gap in target proceeds between the two challenger types, an investor who knows the type has more to trade on, and the price the challenger reads becomes more informative about its own value. When that information effect outweighs deterrence, competition creates competition.</p>
+<p>The received wisdom runs the other way: a challenger must pay to prepare before it can bid, and a stronger prepared rival lowers the return to preparing (Fishman 1988; Hirshleifer and Png 1989). That force never switches off in my model. What changes is what the challenger knows when it decides. A high-value challenger wins and pays the incumbent's bid; a low-value challenger loses to a strong incumbent, which pays the challenger's bid. A stronger incumbent therefore widens the gap in target proceeds between the two challenger types, an investor who knows the type has more to trade on, and the price becomes more informative about the challenger's own value. When that information effect outweighs deterrence, competition creates competition.</p>
 
 <div class="strip">
 <div class="stat"><span class="stat-value"><span class="q" data-q="base_entry_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">0.250000</span></span><span class="stat-label">entry at \(r=1.2\), no trade</span></div>
@@ -746,41 +747,37 @@ nav.toc::-webkit-scrollbar-track { background: transparent; }
 <div class="stat"><span class="stat-value"><span class="q" data-q="base_entry_collapse" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse">0.250000</span></span><span class="stat-label">entry at \(r=3.6\), ceiling binds</span></div>
 </div>
 
-<p>In the benchmark, gross acquisition profit at the prior falls from <span class="q" data-q="base_profit_prior_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">4.804167</span> to <span class="q" data-q="base_profit_prior_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">4.291667</span> as incumbent strength rises from \(r=1.2\) to \(r=3\), and the target-payoff spread rises from <span class="q" data-q="base_spread_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">0.016667</span> to <span class="q" data-q="base_spread_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">0.666667</span>. Entry more than doubles. At \(r=3.6\) even the most favorable attainable price no longer justifies expensive preparation, and entry returns to its floor. Holding the price information fixed restores deterrence at every step.</p>
+<p>In the benchmark, gross acquisition profit at the prior falls from <span class="q" data-q="base_profit_prior_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">4.804167</span> to <span class="q" data-q="base_profit_prior_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">4.291667</span> as \(r\) rises from <span class="q" data-q="base_r_weak" data-status="input" title="input · input manifest · r_weak">1.2</span> to <span class="q" data-q="base_r_strong" data-status="input" title="input · input manifest · r_strong">3</span>, the target-payoff spread rises from <span class="q" data-q="base_spread_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">0.016667</span> to <span class="q" data-q="base_spread_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">0.666667</span>, and entry more than doubles. At \(r=3.6\) no attainable price justifies expensive preparation and entry returns to its floor. Holding the price information fixed restores deterrence at every step.</p>
 </section>
 
 <section class="sec" id="sec-02-position">
 <h2>Where the decision sits</h2>
 
-<p>The decision I model falls between an expression of interest and a commitment to participate. A listed target may already have a prepared lead buyer when other prospective acquirers are still deciding whether to investigate. Imprivata's definitive proxy describes an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence (Imprivata 2016), and much of takeover competition develops before public bidding (Boone and Mulherin 2007; Gentry and Stroup 2019). These records motivate a costly preparation decision. They do not establish learning from prices, which needs a publicly understood sale opportunity that remains open to a challenger. An empirical study has to verify that condition first.</p>
+<p>The decision I model falls between an expression of interest and a commitment to participate. A listed target may already have a prepared lead buyer while other prospective acquirers are still deciding whether to investigate; Imprivata's definitive proxy describes an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence (Imprivata 2016), and much of takeover competition develops before public bidding (Boone and Mulherin 2007; Gentry and Stroup 2019). These records motivate a costly preparation decision. They do not establish learning from prices, which needs a publicly understood sale opportunity that remains open to a challenger, and an empirical study has to verify that condition first.</p>
 
-<h3 id="sec-02-position-feedback">Feedback effects</h3>
-<p>The paper connects takeover entry to financial-market feedback. In Dow, Goldstein and Guembel (2017) a firm's investment decision shapes the incentive to produce information about its stock; here the sale rule divides acquisition surplus between a traded claim and a buyer deciding whether to enter, and the two returns to information move in opposite directions. Edmans, Goldstein and Jiang (2015) show that corrective real decisions can discourage trading on bad news under rational pricing. I ask how rival strength changes the information sensitivity of the claim and, through it, participation. Evidence that prices affect takeover activity (Edmans, Goldstein and Jiang 2012) runs from prices to control and does not identify a prospective challenger learning its own value; learning from announcement returns (Luo 2005) happens after the participation margin studied here.</p>
+<p>Relative to the feedback-effects literature, the sale rule here divides acquisition surplus between a traded claim and a buyer deciding whether to enter, so the two returns to information move in opposite directions. Relative to the auction-entry literature, I keep the direct deterrence force and add a market that operates before preparation, with the informed party outside the auction. Relative to takeover models with trading, I hold cash consideration fixed and study entry rather than tendering, negotiation, or payment choice.</p>
 
-<h3 id="sec-02-position-entry">Auction entry and information</h3>
-<p>The auction-entry literature makes the bidder pool endogenous (Levin and Smith 1994; Gentry and Stroup 2019) and shows how selective entry affects the choice of sale procedure (Roberts and Sweeting 2013). I keep the direct deterrence force and add information from a market that operates before preparation. Bidders' own information acquisition responds to the format (Persico 2000); here the informed party is an investor outside the auction, trading a payoff that differs from the entrant's profit. Bidder learning about own values and competitors (Pernoud and Gleyze 2026), post-auction feedback in security-payment design (Liu and Bernhardt 2022), and bidder-pool choice with correlated values (Carlin et al. 2026) are the closest recent work.</p>
-
-<h3 id="sec-02-position-trading">Takeover models with trading</h3>
-<p>Other takeover models connect trading to later stages of a deal: negotiations with stock-market feedback (Betton et al. 2014) and payment choice within an initiated deal (Lin, Ma, Yang and Zhu 2025). I hold cash consideration fixed and study entry. The investor here plays no role in tendering (Cornelli and Li 2002), and the model excludes toeholds and free riding (Bulow, Huang and Klemperer 1999; Grossman and Hart 1980). Endogenous investor research would add manipulation incentives through the real decision that responds to the price (Goldstein and Guembel 2008).</p>
+<details class="fold">
+<summary>Positioning in the literature</summary>
+<p><strong>Feedback effects.</strong> In Dow, Goldstein and Guembel (2017) a firm's investment decision shapes the incentive to produce information about its stock. Edmans, Goldstein and Jiang (2015) show that corrective real decisions can discourage trading on bad news under rational pricing. I ask how rival strength changes the information sensitivity of the claim and, through it, participation. Evidence that prices affect takeover activity (Edmans, Goldstein and Jiang 2012) runs from prices to control and does not identify a prospective challenger learning its own value; learning from announcement returns (Luo 2005) happens after the participation margin studied here.</p>
+<p><strong>Auction entry and information.</strong> The auction-entry literature makes the bidder pool endogenous (Levin and Smith 1994; Gentry and Stroup 2019) and shows how selective entry affects the choice of sale procedure (Roberts and Sweeting 2013). Bidders' own information acquisition responds to the format (Persico 2000); here the informed party is an investor outside the auction, trading a payoff that differs from the entrant's profit. Bidder learning about own values and competitors (Pernoud and Gleyze 2026), post-auction feedback in security-payment design (Liu and Bernhardt 2022), and bidder-pool choice with correlated values (Carlin et al. 2026) are the closest recent work.</p>
+<p><strong>Takeover models with trading.</strong> Other models connect trading to later stages of a deal: negotiations with stock-market feedback (Betton et al. 2014) and payment choice within an initiated deal (Lin, Ma, Yang and Zhu 2025). The investor here plays no role in tendering (Cornelli and Li 2002), and the model excludes toeholds and free riding (Bulow, Huang and Klemperer 1999; Grossman and Hart 1980). Endogenous investor research would add manipulation incentives through the real decision that responds to the price (Goldstein and Guembel 2008).</p>
+</details>
 </section>
 
 <section class="sec" id="sec-03-model">
 <h2>The model</h2>
 
 <h3 id="sec-03-model-values">Values, preparation, and the sale</h3>
-<p>A listed target with standalone value normalized to zero is sold through a cash second-price auction with reserve \(p\); values and costs are per target share. The incumbent has already prepared. Its acquisition value \(R\) is uniform on \([0,r]\), so a higher \(r\) strengthens it in the sense of first-order stochastic dominance, and it knows \(R\) before bidding.</p>
-
-<p>The challenger has acquisition value \(\theta\in\{\ell,h\}\) with equal prior probabilities. The benchmark restricts values and the reserve to</p>
+<p>A listed target with standalone value zero is sold through a cash second-price auction with reserve \(p\); values and costs are per share. The incumbent has already prepared and knows its value \(R\), uniform on \([0,r]\); a higher \(r\) strengthens it in the first-order stochastic sense. The challenger has value \(\theta\in\{\ell,h\}\) with equal priors, does not know it, and after observing the stock price learns its preparation cost \(C\), equal to \(c_L\) with probability \(\rho\) and \(c_H\) otherwise; paying \(C\) reveals \(\theta\) and permits bidding. The benchmark restricts values and the reserve to</p>
 <div class="math-block">\[
 0\lt p\lt\ell\lt r\lt h.
 \tag{1}
 \]</div>
-<p>The challenger does not know its value at the start. After observing the stock price it privately learns its preparation cost \(C\), equal to \(c_L\) with probability \(\rho\) and \(c_H\) otherwise, with \(0\lt\rho\lt 1\) and \(0\le c_L\lt c_H\). Paying \(C\) reveals \(\theta\) and permits bidding; declining leaves the challenger outside the sale. Incumbent value, challenger value, preparation cost, and noise demand are independent.</p>
-
-<p>The seller commits to the auction before trading. The highest admissible bidder acquires the target and pays the larger of the reserve and the highest competing bid; bids are truthful and weakly dominant. A challenger indifferent about preparation enters. That tie rule matters in exactly one place, a posterior plateau that appears in the results.</p>
+<p>Bids are truthful and weakly dominant; the winner pays the larger of the reserve and the highest competing bid. A challenger indifferent about preparation enters, a tie rule that matters at exactly one posterior plateau in the results.</p>
 
 <h3 id="sec-03-model-trading">Trading and pricing</h3>
-<p>An investor observes \(\theta\) and submits an order \(q\in[-1,1]\) in a small reference unit with no control rights. It holds no initial position, cannot acquire the target, and pays a linear trading cost \(k|q|\). Its profit and aggregate order flow are</p>
+<p>An investor observes \(\theta\) and submits an order \(q\in[-1,1]\) in a small unit with no control rights, paying a linear trading cost \(k|q|\). Its profit and aggregate order flow are</p>
 <div class="math-block">\[
 \begin{gathered}
 q\{V_T-P(X)\}-k|q|,\qquad X=q+Z,\\
@@ -788,7 +785,7 @@ f(z)=\frac{1}{2b}e^{-|z|/b},\qquad b\gt 1,
 \end{gathered}
 \tag{2}
 \]</div>
-<p>where \(V_T\) is the terminal payoff of a target share and \(Z\) is independent noise demand with a Laplace density. The Laplace law has bounded likelihood ratios, which caps the information any order can reveal. Competitive market makers observe aggregate flow and set</p>
+<p>where \(V_T\) is the terminal payoff of a target share and \(Z\) is independent Laplace noise, whose bounded likelihood ratios cap what any order can reveal. Competitive market makers observe aggregate flow and set</p>
 <div class="math-block">\[
 P(X)=\mathbb E[V_T\mid X],
 \tag{3}
@@ -806,13 +803,10 @@ P(X)=\mathbb E[V_T\mid X],
 <li data-step><button type="button" class="step-btn">Payoffs</button><div class="step-note">Ownership changes hands and the target's shareholders receive the sale proceeds, which determine \(V_T\). The investor's position pays \(q(V_T-P)\) less its trading cost.</div></li>
 </ol>
 
-<h3 id="sec-03-model-equilibrium">Equilibrium</h3>
-<p>An equilibrium specifies conditional order distributions \(\sigma_H,\sigma_L\), a measurable price function, Bayesian beliefs conditional on the observed price, optimal preparation, and truthful bidding. The investor can mix and can deviate to any order in \([-1,1]\). Two comparisons should be kept apart: a unilateral deviation changes the distribution of order flow with the candidate equilibrium's pricing and preparation schedules held fixed, whereas a comparison across incumbent strengths re-solves those schedules.</p>
-
-<p>Notation. \(t_0\) is expected target proceeds without entry, \(t_H,t_L\) are proceeds conditional on entry and quality, and \(g_H,g_L\) are the challenger's corresponding gross acquisition profits. The target-payoff spread is \(\Delta_T=t_H-t_L\), and at belief \(\mu=\Pr(\theta=h)\) the challenger's expected gross profit is \(B_r(\mu)=g_L+\mu(g_H-g_L)\).</p>
+<h3 id="sec-03-model-equilibrium">Equilibrium and notation</h3>
+<p>An equilibrium specifies conditional order distributions \(\sigma_H,\sigma_L\), a measurable price function, beliefs given the price, optimal preparation, and truthful bidding; the investor can mix and can deviate to any order in \([-1,1]\). Write \(t_0\) for expected target proceeds without entry, \(t_H,t_L\) for proceeds given entry and quality, \(g_H,g_L\) for the challenger's gross profits, \(\Delta_T=t_H-t_L\) for the target-payoff spread, and \(B_r(\mu)=g_L+\mu(g_H-g_L)\) for expected gross profit at belief \(\mu=\Pr(\theta=h)\).</p>
 
 <h3 id="sec-03-model-benchmark">Benchmark parameters</h3>
-<p>Declared primitives, with three incumbent strengths in the roles of weak, strong, and very strong.</p>
 <dl class="params">
 <dt>\(h\)</dt><dd><span class="q" data-q="base_h" data-status="input" title="input · input manifest · h">10</span></dd>
 <dt>\(\ell\)</dt><dd><span class="q" data-q="base_ell" data-status="input" title="input · input manifest · ell">1</span></dd>
@@ -832,7 +826,7 @@ P(X)=\mathbb E[V_T\mid X],
 <h2>Two returns to information</h2>
 
 <h3 id="sec-04-two-returns-payoffs">Acquisition profits and target proceeds</h3>
-<p>The auction determines both the return to preparation and the claim the investor trades. A high-value challenger wins and pays \(\max\{p,R\}\); with a low-value challenger the target receives \(\max\{p,\min(R,\ell)\}\); without entry the incumbent pays the reserve if its value meets it. Integrating over the uniform incumbent gives</p>
+<p>A high-value challenger wins and pays \(\max\{p,R\}\); with a low-value challenger the target receives \(\max\{p,\min(R,\ell)\}\). Integrating over the uniform incumbent gives</p>
 <div class="math-block">\[
 \begin{aligned}
 t_0&amp;=p\left(1-\frac p r\right),&amp;
@@ -844,7 +838,7 @@ g_L&amp;=\frac{\ell^2-p^2}{2r},&amp;
 \end{aligned}
 \tag{4}
 \]</div>
-<p>The relevant derivatives are</p>
+<p>with derivatives</p>
 <div class="math-block">\[
 \begin{aligned}
 B_r(\mu)&amp;=g_L+\mu(g_H-g_L),\\
@@ -854,11 +848,14 @@ g_H'(r)&amp;=-\frac12+\frac{p^2}{2r^2}\lt 0,
 \end{aligned}
 \tag{5}
 \]</div>
-<p>A stronger incumbent lowers the challenger's acquisition profit at every fixed belief and makes target proceeds more sensitive to challenger quality. The first effect is the deterrence force of the preemptive-bidding literature; the second is the one an informed investor cares about. Proposition 1 frees the opposition from the uniform distribution.</p>
+<p>A stronger incumbent lowers the challenger's profit at every belief (deterrence) and makes target proceeds more sensitive to challenger quality (what an informed investor cares about).</p>
 
 <div class="prop" id="sec-04-two-returns-prop1">
 <p class="prop-title">Proposition 1 (competition and the two returns to information).</p>
 <div class="prop-body">
+<p><em>For any continuous incumbent distribution, a first-order stochastic strengthening weakly increases the spread of target proceeds between a high- and a low-value challenger and weakly decreases the challenger's gross acquisition profit at every fixed posterior.</em></p>
+<details class="fold">
+<summary>Full statement</summary>
 <p><em>Let the incumbent's value have a continuous distribution \(F\) on \([0,\bar r]\) with \(0\lt p\lt\ell\lt\bar r\lt h\), and extend \(F\) by unity above its support. A first-order stochastic strengthening of \(F\) weakly increases the spread of target proceeds between a high- and a low-value challenger and weakly decreases the challenger's gross acquisition profit at every fixed posterior, where</em></p>
 <div class="math-block">\[
 \begin{aligned}
@@ -870,10 +867,11 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 \tag{6}
 \]</div>
 <p><em>Both comparisons are strict when the change in \(F\) has positive integral over the corresponding range.</em></p>
+</details>
 </div>
 </div>
 
-<p>The result follows from the payment rule alone. If \(R\le\ell\), either challenger type outbids the incumbent and pays the same amount. If \(R\gt\ell\), a high-value challenger wins and pays \(R\), whereas a low-value challenger loses and the incumbent pays \(\ell\). The difference in target proceeds is therefore \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value, and a stronger incumbent raises its expectation while raising the payment the challenger needs to win. Deterrence models keep only the second half of this argument; the first half is what a second-price payment rule adds, and the bargaining institution below shows it can be switched off by paying the runner-up differently.</p>
+<p>The result follows from the payment rule alone. If \(R\gt\ell\), a high-value challenger wins and pays \(R\) while a low-value challenger loses and the incumbent pays \(\ell\), so the difference in target proceeds is \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value. A stronger incumbent raises its expectation and, at the same time, the payment the challenger needs to win. Deterrence models keep only the second half; the bargaining institution below shows the first half can be switched off by paying the runner-up differently.</p>
 
 <details class="proof">
 <summary>Proof sketch</summary>
@@ -883,7 +881,8 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 
 <figure class="chart" data-chart="fig1">
 <div class="chart-mount" id="chart-fig1" role="img" aria-label="Two panels against incumbent strength r: the target-payoff spread rising, and gross challenger profit at three beliefs falling."></div>
-<figcaption><span class="fig-label">Figure 1.</span> Competition and the two returns to information. Panel (a) plots the target-payoff spread \(\Delta_T(r)\); panel (b) plots gross challenger profit \(B_r(\mu)\) at the posterior bounds \(m,M\) and the prior \(1/2\). Benchmark values are \(h=10\), \(\ell=1\), \(p=0.5\), and \(b=2\). Values are per target share. These are acquisition-stage payoffs, before solving trading and entry. Hover for exact values and the derivatives in (5).</figcaption>
+<figcaption><span class="fig-label">Figure 1.</span> Competition and the two returns to information. Panel (a) plots the target-payoff spread \(\Delta_T(r)\); panel (b) plots gross challenger profit \(B_r(\mu)\) at the posterior bounds \(m,M\) and the prior \(1/2\). Hover for exact values.
+<details class="fold"><summary>Notes</summary><p>Benchmark values are \(h=10\), \(\ell=1\), \(p=0.5\), and \(b=2\). Values are per target share. These are acquisition-stage payoffs, before solving trading and entry.</p></details></figcaption>
 </figure>
 
 <h3 id="sec-04-two-returns-inference">What the challenger learns from the price</h3>
@@ -897,14 +896,16 @@ a_H(x)&amp;=\int f(x-q)\,d\sigma_H(q),\qquad
 \end{aligned}
 \tag{7}
 \]</div>
+<p>The Laplace likelihood ratios lie between \(e^{-2/b}\) and \(e^{2/b}\) for any two orders, so \(m\le\mu_X\le M\) and the price-based posterior inherits the bounds; at \(b=2\), \(m=0.268941421\) and \(M=0.731058579\). No equilibrium price can induce a belief above \(M\), so once \(B_r(M)\) falls below \(c_H\) no price justifies expensive preparation. When \(c_L\lt B_r(m)\), entry is at least \(\rho\) and the price is strictly increasing in the posterior, so the challenger reads the market maker's posterior straight off the price (Propositions A.1 and A.2).</p>
+
+<details class="fold">
+<summary>How the price reveals the posterior</summary>
 <p>For any two orders \(q,q'\in[-1,1]\) the Laplace density obeys</p>
 <div class="math-block">\[
 e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b},
 \tag{8}
 \]</div>
-<p>and integrating over the conditional order distributions preserves the inequalities, so \(m\le\mu_X\le M\); the price-based posterior is a conditional expectation of \(\mu_X\) and inherits the bounds. At \(b=2\) they are \(m=0.268941421\) and \(M=0.731058579\). No equilibrium price can induce a belief above \(M\), so deterrence eventually meets this ceiling: once \(B_r(M)\) falls below \(c_H\), no price justifies expensive preparation.</p>
-
-<p>Suppose \(c_L\lt B_r(m)\), so the low-cost challenger prepares at every feasible belief. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
+<p>and integrating over the conditional order distributions preserves the inequalities. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
 <div class="math-block">\[
 \begin{aligned}
 e_r(\mu)&amp;=\rho+(1-\rho)\mathbf 1\{B_r(\mu)\ge c_H\},\\
@@ -920,7 +921,8 @@ P&amp;=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\\
 \end{aligned}
 \tag{10}
 \]</div>
-<p>The positive denominator makes \(\mu_X\) a measurable function of \(P\), price atoms and entry jumps included (Propositions A.1 and A.2). The challenger reads the market maker's posterior straight off the price.</p>
+<p>and the positive denominator makes \(\mu_X\) a measurable function of \(P\).</p>
+</details>
 
 <h3 id="sec-04-two-returns-trading">Informed trading incentives</h3>
 <p>Rational pricing strips the anticipated increase in proceeds out of the investor's advantage; what remains depends on challenger quality. The residual advantages of buying in state \(H\) and selling in state \(L\) are</p>
@@ -932,17 +934,17 @@ A_L(x)&amp;=P(x)-\mathbb E[V_T\mid L,x]=e_r(\mu_X(x))\Delta_T\mu_X(x),\\
 \end{aligned}
 \tag{11}
 \]</div>
-<p>The investor's advantage is the entry probability times the target-payoff spread times the market's residual uncertainty. The lower bound uses the entry floor \(\rho\) and the posterior floor \(m\); the upper bound is \(\Delta_T\). Both hold for every candidate order distribution, so the main result can compare them with the trading cost before committing to any order profile. Uniqueness comes from a global bound, not from checking deviations around a conjectured equilibrium.</p>
+<p>The advantage is entry probability times spread times residual uncertainty. Both bounds hold for every candidate order distribution, so uniqueness will come from comparing them with the trading cost, not from checking deviations around a conjectured equilibrium.</p>
 
 <h3 id="sec-04-two-returns-explorer">Try the closed forms</h3>
-<p>The slider moves incumbent strength \(r\) with every other primitive held at the benchmark and recomputes the payoffs in (4), the bounds in (7), the full-order entry formulas in (12), the conditions of Proposition 2, and the boundaries of Proposition A.4.</p>
+<p>The slider moves \(r\) with every other primitive at the benchmark and recomputes (4), (7), (12), the conditions of Proposition 2, and the boundaries of Proposition A.4.</p>
 <div id="explorer" data-explorer></div>
 </section>
 
 <section class="sec" id="sec-05-results">
 <h2>Competition creates competition</h2>
 
-<p>The main result compares two economies that differ only in incumbent strength. In the weak economy the unique equilibrium has no informed trading and entry at the low-cost floor; in the strong economy it has full informed orders, an informative price, and entry above the floor. A third, still stronger economy shows that the rise is not permanent.</p>
+<p>Two economies differ only in incumbent strength. In the weak one the unique equilibrium has no informed trading and entry at the low-cost floor; in the strong one it has full informed orders, an informative price, and entry above the floor. A still stronger economy shows the rise is not permanent.</p>
 
 <h3 id="sec-05-results-prop2">Proposition 2</h3>
 
@@ -962,14 +964,17 @@ B_{r_0}(1/2)\lt c_H\lt B_{r_1}(M),
 \Delta_T(r_0)\lt k\lt\left(1-\frac1b\right)\rho m\Delta_T(r_1).
 \tag{A3}
 \]</div>
+<p><em>(i) At \(r_0\) the unique equilibrium has no informed trading and entry \(\rho\). (ii) At \(r_1\) it has full orders \((1,-1)\), a price that Blackwell dominates the weak-incumbent experiment, entry above \(\rho\), and a higher probability that the high-value challenger acquires the target. (iii) At any \(r_2\in(r_1,h)\) with \(c_L\lt B_{r_2}(m)\), \(B_{r_2}(M)\lt c_H\), and \(k\lt(1-1/b)\rho m\Delta_T(r_2)\), trading stays informative but entry returns to \(\rho\). The comparisons hold on a nonempty open set of primitives, against arbitrary mixed orders and every continuous deviation.</em></p>
+<details class="fold">
+<summary>Full statement</summary>
 <p><em>(i) With the weak incumbent \(r_0\), the unique equilibrium trading outcome is \(q_H=q_L=0\), the price carries no information, and entry equals \(\rho\). (ii) With the strong incumbent \(r_1\), the unique equilibrium trading outcome is \((q_H,q_L)=(1,-1)\), the price is informative, entry strictly exceeds \(\rho\), and the probability that the high-value challenger acquires the target is strictly higher than at \(r_0\). The strong-incumbent price experiment strictly Blackwell dominates the weak-incumbent experiment at the same noise law. (iii) For any \(r_2\in(r_1,h)\) with \(c_L\lt B_{r_2}(m)\), \(B_{r_2}(M)\lt c_H\), and \(k\lt(1-1/b)\rho m\Delta_T(r_2)\), the unique trading outcome is again \((1,-1)\), but entry returns to \(\rho\). These comparisons hold on a nonempty open set of primitives. Uniqueness refers to trading and on-path entry under truthful bidding and allows arbitrary mixed orders and every continuous deviation.</em></p>
+</details>
 </div>
 </div>
 
-<p>Condition (A1) ensures that low-cost preparation is worthwhile even at the lowest feasible belief. Condition (A2) excludes high-cost preparation at the weak-incumbent prior but permits it at favorable strong-incumbent prices. Condition (A3) places the trading cost above every possible informational return in the weak economy and below a global bound on marginal trading profits in the strong economy.</p>
+<p>(A1) keeps the low-cost challenger in at every feasible belief; (A2) keeps the high-cost challenger out at the weak prior but lets favorable strong-incumbent prices bring it in; (A3) puts the trading cost above every informational return in the weak economy and below a global bound on marginal trading profits in the strong one.</p>
 
-<p>The proof pins down trading before it imposes any order profile. In the weak economy the investor's gross advantage per unit is at most \(\Delta_T(r_0)\lt k\), so every nonzero order loses money against every candidate schedule. In the strong economy the residual lower bound \(\rho m\Delta_T\) from (11) makes every increase in a correctly signed order profitable across the whole order interval, so full orders are necessary in every equilibrium: dominance delivers uniqueness without a fixed-point step. Under full orders the favorable price crosses the expensive challenger's threshold with positive probability. Define the threshold belief \(\tau\), its flow \(x^*\), the crossing probabilities \(\alpha_H,\alpha_L\), total entry \(\mathsf E\), and high-value ownership \(\mathsf O_H\) by</p>
-
+<p>The proof pins down trading before imposing any order profile. In the weak economy the investor's gross advantage per unit is at most \(\Delta_T(r_0)\lt k\), so every nonzero order loses money against every candidate schedule. In the strong economy the residual bound \(\rho m\Delta_T\) from (11) makes every increase in a correctly signed order profitable, so full orders are necessary in every equilibrium: dominance delivers uniqueness without a fixed-point step. Under full orders the price crosses the expensive challenger's threshold \(\tau\) at flow \(x^*\) with probabilities \(\alpha_H\gt\alpha_L\), and</p>
 <div class="math-block">\[
 \begin{aligned}
 \tau&amp;=\frac{c_H-g_L}{g_H-g_L},&amp;
@@ -981,8 +986,7 @@ x^*&amp;=\frac b2\log\frac\tau{1-\tau},\\
 \end{aligned}
 \tag{12}
 \]</div>
-
-<p>Condition (A2) places \(\tau\) in \((1/2,M)\) and \(x^*\) in \((0,1)\). Since \(\alpha_H\gt\alpha_L\), the additional entry is tilted toward high-value challengers. At a strength satisfying part (iii), even the largest feasible belief fails to justify high-cost preparation; trading stays informative, but entry returns to \(\rho\). The proposition establishes a rise and a subsequent fall across the specified economies and imposes no monotone path between them.</p>
+<p>The added entry is tilted toward high-value challengers. Part (iii) is the ceiling at work. The proposition establishes a rise and a subsequent fall across the specified economies and imposes no monotone path between them.</p>
 
 <details class="proof">
 <summary>Proof sketch</summary>
@@ -991,7 +995,7 @@ x^*&amp;=\frac b2\log\frac\tau{1-\tau},\\
 
 <h3 id="sec-05-results-benchmark">The benchmark and its information controls</h3>
 
-<p>The benchmark uses \(r_0=1.2\), \(r_1=3\), and \(r_2=3.6\). From \(r_0\) to \(r_1\), gross profit at the prior falls from <span class="q" data-q="base_profit_prior_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">4.804167</span> to <span class="q" data-q="base_profit_prior_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">4.291667</span> while the spread rises from <span class="q" data-q="base_spread_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">0.016667</span> to <span class="q" data-q="base_spread_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">0.666667</span>; entry rises from <span class="q" data-q="base_entry_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">0.250000</span> to <span class="q" data-q="base_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span> and high-value ownership from <span class="q" data-q="base_ownership_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">0.125000</span> to <span class="q" data-q="base_ownership_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.324192</span>, then entry returns to <span class="q" data-q="base_entry_collapse" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse">0.250000</span> at \(r_2\).</p>
+<p>From \(r_0=1.2\) to \(r_1=3\), gross profit at the prior falls from <span class="q" data-q="base_profit_prior_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">4.804167</span> to <span class="q" data-q="base_profit_prior_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">4.291667</span>, the spread rises from <span class="q" data-q="base_spread_weak" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_weak">0.016667</span> to <span class="q" data-q="base_spread_strong" data-status="analytical" title="analytical · tables/auction_primitives.csv · r=r_strong">0.666667</span>, entry rises from <span class="q" data-q="base_entry_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">0.250000</span> to <span class="q" data-q="base_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span>, and high-value ownership from <span class="q" data-q="base_ownership_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">0.125000</span> to <span class="q" data-q="base_ownership_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.324192</span>; at \(r_2=3.6\) entry is back at <span class="q" data-q="base_entry_collapse" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse">0.250000</span>. Two controls isolate the source. With informative orders held fixed at both strengths, entry falls from <span class="q" data-q="base_frozen_entry_weak" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=frozen; noise=Laplace; cost_law=atoms; r=r_weak">0.562178</span> to <span class="q" data-q="base_frozen_entry_strong" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=frozen; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span> (Proposition A.3); with the price hidden, entry is <span class="q" data-q="base_hidden_entry_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_weak">0.250000</span> and <span class="q" data-q="base_hidden_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_strong">0.250000</span>. The reversal is the information that trading generates, not the payment.</p>
 
 <figure class="table" id="table-1">
 <div class="table-wrap"><table data-table="auction_primitives"><thead><tr><th scope="col"></th><th scope="col" class="num">Weak (r = 1.2)</th><th scope="col" class="num">Strong (r = 3)</th><th scope="col" class="num">Very strong (r = 3.6)</th></tr></thead><tbody><tr><th scope="row">t<sub>0</sub>, proceeds without a challenger</th><td class="num" title="0.29166666666666663" data-src="tables/auction_primitives.csv:2">0.291667</td><td class="num" title="0.4166666666666667" data-src="tables/auction_primitives.csv:3">0.416667</td><td class="num" title="0.4305555555555556" data-src="tables/auction_primitives.csv:4">0.430556</td></tr><tr><th scope="row">t<sub>H</sub>, proceeds with a high-value challenger</th><td class="num" title="0.7041666666666666" data-src="tables/auction_primitives.csv:2">0.704167</td><td class="num" title="1.5416666666666667" data-src="tables/auction_primitives.csv:3">1.541667</td><td class="num" title="1.8347222222222224" data-src="tables/auction_primitives.csv:4">1.834722</td></tr><tr><th scope="row">t<sub>L</sub>, proceeds with a low-value challenger</th><td class="num" title="0.6875" data-src="tables/auction_primitives.csv:2">0.687500</td><td class="num" title="0.875" data-src="tables/auction_primitives.csv:3">0.875000</td><td class="num" title="0.8958333333333334" data-src="tables/auction_primitives.csv:4">0.895833</td></tr><tr><th scope="row">g<sub>H</sub>, gross profit of a high-value challenger</th><td class="num" title="9.295833333333334" data-src="tables/auction_primitives.csv:2">9.295833</td><td class="num" title="8.458333333333334" data-src="tables/auction_primitives.csv:3">8.458333</td><td class="num" title="8.165277777777778" data-src="tables/auction_primitives.csv:4">8.165278</td></tr><tr><th scope="row">g<sub>L</sub>, gross profit of a low-value challenger</th><td class="num" title="0.3125" data-src="tables/auction_primitives.csv:2">0.312500</td><td class="num" title="0.125" data-src="tables/auction_primitives.csv:3">0.125000</td><td class="num" title="0.10416666666666666" data-src="tables/auction_primitives.csv:4">0.104167</td></tr><tr><th scope="row">Δ<sub>T</sub> = t<sub>H</sub> − t<sub>L</sub>, target-payoff spread</th><td class="num" title="0.016666666666666607" data-src="tables/auction_primitives.csv:2">0.016667</td><td class="num" title="0.6666666666666667" data-src="tables/auction_primitives.csv:3">0.666667</td><td class="num" title="0.938888888888889" data-src="tables/auction_primitives.csv:4">0.938889</td></tr><tr><th scope="row">B<sub>r</sub>(1/2), expected gross profit at the prior</th><td class="num" title="4.804166666666667" data-src="tables/auction_primitives.csv:2">4.804167</td><td class="num" title="4.291666666666667" data-src="tables/auction_primitives.csv:3">4.291667</td><td class="num" title="4.134722222222223" data-src="tables/auction_primitives.csv:4">4.134722</td></tr></tbody></table></div>
@@ -1003,12 +1007,22 @@ x^*&amp;=\frac b2\log\frac\tau{1-\tau},\\
 <figcaption><strong>Table 2.</strong> Equilibrium outcomes, information controls, and welfare.</figcaption>
 </figure>
 
-<p>Two controls isolate the source of the reversal. Holding informative orders fixed at both strengths restores deterrence: entry falls from <span class="q" data-q="base_frozen_entry_weak" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=frozen; noise=Laplace; cost_law=atoms; r=r_weak">0.562178</span> to <span class="q" data-q="base_frozen_entry_strong" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=frozen; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span>, because at every belief and cost realization a decline in gross profit can only remove a preparation incentive (Proposition A.3). Hiding the price from the challenger gives entry <span class="q" data-q="base_hidden_entry_weak" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_weak">0.250000</span> and <span class="q" data-q="base_hidden_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_strong">0.250000</span>. Incumbent strength changes the information that trading generates, and the entry response to that information exceeds the direct deterrence effect.</p>
-
 <h3 id="sec-05-results-prop3">Coexisting equilibria at intermediate strength</h3>
 
-<p>Informative trading need not be unique between the two analytical regions. Proposition 3 establishes, by computer-assisted proof, three equilibria with full purchases and partial sales that coexist with no trade.</p>
+<p>Between the two analytical regions, Proposition 3 establishes by computer-assisted proof three equilibria with full purchases and partial sales \((q_H,q_L)=(1,-v_j)\) that coexist with no trade:</p>
+<div class="math-block">\[
+\begin{array}{ccc}
+r_j&amp;\qquad v_j&amp;\qquad\mathsf E_j\\
+1.55&amp;\qquad[0.46031618,\,0.46031620]&amp;\qquad[0.5450528898,\,0.5450528922]\\
+1.60&amp;\qquad[0.70747537,\,0.70747539]&amp;\qquad[0.5487563062,\,0.5487563085]\\
+1.65&amp;\qquad[0.90333198,\,0.90333201]&amp;\qquad[0.5513607988,\,0.5513608020]
+\end{array}
+\tag{13}
+\]</div>
+<p>The entry intervals are strictly ordered upward, and each economy also admits no trade with entry \(\rho\). These are proofs: interval arithmetic on exact decimal inputs encloses the exact root of the low-value investor's marginal-profit equation, and a uniform derivative bound shows that full purchases dominate every smaller order for the high-value investor. The asymmetry is economic: near the high-cost threshold an order moves both the posterior and the probability of entry, so the two investor types face different residual schedules.</p>
 
+<details class="fold">
+<summary>Full statement of Proposition 3</summary>
 <div class="prop" id="prop-3">
 <p class="prop-title">Proposition 3 (coexisting informative equilibria at intermediate strength).</p>
 <div class="prop-body">
@@ -1020,13 +1034,11 @@ r_j&amp;\qquad v_j&amp;\qquad\mathsf E_j\\
 1.60&amp;\qquad[0.70747537,\,0.70747539]&amp;\qquad[0.5487563062,\,0.5487563085]\\
 1.65&amp;\qquad[0.90333198,\,0.90333201]&amp;\qquad[0.5513607988,\,0.5513608020]
 \end{array}
-\tag{13}
 \]</div>
 <p><em>The entry intervals are strictly ordered upward. Each of the three economies also admits no trade with entry \(\rho\).</em></p>
 </div>
 </div>
-
-<p>These are proofs, not numerical solutions: interval arithmetic on exact decimal inputs encloses the exact root of the low-value investor's marginal-profit equation inside each bracket, and a uniform derivative bound shows that full purchases dominate every smaller order for the high-value investor. The asymmetry is economic. Near the high-cost threshold an order moves both the posterior and the probability of entry, so the two investor types face different residual schedules, and the low-value investor can stop at an interior short. No trade survives at the same strengths because \(\rho\Delta_T/2\le k\).</p>
+</details>
 
 <details class="proof">
 <summary>Proof sketch</summary>
@@ -1040,37 +1052,32 @@ r_j&amp;\qquad v_j&amp;\qquad\mathsf E_j\\
 
 <figure class="chart" data-chart="fig2">
 <div class="chart-mount" id="chart-fig2" role="img" aria-label="Two stacked panels over incumbent strength r: total entry for each accepted branch, and the associated order magnitudes, with certified points and threshold lines."></div>
-<figcaption><strong>Figure 2.</strong> Trading and entry across incumbent strengths. <span class="notes">Benchmark parameters. Panel (a) shows entry for every accepted branch; panel (b) shows the associated order magnitudes. Shading marks analytical uniqueness regions and the range in which several equilibria were found. The thresholds \(r_N,r_U,r_C\) respectively mark no-trade existence, sufficient full-order uniqueness, and the ceiling for high-cost entry. Black points carry the certified intervals of Proposition 3. Other curves are numerical continuations, with breaks at unresolved nodes and branch changes. Absence of a plotted branch does not establish nonexistence. Online Appendix C.2 gives the search and acceptance criteria.</span></figcaption>
+<figcaption><strong>Figure 2.</strong> Trading and entry across incumbent strengths. Panel (a) shows entry for every accepted branch; panel (b) shows the associated order magnitudes; diamonds carry the certified intervals of Proposition 3. Click a legend entry to hide a branch; drag to zoom.
+<details class="fold"><summary>Notes</summary><p>Benchmark parameters. Panel (a) shows entry for every accepted branch; panel (b) shows the associated order magnitudes. Shading marks analytical uniqueness regions and the range in which several equilibria were found. The thresholds \(r_N,r_U,r_C\) respectively mark no-trade existence, sufficient full-order uniqueness, and the ceiling for high-cost entry. Black points carry the certified intervals of Proposition 3. Other curves are numerical continuations, with breaks at unresolved nodes and branch changes. Absence of a plotted branch does not establish nonexistence. Online Appendix C.2 gives the search and acceptance criteria.</p></details></figcaption>
 </figure>
 
-<p>Figure 2 places the certified equilibria within the numerical correspondence. No trade remains an equilibrium up to \(r_N=1.747877538\) and is uniquely optimal below \(\mathfrak r(k)=1.220997512\); full orders are uniquely optimal above \(r_U=2.837416964\); high-cost entry is infeasible above \(r_C=3.592658519\). An existence boundary, a sufficient uniqueness bound, and a participation ceiling answer different questions and need not coincide.</p>
-
-<p>Along the accepted asymmetric branch the short magnitude rises toward one and entry rises until the branch meets full orders; full orders then coexist with no trade and with a symmetric interior family too uninformative to induce high-cost preparation. At \(r_C\) the Laplace posterior reaches its bound on a positive-probability tail, so entry approaches <span class="q" data-q="base_laplace_entry_ceiling_left_limit" data-status="analytical" title="analytical · numerics/thresholds.csv · boundary=laplace_entry_left_limit; benchmark inputs">0.506477395</span> from below and drops to \(\rho=0.25\) strictly above the ceiling. The search found no mixed equilibrium, a search result rather than a nonexistence theorem, and the complete intermediate correspondence is open.</p>
+<p>No trade remains an equilibrium up to \(r_N=1.747877538\) and is uniquely optimal below \(\mathfrak r(k)=1.220997512\); full orders are uniquely optimal above \(r_U=2.837416964\); high-cost entry is infeasible above \(r_C=3.592658519\), where entry drops from <span class="q" data-q="base_laplace_entry_ceiling_left_limit" data-status="analytical" title="analytical · numerics/thresholds.csv · boundary=laplace_entry_left_limit; benchmark inputs">0.506477395</span> to \(\rho=0.25\). The search found no mixed equilibrium, a search result rather than a nonexistence theorem; the complete intermediate correspondence is open.</p>
 </section>
 
 <section class="sec" id="sec-06-robustness">
 <h2>What survives</h2>
 
-<p>The reversal survives a different noise law, atomless costs, a small value gap, and a buyer who knows more than the investor. Each replacement keeps the two ingredients of the proof: a global bound on what any order can reveal, and an entry floor that keeps the price invertible.</p>
+<p>The reversal survives a different noise law, atomless costs, a small value gap, and a buyer who knows more than the investor, because each keeps a global bound on what any order can reveal and an entry floor that keeps the price invertible.</p>
 
 <h3 id="sec-06-robustness-noise">Noise and preparation costs</h3>
-
-<p>Logistic noise has a log-density derivative bounded by \(1/b\), which is all the global trading argument uses, so Proposition A.5 carries the unique trading outcomes and the entry comparisons across unchanged. What changes is the tail. In the strong benchmark economy entry is <span class="q" data-q="logistic_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=atoms; r=r_strong">0.301509</span> under logistic noise against <span class="q" data-q="base_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span> under Laplace noise, because the logistic flow threshold sits <span class="q" data-q="logistic_threshold_noise_sd" data-status="analytical" title="analytical · figures_data/posterior_tails.csv · noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd">1.495369</span> noise standard deviations from the center. The same posterior bounds support different participation rates; the mass of favorable information near the upper bound matters, not only the bound.</p>
+<p>Logistic noise has a log-density derivative bounded by \(1/b\), which is all the trading argument uses, so Proposition A.5 keeps the unique trading outcomes and the entry comparisons. What changes is the tail: strong-economy entry is <span class="q" data-q="logistic_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=atoms; r=r_strong">0.301509</span> under logistic noise against <span class="q" data-q="base_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span> under Laplace, because the logistic flow threshold sits <span class="q" data-q="logistic_threshold_noise_sd" data-status="analytical" title="analytical · figures_data/posterior_tails.csv · noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd">1.495369</span> noise standard deviations out. Atomless costs of half-width <span class="q" data-q="cost_halfwidth" data-status="input" title="input · input manifest · cost_halfwidth">0.1</span> preserve the entry floor and the favorable-price entry event, so Proposition A.6 keeps parts (i) and (ii) of Proposition 2 under either noise law, with strong-economy entry <span class="q" data-q="cost_mix_laplace_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=Laplace; cost_law=uniform_mixture; r=r_strong">0.522715</span> and <span class="q" data-q="cost_mix_logistic_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=uniform_mixture; r=r_strong">0.301374</span>.</p>
 
 <figure class="chart" data-chart="fig3">
 <div class="chart-mount" id="chart-fig3" role="img" aria-label="Two panels over the threshold distance M minus tau: the probability that the posterior crosses the threshold under full orders, and implied entry, for Laplace and logistic noise."></div>
-<figcaption><strong>Figure 3.</strong> Posterior tails and high-cost entry. <span class="notes">Full orders at the strong benchmark strength and scale \(b=2\). Panel (a) plots \(\Pr(\mu_X\ge\tau)\) against \(M-\tau\); panel (b) plots implied entry. At zero threshold distance, the Laplace plateau induces entry under the tie rule, whereas the logistic bound is unattained. Scale, rather than variance, is held fixed. These are fixed-profile comparisons; Online Appendix C.5 records equilibrium validation for each implied cost. The figure does not establish a Blackwell ranking.</span></figcaption>
+<figcaption><strong>Figure 3.</strong> Posterior tails and high-cost entry. Panel (a) plots \(\Pr(\mu_X\ge\tau)\) against \(M-\tau\) under full orders at the strong benchmark strength; panel (b) plots implied entry. At zero threshold distance the Laplace plateau induces entry under the tie rule, whereas the logistic bound is unattained.
+<details class="fold"><summary>Notes</summary><p>Scale \(b=2\), rather than variance, is held fixed. These are fixed-profile comparisons; Online Appendix C.5 records equilibrium validation for each implied cost. The figure does not establish a Blackwell ranking.</p></details></figcaption>
 </figure>
 
-<p>Atomless preparation costs of half-width <span class="q" data-q="cost_halfwidth" data-status="input" title="input · input manifest · cost_halfwidth">0.1</span> around each atom preserve the entry floor and the favorable-price entry event, so Proposition A.6 keeps the unique trading outcomes and parts (i) and (ii) of Proposition 2 under either noise law. Strong-incumbent entry is <span class="q" data-q="cost_mix_laplace_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=Laplace; cost_law=uniform_mixture; r=r_strong">0.522715</span> under Laplace noise and <span class="q" data-q="cost_mix_logistic_entry_strong" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=uniform_mixture; r=r_strong">0.301374</span> under logistic noise.</p>
-
 <h3 id="sec-06-robustness-values">Acquisition values</h3>
-
-<p>With \(h=2\) and \(\ell=1\), every strict inequality of Proposition 2 holds and entry rises from <span class="q" data-q="moderate_entry_weak" data-status="analytical" title="analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_weak">0.250000</span> to <span class="q" data-q="moderate_entry_strong" data-status="analytical" title="analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_strong">0.526805</span> between \(r_0=1.05\) and \(r_1=1.5\). The general construction picks both strengths close to \(\ell\), where \(B_\ell(M)-B_\ell(1/2)=(M-1/2)(h-\ell)\gt0\) for any \(h\gt\ell\); what the reversal needs is the placement of incumbent strength relative to the low acquisition value, not a large gap between the values.</p>
+<p>With \(h=2\) and \(\ell=1\), every strict inequality of Proposition 2 holds and entry rises from <span class="q" data-q="moderate_entry_weak" data-status="analytical" title="analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_weak">0.250000</span> to <span class="q" data-q="moderate_entry_strong" data-status="analytical" title="analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_strong">0.526805</span> between \(r_0=1.05\) and \(r_1=1.5\). The general construction picks both strengths close to \(\ell\); what the reversal needs is the placement of incumbent strength relative to the low acquisition value, not a large value gap.</p>
 
 <h3 id="sec-06-robustness-signals">Complementary private information</h3>
-
-<p>The price is worth reading even when the buyer already knows more than the investor. Let the investor observe a binary signal with accuracy \(a\) and the buyer a conditionally independent one with accuracy \(d\), seen together with the price before preparing. Entry becomes state-dependent even conditional on the price, since a high-value challenger is more likely to receive good private news, but the entry floor leaves a strictly positive coefficient on public beliefs, so the price still reveals the market's posterior. Proposition A.7 gives sufficient conditions for unique zero orders in the weak economy and unique full signal-contingent orders with entry above \(\rho\) in the strong one. Nothing requires \(a\gt d\): in the declared example \(d=75\%\) and \(a=70\%\), and entry rises from <span class="q" data-q="signal_entry_weak" data-status="analytical" title="analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_weak">0.850000</span> to <span class="q" data-q="signal_entry_strong" data-status="analytical" title="analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_strong">0.879438</span>. A favorable private signal alone does not justify high-cost preparation against the weak incumbent; combined with a favorable price, it does against the strong one.</p>
+<p>The price is worth reading even when the buyer knows more than the investor. With a binary investor signal of accuracy \(a\) and a conditionally independent buyer signal of accuracy \(d\), the entry floor keeps a strictly positive coefficient on public beliefs, so the price still reveals the market's posterior. Proposition A.7 gives sufficient conditions for the same unique outcomes, and nothing requires \(a\gt d\): with \(d=75\%\) and \(a=70\%\), entry rises from <span class="q" data-q="signal_entry_weak" data-status="analytical" title="analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_weak">0.850000</span> to <span class="q" data-q="signal_entry_strong" data-status="analytical" title="analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_strong">0.879438</span>. A favorable private signal alone does not justify high-cost preparation against the weak incumbent; combined with a favorable price, it does against the strong one.</p>
 
 <figure class="table" id="table-3">
 <div class="table-wrap"><table data-table="extensions"><thead><tr><th scope="col"></th><th scope="col" class="num">Entry weak</th><th scope="col" class="num">Entry strong</th><th scope="col" class="num">O<sub>H</sub> weak</th><th scope="col" class="num">O<sub>H</sub> strong</th><th scope="col" class="num">Minimum margin</th><th scope="col" class="num">Basis</th></tr></thead><tbody><tr class="panel"><td colspan="7">Panel A. Noise and preparation costs (r = 1.2 and 3)</td></tr><tr><th scope="row">Laplace, cost atoms</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:2">0.250000</td><td class="num" title="0.5227572972597381" data-src="tables/extensions.csv:2">0.522757</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:2">0.125000</td><td class="num" title="0.3241924257758909" data-src="tables/extensions.csv:2">0.324192</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:2">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">Laplace, cost mixture</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:3">0.250000</td><td class="num" title="0.5227147163813063" data-src="tables/extensions.csv:3">0.522715</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:3">0.125000</td><td class="num" title="0.324148008634032" data-src="tables/extensions.csv:3">0.324148</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:3">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">logistic, cost atoms</th><td class="num" title="0.25" data-src="tables/extensions.csv:4">0.250000</td><td class="num" title="0.3015088516350811" data-src="tables/extensions.csv:4">0.301509</td><td class="num" title="0.125" data-src="tables/extensions.csv:4">0.125000</td><td class="num" title="0.1619942904485151" data-src="tables/extensions.csv:4">0.161994</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:4">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">logistic, cost mixture</th><td class="num" title="0.25" data-src="tables/extensions.csv:5">0.250000</td><td class="num" title="0.3013741277194073" data-src="tables/extensions.csv:5">0.301374</td><td class="num" title="0.125" data-src="tables/extensions.csv:5">0.125000</td><td class="num" title="0.16185375668090246" data-src="tables/extensions.csv:5">0.161854</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:5">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr class="panel"><td colspan="7">Panel B. Moderate values (h = 2, ℓ = 1; r = 1.05 and 1.5)</td></tr><tr><th scope="row">Moderate values</th><td class="num" title="0.25000000000000006" data-src="numerics/moderate_values.csv:2">0.250000</td><td class="num" title="0.526804662192885" data-src="numerics/moderate_values.csv:2">0.526805</td><td class="num" title="0.12500000000000003" data-src="numerics/moderate_values.csv:2">0.125000</td><td class="num" title="0.3270320655140725" data-src="numerics/moderate_values.csv:2">0.327032</td><td class="num" title="0.0008014731392707837" data-src="numerics/moderate_values.csv:2">8.01<span class="times">×</span>10<sup>-4</sup></td><td class="basis">proved</td></tr><tr class="panel"><td colspan="7">Panel C. Complementary private information (r = 1.1 and 2.3)</td></tr><tr><th scope="row">Investor accuracy a = 0.70, buyer accuracy d = 0.75</th><td class="num" title="0.8500000000000001" data-src="numerics/two_signals.csv:2">0.850000</td><td class="num" title="0.8794375515549993" data-src="numerics/two_signals.csv:4">0.879438</td><td class="num" title="0.42500000000000004" data-src="numerics/two_signals.csv:2">0.425000</td><td class="num" title="0.4489424006229813" data-src="numerics/two_signals.csv:4">0.448942</td><td class="num" title="0.0014545454545454636" data-src="numerics/two_signals.csv:2">1.45<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr></tbody></table></div>
@@ -1081,13 +1088,15 @@ r_j&amp;\qquad v_j&amp;\qquad\mathsf E_j\\
 <section class="sec" id="sec-07-welfare">
 <h2>Welfare and sale terms</h2>
 
-<p>Sale terms reach participation through the buyer's expected payment and through the information the stock market supplies. This section holds competition fixed and varies the second channel: by removing price access, by changing the payment rule, and by moving the reserve.</p>
+<p>Sale terms reach participation through the buyer's expected payment and through the information the market supplies. Here competition is fixed and the second channel varies.</p>
 
 <h3 id="sec-07-welfare-access">Access to prices</h3>
+<p>Hold the incumbent at \(r_1\) and compare the feedback equilibrium with one in which the challenger cannot observe the price. The trading bound forces full orders in both, so trading costs coincide and price access changes only which high-cost challengers prepare; each added entrant's gross profit covers its preparation cost, so Proposition A.9 delivers strictly higher target proceeds (<span class="q" data-q="base_revenue_feedback" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; r=r_strong; noise=Laplace; cost_law=atoms">0.872392</span> against <span class="q" data-q="base_revenue_hidden" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; r=r_strong; noise=Laplace; cost_law=atoms">0.614583</span>) and net acquisition surplus (up by <span class="q" data-q="base_net_surplus_gain" data-status="analytical" title="analytical · numerics/feedback_comparisons.csv · r=r_strong; noise=Laplace; cost_law=atoms; column=W_gain">0.080218</span>). The result ranks access to information under a given sale rule; it ranks neither incumbent strengths nor mechanisms.</p>
 
-<p>Access to prices raises acquisition outcomes at a fixed level of competition. Hold the incumbent at \(r_1\) and compare the feedback equilibrium with an economy in which the challenger cannot observe the price, reoptimizing trading and pricing in both. The global trading bound forces full orders in both, so the order-flow experiment and the trading costs coincide, and price access changes only which high-cost challengers prepare. Each additional entrant's expected gross profit covers its preparation cost, so Proposition A.9 delivers a strict gain in expected target proceeds and in acquisition surplus net of preparation costs. In the benchmark, expected target proceeds are <span class="q" data-q="base_revenue_feedback" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=feedback; r=r_strong; noise=Laplace; cost_law=atoms">0.872392</span> with price access and <span class="q" data-q="base_revenue_hidden" data-status="analytical" title="analytical · tables/equilibrium_controls.csv · experiment=price_hidden; r=r_strong; noise=Laplace; cost_law=atoms">0.614583</span> without it, and net acquisition surplus rises by <span class="q" data-q="base_net_surplus_gain" data-status="analytical" title="analytical · numerics/feedback_comparisons.csv · r=r_strong; noise=Laplace; cost_law=atoms; column=W_gain">0.080218</span>.</p>
-
-<p>A deterministic dividend of <span class="q" data-q="base_matched_dividend" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=matched_dividend; r=r_strong; noise=Laplace; cost_law=atoms">0.257809</span> added to the traded claim in the price-hidden economy matches mean prices across the two economies while leaving \(V_T-P\), trading incentives, and entry unchanged; entry still differs, so the gap is information, not the price level. The result concerns access to information under a given sale rule and incumbent distribution. It ranks neither incumbent strengths nor mechanisms.</p>
+<details class="fold">
+<summary>Separating information from the price level</summary>
+<p>A deterministic dividend of <span class="q" data-q="base_matched_dividend" data-status="numerical diagnostic" title="numerical diagnostic · tables/equilibrium_controls.csv · experiment=matched_dividend; r=r_strong; noise=Laplace; cost_law=atoms">0.257809</span> added to the traded claim in the price-hidden economy matches mean prices across the two economies while leaving \(V_T-P\), trading incentives, and entry unchanged. Entry still differs, so the gap is information, not the price level. The dividend is a diagnostic payment, outside acquisition surplus and outside the seller's feasible terms.</p>
+</details>
 
 <figure class="table" id="table-welfare">
 <div class="table-wrap"><table data-table="welfare"><thead><tr><th scope="col"></th><th scope="col" class="num">Price observed</th><th scope="col" class="num">Price hidden</th><th scope="col" class="num">Gain</th></tr></thead><tbody><tr class="panel"><td colspan="4">Panel C. Access to prices at r = 3</td></tr><tr><th scope="row">Target proceeds R<sub>T</sub></th><td class="num" title="0.8723920450946406" data-src="numerics/feedback_comparisons.csv:3">0.872392</td><td class="num" title="0.6145833333333335" data-src="numerics/feedback_comparisons.csv:3">0.614583</td><td class="num" title="0.25780871176130715" data-src="numerics/feedback_comparisons.csv:3">0.257809</td></tr><tr><th scope="row">Net acquisition surplus W</th><td class="num" title="2.3823008681697755" data-src="numerics/feedback_comparisons.csv:3">2.382301</td><td class="num" title="2.302083333333334" data-src="numerics/feedback_comparisons.csv:3">2.302083</td><td class="num" title="0.08021753483644156" data-src="numerics/feedback_comparisons.csv:3">0.080218</td></tr></tbody></table></div>
@@ -1095,9 +1104,7 @@ r_j&amp;\qquad v_j&amp;\qquad\mathsf E_j\\
 </figure>
 
 <h3 id="sec-07-welfare-bargaining">The payment rule</h3>
-
-<p>Whether competition raises the target-payoff spread depends on how the payment responds to the runner-up's value. In a verifiable-value institution with zero reserve, the highest-value buyer acquires the target after preparation, a sale to the next-best buyer at its value is an enforceable fallback, and the seller and the winner split the surplus above it by Nash bargaining with seller share \(\eta\). For an incumbent distribution on \([0,R_{\max}]\) with \(\ell\lt R_{\max}\lt h\) and \(0\le\eta\lt1\), the transfer, challenger profit, and spread are</p>
-
+<p>Whether competition raises the spread depends on how the payment responds to the runner-up's value. In a verifiable-value institution with zero reserve, the highest-value buyer acquires the target, a sale to the next-best buyer at its value is an enforceable fallback, and seller and winner split the surplus above it by Nash bargaining with seller share \(\eta\):</p>
 <div class="math-block">\[
 \begin{aligned}
 T_\eta(R,\theta)&amp;=(1-\eta)\min\{R,\theta\}+\eta\max\{R,\theta\},\\
@@ -1106,26 +1113,21 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 \end{aligned}
 \tag{14}
 \]</div>
-
-<p>Proposition A.8 gives the comparative statics. A stronger incumbent weakly reduces challenger profit at every bargaining weight, and its effect on the spread is positive for \(\eta\lt1/2\), zero at \(\eta=1/2\), and negative above. Take \(R\gt\ell\) to see why: a high-value challenger wins and pays \((1-\eta)R+\eta h\), which moves with \(R\) at rate \(1-\eta\), while a low-value challenger loses and the incumbent pays \((1-\eta)\ell+\eta R\), which moves at rate \(\eta\). Competition widens the difference exactly when the first rate exceeds the second. The second-price benchmark is the case \(\eta=0\), so the opposition between acquisition profit and information spread that drives Proposition 2 is a property of that payment rule, not of takeover competition in general.</p>
+<p>Proposition A.8: a stronger incumbent weakly reduces challenger profit at every \(\eta\), and raises the spread for \(\eta\lt1/2\), leaves it at \(\eta=1/2\), and lowers it above. For \(R\gt\ell\) the high-value winner's payment moves with \(R\) at rate \(1-\eta\) and the incumbent's payment after a low-value loss at rate \(\eta\); competition widens the difference exactly when the first rate exceeds the second. The second-price benchmark is \(\eta=0\), so the opposition behind Proposition 2 is a property of that payment rule. An entry reversal under bargaining would require solving its trading and participation game, which the paper does not do.</p>
 
 <figure class="chart" data-chart="fig4">
 <div class="chart-mount" id="chart-fig4" role="img" aria-label="Two panels over the seller bargaining weight eta: the information spread for weak and strong incumbents, and conditional challenger profits on a log scale."></div>
-<figcaption><strong>Figure 4.</strong> Bargaining and the division of acquisition surplus. <span class="notes">Zero-reserve verifiable-value institution, \(h=10\), \(\ell=1\), and uniform incumbents with \(r=1.2\) or \(r=3\). Panel (a) plots \(\Delta_\eta\) against seller weight \(\eta\); panel (b) plots conditional challenger profits on a log scale. Values are per target share. The comparison concerns acquisition-stage payoffs; trading and entry under this institution are not solved.</span></figcaption>
+<figcaption><strong>Figure 4.</strong> Bargaining and the division of acquisition surplus. Panel (a) plots \(\Delta_\eta\) against seller weight \(\eta\) for weak and strong incumbents; panel (b) plots conditional challenger profits on a log scale.
+<details class="fold"><summary>Notes</summary><p>Zero-reserve verifiable-value institution, \(h=10\), \(\ell=1\), and uniform incumbents with \(r=1.2\) or \(r=3\). Values are per target share. The comparison concerns acquisition-stage payoffs; trading and entry under this institution are not solved.</p></details></figcaption>
 </figure>
 
-<p>These are payment-stage results. An entry reversal under bargaining would require solving its trading and participation game, which the paper does not do.</p>
-
 <h3 id="sec-07-welfare-reserve">Reserve comparisons</h3>
-
-<p>A reserve changes both the payment required to win and the information carried by target shares. One that excludes the low-value challenger widens the difference in target proceeds across challenger types, which can support informative trading even against a weak incumbent. To keep exclusion from resting on a value atom, let quality identify a value class with conditional values uniform around \(\ell\) and \(h\) at half-width \(\varepsilon_V=0.05\). Raising the reserve from <span class="q" data-q="base_p" data-status="input" title="input · input manifest · p">0.5</span> to <span class="q" data-q="value_reserve_high" data-status="input" title="input · input manifest · value_reserve_high">1.1</span> lifts weak-incumbent revenue from <span class="q" data-q="value_revenue_weak_low_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=0.5">0.392665</span> to <span class="q" data-q="value_revenue_weak_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1">0.432173</span> and strong-incumbent revenue from <span class="q" data-q="value_revenue_strong_low_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=0.5">0.872367</span> to <span class="q" data-q="value_revenue_strong_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1">1.014500</span>; entry at the higher reserve is <span class="q" data-q="value_entry_weak_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1">0.540309</span> and <span class="q" data-q="value_entry_strong_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1">0.511638</span>, with informative trading in both economies and a unique continuation at each reported reserve.</p>
+<p>A reserve that excludes the low-value challenger widens the difference in target proceeds across challenger types and can support informative trading even against a weak incumbent. With quality identifying a value class (values uniform around \(\ell\) and \(h\) at half-width \(\varepsilon_V=0.05\)), raising the reserve from <span class="q" data-q="base_p" data-status="input" title="input · input manifest · p">0.5</span> to <span class="q" data-q="value_reserve_high" data-status="input" title="input · input manifest · value_reserve_high">1.1</span> lifts weak-incumbent revenue from <span class="q" data-q="value_revenue_weak_low_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=0.5">0.392665</span> to <span class="q" data-q="value_revenue_weak_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1">0.432173</span> and strong-incumbent revenue from <span class="q" data-q="value_revenue_strong_low_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=0.5">0.872367</span> to <span class="q" data-q="value_revenue_strong_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1">1.014500</span>, with entry <span class="q" data-q="value_entry_weak_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1">0.540309</span> and <span class="q" data-q="value_entry_strong_high_p" data-status="analytical" title="analytical · tables/reserve_comparisons.csv · value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1">0.511638</span> and informative trading in both economies. This is a feasible improvement, not an optimal reserve: several continuations coexist at many reserves, so an envelope of found revenues is not the seller's objective.</p>
 
 <figure class="table" id="table-4">
 <div class="table-wrap"><table data-table="reserve_comparisons"><thead><tr><th scope="col"></th><th scope="col" class="num">q<sub>H</sub></th><th scope="col" class="num">q<sub>L</sub></th><th scope="col" class="num">E</th><th scope="col" class="num">R<sub>T</sub></th><th scope="col" class="num">Margin</th><th scope="col" class="num">Basis</th></tr></thead><tbody><tr class="panel"><td colspan="7">Panel A. Binary values</td></tr><tr><th scope="row">r = 1.2, reserve p = 0.5</th><td class="num" title="0.0" data-src="tables/reserve_comparisons.csv:2">0</td><td class="num" title="0.0" data-src="tables/reserve_comparisons.csv:2">0</td><td class="num" title="0.25000000000000006" data-src="tables/reserve_comparisons.csv:2">0.250000</td><td class="num" title="0.3927083333333333" data-src="tables/reserve_comparisons.csv:2">0.392708</td><td class="num" title="0.003333333333333393" data-src="tables/reserve_comparisons.csv:2">3.33<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 1.2, reserve p = 1.01</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:3">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:3">-1</td><td class="num" title="0.5435728333758433" data-src="tables/reserve_comparisons.csv:3">0.543573</td><td class="num" title="0.45275611101035046" data-src="tables/reserve_comparisons.csv:3">0.452756</td><td class="num" title="0.009083493395339624" data-src="tables/reserve_comparisons.csv:3">9.08<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 3, reserve p = 0.5</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:4">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:4">-1</td><td class="num" title="0.5227572972597381" data-src="tables/reserve_comparisons.csv:4">0.522757</td><td class="num" title="0.8723920450946406" data-src="tables/reserve_comparisons.csv:4">0.872392</td><td class="num" title="0.0024117851141662594" data-src="tables/reserve_comparisons.csv:4">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 3, reserve p = 1.01</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:5">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:5">-1</td><td class="num" title="0.513372798985137" data-src="tables/reserve_comparisons.csv:5">0.513373</td><td class="num" title="0.9874865842421138" data-src="tables/reserve_comparisons.csv:5">0.987487</td><td class="num" title="0.013619358555132948" data-src="tables/reserve_comparisons.csv:5">1.36<span class="times">×</span>10<sup>-2</sup></td><td class="basis">proved</td></tr><tr class="panel"><td colspan="7">Panel B. Atomless values with class information (ε<sub>V</sub> = 0.05)</td></tr><tr><th scope="row">r = 1.2, reserve p = 0.5</th><td class="num" title="0.0" data-src="tables/reserve_comparisons.csv:6">0</td><td class="num" title="0.0" data-src="tables/reserve_comparisons.csv:6">0</td><td class="num" title="0.25000000000000006" data-src="tables/reserve_comparisons.csv:6">0.250000</td><td class="num" title="0.3926649305555555" data-src="tables/reserve_comparisons.csv:6">0.392665</td><td class="num" title="0.0029861111111104503" data-src="tables/reserve_comparisons.csv:6">2.99<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 1.2, reserve p = 1.1</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:7">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:7">-1</td><td class="num" title="0.5403091180516092" data-src="tables/reserve_comparisons.csv:7">0.540309</td><td class="num" title="0.43217263192739963" data-src="tables/reserve_comparisons.csv:7">0.432173</td><td class="num" title="0.014037898642140011" data-src="tables/reserve_comparisons.csv:7">1.40<span class="times">×</span>10<sup>-2</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 3, reserve p = 0.5</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:8">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:8">-1</td><td class="num" title="0.5227602449522809" data-src="tables/reserve_comparisons.csv:8">0.522760</td><td class="num" title="0.8723672029559061" data-src="tables/reserve_comparisons.csv:8">0.872367</td><td class="num" title="0.0024164542360650618" data-src="tables/reserve_comparisons.csv:8">2.42<span class="times">×</span>10<sup>-3</sup></td><td class="basis">proved</td></tr><tr><th scope="row">r = 3, reserve p = 1.1</th><td class="num" title="1.0" data-src="tables/reserve_comparisons.csv:9">1</td><td class="num" title="-1.0" data-src="tables/reserve_comparisons.csv:9">-1</td><td class="num" title="0.5116375544805927" data-src="tables/reserve_comparisons.csv:9">0.511638</td><td class="num" title="1.01449970228611" data-src="tables/reserve_comparisons.csv:9">1.014500</td><td class="num" title="0.013785766059605634" data-src="tables/reserve_comparisons.csv:9">1.38<span class="times">×</span>10<sup>-2</sup></td><td class="basis">proved</td></tr></tbody></table></div>
 <figcaption><strong>Table 4.</strong> Reserve comparisons and exploratory continuations.</figcaption>
 </figure>
-
-<p>The higher reserve is a feasible improvement, not an optimal reserve. The sweep over the reserve domain reports outcomes among continuations found and records unresolved reserves; with several continuations coexisting at many reserves, an envelope of found revenues is not the seller's objective.</p>
 </section>
 
 <section class="sec" id="sec-08-statics">
@@ -1169,15 +1171,15 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 <section class="sec" id="sec-09-outlook">
 <h2>Conclusion and next steps</h2>
 
-<p>The bidder pool in a takeover depends on the information available before buyers commit to participation. A stronger incumbent can raise the sensitivity of target proceeds to challenger quality, make informed trading profitable, and bring a challenger into the auction that a weaker incumbent would not have faced. The division of acquisition surplus therefore feeds back into the formation of competition. Sale terms reach participation through the buyer's expected payment and through the information the stock market supplies, and the two channels can pull in opposite directions.</p>
+<p>The bidder pool in a takeover depends on the information available before buyers commit. A stronger incumbent can raise the sensitivity of target proceeds to challenger quality, make informed trading profitable, and bring in a challenger that a weaker incumbent would not have faced, so the division of acquisition surplus feeds back into the formation of competition. Sale terms reach participation through the buyer's expected payment and through the information the market supplies, and the two channels can pull in opposite directions.</p>
 
 <h3 id="sec-09-outlook-theory">Theory</h3>
 
-<p>The next step is the seller's choice of terms with the full equilibrium continuation correspondence retained. The reserve comparisons show why the choice matters; multiplicity is what stops me from identifying the seller's objective with an envelope of found revenues. A related question is whether committing to terms before trading does better than revising them after observing prices. Alternative auction formats would show how much of the mechanism is specific to the second-price payment rule, which the bargaining institution already suggests is a lot. Endogenous investor research would add its own incentives, including manipulation through the real decision that responds to the price (Goldstein and Guembel 2008).</p>
+<p>The next step is the seller's choice of terms with the full equilibrium continuation correspondence retained; multiplicity is what stops me from identifying the seller's objective with an envelope of found revenues. A related question is whether committing to terms before trading does better than revising them after observing prices. Alternative auction formats would show how much of the mechanism is specific to the second-price payment rule, which the bargaining institution already suggests is a lot. Endogenous investor research would add its own incentives, including manipulation through the real decision that responds to the price (Goldstein and Guembel 2008).</p>
 
 <h3 id="sec-09-outlook-empirics">Empirics</h3>
 
-<p>The model concerns a decision to prepare, made before the set of executable bids is fixed. Its empirical counterpart is the start of substantive diligence or a proposal that requires costly preparation, not the count of public offers. Incumbent strength must be measured with information available before that decision; the price information must precede entry, since later target returns can reflect anticipated bidder arrival; the sale opportunity must be publicly understood and remain contestable while the challenger decides; and contemporaneous public information must be separated from facts disclosed only in retrospect. Online Appendix D specifies an institutional pilot that reconstructs these events from disclosure records. It is a research design; no sample, estimated effect, or instrument is reported.</p>
+<p>The empirical counterpart of the model's decision is the start of substantive diligence or a proposal that requires costly preparation, not the count of public offers. Incumbent strength must be measured with information available before that decision; the price information must precede entry, since later returns can reflect anticipated bidder arrival; the sale opportunity must be publicly understood and remain contestable while the challenger decides. Online Appendix D specifies an institutional pilot that reconstructs these events from disclosure records. It is a research design; no sample, estimated effect, or instrument is reported.</p>
 </section>
 
 <section class="sec" id="sec-appendix">
@@ -1252,7 +1254,8 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 
   var CCC = (window.CCC = window.CCC || {});
   var params = new URLSearchParams(window.location.search);
-  CCC.eager = params.get("eager") === "1";
+  CCC.eager = params.get("lazy") === "1" ? false : true; // charts mount eagerly unless ?lazy=1
+  CCC.openAll = params.get("eager") === "1";              // ?eager=1 also opens every <details>
   CCC.debug = params.get("debug") === "1";
   CCC.errors = errors;
 
@@ -1445,7 +1448,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     if (target.tagName === "DETAILS") target.open = true;
   }
   function initDetails() {
-    if (CCC.eager) {
+    if (CCC.openAll) {
       Array.prototype.forEach.call(document.querySelectorAll("details"), function (d) {
         if (!d.classList.contains("toc-drawer")) d.open = true;
       });
@@ -1701,10 +1704,10 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
       font: { family: t.fontSans, color: t.ink, size: 13 },
-      margin: { l: 56, r: 16, t: 60, b: 52 },
+      margin: { l: 56, r: 16, t: 72, b: 52 },
       hoverlabel: { bgcolor: t.surface, bordercolor: t.line, namelength: -1,
         font: { family: t.fontMono, size: 12, color: t.ink } },
-      legend: { orientation: 'h', x: 0, xanchor: 'left', y: 1, yanchor: 'bottom',
+      legend: { orientation: 'h', x: 0, xanchor: 'left', y: 1.07, yanchor: 'bottom',
         font: { size: 12, color: t.ink }, bgcolor: 'rgba(0,0,0,0)', itemwidth: 30 },
       uirevision: 'ccc',
       showlegend: true,
@@ -1721,7 +1724,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     return {
       text: text, showarrow: false,
       xref: xaxisKey + ' domain', yref: yaxisKey + ' domain',
-      x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 16,
+      x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 4,
       font: { size: 13, color: t.ink }
     };
   }
@@ -2024,9 +2027,12 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
   var pending = [];
   var FIGURE_NUMBER = { fig1: 1, fig2: 2, fig3: 3, fig4: 4 };
 
+  /* Charts mount eagerly by default: five small plots on inline data are cheap, and
+     lazy observers stall in background tabs. `?lazy=1` restores lazy mounting. */
   function isEager() {
-    if (typeof CCC.eager === 'boolean') return CCC.eager;
-    try { return /[?&]eager=1/.test(location.search); } catch (e) { return false; }
+    try { if (/[?&]lazy=1/.test(location.search)) return false; } catch (e) { /* ignore */ }
+    if (typeof CCC.eager === 'boolean' && CCC.eager === false) return false;
+    return true;
   }
 
   function notice(id) {
@@ -2108,6 +2114,25 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     io.observe(el);
   }
 
+  /* Scroll fallback: IntersectionObserver callbacks pause in background tabs, so also
+     mount anything near the viewport on scroll. */
+  function mountVisible() {
+    var vh = window.innerHeight || 800;
+    Object.keys(builders).forEach(function (id) {
+      if (mounted[id]) return;
+      var el = document.getElementById('chart-' + id);
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (r.bottom > -200 && r.top < vh + 200) mount(id);
+    });
+  }
+  var scrollTick = false;
+  window.addEventListener('scroll', function () {
+    if (scrollTick) return;
+    scrollTick = true;
+    window.setTimeout(function () { scrollTick = false; mountVisible(); }, 120);
+  }, { passive: true });
+
   function mountAll() {
     var ids = Object.keys(builders);
     ids.forEach(function (id) {
@@ -2115,6 +2140,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
       if (!el || mounted[id]) return;
       if (isEager()) mount(id); else observe(id, el);
     });
+    if (!isEager()) window.setTimeout(mountVisible, 0);
     return Promise.all(pending.slice()).then(function () { return status(); });
   }
 
