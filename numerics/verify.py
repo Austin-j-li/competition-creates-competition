@@ -59,6 +59,8 @@ def main() -> int:
     args = ap.parse_args()
     failures: list[str] = []
     stages = args.stage or [s for s, (m, _) in STAGES.items() if (MANIFEST_DIR / f"{m}.json").exists()]
+    want_handout = args.final or bool(args.stage and "handout" in args.stage)
+    stages = [s for s in stages if s != "handout"]
     if args.final:
         stages = list(STAGES)
     if args.rerun:
@@ -119,6 +121,11 @@ def main() -> int:
         check(ok, f"substitution: {len(rep['filled'])} filled, {len(rep['unresolved'])} unresolved, {len(rep['unknown'])} unknown", failures)
         for item in rep["unresolved"] + rep["unknown"]:
             print("     ", item)
+
+    # (5) handout build (docs/index.html from the same CSVs and registry); not an exercise stage
+    if want_handout:
+        r = subprocess.run([sys.executable, str(ROOT / "handout" / "build.py"), "--quiet"], cwd=ROOT)
+        check(r.returncode == 0, "handout build passed", failures)
 
     print("\nVERIFY", "PASSED" if not failures else f"FAILED ({len(failures)} failures)")
     return 0 if not failures else 1
