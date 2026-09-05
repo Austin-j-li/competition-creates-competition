@@ -1,0 +1,242 @@
+{
+ "exercise": "c6c_reserve_events",
+ "timestamp_utc": "2026-09-05T21:58:45.505511+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "epsilon_V": "0.05",
+  "declared": {
+   "binary": [
+    "0.5",
+    "1.01"
+   ],
+   "uniform_classes": [
+    "0.5",
+    "1.1"
+   ]
+  },
+  "strengths": {
+   "r_weak": "1.2",
+   "r_strong": "3"
+  },
+  "events": "0, ell, r, h, ell+-eps_V, h+-eps_V (classes), declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)",
+  "offsets": [
+   "1e-4",
+   "1e-6",
+   "1e-8"
+  ],
+  "sampled_weak_reserve": "6.280",
+  "landmarks": {
+   "p_L": {
+    "value": "6.2817181715",
+    "E": "0.25",
+    "sale": "0.125",
+    "R_T": "0.7852147714"
+   },
+   "p_H": {
+    "value": "1.3252698283",
+    "E": "0.5064773952",
+    "R_T": "1.0688544444",
+    "alpha_H": "0.5",
+    "x_star": "1"
+   },
+   "sampled_6.280": {
+    "E": "0.25",
+    "sale": "0.125",
+    "two_admissible": "0",
+    "R_T": "0.785"
+   }
+  }
+ },
+ "method": "Event nodes solved with the C.6 node solver: exact events classified algebraically at 50 digits with the tie rule applied to the declared identity; offsets classified by high-precision sign; payoff oracle by direct OA.50 integration; continuation candidates validated with price pools (OA.70); outcome measures E, A, S, C2, O_H from the actual allocation event with the union identity S = Pr(R >= p) + A - C2 checked by direct integration; accepted candidates merged only by the continuation identity.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "outputs": {
+  "numerics/reserve_events.csv": "1fb7d9786dfbd31e67dc0865c9509bbd5f45f3a692f474170d9c6de89babea7a",
+  "numerics/reserve_event_ranges.csv": "e9a3f149ad4a084fba833a2f80e82fc238d9b581c73176ef6e5834a053b15e98"
+ },
+ "checks": {
+  "T21_floor_event": {
+   "binary_r1.2": {
+    "p_L": "6.2817181715409547646397125286473",
+    "floor_relation": "equality_event",
+    "accepted_full_order_rows": 1,
+    "E": 0.2500000000000001,
+    "sale": 0.12500000000000006,
+    "R_T": 0.7852147714426196,
+    "R_T_mp": "0.7852147714426193",
+    "status": "analytical (unique full orders: uniform derivative bound with the floor at equality, e >= rho by the tie rule)",
+    "sides_strict": true,
+    "classification": "analytically supported event candidate: B_r(m) = c_L holds exactly and entry is admitted by the tie rule; supported by the inversion/global-bound argument with e >= rho under equality; NOT an interior point of the strict low-cost inequality region",
+    "pass": true
+   },
+   "binary_r3": {
+    "p_L": "6.2817181715409547646397125286473",
+    "floor_relation": "equality_event",
+    "accepted_full_order_rows": 1,
+    "E": 0.2500000000000001,
+    "sale": 0.12500000000000006,
+    "R_T": 0.7852147714426196,
+    "R_T_mp": "0.7852147714426193",
+    "status": "analytical (unique full orders: uniform derivative bound with the floor at equality, e >= rho by the tie rule)",
+    "sides_strict": true,
+    "classification": "analytically supported event candidate: B_r(m) = c_L holds exactly and entry is admitted by the tie rule; supported by the inversion/global-bound argument with e >= rho under equality; NOT an interior point of the strict low-cost inequality region",
+    "pass": true
+   },
+   "uniform_classes_r1.2": {
+    "p_L": "6.2817181715409547646397125286473",
+    "floor_relation": "equality_event",
+    "accepted_full_order_rows": 1,
+    "E": 0.2500000000000001,
+    "sale": 0.12500000000000006,
+    "R_T": 0.7852147714426196,
+    "R_T_mp": "0.7852147714426193",
+    "status": "analytical (unique full orders: uniform derivative bound with the floor at equality, e >= rho by the tie rule)",
+    "sides_strict": true,
+    "classification": "analytically supported event candidate: B_r(m) = c_L holds exactly and entry is admitted by the tie rule; supported by the inversion/global-bound argument with e >= rho under equality; NOT an interior point of the strict low-cost inequality region",
+    "pass": true
+   },
+   "uniform_classes_r3": {
+    "p_L": "6.2817181715409547646397125286473",
+    "floor_relation": "equality_event",
+    "accepted_full_order_rows": 1,
+    "E": 0.2500000000000001,
+    "sale": 0.12500000000000006,
+    "R_T": 0.7852147714426196,
+    "R_T_mp": "0.7852147714426193",
+    "status": "analytical (unique full orders: uniform derivative bound with the floor at equality, e >= rho by the tie rule)",
+    "sides_strict": true,
+    "classification": "analytically supported event candidate: B_r(m) = c_L holds exactly and entry is admitted by the tie rule; supported by the inversion/global-bound argument with e >= rho under equality; NOT an interior point of the strict low-cost inequality region",
+    "pass": true
+   },
+   "pass": true
+  },
+  "T22_ceiling_event": {
+   "binary_r1.2": {
+    "applicable": false,
+    "p_H_value": "1.6919030844381218779173603450223",
+    "regime": "r<p<h (only the high value can meet the reserve)",
+    "note": "event outside its defining regime (p_H > r); treated as an ordinary reserve node",
+    "pass": true
+   },
+   "binary_r3": {
+    "applicable": true,
+    "p_H": "1.3252698283097206399485076783085",
+    "ceiling_relation": "equality_event",
+    "floor_relation": "strict_positive",
+    "alpha_H": "0.5",
+    "alpha_L": "0.1839397205857212",
+    "x_star": "1.0",
+    "E": 0.5064773952196455,
+    "R_T": 1.0688544444308778,
+    "E_mp": "0.5064773952196454",
+    "R_T_mp": "1.068854444430878",
+    "full_unique_relation": "strict_positive",
+    "pass": true
+   },
+   "uniform_classes_r1.2": {
+    "applicable": false,
+    "p_H_value": "1.6919030844381218779173603450223",
+    "regime": "r<p<h (only the high value can meet the reserve) [class bands: low band entirely excluded; high band entirely above reserve and incumbent support (event formulas apply)]",
+    "note": "event outside its defining regime (p_H > r); treated as an ordinary reserve node",
+    "pass": true
+   },
+   "uniform_classes_r3": {
+    "applicable": true,
+    "p_H": "1.3252698283097206399485076783085",
+    "ceiling_relation": "equality_event",
+    "floor_relation": "strict_positive",
+    "alpha_H": "0.5",
+    "alpha_L": "0.1839397205857212",
+    "x_star": "1.0",
+    "E": 0.5064773952196455,
+    "R_T": 1.0688544444308778,
+    "E_mp": "0.5064773952196454",
+    "R_T_mp": "1.068854444430878",
+    "full_unique_relation": "strict_positive",
+    "pass": true
+   },
+   "pass": true
+  },
+  "T23_outcome_measures": {
+   "sampled_6.280": {
+    "E": 0.2500000000000001,
+    "admissible_challenger_probability": 0.12500000000000006,
+    "sale_probability": 0.12500000000000006,
+    "two_admissible_bidders_probability": 0.0,
+    "high_value_ownership_probability": 0.12500000000000006,
+    "R_T": 0.7850000000000004
+   },
+   "union_identity_all_rows": true,
+   "bounds_all_rows": true,
+   "rows": 463,
+   "pass": true
+  },
+  "ledger": {
+   "nodes_attempted": 257,
+   "candidates_evaluated": 463,
+   "candidates_rejected": 180,
+   "candidates_unresolved": 7,
+   "duplicates_merged": 7,
+   "unresolved_nodes": 7,
+   "nodes_without_accepted_continuation": [],
+   "nodes_with_multiple_distinct_continuations": [
+    "binary r=1.2 p=6.281718181540 (2)",
+    "binary r=1.2 p=6.281719171540 (2)",
+    "binary r=1.2 p=6.281818171540 (2)",
+    "binary r=3 p=6.281718181540 (2)",
+    "binary r=3 p=6.281719171540 (2)",
+    "binary r=3 p=6.281818171540 (2)",
+    "uniform_classes r=1.2 p=6.281718181540 (2)",
+    "uniform_classes r=1.2 p=6.281719171540 (2)",
+    "uniform_classes r=1.2 p=6.281818171540 (2)",
+    "uniform_classes r=3 p=6.281718181540 (2)",
+    "uniform_classes r=3 p=6.281719171540 (2)",
+    "uniform_classes r=3 p=6.281818171540 (2)"
+   ]
+  },
+  "payoff_oracle": {
+   "max_error": 2.127117926242761e-14,
+   "pass": true
+  }
+ },
+ "passed": true,
+ "notes": [
+  "Event candidates improve sampled maxima; they prove neither global optimality nor envelope completeness.",
+  "A node without an accepted candidate is 'no candidate found by the declared searches', not nonexistence."
+ ]
+}

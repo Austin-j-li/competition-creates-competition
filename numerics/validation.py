@@ -124,6 +124,8 @@ def conditional_entry_cost_based(sched: Schedule, state: str) -> float:
         xc = threshold_flow(sched, c)
         if sched.tie_at_ceiling and c == prim.fc_H:
             xc = min(xc, sched.hull()[1])  # symbolic tau = M: the entire upper plateau enters
+        if getattr(sched, "tie_at_floor", False) and c == prim.fc_L:
+            xc = -np.inf  # symbolic B_r(m) = c_L: the low-cost type enters at every flow
         if xc == -np.inf:
             return 1.0
         if xc == np.inf:
@@ -225,6 +227,8 @@ def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extr
     eps_e = 0.0
     for c in costs:
         enters = B >= c
+        if getattr(sched, "tie_at_floor", False) and c == prim.fc_L:
+            enters = np.ones_like(B, dtype=bool)  # symbolic floor event: prescribed entry everywhere (tie rule)
         gain_reverse = np.where(enters, c - B, B - c)
         eps_e = max(eps_e, float(np.max(np.maximum(gain_reverse, 0.0))))
     if eps_e > controls.entry_optimality_acceptance:

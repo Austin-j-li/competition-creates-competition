@@ -104,6 +104,7 @@ class Schedule:
     dividend: float = 0.0
     breakpoints: tuple[float, ...] = field(default_factory=tuple)
     tie_at_ceiling: bool = False  # C.2: at r_C treat tau = M symbolically; the whole upper plateau enters
+    tie_at_floor: bool = False    # exact floor event B_r(m) = c_L: the low-cost type enters at every flow (equality admitted)
 
     # posterior and its constant tails ---------------------------------------
     def mu(self, x: np.ndarray) -> np.ndarray:
@@ -126,6 +127,8 @@ class Schedule:
         if self.tie_at_ceiling:
             m, M = posterior_bounds(self.prim.fb)
             e = np.where(mu >= M - 1e-9, 1.0, e)
+        if self.tie_at_floor and self.prim.cost_law == CostLaw.ATOMS:
+            e = np.maximum(e, self.prim.frho)
         return e
 
     def entry(self, x: np.ndarray) -> np.ndarray:
@@ -174,9 +177,10 @@ def _threshold_crossings(mu_fn, tau: float, lo: float, hi: float, n: int = 4001)
 
 
 def make_schedule(prim: Primitives, pay: AuctionPayoffs, profile: OrderProfile,
-                  regime: Regime = "feedback", dividend: float = 0.0, tie_at_ceiling: bool = False) -> Schedule:
+                  regime: Regime = "feedback", dividend: float = 0.0, tie_at_ceiling: bool = False,
+                  tie_at_floor: bool = False) -> Schedule:
     """Build the candidate schedule and its integration breakpoints (support kinks, entry jumps)."""
-    sched = Schedule(prim, pay, profile, regime, dividend, tie_at_ceiling=tie_at_ceiling)
+    sched = Schedule(prim, pay, profile, regime, dividend, tie_at_ceiling=tie_at_ceiling, tie_at_floor=tie_at_floor)
     bps = set(profile.supports)
     if regime == "feedback":
         lo, hi = sched.hull()
@@ -191,7 +195,7 @@ def make_schedule(prim: Primitives, pay: AuctionPayoffs, profile: OrderProfile,
             tau = pay.tau(c)
             for xc in _threshold_crossings(sched.mu, tau, lo - pad - 1e-9, hi + pad + 1e-9):
                 bps.add(xc)
-    return Schedule(prim, pay, profile, regime, dividend, tuple(sorted(bps)), tie_at_ceiling)
+    return Schedule(prim, pay, profile, regime, dividend, tuple(sorted(bps)), tie_at_ceiling, tie_at_floor)
 
 
 def laplace_full_order_objects(prim: Primitives, pay: AuctionPayoffs) -> dict:

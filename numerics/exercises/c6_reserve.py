@@ -12,12 +12,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from numerics.auction import (payoffs_class_closed_form, payoffs_class_formula_OA52, payoffs_class_integrated,  # noqa: E402
                               payoffs_closed_form, payoffs_integrated)
+from numerics.continuations import (INFO_FEEDBACK_CLASS, INFO_FEEDBACK_STATE, NA, SCHEMA_COLUMNS, ContinuationOutcome,  # noqa: E402
+                                    continuation_from_schedule, continuation_row, deduplicate, parameter_set_id)
 from numerics.information import OrderProfile, entry_at_posterior, make_schedule  # noqa: E402
 from numerics.io import write_csv, write_manifest  # noqa: E402
 from numerics.noise import posterior_bounds  # noqa: E402
 from numerics.params import BENCHMARK, BENCHMARK_EXTRA, BENCHMARK_STRENGTHS, CONTROLS, decimal_range  # noqa: E402
 from numerics.search import (Candidate, asymmetric_candidate, asymmetric_roots, full_order_candidate, mixed_support_search,  # noqa: E402
                              pooling_candidate, pure_fixed_points)
+from numerics.reserve_events import EventNode, classify_node, event_grid, outcome_measures  # noqa: E402
 from numerics.validation import validate  # noqa: E402
 
 PRIM = BENCHMARK
@@ -26,8 +29,16 @@ TOL = CONTROLS.independent_formula_acceptance
 STRENGTHS = {k: v for k, v in BENCHMARK_STRENGTHS.items() if k != "r_collapse"}
 DECLARED = {"binary": ["0.5", BENCHMARK_EXTRA["binary_alternative_reserve"]],
             "uniform_classes": ["0.5", BENCHMARK_EXTRA["atomless_alternative_reserve"]]}
-CONT_COLS = ["value_law", "r", "p", "branch", "q_H", "q_L", "E", "O_H", "R_T", "no_entry_price_mass", "posterior_in_no_entry_pool",
-             "epsilon_P", "epsilon_e", "epsilon_q", "status", "accepted", "unresolved_reason"]
+LEGACY_COLS = ["value_law", "r", "p", "branch", "q_H", "q_L", "E", "O_H", "R_T", "no_entry_price_mass", "posterior_in_no_entry_pool",
+               "epsilon_P", "epsilon_e", "epsilon_q", "status", "accepted", "unresolved_reason"]
+# legacy columns first (unchanged names), then the complete continuation schema (spec 16.1); p_exact carries the
+# exact declaration or event tag when p is irrational, and the node classification columns record how each
+# inequality was decided (strict sign at 50 digits, declared equality event, or unresolved).
+CONT_COLS = LEGACY_COLS + ["p_exact", "regime", "band_status", "low_cost_floor_relation", "ceiling_relation", "duplicate_of", "identity_note"] + \
+    [c for c in SCHEMA_COLUMNS if c not in LEGACY_COLS]
+RANGE_COLS = ["value_law", "r", "p", "accepted_continuations_found", "E_min_found", "E_max_found", "R_T_min_found", "R_T_max_found",
+              "search_unresolved", "global_envelope_certified", "p_exact", "event_id", "candidates_evaluated", "candidates_accepted_raw",
+              "candidates_rejected", "candidates_unresolved", "duplicates_merged", "search_outcome"]
 
 
 def payoffs(law: str, r: float, p: float):
@@ -56,74 +67,156 @@ def analytic_bounds(pay) -> dict:
             "full_unique_margin": (1 - 1 / PRIM.fb) * e_m * m * pay.Delta_T - PRIM.fk if e_m > 0 else float("-inf")}
 
 
-def _row(law, rs, ps, branch, cand, val, existence, reason=""):
+def _row(node: EventNode, branch: str, cand, val, existence: str, reason: str = "", *, cls: dict, seq: int, run_id: str,
+         uniqueness: str = "not established", coverage: str = "") -> dict:
+    """Legacy row plus the complete continuation record (candidate identity separate from economic identity)."""
+    law, rs, ps = node.law, node.r, legacy_p(node)
     o = val.outcome
-    return {"value_law": law, "r": rs, "p": ps, "branch": branch,
-            "q_H": cand.profile.q_H[0] if cand.profile.is_pure else "mixed", "q_L": cand.profile.q_L[0] if cand.profile.is_pure else "mixed",
-            "E": o.E, "O_H": o.O_H, "R_T": o.R_T, "no_entry_price_mass": val.no_entry_price_mass,
-            "posterior_in_no_entry_pool": val.posterior_in_no_entry_pool, "epsilon_P": val.epsilon_P, "epsilon_e": val.epsilon_e,
-            "epsilon_q": max(val.epsilon_q, val.epsilon_q_refined), "status": existence, "accepted": val.accepted,
-            "unresolved_reason": reason or ("" if val.accepted else "; ".join(val.breaches))}
+    eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
+    ps_id = parameter_set_id(PRIM, rs, node.p_exact, law, eps_V)
+    info = INFO_FEEDBACK_CLASS if law == "uniform_classes" else INFO_FEEDBACK_STATE
+    om = outcome_measures(PRIM, law, eps_V, float(rs), node.p_float, o.e_H, o.e_L)
+    extra = ContinuationOutcome(o.e_H, o.e_L, o.E, om["A"], om["S"], om["C2"], om["O_H"], o.R_T, o.mean_price)
+    unresolved = reason if (existence == "open") else ""
+    status = existence if val.accepted else ("rejected" if not existence.startswith("open") else existence)
+    cont = continuation_from_schedule(cand.sched, val, candidate_id=f"{run_id}:{law}:r={rs}:p={node.p_decimal[:20]}:{branch}#{seq}",
+                                      parameter_set=ps_id, information=info, controls=CONTROLS, branch=branch, result_status=status,
+                                      existence_scope=("this node only; found by the declared search" if val.accepted else "none (rejected)"),
+                                      uniqueness_scope=uniqueness, search_coverage_scope=coverage or "pooling, full orders, asymmetric roots, pure fixed points, mixed supports (C.6)",
+                                      run_id=run_id, event_id=node.event_id, event_relation=node.event_defining_relation,
+                                      outcome_extra=extra, unresolved_reason=unresolved)
+    row = {"value_law": law, "r": rs, "p": ps, "branch": branch,
+           "q_H": cand.profile.q_H[0] if cand.profile.is_pure else "mixed", "q_L": cand.profile.q_L[0] if cand.profile.is_pure else "mixed",
+           "E": o.E, "O_H": o.O_H, "R_T": o.R_T, "no_entry_price_mass": val.no_entry_price_mass,
+           "posterior_in_no_entry_pool": val.posterior_in_no_entry_pool, "epsilon_P": val.epsilon_P, "epsilon_e": val.epsilon_e,
+           "epsilon_q": max(val.epsilon_q, val.epsilon_q_refined), "status": existence, "accepted": cont.accepted,
+           "unresolved_reason": reason or ("" if val.accepted else "; ".join(val.breaches)),
+           "p_exact": node.p_exact, "regime": cls["regime"], "band_status": cls["band_status"],
+           "low_cost_floor_relation": cls["low_cost_floor_relation"], "ceiling_relation": cls["ceiling_relation"], "duplicate_of": "",
+           "identity_note": ""}
+    row.update({k_: v_ for k_, v_ in continuation_row(cont).items() if k_ not in row})
+    row["_cont"] = cont
+    row["_profile"] = cand.profile
+    if om["S_identity_error"] > TOL or not om["bounds_ok"]:
+        row["accepted"] = False
+        row["unresolved_reason"] = (row["unresolved_reason"] + "; " if row["unresolved_reason"] else "") + \
+            f"outcome identity: S error {om['S_identity_error']:.3e}, bounds_ok={om['bounds_ok']}"
+        row["rejection_reason"] = row["unresolved_reason"]
+    return row
 
 
-def solve_reserve(args) -> tuple[list[dict], dict, dict]:
+def legacy_p(node: EventNode) -> str:
+    """The legacy `p` column: the exact decimal when the declaration is one, else the 32-digit decimal of the event value."""
+    try:
+        Decimal(node.p_exact)
+        return node.p_exact
+    except Exception:
+        return node.p_decimal
+
+
+def node_from_args(args) -> EventNode:
+    """Legacy (law, r, p) grid triples become plain grid nodes; EventNodes pass through."""
+    if isinstance(args, EventNode):
+        return args
     law, rs, ps = args
-    r, p = float(rs), float(ps)
+    from numerics.reserve_events import _dec30
+    return EventNode(law, rs, ps, _dec30(ps), "grid", "declared reserve grid point (C.6)", True)
+
+
+def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
+    node = node_from_args(args)
+    law, rs = node.law, node.r
+    ps = legacy_p(node)
+    r, p = float(rs), node.p_float
+    eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
     pay, oracle_err = payoffs(law, r, p)
     ab = analytic_bounds(pay)
-    rows, diag = [], {"law": law, "r": rs, "p": ps, "payoff_oracle_error": oracle_err, **ab}
+    cls = classify_node(PRIM, node, eps_V)
+    # exact classification overrides the float sign where the two disagree (equality event or unresolved sign)
+    floor_rel, ceil_rel = cls["low_cost_floor_relation"], cls["ceiling_relation"]
+    tie_floor = node.tie_at_floor and node.applicable and floor_rel == "equality_event"
+    tie_ceiling = node.tie_at_ceiling and node.applicable and ceil_rel == "equality_event"
+    floor_ok = floor_rel in ("strict_positive", "equality_event")
+    rows, diag = [], {"law": law, "r": rs, "p": ps, "p_exact": node.p_exact, "event_id": node.event_id, "payoff_oracle_error": oracle_err, **ab,
+                      "regime": cls["regime"], "low_cost_floor_relation": floor_rel, "ceiling_relation": ceil_rel,
+                      "full_unique_relation": cls["full_unique_relation"]}
     unresolved = False
+    seq = 0
     m, M = posterior_bounds(PRIM.fb)
     e_M = float(entry_at_posterior(PRIM, pay, np.array([M]))[0])
+    if tie_ceiling:
+        e_M = 1.0
     degenerate = pay.Delta_T <= 0 or pay.g_H <= 0 or e_M <= 0
+    if floor_rel == "unresolved" or ceil_rel == "unresolved":
+        unresolved = True
+        diag["classification_unresolved"] = f"floor={floor_rel}, ceiling={ceil_rel}"
+    full_unique = cls["full_unique_relation"] == "strict_positive" and floor_ok
     # pooling / constant-price candidate (always analysed directly)
     cand = pooling_candidate(PRIM, pay)
     val = validate(cand.sched, CONTROLS, price_pools=True)
     ex = ("analytical (unique no trade: Delta_T < k)" if val.accepted and ab["no_trade_unique_margin"] > 0 else
           "analytical (pooling exists: e0 Delta_T/2 <= k)" if val.accepted and ab["pooling_exists_margin"] >= 0 else
           "numerical diagnostic" if val.accepted else "rejected")
-    rows.append(_row(law, rs, ps, "pooling", cand, val, ex))
+    seq += 1
+    rows.append(_row(node, "pooling", cand, val, ex, cls=cls, seq=seq, run_id=run_id,
+                     uniqueness="unique (Delta_T < k)" if ab["no_trade_unique_margin"] > 0 else "not established"))
     if degenerate:
         diag["skipped_searches"] = ("all entry impossible (H_C(B_r(M)) = 0): constant-price candidate only" if e_M <= 0 else
                                     "degenerate payoff (Delta_T <= 0 or g_H <= 0): constant-price candidate only")
     elif ab["no_trade_unique_margin"] > 0:
         diag["skipped_searches"] = "Delta_T < k excludes every nonzero order against any candidate schedule"
     else:
-        cand = full_order_candidate(PRIM, pay)
+        sched = make_schedule(PRIM, pay, OrderProfile.pure(1.0, -1.0), tie_at_ceiling=tie_ceiling, tie_at_floor=tie_floor)
+        from numerics.search import J_test
+        from numerics.deviations import dU
+        cand = Candidate("full_orders", sched.profile, sched, J_test(sched))
+        cand.diagnostics["dU_L_at_1"] = dU(sched, "L", 1.0).value
+        cand.diagnostics["dU_H_at_1"] = dU(sched, "H", 1.0).value
         val = validate(cand.sched, CONTROLS, price_pools=True)
         if val.accepted:
-            ex = ("analytical (unique full orders: uniform derivative bound with entry floor)" if ab["full_unique_margin"] > 0 and ab["low_cost_floor_margin"] > 0
-                  else "analytical (candidate J test)" if ab["low_cost_floor_margin"] > 0 and cand.diagnostics["J_margin"] > 0 else "numerical diagnostic")
+            if full_unique:
+                ex = "analytical (unique full orders: uniform derivative bound with entry floor)"
+                if floor_rel == "equality_event":
+                    ex = "analytical (unique full orders: uniform derivative bound with the floor at equality, e >= rho by the tie rule)"
+            elif floor_ok and cand.diagnostics["J_margin"] > 0:
+                ex = "analytical (candidate J test)"
+            else:
+                ex = "numerical diagnostic"
         else:
             ex = "rejected"
-        rows.append(_row(law, rs, ps, "full_orders", cand, val, ex))
-        if ab["full_unique_margin"] > 0 and ab["low_cost_floor_margin"] > 0:
-            diag["skipped_searches"] = "uniform full-order bound with positive entry floor excludes every other candidate"
+        seq += 1
+        rows.append(_row(node, "full_orders", cand, val, ex, cls=cls, seq=seq, run_id=run_id,
+                         uniqueness="unique within all continuations (uniform derivative bound)" if full_unique else "not established"))
+        if full_unique:
+            diag["skipped_searches"] = "uniform full-order bound with positive (or equality-event) entry floor excludes every other candidate"
         else:
             # asymmetric roots
             ar = asymmetric_roots(PRIM, pay)
             for v in ar["roots"]:
                 cand = asymmetric_candidate(PRIM, pay, v)
                 val = validate(cand.sched, CONTROLS, price_pools=True)
+                seq += 1
                 if abs(cand.diagnostics["Psi"]) > 1e-6:
-                    rows.append(_row(law, rs, ps, "asymmetric_discontinuity", cand, val, "rejected", "Psi sign change without root at a region boundary"))
+                    rows.append(_row(node, "asymmetric_discontinuity", cand, val, "rejected", "Psi sign change without root at a region boundary",
+                                     cls=cls, seq=seq, run_id=run_id))
                     continue
-                rows.append(_row(law, rs, ps, "asymmetric", cand, val, "numerical diagnostic" if val.accepted else "rejected"))
+                rows.append(_row(node, "asymmetric", cand, val, "numerical diagnostic" if val.accepted else "rejected", cls=cls, seq=seq, run_id=run_id))
             for v, resid in ar["tangencies"]:
                 cand = asymmetric_candidate(PRIM, pay, v)
                 val = validate(cand.sched, CONTROLS, price_pools=True)
-                rows.append(_row(law, rs, ps, "asymmetric_tangency", cand, val, "open" if not val.accepted else "numerical diagnostic",
-                                 f"local |Psi| minimum {resid:.3e} without sign change"))
+                seq += 1
+                rows.append(_row(node, "asymmetric_tangency", cand, val, "open" if not val.accepted else "numerical diagnostic",
+                                 f"local |Psi| minimum {resid:.3e} without sign change", cls=cls, seq=seq, run_id=run_id))
                 unresolved = unresolved or not val.accepted
-            accepted = [(float(x["q_H"]), -float(x["q_L"])) for x in rows if x["accepted"] is True and x["q_H"] != "mixed"]
             fp = pure_fixed_points(PRIM, pay, inits=[(u, v) for u in (0.2, 0.6, 0.95) for v in (0.2, 0.6, 0.95)], max_iter=40)
             for u, v, init in fp["fixed_points"]:
-                if any(abs(u - au) < 1e-5 and abs(v - av) < 1e-5 for au, av in accepted):
-                    continue
+                # every converged start is validated and recorded; economic duplicates are merged below by the
+                # continuation identity (complete strategies plus price information), never by orders alone
                 sched = make_schedule(PRIM, pay, OrderProfile.pure(u, -v))
                 cand = Candidate("pure", sched.profile, sched, {"init": init})
                 val = validate(sched, CONTROLS, price_pools=True)
-                rows.append(_row(law, rs, ps, "pure", cand, val, "numerical diagnostic" if val.accepted else "rejected"))
+                seq += 1
+                rows.append(_row(node, "pure", cand, val, "numerical diagnostic" if val.accepted else "rejected", cls=cls, seq=seq, run_id=run_id))
             if fp["unconverged"]:
                 unresolved = True
                 diag["pure_unconverged"] = len(fp["unconverged"])
@@ -132,16 +225,50 @@ def solve_reserve(args) -> tuple[list[dict], dict, dict]:
             if ms["converged"] and len(prof.q_H) > 1:
                 val = validate(ms["sched"], CONTROLS, price_pools=True)
                 cand = Candidate("mixed", prof, ms["sched"], {})
-                rows.append(_row(law, rs, ps, "mixed", cand, val, "numerical diagnostic" if val.accepted else "rejected"))
+                seq += 1
+                rows.append(_row(node, "mixed", cand, val, "numerical diagnostic" if val.accepted else "rejected", cls=cls, seq=seq, run_id=run_id))
             elif not ms["converged"]:
                 unresolved = True
                 diag["mixed_search"] = f"not converged (support gap {ms['support_gap']:.2e})"
-    acc = [x for x in rows if x["accepted"] is True]
+    # --- attempt ledger and economic deduplication ------------------------------------------------
+    acc_raw = [x for x in rows if x["accepted"] is True]
+    reps, absorbed = deduplicate([x["_cont"] for x in acc_raw], CONTROLS)
+    merged = 0
+    for cid, cands in absorbed.items():
+        for extra_cid in cands[1:]:
+            for x in acc_raw:
+                if x["_cont"].candidate_id == extra_cid:
+                    x["duplicate_of"] = cands[0]
+                    merged += 1
+    acc = [x for x in acc_raw if not x["duplicate_of"]]
+    # same orders within the identity tolerance but different price information: kept distinct, and said so
+    from numerics.continuations import _same_profile
+    conts = {x["candidate_id"]: x for x in acc}
+    for x in acc:
+        for y in acc:
+            if x is not y and _same_profile(x["_profile"], y["_profile"]):
+                x["identity_note"] = f"orders within identity tolerance of {y['candidate_id']} but distinct price atoms/pools: kept as a distinct continuation"
+    for x in rows:
+        x.pop("_cont", None)
+        x.pop("_profile", None)
+    n_rej = sum(1 for x in rows if x["accepted"] is not True and not x["status"].startswith("open"))
+    n_open = sum(1 for x in rows if x["status"].startswith("open"))
+    if unresolved:
+        outcome = "unresolved search (open nodes or unconverged starts retained)"
+    elif not acc:
+        outcome = "no accepted candidate found by the declared searches (not a nonexistence proof)"
+    elif full_unique or ab["no_trade_unique_margin"] > 0:
+        outcome = "analytically unique continuation"
+    else:
+        outcome = "accepted continuation(s) found; uniqueness not established"
     rng = {"value_law": law, "r": rs, "p": ps, "accepted_continuations_found": len(acc),
-           "E_min_found": min(x["E"] for x in acc) if acc else "n/a", "E_max_found": max(x["E"] for x in acc) if acc else "n/a",
-           "R_T_min_found": min(x["R_T"] for x in acc) if acc else "n/a", "R_T_max_found": max(x["R_T"] for x in acc) if acc else "n/a",
-           "search_unresolved": unresolved or not acc, "global_envelope_certified": False}
+           "E_min_found": min(x["E"] for x in acc) if acc else NA, "E_max_found": max(x["E"] for x in acc) if acc else NA,
+           "R_T_min_found": min(x["R_T"] for x in acc) if acc else NA, "R_T_max_found": max(x["R_T"] for x in acc) if acc else NA,
+           "search_unresolved": unresolved or not acc, "global_envelope_certified": False,
+           "p_exact": node.p_exact, "event_id": node.event_id, "candidates_evaluated": len(rows), "candidates_accepted_raw": len(acc_raw),
+           "candidates_rejected": n_rej, "candidates_unresolved": n_open, "duplicates_merged": merged, "search_outcome": outcome}
     diag["unresolved"] = unresolved
+    diag["ledger"] = {"evaluated": len(rows), "accepted_raw": len(acc_raw), "accepted_distinct": len(acc), "rejected": n_rej, "open": n_open, "merged": merged}
     return rows, rng, diag
 
 
@@ -160,17 +287,33 @@ def reserve_grid(law: str) -> list[str]:
     return sorted(pts | specials, key=Decimal)
 
 
+def reserve_nodes(law: str, rs: str) -> list[EventNode]:
+    """Declared grid plus every support/participation event with one-sided offsets (spec 9.1)."""
+    eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
+    events = event_grid(PRIM, law, rs, eps_V, DECLARED[law])
+    seen = {n.p_decimal for n in events}
+    nodes = list(events)
+    for ps in reserve_grid(law):
+        n = node_from_args((law, rs, ps))
+        if n.p_decimal not in seen:
+            seen.add(n.p_decimal)
+            nodes.append(n)
+    nodes.sort(key=lambda n: Decimal(n.p_decimal))
+    return nodes
+
+
 def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int | None = None) -> bool:
     import os
     workers = workers or max(1, (os.cpu_count() or 8) - 2)
     checks, notes = {}, []
     tasks = []
     for law in ("binary", "uniform_classes"):
-        grid = reserve_grid(law)
-        if quick:
-            grid = [g for g in grid if Decimal(g) % Decimal("0.5") == 0 or g in DECLARED[law]]
         for rs in STRENGTHS.values():
-            tasks += [(law, rs, ps) for ps in grid]
+            nodes = reserve_nodes(law, rs)
+            if quick:
+                nodes = [n for n in nodes if n.event_id != "grid" and not n.event_id.startswith("offset")
+                         or (n.event_id == "grid" and Decimal(n.p_exact) % Decimal("0.5") == 0)]
+            tasks += nodes
     cont, ranges, diags = [], [], []
     with ProcessPoolExecutor(max_workers=workers) as ex:
         for rows, rng, dg in ex.map(solve_reserve, tasks, chunksize=1):
@@ -202,8 +345,8 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
             if why:
                 intervals.append((law, rs, a["p"], b_["p"], "; ".join(why)))
     for law, rs, pa, pb, why in intervals:
-        x = Decimal(pa) + Decimal("0.002")
-        while x < Decimal(pb):
+        x = Decimal(pa[:24]) + Decimal("0.002")
+        while x < Decimal(pb[:24]):
             refine.add((law, rs, str(x)))
             x += Decimal("0.002")
     refine = sorted(refine, key=lambda t: (t[0], Decimal(t[1]), Decimal(t[2])))
@@ -218,11 +361,10 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
                 cont += rows
                 ranges.append(rng)
                 diags.append(dg)
-    cont.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"]), x["branch"]))
-    ranges.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"])))
+    cont.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"][:24]), x["branch"]))
+    ranges.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"][:24])))
     write_csv("numerics/reserve_continuations.csv", CONT_COLS, cont)
-    write_csv("numerics/reserve_ranges.csv", ["value_law", "r", "p", "accepted_continuations_found", "E_min_found", "E_max_found",
-                                              "R_T_min_found", "R_T_max_found", "search_unresolved", "global_envelope_certified"], ranges)
+    write_csv("numerics/reserve_ranges.csv", RANGE_COLS, ranges)
     # --- declared comparisons table ------------------------------------------------------------
     comp_rows = []
     for law in ("binary", "uniform_classes"):
@@ -264,16 +406,27 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
                                                              "alternative_higher": b_[0]["R_T"] > a_[0]["R_T"], "E_original": a_[0]["E"], "E_alternative": b_[0]["E"]}
     max_oracle = max(d["payoff_oracle_error"] for d in diags)
     checks["payoff_oracle"] = {"max_error": max_oracle, "pass": max_oracle <= TOL}
-    checks["sweep"] = {"nodes": len(tasks), "refined_nodes": len(refine), "refinement_intervals": intervals, "refinement_skipped_nodes": skipped,
+    # counts come from the attempt/validation ledger (one range record per solved node), not from the grid length
+    checks["sweep"] = {"nodes_attempted": len(ranges), "initial_nodes": len(tasks), "refined_nodes": len(refine), "refinement_intervals": intervals,
+                       "refinement_skipped_nodes": skipped,
+                       "event_nodes": sum(1 for r_ in ranges if r_["event_id"] not in ("grid",) and not r_["event_id"].startswith("offset")),
+                       "candidates_evaluated": sum(r_["candidates_evaluated"] for r_ in ranges),
+                       "candidates_rejected": sum(r_["candidates_rejected"] for r_ in ranges),
+                       "candidates_unresolved": sum(r_["candidates_unresolved"] for r_ in ranges),
+                       "duplicates_merged": sum(r_["duplicates_merged"] for r_ in ranges),
                        "unresolved_nodes": sum(1 for r_ in ranges if r_["search_unresolved"]),
                        "nodes_without_accepted_continuation": sum(1 for r_ in ranges if r_["accepted_continuations_found"] == 0),
+                       "nodes_analytically_unique": sum(1 for r_ in ranges if r_["search_outcome"].startswith("analytically unique")),
                        "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"}
     passed = all(c.get("pass", True) for c in checks.values())
     write_manifest("c6_reserve", {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED,
-                                  "strengths": STRENGTHS, "grid": "0..h (+eps_V for classes) by 0.05 plus band edges, r, declared reserves, offsets 0.0001", "quick": quick},
+                                  "strengths": STRENGTHS, "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, "
+                                          "p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8", "quick": quick},
                    "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates "
                    "(pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness "
-                   "bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold.",
+                   "bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold. "
+                   "Exact events are classified algebraically at 50 digits with the tie rule; accepted candidates are merged only by the "
+                   "continuation identity (complete strategies plus price information); counts come from the attempt ledger.",
                    CONTROLS.as_dict(), ["tables/reserve_comparisons.csv", "numerics/reserve_continuations.csv", "numerics/reserve_ranges.csv"], checks, passed, notes)
     print("C.6 passed" if passed else "C.6 FAILED", {k: v for k, v in checks.items() if k.startswith(("declared", "revenue", "payoff", "sweep"))})
     return passed
