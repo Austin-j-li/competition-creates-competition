@@ -14,7 +14,10 @@ g_L&amp;=\frac{\ell^2-p^2}{2r},&amp;
 \end{aligned}
 \tag{4}
 \]</div>
-<p>with derivatives</p>
+<p>The spread rises in \(r\) and both gross profits fall in \(r\). A stronger incumbent lowers the challenger's profit at every belief, which is deterrence, and makes target proceeds more sensitive to challenger quality, which is what an informed investor cares about.</p>
+
+<details class="fold">
+<summary>Derivatives (5)</summary>
 <div class="math-block">\[
 \begin{aligned}
 B_r(\mu)&amp;=g_L+\mu(g_H-g_L),\\
@@ -24,7 +27,7 @@ g_H'(r)&amp;=-\frac12+\frac{p^2}{2r^2}\lt 0,
 \end{aligned}
 \tag{5}
 \]</div>
-<p>A stronger incumbent lowers the challenger's profit at every belief (deterrence) and makes target proceeds more sensitive to challenger quality (what an informed investor cares about).</p>
+</details>
 
 <div class="prop" id="sec-04-two-returns-prop1">
 <p class="prop-title">Proposition 1 (competition and the two returns to information).</p>
@@ -47,7 +50,7 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 </div>
 </div>
 
-<p>The result follows from the payment rule alone. If \(R\gt\ell\), a high-value challenger wins and pays \(R\) while a low-value challenger loses and the incumbent pays \(\ell\), so the difference in target proceeds is \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value. A stronger incumbent raises its expectation and, at the same time, the payment the challenger needs to win. Deterrence models keep only the second half; the bargaining institution below shows the first half can be switched off by paying the runner-up differently.</p>
+<p>The result follows from the payment rule alone, seen from the target's side. When the incumbent's value falls below \(\ell\), either challenger type outbids it and pays the same amount, so the sale price does not depend on which challenger arrived. When it exceeds \(\ell\), a high-value challenger wins and pays \(R\), a low-value challenger loses and the incumbent pays \(\ell\), and the proceeds differ by \((R-\ell)_+\), a call on the incumbent's value struck at the low acquisition value. A stronger incumbent raises the value of that call and, at the same time, the payment the challenger needs to win. Deterrence models keep only the second half; <a href="#sec-07-welfare-bargaining">the bargaining institution</a> shows the first half can be switched off by paying the runner-up differently.</p>
 
 <details class="proof">
 <summary>Proof sketch</summary>
@@ -62,7 +65,11 @@ G_\theta(F)&amp;=\mathbb E_F[(\theta-\max\{p,R\})_+]
 </figure>
 
 <h3 id="sec-04-two-returns-inference">What the challenger learns from the price</h3>
-<p>Noise demand bounds the posterior under every feasible trading strategy. For arbitrary mixed orders, define</p>
+<p>Noise demand caps what any order can reveal. Whatever the investor does, the market maker's belief that the challenger is high-value stays inside \([m,M]\), because the likelihood ratio of any two orders in \([-1,1]\) under Laplace noise is at most \(e^{2/b}\); at \(b=[[base_b]]\), \(m=[[base_m]]\) and \(M=[[base_M]]\). The ceiling matters for entry. The best price a challenger can ever see corresponds to belief \(M\), so once \(B_r(M)\) falls below \(c_H\) no price justifies expensive preparation. The floor matters for inference. When \(c_L\lt B_r(m)\) the cheap challenger enters at every price, entry is at least \(\rho\), the price is strictly increasing in the posterior, and the challenger reads that posterior straight off the price (Propositions A.1 and A.2).</p>
+
+<details class="fold">
+<summary>How the price reveals the posterior (7) to (10)</summary>
+<p>For arbitrary mixed orders, define</p>
 <div class="math-block">\[
 \begin{aligned}
 a_H(x)&amp;=\int f(x-q)\,d\sigma_H(q),\qquad
@@ -72,16 +79,12 @@ a_H(x)&amp;=\int f(x-q)\,d\sigma_H(q),\qquad
 \end{aligned}
 \tag{7}
 \]</div>
-<p>The Laplace likelihood ratios lie between \(e^{-2/b}\) and \(e^{2/b}\) for any two orders, so \(m\le\mu_X\le M\) and the price-based posterior inherits the bounds; at \(b=[[base_b]]\), \(m=[[base_m]]\) and \(M=[[base_M]]\). No equilibrium price can induce a belief above \(M\), so once \(B_r(M)\) falls below \(c_H\) no price justifies expensive preparation. When \(c_L\lt B_r(m)\), entry is at least \(\rho\) and the price is strictly increasing in the posterior, so the challenger reads the market maker's posterior straight off the price (Propositions A.1 and A.2).</p>
-
-<details class="fold">
-<summary>How the price reveals the posterior</summary>
 <p>For any two orders \(q,q'\in[-1,1]\) the Laplace density obeys</p>
 <div class="math-block">\[
 e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b},
 \tag{8}
 \]</div>
-<p>and integrating over the conditional order distributions preserves the inequalities. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
+<p>and integrating over the conditional order distributions preserves the inequalities, so \(m\le\mu_X\le M\) and the price-based posterior inherits the bounds. Averaging over preparation costs gives the entry rule and the candidate competitive price</p>
 <div class="math-block">\[
 \begin{aligned}
 e_r(\mu)&amp;=\rho+(1-\rho)\mathbf 1\{B_r(\mu)\ge c_H\},\\
@@ -101,7 +104,10 @@ P&amp;=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\\
 </details>
 
 <h3 id="sec-04-two-returns-trading">Informed trading incentives</h3>
-<p>Rational pricing strips the anticipated increase in proceeds out of the investor's advantage; what remains depends on challenger quality. The residual advantages of buying in state \(H\) and selling in state \(L\) are</p>
+<p>Rational pricing strips the anticipated increase in proceeds out of the investor's advantage; what remains depends on challenger quality. The residual advantage of buying after good news, or selling after bad news, is entry probability times spread times residual uncertainty, and it lies between \(\rho m\Delta_T\) and \(\Delta_T\) for every candidate order distribution. Those two bounds, compared with the trading cost, are what deliver uniqueness.</p>
+
+<details class="fold">
+<summary>Residual advantages (11)</summary>
 <div class="math-block">\[
 \begin{aligned}
 A_H(x)&amp;=\mathbb E[V_T\mid H,x]-P(x)=e_r(\mu_X(x))\Delta_T[1-\mu_X(x)],\\
@@ -110,7 +116,8 @@ A_L(x)&amp;=P(x)-\mathbb E[V_T\mid L,x]=e_r(\mu_X(x))\Delta_T\mu_X(x),\\
 \end{aligned}
 \tag{11}
 \]</div>
-<p>The advantage is entry probability times spread times residual uncertainty. Both bounds hold for every candidate order distribution, so uniqueness will come from comparing them with the trading cost, not from checking deviations around a conjectured equilibrium.</p>
+<p>Both bounds hold for every candidate order distribution, because \(e_r\ge\rho\) and \(\mu_X\in[m,M]\).</p>
+</details>
 
 <h3 id="sec-04-two-returns-explorer">Try the closed forms</h3>
 <p>The slider moves \(r\) with every other primitive at the benchmark and recomputes (4), (7), (12), the conditions of Proposition 2, and the boundaries of Proposition A.4.</p>
