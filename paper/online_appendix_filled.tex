@@ -1,8 +1,10 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 \documentclass[
-  11pt]{article}
+  11pt,
+]{article}
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
@@ -17,7 +19,7 @@
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-\usepackage{lmodern}
+\usepackage[]{newtxtext}
 \ifPDFTeX\else
   % xetex/luatex font selection
 \fi
@@ -27,6 +29,7 @@
   \usepackage[]{microtype}
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
+\usepackage{setspace}
 \makeatletter
 \@ifundefined{KOMAClassName}{% if non-KOMA class
   \IfFileExists{parskip.sty}{%
@@ -90,17 +93,30 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxmath}
 \usepackage{booktabs}
+\usepackage{threeparttable}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{hyperref}
+\usepackage{setspace}
+\definecolor{paperlink}{RGB}{31,59,115}
 \allowdisplaybreaks
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.5em}
+\usepackage{seqsplit}
+\usepackage{etoolbox}
+\renewcommand{\texttt}[1]{{\ttfamily\seqsplit{#1}}}
+\AtBeginEnvironment{longtable}{\footnotesize}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
   pdftitle={Online Appendix to Competition Creates Competition},
-  hidelinks,
+  colorlinks=true,
+  linkcolor={paperlink},
+  filecolor={Maroon},
+  citecolor={paperlink},
+  urlcolor={paperlink},
   pdfcreator={LaTeX via pandoc}}
 
 \title{Online Appendix to Competition Creates Competition}
@@ -110,7 +126,13 @@
 \begin{document}
 \maketitle
 
+\setstretch{1.15}
 \section{A. Full analytical arguments}\label{oa-a}
+
+This appendix contains the complete arguments behind the results in the
+paper. I begin with the probability space, because every later claim
+about beliefs, deviations, and null sets rests on it, and then take the
+results in the order of the paper.
 
 \subsection{A.1. Probability space, strategies, and conditional
 information}\label{oa-a-foundations}
@@ -135,20 +157,20 @@ preparation cost, equal to \(c_L\) with probability \(\rho\) and \(c_H\)
 otherwise, where \(0<\rho<1\) and \(0\le c_L<c_H\). Paying the cost
 reveals its value and permits bidding; declining means absence. Both
 bidders bid truthfully once informed. A bid meeting the reserve is
-admissible. We prescribe preparation at equality of gross expected
-profit and cost. The allocation, cash payment, and stock payoff are then
+admissible. I prescribe preparation at equality of gross expected profit
+and cost. The allocation, cash payment, and stock payoff are then
 realized. The equilibrium requires Bayesian pricing, optimal preparation
 at every reached price and cost, and global investor best responses
 against the fixed equilibrium price and preparation schedules,
 permitting mixed orders.
 
-We write \(t_0\) for expected target proceeds without challenger entry,
+I write \(t_0\) for expected target proceeds without challenger entry,
 \(t_H,t_L\) for proceeds conditional on entry and quality, and
 \(g_H,g_L\) for conditional gross challenger profits. Set
 \(\Delta_T=t_H-t_L\), \(B_r(\mu)=g_L+\mu(g_H-g_L)\),
 \(m=(1+e^{2/b})^{-1}\), and \(M=1-m\). For the comparison
-\(p<\ell<r_0<r_1<h\), the hypotheses of Theorem 1, referred to below as
-(A1)--(A3), are
+\(p<\ell<r_0<r_1<h\), the hypotheses of Proposition 2, referred to below
+as (A1) to (A3), are
 
 \[
 \begin{aligned}
@@ -159,16 +181,16 @@ We write \(t_0\) for expected target proceeds without challenger entry,
 \tag{OA.1}
 \]
 
-We give a probability-space construction to make every conditioning and
-deviation explicit. Let \(\Theta\in\{L,H\}\) have equal probabilities,
-with acquisition values \(v_L=\ell\) and \(v_H=h\). Independently draw
-incumbent value \(R\), preparation cost \(C\), noise demand \(Z\), and
-an auxiliary random variable \(U\) uniform on \([0,1]\). A mixed trader
-strategy is a probability kernel \(\sigma_\Theta\) on the Borel subsets
-of \([-1,1]\). We may implement it by a Borel quantile map
-\(q_\Theta(U)\). Conditional randomization therefore contains no
-information about the other primitives beyond the trader's specified
-signal.
+I give a probability-space construction so that every conditioning step
+and every deviation is explicit. Let \(\Theta\in\{L,H\}\) have equal
+probabilities, with acquisition values \(v_L=\ell\) and \(v_H=h\).
+Independently draw incumbent value \(R\), preparation cost \(C\), noise
+demand \(Z\), and an auxiliary random variable \(U\) uniform on
+\([0,1]\). A mixed trader strategy is a probability kernel
+\(\sigma_\Theta\) on the Borel subsets of \([-1,1]\). It can be
+implemented by a Borel quantile map \(q_\Theta(U)\). Conditional
+randomization therefore contains no information about the other
+primitives beyond the trader's specified signal.
 
 All spaces are standard Borel. Prices, entry policies, and payoffs are
 Borel functions. Because values and the order interval are bounded, all
@@ -228,7 +250,7 @@ used inside the pricing equation. It also explains why a unilateral
 order deviation shifts the density of \(X\) without changing the
 conditional auction formulas.
 
-For the complementary-signal extension, we replace the investor's
+For the complementary-signal extension, I replace the investor's
 observation of \(\Theta\) by \(T\) and add \(Y\). The randomization
 \(U\), noise \(Z\), incumbent \(R\), and cost \(C\) remain independent
 of \((\Theta,T,Y)\); \(T\) and \(Y\) are independent conditional on
@@ -244,7 +266,7 @@ bid above value can turn a loss into an unprofitable win, and a bid
 below value can discard a profitable win. Conditional on winning, the
 bidder's own bid does not determine payment. The presence of a public
 price or information conveyed by entry changes beliefs about other
-bidders but not this pointwise dominance argument. We use truthful
+bidders but not this pointwise dominance argument. I use truthful
 implementation to fix payoff-equivalent bid descriptions.
 
 Without the challenger, the seller receives \(p\) if \(R\ge p\). A
@@ -347,7 +369,7 @@ Subtracting (OA.7) gives \(A_H=e\Delta_T(1-\mu_X)\) and
 orders. This derivation accounts for the endogenous preparation response
 before taking the investor's expectation over shifted noise.
 
-We next justify all differentiation used for continuous deviations. Let
+Next I justify every differentiation used for continuous deviations. Let
 \(f\in W^{1,1}(\mathbb R)\), with positive density and \(|f'|\le Lf\)
 almost everywhere, and let \(A\) be bounded, measurable, and
 nonnegative. For sign \(\epsilon\in\{-1,1\}\), define
@@ -406,14 +428,15 @@ on the allowed interval, integration shows that \(U(s_2)>U(s_1)\) for
 every \(s_2>s_1\). This is global order optimality, not a local
 first-order condition.
 
-\subsection{A.4. Complete proof of Theorem 1}\label{oa-a-entry}
+\subsection{A.4. Complete proof of Proposition 2}\label{oa-a-entry}
 
-We establish necessity of each claimed strategy against every candidate
-equilibrium, and then construct an equilibrium with that strategy.
+I first establish that each claimed strategy is necessary against every
+candidate equilibrium, and then construct an equilibrium with that
+strategy.
 
-\textbf{Weak incumbent.} Lemma 1 and (A1) give the entry floor under
-every conditional mixed order. Section A.3 gives the residual upper
-bound. For a correctly signed order of magnitude \(s>0\),
+\textbf{Weak incumbent.} Proposition A.1 and (A1) give the entry floor
+under every conditional mixed order. Section A.3 gives the residual
+upper bound. For a correctly signed order of magnitude \(s>0\),
 
 \[
 \mathbb E[\text{trading profit}\mid\Theta]\le s\{\Delta_T(r_0)-k\}<0.
@@ -513,7 +536,7 @@ satisfaction persists on an open neighborhood.
 \subsection{A.5. Fixed experiments, threshold distinctions, and finite
 nonmonotonicity}\label{oa-a-thresholds}
 
-For Proposition R1, fix one joint distribution of \((S,\Theta,C)\) for
+For Proposition A.3, fix one joint distribution of \((S,\Theta,C)\) for
 both strengths. Let \(\mu(S)=\Pr(H\mid S)\). For \(r_1>r_0\), the
 difference in entry indicators is
 
@@ -530,7 +553,7 @@ comparison holds within a fixed full-order regime because both
 conditional flow laws are unchanged when only \(r\) changes. It need not
 hold across different informative order profiles.
 
-For Proposition 3, define the maintained domain
+For Proposition A.4, define the maintained domain
 
 \[
 \mathcal D=\{r\in(\ell,h):c_L<B_r(m),\ B_r(1/2)<c_H\}.
@@ -591,12 +614,13 @@ the strict comparisons on either side. With logistic noise the upper
 posterior is approached only as \(x\to\infty\); its survival probability
 tends to zero, and entry converges continuously to \(\rho\).
 
-For Corollary 3, impose (A1)--(A3) at \(r_0,r_1\), the low-cost floor at
-\(r_2\), the strong global derivative bound at \(r_2\), and
-\(B_{r_2}(M)<c_H\). Theorem 1 gives the first two unique outcomes; the
-bound and infeasibility condition give unique full orders but entry
-\(\rho\) at \(r_2\). This proves a finite rise and fall without a
-selection or uniqueness assertion for strengths between them.
+For Proposition 2(iii), impose (A1) to (A3) at \(r_0,r_1\), the low-cost
+floor at \(r_2\), the strong global derivative bound at \(r_2\), and
+\(B_{r_2}(M)<c_H\). Parts (i) and (ii) of Proposition 2 give the first
+two unique outcomes; the bound and infeasibility condition give unique
+full orders but entry \(\rho\) at \(r_2\). This proves a finite rise and
+fall without a selection or uniqueness assertion for strengths between
+them.
 
 A useful full-profile existence test is sharper than the uniform
 uniqueness bound. At a fixed full-order candidate,
@@ -656,9 +680,9 @@ conditional survival probabilities are
 \(\alpha_L=[1+e^{(x^*_{\log}+1)/b}]^{-1}\). These formulas and
 \(\mathsf E=\rho+(1-\rho)(\alpha_H+\alpha_L)/2\) supply the complete
 entry comparison. The trade and information-ordering arguments complete
-Corollary 1.
+Proposition A.5.
 
-For Corollary 2, let \(H_C=\rho H_L+(1-\rho)H_H\), with atomless
+For Proposition A.6, let \(H_C=\rho H_L+(1-\rho)H_H\), with atomless
 component laws supported within
 \([c_L-\varepsilon_C,c_L+\varepsilon_C]\) and
 \([c_H-\varepsilon_C,c_H+\varepsilon_C]\). Retain (A3) and impose
@@ -703,12 +727,12 @@ both arguments. All inequalities have strict slack and persist by
 continuity. This is a mathematical nonemptiness construction, not a
 statement about empirical effect size at every value ratio.
 
-We record two further stability results for completeness.
+Two further stability results are recorded for completeness.
 
 \textbf{Lemma OA.1 (analytical).} \emph{Replace the trading cost by
-\(K(s)=ks+\gamma_qs^2/2\), \(\gamma_q\ge0\). Under (A1)--(A2),
+\(K(s)=ks+\gamma_qs^2/2\), \(\gamma_q\ge0\). Under (A1) and (A2),
 \(\Delta_T(r_0)<k\), and \(k+\gamma_q<(1-1/b)\rho m\Delta_T(r_1)\), the
-conclusions of Theorem 1 remain valid.}
+conclusions of Proposition 2 remain valid.}
 
 Indeed \(K(s)\ge ks\) preserves the weak-economy exclusion. At high
 strength, subtracting \(K'(s)=k+\gamma_qs\) from the gross marginal
@@ -735,8 +759,8 @@ at the equal prior persists for nearby priors. Neither supplemental
 lemma is required to generate a reported numerical value in the present
 manuscript.
 
-\subsection{A.7. Full proof and probability formulas for Theorem
-R2}\label{oa-a-signals}
+\subsection{A.7. Full proof and probability formulas for Proposition
+A.7}\label{oa-a-signals}
 
 The auction, value supports, order interval, noise law, and
 preparation-cost distribution are those in A.1. Only the information
@@ -753,7 +777,7 @@ w_H(r)&=t_H(r)-t_0(r),&w_L(r)&=t_L(r)-t_0(r).
 \tag{OA.28}
 \]
 
-The complete sufficient conditions for Theorem R2 are
+The complete sufficient conditions for Proposition A.7 are
 
 \[
 \begin{aligned}
@@ -765,12 +789,12 @@ The complete sufficient conditions for Theorem R2 are
 \tag{OA.29}
 \]
 
-We prove unique zero orders and entry \(\rho\) at \(r_0\), unique
-maximum correctly signed signal-contingent orders at \(r_1\), and
-strictly higher entry at \(r_1\). The theorem allows \(d>a\) and
-arbitrary mixed orders conditional on the investor's signal.
+I prove unique zero orders and entry \(\rho\) at \(r_0\), unique maximum
+correctly signed signal-contingent orders at \(r_1\), and strictly
+higher entry at \(r_1\). The result allows \(d>a\) and arbitrary mixed
+orders conditional on the investor's signal.
 
-We use \(T\) for the trader's signal, \(Y\) for the buyer's private
+I use \(T\) for the trader's signal, \(Y\) for the buyer's private
 signal, and \(\Theta\) for fundamental quality. Conditional on \(H\),
 the probabilities of \(T=+\) and \(Y=+\) are \(a\) and \(d\);
 conditional on \(L\) they are \(1-a\) and \(1-d\). Conditional
@@ -956,9 +980,9 @@ law given quality would give the wrong entry and pricing objects.
 
 \subsection{A.8. Verifiable-value bargaining}\label{oa-a-bargaining}
 
-We specify a different acquisition institution solely for the bargaining
-comparison. After diligence, all buyer values are verifiable. The seller
-can implement a sale to the runner-up at that buyer's value, with
+The bargaining comparison uses a different acquisition institution,
+specified here. After diligence, all buyer values are verifiable. The
+seller can implement a sale to the runner-up at that buyer's value, with
 acceptance at zero buyer surplus; therefore the disagreement payoff in
 negotiating with the best buyer is the next-best value \(z\). The best
 buyer has value \(V\ge z\) and disagreement payoff zero. For
@@ -971,7 +995,7 @@ buyer has value \(V\ge z\) and disagreement payoff zero. For
 
 For \(V>z\), strict concavity of the log objective gives the unique
 transfer \(P=(1-\eta)z+\eta V\). When \(V=z\), feasible transfers
-collapse to that common value. At \(\eta=0\) we use the continuous
+collapse to that common value. At \(\eta=0\) I use the continuous
 limiting transfer \(z\). With no challenger, the same rule has fallback
 zero and pays the seller \(\eta R\). Thus no-entry proceeds are
 specified by the institution as well as entry proceeds.
@@ -987,8 +1011,8 @@ and \((1-\eta)\ell+\eta R\). Their difference is
 \]
 
 A challenger receives \((1-\eta)(\theta-R)\) when \(\theta\ge R\) and
-zero otherwise. Taking expectations gives Lemma 3 and applying FOSD
-yields its sign comparisons. For a uniform incumbent,
+zero otherwise. Taking expectations gives Proposition A.8 and applying
+FOSD yields its sign comparisons. For a uniform incumbent,
 
 \[
 \Delta_\eta=\eta(h-\ell)+(1-2\eta)\frac{(r-\ell)^2}{2r},\quad
@@ -1009,7 +1033,7 @@ institution.
 \subsection{A.9. Matched welfare and the external-dividend
 diagnostic}\label{oa-a-welfare}
 
-We couple the feedback and price-hidden economies at \(r=r_1\) using the
+I couple the feedback and price-hidden economies at \(r=r_1\) using the
 same \((\Theta,R,C,Z)\) and full informed orders. The strong trading
 bound applies in the price-hidden economy with entry probability
 \(\rho\), so this coupling uses equilibrium behavior in both
@@ -1230,11 +1254,18 @@ sale-design result.
 
 \section{B. Computer-assisted equilibrium certificates}\label{oa-b}
 
+This appendix explains what the computer proves about the asymmetric
+equilibria of Proposition 3, and how. The point deserves to be stated
+plainly. A floating-point root of the equilibrium equation is not a
+proof. What I certify is an exact root inside a stated bracket and a
+global best response for the other trader type, with every rounding
+error accounted for by interval arithmetic.
+
 \subsection{B.1. Objects to be certified}\label{oa-b-objects}
 
-We certify existence of an equilibrium, not merely an approximate fixed
-point. Fix the benchmark primitives and a strength \(r\). Candidate
-orders are \((q_H,q_L)=(1,-v)\) with \(v\in(0,1)\). Let
+The object certified is the existence of an equilibrium, not an
+approximate fixed point. Fix the benchmark primitives and a strength
+\(r\). Candidate orders are \((q_H,q_L)=(1,-v)\) with \(v\in(0,1)\). Let
 \(\tau=(c_H-g_L)/(g_H-g_L)\), \(c=(1-v)/2\), and
 
 \[
@@ -1340,7 +1371,7 @@ Outward enclosures satisfying
 prove existence of an exact root \(v^*\in(v_-,v_+)\). The concavity
 result proves optimality at that root against its own price schedule. It
 does not prove that \(\Psi\) has only one root across all possible
-candidate schedules; no such uniqueness is needed for Proposition 4.
+candidate schedules; no such uniqueness is needed for Proposition 3.
 
 \subsection{B.4. A global cover for favorable-information
 deviations}\label{oa-b-cover}
@@ -1392,7 +1423,7 @@ tails}\label{oa-b-integrals}
 
 Split the integration domain at \(-v\), \(x^*\), \(1\), and the density
 center \(\zeta=\epsilon s\). Within the posterior's central region let
-\(t=e^{(x-c)/b}\), so \(\mu_v=t^2/(1+t^2)\) and \(dx=b\,dt/t\). We use
+\(t=e^{(x-c)/b}\), so \(\mu_v=t^2/(1+t^2)\) and \(dx=b\,dt/t\). I use
 the following primitives, each verified by differentiation:
 
 \[
@@ -1432,14 +1463,14 @@ using only midpoints.
 \subsection{B.6. Certificate acceptance and what it
 establishes}\label{oa-b-acceptance}
 
-We use exact decimal input strings and interval operations rounded
+I use exact decimal input strings and interval operations rounded
 outward. In an interval test, the infimum and supremum of a displayed
 function evaluation mean the endpoints of its outward interval
 enclosure; the underlying equilibrium function remains scalar-valued.
 The starting precision and mesh are specified in Appendix C.2. An
 enclosure must retain its full endpoint representation; a printed
 floating-point midpoint is not the certificate. For a bracket to
-establish the stated result, we require all of the following: the model
+establish the stated result, I require all of the following: the model
 support inequalities, low-cost participation and high-cost prior
 exclusion, strict threshold ordering throughout the bracket, opposite
 enclosed endpoint signs in (OA.61), positive \(\Gamma_H\) in (OA.64),
@@ -1553,7 +1584,7 @@ bound is \(2\overline A/[1+e^{(T-1)/b}]\). Include these bounds in the
 error budget; do not compare a tail-truncated integral with a full
 integral as though both were exact.
 
-We maintain distinct tolerances for equations, quadrature estimates, and
+I maintain distinct tolerances for equations, quadrature estimates, and
 strategic deviations. A root or a finite-grid maximum does not establish
 equilibrium. For each candidate, evaluate
 
@@ -1641,7 +1672,7 @@ parameter, and replace cost atoms by a mixture of uniforms on
 
 The collapse node additionally requires \(c_H-B_{r_2}(M)>0\),
 \(B_{r_2}(m)-c_L>0\), and its full-order margin. For atomless costs
-replace the appropriate cost endpoints as in Corollary 2. Verify all
+replace the appropriate cost endpoints as in Proposition A.6. Verify all
 margins before assigning an analytical equilibrium label.
 
 \textbf{Financial and entry layer.} Pooling has \(q_H=q_L=0\),
@@ -1871,7 +1902,7 @@ All general parameter columns are included or keyed to an immutable
 parameter declaration whose full contents accompany the file.
 \texttt{uniqueness\_status} distinguishes analytical uniqueness from not
 established; it is never inferred from the number of search hits. Feed:
-Figure 1, Proposition 4, the threshold discussion, and the baseline
+Figure 1, Proposition 3, the threshold discussion, and the baseline
 table. Registry keys \texttt{cert\_a\_*}, \texttt{cert\_b\_*}, and
 \texttt{cert\_c\_*} refer to the ordered declared nodes, not arbitrary
 roots selected from a larger search.
@@ -1882,7 +1913,8 @@ roots selected from a larger search.
 cross trader accuracies \texttt{\{0.68,\ 0.69,\ 0.70,\ 0.71,\ 0.72\}}
 with buyer accuracies \texttt{\{0.73,\ 0.74,\ 0.75,\ 0.76,\ 0.77\}},
 holding other primitives fixed. These are separate equilibria with exact
-decimal parameters, not a claim that every grid point meets Theorem R2.
+decimal parameters, not a claim that every grid point meets Proposition
+A.7.
 
 \textbf{Objects.} Compute \(m,M\), public fundamental bounds
 \(\mu_-,\mu_+\), the worst joint buyer posterior \(\phi_-(\mu_-)\), and
@@ -1945,7 +1977,7 @@ repeat them consistently on both strength rows or store them in a
 separately keyed comparison record. The display accuracy keys are
 percentages generated from the raw probability keys, never separately
 typed. Table 3 uses the declared example and marks the sweep's condition
-region separately. Feed: Theorem R2's example and Table 3.
+region separately. Feed: the example of Proposition A.7 and Table 3.
 
 \subsection{C.4. Moderate values and constructive
 nonemptiness}\label{oa-c-moderate}
@@ -2167,7 +2199,7 @@ property}\label{oa-c-bargaining}
 
 \textbf{Inputs.} Use the benchmark \(h,\ell\) and weak/strong incumbent
 distributions, but set the bargaining institution's reserve to zero as
-specified in Lemma 3. Evaluate seller weights from \texttt{0} to
+specified in Proposition A.8. Evaluate seller weights from \texttt{0} to
 \texttt{0.99} by \texttt{0.01}, including the exact midpoint
 \texttt{0.5}. The endpoint \(\eta=1\) can be stored separately as a
 payment-stage limit, not as a positive-cost entry equilibrium.
@@ -2195,13 +2227,13 @@ entry prediction without solving the new continuation game.
 \end{Highlighting}
 \end{Shaded}
 
-Feed: Figure 4 and Lemma 3. Parameter values and the change of
+Feed: Figure 4 and Proposition A.8. Parameter values and the change of
 institution are stated in the figure caption.
 
 \subsection{C.8. Complete scalar registry and placeholder
 substitution}\label{oa-c-registry}
 
-Every quantitative placeholder is defined below. We distinguish exact
+Every quantitative placeholder is defined below. I distinguish exact
 input declarations from computed quantities and interval enclosures. The
 declaration is the numerical input; the unresolved placeholder in the
 manuscript is not another input. A replicator reads the declared values
@@ -2880,6 +2912,13 @@ apparent curve is not used to fill a missing certificate.
 
 \section{D. Institutional pilot and empirical design}\label{oa-d}
 
+The empirical part of this project starts with an institutional question
+rather than a regression. Was there an interval during which a
+prospective buyer could still decide whether to investigate a publicly
+visible sale while the target's shares traded? This appendix sets out
+the rule for finding such intervals, the coding of events, and what
+would count as evidence that the institution the model describes exists.
+
 \subsection{D.1. The decision interval and sample-selection
 rule}\label{oa-d-selection}
 
@@ -2900,8 +2939,8 @@ investigate or submit a substantive proposal. A transaction announced
 only after the buyer set was fixed does not qualify merely because the
 target traded during its earlier confidential negotiations. Likewise, a
 named firm mentioned by an adviser is a potential buyer, not an entrant;
-an NDA alone need not establish costly acquisition preparation. We
-retain each of these events but distinguish their economic content.
+an NDA alone need not establish costly acquisition preparation. I retain
+each of these events but distinguish their economic content.
 
 Selection proceeds without conditioning on whether a later bidder wins,
 whether a target return has a particular sign, or whether the process
@@ -2916,8 +2955,8 @@ this design.
 \subsection{D.2. Information available at the time, not only at the
 filing date}\label{oa-d-information}
 
-We distinguish the date an event occurred from the date its content
-first became public. A definitive proxy can describe a private meeting
+I distinguish the date an event occurred from the date its content first
+became public. A definitive proxy can describe a private meeting
 retrospectively. That description supports the occurrence of the
 meeting, but does not put it in the stock market's information set on
 the meeting date. For every economically relevant event, record the
@@ -2954,7 +2993,7 @@ evidence, not an instruction to treat every party as having the same
 information. Contradictory dates or actor descriptions remain visible
 until resolved.
 
-We use the following event categories in the pilot. An initial approach
+I use the following event categories in the pilot. An initial approach
 identifies who initiated contact and whether it was solicited. Public
 visibility identifies the first disclosure of the acquisition
 opportunity and the competitive facts revealed. Buyer contact records
@@ -3081,6 +3120,11 @@ discriminating restrictions. The pilot determines which route is
 institutionally credible before either exercise is undertaken.
 
 \section{E. Reproducibility and the numerical boundary}\label{oa-e}
+
+This appendix records how the numbers in the paper were produced and
+where the computational boundary lies. I distinguish the node checks
+distributed with the paper from the full exercises of Appendix C, and I
+state the environment in which each was run.
 
 \subsection{E.1. Distributed verification and execution
 environment}\label{oa-e-environment}

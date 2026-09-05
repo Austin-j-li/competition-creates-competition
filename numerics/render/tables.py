@@ -1,4 +1,9 @@
-"""Tables 1 to 4 as LaTeX (booktabs) from the validated CSV outputs. No solving, no parameter changes, no dropped rows."""
+"""Tables 1 to 4 as LaTeX threeparttable bodies from the validated CSV outputs.
+
+Each file holds a threeparttable (tabular plus notes) without a caption or table environment;
+latex.py wraps it with the caption written in the manuscript. No solving, no parameter changes,
+no dropped rows.
+"""
 from __future__ import annotations
 
 import sys
@@ -10,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from numerics.io import ROOT, read_csv  # noqa: E402
 
 TAB = ROOT / "tables"
+MARGIN_KEYS = ("zeta_L", "zeta_H0", "zeta_H1", "zeta_0", "zeta_1")
+SIGNAL_MARGIN_KEYS = ("low_cost_margin", "private_only_exclusion_margin", "joint_entry_margin", "weak_order_margin", "strong_order_margin")
 
 
 def d6(x: str) -> str:
@@ -21,7 +28,7 @@ def d6(x: str) -> str:
 
 def sci(x: str) -> str:
     try:
-        return f"{Decimal(x):.3E}".replace("E+", "e+").replace("E-", "e-")
+        return f"{Decimal(x):.2E}".replace("E", "e")
     except Exception:
         return "n/a"
 
@@ -30,20 +37,46 @@ def esc(s: str) -> str:
     return s.replace("_", r"\_").replace("%", r"\%").replace("&", r"\&")
 
 
-def tabular(header: list[str], rows: list[list[str]], align: str, caption: str, label: str, notes: str = "") -> str:
-    lines = [r"\begin{table}[htbp]", r"\centering", r"\small", f"\\caption{{{caption}}}", f"\\label{{{label}}}",
-             f"\\begin{{tabular}}{{{align}}}", r"\toprule", " & ".join(header) + r" \\", r"\midrule"]
+def status_word(text: str) -> str:
+    t = (text or "").lower()
+    if t.startswith("analytical"):
+        return "proved"
+    if t.startswith("computer-assisted"):
+        return "verified computation"
+    if "fixed full-order profile" in t or "level-matching" in t:
+        return "control"
+    if t.startswith("numerical diagnostic"):
+        return "illustration"
+    if t.startswith("rejected"):
+        return "rejected"
+    return esc(text.split(" (")[0])
+
+
+def order(q: str) -> str:
+    try:
+        v = Decimal(q)
+        return format(v.normalize(), "f") if v != v.to_integral() else str(int(v))
+    except Exception:
+        return esc(q)
+
+
+def threeparttable(header: list[str], rows: list[list[str]], align: str, notes: list[str], size: str = "") -> str:
+    n = len(header)
+    lines = [r"\begin{threeparttable}"] + ([size] if size else []) + [f"\\begin{{tabular}}{{{align}}}", r"\toprule", " & ".join(header) + r" \\", r"\midrule"]
     for r in rows:
         if r == ["\\midrule"]:
             lines.append(r"\midrule")
         elif len(r) == 1:
-            lines.append(f"\\multicolumn{{{len(header)}}}{{l}}{{\\emph{{{r[0]}}}}} \\\\")
+            lines.append(f"\\multicolumn{{{n}}}{{l}}{{\\emph{{{r[0]}}}}} \\\\")
         else:
             lines.append(" & ".join(r) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     if notes:
-        lines.append(f"\\begin{{minipage}}{{0.95\\linewidth}}\\vspace{{4pt}}\\footnotesize {notes}\\end{{minipage}}")
-    lines.append(r"\end{table}")
+        lines.append(r"\begin{tablenotes}\footnotesize")
+        for note in notes:
+            lines.append(f"\\item {note}")
+        lines.append(r"\end{tablenotes}")
+    lines.append(r"\end{threeparttable}")
     return "\n".join(lines) + "\n"
 
 
@@ -52,13 +85,15 @@ def table1() -> Path:
     weak = next(r for r in rows if r["r"] == "1.2")
     strong = next(r for r in rows if r["r"] == "3")
     body = []
-    for key, lab in (("t_0", "$t_0$"), ("t_H", "$t_H$"), ("t_L", "$t_L$"), ("g_H", "$g_H$"), ("g_L", "$g_L$"), ("Delta_T", r"$\Delta_T$"), ("B_prior", "$B_r(1/2)$")):
+    for key, lab in (("t_0", "Proceeds without a challenger, $t_0$"), ("t_H", "Proceeds with a high-value challenger, $t_H$"),
+                     ("t_L", "Proceeds with a low-value challenger, $t_L$"), ("g_H", "Gross profit of a high-value challenger, $g_H$"),
+                     ("g_L", "Gross profit of a low-value challenger, $g_L$"), ("Delta_T", r"Information spread, $\Delta_T = t_H - t_L$"),
+                     ("B_prior", "Expected gross profit at the prior, $B_r(1/2)$")):
         body.append([lab, d6(weak[key]), d6(strong[key])])
-    cap = (r"Auction primitives at the benchmark specification ($h=10$, $\ell=1$, $p=0.5$), per target share, for the weak ($r=1.2$) and strong ($r=3$) incumbent economies. "
-           r"Closed forms in (4), checked against direct integration of the realized sale rule (Online Appendix C.1).")
-    tex = tabular(["Quantity", "Weak ($r=1.2$)", "Strong ($r=3$)"], body, "lrr", cap, "tab:auction_primitives")
+    notes = [r"Benchmark primitives $h=10$, $\ell=1$, $p=0.5$; values per target share. Closed forms in the text agree with "
+             r"direct integration of the realized sale rule to within $10^{-9}$ (Online Appendix C.1)."]
     out = TAB / "table1_auction_primitives.tex"
-    out.write_text(tex)
+    out.write_text(threeparttable(["", "Weak ($r=1.2$)", "Strong ($r=3$)"], body, "lrr", notes))
     return out
 
 
@@ -67,31 +102,38 @@ def table2() -> Path:
     ext = read_csv("tables/extensions.csv")
     fb = read_csv("numerics/feedback_comparisons.csv")
     base = [r for r in eq if r["noise"] == "Laplace" and r["cost_law"] == "atoms" and r["accepted"] == "true"]
-    body = [["Panel (a): equilibrium at weak, strong, and collapse strengths (Laplace noise, cost atoms)"]]
-    for rs in ("1.2", "3", "3.6"):
+    header = ["", "$q_H$", "$q_L$", r"$\mathsf{E}$", r"$\mathsf{O}_H$", r"$\mathcal{R}_T$", "Basis"]
+    body = [["Panel A. Equilibrium"]]
+    for rs, name in (("1.2", "Weak incumbent"), ("3", "Strong incumbent"), ("3.6", "Very strong incumbent")):
         r = next(x for x in base if x["experiment"] == "feedback" and x["r"] == rs)
-        body.append([f"feedback, $r={rs}$", r["q_H"], r["q_L"], d6(r["E"]), d6(r["O_H"]), d6(r["R_T"]), esc(r["status"].split(" (")[0])])
-    e = next(x for x in ext if x["noise"] == "Laplace" and x["cost_law"] == "atoms")
-    body.append([r"Theorem 1 margins $(\zeta_L,\zeta_{H0},\zeta_{H1},\zeta_0,\zeta_1)$",
-                 r"\multicolumn{6}{l}{" + ", ".join(sci(e[k]) for k in ("zeta_L", "zeta_H0", "zeta_H1", "zeta_0", "zeta_1")) + "}"])
+        body.append([f"{name} ($r={rs}$)", order(r["q_H"]), order(r["q_L"]), d6(r["E"]), d6(r["O_H"]), d6(r["R_T"]), status_word(r["status"])])
     body.append(["\\midrule"])
-    body.append(["Panel (b): fixed-profile and information controls"])
-    for exp, lab in (("frozen", "frozen full orders"), ("price_hidden", "price hidden"), ("matched_dividend", "matched dividend")):
+    body.append(["Panel B. Information controls"])
+    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden from the challenger"), ("matched_dividend", "Matched dividend")):
         for rs in ("1.2", "3"):
             r = next(x for x in base if x["experiment"] == exp and x["r"] == rs)
-            body.append([f"{lab}, $r={rs}$", r["q_H"], r["q_L"], d6(r["E"]), d6(r["O_H"]), d6(r["R_T"]), esc(r["status"].split(" (")[0])])
+            body.append([f"{lab}, $r={rs}$", order(r["q_H"]), order(r["q_L"]), d6(r["E"]), d6(r["O_H"]), d6(r["R_T"]), status_word(r["status"])])
     body.append(["\\midrule"])
-    body.append(["Panel (c): fixed-strength gains from access to prices ($r=3$)"])
+    body.append(["Panel C. Gains from access to prices at $r=3$"])
     f = next(x for x in fb if x["noise"] == "Laplace" and x["cost_law"] == "atoms" and x["r"] == "3")
-    body.append([r"target proceeds $\mathcal R_T$: feedback / hidden / gain", r"\multicolumn{5}{l}{" + f"{d6(f['R_T_feedback'])} / {d6(f['R_T_hidden'])} / {d6(f['R_T_gain'])}" + "}", esc(f["status"].split(" (")[0])])
-    body.append([r"net acquisition surplus $\mathcal W$: feedback / hidden / gain", r"\multicolumn{5}{l}{" + f"{d6(f['W_feedback'])} / {d6(f['W_hidden'])} / {d6(f['W_gain'])}" + "}", esc(f["status"].split(" (")[0])])
-    cap = (r"Equilibrium outcomes, information controls, and ownership at the benchmark. Panel (a) reports validated equilibria; panel (b) reports the frozen "
-           r"informative profile (a fixed-profile control that is not an equilibrium at $r=1.2$), the reoptimized price-hidden equilibrium, and the level-matching "
-           r"dividend diagnostic; panel (c) reports fixed-strength gains from access to prices. $\mathcal W$ is allocation value net of paid preparation costs, not target revenue "
-           r"(Online Appendix C.1).")
-    tex = tabular(["Experiment", "$q_H$", "$q_L$", r"$\mathsf E$", r"$\mathsf O_H$", r"$\mathcal R_T$", "Status"], body, "lrrrrrl", cap, "tab:equilibrium_controls")
+    body.append([r"Target proceeds $\mathcal{R}_T$, feedback", "", "", "", "", d6(f["R_T_feedback"]), status_word(f["status"])])
+    body.append([r"Target proceeds $\mathcal{R}_T$, price hidden", "", "", "", "", d6(f["R_T_hidden"]), ""])
+    body.append([r"Gain in target proceeds", "", "", "", "", d6(f["R_T_gain"]), ""])
+    body.append([r"Net acquisition surplus $\mathcal{W}$, feedback", "", "", "", "", d6(f["W_feedback"]), status_word(f["status"])])
+    body.append([r"Net acquisition surplus $\mathcal{W}$, price hidden", "", "", "", "", d6(f["W_hidden"]), ""])
+    body.append([r"Gain in net acquisition surplus", "", "", "", "", d6(f["W_gain"]), ""])
+    e = next(x for x in ext if x["noise"] == "Laplace" and x["cost_law"] == "atoms")
+    notes = [
+        r"Benchmark primitives, Laplace noise, cost atoms. $\mathsf{E}$ is total entry, $\mathsf{O}_H$ the probability that a high-value challenger "
+        r"acquires the target, $\mathcal{R}_T$ expected target proceeds. Basis: proved means the outcome is the unique equilibrium in the analytical "
+        r"region; control means a fixed-profile or level-matching calculation that is not an equilibrium claim.",
+        r"Panel B: the frozen profile imposes full orders at both strengths and lets the challenger reoptimize; it is not an equilibrium at $r=1.2$. "
+        r"The matched dividend adds the feedback-minus-hidden difference in proceeds to the hidden-price claim; residuals, orders, and entry are unchanged.",
+        r"Panel C: $\mathcal{W}$ is allocation value net of paid preparation costs, not target revenue. The five strict margins of Proposition 2 at "
+        r"$(r_0,r_1)=(1.2,3)$ are $\zeta_L$, $\zeta_{H0}$, $\zeta_{H1}$, $\zeta_0$, $\zeta_1$ = " + ", ".join(sci(e[k]) for k in MARGIN_KEYS) + ".",
+    ]
     out = TAB / "table2_equilibrium_controls.tex"
-    out.write_text(tex)
+    out.write_text(threeparttable(header, body, "lrrrrrl", notes))
     return out
 
 
@@ -99,60 +141,76 @@ def table3() -> Path:
     ext = read_csv("tables/extensions.csv")
     mod = read_csv("numerics/moderate_values.csv")
     sig = read_csv("numerics/two_signals.csv")
-    body = [["Panel (a): noise law crossed with preparation-cost law (benchmark, $r_0=1.2$, $r_1=3$)"]]
+    header = ["", r"$\mathsf{E}$ weak", r"$\mathsf{E}$ strong", r"$\mathsf{O}_H$ weak", r"$\mathsf{O}_H$ strong", "Min.\\ margin", "Basis"]
+    body = [["Panel A. Noise law and preparation-cost law (benchmark, $r_0=1.2$, $r_1=3$)"]]
     for r in ext:
-        body.append([f"{r['noise']}, {esc(r['cost_law'].replace('_', ' '))}", d6(r["E_weak"]), d6(r["E_strong"]), d6(r["O_H_weak"]), d6(r["O_H_strong"]),
-                     sci(min((r[k] for k in ("zeta_L", "zeta_H0", "zeta_H1", "zeta_0", "zeta_1")), key=lambda v: Decimal(v))), esc(r["status"].split(" (")[0])])
+        cost = "cost atoms" if r["cost_law"] == "atoms" else "uniform cost mixture"
+        body.append([f"{r['noise']} noise, {cost}", d6(r["E_weak"]), d6(r["E_strong"]), d6(r["O_H_weak"]), d6(r["O_H_strong"]),
+                     sci(min((r[k] for k in MARGIN_KEYS), key=lambda v: Decimal(v))), status_word(r["status"])])
     body.append(["\\midrule"])
-    body.append(["Panel (b): moderate acquisition values ($h=2$, $\\ell=1$, $r_0=1.05$, $r_1=1.5$)"])
-    for r in mod:
-        body.append(["moderate values", d6(r["E_weak"]), d6(r["E_strong"]), d6(r["O_H_weak"]), d6(r["O_H_strong"]),
-                     sci(min((r[k] for k in ("zeta_L", "zeta_H0", "zeta_H1", "zeta_0", "zeta_1")), key=lambda v: Decimal(v))), esc(r["status"].split(" (")[0])])
-        body.append([r"Theorem 1 margins $(\zeta_L,\zeta_{H0},\zeta_{H1},\zeta_0,\zeta_1)$",
-                     r"\multicolumn{6}{l}{" + ", ".join(sci(r[k]) for k in ("zeta_L", "zeta_H0", "zeta_H1", "zeta_0", "zeta_1")) + "}"])
+    body.append(["Panel B. Moderate acquisition values ($h=2$, $\\ell=1$, $r_0=1.05$, $r_1=1.5$)"])
+    mrow = mod[0]
+    body.append(["Moderate values", d6(mrow["E_weak"]), d6(mrow["E_strong"]), d6(mrow["O_H_weak"]), d6(mrow["O_H_strong"]),
+                 sci(min((mrow[k] for k in MARGIN_KEYS), key=lambda v: Decimal(v))), status_word(mrow["status"])])
     body.append(["\\midrule"])
-    body.append(["Panel (c): complementary signals ($r_0=1.1$, $r_1=2.3$); rows are accuracy pairs $(a,d)$"])
+    body.append(["Panel C. Complementary signals ($r_0=1.1$, $r_1=2.3$), by accuracy pair $(a,d)$"])
     acc = [r for r in sig if r["accepted"] == "true"]
     pairs = sorted({(r["a"], r["d"]) for r in acc}, key=lambda t: (Decimal(t[0]), Decimal(t[1])))
+    decl = None
     for a, d in pairs:
         w = [r for r in acc if r["a"] == a and r["d"] == d and r["r"] == "1.1"]
         s = [r for r in acc if r["a"] == a and r["d"] == d and r["r"] == "2.3"]
         if len(w) != 1 or len(s) != 1:
-            body.append([f"$({a},{d})$", r"\multicolumn{6}{l}{multiple or no accepted candidates at a node; see numerics/two\_signals.csv}"])
+            body.append([f"$({a},{d})$", "n/a", "n/a", "n/a", "n/a", "n/a", "several candidates"])
             continue
         w, s = w[0], s[0]
-        margin_min = min((w[k] for k in ("low_cost_margin", "private_only_exclusion_margin", "joint_entry_margin", "weak_order_margin", "strong_order_margin")), key=lambda v: Decimal(v))
-        tag = "declared example" if (a, d) == ("0.70", "0.75") else ""
-        body.append([f"$({a},{d})$ {tag}".strip(), d6(w["E"]), d6(s["E"]), d6(w["O_H"]), d6(s["O_H"]), sci(margin_min),
-                     "Theorem R2 region" if s["status"].startswith("analytical") else "outside theorem region (validated candidates)"])
-    body.append([r"public and joint posterior bounds at the declared example: $[\mu_-,\mu_+]$, $\phi_-(\mu_-)$, $\phi_+(\mu_+)$",
-                 r"\multicolumn{6}{l}{" + ", ".join(d6(next(r for r in acc if r["a"] == "0.70" and r["d"] == "0.75")[k]) for k in ("mu_lower", "mu_upper", "phi_minus_mu_lower", "phi_plus_mu_upper")) + "}"])
-    cap = (r"Extensions and information complementarities. Entry $\mathsf E$ and high-quality ownership $\mathsf O_H$ at the weak and strong strengths, with the minimum of the "
-           r"five strict theorem margins. Panel (a): Laplace or logistic noise crossed with cost atoms or the uniform cost mixture ($\varepsilon_C=0.1$). Panel (b): the moderate-value "
-           r"declaration. Panel (c): complementary-signal economies; each accuracy pair is a separate equilibrium computation, and the theorem region marks pairs for which every "
-           r"strict margin of (27) is positive (Online Appendix C.1, C.3, C.4).")
-    tex = tabular(["Economy", r"$\mathsf E$ weak", r"$\mathsf E$ strong", r"$\mathsf O_H$ weak", r"$\mathsf O_H$ strong", "min margin", "Status"], body, "lrrrrrl", cap, "tab:extensions")
+        if (a, d) == ("0.70", "0.75"):
+            decl = w
+        margin_min = min((w[k] for k in SIGNAL_MARGIN_KEYS), key=lambda v: Decimal(v))
+        tag = ", declared example" if (a, d) == ("0.70", "0.75") else ""
+        basis = "proved" if s["status"].startswith("analytical") else "outside region"
+        body.append([f"$({a},{d})${tag}", d6(w["E"]), d6(s["E"]), d6(w["O_H"]), d6(s["O_H"]), sci(margin_min), basis])
+    notes = [
+        r"Each row is a separate equilibrium computation at its own primitives; the minimum margin is the smallest of the five strict inequalities "
+        r"that the corresponding result requires, so a positive value places the row inside the analytical region.",
+        r"Panel A margins $(\zeta_L,\zeta_{H0},\zeta_{H1},\zeta_0,\zeta_1)$ with cost atoms: " + ", ".join(sci(next(x for x in ext if x["cost_law"] == "atoms")[k]) for k in MARGIN_KEYS)
+        + r"; with the uniform cost mixture ($\varepsilon_C=0.1$): " + ", ".join(sci(next(x for x in ext if x["cost_law"] != "atoms")[k]) for k in MARGIN_KEYS) + ".",
+        r"Panel B margins: " + ", ".join(sci(mrow[k]) for k in MARGIN_KEYS) + ".",
+    ]
+    if decl is not None:
+        notes.append(r"Panel C, declared example: public posterior bounds $[\mu_-,\mu_+]=[" + d6(decl["mu_lower"]) + ", " + d6(decl["mu_upper"])
+                     + r"]$, joint posterior bounds $\phi_-(\mu_-)=" + d6(decl["phi_minus_mu_lower"]) + r"$ and $\phi_+(\mu_+)=" + d6(decl["phi_plus_mu_upper"])
+                     + r"$; margins " + ", ".join(sci(decl[k]) for k in SIGNAL_MARGIN_KEYS)
+                     + r". Basis \emph{outside region}: validated equilibria whose margins are not all positive; the strong-economy "
+                     r"outcome is still full orders, and weak-strength entry exceeds $\rho$ when the buyer's favorable private signal alone justifies expensive preparation.")
     out = TAB / "table3_extensions.tex"
-    out.write_text(tex)
+    out.write_text(threeparttable(header, body, "lrrrrrl", notes, size=r"\footnotesize"))
     return out
 
 
 def table4() -> Path:
     comp = read_csv("tables/reserve_comparisons.csv")
     rng = read_csv("numerics/reserve_ranges.csv") if (ROOT / "numerics/reserve_ranges.csv").exists() else []
-    body = [["Panel (a): binary values, original and alternative reserves"]]
+    header = ["", "$q_H$", "$q_L$", r"$\mathsf{E}$", r"$\mathcal{R}_T$", "Margin", "Basis"]
+    body = [["Panel A. Binary values"]]
     for r in comp:
         if r["value_law"] == "binary":
-            body.append([f"$r={r['r']}$, $p={r['p']}$", r["q_H"], r["q_L"], d6(r["E"]), d6(r["R_T"]), sci(r["trading_margin"]), esc(r["status"].split(" (")[0]) + ("" if r["accepted"] == "true" else " (not accepted)")])
+            body.append([f"$r={r['r']}$, reserve $p={r['p']}$", order(r["q_H"]), order(r["q_L"]), d6(r["E"]), d6(r["R_T"]), sci(r["trading_margin"]),
+                         status_word(r["status"]) + ("" if r["accepted"] == "true" else " (not accepted)")])
     body.append(["\\midrule"])
-    body.append([r"Panel (b): atomless values with class information ($\varepsilon_V=0.05$)"])
+    body.append([r"Panel B. Atomless values with class information ($\varepsilon_V=0.05$)"])
     for r in comp:
         if r["value_law"] == "uniform_classes":
-            body.append([f"$r={r['r']}$, $p={r['p']}$", r["q_H"], r["q_L"], d6(r["E"]), d6(r["R_T"]), sci(r["trading_margin"]), esc(r["status"].split(" (")[0]) + ("" if r["accepted"] == "true" else " (not accepted)")])
-    body.append(["\\midrule"])
-    body.append(["Panel (c): exploratory reserve sweep, ranges across continuations found"])
+            body.append([f"$r={r['r']}$, reserve $p={r['p']}$", order(r["q_H"]), order(r["q_L"]), d6(r["E"]), d6(r["R_T"]), sci(r["trading_margin"]),
+                         status_word(r["status"]) + ("" if r["accepted"] == "true" else " (not accepted)")])
+    notes = [
+        r"Margin: the strict bound supporting the stated continuation, $k-\Delta_T$ for no trade and $(1-1/b)\,e(m)\,m\,\Delta_T-k$ for full orders. "
+        r"Basis: proved means the continuation is the unique equilibrium under that bound."]
     if rng:
-        for law in ("binary", "uniform_classes"):
+        body.append(["\\midrule"])
+        body.append(["Panel C. Exploratory reserve sweep, highest revenue among continuations found"])
+        sweep_notes = []
+        for law, lawname in (("binary", "Binary values"), ("uniform_classes", "Class values")):
             for rs in ("1.2", "3"):
                 sub = [x for x in rng if x["value_law"] == law and x["r"] == rs]
                 if not sub:
@@ -161,19 +219,14 @@ def table4() -> Path:
                 best = max(found, key=lambda x: Decimal(x["R_T_max_found"])) if found else None
                 n_unres = sum(1 for x in sub if x["search_unresolved"] == "true")
                 n_multi = sum(1 for x in sub if int(x["accepted_continuations_found"]) >= 2)
-                body.append([f"{esc(law.replace('_', ' '))}, $r={rs}$: {len(sub)} reserves", r"\multicolumn{6}{l}{"
-                             + (f"highest found revenue {d6(best['R_T_max_found'])} at $p={best['p']}$, entry there {d6(best['E_min_found'])}--{d6(best['E_max_found'])}" if best else "no accepted continuation")
-                             + "}"])
-                body.append(["", r"\multicolumn{6}{l}{" + f"{n_multi} reserves with several continuations found; {n_unres} unresolved reserves; envelope not certified" + "}"])
-    else:
-        body.append([r"\multicolumn{7}{l}{sweep not available}"])
-    cap = (r"Sale terms and discovery. Panels (a) and (b) compare the original reserve with the declared alternative at each strength under binary values and under atomless "
-           r"class values with class-only investor information; the trading margin is the strict bound supporting the stated continuation. Panel (c) summarizes the exploratory "
-           r"reserve sweep as ranges across continuations found; a highest found revenue is not a global optimum, and an unresolved reserve is not an empty equilibrium set "
-           r"(Online Appendix C.6).")
-    tex = tabular(["Economy", "$q_H$", "$q_L$", r"$\mathsf E$", r"$\mathcal R_T$", "trading margin", "Status"], body, "lrrrrrl", cap, "tab:reserve_comparisons")
+                if best:
+                    body.append([f"{lawname}, $r={rs}$, reserve $p={best['p']}$", "", "", d6(best["E_max_found"]), d6(best["R_T_max_found"]), "", "illustration"])
+                sweep_notes.append(f"{lawname.lower()} at $r={rs}$: {len(sub)} reserves, {n_multi} with several continuations found, {n_unres} unresolved")
+        notes.append(r"Panel C reports, for each economy, the reserve with the highest revenue among the continuations found and the entry there. "
+                     r"These are ranges across continuations found, not a global optimum, and an unresolved reserve is not an empty equilibrium set. "
+                     r"Sweep coverage: " + "; ".join(sweep_notes) + ". The envelope is not certified (Online Appendix C.6).")
     out = TAB / "table4_reserve_comparisons.tex"
-    out.write_text(tex)
+    out.write_text(threeparttable(header, body, "lrrrrrl", notes))
     return out
 
 

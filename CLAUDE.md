@@ -12,8 +12,12 @@ built), and the figure and table layer (`figures/`, `tables/`, `figures_data/`, 
 - `paper/quantity_manifest.csv` defines every `[[name]]` placeholder in `paper/main.md`:
   definition, exercise, source file, row selector, display format. Rows with `input_value`
   are declarations; every other row is filled only from validated output.
-- `paper/main.md` prose is the author's. The execution session fills placeholders into a
-  generated copy and does not edit the prose.
+- `paper/main.md` is the manuscript source. On 2026-09-05 the author requested and approved a
+  full rewrite of its prose (single-author voice, finance-journal structure, three numbered
+  propositions), so prose edits go to `paper/main.md` directly when the author asks for them;
+  the numerical layer still fills placeholders into generated copies (`paper/*_filled.md`).
+  Figure and table positions are marked by `<!-- FIGURE N: path -->` or `<!-- TABLE N: path -->`
+  followed by a `> **Figure N.** caption` blockquote; captions are the author's text.
 
 ## Conventions (from Online Appendix E.3 and E.4)
 

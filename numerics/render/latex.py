@@ -1,8 +1,15 @@
 """LaTeX conversion of the filled manuscript and online appendix (deliverable 5).
 
-The filled Markdown copies are generated files; the figure/table placeholder blockquotes in them
-are replaced by LaTeX float environments that include the rendered files. The author's prose is
-untouched. Compilation uses pandoc (with citeproc and references.bib) and latexmk.
+The filled Markdown copies are generated files. Figure and table positions are marked in the
+manuscript by
+
+    <!-- FIGURE 1: figures/equilibrium_correspondence.pdf -->
+    > **Figure 1.** Caption text, possibly over several blockquote lines.
+
+and likewise `<!-- TABLE 2: tables/table2_equilibrium_controls.tex -->` with a `> **Table 2.**`
+caption. The caption is the author's text and is converted with pandoc before insertion. The
+older instruction blockquotes (`> **Figure N placeholder — ...**`) still work as a fallback with
+the default captions below. Compilation uses pandoc (citeproc, references.bib) and latexmk.
 """
 from __future__ import annotations
 
@@ -15,57 +22,125 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from numerics.io import ROOT  # noqa: E402
 
-FIGS = {
-    "Figure 1": ("figures/equilibrium_correspondence.pdf", "fig:correspondence",
-                 r"The equilibrium correspondence at the benchmark primitives. Panel (a): total entry $\mathsf E$ against incumbent strength $r$ for every accepted branch: pooling (no trade), full orders, the asymmetric family $(q_H,q_L)=(1,-v)$ by numerical continuation, and any other pure or mixed profiles found. Shaded regions are analytically established uniqueness regions (no trade below $\mathfrak r(k)$; full orders above $r_U$). Dashed verticals mark $r_N$ (exact pooling-existence boundary), $r_U$ (sufficient full-order uniqueness boundary), and $r_C$ (expensive-entry feasibility boundary). Certified points carry interval enclosures. Lines are broken at unresolved nodes or branch changes; a missing branch is not a uniqueness label. Panel (b): the unfavorable-state order magnitude $v$ along asymmetric candidates, with full orders as the boundary."),
-    "Figure 2": ("figures/two_returns.pdf", "fig:two_returns",
-                 r"Incumbent strength raises the sensitivity of target proceeds while reducing challenger acquisition profit at every displayed belief. Panel (a): $\Delta_T(r)$. Panel (b): $B_r(\mu)$ for $\mu\in\{m,1/2,M\}$. All other primitives at the benchmark specification; values per target share."),
-    "Figure 3": ("figures/posterior_tail_entry.pdf", "fig:posterior_tail",
-                 r"The upper tail of price information under full orders at the strong benchmark strength and scale $b=2$. Panel (a): $\Pr(\mu_X\ge\tau)$ against the threshold distance $M-\tau$ for Laplace and logistic noise. Panel (b): implied total entry $\rho+(1-\rho)\Pr(\mu_X\ge\tau)$ and the conditional favorable-flow probabilities $\alpha_H,\alpha_L$. At $M-\tau=0$ the Laplace plateau enters under the tie rule (dot) while the logistic mass is zero (cross). These are fixed-profile information diagnostics; the accompanying data file records for each threshold whether the equilibrium interpretation with the implied high cost is validated."),
-    "Figure 4": ("figures/bargaining_weight.pdf", "fig:bargaining",
-                 r"Bargaining and the division of information-sensitive returns in the verifiable-value institution with zero reserve, benchmark $h=10$, $\ell=1$, and uniform incumbents with $r=1.2$ (weak) and $r=3$ (strong). Panel (a): $\Delta_\eta$ against the seller weight $\eta$; the strength ordering reverses at $\eta=1/2$. Panel (b): challenger profits $G_{H,\eta}$ and $G_{L,\eta}$ (log scale). These are acquisition-stage comparisons, not equilibrium entry predictions."),
+FALLBACK_FIGS = {
+    1: ("figures/equilibrium_correspondence.pdf",
+        r"The equilibrium correspondence at the benchmark primitives. Panel (a): total entry $\mathsf{E}$ against incumbent strength $r$ for every accepted branch. Shaded regions are analytically established uniqueness regions; the gray band marks strengths at which several equilibria were found. Dotted verticals mark $r_N$, $r_U$, and $r_C$. Certified points carry interval enclosures. Panel (b): order magnitudes along the informative branches, with full orders as the boundary."),
+    2: ("figures/two_returns.pdf",
+        r"Incumbent strength raises the sensitivity of target proceeds while reducing challenger acquisition profit at every displayed belief. Panel (a): $\Delta_T(r)$. Panel (b): $B_r(\mu)$ for $\mu\in\{m,1/2,M\}$. Benchmark primitives; values per target share."),
+    3: ("figures/posterior_tail_entry.pdf",
+        r"The upper tail of price information under full orders at the strong benchmark strength and scale $b=2$. Panel (a): $\Pr(\mu_X\ge\tau)$ against the threshold distance $M-\tau$. Panel (b): implied total entry. At $M-\tau=0$ the Laplace plateau enters under the tie rule (filled dot) while the logistic mass is zero (open circle)."),
+    4: ("figures/bargaining_weight.pdf",
+        r"Bargaining and the division of information-sensitive returns in the verifiable-value institution with zero reserve, benchmark $h=10$, $\ell=1$, and uniform incumbents with $r=1.2$ (weak) and $r=3$ (strong). Panel (a): $\Delta_\eta$ against the seller weight $\eta$. Panel (b): challenger profits $G_{H,\eta}$ and $G_{L,\eta}$ on a log scale."),
 }
-TABS = {"Table 1": "tables/table1_auction_primitives.tex", "Table 2": "tables/table2_equilibrium_controls.tex",
-        "Table 3": "tables/table3_extensions.tex", "Table 4": "tables/table4_reserve_comparisons.tex"}
+FALLBACK_TABS = {
+    1: ("tables/table1_auction_primitives.tex", "Auction primitives at the benchmark specification."),
+    2: ("tables/table2_equilibrium_controls.tex", "Equilibrium outcomes, information controls, and gains from access to prices."),
+    3: ("tables/table3_extensions.tex", "Extensions and information complementarities."),
+    4: ("tables/table4_reserve_comparisons.tex", "Sale terms and discovery."),
+}
 
-PLACEHOLDER_RE = re.compile(r"^> \*\*(Figure \d|Table \d) placeholder — .*?$", re.M)
-HEADER = r"""---
-documentclass: article
-classoption: 11pt
-geometry: margin=1in
-header-includes:
-  - \usepackage{amsmath,amssymb,amsthm}
-  - \usepackage{booktabs}
-  - \usepackage{graphicx}
-  - \usepackage{float}
-  - \usepackage{hyperref}
-  - \allowdisplaybreaks
----
-"""
+NEW_MARKER = re.compile(r"^<!-- (FIGURE|TABLE) (\d+): (\S+) -->[ \t]*\n((?:>.*(?:\n|$))+)", re.M)
+OLD_MARKER = re.compile(r"^> \*\*(Figure|Table) (\d) placeholder — .*?$", re.M)
+CAPTION_PREFIX = re.compile(r"^\*\*(Figure|Table) \d+\.\*\*\s*")
+
+HEADER_META = {
+    "documentclass": "article",
+    "fontsize": "12pt",
+    "geometry": "margin=1in",
+    "linestretch": "2",
+    "fontfamily": "newtxtext",
+    "colorlinks": "true",
+    "linkcolor": "paperlink",
+    "citecolor": "paperlink",
+    "urlcolor": "paperlink",
+}
+HEADER_INCLUDES = [
+    r"\usepackage{amsmath,amssymb,amsthm}",
+    r"\usepackage{newtxmath}",
+    r"\usepackage{booktabs}",
+    r"\usepackage{threeparttable}",
+    r"\usepackage{graphicx}",
+    r"\usepackage{float}",
+    r"\usepackage{setspace}",
+    r"\definecolor{paperlink}{RGB}{31,59,115}",
+    r"\allowdisplaybreaks",
+    r"\setlength{\parskip}{0pt}",
+    r"\setlength{\parindent}{1.5em}",
+]
 
 
-def convert(md_path: str, tex_path: str, pdf: bool) -> bool:
+def md_to_latex_fragment(md: str) -> str:
+    """Convert a caption written in Markdown (with $math$) to a LaTeX fragment."""
+    r = subprocess.run(["pandoc", "-f", "markdown+tex_math_dollars", "-t", "latex"], input=md, capture_output=True, text=True, check=True)
+    return r.stdout.strip()
+
+
+def figure_env(num: int, path: str, caption_tex: str) -> str:
+    return ("```{=latex}\n" + f"\\setcounter{{figure}}{{{num - 1}}}\n" + r"\begin{figure}[tbp]\centering" + "\n"
+            + f"\\includegraphics[width=\\linewidth]{{{path}}}\n" + f"\\caption{{{caption_tex}}}\\label{{fig:{num}}}\n"
+            + r"\end{figure}" + "\n```")
+
+
+def table_env(num: int, path: str, caption_tex: str) -> str:
+    return ("```{=latex}\n" + f"\\setcounter{{table}}{{{num - 1}}}\n" + r"\begin{table}[tbp]\begingroup\singlespacing\small\centering" + "\n"
+            + f"\\caption{{{caption_tex}}}\\label{{tab:{num}}}\n" + f"\\input{{{path}}}\n" + r"\endgroup\end{table}" + "\n```")
+
+
+def replace_markers(text: str) -> str:
+    def new_repl(m: re.Match) -> str:
+        kind, num, path, block = m.group(1), int(m.group(2)), m.group(3), m.group(4)
+        cap = " ".join(line.lstrip("> ").rstrip() for line in block.strip().splitlines())
+        cap = CAPTION_PREFIX.sub("", cap).strip()
+        cap_tex = md_to_latex_fragment(cap) if cap else ""
+        return (figure_env(num, path, cap_tex) if kind == "FIGURE" else table_env(num, path, cap_tex)) + "\n"
+
+    def old_repl(m: re.Match) -> str:
+        kind, num = m.group(1), int(m.group(2))
+        if kind == "Figure":
+            path, cap = FALLBACK_FIGS[num]
+            return figure_env(num, path, cap)
+        path, cap = FALLBACK_TABS[num]
+        return table_env(num, path, cap)
+
+    text = NEW_MARKER.sub(new_repl, text)
+    return OLD_MARKER.sub(old_repl, text)
+
+
+APPENDIX_INCLUDES = [
+    # registry tables carry long code identifiers: let code spans break and set tables small
+    r"\usepackage{seqsplit}",
+    r"\usepackage{etoolbox}",
+    r"\renewcommand{\texttt}[1]{{\ttfamily\seqsplit{#1}}}",
+    r"\AtBeginEnvironment{longtable}{\footnotesize}",
+]
+
+
+def build_front_matter(existing: str, overrides: dict | None = None, extra_includes: list[str] | None = None) -> str:
+    lines = ["---"]
+    meta = {**HEADER_META, **(overrides or {})}
+    for k, v in meta.items():
+        lines.append(f"{k}: {v}")
+    lines.append("header-includes:")
+    for inc in HEADER_INCLUDES + (extra_includes or []):
+        lines.append(f"  - '{inc}'" if "'" not in inc else f'  - "{inc}"')
+    if existing.strip():
+        lines.append(existing.strip())
+    lines.append("---")
+    return "\n".join(lines) + "\n"
+
+
+def convert(md_path: str, tex_path: str, pdf: bool, meta_overrides: dict | None = None,
+            extra_includes: list[str] | None = None) -> bool:
     text = (ROOT / md_path).read_text(encoding="utf-8")
-
-    def repl(m: re.Match) -> str:
-        key = m.group(1)
-        num = int(key.split()[1])
-        if key in FIGS:
-            f, lab, cap = FIGS[key]
-            return ("```{=latex}\n\\setcounter{figure}{" + str(num - 1) + "}\\begin{figure}[H]\\centering\\includegraphics[width=\\linewidth]{" + f + "}\n"
-                    f"\\caption{{{cap}}}\\label{{{lab}}}\\end{{figure}}\n```")
-        return "```{=latex}\n\\setcounter{table}{" + str(num - 1) + "}\\input{" + TABS[key] + "}\n```"
-
-    text = PLACEHOLDER_RE.sub(repl, text)
+    text = replace_markers(text)
     # cross-document links (main <-> online appendix) become plain text in the compiled PDFs
     text = re.sub(r"\[([^\]]+)\]\((?:online_appendix|main)\.md#[^)]+\)", r"\1", text)
-    # YAML front matter: keep the author's (bibliography) and add LaTeX packages
+    existing = ""
     if text.startswith("---"):
         end = text.index("\n---", 3)
-        front = text[4:end]
-        text = HEADER.rstrip("-\n") + "\n" + front + "\n---" + text[end + 4:]
-    else:
-        text = HEADER + text
+        existing = text[4:end]
+        text = text[end + 4:]
+    text = build_front_matter(existing, meta_overrides, extra_includes) + text
     src = ROOT / (tex_path + ".md")
     src.write_text(text, encoding="utf-8")
     cmd = ["pandoc", str(src), "-o", str(ROOT / tex_path), "--standalone", "--citeproc", "--bibliography", str(ROOT / "references.bib"),
@@ -76,7 +151,7 @@ def convert(md_path: str, tex_path: str, pdf: bool) -> bool:
         return False
     if pdf:
         r = subprocess.run(["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=paper/build", tex_path],
-                           cwd=ROOT, capture_output=True, text=True)
+                           cwd=ROOT, capture_output=True, text=True, errors="replace")
         if r.returncode != 0:
             print(r.stdout[-3000:])
             return False
@@ -87,7 +162,9 @@ def convert(md_path: str, tex_path: str, pdf: bool) -> bool:
 
 def main() -> int:
     ok = convert("paper/main_filled.md", "paper/main_filled.tex", pdf=True)
-    ok &= convert("paper/online_appendix_filled.md", "paper/online_appendix_filled.tex", pdf=True)
+    # the online appendix is proof-heavy; 11pt and near-single spacing keep long displays inside the text width
+    ok &= convert("paper/online_appendix_filled.md", "paper/online_appendix_filled.tex", pdf=True,
+                  meta_overrides={"fontsize": "11pt", "linestretch": "1.15"}, extra_includes=APPENDIX_INCLUDES)
     print("LaTeX build", "ok" if ok else "FAILED")
     return 0 if ok else 1
 

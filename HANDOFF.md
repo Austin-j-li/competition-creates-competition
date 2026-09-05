@@ -101,12 +101,25 @@ response from about $r=1.70$ and unique from $r_U$; expensive entry is infeasibl
 $r_C$. A second fixed point at $r=1.55$ ($v\approx0.21$, cutoff on the region boundary) was
 seen and should be classified, not discarded.
 
+## Manuscript rewrite (2026-09-05)
+
+After the numerical layer was delivered, the author asked for the manuscript to be rewritten in a
+single-author voice with the structure and prose style of a finance journal paper (reference:
+Gorbenko's JF 2024 "Auctions with Endogenous Initiation" and his 2025 handbook chapter). The main
+text keeps three numbered propositions (two returns to information; competition creates
+competition; coexisting informative equilibria) and states all other results as Propositions A.1
+to A.9 in Appendix A. Evidentiary status is carried in prose, not in headings. Every `[[name]]`
+placeholder is unchanged and the numerical contract in Online Appendix C is untouched apart from
+pronouns. Figures and tables are placed by `<!-- FIGURE N: path -->` / `<!-- TABLE N: path -->`
+markers followed by a caption blockquote.
+
 ## Rules for the session
 
 - Numbers in the paper come only from validated registry rows. No hand-typed values.
 - Report failures as failures; open nodes stay open; a branch is never selected for its shape.
-- The prose in `paper/main.md` is not edited. Structural fixes (a broken cross-reference, a
-  placeholder key mismatch) are reported to the author, not silently patched.
+- Prose in `paper/main.md` changes only at the author's request (the 2026-09-05 rewrite was one).
+  Structural fixes (a broken cross-reference, a placeholder key mismatch) are reported to the
+  author, not silently patched.
 - Commit after each exercise. Never commit `.venv` or intermediate PDFs.
 - No tool internals in project documents.
 
