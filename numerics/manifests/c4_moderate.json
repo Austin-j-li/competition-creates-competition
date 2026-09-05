@@ -1,0 +1,135 @@
+{
+ "exercise": "c4_moderate",
+ "timestamp_utc": "2026-09-05T13:54:28.634048+00:00",
+ "inputs": {
+  "moderate": {
+   "h": "2",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "0.3",
+   "c_H": "0.89",
+   "b": "2",
+   "k": "0.002",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "moderate"
+  },
+  "strengths": {
+   "r_weak": "1.05",
+   "r_strong": "1.5"
+  },
+  "ratios": [
+   "1.05",
+   "1.10",
+   "1.25",
+   "1.50",
+   "2.00"
+  ],
+  "j": "1..20"
+ },
+ "method": "Moderate declaration solved with the C.1 machinery (independent auction integration, analytical margins, validated pooling/full-order candidates and controls); nonemptiness sequence per A.6 with OA.69 choices in 50-digit arithmetic.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "outputs": {
+  "numerics/moderate_values.csv": "c10985494a45482238df995af53bf21f84346515f8d5e121189675868ee84be8",
+  "numerics/moderate_controls.csv": "0413b36b64c84c4c91f3e5720bc2806774d201fe6a3f3413c0fb6e823702ac18",
+  "numerics/nonemptiness_construction.csv": "b9434eef916556a7df6d690f732cf3ee6f5fc8ab05e89e32890959b14122778a"
+ },
+ "checks": {
+  "auction_integration_r_weak": {
+   "max_abs_diff": 1.1102230246251565e-16,
+   "pass": true
+  },
+  "auction_integration_r_strong": {
+   "max_abs_diff": 2.220446049250313e-16,
+   "pass": true
+  },
+  "theorem_margins": {
+   "zeta_L": 0.1965296362558288,
+   "zeta_H0": 0.0334523809523809,
+   "zeta_H1": 0.030137030410837706,
+   "zeta_0": 0.0008095238095237028,
+   "zeta_1": 0.0008014731392707837,
+   "all_positive": true,
+   "pass": true
+  },
+  "feedback_pooling_r_weak": {
+   "accepted": true,
+   "breaches": [],
+   "eps_q": 0.0
+  },
+  "full_order_closed_form_r_weak": {
+   "diff": 2.220446049250313e-16,
+   "pass": true
+  },
+  "feedback_full_orders_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.701e-03"
+   ],
+   "eps_q": 0.001700575321654619
+  },
+  "feedback_pooling_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=8.417e-03"
+   ],
+   "eps_q": 0.008416666666666671
+  },
+  "full_order_closed_form_r_strong": {
+   "diff": 2.220446049250313e-16,
+   "pass": true
+  },
+  "feedback_full_orders_r_strong": {
+   "accepted": true,
+   "breaches": [],
+   "eps_q": 0.0
+  },
+  "nonemptiness_first_feasible_j_ratio_1.05": {
+   "first_feasible_j": 3,
+   "pass": true
+  },
+  "nonemptiness_first_feasible_j_ratio_1.10": {
+   "first_feasible_j": 3,
+   "pass": true
+  },
+  "nonemptiness_first_feasible_j_ratio_1.25": {
+   "first_feasible_j": 3,
+   "pass": true
+  },
+  "nonemptiness_first_feasible_j_ratio_1.50": {
+   "first_feasible_j": 3,
+   "pass": true
+  },
+  "nonemptiness_first_feasible_j_ratio_2.00": {
+   "first_feasible_j": 3,
+   "pass": true
+  }
+ },
+ "passed": true,
+ "notes": []
+}

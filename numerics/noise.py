@@ -10,8 +10,9 @@ def pdf(noise: Noise, z: np.ndarray, b: float) -> np.ndarray:
     z = np.asarray(z, dtype=float)
     if noise == Noise.LAPLACE:
         return np.exp(-np.abs(z) / b) / (2 * b)
-    u = z / (2 * b)
-    return 1.0 / (4 * b * np.cosh(u) ** 2)
+    u = np.abs(z) / b
+    e = np.exp(-u)
+    return e / (b * (1.0 + e) ** 2)
 
 
 def dpdf(noise: Noise, z: np.ndarray, b: float) -> np.ndarray:

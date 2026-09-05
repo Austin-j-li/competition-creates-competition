@@ -154,6 +154,9 @@ def resolve_row(man: dict, tables: dict) -> dict:
                 v = strengths.get(v, v)
                 ok &= Decimal(r["r"]) == Decimal(v) if r.get("r") not in (None, "", "n/a") else False
                 continue
+            if k == "tau" and v == "benchmark strong threshold":
+                ok &= r.get("tau_label") == "benchmark"
+                continue
             if k in ("epsilon_V", "p") and k in r:
                 ok &= Decimal(r[k]) == Decimal(v)
                 continue
