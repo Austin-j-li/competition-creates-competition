@@ -1,0 +1,973 @@
+{
+ "exercise": "c1_baseline",
+ "timestamp_utc": "2026-09-05T13:38:56.142055+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "strengths": {
+   "r_weak": "1.2",
+   "r_strong": "3",
+   "r_collapse": "3.6"
+  },
+  "extra": {
+   "cost_halfwidth": "0.1",
+   "value_band_halfwidth": "0.05",
+   "binary_alternative_reserve": "1.01",
+   "atomless_alternative_reserve": "1.1"
+  },
+  "economies": [
+   "Laplace/atoms",
+   "Laplace/uniform_mixture",
+   "logistic/atoms",
+   "logistic/uniform_mixture"
+  ]
+ },
+ "method": "Closed-form auction payoffs checked against direct integration of OA.50; candidate schedules (pooling, full orders) validated by flow- and cost-based entry integration, pointwise price identity, entry optimality, posterior inversion, and global order-deviation scans on the initial and refined grids with segment-wise Gauss-Legendre quadrature and analytic Laplace tails (numeric logistic tails with recorded bound).",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "outputs": {
+  "tables/auction_primitives.csv": "6eb1a8788ccb4218dc45c9e93e266edbf0c1afdd1cb00a18f2fb5a4e6d3d9bd5",
+  "tables/equilibrium_controls.csv": "9a3ea33954f755c1a4a2641474a0a77ed399e7b77fa3d303e8a796dcfaa3c906",
+  "tables/extensions.csv": "2114fceb1586d56948167389839abfb45b6abbf233ffd4c167f8a5aad7936e93",
+  "numerics/baseline_deviations.csv": "d9c47e7b1c7c978ec93f81fe0f23a8eaf42870e2fe6bb2806475e87b1deb7ab7",
+  "numerics/feedback_comparisons.csv": "7401b0272158b79991661af0471bcc387c9f5ad36dc17cd1df8d9826f76fb8cf",
+  "figures_data/two_returns.csv": "2ec13c9f4e6d7d1898022e9b4fcfc212aa3d528dfd25e7744d538b7c1919d1cc"
+ },
+ "checks": {
+  "auction_integration_base_r_weak": {
+   "max_abs_diff": 1.7763568394002505e-15,
+   "formula_diff": 0.0,
+   "Delta_T_diff": 5.204170427930421e-17,
+   "quad_err": 1.0320448199744685e-13,
+   "pass": true
+  },
+  "auction_integration_base_r_strong": {
+   "max_abs_diff": 0.0,
+   "formula_diff": 0.0,
+   "Delta_T_diff": 1.1102230246251565e-16,
+   "quad_err": 9.390636416621116e-14,
+   "pass": true
+  },
+  "auction_integration_base_r_collapse": {
+   "max_abs_diff": 2.220446049250313e-16,
+   "formula_diff": 0.0,
+   "Delta_T_diff": 0.0,
+   "quad_err": 9.06527939134902e-14,
+   "pass": true
+  },
+  "auction_integration_moderate_r_weak": {
+   "max_abs_diff": 1.1102230246251565e-16,
+   "formula_diff": 0.0,
+   "Delta_T_diff": 1.0473392986209973e-16,
+   "quad_err": 1.505409553628635e-14,
+   "pass": true
+  },
+  "auction_integration_moderate_r_strong": {
+   "max_abs_diff": 2.220446049250313e-16,
+   "formula_diff": 2.220446049250313e-16,
+   "Delta_T_diff": 4.163336342344337e-17,
+   "quad_err": 1.295260195396016e-14,
+   "pass": true
+  },
+  "auction_integration_signal_r_weak": {
+   "max_abs_diff": 5.551115123125783e-17,
+   "formula_diff": 0.0,
+   "Delta_T_diff": 3.382710778154774e-17,
+   "quad_err": 1.036544587536396e-13,
+   "pass": true
+  },
+  "auction_integration_signal_r_strong": {
+   "max_abs_diff": 5.551115123125783e-17,
+   "formula_diff": 1.7763568394002505e-15,
+   "Delta_T_diff": 5.551115123125783e-17,
+   "quad_err": 9.765135560072573e-14,
+   "pass": true
+  },
+  "feedback_pooling_Laplace_atoms_r_weak": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "pooling_coefficient": -0.017916666666666674
+   }
+  },
+  "full_order_closed_form_Laplace_atoms_r_weak": {
+   "max_abs_diff": 3.3306690738754696e-16,
+   "pass": true,
+   "x_star_formula": 0.5456117398514061,
+   "x_star_root": 0.5456117398514061
+  },
+  "feedback_full_orders_Laplace_atoms_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.619e-02"
+   ],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.01619177794332649,
+   "epsilon_q_refined": 0.01619177794332649,
+   "J": {
+    "J_H": 0.0038082220566735105,
+    "J_L": 0.0038082220566735105,
+    "J_gap": 0.0,
+    "J_margin": -0.018095888971663244,
+    "dU_L_at_1": -0.01753559434380909,
+    "dU_H_at_1": -0.015854710460246627
+   }
+  },
+  "frozen_Laplace_atoms_r_weak": {
+   "accepted": true,
+   "investor_deviation_gain": 0.01619177794332649,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_atoms_r_weak": {
+   "accepted": true,
+   "breaches": []
+  },
+  "hidden_full_orders_Laplace_atoms_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.827e-02"
+   ]
+  },
+  "matched_dividend_Laplace_atoms_r_weak": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 1.6653345369377348e-16
+  },
+  "feedback_comparison_Laplace_atoms_r_weak": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "feedback_pooling_Laplace_atoms_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.06333333333333334,
+   "epsilon_q_refined": 0.06333333333333334,
+   "J": {
+    "pooling_coefficient": 0.06333333333333334
+   }
+  },
+  "full_order_closed_form_Laplace_atoms_r_strong": {
+   "max_abs_diff": 4.440892098500626e-16,
+   "pass": true,
+   "x_star_formula": 0.8712224464724486,
+   "x_star_root": 0.8712224464724482
+  },
+  "feedback_full_orders_Laplace_atoms_r_strong": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 2.220446049250313e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.1407312272830394,
+    "J_L": 0.1407312272830394,
+    "J_gap": 0.0,
+    "J_margin": 0.0503656136415197,
+    "dU_L_at_1": 0.07277739875568597,
+    "dU_H_at_1": 0.14001275409818476
+   }
+  },
+  "frozen_Laplace_atoms_r_strong": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_atoms_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ]
+  },
+  "hidden_full_orders_Laplace_atoms_r_strong": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_Laplace_atoms_r_strong": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 2.220446049250313e-16
+  },
+  "feedback_comparison_Laplace_atoms_r_strong": {
+   "accepted": true,
+   "welfare_identity_error": 6.245004513516506e-16,
+   "revenue_identity_error": 1.1102230246251565e-16
+  },
+  "feedback_pooling_Laplace_atoms_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.09736111111111112,
+   "epsilon_q_refined": 0.09736111111111112,
+   "J": {
+    "pooling_coefficient": 0.09736111111111112
+   }
+  },
+  "full_order_closed_form_Laplace_atoms_r_collapse": {
+   "max_abs_diff": 1.1102230246251565e-16,
+   "pass": true,
+   "x_star_formula": Infinity,
+   "x_star_root": Infinity
+  },
+  "feedback_full_orders_Laplace_atoms_r_collapse": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.09732154830075973,
+    "J_L": 0.09732154830075973,
+    "J_gap": 0.0,
+    "J_margin": 0.028660774150379865,
+    "dU_L_at_1": 0.06022403818616402,
+    "dU_H_at_1": 0.06022403818616402
+   }
+  },
+  "frozen_Laplace_atoms_r_collapse": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_atoms_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ]
+  },
+  "hidden_full_orders_Laplace_atoms_r_collapse": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_Laplace_atoms_r_collapse": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 2.220446049250313e-16
+  },
+  "feedback_comparison_Laplace_atoms_r_collapse": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "extensions_Laplace_atoms": {
+   "margins": {
+    "zeta_L": 1.366178511416626,
+    "zeta_H0": 1.1958333333333329,
+    "zeta_H1": 0.21715482191670787,
+    "zeta_0": 0.003333333333333393,
+    "zeta_1": 0.0024117851141662594
+   },
+   "all_positive": true,
+   "accepted": true
+  },
+  "feedback_pooling_Laplace_uniform_mixture_r_weak": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "pooling_coefficient": -0.017916666666666674
+   }
+  },
+  "feedback_full_orders_Laplace_uniform_mixture_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.619e-02"
+   ],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.016191824502981345,
+   "epsilon_q_refined": 0.016191824502981345,
+   "J": {
+    "J_H": 0.0038081754970186576,
+    "J_L": 0.0038081754970186576,
+    "J_gap": 0.0,
+    "J_margin": -0.01809591225149067,
+    "dU_L_at_1": -0.017535617623636517,
+    "dU_H_at_1": -0.015854733740074053
+   }
+  },
+  "frozen_Laplace_uniform_mixture_r_weak": {
+   "accepted": true,
+   "investor_deviation_gain": 0.016191824502981345,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_uniform_mixture_r_weak": {
+   "accepted": true,
+   "breaches": []
+  },
+  "hidden_full_orders_Laplace_uniform_mixture_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.827e-02"
+   ]
+  },
+  "matched_dividend_Laplace_uniform_mixture_r_weak": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 1.6653345369377348e-16
+  },
+  "feedback_comparison_Laplace_uniform_mixture_r_weak": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "feedback_pooling_Laplace_uniform_mixture_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.06333333333333334,
+   "epsilon_q_refined": 0.06333333333333334,
+   "J": {
+    "pooling_coefficient": 0.06333333333333334
+   }
+  },
+  "feedback_full_orders_Laplace_uniform_mixture_r_strong": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 2.220446049250313e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.14072729275954568,
+    "J_L": 0.1407272927595457,
+    "J_gap": 2.7755575615628914e-17,
+    "J_margin": 0.050363646379772836,
+    "dU_L_at_1": 0.07277543149393911,
+    "dU_H_at_1": 0.1400107868364379
+   }
+  },
+  "frozen_Laplace_uniform_mixture_r_strong": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_uniform_mixture_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ]
+  },
+  "hidden_full_orders_Laplace_uniform_mixture_r_strong": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_Laplace_uniform_mixture_r_strong": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 2.220446049250313e-16
+  },
+  "feedback_comparison_Laplace_uniform_mixture_r_strong": {
+   "accepted": true,
+   "welfare_identity_error": 2.7755575615628914e-16,
+   "revenue_identity_error": 1.1102230246251565e-16
+  },
+  "feedback_pooling_Laplace_uniform_mixture_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.09736111111111112,
+   "epsilon_q_refined": 0.09736111111111112,
+   "J": {
+    "pooling_coefficient": 0.09736111111111112
+   }
+  },
+  "feedback_full_orders_Laplace_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 2.220446049250313e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.14409730502148366,
+    "J_L": 0.14409730502148366,
+    "J_gap": 0.0,
+    "J_margin": 0.052048652510741825,
+    "dU_L_at_1": 0.08361191654652599,
+    "dU_H_at_1": 0.12968375461742512
+   }
+  },
+  "frozen_Laplace_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_Laplace_uniform_mixture_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ]
+  },
+  "hidden_full_orders_Laplace_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_Laplace_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 0.0
+  },
+  "feedback_comparison_Laplace_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "welfare_identity_error": 2.740863092043355e-16,
+   "revenue_identity_error": 5.551115123125783e-17
+  },
+  "extensions_Laplace_uniform_mixture": {
+   "margins": {
+    "zeta_L": 1.266178511416626,
+    "zeta_H0": 1.0958333333333332,
+    "zeta_H1": 0.11715482191670823,
+    "zeta_0": 0.003333333333333393,
+    "zeta_1": 0.0024117851141662594
+   },
+   "all_positive": true,
+   "accepted": true
+  },
+  "feedback_pooling_logistic_atoms_r_weak": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "pooling_coefficient": -0.017916666666666674
+   }
+  },
+  "full_order_closed_form_logistic_atoms_r_weak": {
+   "max_abs_diff": 2.220446049250313e-16,
+   "pass": true,
+   "x_star_formula": 2.4936701756580995,
+   "x_star_root": 2.4936701756580972
+  },
+  "feedback_full_orders_logistic_atoms_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.681e-02"
+   ],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.01681469332600612,
+   "epsilon_q_refined": 0.01681469332600612,
+   "J": {
+    "J_H": 0.0031853066739938817,
+    "J_L": 0.0031853066739938817,
+    "J_gap": 0.0,
+    "J_margin": -0.01840734666300306,
+    "dU_L_at_1": -0.017515373821410274,
+    "dU_H_at_1": -0.016556082651750008
+   }
+  },
+  "frozen_logistic_atoms_r_weak": {
+   "accepted": true,
+   "investor_deviation_gain": 0.01681469332600612,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_atoms_r_weak": {
+   "accepted": true,
+   "breaches": []
+  },
+  "hidden_full_orders_logistic_atoms_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.808e-02"
+   ]
+  },
+  "matched_dividend_logistic_atoms_r_weak": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 5.551115123125783e-17
+  },
+  "feedback_comparison_logistic_atoms_r_weak": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "feedback_pooling_logistic_atoms_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.06333333333333262,
+   "epsilon_q_refined": 0.06333333333333262,
+   "J": {
+    "pooling_coefficient": 0.06333333333333334
+   }
+  },
+  "full_order_closed_form_logistic_atoms_r_strong": {
+   "max_abs_diff": 4.440892098500626e-16,
+   "pass": true,
+   "x_star_formula": 5.4245983979398416,
+   "x_star_root": 5.424598397939854
+  },
+  "feedback_full_orders_logistic_atoms_r_strong": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 2.220446049250313e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.09071782688208532,
+    "J_L": 0.09071782688208532,
+    "J_gap": 0.0,
+    "J_margin": 0.02535891344104266,
+    "dU_L_at_1": 0.05764019436331019,
+    "dU_H_at_1": 0.07057243053192595
+   }
+  },
+  "frozen_logistic_atoms_r_strong": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_atoms_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ]
+  },
+  "hidden_full_orders_logistic_atoms_r_strong": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_logistic_atoms_r_strong": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 0.0
+  },
+  "feedback_comparison_logistic_atoms_r_strong": {
+   "accepted": true,
+   "welfare_identity_error": 7.216449660063518e-16,
+   "revenue_identity_error": 7.632783294297951e-17
+  },
+  "feedback_pooling_logistic_atoms_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.09736111111111038,
+   "epsilon_q_refined": 0.09736111111111038,
+   "J": {
+    "pooling_coefficient": 0.09736111111111112
+   }
+  },
+  "full_order_closed_form_logistic_atoms_r_collapse": {
+   "max_abs_diff": 0.0,
+   "pass": true,
+   "x_star_formula": Infinity,
+   "x_star_root": Infinity
+  },
+  "feedback_full_orders_logistic_atoms_r_collapse": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.10819145098701223,
+    "J_L": 0.10819145098701224,
+    "J_gap": 1.3877787807814457e-17,
+    "J_margin": 0.03409572549350612,
+    "dU_L_at_1": 0.07918209712355705,
+    "dU_H_at_1": 0.07918209712355702
+   }
+  },
+  "frozen_logistic_atoms_r_collapse": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_atoms_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ]
+  },
+  "hidden_full_orders_logistic_atoms_r_collapse": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_logistic_atoms_r_collapse": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 1.1102230246251565e-16
+  },
+  "feedback_comparison_logistic_atoms_r_collapse": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "extensions_logistic_atoms": {
+   "margins": {
+    "zeta_L": 1.366178511416626,
+    "zeta_H0": 1.1958333333333329,
+    "zeta_H1": 0.21715482191670787,
+    "zeta_0": 0.003333333333333393,
+    "zeta_1": 0.0024117851141662594
+   },
+   "all_positive": true,
+   "accepted": true
+  },
+  "feedback_pooling_logistic_uniform_mixture_r_weak": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "pooling_coefficient": -0.017916666666666674
+   }
+  },
+  "feedback_full_orders_logistic_uniform_mixture_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.681e-02"
+   ],
+   "epsilon_P": 1.1102230246251565e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.01681484063858499,
+   "epsilon_q_refined": 0.01681484063858499,
+   "J": {
+    "J_H": 0.00318515936141501,
+    "J_L": 0.0031851593614150107,
+    "J_gap": 8.673617379884035e-19,
+    "J_margin": -0.018407420319292496,
+    "dU_L_at_1": -0.017515065240281673,
+    "dU_H_at_1": -0.016556953704150373
+   }
+  },
+  "frozen_logistic_uniform_mixture_r_weak": {
+   "accepted": true,
+   "investor_deviation_gain": 0.01681484063858499,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_uniform_mixture_r_weak": {
+   "accepted": true,
+   "breaches": []
+  },
+  "hidden_full_orders_logistic_uniform_mixture_r_weak": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=1.808e-02"
+   ]
+  },
+  "matched_dividend_logistic_uniform_mixture_r_weak": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 5.551115123125783e-17
+  },
+  "feedback_comparison_logistic_uniform_mixture_r_weak": {
+   "accepted": true,
+   "welfare_identity_error": 0.0,
+   "revenue_identity_error": 0.0
+  },
+  "feedback_pooling_logistic_uniform_mixture_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.06333333333333262,
+   "epsilon_q_refined": 0.06333333333333262,
+   "J": {
+    "pooling_coefficient": 0.06333333333333334
+   }
+  },
+  "feedback_full_orders_logistic_uniform_mixture_r_strong": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 2.220446049250313e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.09070537823304607,
+    "J_L": 0.09070537823304607,
+    "J_gap": 0.0,
+    "J_margin": 0.025352689116523035,
+    "dU_L_at_1": 0.05765233004140857,
+    "dU_H_at_1": 0.07050994300575646
+   }
+  },
+  "frozen_logistic_uniform_mixture_r_strong": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_uniform_mixture_r_strong": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=6.333e-02"
+   ]
+  },
+  "hidden_full_orders_logistic_uniform_mixture_r_strong": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_logistic_uniform_mixture_r_strong": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 0.0
+  },
+  "feedback_comparison_logistic_uniform_mixture_r_strong": {
+   "accepted": true,
+   "welfare_identity_error": 5.898059818321144e-17,
+   "revenue_identity_error": 1.249000902703301e-16
+  },
+  "feedback_pooling_logistic_uniform_mixture_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ],
+   "epsilon_P": 0.0,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.09736111111111038,
+   "epsilon_q_refined": 0.09736111111111038,
+   "J": {
+    "pooling_coefficient": 0.09736111111111112
+   }
+  },
+  "feedback_full_orders_logistic_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "breaches": [],
+   "epsilon_P": 4.440892098500626e-16,
+   "epsilon_e": 0.0,
+   "epsilon_q_initial": 0.0,
+   "epsilon_q_refined": 0.0,
+   "J": {
+    "J_H": 0.11041861680211994,
+    "J_L": 0.11041861680211994,
+    "J_gap": 0.0,
+    "J_margin": 0.03520930840105997,
+    "dU_L_at_1": 0.08030892199966082,
+    "dU_H_at_1": 0.08248739274968785
+   }
+  },
+  "frozen_logistic_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "investor_deviation_gain": 0.0,
+   "breaches": []
+  },
+  "hidden_pooling_logistic_uniform_mixture_r_collapse": {
+   "accepted": false,
+   "breaches": [
+    "epsilon_q=9.736e-02"
+   ]
+  },
+  "hidden_full_orders_logistic_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "breaches": []
+  },
+  "matched_dividend_logistic_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "residual_invariance_error": 0.0,
+   "price_shift_error": 0.0,
+   "mean_price_matches_feedback_revenue": 0.0
+  },
+  "feedback_comparison_logistic_uniform_mixture_r_collapse": {
+   "accepted": true,
+   "welfare_identity_error": 1.3975366003338152e-16,
+   "revenue_identity_error": 1.48318857196017e-16
+  },
+  "extensions_logistic_uniform_mixture": {
+   "margins": {
+    "zeta_L": 1.266178511416626,
+    "zeta_H0": 1.0958333333333332,
+    "zeta_H1": 0.11715482191670823,
+    "zeta_0": 0.003333333333333393,
+    "zeta_1": 0.0024117851141662594
+   },
+   "all_positive": true,
+   "accepted": true
+  },
+  "refinement_pass_r_weak": {
+   "controls": {
+    "quadrature_absolute_target": 1e-12,
+    "quadrature_relative_target": 1e-12,
+    "probability_acceptance": 1e-08,
+    "price_identity_acceptance": 1e-08,
+    "entry_optimality_acceptance": 1e-08,
+    "deviation_gain_acceptance": 1e-07,
+    "independent_formula_acceptance": 1e-09,
+    "initial_order_intervals": 800,
+    "refined_order_intervals": 1600,
+    "initial_flow_halfwidth": 40.0,
+    "interval_decimal_precision": 50,
+    "certificate_derivative_intervals": 200,
+    "certificate_refined_intervals": 400,
+    "probability_display_decimals": 6
+   },
+   "accepted": true,
+   "epsilon_q": 0.0,
+   "E": 0.25000000000000006,
+   "breaches": []
+  },
+  "refinement_pass_r_strong": {
+   "controls": {
+    "quadrature_absolute_target": 1e-12,
+    "quadrature_relative_target": 1e-12,
+    "probability_acceptance": 1e-08,
+    "price_identity_acceptance": 1e-08,
+    "entry_optimality_acceptance": 1e-08,
+    "deviation_gain_acceptance": 1e-07,
+    "independent_formula_acceptance": 1e-09,
+    "initial_order_intervals": 800,
+    "refined_order_intervals": 1600,
+    "initial_flow_halfwidth": 40.0,
+    "interval_decimal_precision": 50,
+    "certificate_derivative_intervals": 200,
+    "certificate_refined_intervals": 400,
+    "probability_display_decimals": 6
+   },
+   "accepted": true,
+   "epsilon_q": 0.0,
+   "E": 0.5227572972597381,
+   "breaches": []
+  },
+  "refinement_pass_r_collapse": {
+   "controls": {
+    "quadrature_absolute_target": 1e-12,
+    "quadrature_relative_target": 1e-12,
+    "probability_acceptance": 1e-08,
+    "price_identity_acceptance": 1e-08,
+    "entry_optimality_acceptance": 1e-08,
+    "deviation_gain_acceptance": 1e-07,
+    "independent_formula_acceptance": 1e-09,
+    "initial_order_intervals": 800,
+    "refined_order_intervals": 1600,
+    "initial_flow_halfwidth": 40.0,
+    "interval_decimal_precision": 50,
+    "certificate_derivative_intervals": 200,
+    "certificate_refined_intervals": 400,
+    "probability_display_decimals": 6
+   },
+   "accepted": true,
+   "epsilon_q": 0.0,
+   "E": 0.2500000000000001,
+   "breaches": []
+  },
+  "required_row_feedback_Laplace_atoms_1.2": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_feedback_Laplace_atoms_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_feedback_Laplace_atoms_3.6": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_frozen_Laplace_atoms_1.2": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_frozen_Laplace_atoms_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_price_hidden_Laplace_atoms_1.2": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_price_hidden_Laplace_atoms_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_matched_dividend_Laplace_atoms_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_feedback_logistic_atoms_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_feedback_Laplace_uniform_mixture_3": {
+   "accepted_rows": 1,
+   "pass": true
+  },
+  "required_row_feedback_logistic_uniform_mixture_3": {
+   "accepted_rows": 1,
+   "pass": true
+  }
+ },
+ "passed": true,
+ "notes": []
+}
