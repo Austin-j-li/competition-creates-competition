@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 # figure survives grayscale printing.
 NAVY = "#1f3b73"
 RUST = "#b5533c"
-GRAY = "#8c8c8c"
+GRAY = "#656565"
 INK = "#000000"
 MUTED = "#6b6b6b"
 TINT_A = "#e9edf5"   # analytical uniqueness region, no trade
@@ -21,13 +21,13 @@ DASHED = (0, (5, 2.5))
 DOTTED = (0, (1.2, 1.8))
 
 plt.rcParams.update({
-    "pdf.fonttype": 42, "ps.fonttype": 42, "font.family": "serif", "font.size": 10,
+    "pdf.fonttype": 42, "ps.fonttype": 42, "font.family": "STIXGeneral", "font.size": 10,
     "axes.edgecolor": INK, "axes.labelcolor": INK, "axes.linewidth": 0.7,
     "axes.spines.top": False, "axes.spines.right": False,
     "xtick.color": INK, "ytick.color": INK, "xtick.labelsize": 9, "ytick.labelsize": 9,
     "xtick.direction": "out", "ytick.direction": "out", "xtick.major.size": 3, "ytick.major.size": 3,
     "axes.grid": False, "legend.frameon": False, "lines.linewidth": 1.6, "lines.solid_capstyle": "round",
-    "mathtext.fontset": "dejavuserif",
+    "mathtext.fontset": "stix",
 })
 
 FULL_WIDTH = 6.5

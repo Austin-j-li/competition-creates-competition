@@ -3,7 +3,7 @@
 The filled Markdown copies are generated files. Figure and table positions are marked in the
 manuscript by
 
-    <!-- FIGURE 1: figures/equilibrium_correspondence.pdf -->
+    <!-- FIGURE 1: figures/two_returns.pdf -->
     > **Figure 1.** Caption text, possibly over several blockquote lines.
 
 and likewise `<!-- TABLE 2: tables/table2_equilibrium_controls.tex -->` with a `> **Table 2.**`
@@ -23,9 +23,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from numerics.io import ROOT  # noqa: E402
 
 FALLBACK_FIGS = {
-    1: ("figures/equilibrium_correspondence.pdf",
+    2: ("figures/equilibrium_correspondence.pdf",
         r"The equilibrium correspondence at the benchmark primitives. Panel (a): total entry $\mathsf{E}$ against incumbent strength $r$ for every accepted branch. Shaded regions are analytically established uniqueness regions; the gray band marks strengths at which several equilibria were found. Dotted verticals mark $r_N$, $r_U$, and $r_C$. Certified points carry interval enclosures. Panel (b): order magnitudes along the informative branches, with full orders as the boundary."),
-    2: ("figures/two_returns.pdf",
+    1: ("figures/two_returns.pdf",
         r"Incumbent strength raises the sensitivity of target proceeds while reducing challenger acquisition profit at every displayed belief. Panel (a): $\Delta_T(r)$. Panel (b): $B_r(\mu)$ for $\mu\in\{m,1/2,M\}$. Benchmark primitives; values per target share."),
     3: ("figures/posterior_tail_entry.pdf",
         r"The upper tail of price information under full orders at the strong benchmark strength and scale $b=2$. Panel (a): $\Pr(\mu_X\ge\tau)$ against the threshold distance $M-\tau$. Panel (b): implied total entry. At $M-\tau=0$ the Laplace plateau enters under the tie rule (filled dot) while the logistic mass is zero (open circle)."),
@@ -62,10 +62,14 @@ HEADER_INCLUDES = [
     r"\usepackage{graphicx}",
     r"\usepackage{float}",
     r"\usepackage{setspace}",
+    r"\usepackage{etoolbox}",
+    r"\usepackage[font=small,labelfont=bf,labelsep=period]{caption}",
+    r"\usepackage[section]{placeins}",
     r"\definecolor{paperlink}{RGB}{31,59,115}",
     r"\allowdisplaybreaks",
     r"\setlength{\parskip}{0pt}",
     r"\setlength{\parindent}{1.5em}",
+    r"\AtBeginEnvironment{CSLReferences}{\interlinepenalty=10000}",
 ]
 
 
@@ -75,15 +79,17 @@ def md_to_latex_fragment(md: str) -> str:
     return r.stdout.strip()
 
 
-def figure_env(num: int, path: str, caption_tex: str) -> str:
-    return ("```{=latex}\n" + f"\\setcounter{{figure}}{{{num - 1}}}\n" + r"\begin{figure}[tbp]\centering" + "\n"
+def figure_env(num: int, path: str, caption_tex: str, notes_tex: str = "") -> str:
+    notes = (r"\par\medskip\begin{minipage}{\linewidth}\footnotesize\singlespacing\noindent "
+             + r"\textit{Notes.} " + notes_tex + r"\end{minipage}" + "\n") if notes_tex else ""
+    return ("```{=latex}\n" + f"\\setcounter{{figure}}{{{num - 1}}}\n" + r"\begin{figure}[tbp]\centering\begingroup\singlespacing" + "\n"
             + f"\\includegraphics[width=\\linewidth]{{{path}}}\n" + f"\\caption{{{caption_tex}}}\\label{{fig:{num}}}\n"
-            + r"\end{figure}" + "\n```")
+            + notes + r"\endgroup\end{figure}" + "\n```")
 
 
 def table_env(num: int, path: str, caption_tex: str) -> str:
     return ("```{=latex}\n" + f"\\setcounter{{table}}{{{num - 1}}}\n" + r"\begin{table}[tbp]\begingroup\singlespacing\small\centering" + "\n"
-            + f"\\caption{{{caption_tex}}}\\label{{tab:{num}}}\n" + f"\\input{{{path}}}\n" + r"\endgroup\end{table}" + "\n```")
+            + f"\\caption{{{caption_tex}}}\\label{{tab:{num}}}\n" + f"\\input{{{path}}}\n" + r"\par\endgroup\end{table}" + "\n```")
 
 
 def replace_markers(text: str) -> str:
@@ -91,8 +97,10 @@ def replace_markers(text: str) -> str:
         kind, num, path, block = m.group(1), int(m.group(2)), m.group(3), m.group(4)
         cap = " ".join(line.lstrip("> ").rstrip() for line in block.strip().splitlines())
         cap = CAPTION_PREFIX.sub("", cap).strip()
+        cap, _, notes = cap.partition("**Notes.**")
         cap_tex = md_to_latex_fragment(cap) if cap else ""
-        return (figure_env(num, path, cap_tex) if kind == "FIGURE" else table_env(num, path, cap_tex)) + "\n"
+        notes_tex = md_to_latex_fragment(notes.strip()) if notes.strip() else ""
+        return (figure_env(num, path, cap_tex, notes_tex) if kind == "FIGURE" else table_env(num, path, cap_tex)) + "\n"
 
     def old_repl(m: re.Match) -> str:
         kind, num = m.group(1), int(m.group(2))
@@ -109,7 +117,6 @@ def replace_markers(text: str) -> str:
 APPENDIX_INCLUDES = [
     # registry tables carry long code identifiers: let code spans break and set tables small
     r"\usepackage{seqsplit}",
-    r"\usepackage{etoolbox}",
     r"\renewcommand{\texttt}[1]{{\ttfamily\seqsplit{#1}}}",
     r"\AtBeginEnvironment{longtable}{\footnotesize}",
 ]
@@ -161,7 +168,8 @@ def convert(md_path: str, tex_path: str, pdf: bool, meta_overrides: dict | None 
 
 
 def main() -> int:
-    ok = convert("paper/main_filled.md", "paper/main_filled.tex", pdf=True)
+    ok = convert("paper/main_filled.md", "paper/main_filled.tex", pdf=True,
+                 extra_includes=[r"\AfterEndEnvironment{abstract}{\clearpage}"])
     # the online appendix is proof-heavy; 11pt and near-single spacing keep long displays inside the text width
     ok &= convert("paper/online_appendix_filled.md", "paper/online_appendix_filled.tex", pdf=True,
                   meta_overrides={"fontsize": "11pt", "linestretch": "1.15"}, extra_includes=APPENDIX_INCLUDES)

@@ -15,7 +15,8 @@ def main() -> int:
     tabs = tables.render_all()
     outs = [str(p.relative_to(ROOT)) for p in figs + tabs]
     checks = {"figures": [str(p.name) for p in figs], "tables": [str(p.name) for p in tabs],
-              "figure1_present": any(p.name == "equilibrium_correspondence.pdf" for p in figs),
+              "figure1_present": any(p.name == "two_returns.pdf" for p in figs),
+              "figure2_present": any(p.name == "equilibrium_correspondence.pdf" for p in figs),
               "table4_present": any(p.name == "table4_reserve_comparisons.tex" for p in tabs)}
     write_manifest("render", {"sources": ["figures_data/*.csv", "tables/*.csv", "numerics/correspondence.csv", "numerics/certificates.csv",
                                           "numerics/thresholds.csv", "numerics/moderate_values.csv", "numerics/two_signals.csv",

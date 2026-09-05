@@ -21,11 +21,14 @@ python3 -m venv .venv && .venv/bin/pip install numpy scipy mpmath matplotlib
 .venv/bin/python numerics/exercises/c5_noise.py           # C.5
 .venv/bin/python numerics/exercises/c6_reserve.py         # C.6 (about an hour on 8 cores)
 .venv/bin/python numerics/exercises/c7_bargaining.py      # C.7
+.venv/bin/python numerics/check_registry.py               # precision and import-order regression
 .venv/bin/python numerics/registry.py                     # C.8 registry
 .venv/bin/python numerics/substitute.py                   # filled manuscripts (fails on an open required placeholder)
-.venv/bin/python numerics/render/render_all.py            # Figures 1-4, Tables 1-4
+.venv/bin/python numerics/render/render_all.py            # Figures 1-4, Tables 1-4, appendix signal grid
 .venv/bin/python numerics/render/latex.py                 # LaTeX conversion and PDFs (needs pandoc, latexmk)
 .venv/bin/python numerics/verify.py --final               # the gate: acceptance checks, hashes, registry, substitution
 ```
 
 `numerics/verify.py` exits nonzero on any breached acceptance bound, any output file that differs from its manifest hash, or any unresolved required placeholder.
+
+To rebuild the paper from the validated exercise outputs, start with `numerics/check_registry.py`; no new equilibrium search is needed. Registry arithmetic uses a local 60-digit decimal context. The final gate checks the registry and presentation manifests as well as the numerical exercises.

@@ -5,109 +5,102 @@ date: ""
 bibliography: references.bib
 link-citations: true
 abstract: |
-  A stronger acquirer can attract its own challenger. I study a listed target whose prospective buyer learns from the stock price before paying for acquisition diligence. A stronger incumbent lowers the challenger's profit from acquiring at every belief, but it makes target shareholders' proceeds more sensitive to the challenger's quality, and that sensitivity is what informed investors trade on. Against a weak incumbent the spread is too small to support informed trading and the price says nothing. Against a strong one, trading is informative, favorable prices bring the challenger in, and the better challenger owns the target more often. Holding the information in prices fixed, the usual deterrence returns. At intermediate strengths, informative equilibria with asymmetric trading coexist with the uninformative one. The mechanism survives smooth noise, spread-out preparation costs, and a buyer whose own signal is more accurate than the market's. At fixed competitive strength, access to prices raises acquisition surplus net of diligence, and a bargaining comparison shows that runner-up pricing is the payment property behind discovery. I close by setting up the seller's problem when sale terms determine both what a buyer pays and what the market reveals about who should bid.
+  A stronger incumbent bidder can attract a challenger by making the target's stock price more informative. I study a takeover auction in which a prospective buyer observes the price before paying to learn its acquisition value. Stronger competition reduces the buyer's acquisition profit at every belief but increases the sensitivity of target proceeds to its value. This raises informed investors' trading incentives. On an open set of parameters, a stronger incumbent changes the unique equilibrium from uninformative to informative prices, increasing entry and the probability of acquisition by a high-value challenger. Holding price information fixed restores deterrence. At intermediate strengths, computer-assisted proofs establish informative equilibria that coexist with no trade. The reversal also arises when the buyer's private signal is more accurate than the investor's. Access to prices increases acquisition surplus net of preparation costs, and an alternative bargaining institution identifies how payment rules affect the mechanism.
 ---
 
 ## 1. Introduction {#sec-introduction}
 
-Where does takeover competition come from? Before a prospective acquirer can submit a bid it can live with, it has to spend money finding out what the target is worth to it. Lawyers read contracts, bankers build models, operating people visit plants. A company that has not done this work is not a bidder in any meaningful sense, however interested it may be. The decision to do the work is made under uncertainty, and it is made in the shadow of whoever is already at the table. A powerful rival makes the investigation less attractive. It lowers the chance of winning and, when the challenger does win, it raises the price. That is the deterrence logic of @Fishman1988 and @HirshleiferPng1989, and it is the natural first guess about what a strong incumbent does to the buyer pool.
+A stronger incumbent bidder usually deters takeover competition. A prospective challenger must incur preparation costs before submitting an executable offer, and a stronger rival reduces its expected return from doing so [@Fishman1988; @HirshleiferPng1989]. This paper shows that the same rival can make the target's stock price more informative about the challenger's acquisition value. If the challenger observes that price before committing to preparation, the information effect can outweigh deterrence. A stronger incumbent then attracts a competing buyer and increases the probability that a high-value challenger acquires the target.
 
-This paper argues that the first guess can be wrong, and for a reason that has nothing to do with the incumbent being weak in disguise. The same rival that makes investigation less rewarding makes the target's stock more informative about whether investigation is worthwhile. When a prospective buyer can read that stock price before committing to diligence, a stronger incumbent can recruit the very challenger it would otherwise deter.
+The relevant decision occurs between an expression of interest and a commitment to participate. A listed target may have a prepared lead buyer while other prospective acquirers are still deciding whether to investigate. Takeover records distinguish these stages. Imprivata's definitive proxy describes an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence [@Imprivata2016]. More broadly, much of takeover competition develops before public bidding [@BooneMulherin2007; @GentryStroup2019]. These observations motivate a costly preparation decision. They do not establish learning from prices: the mechanism requires a publicly understood sale opportunity that remains open to a challenger, a condition that an empirical study must verify.
 
-The setting I have in mind is a publicly visible, still contestable sale of a listed company. A lead buyer is prepared to bid. A second prospective buyer has expressed interest but has not paid for the diligence that would let it submit an executable offer. Target shares trade during that interval. Merger proxies routinely describe such phases. Imprivata's definitive proxy, for instance, records an unsolicited approach, deliberation over who else might buy, confidential outreach, and indications of interest that were explicitly conditional on further diligence, alongside worries about disruption and leakage [@Imprivata2016]. @BooneMulherin2007 and @GentryStroup2019 document how much of takeover competition is decided before the public bidding stage. I use the Imprivata record to motivate the separation between an expression of interest and a costly commitment to participate, not as evidence that its stock price caused anyone to enter.
+I model a listed target sold through a cash second-price auction. An incumbent is already prepared to bid. A challenger learns its acquisition value only after paying a privately realized preparation cost. Before that decision, an investor who knows the challenger's value trades target shares against noise demand. Competitive market makers price aggregate order flow, anticipating both entry and the auction. The challenger observes the stock price and its preparation cost, then decides whether to become a bidder. Incumbent strength shifts the distribution of the prepared bidder's value upward.
 
-Which features of the sale determine whether a stronger incumbent deters or attracts a challenger? And what does the challenger actually learn from the price? To study these questions, I develop a model that joins a corporate control contest to a financial market in which prices are rational and traders anticipate the real decisions their orders influence. A seller commits to a cash second-price auction with a reserve. An incumbent bidder is already prepared; its value for the target is drawn from a distribution whose strength is the comparative-static primitive. A potential challenger is either a good match or a poor one. It does not know which until it pays a privately realized preparation cost, low with some probability and high otherwise, after which it learns its value and can bid. Before that decision, an investor who knows the challenger's quality trades the target's shares against noise demand, paying a linear trading cost. Competitive market makers observe order flow and set the price equal to the expected terminal value of a share, anticipating both the challenger's entry decision and the auction. The challenger sees the price, not the flow, and then decides whether to prepare.
+The mechanism follows from the division of acquisition surplus. When the challenger has a high value, it wins and pays the incumbent's bid. When it has a low value, a sufficiently strong incumbent wins and pays the challenger's bid. A stronger incumbent therefore widens the difference in target proceeds between the two challenger types. Target shares become more sensitive to the information the investor holds, even as competition reduces the challenger's acquisition profit. Rational pricing incorporates the anticipated entry response, but noise trading leaves the investor an informational advantage. A larger difference in target proceeds can make that advantage worth trading on.
 
-The main insight is that competition reallocates the returns to information between the buyer who might acquire the company and the trader who holds its shares, and that this reallocation can reverse entry deterrence. I establish three results.
+The main result compares economies in which equilibrium trading is unique, allowing arbitrary mixed orders and all continuous unilateral deviations. With a weak incumbent, the informational advantage is too small to cover trading costs. The price reveals nothing, and only a low-cost challenger prepares. With a stronger incumbent, informed trading becomes profitable, the investor trades to its limit, and favorable prices induce a high-cost challenger to prepare. Entry rises even though acquisition profit falls at every fixed belief. With a sufficiently strong incumbent, expensive preparation becomes unprofitable even at the most favorable attainable belief, and entry falls again. These comparisons hold on a nonempty open set of parameters.
 
-1. Strengthening the incumbent, in the sense of first-order stochastic dominance, weakly raises the sensitivity of target proceeds to the challenger's quality and weakly lowers the challenger's expected acquisition profit at every belief about its quality. Both movements come from the same sale rule.
+The change in information is essential. If the investor's orders are held fixed at their informative level, stronger competition reduces entry. At intermediate incumbent strengths, the market can also support both informative and uninformative equilibria. I establish three informative equilibria by verified interval computation. In each, the investor buys fully after good news and sells partially after bad news; entry is strictly ordered upward across the three strengths. Numerical continuation describes additional parts of the equilibrium correspondence, but its complete characterization remains open. The distinction separates the entry reversal proved at specified economies from a claim about every equilibrium between them.
 
-2. On a nonempty open set of primitives, a weak incumbent leaves the market silent. The unique equilibrium has no informed trading, an uninformative price, and challenger entry equal to the probability of a low preparation cost, $\rho$. A strong incumbent turns informed trading on. The unique equilibrium has full correctly signed orders, an informative price, entry strictly above $\rho$, and a strictly higher probability that a high-quality challenger ends up owning the target. I solve both economies allowing mixed orders and every continuous deviation. At still stronger incumbents entry falls back to $\rho$, because the noise in order flow bounds how favorable a price can ever look, and beyond some strength no price is favorable enough to justify the expensive preparation cost.
+The reversal survives logistic noise, atomless preparation costs, and a narrower gap between acquisition values. It also arises when the challenger has a more accurate private signal than the investor: the price supplies complementary information. At fixed incumbent strength, access to prices raises target proceeds and acquisition surplus net of preparation costs. An alternative bargaining institution shows that the effect of competition on target-payoff sensitivity depends on how payments respond to the runner-up's value. Reserve comparisons illustrate how sale terms can change both information and participation; they do not solve the seller's optimization problem.
 
-3. Between the silent and the fully informed regions, informative equilibria with asymmetric trading exist alongside no trade. The investor buys as much as it can after good news but sells only part of its capacity after bad news, and entry rises with incumbent strength along this branch. I establish these equilibria by interval arithmetic that encloses an exact solution rather than by a floating-point residual, and the enclosures are tight enough to order entry across the certified strengths.
+The paper connects takeover entry to financial-market feedback. In @DowGoldsteinGuembel2017, a firm's investment decision affects incentives to produce information in its stock. Here the sale rule divides acquisition surplus between a traded claim and a buyer deciding whether to enter, producing opposing effects on their returns to information. @EdmansGoldsteinJiang2015 show that corrective real decisions can discourage trading on bad news under rational pricing. I study how rival strength changes the information sensitivity of the claim and participation. Evidence that prices affect takeover activity [@EdmansGoldsteinJiang2012] concerns the direction from prices to control; it does not identify a prospective challenger learning its acquisition value. Learning from announcement returns in completion decisions [@Luo2005] occurs after the participation margin studied here.
 
-The mechanism is easiest to see by separating two returns. The return to acquiring the company is what the challenger keeps after paying for it. The return to trading its shares is what an informed investor earns from knowing the challenger's quality before the market does. In a second-price sale the winner pays the runner-up's willingness to pay, so the target's proceeds when the challenger is a good match exceed its proceeds when the challenger is a poor match by exactly the amount by which the incumbent's value exceeds the poor match's value, when it does. A stronger incumbent puts more probability on that event. Its own value moves into the range where the challenger's quality changes what shareholders receive, so the spread of target proceeds across challenger types widens. The same movement shrinks what a good challenger keeps, because it now pays more. Competition transfers part of the challenger's acquisition advantage into the target's sale price, and that transfer is what an informed trader can trade on.
+The auction-entry literature makes the bidder pool endogenous [@GentryStroup2019; @LevinSmith1994] and shows how selective entry affects the choice of sale procedure [@RobertsSweeting2013]. I retain the direct deterrence force and add information from a market that operates before preparation. Auction formats can also affect bidders' incentives to acquire information [@Persico2000]. In this model, the informed trader is outside the auction, and the payoff it trades differs from the entrant's profit. Recent work studies bidder learning about own values and competitors [@PernoudGleyze2026], post-auction feedback in security-payment design [@LiuBernhardt2022], and bidder-pool choice with correlated values [@CarlinEtAl2026]. My focus is the effect of competition on information available before participation.
 
-Rational pricing does not undo the effect, but it does discipline it. The market maker knows that a favorable price will bring the challenger in and prices the entry response. What remains profitable to trade on is only the difference between the high- and low-quality outcomes after that response has been priced, scaled by the probability that the buyer enters. With a weak incumbent that residual is smaller than the trading cost at every belief the market could hold, so no order is worth placing and the price says nothing. With a strong incumbent the residual exceeds the trading cost at every belief, and I show that the informed investor's marginal profit is positive over the whole order interval, so it trades to its limit. The price then carries information, and on the favorable tail it crosses the threshold at which even a high-cost challenger finds preparation worthwhile. Acquisition profit falls at every fixed belief throughout this comparison. Entry rises because the information the market supplies changes.
+Other takeover models connect trading to later stages of a deal. @BettonEtAl2014 study negotiations with stock-market feedback, while @LinMaYangZhu2025 jointly model payment choice and trading within an initiated deal. I hold cash consideration fixed and study entry. Arbitrageurs' positions can affect tendering [@CornelliLi2002]; the investor here has information about a prospective acquirer and no role in tendering. The model excludes toeholds and dispersed-shareholder free riding [@BulowHuangKlemperer1999; @GrossmanHart1980]. Endogenous investor research would introduce additional incentives, including manipulation through the real decision that responds to the price [@GoldsteinGuembel2008].
 
-The distinction between a changing information experiment and a fixed one is the core of the paper. If I freeze the investor's orders at their informative level and vary the incumbent, the usual deterrence logic returns and entry falls with strength. What overturns deterrence is that the experiment itself is endogenous to competition. This is why the intermediate region matters. There the investor's two-sided problem has interior solutions, buying fully after good news and shorting partially after bad news, and the resulting experiment is neither silent nor fully revealing. It is also why the effect eventually dies. Order flow noise with bounded likelihood ratios caps how informative any price can be, and once the expensive challenger needs more optimism than any price can deliver, the market keeps trading but the challenger stops coming.
-
-The mechanism does not depend on the particular assumptions I use to make it tractable. It survives smooth logistic noise in place of the two-sided exponential, atomless preparation costs in place of two cost levels, acquisition values that differ by a factor of two rather than ten, and, most importantly for how one should read the model, a buyer whose own private signal about the match is more accurate than the trader's. In that extension the price is complementary information for a well-informed buyer, not a substitute for its judgment. The buyer still uses the increment in the price, and a stronger incumbent still raises entry.
-
-Discovery also has real consequences. Holding competition fixed, giving the challenger access to the price raises expected target proceeds and raises acquisition surplus net of preparation costs, because every additional entrant the price attracts is one who has judged the acquisition worth its cost. A comparison with a verifiable-value bargaining institution isolates the payment property behind all of this. What matters is that the winner's payment is disciplined by the runner-up's value. When the seller instead captures much of the winner's own value, stronger competition need not make the target claim more sensitive to challenger quality at all. That observation reframes sale design. A seller choosing a reserve changes what an entrant pays, and it also changes whether investors have a reason to reveal the information that brings entrants in. I formulate that problem, show that a higher reserve can raise proceeds in a diagnostic economy with atomless values by turning on informative trading against a weak incumbent, and leave its full solution as the next result.
-
-The paper is closest in spirit to @DowGoldsteinGuembel2017, where a firm's real investment decision shapes the incentive to produce information in its stock. I share the feedback from real decisions to information incentives but study a different object, the division of acquisition rents between a traded claim and a buyer deciding whether to enter, and I derive the opposite movements in those returns from the mechanics of a takeover auction. @EdmansGoldsteinJiang2015 show that corrective real decisions can discourage trading on bad news even under rational pricing; here rival strength changes the information sensitivity of the claim and the set of willing acquirers. Their evidence that prices affect takeover activity [@EdmansGoldsteinJiang2012] establishes the direction from prices to control, although a takeover triggered by undervaluation is not a challenger learning its match. @Luo2005 studies learning from announcement returns in completion decisions; my participation decision comes before the buyer set is fixed. @GentryStroup2019 and @LevinSmith1994 make entry into auctions an economic object, and @RobertsSweeting2013 show how selective entry shapes the choice of sale procedure. I keep the direct deterrence force these papers rely on and add the market information available before investigation. @Persico2000 studies how auction formats shape bidders' incentives to acquire information; in my setting the informed party is not a bidder, and the claim it trades is not the entrant's profit.
-
-On the market side, @BettonEtAl2014 analyze negotiations with stock-market feedback and the relation between run-ups and offer prices, and @LinMaYangZhu2025 model payment choice and trading in the merging firms within an initiated deal. I study who shows up in the first place, under cash consideration. @CornelliLi2002 show how arbitrageurs' positions affect tendering; my investor knows something about a prospective buyer and does not determine tendering. Recent auction-information work sharpens the boundary. @PernoudGleyze2026 study bidders learning about their own values and their competitors, @LiuBernhardt2022 use post-auction market feedback in security-payment design, and @CarlinEtAl2026 study bidder-pool choice with correlated values. My market operates before participation, and the sale payment determines what an outside investor has an incentive to reveal. Toeholds and takeover free riding [@BulowHuangKlemperer1999; @GrossmanHart1980] are absent by construction, since the investor holds no control rights and the sale binds the whole company; manipulation through real decisions [@GoldsteinGuembel2008] would enter only once the trader's own information acquisition is endogenous.
-
-Section 2 sets up the model. Section 3 derives the two returns to competition and states Proposition 1. Section 4 works out what the challenger learns from the price and why the price is enough. Section 5 contains the main results, Propositions 2 and 3, the benchmark numbers, and the full map of equilibria across incumbent strengths. Section 6 examines robustness and the buyer who knows more than the trader. Section 7 asks what discovery is worth to the target and which payment property produces it. Section 8 turns to sale design, Section 9 to what an empirical study would have to measure, and Section 10 concludes. Appendix A collects the supporting results and proofs; the online appendix contains complete arguments, the interval certificates, and the numerical contract behind every reported number.
+Section 2 presents the model. Sections 3 and 4 derive the information mechanism and equilibrium results. Sections 5 and 6 examine robustness, welfare, and sale terms. Section 7 discusses empirical implications, and Section 8 concludes. The appendices contain supporting results, proofs, and reproducibility details.
 
 ## 2. The model {#sec-model}
 
 ### 2.1 Values, preparation, and the sale
 
-I normalize the target's known standalone value to zero and measure acquisition values and preparation costs per target share. Adding the same standalone component to every ownership outcome shifts prices and payoffs by a constant and changes no incentive. The informed order is measured in a small reference trading unit, not as a claim on the whole company.
+The target's known standalone value is normalized to zero. Acquisition values and preparation costs are measured per target share. Adding the same standalone component to every ownership outcome shifts prices and payoffs by a constant without changing incentives. The investor's order is measured in a small reference trading unit and conveys no control rights.
 
-Two potential acquirers face the target. The incumbent is an available acquirer that has already done its preparation and knows its value $R$, drawn uniformly on $[0,r]$. The distribution is conditional on public information at the start of the sale process, and raising $r$ is a first-order stochastic strengthening. The incumbent is not the target's management, and it incurs no further participation cost.
+Two potential acquirers face the target. The incumbent has already prepared and incurs no further participation cost. Its acquisition value $R$ is uniform on $[0,r]$, conditional on public information when the sale process begins. An increase in $r$ strengthens the incumbent in the sense of first-order stochastic dominance. The incumbent is a bidder, rather than the target's management, and knows its value before bidding.
 
-The challenger is a prospective competing acquirer, not an activist shareholder. Its value is $\theta\in\{\ell,h\}$ with equal prior probabilities, and I impose
+The challenger has acquisition value $\theta\in\{\ell,h\}$, with equal prior probabilities. The benchmark restricts values and the reserve $p$ to
 
 $$
 0<p<\ell<r<h.
 \tag{1}
 $$
 
-The challenger begins without knowing $\theta$. After observing the target's price it privately learns its preparation cost $C$, equal to $c_L$ with probability $\rho$ and $c_H$ otherwise, with $0<\rho<1$ and $0\le c_L<c_H$. Paying the cost reveals the acquisition value and permits participation. Declining means the challenger is absent from the sale. Preparation is sunk before bidding. Incumbent value, challenger value, preparation cost, and noise demand are mutually independent.
+The challenger initially does not know its value. After observing the stock price, it privately learns its preparation cost $C$, which equals $c_L$ with probability $\rho$ and $c_H$ otherwise. I assume $0<\rho<1$ and $0\le c_L<c_H$. Paying $C$ reveals $\theta$ and permits bidding; declining leaves the challenger outside the sale. Incumbent value, challenger value, preparation cost, and noise demand are mutually independent.
 
-The seller commits publicly, before trading begins, to a cash second-price auction with reserve $p$. The highest admissible bidder acquires the target and pays the larger of the reserve and the highest competing bid; without an admissible bid there is no sale. I implement truthful, weakly dominant bidding. Conditional on the competing bid, a bidder wants to win exactly when its value covers the payment required to win, and its own bid cannot lower that payment conditional on winning. A bid equal to the reserve is admissible, and acquisition-value ties have no effect in the interior benchmark. A challenger that is exactly indifferent about preparing prepares. That convention is harmless almost everywhere but matters at one boundary of the analysis, where the posterior sits on a plateau with positive probability.
+Before trading, the seller publicly commits to a cash second-price auction with reserve $p$. The highest admissible bidder acquires the target and pays the larger of the reserve and the highest competing bid. There is no sale without an admissible bid. Both bidders use truthful, weakly dominant bids. A bid equal to the reserve is admissible, and a challenger indifferent about preparation enters. Acquisition-value ties have probability zero in the benchmark. Preparation indifference matters at a posterior plateau considered in Section 4.
 
-### 2.2 Trading, prices, and timing
+### 2.2 Trading and timing
 
-The investor observes $\theta$ and submits an order $q\in[-1,1]$. It has no initial position, cannot bid for the target, and pays a linear cost $k|q|$ with $k>0$. Its profit is
+An investor observes $\theta$ and submits an order $q\in[-1,1]$. It has no initial position, cannot acquire the target, and pays a linear trading cost $k|q|$, where $k>0$. Its profit and aggregate order flow are
 
 $$
-q\{V_T-P(X)\}-k|q|,
-\qquad X=q+Z,
-\qquad f(z)=\frac{1}{2b}e^{-|z|/b},\quad b>1,
+\begin{gathered}
+q\{V_T-P(X)\}-k|q|,\qquad X=q+Z,\\
+f(z)=\frac{1}{2b}e^{-|z|/b},\qquad b>1.
+\end{gathered}
 \tag{2}
 $$
 
-where $V_T$ is the terminal payoff of a target share and $Z$ is independent noise demand with the two-sided exponential (Laplace) density $f$. The Laplace law has one property I use repeatedly, a likelihood ratio between any two feasible orders that is bounded above and below, and it delivers closed forms for everything the challenger needs to compute. Section 6 replaces it by the logistic law, which has the same bounded log-density slope, and shows that nothing of substance changes.
+Here $V_T$ is the terminal payoff of a target share and $Z$ is independent noise demand with a Laplace density. The bounded likelihood ratios of this density limit the information that any order can reveal. Section 5 also considers logistic noise.
 
-Competitive market makers observe aggregate order flow $X$ and set
+Competitive market makers observe aggregate flow and set
 
 $$
 P(X)=\mathbb E[V_T\mid X],
 \tag{3}
 $$
 
-anticipating both the challenger's preparation decision and the auction. The challenger observes $P$, not $X$. This is the informational restriction that makes the price the object of study. The buyer reads a price, not a tape.
+anticipating preparation and auction outcomes. The challenger observes $P$, but not $X$.
 
-The sequence is as follows. The sale opportunity and its rule are announced. The investor learns $\theta$ and trades. Market makers price aggregate demand. The challenger observes the price and its cost, decides whether to prepare, and learns its value if it does. Bidders submit truthful bids, ownership changes if there is an admissible bid, and financial payoffs are realized.
+The sequence is therefore: the seller announces the sale rule; the investor learns quality and trades; market makers set the price; the challenger observes the price and its cost and decides whether to prepare; informed bidders submit truthful bids; ownership and financial payoffs are realized.
 
 ### 2.3 Equilibrium
 
-An equilibrium consists of conditional probability distributions $\sigma_H,\sigma_L$ over orders, a measurable price function, Bayesian beliefs based on the observed price, optimal preparation for each cost realization, and truthful bidding. The investor optimizes over the entire order interval, and I allow it to mix. A unilateral deviation holds the equilibrium pricing and preparation schedules fixed while changing the distribution of order flow that reaches them. A comparison across values of $r$, by contrast, re-solves the whole equilibrium, including the schedules. Keeping these two exercises apart is what separates a fixed information experiment from an endogenous one, and much of Section 5 turns on the difference.
+An equilibrium specifies conditional order distributions $\sigma_H,\sigma_L$, a measurable price function, Bayesian beliefs conditional on the observed price, optimal preparation, and truthful bidding. The investor can mix and can deviate to any order in $[-1,1]$. A unilateral deviation changes the distribution of order flow while holding the candidate equilibrium's pricing and preparation schedules fixed. A comparison across incumbent strengths instead re-solves these schedules.
 
-I write $t_0$ for expected target proceeds without entry, $t_H$ and $t_L$ for proceeds conditional on entry by a high- or a low-value challenger, and $g_H$ and $g_L$ for the challenger's gross acquisition profits. The payoff spread is $\Delta_T=t_H-t_L$, and $B_r(\mu)$ denotes gross challenger profit at posterior $\mu$. The posterior bounds are $m$ and $M$; the belief at which an expensive challenger is willing to prepare is $\tau$, and $x^*$ is the order flow at which the belief reaches $\tau$. Favorable-flow probabilities conditional on quality are $\alpha_H$ and $\alpha_L$. Total entry is $\mathsf E$, the probability that a high-quality challenger acquires the target is $\mathsf O_H$, and expected target revenue is $\mathcal R_T$. Three boundaries on incumbent strength, $r_N$, $r_U$, and $r_C$, mark where no trade stops being an equilibrium, where full orders become the unique outcome, and where expensive entry becomes infeasible.
+Write $t_0$ for expected target proceeds without entry, $t_H,t_L$ for proceeds conditional on entry and quality, and $g_H,g_L$ for the challenger's corresponding gross acquisition profits. The target-payoff spread is $\Delta_T=t_H-t_L$. At a belief $\mu=\Pr(\theta=h)$, the challenger's expected gross profit is $B_r(\mu)=g_L+\mu(g_H-g_L)$.
 
-## 3. Competition and the two returns to information {#sec-payoffs}
+## 3. Competition and information {#sec-payoffs}
 
-Start with the auction itself, before any trading. A high-value challenger wins and pays $\max\{p,R\}$. Against a low-value challenger the winner pays $\max\{p,\min(R,\ell)\}$. Without a challenger the incumbent pays the reserve exactly when its value meets it. Integrating over the uniform incumbent gives
+### 3.1 Acquisition profits and target proceeds
+
+The auction determines both the return to preparation and the claim that informed investors trade. A high-value challenger wins and pays $\max\{p,R\}$. With a low-value challenger, the target receives $\max\{p,\min(R,\ell)\}$. Without entry, the incumbent pays the reserve if its value meets it. Integrating over the uniform incumbent gives
 
 $$
 \begin{aligned}
 t_0&=p\left(1-\frac p r\right),&
-t_H&=\frac r2+\frac{p^2}{2r},&
-t_L&=\ell-\frac{\ell^2-p^2}{2r},\\
-g_H&=h-\frac r2-\frac{p^2}{2r},&
+t_H&=\frac r2+\frac{p^2}{2r},\\
+t_L&=\ell-\frac{\ell^2-p^2}{2r},&
+g_H&=h-\frac r2-\frac{p^2}{2r},\\
 g_L&=\frac{\ell^2-p^2}{2r},&
 \Delta_T(r)&=\frac{(r-\ell)^2}{2r}.
 \end{aligned}
 \tag{4}
 $$
 
-At a posterior $\mu$ that the challenger is a good match, its gross profit from preparing is a weighted average of the two conditional profits, and the derivatives that matter are
+The relevant derivatives are
 
 $$
 \begin{aligned}
@@ -119,58 +112,55 @@ g_H'(r)&=-\frac12+\frac{p^2}{2r^2}<0,
 \tag{5}
 $$
 
-So $\partial B_r(\mu)/\partial r<0$ at every fixed posterior, while the spread $\Delta_T$ rises with $r$. The decline in acquisition profitability and the increase in the sensitivity of target proceeds are two consequences of the same payment rule, and neither depends on the uniform distribution. The next result states the general version.
+Thus a stronger incumbent lowers acquisition profit at every fixed belief while making target proceeds more sensitive to challenger quality. Proposition 1 extends this opposition beyond the uniform distribution.
 
 **Proposition 1 (competition and the two returns to information).** *Let the incumbent's value have a continuous distribution $F$ on $[0,\bar r]$ with $0<p<\ell<\bar r<h$, and extend $F$ by unity above its support. A first-order stochastic strengthening of $F$ weakly increases the spread of target proceeds between a high- and a low-value challenger and weakly decreases the challenger's gross acquisition profit at every fixed posterior, where*
 
 $$
-\Delta_T(F)=\mathbb E_F[(R-\ell)_+]
-=\int_\ell^{\bar r}[1-F(u)]\,du,
-\qquad
-G_\theta(F)=\mathbb E_F[(\theta-\max\{p,R\})_+]
+\begin{aligned}
+\Delta_T(F)&=\mathbb E_F[(R-\ell)_+]
+=\int_\ell^{\bar r}[1-F(u)]\,du,\\
+G_\theta(F)&=\mathbb E_F[(\theta-\max\{p,R\})_+]
 =\int_p^\theta F(u)\,du.
+\end{aligned}
 \tag{6}
 $$
 
 *Both comparisons are strict when the change in $F$ has positive integral over the corresponding range.*
 
-The proof is in Appendix A, and it is short because the result is a statement about payments, not about beliefs. Fix a realization $R$ of the incumbent's value. If $R\le\ell$, the target receives the same amount whether the challenger is a good match or a poor one, because either type outbids the incumbent and pays the same competing bid. If $R>\ell$, a good match pays $R$ while a poor match loses and the incumbent pays $\ell$. The difference in target proceeds is therefore $(R-\ell)_+$, realization by realization. Its expectation is the survival integral in equation (6), and a stronger incumbent, having a smaller distribution function, has more mass in the region where the challenger's quality matters to shareholders. That is the first return to information: the claim that an investor can trade becomes more sensitive to what the investor knows.
+The result follows directly from the payment rule. If $R\le\ell$, either challenger type outbids the incumbent and pays the same amount. If $R>\ell$, a high-value challenger wins and pays $R$, whereas a low-value challenger loses and the incumbent pays $\ell$. The difference in target proceeds is therefore $(R-\ell)_+$. A stronger incumbent increases its expectation. The same shift raises the payment required for the challenger to win and reduces its expected acquisition profit. Appendix A gives the proof.
 
-The profit integrand moves the other way for the same reason. The challenger keeps $\theta-\max\{p,R\}$ when that is positive, so its expected profit is the integral of $F$ over $[p,\theta]$. Shifting mass upward lowers $F$ pointwise and shrinks the integral. What the challenger loses when the incumbent is stronger is exactly what the target gains in the states where quality matters. Competition does not create information; it moves the return to information from the buyer who would act on it to the shareholders who own the claim, and a fixed-posterior average of the two profit integrals inherits the ordering.
+<!-- FIGURE 1: figures/two_returns.pdf -->
+> **Figure 1.** Competition and the two returns to information.
+>
+> **Notes.** Panel (a) plots the target-payoff spread $\Delta_T(r)$; panel (b) plots gross challenger profit $B_r(\mu)$ at the posterior bounds $m,M$ and the prior $1/2$. Benchmark values are $h=[[base_h]]$, $\ell=[[base_ell]]$, $p=[[base_p]]$, and $b=[[base_b]]$. Values are per target share. These are acquisition-stage payoffs, before solving trading and entry.
 
-This opposition is worth dwelling on because it is the whole reason the rest of the paper can go the way it does. Deterrence works through $B_r(\mu)$, since at any belief a stronger incumbent makes preparation less attractive. Discovery works through $\Delta_T$, since at any level of trading a stronger incumbent makes the target's shares a better bet for someone who knows the challenger. Which force wins depends on whether the second is large enough to change what the market reveals, and that is a question about equilibrium, taken up in Sections 4 and 5.
+Figure 1 shows both effects within the benchmark support. The target-payoff spread approaches zero as $r$ approaches $\ell$, since the incumbent then almost never outbids a low-value challenger. As $r$ increases, the spread rises while gross acquisition profit falls at each displayed belief. Whether entry rises depends on how this change in payoffs affects equilibrium information.
 
-<!-- FIGURE 2: figures/two_returns.pdf -->
-> **Figure 2.** The two returns to competition at the benchmark specification ($h=10$, $\ell=1$, $p=0.5$, $b=2$), with all other primitives fixed and values measured per target share. Panel (a) plots the information spread of target proceeds, $\Delta_T(r)=(r-\ell)^2/(2r)$, against incumbent strength $r$. Panel (b) plots the challenger's gross acquisition profit $B_r(\mu)$ at the lowest attainable belief $\mu=m$, the prior $\mu=1/2$, and the highest attainable belief $\mu=M$. A stronger incumbent raises what an informed trader can earn from knowing the challenger's quality while lowering what the challenger can earn from acquiring the target at every belief.
+### 3.2 What the challenger learns from the price {#sec-inference}
 
-Figure 2 draws the two functions under the benchmark parameters used throughout the paper. Panel (a) shows the spread $\Delta_T(r)$ starting from zero at $r=\ell$, where the incumbent never outbids a poor match and the challenger's quality never reaches shareholders, and rising without bound as the incumbent strengthens. Panel (b) shows $B_r(\mu)$ declining in $r$ at each of the three beliefs the analysis will use. The vertical distance between the top and bottom lines is how much the most favorable attainable belief adds to expected acquisition profit relative to the least favorable one, and it is that distance, set against a fixed preparation cost, that will make the challenger's entry decision responsive to the price.
-
-## 4. Learning from prices {#sec-inference}
-
-The challenger cannot see the order flow, only a price that competitive market makers have set knowing how the challenger will react. Two questions have to be answered before anything can be said about equilibrium trading. How much can any pattern of informed trading move the market's belief? And does a price computed by rational market makers reveal that belief to the challenger? This section answers both; the exact statements are Propositions A.1 and A.2 in Appendix A.
-
-Take any mixed strategies $\sigma_H$ and $\sigma_L$ over orders in $[-1,1]$. Order flow has conditional densities and a posterior
+Noise demand bounds the posterior under every feasible trading strategy. For arbitrary mixed orders, define
 
 $$
 \begin{aligned}
-a_H(x)&=\int f(x-q)\,d\sigma_H(q),\quad
-a_L(x)&=\int f(x-q)\,d\sigma_L(q),\\
+a_H(x)&=\int f(x-q)\,d\sigma_H(q),\qquad
+&a_L(x)&=\int f(x-q)\,d\sigma_L(q),\\
 \mu_X(x)&=\frac{a_H(x)}{a_H(x)+a_L(x)},\qquad
-m=\frac1{1+e^{2/b}},\quad M=1-m,
+&m&=\frac1{1+e^{2/b}},\quad M=1-m.
 \end{aligned}
 \tag{7}
 $$
 
-and the posterior lies in $[m,M]$ whatever the investor does. The reason is the shape of the noise. For any two feasible orders $q$ and $q'$, the triangle inequality gives
+The posterior satisfies $m\le\mu_X\le M$. For any two orders $q,q'\in[-1,1]$, the Laplace density obeys
 
 $$
 e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b},
 \tag{8}
 $$
 
-so no realization of order flow can be more than $e^{2/b}$ times as likely under one quality as under the other. Integrating over the mixed strategies preserves the bounds, and equal priors turn them into $[m,M]$. Because the price is a function of order flow, the belief based on the price is a conditional expectation of $\mu_X$ and lives in the same interval. This bound is the reason the strong-incumbent result in Section 5 eventually undoes itself. However much the investor trades, the market can never be more than a fixed amount more optimistic than the prior, and a challenger whose preparation cost requires more optimism than $M$ delivers will never enter.
+Integrating over the conditional order distributions preserves these inequalities. Equal priors then give the posterior bounds. Since the price is a function of flow, the price-based posterior is a conditional expectation of $\mu_X$ and has the same bounds. A preparation decision requiring a belief above $M$ cannot be induced by any equilibrium price.
 
-Now suppose that the low-cost challenger always finds preparation worthwhile, that is, $c_L<B_r(m)$, so that entry has a positive floor at every feasible price. This is a mild restriction in the applications I have in mind. It says only that a cheap opportunity is worth investigating even after the worst news the market can deliver. At a price-based belief $\mu$, a challenger with cost $C$ prepares exactly when $C\le B_r(\mu)$. Averaging over the cost, entry and the competitive price can be written as
+Suppose $c_L<B_r(m)$, so the low-cost challenger prepares at every feasible belief. Averaging over preparation costs gives the entry rule and candidate competitive price
 
 $$
 \begin{aligned}
@@ -180,20 +170,23 @@ P_r(\mu)&=t_0+e_r(\mu)[t_L-t_0+\Delta_T\mu].
 \tag{9}
 $$
 
-The price has a transparent structure. Without entry, shareholders receive $t_0$. Entry adds the low-quality increment $t_L-t_0$ for certain and the additional spread $\Delta_T$ with probability $\mu$. Both the entry probability and the bracket are nondecreasing in $\mu$, and the bracket is strictly increasing because $t_L\ge p>t_0$, so $P_r$ is strictly increasing in the belief. It jumps upward where the expensive challenger starts to enter, but it never goes down.
+Both entry and the expected increment in target proceeds increase weakly with $\mu$. The increment is strictly increasing, and entry is bounded below by $\rho>0$, so $P_r(\mu)$ is strictly increasing. The price can jump when high-cost preparation becomes worthwhile.
 
-That monotonicity is what makes the price sufficient for the buyer. Write $e(P)$ for entry averaged over the cost realization. Conditional pricing implies
+Price sufficiency also holds in any candidate equilibrium, rather than only in this construction. Let $e(P)$ denote entry conditional on the observed price, averaged over costs. Competitive pricing implies
 
 $$
-P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],
-\qquad
-\mu_X=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T},
+\begin{aligned}
+P&=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\\
+\mu_X&=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T}.
+\end{aligned}
 \tag{10}
 $$
 
-and the denominator is positive because entry has a floor and the spread is positive. The market's belief is therefore a measurable function of the price, and conditioning it again on the price leaves it unchanged. The challenger, who sees only $P$, recovers exactly what a market maker who saw $X$ believed. Nothing is lost by hiding the tape. This uses the independence of incumbent value and preparation cost from trading; it does not require the challenger to see order flow, and it does not require the price function to be differentiable or even continuous.
+The positive denominator makes $\mu_X$ a measurable function of $P$. The challenger can therefore recover the market maker's posterior from the price alone. This argument permits price atoms and entry jumps; it does not require differentiable prices. Propositions A.1 and A.2 give the formal statements.
 
-The last object is the one the investor cares about. Subtract the price from the terminal value a share is worth to someone who knows the challenger is a good match, and reverse the subtraction for a poor match. The residual advantages of an informed buyer of shares in state $H$ and an informed short seller in state $L$ are
+### 3.3 Informed trading incentives
+
+Rational pricing removes the anticipated increase in proceeds from the investor's informational advantage. What remains depends on challenger quality. The residual advantages of buying in state $H$ and selling in state $L$ are
 
 $$
 \begin{aligned}
@@ -204,13 +197,13 @@ A_L(x)&=P(x)-\mathbb E[V_T\mid L,x]=e_r(\mu_X(x))\Delta_T\mu_X(x),\\
 \tag{11}
 $$
 
-This identity is the core feedback calculation of the paper, and it is worth reading slowly. A publicly anticipated increase in acquisition proceeds cancels from the informed trader's profit. If the market already expects entry and already expects the entrant to pay more, the price reflects it and there is nothing to earn. What remains is the state-dependent component that noise trading prevents the market maker from identifying, namely the entry probability times the spread times the market's remaining uncertainty about which state it is in. Both bounds in equation (11) are independent of the investor's strategy. The lower bound comes from the entry floor $\rho$ and the belief floor $m$; the upper bound is the spread itself. Everything in Section 5 follows from comparing these two bounds with the trading cost $k$. If even the upper bound falls short of $k$, no informed trade is ever profitable and the price is silent. If the lower bound exceeds $k$ by enough to cover the way an order shifts the noise, informed trade is profitable at every belief the market could hold, and the investor trades to its limit.
+The market maker prices the entry response, but cannot identify quality perfectly because of noise demand. The investor's advantage is the entry probability times the target-payoff spread times the market's residual uncertainty. The lower bound uses the entry floor $\rho$ and posterior floor $m$; the upper bound is $\Delta_T$. Both hold for every candidate order distribution. Comparing these bounds with the trading cost determines when information can be sustained in equilibrium.
 
-## 5. Competition creates competition {#sec-results}
+## 4. Equilibrium results {#sec-results}
 
-### 5.1 The entry reversal
+### 4.1 Competition creates competition
 
-I can now put the two returns of Section 3 and the inference of Section 4 together. The result is the paper's central claim. Strengthening the incumbent lowers the challenger's acquisition profit at every belief, and yet it can raise the probability that the challenger enters, because it changes what the challenger learns before deciding.
+The main result identifies an open set of economies in which stronger competition changes the unique equilibrium from an uninformative price to an informative price and raises challenger entry.
 
 **Proposition 2 (competition creates competition).** *Fix $0<p<\ell<r_0<r_1<h$, $0<\rho<1$, $b>1$, and $k>0$, and suppose that*
 
@@ -231,32 +224,11 @@ $$
 
 *(i) With the weak incumbent $r_0$, the unique equilibrium trading outcome is $q_H=q_L=0$, the price carries no information, and entry equals $\rho$. (ii) With the strong incumbent $r_1$, the unique equilibrium trading outcome is $(q_H,q_L)=(1,-1)$, the price is informative, entry strictly exceeds $\rho$, and the probability that the high-value challenger acquires the target is strictly higher than at $r_0$. The strong-incumbent price experiment strictly Blackwell dominates the weak-incumbent experiment at the same noise law. (iii) For any $r_2\in(r_1,h)$ with $c_L<B_{r_2}(m)$, $B_{r_2}(M)<c_H$, and $k<(1-1/b)\rho m\Delta_T(r_2)$, the unique trading outcome is again $(1,-1)$, but entry returns to $\rho$. These comparisons hold on a nonempty open set of primitives. Uniqueness refers to trading and on-path entry under truthful bidding and allows arbitrary mixed orders and every continuous deviation.*
 
-The proof is in Appendix A, with the full measure-theoretic argument in Online Appendix A. Here I explain why the result holds, because the logic is the economics of the paper.
+Condition (A1) ensures that low-cost preparation is worthwhile even at the lowest feasible belief. Condition (A2) excludes high-cost preparation at the weak-incumbent prior but permits it at favorable strong-incumbent prices. Condition (A3) places the trading cost above every possible informational return in the weak economy and below a global bound on marginal trading profits in the strong economy.
 
-The three conditions describe an economy in which some opportunities are always worth investigating, some are worth investigating only after good news, and information is expensive enough to produce in the weak economy but cheap enough in the strong one. Condition (A1) says that the low preparation cost is covered even at the most pessimistic belief a price can ever induce. Condition (A2) says that the high preparation cost is not covered at the prior when the incumbent is weak, but is covered at the most optimistic belief when the incumbent is strong. Condition (A3) is the trading wedge. It compares the trading cost $k$ with the largest residual profit an informed trader can earn in the weak economy and the smallest marginal profit the trader can earn in the strong one. None of the three conditions says that rivalry raises acquisition profit. Equation (5) says it lowers it.
+These inequalities determine trading before imposing a particular order profile. In the weak economy, the investor's gross advantage per unit is at most $\Delta_T(r_0)<k$, so every nonzero order loses money. With no informed trading, the posterior stays at the prior and only low-cost preparation occurs. In the strong economy, the residual lower bound is large enough to make every increase in a correctly signed order profitable. The bound controls the full order interval, including deviations from mixed candidate strategies. Full correctly signed orders are therefore necessary in every equilibrium. Appendix A derives the bound and constructs the associated price and entry schedules.
 
-The argument runs in a short sequence. First, whatever the investor does, beliefs based on the price stay inside $[m,M]$, because the likelihood ratio of any two feasible orders is bounded by the tail behavior of the noise. Second, condition (A1) means that the inexpensive challenger prepares at every price, so entry is at least $\rho$ on every path. That floor is what makes the price sufficient for the buyer's decision and leaves the trader a residual profit of at least $\rho m\Delta_T$ per unit traded. Third, in the weak economy even the largest possible residual, $\Delta_T(r_0)$, falls short of $k$, so any nonzero order loses money against any candidate price schedule. The market is silent, beliefs stay at the prior, and by (A2) only the cheap challenger prepares. Fourth, in the strong economy the residual is large enough that increasing a correctly signed order is profitable at every magnitude and against every candidate schedule, so the trader buys the maximum after good news and sells the maximum after bad news. Finally, the informative price crosses the expensive challenger's threshold with positive probability, so entry exceeds $\rho$ and the better challenger owns the target more often.
-
-The fourth step deserves a closer look, because it is what makes the strong-economy outcome unique rather than merely an equilibrium. Fix any candidate equilibrium and its residual schedules $A_H$ and $A_L$. A trader who has seen good news and buys $s$ units earns
-
-$$
-F_H(s)=\int f(x-s)A_H(x)\,dx,
-\qquad F_L(s)=\int f(x+s)A_L(x)\,dx,
-\qquad U_\theta(s)=sF_\theta(s)-ks.
-\tag{12}
-$$
-
-The Laplace density satisfies $|f'|\le f/b$, so shifting the order changes the convolution by at most a fraction $1/b$ of itself. Differentiating gives
-
-$$
-U_\theta'(s)\ge\left(1-\frac{s}{b}\right)F_\theta(s)-k
-\ge\left(1-\frac1b\right)\rho m\Delta_T-k>0
-\tag{13}
-$$
-
-almost everywhere. The bound holds for every candidate schedule at once, which is why mixed orders and interior deviations cannot support any other outcome. This is a stronger statement than a first-order condition at a conjectured profile. It says that against anything the market could be pricing, a larger correctly signed order is better.
-
-With full orders in place, the rest is arithmetic. Writing $\tau$ for the belief at which the expensive challenger is indifferent and $x^*$ for the order flow that produces it,
+Under full orders, favorable prices cross the expensive challenger's preparation threshold with positive probability. Define the threshold belief $\tau$, its corresponding flow $x^*$, the conditional probabilities of crossing it $\alpha_H,\alpha_L$, total entry $\mathsf E$, and the probability of high-value challenger ownership $\mathsf O_H$ by
 
 $$
 \begin{aligned}
@@ -267,215 +239,112 @@ x^*&=\frac b2\log\frac\tau{1-\tau},\\
 \mathsf E&=\rho+\frac{1-\rho}{2}(\alpha_H+\alpha_L),&
 \mathsf O_H&=\frac12[\rho+(1-\rho)\alpha_H].
 \end{aligned}
-\tag{14}
+\tag{12}
 $$
 
-Condition (A2) places $\tau$ strictly between $1/2$ and $M$ and therefore $x^*$ strictly between $0$ and $1$. The probability $\alpha_H$ that a good challenger generates a flow above the threshold exceeds the probability $\alpha_L$ that a poor one does, so the additional entry is tilted toward the challenger the target wants.
+Condition (A2) places $\tau$ in $(1/2,M)$ and $x^*$ in $(0,1)$. Since $\alpha_H>\alpha_L$, the additional entry is tilted toward high-value challengers. At a sufficiently strong incumbent satisfying part (iii), even the largest feasible belief fails to justify high-cost preparation. Trading remains informative, but entry returns to $\rho$. The proposition establishes a rise and a subsequent fall across the specified economies; it does not impose a monotone path between them.
 
-Part (iii) is the other side of the same coin. Beliefs based on prices can never exceed $M$, whatever the investor does. Once the incumbent is strong enough that even the belief $M$ does not cover the high preparation cost, the expensive challenger stays out on every path. Trading remains informative and full, but it no longer moves anyone across a threshold, and entry falls back to $\rho$. Entry therefore rises and then falls as the incumbent gets stronger. The rise is not an artifact of the two points I picked in (i) and (ii). It is what happens when information first becomes worth producing and later stops being able to clear the bar.
+### 4.2 Benchmark and information controls
 
-### 5.2 The benchmark economy
-
-Appendix A.4 lists the primitive vector I use for the benchmark. The weak incumbent has $r_0=[[base_r_weak]]$, the strong incumbent $r_1=[[base_r_strong]]$, and the collapse strength of part (iii) is $r_2=[[base_r_collapse]]$. Strengthening the incumbent from $r_0$ to $r_1$ lowers the challenger's gross profit at the prior from [[base_profit_prior_weak]] to [[base_profit_prior_strong]] and raises the information spread of target proceeds from [[base_spread_weak]] to [[base_spread_strong]]. Entry nevertheless rises from [[base_entry_weak]] to [[base_entry_strong]] and falls back to [[base_entry_collapse]] at $r_2$. The probability that the high-value challenger ends up owning the target rises from [[base_ownership_weak]] to [[base_ownership_strong]].
+The benchmark uses incumbent strengths $r_0=[[base_r_weak]]$, $r_1=[[base_r_strong]]$, and $r_2=[[base_r_collapse]]$; Appendix A lists the full parameter vectors. From $r_0$ to $r_1$, gross acquisition profit at the prior falls from [[base_profit_prior_weak]] to [[base_profit_prior_strong]], while the target-payoff spread rises from [[base_spread_weak]] to [[base_spread_strong]]. Entry nevertheless rises from [[base_entry_weak]] to [[base_entry_strong]], and high-value challenger ownership rises from [[base_ownership_weak]] to [[base_ownership_strong]]. At $r_2$, entry returns to [[base_entry_collapse]].
 
 <!-- TABLE 1: tables/table1_auction_primitives.tex -->
-> **Table 1.** Auction primitives at the benchmark specification for the weak ($r=[[base_r_weak]]$) and strong ($r=[[base_r_strong]]$) incumbent economies, per target share. Expected target proceeds without entry ($t_0$) and with a high- or low-value challenger ($t_H$, $t_L$), the challenger's gross acquisition profits ($g_H$, $g_L$), the information spread $\Delta_T=t_H-t_L$, and gross profit at the prior belief $B_r(1/2)$. The closed forms in (4) are checked against direct integration of the realized sale rule; Online Appendix C.1 gives the procedure.
+> **Table 1.** Acquisition-stage payoffs in the benchmark.
 
 <!-- TABLE 2: tables/table2_equilibrium_controls.tex -->
-> **Table 2.** Equilibrium outcomes and information controls at the benchmark. Panel (a) reports the validated equilibrium at the weak, strong, and collapse strengths (Laplace noise, cost atoms): orders $q_H,q_L$, total entry $\mathsf E$, the probability of high-quality ownership $\mathsf O_H$, and target proceeds $\mathcal R_T$. Panel (b) reports three controls. The frozen profile imposes full orders at both strengths and lets the buyer reoptimize; it is not an equilibrium at the weak strength and is reported as a control. The price-hidden economy reoptimizes trading and pricing while the buyer uses the prior. The matched-dividend economy adds a deterministic payment to the traded claim in the price-hidden economy so that mean prices coincide with the feedback economy. Panel (c) reports the fixed-strength gains from access to prices in target proceeds and in allocation value net of paid preparation costs. Online Appendix C.1 defines every column.
+> **Table 2.** Equilibrium outcomes, information controls, and welfare.
 
-Table 1 collects the auction primitives and Table 2 the equilibrium outcomes. Two features of the strong and collapse economies are worth noticing. In the strong economy the threshold flow $x^*$ lies strictly inside the unit interval, so the expensive challenger enters after favorable flow and stays out otherwise. In the collapse economy trading is still full, but the belief the expensive challenger needs lies above $M$ and no flow reaches it; the price is informative, but it informs nobody who can act on it.
+Table 1 reports the acquisition payoffs. Table 2 separates equilibrium outcomes from controls. Holding informative orders fixed restores deterrence: entry falls from [[base_frozen_entry_weak]] to [[base_frozen_entry_strong]] as the incumbent strengthens. At every belief and cost realization, the decline in gross acquisition profit can only remove a preparation incentive. Proposition A.3 states this result for any fixed information experiment. The frozen profile is a control, since full orders are unprofitable against the weak incumbent.
 
-### 5.3 Holding the information experiment fixed
+Hiding prices from the challenger produces entry [[base_hidden_entry_weak]] and [[base_hidden_entry_strong]] at the two strengths. The buyer uses its prior and prepares only at low cost. Together, these comparisons identify the source of the reversal: incumbent strength changes the information generated by trading, and the resulting entry response can exceed the direct deterrence effect.
 
-It is tempting to read the reversal as "informative prices raise entry." That reading is wrong, and Table 2 shows why. Suppose the informed trader placed full orders at both strengths, so that the price is equally informative in the weak and the strong economy, and let the buyer reoptimize against that fixed information. Entry then falls from [[base_frozen_entry_weak]] to [[base_frozen_entry_strong]]. Holding the signal fixed, a stronger incumbent lowers gross profit at every belief, so every belief-cost pair that entered before still enters only if profit remains above cost. Entry can only fall. Proposition A.3 in Appendix A states this monotonicity for any fixed joint distribution of the signal, the challenger's quality, and the preparation cost.
+### 4.3 Coexistence and the equilibrium correspondence
 
-Removing access to prices produces the same entry at both strengths, [[base_hidden_entry_weak]] and [[base_hidden_entry_strong]], because the buyer then acts on the prior and only the cheap challenger prepares. The comparison isolates what drives the reversal. It is neither the level of information nor the strength of the incumbent alone. It is that the incumbent's strength changes which information experiment the market runs. In the weak economy the experiment is silent, in the strong economy it speaks, and the buyer's response to a speaking market outweighs the direct deterrence that the frozen control measures. The frozen profile is not an equilibrium in the weak economy, since the trader would rather not trade at all, which is precisely the point. The informative experiment has to be paid for by someone, and a weak incumbent does not make it worth paying for.
+Informative trading need not be unique at intermediate strengths. Proposition 3 establishes three equilibria with full purchases and partial sales that coexist with no trade.
 
-### 5.4 The equilibrium correspondence
-
-Proposition 2 compares two, or three, strengths. What happens in between is richer, and I compute it rather than assume it away. Figure 1 plots every equilibrium branch found and validated on a fine grid of strengths at the benchmark primitives.
-
-<!-- FIGURE 1: figures/equilibrium_correspondence.pdf -->
-> **Figure 1.** The equilibrium correspondence at the benchmark primitives (Laplace noise, cost atoms). Panel (a) plots total entry $\mathsf E$ against incumbent strength $r$ for every accepted branch: no trade, full orders, the asymmetric family $(q_H,q_L)=(1,-v)$ traced by numerical continuation, and a symmetric interior family $(u,-u)$. Shaded regions are the strengths where uniqueness is established analytically, no trade below $\mathfrak r(k)$ and full orders above $r_U$. The dotted verticals mark $r_N$, the exact boundary of no-trade existence, $r_U$, the sufficient boundary for full-order uniqueness, and $r_C$, beyond which expensive entry is infeasible. The three certified equilibria of Proposition 3 carry interval enclosures; the bars are drawn even where they are too narrow to see. Panel (b) plots the unfavorable-state order magnitude $v$ along the asymmetric branch and $u$ along the symmetric interior branch, with full orders at $1$. Lines are broken at unresolved nodes and at branch changes, and a branch that does not appear at a strength is a branch the search did not find, not a uniqueness claim. Online Appendix C.2 specifies the grid, the searches, and the validation.
-
-Three boundaries organize the picture, and each answers a different question. Write $\mathfrak r(d)=\ell+d+\sqrt{d^2+2\ell d}$ for the strength at which the information spread equals $d$, that is, $\Delta_T(\mathfrak r(d))=d$. Against a silent market a correctly signed order of size $s$ earns $s(\rho\Delta_T/2-k)$, so no trade is an equilibrium exactly when $\rho\Delta_T(r)/2\le k$, that is, when $r\le r_N=\mathfrak r(2k/\rho)$. Below $\mathfrak r(k)$ the spread itself is smaller than the trading cost, so no order is profitable against any price schedule and no trade is the only outcome. Above $r_U=\mathfrak r(k/[(1-1/b)\rho m])$ the marginal-profit bound (13) holds against every schedule and full orders are the only outcome. Finally, the belief $M$ is the most optimistic belief any price can carry, and the strength $r_C$ at which $B_r(M)=c_H$ is the last strength at which the expensive challenger can be brought in by any equilibrium. In the benchmark these boundaries are $r_N=[[base_r_no_trade_exact]]$, $\mathfrak r(k)=[[base_r_pool_unique_sufficient]]$, $r_U=[[base_r_full_unique_sufficient]]$, and $r_C=[[base_r_high_cost_ceiling]]$. Proposition A.4 in Appendix A states these characterizations and their domain. I keep them separate on purpose. The exact existence boundary $r_N$ is not the strength at which informative trading appears, and a sufficient uniqueness boundary is not a boundary at which anything happens to the economy.
-
-Reading Figure 1 from left to right, no trade is the only branch below $\mathfrak r(k)$ and remains available up to $r_N$. Well before $r_N$, informative equilibria appear. The first to appear are asymmetric. The trader buys the full amount after good news but sells only part of the way after bad news, and the magnitude $v$ of the short rises with the incumbent's strength until it reaches one. Along this branch entry rises even though acquisition profit falls at every belief, which is the reversal again, now inside the correspondence rather than across two isolated points. When $v$ reaches one the asymmetric branch merges into full orders, at a strength below $r_N$, so from there to $r_N$ full orders coexist with no trade. Just above $r_N$, where no trade stops being an equilibrium, the computation finds a second informative family in which both trader types place small orders of equal size in opposite directions. Prices are informative on that branch, but the posterior never reaches the expensive challenger's threshold, so entry stays at $\rho$. That family disappears a little further along, and from there full orders are the only branch the search finds, well before $r_U$ makes uniqueness a theorem. At $r_C$ the expensive challenger drops out and entry falls to $\rho$ while trading stays full. Under Laplace noise the top belief $M$ is reached on a whole tail of flows, so the equality at $r_C$ is not a null event; I keep the convention that an indifferent challenger enters, which is why entry at $r_C$ itself is the left limit rather than $\rho$.
-
-Figure 1 establishes less than it might appear to, and the distinctions matter. The shaded regions are theorems. The certified points of Proposition 3 are exact equilibria enclosed in intervals. Everything else, including the asymmetric branch between the certified points, the symmetric interior family, and the location of every branch change, is a numerical continuation. Each plotted point is a candidate profile that passed the full set of unilateral-deviation, pricing, and entry checks at the stated tolerances, and the searches include pure, asymmetric, and finite-support mixed profiles. A branch that is absent at a strength was not found, which is not the same as not existing. The mixed-strategy searches found no mixed equilibrium at any strength, and I report that as a search outcome, not as a proof. The complete intermediate correspondence remains an open characterization, and I return to it in Section 10.
-
-### 5.5 Coexisting informative equilibria
-
-The asymmetric branch is the part of Figure 1 that a two-point comparison would miss entirely, and it changes how one should think about the reversal. On that branch prices are informative, entry exceeds $\rho$, and the economy also admits no trade. Competition does not force information out of the market at intermediate strengths. It makes information possible. I establish three points on the branch exactly.
-
-**Proposition 3 (coexisting informative equilibria at intermediate strength).** *At the benchmark primitives of Appendix A.4, there exist equilibria $(q_H,q_L)=(1,-v_j)$ at strengths $r_j$ whose certified enclosures are*
+**Proposition 3 (coexisting informative equilibria at intermediate strength).** *At the benchmark parameters of Appendix A.6, there exist equilibria $(q_H,q_L)=(1,-v_j)$ at strengths $r_j$ whose certified enclosures are*
 
 $$
-\begin{aligned}
-r_{\mathrm a}&=[[cert_a_r]],&v_{\mathrm a}&\in[[cert_a_v_interval]],&\mathsf E_{\mathrm a}&\in[[cert_a_entry_interval]],\\
-r_{\mathrm b}&=[[cert_b_r]],&v_{\mathrm b}&\in[[cert_b_v_interval]],&\mathsf E_{\mathrm b}&\in[[cert_b_entry_interval]],\\
-r_{\mathrm c}&=[[cert_c_r]],&v_{\mathrm c}&\in[[cert_c_v_interval]],&\mathsf E_{\mathrm c}&\in[[cert_c_entry_interval]].
-\end{aligned}
-\tag{15}
+\begin{array}{c@{\qquad}c@{\qquad}c}
+r_j&v_j&\mathsf E_j\\[3pt]
+[[cert_a_r]]&[[cert_a_v_interval]]&[[cert_a_entry_interval]]\\
+[[cert_b_r]]&[[cert_b_v_interval]]&[[cert_b_entry_interval]]\\
+[[cert_c_r]]&[[cert_c_v_interval]]&[[cert_c_entry_interval]]
+\end{array}
+\tag{13}
 $$
 
 *The entry intervals are strictly ordered upward. Each of the three economies also admits no trade with entry $\rho$.*
 
-Existence here is established by verified interval computation rather than by a pen-and-paper proof. Appendix A.3 reports the enclosures that complete the argument and Online Appendix B gives the method. The logic is the following. Against its own price schedule, the trader who has seen bad news faces a strictly concave problem, because the residual it trades against is bounded and nondecreasing in the order flow. Its best short is therefore the unique root of a marginal-profit equation, and an equilibrium on this branch is a fixed point in which the conjectured short $v$ equals that root. Interval arithmetic with exact antiderivatives shows that the marginal profit is strictly positive at one end of each bracket in (15) and strictly negative at the other, with every rounding error accounted for, so an exact root lies inside. For the trader who has seen good news the problem is not concave, and I instead bound its marginal profit from below on a fine mesh over the whole bracket, correct for what can happen between mesh points using a Lipschitz constant, and verify that the bound is positive. The favorable trader therefore buys the maximum. Wrong-signed trades lose money outright. The result is a proof whose arithmetic was done by a machine, and I label it that way.
+The proof uses interval arithmetic to enclose exact solutions. For the low-value investor, global strict concavity reduces optimality to a marginal-profit root. Opposite endpoint signs place a root inside each reported interval. For the high-value investor, a uniform derivative bound verifies that full purchases dominate every smaller order throughout the root bracket. Wrong-signed orders are unprofitable. The resulting entry enclosures are disjoint, which establishes the cross-economy ordering. Appendix A reports the certificate margins; Online Appendix B supplies the complete method.
 
-Why does the trader buy fully after good news but only partly after bad news? The asymmetry comes from the buyer's response. After favorable flow the expensive challenger is close to entering, and each additional unit bought pushes the price posterior toward the threshold at which entry jumps; the residual profit of a buyer is large exactly where the jump happens. After unfavorable flow the expensive challenger is already out, so further selling moves the posterior along a flat part of the entry schedule and earns only the fundamental spread. Selling has a smaller marginal return, and the trader stops before the bound. As the incumbent gets stronger the spread grows, the return to selling rises, and $v$ moves toward one. That is the continuation Figure 1 traces.
+<!-- FIGURE 2: figures/equilibrium_correspondence.pdf -->
+> **Figure 2.** Trading and entry across incumbent strengths.
+>
+> **Notes.** Benchmark parameters. Panel (a) shows entry for every accepted branch; panel (b) shows the associated order magnitudes. Shading marks analytical uniqueness regions and the range in which several equilibria were found. The thresholds $r_N,r_U,r_C$ respectively mark no-trade existence, sufficient full-order uniqueness, and the ceiling for high-cost entry. Black points carry the certified intervals of Proposition 3. Other curves are numerical continuations, with breaks at unresolved nodes and branch changes. Absence of a plotted branch does not establish nonexistence. Online Appendix C.2 gives the search and acceptance criteria.
 
-Why does entry rise along the branch when profits are falling? Because the market's experiment is improving faster than acquisition profits deteriorate. A larger short after bad news makes good news more distinguishable from bad news, so the favorable flows that induce the expensive challenger to enter become more likely conditional on a good challenger. The certified entry intervals in (15) are disjoint and ordered, which is the cross-economy comparison the branch supports at these three points. Between them the branch is a numerical continuation, and I do not read a derivative off it.
+Figure 2 places the certified equilibria within the numerical correspondence. No trade remains an equilibrium up to $r_N=[[base_r_no_trade_exact]]$ and is uniquely optimal below the sufficient bound $\mathfrak r(k)=[[base_r_pool_unique_sufficient]]$. Full orders are uniquely optimal above the sufficient bound $r_U=[[base_r_full_unique_sufficient]]$. High-cost entry becomes infeasible above $r_C=[[base_r_high_cost_ceiling]]$. Proposition A.4 defines these thresholds. An existence boundary, a sufficient uniqueness bound, and a participation ceiling answer different questions and need not coincide.
 
-Why does no trade survive alongside these informative equilibria? Because at these strengths $\rho\Delta_T/2\le k$: against a silent market, a single trader who deviates to a small order earns the fundamental spread times the entry floor, and that is not enough to cover the trading cost. Informative trading is self-supporting once it is in place, because it changes the buyer's behavior and thereby the residual profit, but nobody has a unilateral reason to start it. This multiplicity is not an inconvenience. It is the sense in which competition creates the conditions for information without guaranteeing it.
+The numerical continuation finds asymmetric informative equilibria before no trade disappears. On this family, the investor buys fully after good news and sells partially after bad news. The short magnitude increases toward one as the incumbent strengthens, and entry rises along the accepted continuation. Full orders subsequently coexist with no trade. The search also finds a symmetric interior family whose price information is insufficient to induce high-cost preparation, so entry remains $\rho$. These descriptions concern the branches found and validated; the search is not exhaustive.
 
-## 6. Robustness and richer information {#sec-extensions}
+The trading asymmetry reflects the entry response. Around the high-cost preparation threshold, orders change both the posterior and the probability of entry, and thus the residual payoff to information. The low-value investor faces a different residual schedule from the high-value investor and can stop at an interior short while full purchases remain optimal. The certified points establish this behavior at three strengths. They do not prove a differentiable branch or a monotonicity result between the points.
 
-The mechanism does not depend on the sharp features of the benchmark, the Laplace noise with its flat posterior tails, the two preparation-cost atoms, the wide gap between the challenger's possible values, or the assumption that the investor knows more than the buyer. I relax each in turn.
+No trade survives at the certified strengths because $\rho\Delta_T/2\le k$. Against an uninformative price with entry $\rho$, a unilateral informed order cannot cover its cost. An informative equilibrium instead changes the preparation response and the residual return to trading. The two outcomes can therefore be self-consistent at the same parameters.
 
-### 6.1 Smooth noise and atomless preparation costs
+At $r_C$, the Laplace posterior reaches its upper bound on a positive-probability tail. The convention that an indifferent challenger prepares preserves high-cost entry at the boundary itself; strictly above it, that entry disappears. The numerical searches also examined additional pure and finite-support mixed profiles. They found no mixed equilibrium, which remains a search result rather than a nonexistence theorem. The complete intermediate correspondence is open.
 
-Replace the Laplace noise by logistic noise with density
 
-$$
-f_{\mathrm{log}}(z)=\frac{1}{4b}\operatorname{sech}^{2}\left(\frac z{2b}\right),\qquad b>1.
-\tag{16}
-$$
+## 5. Robustness and private information {#sec-extensions}
 
-The derivative of the log density is bounded by $1/b$ in absolute value, which is all the global trading argument used, so Proposition 2 holds unchanged under (A1) to (A3); Proposition A.5 in Appendix A states the result. What changes is the shape of the price experiment. Under full logistic orders the posterior is strictly increasing in the order flow and approaches the bounds $m$ and $M$ only in the limit, instead of sitting on them over whole tails. With $A=e^{1/b}$ and $w=\sqrt{\tau/(1-\tau)}$,
+### 5.1 Noise and preparation costs
 
-$$
-x^*_{\mathrm{log}}=b\log\frac{Aw-1}{A-w},\qquad
-\alpha_H^{\mathrm{log}}=\frac1{1+e^{(x^*_{\mathrm{log}}-1)/b}},\qquad
-\alpha_L^{\mathrm{log}}=\frac1{1+e^{(x^*_{\mathrm{log}}+1)/b}}.
-\tag{17}
-$$
+The reversal extends beyond the benchmark's Laplace noise and two preparation-cost levels. Logistic noise also has a log-density derivative bounded in absolute value by $1/b$, so the global trading bounds remain valid. Proposition A.5 establishes the corresponding equilibrium and entry comparisons. Unlike the Laplace posterior, the logistic posterior reaches its bounds only as order flow tends to infinity.
 
-In the strong benchmark economy, logistic noise gives entry [[logistic_entry_strong]] against [[base_entry_strong]] under Laplace noise. The order-flow threshold is [[logistic_flow_threshold]], which is [[logistic_threshold_noise_sd]] standard deviations of the noise from its center. The two laws share the same posterior bounds at the same scale parameter, but they put very different mass near those bounds. Under Laplace noise the top belief is reached on a positive-probability tail, so a challenger with a threshold just below $M$ still enters often. Under logistic noise the same threshold is crossed only by extreme flows. Figure 3 makes this comparison directly.
+In the strong benchmark economy, entry is [[logistic_entry_strong]] under logistic noise, compared with [[base_entry_strong]] under Laplace noise. The logistic flow threshold is [[logistic_flow_threshold]], or [[logistic_threshold_noise_sd]] noise standard deviations from the center. Thus the same posterior bounds can support different participation rates: the probability of favorable information near the upper bound also matters.
 
 <!-- FIGURE 3: figures/posterior_tail_entry.pdf -->
-> **Figure 3.** The upper tail of price information under full orders at the strong benchmark strength and scale $b=[[base_b]]$. Panel (a) plots $\Pr(\mu_X\ge\tau)$ against the threshold distance $M-\tau$ for Laplace and logistic noise. Panel (b) plots the implied total entry $\rho+(1-\rho)\Pr(\mu_X\ge\tau)$. At $M-\tau=0$ the Laplace plateau enters under the tie rule, so its mass is positive (filled marker), while the logistic mass is zero because the bound is never attained (open marker). These are information-experiment comparisons at a fixed order profile; Online Appendix C.5 records, for each threshold, whether the corresponding economy with the implied high preparation cost is a validated equilibrium. Scale, not variance, is held fixed, and the comparison is not a liquidity or Blackwell ordering between the laws.
+> **Figure 3.** Posterior tails and high-cost entry.
+>
+> **Notes.** Full orders at the strong benchmark strength and scale $b=[[base_b]]$. Panel (a) plots $\Pr(\mu_X\ge\tau)$ against $M-\tau$; panel (b) plots implied entry. At zero threshold distance, the Laplace plateau induces entry under the tie rule, whereas the logistic bound is unattained. Scale, rather than variance, is held fixed. These are fixed-profile comparisons; Online Appendix C.5 records equilibrium validation for each implied cost. The figure does not establish a Blackwell ranking.
 
-I resist the temptation to summarize Figure 3 as one law being more informative than the other. The two experiments are not Blackwell ordered, and holding the scale parameter fixed is not the same as holding variance fixed. What the figure shows is where the mass sits. The Laplace experiment concentrates favorable evidence in a plateau at the top belief, and the logistic experiment spreads it out. For a challenger whose threshold is near the top of the feasible range, that difference decides whether prices bring it in.
+Figure 3 compares the probability of crossing a preparation threshold close to $M$. Laplace noise assigns positive probability to the upper posterior bound; logistic noise does not. The comparison concerns the location of posterior mass at a common scale parameter, and cannot be interpreted as a general ordering of informativeness.
 
-Atomless preparation costs work the same way as atoms once the conditions are restated for the supports. Let the low and high costs be drawn from atomless distributions with probabilities $\rho$ and $1-\rho$, supported within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$. If
+The result also holds when low and high preparation costs are drawn from atomless distributions with sufficiently narrow supports. The support conditions ensure that every low-cost realization prepares at every feasible belief, while high-cost preparation occurs only after sufficiently favorable prices in the strong economy. This preserves the entry floor and the global trading bounds. Proposition A.6 states the result, and Appendix A gives the support restrictions. With the declared cost half-width, strong-incumbent entry is [[cost_mix_laplace_entry_strong]] under Laplace noise and [[cost_mix_logistic_entry_strong]] under logistic noise.
 
-$$
-\begin{gathered}
-c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C<B_{r_1}(m),\\
-B_{r_0}(1/2)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M),
-\end{gathered}
-\tag{18}
-$$
+### 5.2 Acquisition values
 
-and (A3) holds, then every low-cost realization prepares at every feasible belief, every high-cost realization stays out at the weak prior, and every high-cost realization prepares after sufficiently favorable strong-economy prices. The entry rule becomes the cost distribution evaluated at gross profit, which is continuous and nondecreasing in the belief with a positive floor, and that is all the price construction needs. Proposition A.6 in Appendix A states the result under either noise law. In the strong benchmark economy with the cost half-width of Appendix A.4, entry is [[cost_mix_laplace_entry_strong]] under Laplace noise and [[cost_mix_logistic_entry_strong]] under logistic noise, slightly below the values with cost atoms.
+The reversal does not require the benchmark's tenfold gap between high and low acquisition values. With $h=[[moderate_h]]$ and $\ell=[[moderate_ell]]$, the moderate-value specification satisfies all strict inequalities of Proposition 2. Entry rises from [[moderate_entry_weak]] to [[moderate_entry_strong]]. More generally, for any $h>\ell$, the proof constructs weak and strong incumbent strengths sufficiently close to $\ell$, together with costs satisfying the strict inequalities. The relevant requirement is the placement of incumbent strength relative to the low acquisition value. Appendix A provides the construction; Online Appendix C.4 records the numerical examples.
 
-### 6.2 Moderate acquisition values
+### 5.3 Complementary private information
 
-The benchmark uses a wide gap between the challenger's possible values. That is a convenience, not a requirement. With $h=[[moderate_h]]$ and $\ell=[[moderate_ell]]$, the moderate-value specification of Appendix A.4 satisfies every strict inequality of Proposition 2, and entry rises from [[moderate_entry_weak]] to [[moderate_entry_strong]] between its weak and strong strengths.
+The challenger can benefit from prices even when its own information is more accurate than the investor's. A buyer may know its integration technology, while investors following the target hold information about its customers or product market. Diligence combines these sources. I represent this possibility with conditionally independent binary signals: the investor observes $T$ with accuracy $a$, and the buyer observes $Y$ with accuracy $d$, where $a,d\in(1/2,1)$. The buyer observes its signal and the price before preparing; preparation still reveals the exact acquisition value.
 
-The general argument is short. At $r=\ell$ the profit gap between a good and a poor challenger is $h-\ell$, so the gap between the profit at the top belief and at the prior is $(M-1/2)(h-\ell)$, which is positive for any $h>\ell$. Choosing the strong strength close enough to $\ell$ keeps the top-belief profit above the prior profit, and choosing the weak strength closer still makes the weak spread smaller than the fraction $(1-1/b)\rho m$ of the strong spread. A trading cost strictly between those two spreads and a high preparation cost strictly between the two profits then satisfy (A2) and (A3), and any positive low cost below the floor satisfies (A1). All the inequalities are strict, so they survive small perturbations. Appendix A gives the construction and Online Appendix C.4 reports it numerically for several value ratios. The lesson is that the reversal is about where the strengths sit relative to the challenger's low value, not about how dramatic the challenger's upside is.
+Private information makes entry state-dependent even conditional on the price. A high-value challenger is more likely to receive favorable private information and therefore more likely to prepare. Competitive pricing incorporates both conditional entry rates. Nevertheless, the positive entry floor leaves a strictly positive coefficient on public beliefs, so the price still reveals the market's posterior. The buyer combines that posterior with its own signal. Appendix A derives the posterior formulas, state-dependent pricing, and trading bounds.
 
-### 6.3 A buyer who knows more than the market
+Proposition A.7 gives sufficient conditions for unique zero orders and entry $\rho$ in the weak economy, and unique full orders by investor signal with entry above $\rho$ in the strong economy. These conditions allow arbitrary mixed signal-contingent orders and every continuous deviation. They do not require the investor's signal to be more accurate than the buyer's.
 
-A natural objection to the benchmark is that it gives the investor knowledge of the challenger's value while the challenger itself knows nothing. That is not the interpretation I have in mind. The information relevant to a takeover is dispersed. A buyer knows its own technology and integration capacity; investors who follow the target know its customers and product market. Diligence combines the two. To capture this, I give the trader and the buyer different noisy signals and let the buyer's signal be the more accurate one.
-
-Let $T,Y\in\{+,-\}$ be conditionally independent given the challenger's quality, with
-
-$$
-\Pr(T=+\mid H)=\Pr(T=-\mid L)=a,\qquad
-\Pr(Y=+\mid H)=\Pr(Y=-\mid L)=d,
-\qquad a,d\in(1/2,1).
-\tag{19}
-$$
-
-The trader observes $T$; the buyer observes $Y$ and the price before preparing, and diligence still reveals the exact value before bidding. Writing $\lambda_X=\Pr(T=+\mid X)$ for the market's belief about the trader's signal, the public belief about quality and the buyer's joint posteriors are
-
-$$
-\begin{aligned}
-\mu_X&=(1-a)+(2a-1)\lambda_X,\quad
-\mu_-=(1-a)+(2a-1)m,\quad \mu_+=(1-a)+(2a-1)M,\\
-\phi_+(\mu)&=\frac{d\mu}{d\mu+(1-d)(1-\mu)},\qquad
-\phi_-(\mu)&=\frac{(1-d)\mu}{(1-d)\mu+d(1-\mu)}.
-\end{aligned}
-\tag{20}
-$$
-
-The new element is that the buyer's private signal makes entry depend on the state even conditional on the price. Write $w_H=t_H-t_0$ and $w_L=t_L-t_0$ and let $I_y=\mathbf1\{B_r(\phi_y(\mu))\ge c_H\}$ indicate expensive entry after private signal $y$. Then
-
-$$
-\begin{aligned}
-e_H&=\rho+(1-\rho)[dI_++(1-d)I_-],\\
-e_L&=\rho+(1-\rho)[(1-d)I_++dI_-],\\
-D&=e_Hw_H-e_Lw_L,\qquad
-\rho\Delta_T\le D\le\Delta_T+(1-\rho)(2d-1)w_H.
-\end{aligned}
-\tag{21}
-$$
-
-A good challenger enters more often than a poor one at the same price, because its buyer is more likely to have seen a favorable private signal. The market maker cannot use a common entry rate. Competitive pricing becomes
-
-$$
-P=t_0+e_L(P)w_L+\mu_XD(P),\qquad
-\mu_X=\frac{P-t_0-e_L(P)w_L}{D(P)},
-\tag{22}
-$$
-
-and the price still reveals the public belief, because the coefficient $D$ is bounded away from zero. The buyer combines that belief with its own signal. The trader's residual profits after a favorable and an unfavorable signal become
-
-$$
-A_+=(2a-1)(1-\lambda_X)D,
-\qquad A_-=(2a-1)\lambda_XD.
-\tag{23}
-$$
-
-These are the benchmark residuals scaled by the trader's own informativeness $2a-1$ and by a spread $D$ that now includes the state-dependent entry response. Proposition A.7 in Appendix A gives the exact conditions, the analogues of (A1) to (A3) in which the buyer's most pessimistic joint posterior $\phi_-(\mu_-)$ replaces $m$, the buyer's favorable private posterior at the prior, $d$, replaces $1/2$ in the weak-economy exclusion, and the trading wedge is scaled by $2a-1$. Under those conditions the weak economy has unique zero orders and entry $\rho$, the strong economy has unique full orders by trader signal and entry above $\rho$, and both conclusions allow arbitrary mixed signal-contingent orders and every continuous deviation. Nothing in the argument requires $a\ge d$.
-
-The example uses buyer accuracy [[signal_buyer_accuracy]] and trader accuracy [[signal_trader_accuracy]]. The buyer's private signal is the more accurate one, and entry still rises from [[signal_entry_weak]] to [[signal_entry_strong]]. In the weak economy even a favorable private signal does not justify expensive preparation; in the strong economy the favorable private signal combined with a favorable price does. The price adds something the buyer does not have, which is the incremental information in the market's signal, and that increment is what the stronger incumbent makes worth producing. Table 3 collects the robustness results.
+The declared example has buyer accuracy [[signal_buyer_accuracy]] and investor accuracy [[signal_trader_accuracy]]. Entry rises from [[signal_entry_weak]] to [[signal_entry_strong]]. A favorable private signal alone does not justify high-cost preparation against the weak incumbent; combined with a favorable price, it does against the strong incumbent. Table 3 reports this example with the other robustness checks. The full accuracy grid, including validated economies outside the sufficient uniqueness region, appears in Online Appendix Table 1.
 
 <!-- TABLE 3: tables/table3_extensions.tex -->
-> **Table 3.** Extensions and information complementarities. Each row is a separate economy solved from its own primitive vector; entry $\mathsf E$ and the probability of high-quality ownership $\mathsf O_H$ are reported at the weak and strong strengths together with the smallest of the five strict margins that support the analytical result. Panel (a) crosses Laplace and logistic noise with cost atoms and the uniform cost mixture at the benchmark. Panel (b) reports the moderate-value specification. Panel (c) reports the complementary-signal economies for a grid of trader and buyer accuracies $(a,d)$; the declared example is marked, and rows outside the region where every margin in Proposition A.7 is positive are validated equilibria without the analytical uniqueness label. Online Appendix C.1, C.3, and C.4 define the columns.
+> **Table 3.** Robustness and complementary private information.
 
-## 7. What discovery is worth {#sec-welfare}
+## 6. Welfare and sale terms {#sec-welfare}
 
-### 7.1 Access to prices and acquisition surplus
+### 6.1 Access to prices
 
-Proposition 2 is a statement about who shows up. It does not say whether anyone is better off when the prospective buyer can read the target's price. The answer is not obvious. Informed trading redistributes money from noise traders to the investor, extra entry moves money from bidders to target shareholders, and the challenger pays preparation costs that would otherwise be saved. None of these transfers is a gain by itself. I therefore compare two economies that differ only in whether the buyer sees the price.
+Access to prices improves acquisition outcomes at a fixed level of competition. Hold the incumbent at $r_1$ and compare the feedback equilibrium with an economy in which the challenger cannot observe the price. All other parameters are unchanged, and trading and pricing are reoptimized in both economies. Proposition A.9 establishes that price access increases expected target proceeds and acquisition surplus net of preparation costs. The comparison also holds with logistic noise and atomless preparation costs.
 
-Hold the incumbent at the strong strength $r_1$ and every other primitive at the values of Proposition 2. In the first economy the challenger observes the target price before deciding whether to prepare. In the second it cannot, and it decides on the prior. Trading and pricing are reoptimized in both. Proposition A.9 in Appendix A states the result. Access to prices strictly raises expected target proceeds and strictly raises acquisition surplus net of preparation costs, and both statements survive smooth noise and atomless costs.
+The two economies generate the same order-flow experiment. The global trading bound forces full orders even when the challenger cannot use the price and entry remains $\rho$. Trading costs therefore coincide. Price access changes which high-cost challengers prepare. Conditional on the information and cost that induce an additional entrant, expected gross acquisition profit covers preparation cost. The allocation gain includes that profit and the value of sales that would otherwise fail the reserve. Appendix A gives the accounting identities. Transfers between bidders, shareholders, and traders are excluded from acquisition surplus.
 
-The comparison is clean because the two economies differ in exactly one thing. A buyer who cannot see the price keeps its prior, and at the prior the expensive opportunity is not worth investigating, so it enters only when its cost happens to be low. The investor's problem, by contrast, is the same in both economies. The trading bound that forces full orders under feedback applies just as well when entry is stuck at $\rho$, because that bound only uses the floor on entry. The investor therefore trades fully in both economies, the order-flow experiment is the same, and the real trading costs are the same. What changes is whether the buyer can use the experiment.
+Table 2 reports the fixed-strength comparison. Expected target proceeds are [[base_revenue_feedback]] with price access and [[base_revenue_hidden]] without it. This is a welfare result about access to information under a given sale rule and incumbent distribution; it does not rank different incumbent strengths or sale mechanisms.
 
-Why does using it create surplus rather than a transfer? Without a challenger, the ownership value of the target is $W_0(R)=R\mathbf1\{R\ge p\}$. With a challenger of value $\theta>p$ it is $W_\theta(R)=\max\{R,\theta\}$. The difference has a simple form,
+The information effect can be separated from the average price level. Add a deterministic external dividend of [[base_matched_dividend]] to the traded claim in the price-hidden economy. The dividend raises both the terminal financial payoff and its price by the same amount, leaving $V_T-P$, trading incentives, and entry unchanged. Mean prices then match those in the feedback economy, while entry still differs. This dividend is a diagnostic payment, excluded from acquisition surplus and from the seller's feasible sale terms.
 
-$$
-W_\theta(R)-W_0(R)
-=(\theta-\max\{p,R\})_++p\mathbf1\{R<p\}.
-\tag{24}
-$$
+### 6.2 The payment rule
 
-If the incumbent's value is below the reserve, entry replaces no sale with a sale to a buyer worth $\theta$. If it is above, entry improves ownership by $(\theta-R)_+$, which is the challenger's gross acquisition profit. Integrating over $R$, an additional preparation decision taken at posterior $\mu$ and cost $C$ produces conditional expected net surplus $B_r(\mu)-C+p^2/r$. The buyer takes that decision only when $B_r(\mu)-C\ge0$, so every additional entrant adds at least $p^2/r$, the value of sales that would otherwise not have happened. Low-cost entry is unchanged across the two economies. For cost atoms the gains in surplus and in target proceeds are
+The effect of competition on target-payoff sensitivity depends on the sale payment. To isolate this dependence, consider a verifiable-value institution with zero reserve. After diligence, the highest-value buyer acquires the target. A sale to the next-best buyer at its value is an enforceable fallback, accepted at zero surplus. The seller and winner divide the surplus above this fallback by Nash bargaining, with seller share $\eta$.
 
-$$
-\begin{aligned}
-\Delta\mathcal W&=(1-\rho)\mathbb E\left[
-\left(B_r(\mu_X)-c_H+\frac{p^2}{r}\right)\mathbf1\{\mu_X\ge\tau\}\right]>0,\\
-\Delta\mathcal R_T&=\frac{1-\rho}{2}
-\left[\alpha_H(t_H-t_0)+\alpha_L(t_L-t_0)\right]>0.
-\end{aligned}
-\tag{25}
-$$
-
-Payments among bidders, target shareholders, market makers, and noise traders are transfers in this calculation and drop out. The result is about access to prices at a fixed level of competition. It is not a welfare ranking of weak against strong incumbents, and it is not a ranking of sale rules. I return to the seller's problem in Section 8.
-
-### 7.2 Separating information from price levels
-
-At the strong strength, mean target proceeds are [[base_revenue_feedback]] when the buyer sees the price and [[base_revenue_hidden]] when it does not. A skeptic could argue that the buyer responds to a higher price level rather than to information. To rule this out I attach a deterministic external dividend of [[base_matched_dividend]] to the traded claim in the price-hidden economy. The competitive price shifts up by exactly that amount, $V_T-P$ is unchanged, and so is every trading residual and every entry decision. The two economies now have the same mean price and the same mean financial payoff, and they still differ in entry. The difference is information, not level. The dividend is a diagnostic. It is not a sale term the seller can offer and it does not count as a resource gain in the surplus calculation.
-
-### 7.3 Which payment property supports discovery
-
-The auction of Section 2 pays the target whatever the strongest competing bid is. Which part of that rule drives the opposition in Proposition 1? To find out I change the institution and keep everything else. Set the reserve to zero. After diligence, values are publicly verifiable and the highest-value buyer acquires the target. A sale to the next-best buyer at its own value is an enforceable fallback, accepted at zero surplus. The seller and the winning buyer then split the winner's surplus above that fallback by Nash bargaining, with the seller receiving share $\eta$. Without a challenger the fallback is zero and the seller receives $\eta R$. For an incumbent distribution on $[0,R_{\max}]$ with $\ell<R_{\max}<h$ and $0\le\eta<1$, the transfer, the challenger's profit, and the information spread of target proceeds are
+Without a challenger, the seller receives $\eta R$. For an incumbent distribution supported on $[0,R_{\max}]$, with $\ell<R_{\max}<h$ and $0\le\eta<1$, the transfer, challenger profit, and target-payoff spread are
 
 $$
 \begin{aligned}
@@ -483,130 +352,67 @@ T_\eta(R,\theta)&=(1-\eta)\min\{R,\theta\}+\eta\max\{R,\theta\},\\
 G_{\theta,\eta}&=(1-\eta)\mathbb E[(\theta-R)_+],\\
 \Delta_\eta&=\eta(h-\ell)+(1-2\eta)\mathbb E[(R-\ell)_+].
 \end{aligned}
-\tag{26}
+\tag{14}
 $$
 
-Proposition A.8 in Appendix A records the comparative statics. A stronger incumbent weakly reduces challenger profits at every $\eta$, as in the auction. The spread behaves differently. It rises with competition for $\eta<1/2$, does not respond to competition at $\eta=1/2$, and falls with competition for $\eta>1/2$.
+Proposition A.8 establishes the comparative statics. A stronger incumbent weakly reduces challenger profit for every bargaining weight. Its effect on the target-payoff spread is positive for $\eta<1/2$, zero at $\eta=1/2$, and negative for $\eta>1/2$, with strictness determined by the change in the incumbent distribution.
 
-The mechanics are worth spelling out. Suppose the incumbent's value exceeds $\ell$. If the challenger turns out to be worth $h$, it wins and pays $(1-\eta)R+\eta h$, which rises with $R$ at rate $1-\eta$. If the challenger turns out to be worth $\ell$, the incumbent wins and pays $(1-\eta)\ell+\eta R$, which rises with $R$ at rate $\eta$. A stronger incumbent therefore raises the high-quality payment faster than the low-quality payment exactly when $1-\eta>\eta$. When the seller keeps most of the surplus, the target claim is already close to a claim on the winner's value, and competition adds nothing to how much that claim depends on who the challenger is. When the seller keeps little, the claim is close to the runner-up's value, and a stronger incumbent makes the runner-up matter more precisely when the challenger is good. It is runner-up discipline, the tie between the target's payment and the loser's value, that makes competition raise the information sensitivity of the target's shares. The auction label plays no role.
+To see why, take $R>\ell$. A high-value challenger wins and pays $(1-\eta)R+\eta h$, whose sensitivity to $R$ is $1-\eta$. A low-value challenger loses, and the incumbent pays $(1-\eta)\ell+\eta R$, whose sensitivity is $\eta$. Competition widens the difference precisely when the first sensitivity exceeds the second. Thus the benchmark's opposition between acquisition profit and target-payoff sensitivity depends on the weight placed on the runner-up's value.
 
 <!-- FIGURE 4: figures/bargaining_weight.pdf -->
-> **Figure 4.** Bargaining weight and the division of information-sensitive returns in the verifiable-value institution with a zero reserve, benchmark values $h=$ [[base_h]] and $\ell=$ [[base_ell]], and uniform incumbents with $r=$ [[base_r_weak]] (weak) and $r=$ [[base_r_strong]] (strong). Panel (a) plots the information spread $\Delta_\eta$ against the seller's bargaining weight $\eta$; the two lines cross at $\eta=1/2$, where competition stops affecting the spread. Panel (b) plots the challenger's expected profits $G_{H,\eta}$ and $G_{L,\eta}$ on a log scale; a stronger incumbent lowers both at every weight. Values are per target share. The figure compares acquisition-stage payoffs only; the trading and entry game under this institution is not solved here.
+> **Figure 4.** Bargaining and the division of acquisition surplus.
+>
+> **Notes.** Zero-reserve verifiable-value institution, $h=[[base_h]]$, $\ell=[[base_ell]]$, and uniform incumbents with $r=[[base_r_weak]]$ or $r=[[base_r_strong]]$. Panel (a) plots $\Delta_\eta$ against seller weight $\eta$; panel (b) plots conditional challenger profits on a log scale. Values are per target share. The comparison concerns acquisition-stage payoffs; trading and entry under this institution are not solved.
 
-Figure 4 shows the two forces at the benchmark values. In panel (a) the strong incumbent produces the larger spread to the left of $\eta=1/2$ and the smaller spread to the right, with the two lines crossing exactly at the midpoint. Panel (b) shows challenger profits falling with strength at every weight, so the profit side of Proposition 1 does not depend on the institution at all. The lesson for the design question is direct. An institution that lets competition raise the target's information sensitivity must tie the target's payment to the losing bidder. This is a payment-stage statement about a specified alternative institution. Solving the trading and entry game under it, with the different residual profits that (26) implies, is part of the program in Section 8.
+Figure 4 illustrates these payment-stage results. They identify a condition under which stronger competition increases the sensitivity of target shares to challenger quality. They do not establish an entry reversal under bargaining, which would require solving its trading and participation game.
 
-## 8. Sale design as information policy {#sec-design}
+### 6.3 Reserve comparisons {#sec-design}
 
-### 8.1 The seller's continuation problem
+A reserve affects both the payment required to win and the information embedded in target shares. A reserve that excludes the low-value challenger can widen the difference in target proceeds across challenger types. This can support informative trading even against a weak incumbent. I illustrate this possibility with two reserve levels; the seller's complete continuation problem and local revenue decomposition appear in Appendix A.
 
-Proposition 2 holds the sale mechanism fixed. That is what makes the result sharp, and it also points at the next question. A seller who chooses sale terms changes what an entrant pays, and it also changes whether investors have a reason to reveal the information that makes entry worthwhile. Which sale rules maximize target proceeds once they are understood to shape the information revealed before participation? How does the answer depend on the incumbent's strength, and does an optimizing seller reinforce the entry reversal or remove it? These are the questions the model makes concrete, and I set them up here without yet answering them.
-
-I begin with a reserve chosen publicly before trading. For every reserve $p$ let $\mathcal E(p,r)$ be the set of trading, pricing, and entry continuations. For a continuation $\sigma\in\mathcal E(p,r)$ write $e_H(p,r;\sigma)$ and $e_L(p,r;\sigma)$ for entry in the two quality states. Seller revenue is
-
-$$
-\mathcal R_T(p,r;\sigma)
-=t_0(p,r)+\frac12\sum_{\theta\in\{H,L\}}e_\theta(p,r;\sigma)
-[t_\theta(p,r)-t_0(p,r)].
-\tag{27}
-$$
-
-A seller equilibrium has to specify a continuation after every feasible reserve, not only after the one chosen, because the seller's deviations are evaluated against those continuations. Given a selection $\sigma^*(p)\in\mathcal E(p,r)$, the chosen reserve satisfies
-
-$$
-p^*\in\arg\max_{p\in[0,h]}\mathcal R_T(p,r;\sigma^*(p)).
-\tag{28}
-$$
-
-Existence, attainment, and the selection itself are part of the result to be established. The optimistic envelope that picks the best continuation at each reserve and the pessimistic envelope that picks the worst describe the correspondence, but neither is automatically the seller's objective. The strongest comparative-static target is an entry reversal under seller-optimal terms. A characterization of when an optimizing seller instead eliminates the reversal would answer the same design question.
-
-### 8.2 Payoffs over the complete reserve domain
-
-The reliable starting point is the realized sale rule. For a realized challenger value $v$,
-
-$$
-\begin{aligned}
-t_0(p,r)&=\mathbb E[p\mathbf1\{R\ge p\}],\\
-t_v(p,r)&=
-\begin{cases}
-\mathbb E[\max\{p,\min(R,v)\}],&v\ge p,\\
-t_0(p,r),&v<p,
-\end{cases}\\
-g_v(p,r)&=\mathbb E[(v-\max\{p,R\})_+].
-\end{aligned}
-\tag{29}
-$$
-
-Four regimes follow. For $p<\ell$ the closed forms in (4) apply. For $\ell<p<r$ the low-value challenger never meets the reserve, so $t_L=t_0$ and $g_L=0$, while $t_H=r/2+p^2/(2r)$ and $g_H=h-t_H$. For $r\le p<h$ the incumbent never meets the reserve either, so $t_0=t_L=g_L=0$, $t_H=p$, and $g_H=h-p$. A reserve above $h$ prevents any sale. Equality at an acquisition-value atom is evaluated with the admissibility convention of Section 2.
-
-These regimes change the claim investors trade. Excluding the low-value buyer widens the gap between what the target receives when the challenger is good and when it is poor, and it can do so enough to make information valuable even against a weak incumbent. This is why a reserve is an information instrument and not only an extraction instrument. With atomless acquisition values I integrate (29) over the conditional value distribution rather than extending a formula through an exclusion boundary; a reserve that cuts through a value band is handled by the integral, not by a case.
-
-### 8.3 A local extraction-discovery decomposition
-
-On a differentiable continuation branch with atomless preparation costs and $0<p<\ell$, write $\mathsf E=(e_H+e_L)/2$. Differentiating (27) gives
-
-$$
-\frac{d\mathcal R_T}{dp}
-=(1-\mathsf E)\left(1-\frac{2p}{r}\right)+\mathsf E\frac p r
-+\frac12\sum_\theta\frac{de_\theta}{dp}(t_\theta-t_0).
-\tag{30}
-$$
-
-The first two terms are the familiar reserve trade-off with the entry probability as a weight. The last term is where sale design meets discovery. If the cost distribution has CDF $H_C$ with density $h_C$, and $\mu_\theta(z;p)$ is the posterior reached in state $\theta$ at noise realization $z$, then
-
-$$
-\frac{de_\theta}{dp}
-=\int f(z)h_C(B_{p,r}(\mu_\theta))
-\left[-\frac p r+(g_H-g_L)\frac{d\mu_\theta(z;p)}{dp}\right]dz.
-\tag{31}
-$$
-
-The first term in the bracket is direct rent extraction. A higher reserve lowers every challenger's gross profit and pushes marginal preparers out. The second term is the change in the information generated by equilibrium trading. On a branch where orders are fixed at their bounds it vanishes locally, because the posterior reached at each noise realization does not move with the reserve. When orders adjust it does not vanish, and its sign is not pinned down. Equations (30) and (31) are local decompositions, not global sign restrictions, and Appendix A gives the regularity they need. At an atomic cost threshold or a nonregular continuation, the level objective (27) is the right object.
-
-### 8.4 A reserve diagnostic with atomless acquisition values
-
-To see the design margin at work I compute a comparison rather than an optimum. Let the challenger's quality indicate a low or a high value class, equally likely. Conditional on class, the acquisition value is uniform on $[\ell-\varepsilon_V,\ell+\varepsilon_V]$ or $[h-\varepsilon_V,h+\varepsilon_V]$ with half-width $\varepsilon_V=$ [[value_band_halfwidth]]. The investor observes the class and nothing more. Preparation reveals the exact value. Raising the reserve from [[base_p]] to [[value_reserve_high]] raises weak-economy revenue from [[value_revenue_weak_low_p]] to [[value_revenue_weak_high_p]], and strong-economy revenue from [[value_revenue_strong_low_p]] to [[value_revenue_strong_high_p]]. Under the higher reserve entry is [[value_entry_weak_high_p]] in the weak economy and [[value_entry_strong_high_p]] in the strong one, and trading is informative in both. Each stated trading outcome satisfies the corresponding global bound, so the continuations behind these numbers are the unique ones at those reserves.
+To avoid making exclusion depend on an acquisition-value atom, let quality identify a low or high value class, each with probability one half. Conditional values are uniform around $\ell$ and $h$ with half-width $\varepsilon_V=[[value_band_halfwidth]]$. The investor observes the class, and preparation reveals the exact value. Increasing the reserve from [[base_p]] to [[value_reserve_high]] raises weak-incumbent revenue from [[value_revenue_weak_low_p]] to [[value_revenue_weak_high_p]] and strong-incumbent revenue from [[value_revenue_strong_low_p]] to [[value_revenue_strong_high_p]]. At the higher reserve, entry is [[value_entry_weak_high_p]] and [[value_entry_strong_high_p]], respectively, and trading is informative in both economies. The global bounds establish unique trading continuations at the reported reserve choices.
 
 <!-- TABLE 4: tables/table4_reserve_comparisons.tex -->
-> **Table 4.** Sale terms and discovery. Panel (a) compares the original reserve with the declared alternative at each incumbent strength under binary acquisition values, reporting the trading profile, total entry, target proceeds per share, and the strict bound that supports the stated continuation. Panel (b) repeats the comparison with atomless class values and class-only investor information. Panel (c) summarizes an exploratory sweep over reserves from zero to the highest acquisition value as ranges across the continuations found, with the number of reserves at which several continuations were found and the number left unresolved. The highest found revenue is not an optimum, and a reserve without a found continuation is not an empty equilibrium set. Online Appendix C.6 specifies the computation.
+> **Table 4.** Reserve comparisons and exploratory continuations.
 
-The higher reserve excludes the low-value class from the sale. That is the extraction motive, and by itself it would not make a weak-incumbent economy informative. What the reserve also does is widen the spread between the target's proceeds with a good challenger and with a poor one, which switches informed trading on against the weak incumbent as well. Revenue rises at both strengths for that combined reason. Panel (c) of Table 4 reports what an exploratory sweep over the full reserve domain finds, reserve by reserve, keeping every accepted continuation and flagging the reserves the search could not resolve. I read it as a map of the problem in (28), not as its solution. The profitable alternative identifies a design margin worth optimizing. Its optimization is the next result, and I do not infer any property of the optimum from a two-point comparison.
+Table 4 reports the declared comparisons and an exploratory sweep over the reserve domain. The higher reserve excludes the low-value class and changes both acquisition incentives and the target-payoff spread. Its revenue advantage demonstrates a feasible improvement over the original reserve. It does not identify an optimal reserve. The sweep reports outcomes among continuations found and records unresolved reserves; neither an envelope of found revenues nor a missing continuation establishes the seller's solution.
 
-### 8.5 Open questions
+## 7. Empirical implications {#sec-program}
 
-The seller's problem is the first item on the agenda that follows from this paper. I intend to solve it with the complete continuation problem retained at every reserve and with continuous challenger values. The object is an institutional result about how a seller obtains informative participation, and the comparison between a fixed institution and an optimized one decides whether the seller uses, strengthens, or replaces the effect of the incumbent's strength.
+The model concerns a decision to prepare, made before the set of executable bids is fixed. An empirical counterpart is the start of substantive diligence or the submission of a proposal requiring costly preparation, rather than the number of public offers. Incumbent strength must be measured using information available before that decision. The relevant price information must also precede entry. Later target returns can reflect anticipated bidder arrival, so a return-entry association alone does not identify learning.
 
-The second item is commitment. When does fixing sale terms before trading raise the seller's expected proceeds relative to revising them after observing the price but before preparation? Anticipated repricing changes both the return to revealing information and the return to becoming an informed buyer. That timing has to be solved, not imposed through a price-indexed penalty with a convenient sign.
+Online Appendix D proposes an institutional pilot that reconstructs the timing of approaches, public visibility, buyer contacts, diligence, proposals, and final selection from disclosure records. It separates contemporaneous public information from facts disclosed only retrospectively. The first requirement is a publicly understood sale opportunity that remains contestable while a prospective challenger decides whether to investigate. A traded stock during confidential negotiations is insufficient. The pilot specifies a research design; no sample, estimated effect, or instrument is reported here.
 
-The third item is the acquisition institution itself. Section 7.3 identifies the payment property to study. In a first-price alternative, bids and expected payments depend on the incumbent's belief about a challenger selected through price-dependent entry, and those beliefs belong inside the auction continuation. Endogenous investor research adds the uninformed trader's incentives, including manipulation through the real decision the price feeds into [@GoldsteinGuembel2008]. Each of these is a different game, not a substitution into the payoff formulas of Section 3.
+## 8. Conclusion {#sec-conclusion}
 
-The fourth item is the middle of the correspondence. The certified points of Proposition 3 are exact anchors, not a branch. Continuation between them must allow changing buy-sell asymmetry and mixed orders, and the conditions for branch existence, local continuation, and multiplicity are open, as is any selection argument where one is economically justified.
+The bidder pool in a takeover depends on the information available before buyers commit to participation. A stronger incumbent can increase the sensitivity of target proceeds to challenger quality, making informed trading profitable and bringing a challenger into the auction. This connects the division of acquisition surplus to the formation of competition. Sale terms therefore affect participation through both the buyer's expected payment and the information supplied by the stock market.
 
-## 9. Empirical implications {#sec-program}
+The next theoretical step is to characterize the seller's choice of terms with the full equilibrium continuation correspondence retained. The reserve comparisons show why this choice matters, while multiplicity prevents a direct identification of the seller's objective with an envelope of found revenues. A related question is whether committing before trading improves outcomes relative to revising terms after observing prices. Solving alternative auction formats and endogenous investor research would further clarify the role of payment rules and manipulation incentives [@GoldsteinGuembel2008]. Empirical work must first establish the decision interval and information sets required for buyers to learn from prices.
 
-The model's decision is not a bid. It is the decision to investigate, taken by a buyer who has not yet committed to the diligence and preparation that a bid requires, during an interval in which the target's shares trade. That is where the empirical work has to start. An empirical entry variable is a decision to investigate or to submit a substantive proposal, not a count of public offers. Incumbent strength has to be measured from information available before the challenger's decision, because the final winning bid is not the initial threat the challenger faced. And the financial information has to precede entry. A relation between target returns and the later arrival of bidders can reflect anticipation of entry as easily as learning from prices, so the first task is to establish the decision interval and its information sets rather than to run a regression across deals.
-
-The pilot in Online Appendix D is built for that task. It selects publicly visible, still-open sale opportunities involving listed targets and reconstructs, from disclosure records, the timing of initial approaches, public visibility, contacts, diligence, substantive proposals, revisions, and final selection. At each event it records what was publicly known at that time, separating later retrospective disclosure from contemporaneous availability. The Imprivata process record shows the shape of what the pilot looks for, an unsolicited approach followed by deliberation over potential buyers and indications subject to further diligence, but a stock price that exists during a confidential negotiation is not enough. The model needs an observable interval in which another buyer could still decide whether to investigate a publicly understood opportunity. The pilot is a design. It does not report a sample, a measured effect, or an instrument, and a targeted causal or structural exercise follows the institutional results rather than preceding them.
-
-## 10. Conclusion {#sec-conclusion}
-
-Competition changes two returns at once. It lowers what a challenger can earn from acquiring the target and raises what an investor can earn from knowing the challenger's quality. I have shown that the second effect can dominate the first, so that a stronger incumbent recruits the very buyer it would ordinarily deter, and that the reversal is a property of the equilibrium information rather than of the auction alone. Holding the information experiment fixed, deterrence returns. Letting the market choose it, entry rises with competition over a certified range and coexists with an uninformative equilibrium in between. The mechanism survives smooth noise, atomless preparation costs, and a buyer whose private signal is better than the market's. At fixed competition, access to prices raises acquisition surplus net of diligence. And the payment property behind all of this is runner-up discipline, not the auction label.
-
-A company is not sold to a fixed list of fully informed buyers. Its sale rules and its stock market decide who becomes an informed, willing buyer. How should the institutions of corporate control be designed once their effect on discovery is taken seriously? That is the question these results make concrete, and it is the one I turn to next.
+```{=latex}
+\clearpage
+```
 
 ## References {#references}
 
 ::: {#refs}
 :::
 
+
+```{=latex}
+\clearpage
+```
+
 ## Appendix A {#paper-appendix}
 
 ### A.1 Supporting results {#pa-results}
 
-The main text states three propositions. The arguments behind them, and the extensions discussed in Sections 4 to 7, rest on the results collected here. Complete proofs are in the Online Appendix; each statement names the section that proves it.
+
+These supporting results supply the inference, comparative statics, and extensions used in the main text. The indicated sections of the Online Appendix provide complete proofs.
 
 **Proposition A.1 (posterior bounds).** *For arbitrary mixed state-contingent orders on $[-1,1]$, the order-flow posterior $\mu_X$ and the posterior based on the price lie in $[m,M]$, where $a_H$, $a_L$, $\mu_X$, $m$, and $M$ are defined in (7).*
 
-The proof is short. For any feasible orders $q,q'$ the triangle inequality gives $e^{-2/b}\le f(x-q)/f(x-q')\le e^{2/b}$, which is (8). Integrating against $d\sigma_H(q)\,d\sigma_L(q')$ preserves both inequalities, and equal priors turn them into bounds on $\mu_X$. Because the price is a function of $X$, the price posterior is $\mathbb E[\mu_X\mid P]$ and inherits the interval. Online Appendix A.1 and A.3 give the measure-theoretic version.
+For any feasible orders $q,q'$ the triangle inequality gives $e^{-2/b}\le f(x-q)/f(x-q')\le e^{2/b}$, which is (8). Integrating against $d\sigma_H(q)\,d\sigma_L(q')$ preserves both inequalities, and equal priors turn them into bounds on $\mu_X$. Because the price is a function of $X$, the price posterior is $\mathbb E[\mu_X\mid P]$ and inherits the interval. Online Appendix A.1 and A.3 give the measure-theoretic version.
 
 **Proposition A.2 (price sufficiency and residual profits).** *Suppose $c_L<B_r(m)$. The observed price reveals $\mu_X$ almost surely. Entry and competitive pricing take the form (9), and the residual advantages of an informed buyer of shares in state $H$ and of an informed short seller in state $L$ are given by (11), with $\rho m\Delta_T\le A_H(x),A_L(x)\le\Delta_T$.*
 
@@ -624,29 +430,29 @@ $$
 r_N&=\mathfrak r(2k/\rho),\qquad
 r_U=\mathfrak r\left(\frac{k}{(1-1/b)\rho m}\right).
 \end{aligned}
-\tag{32}
+\tag{A.1}
 $$
 
 *No trade is an equilibrium exactly when $\rho\Delta_T(r)/2\le k$, that is, when $r\le r_N$. The stronger restriction $r<\mathfrak r(k)$ guarantees that it is the unique outcome. The restriction $r>r_U$ guarantees unique full orders. Expensive entry is impossible in every equilibrium when $B_r(M)<c_H$. If the equality $B_r(M)=c_H$ has a solution in the specified domain, its unique crossing is*
 
 $$
 r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}{M}.
-\tag{33}
+\tag{A.2}
 $$
 
 *At $r_C$ the tie rule of Section 2 is retained.*
 
-Under no trade the posterior is $1/2$, entry is $\rho$, and a correctly signed order of size $s$ earns (A.5) below; zero is optimal exactly when the coefficient is nonpositive, which gives $r_N$. The sufficient uniqueness boundary $\mathfrak r(k)$ comes from $\Delta_T<k$, which defeats any nonzero order against every candidate schedule. The full-order boundary $r_U$ comes from the derivative bound (13). The function $B_r(M)$ in (A.6) is strictly decreasing on the auction-support domain, so there is at most one crossing of $c_H$, and (33) selects the larger algebraic root. Under Laplace noise the maximum posterior is attained on the positive-probability tail $x\ge1$, so indifference at $r_C$ is not a null event and the tie rule matters there. Online Appendix A.5 derives the formulas and their domain.
+Under no trade the posterior is $1/2$, entry is $\rho$, and a correctly signed order of size $s$ earns (A.25) below; zero is optimal exactly when the coefficient is nonpositive, which gives $r_N$. The sufficient uniqueness boundary $\mathfrak r(k)$ comes from $\Delta_T<k$, which defeats any nonzero order against every candidate schedule. The full-order boundary $r_U$ comes from the derivative bound (A.5). The function $B_r(M)$ in (A.26) is strictly decreasing on the auction-support domain, so there is at most one crossing of $c_H$, and (A.2) selects the larger algebraic root. Under Laplace noise the maximum posterior is attained on the positive-probability tail $x\ge1$, so indifference at $r_C$ is not a null event and the tie rule matters there. Online Appendix A.5 derives the formulas and their domain.
 
-**Proposition A.5 (logistic noise).** *Replace Laplace noise by logistic noise with the density in (16). Under conditions (A1) to (A3), the unique trading outcomes and the entry and ownership comparisons of Proposition 2 remain valid, with the threshold and favorable-flow probabilities given by (17).*
+**Proposition A.5 (logistic noise).** *Replace Laplace noise by logistic noise with the density in (A.6). Under conditions (A1) to (A3), the unique trading outcomes and the entry and ownership comparisons of Proposition 2 remain valid, with the threshold and favorable-flow probabilities given by (A.7).*
 
-The log-density derivative of the logistic law is bounded in absolute value by $1/b$, which is all the global trading argument uses. Under full orders the posterior is strictly increasing with log odds (A.13) below, spans the open interval $(m,M)$, and reaches every interior threshold with positive probability. Online Appendix A.6 has the inversion.
+The log-density derivative of the logistic law is bounded in absolute value by $1/b$, which is all the global trading argument uses. Under full orders the posterior is strictly increasing with log odds (A.8) below, spans the open interval $(m,M)$, and reaches every interior threshold with positive probability. Online Appendix A.6 has the inversion.
 
-**Proposition A.6 (atomless preparation costs).** *Replace the cost atoms by atomless low- and high-cost distributions with probabilities $\rho$ and $1-\rho$, supported respectively within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$. Suppose the support conditions (18) hold and retain (A3). The conclusions of Proposition 2 hold under either noise law.*
+**Proposition A.6 (atomless preparation costs).** *Replace the cost atoms by atomless low- and high-cost distributions with probabilities $\rho$ and $1-\rho$, supported respectively within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$. Suppose the support conditions (A.9) hold and retain (A3). The unique trading outcomes and the entry and ownership reversal in parts (i) and (ii) of Proposition 2 hold under either noise law.*
 
 Every low-cost realization participates at every feasible belief, which preserves the residual lower bound. At the weak prior all high-cost realizations stay out; at prices close enough to the upper feasible posterior all of them enter, and that event has positive probability under either noise law. The price construction stays strictly increasing because the cost CDF is nondecreasing. Online Appendix A.6 proves it without assuming a density.
 
-**Proposition A.7 (complementary private signals).** *In the complementary-signal economy of Section 6.3, choose $0<p<\ell<r_0<r_1<h$ and suppose*
+**Proposition A.7 (complementary private signals).** *In the complementary-signal economy of Section 5.3, choose $0<p<\ell<r_0<r_1<h$ and suppose*
 
 $$
 \begin{gathered}
@@ -655,24 +461,204 @@ B_{r_0}(d)<c_H<B_{r_1}(\phi_+(\mu_+)),\\
 (2a-1)\{\Delta_T(r_0)+(1-\rho)(2d-1)w_H(r_0)\}<k\\
 <\left(1-\frac1b\right)m(2a-1)\rho\Delta_T(r_1).
 \end{gathered}
-\tag{34}
+\tag{A.3}
 $$
 
 *The weak economy has unique zero informed orders and entry $\rho$. The strong economy has unique orders $q(T=+)=1$ and $q(T=-)=-1$, and entry strictly exceeds $\rho$. The conclusions permit arbitrary mixed signal-contingent orders and every continuous unilateral deviation.*
 
-The proof controls public beliefs before imposing any order profile, proves the price inversion with state-dependent entry, and applies the global trading bounds to the residuals (23), which satisfy (A.16) below. In the weak economy even the buyer's favorable private signal is not enough for expensive preparation; in the strong economy that signal together with a favorable price is. Online Appendix A.7 gives the joint conditional laws and the probability formulas.
+The proof controls public beliefs before imposing any order profile, proves the price inversion with state-dependent entry, and applies the global trading bounds to the residuals (A.15), which satisfy (A.17) below. In the weak economy even the buyer's favorable private signal is not enough for expensive preparation; in the strong economy that signal together with a favorable price is. Online Appendix A.7 gives the joint conditional laws and the probability formulas.
 
-**Proposition A.8 (bargaining).** *In the verifiable-value institution of Section 7.3, let $R$ have any distribution supported on $[0,R_{\max}]$ with $0<\ell<R_{\max}<h$. For $0\le\eta<1$ the institution generates (26). A first-order stochastic strengthening of the incumbent weakly reduces challenger profits. It weakly increases the target's information spread for $\eta<1/2$, leaves that spread unchanged at $\eta=1/2$, and weakly decreases it for $\eta>1/2$. Strictness follows from a positive integral change in the corresponding payoff function.*
+**Proposition A.8 (bargaining).** *In the verifiable-value institution of Section 6.2, let $R$ have any distribution supported on $[0,R_{\max}]$ with $0<\ell<R_{\max}<h$. For $0\le\eta<1$ the institution generates (14). A first-order stochastic strengthening of the incumbent weakly reduces challenger profits. It weakly increases the target's information spread for $\eta<1/2$, leaves that spread unchanged at $\eta=1/2$, and weakly decreases it for $\eta>1/2$. Strictness follows from a positive integral change in the corresponding payoff function.*
 
-With fallback $z$ and winning value $V>z$, the Nash solution maximizes $(P-z)^\eta(V-P)^{1-\eta}$ on $[z,V]$ and gives $P=z+\eta(V-z)$; the zero-weight endpoint follows by continuity. A challenger wins only if $\theta\ge R$ and keeps $(1-\eta)(\theta-R)$. Subtracting target payments state by state gives a high-low difference of $\eta(h-\ell)$ when $R\le\ell$ and $\eta(h-\ell)+(1-2\eta)(R-\ell)$ when $R>\ell$; taking expectations gives (26), and first-order stochastic dominance applied to the increasing function $(R-\ell)_+$ and the decreasing function $(\theta-R)_+$ gives the signs. Online Appendix A.8 treats the endpoints.
+With fallback $z$ and winning value $V>z$, the Nash solution maximizes $(P-z)^\eta(V-P)^{1-\eta}$ on $[z,V]$ and gives $P=z+\eta(V-z)$; the zero-weight endpoint follows by continuity. A challenger wins only if $\theta\ge R$ and keeps $(1-\eta)(\theta-R)$. Subtracting target payments state by state gives a high-low difference of $\eta(h-\ell)$ when $R\le\ell$ and $\eta(h-\ell)+(1-2\eta)(R-\ell)$ when $R>\ell$; taking expectations gives (14), and first-order stochastic dominance applied to the increasing function $(R-\ell)_+$ and the decreasing function $(\theta-R)_+$ gives the signs. Online Appendix A.8 treats the endpoints.
 
 **Proposition A.9 (access to prices).** *Hold $r=r_1$ and all other primitives fixed under the conditions of Proposition 2. Compare the feedback equilibrium with the equilibrium in which the challenger cannot observe the target price, reoptimizing trading and pricing in both. Access to prices strictly increases expected target proceeds and acquisition surplus net of preparation costs. The comparison also holds under Propositions A.5 and A.6.*
 
-In the price-hidden game the buyer's posterior stays at the prior, so entry is $\rho$; the strong trading bound still applies with constant entry, so orders are full in both games and the noise distribution and order magnitudes coincide. Identity (24) gives the pointwise allocation gain, every additional entrant contributes at least $p^2/r$, and averaging over the positive-probability event of additional entry gives the first line of (25). Since $t_H,t_L>t_0$, the second line follows. The dividend argument of Section 7.2 shifts the price by a constant and leaves $V_T-P$ unchanged. Online Appendix A.9 states the coupling and the atomless-cost integral.
+In the price-hidden game the buyer's posterior stays at the prior, so entry is $\rho$; the strong trading bound still applies with constant entry, so orders are full in both games and the noise distribution and order magnitudes coincide. Identity (A.19) gives the pointwise allocation gain, every additional entrant contributes at least $p^2/r$, and averaging over the positive-probability event of additional entry gives the first line of (A.20). Since $t_H,t_L>t_0$, the second line follows. The dividend argument of Section 6.1 shifts the price by a constant and leaves $V_T-P$ unchanged. Online Appendix A.9 states the coupling and the atomless-cost integral.
 
-### A.2 Proofs of Propositions 1 to 3 {#pa-proofs}
 
-*Proposition 1.* Payments have to be determined before expectations are taken. Without entry the target receives $p\mathbf1\{R\ge p\}$. With a high-quality challenger the challenger wins and pays $\max\{p,R\}$. With a low-quality challenger the target receives $\max\{p,\min(R,\ell)\}$ and the challenger obtains $(\ell-\max\{p,R\})_+$. Truthful bidding is weakly dominant conditional on every competing bid, so none of this depends on a conjectured shading strategy. For the uniform incumbent,
+### A.2 Trading bounds and extension formulas {#pa-calculations}
+
+#### Trading incentives
+
+Fix a candidate pricing and preparation schedule. For a correctly signed order of magnitude $s\in[0,1]$, define
+
+$$
+\begin{aligned}
+F_H(s)&=\int f(x-s)A_H(x)\,dx,\\
+F_L(s)&=\int f(x+s)A_L(x)\,dx,\\
+U_\theta(s)&=sF_\theta(s)-ks.
+\end{aligned}
+\tag{A.4}
+$$
+
+The Laplace bound $|f'|\le f/b$ implies $|F_\theta'|\le F_\theta/b$. Together with the residual lower bound, this gives
+
+$$
+U_\theta'(s)\ge\left(1-\frac{s}{b}\right)F_\theta(s)-k
+\ge\left(1-\frac1b\right)\rho m\Delta_T-k>0
+\tag{A.5}
+$$
+
+under the strong-incumbent inequality in (A3). The derivative bound holds over the entire order interval. The proof below justifies differentiation with discontinuous entry and establishes global optimality.
+
+#### Logistic noise and atomless costs
+
+The logistic density and full-order threshold probabilities are
+
+$$
+f_{\mathrm{log}}(z)=\frac{1}{4b}\operatorname{sech}^{2}\left(\frac z{2b}\right),\qquad b>1.
+\tag{A.6}
+$$
+
+$$
+\begin{aligned}
+x^*_{\mathrm{log}}&=b\log\frac{Aw-1}{A-w},\\
+\alpha_H^{\mathrm{log}}&=\frac1{1+e^{(x^*_{\mathrm{log}}-1)/b}},\\
+\alpha_L^{\mathrm{log}}&=\frac1{1+e^{(x^*_{\mathrm{log}}+1)/b}}.
+\end{aligned}
+\tag{A.7}
+$$
+
+where $A=e^{1/b}$ and $w=\sqrt{\tau/(1-\tau)}$. Under full orders, the posterior log odds are
+
+$$
+2\log\cosh\left(\frac{x+1}{2b}\right)
+-2\log\cosh\left(\frac{x-1}{2b}\right),
+\tag{A.8}
+$$
+
+The derivative is positive, and the limits are $-2/b$ and $2/b$. The posterior therefore spans $(m,M)$ and crosses every interior preparation threshold with positive probability.
+
+For atomless low- and high-cost distributions supported within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$, the sufficient support restrictions are
+
+$$
+\begin{gathered}
+c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C<B_{r_1}(m),\\
+B_{r_0}(1/2)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M),
+\end{gathered}
+\tag{A.9}
+$$
+
+together with (A3). Every low-cost realization then prepares at every feasible belief. All high-cost realizations stay out at the weak-incumbent prior and enter at sufficiently favorable strong-incumbent prices. Monotonicity of the cost CDF preserves the price construction.
+
+The nonempty parameter region does not require a large value gap. At the continuous limit $r=\ell$,
+
+$$
+B_\ell(M)-B_\ell(1/2)=(M-1/2)(h-\ell)>0,
+\tag{A.10}
+$$
+
+Choose $r_1$ sufficiently close to $\ell$ that $B_{r_1}(M)>B_\ell(1/2)$. Then choose $r_0\in(\ell,r_1)$ sufficiently close to $\ell$ that $\Delta_T(r_0)<(1-1/b)\rho m\Delta_T(r_1)$. Trading and preparation costs can be selected strictly inside the resulting bounds for any $h>\ell$. Strict inequalities preserve the result under small perturbations.
+
+#### Complementary private signals
+
+The investor and buyer observe signals $T,Y\in\{+,-\}$, conditionally independent given quality, with accuracies
+
+$$
+\begin{aligned}
+\Pr(T=+\mid H)&=\Pr(T=-\mid L)=a,\\
+\Pr(Y=+\mid H)&=\Pr(Y=-\mid L)=d,
+\qquad a,d\in(1/2,1).
+\end{aligned}
+\tag{A.11}
+$$
+
+Write $\lambda_X=\Pr(T=+\mid X)$. Public beliefs about quality, their bounds, and the buyer's combined posteriors are
+
+$$
+\begin{aligned}
+\mu_X&=(1-a)+(2a-1)\lambda_X,\\
+\mu_-&=(1-a)+(2a-1)m,\qquad \mu_+=(1-a)+(2a-1)M,\\
+\phi_+(\mu)&=\frac{d\mu}{d\mu+(1-d)(1-\mu)},\\
+\phi_-(\mu)&=\frac{(1-d)\mu}{(1-d)\mu+d(1-\mu)}.
+\end{aligned}
+\tag{A.12}
+$$
+
+Set $w_H=t_H-t_0$, $w_L=t_L-t_0$, and $I_y=\mathbf1\{B_r(\phi_y(\mu))\ge c_H\}$. Conditional entry rates and the coefficient on public beliefs are
+
+$$
+\begin{aligned}
+e_H&=\rho+(1-\rho)[dI_++(1-d)I_-],\\
+e_L&=\rho+(1-\rho)[(1-d)I_++dI_-],\\
+D&=e_Hw_H-e_Lw_L,\\
+\rho\Delta_T&\le D\le\Delta_T+(1-\rho)(2d-1)w_H.
+\end{aligned}
+\tag{A.13}
+$$
+
+The difference in entry rates is nonnegative: the high-value challenger is more likely to receive a favorable private signal. Competitive pricing and inversion give
+
+$$
+\begin{aligned}
+P&=t_0+e_L(P)w_L+\mu_XD(P),\\
+\mu_X&=\frac{P-t_0-e_L(P)w_L}{D(P)}.
+\end{aligned}
+\tag{A.14}
+$$
+
+The strictly positive coefficient $D$ lets the buyer recover the public posterior and combine it with its signal. The investor's residuals are
+
+$$
+A_+=(2a-1)(1-\lambda_X)D,
+\qquad A_-=(2a-1)\lambda_XD.
+\tag{A.15}
+$$
+
+The useful bounds follow from
+
+$$
+D=e_L\Delta_T+(e_H-e_L)w_H,
+\quad 0\le e_H-e_L\le(1-\rho)(2d-1),
+\tag{A.16}
+$$
+
+and therefore
+
+$$
+m(2a-1)\rho\Delta_T\le A_+,A_-
+\le(2a-1)[\Delta_T+(1-\rho)(2d-1)w_H],
+\tag{A.17}
+$$
+
+At the strong incumbent strength, the convolution argument yields
+
+$$
+U'(s)\ge(1-1/b)m(2a-1)\rho\Delta_T(r_1)-k>0,
+\tag{A.18}
+$$
+
+under Proposition A.7. This bound forces full signal-contingent orders against every candidate equilibrium schedule. Online Appendix A.7 supplies the joint probability laws and the complete price-sufficiency argument.
+
+#### Acquisition surplus
+
+Without a challenger, ownership value is $W_0(R)=R\mathbf1\{R\ge p\}$. With challenger value $\theta>p$, it is $W_\theta(R)=\max\{R,\theta\}$. The pointwise difference is
+
+$$
+W_\theta(R)-W_0(R)
+=(\theta-\max\{p,R\})_++p\mathbf1\{R<p\}.
+\tag{A.19}
+$$
+
+At belief $\mu$ and preparation cost $C$, additional entry contributes conditional expected net surplus $B_r(\mu)-C+p^2/r$. Optimal preparation requires $B_r(\mu)\ge C$, so the contribution is positive. Low-cost entry is unchanged in the matched comparison. For cost atoms, the surplus and target-proceeds gains are
+
+$$
+\begin{aligned}
+\Delta\mathcal W&=(1-\rho)\mathbb E\left[
+\left(B_r(\mu_X)-c_H+\frac{p^2}{r}\right)\mathbf1\{\mu_X\ge\tau\}\right]>0,\\
+\Delta\mathcal R_T&=\frac{1-\rho}{2}
+\left[\alpha_H(t_H-t_0)+\alpha_L(t_L-t_0)\right]>0.
+\end{aligned}
+\tag{A.20}
+$$
+
+Transfers among bidders, shareholders, market makers, and noise traders cancel. Full orders imply equal trading costs in the two economies. The comparison holds incumbent strength and the sale rule fixed.
+
+### A.3 Proofs of Propositions 1 to 3 {#pa-proofs}
+
+
+*Proposition 1.* The realized sale rule determines the payoff formulas. Without entry the target receives $p\mathbf1\{R\ge p\}$. With a high-quality challenger the challenger wins and pays $\max\{p,R\}$. With a low-quality challenger the target receives $\max\{p,\min(R,\ell)\}$ and the challenger obtains $(\ell-\max\{p,R\})_+$. Truthful bidding is weakly dominant conditional on every competing bid, so none of this depends on a conjectured shading strategy. For the uniform incumbent,
 
 $$
 \begin{aligned}
@@ -680,12 +666,12 @@ t_H&=\frac1r\left[\int_0^p p\,du+\int_p^r u\,du\right],\\
 t_L&=\frac1r\left[\int_0^p p\,du+\int_p^\ell u\,du+\int_\ell^r\ell\,du\right],\\
 g_L&=\frac1r\left[\int_0^p(\ell-p)\,du+\int_p^\ell(\ell-u)\,du\right],
 \end{aligned}
-\tag{A.1}
+\tag{A.21}
 $$
 
 which evaluate to (4) and differentiate to (5). The distribution-free opposition rests on one observation. If $R\le\ell$, the high and low target payments coincide; if $R>\ell$, they differ by $R-\ell$; hence the difference is $(R-\ell)_+$. Tonelli's theorem applied to the nonnegative indicators gives both integrals in (6). A stronger distribution has a smaller CDF, which raises the survival integral and lowers the profit integral, and positive integral differences make the comparisons strict. A weighted average at a fixed posterior preserves the profit ordering. Online Appendix A.2 gives the measure formulation.
 
-*Proposition 2.* The argument runs through six steps, each of which I sketch; Online Appendix A.1 to A.4 supply the conditional-probability versions, the null-set invariance under deviations, and the convolution regularity.
+*Proposition 2.* The proof has six steps; Online Appendix A.1 to A.4 supply the conditional-probability versions, the null-set invariance under deviations, and the convolution regularity.
 
 First, beliefs are bounded under every trading strategy. Positivity of $f$ makes every conditional flow density positive, and integrating (8) gives $m\le\mu_X\le M$; the price posterior obeys the same bound by conditional expectation. Because $g_H$ and $g_L$ both fall with $r$, condition (A1) gives $c_L<B_r(m)$ in both economies.
 
@@ -698,56 +684,60 @@ Fourth, the entire order interval is controlled in the strong economy. For a bou
 $$
 F(s_2)-F(s_1)
 =\int_{s_1}^{s_2}\int \partial_u f(x\mp u)A(x)\,dx\,du
-\tag{A.2}
+\tag{A.22}
 $$
 
-follows from the fundamental theorem for the absolutely continuous density and Fubini, since the absolute double integral is at most $\|A\|_\infty|s_2-s_1|\|f'\|_1$. Thus $F$ is absolutely continuous with $|F'|\le F/b$ almost everywhere, (11) gives $F\ge\rho m\Delta_T$, and differentiating $U=sF-ks$ under (A3) yields (13). Integrating the positive lower bound on the derivative shows that the full correctly signed order strictly dominates every smaller magnitude; wrong signs are dominated by zero. Every equilibrium therefore has full correctly signed orders, and mixing cannot introduce another optimal action.
+follows from the fundamental theorem for the absolutely continuous density and Fubini, since the absolute double integral is at most $\|A\|_\infty|s_2-s_1|\|f'\|_1$. Thus $F$ is absolutely continuous with $|F'|\le F/b$ almost everywhere, (11) gives $F\ge\rho m\Delta_T$, and differentiating $U=sF-ks$ under (A3) yields (A.5). Integrating the positive lower bound on the derivative shows that the full correctly signed order strictly dominates every smaller magnitude; wrong signs are dominated by zero. Every equilibrium therefore has full correctly signed orders, and mixing cannot introduce another optimal action.
 
 Fifth, the informative equilibrium exists. Full orders give
 
 $$
 \mu_X(x)=\left[1+\exp\left\{-\frac{|x+1|-|x-1|}{b}\right\}\right]^{-1}.
-\tag{A.3}
+\tag{A.23}
 $$
 
 Defining entry and price by (9), the strict monotonicity of $P_r(\mu)$ gives a measurable inverse on its image, including across its upward jump. The buyer recovers the posterior from the price, prepares optimally, and bids truthfully. The bounds above verify investor optimality and market-maker pricing.
 
-Sixth, the comparisons follow. Since $B_r$ increases in $\mu$ and decreases in $r$, condition (A2) places $\tau$ in $(1/2,M)$ and $x^*$ in $(0,1)$, and the Laplace survival function evaluated at $x^*-1$ and $x^*+1$ gives $\alpha_H$, $\alpha_L$, and the entry and ownership formulas in (14). The favorable event has positive probability. Ignoring the strong-economy price reproduces the uninformative experiment, while no state-independent transformation of a constant experiment can reproduce a nonconstant state-dependent law, so the strong experiment strictly Blackwell dominates the weak one. Strict margins make the region open.
+Sixth, the comparisons follow. Since $B_r$ increases in $\mu$ and decreases in $r$, condition (A2) places $\tau$ in $(1/2,M)$ and $x^*$ in $(0,1)$, and the Laplace survival function evaluated at $x^*-1$ and $x^*+1$ gives $\alpha_H$, $\alpha_L$, and the entry and ownership formulas in (12). The favorable event has positive probability. Ignoring the strong-economy price reproduces the uninformative experiment, while no state-independent transformation of a constant experiment can reproduce a nonconstant state-dependent law, so the strong experiment strictly Blackwell dominates the weak one. Strict margins make the region open.
 
-For part (iii), the low-cost floor and the derivative bound at $r_2$ give unique full orders exactly as in the fourth and fifth steps, while $B_{r_2}(M)<c_H$ excludes every expensive entrant because $M$ is the largest attainable belief, so entry returns to $\rho$. Two facts about the boundary $r_C$ are worth recording. Under full Laplace orders $\mu_X=M$ on $x\ge1$, an event of positive probability, and the tie rule admits expensive entry at $r_C$ on that event. As $r$ approaches $r_C$ from below,
+For part (iii), the low-cost floor and the derivative bound at $r_2$ give unique full orders exactly as in the fourth and fifth steps, while $B_{r_2}(M)<c_H$ excludes every expensive entrant because $M$ is the largest attainable belief, so entry returns to $\rho$. The boundary $r_C$ depends on how the posterior attains its upper bound. Under full Laplace orders $\mu_X=M$ on $x\ge1$, an event of positive probability, and the tie rule admits expensive entry at $r_C$ on that event. As $r$ approaches $r_C$ from below,
 
 $$
 \mathsf E(r)\longrightarrow\rho+\frac{1-\rho}{4}(1+e^{-2/b}),
-\tag{A.4}
+\tag{A.24}
 $$
 
 whereas strictly above $r_C$ expensive entry is impossible. Under logistic noise the posterior reaches $M$ only in the limit, so expensive entry converges to zero continuously. Online Appendix A.5 has the derivations, together with the no-trade deviation payoff
 
 $$
 s\left(\frac{\rho\Delta_T(r)}2-k\right)
-\tag{A.5}
+\tag{A.25}
 $$
 
 and the ceiling profit
 
 $$
 B_r(M)=Mh-\frac{Mr}{2}+\frac{(1-M)\ell^2-p^2}{2r}
-\tag{A.6}
+\tag{A.26}
 $$
 
 used in Proposition A.4.
 
 *Proposition 3.* The proof is computer-assisted and is laid out in the next subsection.
 
-### A.3 The certified equilibria {#pa-certificate}
+
+### A.4 The certified equilibria {#pa-certificate}
+
 
 Fix $(q_H,q_L)=(1,-v)$ with $0<v<1$. Bayes' rule gives $\mu_v(x)=\operatorname{logistic}((|x+v|-|x-1|)/b)$, which ranges from $m_v=(1+e^{(1+v)/b})^{-1}$ to $M_v=1-m_v$. In the certified region $1/2<\tau<M_v$, and
 
 $$
-x^*(r,v)=\frac{b\operatorname{logit}(\tau)+1-v}{2},\qquad
-\mathsf E(r,v)=\rho+\frac{1-\rho}{2}
+\begin{aligned}
+x^*(r,v)&=\frac{b\operatorname{logit}(\tau)+1-v}{2},\\
+\mathsf E(r,v)&=\rho+\frac{1-\rho}{2}
 \left[1-\frac12e^{(x^*-1)/b}+\frac12e^{-(x^*+v)/b}\right].
-\tag{A.7}
+\end{aligned}
+\tag{A.27}
 $$
 
 The unfavorable type's problem is globally concave. Its residual $A_L=e(\mu_v)\Delta_T\mu_v$ is bounded, nonconstant, and nondecreasing, so it defines a finite positive Stieltjes measure and
@@ -755,12 +745,12 @@ The unfavorable type's problem is globally concave. Its residual $A_L=e(\mu_v)\D
 $$
 F_L'(s)=-\int f(x+s)\,dA_L(x)<0,
 \qquad |F_L''(s)|\le-\frac1bF_L'(s).
-\tag{A.8}
+\tag{A.28}
 $$
 
 Therefore $U_L''(s)\le(2-s/b)F_L'(s)<0$ on $[0,1]$ whenever $b>1/2$. The measure includes the entry jump, so no derivative of that jump is omitted. A root of the unilateral marginal-profit equation is thus the unique global short magnitude against its candidate schedule.
 
-The root is exact, not a small residual. Let $\Psi(r,v)=U_L'(v;1,-v)$ with the derivative taken in the deviating magnitude while the candidate schedule is held fixed; recomputing the schedule as $v$ varies makes $\Psi$ continuous on each bracket. Outward interval evaluation proves that $\Psi$ is positive at the left endpoint of each bracket in Proposition 3 and negative at the right endpoint, so the intermediate value theorem places an exact root inside. Throughout each bracket the entry threshold stays strictly between $-v$ and $1$. Writing $v_{j,-}$ and $v_{j,+}$ for the endpoints of the bracket at $r_j$, the enclosures completing the sign tests are
+Existence follows from an interval sign change. Let $\Psi(r,v)=U_L'(v;1,-v)$ with the derivative taken in the deviating magnitude while the candidate schedule is held fixed; recomputing the schedule as $v$ varies makes $\Psi$ continuous on each bracket. Outward interval evaluation proves that $\Psi$ is positive at the left endpoint of each bracket in Proposition 3 and negative at the right endpoint, so the intermediate value theorem places an exact root inside. Throughout each bracket the entry threshold stays strictly between $-v$ and $1$. Writing $v_{j,-}$ and $v_{j,+}$ for the endpoints of the bracket at $r_j$, the enclosures completing the sign tests are
 
 $$
 \begin{aligned}
@@ -771,15 +761,15 @@ $$
 \Psi(r_{\mathrm c},v_{\mathrm c,-})&\ge[[cert_c_psi_left_lower]]>0,&
 \Psi(r_{\mathrm c},v_{\mathrm c,+})&\le[[cert_c_psi_right_upper]]<0.
 \end{aligned}
-\tag{A.9}
+\tag{A.29}
 $$
 
-Every smaller purchase by the favorable type is excluded as well. For any bounded residual $A_H\in[0,\Delta_T]$ the Laplace kernel satisfies $f''=(f-\delta_0)/b^2$ in the sense of distributions, so
+A uniform derivative bound establishes optimality for the high-value investor. For any bounded residual $A_H\in[0,\Delta_T]$ the Laplace kernel satisfies $f''=(f-\delta_0)/b^2$ in the sense of distributions, so
 
 $$
 F_H''(s)=\frac{F_H(s)-A_H(s)}{b^2}\quad\text{a.e.},\qquad
 |U_H''(s)|\le L_U:=\frac{2\Delta_T}{b}+\frac{\Delta_T}{b^2}.
-\tag{A.10}
+\tag{A.30}
 $$
 
 On the mesh $s_j=j/n$, interval arithmetic bounds $U_H'(s_j)$ uniformly over the whole root bracket, not only at a floating-point midpoint. Every untested magnitude lies within $1/(2n)$ of a mesh point, so
@@ -787,7 +777,7 @@ On the mesh $s_j=j/n$, interval arithmetic bounds $U_H'(s_j)$ uniformly over the
 $$
 \inf_{s\in[0,1]}U_H'(s)
 \ge\min_j\underline{U_H'(s_j)}-\frac{L_U}{2n}>0.
-\tag{A.11}
+\tag{A.31}
 $$
 
 The certified global lower margins at the three strengths are [[cert_a_high_derivative_lower]], [[cert_b_high_derivative_lower]], and [[cert_c_high_derivative_lower]]. The favorable type therefore chooses its maximum purchase, and all wrong-signed trades have negative gross profit and are dominated by zero.
@@ -795,56 +785,83 @@ The certified global lower margins at the three strengths are [[cert_a_high_deri
 The integrals are elementary. Split each convolution at $-v$, $x^*$, $1$, and the deviation center. On the central region put $c=(1-v)/2$ and $t=e^{(x-c)/b}$, so that $\mu_v=t^2/(1+t^2)$. The primitives of $e^{x/b}(1-\mu_v)$, $e^{-x/b}(1-\mu_v)$, $e^{x/b}\mu_v$, and $e^{-x/b}\mu_v$ are respectively
 
 $$
-b e^{c/b}\arctan t,\quad
-b e^{-c/b}(-t^{-1}-\arctan t),\quad
-b e^{c/b}(t-\arctan t),\quad
+\begin{gathered}
+b e^{c/b}\arctan t,\qquad
+b e^{-c/b}(-t^{-1}-\arctan t),\\
+b e^{c/b}(t-\arctan t),\qquad
 b e^{-c/b}\arctan t.
-\tag{A.12}
+\end{gathered}
+\tag{A.32}
 $$
 
-Constant-posterior tails integrate as exponentials. Interval arithmetic applied to these expressions encloses the root tests, the derivative cover (A.11), and the entry probabilities in Proposition 3. The no-trade margins are positive at the same strengths, and the entry enclosures are disjoint and ordered upward. This is a computer-assisted existence proof in the sense of Online Appendix B, which specifies the outward interval arithmetic on exact decimal inputs, the parameter brackets, the endpoint ordering, and every regularity argument needed to replicate it.
+Constant-posterior tails integrate as exponentials. Interval arithmetic applied to these expressions encloses the root tests, the derivative cover (A.31), and the entry probabilities in Proposition 3. The no-trade margins are positive at the same strengths, and the entry enclosures are disjoint and ordered upward. This is a computer-assisted existence proof in the sense of Online Appendix B, which specifies the outward interval arithmetic on exact decimal inputs, the parameter brackets, the endpoint ordering, and every regularity argument needed to replicate it.
 
-Two further formulas from the extensions are used above. Under full logistic orders the posterior log odds are
 
-$$
-2\log\cosh\left(\frac{x+1}{2b}\right)
--2\log\cosh\left(\frac{x-1}{2b}\right),
-\tag{A.13}
-$$
+### A.5 The seller's continuation problem {#pa-design}
 
-with derivative positive and limits $-2/b$ and $2/b$. At the continuous limit $r=\ell$ of the nonemptiness construction,
+Let $\mathcal E(p,r)$ denote the set of trading, pricing, and preparation continuations after reserve $p$. For a continuation $\sigma\in\mathcal E(p,r)$, write $e_H(p,r;\sigma)$ and $e_L(p,r;\sigma)$ for conditional entry. Expected seller revenue is
 
 $$
-B_\ell(M)-B_\ell(1/2)=(M-1/2)(h-\ell)>0,
-\tag{A.14}
+\mathcal R_T(p,r;\sigma)
+=t_0(p,r)+\frac12\sum_{\theta\in\{H,L\}}e_\theta(p,r;\sigma)
+[t_\theta(p,r)-t_0(p,r)].
+\tag{A.33}
 $$
 
-so a strength $r_1$ close enough to $\ell$ has $B_{r_1}(M)>B_\ell(1/2)$, a strength $r_0\in(\ell,r_1)$ close enough to $\ell$ has $\Delta_T(r_0)<(1-1/b)\rho m\Delta_T(r_1)$, and $k$, $c_H$, and $c_L$ can be chosen strictly inside the resulting intervals for any $h>\ell$. In the complementary-signal economy the price coefficient satisfies
+A seller equilibrium specifies a feasible continuation after every reserve, including deviations from the chosen reserve. Given a selection $\sigma^*(p)\in\mathcal E(p,r)$, its reserve satisfies
 
 $$
-D=e_L\Delta_T+(e_H-e_L)w_H,
-\quad 0\le e_H-e_L\le(1-\rho)(2d-1),
-\tag{A.15}
+p^*\in\arg\max_{p\in[0,h]}\mathcal R_T(p,r;\sigma^*(p)).
+\tag{A.34}
 $$
 
-the residuals obey
+Existence of a feasible selection and attainment of the maximum require separate arguments. The optimistic and pessimistic envelopes of the continuation set are not automatically the seller's objective. In the atomless-value extension, the feasible reserve domain extends to the upper endpoint $h+\varepsilon_V$; equation (A.34) describes the binary-value benchmark.
+
+#### Payoffs over the reserve domain
+
+For a realized challenger value $v$, the sale rule gives
 
 $$
-m(2a-1)\rho\Delta_T\le A_+,A_-
-\le(2a-1)[\Delta_T+(1-\rho)(2d-1)w_H],
-\tag{A.16}
+\begin{aligned}
+t_0(p,r)&=\mathbb E[p\mathbf1\{R\ge p\}],\\
+t_v(p,r)&=
+\begin{cases}
+\mathbb E[\max\{p,\min(R,v)\}],&v\ge p,\\
+t_0(p,r),&v<p,
+\end{cases}\\
+g_v(p,r)&=\mathbb E[(v-\max\{p,R\})_+].
+\end{aligned}
+\tag{A.35}
 $$
 
-and at the strong strength the convolution argument gives
+For $p<\ell$, the benchmark closed forms apply. If $\ell<p<r$, the low-value challenger cannot meet the reserve: $t_L=t_0$, $g_L=0$, $t_H=r/2+p^2/(2r)$, and $g_H=h-t_H$. If $r\le p<h$, then $t_0=t_L=g_L=0$, $t_H=p$, and $g_H=h-p$. A reserve above $h$ prevents a sale. Equality at a value atom follows the admissibility convention in Section 2. For atomless acquisition values, integrate the realized sale rule over each conditional value distribution, including when the reserve cuts through a value band.
+
+#### Local revenue decomposition
+
+On a differentiable continuation branch with atomless preparation costs and $0<p<\ell$, let $\mathsf E=(e_H+e_L)/2$. Differentiating seller revenue gives
 
 $$
-U'(s)\ge(1-1/b)m(2a-1)\rho\Delta_T(r_1)-k>0,
-\tag{A.17}
+\frac{d\mathcal R_T}{dp}
+=(1-\mathsf E)\left(1-\frac{2p}{r}\right)+\mathsf E\frac p r
++\frac12\sum_\theta\frac{de_\theta}{dp}(t_\theta-t_0).
+\tag{A.36}
 $$
 
-which is what makes full signal-contingent orders necessary against every candidate schedule.
+The first two terms hold entry fixed. The last term accounts for the change in participation. If $H_C$ is the cost CDF with density $h_C$, and $\mu_\theta(z;p)$ is the posterior reached in state $\theta$ at noise realization $z$, then
 
-### A.4 Numerical primitives {#pa-parameters}
+$$
+\frac{de_\theta}{dp}
+=\int f(z)h_C(B_{p,r}(\mu_\theta))
+\left[-\frac p r+(g_H-g_L)\frac{d\mu_\theta(z;p)}{dp}\right]dz.
+\tag{A.37}
+$$
+
+The term $-p/r$ is the direct effect on acquisition profit. The posterior derivative captures the change in information generated by equilibrium trading. It vanishes locally when orders remain fixed at their bounds, but can be nonzero when orders adjust. Online Appendix A.10 states sufficient regularity and domination conditions. These are local decompositions, with no general sign restriction on the information term. At an atomic preparation threshold or a nonregular continuation, use the level objective and complete conditional laws.
+
+The reserve sweep in Online Appendix C.6 records continuations found under the declared searches. It does not prove existence at unresolved reserves, exhaust the correspondence, or establish a global seller optimum. Characterizing seller-optimal terms, their commitment timing, and whether they preserve the entry reversal remains open.
+
+### A.6 Numerical parameters {#pa-parameters}
+
 
 The benchmark parameter vector is
 
@@ -854,7 +871,7 @@ $$
 &=([[base_h]],[[base_ell]],[[base_p]],[[base_rho]],[[base_c_low]],[[base_c_high]],[[base_b]],[[base_k]]),\\
 (r_0,r_1,r_2)&=([[base_r_weak]],[[base_r_strong]],[[base_r_collapse]]).
 \end{aligned}
-\tag{A.18}
+\tag{A.38}
 $$
 
 The moderate-value vector is
@@ -865,7 +882,7 @@ $$
 &=([[moderate_h]],[[moderate_ell]],[[moderate_p]],[[moderate_rho]],[[moderate_c_low]],[[moderate_c_high]],[[moderate_b]],[[moderate_k]]),\\
 (r_0,r_1)&=([[moderate_r_weak]],[[moderate_r_strong]]).
 \end{aligned}
-\tag{A.19}
+\tag{A.39}
 $$
 
 For complementary signals I use
@@ -877,7 +894,7 @@ $$
 (r_0,r_1,a,d)
 &=([[signal_r_weak]],[[signal_r_strong]],[[signal_trader_accuracy_value]],[[signal_buyer_accuracy_value]]).
 \end{aligned}
-\tag{A.20}
+\tag{A.40}
 $$
 
 The atomless-cost half-width is $\varepsilon_C=$ [[cost_halfwidth]] and the atomless-value half-width is $\varepsilon_V=$ [[value_band_halfwidth]]. These are separate experiments. Online Appendix C defines the exact input values, the derived quantities, their formatting, and the acceptance criteria behind every number reported in the text.

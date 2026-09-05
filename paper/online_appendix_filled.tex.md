@@ -16,24 +16,29 @@ header-includes:
   - '\usepackage{graphicx}'
   - '\usepackage{float}'
   - '\usepackage{setspace}'
+  - '\usepackage{etoolbox}'
+  - '\usepackage[font=small,labelfont=bf,labelsep=period]{caption}'
+  - '\usepackage[section]{placeins}'
   - '\definecolor{paperlink}{RGB}{31,59,115}'
   - '\allowdisplaybreaks'
   - '\setlength{\parskip}{0pt}'
   - '\setlength{\parindent}{1.5em}'
+  - '\AtBeginEnvironment{CSLReferences}{\interlinepenalty=10000}'
   - '\usepackage{seqsplit}'
-  - '\usepackage{etoolbox}'
   - '\renewcommand{\texttt}[1]{{\ttfamily\seqsplit{#1}}}'
   - '\AtBeginEnvironment{longtable}{\footnotesize}'
+title: "Online Appendix to Competition Creates Competition"
+author: "Austin Li"
+date: ""
 bibliography: references.bib
 link-citations: true
 ---
 
 
-# Online Appendix to Competition Creates Competition
 
 ## A. Full analytical arguments {#oa-a}
 
-This appendix contains the complete arguments behind the results in the paper. I begin with the probability space, because every later claim about beliefs, deviations, and null sets rests on it, and then take the results in the order of the paper.
+This appendix develops the probability space, proves the main results and extensions, and states the regularity conditions used in the sale-design calculations. Sections B and C describe the equilibrium certificates and numerical exercises.
 
 ### A.1. Probability space, strategies, and conditional information {#oa-a-foundations}
 
@@ -52,16 +57,18 @@ $$
 \tag{OA.1}
 $$
 
-I give a probability-space construction so that every conditioning step and every deviation is explicit. Let $\Theta\in\{L,H\}$ have equal probabilities, with acquisition values $v_L=\ell$ and $v_H=h$. Independently draw incumbent value $R$, preparation cost $C$, noise demand $Z$, and an auxiliary random variable $U$ uniform on $[0,1]$. A mixed trader strategy is a probability kernel $\sigma_\Theta$ on the Borel subsets of $[-1,1]$. It can be implemented by a Borel quantile map $q_\Theta(U)$. Conditional randomization therefore contains no information about the other primitives beyond the trader's specified signal.
+To define beliefs and deviations, let $\Theta\in\{L,H\}$ have equal probabilities, with acquisition values $v_L=\ell$ and $v_H=h$. Independently draw incumbent value $R$, preparation cost $C$, noise demand $Z$, and an auxiliary random variable $U$ uniform on $[0,1]$. A mixed trader strategy is a probability kernel $\sigma_\Theta$ on the Borel subsets of $[-1,1]$. It can be implemented by a Borel quantile map $q_\Theta(U)$. Conditional randomization therefore contains no information about the other primitives beyond the trader's specified signal.
 
 All spaces are standard Borel. Prices, entry policies, and payoffs are Borel functions. Because values and the order interval are bounded, all acquisition and trading payoffs are integrable. A regular conditional distribution of quality given price exists. Expectations conditional on a price atom use its complete preimage, not a pointwise inversion that presumes injectivity.
 
 For the benchmark, define
 
 $$
-a_\theta(x)=\int_{[-1,1]}f(x-q)\,\sigma_\theta(dq),\qquad
-\nu(dx)=\frac{a_H(x)+a_L(x)}2\,dx,
-\qquad \mu_X(x)=\frac{a_H(x)}{a_H(x)+a_L(x)}.
+\begin{aligned}
+a_\theta(x)&=\int_{[-1,1]}f(x-q)\,\sigma_\theta(dq),\\
+\nu(dx)&=\frac{a_H(x)+a_L(x)}2\,dx,\\
+\mu_X(x)&=\frac{a_H(x)}{a_H(x)+a_L(x)}.
+\end{aligned}
 \tag{OA.2}
 $$
 
@@ -188,7 +195,7 @@ If the right-hand side is bounded below by a strictly positive constant on the a
 
 ### A.4. Complete proof of Proposition 2 {#oa-a-entry}
 
-I first establish that each claimed strategy is necessary against every candidate equilibrium, and then construct an equilibrium with that strategy.
+The proof first restricts the trading strategy in any candidate equilibrium, then constructs prices and entry that support it.
 
 **Weak incumbent.** Proposition A.1 and (A1) give the entry floor under every conditional mixed order. Section A.3 gives the residual upper bound. For a correctly signed order of magnitude $s>0$,
 
@@ -345,7 +352,7 @@ Choose $r_1\in(\ell,h)$ close enough to $\ell$ that $B_{r_1}(M)>B_\ell(1/2)$. Be
 
 Two further stability results are recorded for completeness.
 
-**Lemma OA.1 (analytical).** *Replace the trading cost by $K(s)=ks+\gamma_qs^2/2$, $\gamma_q\ge0$. Under (A1) and (A2), $\Delta_T(r_0)<k$, and $k+\gamma_q<(1-1/b)\rho m\Delta_T(r_1)$, the conclusions of Proposition 2 remain valid.*
+**Lemma OA.1 (analytical).** *Replace the trading cost by $K(s)=ks+\gamma_qs^2/2$, $\gamma_q\ge0$. Under (A1) and (A2), $\Delta_T(r_0)<k$, and $k+\gamma_q<(1-1/b)\rho m\Delta_T(r_1)$, the unique trading outcomes and entry reversal in parts (i) and (ii) of Proposition 2 remain valid.*
 
 Indeed $K(s)\ge ks$ preserves the weak-economy exclusion. At high strength, subtracting $K'(s)=k+\gamma_qs$ from the gross marginal profit leaves a strictly positive bound. The price construction, threshold, and information comparison are unchanged. This perturbation retains the position bound; it does not solve an unbounded-order game.
 
@@ -471,9 +478,11 @@ At high strength, the convolution regularity applies to either bounded signal re
 For numerical implementation with either private signal, let $\tau=(c_H-g_L)/(g_H-g_L)$ and solve $\phi_y(\mu)=\tau$:
 
 $$
-\mu_{\mathrm{req},+}=\frac{\tau(1-d)}{d(1-\tau)+\tau(1-d)},\qquad
-\mu_{\mathrm{req},-}=\frac{\tau d}{(1-d)(1-\tau)+\tau d},\qquad
-\lambda_{\mathrm{req},y}=\frac{\mu_{\mathrm{req},y}-(1-a)}{2a-1}.
+\begin{aligned}
+\mu_{\mathrm{req},+}&=\frac{\tau(1-d)}{d(1-\tau)+\tau(1-d)},\\
+\mu_{\mathrm{req},-}&=\frac{\tau d}{(1-d)(1-\tau)+\tau d},\\
+\lambda_{\mathrm{req},y}&=\frac{\mu_{\mathrm{req},y}-(1-a)}{2a-1}.
+\end{aligned}
 \tag{OA.39}
 $$
 
@@ -520,9 +529,11 @@ $$
 A challenger receives $(1-\eta)(\theta-R)$ when $\theta\ge R$ and zero otherwise. Taking expectations gives Proposition A.8 and applying FOSD yields its sign comparisons. For a uniform incumbent,
 
 $$
-\Delta_\eta=\eta(h-\ell)+(1-2\eta)\frac{(r-\ell)^2}{2r},\quad
-G_{H,\eta}=(1-\eta)(h-r/2),\quad
-G_{L,\eta}=(1-\eta)\frac{\ell^2}{2r}.
+\begin{aligned}
+\Delta_\eta&=\eta(h-\ell)+(1-2\eta)\frac{(r-\ell)^2}{2r},\\
+G_{H,\eta}&=(1-\eta)(h-r/2),\\
+G_{L,\eta}&=(1-\eta)\frac{\ell^2}{2r}.
+\end{aligned}
 \tag{OA.44}
 $$
 
@@ -661,11 +672,11 @@ A seller equilibrium requires a feasible continuation selection after each reser
 
 ## B. Computer-assisted equilibrium certificates {#oa-b}
 
-This appendix explains what the computer proves about the asymmetric equilibria of Proposition 3, and how. The point deserves to be stated plainly. A floating-point root of the equilibrium equation is not a proof. What I certify is an exact root inside a stated bracket and a global best response for the other trader type, with every rounding error accounted for by interval arithmetic.
+The certificates in Proposition 3 establish an exact equilibrium inside each reported bracket. Outward interval arithmetic encloses a marginal-profit root for the low-value investor and verifies global optimality for the high-value investor. The argument combines analytical regularity and deviation bounds with finite interval calculations.
 
 ### B.1. Objects to be certified {#oa-b-objects}
 
-The object certified is the existence of an equilibrium, not an approximate fixed point. Fix the benchmark primitives and a strength $r$. Candidate orders are $(q_H,q_L)=(1,-v)$ with $v\in(0,1)$. Let $\tau=(c_H-g_L)/(g_H-g_L)$, $c=(1-v)/2$, and
+Fix the benchmark primitives and a strength $r$. Candidate orders are $(q_H,q_L)=(1,-v)$ with $v\in(0,1)$. Let $\tau=(c_H-g_L)/(g_H-g_L)$, $c=(1-v)/2$, and
 
 $$
 \mu_v(x)=\operatorname{logistic}\left(\frac{|x+v|-|x-1|}{b}\right),\quad
@@ -848,8 +859,10 @@ The flow halfwidth determines a diagnostic mesh, not an integration truncation. 
 I maintain distinct tolerances for equations, quadrature estimates, and strategic deviations. A root or a finite-grid maximum does not establish equilibrium. For each candidate, evaluate
 
 $$
-\epsilon_P=\sup_{x\ \mathrm{tested}}|P(x)-\mathbb E[V_T\mid X=x]|,\qquad
-\epsilon_e=\sup_{(P,C)\ \mathrm{tested}}[\text{profit from reversing entry}]_+,
+\begin{aligned}
+\epsilon_P&=\sup_{x\ \mathrm{tested}}|P(x)-\mathbb E[V_T\mid X=x]|,\\
+\epsilon_e&=\sup_{(P,C)\ \mathrm{tested}}[\text{profit from reversing entry}]_+.
+\end{aligned}
 \tag{OA.66}
 $$
 
@@ -928,7 +941,7 @@ figures_data/two_returns.csv:
 r, mu, Delta_T, B_r(mu), d_Delta_T_dr, d_B_r_mu_dr
 ```
 
-$W$ denotes allocation value net of paid preparation costs, not target revenue. The derivatives in the last file are the explicit uniform formulas. Use the correspondence strength grid from C.2 and beliefs $m,1/2,M$. These outputs feed Tables 1–3 and Figure 2. Scalar keys are defined in C.8; no displayed value is copied directly from a figure.
+$W$ denotes allocation value net of paid preparation costs, not target revenue. The derivatives in the last file are the explicit uniform formulas. Use the correspondence strength grid from C.2 and beliefs $m,1/2,M$. These outputs feed Tables 1–3 and Figure 1. Scalar keys are defined in C.8; no displayed value is copied directly from a figure.
 
 ### C.2. The equilibrium correspondence and interval certificates {#oa-c-correspondence}
 
@@ -982,7 +995,7 @@ in_support_domain, low_cost_floor_valid, interpretation
 
 The threshold file uses exact row labels `pooling_unique_sufficient`, `pooling_existence`, `full_orders_unique_sufficient`, and `high_cost_ceiling`. It also carries separately labeled analytical scalars `m`, `M`, and `laplace_entry_left_limit` needed by the registry; these are not mislabeled activation thresholds. Every row stores its defining expression and checks. Fields that do not apply to a probability scalar are marked not applicable, not set to zero.
 
-All general parameter columns are included or keyed to an immutable parameter declaration whose full contents accompany the file. `uniqueness_status` distinguishes analytical uniqueness from not established; it is never inferred from the number of search hits. Feed: Figure 1, Proposition 3, the threshold discussion, and the baseline table. Registry keys `cert_a_*`, `cert_b_*`, and `cert_c_*` refer to the ordered declared nodes, not arbitrary roots selected from a larger search.
+All general parameter columns are included or keyed to an immutable parameter declaration whose full contents accompany the file. `uniqueness_status` distinguishes analytical uniqueness from not established; it is never inferred from the number of search hits. Feed: Figure 2, Proposition 3, the threshold discussion, and the baseline table. Registry keys `cert_a_*`, `cert_b_*`, and `cert_c_*` refer to the ordered declared nodes, not arbitrary roots selected from a larger search.
 
 ### C.3. Complementary private signals {#oa-c-signals}
 
@@ -1011,7 +1024,14 @@ a, d, r, trader_signal, q, U(q), U(candidate),
 deviation_gain, quadrature_error, tail_bound
 ```
 
-The same complete primitive vector accompanies each row. The scalar-margin names map to these columns in order: low cost to `low_cost_margin`, high prior to `private_only_exclusion_margin`, high ceiling to `joint_entry_margin`, weak trade to `weak_order_margin`, and strong trade to `strong_order_margin`. These are comparison-level margins; repeat them consistently on both strength rows or store them in a separately keyed comparison record. The display accuracy keys are percentages generated from the raw probability keys, never separately typed. Table 3 uses the declared example and marks the sweep's condition region separately. Feed: the example of Proposition A.7 and Table 3.
+The same complete primitive vector accompanies each row. The scalar-margin names map to these columns in order: low cost to `low_cost_margin`, high prior to `private_only_exclusion_margin`, high ceiling to `joint_entry_margin`, weak trade to `weak_order_margin`, and strong trade to `strong_order_margin`. These are comparison-level margins; repeat them consistently on both strength rows or store them in a separately keyed comparison record. The display accuracy keys are percentages generated from the raw probability keys, never separately typed. Table 3 in the main paper uses the declared example. Online Appendix Table 1 reports every accuracy combination and distinguishes the sufficient uniqueness region from other validated outcomes. These outputs also supply the example of Proposition A.7.
+
+
+The full signal comparison is reported below. The declared example is marked; every other accuracy combination remains visible.
+
+```{=latex}
+\input{tables/table_signal_grid.tex}
+```
 
 ### C.4. Moderate values and constructive nonemptiness {#oa-c-moderate}
 
@@ -1146,7 +1166,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Declared scalars.** These values identify the input vector or execution metadata, rather than replace any derived result.
 
 | Placeholder key | Exact declaration | Meaning |
-|---|---|---|
+|:---------------------------------------|:-----------------|:-----------------------------------------|
 | `base_h` | `10` | Declared $h$; retain its exact decimal input. |
 | `base_ell` | `1` | Declared $\ell$; retain its exact decimal input. |
 | `base_p` | `0.5` | Declared $p$; retain its exact decimal input. |
@@ -1196,7 +1216,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Benchmark and matched controls.**
 
 | Key | Definition and row selection | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `base_entry_weak` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
 | `base_entry_strong` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
 | `base_entry_collapse` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
@@ -1217,7 +1237,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Distributional and moderate-value illustrations.**
 
 | Key | Definition and row selection | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `logistic_entry_strong` | $\mathsf E$ under logistic noise and atomic costs. Select: `noise=logistic; cost_law=atoms; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_6` |
 | `logistic_flow_threshold` | $x^*_{\log}$ from the likelihood-ratio inverse, independently checked by a root. Select: `noise=logistic; cost_law=atoms; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_9` |
 | `logistic_threshold_noise_sd` | $x^*_{\log}/(b\pi/\sqrt{3})$, using the standard deviation of noise, not aggregate flow. Select: `noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd`. | C.1/C.5; `figures_data/posterior_tails.csv` | `decimal_6` |
@@ -1229,7 +1249,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Complementary private information.**
 
 | Key | Definition and row selection | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `signal_entry_weak` | $\mathsf E=(\bar e_H+\bar e_L)/2$, using true-state-conditioned private-signal probabilities. Select: `a=0.70; d=0.75; r=r_weak`. | C.3; `numerics/two_signals.csv` | `decimal_6` |
 | `signal_entry_strong` | $\mathsf E=(\bar e_H+\bar e_L)/2$, using true-state-conditioned private-signal probabilities. Select: `a=0.70; d=0.75; r=r_strong`. | C.3; `numerics/two_signals.csv` | `decimal_6` |
 | `signal_trader_accuracy` | The input $a$ displayed as a percentage; no new calculation beyond the change of units. Select: `a`. | C.3; `input manifest` | `percent_integer` |
@@ -1238,7 +1258,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Certified asymmetric equilibria.**
 
 | Key | Definition and row selection | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `cert_a_v_interval` | Certified bracket for the exact equilibrium root $v^*$; require both endpoint signs, threshold ordering, low-type concavity, and positive global high-type derivative cover. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_8` |
 | `cert_a_entry_interval` | Outward enclosure of $\mathsf E(r,v)$ for every $v$ in the certified root bracket. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_10` |
 | `cert_a_high_derivative_lower` | The nonnegative lower enclosure $\Gamma_H$ after subtracting the between-grid Lipschitz correction, uniform over the full root bracket. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `lower_bound_10` |
@@ -1252,7 +1272,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Atomless-value reserve comparison.**
 
 | Key | Definition and row selection | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `value_entry_weak_high_p` | Class-economy $\mathsf E$ at the high reserve, with class-only investor information. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
 | `value_revenue_weak_low_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=0.5`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
 | `value_revenue_weak_high_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
@@ -1263,7 +1283,7 @@ The substantive statuses attached to output rows inherit the result actually sup
 **Validation and construction scalars.** These quantities are produced before figures or replacement of manuscript placeholders. They make the proof-region checks and threshold distinctions machine-checkable even when the corresponding value is not printed in the main text.
 
 | Key | Definition | Exercise / output | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `base_m` | $m=(1+e^{2/b})^{-1}$. | C.2; `numerics/thresholds.csv` | `decimal_9` |
 | `base_M` | $M=1-m$. | C.2; `numerics/thresholds.csv` | `decimal_9` |
 | `base_r_pool_unique_sufficient` | $\mathfrak r(k)$, the sufficient pooling-uniqueness boundary. | C.2; `numerics/thresholds.csv` | `decimal_9` |
@@ -1297,7 +1317,7 @@ The minimum-margin statistic is a convenience for acceptance, not a substitute f
 **Root-sign quantities accompanying the paper-appendix certificates.** The root bracket for each node is the one defined by its corresponding interval key. The left lower bound must be positive and the right upper bound negative before either value is substituted.
 
 | Key | Definition | Source and row | Display |
-|---|---|---|---|
+|:-----------------------|:---------------------------------------|:-------------------|:---------------|
 | `cert_a_psi_left_lower` | Outward endpoint enclosure $\inf\Psi(r,v_-)$. | C.2; `numerics/certificates.csv`; `r=1.55`; `Psi_left_lower` | `lower_bound_12` |
 | `cert_a_psi_right_upper` | Outward endpoint enclosure $\sup\Psi(r,v_+)$. | C.2; `numerics/certificates.csv`; `r=1.55`; `Psi_right_upper` | `upper_bound_12` |
 | `cert_b_psi_left_lower` | Outward endpoint enclosure $\inf\Psi(r,v_-)$. | C.2; `numerics/certificates.csv`; `r=1.60`; `Psi_left_lower` | `lower_bound_12` |
@@ -1311,7 +1331,7 @@ The minimum-margin statistic is a convenience for acceptance, not a substitute f
 
 ## D. Institutional pilot and empirical design {#oa-d}
 
-The empirical part of this project starts with an institutional question rather than a regression. Was there an interval during which a prospective buyer could still decide whether to investigate a publicly visible sale while the target's shares traded? This appendix sets out the rule for finding such intervals, the coding of events, and what would count as evidence that the institution the model describes exists.
+The proposed pilot identifies publicly visible sale opportunities in which a prospective buyer can still decide whether to investigate while target shares trade. This appendix specifies eligibility, event coding, and the evidence needed to establish the decision interval. It reports a research design, without an extracted sample or estimated effects.
 
 ### D.1. The decision interval and sample-selection rule {#oa-d-selection}
 
@@ -1393,13 +1413,26 @@ A targeted causal design would shift information transmission without independen
 
 ## E. Reproducibility and the numerical boundary {#oa-e}
 
-This appendix records how the numbers in the paper were produced and where the computational boundary lies. I distinguish the node checks distributed with the paper from the full exercises of Appendix C, and I state the environment in which each was run.
+The replication package separates independent node verification, the numerical exercises, and presentation. This section describes their inputs, recorded environments, and reproducibility checks.
 
 ### E.1. Distributed verification and execution environment {#oa-e-environment}
 
 The verification directory contains independent node calculations, exploratory asymmetric searches, and interval certificates. The documented execution environment is Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0, and mpmath 1.3.0. These are metadata for the distributed results, not a claim that every other compatible environment fails. Each new execution records its actual interpreter, package versions, operating system, arithmetic precision, parameter declarations, tolerances, and source-file hashes.
 
-The computational contract in Appendix C extends beyond the distributed node checks. In particular, the complete strength correspondence, the exploratory reserve correspondence, and the figure-ready scalar registry are exercises to execute and validate. Their outputs are not inferred from the existence of a node verifier or filled from undocumented cached calculations. The empirical pilot contains a coding specification rather than an extracted case sample.
+The numerical layer implements the exercises in Appendix C, including the searches over incumbent strengths and reserves. These searches retain their stated limits on coverage. Accepted output rows supply the quantity registry, tables, and figures, and each exercise has a run manifest with acceptance results and output hashes. The empirical pilot remains a coding specification.
+
+The generated paper can be rebuilt from the validated exercise outputs with the project environment:
+
+```bash
+.venv/bin/python numerics/check_registry.py
+.venv/bin/python numerics/registry.py
+.venv/bin/python numerics/substitute.py
+.venv/bin/python numerics/render/render_all.py
+.venv/bin/python numerics/render/latex.py
+.venv/bin/python numerics/verify.py --final
+```
+
+Registry calculations use a local decimal context with precision 60, so their serialized values do not depend on ambient arithmetic precision or import order. The registry check compares outputs across these environments. The final verification includes the registry manifest, numerical acceptance checks, and strict substitution. Source manuscripts remain editable; filled Markdown, LaTeX, tables, and figures are regenerated.
 
 To reproduce the distributed checks from the verification directory, use:
 
@@ -1437,7 +1470,7 @@ verification/
 
 The core results hold primitive vectors, inequality margins, threshold calculations, candidate outcomes, and reserve comparisons. The deviation ledger records tested state–order alternatives and their payoffs. The signal results hold private-information margins, joint-probability checks, and the associated deviation ledger. The asymmetric candidate file is exploratory: its root and local-search output is not an exhaustive equilibrium enumeration. The interval file contains the root-sign enclosures, order-cover bounds, and entry intervals that complete the selected computer-assisted existence arguments. The certificate log provides the readable arithmetic output; the complete interval endpoints, not their displayed midpoints, are the numerical proof objects.
 
-These files support the statements at their documented parameter points. They do not supply an optimizer over sale terms, a first-price bidding equilibrium, or the full set of mixed trading equilibria. The corresponding research questions are implemented through the new exercises in Appendix C rather than relabeled node output.
+These files support the statements at their documented parameter points. They do not supply an optimizer over sale terms, a first-price bidding equilibrium, or the full set of mixed trading equilibria. The exercises in Appendix C extend numerical coverage while preserving those limits. Their results are reported separately from the independent node checks.
 
 ### E.3. Implementation contract for the full exercises {#oa-e-contract}
 

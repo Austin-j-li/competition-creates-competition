@@ -43,7 +43,7 @@ def _at(xs: np.ndarray, ys: np.ndarray, x0: float) -> tuple[float, float]:
     return float(xs[ok][i]), float(ys[ok][i])
 
 
-def figure1() -> Path:
+def figure2() -> Path:
     rows = read_csv("numerics/correspondence.csv")
     certs = [c for c in read_csv("numerics/certificates.csv") if c["accepted"] == "true"]
     th = {r["boundary"]: float(r["value"]) for r in read_csv("numerics/thresholds.csv") if r["value"] not in ("nan", "n/a")}
@@ -120,12 +120,12 @@ def figure1() -> Path:
 
     # lower panel: order magnitudes along the informative branches
     if "pooling" in kept:
-        x = np.array(sorted(float(Decimal(r["r"])) for r in kept["pooling"]))
-        b.plot(x, np.zeros_like(x), color=NAVY, ls=SOLID, lw=1.6, zorder=3)
+        x, y = _broken_series(kept["pooling"], "r", "q_H", 0.005)
+        b.plot(x, y, color=NAVY, ls=SOLID, lw=1.6, zorder=3)
         label_line(b, 1.30, 0.0, "no trade ($q=0$)", NAVY, dx=0, dy=5, ha="center")
     if "full_orders" in kept:
-        x = np.array(sorted(float(Decimal(r["r"])) for r in kept["full_orders"]))
-        b.plot([x.min(), x.max()], [1.0, 1.0], color=RUST, ls=SOLID, lw=1.6, zorder=3)
+        x, y = _broken_series(kept["full_orders"], "r", "q_H", 0.005)
+        b.plot(x, y, color=RUST, ls=SOLID, lw=1.6, zorder=3)
         label_line(b, 2.9, 1.0, "full orders ($v=1$)", RUST, dx=0, dy=5, ha="center")
     if "asymmetric" in kept:
         xv, yv = _broken_series(kept["asymmetric"], "r", "v", 0.005, jump=0.2)
@@ -149,7 +149,7 @@ def figure1() -> Path:
     return out
 
 
-def figure2() -> Path:
+def figure1() -> Path:
     rows = read_csv("figures_data/two_returns.csv")
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL_WIDTH, 2.9), constrained_layout=True)
     mus = sorted({r["mu"] for r in rows}, key=float)
@@ -266,9 +266,10 @@ def figure4() -> Path:
 
 def render_all() -> list[Path]:
     FIG.mkdir(exist_ok=True)
-    out = [figure2(), figure3(), figure4()]
+    out = [figure1()]
     if (ROOT / "numerics/correspondence.csv").exists():
-        out.append(figure1())
+        out.append(figure2())
+    out.extend([figure3(), figure4()])
     return out
 
 

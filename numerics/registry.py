@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import sys
-from decimal import ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_EVEN, Decimal
+from decimal import ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_EVEN, Context, Decimal, localcontext
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -213,33 +213,34 @@ def resolve_row(man: dict, tables: dict) -> dict:
 
 
 def build_registry() -> tuple[list[dict], list[str]]:
-    manifest = read_csv("paper/quantity_manifest.csv")
-    tables = {"__manifest__": manifest, "__registry__": {}}
-    for src in sorted({m["source_file"] for m in manifest}):
-        if (ROOT / src).exists() and src.endswith(".csv") and src != "numerics/quantity_registry.csv":
-            tables[src] = read_csv(src)
-    registry = []
-    deferred = []
-    for m in manifest:
-        if m["source_file"] == "numerics/quantity_registry.csv":
-            deferred.append(m)
-            continue
-        row = resolve_row(m, tables)
-        registry.append(row)
-        tables["__registry__"][row["name"]] = row
-    for m in deferred:
-        row = resolve_row(m, tables)
-        registry.append(row)
-        tables["__registry__"][row["name"]] = row
-    names = [r["name"] for r in registry]
-    problems = []
-    if len(set(names)) != len(names):
-        problems.append("duplicate registry names")
-    for r in registry:
-        if r["status"] == "open":
-            problems.append(f"open: {r['name']} ({r['branch']})")
-    return registry, problems
-
+    """Resolve quantities with fixed precision, independent of import order."""
+    with localcontext(Context(prec=60, rounding=ROUND_HALF_EVEN)):
+        manifest = read_csv("paper/quantity_manifest.csv")
+        tables = {"__manifest__": manifest, "__registry__": {}}
+        for src in sorted({m["source_file"] for m in manifest}):
+            if (ROOT / src).exists() and src.endswith(".csv") and src != "numerics/quantity_registry.csv":
+                tables[src] = read_csv(src)
+        registry = []
+        deferred = []
+        for m in manifest:
+            if m["source_file"] == "numerics/quantity_registry.csv":
+                deferred.append(m)
+                continue
+            row = resolve_row(m, tables)
+            registry.append(row)
+            tables["__registry__"][row["name"]] = row
+        for m in deferred:
+            row = resolve_row(m, tables)
+            registry.append(row)
+            tables["__registry__"][row["name"]] = row
+        names = [r["name"] for r in registry]
+        problems = []
+        if len(set(names)) != len(names):
+            problems.append("duplicate registry names")
+        for r in registry:
+            if r["status"] == "open":
+                problems.append(f"open: {r['name']} ({r['branch']})")
+        return registry, problems
 
 def main() -> bool:
     registry, problems = build_registry()
@@ -249,7 +250,8 @@ def main() -> bool:
     for p in problems:
         print("  ", p)
     write_manifest("c8_registry", {"manifest": "paper/quantity_manifest.csv"}, "Resolve each manifest row from its declared "
-                   "source file and selector; require a unique accepted source row; format only after validation.",
+                   "source file and selector; use a local 60-digit decimal context; require a unique accepted source row; "
+                   "format only after validation.",
                    {}, ["numerics/quantity_registry.csv"], {"open_rows": n_open, "problems": problems}, n_open == 0)
     return n_open == 0
 

@@ -38,6 +38,7 @@ STAGES = {
     "c5": ("c5_noise", ["C.5"]),
     "c6": ("c6_reserve", ["C.6", "C.0/C.6"]),
     "c7": ("c7_bargaining", ["C.7"]),
+    "c8": ("c8_registry", ["C.8"]),
     "render": ("render", []),
 }
 RERUN = {"c1": "numerics/exercises/c1_baseline.py", "c3": "numerics/exercises/c3_signals.py", "c4": "numerics/exercises/c4_moderate.py",
