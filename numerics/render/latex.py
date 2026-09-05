@@ -49,11 +49,12 @@ def convert(md_path: str, tex_path: str, pdf: bool) -> bool:
 
     def repl(m: re.Match) -> str:
         key = m.group(1)
+        num = int(key.split()[1])
         if key in FIGS:
             f, lab, cap = FIGS[key]
-            return ("```{=latex}\n\\begin{figure}[H]\\centering\\includegraphics[width=\\linewidth]{" + f + "}\n"
+            return ("```{=latex}\n\\setcounter{figure}{" + str(num - 1) + "}\\begin{figure}[H]\\centering\\includegraphics[width=\\linewidth]{" + f + "}\n"
                     f"\\caption{{{cap}}}\\label{{{lab}}}\\end{{figure}}\n```")
-        return "```{=latex}\n\\input{" + TABS[key] + "}\n```"
+        return "```{=latex}\n\\setcounter{table}{" + str(num - 1) + "}\\input{" + TABS[key] + "}\n```"
 
     text = PLACEHOLDER_RE.sub(repl, text)
     # cross-document links (main <-> online appendix) become plain text in the compiled PDFs
@@ -68,7 +69,7 @@ def convert(md_path: str, tex_path: str, pdf: bool) -> bool:
     src = ROOT / (tex_path + ".md")
     src.write_text(text, encoding="utf-8")
     cmd = ["pandoc", str(src), "-o", str(ROOT / tex_path), "--standalone", "--citeproc", "--bibliography", str(ROOT / "references.bib"),
-           "--resource-path", str(ROOT), "-f", "markdown+tex_math_dollars+raw_attribute", "--number-sections"]
+           "--resource-path", str(ROOT), "-f", "markdown+tex_math_dollars+raw_attribute", "--shift-heading-level-by=-1"]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         print(r.stderr)

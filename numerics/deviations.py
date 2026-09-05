@@ -17,7 +17,12 @@ class Convolution:
     tail_bound: float
 
 
+from functools import lru_cache
+
+
+@lru_cache(maxsize=4096)
 def _exterior_constants(sched: Schedule, state: str) -> tuple[float | None, float | None]:
+    """Constant residual values outside the extended hull (Laplace); cached per frozen schedule."""
     if sched.prim.noise != Noise.LAPLACE:
         return None, None
     lo, hi = sched.hull()

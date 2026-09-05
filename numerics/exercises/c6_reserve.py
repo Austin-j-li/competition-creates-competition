@@ -160,7 +160,9 @@ def reserve_grid(law: str) -> list[str]:
     return sorted(pts | specials, key=Decimal)
 
 
-def run(workers: int = 8, quick: bool = False, max_refine_nodes: int = 400) -> bool:
+def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int | None = None) -> bool:
+    import os
+    workers = workers or max(1, (os.cpu_count() or 8) - 2)
     checks, notes = {}, []
     tasks = []
     for law in ("binary", "uniform_classes"):
@@ -206,7 +208,7 @@ def run(workers: int = 8, quick: bool = False, max_refine_nodes: int = 400) -> b
             x += Decimal("0.002")
     refine = sorted(refine, key=lambda t: (t[0], Decimal(t[1]), Decimal(t[2])))
     skipped = 0
-    if len(refine) > max_refine_nodes:
+    if max_refine_nodes is not None and len(refine) > max_refine_nodes:
         skipped = len(refine) - max_refine_nodes
         # keep refinement for revenue maxima and branch changes first, in listed order
         refine = refine[:max_refine_nodes]
@@ -278,4 +280,5 @@ def run(workers: int = 8, quick: bool = False, max_refine_nodes: int = 400) -> b
 
 
 if __name__ == "__main__":
-    sys.exit(0 if run(quick="--quick" in sys.argv) else 1)
+    w = next((int(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--workers=")), None)
+    sys.exit(0 if run(workers=w, quick="--quick" in sys.argv) else 1)

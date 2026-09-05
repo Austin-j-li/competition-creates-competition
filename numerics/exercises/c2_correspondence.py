@@ -199,7 +199,9 @@ def _worker(args):
     return solve_node(*args)
 
 
-def run(workers: int = 8, quick: bool = False) -> bool:
+def run(workers: int | None = None, quick: bool = False) -> bool:
+    import os
+    workers = workers or max(1, (os.cpu_count() or 8) - 2)
     checks, notes = {}, []
     # --- thresholds -------------------------------------------------------------------
     th = compute_thresholds(PRIM)
@@ -381,4 +383,5 @@ def fmt_cell(v):
 if __name__ == "__main__":
     if "--postprocess" in sys.argv:
         sys.exit(0 if postprocess_existing() else 1)
-    sys.exit(0 if run(quick="--quick" in sys.argv) else 1)
+    w = next((int(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--workers=")), None)
+    sys.exit(0 if run(workers=w, quick="--quick" in sys.argv) else 1)

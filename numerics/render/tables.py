@@ -162,8 +162,9 @@ def table4() -> Path:
                 n_unres = sum(1 for x in sub if x["search_unresolved"] == "true")
                 n_multi = sum(1 for x in sub if int(x["accepted_continuations_found"]) >= 2)
                 body.append([f"{esc(law.replace('_', ' '))}, $r={rs}$: {len(sub)} reserves", r"\multicolumn{6}{l}{"
-                             + (f"highest found revenue {d6(best['R_T_max_found'])} at $p={best['p']}$ (entry range {d6(best['E_min_found'])}--{d6(best['E_max_found'])}); " if best else "")
-                             + f"{n_multi} reserves with several continuations found; {n_unres} unresolved reserves; envelope not certified" + "}"])
+                             + (f"highest found revenue {d6(best['R_T_max_found'])} at $p={best['p']}$, entry there {d6(best['E_min_found'])}--{d6(best['E_max_found'])}" if best else "no accepted continuation")
+                             + "}"])
+                body.append(["", r"\multicolumn{6}{l}{" + f"{n_multi} reserves with several continuations found; {n_unres} unresolved reserves; envelope not certified" + "}"])
     else:
         body.append([r"\multicolumn{7}{l}{sweep not available}"])
     cap = (r"Sale terms and discovery. Panels (a) and (b) compare the original reserve with the declared alternative at each strength under binary values and under atomless "

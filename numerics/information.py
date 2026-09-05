@@ -118,22 +118,29 @@ class Schedule:
             return np.full_like(np.asarray(x, dtype=float), 0.5)
         return self.mu(x)
 
-    def entry(self, x: np.ndarray) -> np.ndarray:
-        e = entry_at_posterior(self.prim, self.pay, self.public_posterior(x))
-        if self.tie_at_ceiling and self.regime == "feedback":
+    def entry_from_mu(self, mu: np.ndarray) -> np.ndarray:
+        """Entry given the flow posterior (the buyer sees the prior when the price is hidden)."""
+        if self.regime == "price_hidden":
+            return entry_at_posterior(self.prim, self.pay, np.full_like(mu, 0.5))
+        e = entry_at_posterior(self.prim, self.pay, mu)
+        if self.tie_at_ceiling:
             m, M = posterior_bounds(self.prim.fb)
-            e = np.where(self.mu(x) >= M - 1e-9, 1.0, e)
+            e = np.where(mu >= M - 1e-9, 1.0, e)
         return e
+
+    def entry(self, x: np.ndarray) -> np.ndarray:
+        return self.entry_from_mu(self.mu(x))
 
     def price(self, x: np.ndarray) -> np.ndarray:
         """P = t_0 + e [w_L + Delta_T mu_X] + dividend (eq. 9 / OA.35 with common entry)."""
-        e = self.entry(x)
-        return self.pay.t_0 + e * (self.pay.w_L + self.pay.Delta_T * self.mu(x)) + self.dividend
+        mu = self.mu(x)
+        e = self.entry_from_mu(mu)
+        return self.pay.t_0 + e * (self.pay.w_L + self.pay.Delta_T * mu) + self.dividend
 
     def A(self, x: np.ndarray, state: str) -> np.ndarray:
         """Residual advantage: A_H = E[V_T|H,x] - P, A_L = P - E[V_T|L,x] (eq. 10)."""
-        e = self.entry(x)
         mu = self.mu(x)
+        e = self.entry_from_mu(mu)
         if state == "H":
             return e * self.pay.Delta_T * (1 - mu)
         return e * self.pay.Delta_T * mu
