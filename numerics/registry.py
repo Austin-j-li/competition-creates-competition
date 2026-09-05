@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import sys
-from decimal import ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_EVEN, Context, Decimal, localcontext
+from decimal import ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_EVEN, Context, Decimal, getcontext, localcontext
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -12,6 +12,30 @@ from numerics.params import (BENCHMARK_STRENGTHS, MODERATE_STRENGTHS, SIGNAL_STR
 
 REGISTRY_COLUMNS = ["name", "value", "lower", "upper", "units", "display", "exercise", "parameter_set", "branch", "status",
                     "source_file", "source_row", "definition"]
+
+# Registry decimal context (16.2 item 8): fixed here, independent of the ambient context and import order.
+REGISTRY_PRECISION = 60
+REGISTRY_ROUNDING = ROUND_HALF_EVEN
+
+# Units vocabulary (16.2 item 4). "percentage_point" is a difference of two probabilities times 100; it is never
+# mixed with "probability" or "percentage" in one key.
+VALID_UNITS = frozenset({
+    "model units", "probability", "percentage", "percentage_point", "payoff per share", "payoff margin", "order units",
+    "surplus per share", "standard deviations", "payoff per marginal order", "version", "bound",
+})
+STATUS_VOCABULARY = ("analytical", "computer-assisted", "numerical diagnostic", "open", "input")
+
+# Sources without a per-row status column: evidence class fixed by the exercise that produces them.
+# Every other source must carry a status column; a missing one resolves to open, never to analytical.
+SOURCE_DEFAULT_STATUS = {
+    "numerics/certificates.csv": "computer-assisted",   # outward interval enclosures with a global deviation cover
+    "numerics/thresholds.csv": "analytical",            # closed-form boundaries with independently checked residuals
+    "tables/auction_primitives.csv": "analytical",      # closed-form auction payoffs checked against direct integration
+}
+STATUS_COLUMNS = ("status", "existence_status", "validation_status", "result_status")
+# Columns that carry the continuation identity when a source has them; the recorded branch names the exact
+# candidate rather than a rounded scalar (16.2 item 2).
+IDENTITY_COLUMNS = ("candidate_id", "continuation_id", "parameter_set_id")
 
 STRENGTHS = {"base": BENCHMARK_STRENGTHS, "moderate": MODERATE_STRENGTHS, "signal": SIGNAL_STRENGTHS,
              "value classes": BENCHMARK_STRENGTHS, "cost mixture": BENCHMARK_STRENGTHS}
@@ -52,6 +76,14 @@ def parse_selector(sel: str) -> dict:
 
 def _dec(x: str) -> Decimal:
     return Decimal(x)
+
+
+def _same_value(cell: str, declared: str) -> bool:
+    """Exact comparison of a source cell with a declared selector value: as decimals when both parse, else as strings."""
+    try:
+        return Decimal(cell) == Decimal(declared)
+    except Exception:
+        return cell == declared
 
 
 def fmt_display(display: str, value: str | None, lower: str | None, upper: str | None) -> tuple[str, bool]:
@@ -120,6 +152,21 @@ def resolve_row(man: dict, tables: dict) -> dict:
         text, _ = fmt_display(man["display"], inp, None, None)
         reg.update(value=inp, status="input", display=text)
         return reg
+    if src == "numerics/quantity_registry.csv" and sel_text.strip().startswith("pp_change"):
+        # change in preparation in percentage points, 100 (E_strong - E_weak), from the resolved probability rows
+        sel = parse_selector(sel_text)
+        strong, weak = tables["__registry__"].get(sel.get("strong", "")), tables["__registry__"].get(sel.get("weak", ""))
+        if strong is None or weak is None or strong["status"] == "open" or weak["status"] == "open":
+            reg.update(value="n/a", status="open", display="[[unresolved]]", branch="component probability unresolved")
+            return reg
+        if strong["units"] != "probability" or weak["units"] != "probability" or man["units"] != "percentage_point":
+            raise ValueError(f"{name}: percentage-point change requires two probability rows and units percentage_point")
+        val = (Decimal(strong["value"]) - Decimal(weak["value"])) * 100
+        text, _ = fmt_display(man["display"], str(val), None, None)
+        classes = {strong["status"], weak["status"]}
+        st = "analytical" if classes == {"analytical"} else "computer-assisted" if "computer-assisted" in classes and "numerical diagnostic" not in classes else "numerical diagnostic"
+        reg.update(value=str(val), status=st, display=text, branch=f"{sel['strong']} minus {sel['weak']}")
+        return reg
     if src == "numerics/quantity_registry.csv":  # minimum of the five margins, computed from resolved rows
         prefix = name.replace("minimum_theorem_margin", "margin_")
         comps = [tables["__registry__"].get(prefix + s) for s in ("low_cost", "high_prior", "high_ceiling", "weak_trade", "strong_trade")]
@@ -161,9 +208,7 @@ def resolve_row(man: dict, tables: dict) -> dict:
                 ok &= Decimal(r[k]) == Decimal(v)
                 continue
             if k in r:
-                ok &= r[k] == v
-            elif k in ("a", "d") and k in r:
-                ok &= Decimal(r[k]) == Decimal(v)
+                ok &= _same_value(r[k], v)
             elif k in ("declared moderate comparison", "benchmark inputs", "all certificate predicates", "all predicates accepted",
                        "declared comparison", "tau"):
                 pass
@@ -198,24 +243,43 @@ def resolve_row(man: dict, tables: dict) -> dict:
         reg.update(value="n/a", status="open", display="[[unresolved]]", branch="source value not applicable")
         return reg
     text, ok = fmt_display(man["display"], value, lower, upper)
-    st_text = row.get("status") or row.get("existence_status") or ("computer-assisted" if src == "numerics/certificates.csv" else "analytical")
-    if src == "numerics/thresholds.csv":
-        st_text = "analytical"
+    st_text = next((row[c] for c in STATUS_COLUMNS if row.get(c)), None) or SOURCE_DEFAULT_STATUS.get(src, "open")
     st = status_class(st_text)
     if not ok:
         st = "open"
         text = "[[unresolved]]"
         reg["branch"] = "displayed sign does not support the strict inequality"
     else:
-        reg["branch"] = row.get("branch") or row.get("experiment") or (f"({row['q_H']},{row['q_L']})" if "q_H" in row else "n/a")
+        ident = next((row[c] for c in IDENTITY_COLUMNS if row.get(c)), None)
+        reg["branch"] = row.get("branch") or row.get("experiment") or ident or (f"({row['q_H']},{row['q_L']})" if "q_H" in row else "n/a")
+        if ident and reg["branch"] != ident:
+            reg["branch"] = f"{reg['branch']}; {ident}"
     reg.update(value=value, status=st, display=text)
     return reg
 
 
-def build_registry() -> tuple[list[dict], list[str]]:
-    """Resolve quantities with fixed precision, independent of import order."""
-    with localcontext(Context(prec=60, rounding=ROUND_HALF_EVEN)):
-        manifest = read_csv("paper/quantity_manifest.csv")
+def registry_context() -> Context:
+    return Context(prec=REGISTRY_PRECISION, rounding=REGISTRY_ROUNDING)
+
+
+def build_registry(manifest: list[dict] | None = None) -> tuple[list[dict], list[str]]:
+    """Resolve quantities with fixed precision, independent of import order and of the ambient context.
+
+    Hard failures (raised): duplicate manifest keys, an unknown unit, an unknown display rule. Soft failures
+    (returned in `problems`, row left open): a selector matching zero or several accepted rows, a missing source.
+    """
+    with localcontext(registry_context()):
+        if getcontext().prec != REGISTRY_PRECISION or getcontext().rounding != REGISTRY_ROUNDING:
+            raise RuntimeError("registry context not established")
+        if manifest is None:
+            manifest = read_csv("paper/quantity_manifest.csv")
+        names = [m["name"] for m in manifest]
+        dupes = sorted({n for n in names if names.count(n) > 1})
+        if dupes:
+            raise ValueError(f"duplicate manifest keys: {dupes}")
+        bad_units = sorted({m["units"] for m in manifest if m["units"] not in VALID_UNITS})
+        if bad_units:
+            raise ValueError(f"unknown units in manifest: {bad_units}")
         tables = {"__manifest__": manifest, "__registry__": {}}
         for src in sorted({m["source_file"] for m in manifest}):
             if (ROOT / src).exists() and src.endswith(".csv") and src != "numerics/quantity_registry.csv":
@@ -233,11 +297,10 @@ def build_registry() -> tuple[list[dict], list[str]]:
             row = resolve_row(m, tables)
             registry.append(row)
             tables["__registry__"][row["name"]] = row
-        names = [r["name"] for r in registry]
         problems = []
-        if len(set(names)) != len(names):
-            problems.append("duplicate registry names")
         for r in registry:
+            if r["status"] not in STATUS_VOCABULARY:
+                raise ValueError(f"{r['name']}: status {r['status']!r} outside the vocabulary")
             if r["status"] == "open":
                 problems.append(f"open: {r['name']} ({r['branch']})")
         return registry, problems
@@ -252,7 +315,9 @@ def main() -> bool:
     write_manifest("c8_registry", {"manifest": "paper/quantity_manifest.csv"}, "Resolve each manifest row from its declared "
                    "source file and selector; use a local 60-digit decimal context; require a unique accepted source row; "
                    "format only after validation.",
-                   {}, ["numerics/quantity_registry.csv"], {"open_rows": n_open, "problems": problems}, n_open == 0)
+                   {}, ["numerics/quantity_registry.csv"],
+                   {"open_rows": n_open, "problems": problems, "registry_precision": REGISTRY_PRECISION,
+                    "registry_rounding": REGISTRY_ROUNDING, "ambient_precision_at_call": getcontext().prec}, n_open == 0)
     return n_open == 0
 
 

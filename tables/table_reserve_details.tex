@@ -1,0 +1,27 @@
+\begin{table}[tbp]\begingroup\singlespacing\small\centering
+\caption{Reserve comparisons: orders, margins, evidence, and identity behind Table 4.}\label{tab:oa-reserve-details}
+\begin{threeparttable}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}p{0.24\linewidth}rrrrrrrrll@{}}
+\toprule
+Economy and reserve & $q_H$ & $q_L$ & $\mathsf E$ & $\mathsf A$ & $\mathsf O_H$ & $\mathcal R_T$ & \shortstack{Floor\\margin} & \shortstack{Trading\\margin} & Evidence & Unique \\
+\midrule
+\multicolumn{11}{l}{\emph{Panel A. Binary values}} \\
+Weak incumbent ($r=1.2$), reserve $p=0.5$ & 0 & 0 & 0.250000 & 0.250000 & 0.125000 & 0.392708 & $1.73\times10^{0}$ & $3.33\times10^{-3}$ & analytical & yes \\
+Weak incumbent ($r=1.2$), reserve $p=1.01$ & 1 & -1 & 0.543573 & 0.338494 & 0.338494 & 0.452756 & $1.41\times10^{0}$ & $9.08\times10^{-3}$ & analytical & yes \\
+Strong incumbent ($r=3$), reserve $p=0.5$ & 1 & -1 & 0.522757 & 0.522757 & 0.324192 & 0.872392 & $1.37\times10^{0}$ & $2.41\times10^{-3}$ & analytical & yes \\
+Strong incumbent ($r=3$), reserve $p=1.01$ & 1 & -1 & 0.513373 & 0.317504 & 0.317504 & 0.987487 & $1.24\times10^{0}$ & $1.36\times10^{-2}$ & analytical & yes \\
+\midrule
+\multicolumn{11}{l}{\emph{Panel B. Atomless values with class information}} \\
+Weak incumbent ($r=1.2$), reserve $p=0.5$ & 0 & 0 & 0.250000 & 0.250000 & 0.125000 & 0.392665 & $1.73\times10^{0}$ & $2.99\times10^{-3}$ & analytical & yes \\
+Weak incumbent ($r=1.2$), reserve $p=1.1$ & 1 & -1 & 0.540309 & 0.336302 & 0.336302 & 0.432173 & $1.39\times10^{0}$ & $1.40\times10^{-2}$ & analytical & yes \\
+Strong incumbent ($r=3$), reserve $p=0.5$ & 1 & -1 & 0.522760 & 0.522760 & 0.324195 & 0.872367 & $1.37\times10^{0}$ & $2.42\times10^{-3}$ & analytical & yes \\
+Strong incumbent ($r=3$), reserve $p=1.1$ & 1 & -1 & 0.511638 & 0.316252 & 0.316252 & 1.014500 & $1.23\times10^{0}$ & $1.38\times10^{-2}$ & analytical & yes \\
+\bottomrule
+\end{tabular*}
+\begin{tablenotes}\footnotesize
+\item Complete parameter identity of every node: \texttt{h=10$|$ell=1$|$rho=0.25$|$c\_L=1$|$c\_H=6$|$b=2$|$k=0.02$|$noise=Laplace$|$cost=atoms$|$cost\_halfwidth=0$|$prior\_H=0.5} with \texttt{r}, \texttt{p}, \texttt{value\_law} $\in\{$binary, uniform\_classes$\}$ and \texttt{eps\_V} $\in\{0, 0.05\}$ as listed. Institution, information structure, and tie rule: \texttt{reserve\_auction:uniform\_incumbent[0,r];sale\_to\_highest\_admissible\_at\_max(p,min(R,v));bid\_equal\_reserve\_is\_admissible=yes}, \texttt{public\_price\_feedback}, \texttt{entry\_at\_indifference=yes;bid\_equal\_reserve\_is\_admissible=yes;upper\_plateau\_enters\_at\_tau=M;lower\_plateau\_enters\_at\_B(m)=c\_L}.
+\item $\mathsf A$ is the probability of an admissible prepared challenger. Floor margin is $B_r(m)-c_L$; trading margin is $k-\Delta_T$ for no trade and $(1-1/b)\,e(m)\,m\,\Delta_T-k$ for full orders. Evidence is the result status; Unique reports the uniqueness scope recorded with the continuation (unique within all continuations under the stated bound, or not established). Each node is a validated row of \texttt{numerics/reserve\_events.csv} joined with \texttt{tables/reserve\_comparisons.csv} on the full parameter identity, the exact reserve, and the branch.
+\end{tablenotes}
+\end{threeparttable}
+\par\endgroup\end{table}

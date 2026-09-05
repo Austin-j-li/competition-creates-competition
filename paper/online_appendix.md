@@ -177,7 +177,7 @@ $$
 
 An incorrectly signed order has strictly negative gross expected profit. Zero gives zero. Thus each type has the unique best response zero, irrespective of the candidate equilibrium schedules. A mixed distribution placing positive probability on a nonzero order cannot be optimal: its payoff is an average of strictly negative payoffs and zero, and is strictly negative if that probability is positive. There is no issue from arbitrarily small trades; a nonpositive integrable random payoff that is strictly negative on a positive-probability set has a negative expectation.
 
-Under zero orders, $X=Z$ is independent of quality. Set $e=\rho$ and $P=t_0+\rho[(t_H+t_L)/2-t_0]$. Condition (A2) excludes high-cost preparation at the prior, and (A1) admits low-cost preparation. Competitive pricing is correct and the previous payoff calculation validates zero. This constructs the unique trading and entry outcome.
+Under zero orders, $X=Z$ is independent of quality. Set $e=\rho$ and $P=t_0+\rho[(t_H+t_L)/2-t_0]$. Condition (A2) excludes high-cost preparation at the prior, and (A1) admits low-cost preparation. Competitive pricing is correct and the previous payoff calculation validates zero. This constructs the unique trading and on-path preparation outcome.
 
 **Strong incumbent.** Again consider any candidate equilibrium, including mixed orders. Section A.3 gives $F_\theta(s)\ge\rho m\Delta_T(r_1)$, and (OA.13) with $L=1/b$ gives
 
@@ -200,7 +200,7 @@ M,&x\ge1.
 \tag{OA.16}
 $$
 
-Use the preparation rule (OA.8) and pricing (OA.7). Equation (OA.9) makes the price invertible with respect to this posterior, so the buyer optimizes using exactly the information it observes. The global bounds verify investor best responses, and the construction satisfies competitive pricing and truthful bidding. This proves existence as well as uniqueness of trading and entry outcomes. Price functions can differ at unrealized price values or flow null sets without creating a different economic outcome.
+Use the preparation rule (OA.8) and pricing (OA.7). Equation (OA.9) makes the price invertible with respect to this posterior, so the buyer optimizes using exactly the information it observes. The global bounds verify investor best responses, and the construction satisfies competitive pricing and truthful bidding. This proves existence and the uniqueness of the trading and on-path preparation outcome. Price functions can differ at unrealized price values or flow null sets without creating a different economic outcome.
 
 **Entry and allocation.** Since $g_H>g_L$, expensive preparation requires $\mu\ge\tau$. The strict inequalities $B_{r_1}(1/2)<B_{r_0}(1/2)<c_H<B_{r_1}(M)$ imply $\tau\in(1/2,M)$. Solving (OA.16) gives $x^*=b\operatorname{logit}(\tau)/2\in(0,1)$. The Laplace survival function is
 
@@ -221,7 +221,7 @@ Hence $\alpha_H=\overline F_Z(x^*-1)$ and $\alpha_L=\overline F_Z(x^*+1)$ give t
 
 ### A.5. Fixed experiments, threshold distinctions, and finite nonmonotonicity {#oa-a-thresholds}
 
-For Proposition A.3, fix one joint distribution of $(S,\Theta,C)$ for both strengths. Let $\mu(S)=\Pr(H\mid S)$. For $r_1>r_0$, the difference in entry indicators is
+For Proposition A.3, fix one joint distribution of $(S,\Theta)$ for both strengths, and keep the preparation cost $C$ independent of $(S,\Theta)$ with its law also fixed as strength varies. Only $r$ changes between the two economies; the signal experiment and the cost law do not. Cost independence is what makes the buyer's posterior $\mu(S)=\Pr(H\mid S)$ the right object: with a cost that carried information about quality, the comparison would need $\Pr(H\mid S,C)$ and an independence condition between the incumbent's value and the buyer's full information, and I do not claim that version. For $r_1>r_0$, the difference in entry indicators is
 
 $$
 \mathbf1\{C\le B_{r_0}(\mu(S))\}
@@ -529,7 +529,7 @@ B_r(\mu_X)-C+p\Pr(R<p)=B_r(\mu_X)-C+\frac{p^2}{r}.
 \tag{OA.46}
 $$
 
-Additional entry occurs only when its first two terms sum to a nonnegative value. The final term is strictly positive. For atomic costs, integrate against the marginal full-order flow density $g(x)=[f(x-1)+f(x+1)]/2$ to obtain
+Additional entry occurs only when its first two terms sum to a nonnegative value. The final term is strictly positive. The statement is about conditional expectations: each additional preparation decision contributes at least $p^2/r$ in conditional expectation, given price information and preparation cost. A realized low-value preparation need not generate a positive realized net gain, since $(\ell-\max(p,R))_+$ can fall short of the cost paid. For atomic costs, integrate against the marginal full-order flow density $g(x)=[f(x-1)+f(x+1)]/2$ to obtain
 
 $$
 \Delta\mathcal W=(1-\rho)\int g(x)
@@ -608,13 +608,20 @@ $$
 
 When the reserve is above the entire low band but below $r$, $t_L=t_0$, $g_L=0$, and the high-class formulas are unchanged. Conditional on class and flow, exact $V$ retains its within-class distribution, so the benchmark price and residual proof applies to these class-averaged payoffs whenever $\Delta_T>0$ and a positive entry floor holds. In this region $t_L=t_0$ is permitted: the price construction remains strictly increasing on the bounded posterior interval because $\Delta_T\mu>0$.
 
-For a general reserve, the seller's continuation includes the public price posterior, not necessarily the raw order-flow posterior. If entry vanishes, the inversion denominator vanishes. A replication must condition on any resulting price pool. If $\Delta_T=0$ or all entry is impossible, the informative-price argument cannot be imported. Section C.6 therefore requires direct pricing, posterior, and entry verification at such reserves.
+For a general reserve, the object the seller faces after choosing $p$ is a complete continuation
+
+$$
+\sigma=(\sigma_H,\sigma_L;\ P(\cdot);\ \mu_P;\ \text{preparation rule})\in\mathcal E(p,r),
+\tag{OA.53}
+$$
+
+the conditional order distributions, the price mapping on flow, the buyer's beliefs at every realized price including price atoms, and the preparation rule at every price and cost. Its beliefs are the public price posterior, not necessarily the raw order-flow posterior. If entry vanishes on a set of flows, the inversion denominator vanishes there, those flows share the no-entry price, and the buyer conditions on the whole preimage of that price. The construction used in C.6, which prices every positive-entry flow by the benchmark inversion and pools exactly the zero-entry preimage at $t_0$, is one admissible member of $\mathcal E(p,r)$ when it validates. It is not the only one. Section A.11 exhibits, in the reserve game itself, a one-parameter family of continuations with the same orders and different pools, each of which validates. Two continuations with the same orders but different price mappings are different elements of $\mathcal E(p,r)$, and the numerical record identifies a continuation by the whole object (OA.53). If $\Delta_T=0$ or all entry is impossible, the informative-price argument cannot be imported. Section C.6 therefore requires direct pricing, posterior, and entry verification at such reserves.
 
 For the local decomposition in the paper, impose a neighborhood $I$ contained strictly in $0<p<\ell$, a pure strategy branch $q_\theta(p)$ continuously differentiable on $I$, and an atomless preparation-cost CDF $H_C$ continuously differentiable on the compact profit range. Suppose $\mu_\theta(z;p)$ is differentiable in $p$ for almost every $z$ and there is an integrable function $J(z)$ dominating
 
 $$
 f(z)\left|h_C(B_{p,r}(\mu_\theta))\left[-p/r+(g_H-g_L)\partial_p\mu_\theta\right]\right|
-\tag{OA.53}
+\tag{OA.54}
 $$
 
 uniformly on a compact neighborhood of the reserve. These assumptions are sufficient, not an assertion that every continuation has them. For positive smooth noise with bounded log-density derivative and a bounded derivative of each pure order, posterior derivatives can be bounded directly by likelihood-ratio differentiation; bounded $h_C$ then supplies domination by a constant times $f$. For Laplace noise, the same calculation holds away from the finite shifted kinks, a null set in $z$, and the bounded log slope again supplies domination.
@@ -625,7 +632,7 @@ $$
 \frac{d\bar e_\theta}{dp}
 =\int f(z)h_C(B_{p,r}(\mu_\theta))
 \left[-\frac p r+(g_H-g_L)\frac{\partial\mu_\theta}{\partial p}\right]dz.
-\tag{OA.54}
+\tag{OA.55}
 $$
 
 With $\mathsf E=(\bar e_H+\bar e_L)/2$ and $\mathcal R_T=t_0+\sum_\theta\bar e_\theta(t_\theta-t_0)/2$, the product rule gives
@@ -634,12 +641,139 @@ $$
 \frac{d\mathcal R_T}{dp}
 =(1-\mathsf E)\left(1-\frac{2p}{r}\right)+\mathsf E\frac p r
 +\frac12\sum_\theta\frac{d\bar e_\theta}{dp}(t_\theta-t_0).
-\tag{OA.55}
+\tag{OA.56}
 $$
 
 The calculation uses $\partial_pt_0=1-2p/r$, $\partial_pt_H=\partial_pt_L=p/r$, and $\partial_pB|_\mu=-p/r$. At an atomic preparation threshold or a nonregular continuation, this differentiation argument is unavailable. The level objective and full conditional laws remain the correct objects.
 
 A seller equilibrium requires a feasible continuation selection after each reserve and a maximizing reserve under that selection. The numerical envelope of found continuations is an exploration of this problem, not a proof of existence, measurable selection, global attainment, or optimality. These are the explicit open parts of the sale-design result.
+
+### A.11. Price pooling when preparation can vanish {#oa-a-pools}
+
+This subsection gives the full argument behind Proposition A.10 in the paper appendix. It is a worked example inside the reserve game, not a new headline. Its job is to show what a continuation must contain once entry can vanish on a set of flows, and to fix the regression that the numerical record of C.6 must reproduce. That prices can pool in more than one way at fixed orders is not new; @DowGoldsteinGuembel2017 already discuss continuations distinguished by their pooling regions in their Lemma 1. What I need here is the explicit family, its validation, and the identity rule it forces on the numerical layer.
+
+**Inputs and institution.** Take the benchmark declaration of C.0 with $r=r_0$ and change only the reserve, to the value declared as `pool_reserve` in the registry:
+
+```text
+h = 10; ell = 1; r = 1.2; p = 7;
+rho = 0.25; c_L = 1; c_H = 6;
+b = 2; k = 0.02; prior_H = 0.5;
+q_H = 1; q_L = -1;
+entry_at_indifference = yes;
+bid_equal_reserve_is_admissible = yes.
+```
+
+The reserve exceeds incumbent support and excludes the low-value challenger, so this is the expanded reserve domain of A.10, not the benchmark support $p<\ell$. From (OA.51) with $r<p\le v$ for $v=h$ and $v<p$ for $v=\ell$,
+
+$$
+t_0=t_L=g_L=0,\qquad t_H=7,\qquad g_H=3,\qquad \Delta_T=7.
+$$
+
+A payoff routine written for $p<\ell$ must not be applied here; C.6b evaluates these objects in exact rational arithmetic and by direct integration of (OA.50).
+
+**Densities and the price family.** With $b=2$ and full orders,
+
+$$
+f(z)=\frac14e^{-|z|/2},\qquad a_H(x)=f(x-1),\qquad a_L(x)=f(x+1),\qquad
+\mu_X(x)=\left[1+\exp\left\{-\frac{|x+1|-|x-1|}{2}\right\}\right]^{-1},
+\tag{OA.57}
+$$
+
+which is (OA.16) at $b=2$: the plateau $m=(1+e)^{-1}$ on $x\le-1$, $\operatorname{logistic}(x)$ on $(-1,1)$, and $M=1-m$ on $x\ge1$. For each cutoff $c\in[-\log2,0]$ define the price rule
+
+$$
+P_c(x)=
+\begin{cases}
+0,&x<c,\\
+\tfrac74\mu_X(x),&x\ge c,
+\end{cases}
+\tag{OA.58}
+$$
+
+with the preparation policy: at price zero neither cost type prepares; at every positive price the low-cost type prepares and the high-cost type does not. The upper plateau $x\ge1$ maps to the price $\tfrac74M$, a positive-price atom with probability $\tfrac12[S_Z(0)+S_Z(2)]$; the buyer conditions on it as an atom, and its posterior is $M$ because the plateau is a level set of $\mu_X$.
+
+**Noise CDF versus survival.** I write $F_Z$ for the noise CDF and $S_Z=1-F_Z$ for its survival function, and keep the two apart throughout, because the pooled posterior uses the CDF and the outcome quantities use the survival function:
+
+$$
+F_Z(z)=
+\begin{cases}
+\tfrac12e^{z/2},&z\le0,\\
+1-\tfrac12e^{-z/2},&z>0,
+\end{cases}
+\qquad
+S_Z(z)=1-F_Z(z).
+\tag{OA.59}
+$$
+
+Equation (OA.17) is $S_Z$ at general $b$.
+
+**Buyer at price zero.** The zero price is one atom whose preimage is the whole pool $\{X<c\}$. Its posterior follows (OA.79) with that preimage:
+
+$$
+\bar\mu_c=\Pr(H\mid X<c)=\frac{\int_{-\infty}^ca_H}{\int_{-\infty}^ca_H+\int_{-\infty}^ca_L}
+=\frac{F_Z(c-1)}{F_Z(c-1)+F_Z(c+1)}.
+\tag{OA.60}
+$$
+
+The likelihood ratio $a_H/a_L$ is nondecreasing, so $\bar\mu_c$ is nondecreasing in $c$ and, over the declared family, $\bar\mu_c\le\bar\mu_0=\tfrac12e^{-1/2}<\tfrac13$. Gross profit at the pool is $B(\bar\mu_c)=g_H\bar\mu_c=3\bar\mu_c<1=c_L$, so not preparing is strictly optimal at price zero for both cost types. The point that matters for the numerical layer is the case $c=0$. There the raw flow posterior $\mu_X(x)$ exceeds $\tfrac13$ on $(-\log2,0)$, and a buyer who observed those flows one by one would prepare at low cost. Those flows are not individually observed. They all produce price zero, the buyer's information set at price zero is the pool, and the pooled posterior governs. A candidate that lets the buyer act on $\mu_X$ inside the pool is not measurable with respect to the price and is rejected for that reason, not for a numerical breach. C.6b carries this as a negative control.
+
+**Buyer at positive prices.** On $x\ge c$ the price $\tfrac74\mu_X(x)$ is strictly increasing in $\mu_X$, so the buyer recovers $\mu_X$ from the price on $(-1,1)$ and the plateau atom on $x\ge1$ carries posterior $M$. Since $c\ge-\log2$ and $\mu_X$ is nondecreasing, $\mu_X(x)\ge\mu_X(-\log2)=\tfrac13$ on the positive-price region, so $3\mu_X\ge c_L$ and low-cost preparation is optimal under the equality convention, with equality at $c=-\log2$ exactly at the cutoff. High-cost preparation is impossible at any price: gross profit is at most $g_H=3<6=c_H$. The zero-price and positive-price regions do not collide, since $\tfrac74\mu_X\ge\tfrac7{12}>0$ on $x\ge c$.
+
+**Conditional pricing.** For $x<c$ nobody is prepared, neither the incumbent nor a low-value challenger can meet the reserve, and the terminal value is zero. For $x\ge c$ preparation occurs with probability $\rho$, and a sale, at exactly $p$, occurs only when the prepared challenger has value $h$:
+
+$$
+\mathbb E[V_T\mid X=x]=\rho\,p\,\mu_X(x)=\tfrac74\mu_X(x)\quad(x\ge c),\qquad
+\mathbb E[V_T\mid X=x]=0\quad(x<c).
+\tag{OA.61}
+$$
+
+So $P_c$ is the competitive price pointwise in flow on both regions. This is the test. Average price equal to average payoff is implied by it, and a wrong pointwise schedule can pass the average check, so C.6b verifies (OA.61) on a flow mesh that includes the cutoff from both sides and every breakpoint, and treats the average identity as a separate necessary check.
+
+**Global investor validation.** Against a fixed member of the family the residuals of A.3, after the preparation response, are
+
+$$
+A_H(x)=\rho p[1-\mu_X(x)]\mathbf1\{x\ge c\},\qquad
+A_L(x)=\rho p\,\mu_X(x)\mathbf1\{x\ge c\}.
+\tag{OA.62}
+$$
+
+They vanish inside the pool, where the price carries no information and no entry follows, and are nonnegative elsewhere; wrong-signed orders are therefore dominated by zero. Let $J_c=F_H(1)=F_L(1)$ as in (OA.22). The equality holds pointwise inside the integral by Bayes' rule, since $f(x-1)[1-\mu_X(x)]=f(x+1)\mu_X(x)$. The Laplace density-ratio bound gives $F_\theta(s)\ge e^{-(1-s)/b}J_c$ and $|F_\theta'(s)|\le F_\theta(s)/b$ by (OA.12), hence by (OA.13)
+
+$$
+U_\theta'(s)\ge\left(1-\frac1b\right)J_c-k
+$$
+
+for every $s\in[0,1]$. Every cutoff in the family satisfies $c\le0<1$, so the tail $x\ge1$ is active with entry $\rho$ under each member. On that tail $1-\mu_X=m=(1+e)^{-1}>\tfrac14$, and its probability in state $H$ is $S_Z(0)=\tfrac12$. Dropping the rest of the active region,
+
+$$
+J_c\ge\frac{\rho p\,m}{2}>\frac{7}{32},
+\qquad
+U_\theta'(s)>\frac{7}{64}-\frac{1}{50}=\frac{143}{1600}>0.
+\tag{OA.63}
+$$
+
+The rational bound (OA.63) is the proof, common to every member of the family and to both types. A positive derivative found on a finite grid is not the proof; it is an implementation check, and C.6b keeps the two apart by writing the rational bound and the mesh minimum in separate columns. Full correctly signed orders are globally optimal against every price rule in the family. This is analytical existence for the whole family. It says nothing about whether other continuations exist in $\mathcal E(7,r_0)$.
+
+**Proposition OA.3 (price pooling at fixed orders; analytical).** *For every $c\in[-\log2,0]$, the price rule (OA.58) with the stated preparation policy and full orders $(1,-1)$ is a continuation equilibrium in $\mathcal E(7,r_0)$: prices are competitive pointwise in flow, beliefs at the zero-price atom are (OA.60), the buyer's preparation decision is optimal at every price information set, and full correctly signed orders are globally optimal for both investor types against the fixed price and preparation schedule. The orders are the same in all members of the family; prices, beliefs, and preparation differ.*
+
+The proof is the four validations above. The statement does not establish uniqueness of this family within $\mathcal E(7,r_0)$, and it is confined to lower-interval pools $\{X<c\}$; other measurable pool sets are not searched, and the numerical record says so through `pricing_family_coverage` and `exhaustive_pricing_search = false`. On the benchmark support the family cannot arise: there $c_L<B_r(m)$ gives entry at least $\rho$ at every flow and Proposition A.2 ties the price experiment to the orders.
+
+**Output quantities.** With $S_Z$ from (OA.59),
+
+$$
+\begin{aligned}
+\Pr(P=0)&=\frac{F_Z(c-1)+F_Z(c+1)}2,\\
+\mathsf E_c&=\frac\rho2\{S_Z(c-1)+S_Z(c+1)\},\qquad
+\Pr(\text{sale})=\frac\rho2S_Z(c-1),\\
+\mathcal R_{T,c}&=\frac{\rho p}{2}S_Z(c-1),\qquad
+\Pr(\text{two admissible bidders})=0.
+\end{aligned}
+\tag{OA.64}
+$$
+
+The admissible-challenger probability equals the sale probability, because only a prepared high-value challenger can meet the reserve and the incumbent never does. Both $\mathsf E_c$ and $\mathcal R_{T,c}$ are strictly decreasing in $c$. A higher cutoff pools more flows into the uninformative price and suppresses preparation at flows that would have justified it if observed separately. C.6b recomputes (OA.64) in fifty-digit arithmetic and by independent conditional integration, and reports the endpoints $c=-\log2$ and $c=0$ through the registry keys `pool_posterior_cutoff_*`, `pool_entry_cutoff_*`, and `pool_revenue_cutoff_*`.
+
+**The seventeen-cutoff grid and the negative controls.** The declared grid is $c_j=-\log2\,(1-j/16)$ for $j=0,\dots,16$, with the endpoints included. Every grid member must pass the price, buyer, and global-investor validations, and preparation and revenue must decrease along the grid. That ordered check is a check of the implementation of (OA.64), not a continuum theorem. Three controls must fail, each for its own economic reason. At $c=-1$ some positive prices have $3\mu_X<1$, so the prescribed low-cost preparation is not optimal there. At $c=1$ the pooled zero-price posterior $\bar\mu_1$ makes low-cost preparation profitable, so the prescribed nonpreparation fails. Inside the $c=0$ pool, a buyer who acts on the raw posterior is rejected as inconsistent with the observed-price information structure, whatever its arithmetic. A fourth control is about identity rather than validation: a deduplication key built from orders alone merges the two valid endpoint continuations, which have the same orders and different atoms, and the C.6b ledger must show that merge so that the key is never used. Failed controls are stored as expected failures with their reason, never as accepted rows.
 
 ## B. Computer-assisted equilibrium certificates {#oa-b}
 
@@ -652,7 +786,7 @@ Fix the benchmark primitives and a strength $r$. Candidate orders are $(q_H,q_L)
 $$
 \mu_v(x)=\operatorname{logistic}\left(\frac{|x+v|-|x-1|}{b}\right),\quad
 x^*(r,v)=\frac{b\operatorname{logit}\tau+1-v}{2}.
-\tag{OA.56}
+\tag{OA.65}
 $$
 
 The certificate region has $1/2<\tau<M_v$, where $M_v=\operatorname{logistic}((1+v)/b)$. Thus $x^*$ is strictly between $-v$ and $1$. Set $e(x)=\rho+(1-\rho)\mathbf1\{x\ge x^*\}$ and define $A_H=e\Delta_T(1-\mu_v)$, $A_L=e\Delta_T\mu_v$.
@@ -662,7 +796,7 @@ For a signed direction $\epsilon\in\{-1,1\}$ and magnitude $s\in[0,1]$, the inve
 $$
 F_\epsilon(s)=\int f(x-\epsilon s)A_\epsilon(x)\,dx,
 \qquad U_\epsilon'(s)=F_\epsilon(s)+sF_\epsilon'(s)-k,
-\tag{OA.57}
+\tag{OA.66}
 $$
 
 where $A_+=A_H$ and $A_-=A_L$. In the root condition $\Psi(r,v)=U_-'(v;1,-v)$, the derivative is with respect to the deviating magnitude $s$, holding the candidate schedule fixed. The outer change of $v$ recomputes that schedule. Confusing these derivatives would solve the wrong equilibrium condition.
@@ -675,7 +809,7 @@ Integration by parts on finite intervals, followed by passage to the infinite en
 
 $$
 F_L'(s)=\int f'(x+s)A_L(x)\,dx=-\int f(x+s)\,dA_L(x).
-\tag{OA.58}
+\tag{OA.67}
 $$
 
 The boundary term vanishes because $A_L$ is bounded and the Laplace density tends to zero in both tails. The measure integral is finite because $f$ is bounded and $dA_L$ has finite mass. It is strictly positive before the minus sign because $f>0$ and the measure is nonzero. An entry jump contributes its positive atom to this measure.
@@ -685,7 +819,7 @@ The function $f$ is globally Lipschitz. Therefore $s\mapsto\int f(x+s)dA_L(x)$ i
 $$
 F_L''(s)=-\int f'(x+s)\,dA_L(x),\qquad
 |F_L''(s)|\le\frac1b\int f(x+s)\,dA_L(x)=-\frac1bF_L'(s)
-\tag{OA.59}
+\tag{OA.68}
 $$
 
 almost everywhere. Hence
@@ -693,7 +827,7 @@ almost everywhere. Hence
 $$
 U_L''(s)=2F_L'(s)+sF_L''(s)
 \le(2-s/b)F_L'(s)<0
-\tag{OA.60}
+\tag{OA.69}
 $$
 
 for $b>1/2$ on the unit order interval. Since $U_L'$ is absolutely continuous, this strict almost-everywhere inequality makes it strictly decreasing. Any interior root is therefore the unique global maximizer of $U_L$ over all correctly signed magnitudes, including the endpoints.
@@ -706,7 +840,7 @@ Outward enclosures satisfying
 
 $$
 \inf\Psi(r,v_-)>0,\qquad \sup\Psi(r,v_+)<0
-\tag{OA.61}
+\tag{OA.70}
 $$
 
 prove existence of an exact root $v^*\in(v_-,v_+)$. The concavity result proves optimality at that root against its own price schedule. It does not prove that $\Psi$ has only one root across all possible candidate schedules; no such uniqueness is needed for Proposition 3.
@@ -717,23 +851,23 @@ The distributional second derivative of the Laplace density is
 
 $$
 f''=\frac{f}{b^2}-\frac{\delta_0}{b^2}.
-\tag{OA.62}
+\tag{OA.71}
 $$
 
-Away from zero, ordinary differentiation gives $f''=f/b^2$. The first derivative jumps from $1/(2b^2)$ to $-1/(2b^2)$ at zero, contributing the atom $-\delta_0/b^2$. This verifies (OA.62), for example by integrating twice against a compactly supported smooth test function.
+Away from zero, ordinary differentiation gives $f''=f/b^2$. The first derivative jumps from $1/(2b^2)$ to $-1/(2b^2)$ at zero, contributing the atom $-\delta_0/b^2$. This verifies (OA.71), for example by integrating twice against a compactly supported smooth test function.
 
 Convolving with a bounded measurable $A_H$ yields $F_H''=(F_H-A_H)/b^2$ as distributions and almost everywhere as functions. Since $F_H,A_H\in[0,\Delta_T]$, the weak second derivative is bounded by $\Delta_T/b^2$ in absolute value. The first derivative has an absolutely continuous, Lipschitz representative; combined with $|F_H'|\le\Delta_T/b$, this gives
 
 $$
 |U_H''(s)|\le L_U=\frac{2\Delta_T}{b}+\frac{\Delta_T}{b^2},\qquad s\in[0,1]\ \text{a.e.}
-\tag{OA.63}
+\tag{OA.72}
 $$
 
 For $s_j=j/n$, evaluate interval enclosures of $U_H'(s_j)$ **uniformly for every $v$ in the root bracket**. Every point of the order interval lies within $1/(2n)$ of a mesh point, so the global bound is
 
 $$
 \Gamma_H:=\min_j\inf U_H'(s_j;[v_-,v_+])-\frac{L_U}{2n}.
-\tag{OA.64}
+\tag{OA.73}
 $$
 
 A strictly positive lower enclosure for $\Gamma_H$ proves that buying the maximum amount is uniquely optimal. Checking only the numerical root midpoint does not suffice: the exact root is known only to lie inside the bracket. The interval cover must hold for the whole bracket. All wrong-signed orders are dominated by zero by the residual signs already proved.
@@ -748,7 +882,7 @@ $$
 1-\mu_v&b e^{c/b}\arctan t&b e^{-c/b}(-t^{-1}-\arctan t)\\[2pt]
 \mu_v&b e^{c/b}(t-\arctan t)&b e^{-c/b}\arctan t
 \end{array}
-\tag{OA.65}
+\tag{OA.74}
 $$
 
 For $x<\zeta$, the density multiplier is $e^{-\zeta/b}e^{x/b}/(2b)$; for $x>\zeta$ it is $e^{\zeta/b}e^{-x/b}/(2b)$. Multiply the relevant primitive by this constant, by $e\Delta_T$, and evaluate it at the segment endpoints. On each segment the marginal-density multiplier for $F_\epsilon'$ is $\epsilon\operatorname{sgn}(x-\zeta)/b$, so the same segment integral gives the derivative. This avoids differentiating the candidate entry threshold during a unilateral deviation.
@@ -759,7 +893,7 @@ Endpoint ordering must be certified. When the low trader is evaluated at $s=v$, 
 
 ### B.6. Certificate acceptance and what it establishes {#oa-b-acceptance}
 
-I use exact decimal input strings and interval operations rounded outward. In an interval test, the infimum and supremum of a displayed function evaluation mean the endpoints of its outward interval enclosure; the underlying equilibrium function remains scalar-valued. The starting precision and mesh are specified in Appendix C.2. An enclosure must retain its full endpoint representation; a printed floating-point midpoint is not the certificate. For a bracket to establish the stated result, I require all of the following: the model support inequalities, low-cost participation and high-cost prior exclusion, strict threshold ordering throughout the bracket, opposite enclosed endpoint signs in (OA.61), positive $\Gamma_H$ in (OA.64), and a positive pooling-existence margin at the same strength. Entry is enclosed by evaluating the exact tail formula throughout the bracket. Pairwise strictly ordered entry intervals establish the cross-economy increase.
+I use exact decimal input strings and interval operations rounded outward. In an interval test, the infimum and supremum of a displayed function evaluation mean the endpoints of its outward interval enclosure; the underlying equilibrium function remains scalar-valued. The starting precision and mesh are specified in Appendix C.2. An enclosure must retain its full endpoint representation; a printed floating-point midpoint is not the certificate. For a bracket to establish the stated result, I require all of the following: the model support inequalities, low-cost participation and high-cost prior exclusion, strict threshold ordering throughout the bracket, opposite enclosed endpoint signs in (OA.70), positive $\Gamma_H$ in (OA.73), and a positive pooling-existence margin at the same strength. Entry is enclosed by evaluating the exact tail formula throughout the bracket. Pairwise strictly ordered entry intervals establish the cross-economy increase.
 
 Failure of an enclosure to exclude zero is an unresolved certificate, not evidence of a profitable deviation or nonexistence. A failed sign in a claimed successful certificate is an acceptance failure. Raising precision or refining a bracket is legitimate only with the complete failed and successful record retained.
 
@@ -825,23 +959,47 @@ parameter_display = shortest_exact_decimal;
 certificate_display = outward_interval;
 ```
 
+**Input declaration: continuation, event, and outcome controls.**
+
+```text
+pool_reserve = 7;
+price_pool_cutoff_grid = -log2 * (1 - j/16), j = 0..16;
+price_pool_negative_controls = {c = -1, c = 1, raw posterior inside the c = 0 pool,
+                                orders-only deduplication key};
+pricing_family_coverage = recorded per row (text);
+exhaustive_pricing_search = false unless a separate exhaustive argument is recorded;
+order_identity_tolerance = 1e-6;
+atom_identity_tolerance = 1e-8;
+event_arithmetic_digits = 50;
+event_sign_resolution = 1e-40;
+event_offsets = {1e-4, 1e-6, 1e-8};
+tie_rule = entry_at_indifference; bid_equal_reserve_admissible;
+           upper plateau enters at tau = M; lower plateau enters at B(m) = c_L;
+outcome_measures = {E, A, S, C2, O_H} with S = Pr(R >= p) + A - C2;
+mixed_search_minimum_starts = 3;
+```
+
+These controls govern the continuation records of C.2 and C.6 and the two regression exercises C.6b and C.6c. A price atom is validated by the rule in (OA.79) applied to its full preimage, followed by the four checks of A.11: the buyer's preparation decision is optimal at its price information set, the conditional target payoff equals the price pointwise in flow, positive-price and zero-price regions do not collide (a collision is one preimage), and every unilateral investor deviation is evaluated against the entire fixed price and preparation schedule. Average price equal to average payoff is a necessary identity and is recorded, but it accepts nothing on its own. An exact declared event is evaluated from its defining identity in fifty-digit arithmetic with the tie rule applied to the identity; a non-event input has its sign evaluated at that precision and is reported unresolved if the sign is closer to zero than the declared resolution. A tolerance for residual acceptance is not a rule for treating nearby inequalities as equalities.
+
+The outcome measures follow A.7 of the paper appendix. With $I$ the preparation indicator and $V$ the realized challenger value, $\mathsf E=\Pr(I=1)$, $\mathsf A=\Pr(I=1,V\ge p)$, $\mathsf S=\Pr(R\ge p\ \text{or}\ [I=1,V\ge p])$, and $\mathsf C_2=\Pr(R\ge p,I=1,V\ge p)$. Every continuation row must satisfy $\mathsf S=\Pr(R\ge p)+\mathsf A-\mathsf C_2$ by inclusion and exclusion, with $\mathsf S$ also integrated directly as a union event, and $0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1$, $0\le\mathsf S\le1$. High-value ownership $\mathsf O_H$ is computed from the actual allocation event; outside the benchmark support it is not $e_H/2$ by default, since a high-class value can fail the reserve or lose to the incumbent.
+
 The flow halfwidth determines a diagnostic mesh, not an integration truncation. Integrals are evaluated over the full line, or their omitted tails are explicitly bounded. For a bounded residual $A\le\overline A$ and $|q|\le1$, a Laplace truncation outside $[-T,T]$, $T>1$, loses at most $\overline A e^{-(T-1)/b}$ in per-unit gross profit. Multiply by the order magnitude for total payoff. Under logistic noise a valid bound is $2\overline A/[1+e^{(T-1)/b}]$. Include these bounds in the error budget; do not compare a tail-truncated integral with a full integral as though both were exact.
 
-I maintain distinct tolerances for equations, quadrature estimates, and strategic deviations. A root or a finite-grid maximum does not establish equilibrium. For each candidate, evaluate
+I maintain distinct tolerances for equations, quadrature estimates, and strategic deviations, and four separate error budgets: residual approximation, quadrature, tail truncation, and between-grid deviation coverage. Each is recorded in its own column where the exercise produces it (`quadrature_error`, `tail_bound`, `posterior_inversion_error`, `entry_independent_error`, and the deviation-gain estimate with its rigorous upper bound when one exists); the continuation schema's `error_budget` is the sum of the quadrature and tail terms and is never a bound on the other two. A solver residual is never reported as an upper bound on all four. The refinement pass doubles the order resolution and raises the Gauss-Legendre order on every segment; the quadrature error estimate on each pass is compared with the declared target, tightened by a factor of ten on refinement, and a breach is a breach. If machine precision obstructs the tightened target on some integral, the check is marked unresolved for that row rather than passed. Integration warnings are not suppressed. A root or a finite-grid maximum does not establish equilibrium. For each candidate, evaluate
 
 $$
 \begin{aligned}
 \epsilon_P&=\sup_{x\ \mathrm{tested}}|P(x)-\mathbb E[V_T\mid X=x]|,\\
 \epsilon_e&=\sup_{(P,C)\ \mathrm{tested}}[\text{profit from reversing entry}]_+.
 \end{aligned}
-\tag{OA.66}
+\tag{OA.75}
 $$
 
 and
 
 $$
 \epsilon_q=\max_\theta\left\{\sup_{q\in[-1,1]}U_\theta(q;\sigma)-\int U_\theta(q;\sigma)\,d\sigma_\theta(q)\right\}.
-\tag{OA.67}
+\tag{OA.76}
 $$
 
 The tested price supremum is a numerical diagnostic unless a uniform bound is supplied. The order supremum must be bounded globally for a computer-assisted label; a finite approximation is identified separately. Check all wrong-signed orders as well as correctly signed ones in numerical diagnostics, even when an analytical sign argument excludes them. For mixed profiles, every positive-weight support action must attain the same maximal payoff within the stated tolerance. Recompute the price and entry schedules once per candidate, then hold them fixed during each unilateral-deviation calculation.
@@ -866,7 +1024,7 @@ $$
 \zeta_0&=k-\Delta_T(r_0),\qquad
 \zeta_1=(1-1/b)\rho m\Delta_T(r_1)-k.
 \end{aligned}
-\tag{OA.68}
+\tag{OA.77}
 $$
 
 The collapse node additionally requires $c_H-B_{r_2}(M)>0$, $B_{r_2}(m)-c_L>0$, and its full-order margin. For atomless costs replace the appropriate cost endpoints as in Proposition A.6. Verify all margins before assigning an analytical equilibrium label.
@@ -876,6 +1034,22 @@ The collapse node additionally requires $c_H-B_{r_2}(M)>0$, $B_{r_2}(m)-c_L>0$, 
 For atomless costs, entry at a posterior is the complete mixture CDF $H_C(B_r(\mu))$. Independently compute entry by integrating the tail probability for each cost within each uniform component. The two integrals must agree. Compute expected paid preparation costs as well as entry probability; they are not mean cost multiplied by unconditional entry when the high-cost component is selected.
 
 **Controls.** The frozen-profile control uses full orders at both strengths and reoptimizes preparation and prices, but explicitly does not require that the weak investor chooses that profile. The price-hidden control reoptimizes investor behavior and pricing, while the buyer uses the prior: pooling at weak strength and full orders at strong strength follow their respective bounds. The matched-dividend control adds exactly $\mathcal R_T^{\mathrm{feedback}}-\mathcal R_T^{\mathrm{hidden}}$ to the hidden financial payoff and price. Verify that all residuals, orders, and entry probabilities are unchanged. It is not an additional acquisition payment.
+
+**Matched-price panel (online).** Table 2 in the paper keeps the frozen-profile and price-hidden rows and drops the matched-dividend rows; the matched control is reported here instead, as an online panel with columns
+
+```text
+environment, mean_financial_price, seller_revenue, external_dividend,
+preparation_probability, high_value_ownership_probability, net_acquisition_surplus
+```
+
+for the three environments `feedback`, `price_hidden`, and `matched_dividend` at the strong strength. The renderer assembles the panel from the accepted rows of `tables/equilibrium_controls.csv` and `numerics/feedback_comparisons.csv`; it solves nothing. The panel must satisfy, row by row,
+
+$$
+D_0=\mathcal R_T^{\mathrm{feedback}}-\mathcal R_T^{\mathrm{hidden}},\qquad
+\mathbb E[P^{\mathrm{matched}}]=\mathcal R_T^{\mathrm{hidden}}+D_0=\mathbb E[P^{\mathrm{feedback}}],
+$$
+
+while `seller_revenue`, `net_acquisition_surplus`, `preparation_probability`, `high_value_ownership_probability`, and the investor residuals in the matched row equal those of the price-hidden environment, and `external_dividend` is zero in the two equilibrium rows and $D_0$ in the matched row. Seller revenue in the matched row does not include the dividend. The dividend is attached to the traded claim, is not paid by any bidder, and is not a seller instrument. The panel's note distinguishes the two analytical outcomes from the matched control, which is an invariance diagnostic and not a feasible sale mechanism.
 
 **Welfare.** At strong strength, evaluate (OA.47) or (OA.48), and independently subtract total net allocation surplus in (OA.49). Also compute the revenue difference directly from conditional entry and from the difference in mean prices. Store these as different quantities. A strength comparison is not labeled a welfare effect of access to prices.
 
@@ -938,6 +1112,10 @@ At each candidate compute $x^*,e_H,e_L,\mathsf E,\mathsf O_H$, revenue, the pool
 
 A mixed candidate with support points $q_{\theta j}$ and weights $\omega_{\theta j}$ has conditional density $a_\theta(x)=\sum_j\omega_{\theta j}f(x-q_{\theta j})$. Recompute its posterior, entry, and competitive price. Its payoff is the weighted average of the support payoffs. All positive-weight points must be best responses within tolerance, and every off-support deviation must be checked. Preserve distinct roots and supports found from different initializations. A candidate search that fails to resolve a node receives an open flag; it does not create an empty equilibrium set.
 
+**Mixed-search attempt records.** Each node's mixed search runs from at least the declared minimum of three independent starts (uniform weights on the mesh; mass concentrated near the full order; mass concentrated near zero), each with its own initial low-type magnitude, under a convergence-based stopping rule: iterate the support update until the support gap falls below the deviation-gain acceptance or a documented stall is detected, and then solve the indifference and simplex system at the final support. Every start is written to `numerics/mixed_supports.csv` with its `init_id`, iteration count, stop reason, final support gap, simplex residual, and quadrature error. A node at which no start converges is written to `numerics/correspondence.csv` as an `open` row with the reason; it is not left out, and the manifest's open-row count is computed from those rows. What the records show at each node is what the search found under that budget: a converged mixed candidate that validates, a converged start that reached a pure profile already in the record, or an unresolved search. None of these is a nonexistence statement about mixed equilibria.
+
+**Continuation identity and deduplication.** Two candidates at a node are the same continuation only when their complete strategies (support points and weights within the order identity tolerance) and their induced price information (every positive-mass price atom's value, state masses, and kind within the atom identity tolerance) agree, together with the preparation rule; this is the rule of (OA.53) applied numerically, and C.6 uses the same one. On the benchmark strength grid the low-cost floor $c_L<B_r(m)$ holds at every node, entry is positive at every flow, and no positive-mass pool exists, so identity reduces to the complete order profile there; the code applies the full rule regardless. Strength labels are normalized to their shortest exact decimal before nodes are compared, so a strength written two ways is one node. A root found by $|\Psi|$ minimization is compared with the roots found by sign change at the same node and merged when it is the same continuation; the raw attempt stays in the ledger with the identifier of the row that absorbed it. `multiplicity_found` counts distinct accepted continuations after this merge, never raw candidates. Rejected candidates keep their breach witness; a candidate rejected because a sufficient condition failed is not a rejection, and the status vocabulary of C.0 applies.
+
 **Figure discipline.** Plot analytical uniqueness regions separately from existence-only regions. Show every accepted observed branch. Certified points have interval bars. Numerical lines are broken at failed validation, discontinuities, branch changes, or unresolved gaps. The multiplicity flag means that distinct equilibria have been established or found at a node, not that all equilibria have been enumerated. The ordered certified entry intervals provide the stated cross-economy comparison; a fitted derivative on an exploratory line is not substituted for that result.
 
 **Outputs.**
@@ -947,11 +1125,14 @@ numerics/correspondence.csv:
 r, branch, q_H, q_L, v, e_H, e_L, E, O_H, R_T, tau, x_star,
 pooling_exists, pooling_unique_bound, full_unique_bound,
 existence_status, uniqueness_status, accepted, multiplicity_found,
-epsilon_P, epsilon_e, epsilon_q, tail_bound, unresolved_reason
+epsilon_P, epsilon_e, epsilon_q, quadrature_error, tail_bound,
+posterior_inversion_error, entry_independent_error,
+candidate_id, continuation_id, duplicate_of, unresolved_reason
 
 numerics/mixed_supports.csv:
-r, branch, state, support_index, q, weight, U(q), support_gap,
-off_support_gain_bound, accepted, status
+r, branch, init_id, state, support_index, q, weight, U(q), support_gap,
+off_support_gain_mesh, simplex_residual, iterations, stop_reason,
+final_gap, quadrature_error, accepted, status
 
 numerics/certificates.csv:
 r, v_lower, v_upper, Psi_left_lower, Psi_left_upper,
@@ -966,7 +1147,7 @@ in_support_domain, low_cost_floor_valid, interpretation
 
 The threshold file uses exact row labels `pooling_unique_sufficient`, `pooling_existence`, `full_orders_unique_sufficient`, and `high_cost_ceiling`. It also carries separately labeled analytical scalars `m`, `M`, and `laplace_entry_left_limit` needed by the registry; these are not mislabeled activation thresholds. Every row stores its defining expression and checks. Fields that do not apply to a probability scalar are marked not applicable, not set to zero.
 
-All general parameter columns are included or keyed to an immutable parameter declaration whose full contents accompany the file. `uniqueness_status` distinguishes analytical uniqueness from not established; it is never inferred from the number of search hits. Feed: Figure 2, Proposition 3, the threshold discussion, and the baseline table. Registry keys `cert_a_*`, `cert_b_*`, and `cert_c_*` refer to the ordered declared nodes, not arbitrary roots selected from a larger search.
+All general parameter columns are included or keyed to an immutable parameter declaration whose full contents accompany the file. `uniqueness_status` distinguishes analytical uniqueness from not established; it is never inferred from the number of search hits. `off_support_gain_mesh` is a mesh maximum and is named as one; it is not a bound. `quadrature_error` is checked against the declared target on each pass, and `tail_bound` is zero under Laplace noise only because the exterior tails are integrated in closed form against the constant residual. Feed: Figure 2, Proposition 3, the threshold discussion, and the baseline table. Registry keys `cert_a_*`, `cert_b_*`, and `cert_c_*` refer to the ordered declared nodes, not arbitrary roots selected from a larger search.
 
 ### C.3. Complementary private signals {#oa-c-signals}
 
@@ -1016,7 +1197,7 @@ k&=\frac{\Delta_T(r_0)+(1-1/b)\rho m\Delta_T(r_1)}2,\\
 c_H&=\frac{B_{r_0}(1/2)+B_{r_1}(M)}2,
 \qquad c_L=\frac{B_{r_1}(m)}2.
 \end{aligned}
-\tag{OA.69}
+\tag{OA.78}
 $$
 
 Every chosen value is an output of the construction, not a fixed calibration imposed on all ratios. Check $c_L<c_H$, support, and all theorem inequalities explicitly. Keep the sequence of failed and successful $j$ values. Small margins require adequate arithmetic precision; floating-point cancellation is not evidence against nonemptiness. Report the first certified feasible member of the declared sequence and the numerical scale of $k$, not an invented uniform lower bound on its size.
@@ -1063,25 +1244,31 @@ Feed: Figure 3, the logistic magnitude paragraph, and Table 3's noise rows. Infi
 
 **Inputs.** Reproduce the binary-value comparison using the benchmark reserves `0.5` and `1.01` at strengths `1.2` and `3`. Reproduce the atomless-value class economy using half-width `0.05` and reserves `0.5` and `1.1` at the same strengths. In the class economy the investor sees the class only and preparation reveals the exact value. Do not let the investor trade on the within-class realization.
 
-**Payoff oracle.** Integrate the realized outcomes (OA.50) over the independent uniform incumbent and each conditional value distribution. Split at $R=p$, $R=v$, and all reserve/value support boundaries. Verify against (OA.51) and, where applicable, (OA.52). Compute class-conditional $t_H,t_L,g_H,g_L$ for every reserve, including reserves inside a value band. A formula for $p<\ell$ or for exclusion of an entire class is not used inside a partially excluded band.
+**Payoff oracle.** Integrate the realized outcomes (OA.50) over the independent uniform incumbent and each conditional value distribution. Split at $R=p$, $R=v$, and all reserve/value support boundaries. Verify against (OA.51) and, where applicable, (OA.52). Compute class-conditional $t_H,t_L,g_H,g_L$ for every reserve, including reserves inside a value band. A formula for $p<\ell$ or for exclusion of an entire class is not used inside a partially excluded band. Each reserve's regime on the full domain (below $\ell$, at $\ell$, between $\ell$ and $r$, at $r$, between $r$ and $h$, at $h$, above $h$, and the band cases for the class economy) is decided by exact comparison of the declared numbers and written to the row.
 
-**Continuation with and without an entry floor.** For a candidate class-contingent order profile, compute its raw flow posterior $\mu_X$. When $\Delta_T>0$ and there is positive entry, the benchmark inversion applies to the positive-entry prices. If entry vanishes on a set of flows, those flows can pool at $P=t_0$. Compute their joint posterior by integrating the full preimage of that price:
+**Complete continuations.** A candidate at a reserve is accepted only as a complete continuation in the sense of (OA.53): the investor's state- or class-contingent order distribution, the pricing rule with every positive-mass price pool, the buyer's information at each price (the pooled posterior on an atom, the inverted posterior elsewhere), the preparation rule by observed price and cost, and the validation evidence. For a candidate order profile, compute its raw flow posterior $\mu_X$. When $\Delta_T>0$ and there is positive entry, the benchmark inversion applies to the positive-entry prices. If entry vanishes on a set of flows, those flows pool at $P=t_0$, and their posterior is the integral over the full preimage of that price:
 
 $$
 \mu(P=t_0)=\frac{\int_{\{x:P(x)=t_0\}}a_H(x)\,dx}
 {\int_{\{x:P(x)=t_0\}}[a_H(x)+a_L(x)]\,dx}.
-\tag{OA.70}
+\tag{OA.79}
 $$
 
-The formula is used only when the denominator is positive. The actual buyer entry rule is based on this price posterior, not on the raw posterior inside that pool. Recheck its consistency and competitive pricing pointwise in flow. A convenient candidate construction for independent costs is $P(\mu)=t_0+H_C(B(\mu))[t_L-t_0+\Delta_T\mu]$: it is strictly increasing wherever entry is positive and $\Delta_T>0$, while zero-entry flows share $t_0$. The zero-entry pool remains consistent only after its pooled posterior and the cost comparison are verified. This check is required even when the raw posterior formula looks well behaved.
+The formula is used only when the denominator is positive. The buyer's entry rule at that price uses this pooled posterior and nothing finer; a candidate whose buyer acts on the raw posterior inside the pool is not measurable with respect to the price and is rejected. The convenient construction for independent costs, $P(\mu)=t_0+H_C(B(\mu))[t_L-t_0+\Delta_T\mu]$, prices every positive-entry flow by the inversion and pools exactly the zero-entry preimage; it is strictly increasing wherever entry is positive and $\Delta_T>0$. It is the one pricing family the C.6 node solver constructs, and the row says so: `pricing_family_coverage` records that alternative cutoffs were not scanned at that node and `exhaustive_pricing_search` is false. Section A.11 shows why this matters. At a reserve where entry can vanish, the same orders admit a family of pools, each a different continuation, and the convenient construction is one member. Every accepted candidate must pass the price-atom validation of C.0: pooled posterior from the full preimage, buyer optimality at the pooled posterior and pointwise on positive prices, competitive pricing pointwise in flow on both regions, no collision between the atom and the positive-price range, and every unilateral deviation against the whole fixed schedule.
 
 At reserves with $\Delta_T=0$, all entry impossible, or a degenerate payoff, analyze the constant-price candidate directly. Pooling uses the actual prior entry probability $e_0=H_C(B(1/2))$, and its correctly signed deviation coefficient is $e_0\Delta_T/2-k$; it is not automatically $\rho\Delta_T/2-k$. When $e_0=0$, no trade and no entry are supported by constant pricing. All accepted candidates must satisfy the original conditional pricing and entry conditions.
 
-**Specified comparisons.** At the declared reserves, verify the relevant strict no-trade or full-order bounds using the class payoff spread and the actual floor. Compute entry and seller revenue and compare each alternative reserve with the original one at the same strength. This reproduces the profitable alternatives, not a global reserve optimum.
+**Specified comparisons.** At the declared reserves, verify the relevant strict no-trade or full-order bounds using the class payoff spread and the actual floor $e(m)=H_C(B_r(m))$. Compute entry and seller revenue and compare each alternative reserve with the original one at the same strength. This reproduces the profitable alternatives, not a global reserve optimum.
 
-**Exploratory sweep.** For binary values scan reserves from `0` to `h` in steps of `0.05`; for the class economy scan to `h + epsilon_V` at the same spacing. Add exactly $\ell\pm\varepsilon_V$, $h\pm\varepsilon_V$, $r$, the declared reserves, and the boundary offsets `0.0001` on both sides whenever feasible. Refine intervals with changing trading behavior, unresolved candidates, or candidate revenue maxima to spacing `0.002` or smaller. At each reserve re-solve pooling, full-order, asymmetric, other pure, and finite-support mixed candidates using C.2's best-response discipline and the correct price pools. Warm starts in both directions supplement, rather than replace, independent starts.
+**Event grid.** The sweep and the event exercise share one grid rule. Beyond the declared reserve mesh, every node set contains the support and participation events $0$, $\ell$, $r$, $h$; in the class economy $\ell\pm\varepsilon_V$ and $h\pm\varepsilon_V$; the declared reserve alternatives; and the two exact events of the paper appendix, the low-cost floor equality $p_L=h-c_L/m$ and the expensive-entry ceiling equality $p_H=\sqrt{2r(h-c_H/M)-r^2}$, each attached to the strength at which its defining regime applies. Every event carries one-sided offsets `1e-4`, `1e-6`, and `1e-8` on both sides where the offset stays in $[0,h]$ (or $[0,h+\varepsilon_V]$), so that the regime classification on each side is tested separately. An exact event is stored by its defining relation and recomputed from it at fifty digits; its decimal expansion is reference only and never decides a tie. The tie rule is applied to the identity: at $p_L$ the low-cost type enters on the lower plateau under $B(m)=c_L$, and at $p_H$ the high-cost type enters on the upper plateau under $\tau=M$ with $x^*=1$. A node whose inequality sign cannot be resolved at that precision is written as unresolved. The same continuation need not be supported on both sides of an event, and the record does not assume it.
 
-For each reserve retain every accepted continuation found. Report the minimum and maximum entry and revenue across those continuations and the unresolved-search flag. These are found-continuation ranges, not certified envelopes of all equilibria. Never replace a failed solve with the nearest successful reserve, optimize a frozen information experiment, or label the best sampled reserve globally optimal. Any proposed seller equilibrium must specify its continuation at unchosen reserves as well as chosen ones.
+**Exploratory sweep.** For binary values scan reserves from `0` to `h` in steps of `0.05`; for the class economy scan to `h + epsilon_V` at the same spacing, and add the event grid above. Refine intervals with changing trading behavior, unresolved candidates, or candidate revenue maxima to spacing `0.002` or smaller. At each reserve re-solve pooling, full-order, asymmetric, other pure, and finite-support mixed candidates using C.2's best-response discipline and the price pools above. Warm starts in both directions supplement, rather than replace, independent starts.
+
+**Identity and deduplication.** Every candidate is written to the ledger with a `candidate_id` that records how it was obtained (exercise, node, branch, and sequence) and a `continuation_id` that is the canonical economic identity: the parameter-set identity built from the exact declarations, the institution, the information structure, the tie rule, the complete order profile at the order identity tolerance, the pricing family, the preparation rule, and every positive-mass price atom at the atom identity tolerance. Atoms and pools of probability at most the probability acceptance are null sets and do not enter. Accepted candidates are merged only when their continuation identities agree; the absorbed candidate keeps its row with `duplicate_of` pointing at the representative. Candidates are never merged on a rounded strength or reserve, on orders or mixed supports alone, on entry probability alone, on mean price or revenue alone, or on a solver's branch name. Two candidates with the same orders and different price atoms stay distinct, and the row's `identity_note` says so. Counts of continuations found, rejected candidates, unresolved candidates, and merged duplicates are computed from this ledger, never from the grid length.
+
+**Reporting.** For each reserve retain every accepted continuation found. Report the minimum and maximum entry and revenue across those continuations and the search outcome, which is one of: analytically unique continuation; accepted continuations found with uniqueness not established; no accepted candidate found by the declared searches, which is not a nonexistence proof; or unresolved search with the open rows retained. These are found-continuation ranges, not certified envelopes of all equilibria. Never replace a failed solve with the nearest successful reserve, optimize a frozen information experiment, or label the best sampled reserve globally optimal. Any proposed seller equilibrium must specify its continuation at unchosen reserves as well as chosen ones.
+
+The online summary of the sweep is headed "highest revenue among continuations found", never "optimal reserve". It lists, per economy and strength, the reserve and continuation with the highest accepted revenue, the number of reserve nodes attempted, the number with more than one distinct accepted continuation, and the number of unresolved nodes, all computed from the attempt ledger. It carries its known limits in the same table note: the search covers the declared candidate classes only, the pricing family at each node is the benchmark construction, and no envelope is certified. It is not in the paper.
 
 **Outputs.**
 
@@ -1093,18 +1280,78 @@ q_H, q_L, e_H, e_L, E, R_T,
 low_cost_floor_margin, trading_margin, payoff_oracle_error,
 status, accepted
 
-numerics/reserve_continuations.csv:
+numerics/reserve_continuations.csv (and numerics/reserve_events.csv):
 value_law, r, p, branch, q_H, q_L,
 E, O_H, R_T, no_entry_price_mass, posterior_in_no_entry_pool,
-epsilon_P, epsilon_e, epsilon_q, status, accepted, unresolved_reason
+epsilon_P, epsilon_e, epsilon_q, status, accepted, unresolved_reason,
+p_exact, regime, band_status, low_cost_floor_relation, ceiling_relation,
+duplicate_of, identity_note,
+candidate_id, continuation_id, parameter_set_id, institution_id,
+information_structure_id, order_rule_id, price_rule_id,
+pricing_family_coverage, exhaustive_pricing_search,
+pool_id, pool_set_definition, pool_cutoff_exact, price_atom_value,
+state_H_pool_mass, state_L_pool_mass, pool_probability, pool_posterior,
+preparation_rule_id, tie_rule_id, event_id, event_defining_relation,
+preparation_probability, admissible_challenger_probability, sale_probability,
+two_admissible_bidders_probability, high_value_ownership_probability,
+seller_revenue, mean_financial_price,
+pricing_error, belief_error, entry_deviation_gain,
+investor_deviation_gain_estimate, investor_deviation_gain_upper_bound,
+error_budget, result_status, existence_scope, uniqueness_scope,
+search_coverage_scope, rejection_reason, run_id
 
-numerics/reserve_ranges.csv:
+numerics/reserve_ranges.csv (and numerics/reserve_event_ranges.csv):
 value_law, r, p, accepted_continuations_found,
 E_min_found, E_max_found, R_T_min_found, R_T_max_found,
-search_unresolved, global_envelope_certified
+search_unresolved, global_envelope_certified,
+p_exact, event_id, candidates_evaluated, candidates_accepted_raw,
+candidates_rejected, candidates_unresolved, duplicates_merged, search_outcome
 ```
 
-The final column is false unless an additional exhaustive argument establishes the full envelope. Feed: Table 4 and the sale-design discussion. The research question about seller-optimal discovery is not assigned an answer by this exploratory file.
+**Data dictionary for the continuation schema.** `p` is the exact declared decimal, or the thirty-two-digit decimal of an event value; `p_exact` is the declaration or the event's defining relation with the primitives it uses. `regime` is the reserve's position on the full payoff domain; `band_status` says whether a class reserve lies below, inside, or above each value band. `low_cost_floor_relation` and `ceiling_relation` take the values strict positive, strict negative, equality event, or unresolved, from the fifty-digit evaluation. `candidate_id` is the attempt identity and `continuation_id` the economic identity defined above; `duplicate_of` is empty or the representative's candidate identity; `identity_note` records same-orders-different-atoms cases. `parameter_set_id` is the canonical string of exact declarations (not a hash); `institution_id`, `information_structure_id`, and `tie_rule_id` are the literal definitions of the sale rule, of who observes what, and of the tie conventions. `order_rule_id` is the canonical order profile; `price_rule_id` names the pricing family, its pool sets, and the positive-entry price map. `pricing_family_coverage` and `exhaustive_pricing_search` are as declared in C.0. `pool_id`, `pool_set_definition`, `pool_cutoff_exact`, `price_atom_value`, `state_H_pool_mass`, `state_L_pool_mass`, `pool_probability`, and `pool_posterior` describe the zero-entry atom when one exists and are `n/a` otherwise; a positive-price plateau atom in a flat posterior tail is a different kind of atom and is not written as a no-entry pool. `preparation_rule_id` is the buyer's action by price region and cost. `event_id` and `event_defining_relation` identify the node on the event grid. `preparation_probability`, `admissible_challenger_probability`, `sale_probability`, `two_admissible_bidders_probability`, and `high_value_ownership_probability` are $\mathsf E,\mathsf A,\mathsf S,\mathsf C_2,\mathsf O_H$ of C.0; `seller_revenue` is $\mathcal R_T$ and `mean_financial_price` is $\mathbb E P$, which must agree with it. `pricing_error`, `belief_error`, and `entry_deviation_gain` are the pointwise price, pooled-belief, and buyer-optimality diagnostics; `investor_deviation_gain_estimate` is the maximal gain found on the declared and refined order grids, and `investor_deviation_gain_upper_bound` is a rigorous bound when one exists (zero when an analytical bound covers the whole order interval) and `n/a` otherwise, never zero by default. `error_budget` is the quadrature plus tail term. `result_status` uses the vocabulary of C.0; `existence_scope`, `uniqueness_scope`, and `search_coverage_scope` state, in words, what the row establishes and what was searched. `rejection_reason` carries the breach witness of a rejected candidate; `unresolved_reason` the reason an open row is open. `run_id` names the producing exercise. In the range file, `search_outcome` is one of the four outcomes listed under Reporting, and `global_envelope_certified` is false unless an additional exhaustive argument establishes the full envelope.
+
+Feed: Table 4 and the sale-design discussion. The research question about seller-optimal discovery is not assigned an answer by this exploratory file.
+
+### C.6b. Price pooling at fixed orders {#oa-c-price-pools}
+
+This exercise is the regression for A.11. It runs the declared cutoff family at the price-pool reserve and the negative controls, and it is the smallest test that the continuation representation above is right.
+
+**Inputs.** The benchmark declaration with the reserve replaced by the declared `pool_reserve`, at strength `1.2`, full orders $(1,-1)$, atomic costs, Laplace noise, and the cutoff grid declared in C.0. The auction objects are computed in exact rational arithmetic and by direct integration of (OA.50), and both must give $t_0=t_L=g_L=0$, $t_H=7$, $g_H=3$.
+
+**Method.** For each cutoff, build the complete pooled schedule (OA.58) with its prescribed preparation policy and validate it as a continuation. The pool masses $\int_{-\infty}^ca_\theta$ are computed in fifty-digit arithmetic from (OA.59) and by segment-wise Gauss-Legendre integration, and the two must agree within the independent-formula acceptance. The pooled posterior is (OA.60) from the full preimage. Buyer optimality is checked at the zero-price atom against the pooled posterior for both cost types, and pointwise on the positive-price region on a flow mesh that starts at the cutoff and includes every breakpoint; the row stores the minimum slack in each case. Competitive pricing (OA.61) is checked pointwise on a mesh spanning both regions and including the cutoff from both sides, together with the residual identities (OA.62) against direct conditional payoffs; the collision test requires a positive gap between the positive-price range and the zero atom. The upper plateau is recorded as a positive-entry atom with its own masses and posterior. Investor deviations are scanned on the declared and refined order grids for both signs and both types against the fixed schedule. The global bound (OA.63) is evaluated in exact rational arithmetic with an outward-rounded $e^{2/b}$, and the row stores the rational lower bounds on $J_c$ and on $U_\theta'$; the numerical $J_c$ from both types and the minimum of $U_\theta'$ on a two-hundred-point mesh are stored beside them as the implementation check, and a numerical value below the rational bound is a breach. The output quantities (OA.64) are computed in closed form and by conditional integration; both are compared with each other and, at the two endpoints, must agree to ten decimals with the values written into the manifest as landmarks.
+
+**Acceptance.** Every grid member passes every validation. Preparation and revenue strictly decrease along the grid. The rational bounds satisfy $J_c\ge7/32$ and $U'_\theta\ge143/1600$. The two endpoints survive deduplication as distinct continuations, a repeated construction of one endpoint from a second start merges into it with a different `candidate_id` and the same `continuation_id`, and the orders-only key merges the two endpoints, which the ledger records as the reason that key is forbidden. The controls $c=-1$, $c=1$, and the raw-posterior buyer inside the $c=0$ pool fail, and each fails with the breach named in A.11. A control that does not fail as required stops the exercise.
+
+**Outputs.**
+
+```text
+numerics/price_pool_regression.csv:
+h, ell, p, rho, c_L, c_H, b, k, r, noise, cost, prior_H, q_H, q_L,
+t_0, t_H, t_L, g_H, g_L, cutoff_exact, cutoff_decimal,
+pool_probability, state_H_pool_mass, state_L_pool_mass, pool_posterior,
+buyer_slack_zero_price_c_L, buyer_slack_zero_price_c_H,
+buyer_slack_positive_price_c_L_min, buyer_slack_positive_price_c_H_min,
+global_bound_J_lower_rational, global_bound_Uprime_lower_rational,
+J_numeric, min_dU_mesh,
+preparation_probability, sale_probability, admissible_challenger_probability,
+two_admissible_bidders_probability, high_value_ownership_probability,
+seller_revenue, mean_financial_price, closed_form_vs_integration_error,
+pricing_error, entry_deviation_gain, investor_deviation_gain_estimate,
+investor_deviation_gain_upper_bound, validation_status, accepted,
+expected_failure_reason, candidate_id, continuation_id, run_id
+```
+
+`cutoff_exact` is the symbolic cutoff and `cutoff_decimal` its thirty-two-digit expansion. Negative controls and the duplicate start appear with `accepted = false` and an `expected_failure_reason`; they are not accepted rows. Feed: the registry keys `pool_*` of C.8, Proposition A.10 in the paper appendix, and A.11.
+
+### C.6c. Exact reserve events and admissible-bid outcomes {#oa-c-reserve-events}
+
+This exercise runs the C.6 node solver, with the continuation identity and event handling above, on the event grid alone. It leaves the full sweep untouched and exists so that the event candidates and the outcome measures can be checked without the hour-long scan.
+
+**Inputs.** Both economies at both strengths, on the event grid of C.6: $0$, $\ell$, $r$, $h$, the band edges in the class economy, the declared reserve alternatives, $p_L$ at every strength and $p_H$ where $\ell<p_H<r$, each with the three one-sided offsets on both sides, and the reserve `6.280` used as the sampled weak maximum in the previous sweep.
+
+**Method and acceptance.** At $p_L$ in the weak economy, the row must show the equality-event classification of the floor, a single accepted full-order continuation whose status names the equality and the tie rule rather than the strict inequality, $\mathsf E=\rho$, sale probability $\rho/2$, $\mathsf C_2=0$, and $\mathcal R_T=\rho p_L/2$ from both the row and a fifty-digit evaluation; the three offsets below the event must classify the floor as strictly positive and the three above as strictly negative. At $p_H$ in the strong economy, the row must show the equality-event classification of the ceiling with a strictly positive floor and a strictly positive full-order bound, $\tau=M$, $x^*=1$, $\alpha_H=1/2$, $\alpha_L=e^{-2/b}/2$, and entry and revenue agreeing with the fifty-digit evaluation; where $p_H$ falls outside its defining regime the node is an ordinary reserve node and must not be classified as an event. At the sampled reserve `6.280`, $\mathsf E=\rho$, sale $\rho/2$, $\mathsf C_2=0$, and $\mathcal R_T=\rho\,(6.280)/2$: preparation there does not mean two admissible bidders, because the incumbent is excluded. On every row the union identity for $\mathsf S$ and the ordering $0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1$ hold, and the payoff oracle error is within tolerance. Deduplication follows the C.6 rule, and every count in the manifest comes from the ledger.
+
+**Outputs.** `numerics/reserve_events.csv`, with the continuation schema of C.6 and an added `event_classification` text column, and `numerics/reserve_event_ranges.csv` with the range schema of C.6. Feed: the exact-event paragraphs of the paper appendix and the online summary of C.6. Event candidates improve sampled maxima; they prove neither global optimality nor envelope completeness, and a node without an accepted candidate is a node where the declared searches found none.
 
 ### C.7. Bargaining weights and the payment property {#oa-c-bargaining}
 
@@ -1124,181 +1371,33 @@ transfer_feasibility_error, integration_error, status
 
 Feed: Figure 4 and Proposition A.8. Parameter values and the change of institution are stated in the figure caption.
 
-### C.8. Complete scalar registry and placeholder substitution {#oa-c-registry}
+### C.8. Quantity definitions and provenance {#oa-c-registry}
 
-Every quantitative placeholder is defined below. I distinguish exact input declarations from computed quantities and interval enclosures. The declaration is the numerical input; the unresolved placeholder in the manuscript is not another input. A replicator reads the declared values in C.0 and the tables below, computes the specified row, validates it, and only then substitutes its formatted value. Mathematical constants, equation and result numbers, bibliographic identifiers, and data-schema labels remain literal: they are not outputs of a numerical exercise.
+Every quantitative placeholder in the two manuscripts resolves to one row of `numerics/quantity_registry.csv`, generated by `numerics/registry.py` from `paper/quantity_manifest.csv` and the validated exercise outputs named in C.1 to C.7. The manifest is the specification: for each placeholder key it records the definition, the producing exercise, the source file, the row selector, the display rule, and the units, and for a declared input its exact value. The registry is the result: value, outward bounds where the quantity is an enclosure, status, and the source row actually used. The complete key list with every definition is distributed with the paper as `replication/quantity_dictionary.md`, generated from the same manifest, together with the machine-readable `numerics/quantity_registry.csv`. This subsection fixes the rules those files obey; it does not repeat the key-by-key text.
 
-The output registry is `numerics/quantity_registry.csv`, with the schema in C.0. The accompanying `quantity_manifest.csv` repeats the definitions below; it is a specification, not a file of prefilled results. Each derived row records its source file and an unambiguous row selector. The source row must itself identify the full parameter vector, information regime, cost and noise law, and continuation branch. A scalar referring to a difference records both rows used to form the difference. An unresolved source leaves its placeholder unfilled and records the reason; the renderer must reject a request for a fully filled manuscript in that state.
+**Rules.** A declared input is echoed with status `input` and printed as its exact decimal. A derived quantity is filled only from an accepted source row selected by the full parameter declaration, information regime, cost and noise law, continuation identity, and branch label, never by a rounded scalar. The selector must match exactly one row. A difference records both rows used to form it. The row's result status must permit the statement the manuscript makes with it: an analytical claim needs an analytical row, a certified interval needs every certificate predicate, and a numerical diagnostic is printed as one. An unresolved source leaves the placeholder unfilled with its reason, and the substitution step refuses to produce a filled manuscript in that state. Mathematical constants, equation and result labels, bibliographic identifiers, and schema labels are literal text, not registry quantities. No renderer replaces a registry value with a cached or typed number.
 
-Display conventions are fixed as follows. `exact_input` prints the input decimal without changing its value. `decimal_6` and `decimal_9` round ordinary scalar diagnostics to six and nine decimal places. `scientific_10` prints ten significant digits in scientific notation. `percent_integer` displays the underlying probability as an integer percentage. `outward_interval_8` and `outward_interval_10` round lower endpoints downward and upper endpoints upward to the indicated decimal precision. `lower_bound_10` rounds a lower bound downward to ten decimal places. Interval outputs in display mathematics are inserted as LaTeX brackets; percentage outputs include the percent sign. Rounding is performed only after all validations on unrounded values. A displayed lower bound must remain strictly positive to support an asserted strict inequality.
+**Units and rounding.** Probabilities are stored as probabilities and displayed by `decimal_6`; `percent_integer` converts a declared accuracy to a percentage at display time only. Margins and bounds use `scientific_10`; thresholds and standardized distances use `decimal_9`. Enclosures use `outward_interval_8` or `outward_interval_10`, rounding the lower endpoint down and the upper endpoint up; one-sided bounds use `lower_bound_10`, `lower_bound_12`, or `upper_bound_12`, rounding conservatively. Rounding is applied after every validation on the unrounded value. A displayed lower bound that supports a strict inequality must remain strictly positive after rounding; if outward rounding would print a zero, more digits are printed rather than rounding inward. Model units are the per-share normalization of A.1.
 
-The substantive statuses attached to output rows inherit the result actually supported. An evaluation satisfying the analytical theorem region records that region and its margins. A computer-assisted row requires every certificate predicate, not a successful floating-point root. A finite search outside proved regions remains a numerical diagnostic. A failed or unresolved problem remains open. The declaration records carry the administrative status `input`.
+**Quantity families.**
 
-**Declared scalars.** These values identify the input vector or execution metadata, rather than replace any derived result.
+| Family | Keys (prefix or pattern) | Producing exercise | Source file | Units |
+|:---|:---|:---|:---|:---|
+| Declared primitives | `base_*`, `moderate_*`, `signal_*` inputs; `cost_halfwidth`, `value_band_halfwidth`, `value_reserve_high`, `pool_reserve`, `cert_*_r`, `seed_*_version` | C.0 declarations | `paper/quantity_manifest.csv` (`input_value`) | exact input |
+| Auction primitives | `base_spread_*`, `base_profit_prior_*` | C.1 | `tables/auction_primitives.csv` | model units |
+| Equilibrium and control outcomes | `base_entry_*`, `base_frozen_entry_*`, `base_hidden_entry_*`, `base_ownership_*`, `base_revenue_*`, `base_matched_dividend` | C.1 | `tables/equilibrium_controls.csv` | probability; model units |
+| Welfare and revenue differences | `base_net_surplus_gain`, `base_revenue_gain` | C.1 | `numerics/feedback_comparisons.csv` | model units |
+| Theorem margins | `*_margin_*`, `*_minimum_theorem_margin` | C.1, C.3, C.4 | `tables/extensions.csv`, `numerics/two_signals.csv`, `numerics/moderate_values.csv` | model units (bound) |
+| Thresholds and posterior bounds | `base_m`, `base_M`, `base_r_*`, `base_laplace_entry_ceiling_left_limit` | C.2 | `numerics/thresholds.csv` | normalized value; strength |
+| Distributional and moderate illustrations | `logistic_*`, `cost_mix_*`, `moderate_entry_*` | C.1, C.4, C.5 | `tables/equilibrium_controls.csv`, `figures_data/posterior_tails.csv`, `numerics/moderate_values.csv` | probability; normalized distance |
+| Complementary signals | `signal_entry_*`, `signal_*_accuracy` | C.3 | `numerics/two_signals.csv` | probability; percentage |
+| Certified asymmetric nodes | `cert_{a,b,c}_v_interval`, `cert_*_entry_interval`, `cert_*_high_derivative_lower`, `cert_*_psi_*` | C.2 | `numerics/certificates.csv` | enclosure; bound |
+| Class-economy reserve comparison | `value_entry_*`, `value_revenue_*` | C.6 | `tables/reserve_comparisons.csv` | probability; model units |
+| Price-pool endpoints | `pool_posterior_cutoff_*`, `pool_entry_cutoff_*`, `pool_revenue_cutoff_*` | C.6b | `numerics/price_pool_regression.csv` | probability; model units |
 
-| Placeholder key | Exact declaration | Meaning |
-|:---------------------------------------|:-----------------|:-----------------------------------------|
-| `base_h` | `10` | Declared $h$; retain its exact decimal input. |
-| `base_ell` | `1` | Declared $\ell$; retain its exact decimal input. |
-| `base_p` | `0.5` | Declared $p$; retain its exact decimal input. |
-| `base_rho` | `0.25` | Declared $\rho$; retain its exact decimal input. |
-| `base_c_low` | `1` | Declared $c_L$; retain its exact decimal input. |
-| `base_c_high` | `6` | Declared $c_H$; retain its exact decimal input. |
-| `base_b` | `2` | Declared $b$; retain its exact decimal input. |
-| `base_k` | `0.02` | Declared $k$; retain its exact decimal input. |
-| `base_r_weak` | `1.2` | Declared $r_0$; retain its exact decimal input. |
-| `base_r_strong` | `3` | Declared $r_1$; retain its exact decimal input. |
-| `base_r_collapse` | `3.6` | Declared $r_2$; retain its exact decimal input. |
-| `moderate_h` | `2` | Declared $h$; retain its exact decimal input. |
-| `moderate_ell` | `1` | Declared $\ell$; retain its exact decimal input. |
-| `moderate_p` | `0.5` | Declared $p$; retain its exact decimal input. |
-| `moderate_rho` | `0.25` | Declared $\rho$; retain its exact decimal input. |
-| `moderate_c_low` | `0.3` | Declared $c_L$; retain its exact decimal input. |
-| `moderate_c_high` | `0.89` | Declared $c_H$; retain its exact decimal input. |
-| `moderate_b` | `2` | Declared $b$; retain its exact decimal input. |
-| `moderate_k` | `0.002` | Declared $k$; retain its exact decimal input. |
-| `moderate_r_weak` | `1.05` | Declared $r_0$; retain its exact decimal input. |
-| `moderate_r_strong` | `1.5` | Declared $r_1$; retain its exact decimal input. |
-| `signal_h` | `10` | Declared $h$; retain its exact decimal input. |
-| `signal_ell` | `1` | Declared $\ell$; retain its exact decimal input. |
-| `signal_p` | `0.5` | Declared $p$; retain its exact decimal input. |
-| `signal_rho` | `0.85` | Declared $\rho$; retain its exact decimal input. |
-| `signal_c_low` | `1` | Declared $c_L$; retain its exact decimal input. |
-| `signal_c_high` | `7.14` | Declared $c_H$; retain its exact decimal input. |
-| `signal_b` | `2` | Declared $b$; retain its exact decimal input. |
-| `signal_k` | `0.015` | Declared $k$; retain its exact decimal input. |
-| `signal_r_weak` | `1.1` | Declared $r_0$; retain its exact decimal input. |
-| `signal_r_strong` | `2.3` | Declared $r_1$; retain its exact decimal input. |
-| `signal_trader_accuracy_value` | `0.70` | Declared $a$; retain its exact decimal input. |
-| `signal_buyer_accuracy_value` | `0.75` | Declared $d$; retain its exact decimal input. |
-| `cost_halfwidth` | `0.1` | $\varepsilon_C$, the preparation-cost half-width. |
-| `value_band_halfwidth` | `0.05` | $\varepsilon_V$, the within-class value half-width. |
-| `value_reserve_high` | `1.1` | The class-economy reserve above the entire low-value band. |
-| `cert_a_r` | `1.55` | Declared incumbent strength of the corresponding certified node. |
-| `cert_b_r` | `1.60` | Declared incumbent strength of the corresponding certified node. |
-| `cert_c_r` | `1.65` | Declared incumbent strength of the corresponding certified node. |
-| `seed_python_version` | `3.13.5` | Documented software version for the distributed verification results; a new run records its actual version separately. |
-| `seed_numpy_version` | `2.3.5` | Documented software version for the distributed verification results; a new run records its actual version separately. |
-| `seed_scipy_version` | `1.17.0` | Documented software version for the distributed verification results; a new run records its actual version separately. |
-| `seed_mpmath_version` | `1.3.0` | Documented software version for the distributed verification results; a new run records its actual version separately. |
+The basic definitions the families share are $\mathsf E=(\bar e_H+\bar e_L)/2$, $\mathsf O_H=\bar e_H/2$ on the benchmark support and the allocation-event value elsewhere, $\mathcal R_T=t_0+[\bar e_H(t_H-t_0)+\bar e_L(t_L-t_0)]/2$, the margins (OA.77) and (OA.29), the thresholds of A.5, the certificate predicates of B.6, and the outcome measures of C.0. Within a parameter set, `r_weak`, `r_strong`, and `r_collapse` select the declared strengths; the certified keys refer to the three declared nodes in order, not to roots chosen from a larger search; the reserve keys select on `value_law`, `epsilon_V`, `r`, and `p` exactly; the price-pool keys select on the symbolic cutoff. The minimum-margin keys are a convenience for acceptance and do not replace the recorded components. A figure is never the source of a scalar, and an apparent curve is never used to fill a missing certificate.
 
-**Computed manuscript scalars.** All row selectors below refer to the parameter declarations in C.0. Within a parameter set, `r_weak`, `r_strong`, and `r_collapse` select its declared strengths. The basic probability and revenue definitions are $\mathsf E=(\bar e_H+\bar e_L)/2$, $\mathsf O_H=\bar e_H/2$, and $\mathcal R_T=t_0+[\bar e_H(t_H-t_0)+\bar e_L(t_L-t_0)]/2$.
-
-**Benchmark and matched controls.**
-
-| Key | Definition and row selection | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `base_entry_weak` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_entry_strong` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_entry_collapse` | $\mathsf E=(\bar e_H+\bar e_L)/2$ in the validated Laplace, atomic-cost feedback equilibrium. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_frozen_entry_weak` | $\mathsf E$ with fixed full orders and optimal preparation at this strength; not an equilibrium assertion for the investor. Select: `experiment=frozen; noise=Laplace; cost_law=atoms; r=r_weak`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_hidden_entry_weak` | $\mathsf E$ in the reoptimized price-hidden economy. Select: `experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_weak`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_ownership_weak` | $\mathsf O_H=\bar e_H/2$, unconditional probability of high-quality challenger ownership. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_spread_weak` | $\Delta_T=t_H-t_L$ from independently checked auction expectations. Select: `r=r_weak`. | C.1; `tables/auction_primitives.csv` | `decimal_6` |
-| `base_profit_prior_weak` | $B_r(1/2)=(g_H+g_L)/2$. Select: `r=r_weak`. | C.1; `tables/auction_primitives.csv` | `decimal_6` |
-| `base_frozen_entry_strong` | $\mathsf E$ with fixed full orders and optimal preparation at this strength; not an equilibrium assertion for the investor. Select: `experiment=frozen; noise=Laplace; cost_law=atoms; r=r_strong`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_hidden_entry_strong` | $\mathsf E$ in the reoptimized price-hidden economy. Select: `experiment=price_hidden; noise=Laplace; cost_law=atoms; r=r_strong`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_ownership_strong` | $\mathsf O_H=\bar e_H/2$, unconditional probability of high-quality challenger ownership. Select: `experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_spread_strong` | $\Delta_T=t_H-t_L$ from independently checked auction expectations. Select: `r=r_strong`. | C.1; `tables/auction_primitives.csv` | `decimal_6` |
-| `base_profit_prior_strong` | $B_r(1/2)=(g_H+g_L)/2$. Select: `r=r_strong`. | C.1; `tables/auction_primitives.csv` | `decimal_6` |
-| `base_revenue_feedback` | $\mathcal R_T$ in the strong feedback equilibrium. Select: `experiment=feedback; r=r_strong; noise=Laplace; cost_law=atoms`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_revenue_hidden` | $\mathcal R_T$ in the strong price-hidden equilibrium. Select: `experiment=price_hidden; r=r_strong; noise=Laplace; cost_law=atoms`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `base_matched_dividend` | $D_0=\mathcal R_T^{feedback}-\mathcal R_T^{hidden}$ at the strong strength; verify residual invariance. Select: `experiment=matched_dividend; r=r_strong; noise=Laplace; cost_law=atoms`. | C.1; `tables/equilibrium_controls.csv` | `decimal_6` |
-
-**Distributional and moderate-value illustrations.**
-
-| Key | Definition and row selection | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `logistic_entry_strong` | $\mathsf E$ under logistic noise and atomic costs. Select: `noise=logistic; cost_law=atoms; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `logistic_flow_threshold` | $x^*_{\log}$ from the likelihood-ratio inverse, independently checked by a root. Select: `noise=logistic; cost_law=atoms; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_9` |
-| `logistic_threshold_noise_sd` | $x^*_{\log}/(b\pi/\sqrt{3})$, using the standard deviation of noise, not aggregate flow. Select: `noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd`. | C.1/C.5; `figures_data/posterior_tails.csv` | `decimal_6` |
-| `cost_mix_laplace_entry_strong` | $\mathsf E$ under Laplace noise with the complete uniform-mixture cost CDF. Select: `noise=Laplace; cost_law=uniform_mixture; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `cost_mix_logistic_entry_strong` | $\mathsf E$ under logistic noise with the complete uniform-mixture cost CDF. Select: `noise=logistic; cost_law=uniform_mixture; r=r_strong`. | C.1/C.5; `tables/equilibrium_controls.csv` | `decimal_6` |
-| `moderate_entry_weak` | $\mathsf E$ in the moderate-value feedback equilibrium after every strict theorem margin is verified. Select: `declared moderate comparison; column=E_weak`. | C.4; `numerics/moderate_values.csv` | `decimal_6` |
-| `moderate_entry_strong` | $\mathsf E$ in the moderate-value feedback equilibrium after every strict theorem margin is verified. Select: `declared moderate comparison; column=E_strong`. | C.4; `numerics/moderate_values.csv` | `decimal_6` |
-
-**Complementary private information.**
-
-| Key | Definition and row selection | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `signal_entry_weak` | $\mathsf E=(\bar e_H+\bar e_L)/2$, using true-state-conditioned private-signal probabilities. Select: `a=0.70; d=0.75; r=r_weak`. | C.3; `numerics/two_signals.csv` | `decimal_6` |
-| `signal_entry_strong` | $\mathsf E=(\bar e_H+\bar e_L)/2$, using true-state-conditioned private-signal probabilities. Select: `a=0.70; d=0.75; r=r_strong`. | C.3; `numerics/two_signals.csv` | `decimal_6` |
-| `signal_trader_accuracy` | The input $a$ displayed as a percentage; no new calculation beyond the change of units. Select: `a`. | C.3; `input manifest` | `percent_integer` |
-| `signal_buyer_accuracy` | The input $d$ displayed as a percentage; no new calculation beyond the change of units. Select: `d`. | C.3; `input manifest` | `percent_integer` |
-
-**Certified asymmetric equilibria.**
-
-| Key | Definition and row selection | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `cert_a_v_interval` | Certified bracket for the exact equilibrium root $v^*$; require both endpoint signs, threshold ordering, low-type concavity, and positive global high-type derivative cover. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_8` |
-| `cert_a_entry_interval` | Outward enclosure of $\mathsf E(r,v)$ for every $v$ in the certified root bracket. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_10` |
-| `cert_a_high_derivative_lower` | The nonnegative lower enclosure $\Gamma_H$ after subtracting the between-grid Lipschitz correction, uniform over the full root bracket. Select: `r=1.55; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `lower_bound_10` |
-| `cert_b_v_interval` | Certified bracket for the exact equilibrium root $v^*$; require both endpoint signs, threshold ordering, low-type concavity, and positive global high-type derivative cover. Select: `r=1.60; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_8` |
-| `cert_b_entry_interval` | Outward enclosure of $\mathsf E(r,v)$ for every $v$ in the certified root bracket. Select: `r=1.60; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_10` |
-| `cert_b_high_derivative_lower` | The nonnegative lower enclosure $\Gamma_H$ after subtracting the between-grid Lipschitz correction, uniform over the full root bracket. Select: `r=1.60; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `lower_bound_10` |
-| `cert_c_v_interval` | Certified bracket for the exact equilibrium root $v^*$; require both endpoint signs, threshold ordering, low-type concavity, and positive global high-type derivative cover. Select: `r=1.65; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_8` |
-| `cert_c_entry_interval` | Outward enclosure of $\mathsf E(r,v)$ for every $v$ in the certified root bracket. Select: `r=1.65; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `outward_interval_10` |
-| `cert_c_high_derivative_lower` | The nonnegative lower enclosure $\Gamma_H$ after subtracting the between-grid Lipschitz correction, uniform over the full root bracket. Select: `r=1.65; all certificate predicates=true`. | C.2; `numerics/certificates.csv` | `lower_bound_10` |
-
-**Atomless-value reserve comparison.**
-
-| Key | Definition and row selection | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `value_entry_weak_high_p` | Class-economy $\mathsf E$ at the high reserve, with class-only investor information. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-| `value_revenue_weak_low_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=0.5`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-| `value_revenue_weak_high_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_weak; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-| `value_entry_strong_high_p` | Class-economy $\mathsf E$ at the high reserve, with class-only investor information. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-| `value_revenue_strong_low_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=0.5`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-| `value_revenue_strong_high_p` | Class-economy $\mathcal R_T$ using integrated within-class auction payoffs and the validated continuation. Select: `value_law=uniform_classes; epsilon_V=0.05; r=r_strong; p=1.1`. | C.6; `tables/reserve_comparisons.csv` | `decimal_6` |
-
-**Validation and construction scalars.** These quantities are produced before figures or replacement of manuscript placeholders. They make the proof-region checks and threshold distinctions machine-checkable even when the corresponding value is not printed in the main text.
-
-| Key | Definition | Exercise / output | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `base_m` | $m=(1+e^{2/b})^{-1}$. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_M` | $M=1-m$. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_r_pool_unique_sufficient` | $\mathfrak r(k)$, the sufficient pooling-uniqueness boundary. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_r_no_trade_exact` | $r_N=\mathfrak r(2k/\rho)$, checked within the stated prior/floor domain. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_r_full_unique_sufficient` | $r_U=\mathfrak r(k/[(1-1/b)\rho m])$. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_r_high_cost_ceiling` | $r_C$ from (OA.20), independently checked against $B_r(M)=c_H$ and its admissible domain. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_laplace_entry_ceiling_left_limit` | $\rho+(1-\rho)(1+e^{-2/b})/4$; the one-sided limit, not automatically the boundary equilibrium. | C.2; `numerics/thresholds.csv` | `decimal_9` |
-| `base_margin_low_cost` | $\zeta_L$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.1; `tables/extensions.csv` | `scientific_10` |
-| `base_margin_high_prior` | $\zeta_{H0}$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.1; `tables/extensions.csv` | `scientific_10` |
-| `base_margin_high_ceiling` | $\zeta_{H1}$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.1; `tables/extensions.csv` | `scientific_10` |
-| `base_margin_weak_trade` | $\zeta_0$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.1; `tables/extensions.csv` | `scientific_10` |
-| `base_margin_strong_trade` | $\zeta_1$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.1; `tables/extensions.csv` | `scientific_10` |
-| `moderate_margin_low_cost` | $\zeta_L$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.4; `numerics/moderate_values.csv` | `scientific_10` |
-| `moderate_margin_high_prior` | $\zeta_{H0}$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.4; `numerics/moderate_values.csv` | `scientific_10` |
-| `moderate_margin_high_ceiling` | $\zeta_{H1}$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.4; `numerics/moderate_values.csv` | `scientific_10` |
-| `moderate_margin_weak_trade` | $\zeta_0$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.4; `numerics/moderate_values.csv` | `scientific_10` |
-| `moderate_margin_strong_trade` | $\zeta_1$ from (OA.68); a strict inequality requires a strictly positive verified value. | C.4; `numerics/moderate_values.csv` | `scientific_10` |
-| `signal_margin_low_cost` | $\zeta_L$ as defined by the corresponding low-cost, high-cost, or trading inequality in (OA.29); use the signal-specific bounds, not the benchmark bound. | C.3; `numerics/two_signals.csv` | `scientific_10` |
-| `signal_margin_high_prior` | $\zeta_{H0}$ as defined by the corresponding low-cost, high-cost, or trading inequality in (OA.29); use the signal-specific bounds, not the benchmark bound. | C.3; `numerics/two_signals.csv` | `scientific_10` |
-| `signal_margin_high_ceiling` | $\zeta_{H1}$ as defined by the corresponding low-cost, high-cost, or trading inequality in (OA.29); use the signal-specific bounds, not the benchmark bound. | C.3; `numerics/two_signals.csv` | `scientific_10` |
-| `signal_margin_weak_trade` | $\zeta_0$ as defined by the corresponding low-cost, high-cost, or trading inequality in (OA.29); use the signal-specific bounds, not the benchmark bound. | C.3; `numerics/two_signals.csv` | `scientific_10` |
-| `signal_margin_strong_trade` | $\zeta_1$ as defined by the corresponding low-cost, high-cost, or trading inequality in (OA.29); use the signal-specific bounds, not the benchmark bound. | C.3; `numerics/two_signals.csv` | `scientific_10` |
-| `base_net_surplus_gain` | $\Delta\mathcal W$ at strong strength: (OA.47) and the independent difference of (OA.49). | C.1; `numerics/feedback_comparisons.csv` | `decimal_6` |
-| `base_revenue_gain` | $\Delta\mathcal R_T$ at strong strength, calculated from conditional entry and independently from mean prices. | C.1; `numerics/feedback_comparisons.csv` | `decimal_6` |
-| `base_minimum_theorem_margin` | Minimum of the five explicitly defined strict margins, retaining the separate component values in the output. | C.1/C.3/C.4; `numerics/quantity_registry.csv` | `scientific_10` |
-| `moderate_minimum_theorem_margin` | Minimum of the five explicitly defined strict margins, retaining the separate component values in the output. | C.1/C.3/C.4; `numerics/quantity_registry.csv` | `scientific_10` |
-| `signal_minimum_theorem_margin` | Minimum of the five explicitly defined strict margins, retaining the separate component values in the output. | C.1/C.3/C.4; `numerics/quantity_registry.csv` | `scientific_10` |
-
-The minimum-margin statistic is a convenience for acceptance, not a substitute for recording every inequality. The threshold values answer different questions; a renderer cannot rename the sufficient full-order uniqueness boundary as an equilibrium activation threshold. For the certified nodes, the source also records the root-endpoint derivative enclosures and the global high-type derivative enclosure even when only their lower bound appears in the manuscript.
-
-**Root-sign quantities accompanying the paper-appendix certificates.** The root bracket for each node is the one defined by its corresponding interval key. The left lower bound must be positive and the right upper bound negative before either value is substituted.
-
-| Key | Definition | Source and row | Display |
-|:-----------------------|:---------------------------------------|:-------------------|:---------------|
-| `cert_a_psi_left_lower` | Outward endpoint enclosure $\inf\Psi(r,v_-)$. | C.2; `numerics/certificates.csv`; `r=1.55`; `Psi_left_lower` | `lower_bound_12` |
-| `cert_a_psi_right_upper` | Outward endpoint enclosure $\sup\Psi(r,v_+)$. | C.2; `numerics/certificates.csv`; `r=1.55`; `Psi_right_upper` | `upper_bound_12` |
-| `cert_b_psi_left_lower` | Outward endpoint enclosure $\inf\Psi(r,v_-)$. | C.2; `numerics/certificates.csv`; `r=1.60`; `Psi_left_lower` | `lower_bound_12` |
-| `cert_b_psi_right_upper` | Outward endpoint enclosure $\sup\Psi(r,v_+)$. | C.2; `numerics/certificates.csv`; `r=1.60`; `Psi_right_upper` | `upper_bound_12` |
-| `cert_c_psi_left_lower` | Outward endpoint enclosure $\inf\Psi(r,v_-)$. | C.2; `numerics/certificates.csv`; `r=1.65`; `Psi_left_lower` | `lower_bound_12` |
-| `cert_c_psi_right_upper` | Outward endpoint enclosure $\sup\Psi(r,v_+)$. | C.2; `numerics/certificates.csv`; `r=1.65`; `Psi_right_upper` | `upper_bound_12` |
-
-`lower_bound_12` rounds downward and `upper_bound_12` rounds upward to twelve decimal places. A bound whose displayed sign becomes zero is printed with additional outward-rounded digits, not rounded inward to preserve a sign.
-
-**First production pass.** Produce the benchmark, moderate-value, and complementary-signal input rows; the complete margin rows and minimum margins; the benchmark pooling/full-order/expensive-entry boundaries; the benchmark entry, hidden-information, frozen-profile, ownership, and welfare quantities; and the certified asymmetric brackets and derivative bounds. These determine which theorem regions and outcome comparisons can be populated. The exploratory correspondence and reserve sweeps follow them. A figure is not used as a source of a scalar, and an apparent curve is not used to fill a missing certificate.
+**Production order.** The benchmark, moderate-value, and complementary-signal inputs and margins come first, then the threshold boundaries, the benchmark entry, control, ownership, and welfare quantities, and the certified brackets; these determine which theorem regions the text can populate. The correspondence and reserve sweeps, the price-pool regression, and the event exercise follow. `numerics/check_registry.py` regenerates the registry in fresh processes under several ambient decimal precisions and import orders and requires identical output, so the printed values do not depend on the environment that produced them.
 
 ## D. Institutional pilot and empirical design {#oa-d}
 
@@ -1390,22 +1489,40 @@ The replication package separates independent node verification, the numerical e
 
 The verification directory contains independent node calculations, exploratory asymmetric searches, and interval certificates. The documented execution environment is Python [[seed_python_version]], NumPy [[seed_numpy_version]], SciPy [[seed_scipy_version]], and mpmath [[seed_mpmath_version]]. These are metadata for the distributed results, not a claim that every other compatible environment fails. Each new execution records its actual interpreter, package versions, operating system, arithmetic precision, parameter declarations, tolerances, and source-file hashes.
 
-The numerical layer implements the exercises in Appendix C, including the searches over incumbent strengths and reserves. These searches retain their stated limits on coverage. Accepted output rows supply the quantity registry, tables, and figures, and each exercise has a run manifest with acceptance results and output hashes. The empirical pilot remains a coding specification.
+The numerical layer under `numerics/` implements the exercises in Appendix C, including the searches over incumbent strengths and reserves, with the coverage limits stated there. Accepted output rows supply the quantity registry, tables, and figures, and each exercise writes a run manifest under `numerics/manifests/` with its inputs, method, tolerances, software versions, the SHA-256 of every output, and its pass or fail result. The verification gate refuses any output whose hash no longer matches its manifest, so a rerun of the producing exercise is the only way to change a number. The empirical pilot in Appendix D remains a coding specification and produces nothing in this build.
 
-The generated paper can be rebuilt from the validated exercise outputs with the project environment:
+Each displayed exercise has one producer, run from the repository root with the project interpreter:
 
 ```bash
-.venv/bin/python numerics/check_registry.py
-.venv/bin/python numerics/registry.py
-.venv/bin/python numerics/substitute.py
-.venv/bin/python numerics/render/render_all.py
-.venv/bin/python numerics/render/latex.py
-.venv/bin/python numerics/verify.py --final
+PY=.venv/bin/python
+$PY numerics/exercises/c1_baseline.py          # C.1: tables/{auction_primitives,equilibrium_controls,extensions}.csv,
+                                               #      numerics/{baseline_deviations,feedback_comparisons}.csv, figures_data/two_returns.csv
+$PY numerics/exercises/c2_correspondence.py    # C.2: numerics/{thresholds,certificates,correspondence,mixed_supports}.csv  (about one hour; --workers=N, --quick)
+$PY numerics/exercises/c3_signals.py           # C.3: numerics/{two_signals,two_signal_deviations}.csv
+$PY numerics/exercises/c4_moderate.py          # C.4: numerics/{moderate_values,moderate_controls,nonemptiness_construction}.csv
+$PY numerics/exercises/c5_noise.py             # C.5: figures_data/posterior_tails.csv
+$PY numerics/exercises/c6_reserve.py           # C.6: tables/reserve_comparisons.csv, numerics/{reserve_continuations,reserve_ranges}.csv  (about one hour; --workers=N, --quick)
+$PY numerics/exercises/c6b_price_pools.py      # C.6b: numerics/price_pool_regression.csv
+$PY numerics/exercises/c6c_reserve_events.py   # C.6c: numerics/{reserve_events,reserve_event_ranges}.csv  (--workers=N)
+$PY numerics/exercises/c7_bargaining.py        # C.7: figures_data/bargaining.csv
 ```
 
-Registry calculations use a local decimal context with precision 60, so their serialized values do not depend on ambient arithmetic precision or import order. The registry check compares outputs across these environments. The final verification includes the registry manifest, numerical acceptance checks, and strict substitution. Source manuscripts remain editable; filled Markdown, LaTeX, tables, and figures are regenerated.
+The presentation layer then runs in this order:
 
-To reproduce the distributed checks from the verification directory, use:
+```bash
+$PY numerics/check_registry.py        # registry invariance across decimal contexts and import orders; writes nothing
+$PY numerics/registry.py              # numerics/quantity_registry.csv and its manifest from the validated rows
+$PY numerics/substitute.py            # paper/main_filled.md, paper/online_appendix_filled.md; refuses to write if a placeholder is open
+$PY numerics/render/render_all.py     # figures/*.pdf and tables/*.tex from the CSV files; no solving
+$PY numerics/render/latex.py          # pandoc and latexmk: paper/main_filled.pdf, paper/online_appendix_filled.pdf
+$PY numerics/verify.py --final        # the gate: manifests, hashes, C.1 node revalidation, the three certificates, registry, strict substitution
+```
+
+Two entry points wrap these sequences. `make peer-release` validates the required calculations, regenerates the registry, tables, figures, and filled manuscripts, typesets, runs the final gate, and assembles the deliverables. `make peer-reproduce` runs the same declared sequence in a fresh working and output directory, without any accepted result carried over from a previous run, and compares the canonical numerical outputs, exact input declarations, certificate validity, resolved references, and extracted manuscript text with the release. Byte-identical PDFs are not required, because the figure and PDF engines stamp creation dates. `replication/README.md` lists every producer command and the role of every file.
+
+Registry calculations use a local decimal context with precision 60, so their serialized values do not depend on ambient arithmetic precision or import order; the registry check runs the generator in fresh processes at several ambient precisions and import orders and requires identical output. The final verification includes the registry manifest, numerical acceptance checks, and strict substitution. Source manuscripts remain editable; filled Markdown, LaTeX, tables, and figures are regenerated.
+
+The `verification/` directory is the independent seed delivered before the numerical layer existed. Nothing in the build reads it. To rerun its checks in isolation, use:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -1445,13 +1562,13 @@ These files support the statements at their documented parameter points. They do
 
 ### E.3. Implementation contract for the full exercises {#oa-e-contract}
 
-Use pure numerical functions with explicit parameter arguments and immutable returned records. Separate the auction-payoff layer, information and price construction, unilateral-deviation evaluation, equilibrium search, independent validation, and figure/table rendering. A search routine returns candidate equilibria and unresolved nodes; only the independent validation layer assigns an accepted label. No renderer solves an equilibrium, silently changes a parameter, or drops an inconvenient branch.
+The numerical layer is written as pure functions with explicit parameter arguments and immutable returned records. Its modules keep the layers apart: `auction.py` (payoffs on the full reserve domain, with the direct integration oracle), `noise.py` and `information.py` (densities, posteriors, price schedules), `deviations.py` and `quadrature.py` (unilateral-deviation payoffs with analytic Laplace tails), `search.py` (candidate search), `validation.py` and `continuations.py` (independent validation, price atoms, continuation identity, and the wide schema), `reserve_events.py` (exact events and regime classification), `certificates.py` (the interval port of Appendix B), `thresholds.py`, `signals.py`, and `render/` (figures and tables). `params.py` holds the exact decimal declarations of C.0 as strings and the `Controls` record of tolerances; exercises parse them as decimals and never through a binary float where a certificate depends on them. A search routine returns candidates and unresolved nodes; only the validation layer assigns `accepted`. No renderer solves an equilibrium, changes a parameter, or drops a branch.
 
-The only boundary to the presentation layer is the validated CSV output specified in Appendix C. Join tables using the complete parameter declaration and branch label, never only a rounded strength or price. Assemble the extensions table from the distributional, moderate-value, and signal outputs, retaining fields that are not applicable as explicitly not applicable. Do not fill a missing signal bound or an uncomputed welfare statistic with zero. The reserve table uses both its declared comparisons and the separately identified found-continuation ranges.
+The only boundary to the presentation layer is the validated CSV output specified in Appendix C, written through one writer that prints floats by their shortest round-trip representation and marks a missing value `n/a`. Tables are joined on the complete parameter declaration and branch or continuation label, never on a rounded strength or price. The extensions table is assembled from the distributional, moderate-value, and signal outputs, with fields that do not apply left as not applicable; a missing signal bound or an uncomputed welfare statistic is never filled with zero. The reserve table uses the declared comparisons; the found-continuation ranges and the event candidates are reported online under the heading fixed in C.6.
 
 The scalar registry is generated from validated rows and exact input declarations. The substitution stage checks that every placeholder key is defined once, that its source row exists and is unique under the declared selector, and that its result status permits the intended statement. It fails before creating a filled manuscript if a required value remains open. Certificates are substituted as outward intervals and conservative lower bounds. Ordinary diagnostics carry their specified rounding without being promoted to certified enclosures.
 
-Every completed exercise exports a manifest with inputs, method, tolerances, output hashes, and pass/fail outcomes. Failed searches and arithmetic retries remain in the record. This permits a reader to distinguish a genuinely rejected candidate from a numerical failure, and an accepted node from an exhaustive characterization.
+Every exercise writes a manifest with inputs, method, tolerances, software versions, output hashes, and pass or fail outcomes; `numerics/verify.py` reads every manifest and fails on a missing pass, a changed hash, a failed revalidation of the declared nodes, a failed certificate, or an open placeholder. Failed searches, negative controls, duplicate starts, and arithmetic retries remain in the record with their reasons. A reader can therefore distinguish a rejected candidate from a numerical failure, an unresolved search from a nonexistence argument, and an accepted node from an exhaustive characterization.
 
 ### E.4. Figure and table rendering {#oa-e-rendering}
 
