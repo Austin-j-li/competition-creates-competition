@@ -1,0 +1,288 @@
+{
+ "exercise": "c2_correspondence_quick",
+ "timestamp_utc": "2026-09-05T23:39:59.052629+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "mesh": [
+   "1.005",
+   "3.800",
+   "0.005"
+  ],
+  "offsets": [
+   "0.0001",
+   "0.001"
+  ],
+  "certificate_brackets": [
+   [
+    "1.55",
+    "0.46031618",
+    "0.46031620"
+   ],
+   [
+    "1.60",
+    "0.70747537",
+    "0.70747539"
+   ],
+   [
+    "1.65",
+    "0.90333198",
+    "0.90333201"
+   ]
+  ],
+  "grid_size": 3,
+  "quick": false,
+  "nodes": [
+   "1.51",
+   "1.55",
+   "1.8"
+  ],
+  "runtime_seconds": 85.0391554190137,
+  "workers": 2,
+  "thread_limits": {
+   "OPENBLAS_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1",
+   "MKL_NUM_THREADS": "1",
+   "NUMEXPR_NUM_THREADS": "1"
+  },
+  "mixed_iterations": 120,
+  "mixed_meshes": [
+   0.05,
+   0.025
+  ],
+  "pure_inits": [
+   [
+    0.2,
+    0.2
+   ],
+   [
+    0.2,
+    0.6
+   ],
+   [
+    0.2,
+    0.95
+   ],
+   [
+    0.6,
+    0.2
+   ],
+   [
+    0.6,
+    0.6
+   ],
+   [
+    0.6,
+    0.95
+   ],
+   [
+    0.95,
+    0.2
+   ],
+   [
+    0.95,
+    0.6
+   ],
+   [
+    0.95,
+    0.95
+   ]
+  ]
+ },
+ "method": "Exact boundaries from Proposition 3 with residual checks; interval certificates per Appendix B (mpmath iv, exact antiderivatives, uniform high-type cover over the root bracket, mesh 200 and 400); at each strength node pooling, full-order, asymmetric (1,-v) roots by sign-change bracketing plus |Psi| minimisation with a 41-point sub-mesh of each tangency bracket, pure (u,-v) best-response fixed points from 9 initialisations, and finite-support mixed search (3 documented starts per mesh, meshes 0.05 and 0.025, replicator budget then the support indifference/simplex system); every candidate validated independently with a per-row error budget; deduplication by continuation identity; refinement to 0.001 where accepted branch sets change.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
+ },
+ "outputs": {
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/correspondence.csv": "aad65e85457af6d68014f2fc7ebe2986662296ebfbdbc65f02ceff115ced010b",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/correspondence_attempts.csv": "743265ff69224147f5a95f08f7527aa8ae441d0bba2fbe51d577aae52db0e948",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/mixed_supports.csv": "deecbeb11c946e08426e509668e607b83a9a419a22996dbdec1216a7571a8073",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/mixed_search_attempts.csv": "d6ea0f9a8d22a96a05d4aba5a865ceed102b6d15a76b935cb8277e6ce625a026",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/thresholds.csv": "7483ca9d8c286dc2516296d5e0204564e67019259155830f2d88ca50f489314a",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c2_root_polish/certificates.csv": "a1057225886f42fdbf6b220b7e6792f2e4da226a015059a5788597764ced97fa"
+ },
+ "checks": {
+  "threshold_pooling_unique_sufficient": {
+   "value": 1.220997512422418,
+   "residual": 2.0816681711721685e-17,
+   "pass": true
+  },
+  "threshold_pooling_existence": {
+   "value": 1.7478775382679625,
+   "residual": -6.938893903907228e-18,
+   "pass": true
+  },
+  "threshold_full_orders_unique_sufficient": {
+   "value": 2.8374169640989404,
+   "residual": 0.0,
+   "pass": true
+  },
+  "threshold_high_cost_ceiling": {
+   "value": 3.592658518794662,
+   "residual": 8.881784197001252e-16,
+   "pass": true
+  },
+  "certificate_1.55": {
+   "pass": true,
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.00022864750014175018
+  },
+  "certificate_1.60": {
+   "pass": true,
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.0029289761054800915
+  },
+  "certificate_1.65": {
+   "pass": true,
+   "accepted": true,
+   "predicates": {
+    "psi_left_positive": true,
+    "psi_right_negative": true,
+    "support": true,
+    "low_cost_floor": true,
+    "high_cost_prior_exclusion": true,
+    "pooling_exists_margin": true,
+    "threshold_ordering": true,
+    "gamma_H_positive": true,
+    "low_type_concavity": true
+   },
+   "failures": [],
+   "refined_mesh_accepted": true,
+   "Gamma_H_lower_refined": 0.005692224080128024
+  },
+  "certified_entry_intervals_strictly_ordered": {
+   "pass": true
+  },
+  "correspondence": {
+   "nodes": 3,
+   "grid_nodes": 3,
+   "refined_nodes": 0,
+   "refinement_pairs": [
+    [
+     "1.55",
+     "1.8"
+    ]
+   ],
+   "refinement_rule": "adjacent grid nodes whose accepted branch sets differ are refined to spacing 0.001",
+   "node_keys_canonical": true,
+   "attempt_rows": 37,
+   "distinct_rows": 15,
+   "duplicate_attempts": 22,
+   "open_rows": 2,
+   "open_rows_by_branch": {
+    "asymmetric": 0,
+    "asymmetric_discontinuity": 0,
+    "full_orders": 0,
+    "mixed_search": 1,
+    "pooling": 0,
+    "pure_search": 1,
+    "symmetric_interior": 0
+   },
+   "no_candidate_rows": 3,
+   "rejected_rows": 4,
+   "nodes_with_multiplicity": 3,
+   "asymmetric_accepted_nodes": [
+    "1.51",
+    "1.55"
+   ],
+   "accepted_branch_labels": [
+    "asymmetric",
+    "full_orders",
+    "pooling",
+    "symmetric_interior"
+   ],
+   "error_budget_breached_rows": 0,
+   "mixed_attempt_outcomes": {
+    "converged-candidate": 0,
+    "converged-pure": 16,
+    "unresolved": 2
+   },
+   "mixed_nodes_unresolved": [
+    "1.8"
+   ],
+   "mixed_candidates_accepted": 0
+  },
+  "error_budget": {
+   "pass": true,
+   "rule": "quadrature |GL48-GL24| <= 1e-11 on the declared scan; refined |GL64-GL32| <= 1e-12 on 800 intervals; tail truncation bound <= 1e-11; a breached target rejects the row (never loosened)",
+   "breached_candidates": []
+  },
+  "certified_node_root_in_bracket_1.55": {
+   "pass": true,
+   "v": [
+    0.460316190847
+   ],
+   "status": [
+    "computer-assisted"
+   ]
+  }
+ },
+ "passed": true,
+ "notes": [
+  "Node keys are canonical exact decimals (Decimal.normalize); the certificate label 1.60 and the mesh node 1.6 are one node.",
+  "Candidates are deduplicated by complete continuation identity (orders, pricing family, price atoms, preparation rule); raw attempts, including duplicates, are in correspondence_attempts.csv; multiplicity_found counts distinct accepted continuations.",
+  "Refinement rule for the quadrature targets: the x10 tightening is implemented by raising the Gauss-Legendre order 48 -> 64 and the order intervals 400 -> 800; the refined error estimate is compared with target/10 on every row.",
+  "No retries beyond the documented starts: 9 pure initialisations (40 damped iterations each) and 3 mixed starts per mesh (120 replicator iterations each, then the support indifference/simplex solve); mesh-pure outcomes are polished by both continuous best responses from that one profile for at most 40 iterations. Unconverged starts produce open rows.",
+  "Tangency rule: a local |Psi| minimum without sign change on the 41-point sub-mesh is open when within the numerical resolution (10 x quadrature error + tail bound, floor 1e-8) and 'no candidate' otherwise; the same rule is proposed for C.6.",
+  "Mixed-search outcomes are search records only; they never assert that mixed equilibria do not exist."
+ ]
+}

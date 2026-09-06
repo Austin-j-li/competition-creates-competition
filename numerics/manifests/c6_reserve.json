@@ -1,6 +1,6 @@
 {
  "exercise": "c6_reserve",
- "timestamp_utc": "2026-09-05T16:04:35.355336+00:00",
+ "timestamp_utc": "2026-09-05T23:54:41.376600+00:00",
  "inputs": {
   "benchmark": {
    "h": "10",
@@ -32,10 +32,16 @@
    "r_weak": "1.2",
    "r_strong": "3"
   },
-  "grid": "0..h (+eps_V for classes) by 0.05 plus band edges, r, declared reserves, offsets 0.0001",
-  "quick": false
+  "run_id": "c6_20260905T235301335190Z",
+  "replay_source": "audit/peer_polish/c6_20260905T233640627218Z",
+  "workers": 20,
+  "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained",
+  "attempt_ledger": "audit/peer_polish/c6_20260905T235301335190Z",
+  "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8",
+  "quick": false,
+  "declared_only": false
  },
- "method": "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates (pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold.",
+ "method": "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates (pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold. Exact events are classified algebraically at 50 digits with the tie rule; accepted candidates are merged only by the continuation identity (complete strategies plus price information); counts come from the attempt ledger.",
  "tolerances": {
   "quadrature_absolute_target": 1e-11,
   "quadrature_relative_target": 1e-11,
@@ -60,9 +66,9 @@
   "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
  },
  "outputs": {
-  "tables/reserve_comparisons.csv": "19ef67b7e0f72d4b8defba2aad1959bfe70d002d0881368b9cbb267d98d5213e",
-  "numerics/reserve_continuations.csv": "a2968c2486df84462078f42e72594a1a945510dad2ad750d2e0f6a8809519382",
-  "numerics/reserve_ranges.csv": "27ecf4cf2b8be0535e6e240e589f67b523b660b074745e16874b74e36799f7b9"
+  "tables/reserve_comparisons.csv": "23522419e05c96516fda4924453827b8cac6f2423e3f4a181d83aee462752af7",
+  "numerics/reserve_continuations.csv": "13a4742d5bb69140b06aa5b16df3e4b7610953a9538831f8a3c706e6a071d9b8",
+  "numerics/reserve_ranges.csv": "edea909d5da3854b9cc2bb7e3e1eaa4c496e6f71b8c358d5b12860a95dc5a301"
  },
  "checks": {
   "declared_binary_r1.2_p0.5": {
@@ -134,27 +140,15 @@
    "E_alternative": 0.5116375544805927
   },
   "payoff_oracle": {
-   "max_error": 1.1723261250651262e-14,
+   "max_error": 2.1269444538951632e-14,
    "pass": true
   },
   "sweep": {
-   "nodes": 844,
-   "refined_nodes": 816,
+   "nodes_attempted": 1664,
+   "initial_nodes": 1040,
+   "refined_nodes": 624,
+   "refinement_planned_nodes": 624,
    "refinement_intervals": [
-    [
-     "binary",
-     "1.2",
-     "6.2",
-     "6.25",
-     "revenue maximum"
-    ],
-    [
-     "binary",
-     "1.2",
-     "6.25",
-     "6.3",
-     "revenue maximum"
-    ],
     [
      "binary",
      "1.2",
@@ -167,7 +161,7 @@
      "1.2",
      "8.4",
      "8.45",
-     "unresolved"
+     "branch change; unresolved"
     ],
     [
      "binary",
@@ -200,20 +194,6 @@
     [
      "binary",
      "3",
-     "1.25",
-     "1.3",
-     "revenue maximum"
-    ],
-    [
-     "binary",
-     "3",
-     "1.3",
-     "1.35",
-     "revenue maximum"
-    ],
-    [
-     "binary",
-     "3",
      "8",
      "8.05",
      "branch change"
@@ -223,7 +203,7 @@
      "3",
      "8.4",
      "8.45",
-     "unresolved"
+     "branch change; unresolved"
     ],
     [
      "binary",
@@ -257,29 +237,15 @@
      "uniform_classes",
      "1.2",
      "0.9501",
-     "1",
+     "0.9999",
      "branch change; unresolved"
     ],
     [
      "uniform_classes",
      "1.2",
-     "1",
+     "1.0001",
      "1.0499",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "6.2",
-     "6.25",
-     "revenue maximum"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "6.25",
-     "6.3",
-     "revenue maximum"
+     "branch change; unresolved"
     ],
     [
      "uniform_classes",
@@ -293,7 +259,7 @@
      "1.2",
      "8.4",
      "8.45",
-     "unresolved"
+     "branch change; unresolved"
     ],
     [
      "uniform_classes",
@@ -326,20 +292,6 @@
     [
      "uniform_classes",
      "3",
-     "1.25",
-     "1.3",
-     "revenue maximum"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "1.3",
-     "1.35",
-     "revenue maximum"
-    ],
-    [
-     "uniform_classes",
-     "3",
      "8",
      "8.05",
      "branch change"
@@ -349,7 +301,7 @@
      "3",
      "8.4",
      "8.45",
-     "unresolved"
+     "branch change; unresolved"
     ],
     [
      "uniform_classes",
@@ -381,8 +333,16 @@
     ]
    ],
    "refinement_skipped_nodes": 0,
-   "unresolved_nodes": 497,
+   "identity_refinement_nodes": 2,
+   "prior_identity_candidates_preserved": 28,
+   "event_nodes": 40,
+   "candidates_evaluated": 11414,
+   "candidates_rejected": 1323,
+   "candidates_unresolved": 484,
+   "duplicates_merged": 7344,
+   "unresolved_nodes": 503,
    "nodes_without_accepted_continuation": 0,
+   "nodes_analytically_unique": 707,
    "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"
   }
  },

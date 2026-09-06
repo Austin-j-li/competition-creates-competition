@@ -85,13 +85,13 @@ def error_budget(val: Validation, sched: Schedule, controls: Controls, analytica
     breaches: list[str] = []
     refined = controls.tightened()
     q_err = float(val.quadrature_error)
-    if q_err > controls.quadrature_absolute_target:
+    if not np.isfinite(q_err) or q_err > controls.quadrature_absolute_target:
         breaches.append(f"quadrature_error={q_err:.3e} exceeds target {controls.quadrature_absolute_target:.1e}")
     q_ref: float | None = None
     ref_scans = [val.scans[k] for k in ("H_refined", "L_refined") if k in val.scans]
     if ref_scans:
         q_ref = float(max(max(rw[4] for rw in sc["rows"]) for sc in ref_scans))
-        if q_ref > refined.quadrature_absolute_target:
+        if not np.isfinite(q_ref) or q_ref > refined.quadrature_absolute_target:
             breaches.append(f"quadrature_error_refined={q_ref:.3e} exceeds target {refined.quadrature_absolute_target:.1e}")
         spacing = 2.0 / controls.refined_order_intervals
     else:
@@ -102,7 +102,7 @@ def error_budget(val: Validation, sched: Schedule, controls: Controls, analytica
         tail_formula = "exterior tails integrated analytically against the constant Laplace residual; truncation bound 0"
     else:
         tail_formula = "A_bar * 2 / (1 + exp((T - 1) / b)) per unit order with the C.0 truncation half-width T"
-    if tb > controls.quadrature_absolute_target:
+    if not np.isfinite(tb) or tb > controls.quadrature_absolute_target:
         breaches.append(f"tail_truncation_bound={tb:.3e} exceeds target {controls.quadrature_absolute_target:.1e}")
     L = lipschitz_constant_U(sched)
     lip = 0.5 * spacing * L
@@ -113,11 +113,13 @@ def error_budget(val: Validation, sched: Schedule, controls: Controls, analytica
                 + ("" if closed else " (not enclosed within the deviation acceptance: numerical diagnostic)"))
     xs = _marginal_grid(sched, controls.initial_flow_halfwidth)
     resid = float(max(float(np.max(np.abs(sched.A(xs, s) - sched.A_direct(xs, s)))) for s in "HL"))
-    if resid > controls.price_identity_acceptance:
+    if not np.isfinite(resid) or resid > controls.price_identity_acceptance:
         breaches.append(f"residual_approximation_error={resid:.3e}")
     inv = float(val.posterior_inversion_error)
+    if not np.isfinite(inv) or inv > 1e-7:
+        breaches.append(f"posterior_inversion_error={inv:.3e}")
     ent = float(val.entry_independent_error)
-    if ent > controls.independent_formula_acceptance:
+    if not np.isfinite(ent) or ent > controls.independent_formula_acceptance:
         breaches.append(f"entry_independent_error={ent:.3e}")
 
     def summary(state: str) -> tuple[float, float]:

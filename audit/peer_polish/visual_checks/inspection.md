@@ -1,0 +1,143 @@
+# Final PDF inspection
+
+Passed: all 72 main-paper pages and all 57 online-appendix pages. Every page was viewed individually; edited pages were rechecked. No clipping, unresolved references, missing characters, or overflowing TeX boxes remain. All fonts are embedded. Landscape-page bounds account for rotation.
+
+## main
+
+PDF SHA-256: `e912d0db3746763d0d1c8e28003ea548609379970786a15081e25891a952eceb`.
+
+- Page 1: Title, author and abstract readable; deliberate title-page whitespace; no clipping.
+- Page 2: Introduction heading, prose and citations readable; margins consistent; bottom paragraph continues naturally.
+- Page 3: Mechanism, institution and participation prose readable; Section 1.1 link visible; natural continuation.
+- Page 4: Main result, scope and reserve discussion fit within margins; paragraph continues naturally.
+- Page 5: Literature citations display linked names and years correctly; no missing glyphs or clipping.
+- Page 6: Roadmap links and subsection 1.1 heading have substantial following text; no stranded heading.
+- Page 7: Decision interval, preparation and private-information discussion readable; Imprivata citation fits.
+- Page 8: Section 2 and 2.1 headings have substantial text; final sentence introduces next-page inequality without clipping.
+- Page 9: Equation (1) clear at page top; model timing and tie text readable; subsection 2.2 has three following lines.
+- Page 10: Equations (2) and (3) align within margins; trading, information and timing prose readable.
+- Page 11: Section 2.3, 3 and 3.1 headings each have following text; final display introduction continues to next page.
+- Page 12: Equations (4), (5) and (6) fit; Proposition 1 heading, assumptions, result and final statement remain together.
+- Page 13: Figure 1 panels, caption and notes remain readable and unclipped; body reference now correctly prints Figure 1.
+- Page 14: Section 3.2 and equations (7) through (9) fit; posterior bounds and entry definitions readable.
+- Page 15: Equations (10) and (11) fit; Section 3.3 heading has following text; no overlap.
+- Page 16: Section 4 and 4.1 headings, Proposition 2 opener and conditions (A1) through (A3) remain together; long conclusion continues naturally.
+- Page 17: Proposition 2 continuation and interpretation of conditions (A1) through (A3) readable; no clipped mathematics.
+- Page 18: Equation (12) aligned and readable; entry and admissibility interpretation fit; Section 6.3 link readable.
+- Page 19: Table 1 columns, values and notes fit; Section 4.2 has substantial following text; body references now correctly print Table 1 and Table 2.
+- Page 20: Table 2 panels A through C readable; headings, values, evidence and uniqueness columns fit; full explanatory notes remain on page.
+- Page 21: Section 4.3 heading has following text; Proposition 3 statement and equation (13) interval table stay together; proof introduction readable.
+- Page 22: Figure 2 panels, threshold labels, analytical shading, node ticks, certified markers and mixed-support symbols readable; caption explains evidence and endpoints without clipping.
+- Page 23: Opening reference now correctly prints Figure 2; threshold and correspondence prose remain readable with natural continuation.
+- Page 24: Section 5 and 5.1 headings have substantial following text; noise comparison readable; reference now correctly prints Figure 3.
+- Page 25: Figure 3 panels and closed endpoint markers readable; caption and notes fit; common-scale and endpoint qualifications visible.
+- Page 26: Sections 5.2 and 5.3 have following text; robustness and acquisition-value discussion readable; no clipping.
+- Page 27: Private-information discussion and proposition reference remain readable; body reference now correctly prints Table 3.
+- Page 28: Table 3 panels, column headings, probabilities, percentage-point differences and notes readable; entire exhibit fits.
+- Page 29: Section 6 and 6.1 headings and welfare discussion fit; body reference now correctly prints Table 2.
+- Page 30: Section 6.2 heading has substantial text; three-line equation (14) fits and is legible; concluding sentence continues naturally.
+- Page 31: Figure 4 panels, log-axis labels, curves and caption remain readable; all positive-profit curves visible; body reference now correctly prints Figure 4.
+- Page 32: Section 6.3 heading and reserve probability definitions readable; body reference now correctly prints Table 4.
+- Page 33: Table 4 panels, multiline headings, values and notes fit; prose continues without overlap; body reference now correctly prints Table 4.
+- Page 34: Reserve continuation discussion and Section 7 heading fit; empirical implications and appendix links readable.
+- Page 35: Section 8 heading and conclusion readable; citation fits; deliberate whitespace after ending.
+- Page 36: References heading and bibliography entries readable; DOI links wrap within margins; no clipping or overlapping entries.
+- Page 37: Bibliography entries and wrapped DOI links stay inside margins; hanging indents and footer are legible.
+- Page 38: Bibliography links, long SEC URL and working-paper entries wrap without clipping or missing glyphs.
+- Page 39: Final two bibliography entries render cleanly. Lower-page whitespace precedes the explicit Appendix A start.
+- Page 40: Appendix heading, proof text and three-line equation A.1 are clear and aligned; proof continues across the page break.
+- Page 41: Equation A.2 and the proof conclusion are clear. The formerly orphaned 'Posterior bounds' heading has moved to page 42.
+- Page 42: 'Posterior bounds' now stays with Proposition A.1. Proposition A.2 and its proof remain legible with clean margins.
+- Page 43: Equation A.3 fits; the A.2 section and global-order heading retain introductory text before the next-page display.
+- Page 44: Equations A.4–A.6, including nested integrals and the long derivative chain, fit with distinct equation tags.
+- Page 45: Equation A.7 and the Proposition 2 proof heading are clear; proof steps and inline expressions fit the page.
+- Page 46: Proof steps 4–6 and equation A.8 are readable, with normal continuation at the lower page boundary.
+- Page 47: The previous orphan heading is absent. Deterrence heading stays with Proposition A.3; equation A.9 is unclipped.
+- Page 48: 'Threshold distinctions' now stays with Proposition A.4. Equations A.10–A.12 and following proof text render cleanly.
+- Page 49: Ceiling equation A.13 and tail-limit equation A.14 fit; proof concludes without an orphaned following heading.
+- Page 50: A.3 and Root definition headings have attached text; A.15/A.16 and concavity proof remain fully visible.
+- Page 51: Interval-sign heading has following text; long decimal bounds A.17 fit. A.18 near the bottom is fully visible with clear footer separation.
+- Page 52: Whole-bracket cover A.19, antiderivatives A.20 and continued proof are clear and unclipped.
+- Page 53: No-trade proof heading has attached prose; logistic section and equations A.21/A.22 render clearly.
+- Page 54: Logistic cutoff system A.23 and Proposition A.5 are readable; Atomless preparation costs heading retains two lines of explanatory text.
+- Page 55: Conditions A.24, Proposition A.6 and nonemptiness heading with equation A.25 fit cleanly.
+- Page 56: Nonemptiness conclusion and complementary-signal headings are clear; systems A.26/A.27 remain fully visible.
+- Page 57: Entry system A.28, Proposition A.7 assumptions A.29 and proof start are unclipped; conditional-independence glyphs A.30 are clear.
+- Page 58: Conditional posterior A.31, entry inequalities A.32, wide D-bound A.33 and price inversion A.34 all fit without overlap.
+- Page 59: Residual formulas A.35/A.36 and long inline increment expression remain legible; proof continues into the next display on page 60.
+- Page 60: Global derivative display A.37 and proof conclusion are clear. Bargaining-section headings have following explanatory text.
+- Page 61: Bargaining Proposition A.8, constrained-max display A.38 and proof fit cleanly; superscripts and proof square are readable.
+- Page 62: Access-to-prices heading, ownership identity A.39, Proposition A.9 and conditional-surplus equation A.40 are clear.
+- Page 63: Welfare/revenue system A.41 and the reserve-payoff piecewise system A.42 fit, including the final line above the footer.
+- Page 64: Reserve-domain text, continuation heading and object definition A.43 are legible and aligned; next display is introduced before the break.
+- Page 65: Seller-objective system A.44 and price-pooling subsection render cleanly, with intact inline CDF/survival formulas.
+- Page 66: Piecewise price rule A.45, Proposition A.10 and pooled-posterior fraction A.46 are unclipped; buyer proof paragraphs are legible.
+- Page 67: Residuals A.47 and rational derivative bound A.48 fit without overlap; proof conclusion and qualification text are legible.
+- Page 68: Wide outcome formula A.49 has a readable separate equation tag; endpoint scalars, exact-event heading and reserve A.50 are clear.
+- Page 69: Reserve-event radical A.51 and outcome probability system A.52 fit; outcome heading has attached explanatory text.
+- Page 70: Local-regularity heading, revenue derivative A.53 and entry integral A.54 render cleanly; no clipping in long proof prose.
+- Page 71: Parameter declarations A.55–A.57 and cutoff-grid notation are legible; section heading has following text and all equations fit.
+- Page 72: Final declaration paragraph and inline reserve radical render cleanly; final-page whitespace is expected and the footer is intact.
+
+## online_appendix
+
+PDF SHA-256: `4567b920b2f9a9fe88d846812e7f3da88db78907e961e02e1f80dc08f4da832b`.
+
+- Page 1: Title, author, A/A.1 headings and OA.1 display are legible and within margins; footer clear.
+- Page 2: Mixed-strategy probability definitions and OA.2-OA.4 display labels have clear spacing; text and footer unclipped.
+- Page 3: Auction payoff integrations OA.5-OA.6 fit; A.3 heading retains introductory text on the page.
+- Page 4: OA.7-OA.12 displays and long mathematical prose remain inside margins; no overlapping labels.
+- Page 5: A.4 heading and weak/strong proof blocks are readable; OA.13-OA.16 cases and labels clear.
+- Page 6: Entry/information comparison and A.5 opening are balanced; OA.17-OA.19 fit without collisions.
+- Page 7: Threshold proof text, OA.20-OA.22 and equality-limit discussion render cleanly.
+- Page 8: Logistic/mixture/nonemptiness formulas OA.23-OA.27 fit; superscripts and fractions readable.
+- Page 9: Both lemma statements retain their proof text; A.7 heading and OA.28-OA.29 fit.
+- Page 10: Signal posterior/entry/price displays OA.30-OA.36 align cleanly; no collision with right labels.
+- Page 11: Signal residual and probability displays OA.37-OA.40 fit; long OA.38 remains clear of its label.
+- Page 12: Bargaining section, OA.41-OA.44 and A.9 opening are readable; A.9 heading retains introductory text.
+- Page 13: Conditional welfare displays OA.45-OA.49 and dividend discussion fit without clipping or overlapping symbols.
+- Page 14: Piecewise acquisition kernels OA.50-OA.53 fit; stacked cases and equation labels remain distinct.
+- Page 15: Seller continuation/decomposition OA.54-OA.56 fits; A.11 heading retains introductory text.
+- Page 16: Pool input block and split OA.57 are clear; OA.58-OA.59 case displays fit and code lines remain within margins.
+- Page 17: Pooled posterior, conditional pricing and global-bound argument are readable; OA.60-OA.62 fit; bottom unnumbered bound is complete.
+- Page 18: Uniform bound, Proposition OA.3, output identities OA.63-OA.64 and negative-control discussion are legible and unclipped.
+- Page 19: B/B.1/B.2 headings retain text; certificate definitions OA.65-OA.67 fit.
+- Page 20: Concavity/root/cover derivations OA.68-OA.71 fit; headings remain with their text.
+- Page 21: OA.72-OA.74 and the antiderivative array are clear; B.6 heading retains three lines of introductory text.
+- Page 22: Certificate conclusion and numerical-contract introduction are clear. Benchmark and moderate input headings remain with their full blocks; no stranded complementary-signal label remains.
+- Page 23: Complementary-signal heading now starts the page immediately above its full declaration. Numerical and continuation/event controls wrap legibly within margins.
+- Page 24: Outcome/error-budget explanation and OA.75-OA.76 fit; all mathematical braces and right labels remain clear.
+- Page 25: Long error-budget list and inline schema names fit. C.1 heading retains three lines of its input paragraph.
+- Page 26: Baseline formulas, method blocks and matched-price identities fit without clipping; final paragraph continues after the top-of-page table on page 27.
+- Page 27: Matched-price table is fully legible at page top, with four noise/cost blocks and clear notes. Following welfare/validation text and initial schemas fit without overlap.
+- Page 28: Continuation of output schemas and all matched-price fields are clear; explanatory paragraphs fit within the page.
+- Page 29: Final individual image rechecked after equation-label correction. Table note cites OA.77 for panels A/B and OA.29 for C; all margins/notes fit.
+- Page 30: C.2 heading and Inputs label remain with substantial text; exact bracket lines and inline mathematics are legible; paragraph continuation at the page boundary is clean.
+- Page 31: Mixed-search and continuation-identity paragraphs fit within margins; Outputs label has following schema lines before the natural page continuation.
+- Page 32: Long output schemas wrap with visible continuation arrows; certificate and threshold fields remain legible; no clipped identifiers or footer overlap.
+- Page 33: C.3 heading and Inputs label remain with their content; inline signal formulas and references are readable; Outputs label stays with the start of its schema.
+- Page 34: Signal-schema continuation and explanatory paragraphs are legible; whitespace precedes the following landscape table without a stranded heading.
+- Page 35: Final individual image rechecked: OA.29 reference resolves in complete 25-row signal table; all rows and notes fit.
+- Page 36: C.4 and C.5 headings have following text; aligned display OA.78 and its equation number fit with clear spacing; output schemas and inline mathematics are readable.
+- Page 37: C.6 heading and Inputs label remain with their paragraphs; display OA.79 fits above the final text line and footer without overlap.
+- Page 38: Continuation text, price-pool formulas and specified-comparison paragraph fit; whitespace leads cleanly into the next landscape table.
+- Page 39: Landscape Table 4 has both four-row panels, complete column headings and wrapped identity notes; all content remains within margins.
+- Page 40: Event-grid formulas and exploratory-search paragraphs are readable; bold labels remain with following text; final reporting paragraph clears the footer.
+- Page 41: Reporting continuation and coverage-count explanation are legible; paragraph ends cleanly before the next landscape summary table.
+- Page 42: Landscape Table 5 shows both panels, coverage counts and full explanatory notes; wrapped node labels and search outcomes stay within cells; no overlap or clipping.
+- Page 43: Landscape Table 6 caption, headers and event rows are legible; long search outcomes wrap within their column; continuation notice is visible below the bottom rule.
+- Page 44: Landscape Table 6 continuation has repeated title and column headings; final class-economy rows and wrapped search outcomes fit; no clipping.
+- Page 45: Outputs label stays with complete reserve-comparison schema; continuation and range schemas readable within margins; data-dictionary paragraph continues naturally.
+- Page 46: Data-dictionary identifiers wrap within margins; C.6b heading, Inputs label and Method label each have following content; equations and references readable.
+- Page 47: Price-pool acceptance text and output schema readable; C.6c heading has three following lines; no stranded label or clipping.
+- Page 48: C.6c inputs, method, acceptance and outputs readable; C.7 heading has substantial content; bargaining output schema fits; inline mathematics clear.
+- Page 49: C.8 heading and provenance rules readable; quantity-family table remains complete with its label, headings and all rows; no clipping.
+- Page 50: Registry production-order discussion readable; Section D and D.1 headings have substantial following text; empirical sample-selection prose fits.
+- Page 51: D.2 and D.3 headings remain with their text; process-schema listing fits fully above footer; no clipped identifiers.
+- Page 52: Event, interval and adjudication schemas readable within margins; D.4 heading has substantial following text; concluding sentence continues to next page.
+- Page 53: D.4 continuation and D.5 discussion readable; Section E and E.1 headings have following paragraphs; no stranded heading or clipped text.
+- Page 54: Execution commands and worker/thread settings legible; presentation commands fit; release and reproduction descriptions wrap within margins.
+- Page 55: Independent-verification commands and seed-runner path readable; E.2 heading has following text; directory tree complete and legible; final paragraph continues naturally.
+- Page 56: Result-scope discussion and E.3 heading readable; module filenames and implementation-contract prose wrap within margins; final sentence continues naturally.
+- Page 57: E.3 concluding line and E.4 heading readable; figure/table rendering discussion and final bibliography entry fit; DOI readable; clean document ending.
+

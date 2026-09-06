@@ -1,0 +1,38 @@
+..FF.                                                                    [100%]
+=================================== FAILURES ===================================
+_____________________ test_budget_rejects_nonfinite_error ______________________
+
+    def test_budget_rejects_nonfinite_error():
+        sched = make_schedule(BENCHMARK, payoffs_closed_form(BENCHMARK, 1.2), OrderProfile.pure(0, 0))
+        val = validate(sched, CONTROLS)
+        assert error_budget(val, sched, CONTROLS, analytical_cover=True).within_targets
+        val.quadrature_error = float('nan')
+>       assert not error_budget(val, sched, CONTROLS).within_targets
+E       AssertionError: assert not True
+E        +  where True = ErrorBudget(quadrature_error=nan, quadrature_target=1e-11, quadrature_error_refined=1.0842021724855044e-19, quadrature...123125783e-17, deviation_argmax_H=0.0, deviation_gain_H=0.0, deviation_argmax_L=0.0, deviation_gain_L=0.0, breaches=()).within_targets
+E        +    where ErrorBudget(quadrature_error=nan, quadrature_target=1e-11, quadrature_error_refined=1.0842021724855044e-19, quadrature...123125783e-17, deviation_argmax_H=0.0, deviation_gain_H=0.0, deviation_argmax_L=0.0, deviation_gain_L=0.0, breaches=()) = error_budget(Validation(outcome=Outcome(e_H=0.25000000000000006, e_L=0.25000000000000006, E=0.25000000000000006, O_H=0.125000000000...64(5.421010862427522e-20), np.float64(0.0))], 'max_gain': 0.0, 'argmax_q': 0.0, 'candidate_payoff': 0.0}}, breaches=[]), Schedule(prim=Primitives(h='10', ell='1', p='0.5', rho='0.25', c_L='1', c_H='6', b='2', k='0.02', noise=<Noise.LAPLACE...q_L=(0.0,), w_L=(1.0,)), regime='feedback', dividend=0.0, breakpoints=(0.0,), tie_at_ceiling=False, tie_at_floor=False), Controls(quadrature_absolute_target=1e-11, quadrature_relative_target=1e-11, probability_acceptance=1e-08, price_ident..._precision=50, certificate_derivative_intervals=200, certificate_refined_intervals=400, probability_display_decimals=6))
+
+numerics/tests/test_s3_c2.py:38: AssertionError
+_______ test_mixed_search_records_both_states_and_requires_monotonicity ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f111a06f9e0>
+
+    def test_mixed_search_records_both_states_and_requires_monotonicity(monkeypatch):
+        import numerics.mixed_search as ms
+        pay = payoffs_closed_form(BENCHMARK, 1.2)
+        monkeypatch.setattr(ms, 'residual_monotone', lambda sched: False)
+        attempts = mixed_search_node(BENCHMARK, pay, CONTROLS, '1.2', meshes=(0.5,), max_iter=1)
+        assert len(attempts) == 3
+        for at in attempts:
+            assert abs(sum(at.support_w) - 1) < 1e-12
+>           assert at.outcome == 'unresolved'
+E           AssertionError: assert 'converged-pure' == 'unresolved'
+E             
+E             - unresolved
+E             + converged-pure
+
+numerics/tests/test_s3_c2.py:49: AssertionError
+=========================== short test summary info ============================
+FAILED numerics/tests/test_s3_c2.py::test_budget_rejects_nonfinite_error - As...
+FAILED numerics/tests/test_s3_c2.py::test_mixed_search_records_both_states_and_requires_monotonicity
+2 failed, 3 passed in 5.50s

@@ -61,6 +61,8 @@ HEADER_INCLUDES = [
     r"\usepackage{threeparttable}",
     r"\usepackage{graphicx}",
     r"\usepackage{float}",
+    r"\usepackage{pdflscape}",
+    r"\usepackage{needspace}",
     r"\usepackage{setspace}",
     r"\usepackage{etoolbox}",
     r"\usepackage[font=small,labelfont=bf,labelsep=period]{caption}",
@@ -115,9 +117,10 @@ def replace_markers(text: str) -> str:
 
 
 APPENDIX_INCLUDES = [
-    # registry tables carry long code identifiers: let code spans break and set tables small
-    r"\usepackage{seqsplit}",
-    r"\renewcommand{\texttt}[1]{{\ttfamily\seqsplit{#1}}}",
+    # Long numerical schemas wrap; ordinary inline code keeps LaTeX's escaping intact.
+    r"\usepackage{fvextra}",
+    r"\fvset{breaklines=true,breakanywhere=true}",
+    r"\DefineVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true}",
     r"\AtBeginEnvironment{longtable}{\footnotesize}",
 ]
 
@@ -139,6 +142,12 @@ def build_front_matter(existing: str, overrides: dict | None = None, extra_inclu
 def convert(md_path: str, tex_path: str, pdf: bool, meta_overrides: dict | None = None,
             extra_includes: list[str] | None = None) -> bool:
     text = (ROOT / md_path).read_text(encoding="utf-8")
+    # Reserve room for a formal statement's opening and first conditions.
+    text = re.sub(r"(?m)^(?:(#{2,6} [^\n]+\n\n))?(\[?\*\*(?:Proposition|Lemma|Theorem)\s)",
+                  lambda match: "```{=latex}\n\\Needspace{" + ("10" if match[1] else "8")
+                  + "\\baselineskip}\n```\n\n" + (match[1] or "") + match[2], text)
+    text = re.sub(r"(?m)^(\*\*Input declaration:[^\n]+)",
+                  lambda match: "```{=latex}\n\\Needspace{5\\baselineskip}\n```\n\n" + match[1], text)
     text = replace_markers(text)
     # cross-document links (main <-> online appendix) become plain text in the compiled PDFs
     text = re.sub(r"\[([^\]]+)\]\((?:online_appendix|main)\.md#[^)]+\)", r"\1", text)

@@ -1,0 +1,21 @@
+RUN numerics/exercises/c1_baseline.py
+RUN numerics/exercises/c3_signals.py
+RUN numerics/exercises/c4_moderate.py
+RUN numerics/exercises/c5_noise.py
+RUN numerics/exercises/c7_bargaining.py
+RUN numerics/exercises/c6b_price_pools.py
+RUN numerics/exercises/c2_correspondence.py --workers=20
+RUN numerics/exercises/c6_reserve.py --workers=20
+RUN numerics/exercises/c6c_reserve_events.py --workers=8
+RUN numerics/verify.py --stage c1 c2 c3 c4 c5 c6 c6b c6c c7
+RUN numerics/release_checks.py
+RUN audit/peer_polish/verify_core_bindings.py --reserve-comparisons=tables/reserve_comparisons.csv
+RUN -m pytest -q numerics/tests
+RUN numerics/check_registry.py
+RUN numerics/registry.py
+RUN numerics/substitute.py
+RUN numerics/render/render_all.py
+RUN numerics/verify.py --final
+RUN numerics/render/latex.py
+RUN numerics/verify.py --final
+Fresh reproduction passed: /home/uctpiaj/work/tmp/ccc-peer-reproduce-te_98dru

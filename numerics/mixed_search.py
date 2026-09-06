@@ -12,7 +12,7 @@ and the low-type fixed-point residual are both below ``tol`` (converged), when t
 support, the support-payoff indifference and probability-simplex system is solved directly (least squares in
 the free weights and v); support points whose solved weight falls below the pruning threshold are removed with
 their residuals retained; profitable off-support mesh actions are added and the system re-solved (at most
-``max_support_rounds`` rounds). A solved support of size one is a pure profile and is reported as such.
+``max_support_rounds`` rounds). A solved support of size one is polished with the existing continuous pure best-response solver, using its single resulting profile as the start and at most 40 iterations. Only a converged polished profile is reported as pure.
 
 Outcomes. ``converged-candidate`` (a mixed profile with at least two support points whose indifference and
 simplex conditions hold within tolerance; validated by the caller over the full order interval), ``converged-pure``
@@ -31,6 +31,7 @@ from .auction import AuctionPayoffs
 from .deviations import U
 from .information import OrderProfile, Schedule, make_schedule
 from .params import Controls, Primitives
+from .search import pure_fixed_points
 
 DOMAIN_TEXT = "H mixes over the correctly signed mesh {0, m, ..., 1} at spacing m; L plays a pure order -v with v in [0, 1] (OA.60 restriction, residual monotonicity checked)"
 
@@ -71,6 +72,8 @@ class MixedAttempt:
     residual_monotone: bool
     outcome: str                        # converged-candidate | converged-pure | unresolved
     witness: str
+    low_support_payoff: float
+    low_gap_to_best_tested: float
     profile: OrderProfile | None = field(default=None, compare=False)
     sched: Schedule | None = field(default=None, compare=False)
 
@@ -186,7 +189,7 @@ def solve_support(prim: Primitives, pay: AuctionPayoffs, support: np.ndarray, w0
 
 def mixed_search_node(prim: Primitives, pay: AuctionPayoffs, controls: Controls, r_label: str, meshes: tuple[float, ...] = (0.05, 0.025),
                       max_iter: int = 120, tol: float = 1e-7, prune: float = 1e-7, max_support_rounds: int = 8,
-                      starts: list[MixedStart] | None = None) -> list[MixedAttempt]:
+                      starts: list[MixedStart] | None = None, tie_at_ceiling: bool = False) -> list[MixedAttempt]:
     """Run every documented start on every mesh and return one attempt record per (mesh, start)."""
     out: list[MixedAttempt] = []
     for mesh in meshes:
@@ -242,17 +245,27 @@ def mixed_search_node(prim: Primitives, pay: AuctionPayoffs, controls: Controls,
                 break
             else:
                 solve_status = "rounds_exhausted"
+            # Mesh-pure optima must solve both continuous best responses before they count as pure candidates.
+            if len(support) == 1 and solve_status == "pruned_to_pure":
+                pure = pure_fixed_points(prim, pay, inits=[(float(support[0]), float(v))], max_iter=40)
+                if pure["fixed_points"]:
+                    u, v, _ = pure["fixed_points"][0]
+                    support = np.array([0.0 if abs(u) <= tol else (1.0 if abs(u - 1) <= tol else u)])
+                    v = 0.0 if abs(v) <= tol else (1.0 if abs(v - 1) <= tol else v)
+                else:
+                    solve_status = "pure_polish_unresolved"
             # final record at the solved (or last) support
             prof = OrderProfile(tuple(float(q) for q in support), tuple(float(x) for x in w_s), (-float(v),), (1.0,))
-            sched = make_schedule(prim, pay, prof)
+            sched = make_schedule(prim, pay, prof, tie_at_ceiling=tie_at_ceiling and prof.is_pure and prof.q_H[0] == 1 and prof.q_L[0] == -1)
             pay_mesh = np.array([U(sched, "H", q).value for q in qs])
             sup_pay = np.array([U(sched, "H", q).value for q in support])
             best_q = float(qs[int(pay_mesh.argmax())])
-            gaps = tuple(float(pay_mesh.max() - p) for p in sup_pay)
-            bv, _ = best_response_L(sched)
+            gaps = tuple(float(max(pay_mesh.max(), sup_pay.max()) - p) for p in sup_pay)
+            bv, low_best = best_response_L(sched)
+            low_payoff = U(sched, "L", -float(v)).value
             simplex = float(abs(sum(prof.w_H) - 1.0))
             mono = residual_monotone(sched)
-            solved_ok = solve_status in ("solved", "pruned_to_pure") and sol is not None and sol["ok"] and max(gaps) < tol and abs(bv - v) < tol
+            solved_ok = mono and simplex <= controls.probability_acceptance and min(w_s) >= 0 and solve_status in ("solved", "pruned_to_pure") and sol is not None and sol["ok"] and max(gaps) < tol and abs(bv - v) < tol
             if solved_ok and len(support) >= 2:
                 outcome, witness = "converged-candidate", ""
             elif solved_ok:
@@ -260,26 +273,27 @@ def mixed_search_node(prim: Primitives, pay: AuctionPayoffs, controls: Controls,
             else:
                 outcome = "unresolved"
                 witness = (f"replicator {rep['stop']} after {rep['iterations']} of {max_iter} iterations (gap {gap_last:.3e}, v residual {vres_last:.3e}); "
-                           f"support solve {solve_status} (residual {solve_res:.3e}); best tested mesh gain {max(gaps):.3e} at q = {best_q:.4g}")
+                           f"support solve {solve_status} (residual {solve_res:.3e}); best tested mesh gain {max(gaps):.3e} at q = {best_q:.4g}; residual monotone={mono}")
             out.append(MixedAttempt(r_label, mesh, st.start_id, st.description, st.v0, DOMAIN_TEXT.replace("spacing m", f"spacing {mesh}"), max_iter,
                                     rep["iterations"], rep["stop"], float(gap_last), float(vres_last), solve_status, float(solve_res), rounds,
                                     tuple(pruned), tuple(float(q) for q in support), tuple(float(x) for x in w_s), tuple(float(x) for x in sup_pay),
-                                    gaps, best_q, float(v), simplex, float(min(w_s)), mono, outcome, witness, prof, sched))
+                                    gaps, best_q, float(v), simplex, float(min(w_s)), mono, outcome, witness, float(low_payoff), float(low_best - low_payoff), prof, sched))
     return out
 
 
 ATTEMPT_COLUMNS = ["r", "mesh", "start_id", "start_description", "v_init", "domain", "budget", "iterations", "stop_reason", "final_gap",
                    "final_v_residual", "support_solve", "support_solve_residual", "support_rounds", "pruned_points", "support",
                    "support_payoffs", "gap_to_best_tested", "best_tested_q", "v", "simplex_residual", "min_weight", "residual_monotone",
-                   "outcome", "witness", "validation"]
+                   "outcome", "witness", "low_support_payoff", "low_gap_to_best_tested", "validation"]
 
 
 def attempt_row(a: MixedAttempt, validation_text: str = "") -> dict:
     return {"r": a.r, "mesh": a.mesh, "start_id": a.start_id, "start_description": a.start_description, "v_init": a.v_init, "domain": a.domain,
             "budget": a.budget, "iterations": a.iterations, "stop_reason": a.stop_reason, "final_gap": a.final_gap,
-            "final_v_residual": a.final_v_residual, "support_solve": a.support_solve, "support_solve_residual": a.support_solve_residual,
+            "final_v_residual": a.final_v_residual, "support_solve": a.support_solve, "support_solve_residual": a.support_solve_residual if np.isfinite(a.support_solve_residual) else "n/a",
             "support_rounds": a.support_rounds, "pruned_points": ";".join(f"{q:.6g}:w={w:.3e}:gap={g:.3e}" for q, w, g in a.pruned_points),
             "support": a.support_text(), "support_payoffs": ";".join(f"{p:.10g}" for p in a.support_payoffs),
             "gap_to_best_tested": ";".join(f"{g:.3e}" for g in a.gap_to_best_tested), "best_tested_q": a.best_tested_q, "v": a.v,
             "simplex_residual": a.simplex_residual, "min_weight": a.min_weight, "residual_monotone": a.residual_monotone,
-            "outcome": a.outcome, "witness": a.witness, "validation": validation_text}
+            "outcome": a.outcome, "witness": a.witness, "low_support_payoff": a.low_support_payoff,
+            "low_gap_to_best_tested": a.low_gap_to_best_tested, "validation": validation_text}

@@ -16,10 +16,12 @@ ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_DIR = ROOT / "numerics" / "manifests"
 
 
-def fmt(v) -> str:
+def fmt(v, column: str = "") -> str:
     if isinstance(v, (bool, np.bool_)):
         return "true" if v else "false"
     if isinstance(v, (float, np.floating)):
+        if column in {"x_star", "x_star_Yplus", "x_star_Yminus"} and not np.isfinite(v):
+            return "n/a" if np.isnan(v) else "unattainable" if v > 0 else "always"
         if np.isnan(v):
             return "nan"
         if np.isinf(v):
@@ -35,7 +37,7 @@ def write_csv(path: Path | str, columns: list[str], rows: list[dict]) -> Path:
         w = csv.writer(fh, quoting=csv.QUOTE_MINIMAL)
         w.writerow(columns)
         for r in rows:
-            w.writerow([fmt(r.get(c, "n/a")) for c in columns])
+            w.writerow([fmt(r.get(c, "n/a"), c) for c in columns])
     return path
 
 

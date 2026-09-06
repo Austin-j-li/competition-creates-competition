@@ -1,0 +1,61 @@
+{
+  "passed": 11,
+  "failed": 0,
+  "checks": [
+    {
+      "case": "missing_required_key",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/missing_required_key/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/missing_required_key/numerics/release_checks.py\", line 37, in registry\n    require(key in by_name and by_name[key][\"status\"] != \"open\", f\"required key {key} missing/open\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/missing_required_key/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: required key base_entry_strong missing/open\n"
+    },
+    {
+      "case": "duplicate_selected_row",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/duplicate_selected_row/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/duplicate_selected_row/numerics/release_checks.py\", line 44, in controls\n    require(len(keys) == len(set(keys)), \"duplicate control parameter/experiment row\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/duplicate_selected_row/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: duplicate control parameter/experiment row\n"
+    },
+    {
+      "case": "wrong_information_same_r",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/wrong_information_same_r/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/wrong_information_same_r/numerics/release_checks.py\", line 56, in controls\n    feedback, hidden, matched = (get(e) for e in (\"feedback\", \"price_hidden\", \"matched_dividend\"))\n    ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/wrong_information_same_r/numerics/release_checks.py\", line 56, in <genexpr>\n    feedback, hidden, matched = (get(e) for e in (\"feedback\", \"price_hidden\", \"matched_dividend\"))\n                                 ^^^^^^\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/wrong_information_same_r/numerics/release_checks.py\", line 52, in get\n    require(key in indexed, f\"missing exact control identity {key}\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/wrong_information_same_r/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: missing exact control identity ('base', 'Laplace', 'atoms', '1.2', 'feedback')\n"
+    },
+    {
+      "case": "open_candidate_accepted",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/open_candidate_accepted/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/open_candidate_accepted/numerics/release_checks.py\", line 122, in candidates\n    require(status.startswith((\"analytical\", \"computer-assisted\", \"numerical diagnostic\")), f\"unvalidated candidate accepted in {path}\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/open_candidate_accepted/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: unvalidated candidate accepted in numerics/correspondence.csv\n"
+    },
+    {
+      "case": "zero_containing_certificate",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/zero_containing_certificate/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/zero_containing_certificate/numerics/release_checks.py\", line 81, in certificates\n    require(number(row[\"Psi_left_lower\"]) > 0 and number(row[\"Psi_right_upper\"]) < 0 and number(row[\"Gamma_H_lower\"]) > 0,\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/zero_containing_certificate/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: certificate sign 1.55\n"
+    },
+    {
+      "case": "merged_price_pool_endpoints",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/merged_price_pool_endpoints/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/merged_price_pool_endpoints/numerics/release_checks.py\", line 90, in pools\n    require(len({r[\"continuation_id\"] for r in data}) == 17, \"distinct price pools merged by orders\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/merged_price_pool_endpoints/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: distinct price pools merged by orders\n"
+    },
+    {
+      "case": "raw_flow_posterior_inside_pool",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/raw_flow_posterior_inside_pool/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/raw_flow_posterior_inside_pool/numerics/release_checks.py\", line 103, in pools\n    require(expected_row[\"accepted\"] and row[\"continuation_id\"] == expected_row[\"continuation_id\"],\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/raw_flow_posterior_inside_pool/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: pool preparation/pricing policy differs from validated observed-price policy\n"
+    },
+    {
+      "case": "external_dividend_as_revenue",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/external_dividend_as_revenue/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/external_dividend_as_revenue/numerics/release_checks.py\", line 58, in controls\n    require(abs(number(matched[field]) - number(hidden[field])) <= tolerance,\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/external_dividend_as_revenue/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: external dividend changes R_T in Laplace/atoms/3\n"
+    },
+    {
+      "case": "finite_logistic_limit",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/finite_logistic_limit/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/finite_logistic_limit/numerics/release_checks.py\", line 111, in endpoints\n    require(row[\"x_star\"] == \"unattainable\", \"finite cutoff at unattained logistic bound\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/finite_logistic_limit/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: finite cutoff at unattained logistic bound\n"
+    },
+    {
+      "case": "nan_ordinary_scalar",
+      "exit_code": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/nan_ordinary_scalar/numerics/release_checks.py\", line 153, in <module>\n    CHECKS[name]()\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/nan_ordinary_scalar/numerics/release_checks.py\", line 142, in finite\n    require(parsed.is_finite(), f\"nonfinite untagged field {path}:{index}/{key}\")\n  File \"/home/uctpiaj/work/tmp/ccc-negative-_mjftuyq/nan_ordinary_scalar/numerics/release_checks.py\", line 17, in require\n    raise ValueError(message)\nValueError: nonfinite untagged field tables/equilibrium_controls.csv:2/E\n"
+    },
+    {
+      "case": "optimized_legacy_seed",
+      "exit_code": 2,
+      "diagnostic": "refusing to run: PYTHONOPTIMIZE is set (1)\n"
+    }
+  ]
+}

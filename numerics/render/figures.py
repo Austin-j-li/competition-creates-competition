@@ -11,21 +11,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from numerics.io import ROOT, read_csv  # noqa: E402
 from numerics.render.style import (DASHED, DOTTED, FULL_WIDTH, GRAY, INK, MUTED, NAVY, RUST, SOLID, TINT_A,  # noqa: E402
-                                   TINT_B, TINT_C, label_line, panel_label, plt, region_label)
+                                   TINT_B, label_line, panel_label, plt, region_label)
 
 FIG = ROOT / "figures"
 
 
 def _f(x: str) -> float:
-    try:
-        return float(x)
-    except ValueError:
-        return float("nan")
+    value = float(x)
+    if not np.isfinite(value):
+        raise ValueError(f"nonfinite plotted scalar: {x}")
+    return value
 
 
-def _broken_series(rows: list[dict], xkey: str, ykey: str, gap: float, jump: float = 0.02) -> tuple[np.ndarray, np.ndarray]:
-    """Sort by x and insert NaN where consecutive accepted nodes are farther apart than `gap` or the value jumps."""
-    pts = sorted(((float(Decimal(r[xkey])), _f(r[ykey])) for r in rows), key=lambda t: t[0])
+def _broken_series(rows: list[dict], xkey: str, ykey: str, gap: float, jump: float = 0.02,
+                   nodes: list[Decimal] | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """Connect only unique accepted family members at adjacent searched nodes; retain ambiguous nodes as separate points."""
+    grouped = {}
+    for row in rows:
+        if row.get("accepted", "true") == "true":
+            grouped.setdefault(Decimal(row[xkey]), []).append(row)
+    pts = []
+    for x in (nodes if nodes is not None else sorted(grouped)):
+        sub = grouped.get(x, [])
+        if len(sub) <= 1:
+            pts.append((float(x), _f(sub[0][ykey]) if sub else np.nan))
+        else:
+            pts.append((np.nan, np.nan))
+            for row in sub:
+                pts.extend([(float(x), _f(row[ykey])), (np.nan, np.nan)])
     xs, ys = [], []
     for i, (x, y) in enumerate(pts):
         if i and (x - pts[i - 1][0] > gap * 1.5 or abs(y - pts[i - 1][1]) > jump):
@@ -36,6 +49,37 @@ def _broken_series(rows: list[dict], xkey: str, ykey: str, gap: float, jump: flo
     return np.array(xs), np.array(ys)
 
 
+def _correspondence_rows(rows: list[dict]) -> list[dict]:
+    """Require complete, distinct continuation records and a consistent multiplicity ledger."""
+    from numerics.continuations import parameter_set_id
+    from numerics.params import BENCHMARK
+    accepted = [r for r in rows if r["accepted"] == "true"]
+    identities = set()
+    counts = {}
+    for row in accepted:
+        if row.get("parameter_set_id") != parameter_set_id(BENCHMARK, row["r"], BENCHMARK.p, "binary", "0"):
+            raise ValueError("Figure 2 requires the complete benchmark parameter identity")
+        if any(row.get(k) in (None, "", "n/a") for k in ("candidate_id", "continuation_id", "result_status")):
+            raise ValueError("Figure 2 requires the audited C.2 identity schema")
+        ident = row["parameter_set_id"], row["continuation_id"]
+        if ident in identities or row.get("duplicate_of"):
+            raise ValueError("Figure 2 contains duplicate accepted continuations")
+        identities.add(ident)
+        counts[Decimal(row["r"])] = counts.get(Decimal(row["r"]), 0) + 1
+        if row["result_status"] not in ("analytical", "computer-assisted", "numerical diagnostic"):
+            raise ValueError("Figure 2 accepted row has unsupported evidence status")
+        if not np.isfinite(float(row["E"])) or not 0 <= float(row["E"]) <= 1:
+            raise ValueError("Figure 2 has an invalid preparation probability")
+        for key in ("q_H", "q_L"):
+            if key in row and row[key] != "mixed" and (not np.isfinite(float(row[key])) or not -1 <= float(row[key]) <= 1):
+                raise ValueError("Figure 2 has an invalid order coordinate")
+    for row in accepted:
+        count = counts[Decimal(row["r"])]
+        if int(row["n_distinct_accepted"]) != count or (row["multiplicity_found"] == "true") != (count >= 2):
+            raise ValueError("Figure 2 multiplicity disagrees with distinct continuation identities")
+    return accepted
+
+
 def _at(xs: np.ndarray, ys: np.ndarray, x0: float) -> tuple[float, float]:
     """Point on a (possibly broken) series nearest to x0, used to anchor direct labels."""
     ok = ~np.isnan(ys)
@@ -44,27 +88,32 @@ def _at(xs: np.ndarray, ys: np.ndarray, x0: float) -> tuple[float, float]:
 
 
 def figure2() -> Path:
+    from numerics.params import BENCHMARK
     rows = read_csv("numerics/correspondence.csv")
     certs = [c for c in read_csv("numerics/certificates.csv") if c["accepted"] == "true"]
     th = {r["boundary"]: float(r["value"]) for r in read_csv("numerics/thresholds.csv") if r["value"] not in ("nan", "n/a")}
-    acc = [r for r in rows if r["accepted"] == "true"]
+    acc = _correspondence_rows(rows)
+    nodes = sorted({Decimal(r["r"]) for r in rows})
     rmin, rmax = 1.0, 3.8
     fig, (a, b) = plt.subplots(2, 1, figsize=(FULL_WIDTH, 5.2), sharex=True, constrained_layout=True,
                                gridspec_kw={"height_ratios": [1.15, 1.0]})
-    # regions: analytical uniqueness tints and the multiplicity window found in the data
-    multi = sorted(float(Decimal(r["r"])) for r in acc if r["multiplicity_found"] == "true")
+    # Analytical regions and numerical multiplicity have different visual encodings.
+    multi = sorted({float(Decimal(r["r"])) for r in acc if r["multiplicity_found"] == "true"})
     for ax in (a, b):
         ax.axvspan(rmin, th["pooling_unique_sufficient"], color=TINT_A, lw=0, zorder=0)
         ax.axvspan(th["full_orders_unique_sufficient"], rmax, color=TINT_B, lw=0, zorder=0)
+        # Vertical ticks mark only searched nodes with distinct accepted continuations.
+        # They cannot imply multiplicity at an unsearched or unresolved intervening node.
         if multi:
-            ax.axvspan(min(multi), max(multi), color=TINT_C, lw=0, zorder=0)
+            ax.vlines(multi, 0, 0.018, transform=ax.get_xaxis_transform(), color=GRAY, lw=0.7, zorder=2)
         for key in ("pooling_existence", "full_orders_unique_sufficient", "high_cost_ceiling"):
             ax.axvline(th[key], color=MUTED, lw=0.7, ls=DOTTED, zorder=1)
         ax.set_xlim(rmin, rmax)
     # threshold names on a secondary top axis of the upper panel, never inside the data area
     top = a.secondary_xaxis("top")
     top.set_xticks([th["pooling_existence"], th["full_orders_unique_sufficient"], th["high_cost_ceiling"]])
-    top.set_xticklabels([r"$r_N$", r"$r_U$", r"$r_C$"], fontsize=9)
+    top.set_xticklabels(["no-trade existence\n" + r"$r_N$", "sufficient uniqueness\n" + r"$r_U$",
+                        "preparation ceiling\n" + r"$r_C$"], fontsize=8)
     top.tick_params(length=3, color=MUTED)
     top.spines["top"].set_visible(False)
 
@@ -73,13 +122,16 @@ def figure2() -> Path:
         "asymmetric": (NAVY, DASHED, 1.6), "symmetric_interior": (GRAY, DOTTED, 2.0),
         "pure": (GRAY, SOLID, 1.2), "mixed": (GRAY, DASHED, 1.2),
     }
+    for branch in sorted({row["branch"] for row in acc} - series.keys()):
+        series[branch] = (GRAY, DASHED, 1.2)
     kept = {}
     for br, (col, ls, lw) in series.items():
         sub = [r for r in acc if r["branch"] == br]
         if not sub:
             continue
-        x, y = _broken_series(sub, "r", "E", 0.005)
+        x, y = _broken_series(sub, "r", "E", 0.005, nodes=nodes)
         a.plot(x, y, color=col, ls=ls, lw=lw, zorder=3 if br != "symmetric_interior" else 4)
+        a.scatter([float(r["r"]) for r in sub], [float(r["E"]) for r in sub], s=2, color=col, zorder=3)
         kept[br] = sub
     # certified equilibria: black markers with interval bars, kept even where the bars are tiny
     if certs:
@@ -99,7 +151,13 @@ def figure2() -> Path:
         x, y = _at(xs, ys, 2.5)
         label_line(a, x, y, "full orders", RUST, dx=0, dy=6, ha="center")
         x, y = _at(xs, ys, 3.72)
-        label_line(a, x, y, "full orders,\nno expensive entry", RUST, dx=0, dy=6, ha="center")
+        label_line(a, x, y, "full orders,\nno expensive entry", RUST, dx=0, dy=6, ha="right")
+        boundary = [r for r in kept["full_orders"] if abs(float(r["r"]) - th["high_cost_ceiling"]) < 1e-12]
+        if len(boundary) != 1 or abs(float(boundary[0]["E"]) - th["laplace_entry_left_limit"]) > 1e-8:
+            raise ValueError("Figure 2 requires the validated full-order equality outcome at the high-cost ceiling")
+        a.plot(float(boundary[0]["r"]), float(boundary[0]["E"]), "o", color=RUST, ms=4, zorder=6)
+        # The right-hand limit is the analytical baseline rho once expensive entry is infeasible.
+        a.plot(th["high_cost_ceiling"], float(BENCHMARK.rho), "o", color=RUST, mfc="white", ms=4, zorder=6)
     if "asymmetric" in kept:
         x, y = _at(*_broken_series(kept["asymmetric"], "r", "E", 0.005), 1.60)
         label_line(a, x, y, "asymmetric orders\n$(1,-v)$", NAVY, dx=0, dy=-14, ha="center", va="top")
@@ -108,7 +166,7 @@ def figure2() -> Path:
         x, y = _at(xs, ys, 1.834)
         label_line(a, x, y, "symmetric interior orders $(u,-u)$", GRAY, dx=6, dy=0, ha="left", va="center")
     if certs:
-        label_line(a, float(cx[1]), float(eU[1]), "certified equilibria", INK, dx=0, dy=9, ha="center", va="bottom")
+        label_line(a, float(cx[len(cx)//2]), float(eU[len(cx)//2]), "computer-assisted nodes", INK, dx=0, dy=9, ha="center", va="bottom")
     a.set_ylabel(r"total entry $\mathsf{E}$")
     a.set_ylim(0.12, 0.60)
     a.set_yticks([0.25, 0.35, 0.45, 0.55])
@@ -116,27 +174,53 @@ def figure2() -> Path:
            color=MUTED, linespacing=1.1)
     region_label(a, (th["full_orders_unique_sufficient"] + rmax) / 2, "full orders unique")
     if multi:
-        region_label(a, (min(multi) + max(multi)) / 2, "several\nequilibria")
+        region_label(a, (min(multi) + max(multi)) / 2, "multiplicity found\nsearch not exhaustive")
 
     # lower panel: order magnitudes along the informative branches
     if "pooling" in kept:
-        x, y = _broken_series(kept["pooling"], "r", "q_H", 0.005)
+        x, y = _broken_series(kept["pooling"], "r", "q_H", 0.005, nodes=nodes)
         b.plot(x, y, color=NAVY, ls=SOLID, lw=1.6, zorder=3)
         label_line(b, 1.30, 0.0, "no trade ($q=0$)", NAVY, dx=0, dy=5, ha="center")
     if "full_orders" in kept:
-        x, y = _broken_series(kept["full_orders"], "r", "q_H", 0.005)
+        x, y = _broken_series(kept["full_orders"], "r", "q_H", 0.005, nodes=nodes)
         b.plot(x, y, color=RUST, ls=SOLID, lw=1.6, zorder=3)
         label_line(b, 2.9, 1.0, "full orders ($v=1$)", RUST, dx=0, dy=5, ha="center")
     if "asymmetric" in kept:
-        xv, yv = _broken_series(kept["asymmetric"], "r", "v", 0.005, jump=0.2)
+        xv, yv = _broken_series(kept["asymmetric"], "r", "v", 0.005, jump=0.2, nodes=nodes)
         b.plot(xv, yv, color=NAVY, ls=DASHED, lw=1.6, zorder=3)
         x, y = _at(xv, yv, 1.60)
         label_line(b, x, y, "$v$, asymmetric", NAVY, dx=-8, dy=0, ha="right", va="center")
     if "symmetric_interior" in kept:
-        xu, yu = _broken_series(kept["symmetric_interior"], "r", "q_H", 0.005, jump=0.2)
+        xu, yu = _broken_series(kept["symmetric_interior"], "r", "q_H", 0.005, jump=0.2, nodes=nodes)
         b.plot(xu, yu, color=GRAY, ls=DOTTED, lw=2.0, zorder=3)
         x, y = _at(xu, yu, 1.80)
         label_line(b, x, y, "$u$, symmetric interior", GRAY, dx=8, dy=-2, ha="left", va="top")
+    for branch, sub in kept.items():
+        pure = [r for r in sub if r["q_H"] != "mixed"]
+        color = series[branch][0]
+        if branch in ("pooling", "full_orders", "symmetric_interior", "asymmetric"):
+            key = "v" if branch == "asymmetric" else "q_H"
+            b.scatter([float(r["r"]) for r in pure], [abs(float(r[key])) for r in pure], s=2, color=color, zorder=3)
+        else:
+            for key, marker in (("q_H", "^"), ("q_L", "v")):
+                b.scatter([float(r["r"]) for r in pure], [abs(float(r[key])) for r in pure], s=8, marker=marker, color=color, zorder=4)
+    mixed = [r for r in acc if r["q_H"] == "mixed"]
+    if mixed:
+        support_rows = read_csv("numerics/mixed_supports.csv")
+        for row in mixed:
+            color = series[row["branch"]][0]
+            a.scatter(float(row["r"]), float(row["E"]), s=22, marker="D", facecolors="white", edgecolors=color, zorder=6)
+            supports = [s for s in support_rows if s["accepted"] == "true"
+                        and s.get("continuation_id") == row["continuation_id"] and s.get("candidate_id") == row["candidate_id"]]
+            if not supports:
+                raise ValueError("Figure 2 mixed continuation has no identified support records")
+            for state, marker in (("H", "^"), ("L", "v")):
+                sub = [s for s in supports if s["state"] == state]
+                b.scatter([float(s["r"]) for s in sub], [abs(float(s["q"])) for s in sub],
+                          s=[8 + 16 * float(s["weight"]) for s in sub], marker=marker, color=color, zorder=4)
+        b.annotate("mixed supports", (float(mixed[-1]["r"]), max(abs(float(s["q"])) for s in supports)),
+                   xytext=(25, 20), textcoords="offset points", fontsize=8, color=GRAY,
+                   arrowprops={"arrowstyle": "-", "color": GRAY, "lw": 0.6})
     b.set_ylabel("order magnitude")
     b.set_ylim(-0.05, 1.12)
     b.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
@@ -151,6 +235,9 @@ def figure2() -> Path:
 
 def figure1() -> Path:
     rows = read_csv("figures_data/two_returns.csv")
+    for row in rows:
+        for key in ("r", "mu", "Delta_T", "B_r(mu)"):
+            _f(row[key])
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL_WIDTH, 2.9), constrained_layout=True)
     mus = sorted({r["mu"] for r in rows}, key=float)
     d = [r for r in rows if r["mu"] == mus[0]]
@@ -181,6 +268,19 @@ def figure1() -> Path:
 
 def figure3() -> Path:
     rows = read_csv("figures_data/posterior_tails.csv")
+    from numerics.params import BENCHMARK
+    for row in rows:
+        if Decimal(row["b"]) != Decimal(BENCHMARK.b):
+            raise ValueError("Figure 3 noise laws must share the declared scale")
+        if row["noise"] == "logistic":
+            if float(row["M_minus_tau"]) == 0:
+                if (row["x_star"] != "unattainable" or row["threshold_noise_sd"] != "unattainable"
+                        or Decimal(row["posterior_upper_tail_mass"]) != 0 or Decimal(row["E"]) != Decimal(BENCHMARK.rho)):
+                    raise ValueError("Figure 3 logistic endpoint must have zero tail mass and baseline preparation")
+            elif row["tau_label"] == "benchmark":
+                sd = float(row["b"]) * np.pi / np.sqrt(3)
+                if abs(float(row["threshold_noise_sd"]) - float(row["x_star"]) / sd) > 1e-9:
+                    raise ValueError("Figure 3 cutoff must be standardized by noise, not aggregate-flow, deviation")
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL_WIDTH, 2.9), constrained_layout=True)
     styles = {"Laplace": (NAVY, SOLID), "logistic": (RUST, DASHED)}
     for noise, (col, ls) in styles.items():
@@ -188,12 +288,13 @@ def figure3() -> Path:
         x = np.array([float(r["M_minus_tau"]) for r in sub])
         mass = np.array([float(r["posterior_upper_tail_mass"]) for r in sub])
         E = np.array([float(r["E"]) for r in sub])
-        interior = x > 0
-        a.plot(x[interior], mass[interior], color=col, ls=ls)
-        b.plot(x[interior], E[interior], color=col, ls=ls)
+        if not all(np.all(np.isfinite(v)) for v in (x, mass, E)):
+            raise ValueError("Figure 3 requires finite plotted coordinates")
+        a.plot(x, mass, color=col, ls=ls)
+        b.plot(x, E, color=col, ls=ls)
         end = [r for r in sub if float(r["M_minus_tau"]) == 0.0]
         if end:
-            mk = dict(marker="o", ms=5.5, color=col, mfc=col if noise == "Laplace" else "white", mew=1.4, ls="none", zorder=5)
+            mk = dict(marker="o", ms=5.5, color=col, mfc=col, mew=1.4, ls="none", zorder=5)
             a.plot([0.0], [float(end[0]["posterior_upper_tail_mass"])], **mk)
             b.plot([0.0], [float(end[0]["E"])], **mk)
         # direct labels away from the right end, where the two laws meet
@@ -221,7 +322,11 @@ def figure3() -> Path:
 
 
 def figure4() -> Path:
-    rows = [r for r in read_csv("figures_data/bargaining.csv") if r["eta"] != "1"]
+    rows = [r for r in read_csv("figures_data/bargaining.csv") if Decimal(r["eta"]) < 1]
+    if any(not np.isfinite(float(r[k])) or Decimal(r[k]) <= 0 for r in rows for k in ("G_H_eta", "G_L_eta")):
+        raise ValueError("Figure 4 log-profit panel requires positive finite profits on eta < 1")
+    for row in rows:
+        _f(row["Delta_eta"])
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL_WIDTH, 2.9), constrained_layout=True)
     strengths = sorted({r["r"] for r in rows}, key=float)
     styles = {strengths[0]: (NAVY, "weak"), strengths[1]: (RUST, "strong")}
@@ -255,7 +360,7 @@ def figure4() -> Path:
     a.set_ylim(0, 10.5)
     b.set_ylabel(r"challenger profit $G_{\theta,\eta}$")
     b.set_yscale("log")
-    b.set_ylim(3e-3, 60)
+    b.set_ylim(0.8 * min(float(r[k]) for r in rows for k in ("G_H_eta", "G_L_eta")), 60)
     panel_label(a, "(a)")
     panel_label(b, "(b)")
     out = FIG / "bargaining_weight.pdf"

@@ -23,7 +23,7 @@ import numpy as np
 
 from .auction import AuctionPayoffs
 from .deviations import dU, deviation_scan, F
-from .information import OrderProfile
+from .information import OrderProfile, entry_at_posterior
 from .noise import pdf, posterior_bounds, survival
 from .params import Controls, CostLaw, Noise, Primitives
 from .quadrature import integrate_segments, segments
@@ -207,9 +207,11 @@ def continuation_identity(parameter_set: str, institution: str, information: str
     """
     atoms = sorted((a for a in info.atoms if a.probability > controls.probability_acceptance), key=lambda a: a.atom_value)
     atom_s = ";".join(f"{a.kind}@{_fmt_tol(a.atom_value, ATOM_IDENTITY_TOL)}:mH={_fmt_tol(a.mass_H, ATOM_IDENTITY_TOL)}:"
-                      f"mL={_fmt_tol(a.mass_L, ATOM_IDENTITY_TOL)}" for a in atoms) or "none"
+                      f"mL={_fmt_tol(a.mass_L, ATOM_IDENTITY_TOL)}:mu={_fmt_tol(a.posterior, ATOM_IDENTITY_TOL)}:"
+                      f"preimage={tuple((_fmt_tol(lo, ORDER_IDENTITY_TOL), _fmt_tol(hi, ORDER_IDENTITY_TOL)) for lo, hi in a.preimage)}" for a in atoms) or "none"
     return "|".join([f"ps[{parameter_set}]", f"inst[{institution}]", f"info[{information}]", f"tie[{tie_rule}]",
-                     canonical_strategy(profile), f"price[{pricing.rule_family}]", f"atoms[{atom_s}]", f"prep[{prep.definition()}]"])
+                     canonical_strategy(profile), f"price[{pricing.rule_family}:{pricing.positive_entry_price_map}]", f"atoms[{atom_s}]", f"prep[{prep.definition()}]",
+                     f"posterior[{info.posterior_map}]"])
 
 
 def orders_only_key(cont: Continuation) -> str:
@@ -235,7 +237,12 @@ def _same_atoms(a: PriceInformation, b: PriceInformation, controls: Controls) ->
         return False
     for x, y in zip(fa, fb):
         if x.kind != y.kind or abs(x.atom_value - y.atom_value) > ATOM_IDENTITY_TOL or abs(x.mass_H - y.mass_H) > ATOM_IDENTITY_TOL \
-                or abs(x.mass_L - y.mass_L) > ATOM_IDENTITY_TOL:
+                or abs(x.mass_L - y.mass_L) > ATOM_IDENTITY_TOL or abs(x.posterior - y.posterior) > ATOM_IDENTITY_TOL:
+            return False
+        if len(x.preimage) != len(y.preimage):
+            return False
+        if any(u != v and (not np.isfinite(u) or not np.isfinite(v) or abs(u - v) > ORDER_IDENTITY_TOL)
+               for ix, iy in zip(x.preimage, y.preimage) for u, v in zip(ix, iy)):
             return False
     return True
 
@@ -247,6 +254,8 @@ def economically_equivalent(a: Continuation, b: Continuation, controls: Controls
             and a.information_structure_id == b.information_structure_id and a.tie_rule_id == b.tie_rule_id
             and _same_profile(a.investor_strategy, b.investor_strategy)
             and a.pricing_rule.rule_family == b.pricing_rule.rule_family
+            and a.pricing_rule.positive_entry_price_map == b.pricing_rule.positive_entry_price_map
+            and a.price_information.posterior_map == b.price_information.posterior_map
             and a.preparation_rule.definition() == b.preparation_rule.definition()
             and _same_atoms(a.price_information, b.price_information, controls))
 
@@ -736,6 +745,112 @@ def continuation_row(c: Continuation) -> dict:
 # ---------------------------------------------------------------------------------------------
 # adapter: existing Schedule + Validation (validation.validate) -> Continuation
 # ---------------------------------------------------------------------------------------------
+def _interval_point(lo: float, hi: float, scale: float) -> float:
+    if not np.isfinite(lo):
+        return hi - scale if np.isfinite(hi) else 0.0
+    return lo + scale if not np.isfinite(hi) else (lo + hi) / 2
+
+
+def _interval_mass(sched, preimage: Sequence[tuple[float, float]], state: str) -> float:
+    qs, ws = (sched.profile.q_H, sched.profile.w_H) if state == "H" else (sched.profile.q_L, sched.profile.w_L)
+    def tail(x: float, q: float) -> float:
+        if x == -np.inf:
+            return 1.0
+        if x == np.inf:
+            return 0.0
+        return float(survival(sched.prim.noise, x - q, sched.prim.fb))
+    return sum(w * (tail(lo, q) - tail(hi, q)) for lo, hi in preimage for q, w in zip(qs, ws) if w > 0)
+
+
+def schedule_price_atoms(sched, controls: Controls) -> tuple[tuple[PriceAtom, ...], tuple[str, ...], float]:
+    """Find full constant-price preimages on the candidate's threshold/support partition.
+
+    Between consecutive Laplace supports, the posterior is a ratio of two
+    linear combinations of exp(x/b) and exp(-x/b). Its derivative has constant
+    sign, so its flat pieces and the schedule's threshold crossings suffice.
+    Nonmonotone candidates can have unions of intervals at the same price.
+    """
+    prim, pay = sched.prim, sched.pay
+    pi = float(Decimal(prim.fundamental_prior_H))
+    edges = [-np.inf, *sorted(set(sched.breakpoints) | set(sched.profile.supports)), np.inf]
+    groups: list[tuple[float, list[tuple[float, float]], list[float]]] = []
+    breaches = []
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        x = _interval_point(lo, hi, prim.fb)
+        entry = float(sched.entry(np.array([x]))[0])
+        constant_mu = False
+        if prim.noise == Noise.LAPLACE:
+            coefficients = []
+            for qs, ws in ((sched.profile.q_H, sched.profile.w_H), (sched.profile.q_L, sched.profile.w_L)):
+                coefficients.append((sum(w * np.exp((q - x) / prim.fb) for q, w in zip(qs, ws) if q <= x),
+                                     sum(w * np.exp((x - q) / prim.fb) for q, w in zip(qs, ws) if q > x)))
+            (hl, hr), (ll, lr) = coefficients
+            constant_mu = abs(hl * lr - hr * ll) <= 1e-14 * (hl + hr) * (ll + lr)
+        else:
+            constant_mu = sched.profile.q_H == sched.profile.q_L and sched.profile.w_H == sched.profile.w_L
+        constant = entry == 0 or constant_mu or (pay.Delta_T == 0 and (prim.cost_law == CostLaw.ATOMS or sched.regime == "price_hidden"))
+        if not constant:
+            continue
+        price = float(sched.price(np.array([x]))[0])
+        for value, intervals, entries in groups:
+            if abs(value - price) <= 1e-13:
+                if intervals[-1][1] == lo:
+                    intervals[-1] = (intervals[-1][0], hi)
+                else:
+                    intervals.append((lo, hi))
+                entries.append(entry)
+                break
+        else:
+            groups.append((price, [(lo, hi)], [entry]))
+    atoms = []
+    belief_error = 0.0
+    for price, intervals, entries in groups:
+        mH, mL = (_interval_mass(sched, intervals, state) for state in "HL")
+        probability = pi * mH + (1 - pi) * mL
+        if probability <= controls.probability_acceptance:
+            continue
+        posterior = pi * mH / probability
+        for state, mass in (("H", mH), ("L", mL)):
+            def density_on_atom(x, state=state):
+                inside = np.zeros_like(x, dtype=bool)
+                for lo, hi in intervals:
+                    inside |= (x >= lo) & (x < hi)
+                return sched.profile.a(prim.noise, prim.fb, x, state) * inside
+            mass_error = abs(_flow_integral(sched, density_on_atom) - mass)
+            belief_error = max(belief_error, mass_error)
+            if mass_error > controls.probability_acceptance:
+                breaches.append(f"price_atom_mass_{state}_error={mass_error:.3e}")
+        kind = "no_entry_pool" if max(entries) == 0 else "positive_entry_plateau"
+        atom = PriceAtom(price, tuple(intervals), mH, mL, probability, posterior, kind)
+        atoms.append(atom)
+        buyer_mu = pi if sched.regime == "price_hidden" else posterior
+        optimal_entry = float(entry_at_posterior(prim, pay, np.array([buyer_mu]))[0])
+        # Exact floor/ceiling events prescribe entry at equality independently
+        # of the final binary rounding of the declared event value.
+        if sched.tie_at_floor and abs(pay.B(buyer_mu) - prim.fc_L) <= controls.entry_optimality_acceptance:
+            optimal_entry = max(optimal_entry, prim.frho)
+        if sched.tie_at_ceiling and abs(pay.B(buyer_mu) - prim.fc_H) <= controls.entry_optimality_acceptance:
+            optimal_entry = 1.0
+        if max(abs(entry - optimal_entry) for entry in entries) > controls.probability_acceptance:
+            breaches.append(f"price_atom_preparation_inconsistent:P={price:.12g},mu={posterior:.12g}")
+        # Conditional price on an atom must also equal the atom-conditioned
+        # target payoff. This catches collisions with different entry rules.
+        expected_price = pay.t_0 + optimal_entry * (pay.w_L + pay.Delta_T * posterior) + sched.dividend
+        if abs(price - expected_price) > controls.price_identity_acceptance:
+            breaches.append(f"price_atom_pricing_error={abs(price - expected_price):.3e}")
+        if not all(np.isfinite(v) for v in (price, mH, mL, probability, posterior)):
+            breaches.append("price_atom_nonfinite")
+        if sched.regime == "feedback" and kind != "no_entry_pool":
+            for lo, hi in intervals:
+                mu = float(sched.mu(np.array([_interval_point(lo, hi, prim.fb)]))[0])
+                # A constant terminal payoff need not reveal the flow posterior.
+                if pay.Delta_T != 0:
+                    belief_error = max(belief_error, abs(mu - posterior))
+    if belief_error > controls.probability_acceptance:
+        breaches.append(f"price_atom_belief_error={belief_error:.3e}")
+    return tuple(sorted(atoms, key=lambda atom: atom.atom_value)), tuple(breaches), belief_error
+
+
 def continuation_from_schedule(sched, val, *, candidate_id: str, parameter_set: str, information: str, controls: Controls,
                                branch: str, result_status: str, existence_scope: str, uniqueness_scope: str,
                                search_coverage_scope: str, run_id: str, event_id: str = NA, event_relation: str = NA,
@@ -744,40 +859,47 @@ def continuation_from_schedule(sched, val, *, candidate_id: str, parameter_set: 
     prim, pay = sched.prim, sched.pay
     pi = float(Decimal(prim.fundamental_prior_H))
     o = val.outcome
-    pool_mass = float(getattr(val, "no_entry_price_mass", 0.0) or 0.0)
-    pool_mu = float(getattr(val, "posterior_in_no_entry_pool", float("nan")))
-    atoms = []
-    pool_sets: tuple[tuple[str, str], ...] = ()
+    atoms, atom_breaches, atom_belief_error = schedule_price_atoms(sched, controls)
+    pool_sets = tuple((str(lo), str(hi)) for atom in atoms if atom.kind == "no_entry_pool" for lo, hi in atom.preimage)
     family = "benchmark_inversion"
-    cutoff_exact = NA
-    if sched.regime == "price_hidden":
-        family = "price_hidden_constant"
-    elif sched.profile.is_pure and sched.profile.q_H[0] == sched.profile.q_L[0]:
+    if len(atoms) == 1 and atoms[0].preimage == ((-np.inf, np.inf),):
         family = "constant_price"
-    if pool_mass > controls.probability_acceptance and not np.isnan(pool_mu):
-        family = "lower_cutoff_pool" if family == "benchmark_inversion" else family
-        # convenient construction: the pool is the zero-entry preimage {x : H_C(B(mu_X(x))) = 0}
-        xs = np.linspace(-60.0 * prim.fb + sched.hull()[0], 60.0 * prim.fb + sched.hull()[1], 200001)
-        e = sched.entry(xs)
-        zero = xs[e <= 0]
-        c_num = float(zero.max()) if len(zero) else float("nan")
-        mH = 2 * pool_mass * pool_mu
-        mL = 2 * pool_mass * (1 - pool_mu)
-        atoms.append(PriceAtom(pay.t_0 + sched.dividend, ((-np.inf, c_num),), mH, mL, pool_mass, pool_mu, "no_entry_pool"))
-        pool_sets = ((NEG_INF, f"x:B(mu_X(x))=c_L (numerically {c_num:.12g})"),)
-        cutoff_exact = "x:B_r(mu_X(x))=c_L (benchmark construction: pool = zero-entry preimage)"
-    pricing = PricingRule(family, pool_sets, cutoff_exact, NA if cutoff_exact == NA else "see pool_set_definition",
-                          "P(x)=t_0+H_C(B(mu_X(x)))[w_L+Delta_T mu_X(x)]", ())
-    xs_e = np.linspace(sched.hull()[0] - 3 * prim.fb, sched.hull()[1] + 3 * prim.fb, 4001)
-    e_grid = sched.entry(xs_e)
-    positive_entry_exists = bool(np.max(e_grid) > 0)
-    m_, M_ = posterior_bounds(prim.fb)
-    high_enters_somewhere = bool(positive_entry_exists and (np.max(e_grid) > prim.frho + 1e-12 or getattr(sched, "tie_at_ceiling", False)))
-    prep = PreparationRule("cost_threshold_at_price_information",
-                           (("zero_entry_pool", "c_L", False), ("zero_entry_pool", "c_H", False),
-                            ("positive_entry_price", "c_L", positive_entry_exists),
-                            ("positive_entry_price", "c_H", high_enters_somewhere)))
-    info = PriceInformation(tuple(atoms), "mu = P^{-1}(P) on positive-entry prices (strictly increasing in mu)", float(val.posterior_inversion_error))
+    elif pool_sets:
+        family = "lower_cutoff_pool" if len(pool_sets) == 1 and pool_sets[0][0] == NEG_INF else "interval_union_pool"
+    if sched.regime == "price_hidden":
+        family = "price_hidden_flow_pricing"
+    cutoff_exact = "x:B_r(mu_X(x))=c_min; endpoints solved from schedule threshold equations" if pool_sets else NA
+    cutoff_decimal = pool_sets[0][1] if family == "lower_cutoff_pool" else NA
+    entry_map = "H_C(B(prior))" if sched.regime == "price_hidden" else "H_C(B(mu_X(x)))"
+    pricing = PricingRule(family, pool_sets, cutoff_exact, cutoff_decimal,
+                          f"P(x)=t_0+{entry_map}[w_L+Delta_T mu_X(x)]+{sched.dividend!r}", ())
+    actions = []
+    # Each region is a condition on the observed-price posterior. Unlike an
+    # 'enters somewhere' flag, this records both actions at a cost threshold.
+    for lab, cost in (("c_L", prim.fc_L), ("c_H", prim.fc_H)):
+        actions.extend(((f"nonatom_price:B(mu_P)>={cost!r}", lab, True),
+                        (f"nonatom_price:B(mu_P)<{cost!r}", lab, False)))
+    if prim.cost_law != CostLaw.ATOMS:
+        actions = [("nonatom_price:C<=B(mu_P)", "C in declared cost support", True),
+                   ("nonatom_price:C>B(mu_P)", "C in declared cost support", False)]
+    for atom_index, atom in enumerate(atoms):
+        mu_buyer = pi if sched.regime == "price_hidden" else atom.posterior
+        region = f"price_atom[{atom_index}]"
+        if prim.cost_law == CostLaw.ATOMS:
+            for lab, cost in _cost_labels(prim):
+                enters = bool(pay.B(mu_buyer) >= cost)
+                if sched.tie_at_floor and lab == "c_L":
+                    enters = True
+                if sched.tie_at_ceiling and lab == "c_H" and atom.preimage[-1][1] == np.inf:
+                    enters = True
+                actions.append((region, lab, enters))
+        else:
+            actions.extend(((region + ":C<=B(mu_P)", "C in declared cost support", True),
+                            (region + ":C>B(mu_P)", "C in declared cost support", False)))
+    prep = PreparationRule("cost_threshold_at_price_information", tuple(actions))
+    posterior_map = ("buyer posterior=prior; financial price conditions on flow" if sched.regime == "price_hidden" else
+                     "mu_P=pooled Bayes posterior on each atom; invert P(mu) on nonatom positive-entry prices")
+    info = PriceInformation(atoms, posterior_map, float(val.posterior_inversion_error))
     identity = continuation_identity(parameter_set, INSTITUTION_RESERVE_AUCTION, information, TIE_RULE, sched.profile, pricing, prep, info, controls)
     h, ell, p, r = prim.fh, prim.fell, pay.p, pay.r
     if outcome_extra is None:
@@ -786,12 +908,15 @@ def continuation_from_schedule(sched, val, *, candidate_id: str, parameter_set: 
         pr_R = max(0.0, 1.0 - p / r) if p <= r else 0.0
         C2 = pr_R * A
         outcome_extra = ContinuationOutcome(o.e_H, o.e_L, o.E, A, pr_R + A - C2, C2, pi * o.e_H * admit_H * min(h / r, 1.0), o.R_T, o.mean_price)
-    upper = 0.0 if result_status.startswith("analytical") and val.accepted else None
-    ev = ValidationEvidence(val.epsilon_P, float(val.posterior_inversion_error), val.epsilon_e, max(val.epsilon_q, val.epsilon_q_refined),
+    upper = 0.0 if result_status.startswith("analytical") and val.accepted and not atom_breaches else None
+    ev = ValidationEvidence(val.epsilon_P, max(float(val.posterior_inversion_error), atom_belief_error), val.epsilon_e, max(val.epsilon_q, val.epsilon_q_refined),
                             upper, val.quadrature_error + val.tail_bound,
-                            "deviation scans on declared and refined order grids over [-1, 1]", "flow- and cost-based entry integrations agree",
-                            tuple(val.breaches))
+                            "deviation scans on declared and refined order grids over [-1, 1] against the fixed schedule",
+                            "flow- and cost-based entry integrations agree; atom state masses: analytic tails versus segment quadrature",
+                            tuple(val.breaches) + atom_breaches)
+    if not ev.accepted:
+        result_status, existence_scope, uniqueness_scope = "rejected", "none (rejected)", "not established"
     return Continuation(candidate_id, identity, parameter_set, INSTITUTION_RESERVE_AUCTION, information, TIE_RULE, sched.profile, pricing, info,
                         prep, outcome_extra, ev, result_status, existence_scope, uniqueness_scope, search_coverage_scope,
                         "benchmark construction only (pool = zero-entry preimage of the cost threshold); alternative cutoffs not scanned at this node",
-                        False, event_id, event_relation, "" if val.accepted else "; ".join(val.breaches), unresolved_reason, run_id, branch)
+                        False, event_id, event_relation, "; ".join(ev.breaches), unresolved_reason, run_id, branch)

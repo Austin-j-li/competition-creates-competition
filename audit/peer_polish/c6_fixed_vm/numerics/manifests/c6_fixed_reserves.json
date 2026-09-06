@@ -1,0 +1,193 @@
+{
+ "exercise": "c6_fixed_reserves",
+ "timestamp_utc": "2026-09-05T23:29:29.118764+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "epsilon_V": "0.05",
+  "declared": {
+   "binary": [
+    "0.5",
+    "1.01"
+   ],
+   "uniform_classes": [
+    "0.5",
+    "1.1"
+   ]
+  },
+  "strengths": {
+   "r_weak": "1.2",
+   "r_strong": "3"
+  },
+  "run_id": "c6_20260905T232927286058Z",
+  "workers": 8,
+  "attempt_ledger": "audit/peer_polish/c6_20260905T232927286058Z",
+  "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8",
+  "quick": false,
+  "declared_only": true
+ },
+ "method": "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates (pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold. Exact events are classified algebraically at 50 digits with the tie rule; accepted candidates are merged only by the continuation identity (complete strategies plus price information); counts come from the attempt ledger.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
+ },
+ "outputs": {
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c6_fixed_vm/tables/reserve_comparisons.csv": "19ef67b7e0f72d4b8defba2aad1959bfe70d002d0881368b9cbb267d98d5213e",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c6_fixed_vm/numerics/reserve_fixed_continuations.csv": "dbbfddc07b3c7248f8209d3d21135a425afce3bf79fd0fe3e6403fbaf19ca36e",
+  "/home/uctpiaj/work/competition-creates-competition/audit/peer_polish/c6_fixed_vm/numerics/reserve_fixed_ranges.csv": "e3eb93440ac0c5142a3e50889c8d33c3dd83f5794af794ca3020cd1c4d3125d8"
+ },
+ "checks": {
+  "declared_binary_r1.2_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_binary_r1.2_p1.01": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 0.0,
+   "pass": true
+  },
+  "declared_binary_r3_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 0.0,
+   "pass": true
+  },
+  "declared_binary_r3_p1.01": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 2.220446049250313e-16,
+   "pass": true
+  },
+  "declared_uniform_classes_r1.2_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r1.2_p1.1": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r3_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r3_p1.1": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 4.440892098500626e-16,
+   "pass": true
+  },
+  "revenue_comparison_binary_r1.2": {
+   "R_T_original": 0.3927083333333333,
+   "R_T_alternative": 0.45275611101035046,
+   "alternative_higher": true,
+   "E_original": 0.25000000000000006,
+   "E_alternative": 0.5435728333758433
+  },
+  "revenue_comparison_binary_r3": {
+   "R_T_original": 0.8723920450946406,
+   "R_T_alternative": 0.9874865842421138,
+   "alternative_higher": true,
+   "E_original": 0.5227572972597381,
+   "E_alternative": 0.513372798985137
+  },
+  "revenue_comparison_uniform_classes_r1.2": {
+   "R_T_original": 0.3926649305555555,
+   "R_T_alternative": 0.43217263192739963,
+   "alternative_higher": true,
+   "E_original": 0.25000000000000006,
+   "E_alternative": 0.5403091180516092
+  },
+  "revenue_comparison_uniform_classes_r3": {
+   "R_T_original": 0.8723672029559061,
+   "R_T_alternative": 1.01449970228611,
+   "alternative_higher": true,
+   "E_original": 0.5227602449522809,
+   "E_alternative": 0.5116375544805927
+  },
+  "payoff_oracle": {
+   "max_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "sweep": {
+   "nodes_attempted": 8,
+   "initial_nodes": 8,
+   "refined_nodes": 0,
+   "refinement_planned_nodes": 1106,
+   "refinement_intervals": [
+    [
+     "binary",
+     "1.2",
+     "0.5",
+     "1.01",
+     "branch change; revenue maximum"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "0.5",
+     "1.1",
+     "branch change; revenue maximum"
+    ],
+    [
+     "binary",
+     "3",
+     "0.5",
+     "1.01",
+     "revenue maximum"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "0.5",
+     "1.1",
+     "revenue maximum"
+    ]
+   ],
+   "refinement_skipped_nodes": 0,
+   "event_nodes": 0,
+   "candidates_evaluated": 14,
+   "candidates_rejected": 6,
+   "candidates_unresolved": 0,
+   "duplicates_merged": 0,
+   "unresolved_nodes": 0,
+   "nodes_without_accepted_continuation": 0,
+   "nodes_analytically_unique": 8,
+   "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"
+  }
+ },
+ "passed": true,
+ "notes": []
+}

@@ -1,6 +1,6 @@
 {
  "exercise": "c2_correspondence",
- "timestamp_utc": "2026-09-05T15:39:54.529837+00:00",
+ "timestamp_utc": "2026-09-05T23:59:35.310946+00:00",
  "inputs": {
   "benchmark": {
    "h": "10",
@@ -43,10 +43,62 @@
     "0.90333201"
    ]
   ],
-  "grid_size": 581,
-  "quick": false
+  "grid_size": 580,
+  "quick": false,
+  "nodes": null,
+  "runtime_seconds": 822.5863503290166,
+  "workers": 20,
+  "thread_limits": {
+   "OPENBLAS_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1",
+   "MKL_NUM_THREADS": "1",
+   "NUMEXPR_NUM_THREADS": "1"
+  },
+  "mixed_iterations": 120,
+  "mixed_meshes": [
+   0.05,
+   0.025
+  ],
+  "pure_inits": [
+   [
+    0.2,
+    0.2
+   ],
+   [
+    0.2,
+    0.6
+   ],
+   [
+    0.2,
+    0.95
+   ],
+   [
+    0.6,
+    0.2
+   ],
+   [
+    0.6,
+    0.6
+   ],
+   [
+    0.6,
+    0.95
+   ],
+   [
+    0.95,
+    0.2
+   ],
+   [
+    0.95,
+    0.6
+   ],
+   [
+    0.95,
+    0.95
+   ]
+  ]
  },
- "method": "Exact boundaries from Proposition 3 with residual checks; interval certificates per Appendix B (mpmath iv, exact antiderivatives, uniform high-type cover over the root bracket, mesh 200 and 400); at each strength node pooling, full-order, asymmetric (1,-v) roots by sign-change bracketing plus |Psi| minimization, pure (u,-v) best-response fixed points from 9 initializations, and finite-support mixed search on meshes 0.05 and 0.025; every candidate validated independently; refinement to 0.001 where accepted branch sets change. Post-processing: relabelled 26 pure fixed points by profile type (q_H = 1 -> asymmetric; q_H = -q_L -> symmetric_interior); tangency rows with |Psi| minimum >= 0.0001 reclassified from open to rejected (resolved non-roots); node r_C = 3.592658518794662 re-solved with tau = M treated symbolically (tie rule admits the whole upper plateau)",
+ "method": "Exact boundaries from Proposition 3 with residual checks; interval certificates per Appendix B (mpmath iv, exact antiderivatives, uniform high-type cover over the root bracket, mesh 200 and 400); at each strength node pooling, full-order, asymmetric (1,-v) roots by sign-change bracketing plus |Psi| minimisation with a 41-point sub-mesh of each tangency bracket, pure (u,-v) best-response fixed points from 9 initialisations, and finite-support mixed search (3 documented starts per mesh, meshes 0.05 and 0.025, replicator budget then the support indifference/simplex system); every candidate validated independently with a per-row error budget; deduplication by continuation identity; refinement to 0.001 where accepted branch sets change.",
  "tolerances": {
   "quadrature_absolute_target": 1e-11,
   "quadrature_relative_target": 1e-11,
@@ -68,13 +120,15 @@
   "numpy": "2.5.2",
   "scipy": "1.18.1",
   "mpmath": "1.4.1",
-  "platform": "macOS-26.5.2-arm64-arm-64bit"
+  "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
  },
  "outputs": {
+  "numerics/correspondence.csv": "db420043887539fee4a87e8a977378d97ff29a596e062fc50e4bcf69e34ed870",
+  "numerics/correspondence_attempts.csv": "e3fef5fb3d1b23f0ee1b46536f87bc7d341f7c0f674545edaccacb09df4d3da8",
+  "numerics/mixed_supports.csv": "145c859502d2c72da08cbc7ead14a4963e18867a9e918b37ec9a4e6d9081d66f",
+  "numerics/mixed_search_attempts.csv": "103aa65ffc62eb8ee69b8363509d38945c08c6a0207c916a908bedad0803f278",
   "numerics/thresholds.csv": "7483ca9d8c286dc2516296d5e0204564e67019259155830f2d88ca50f489314a",
-  "numerics/certificates.csv": "a1057225886f42fdbf6b220b7e6792f2e4da226a015059a5788597764ced97fa",
-  "numerics/correspondence.csv": "77d46012372d7fc5607e358760be3ac34a441243b643c6c507bee093c17ca97a",
-  "numerics/mixed_supports.csv": "c709f2c3eab421bbd3edc14ca5c0239cbb760d5c2aeafcabdf4b3b114ae13c01"
+  "numerics/certificates.csv": "a1057225886f42fdbf6b220b7e6792f2e4da226a015059a5788597764ced97fa"
  },
  "checks": {
   "threshold_pooling_unique_sufficient": {
@@ -98,6 +152,7 @@
    "pass": true
   },
   "certificate_1.55": {
+   "pass": true,
    "accepted": true,
    "predicates": {
     "psi_left_positive": true,
@@ -115,6 +170,7 @@
    "Gamma_H_lower_refined": 0.00022864750014175018
   },
   "certificate_1.60": {
+   "pass": true,
    "accepted": true,
    "predicates": {
     "psi_left_positive": true,
@@ -132,6 +188,7 @@
    "Gamma_H_lower_refined": 0.0029289761054800915
   },
   "certificate_1.65": {
+   "pass": true,
    "accepted": true,
    "predicates": {
     "psi_left_positive": true,
@@ -152,16 +209,13 @@
    "pass": true
   },
   "correspondence": {
-   "nodes": 597,
-   "refined_nodes": 16,
+   "nodes": 592,
+   "grid_nodes": 580,
+   "refined_nodes": 12,
    "refinement_pairs": [
     [
      "1.505",
      "1.51"
-    ],
-    [
-     "1.51",
-     "1.515"
     ],
     [
      "1.675",
@@ -173,14 +227,29 @@
     ]
    ],
    "refinement_rule": "adjacent grid nodes whose accepted branch sets differ are refined to spacing 0.001",
-   "open_rows": 23,
-   "nodes_with_multiplicity": 85,
+   "node_keys_canonical": true,
+   "attempt_rows": 6000,
+   "distinct_rows": 1841,
+   "duplicate_attempts": 4159,
+   "open_rows": 40,
+   "open_rows_by_branch": {
+    "asymmetric": 0,
+    "asymmetric_discontinuity": 0,
+    "asymmetric_tangency": 0,
+    "full_orders": 0,
+    "mixed": 0,
+    "mixed_search": 19,
+    "pooling": 0,
+    "pure_search": 21,
+    "symmetric_interior": 0
+   },
+   "no_candidate_rows": 545,
+   "rejected_rows": 581,
+   "nodes_with_multiplicity": 80,
    "asymmetric_accepted_nodes": [
+    "1.508",
+    "1.509",
     "1.51",
-    "1.511",
-    "1.512",
-    "1.513",
-    "1.514",
     "1.515",
     "1.52",
     "1.525",
@@ -198,7 +267,6 @@
     "1.585",
     "1.59",
     "1.595",
-    "1.60",
     "1.6",
     "1.605",
     "1.61",
@@ -216,14 +284,50 @@
     "1.67",
     "1.675",
     "1.676",
-    "1.677"
+    "1.677",
+    "1.678",
+    "1.679"
    ],
    "accepted_branch_labels": [
     "asymmetric",
     "full_orders",
+    "mixed",
     "pooling",
     "symmetric_interior"
-   ]
+   ],
+   "error_budget_breached_rows": 0,
+   "mixed_attempt_outcomes": {
+    "converged-candidate": 1,
+    "converged-pure": 3510,
+    "unresolved": 41
+   },
+   "mixed_nodes_unresolved": [
+    "1.7479775382679625",
+    "1.7488775382679625",
+    "1.75",
+    "1.755",
+    "1.76",
+    "1.765",
+    "1.77",
+    "1.775",
+    "1.78",
+    "1.785",
+    "1.79",
+    "1.795",
+    "1.8",
+    "1.805",
+    "1.81",
+    "1.815",
+    "1.83",
+    "1.831",
+    "1.832"
+   ],
+   "mixed_candidates_accepted": 1
+  },
+  "error_budget": {
+   "pass": true,
+   "rule": "quadrature |GL48-GL24| <= 1e-11 on the declared scan; refined |GL64-GL32| <= 1e-12 on 800 intervals; tail truncation bound <= 1e-11; a breached target rejects the row (never loosened)",
+   "breached_candidates": []
   },
   "declared_node_1.2": {
    "accepted_branches": [
@@ -247,18 +351,27 @@
    "pass": true,
    "v": [
     0.460316190847
+   ],
+   "status": [
+    "computer-assisted"
    ]
   },
   "certified_node_root_in_bracket_1.60": {
    "pass": true,
    "v": [
     0.707475380096
+   ],
+   "status": [
+    "computer-assisted"
    ]
   },
   "certified_node_root_in_bracket_1.65": {
    "pass": true,
    "v": [
     0.903331992461
+   ],
+   "status": [
+    "computer-assisted"
    ]
   },
   "r_C_node_tie_rule": {
@@ -267,14 +380,62 @@
    ],
    "pass": true,
    "E_full_orders": [
-    "0.5064773952196456"
+    0.5064773952196455
    ]
   }
  },
  "passed": true,
  "notes": [
-  "relabelled 26 pure fixed points by profile type (q_H = 1 -> asymmetric; q_H = -q_L -> symmetric_interior)",
-  "tangency rows with |Psi| minimum >= 0.0001 reclassified from open to rejected (resolved non-roots)",
-  "node r_C = 3.592658518794662 re-solved with tau = M treated symbolically (tie rule admits the whole upper plateau)"
- ]
+  "Node keys are canonical exact decimals (Decimal.normalize); the certificate label 1.60 and the mesh node 1.6 are one node.",
+  "Candidates are deduplicated by complete continuation identity (orders, pricing family, price atoms, preparation rule); raw attempts, including duplicates, are in correspondence_attempts.csv; multiplicity_found counts distinct accepted continuations.",
+  "Refinement rule for the quadrature targets: the x10 tightening is implemented by raising the Gauss-Legendre order 48 -> 64 and the order intervals 400 -> 800; the refined error estimate is compared with target/10 on every row.",
+  "No retries beyond the documented starts: 9 pure initialisations (40 damped iterations each) and 3 mixed starts per mesh (120 replicator iterations each, then the support indifference/simplex solve); mesh-pure outcomes are polished by both continuous best responses from that one profile for at most 40 iterations. Unconverged starts produce open rows.",
+  "Tangency rule: a local |Psi| minimum without sign change on the 41-point sub-mesh is open when within the numerical resolution (10 x quadrature error + tail bound, floor 1e-8) and 'no candidate' otherwise; the same rule is proposed for C.6.",
+  "Mixed-search outcomes are search records only; they never assert that mixed equilibria do not exist.",
+  "Interior pure fixed points are polished by the two held-schedule first-order conditions, then revalidated. A bounded 23-node replay removed a numerical duplicate at r=1.79; no identity or acceptance tolerance changed."
+ ],
+ "validation_replay": {
+  "method": "Full producer plus all 23 interior-pure nodes rerun after direct FOC polishing; unaffected node records retained byte-for-byte.",
+  "nodes": [
+   "1.7479775382679625",
+   "1.7488775382679625",
+   "1.75",
+   "1.755",
+   "1.76",
+   "1.765",
+   "1.77",
+   "1.775",
+   "1.78",
+   "1.785",
+   "1.79",
+   "1.795",
+   "1.8",
+   "1.805",
+   "1.81",
+   "1.815",
+   "1.82",
+   "1.825",
+   "1.83",
+   "1.831",
+   "1.832",
+   "1.833",
+   "1.834"
+  ],
+  "baseline_manifest": "audit/peer_polish/c2_full_before_interior_polish/c2_correspondence.json",
+  "patch_manifest": "audit/peer_polish/c2_interior_polish/c2_correspondence.json",
+  "baseline_hash": "6f4f1553f11c0936151d26ce067261bea0820346f820022dca6baf75e7df4985",
+  "patch_hash": "2f2df84a38ec5b5789fd29c9203fead45045f66d015db790a0da091a55a6f975",
+  "script": "audit/peer_polish/c2_merge_revalidation.py",
+  "additional_runtime_seconds": 91.51327440398745
+ },
+ "validated_source_hashes": {
+  "numerics/exercises/c2_correspondence.py": "58f52e3a380183929f8c1a4cda31f200d686fea2ad60d993ae42336f9f1d5c92",
+  "numerics/mixed_search.py": "37b9932c72f1f6b1ea9dafbf48a846e66cffdbe225ce1798901f218b22c17fc9",
+  "numerics/error_budget.py": "4eb6720c5436d9088995831aa0ac41129b531e722ad489b94912a4e8c7c5f56c",
+  "numerics/status_rules.py": "65b21ec259aeed3db3f6b65a5be95e1297e6493af87bd453fcfa60f0c352d5df",
+  "numerics/continuations.py": "8db4c0ccc882b720dc48354f7d2d6b0d5dfab9c4c0aa47bb22ed9c7ce5692b74",
+  "numerics/validation.py": "3b9a4280152893257cf25c6b6e09181de4c9c53325bd6e17f4e776b7a8988bc0",
+  "numerics/params.py": "9c95c25278a3fab6f5978311d7e592d36471755f84b305cad39ed493e350ac3a",
+  "numerics/search.py": "240415140e5aa0897d80b4b7b4cab9c10c528f16dee1827966da3a0ffd3a595f"
+ }
 }

@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import sys
-from concurrent.futures import ProcessPoolExecutor
+import json
+import os
+from datetime import datetime, timezone
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from decimal import Decimal
 from pathlib import Path
 
@@ -15,7 +18,8 @@ from numerics.auction import (payoffs_class_closed_form, payoffs_class_formula_O
 from numerics.continuations import (INFO_FEEDBACK_CLASS, INFO_FEEDBACK_STATE, NA, SCHEMA_COLUMNS, ContinuationOutcome,  # noqa: E402
                                     continuation_from_schedule, continuation_row, deduplicate, parameter_set_id)
 from numerics.information import OrderProfile, entry_at_posterior, make_schedule  # noqa: E402
-from numerics.io import write_csv, write_manifest  # noqa: E402
+from numerics.error_budget import BUDGET_COLUMNS, error_budget
+from numerics.io import ROOT, _json_default, write_csv, write_manifest  # noqa: E402
 from numerics.noise import posterior_bounds  # noqa: E402
 from numerics.params import BENCHMARK, BENCHMARK_EXTRA, BENCHMARK_STRENGTHS, CONTROLS, decimal_range  # noqa: E402
 from numerics.search import (Candidate, asymmetric_candidate, asymmetric_roots, full_order_candidate, mixed_support_search,  # noqa: E402
@@ -35,7 +39,7 @@ LEGACY_COLS = ["value_law", "r", "p", "branch", "q_H", "q_L", "E", "O_H", "R_T",
 # exact declaration or event tag when p is irrational, and the node classification columns record how each
 # inequality was decided (strict sign at 50 digits, declared equality event, or unresolved).
 CONT_COLS = LEGACY_COLS + ["p_exact", "regime", "band_status", "low_cost_floor_relation", "ceiling_relation", "duplicate_of", "identity_note"] + \
-    [c for c in SCHEMA_COLUMNS if c not in LEGACY_COLS]
+    [c for c in SCHEMA_COLUMNS + BUDGET_COLUMNS if c not in LEGACY_COLS]
 RANGE_COLS = ["value_law", "r", "p", "accepted_continuations_found", "E_min_found", "E_max_found", "R_T_min_found", "R_T_max_found",
               "search_unresolved", "global_envelope_certified", "p_exact", "event_id", "candidates_evaluated", "candidates_accepted_raw",
               "candidates_rejected", "candidates_unresolved", "duplicates_merged", "search_outcome"]
@@ -71,11 +75,17 @@ def _row(node: EventNode, branch: str, cand, val, existence: str, reason: str = 
          uniqueness: str = "not established", coverage: str = "") -> dict:
     """Legacy row plus the complete continuation record (candidate identity separate from economic identity)."""
     law, rs, ps = node.law, node.r, legacy_p(node)
+    budget = error_budget(val, cand.sched, CONTROLS, analytical_cover=existence.startswith("analytical"))
+    val.breaches.extend(b for b in budget.breaches if b not in val.breaches)
+    if existence == "rejected" and reason and reason not in val.breaches:
+        val.breaches.append(reason)
     o = val.outcome
     eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
     ps_id = parameter_set_id(PRIM, rs, node.p_exact, law, eps_V)
     info = INFO_FEEDBACK_CLASS if law == "uniform_classes" else INFO_FEEDBACK_STATE
     om = outcome_measures(PRIM, law, eps_V, float(rs), node.p_float, o.e_H, o.e_L)
+    if om["S_identity_error"] > TOL or not om["bounds_ok"]:
+        val.breaches.append(f"outcome identity: S error {om['S_identity_error']:.3e}, bounds_ok={om['bounds_ok']}")
     extra = ContinuationOutcome(o.e_H, o.e_L, o.E, om["A"], om["S"], om["C2"], om["O_H"], o.R_T, o.mean_price)
     unresolved = reason if (existence == "open") else ""
     status = existence if val.accepted else ("rejected" if not existence.startswith("open") else existence)
@@ -87,21 +97,20 @@ def _row(node: EventNode, branch: str, cand, val, existence: str, reason: str = 
                                       outcome_extra=extra, unresolved_reason=unresolved)
     row = {"value_law": law, "r": rs, "p": ps, "branch": branch,
            "q_H": cand.profile.q_H[0] if cand.profile.is_pure else "mixed", "q_L": cand.profile.q_L[0] if cand.profile.is_pure else "mixed",
-           "E": o.E, "O_H": o.O_H, "R_T": o.R_T, "no_entry_price_mass": val.no_entry_price_mass,
-           "posterior_in_no_entry_pool": val.posterior_in_no_entry_pool, "epsilon_P": val.epsilon_P, "epsilon_e": val.epsilon_e,
-           "epsilon_q": max(val.epsilon_q, val.epsilon_q_refined), "status": existence, "accepted": cont.accepted,
+           "E": o.E, "O_H": om["O_H"], "R_T": o.R_T, "no_entry_price_mass": val.no_entry_price_mass,
+           "posterior_in_no_entry_pool": val.posterior_in_no_entry_pool if np.isfinite(val.posterior_in_no_entry_pool) else NA, "epsilon_P": val.epsilon_P, "epsilon_e": val.epsilon_e,
+           "epsilon_q": max(val.epsilon_q, val.epsilon_q_refined), "status": status, "accepted": cont.accepted,
            "unresolved_reason": reason or ("" if val.accepted else "; ".join(val.breaches)),
            "p_exact": node.p_exact, "regime": cls["regime"], "band_status": cls["band_status"],
            "low_cost_floor_relation": cls["low_cost_floor_relation"], "ceiling_relation": cls["ceiling_relation"], "duplicate_of": "",
            "identity_note": ""}
     row.update({k_: v_ for k_, v_ in continuation_row(cont).items() if k_ not in row})
+    if not cont.accepted:
+        row["status"] = "open" if existence == "open" else "rejected"
+        row["unresolved_reason"] = reason or cont.rejection_reason
+    row.update(budget.row())
     row["_cont"] = cont
     row["_profile"] = cand.profile
-    if om["S_identity_error"] > TOL or not om["bounds_ok"]:
-        row["accepted"] = False
-        row["unresolved_reason"] = (row["unresolved_reason"] + "; " if row["unresolved_reason"] else "") + \
-            f"outcome identity: S error {om['S_identity_error']:.3e}, bounds_ok={om['bounds_ok']}"
-        row["rejection_reason"] = row["unresolved_reason"]
     return row
 
 
@@ -123,13 +132,37 @@ def node_from_args(args) -> EventNode:
     return EventNode(law, rs, ps, _dec30(ps), "grid", "declared reserve grid point (C.6)", True)
 
 
-def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
+def snap_endpoint(q: float) -> float:
+    """Propose an exact order boundary within solver tolerance, then revalidate its schedule."""
+    endpoint = min((-1.0, 0.0, 1.0), key=lambda e: abs(q - e))
+    return endpoint if abs(q - endpoint) <= 1e-7 else q
+
+
+def finalize_node(result: tuple[list[dict], dict, dict]) -> tuple[list[dict], dict, dict]:
+    """Separate rejected terminal profiles from unresolved searches, using recorded validation evidence."""
+    original_rows, original_range, original_diag = result
+    rows = [dict(row) for row in original_rows]
+    rng, diag = dict(original_range), dict(original_diag)
+    for row in rows:
+        if row["accepted"] is not True and row["result_status"] == "rejected" and row["rejection_reason"]:
+            row["status"] = "rejected"
+    open_solver_attempts = int(rng["candidates_evaluated"]) - len(rows)
+    rng["candidates_rejected"] = sum(row["accepted"] is not True and not row["status"].startswith("open") for row in rows)
+    rng["candidates_unresolved"] = open_solver_attempts + sum(row["status"].startswith("open") for row in rows)
+    diag["ledger"] = {**diag["ledger"], "rejected": rng["candidates_rejected"], "open": rng["candidates_unresolved"]}
+    # The separate search_unresolved flag and its diagnostic reasons are preserved.
+    return rows, rng, diag
+
+
+def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tuple[list[dict], dict, dict]:
     node = node_from_args(args)
     law, rs = node.law, node.r
     ps = legacy_p(node)
     r, p = float(rs), node.p_float
     eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
     pay, oracle_err = payoffs(law, r, p)
+    if not np.isfinite(oracle_err) or oracle_err > TOL:
+        raise ValueError(f"Payoff oracle failed at {node}: error={oracle_err}")
     ab = analytic_bounds(pay)
     cls = classify_node(PRIM, node, eps_V)
     # exact classification overrides the float sign where the two disagree (equality event or unresolved sign)
@@ -142,6 +175,7 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
                       "full_unique_relation": cls["full_unique_relation"]}
     unresolved = False
     seq = 0
+    open_attempts = 0
     m, M = posterior_bounds(PRIM.fb)
     e_M = float(entry_at_posterior(PRIM, pay, np.array([M]))[0])
     if tie_ceiling:
@@ -192,6 +226,7 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
         else:
             # asymmetric roots
             ar = asymmetric_roots(PRIM, pay)
+            diag["asymmetric_attempts"] = ar
             for v in ar["roots"]:
                 cand = asymmetric_candidate(PRIM, pay, v)
                 val = validate(cand.sched, CONTROLS, price_pools=True)
@@ -208,8 +243,20 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
                 rows.append(_row(node, "asymmetric_tangency", cand, val, "open" if not val.accepted else "numerical diagnostic",
                                  f"local |Psi| minimum {resid:.3e} without sign change", cls=cls, seq=seq, run_id=run_id))
                 unresolved = unresolved or not val.accepted
-            fp = pure_fixed_points(PRIM, pay, inits=[(u, v) for u in (0.2, 0.6, 0.95) for v in (0.2, 0.6, 0.95)], max_iter=40)
+            # Preserve each start before the shared search's within-call deduplication.
+            fp = {"fixed_points": [], "unconverged": []}
+            for init in [(u, v) for u in (0.2, 0.6, 0.95) for v in (0.2, 0.6, 0.95)]:
+                result = pure_fixed_points(PRIM, pay, inits=[init], max_iter=40)
+                for key in fp:
+                    fp[key].extend(result[key])
+            diag["pure_attempts"] = fp
             for u, v, init in fp["fixed_points"]:
+                u, v = snap_endpoint(u), snap_endpoint(v)
+                if refine_identity and u == 1.0 and 0.0 < v < 1.0:
+                    from numerics.continuations import ORDER_IDENTITY_TOL
+                    nearby = [root for root in ar["roots"] if abs(root - v) <= ORDER_IDENTITY_TOL]
+                    if nearby:
+                        v = min(nearby, key=lambda root: abs(root - v))
                 # every converged start is validated and recorded; economic duplicates are merged below by the
                 # continuation identity (complete strategies plus price information), never by orders alone
                 sched = make_schedule(PRIM, pay, OrderProfile.pure(u, -v))
@@ -220,15 +267,28 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
             if fp["unconverged"]:
                 unresolved = True
                 diag["pure_unconverged"] = len(fp["unconverged"])
+                open_attempts += len(fp["unconverged"])
             ms = mixed_support_search(PRIM, pay, mesh=0.05, iters=150)
             prof = ms["profile"]
-            if ms["converged"] and len(prof.q_H) > 1:
+            diag["mixed_attempt"] = {k: v for k, v in ms.items() if k not in ("sched", "profile")}
+            diag["mixed_attempt"]["profile"] = prof.__dict__
+            if ms["converged"]:
+                prof = OrderProfile(tuple(snap_endpoint(q) for q in prof.q_H), prof.w_H,
+                                    tuple(snap_endpoint(q) for q in prof.q_L), prof.w_L)
+                ms["sched"] = make_schedule(PRIM, pay, prof)
+                diag["mixed_attempt"]["endpoint_refined_profile"] = prof.__dict__
                 val = validate(ms["sched"], CONTROLS, price_pools=True)
+                for state, qs, weights in (("H", prof.q_H, prof.w_H), ("L", prof.q_L, prof.w_L)):
+                    if abs(sum(weights) - 1) > CONTROLS.probability_acceptance or any(w < 0 for w in weights) or any(abs(q) > 1 for q in qs):
+                        val.breaches.append(f"mixed support/simplex invalid for {state}")
+                if ms["support_gap"] > CONTROLS.deviation_gain_acceptance:
+                    val.breaches.append(f"mixed support payoff gap={ms['support_gap']:.3e}")
                 cand = Candidate("mixed", prof, ms["sched"], {})
                 seq += 1
                 rows.append(_row(node, "mixed", cand, val, "numerical diagnostic" if val.accepted else "rejected", cls=cls, seq=seq, run_id=run_id))
             elif not ms["converged"]:
                 unresolved = True
+                open_attempts += 1
                 diag["mixed_search"] = f"not converged (support gap {ms['support_gap']:.2e})"
     # --- attempt ledger and economic deduplication ------------------------------------------------
     acc_raw = [x for x in rows if x["accepted"] is True]
@@ -252,7 +312,7 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
         x.pop("_cont", None)
         x.pop("_profile", None)
     n_rej = sum(1 for x in rows if x["accepted"] is not True and not x["status"].startswith("open"))
-    n_open = sum(1 for x in rows if x["status"].startswith("open"))
+    n_open = open_attempts + sum(1 for x in rows if x["status"].startswith("open"))
     if unresolved:
         outcome = "unresolved search (open nodes or unconverged starts retained)"
     elif not acc:
@@ -265,11 +325,21 @@ def solve_reserve(args, run_id: str = "c6") -> tuple[list[dict], dict, dict]:
            "E_min_found": min(x["E"] for x in acc) if acc else NA, "E_max_found": max(x["E"] for x in acc) if acc else NA,
            "R_T_min_found": min(x["R_T"] for x in acc) if acc else NA, "R_T_max_found": max(x["R_T"] for x in acc) if acc else NA,
            "search_unresolved": unresolved or not acc, "global_envelope_certified": False,
-           "p_exact": node.p_exact, "event_id": node.event_id, "candidates_evaluated": len(rows), "candidates_accepted_raw": len(acc_raw),
+           "p_exact": node.p_exact, "event_id": node.event_id, "candidates_evaluated": len(rows) + open_attempts, "candidates_accepted_raw": len(acc_raw),
            "candidates_rejected": n_rej, "candidates_unresolved": n_open, "duplicates_merged": merged, "search_outcome": outcome}
     diag["unresolved"] = unresolved
-    diag["ledger"] = {"evaluated": len(rows), "accepted_raw": len(acc_raw), "accepted_distinct": len(acc), "rejected": n_rej, "open": n_open, "merged": merged}
-    return rows, rng, diag
+    diag["ledger"] = {"evaluated": len(rows) + open_attempts, "accepted_raw": len(acc_raw), "accepted_distinct": len(acc), "rejected": n_rej, "open": n_open, "merged": merged}
+    result = finalize_node((rows, rng, diag))
+    if any(row["identity_note"] for row in rows) and not refine_identity:
+        refined_rows, refined_range, refined_diag = solve_reserve(node, run_id + ":identity_refined", refine_identity=True)
+        refined_diag["prior_identity_attempt"] = result
+        refined_diag["identity_refinement_method"] = ("A pure high-type endpoint with a nearby independently solved asymmetric root proposes that root "
+                                                      "within the existing order-identity tolerance, then rebuilds and fully validates the schedule. "
+                                                      "Raw prior profiles and validations remain in prior_identity_attempt.")
+        if any(row["identity_note"] for row in refined_rows):
+            raise ValueError(f"Economic identity remained unresolved after bounded root refinement: {node}")
+        return refined_rows, refined_range, refined_diag
+    return result
 
 
 def reserve_grid(law: str) -> list[str]:
@@ -302,24 +372,65 @@ def reserve_nodes(law: str, rs: str) -> list[EventNode]:
     return nodes
 
 
-def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int | None = None) -> bool:
-    import os
-    workers = workers or max(1, (os.cpu_count() or 8) - 2)
+def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int | None = None, out: str | None = None, declared_only: bool = False, replay: str | None = None) -> bool:
+    workers = workers or min(8, os.cpu_count() or 1)
+    output_root = Path(out).resolve() if out else ROOT
+    exercise = "c6_fixed_reserves" if declared_only else "c6_reserve"
+    cont_file = "numerics/reserve_fixed_continuations.csv" if declared_only else "numerics/reserve_continuations.csv"
+    range_file = "numerics/reserve_fixed_ranges.csv" if declared_only else "numerics/reserve_ranges.csv"
+    run_id = datetime.now(timezone.utc).strftime("c6_%Y%m%dT%H%M%S%fZ")
+    checkpoint = output_root / "audit/peer_polish" / run_id
+    checkpoint.mkdir(parents=True, exist_ok=False)
+    def collect(nodes, phase):
+        with (checkpoint / f"{phase}.jsonl").open("w") as ledger:
+            if replay:
+                source = Path(replay) / f"{phase}.jsonl"
+                records = [json.loads(line) for line in source.read_text().splitlines()]
+                declared_nodes = {(n.law, n.r, n.p_exact): n for n in map(node_from_args, nodes)}
+                expected = set(declared_nodes)
+                actual = {(r[1]["value_law"], r[1]["r"], r[1]["p_exact"]) for r in records}
+                if len(records) != len(nodes) or actual != expected:
+                    raise ValueError(f"Replay ledger does not match requested {phase} nodes")
+                for raw in records:
+                    if any(row["identity_note"] for row in raw[0]):
+                        key = (raw[1]["value_law"], raw[1]["r"], raw[1]["p_exact"])
+                        result = solve_reserve(declared_nodes[key], raw[0][0]["run_id"])
+                    else:
+                        result = finalize_node(raw)
+                    ledger.write(json.dumps(result, default=_json_default) + "\n")
+                    yield result
+                return
+            with ProcessPoolExecutor(max_workers=workers) as ex:
+                futures = {ex.submit(solve_reserve, node, run_id): node for node in nodes}
+                for completed, future in enumerate(as_completed(futures), 1):
+                    node = futures[future]
+                    try:
+                        result = future.result()
+                    except Exception as exc:
+                        ledger.write(json.dumps({"node": str(node), "exception": repr(exc)}) + "\n")
+                        ledger.flush()
+                        for pending in futures:
+                            pending.cancel()
+                        raise
+                    ledger.write(json.dumps(result, default=_json_default) + "\n")
+                    ledger.flush()
+                    if completed % 20 == 0 or completed == len(nodes):
+                        print(f"C.6 {phase}: {completed}/{len(nodes)} nodes completed", flush=True)
+                    yield result
     checks, notes = {}, []
     tasks = []
     for law in ("binary", "uniform_classes"):
         for rs in STRENGTHS.values():
-            nodes = reserve_nodes(law, rs)
+            nodes = [node_from_args((law, rs, p)) for p in DECLARED[law]] if declared_only else reserve_nodes(law, rs)
             if quick:
                 nodes = [n for n in nodes if n.event_id != "grid" and not n.event_id.startswith("offset")
                          or (n.event_id == "grid" and Decimal(n.p_exact) % Decimal("0.5") == 0)]
             tasks += nodes
     cont, ranges, diags = [], [], []
-    with ProcessPoolExecutor(max_workers=workers) as ex:
-        for rows, rng, dg in ex.map(solve_reserve, tasks, chunksize=1):
-            cont += rows
-            ranges.append(rng)
-            diags.append(dg)
+    for rows, rng, dg in collect(tasks, "initial"):
+        cont += rows
+        ranges.append(rng)
+        diags.append(dg)
     # refinement: branch changes, unresolved nodes, and the found revenue maximum, to spacing 0.002
     refine = set()
     by_key = {(d["law"], d["r"]): [] for d in diags}
@@ -344,6 +455,8 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
                 why.append("revenue maximum")
             if why:
                 intervals.append((law, rs, a["p"], b_["p"], "; ".join(why)))
+    if declared_only:
+        intervals = []
     for law, rs, pa, pb, why in intervals:
         x = Decimal(pa[:24]) + Decimal("0.002")
         while x < Decimal(pb[:24]):
@@ -355,16 +468,15 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
         skipped = len(refine) - max_refine_nodes
         # keep refinement for revenue maxima and branch changes first, in listed order
         refine = refine[:max_refine_nodes]
-    if refine and not quick:
-        with ProcessPoolExecutor(max_workers=workers) as ex:
-            for rows, rng, dg in ex.map(solve_reserve, refine, chunksize=1):
-                cont += rows
-                ranges.append(rng)
-                diags.append(dg)
+    if refine and not quick and not declared_only:
+        for rows, rng, dg in collect(refine, "refinement"):
+            cont += rows
+            ranges.append(rng)
+            diags.append(dg)
     cont.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"][:24]), x["branch"]))
     ranges.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"][:24])))
-    write_csv("numerics/reserve_continuations.csv", CONT_COLS, cont)
-    write_csv("numerics/reserve_ranges.csv", RANGE_COLS, ranges)
+    write_csv(output_root / cont_file, CONT_COLS, cont)
+    write_csv(output_root / range_file, RANGE_COLS, ranges)
     # --- declared comparisons table ------------------------------------------------------------
     comp_rows = []
     for law in ("binary", "uniform_classes"):
@@ -372,7 +484,7 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
             for ps in DECLARED[law]:
                 pay, oracle_err = payoffs(law, float(rs), float(ps))
                 ab = analytic_bounds(pay)
-                acc = [x for x in cont if x["value_law"] == law and x["r"] == rs and x["p"] == ps and x["accepted"] is True]
+                acc = [x for x in cont if x["value_law"] == law and x["r"] == rs and x["p"] == ps and x["accepted"] is True and not x["duplicate_of"]]
                 for x in acc:
                     if x["branch"] == "pooling":
                         margin = ab["no_trade_unique_margin"]
@@ -382,20 +494,20 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
                         status = ("analytical (unique full orders: (1-1/b) e(m) m Delta_T - k > 0 with positive floor)"
                                   if margin > 0 and ab["low_cost_floor_margin"] > 0 else "numerical diagnostic (full orders validated; uniqueness not established)")
                     else:
-                        margin, status = float("nan"), "numerical diagnostic (additional continuation found)"
-                    sched_rows = [y for y in cont if y is x]
+                        margin, status = NA, "numerical diagnostic (additional continuation found)"
                     eH, eL = 2 * x["O_H"], 2 * x["E"] - 2 * x["O_H"]
                     comp_rows.append({"value_law": law, "signal_information": "class only" if law == "uniform_classes" else "exact value",
                                       "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0", "r": rs, "p": ps,
                                       "t_0": pay.t_0, "t_H": pay.t_H, "t_L": pay.t_L, "g_H": pay.g_H, "g_L": pay.g_L, "Delta_T": pay.Delta_T,
                                       "q_H": x["q_H"], "q_L": x["q_L"], "e_H": eH, "e_L": eL, "E": x["E"], "R_T": x["R_T"],
                                       "low_cost_floor_margin": ab["low_cost_floor_margin"], "trading_margin": margin, "payoff_oracle_error": oracle_err,
-                                      "status": status, "accepted": oracle_err <= TOL and len(acc) == 1})
+                                      "status": status, "accepted": oracle_err <= TOL and len(acc) == 1,
+                                      **{key: x[key] for key in ("parameter_set_id", "continuation_id", "candidate_id", "information_structure_id", "institution_id", "event_id", "p_exact", "branch")}})
                 checks[f"declared_{law}_r{rs}_p{ps}"] = {"accepted_continuations": len(acc), "payoff_oracle_error": oracle_err,
                                                          "pass": len(acc) == 1 and oracle_err <= TOL}
-    write_csv("tables/reserve_comparisons.csv", ["value_law", "signal_information", "epsilon_V", "r", "p", "t_0", "t_H", "t_L", "g_H", "g_L", "Delta_T",
+    write_csv(output_root / "tables/reserve_comparisons.csv", ["value_law", "signal_information", "epsilon_V", "r", "p", "t_0", "t_H", "t_L", "g_H", "g_L", "Delta_T",
                                                  "q_H", "q_L", "e_H", "e_L", "E", "R_T", "low_cost_floor_margin", "trading_margin", "payoff_oracle_error",
-                                                 "status", "accepted"], comp_rows)
+                                                 "status", "accepted", "parameter_set_id", "continuation_id", "candidate_id", "information_structure_id", "institution_id", "event_id", "p_exact", "branch"], comp_rows)
     # revenue comparison at the declared reserves (alternative vs original at the same strength)
     for law in ("binary", "uniform_classes"):
         for rs in STRENGTHS.values():
@@ -407,8 +519,10 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
     max_oracle = max(d["payoff_oracle_error"] for d in diags)
     checks["payoff_oracle"] = {"max_error": max_oracle, "pass": max_oracle <= TOL}
     # counts come from the attempt/validation ledger (one range record per solved node), not from the grid length
-    checks["sweep"] = {"nodes_attempted": len(ranges), "initial_nodes": len(tasks), "refined_nodes": len(refine), "refinement_intervals": intervals,
+    checks["sweep"] = {"nodes_attempted": len(ranges), "initial_nodes": len(tasks), "refined_nodes": len(refine) if not (quick or declared_only) else 0, "refinement_planned_nodes": len(refine), "refinement_intervals": intervals,
                        "refinement_skipped_nodes": skipped,
+                       "identity_refinement_nodes": sum("prior_identity_attempt" in d for d in diags),
+                       "prior_identity_candidates_preserved": sum(d["prior_identity_attempt"][1]["candidates_evaluated"] for d in diags if "prior_identity_attempt" in d),
                        "event_nodes": sum(1 for r_ in ranges if r_["event_id"] not in ("grid",) and not r_["event_id"].startswith("offset")),
                        "candidates_evaluated": sum(r_["candidates_evaluated"] for r_ in ranges),
                        "candidates_rejected": sum(r_["candidates_rejected"] for r_ in ranges),
@@ -419,19 +533,27 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
                        "nodes_analytically_unique": sum(1 for r_ in ranges if r_["search_outcome"].startswith("analytically unique")),
                        "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"}
     passed = all(c.get("pass", True) for c in checks.values())
-    write_manifest("c6_reserve", {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED,
-                                  "strengths": STRENGTHS, "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, "
-                                          "p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8", "quick": quick},
+    if out:
+        from numerics import io
+        original_manifest_dir = io.MANIFEST_DIR
+        io.MANIFEST_DIR = output_root / "numerics/manifests"
+    write_manifest(exercise, {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED,
+                                  "strengths": STRENGTHS, "run_id": run_id, "replay_source": replay, "workers": workers, "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained", "attempt_ledger": str(checkpoint.relative_to(output_root)), "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, "
+                                          "p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8", "quick": quick, "declared_only": declared_only},
                    "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates "
                    "(pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness "
                    "bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold. "
                    "Exact events are classified algebraically at 50 digits with the tie rule; accepted candidates are merged only by the "
                    "continuation identity (complete strategies plus price information); counts come from the attempt ledger.",
-                   CONTROLS.as_dict(), ["tables/reserve_comparisons.csv", "numerics/reserve_continuations.csv", "numerics/reserve_ranges.csv"], checks, passed, notes)
+                   CONTROLS.as_dict(), [str(output_root / name) if out else name for name in ("tables/reserve_comparisons.csv", cont_file, range_file)], checks, passed, notes)
+    if out:
+        io.MANIFEST_DIR = original_manifest_dir
     print("C.6 passed" if passed else "C.6 FAILED", {k: v for k, v in checks.items() if k.startswith(("declared", "revenue", "payoff", "sweep"))})
     return passed
 
 
 if __name__ == "__main__":
     w = next((int(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--workers=")), None)
-    sys.exit(0 if run(workers=w, quick="--quick" in sys.argv) else 1)
+    o = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--out=")), None)
+    replay = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--replay=")), None)
+    sys.exit(0 if run(workers=w, quick="--quick" in sys.argv, out=o, declared_only="--declared-only" in sys.argv, replay=replay) else 1)

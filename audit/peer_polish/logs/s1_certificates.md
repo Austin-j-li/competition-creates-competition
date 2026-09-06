@@ -1,6 +1,6 @@
 # S1-D interval certificates (T16, T17)
 
-Generated 2026-09-05 22:54:56; Python 3.12.13, mpmath 1.4.1 (preserved seed result: mpmath 1.3.0, 50 digits).
+Generated 2026-09-06 00:32:25; Python 3.12.13, mpmath 1.4.1 (preserved seed result: mpmath 1.3.0, 50 digits).
 
 Seed copy sha256 085b0f10c20a1b7d48125ba0480c1dde5968958005287f9325ef0ce6897b8194 (identical before and after the run; run under `run_seed.sh`, which refuses PYTHONOPTIMIZE and -O).
 

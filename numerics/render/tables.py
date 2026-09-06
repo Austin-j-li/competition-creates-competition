@@ -40,26 +40,34 @@ STRENGTH_NAMES = (("r_weak", "Weak incumbent"), ("r_strong", "Strong incumbent")
 # formatting
 # ---------------------------------------------------------------------------------------------
 def d6(x: str) -> str:
-    try:
-        return format(Decimal(x).quantize(Decimal("0.000001"), rounding=ROUND_HALF_EVEN), "f")
-    except Exception:
+    if x == "n/a":
         return "n/a"
+    if not Decimal(x).is_finite():
+        raise ValueError(f"nonfinite table scalar: {x}")
+    return format(Decimal(x).quantize(Decimal("0.000001"), rounding=ROUND_HALF_EVEN), "f")
 
 
 def d2(x: Decimal) -> str:
+    if not x.is_finite():
+        raise ValueError(f"nonfinite table scalar: {x}")
     return format(x.quantize(Decimal("0.01"), rounding=ROUND_HALF_EVEN), "f")
 
 
 def sci(x: str) -> str:
-    try:
-        mantissa, exponent = f"{Decimal(x):.2E}".split("E")
-        return rf"${mantissa}\times10^{{{int(exponent)}}}$"
-    except Exception:
+    if x == "n/a":
         return "n/a"
+    if not Decimal(x).is_finite():
+        raise ValueError(f"nonfinite table scalar: {x}")
+    mantissa, exponent = f"{Decimal(x):.2E}".split("E")
+    return rf"${mantissa}\times10^{{{int(exponent)}}}$"
 
 
 def esc(s: str) -> str:
     return s.replace("_", r"\_").replace("%", r"\%").replace("&", r"\&").replace("|", r"$|$")
+
+
+def identity_text(s: str) -> str:
+    return esc(s).replace(r"\_", r"\_\allowbreak{}").replace(r"$|$", r"$|$\allowbreak{}").replace(";", r";\allowbreak{}")
 
 
 def evidence(text: str) -> str:
@@ -159,10 +167,12 @@ def threeparttable(header: list[str], rows: list[list[str]], align: str, notes: 
     return "\n".join(lines) + "\n"
 
 
-def online_table(caption: str, label: str, body: str) -> str:
+def online_table(caption: str, label: str, body: str, landscape: bool = False) -> str:
     """Online tables carry their own caption (main tables receive theirs from the manuscript marker)."""
-    return (r"\begin{table}[tbp]\begingroup\singlespacing\small\centering" + "\n"
-            + rf"\caption{{{caption}}}\label{{{label}}}" + "\n" + body + r"\par\endgroup\end{table}" + "\n")
+    return ((r"\begin{landscape}" + "\n" if landscape else "")
+            + r"\begin{table}[tbp]\begingroup\singlespacing\small\centering" + "\n"
+            + rf"\caption{{{caption}}}\label{{{label}}}" + "\n" + body + r"\par\endgroup\end{table}" + "\n"
+            + (r"\end{landscape}" + "\n" if landscape else ""))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -207,11 +217,11 @@ def table2() -> Path:
                      evidence(r["status"]), unique_field(r["status"])])
     body.append(["\\midrule"])
     body.append(["Panel B. Information controls"])
-    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden from the challenger")):
+    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden")):
         for key, _ in STRENGTH_NAMES:
             rs = BENCHMARK_STRENGTHS[key]
             r = one(base, "Table 2 Panel B", experiment=exp, r=rs)
-            uniq = "n/a (fixed profile)" if exp == "frozen" else unique_field(r["status"])
+            uniq = "n/a" if exp == "frozen" else unique_field(r["status"])
             body.append([f"{lab}, $r={rs}$", order(r["q_H"]), order(r["q_L"]), d6(r["E"]), d6(r["O_H"]), d6(r["R_T"]), evidence(r["status"]), uniq])
     f = one(fb, "Table 2 Panel C", noise="Laplace", cost_law="atoms", r=BENCHMARK_STRENGTHS["r_strong"])
     welfare = tabular(
@@ -236,7 +246,7 @@ def table2() -> Path:
         r"$(r_0,r_1)=(1.2,3)$ are " + ", ".join(f"{lab} = {sci(e[k])}" for lab, k in zip(MARGIN_LABELS, MARGIN_KEYS)) + ".",
     ]
     out = TAB / "table2_equilibrium_controls.tex"
-    out.write_text(threeparttable(header, body, r"p{0.34\linewidth}rrrrrll", notes, extra=welfare))
+    out.write_text(threeparttable(header, body, r"p{0.325\linewidth}rrrrrll", notes, extra=welfare))
     return out
 
 
@@ -248,7 +258,7 @@ def matched_price_panel() -> list[Path]:
     rows_out = []
     body = []
     env_label = {"feedback": "Price observed (feedback equilibrium)", "price_hidden": "Price hidden (reoptimized equilibrium)",
-                 "matched_dividend": "Price hidden plus external dividend (control)"}
+                 "matched_dividend": "Hidden plus dividend (control)"}
     for noise in ("Laplace", "logistic"):
         for cost in ("atoms", "uniform_mixture"):
             base = [r for r in _benchmark_controls() if r["noise"] == noise and r["cost_law"] == cost]
@@ -263,8 +273,9 @@ def matched_price_panel() -> list[Path]:
                 raise ValueError(f"matched dividend identity D_0 = R_T^feedback - R_T^hidden fails for {noise}/{cost}: {d0} vs {rt_f - rt_h}")
             if abs(d0 - Decimal(f["matched_dividend"])) > IDENTITY_TOL:
                 raise ValueError(f"matched dividend differs between equilibrium_controls and feedback_comparisons for {noise}/{cost}")
-            if Decimal(f["revenue_identity_error"]) > IDENTITY_TOL:
-                raise ValueError(f"mean-price/revenue identity error {f['revenue_identity_error']} exceeds tolerance for {noise}/{cost}")
+            for key in ("revenue_identity_error", "residual_invariance_error"):
+                if not Decimal(f[key]).is_finite() or abs(Decimal(f[key])) > IDENTITY_TOL:
+                    raise ValueError(f"{key} exceeds tolerance for {noise}/{cost}")
             for k in ("R_T", "W", "E", "O_H", "q_H", "q_L", "e_H", "e_L"):
                 if abs(Decimal(mat[k]) - Decimal(hid[k])) > IDENTITY_TOL:
                     raise ValueError(f"matched control changes {k} relative to the hidden environment for {noise}/{cost}")
@@ -300,7 +311,7 @@ def matched_price_panel() -> list[Path]:
         r"is not paid by any bidder, and is not a sale term: the matched row is an analytical invariance diagnostic, not an equilibrium of a new game.",
     ]
     tex = online_table("Matched-price panel: information versus price level at the strong strength.", "tab:oa-matched-price",
-                       threeparttable(header, body, r"p{0.40\linewidth}rrrrrr", notes))
+                       threeparttable(header, body, r"p{0.395\linewidth}rrrrrr", notes))
     out = TAB / "table_matched_price.tex"
     out.write_text(tex)
     return [out, csv_path]
@@ -417,7 +428,7 @@ def extensions_margins() -> list[Path]:
         body.append([r["label"], *[sci(r[k]) for k in MARGIN_KEYS], sci(r["minimum_margin"]), r["evidence"], r["unique"]])
     notes = [
         r"The five strict sufficient inequalities of the relevant proposition (low cost, high cost at the prior, high cost at the ceiling, weak-economy "
-        r"trade, strong-economy trade), in the order of (OA.68) for Panels A and B and of (OA.29) for Panel C, and their minimum. A positive minimum "
+        r"trade, strong-economy trade), in the order of \eqref{eq:oa-oa-77} for Panels A and B and of \eqref{eq:oa-oa-29} for Panel C, and their minimum. A positive minimum "
         r"places the row inside the analytical uniqueness region; a nonpositive minimum would mean the comparison condition is not met, not that a "
         r"candidate is rejected.",
         r"Parameter vectors: Panel A $(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.25,1,6,2,0.02)$ with $(r_0,r_1)=(1.2,3)$; Panel B "
@@ -425,7 +436,7 @@ def extensions_margins() -> list[Path]:
         r"The complete records, including the preparation change in percentage points, are in \texttt{tables/extensions\_margins.csv}.",
     ]
     tex = online_table("Sufficient-condition margins behind Table 3.", "tab:oa-margins",
-                       threeparttable(header, body, r"p{0.24\linewidth}rrrrrrll", notes))
+                       threeparttable(header, body, r"p{0.24\linewidth}rrrrrrll", notes), landscape=True)
     out = TAB / "table_extensions_margins.tex"
     out.write_text(tex)
     return [out, csv_path]
@@ -438,7 +449,7 @@ def signal_grid() -> Path:
               r"\shortstack{Minimum\\margin}", "Evidence", r"\shortstack{Comparison\\condition}"]
     n = len(header)
     heading = " & ".join(header) + r" \\"
-    lines = [r"\begingroup\singlespacing\setlength{\tabcolsep}{3pt}",
+    lines = [r"\begin{landscape}\begingroup\singlespacing\footnotesize\setlength{\tabcolsep}{3pt}",
              rf"\begin{{longtable}}{{@{{\extracolsep{{\fill}}}}{'r' * 8}ll@{{}}}}",
              r"\caption{Complementary private information: complete accuracy grid.}\label{tab:oa-signals}\\",
              r"\toprule", heading, r"\midrule", r"\endfirsthead",
@@ -458,12 +469,12 @@ def signal_grid() -> Path:
              r"Other parameters are $h=10$, $\ell=1$, $p=0.5$, $\rho=0.85$, $c_L=1$, $c_H=7.14$, $b=2$, $k=0.015$, "
              r"with strengths $r_0=1.1$ and $r_1=2.3$. $\mathsf E$ and $\mathsf O_H$ are probabilities; $\Delta\mathsf E$ is the change in "
              r"preparation in percentage points from the same validated probabilities. "
-             r"The minimum margin is the smallest of the five conditions in (OA.29); the comparison condition is met when it is strictly positive "
+             r"The minimum margin is the smallest of the five conditions in \eqref{eq:oa-oa-29}; the comparison condition is met when it is strictly positive "
              r"(" + str(n_met) + r" rows), which places the row inside the analytical uniqueness region. A condition that is not met is not a "
              r"rejection: every row is a validated equilibrium of the finite check, and its evidence is then numerical diagnostic unless a separate "
              r"analytical or interval argument supports more. The asterisk marks the example used in the main text. All rows pass the declared "
              r"numerical acceptance checks.")
-    lines += [rf"\multicolumn{{{n}}}{{@{{}}p{{0.97\linewidth}}@{{}}}}{{{notes}}}\\", r"\end{longtable}", r"\endgroup"]
+    lines += [rf"\multicolumn{{{n}}}{{@{{}}p{{0.97\linewidth}}@{{}}}}{{{notes}}}\\", r"\end{longtable}", r"\endgroup\end{landscape}"]
     out = TAB / "table_signal_grid.tex"
     out.write_text("\n".join(lines) + "\n")
     return out
@@ -486,9 +497,9 @@ def _declared_reserve_nodes() -> list[dict]:
             rs = BENCHMARK_STRENGTHS[key]
             for ps in DECLARED_RESERVES[law]:
                 ps_id = parameter_set_id(BENCHMARK, rs, ps, law, eps_v)
-                node = {"value_law": law, "r": rs, "p": ps, "label": f"{name} ($r={rs}$), reserve $p={ps}$", "parameter_set_id": ps_id,
+                node = {"value_law": law, "r": rs, "p": ps, "label": f"{name.removesuffix(' incumbent')} ($r={rs}$), $p={ps}$", "parameter_set_id": ps_id,
                         "unresolved": ""}
-                c = [x for x in comp if x["value_law"] == law and Decimal(x["r"]) == Decimal(rs) and Decimal(x["p"]) == Decimal(ps)
+                c = [x for x in comp if x.get("parameter_set_id") == ps_id and x["value_law"] == law and Decimal(x["r"]) == Decimal(rs) and Decimal(x["p"]) == Decimal(ps)
                      and Decimal(x["epsilon_V"]) == Decimal(eps_v) and x["accepted"] == "true"]
                 ev = [x for x in events if x["parameter_set_id"] == ps_id and x["p_exact"] == ps and x["accepted"] == "true"
                       and x["event_id"] == f"declared_reserve_{ps}"]
@@ -497,6 +508,9 @@ def _declared_reserve_nodes() -> list[dict]:
                     nodes.append(node)
                     continue
                 c, ev = c[0], ev[0]
+                for identity in ("continuation_id", "institution_id", "information_structure_id", "p_exact", "branch"):
+                    if c.get(identity) != ev[identity]:
+                        raise ValueError(f"reserve comparison {identity} disagrees with event identity at {law}, r={rs}, p={ps}")
                 if ev["branch"] != ("pooling" if Decimal(c["q_H"]) == 0 else "full_orders"):
                     node["unresolved"] = f"branch mismatch: comparisons {c['q_H']},{c['q_L']} versus events {ev['branch']}"
                     nodes.append(node)
@@ -508,7 +522,7 @@ def _declared_reserve_nodes() -> list[dict]:
                              "S": ev["sale_probability"], "C2": ev["two_admissible_bidders_probability"], "A": ev["admissible_challenger_probability"],
                              "O_H": ev["high_value_ownership_probability"], "R_T": ev["seller_revenue"],
                              "low_cost_floor_margin": c["low_cost_floor_margin"], "trading_margin": c["trading_margin"],
-                             "status": c["status"], "result_status": ev["result_status"], "existence_scope": ev["existence_scope"],
+                             "status": joint_evidence(c["status"], ev["result_status"]), "result_status": ev["result_status"], "existence_scope": ev["existence_scope"],
                              "uniqueness_scope": ev["uniqueness_scope"], "candidate_id": ev["candidate_id"], "tie_rule_id": ev["tie_rule_id"],
                              "institution_id": ev["institution_id"], "information_structure_id": ev["information_structure_id"]})
                 nodes.append(node)
@@ -531,7 +545,8 @@ def table4() -> Path:
                 body.append([n["label"], "[[unresolved]]", "[[unresolved]]", "[[unresolved]]", "[[unresolved]]", "[[unresolved]]"])
                 continue
             body.append([n["label"], d6(n["E"]), d6(n["S"]), d6(n["C2"]), d6(n["R_T"]), trading_outcome(n["q_H"], n["q_L"])])
-    supported = [n for n in nodes if not n["unresolved"] and evidence(n["status"]) == "analytical"]
+    supported = [n for n in nodes if not n["unresolved"] and evidence(n["status"]) == "analytical"
+                 and unique_field(n["uniqueness_scope"]) == "yes"]
     if len(supported) == len(nodes):
         support = (r"Analytical support: at every listed node the trading outcome is the unique continuation under the global bound "
                    r"($k-\Delta_T>0$ for no trade; the uniform derivative bound with a positive low-cost floor for full orders).")
@@ -552,7 +567,7 @@ def table4() -> Path:
     if unresolved:
         notes.append("Unresolved nodes: " + "; ".join(esc(u) for u in unresolved) + ".")
     out = TAB / "table4_reserve_comparisons.tex"
-    out.write_text(threeparttable(header, body, r"p{0.36\linewidth}rrrrl", notes))
+    out.write_text(threeparttable(header, body, r"p{0.28\linewidth}rrrrl", notes))
     if unresolved:
         print("table4 unresolved:", *unresolved, sep="\n  ")
     return out
@@ -572,16 +587,16 @@ def reserve_details() -> Path:
             if n["unresolved"]:
                 body.append([n["label"]] + ["[[unresolved]]"] * 8 + ["open", "n/a"])
                 continue
-            ids.add((n["institution_id"], n["information_structure_id"].split(";")[0], n["tie_rule_id"]))
+            ids.add((n["institution_id"], n["information_structure_id"], n["tie_rule_id"]))
             body.append([n["label"], order(n["q_H"]), order(n["q_L"]), d6(n["E"]), d6(n["A"]), d6(n["O_H"]), d6(n["R_T"]),
                          sci(n["low_cost_floor_margin"]), sci(n["trading_margin"]), evidence(n["status"]), unique_field(n["uniqueness_scope"])])
     resolved = [n for n in nodes if not n["unresolved"]]
     ident = resolved[0]["parameter_set_id"] if resolved else ""
     common = "|".join(part for part in ident.split("|") if not part.startswith(("p=", "r=", "value_law=", "eps_V=")))
     notes = [
-        r"Complete parameter identity of every node: \texttt{" + esc(common) + r"} with \texttt{r}, \texttt{p}, \texttt{value\_law} "
+        r"Complete parameter identity of every node: \texttt{" + identity_text(common) + r"} with \texttt{r}, \texttt{p}, \texttt{value\_law} "
         r"$\in\{$binary, uniform\_classes$\}$ and \texttt{eps\_V} $\in\{0, 0.05\}$ as listed. Institution, information structure, and tie rule: "
-        + "; ".join(r"\texttt{" + esc(a) + r"}, \texttt{" + esc(b_) + r"}, \texttt{" + esc(t) + "}" for a, b_, t in sorted(ids)) + ".",
+        + "; ".join(r"\texttt{" + identity_text(a) + r"}, \texttt{" + identity_text(b_) + r"}, \texttt{" + identity_text(t) + "}" for a, b_, t in sorted(ids)) + ".",
         r"$\mathsf A$ is the probability of an admissible prepared challenger. Floor margin is $B_r(m)-c_L$; trading margin is $k-\Delta_T$ for "
         r"no trade and $(1-1/b)\,e(m)\,m\,\Delta_T-k$ for full orders. Evidence is the result status; Unique reports the uniqueness scope recorded "
         r"with the continuation (unique within all continuations under the stated bound, or not established). Each node is a validated row of "
@@ -589,7 +604,7 @@ def reserve_details() -> Path:
         r"reserve, and the branch.",
     ]
     tex = online_table("Reserve comparisons: orders, margins, evidence, and identity behind Table 4.", "tab:oa-reserve-details",
-                       threeparttable(header, body, r"p{0.24\linewidth}rrrrrrrrll", notes))
+                       threeparttable(header, body, r"p{0.24\linewidth}rrrrrrrrll", notes), landscape=True)
     out = TAB / "table_reserve_details.tex"
     out.write_text(tex)
     return out
@@ -603,6 +618,18 @@ def _read_ranges(path: str) -> list[dict]:
     if missing:
         raise ValueError(f"{path} lacks the widened C.6 range schema (missing {missing}); rerun numerics/exercises/c6_reserve.py. "
                          "The exploratory table is not rendered from the narrow schema.")
+    identities = set()
+    for row in rows:
+        identity = row["value_law"], Decimal(row["r"]), row["p_exact"]
+        if identity in identities:
+            raise ValueError(f"duplicate reserve range node: {identity}")
+        identities.add(identity)
+        counts = {k: int(row[k]) for k in ("candidates_evaluated", "candidates_accepted_raw", "candidates_rejected",
+                                         "candidates_unresolved", "duplicates_merged", "accepted_continuations_found")}
+        if (min(counts.values()) < 0
+                or counts["candidates_evaluated"] != sum(counts[k] for k in ("candidates_accepted_raw", "candidates_rejected", "candidates_unresolved"))
+                or counts["candidates_accepted_raw"] - counts["duplicates_merged"] != counts["accepted_continuations_found"]):
+            raise ValueError(f"inconsistent reserve attempt ledger: {identity}")
     return rows
 
 
@@ -633,8 +660,8 @@ def reserve_exploratory(path: str = "numerics/reserve_ranges.csv") -> Path:
     strengths = [BENCHMARK_STRENGTHS[k] for k, _ in STRENGTH_NAMES]
     # Panel 1: highest revenue among continuations found
     best_body = [["Panel A. Highest revenue among continuations found"]]
-    cover_body = [["Panel B. Search coverage from the attempt ledger"]]
-    event_body = [["Panel C. Exact-event candidates"]]
+    cover_body = [["Panel B. Search coverage from the final-pass attempt ledger"]]
+    event_body = []
     for law, lawname in laws:
         for rs in strengths:
             sub = [x for x in rng if x["value_law"] == law and Decimal(x["r"]) == Decimal(rs)]
@@ -645,9 +672,10 @@ def reserve_exploratory(path: str = "numerics/reserve_ranges.csv") -> Path:
                 top = max(Decimal(x["R_T_max_found"]) for x in found)
                 ties = sorted((x for x in found if Decimal(x["R_T_max_found"]) == top), key=lambda x: Decimal(x["p"]))
                 best = ties[0]
-                kind = "event: " + esc(best["event_id"]) if _is_event(best["event_id"]) else ("grid" if best["event_id"] == "grid" else esc(best["event_id"]))
+                kind = "event: " + esc(best["event_id"].replace("_", " ")) if _is_event(best["event_id"]) else ("grid" if best["event_id"] == "grid" else esc(best["event_id"].replace("_", " ")))
                 best_body.append([f"{lawname}, $r={rs}$", _p_display(best), kind, best["accepted_continuations_found"],
-                                  d6(best["E_min_found"]) + "--" + d6(best["E_max_found"]), d6(best["R_T_min_found"]) + "--" + d6(best["R_T_max_found"]),
+                                  *[d6(best[f"{q}_min_found"]) if Decimal(best[f"{q}_min_found"]) == Decimal(best[f"{q}_max_found"])
+                                    else d6(best[f"{q}_min_found"]) + "--" + d6(best[f"{q}_max_found"]) for q in ("E", "R_T")],
                                   esc(best["search_outcome"]) + (f" ({len(ties)} nodes tie)" if len(ties) > 1 else "")])
             else:
                 best_body.append([f"{lawname}, $r={rs}$", "none", "n/a", "0", "n/a", "n/a", "no accepted continuation found at any node"])
@@ -659,7 +687,7 @@ def reserve_exploratory(path: str = "numerics/reserve_ranges.csv") -> Path:
                                str(sum(int(x["candidates_evaluated"]) for x in sub)), str(sum(int(x["candidates_rejected"]) for x in sub)),
                                str(sum(int(x["candidates_unresolved"]) for x in sub)), str(sum(int(x["duplicates_merged"]) for x in sub))])
             for x in sorted((x for x in sub if _is_event(x["event_id"])), key=lambda x: Decimal(x["p"])):
-                event_body.append([f"{lawname}, $r={rs}$", esc(x["event_id"]), _p_display(x), x["accepted_continuations_found"],
+                event_body.append([f"{'Binary' if law == 'binary' else 'Classes'}, $r={rs}$", esc(x["event_id"].replace("_", " ")), _p_display(x), x["accepted_continuations_found"],
                                    d6(x["R_T_max_found"]) if x["R_T_max_found"] != "n/a" else "n/a",
                                    "yes" if x["search_unresolved"] == "true" else "no", esc(x["search_outcome"])])
     if any(x["global_envelope_certified"] == "true" for x in rng):
@@ -668,26 +696,38 @@ def reserve_exploratory(path: str = "numerics/reserve_ranges.csv") -> Path:
     cover = tabular(["", "Nodes", "Events", r"\shortstack{Several\\found}", "Unresolved", r"\shortstack{None\\found}",
                      r"\shortstack{Candidates\\evaluated}", "Rejected", r"\shortstack{Cand.\\unresolved}", r"\shortstack{Duplicates\\merged}"],
                     cover_body, r"p{0.17\linewidth}rrrrrrrrr")
-    events = tabular(["", "Event", "Reserve", "Found", r"$\mathcal R_T$ max", "Unresolved", "Search outcome"], event_body,
-                     r"p{0.13\linewidth}p{0.20\linewidth}lrrlp{0.24\linewidth}")
     notes = [
         r"Highest revenue among continuations found, not an optimal reserve: Panel A selects, for each economy, the node (grid point or exact "
         r"event) whose highest accepted continuation revenue is largest among the continuations the declared searches found, and reports the "
         r"ranges of preparation and revenue across the accepted continuations at that node. Range endpoints need not belong to the same "
-        r"continuation. No global envelope is certified; a node without an accepted continuation is not a nonexistence result, and an "
+        r"continuation; a single value denotes a singleton found range. No global envelope is certified; a node without an accepted continuation is not a nonexistence result, and an "
         r"unresolved node does not imply an empty equilibrium set.",
-        r"Panel B counts come from the attempt and validation ledger of \texttt{numerics/reserve\_ranges.csv}, one record per solved node: nodes "
+        r"Panel B counts come from the final-pass attempt and validation ledger of \texttt{numerics/reserve\_ranges.csv}, one record per solved node: nodes "
         r"attempted, exact-event nodes among them, nodes with several accepted continuations, nodes left unresolved, nodes with no accepted "
-        r"continuation, candidates evaluated, rejected, unresolved, and duplicates merged by the continuation identity. Panel C lists every "
+        r"continuation, candidates evaluated, rejected, unresolved, and duplicates merged by the continuation identity. The following exact-event table lists every "
         r"exact-event node (reserve at zero, at $\ell$, at $r$, at $h$, at the class-band edges, at the declared reserves, at the published sampled "
         r"weak reserve, at the weak-incumbent floor equality $p_L=h-c_L/m$, and at the high-cost ceiling equality $p_H$) with the candidates found "
-        r"there; one-sided offsets from each event are separate nodes counted in Panel B. Known limits: the searches "
+        r"there; one-sided offsets from each event are separate nodes counted in Panel B. Earlier attempts that triggered identity refinement "
+        r"are preserved separately in the numerical diagnostics archive. Known limits: the searches "
         r"cover the declared candidate families and the declared pricing family only (Online Appendix C.6).",
     ]
     body = (r"\begin{threeparttable}" + "\n" + r"\setlength{\tabcolsep}{3pt}" + "\n" + best + "\n" + r"\par\medskip" + "\n" + cover + "\n"
-            + r"\par\medskip" + "\n" + events + "\n" + r"\begin{tablenotes}\footnotesize" + "\n"
+            + r"\begin{tablenotes}\footnotesize" + "\n"
             + "\n".join(f"\\item {n}" for n in notes) + "\n" + r"\end{tablenotes}" + "\n" + r"\end{threeparttable}" + "\n")
-    tex = online_table("Highest revenue among continuations found: exploratory reserve summary with coverage counts.", "tab:oa-reserve-exploratory", body)
+    tex = online_table("Highest revenue among continuations found: exploratory reserve summary with coverage counts.",
+                       "tab:oa-reserve-exploratory", body, landscape=True)
+    heading = " & ".join(["", "Event", "Reserve", "Found", r"$\mathcal R_T$ max", "Unresolved", "Search outcome"]) + r" \\"
+    events = [r"\begin{landscape}\begingroup\singlespacing\small\setlength{\tabcolsep}{3pt}",
+              r"\begin{longtable}{@{}p{0.13\linewidth}p{0.19\linewidth}lrrlp{0.24\linewidth}@{}}",
+              r"\caption{Exact-event candidates in the exploratory reserve search.}\label{tab:oa-reserve-events}\\",
+              r"\toprule", heading, r"\midrule\endfirsthead",
+              r"\caption[]{Exact-event candidates in the exploratory reserve search (continued).}\\",
+              r"\toprule", heading, r"\midrule\endhead",
+              r"\midrule\multicolumn{7}{r}{\textit{Continued on next page}}\\\endfoot",
+              r"\bottomrule\endlastfoot"]
+    events += [" & ".join(row) + r" \\" for row in event_body]
+    events += [r"\end{longtable}\endgroup\end{landscape}"]
+    tex += "\n".join(events) + "\n"
     out = TAB / "table_reserve_exploratory.tex"
     out.write_text(tex)
     return out

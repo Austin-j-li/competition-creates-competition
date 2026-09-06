@@ -11,7 +11,8 @@ from numerics.io import ROOT, read_csv, write_csv, write_manifest  # noqa: E402
 from numerics.params import (BENCHMARK_STRENGTHS, MODERATE_STRENGTHS, SIGNAL_STRENGTHS)  # noqa: E402
 
 REGISTRY_COLUMNS = ["name", "value", "lower", "upper", "units", "display", "exercise", "parameter_set", "branch", "status",
-                    "source_file", "source_row", "definition"]
+                    "source_file", "source_row", "definition", "candidate_id", "continuation_id", "parameter_set_id",
+                    "institution_id", "information_structure_id", "tie_rule_id"]
 
 # Registry decimal context (16.2 item 8): fixed here, independent of the ambient context and import order.
 REGISTRY_PRECISION = 60
@@ -70,6 +71,8 @@ def parse_selector(sel: str) -> dict:
         part = part.strip()
         if "=" in part:
             k, v = part.split("=", 1)
+            if k.strip() in out:
+                raise ValueError(f"duplicate selector field: {k.strip()}")
             out[k.strip()] = v.strip()
     return out
 
@@ -88,6 +91,12 @@ def _same_value(cell: str, declared: str) -> bool:
 
 def fmt_display(display: str, value: str | None, lower: str | None, upper: str | None) -> tuple[str, bool]:
     """Return (text, ok). ok is False when a strict-sign requirement fails."""
+    if display != "literal_string":
+        for scalar in (value, lower, upper):
+            if scalar is not None and not Decimal(scalar).is_finite():
+                raise ValueError(f"nonfinite registry scalar: {scalar}")
+    if lower is not None and upper is not None and Decimal(lower) > Decimal(upper):
+        raise ValueError(f"reversed enclosure: [{lower}, {upper}]")
     if display in ("exact_input", "literal_string"):
         return value, True
     if display == "percent_integer":
@@ -212,6 +221,8 @@ def resolve_row(man: dict, tables: dict) -> dict:
             elif k in ("declared moderate comparison", "benchmark inputs", "all certificate predicates", "all predicates accepted",
                        "declared comparison", "tau"):
                 pass
+            else:
+                ok = False
         if "accepted" in r and ok:
             ok &= r["accepted"] == "true"
         if src == "tables/extensions.csv" and ok:
@@ -225,6 +236,8 @@ def resolve_row(man: dict, tables: dict) -> dict:
                    branch=f"{len(filt)} accepted rows match selector" if filt or rows else "no rows")
         return reg
     row = filt[0]
+    for key in REGISTRY_COLUMNS[13:]:
+        reg[key] = row.get(key, "n/a")
     col = _column_for(name, sel)
     if isinstance(col, tuple):
         lower, upper = row[col[0]], row[col[1]]
@@ -239,10 +252,12 @@ def resolve_row(man: dict, tables: dict) -> dict:
             upper = value
         if src == "numerics/certificates.csv":
             reg.update(lower=lower or "n/a", upper=upper or "n/a")
-    if value in ("", "n/a", "nan"):
+    if value in ("", "n/a"):
         reg.update(value="n/a", status="open", display="[[unresolved]]", branch="source value not applicable")
         return reg
     text, ok = fmt_display(man["display"], value, lower, upper)
+    if man["units"] in ("probability", "percentage") and not Decimal(0) <= Decimal(value) <= Decimal(1):
+        raise ValueError(f"{name}: probability {value} outside [0,1]")
     st_text = next((row[c] for c in STATUS_COLUMNS if row.get(c)), None) or SOURCE_DEFAULT_STATUS.get(src, "open")
     st = status_class(st_text)
     if not ok:
@@ -303,6 +318,8 @@ def build_registry(manifest: list[dict] | None = None) -> tuple[list[dict], list
                 raise ValueError(f"{r['name']}: status {r['status']!r} outside the vocabulary")
             if r["status"] == "open":
                 problems.append(f"open: {r['name']} ({r['branch']})")
+            elif r["units"] in ("probability", "percentage") and not Decimal(0) <= Decimal(r["value"]) <= Decimal(1):
+                raise ValueError(f"{r['name']}: probability {r['value']} outside [0,1]")
         return registry, problems
 
 def main() -> bool:

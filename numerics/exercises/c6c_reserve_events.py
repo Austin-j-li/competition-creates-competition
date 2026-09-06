@@ -9,7 +9,9 @@ event classification) and numerics/reserve_event_ranges.csv, and a manifest. The
 from __future__ import annotations
 
 import sys
-from concurrent.futures import ProcessPoolExecutor
+import json
+from datetime import datetime, timezone
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from decimal import Decimal
 from pathlib import Path
 
@@ -18,8 +20,8 @@ import mpmath as mp
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from numerics.exercises.c6_reserve import (BENCHMARK_EXTRA, CONT_COLS, DECLARED, PRIM, RANGE_COLS, STRENGTHS, TOL,  # noqa: E402
-                                           node_from_args, solve_reserve)
-from numerics.io import write_csv, write_manifest  # noqa: E402
+                                           finalize_node, node_from_args, solve_reserve)
+from numerics.io import _json_default, write_csv, write_manifest  # noqa: E402
 from numerics.params import CONTROLS  # noqa: E402
 from numerics.reserve_events import EventNode, classify_node, event_grid, full_order_objects_mp  # noqa: E402
 
@@ -60,16 +62,35 @@ def _close(a: float, target: str, tol: float) -> bool:
     return abs(a - float(target)) <= tol
 
 
-def run(workers: int | None = None) -> bool:
+def run(workers: int | None = None, replay: str | None = None) -> bool:
     import os
-    workers = workers or max(1, (os.cpu_count() or 8) - 2)
+    workers = workers or min(8, os.cpu_count() or 1)
     nodes = event_nodes()
     cont, ranges, diags = [], [], []
-    with ProcessPoolExecutor(max_workers=workers) as ex:
-        for rows, rng, dg in ex.map(_solve, nodes, chunksize=1):
+    run_id = datetime.now(timezone.utc).strftime("c6c_%Y%m%dT%H%M%S%fZ")
+    ledger_path = Path("audit/peer_polish") / f"{run_id}.jsonl"
+    def completed_results():
+        if replay:
+            records = [json.loads(line) for line in Path(replay).read_text().splitlines()]
+            expected = {(n.law, n.r, n.p_exact) for n in nodes}
+            actual = {(r[1]["value_law"], r[1]["r"], r[1]["p_exact"]) for r in records}
+            if len(records) != len(nodes) or actual != expected:
+                raise ValueError("Event replay ledger does not match requested nodes")
+            yield from map(finalize_node, records)
+        else:
+            with ProcessPoolExecutor(max_workers=workers) as ex:
+                futures = {ex.submit(solve_reserve, node, run_id): node for node in nodes}
+                for future in as_completed(futures):
+                    yield future.result()
+    with ledger_path.open("w") as ledger:
+        for completed, (rows, rng, dg) in enumerate(completed_results(), 1):
+            ledger.write(json.dumps((rows, rng, dg), default=_json_default) + "\n")
+            ledger.flush()
             cont += rows
             ranges.append(rng)
             diags.append(dg)
+            if completed % 20 == 0 or completed == len(nodes):
+                print(f"C.6c: {completed}/{len(nodes)} nodes completed", flush=True)
     for x in cont:
         x["event_classification"] = EVENT_CLASSIFICATION.get(x["event_id"], "")
     cont.sort(key=lambda x: (x["value_law"], Decimal(x["r"]), Decimal(x["p"][:24]), x["branch"]))
@@ -152,12 +173,12 @@ def run(workers: int | None = None) -> bool:
     passed = all(c.get("pass", True) for c in checks.values())
     write_manifest("c6c_reserve_events", {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED, "strengths": STRENGTHS,
                                           "events": "0, ell, r, h, ell+-eps_V, h+-eps_V (classes), declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)",
-                                          "offsets": ["1e-4", "1e-6", "1e-8"], "sampled_weak_reserve": SAMPLED_WEAK_RESERVE, "landmarks": LANDMARKS},
+                                          "offsets": ["1e-4", "1e-6", "1e-8"], "sampled_weak_reserve": SAMPLED_WEAK_RESERVE, "landmarks": LANDMARKS, "workers": workers, "replay_source": replay, "run_id": run_id, "attempt_ledger": str(ledger_path)},
                    "Event nodes solved with the C.6 node solver: exact events classified algebraically at 50 digits with the tie rule applied to the "
                    "declared identity; offsets classified by high-precision sign; payoff oracle by direct OA.50 integration; continuation candidates "
                    "validated with price pools (OA.70); outcome measures E, A, S, C2, O_H from the actual allocation event with the union identity "
                    "S = Pr(R >= p) + A - C2 checked by direct integration; accepted candidates merged only by the continuation identity.",
-                   CONTROLS.as_dict(), ["numerics/reserve_events.csv", "numerics/reserve_event_ranges.csv"], checks, passed,
+                   CONTROLS.as_dict(), ["numerics/reserve_events.csv", "numerics/reserve_event_ranges.csv", str(ledger_path)], checks, passed,
                    ["Event candidates improve sampled maxima; they prove neither global optimality nor envelope completeness.",
                     "A node without an accepted candidate is 'no candidate found by the declared searches', not nonexistence."])
     print("C.6c passed" if passed else "C.6c FAILED", {k_: v_.get("pass") for k_, v_ in checks.items()}, checks["ledger"])
@@ -166,4 +187,5 @@ def run(workers: int | None = None) -> bool:
 
 if __name__ == "__main__":
     w = next((int(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--workers=")), None)
-    sys.exit(0 if run(workers=w) else 1)
+    replay = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--replay=")), None)
+    sys.exit(0 if run(workers=w, replay=replay) else 1)

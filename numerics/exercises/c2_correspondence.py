@@ -15,6 +15,8 @@ from __future__ import annotations
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from decimal import Decimal
+from dataclasses import replace
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -26,7 +28,7 @@ from numerics.auction import payoffs_closed_form  # noqa: E402
 from numerics.certificates import certify, lo, hi, endpoint_str as es  # noqa: E402
 from numerics.continuations import (INFO_FEEDBACK_STATE, NA, _norm_dec, continuation_from_schedule, deduplicate,  # noqa: E402
                                     parameter_set_id)
-from numerics.deviations import dU  # noqa: E402
+from numerics.deviations import U, dU  # noqa: E402
 from numerics.error_budget import BUDGET_COLUMNS, error_budget, na_budget_row  # noqa: E402
 from numerics.exercises.common import node_margins  # noqa: E402
 from numerics.information import OrderProfile, make_schedule  # noqa: E402
@@ -39,7 +41,7 @@ from numerics.search import (Candidate, Psi, asymmetric_candidate, asymmetric_ro
 from numerics.status_rules import (ANALYTICAL, COMPUTER_ASSISTED, NO_CANDIDATE, NUMERICAL_DIAGNOSTIC, OPEN, REJECTED,  # noqa: E402
                                    classify_tangency, pooling_existence_label)
 from numerics.thresholds import compute_thresholds  # noqa: E402
-from numerics.validation import validate  # noqa: E402
+from numerics.validation import validate as _validate  # noqa: E402
 
 PRIM = BENCHMARK
 LEGACY_COLUMNS = ["r", "branch", "q_H", "q_L", "v", "e_H", "e_L", "E", "O_H", "R_T", "tau", "x_star", "pooling_exists",
@@ -48,9 +50,9 @@ LEGACY_COLUMNS = ["r", "branch", "q_H", "q_L", "v", "e_H", "e_L", "E", "O_H", "R
 IDENTITY_COLUMNS = ["candidate_id", "continuation_id", "parameter_set_id", "search_path", "duplicate_of", "n_distinct_accepted",
                     "result_status"]
 COLUMNS = LEGACY_COLUMNS + IDENTITY_COLUMNS + BUDGET_COLUMNS
-MIXED_COLUMNS = ["r", "branch", "state", "support_index", "q", "weight", "U(q)", "support_gap", "off_support_gain_bound", "accepted", "status",
+MIXED_COLUMNS = ["r", "branch", "state", "support_index", "q", "weight", "U(q)", "support_gap", "off_support_gain_mesh", "accepted", "status",
                  "init_id", "mesh_spacing", "iterations", "stop_reason", "final_gap", "gap_to_best_tested", "simplex_residual",
-                 "residual_monotone", "quadrature_error", "search_domain", "outcome"]
+                 "residual_monotone", "quadrature_error", "search_domain", "outcome", "candidate_id", "continuation_id", "parameter_set_id"]
 PURE_INITS = [(u, v) for u in (0.2, 0.6, 0.95) for v in (0.2, 0.6, 0.95)]
 TANGENCY_SUBMESH = 41
 MIXED_MESHES = (0.05, 0.025)
@@ -80,6 +82,11 @@ def strength_grid() -> list[str]:
     return sorted(pts, key=Decimal)
 
 
+def snap_endpoint(q: float) -> float:
+    """Polish known boundaries within the existing pure-search convergence tolerance."""
+    return 0.0 if abs(q) <= 1e-7 else (1.0 if abs(q - 1.0) <= 1e-7 else q)
+
+
 def pure_label(u: float, v: float) -> str:
     """Data label for a pure fixed point found by the best-response search (a label, not a selection)."""
     if abs(u - 1.0) < 1e-6:
@@ -101,7 +108,9 @@ def _row(rs: str, branch: str, cand: Candidate, val, mg, existence: str, uniquen
     """Legacy row plus continuation identity and the error budget. The budget can turn an accepted candidate into a rejection."""
     o = val.outcome
     eb = error_budget(val, cand.sched, CONTROLS, analytical_cover=analytical_cover)
-    accepted = bool(val.accepted) and eb.within_targets
+    if existence == COMPUTER_ASSISTED:
+        eb = replace(eb, between_grid_closed=True, between_grid_coverage="Interval certificate over the declared root bracket closes between-grid deviations; see certificates.csv")
+    accepted = bool(val.accepted) and eb.within_targets and _status_word(existence) not in (OPEN, NO_CANDIDATE, REJECTED)
     if val.accepted and not eb.within_targets:
         existence = REJECTED
         reason = "error budget: " + "; ".join(eb.breaches)
@@ -112,9 +121,11 @@ def _row(rs: str, branch: str, cand: Candidate, val, mg, existence: str, uniquen
                                       uniqueness_scope=uniqueness,
                                       search_coverage_scope="pooling, full orders, asymmetric roots and tangencies, pure fixed points, mixed supports (C.2)",
                                       run_id=RUN_ID, unresolved_reason=reason if existence.startswith(OPEN) else "")
+    if accepted and not cont.accepted:
+        accepted, existence, reason = False, REJECTED, cont.rejection_reason
     row = {"r": rs, "branch": branch, "q_H": cand.profile.q_H[0] if cand.profile.is_pure else "mixed",
            "q_L": cand.profile.q_L[0] if cand.profile.is_pure else "mixed", "v": -cand.profile.q_L[0],
-           "e_H": o.e_H, "e_L": o.e_L, "E": o.E, "O_H": o.O_H, "R_T": o.R_T, "tau": o.tau, "x_star": o.x_star,
+           "e_H": o.e_H, "e_L": o.e_L, "E": o.E, "O_H": o.O_H, "R_T": o.R_T, "tau": o.tau, "x_star": o.x_star if np.isfinite(o.x_star) else ("unattainable" if o.x_star > 0 else "always"),
            "pooling_exists": mg.pooling_exists, "pooling_unique_bound": mg.pooling_unique_bound,
            "full_unique_bound": mg.full_unique_bound, "existence_status": existence, "uniqueness_status": uniqueness,
            "accepted": accepted, "multiplicity_found": False, "epsilon_P": val.epsilon_P, "epsilon_e": val.epsilon_e,
@@ -168,6 +179,8 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
     Every attempt row has `duplicate_of` set when its continuation identity coincides with an earlier row at the node;
     `n_distinct_accepted` and `multiplicity_found` are computed from distinct accepted continuations.
     """
+    # Repeated search paths share an identical immutable schedule; validate it once per node.
+    validate = lru_cache(maxsize=None)(_validate)
     rs = canonical_r(rs)
     r = float(rs)
     pay = payoffs_closed_form(PRIM, r)
@@ -250,12 +263,28 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
         rows.append(_row(rs, "asymmetric_tangency", cand, val, mg, verdict.status, "not established", seq=nxt(), search_path=path,
                          reason=verdict.reason))
 
+    def polished_pure(u: float, v: float):
+        u, v = snap_endpoint(u), snap_endpoint(v)
+        if u == 1.0 and root_paths:
+            root = min((x for x, _ in root_paths), key=lambda x: abs(x - v))
+            if abs(root - v) <= 1e-6 and abs(Psi(PRIM, pay, root)) <= 1e-6:
+                v = root
+        if 0.0 < u < 1.0 and 0.0 < v < 1.0:
+            def foc(z):
+                sch = make_schedule(PRIM, pay, OrderProfile.pure(float(z[0]), -float(z[1])))
+                return [dU(sch, "H", float(z[0])).value, dU(sch, "L", float(z[1])).value]
+            root = optimize.root(foc, [u, v], tol=1e-10)
+            if root.success and all(0 < x < 1 for x in root.x) and max(abs(x) for x in foc(root.x)) < 1e-10:
+                u, v = (float(x) for x in root.x)
+        return make_schedule(PRIM, pay, OrderProfile.pure(u, -v), tie_at_ceiling=tie_at_ceiling and u == v == 1.0)
+
     # other pure profiles (u, -v) ------------------------------------------------
     if do_pure:
         fp = pure_fixed_points(PRIM, pay, inits=PURE_INITS, max_iter=40)
         diag["pure_unconverged"] = len(fp["unconverged"])
         for u, v, init in fp["fixed_points"]:
-            sched = make_schedule(PRIM, pay, OrderProfile.pure(u, -v))
+            sched = polished_pure(u, v)
+            u, v = sched.profile.q_H[0], -sched.profile.q_L[0]
             cand = Candidate("pure", sched.profile, sched, {"init": init})
             val = validate(cand.sched, CONTROLS)
             rows.append(_row(rs, pure_label(u, v), cand, val, mg, NUMERICAL_DIAGNOSTIC if val.accepted else REJECTED, "not established",
@@ -268,12 +297,14 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
 
     # finite-support mixed search: documented starts, budget, support system, attempt ledger --------------
     if do_mixed:
-        attempts = mixed_search_node(PRIM, pay, CONTROLS, rs, meshes=MIXED_MESHES, max_iter=mixed_iter)
+        attempts = mixed_search_node(PRIM, pay, CONTROLS, rs, meshes=MIXED_MESHES, max_iter=mixed_iter, tie_at_ceiling=tie_at_ceiling)
         unresolved = []
         for at in attempts:
             path = f"mixed: mesh {at.mesh}, start {at.start_id}"
             val_text, acc, qerr, status = "", False, NA, f"{at.outcome} ({at.stop_reason}; support solve {at.support_solve})"
             gaps = list(at.gap_to_best_tested)
+            low_payoff, low_gap = at.low_support_payoff, at.low_gap_to_best_tested
+            ids = {key: NA for key in ("candidate_id", "continuation_id", "parameter_set_id")}
             if at.outcome == "converged-candidate":
                 val = validate(at.sched, CONTROLS)
                 cand = Candidate("mixed", at.profile, at.sched, {})
@@ -286,7 +317,10 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
                 val_text = "accepted" if acc else "rejected: " + rw["unresolved_reason"]
             elif at.outcome == "converged-pure":
                 u, v = at.support_q[0], at.v
-                sched = make_schedule(PRIM, pay, OrderProfile.pure(u, -v))
+                sched = polished_pure(u, v)
+                u, v = sched.profile.q_H[0], -sched.profile.q_L[0]
+                at = replace(at, v=v, support_q=(u,), profile=sched.profile, sched=sched,
+                             support_payoffs=(U(sched, "H", u).value,), low_support_payoff=U(sched, "L", -v).value)
                 val = validate(sched, CONTROLS)
                 cand = Candidate("pure", sched.profile, sched, {})
                 label = "pooling" if (abs(u) < 1e-6 and abs(v) < 1e-6) else ("full_orders" if (abs(u - 1) < 1e-6 and abs(v - 1) < 1e-6) else pure_label(u, v))
@@ -297,16 +331,25 @@ def solve_node(rs: str, certified: dict[str, tuple[str, str]], do_pure: bool = T
             else:
                 unresolved.append(at)
                 val_text = "not validated (unresolved attempt)"
+            if at.outcome in ("converged-candidate", "converged-pure"):
+                ids = {key: rw[key] for key in ids}
+                high_scan = val.scans.get("H_refined", val.scans["H"])
+                gaps = [max(x[1] for x in high_scan["rows"]) - p for p in at.support_payoffs]
+                low_scan = val.scans.get("L_refined", val.scans["L"])
+                low_payoff = low_scan["candidate_payoff"]
+                low_gap = low_scan["max_gain"]
+                at = replace(at, gap_to_best_tested=tuple(gaps), best_tested_q=high_scan["argmax_q"],
+                             low_support_payoff=low_payoff, low_gap_to_best_tested=low_gap)
             mixed_attempts.append(attempt_row(at, val_text))
             common = {"init_id": at.start_id, "mesh_spacing": at.mesh, "iterations": at.iterations, "stop_reason": at.stop_reason,
                       "final_gap": at.final_gap, "simplex_residual": at.simplex_residual, "residual_monotone": at.residual_monotone,
-                      "quadrature_error": qerr, "search_domain": at.domain, "outcome": at.outcome}
+                      "quadrature_error": qerr, "search_domain": at.domain, "outcome": at.outcome, **ids}
             for j, (q, w, pq, g) in enumerate(zip(at.support_q, at.support_w, at.support_payoffs, gaps)):
                 mixed_rows.append({"r": rs, "branch": f"mixed_mesh_{at.mesh}", "state": "H", "support_index": j, "q": q, "weight": w, "U(q)": pq,
-                                   "support_gap": max(at.support_payoffs) - min(at.support_payoffs), "off_support_gain_bound": max(gaps),
+                                   "support_gap": max(at.support_payoffs) - min(at.support_payoffs), "off_support_gain_mesh": max(gaps),
                                    "gap_to_best_tested": g, "accepted": acc, "status": status, **common})
-            mixed_rows.append({"r": rs, "branch": f"mixed_mesh_{at.mesh}", "state": "L", "support_index": 0, "q": -at.v, "weight": 1.0, "U(q)": NA,
-                               "support_gap": 0.0, "off_support_gain_bound": NA, "gap_to_best_tested": at.final_v_residual, "accepted": acc,
+            mixed_rows.append({"r": rs, "branch": f"mixed_mesh_{at.mesh}", "state": "L", "support_index": 0, "q": -at.v, "weight": 1.0, "U(q)": low_payoff,
+                               "support_gap": 0.0, "off_support_gain_mesh": low_gap, "gap_to_best_tested": low_gap, "accepted": acc,
                                "status": status, **common})
         if unresolved:
             detail = "; ".join(f"mesh {a.mesh} {a.start_id}: {a.witness}" for a in unresolved)
@@ -361,6 +404,8 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
         mixed_iter: int = 120) -> bool:
     import os
     import shutil
+    import time
+    started = time.monotonic()
     workers = workers or max(1, (os.cpu_count() or 8) - 2)
     out_dir = Path(out).resolve() if out else (ROOT / "numerics")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -380,7 +425,7 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
     for r_s, vl, vr in CERTIFICATE_BRACKETS:
         rec = certify(PRIM, r_s, vl, vr, CONTROLS)
         rec2 = certify(PRIM, r_s, vl, vr, CONTROLS, n=CONTROLS.certificate_refined_intervals)
-        checks[f"certificate_{r_s}"] = {"accepted": rec.accepted, "predicates": rec.predicates, "failures": rec.failures,
+        checks[f"certificate_{r_s}"] = {"pass": rec.accepted and rec2.accepted, "accepted": rec.accepted, "predicates": rec.predicates, "failures": rec.failures,
                                         "refined_mesh_accepted": rec2.accepted,
                                         "Gamma_H_lower_refined": lo(rec2.values["Gamma_H"]) if "Gamma_H" in rec2.values else None}
         V = rec.values
@@ -408,7 +453,8 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
         grid = sorted({canonical_r(n) for n in nodes}, key=Decimal)
     elif quick:
         grid = quick_grid(grid, certified, rC)
-    assert len(grid) == len({Decimal(g) for g in grid}), "strength grid has Decimal duplicates"
+    if len(grid) != len({Decimal(g) for g in grid}):
+        raise ValueError("strength grid has Decimal duplicates")
     tasks = [(rs, certified, True, True, rs == rC, mixed_iter) for rs in grid]
     rows, mixed_rows, mixed_attempts, diags = [], [], [], []
     with ProcessPoolExecutor(max_workers=workers) as ex:
@@ -417,9 +463,11 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
             mixed_rows += mrows
             mixed_attempts += matt
             diags.append(dg)
+            if len(diags) % 25 == 0 or quick:
+                print(f"C.2 nodes {len(diags)}/{len(grid)}; r={dg['r']}; elapsed={time.monotonic() - started:.1f}s", flush=True)
     # --- refinement where accepted branch sets change between adjacent grid nodes -------------
     def accepted_set(rs: str) -> frozenset:
-        return frozenset(row["branch"] for row in rows if row["r"] == rs and row["accepted"] is True)
+        return frozenset(row["branch"] for row in rows if row["r"] == rs and row["accepted"] is True and not row["duplicate_of"])
     refine_pairs = []
     for a, b_ in zip(grid[:-1], grid[1:]):
         if accepted_set(a) != accepted_set(b_) and Decimal(b_) - Decimal(a) > Decimal("0.001"):
@@ -431,7 +479,7 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
             refine_nodes.add(canonical_r(str(x)))
             x += Decimal("0.001")
     refine_nodes -= set(grid)
-    refine_nodes = sorted(refine_nodes, key=Decimal)
+    refine_nodes = sorted(refine_nodes, key=Decimal) if not quick and not nodes else []
     if refine_nodes and not quick and not nodes:
         with ProcessPoolExecutor(max_workers=workers) as ex:
             for rws, mrows, matt, dg in ex.map(_worker, [(rs, certified, True, True, False, mixed_iter) for rs in refine_nodes], chunksize=1):
@@ -496,13 +544,14 @@ def run(workers: int | None = None, quick: bool = False, out: str | None = None,
     notes.append("Refinement rule for the quadrature targets: the x10 tightening is implemented by raising the Gauss-Legendre order 48 -> 64 "
                  "and the order intervals 400 -> 800; the refined error estimate is compared with target/10 on every row.")
     notes.append("No retries beyond the documented starts: 9 pure initialisations (40 damped iterations each) and 3 mixed starts per mesh "
-                 f"({mixed_iter} replicator iterations each, then the support indifference/simplex solve). Unconverged starts produce open rows.")
+                 f"({mixed_iter} replicator iterations each, then the support indifference/simplex solve); mesh-pure outcomes are polished by both continuous best responses from that one profile for at most 40 iterations. Unconverged starts produce open rows.")
     notes.append("Tangency rule: a local |Psi| minimum without sign change on the 41-point sub-mesh is open when within the numerical resolution "
                  "(10 x quadrature error + tail bound, floor 1e-8) and 'no candidate' otherwise; the same rule is proposed for C.6.")
     notes.append("Mixed-search outcomes are search records only; they never assert that mixed equilibria do not exist.")
     exercise = "c2_correspondence" if out is None else "c2_correspondence_quick"
     man_path = write_manifest(exercise, {"benchmark": PRIM.__dict__, "mesh": CORRESPONDENCE_MESH, "offsets": CORRESPONDENCE_OFFSETS,
                                          "certificate_brackets": CERTIFICATE_BRACKETS, "grid_size": len(grid), "quick": quick, "nodes": nodes,
+                                         "runtime_seconds": time.monotonic() - started, "workers": workers, "thread_limits": {key: os.environ.get(key) for key in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")},
                                          "mixed_iterations": mixed_iter, "mixed_meshes": MIXED_MESHES, "pure_inits": PURE_INITS},
                               "Exact boundaries from Proposition 3 with residual checks; interval certificates per Appendix B (mpmath iv, "
                               "exact antiderivatives, uniform high-type cover over the root bracket, mesh 200 and 400); at each strength node "

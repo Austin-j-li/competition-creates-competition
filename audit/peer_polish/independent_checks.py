@@ -16,6 +16,8 @@ Outputs:
 from __future__ import annotations
 
 import csv
+import argparse
+import hashlib
 import json
 import math
 import os
@@ -39,6 +41,8 @@ mp.mp.dps = 40
 ROOT = Path(__file__).resolve().parents[2]
 OUT_JSON = ROOT / "audit/peer_polish/independent_checks.json"
 OUT_MD = ROOT / "audit/peer_polish/logs/s1_independent_checks.md"
+INPUT_HASHES: dict[str, str] = {}
+RESERVE_COMPARISONS = "tables/reserve_comparisons.csv"
 
 # ---------------------------------------------------------------------------------------
 # numerical controls (C.0), tightened for the ordinary-quadrature refinement (S1-C)
@@ -728,6 +732,10 @@ def theorem_margins(e: Econ, pay0: Pay, pay1: Pay) -> dict:
 # CSV access, joined on full parameter columns and labels
 # ---------------------------------------------------------------------------------------
 def read_csv(path: str) -> list[dict]:
+    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+    if path in INPUT_HASHES and INPUT_HASHES[path] != digest:
+        raise CheckFailure(f"input changed during independent checks: {path}")
+    INPUT_HASHES[path] = digest
     with open(ROOT / path, newline="") as f:
         return list(csv.DictReader(f))
 
@@ -741,6 +749,10 @@ def pick(rows: list[dict], **key) -> dict:
 
 def ff(x) -> float:
     return float(x)
+
+
+def cutoff_float(x: str) -> float:
+    return float({"unattainable": "inf", "always": "-inf", "n/a": "nan"}.get(x, x))
 
 
 # ---------------------------------------------------------------------------------------
@@ -793,7 +805,7 @@ def t02_t03_auction(L: Ledger):
               note=f"Pr(sale|v=p)={mp.nstr(sale_eq,12)}, Pr(sale|v=p-1e-9)={mp.nstr(sale_below,12)}")
     # class economy oracle at the declared reserves
     epsV = BENCH["value_band_halfwidth"]
-    rc = read_csv("tables/reserve_comparisons.csv")
+    rc = read_csv(RESERVE_COMPARISONS)
     for rs in (BENCH["r_weak"], BENCH["r_strong"]):
         for ps in (BENCH["p"], BENCH["atomless_alternative_reserve"]):
             pk = pay_class(e, rs, ps, epsV, integrate_direct=False)
@@ -865,7 +877,7 @@ def t04_t05_t06_t08_t09_t10(L: Ledger, scans: dict):
         L.add("T04", f"{lab}: expected paid preparation cost vs repo", o["paid_cost"], ff(row["expected_preparation_cost"]), TOL_FORMULA)
         L.add("T04", f"{lab}: tau vs repo", o["tau"], ff(row["tau"]), TOL_FORMULA)
         if spec["regime"] == "feedback" and spec["econ"]["cost"] == "atoms" and spec["q_H"] != spec["q_L"]:
-            L.add("T04", f"{lab}: x_star vs repo", o["x_star"], ff(row["x_star"]), 1e-9)
+            L.add("T04", f"{lab}: x_star vs repo", o["x_star"], cutoff_float(row["x_star"]), 1e-9)
         # closed forms for full orders with atomic costs
         if spec["regime"] == "feedback" and spec["econ"]["cost"] == "atoms" and spec["q_H"] == 1.0 and spec["q_L"] == -1.0:
             cf = full_order_closed(Econ(**spec["econ"]), s.pay)
@@ -1379,7 +1391,7 @@ def t14_t15_signals(L: Ledger, sig_scans: dict):
         for d in D_grid:
             for rs in (SIGN["r_weak"], SIGN["r_strong"]):
                 hits = [r for r in rows if r["a"] == a and r["d"] == d and r["r"] == rs]
-                L.require("T15", f"grid (a={a}, d={d}, r={rs}): both order profiles retained", {(h["q_plus"], h["q_minus"]) for h in hits} == {("0.0", "0.0"), ("1.0", "-1.0")},
+                L.require("T15", f"grid (a={a}, d={d}, r={rs}): exactly both order profiles retained", len(hits) == 2 and {(h["q_plus"], h["q_minus"]) for h in hits} == {("0.0", "0.0"), ("1.0", "-1.0")},
                           note=str([(h["q_plus"], h["q_minus"], h["status"][:40]) for h in hits]))
     # analytical margins (OA.29) per pair
     pay0, pay1 = pay_binary(E_SIG, SIGN["r_weak"]), pay_binary(E_SIG, SIGN["r_strong"])
@@ -1400,6 +1412,12 @@ def t14_t15_signals(L: Ledger, sig_scans: dict):
                 for qp, qm in (("0.0", "0.0"), ("1.0", "-1.0")):
                     row = pick(rows, a=a, d=d, r=rs, q_plus=qp, q_minus=qm)
                     lab = f"signal a={a} d={d} r={rs} ({qp},{qm})"
+                    accepted = row["accepted"].lower() == "true"
+                    expected = "0.0" if rs == SIGN["r_weak"] else "1.0"
+                    theorem = all(v > 0 for v in marg.values())
+                    wanted_status = "analytical" if accepted and theorem and qp == expected else "numerical diagnostic" if accepted else "rejected"
+                    L.require("T15", f"{lab}: status distinguishes theorem region from candidate validation",
+                              row["status"].startswith(wanted_status), note=row["status"])
                     L.add("T14", f"{lab}: mu_lower", mu_m, ff(row["mu_lower"]), TOL_FORMULA)
                     L.add("T14", f"{lab}: mu_upper", mu_p, ff(row["mu_upper"]), TOL_FORMULA)
                     L.add("T14", f"{lab}: phi_-(mu_lower)", phim, ff(row["phi_minus_mu_lower"]), TOL_FORMULA)
@@ -1415,9 +1433,10 @@ def t14_t15_signals(L: Ledger, sig_scans: dict):
                     for y, col in (("+", "x_star_Yplus"), ("-", "x_star_Yminus")):
                         rv = row[col]
                         if rv == "n/a":
-                            L.require("T14", f"{lab}: {col} n/a only for uninformative orders", qp == qm)
+                            L.require("T14", f"{lab}: accepted informative orders report {col}", qp == qm or not accepted,
+                                      note="Rejected candidates may omit the reported cutoff; their entry and payoffs are still independently checked.")
                         else:
-                            L.add("T14", f"{lab}: {col}", cf[col], (float("inf") if rv == "inf" else -float("inf") if rv == "-inf" else ff(rv)), 1e-9)
+                            L.add("T14", f"{lab}: {col}", cf[col], cutoff_float(rv), 1e-9)
                     L.add("T14", f"{lab}: int f_+ = 1", o["int_fp"], 1.0, TOL_PROB)
                     L.add("T14", f"{lab}: E[mu_X] = 1/2", o["E_mu"], 0.5, TOL_PROB)
                     L.add("T14", f"{lab}: E[P] = R_T", o["mean_price"], o["R_T"], TOL_PROB)
@@ -1453,7 +1472,7 @@ def t14_t15_signals(L: Ledger, sig_scans: dict):
 # reserve comparisons (C.6 declared rows) with E, A, S, C2
 # ---------------------------------------------------------------------------------------
 def reserve_rows(L: Ledger, scans: dict):
-    rc = read_csv("tables/reserve_comparisons.csv")
+    rc = read_csv(RESERVE_COMPARISONS)
     e = E_BASE
     epsV = mp.mpf(BENCH["value_band_halfwidth"])
     m, M = posterior_bounds_mp(e.M("b"))
@@ -1588,6 +1607,15 @@ def run_scans(specs: list[dict], fn, workers: int) -> list[dict]:
 
 
 def main() -> int:
+    global RESERVE_COMPARISONS
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
+    parser.add_argument("--reserve-comparisons", default=RESERVE_COMPARISONS,
+                        help="Fixed-reserve producer CSV, relative to the repository root or absolute")
+    args = parser.parse_args()
+    if args.workers < 1:
+        parser.error("--workers must be positive")
+    RESERVE_COMPARISONS = args.reserve_comparisons
     L = Ledger()
     t0 = time.time()
     print("T02/T03 auction layer ...", flush=True)
@@ -1595,7 +1623,7 @@ def main() -> int:
     print("thresholds ...", flush=True)
     land = thresholds(L)
     # scans (parallel)
-    workers = max(1, min(8, (os.cpu_count() or 2) - 1))
+    workers = args.workers
     bench_specs = []
     for sp in benchmark_candidates():
         d = {k: v for k, v in sp.items() if k != "row"}
@@ -1603,7 +1631,7 @@ def main() -> int:
     # moderate and reserve candidates
     extra_specs = [{"econ": asdict(E_MOD), "r": MODER["r_strong"], "q_H": 1.0, "q_L": -1.0, "experiment": "moderate_full"},
                    {"econ": asdict(E_MOD), "r": MODER["r_weak"], "q_H": 0.0, "q_L": 0.0, "experiment": "moderate_pooling"}]
-    rc = read_csv("tables/reserve_comparisons.csv")
+    rc = read_csv(RESERVE_COMPARISONS)
     for row in rc:
         if row["value_law"] == "binary":
             extra_specs.append({"econ": asdict(E_BASE), "r": row["r"], "p": row["p"], "q_H": ff(row["q_H"]), "q_L": ff(row["q_L"]),
@@ -1648,6 +1676,8 @@ def main() -> int:
     sig_scans = {(r["spec"]["a"], r["spec"]["d"], r["spec"]["r"], f"{r['spec']['q_plus']:.1f}", f"{r['spec']['q_minus']:.1f}"): r["scan"] for r in sres}
     print(f"T14/T15 signal objects ... ({time.time()-t0:.0f}s)", flush=True)
     t14_t15_signals(L, sig_scans)
+    for path, digest in INPUT_HASHES.items():
+        L.require("provenance", f"{path} unchanged during comparison", hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest)
     elapsed = time.time() - t0
     # summary
     summary = {}
@@ -1657,7 +1687,9 @@ def main() -> int:
         if r["status"] == "FAIL" and r["required"]:
             s["required_fail"] += 1
     out = {"generated": time.strftime("%Y-%m-%d %H:%M:%S"), "elapsed_seconds": elapsed,
-           "environment": {"python": sys.version.split()[0], "numpy": np.__version__, "scipy": __import__("scipy").__version__, "mpmath": mp.__version__},
+           "environment": {"python": sys.version.split()[0], "numpy": np.__version__, "scipy": __import__("scipy").__version__, "mpmath": mp.__version__,
+                           "workers": workers, "thread_limits": {k: os.environ.get(k) for k in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")}},
+           "input_sha256": INPUT_HASHES,
            "controls": {"quad_abs": QUAD_ABS, "quad_rel": QUAD_REL, "order_intervals": ORDER_INTERVALS, "tol_formula": TOL_FORMULA, "tol_prob": TOL_PROB,
                         "tol_price": TOL_PRICE, "tol_entry": TOL_ENTRY, "tol_dev": TOL_DEV, "mpmath_dps": mp.mp.dps},
            "declarations_parsed_from_C0": DECL, "summary": summary, "checks": L.rows}
@@ -1725,8 +1757,9 @@ def write_summary(out: dict) -> None:
                     agg[k] = max(agg[k], b.get(k, 0.0))
     lines.append(f"{nb} state-scans; max quadrature error {agg['quadrature']:.2e}; max tail-truncation bound {agg['tail_truncation']:.2e} (cut at 60 b); "
                  f"between-grid coverage bound: first-order Lipschitz {agg['between_grid_first_order']:.2e}, second-order (OA.63) {agg['between_grid_second_order']:.2e}.")
-    lines.append("The between-grid bound is a coverage budget for the finite grid; global optimality of the accepted rows rests on the analytical "
-                 "margins (A1)-(A3) and the derivative bound, which are verified separately (T06).")
+    lines.append("The between-grid bound is a coverage budget for the finite grid and is not itself a certificate at the 1e-7 deviation tolerance. "
+                 "Benchmark analytical margins are checked separately in T06; signal margins and status distinctions are checked in T14/T15. "
+                 "Rows outside the stated theorem region retain their numerical-diagnostic status.")
     OUT_MD.write_text("\n".join(lines) + "\n")
 
 

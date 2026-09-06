@@ -1,0 +1,348 @@
+{
+ "exercise": "c6_reserve",
+ "timestamp_utc": "2026-09-05T23:49:23.596741+00:00",
+ "inputs": {
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "1",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "cost_halfwidth": "0",
+   "fundamental_prior_H": "0.5",
+   "parameter_set": "base"
+  },
+  "epsilon_V": "0.05",
+  "declared": {
+   "binary": [
+    "0.5",
+    "1.01"
+   ],
+   "uniform_classes": [
+    "0.5",
+    "1.1"
+   ]
+  },
+  "strengths": {
+   "r_weak": "1.2",
+   "r_strong": "3"
+  },
+  "run_id": "c6_20260905T233640627218Z",
+  "workers": 20,
+  "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained",
+  "attempt_ledger": "audit/peer_polish/c6_20260905T233640627218Z",
+  "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8",
+  "quick": false,
+  "declared_only": false
+ },
+ "method": "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates (pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness bounds (Delta_T < k; uniform derivative bound with positive floor) recorded and used to skip exploratory searches only where they hold. Exact events are classified algebraically at 50 digits with the tie rule; accepted candidates are merged only by the continuation identity (complete strategies plus price information); counts come from the attempt ledger.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
+ },
+ "outputs": {
+  "tables/reserve_comparisons.csv": "23522419e05c96516fda4924453827b8cac6f2423e3f4a181d83aee462752af7",
+  "numerics/reserve_continuations.csv": "e4ee3515d0a1607413b645f5c19a189a7073bdb0b200eb5b1d71f3d1dcdd0d16",
+  "numerics/reserve_ranges.csv": "6fa2867122ff5d9d78fb0d0bfd457d6c8cd5d2d11e63ee9ba9d315387f5a8ad2"
+ },
+ "checks": {
+  "declared_binary_r1.2_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_binary_r1.2_p1.01": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 0.0,
+   "pass": true
+  },
+  "declared_binary_r3_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 0.0,
+   "pass": true
+  },
+  "declared_binary_r3_p1.01": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 2.220446049250313e-16,
+   "pass": true
+  },
+  "declared_uniform_classes_r1.2_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r1.2_p1.1": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r3_p0.5": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 1.7763568394002505e-15,
+   "pass": true
+  },
+  "declared_uniform_classes_r3_p1.1": {
+   "accepted_continuations": 1,
+   "payoff_oracle_error": 4.440892098500626e-16,
+   "pass": true
+  },
+  "revenue_comparison_binary_r1.2": {
+   "R_T_original": 0.3927083333333333,
+   "R_T_alternative": 0.45275611101035046,
+   "alternative_higher": true,
+   "E_original": 0.25000000000000006,
+   "E_alternative": 0.5435728333758433
+  },
+  "revenue_comparison_binary_r3": {
+   "R_T_original": 0.8723920450946406,
+   "R_T_alternative": 0.9874865842421138,
+   "alternative_higher": true,
+   "E_original": 0.5227572972597381,
+   "E_alternative": 0.513372798985137
+  },
+  "revenue_comparison_uniform_classes_r1.2": {
+   "R_T_original": 0.3926649305555555,
+   "R_T_alternative": 0.43217263192739963,
+   "alternative_higher": true,
+   "E_original": 0.25000000000000006,
+   "E_alternative": 0.5403091180516092
+  },
+  "revenue_comparison_uniform_classes_r3": {
+   "R_T_original": 0.8723672029559061,
+   "R_T_alternative": 1.01449970228611,
+   "alternative_higher": true,
+   "E_original": 0.5227602449522809,
+   "E_alternative": 0.5116375544805927
+  },
+  "payoff_oracle": {
+   "max_error": 2.1269444538951632e-14,
+   "pass": true
+  },
+  "sweep": {
+   "nodes_attempted": 1664,
+   "initial_nodes": 1040,
+   "refined_nodes": 624,
+   "refinement_planned_nodes": 624,
+   "refinement_intervals": [
+    [
+     "binary",
+     "1.2",
+     "8",
+     "8.05",
+     "branch change"
+    ],
+    [
+     "binary",
+     "1.2",
+     "8.4",
+     "8.45",
+     "branch change; unresolved"
+    ],
+    [
+     "binary",
+     "1.2",
+     "8.45",
+     "8.5",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "1.2",
+     "8.5",
+     "8.55",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "1.2",
+     "8.55",
+     "8.6",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "1.2",
+     "8.6",
+     "8.65",
+     "branch change; unresolved"
+    ],
+    [
+     "binary",
+     "3",
+     "8",
+     "8.05",
+     "branch change"
+    ],
+    [
+     "binary",
+     "3",
+     "8.4",
+     "8.45",
+     "branch change; unresolved"
+    ],
+    [
+     "binary",
+     "3",
+     "8.45",
+     "8.5",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "3",
+     "8.5",
+     "8.55",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "3",
+     "8.55",
+     "8.6",
+     "unresolved"
+    ],
+    [
+     "binary",
+     "3",
+     "8.6",
+     "8.65",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "0.9501",
+     "0.9999",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "1.0001",
+     "1.0499",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8",
+     "8.05",
+     "branch change"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8.4",
+     "8.45",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8.45",
+     "8.5",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8.5",
+     "8.55",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8.55",
+     "8.6",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "1.2",
+     "8.6",
+     "8.65",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8",
+     "8.05",
+     "branch change"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8.4",
+     "8.45",
+     "branch change; unresolved"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8.45",
+     "8.5",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8.5",
+     "8.55",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8.55",
+     "8.6",
+     "unresolved"
+    ],
+    [
+     "uniform_classes",
+     "3",
+     "8.6",
+     "8.65",
+     "branch change; unresolved"
+    ]
+   ],
+   "refinement_skipped_nodes": 0,
+   "event_nodes": 40,
+   "candidates_evaluated": 11414,
+   "candidates_rejected": 1290,
+   "candidates_unresolved": 517,
+   "duplicates_merged": 7342,
+   "unresolved_nodes": 503,
+   "nodes_without_accepted_continuation": 0,
+   "nodes_analytically_unique": 707,
+   "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"
+  }
+ },
+ "passed": true,
+ "notes": []
+}

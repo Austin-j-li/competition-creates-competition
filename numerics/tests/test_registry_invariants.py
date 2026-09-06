@@ -88,6 +88,9 @@ def test_full_identity_selectors_on_continuation_sources():
     rows, _ = _registry()
     pool = [r for r in rows if r["source_file"] == "numerics/price_pool_regression.csv"]
     require(pool and all(r["branch"].startswith("c6b:") for r in pool), "pool keys do not record the candidate identity")
+    require(all(r["candidate_id"] != "n/a" and r["continuation_id"] != "n/a" for r in pool), "complete pool identities omitted")
+    expected = {"pool_reserve"} | {f"pool_{quantity}_cutoff_{end}" for quantity in ("posterior", "entry", "revenue") for end in ("low", "high")}
+    require(expected == {r["name"] for r in rows if r["name"].startswith("pool_")}, "seven pool keys must all resolve")
 
 
 # --- 3. required rows accepted, vocabulary -----------------------------------------------------------------
@@ -196,6 +199,42 @@ def test_no_nan_or_inf_in_finite_fields():
             require(d.is_finite(), f"{r['name']}.{field} = {v} is not finite")
         if r["units"] == "probability" and r["source_file"] != "input manifest":
             require(Decimal("0") <= Decimal(r["value"]) <= Decimal("1"), f"{r['name']}: probability {r['value']} outside [0,1]")
+
+
+def test_invalid_scalars_and_selectors_fail():
+    for value in ("NaN", "Infinity", "-Infinity"):
+        for display in ("decimal_6", "exact_input", "percent_integer"):
+            try:
+                fmt_display(display, value, None, None)
+            except ValueError:
+                pass
+            else:
+                raise Check(f"{display} accepted {value}")
+    try:
+        fmt_display("outward_interval_6", None, "0.4", "0.3")
+    except ValueError:
+        pass
+    else:
+        raise Check("reversed enclosure accepted")
+    for value in ("-0.1", "1.1"):
+        bad = dict(next(m for m in _manifest() if m["units"] == "probability" and m["input_value"]))
+        bad.update(name="invalid_probability", input_value=value)
+        try:
+            build_registry([bad])
+        except ValueError:
+            pass
+        else:
+            raise Check(f"declared probability {value} accepted")
+    bad = dict(next(m for m in _manifest() if m["name"] == "base_entry_strong"))
+    bad["source_row"] += "; typo_field=wrong"
+    rows, problems = build_registry([bad])
+    require(rows[0]["status"] == "open" and problems, "unknown selector silently ignored")
+    try:
+        parse_selector("r=1.2; r=3")
+    except ValueError:
+        pass
+    else:
+        raise Check("duplicate selector field accepted")
 
 
 # --- 8. precision invariance under ambient decimal contexts and import orders ----------------------------------

@@ -37,6 +37,8 @@ STAGES = {
     "c4": ("c4_moderate", ["C.4"]),
     "c5": ("c5_noise", ["C.5"]),
     "c6": ("c6_reserve", ["C.6", "C.0/C.6"]),
+    "c6b": ("c6b_price_pools", ["C.6b"]),
+    "c6c": ("c6c_reserve_events", ["C.6c"]),
     "c7": ("c7_bargaining", ["C.7"]),
     "c8": ("c8_registry", ["C.8"]),
     "render": ("render", []),
@@ -59,7 +61,7 @@ def main() -> int:
     args = ap.parse_args()
     failures: list[str] = []
     stages = args.stage or [s for s, (m, _) in STAGES.items() if (MANIFEST_DIR / f"{m}.json").exists()]
-    want_handout = args.final or bool(args.stage and "handout" in args.stage)
+    want_handout = bool(args.stage and "handout" in args.stage)
     stages = [s for s in stages if s != "handout"]
     if args.final:
         stages = list(STAGES)
