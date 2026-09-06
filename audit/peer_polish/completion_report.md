@@ -1,10 +1,10 @@
 # Peer-circulation revision
 
-All scientific, build, fresh-reproduction and visual-review gates passed. Package assembly is the remaining delivery step.
+Completed on 2026-09-06. The audited working-paper package is ready for peer circulation. All 33 release tests passed, with zero failed, zero open and zero not-in-release tests; exploratory search limitations remain recorded separately.
 
 ## Scope and provenance
 
-The retained scope is the audited working paper, including the C.2 correspondence and C.6 reserve diagnostics. No core-only fallback was applied. The empirical section remains a research design. The revision began at `dfea7f9a01c46a92f1d2c678bfe775217ccaf51d` on branch `peer-circulation-fix`. The final source revision and exact file hashes are recorded in `replication/run_manifest.json`; command records are in `replication/build_manifest.json`.
+The retained scope is the audited working paper, including the C.2 correspondence and C.6 reserve diagnostics. No core-only fallback was applied. The empirical section remains a research design. The revision began at `dfea7f9a01c46a92f1d2c678bfe775217ccaf51d` on branch `peer-circulation-fix`. The validated source revision is `6aac3caacb7a0fc819795a423d4fb7363eb58371` (663 revision files). Final audit/package records are a separate delivery commit. Exact file hashes are recorded in `replication/run_manifest.json`; command records are in `replication/build_manifest.json`.
 
 The editable manuscripts are `paper/main.md` and `paper/online_appendix.md`; the bibliography is `references.bib`. Changes cover these manuscripts, the continuation and search validation layers, registry and exhibit rendering, numerical outputs and manifests, release checks, and the audit evidence. The issue-level source/output map is `issue_ledger.csv`; `source_output_map.csv` records the build graph and `claim_ledger.csv` records retained claims and their proof locations. Foreign handout, `docs/`, and `learn/` work was preserved.
 
@@ -50,6 +50,8 @@ The first complete test run reported 45 passes and one negative-test diagnostic 
 The VM has 64 virtual CPUs and 125 GiB RAM. Broad C.2 and C.6 jobs use 20 workers each; event and independent jobs use eight. Each worker uses one BLAS/OpenMP/MKL/NumExpr thread. Python and package versions are pinned in `replication/requirements.txt`, and TeX/Pandoc requirements are documented in `replication/README.md`.
 
 The executed release commands are `.venv/bin/python replication/release.py --build-only`, `.venv/bin/python replication/release.py --reproduce --workers=20`, and `.venv/bin/python replication/release.py --package-only`; the Make targets invoke the same runner. The build runs manifest/semantic checks, current-input bindings, the full test suite, registry invariance, substitution, exhibit rendering, LaTeX and a final numerical/PDF check. Fresh reproduction reruns every raw producer in an isolated source copy and compares CSV content and substantive manuscript text. Full commands and outcomes are retained in the build and reproduction manifests.
+
+The source archive inventory was checked for missing inputs, source/PDF hash differences, path escapes, secrets, caches, bundled fonts and foreign project material. The archive contains no generated PDFs; its two peer PDFs are delivered separately. `package_inventory.json` lists archived source-file hashes, and `replication/delivery_checksums.json` records the final archive/PDF checksums.
 
 Delivery paths are `peer_release/main.pdf`, `peer_release/online_appendix.pdf`, `peer_release/README.md`, and `source_and_replication.tar.gz`. The separate source archive includes editable sources, exact declarations, tests, dependencies, validated data, certificate evidence, manifests and retained failed/search attempts. Nothing was emailed, published or pushed.
 
