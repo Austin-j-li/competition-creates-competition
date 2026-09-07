@@ -10,6 +10,12 @@ async (page) => {
     for (const theme of ['light', 'dark']) {
       await page.goto(base + '?theme=' + theme);
       await page.evaluate(() => CCC.ready);
+      const mathVisible = await page.evaluate(() =>
+        ['model-brief', 'incentive-brief', 'equilibrium-brief', 'main-result'].every(id => {
+          const e = document.getElementById(id);
+          return e && !e.closest('details') && e.querySelectorAll('.katex-display').length >= 2;
+        }));
+      check(mathVisible, 'Model, incentives, equilibrium and theorem are visible without expansion');
       await page.locator('#model-detail > summary').click();
       await page.locator('#explorer-r').focus();
       const before = await page.locator('#explorer-r').inputValue();

@@ -2,10 +2,41 @@
 <span id="sec-05-results" class="legacy-anchor" aria-hidden="true"></span>
 
 <h2>What the paper establishes</h2>
-<p class="section-time">3 · The result · 3 minutes</p>
+<p class="section-time">3 · The result · 4 minutes</p>
 
-<div class="prop" id="main-result"><p class="prop-title">Main result · Proposition 2 · analytical</p><div class="prop-body"><p>For a robust range of values and costs, a stronger incumbent switches the market from no informed trading and low-cost preparation only to informative trading and additional high-cost preparation. The paper proves these are the only trading and preparation outcomes reached in the two comparison economies. Participation rises, and so does the probability that a high-value challenger acquires the target.</p></div></div>
-<p>Three conditions drive the result. Low preparation costs keep the challenger willing to enter even after bad news. High preparation costs make favorable news necessary. Trading costs make informed orders unprofitable against the weak incumbent but worthwhile against the strong one. These conditions hold over a range of parameter values, so the result does not depend on a single calibration.</p>
+<div class="prop" id="main-result">
+<p class="prop-title">Proposition 2 · Sufficient conditions for the reversal</p>
+<div class="prop-body">
+<p>Compare \(\ell\lt r_0\lt r_1\lt h\), holding all other primitives fixed. Under the model above, suppose:</p>
+<div class="math-block">\[
+0\le c_L\lt B_{r_1}(m).
+\tag{A1}
+\]</div>
+<p><strong>A preparation floor.</strong> Even unfavorable prices leave low-cost preparation worthwhile.</p>
+<div class="math-block">\[
+B_{r_0}(1/2)\lt c_H\lt B_{r_1}(M).
+\tag{A2}
+\]</div>
+<p><strong>Information can recruit the high-cost challenger.</strong> The weak-incumbent prior does not justify preparation, but favorable strong-incumbent prices can.</p>
+<div class="math-block">\[
+\Delta_T(r_0)\lt k\lt\left(1-\frac1b\right)\rho m\Delta_T(r_1).
+\tag{A3}
+\]</div>
+<p><strong>Trading incentives switch.</strong> Trading costs exceed every informational return in the weak economy but lie below a global bound on marginal trading profits in the strong one.</p>
+<div id="prop-2">
+<p>Then the unique trading and on-path preparation outcomes satisfy</p>
+<div class="math-block">\[
+\begin{aligned}
+r_0:&amp;\quad(q_H,q_L)=(0,0),\quad\mathsf E(r_0)=\rho,\\
+r_1:&amp;\quad(q_H,q_L)=(1,-1),\quad\mathsf E(r_1)\gt\rho,\\
+&amp;\quad\mathsf O_H(r_1)\gt\mathsf O_H(r_0).
+\end{aligned}
+\]</div>
+<p>Here \(q_H,q_L\) are orders conditional on high and low challenger value, \(\mathsf E\) is preparation probability and \(\mathsf O_H\) is the probability that a high-value challenger acquires the target. The strong price experiment strictly Blackwell dominates the uninformative weak experiment. These comparisons hold on a nonempty open set of primitives, allowing arbitrary mixed orders and every continuous deviation. Off-path pricing rules need not be unique.</p>
+</div>
+</div>
+</div>
+<p><strong>Why uniqueness holds.</strong> Against the weak incumbent, the investor's gross advantage per unit is at most \(\Delta_T(r_0)\lt k\), so no trade is optimal. Against the strong incumbent, the preparation floor and noise bound make every increase in a correctly signed order profitable. Full orders are therefore necessary in every equilibrium; the proof constructs the associated price and preparation schedules. Favorable prices recruit high-cost preparation more often when challenger value is high.</p>
 <div class="strip">
 <div class="stat"><span class="stat-value">[[base_entry_weak:percent]]</span><span class="stat-label">prepare against the weak incumbent<br>\(r=[[base_r_weak]]\), uninformative price</span></div>
 <div class="stat"><span class="stat-value">[[base_entry_strong:percent]]</span><span class="stat-label">prepare against the strong incumbent<br>\(r=[[base_r_strong]]\), informative price</span></div>
@@ -14,47 +45,19 @@
 
 <span id="sec-05-results-benchmark" class="legacy-anchor" aria-hidden="true"></span><span id="table-2" class="legacy-anchor" aria-hidden="true"></span>
 <h3 id="sec-evidence-control">Hold the information fixed</h3>
-<p>To isolate the information effect, hold investor orders fixed at the same informative profile in both economies. A stronger incumbent then reduces preparation, as the usual deterrence argument predicts. In equilibrium, however, the investor does not trade against the weak incumbent and does trade against the strong one. Allowing the information to change reverses the preparation comparison.</p>
+<p>Hold the investor's informative orders fixed across economies: stronger competition reduces preparation. Let orders adjust in equilibrium: information changes, and the comparison reverses.</p>
 <figure class="table">
 <!-- @@TABLE:core_comparison@@ -->
 <figcaption>Preparation probabilities in the benchmark. Holding orders fixed isolates the information effect; these orders would not be chosen in equilibrium against the weak incumbent. When the price is withheld, the equilibrium is solved again. Percentages are rounded for reading; exact CSV values remain available on hover.</figcaption></figure>
-<p>Preparation is the decision to pay to learn. Bidding follows if the prepared buyer can submit an admissible offer. Ownership requires winning, and <em>high-value ownership</em> counts only wins by the high-value challenger. These outcomes should not be conflated. In the benchmark, high-value challenger ownership rises from [[base_ownership_weak:percent]] to [[base_ownership_strong:percent]], so the participation gain also changes who acquires the target.</p>
-<p>A still stronger incumbent need not attract more preparation. At the third benchmark strength, even the best attainable price cannot justify the high cost, and preparation returns to [[base_entry_collapse:percent]]. The three benchmarks establish a rise followed by a fall. They do not establish a smooth hump or a monotone path between those points.</p>
-<p>At intermediate strengths, informative and uninformative outcomes can coexist. The paper certifies selected examples and reports numerical searches more broadly. The main result avoids choosing a preferred branch by establishing unique trading and on-path preparation outcomes in its comparison economies. Pricing rules for events that do not occur in equilibrium need not be unique.</p>
-<details class="fold" id="result-detail"><summary>Formal conditions and the proof of the participation reversal</summary>
+<p>Preparation, bidding and ownership are distinct. In the benchmark, preparation rises from [[base_entry_weak:percent]] to [[base_entry_strong:percent]], while high-value ownership rises from [[base_ownership_weak:percent]] to [[base_ownership_strong:percent]]. These are model probabilities, not empirical estimates.</p>
+<p>A still stronger incumbent can make even the best attainable price insufficient to justify high-cost preparation. Participation then returns to [[base_entry_collapse:percent]]. The theorem compares specified economies; it does not establish a smooth hump. At intermediate strengths, equilibria can coexist. The certificates and numerical searches below retain that distinction.</p>
+<details class="fold" id="result-detail"><summary>Full theorem, preparation probabilities and proof</summary>
 <span id="sec-appendix" class="legacy-anchor" aria-hidden="true"></span>
 
 <h3 id="sec-05-results-prop2">Proposition 2</h3>
 
-<div class="prop" id="prop-2">
-<p class="prop-title">Proposition 2 (competition creates competition).</p>
-<div class="prop-body">
-<p><em>Fix \(0\lt p\lt\ell\lt r_0\lt r_1\lt h\), \(0\lt\rho\lt1\), \(b\gt1\), and \(k\gt0\), and suppose that</em></p>
-<div class="math-block">\[
-0\le c_L\lt B_{r_1}(m),
-\tag{A1}
-\]</div>
-<div class="math-block">\[
-B_{r_0}(1/2)\lt c_H\lt B_{r_1}(M),
-\tag{A2}
-\]</div>
-<div class="math-block">\[
-\Delta_T(r_0)\lt k\lt\left(1-\frac1b\right)\rho m\Delta_T(r_1).
-\tag{A3}
-\]</div>
-<p><em>(i) At \(r_0\) the unique trading and on-path preparation outcome has no informed trading and entry \(\rho\). (ii) At \(r_1\) the unique trading outcome has full orders \((1,-1)\), a price that Blackwell dominates the weak-incumbent experiment, entry above \(\rho\), and a higher probability that the high-value challenger acquires the target. (iii) At any \(r_2\in(r_1,h)\) with \(c_L\lt B_{r_2}(m)\), \(B_{r_2}(M)\lt c_H\), and \(k\lt(1-1/b)\rho m\Delta_T(r_2)\), trading stays informative but entry returns to \(\rho\). The comparisons hold on a nonempty open set of primitives.</em></p>
-<details class="fold">
-<summary>Reading the conditions</summary>
-<p>(A1) keeps the low-cost challenger in at every feasible belief; (A2) keeps the high-cost challenger out at the weak prior but lets favorable strong-incumbent prices bring it in; (A3) puts the trading cost above every informational return in the weak economy and below a global bound on marginal trading profits in the strong one.</p>
-</details>
-<details class="fold">
-<summary>Full statement</summary>
-<p><em>(i) With the weak incumbent \(r_0\), the unique equilibrium trading outcome is \(q_H=q_L=0\), the price carries no information, and entry equals \(\rho\). (ii) With the strong incumbent \(r_1\), the unique equilibrium trading outcome is \((q_H,q_L)=(1,-1)\), the price is informative, entry strictly exceeds \(\rho\), and the probability that the high-value challenger acquires the target is strictly higher than at \(r_0\). The strong-incumbent price experiment strictly Blackwell dominates the weak-incumbent experiment at the same noise law. (iii) For any \(r_2\in(r_1,h)\) with \(c_L\lt B_{r_2}(m)\), \(B_{r_2}(M)\lt c_H\), and \(k\lt(1-1/b)\rho m\Delta_T(r_2)\), the unique trading outcome is again \((1,-1)\), but entry returns to \(\rho\). These comparisons hold on a nonempty open set of primitives. Uniqueness refers to trading and on-path entry under truthful bidding and allows arbitrary mixed orders and every continuous deviation.</em></p>
-</details>
-</div>
-</div>
 
-<p>The proof bounds trading profits over every candidate strategy, including mixed orders. Against the weak incumbent, no informed order covers its cost. Against the strong incumbent, a full order is better than every smaller order. This establishes uniqueness without selecting among numerical solutions.</p><p>With full orders, the price crosses the high-cost preparation threshold \(\tau\) more often when challenger value is high: \(\alpha_H\gt\alpha_L\). Additional preparation therefore favors high-value challengers. Equation (12) gives the probabilities used by the explorer. The comparison applies to the specified economies and does not impose a monotone path between them.</p>
+<p><em>(i) With the weak incumbent \(r_0\), the unique equilibrium trading outcome is \(q_H=q_L=0\), the price carries no information, and entry equals \(\rho\). (ii) With the strong incumbent \(r_1\), the unique equilibrium trading outcome is \((q_H,q_L)=(1,-1)\), the price is informative, entry strictly exceeds \(\rho\), and the probability that the high-value challenger acquires the target is strictly higher than at \(r_0\). The strong-incumbent price experiment strictly Blackwell dominates the weak-incumbent experiment at the same noise law. (iii) For any \(r_2\in(r_1,h)\) with \(c_L\lt B_{r_2}(m)\), \(B_{r_2}(M)\lt c_H\), and \(k\lt(1-1/b)\rho m\Delta_T(r_2)\), the unique trading outcome is again \((1,-1)\), but entry returns to \(\rho\). These comparisons hold on a nonempty open set of primitives. Uniqueness refers to trading and on-path entry under truthful bidding and allows arbitrary mixed orders and every continuous deviation.</em></p>
 
 <details class="fold">
 <summary>The full-order candidate (12)</summary>

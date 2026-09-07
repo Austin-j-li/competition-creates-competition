@@ -2,9 +2,9 @@
 <span id="sec-04-two-returns" class="legacy-anchor" aria-hidden="true"></span>
 
 <h2>Two returns to information</h2>
-<p class="section-time">2 · The mechanism · 3 minutes</p>
+<p class="section-time">2 · The mechanism · 4 minutes</p>
 
-<p>Two parties care about the same acquisition but receive different payoffs. The challenger cares about the value it keeps after paying for the target. Target shareholders care about the payment they receive. A stronger incumbent can move these two returns in opposite directions. This difference connects the auction to information in the stock market.</p>
+<p>The challenger cares about the acquisition value it keeps after paying for the target. Target shareholders receive that payment. The auction links these different payoffs to preparation and informed trading.</p>
 <figure class="mechanism-map" aria-labelledby="mechanism-caption">
 <div class="mechanism-start">A stronger incumbent</div>
 <div class="mechanism-paths">
@@ -13,18 +13,51 @@
 </div>
 <figcaption id="mechanism-caption">The participation reversal occurs when the second effect outweighs the first. Proposition 2 gives conditions on preparation costs and trading costs that establish this comparison.</figcaption>
 </figure>
-<h3 id="sec-mechanism-payments">Follow the payment</h3>
-<p>In the benchmark auction, the winner pays the greater of the reserve and the other bidder's value. The challenger's value can be high or low. Its high value exceeds every possible incumbent value, so a prepared high-value challenger wins. Its low value lies inside the incumbent's range, so a low-value challenger sometimes wins and sometimes loses. Both challenger values exceed the benchmark reserve.</p>
-<div class="payment-cases">
-<p><strong>If the incumbent's value is below the challenger's low value,</strong> either challenger type wins and pays the same amount: the greater of the reserve and the incumbent's bid. Target shareholders receive the same payment whichever challenger type arrives.</p>
-<p><strong>If the incumbent's value exceeds the challenger's low value,</strong> a high-value challenger wins and pays the incumbent's bid. A low-value challenger loses, and the incumbent pays the challenger's low bid. Target proceeds now depend on the challenger's type, and the difference grows with the incumbent's value.</p>
+<h3 id="sec-mechanism-payments">One payment rule, two incentives</h3>
+<div id="incentive-brief">
+<p>Let \(g_H(r),g_L(r)\) be the challenger's expected acquisition profits before preparation costs, conditional on its value. At posterior belief \(\mu(P)=\Pr(\theta=h\mid P)\), its decision is</p>
+<div class="math-block">\[
+\begin{gathered}
+B_r(\mu)=g_L(r)+\mu[g_H(r)-g_L(r)],\\
+\text{prepare iff }B_r(\mu(P))\ge C.
+\end{gathered}
+\]</div>
+<p>Let \(t_H,t_L\) be expected target proceeds when the challenger prepares. If \(R\le\ell\), either challenger type wins and pays the same amount. If \(R\gt\ell\), a high-value challenger wins and pays \(R\); a low-value challenger loses, and the incumbent pays \(\ell\). Thus</p>
+<div class="math-block">\[
+\begin{gathered}
+\Delta_T(r)\equiv t_H-t_L=\mathbb E[(R-\ell)_+]
+=\frac{(r-\ell)^2}{2r},\\
+\frac{d\Delta_T}{dr}\gt0,\qquad
+\left.\frac{\partial B_r(\mu)}{\partial r}\right|_\mu\lt0.
+\end{gathered}
+\]</div>
+<p>Here \((x)_+=\max\{x,0\}\). Stronger competition lowers acquisition profit at every fixed belief, but makes target proceeds more sensitive to challenger value. The second effect raises the value of the investor's information.</p>
 </div>
-<p>Making the incumbent stronger puts more weight on the second case and increases the expected payment difference between challenger types. At the same time, it makes beating the incumbent less profitable for either type. The familiar deterrence effect remains: at any fixed belief about its own value, the challenger expects less acquisition profit from preparing.</p>
-<h3 id="sec-mechanism-trading">Why the investor responds differently</h3>
-<p>An investor trades the target's shares, whose payoff is tied to what target shareholders receive. When those proceeds barely depend on the challenger's type, knowing that type is of little trading value. When the payment difference is larger, the same information is more valuable. The investor is more willing to buy on good information or sell on bad information, making order flow more informative.</p>
-<p>Competitive pricing does not eliminate this effect. Market makers anticipate both the investor's strategy and the preparation their price will induce. They cannot perfectly distinguish informed orders from noise demand. An investor who knows the challenger's type therefore retains an advantage over the price, even after the expected effect of preparation is priced in. Whether that residual advantage covers trading costs determines whether informed trading takes place.</p>
-<p>The challenger observes the price, rather than the market maker's order flow. Under the main result's conditions, some low-cost buyers always prepare. This keeps the price sensitive to beliefs and lets the challenger recover the market's information from the price alone. Favorable prices can then justify preparation for a high-cost buyer that would stay out on its prior information.</p>
-<figure class="chart" data-chart="fig1" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p><div class="chart-mount" id="chart-fig1" role="img" aria-label="Target-payoff spread rising and challenger acquisition profits falling with incumbent strength"></div><figcaption><strong>Figure 1.</strong> At fixed beliefs, challenger profit falls as the incumbent strengthens, while the target-payoff spread rises. The horizontal axis is incumbent strength \(r\); \(\Delta_T\) is the expected difference in target proceeds across challenger types, and \(B_r\) is expected challenger profit before preparation costs. The three profit curves hold beliefs fixed at the lower bound, the prior and the upper bound. Values are per target share. Hover for values.</figcaption></figure><p class="takeaway">The stronger rival reduces the return to winning, but increases the value of information in the traded claim. When that changes whether information is produced through trading, a buyer can become more willing to prepare even as its profit at every fixed belief falls.</p><details class="fold" id="model-detail"><summary>Model, payoff formulas and the price-information argument</summary>
+<h3 id="sec-mechanism-trading">Why the price can change preparation</h3>
+<div id="equilibrium-brief">
+<p>The investor chooses an order \(q\in[-1,1]\) to maximize expected profit conditional on \(\theta\), paying \(k|q|\), with \(k\gt0\). Independent noise demand is \(Z\sim\operatorname{Laplace}(0,b)\), \(b\gt1\). For terminal target proceeds \(V_T\), competitive pricing requires</p>
+<div class="math-block">\[
+\begin{gathered}
+X=q+Z,\qquad P(X)=\mathbb E[V_T\mid X],\\
+\pi_I=q[V_T-P(X)]-k|q|.
+\end{gathered}
+\]</div>
+<p>An equilibrium jointly determines investor orders, prices, Bayesian beliefs and optimal preparation under truthful bidding. Investor deviations may use any order or mixture, evaluated against the candidate price and preparation schedules. Comparing incumbent strengths instead solves those schedules again.</p>
+<p>Noise bounds the market maker's posterior \(\mu_X=\Pr(\theta=h\mid X)\), under every order strategy:</p>
+<div class="math-block">\[
+m\le\mu_X\le M,\qquad
+m=\frac{1}{1+e^{2/b}},\quad M=1-m.
+\]</div>
+<p>Price posteriors inherit these bounds. If \(c_L\lt B_r(m)\), the low-cost challenger always prepares. With preparation probability \(e(P)\ge\rho\) and no-preparation proceeds \(t_0\), rational pricing implies</p>
+<div class="math-block">\[
+\begin{gathered}
+P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\\
+\mu_X=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T}.
+\end{gathered}
+\]</div>
+<p>The positive denominator lets the challenger recover the market's posterior from the price alone. This preparation floor sustains state-sensitive proceeds. Rational pricing incorporates expected preparation but leaves an investor who knows \(\theta\) an informational advantage; the question is whether it covers trading costs.</p>
+</div>
+<figure class="chart" data-chart="fig1" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p><div class="chart-mount" id="chart-fig1" role="img" aria-label="Target-payoff spread rising and challenger acquisition profits falling with incumbent strength"></div><figcaption><strong>Figure 1.</strong> At fixed beliefs, challenger profit falls as the incumbent strengthens, while the target-payoff spread rises. The horizontal axis is incumbent strength \(r\); \(\Delta_T\) is the expected difference in target proceeds across challenger types, and \(B_r\) is expected challenger profit before preparation costs. The three profit curves hold beliefs fixed at the lower bound, the prior and the upper bound. Values are per target share. Hover for values.</figcaption></figure><details class="fold" id="model-detail"><summary>Payoff derivations, equilibrium details and the explorer</summary>
 <span id="sec-03-model" class="legacy-anchor" aria-hidden="true"></span>
 
 

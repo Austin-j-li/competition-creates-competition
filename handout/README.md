@@ -1,7 +1,8 @@
 # Professor handout
 
 Edit `handout/`, then regenerate the HTML. Do not edit `docs/index.html` directly.
-The default reading path is designed for 10–15 minutes; technical material stays in native
+The default reading path is designed for 10–15 minutes. The model, incentive comparison,
+price-inference argument, and theorem conditions are visible; derivations stay in native
 `details` controls. The four sections are the takeover setting, the mechanism, the evidence,
 and implications. Only their headings appear in the sidebar.
 The research-brief layout uses a short opening question, two mechanism paths, and a visible
@@ -46,8 +47,12 @@ commit in a fresh deployment checkout and publish a new commit. This preserves h
 After publishing, check Pages build status and compare the live HTML and both PDF hashes
 with the reviewed local artifacts.
 
+The deployment immediately before the visible-mathematics revision is
+`af99f89d28e4b8c106b00543fa733776d9624cf8`. Restore its `index.html` in a new deployment
+commit to undo that content revision while retaining the redesigned typography and fonts.
+
 The revision was checked at desktop and mobile sizes in both themes. The main reading path
-is approximately 2,060 words, excluding expanded details. Prose, the benchmark table and
+contains approximately 1,700 words of prose plus four mathematical stops, excluding expanded details. Prose, the benchmark table and
 PDF links also remain available with JavaScript disabled or the CDN blocked.
 
 ## Content and data boundaries
