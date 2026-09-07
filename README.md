@@ -10,6 +10,41 @@ Research repository for the paper and its numerical layer.
 - `tables/`, `figures/`, `figures_data/`: generated CSV outputs, LaTeX tables, and vector figures.
 - `verification/`: the collaborator's distributed node checks and interval certificates (E.2), kept as delivered.
 
+## Working across machines
+
+`main` is the shared branch for the current paper, supervisor handout, and teaching course.
+Before changing machines, commit the intended files and push them. On the other laptop,
+run these commands from your existing checkout:
+
+```bash
+git fetch origin
+git switch main
+git pull --ff-only origin main
+```
+
+Commit or stash any local edits before switching branches. A new clone checks out `main`.
+Install the local environment using `replication/README.md`; virtual environments, caches,
+and private Claude settings stay on each machine. Shared Claude instructions, skills, and
+preview configuration are tracked.
+
+The supervisor brief is at https://austinjunyuli.github.io/competition-creates-competition/.
+Its sources and build instructions are in `handout/README.md`; the course is in `learn/`.
+The current delivery PDFs are in `peer_release/` and the site copies in `docs/`.
+Publishing the website still requires updating `gh-pages` after building the handout.
+
+Both VM checkouts were reconciled on 2026-09-07. Their previous working states, including
+historical source archives, are preserved as Git stashes:
+
+| VM checkout | Backup stash commit |
+|---|---|
+| `/home/uctpiaj/work/competition-creates-competition` | `8531dae98d683d794335ad2db29ce493f93ea383` |
+| `/home/uctpiaj/work/Projects/competition-creates-competition` | `b04462a0f4f8c6b803b6d765dae749038d19f3e8` |
+
+These backups remain on the VM. Unique review inputs and audit records are tracked here;
+the archived source packages duplicate earlier revisions. Inspect a backup with
+`git stash show --include-untracked --stat <commit>` in its VM checkout. Do not apply the
+old state over current work without reviewing the differences.
+
 ## Running
 
 ```bash

@@ -1,4 +1,8 @@
-# Resume the peer-circulation revision on the VM
+# Peer-circulation revision: historical VM handoff
+
+For current cross-machine updates, follow `README.md`. The current paper, handout, course,
+and shared project instructions are on `main`. The interrupted-work instructions below
+are retained as history; the revision is complete.
 
 ## Completed on 2026-09-06
 

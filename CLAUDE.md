@@ -1,8 +1,8 @@
 # CLAUDE.md
 
 Research repository for "Competition Creates Competition: Stock Prices and the Discovery of
-Takeover Bidders". Three layers: the paper (`paper/`), the numerical layer (`numerics/`, to be
-built), and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generated).
+Takeover Bidders". Three layers: the paper (`paper/`), the numerical layer (`numerics/`),
+and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generated).
 
 ## Source of truth
 
@@ -14,7 +14,7 @@ built), and the figure and table layer (`figures/`, `tables/`, `figures_data/`, 
   are declarations; every other row is filled only from validated output.
 - `paper/main.md` is the manuscript source. On 2026-09-05 the author requested and approved a
   full rewrite of its prose (single-author voice, finance-journal structure, three numbered
-  propositions), so prose edits go to `paper/main.md` directly when the author asks for them;
+  propositions), so requested prose edits go to `paper/main.md` directly, never to the generated copies;
   the numerical layer still fills placeholders into generated copies (`paper/*_filled.md`).
   Figure and table positions are marked by `<!-- FIGURE N: path -->` or `<!-- TABLE N: path -->`
   followed by a `> **Figure N.** caption` blockquote; captions are the author's text.
@@ -44,10 +44,25 @@ built), and the figure and table layer (`figures/`, `tables/`, `figures_data/`, 
 
 ## Working rules
 
-- Verification before any commit or completion claim: a single script under `numerics/`
+- Verification for numerical changes and full release/readiness claims: a single script under `numerics/`
   that reruns every acceptance check and the placeholder substitution and exits nonzero on
   any breach or unresolved required placeholder.
 - Commit at the end of each exercise with an informative subject. Never commit the virtual
   environment or generated PDFs other than the built manuscript at delivery.
 - Tool internals (agent names, delegation tooling, session mechanics) stay out of this file,
   the paper, and any project document.
+
+## Verification scope
+
+For documentation-only changes or read-only assessments, use relevant static/source checks.
+For focused implementation changes, run the affected checks and dependent renders. Full
+release/readiness claims require all applicable gates. Keep verification-only requests
+read-only; an authorized implementation caller repairs failures caused by its changes and
+reruns the affected checks. Preserve tolerances, provenance, and unresolved-result labels.
+
+## Related work
+
+For the supervisor handout, read `handout/README.md`. For the teaching course, read
+`learn/MISSION.md`. For cross-machine updates, use the instructions in `README.md`.
+The completed peer-circulation revision is recorded in `audit/peer_polish/completion_report.md`;
+`VM_START_HERE.md` retains the historical transfer instructions.
