@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proof Map</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+td:first-child{white-space:nowrap;font-weight:600}
+.status{font:.72rem system-ui;padding:.1em .5em;border-radius:10px;color:#fff;white-space:nowrap}
+.an{background:var(--accent2)}.ca{background:var(--accent)}
+.dep rect{fill:var(--box);stroke:var(--accent2);stroke-width:1.5}
+.dep rect.ca{stroke:var(--accent)}
+.dep line,.dep path{stroke:var(--muted);stroke-width:1.3;fill:none;marker-end:url(#arr)}
+.dep text{font-size:12px}
+</style>
+</head>
+<body>
+<nav class="course">
+  <span><a href="../lessons/0001-the-story-and-the-institutions.html">Lesson 1</a></span>
+  <span><a href="glossary.html">Glossary</a> · <a href="formula-sheet.html">Formula sheet</a></span>
+</nav>
+
+<h1>Proof Map</h1>
+<p class="subtitle">What each proposition claims, what it needs, how it is proved, and what it leaves alone.</p>
+<p class="meta"><span>Reference document</span><span>Status: <span class="status an">analytical</span> pen and paper; <span class="status ca">computer-assisted</span> interval certificate</span></p>
+
+<h2>Dependency diagram</h2>
+<figure>
+<svg class="dep" viewBox="0 0 760 330" width="100%" role="img" aria-label="Dependency diagram of propositions">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+<!-- row 1 -->
+<rect x="20" y="20" width="130" height="44" rx="6"/><text x="85" y="38" text-anchor="middle">Prop A.1</text><text x="85" y="55" text-anchor="middle">posterior bounds</text>
+<rect x="200" y="20" width="130" height="44" rx="6"/><text x="265" y="38" text-anchor="middle">Prop A.2</text><text x="265" y="55" text-anchor="middle">price sufficiency</text>
+<rect x="20" y="110" width="130" height="44" rx="6"/><text x="85" y="128" text-anchor="middle">Prop 1</text><text x="85" y="145" text-anchor="middle">two returns</text>
+<rect x="200" y="110" width="130" height="44" rx="6"/><text x="265" y="128" text-anchor="middle">Prop 2</text><text x="265" y="145" text-anchor="middle">entry reversal</text>
+<!-- arrows -->
+<line x1="150" y1="42" x2="198" y2="42"/>
+<line x1="265" y1="64" x2="265" y2="108"/>
+<line x1="150" y1="132" x2="198" y2="132"/>
+<!-- consequences column -->
+<rect x="400" y="10" width="120" height="36" rx="6"/><text x="460" y="33" text-anchor="middle">A.3 fixed experiment</text>
+<rect x="400" y="56" width="120" height="36" rx="6"/><text x="460" y="79" text-anchor="middle">A.4 thresholds</text>
+<rect x="400" y="102" width="120" height="36" rx="6"/><text x="460" y="125" text-anchor="middle">A.5 logistic noise</text>
+<rect x="400" y="148" width="120" height="36" rx="6"/><text x="460" y="171" text-anchor="middle">A.6 atomless costs</text>
+<rect x="400" y="194" width="120" height="36" rx="6"/><text x="460" y="217" text-anchor="middle">A.7 private signals</text>
+<rect x="400" y="240" width="120" height="36" rx="6"/><text x="460" y="263" text-anchor="middle">A.9 price access</text>
+<path d="M330,132 C365,132 365,28 398,28"/>
+<path d="M330,132 C365,132 365,74 398,74"/>
+<path d="M330,132 C365,132 365,120 398,120"/>
+<path d="M330,132 C365,132 365,166 398,166"/>
+<path d="M330,132 C365,132 365,212 398,212"/>
+<path d="M330,132 C365,132 365,258 398,258"/>
+<!-- separate -->
+<rect class="ca" x="580" y="20" width="160" height="44" rx="6"/><text x="660" y="38" text-anchor="middle">Prop 3</text><text x="660" y="55" text-anchor="middle">certified equilibria</text>
+<rect class="ca" x="580" y="110" width="160" height="44" rx="6"/><text x="660" y="128" text-anchor="middle">Online Appendix B</text><text x="660" y="145" text-anchor="middle">interval certificates</text>
+<line x1="660" y1="108" x2="660" y2="66"/>
+<rect x="580" y="230" width="160" height="44" rx="6"/><text x="660" y="248" text-anchor="middle">Prop A.8</text><text x="660" y="265" text-anchor="middle">bargaining</text>
+<text x="660" y="300" text-anchor="middle" style="fill:var(--muted)">self-contained; uses only the payment rule</text>
+</svg>
+<figcaption>Arrows point from a result to the results that use it. Proposition 3 rests on the interval machinery of Online Appendix B and on the payoff formulas, not on Proposition 2. Proposition A.8 is a separate institution.</figcaption>
+</figure>
+
+<h2>The map</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Result</th><th>Claim in one sentence</th><th>Needs</th><th>Uses</th><th>Technique</th><th>Status</th><th>Does not claim</th></tr>
+
+<tr><td>Prop 1</td>
+<td>A stronger incumbent widens the gap in target proceeds between high and low challengers and lowers the challenger's profit at every belief.</td>
+<td>Continuous \(F\) on \([0,\bar r]\), \(0\lt p\lt \ell\lt \bar r\lt h\), second-price rule with truthful bids.</td>
+<td>Payment rule only: the target-payment difference is \((R-\ell)_+\).</td>
+<td>Direct integration (A.1); Tonelli for (6); FOSD on monotone functions.</td>
+<td><span class="status an">analytical</span></td>
+<td>Anything about trading or entry; it is an acquisition-stage statement.</td></tr>
+
+<tr><td>Prop A.1</td>
+<td>No trading strategy, pure or mixed, can push the belief outside \([m,M]\); the price posterior obeys the same bounds.</td>
+<td>Laplace noise, orders in \([-1,1]\), equal priors.</td>
+<td>Triangle inequality on \(|x-q|\); conditional expectation.</td>
+<td>Likelihood-ratio bound (8) integrated against order distributions.</td>
+<td><span class="status an">analytical</span></td>
+<td>Which beliefs are actually reached; only which are impossible.</td></tr>
+
+<tr><td>Prop A.2</td>
+<td>The price reveals the market's belief, and the insider's residual edge equals entry times spread times remaining uncertainty.</td>
+<td>\(c_L\lt B_r(m)\) so entry is at least \(\rho\).</td>
+<td>Prop A.1; competitive pricing (3).</td>
+<td>Algebraic inversion (10) with positive denominator; subtraction of conditional payoffs (11).</td>
+<td><span class="status an">analytical</span></td>
+<td>Differentiable prices; it allows atoms and jumps.</td></tr>
+
+<tr><td>Prop 2</td>
+<td>Across two specified strengths the unique equilibrium switches from no trade with entry \(\rho\) to full orders with entry above \(\rho\), and at a third strength entry returns to \(\rho\).</td>
+<td>(A1), (A2), (A3); \(0\lt p\lt \ell\lt r_0\lt r_1\lt h\).</td>
+<td>Prop 1 (signs of derivatives), Prop A.1, Prop A.2, translation formula (A.5).</td>
+<td>Convolution derivative bound (A.6); Laplace survival function for (12); garbling argument for Blackwell.</td>
+<td><span class="status an">analytical</span></td>
+<td>Monotone entry between the economies; uniqueness at intermediate strengths; anything about the path from \(r_0\) to \(r_1\).</td></tr>
+
+<tr><td>Prop A.3</td>
+<td>If the information experiment is held fixed, a stronger incumbent weakly reduces entry.</td>
+<td>Posterior distribution independent of \(r\).</td>
+<td>\(B_r\) decreasing in \(r\) (Prop 1).</td>
+<td>Pointwise indicator comparison.</td>
+<td><span class="status an">analytical</span></td>
+<td>Anything across order profiles that change with \(r\); changing orders change the experiment.</td></tr>
+
+<tr><td>Prop A.4</td>
+<td>No trade exists iff \(r\le r_N\), is unique below \(\mathfrak r(k)\), full orders are unique above \(r_U\), and expensive entry is impossible above \(r_C\).</td>
+<td>\(c_L\lt B_r(m)\), \(B_r(1/2)\lt c_H\), strengths in \((\ell,h)\).</td>
+<td>Deviation payoff (A.12); bound (A.6); monotonicity of \(B_r(M)\) in (A.13).</td>
+<td>Solving \(\Delta_T(r)=d\) and \(B_r(M)=c_H\) in closed form.</td>
+<td><span class="status an">analytical</span></td>
+<td>That these three boundaries coincide, or that the region between \(r_N\) and \(r_U\) has a unique equilibrium.</td></tr>
+
+<tr><td>Prop 3</td>
+<td>At \(r=1.55,1.60,1.65\) there exist equilibria with full purchases and partial short sales \(v_j\), with entry strictly ordered upward, coexisting with no trade.</td>
+<td>Benchmark (A.55); \(1/2\lt \tau\lt M_v\); \(b\gt 1/2\).</td>
+<td>Payoff formulas (4); Stieltjes concavity (A.16); Lipschitz cover (A.18), (A.19); antiderivatives (A.20).</td>
+<td>Interval arithmetic with outward rounding; intermediate value theorem on sign changes (A.17); mesh cover.</td>
+<td><span class="status ca">computer-assisted</span></td>
+<td>A differentiable branch through the three points; monotonicity between them; nonexistence of mixed equilibria; uniqueness.</td></tr>
+
+<tr><td>Prop A.5</td>
+<td>Proposition 2 survives when Laplace noise is replaced by logistic noise.</td>
+<td>(A1) to (A3) with logistic density (A.21).</td>
+<td>Bounded log-density slope \(1/b\); log odds (A.22).</td>
+<td>Same convolution bound; inversion of the logistic posterior for (A.23).</td>
+<td><span class="status an">analytical</span></td>
+<td>Equal entry levels across noise laws; the bounds are reached only in the limit, so entry differs.</td></tr>
+
+<tr><td>Prop A.6</td>
+<td>Proposition 2 parts (i) and (ii) survive atomless preparation costs with narrow supports.</td>
+<td>Support restrictions (A.24) and (A3).</td>
+<td>Prop A.1, A.2; monotone cost CDF.</td>
+<td>Same bounds; positive-probability favorable event under either noise law.</td>
+<td><span class="status an">analytical</span></td>
+<td>Results for wide cost supports that violate (A.24).</td></tr>
+
+<tr><td>Prop A.7</td>
+<td>With conditionally independent private signals for investor and buyer, the weak economy has zero orders and entry \(\rho\); the strong economy has full signal-contingent orders and entry above \(\rho\).</td>
+<td>Conditions (A.29) of the appendix; \(a,d\in(1/2,1)\).</td>
+<td>Public-belief bounds (A.27); positive coefficient \(D\) in (A.33); residuals (A.35) to (A.36).</td>
+<td>Price inversion with state-dependent entry (A.34); convolution bound (A.37).</td>
+<td><span class="status an">analytical</span></td>
+<td>That the investor must be better informed than the buyer; the example has \(d\gt a\).</td></tr>
+
+<tr><td>Prop A.8</td>
+<td>Under Nash bargaining with seller weight \(\eta\), a stronger incumbent lowers challenger profit for every \(\eta\) and widens the target spread iff \(\eta\lt 1/2\).</td>
+<td>Zero reserve, verifiable values, \(0\lt \ell\lt R_{\max}\lt h\), \(0\le\eta\lt 1\).</td>
+<td>Payment rule (14) only.</td>
+<td>Nash bargaining solution \(P=z+\eta(V-z)\); FOSD on \((R-\ell)_+\) and \((\theta-R)_+\).</td>
+<td><span class="status an">analytical</span></td>
+<td>An entry reversal under bargaining; trading and entry are not solved for this institution.</td></tr>
+
+<tr><td>Prop A.9</td>
+<td>At fixed \(r_1\), letting the challenger see the price raises expected target proceeds and acquisition surplus net of preparation costs.</td>
+<td>Conditions of Prop 2; \(r=r_1\).</td>
+<td>Full orders in both games (A.6); pointwise gain (A.39).</td>
+<td>Matched coupling of the two economies; accounting identity (A.41).</td>
+<td><span class="status an">analytical</span></td>
+<td>A ranking of incumbent strengths or of sale mechanisms; it holds the sale rule fixed.</td></tr>
+
+<tr><td>Prop A.10</td>
+<td>At reserve \(p=7\) and \(r=r_0\), every cutoff \(c\in[-\log2,0]\) of the price rule (A.45) is a continuation equilibrium with full orders; prices, beliefs, and entry differ across the family, orders do not.</td>
+<td>Benchmark primitives; \(p\gt r\gt\ell\), so \(t_0=t_L=g_L=0\), \(t_H=7\), \(g_H=3\).</td>
+<td>Pooled posterior (A.46); residuals (A.47); existence test (A.7).</td>
+<td>Pooled belief below \(1/3\) keeps the cheap type out at price zero; belief at least \(1/3\) elsewhere; rational lower bound (A.48) on \(U_\theta'\).</td>
+<td><span class="status an">analytical</span></td>
+<td>Uniqueness of the family within \(\mathcal E(7,r_0)\); pooling on the benchmark support, where \(c_L\lt B_r(m)\) rules it out.</td></tr>
+</table>
+</div>
+
+<h2>Reading the map</h2>
+<p>Three ideas carry the whole paper. First, the payment rule alone makes the target's payoff spread rise and the challenger's profit fall with competition (Proposition 1). Second, noise bounds beliefs, and the price reveals the bounded belief (A.1, A.2). Third, a global derivative bound on convolution profits pins down trading without guessing an equilibrium (the fourth step of Proposition 2). Every extension reuses these three ideas with a different noise law, cost law, or signal structure. Proposition 3 is the one place where pen and paper stop and a certified computation takes over, and its status label says so.</p>
+
+<p class="ask">If a row here is unclear, ask the teaching agent to walk through that proof step by step.</p>
+</body>
+</html>

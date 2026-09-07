@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3: What can Buyer B learn from Target's share price?</title>
+<link rel="stylesheet" href="../assets/course.css?revision=20260906-final">
+<script defer src="../assets/quiz.js"></script>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<nav class="course"><span>Lesson 3 of 5</span><span><a href="0002-auction-payoffs-and-proposition-1.html?revision=20260906-final">← Previous</a> · <a href="../index.html?revision=20260906-final">Course home</a> · <a href="0004-proposition-2-the-full-proof.html?revision=20260906-final">Next →</a></span></nav>
+<h1>What can Buyer B learn from Target's share price?</h1>
+<p class="subtitle">Start with probability updating. Then explain the price and calculate the informed investor's remaining advantage.</p>
+<div class="meta"><span>Paper: Sections 3.2–3.3</span><span>Appendix A.1</span></div>
+<div class="eli5">Dealers see trading that may contain information about B. They use that evidence to price Target shares. B sees the price and can learn from it. But unrelated trading prevents anyone from inferring B's value perfectly, so the informed investor can still know more than the price reveals.</div>
+<h2>1. Updating a probability means comparing explanations</h2>
+<p>Before observing trading, B has a 50% probability of having value 10 and a 50% probability of having value 1. This starting probability is the <em>prior</em>. We use \(H\) for the high-value state and \(L\) for the low-value state.</p>
+<p>Suppose an observation is three times as likely in state H as in state L. Starting from equal odds, the updated odds are three to one. The probability of H is therefore \(3/(3+1)=0.75\).</p>
+<p>The updated probability is the <em>posterior</em>. It combines the starting probability with the relative likelihood of the evidence:</p>
+$$\text{posterior odds}=\text{prior odds}\times\text{likelihood ratio}.$$
+<p>For a probability \(\mu\), the odds are \(\mu/(1-\mu)\). With equal priors and likelihoods \(a_H\) and \(a_L\), Bayes' rule becomes</p>
+$$\mu=\frac{a_H}{a_H+a_L},\qquad \frac{\mu}{1-\mu}=\frac{a_H}{a_L}.$$
+<p>The denominator includes both ways the observation could arise. Evidence more likely under H raises the probability of H; evidence more likely under L lowers it.</p>
+<div class="checkpoint"><h3>Update once</h3><div class="quiz" data-answer="c"><div class="q">H and L start equally likely. An observation is twice as likely under H as under L. What is the posterior probability of H?</div><label><input type="radio" value="a">1/2</label><label><input type="radio" value="b">1</label><label><input type="radio" value="c">2/3</label><div class="fb ok">Yes. The odds become 2 to 1, giving probability 2/3.</div><div class="fb no">Give the H explanation weight 2 and the L explanation weight 1. H receives 2 of the 3 total units of weight.</div></div></div>
+<h2>2. What dealers observe</h2>
+<p>The informed investor chooses an order \(q\) between −1 and 1. Positive means buying, negative means selling short, and zero means no trade. These are units of a small trading position, not fractions representing ownership of the entire company.</p>
+<p>Selling short means selling a borrowed share and later settling the position. A lower eventual share payoff benefits the seller. The model summarizes either direction with the signed order q.</p>
+<p>Write \(V_T\) for a share's eventual payoff and k for the trading cost per unit. The investor's realized profit is</p>
+$$q\{V_T-P(X)\}-k|q|.$$
+<p>A positive q benefits from a payoff above the purchase price. A negative q benefits from a payoff below the sale price. The absolute value \(|q|\) makes the trading cost positive in either direction. The investor chooses before the eventual payoff and unrelated demand are known, so it maximizes the expected value of this expression.</p>
+<p>Other traders submit combined net demand \(Z\). Dealers observe only the total</p>
+$$X=q+Z.$$
+<p>For example, total demand of 0.6 could come from an informed purchase of 1 plus other traders selling 0.4. It could also come from an informed sale of 1 plus other traders buying 1.6. The two explanations need not be equally likely.</p>
+<p>The model describes unrelated demand with a Laplace density:</p>
+$$f(z)=\frac{1}{2b}e^{-|z|/b},\qquad b&gt;1.$$
+<p>A density describes how probability is distributed over a continuous range. The probability of an interval is the area under the density on that interval. The density's value at one point is not itself the probability of that exact point.</p>
+<p>The symbol \(|z|\) is the distance from zero. The density declines as that distance increases, so modest unrelated orders are more likely than very large ones. The scale \(b\) controls the spread; the benchmark uses \(b=2\).</p>
+<p>If the investor chooses \(q\), observing \(X=x\) requires noise \(Z=x-q\). The flow density is therefore \(f(x-q)\). This simple shift is the link between trading and Bayes' rule.</p>
+<h2>3. First suppose the investor buys 1 after H and sells 1 after L</h2>
+<p>We have not yet proved those orders are optimal. For now, ask what dealers would infer if they expected them.</p>
+$$a_H(x)=f(x-1),\qquad a_L(x)=f(x+1).$$
+<p>Substitute into Bayes' rule. The normalizing factor \(1/(2b)\) cancels:</p>
+$$\frac{\mu_X(x)}{1-\mu_X(x)}=
+\frac{f(x-1)}{f(x+1)}=
+\exp\left(\frac{|x+1|-|x-1|}{b}\right).$$
+<p>The subscript X means this belief uses total flow. Taking a natural logarithm gives a convenient expression for the log odds:</p>
+$$\log\frac{\mu_X(x)}{1-\mu_X(x)}=
+\frac{|x+1|-|x-1|}{b}.$$
+<p>Between −1 and 1, the absolute values reduce to \(x+1\) and \(1-x\). Their difference is \(2x\). Thus</p>
+$$\mu_X(x)=\frac{1}{1+e^{-2x/b}},\qquad -1&lt;x&lt;1.$$
+<p>The function \(1/(1+e^{-a})\) is often called the logistic function. It converts log odds \(a\) back into a probability. At \(x=0\), the two explanations are equally likely, so the posterior is 1/2.</p>
+<h3>Large flows do not reveal the state completely</h3>
+<p>For \(x\ge1\), the difference \(|x+1|-|x-1|\) is always 2. The likelihood ratio stops rising. Similarly, it is always \(e^{-2/b}\) for \(x\le-1\).</p>
+$$\mu_X(x)=\begin{cases}
+m,&amp;x\le-1,\\
+(1+e^{-2x/b})^{-1},&amp;-1&lt;x&lt;1,\\
+M,&amp;x\ge1,
+\end{cases}
+\qquad m=\frac1{1+e^{2/b}},\quad M=1-m.$$
+<p>With \(b=2\), \(m\approx0.268941\) and \(M\approx0.731059\). Even a huge positive flow leaves about a 27% probability of L. Under this noise law, very large positive noise is possible under either state, and the relative likelihood settles at a finite ratio.</p>
+<p>The flat parts are called <em>posterior plateaus</em>. They will matter when a preparation decision is exactly tied at the highest possible belief.</p>
+<h2>4. The same bounds hold for any feasible trading strategy</h2>
+<p>The proof of the main result cannot assume full orders in advance. An investor might use smaller orders or randomize. We need a belief bound that covers all of those choices.</p>
+<p>Any two allowed orders \(q,q'\) differ by at most 2. Moving the order by that amount changes the distance of the required noise from zero by at most 2:</p>
+$$\big||x-q|-|x-q'|\big|\le|q-q'|\le2.$$
+<p>This is the triangle inequality for distances. Apply it to the exponential density:</p>
+$$e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b}.$$
+<p>If the investor randomizes, write \(\sigma_H\) and \(\sigma_L\) for the distributions of its orders in the two states. The flow densities are averages:</p>
+$$a_H(x)=\int f(x-q)\,d\sigma_H(q),\qquad
+a_L(x)=\int f(x-q)\,d\sigma_L(q).$$
+<p>Here “integrate with respect to \(\sigma\)” just means average over the orders chosen by that strategy. To preserve the bound, multiply the pairwise inequality by the probabilities of \(q\) and \(q'\), then average over both. This yields</p>
+$$e^{-2/b}a_L(x)\le a_H(x)\le e^{2/b}a_L(x).$$
+<p>Equal priors convert these likelihood-ratio bounds into \(m\le\mu_X\le M\). This proves Proposition A.1 for flow beliefs, including mixed strategies.</p>
+<p>B observes the price, which is a function of flow. Several flows could in principle produce the same price. B's belief would then average their flow-based beliefs. An average of numbers between m and M is still between m and M:</p>
+$$\Pr(H\mid P)=\mathbb E[\mu_X\mid P]\in[m,M].$$
+<p>This averaging identity is the tower property of conditional expectation. We have established the price bound without assuming that the price reveals flow or even reveals the flow posterior.</p>
+<div class="claim">Finite noise scale and bounded orders produce the belief bounds. The additional assumption \(b&gt;1\) will make a trading-profit bound positive in Lesson 4. Perfect revelation is already ruled out for any finite positive Laplace scale.</div>
+<h2>5. Work out who prepares at a given belief</h2>
+<p>From Lesson 2, B's expected gross profit is \(B_r(\mu)=g_L+\mu(g_H-g_L)\). Let \(c_L\) and \(c_H\) be its low and high preparation costs, and let \(\rho\) be the probability of the low cost.</p>
+<p>Suppose</p>
+$$c_L&lt;B_r(m).$$
+<p>Even the worst possible news leaves enough expected profit to cover the low cost. B therefore prepares whenever its cost is low. This creates a preparation probability of at least \(\rho\) at every price.</p>
+<p>At a belief \(\mu\), the probability of preparation, averaging over costs, is</p>
+$$e_r(\mu)=\rho+(1-\rho)\mathbf1\{B_r(\mu)\ge c_H\}.$$
+<p>The first term covers low-cost preparation. The second adds high-cost preparation when expected profit reaches its cost. Equality counts as preparation under the paper's tie rule.</p>
+<p>The cost is independent of B's value. In this benchmark, at a given belief the same cost-averaged entry probability applies in either true state. That will change in the private-signal extension.</p>
+<h2>6. Price the share by averaging its eventual payment</h2>
+<p>If B does not prepare, Target's expected payment is \(t_0\). If B prepares, its expected payment is \((1-\mu)t_L+\mu t_H=t_L+\mu\Delta_T\).</p>
+<p>Average over those possibilities:</p>
+$$\begin{aligned}
+P_r(\mu)&amp;=(1-e_r(\mu))t_0+e_r(\mu)[t_L+\mu\Delta_T]\\
+&amp;=t_0+e_r(\mu)[t_L-t_0+\mu\Delta_T].
+\end{aligned}$$
+<p>The price already includes the chance that B will prepare in response to it. Dealers do not forget that response and leave an extra predictable gain for the investor.</p>
+<p>At \(r=3\) and \(\mu=0.6\), B expects \(0.125+0.6(8.333333)=5.125\), below the high cost of 6. Thus \(e=0.25\) and</p>
+$$P\approx0.416667+0.25[0.875-0.416667+0.6(0.666667)]
+=0.63125.$$
+<p>This is a financial share price. It is not B's acquisition profit of 5.125, and it is not the preparation cost.</p>
+<h2>7. Can B recover the dealers' belief from the price?</h2>
+<p>We need to prove this rather than assume it. Start with any candidate equilibrium. Let \(e(P)\) be the preparation probability implied by B's behavior at price P.</p>
+<p>Dealers' rational pricing requires</p>
+$$P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X].$$
+<p>We already proved that low-cost preparation occurs at every reachable price. Hence \(e(P)\ge\rho&gt;0\). Also \(\Delta_T&gt;0\) because \(r&gt;\ell\). We can safely rearrange:</p>
+$$\mu_X=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T}.$$
+<p>Everything on the right is determined by the observed price and the known equilibrium rules. Thus B can recover the dealers' posterior without observing X. Averaging that already known number conditional on P leaves it unchanged.</p>
+<p>For the explicit price formula, let \(\mu_2&gt;\mu_1\) and write \(e_i=e_r(\mu_i)\). Since higher beliefs cannot discourage preparation, \(e_2\ge e_1\). Then</p>
+$$\begin{aligned}
+P_r(\mu_2)-P_r(\mu_1)
+&amp;=e_2\Delta_T(\mu_2-\mu_1)\\
+&amp;\quad +(e_2-e_1)(t_L-t_0+\Delta_T\mu_1)\\
+&amp;\ge\rho\Delta_T(\mu_2-\mu_1)&gt;0.
+\end{aligned}$$
+<p>The second term is nonnegative: adding even a low-value B strictly raises expected Target proceeds, so \(t_L&gt;t_0\). The price therefore rises strictly with the posterior.</p>
+<p>It can jump when high-cost preparation starts. It can also be constant over flows that all have the same plateau belief. Neither feature prevents it from revealing the posterior. Revealing the belief does not mean revealing the exact flow or B's true value.</p>
+<div class="checkpoint"><h3>What does the price reveal?</h3><div class="quiz" data-answer="b"><div class="q">Under the positive preparation floor, two flows have different dealer posteriors. Can they have the same equilibrium price?</div><label><input type="radio" value="a">Yes, because B never sees total flow.</label><label><input type="radio" value="b">No. Rearranging the pricing equation recovers one posterior from each price.</label><label><input type="radio" value="c">No, because the price always reveals B's exact value.</label><div class="fb ok">Yes. The price identifies the posterior, which can still be far from certainty.</div><div class="fb no">The positive coefficient on the posterior makes it recoverable from P. B need not observe X or know its true value.</div></div></div>
+<h2>8. Why does the informed investor still have an advantage?</h2>
+<p>At a given flow, dealers put probability \(\mu_X\) on H. The investor knows which state actually holds. Conditional on H, its estimate of the share's eventual payment is</p>
+$$\mathbb E[V_T\mid H,x]=t_0+e(P(x))(t_H-t_0).$$
+<p>Subtract the dealers' price. The common no-entry payment and common entry-related terms cancel:</p>
+$$\begin{aligned}
+A_H(x)&amp;=\mathbb E[V_T\mid H,x]-P(x)\\
+&amp;=e(P(x))\Delta_T[1-\mu_X(x)].
+\end{aligned}$$
+<p>This is the expected gain per share from buying after H, before the trading cost. For a sale after L, reverse the subtraction:</p>
+$$A_L(x)=P(x)-\mathbb E[V_T\mid L,x]
+=e(P(x))\Delta_T\mu_X(x).$$
+<p>Each advantage has three factors: the chance B prepares, the difference between Target's two conditional payments, and the probability dealers still assign to the other state.</p>
+<p>For the earlier example with \(r=3,\mu=0.6,e=0.25\), the high-state advantage is \(0.25\times(2/3)\times0.4=0.066667\). The low-state selling advantage is \(0.25\times(2/3)\times0.6=0.1\).</p>
+<p>These are advantages at this particular flow. The investor chooses before seeing unrelated demand, so its trading decision averages over flows. Comparing just these two numbers with the trading cost would not prove which order is optimal.</p>
+<h3>Bounds that hold at every flow</h3>
+<p>Entry is at least \(\rho\). Both \(\mu_X\) and \(1-\mu_X\) are at least m. All three factors are at most 1 apart from \(\Delta_T\). Consequently</p>
+$$\rho m\Delta_T\le A_H(x),A_L(x)\le\Delta_T.$$
+<p>At \(r=3\), the lower bound is about 0.044824 and the upper bound is 0.666667. These deliberately broad bounds cover every candidate trading strategy. Lesson 4 uses them to rule out all competing orders.</p>
+<div class="checkpoint"><h3>Check the investor's edge</h3><div class="quiz" data-answer="a"><div class="q">Why can the investor profit even though dealers anticipate B's preparation?</div><label><input type="radio" value="a">The investor knows the state, while dealers remain uncertain about it.</label><label><input type="radio" value="b">Dealers omit the effect of preparation from the price.</label><label><input type="radio" value="c">B pays the investor a fee for making the price informative.</label><div class="fb ok">Yes. Preparation is priced in. The advantage comes from remaining disagreement about the state.</div><div class="fb no">Both valuation formulas include preparation. Subtracting them leaves \(e\Delta_T(1-\mu)\) or \(e\Delta_T\mu\), reflecting the investor's better information.</div></div></div>
+<h2>9. One rule for the next proof</h2>
+<p>To test an equilibrium, let the investor try a different order while holding the candidate pricing and preparation rules fixed. Its new order changes which flows occur and how often. It does not cause everyone to adopt a newly solved equilibrium rule just for that deviation.</p>
+<p>Across different economies, by contrast, we solve trading, pricing, and preparation again. Keep these two operations separate. Many mistaken equilibrium calculations confuse them.</p>
+<div class="recall"><details><summary>Derive the posterior ceiling from the order bound.</summary><p>Orders differ by at most 2. The Laplace likelihood ratio is therefore at most \(e^{2/b}\). Equal priors turn that into \(M=e^{2/b}/(1+e^{2/b})\).</p></details><details><summary>Why must the preparation floor come before price inversion?</summary><p>The inversion divides by \(e(P)\Delta_T\). We first establish \(e(P)\ge\rho&gt;0\) using bounds that hold even if the price pools flows.</p></details><details><summary>Can a price reveal the dealer posterior but conceal the true state?</summary><p>Yes. Revealing “the chance of H is 60%” does not reveal whether H occurred.</p></details><details><summary>Derive the low-state selling advantage.</summary><p>Subtract the low-state expected payoff \(t_0+e(t_L-t_0)\) from the price \(t_0+e(t_L-t_0+\mu\Delta_T)\). The remainder is \(e\mu\Delta_T\).</p></details><details><summary>What does an investor's deviation change?</summary><p>The distribution of total flow reaching a fixed price and preparation schedule. The candidate schedules stay fixed during the best-response calculation.</p></details></div>
+<p class="source">Source: equations (7)–(11), Propositions A.1–A.2, and Online Appendix A.1 and A.3. The proof uses Bayes' rule, the triangle inequality, and conditional averaging; each has been introduced above.</p>
+<p><a href="0004-proposition-2-the-full-proof.html?revision=20260906-final">Continue to Lesson 4: prove the entry reversal →</a></p>
+</body></html>

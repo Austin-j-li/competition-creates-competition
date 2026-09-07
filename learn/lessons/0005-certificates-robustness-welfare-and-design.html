@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 5: What survives when we change the model?</title>
+<link rel="stylesheet" href="../assets/course.css?revision=20260906-final">
+<script defer src="../assets/quiz.js"></script>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<nav class="course"><span>Lesson 5 of 5</span><span><a href="0004-proposition-2-the-full-proof.html?revision=20260906-final">← Previous</a> · <a href="../index.html?revision=20260906-final">Course home</a> · <a href="../reference/proof-map.html?revision=20260906-final">Proof map</a></span></nav>
+<h1>What survives when we change the model?</h1>
+<p class="subtitle">Study this lesson in several sittings. We will separate equilibrium multiplicity, robustness, welfare, and the seller's choice of terms.</p>
+<div class="meta"><span>Paper: Sections 4.3–7</span><span>Appendix A.3–A.7</span></div>
+<div class="eli5">We have proved one way a stronger rival can encourage preparation. Now ask how much that result tells us. Could there be several equilibria? Does it survive different information or costs? Who benefits from price access? Can the seller improve the outcome by changing the sale rules? Each question requires a separate argument.</div>
+<p>Keep the same Target, Buyer A, and Buyer B. Unless a section says otherwise, keep the benchmark inputs. The core route is Sections 1, 3, 5, 6, and 7. The intervening sections supply the mathematical arguments. Everything is included on this page; use the route to take breaks, not to treat the proofs as optional claims.</p>
+<h2>1. Can the same economy support both trading and no trading?</h2>
+<p>Yes. At some intermediate strengths, a constant price and no informed trading fit together. An informative price and informed trading can also fit together at exactly the same inputs.</p>
+<p>To understand the first possibility, hold the no-trade price schedule fixed. From Lesson 4, a correctly signed order of magnitude s earns</p>
+$$s\left[\frac{\rho\Delta_T}2-k\right].$$
+<p>If \(\rho\Delta_T/2\le k\), the investor prefers zero to any profitable-looking deviation. B then learns nothing and prepares only at low cost. This is a consistent no-trade equilibrium.</p>
+<p>In an informative equilibrium, trading affects the beliefs B receives, and high-cost preparation can occur after favorable prices. The resulting price and preparation schedules differ from the constant schedule. The investor can prefer to trade against these different schedules.</p>
+<p>There is no contradiction: a best response is evaluated against its own candidate equilibrium's schedules. A deviation from no trade does not let the investor replace everyone's schedules with those from the informative equilibrium.</p>
+<p>Proposition 3 certifies informative equilibria of the form</p>
+$$q_H=1,\qquad q_L=-v,\qquad 0&lt;v&lt;1.$$
+<p>The high-state investor buys its maximum. The low-state investor sells less than its maximum. At strengths 1.55, 1.60, and 1.65, the certified short magnitudes are respectively</p>
+$$[0.46031618,0.46031620],\quad
+[0.70747537,0.70747539],\quad
+[0.90333198,0.90333201].$$
+<p>The corresponding preparation intervals are</p>
+$$[0.5450528898,0.5450528922],$$
+$$[0.5487563062,0.5487563085],$$
+$$[0.5513607988,0.5513608020].$$
+<p>These disjoint intervals prove that preparation rises across the three certified informative equilibria. Each of those economies also has a no-trade equilibrium with preparation 0.25.</p>
+<p>This establishes existence at three points. It does not establish a unique informative equilibrium, exclude mixed strategies elsewhere, or prove a continuous increasing branch between the points.</p>
+<h2>2. How does a computer-assisted proof establish an exact equilibrium?</h2>
+<p>A decimal produced by a solver is an approximation. A certificate instead encloses the exact answer in an interval and proves the relevant inequalities throughout the required domain.</p>
+<p><em>Outward rounding</em> means rounding a lower endpoint down and an upper endpoint up, so the true result stays inside. For example, a verified interval entirely above zero proves positivity. An interval that straddles zero does not prove either sign.</p>
+<h3>First, construct the candidate from v</h3>
+<p>With orders \((1,-v)\), total flow has densities \(f(x-1)\) and \(f(x+v)\). Hence</p>
+$$\mu_v(x)=\frac1{1+\exp[-(|x+v|-|x-1|)/b]}.$$
+<p>Its lowest and highest beliefs are</p>
+$$m_v=\frac1{1+e^{(1+v)/b}},\qquad M_v=1-m_v.$$
+<p>Use the same preparation threshold \(\tau=(c_H-g_L)/(g_H-g_L)\). In the certified region \(1/2&lt;\tau&lt;M_v\). Between \(-v\) and 1, posterior log odds equal \((2x+v-1)/b\), so</p>
+$$x^*(r,v)=\frac{b\log[\tau/(1-\tau)]+1-v}{2}.$$
+<p>This defines entry \(e(x)=\rho+(1-\rho)\mathbf1\{x\ge x^*\}\), the competitive price, and both residual advantages from Lesson 3.</p>
+<h3>Second, prove that the low-state profit has only one peak</h3>
+<p>The low-state advantage \(A_L(x)=e(x)\Delta_T\mu_v(x)\) is nondecreasing in flow. Both entry and the posterior rise with x. It is nonconstant, and it includes an upward jump at the entry threshold.</p>
+<p>As the investor sells more, the flow distribution shifts left toward lower advantages. Formally, let \(dA_L\) record all increases in \(A_L\), including a point mass at its jump. Integration by parts gives</p>
+$$F_L'(s)=-\int f(x+s)\,dA_L(x)&lt;0.$$
+<p>The measure \(dA_L\) is simply a way to add continuous increases and discrete jumps in one expression. Since \(|f'|\le f/b\),</p>
+$$|F_L''(s)|\le-\frac{F_L'(s)}b.$$
+<p>Differentiate total profit \(U_L=sF_L-ks\) twice:</p>
+$$U_L''(s)=2F_L'(s)+sF_L''(s)
+\le(2-s/b)F_L'(s)&lt;0.$$
+<p>The last sign holds for \(s\in[0,1]\) when \(b&gt;1/2\), including our \(b=2\). The derivative decreases strictly, so any zero of the marginal profit is the unique best short magnitude against that fixed schedule.</p>
+<h3>Third, enclose a candidate whose own v is optimal</h3>
+<p>Define</p>
+$$\Psi(r,v)=U_L'(s;\text{schedule generated by }v)\big|_{s=v}.$$
+<p>There are two operations here. Differentiate with respect to the deviating magnitude s while holding the schedule fixed. Then evaluate at \(s=v\). When we try another candidate v, we build that candidate's schedule again.</p>
+<p>The certificate finds a bracket \([v_-,v_+]\) with</p>
+$$\Psi(r,v_-)&gt;0,\qquad \Psi(r,v_+)&lt;0.$$
+<p>The threshold and integrals vary continuously with the candidate v inside the bracket. The intermediate value theorem therefore puts an exact root inside it. At that root, the concavity argument proves low-state optimality.</p>
+<p>For \(r=1.55\), the certified endpoint signs include \(\Psi(r,v_-)\ge1.14\times10^{-10}\) and \(\Psi(r,v_+)\le-9.6\times10^{-11}\). Small margins can be valid proof margins if the rounding enclosure is rigorous.</p>
+<h3>Fourth, cover every high-state order</h3>
+<p>We also need the high-state investor to prefer buying 1 at the exact root. We do not know that root exactly, so the check must work for every candidate inside its bracket.</p>
+<p>For the Laplace density, the identity \(f''=(f-\delta_0)/b^2\) includes the corner at zero through a point mass \(\delta_0\). After averaging it gives</p>
+$$F_H''(s)=\frac{F_H(s)-A_H(s)}{b^2}.$$
+<p>Both \(F_H\) and \(A_H\) lie between 0 and \(\Delta_T\). Together with \(|F_H'|\le\Delta_T/b\), this bounds how fast the profit derivative can move:</p>
+$$|U_H''(s)|\le L_U:=\frac{2\Delta_T}{b}+\frac{\Delta_T}{b^2}.$$
+<p>Take mesh points \(s_j=j/n\). Every untested s is at most \(1/(2n)\) from a mesh point. A lower bound valid between all points is therefore</p>
+$$\inf_{s\in[0,1]}U_H'(s)
+\ge\min_j\underline{U_H'(s_j)}-\frac{L_U}{2n}.$$
+<p>The underline denotes a rigorously rounded lower endpoint, evaluated uniformly over the full v bracket. The correction subtracts the largest possible deterioration between mesh points. If the result is positive, profit rises over the entire interval.</p>
+<p>The three certified lower margins are 0.0000761777, 0.0027531948, and 0.0054921767. They prove full purchases are optimal. Wrong-signed orders are dominated by zero.</p>
+<h3>Finally, calculate preparation and verify no-trade coexistence</h3>
+<p>With the candidate cutoff, averaging the two noise tails gives</p>
+$$\mathsf E(r,v)=\rho+\frac{1-\rho}{2}
+\left[1-\frac12e^{(x^*-1)/b}+\frac12e^{-(x^*+v)/b}\right].$$
+<p>Interval evaluation over the root bracket produces the preparation intervals reported above. Checking \(\rho\Delta_T/2\le k\) with outward arithmetic also proves no-trade coexistence.</p>
+<details class="recall"><summary>How are the integrals evaluated without truncating the tails?</summary><p>Split the integration range at \(-v\), \(x^*\), 1, and the center of the shifted noise density. On the central range, put \(c=(1-v)/2\) and \(t=e^{(x-c)/b}\). Then \(\mu_v=t^2/(1+t^2)\). Four antiderivatives suffice:</p>$$\begin{aligned}
+\int e^{x/b}(1-\mu_v)\,dx&amp;=be^{c/b}\arctan t,\\
+\int e^{-x/b}(1-\mu_v)\,dx&amp;=be^{-c/b}(-t^{-1}-\arctan t),\\
+\int e^{x/b}\mu_v\,dx&amp;=be^{c/b}(t-\arctan t),\\
+\int e^{-x/b}\mu_v\,dx&amp;=be^{-c/b}\arctan t.
+\end{aligned}$$<p>For example, in the first integral use \(e^{x/b}=e^{c/b}t\) and \(dx=b\,dt/t\), leaving \(be^{c/b}\int dt/(1+t^2)\). The other formulas follow by the same substitution. On the tails the posterior is constant, so the remaining integrals are exponentials evaluated to infinity. The certificate also checks the ordering of uncertain endpoints. Coincident endpoints are combined exactly.</p></details>
+<div class="checkpoint"><h3>Distinguish evidence from proof</h3><div class="quiz" data-answer="b"><div class="q">A program finds positive high-state profit derivatives at 1,001 order sizes. What is still needed to prove positivity everywhere?</div><label><input type="radio" value="a">Nothing; 1,001 points cover the interval.</label><label><input type="radio" value="b">Rigorous rounding bounds and a bound on what can happen between points, throughout the root bracket.</label><label><input type="radio" value="c">Only a graph with a smooth line through the points.</label><div class="fb ok">Yes. The mesh correction and interval enclosures close those gaps.</div><div class="fb no">A finite grid leaves untested magnitudes and rounding uncertainty. The certificate controls both, including uncertainty about the candidate root.</div></div></div>
+<h2>3. Does the result require Laplace noise or exactly two costs?</h2>
+<h3>Different noise changes how often useful evidence arrives</h3>
+<p>Replace Laplace noise by logistic noise:</p>
+$$f_{\mathrm{log}}(z)=\frac{e^{-z/b}}{b(1+e^{-z/b})^2}.$$
+<p>Its log-density derivative is \(-\tanh(z/(2b))/b\), whose absolute value is at most \(1/b\). This is the same bound used for both the likelihood ratios and the global trading-profit derivative. Therefore the belief bounds and trading optimality proof remain valid.</p>
+<p>Under full orders, the posterior log odds become</p>
+$$2\log\cosh\left(\frac{x+1}{2b}\right)
+-2\log\cosh\left(\frac{x-1}{2b}\right).$$
+<p>The functions cosh and tanh are combinations of exponentials: \(\cosh z=(e^z+e^{-z})/2\) and \(\tanh z=(e^z-e^{-z})/(e^z+e^{-z})\). We need two facts: tanh is increasing and bounded between −1 and 1. Differentiating the displayed expression gives the positive difference of two tanh values divided by b. The log odds increase strictly and approach \(\pm2/b\) at the tails.</p>
+<p>Thus the posterior lies strictly between m and M and approaches the bounds only as flow tends to infinity. There is no plateau carrying positive probability.</p>
+<details class="recall"><summary>Derive the logistic flow threshold</summary><p>Put \(A=e^{1/b}\), \(w=\sqrt{\tau/(1-\tau)}\), and \(y=e^{x/b}\). The square root of the likelihood ratio is \((Ay+1)/(y+A)\). Setting it equal to w gives \(w(y+A)=Ay+1\), hence \(y=(Aw-1)/(A-w)\). Therefore</p>$$x^*_{\mathrm{log}}=b\log\frac{Aw-1}{A-w}.$$<p>When \(m&lt;\tau&lt;M\), this cutoff is finite. The logistic survival probabilities are</p>$$\alpha_H=\frac1{1+e^{(x^*_{\mathrm{log}}-1)/b}},\qquad
+\alpha_L=\frac1{1+e^{(x^*_{\mathrm{log}}+1)/b}}.$$<p>Insert them in the same entry formula \(\mathsf E=\rho+(1-\rho)(\alpha_H+\alpha_L)/2\). They are positive, so the entry reversal remains. This completes the remaining comparison step of Proposition A.5.</p></details>
+<p>At the strong benchmark, entry is 0.301509 under logistic noise rather than 0.522757 under Laplace noise. The same maximum possible belief need not be reached equally often.</p>
+<p>This comparison holds the scale b fixed, not the noise variance. It is not a general Blackwell ranking of the two noise laws.</p>
+<h3>Costs can vary continuously</h3>
+<p>Instead of costs being exactly \(c_L\) or \(c_H\), let them be drawn from two narrow continuous groups around those values. Let \(\varepsilon_C\) be each group's maximum distance from its center.</p>
+<p>The support restrictions are</p>
+$$c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C&lt;B_{r_1}(m),$$
+$$B_{r_0}(1/2)&lt;c_H-\varepsilon_C&lt;c_H+\varepsilon_C&lt;B_{r_1}(M).$$
+<p>Every low-group cost remains worthwhile at every belief. Every high-group cost remains too high at the weak prior and affordable at sufficiently good strong-economy beliefs.</p>
+<p>Let \(H_C(c)=\Pr(C\le c)\) be the cost CDF. Entry becomes</p>
+$$e_r(\mu)=H_C(B_r(\mu)).$$
+<p>This is continuous and nondecreasing when the cost distribution has no point masses. It remains at least \(\rho\), so the price inversion and residual bounds still hold. A3 then forces the same orders as before. Near M in the strong economy, even the top high-group cost is covered, so entry rises above \(\rho\) on a positive-probability event. That proves Proposition A.6.</p>
+<p>With the paper's declared cost half-width, strong entry is 0.522715 under Laplace noise and 0.301374 under logistic noise. The proof needs no point masses in costs; it does not require a density.</p>
+<h3>The value gap can be smaller</h3>
+<p>A separate example uses \(h=2\) and \(\ell=1\) and produces entry rising from 0.25 to 0.526805. Its other inputs differ from the main benchmark. Lesson 4's nonemptiness construction proves that some suitable inputs exist for every \(h&gt;\ell\). This does not say the original costs and strengths work for every value gap.</p>
+
+<h2>4. What if B already has better information than the investor?</h2>
+<p>B may know its own integration technology well, while the investor knows something about Target's customers. B can learn from the investor's information even if B's own assessment is more accurate overall.</p>
+<p>The extension replaces the investor's perfect knowledge with a noisy signal T, either favorable or unfavorable. B has its own noisy signal Y. Let a be the investor's accuracy and d be B's accuracy:</p>
+$$\Pr(T=+\mid H)=\Pr(T=-\mid L)=a,$$
+$$\Pr(Y=+\mid H)=\Pr(Y=-\mid L)=d.$$
+<p>Both accuracies lie between 1/2 and 1. Conditional on the true state, the signals are independent. They are two separate pieces of evidence about the same state; they need not be independent before conditioning on it.</p>
+<h3>Combine the public and private evidence</h3>
+<p>Let \(\lambda_X=\Pr(T=+\mid X)\), the market's probability that the investor saw favorable news. The same bounded-order argument gives \(\lambda_X\in[m,M]\).</p>
+<p>If the investor saw favorable news, the probability of H is a. If it saw unfavorable news, the probability is \(1-a\). Averaging gives the public quality belief</p>
+$$\mu_X=a\lambda_X+(1-a)(1-\lambda_X)
+=(1-a)+(2a-1)\lambda_X.$$
+<p>Its lower and upper bounds are \(\mu_-=(1-a)+(2a-1)m\) and \(\mu_+=(1-a)+(2a-1)M\).</p>
+<p>After seeing a price with quality belief \(\mu\), B adds its private evidence using Bayes' rule:</p>
+$$\phi_+(\mu)=\frac{d\mu}{d\mu+(1-d)(1-\mu)},$$
+$$\phi_-(\mu)=\frac{(1-d)\mu}{(1-d)\mu+d(1-\mu)}.$$
+<p>For example, a public belief of 0.6 and B's accuracy \(d=0.75\) produce a favorable-signal belief of \(0.45/(0.45+0.10)\approx0.81818\). Public and private evidence can jointly justify a cost that neither would justify alone.</p>
+<h3>Preparation is now different in the two true states</h3>
+<p>Define \(I_+\) to equal 1 when \(B_r(\phi_+(\mu))\ge c_H\), and zero otherwise. Define \(I_-\) in the same way for unfavorable private news. Assume for now that the low cost is covered even at the worst combined belief.</p>
+<p>Conditional on H, B receives favorable private news with probability d. Conditional on L, it receives that news with probability \(1-d\). Thus</p>
+$$e_H=\rho+(1-\rho)[dI_++(1-d)I_-],$$
+$$e_L=\rho+(1-\rho)[(1-d)I_++dI_-].$$
+<p>Since favorable news gives the higher belief, \(I_+\ge I_-\). Subtracting yields</p>
+$$e_H-e_L=(1-\rho)(2d-1)(I_+-I_-)\ge0.$$
+<p>Using a single entry probability for both states would therefore be wrong in this extension.</p>
+<h3>Prove that the price still reveals the public belief</h3>
+<p>Write \(w_H=t_H-t_0\) and \(w_L=t_L-t_0\), the payment gains from adding B in each state. Define</p>
+$$D=e_Hw_H-e_Lw_L=e_L\Delta_T+(e_H-e_L)w_H.$$
+<p>Because \(e_L\ge\rho\), \(e_H\ge e_L\), and both w values are positive,</p>
+$$\rho\Delta_T\le D\le\Delta_T+(1-\rho)(2d-1)w_H.$$
+<p>The rational price is the average of the two state-dependent payoffs:</p>
+$$P=t_0+e_L(P)w_L+\mu_XD(P).$$
+<p>The positive D lets B solve for the public belief:</p>
+$$\mu_X=\frac{P-t_0-e_L(P)w_L}{D(P)}.$$
+<p>Conditional independence ensures that B can then combine this recovered belief with Y using the formulas above.</p>
+<details class="recall"><summary>Check that the constructed price rises with the public belief</summary><p>Both entry rates rise weakly with \(\mu\). For \(\mu_2&gt;\mu_1\), the price difference is</p>$$\begin{aligned}
+P(\mu_2)-P(\mu_1)
+&amp;=(\mu_2-\mu_1)D(\mu_1)\\
+&amp;\quad+\mu_2[e_H(\mu_2)-e_H(\mu_1)]w_H\\
+&amp;\quad+(1-\mu_2)[e_L(\mu_2)-e_L(\mu_1)]w_L&gt;0.
+\end{aligned}$$<p>The first term is strictly positive and the others are nonnegative. Jumps therefore do not prevent recovering the posterior from the constructed price.</p></details>
+<h3>Check the investor's incentive with imperfect information</h3>
+<p>The favorable-signal investor assigns probability a to H, while the market assigns \(\mu_X\). Its advantage is \((a-\mu_X)D\). Substitute the public-belief formula:</p>
+$$A_+=(2a-1)(1-\lambda_X)D,\qquad
+A_-=(2a-1)\lambda_XD.$$
+<p>The second expression is the selling advantage after unfavorable news. Therefore</p>
+$$m(2a-1)\rho\Delta_T\le A_+,A_-
+\le(2a-1)[\Delta_T+(1-\rho)(2d-1)w_H].$$
+<p>These replace the perfect-information residual bounds. Proposition A.7 assumes</p>
+$$c_L&lt;B_{r_1}(\phi_-(\mu_-)),$$
+$$B_{r_0}(d)&lt;c_H&lt;B_{r_1}(\phi_+(\mu_+)),$$
+$$\begin{aligned}
+(2a-1)[\Delta_T(r_0)+(1-\rho)(2d-1)w_H(r_0)]&amp;&lt;k,\\
+k&amp;&lt;(1-1/b)m(2a-1)\rho\Delta_T(r_1).
+\end{aligned}$$
+<p>The first protects low-cost preparation. The second excludes expensive preparation even after B's favorable private signal at the weak prior, but allows it after favorable public and private information in the strong economy. The last two inequalities rule out all weak-economy trades and force full strong-economy trades using the same global derivative argument as Lesson 4.</p>
+<p>For existence, construct Bayes beliefs, the state-dependent price, and optimal preparation under those forced orders. Under strong full orders, the positive tail reaches \(\lambda_X=M\) with positive probability. A favorable private signal there makes expensive preparation worthwhile. This proves entry rises above \(\rho\), completing Proposition A.7.</p>
+<p>The paper's example sets \(a=0.70\) and \(d=0.75\). B's signal is more accurate. With that example's distinct costs and \(\rho=0.85\), preparation rises from 0.85 to 0.879438. Do not combine that 85% baseline with the main benchmark's 25% baseline.</p>
+<div class="checkpoint"><h3>What matters about the two signals?</h3><div class="quiz" data-answer="a"><div class="q">Why can B benefit from a less accurate investor's information?</div><label><input type="radio" value="a">It supplies additional evidence beyond B's own signal.</label><label><input type="radio" value="b">The price replaces B's private information.</label><label><input type="radio" value="c">A less accurate signal is always more valuable.</label><div class="fb ok">Yes. B combines the evidence. Relative accuracy alone does not tell us whether one signal adds information to the other.</div><div class="fb no">The model uses conditionally independent signals. B can use both rather than discard the more accurate one.</div></div></div>
+<h2>5. Who benefits when B can see the price?</h2>
+<p>For this welfare comparison, hold A's strength fixed at \(r_1\). Compare an economy where B sees the price with one where it cannot. Re-solve trading and pricing in both.</p>
+<p>Even when B cannot see the price, the strong-economy bound still forces full informed orders. Entry is then \(\rho\), and the residuals are \(\rho\Delta_T(1-\mu_X)\) and \(\rho\Delta_T\mu_X\). The same lower bound applies.</p>
+<p>Thus both economies have the same orders and the same noise experiment. Their trading costs coincide. The difference is that price access lets some high-cost B realizations prepare.</p>
+<h3>Separate economic value from payments</h3>
+<p>A payment from a buyer to Target's shareholders moves money between people. It does not by itself create acquisition value. For welfare, count the value produced by ownership and subtract preparation costs. Transfers among buyers, shareholders, and traders cancel.</p>
+<p>Without B, ownership value is \(W_0(R)=R\mathbf1\{R\ge p\}\). With a prepared B of value \(\theta&gt;p\), the higher-value buyer acquires Target, producing \(W_\theta(R)=\max\{R,\theta\}\).</p>
+<p>Check the difference by cases. If \(R&lt;p\), adding B creates value \(\theta\). If \(p\le R&lt;\theta\), it raises value by \(\theta-R\). If \(R\ge\theta\), ownership does not change. Together,</p>
+$$W_\theta(R)-W_0(R)
+=(\theta-\max\{p,R\})_++p\mathbf1\{R&lt;p\}.$$
+<p>The first term is B's gross acquisition profit. The second adds the value of avoiding a failed sale below the reserve that the private profit calculation does not include.</p>
+<h3>Subtract the cost of the additional preparation</h3>
+<p>At a price and cost that induce additional preparation, the expected net allocation gain is</p>
+$$B_r(\mu_X)-C+p\Pr(R&lt;p)
+=B_r(\mu_X)-C+\frac{p^2}{r}.$$
+<p>B prepares only if \(B_r(\mu_X)\ge C\). Thus the expected gain conditional on the information causing entry is at least \(p^2/r&gt;0\).</p>
+<p>This is an expectation, not a guarantee about each realized sale. B can receive favorable evidence, prepare, and then discover a low value. Such an individual realization may waste resources even though the conditional average is positive.</p>
+<p>Averaging over the additional-entry event gives</p>
+$$\Delta\mathcal W=(1-\rho)\mathbb E\left[
+\left(B_r(\mu_X)-c_H+\frac{p^2}{r}\right)
+\mathbf1\{\mu_X\ge\tau\}\right]&gt;0.$$
+<p>Target's expected revenue also rises, because adding either type of B raises expected payments:</p>
+$$\Delta\mathcal R_T=\frac{1-\rho}{2}
+[\alpha_H(t_H-t_0)+\alpha_L(t_L-t_0)]&gt;0.$$
+<p>This proves Proposition A.9. With continuous high costs, average the same inequality over those costs; with logistic noise, use its tail probabilities. The argument remains the same.</p>
+<p>Expected Target proceeds are 0.872392 with price access and 0.614583 without it at the strong benchmark. The theorem compares access to information at a fixed rival strength and sale rule. It does not prove that stronger rivals are always better for welfare.</p>
+<h3>Why a higher average price is not the explanation</h3>
+<p>The paper adds a deterministic external dividend of 0.257809 to the traded share in the price-hidden economy. That raises both the financial payout and its price by the same amount:</p>
+$$[V_T+d]-[P+d]=V_T-P.$$
+<p>The investor's advantage is unchanged, and B still cannot use prices. Entry stays at 0.25 even though the mean financial price now matches the feedback economy to the reported precision.</p>
+<p>The dividend is an analytical comparison, paid from outside the acquisition. It does not raise seller revenue, alter auction payments, or create acquisition surplus. It isolates information from the average price level.</p>
+<h2>6. Does another payment rule preserve the result?</h2>
+<p>The second-price auction makes the runner-up's value determine the payment. Suppose instead that values can be verified after preparation and the seller bargains with the highest-value buyer. A sale to the runner-up at its value is an enforceable fallback. In this separate institution the reserve is zero.</p>
+<p>Let z be the fallback payment, V the winning buyer's value, and \(\eta\) the seller's bargaining weight. The seller and winner divide the extra value \(V-z\). The transfer T solves</p>
+$$\max_{T\in[z,V]}(T-z)^\eta(V-T)^{1-\eta}.$$
+<p>For \(0&lt;\eta&lt;1\) and \(V&gt;z\), maximize the logarithm and differentiate:</p>
+$$\frac{\eta}{T-z}-\frac{1-\eta}{V-T}=0.$$
+<p>Multiply through the positive denominators and rearrange:</p>
+$$\eta(V-T)=(1-\eta)(T-z)
+\quad\Longrightarrow\quad T=(1-\eta)z+\eta V.$$
+<p>The log objective has a negative second derivative, so this is the unique maximum. If \(V=z\), there is only one feasible payment. At \(\eta=0\), use the limiting transfer z.</p>
+<p>With two buyers, \(z=\min(R,\theta)\) and \(V=\max(R,\theta)\). Without B, the fallback is zero and the seller receives \(\eta R\). A winning B keeps a fraction \(1-\eta\) of its advantage over A:</p>
+$$G_{\theta,\eta}=(1-\eta)\mathbb E[(\theta-R)_+].$$
+<p>A stronger A lowers this profit for every \(\eta&lt;1\).</p>
+<h3>Calculate the difference in Target's payments</h3>
+<p>If \(R\le\ell\), B wins in both states. The difference in payments is \(\eta(h-\ell)\). If \(R&gt;\ell\), a high B wins and pays \((1-\eta)R+\eta h\), while A wins against low B and pays \((1-\eta)\ell+\eta R\).</p>
+<p>Subtract and combine the cases:</p>
+$$\Delta_\eta=\eta(h-\ell)+(1-2\eta)\mathbb E[(R-\ell)_+].$$
+<p>A stronger A raises the last expectation. It therefore raises the spread if \(\eta&lt;1/2\), leaves it unchanged if \(\eta=1/2\), and lowers it if \(\eta&gt;1/2\). The inequalities are strict when the distributional change has a positive effect on the relevant expectation.</p>
+<p>For \(\ell=1,h=10,R=3\), the difference is \(9\eta+2(1-2\eta)\). The important comparative-static coefficient is \(1-2\eta\): raising R widens the payment difference only when the payment puts more weight on the runner-up than on the winner.</p>
+<p>This completes Proposition A.8. It compares acquisition-stage payoffs under a verifiable-value bargaining institution. Trading, preparation, and welfare under that institution have not been solved, so an entry reversal under bargaining does not follow automatically.</p>
+
+<h2>7. What happens when the seller raises the reserve?</h2>
+<p>The original formulas assumed \(p&lt;\ell\), so a prepared B always had a value high enough to bid. Raising the reserve above \(\ell\) changes that. A low-value B may prepare, discover its value, and be unable to submit an admissible bid.</p>
+<p>For a realized B value v, the correct general payoffs are</p>
+$$t_0(p,r)=\mathbb E[p\mathbf1\{R\ge p\}],$$
+$$t_v(p,r)=\begin{cases}
+\mathbb E[\max\{p,\min(R,v)\}],&amp;v\ge p,\\
+t_0(p,r),&amp;v&lt;p,
+\end{cases}$$
+$$g_v(p,r)=\mathbb E[(v-\max\{p,R\})_+].$$
+<p>The positive part gives zero acquisition profit to an excluded B. But excluded B does not force Target's payment to zero: A might still meet the reserve.</p>
+<h3>Reserve above the low value but within A's range</h3>
+<p>When \(\ell&lt;p\le r\), low B is excluded. It adds nothing to the outcome, so</p>
+$$t_L=t_0=p(1-p/r),\qquad g_L=0,$$
+$$t_H=r/2+p^2/(2r),\qquad g_H=h-t_H.$$
+<p>The difference between high and low Target payments can increase sharply because low B no longer provides a competing admissible bid.</p>
+<h3>Reserve above A's whole range</h3>
+<p>When \(r&lt;p\le h\), A is excluded too. Only high-value B can acquire Target. If it prepares, it pays the reserve:</p>
+$$t_0=t_L=g_L=0,\qquad t_H=p,\qquad g_H=h-p.$$
+<p>There can be positive preparation in this region, but never two admissible bidders. Calling it “more auction competition” just because preparation is positive would be misleading.</p>
+<p>A bid equal to the reserve is admissible. At \(p=\ell\), low B can still buy if A fails the reserve. Immediately above \(\ell\), it cannot. That exclusion can create a jump in outcomes with binary values.</p>
+<h3>Use four distinct probabilities</h3>
+<p>Let I equal 1 if B prepares and 0 otherwise, and let V be B's realized value. Define</p>
+$$\mathsf E=\Pr(I=1),\qquad
+\mathsf A=\Pr(I=1,V\ge p),$$
+$$\mathsf S=\Pr(R\ge p\ \text{or}\ [I=1,V\ge p]),$$
+$$\mathsf C_2=\Pr(R\ge p,I=1,V\ge p).$$
+<p>These are preparation, an admissible challenger, a sale, and two admissible bidders. Counting overlapping events gives</p>
+$$\mathsf S=\Pr(R\ge p)+\mathsf A-\mathsf C_2,$$
+$$0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1.$$
+<p>In the original benchmark \(\mathsf A=\mathsf E\), but preparation alone still does not ensure two admissible bidders: A must also meet the reserve.</p>
+<h3>What the reserve comparison establishes</h3>
+<p>To check that the result is not driven solely by a point mass at the low value, the paper also spreads low and high values uniformly within 0.05 of their respective centers. The investor learns the value class; preparation reveals the exact value.</p>
+<p>Raising the reserve from 0.5 to 1.1 raises weak-incumbent revenue from 0.392665 to 0.432173 and strong-incumbent revenue from 0.872367 to 1.014500. At the higher reserve, preparation probabilities are 0.540309 and 0.511638 respectively, with informative trading in both economies.</p>
+<p>This proves a feasible revenue improvement at the specified reserves. It does not identify the best reserve over the full domain.</p>
+<div class="checkpoint"><h3>Read entry carefully</h3><div class="quiz" data-answer="c"><div class="q">The reserve exceeds A's maximum value but is below B's high value. B sometimes prepares. What must be true?</div><label><input type="radio" value="a">There are sometimes two admissible bidders.</label><label><input type="radio" value="b">Every prepared B can buy Target.</label><label><input type="radio" value="c">A is excluded, so there are never two admissible bidders.</label><div class="fb ok">Yes. Only a prepared, sufficiently valuable B can meet the reserve.</div><div class="fb no">A cannot bid above its value and meet this reserve. Positive preparation therefore does not mean a two-bidder contest.</div></div></div>
+<h2>8. Can identical orders produce different price information?</h2>
+<p>On the original benchmark support, the preparation floor made the price reveal the market's posterior. At high reserves that floor can fail. Some flows can then produce no preparation and the same zero price, even if their raw flow posteriors differ.</p>
+<p>This is <em>price pooling</em>. B observes the pooled price, so it must condition on the whole group of flows generating that price. It cannot act on a flow it never observed.</p>
+<h3>A complete example at reserve 7</h3>
+<p>Set \(r=1.2\) and \(p=7\), keeping the other benchmark values. A and low B are excluded. Thus</p>
+$$t_0=t_L=g_L=0,\quad t_H=7,\quad g_H=3,\quad c_L=1,\quad c_H=6.$$
+<p>Keep full orders \((1,-1)\) and \(b=2\). For any cutoff \(c\in[-\log2,0]\), define</p>
+$$P_c(x)=\begin{cases}
+0,&amp;x&lt;c,\\
+\tfrac74\mu_X(x),&amp;x\ge c.
+\end{cases}$$
+<p>The proposed behavior is no preparation at price zero, low-cost preparation at every positive price, and no high-cost preparation. We must verify B, dealers, and the investor in turn.</p>
+<h3>B at price zero</h3>
+<p>Let \(F_Z\) be the Laplace noise CDF. The probability of a flow below c is \(F_Z(c-1)\) in H and \(F_Z(c+1)\) in L. B's posterior at the pooled price is</p>
+$$\bar\mu_c=\frac{F_Z(c-1)}{F_Z(c-1)+F_Z(c+1)}.$$
+<p>The flow posterior is nondecreasing in x. Increasing c adds flows with at least as high a posterior as those already pooled, so the pool's average posterior is nondecreasing in c. It is therefore largest at \(c=0\):</p>
+$$\bar\mu_c\le\bar\mu_0=\tfrac12e^{-1/2}\approx0.303265&lt;1/3.$$
+<p>B's expected acquisition profit is \(3\bar\mu_c&lt;1\). Even the low cost is not covered, so no preparation is optimal at price zero.</p>
+<h3>B at a positive price</h3>
+<p>A positive price reveals \(\mu_X\). For every active flow \(x\ge c\ge-\log2\), the posterior is at least 1/3. Therefore \(3\mu_X\ge1\), and low-cost preparation is worthwhile, including at equality. The high cost of 6 exceeds even the maximum possible acquisition profit of 3, so high-cost B stays out.</p>
+<h3>Dealers</h3>
+<p>In the pool, nobody prepares and neither A nor low B can buy. Target's payout is zero. Outside the pool, B prepares with probability 1/4, and Target sells for 7 only if B is high-value. The expected payout at flow x is therefore \((1/4)7\mu_X(x)\), exactly the proposed positive price.</p>
+<h3>The investor</h3>
+<p>The residual advantages are</p>
+$$A_H=\rho p(1-\mu_X)\mathbf1\{x\ge c\},\qquad
+A_L=\rho p\mu_X\mathbf1\{x\ge c\}.$$
+<p>They vanish in the pool and are nonnegative elsewhere. We cannot use the earlier strictly positive pointwise residual floor. Instead use the candidate-specific J test from Lesson 4.</p>
+<p>Every cutoff in the family leaves \(x\ge1\) active. In H that tail occurs with probability 1/2, and on it \(1-\mu_X=m&gt;1/4\). Hence</p>
+$$J_c\ge\frac{\rho p m}{2}&gt;\frac7{32},$$
+$$U_\theta'(s)\ge(1-1/b)J_c-k&gt;
+\frac7{64}-\frac1{50}=\frac{143}{1600}&gt;0.$$
+<p>Both types prefer their full correctly signed orders. Wrong signs are dominated by zero. This completes Proposition A.10 for every cutoff in the stated interval.</p>
+<p>The same orders therefore support a family of different price and preparation rules. The theorem does not prove these are all possible continuations.</p>
+<h3>Calculate what changes across the family</h3>
+<p>Let \(S_Z=1-F_Z\) be the noise survival function. Then</p>
+$$\Pr(P=0)=\frac{F_Z(c-1)+F_Z(c+1)}2,$$
+$$\mathsf E_c=\frac\rho2[S_Z(c-1)+S_Z(c+1)],$$
+$$\mathcal R_{T,c}=\frac{\rho p}{2}S_Z(c-1).$$
+<p>Sale probability is \(\rho S_Z(c-1)/2\); two-admissible-bidder probability is zero. Moving the cutoff from \(-\log2\) to 0 lowers preparation from 0.151805 to 0.125000 and revenue from 0.687364 to 0.609643.</p>
+<p>The larger pool conceals distinctions B would act on if it observed them. At \(c=0\), for example, some negative flows have raw posteriors above 1/3 but belong to a pool with average posterior below 1/3.</p>
+<h2>9. Why do exact reserve thresholds matter?</h2>
+<p>Two reserve choices in the appendix make a preparation inequality hold exactly. Rounding the reserve and testing an ordinary floating-point inequality can put a calculation on the wrong side of the event.</p>
+<h3>The reserve where low-cost preparation just survives the worst news</h3>
+<p>When \(p&gt;r\) and low B is excluded, expected profit is \(\mu(h-p)\). Set the worst-belief profit equal to \(c_L\):</p>
+$$m(h-p_L)=c_L\quad\Longrightarrow\quad
+p_L=h-\frac{c_L}{m}.$$
+<p>At the weak benchmark strength, this reserve lies above A's support and below h. The high cost is still unaffordable, and the separate trading bound forces full orders. Low-cost B prepares even on the lower posterior plateau because the tie rule says to prepare at equality.</p>
+<p>Thus \(\mathsf E=\rho\), sale probability is \(\rho/2\), seller revenue is \(\rho p_L/2\), and \(\mathsf C_2=0\). These statements concern this event and the checked conditions, not every nearby reserve.</p>
+<h3>The reserve where high-cost preparation just survives the best news</h3>
+<p>When \(\ell&lt;p&lt;r\), high B's expected acquisition profit is \(h-r/2-p^2/(2r)\). Set its best-belief expected profit equal to \(c_H\):</p>
+$$M\left(h-\frac r2-\frac{p_H^2}{2r}\right)=c_H,$$
+$$p_H=\sqrt{2r\left(h-\frac{c_H}{M}\right)-r^2}.$$
+<p>At the strong benchmark, this lies between \(\ell\) and r. After separately checking the low-cost floor and full-order trading bound, the entry threshold is exactly M. High-cost B prepares on the upper plateau, where</p>
+$$\alpha_H=1/2,\qquad \alpha_L=\tfrac12e^{-2/b}.$$
+<p>Here two admissible bidders occur with positive probability because A can meet the reserve. Specifically, \(\mathsf C_2=(1-p_H/r)e_H/2\), where \(e_H\) is preparation conditional on H.</p>
+<h2>10. Why has the paper not found the optimal reserve?</h2>
+<p>For each reserve, there may be several continuation equilibria. A continuation includes orders, the price mapping, B's beliefs at each realized price, and preparation. The pooling example shows why orders alone cannot identify it.</p>
+<p>Let \(\mathcal E(p,r)\) be the set of those continuations. For one continuation \(\sigma\), seller revenue is</p>
+$$\mathcal R_T(p,r;\sigma)=t_0(p,r)+\frac12\sum_{\theta\in\{H,L\}}
+e_\theta(p,r;\sigma)[t_\theta(p,r)-t_0(p,r)].$$
+<p>To formulate a seller choice, specify which continuation \(\sigma^*(p)\in\mathcal E(p,r)\) follows every possible reserve. Then the objective is</p>
+$$p^*\in\arg\max_{p\in[0,h]}\mathcal R_T(p,r;\sigma^*(p)).$$
+<p>One must still prove that a feasible selection exists and that a maximum is attained. Taking the highest revenue found by a numerical search at each reserve does not supply either argument. The search may miss equilibria, and the seller may not be able to select its preferred continuation.</p>
+<h3>A local derivative, when the equilibrium changes smoothly</h3>
+<p>On a differentiable continuation branch with continuous preparation costs and \(0&lt;p&lt;\ell\), write \(\mathsf E=(e_H+e_L)/2\). Differentiating the revenue formula gives</p>
+$$\frac{d\mathcal R_T}{dp}=(1-\mathsf E)(1-2p/r)+\mathsf E\,p/r
++\frac12\sum_\theta\frac{de_\theta}{dp}(t_\theta-t_0).$$
+<p>The first two terms change payments while holding entry fixed. The last term accounts for changing preparation probabilities.</p>
+<p>If the cost CDF \(H_C\) has density \(h_C\), conditional entry is the average of \(H_C(B_{p,r}(\mu_\theta(z;p)))\) over noise. Differentiating this expression by the chain rule gives</p>
+$$\frac{de_\theta}{dp}=\int f(z)h_C(B_{p,r}(\mu_\theta))
+\left[-\frac pr+(g_H-g_L)\frac{d\mu_\theta(z;p)}{dp}\right]dz.$$
+<p>The direct profit effect is \(-p/r\), obtained by differentiating both \(g_H\) and \(g_L\) with respect to p. The second term captures changing information when equilibrium trading changes.</p>
+<p>This requires a smooth branch, a continuously differentiable cost CDF, and a bound permitting differentiation under the integral. At a preparation jump, a price pool, or a nonregular branch, compare the full outcome levels instead. The formula supplies no general sign for the information effect and no global optimum.</p>
+<h2>11. What evidence would test the mechanism?</h2>
+<p>The theory concerns B's decision before it commits to preparation. An empirical study would need to identify a meaningful preparation event, such as substantive diligence, rather than count only public bids.</p>
+<p>It would also need information about A's strength that was public before B's decision, and a public sale opportunity that was still open to B. Distinguish the date an event happened from the date the market learned about it.</p>
+<p>A rising stock price followed by B's arrival is not enough to establish learning. The price could already reflect expected arrival, or another event could cause both the price rise and entry.</p>
+<p>The paper proposes reconstructing these timelines from sale disclosures. It has not assembled a sample or estimated a causal effect. Its empirical discussion is a proposed study, not evidence that the mechanism has been measured.</p>
+
+<h2>12. Explain the whole paper in one minute</h2>
+<p>A potential buyer must pay to prepare before it can bid. A stronger rival lowers the profit from winning, which normally discourages preparation. But the same rival can make the target's sale payment more sensitive to the potential buyer's value. That makes informed trading in target shares more rewarding. The price can then give the potential buyer useful evidence before it pays to prepare. Under the paper's conditions, favorable evidence induces enough extra preparation to outweigh deterrence. If the rival becomes still stronger, even the best evidence no longer justifies expensive preparation.</p>
+<p>To state the result accurately, add that the main theorem compares specified economies under explicit conditions. Intermediate strengths can have multiple equilibria. The result concerns a particular sale mechanism, and the paper has not solved the seller's optimal terms.</p>
+<h2>13. Final check across all five lessons</h2>
+<p>Answer before opening your notes. If an answer feels uncertain, return to the linked lesson and reconstruct the relevant calculation.</p>
+<div class="quiz" data-answer="b"><div class="q">1. What does B obtain by paying the preparation cost?</div><label><input type="radio" value="a">A guarantee that it will win Target.</label><label><input type="radio" value="b">Its exact acquisition value and the ability to submit an executable bid.</label><label><input type="radio" value="c">The right to trade Target shares.</label><div class="fb ok">Yes. Preparation enables informed, executable participation. Winning still depends on the auction.</div><div class="fb no">Preparation reveals value and permits bidding. Revisit <a href="0001-the-story-and-the-institutions.html?revision=20260906-final">Lesson 1</a>.</div></div>
+<div class="quiz" data-answer="c"><div class="q">2. A's value is below B's low value, and both have prepared. How does Target's payment change if B is high-value rather than low-value?</div><label><input type="radio" value="a">It rises by h − ℓ.</label><label><input type="radio" value="b">It rises by A's value.</label><label><input type="radio" value="c">It does not change: B wins and pays the same competing bid or reserve.</label><div class="fb ok">Yes. The payment difference is \((R-\ell)_+=0\) in this case.</div><div class="fb no">In a second-price auction, raising an already winning value does not raise the payment. Revisit <a href="0002-auction-payoffs-and-proposition-1.html?revision=20260906-final">Lesson 2</a>.</div></div>
+<div class="quiz" data-answer="a"><div class="q">3. Which claim about the stock price is correct under the benchmark preparation floor?</div><label><input type="radio" value="a">It reveals the dealer posterior, while uncertainty about B's true value remains.</label><label><input type="radio" value="b">It reveals B's exact value at every flow.</label><label><input type="radio" value="c">It excludes the preparation response from its valuation.</label><div class="fb ok">Yes. Price sufficiency and perfect revelation are different statements.</div><div class="fb no">The pricing equation includes preparation and can be inverted for the posterior. Revisit <a href="0003-prices-beliefs-and-the-investors-edge.html?revision=20260906-final">Lesson 3</a>.</div></div>
+<div class="quiz" data-answer="b"><div class="q">4. In an investor's unilateral deviation, what is held fixed?</div><label><input type="radio" value="a">The investor's chosen order.</label><label><input type="radio" value="b">The candidate price and preparation schedules.</label><label><input type="radio" value="c">The realized total flow.</label><div class="fb ok">Yes. A changed order shifts which flows reach those fixed schedules.</div><div class="fb no">The investor varies its order. Other players' candidate schedules stay fixed during that test. Revisit <a href="0004-proposition-2-the-full-proof.html?revision=20260906-final">Lesson 4</a>.</div></div>
+<div class="quiz" data-answer="c"><div class="q">5. At the very strong rival in Proposition 2, why does preparation return to ρ?</div><label><input type="radio" value="a">The investor stops trading.</label><label><input type="radio" value="b">The price ceases to reveal its posterior.</label><label><input type="radio" value="c">Even the maximum feasible belief cannot cover the high preparation cost.</label><div class="fb ok">Yes. Trading remains informative, but \(B_{r_2}(M)&lt;c_H\).</div><div class="fb no">The strong trading bound still applies. What fails is the expensive preparation incentive, even after the best news.</div></div>
+<div class="quiz" data-answer="a"><div class="q">6. What does Proposition 3's certificate establish?</div><label><input type="radio" value="a">Informative equilibria at three strengths, ordered entry intervals, and no-trade coexistence there.</label><label><input type="radio" value="b">Exactly one equilibrium at every intermediate strength.</label><label><input type="radio" value="c">A smooth increasing informative branch over the entire range.</label><div class="fb ok">Yes. Its pointwise certificates do not establish an exhaustive equilibrium map.</div><div class="fb no">The intervals certify three existence results and their entry ordering. They do not prove uniqueness or behavior between nodes.</div></div>
+<div class="quiz" data-answer="b"><div class="q">7. Which welfare comparison is proved?</div><label><input type="radio" value="a">Every increase in rival strength raises total welfare.</label><label><input type="radio" value="b">At fixed strong-rival parameters, giving B price access raises expected net acquisition surplus.</label><label><input type="radio" value="c">Every additional realized preparation decision creates positive net value.</label><div class="fb ok">Yes. It is a fixed-strength comparison in expectation.</div><div class="fb no">The proof conditions on the information and cost causing additional entry, then averages. It does not guarantee each realization is beneficial.</div></div>
+<div class="quiz" data-answer="c"><div class="q">8. Why is the largest revenue found in a reserve search not automatically the seller's optimum?</div><label><input type="radio" value="a">Because reserve choices never affect information.</label><label><input type="radio" value="b">Because revenue cannot be calculated in this model.</label><label><input type="radio" value="c">The search may be incomplete, and the equilibrium followed after each reserve must be specified.</label><div class="fb ok">Yes. Found continuations and a solved seller problem are different objects.</div><div class="fb no">Revenue is calculable for a continuation. A global seller optimum additionally needs the full domain, a continuation selection, and an attainment argument.</div></div>
+<p id="score" aria-live="polite"></p>
+<h2>14. Rebuild the arguments without the answer choices</h2>
+<div class="recall"><details><summary>Derive the low-state concavity result in the certificate.</summary><p>Monotonicity of \(A_L\) gives \(F_L'=-\int f(x+s)dA_L&lt;0\). The density derivative bound gives \(|F_L''|\le-F_L'/b\). Hence \(U_L''\le(2-s/b)F_L'&lt;0\). The entry jump is included in the measure \(dA_L\).</p></details><details><summary>Why must the high-state derivative cover hold over the entire root bracket?</summary><p>The exact equilibrium root is only known to lie somewhere inside it. Verifying the midpoint could miss failure at the true root.</p></details><details><summary>What part of the proof survives changing the noise distribution?</summary><p>The likelihood and trading bounds survive when the required positivity, regularity, and log-density derivative bound hold. The resulting posterior and tail probabilities still need to be calculated for the new law.</p></details><details><summary>Why does private information require two entry rates?</summary><p>Favorable private news is more likely in H than L. At the same public price, B is therefore more likely to prepare in H.</p></details><details><summary>Derive the bargaining boundary at seller weight one half.</summary><p>The spread is \(\eta(h-\ell)+(1-2\eta)\mathbb E[(R-\ell)_+]\). A stronger rival raises the expectation, so the sign of its effect is the sign of \(1-2\eta\).</p></details><details><summary>Why does the preparation floor rule out pooling distinct posteriors?</summary><p>With positive entry and \(\Delta_T&gt;0\), the pricing equation can be solved for the posterior at each price. If entry can vanish, that positive coefficient can disappear and several raw posteriors may share the no-entry price.</p></details><details><summary>Give one model prediction and one empirical limitation.</summary><p>The model predicts additional preparation after informative favorable prices under the theorem's conditions. The paper has not established empirically that buyers use those prices, and a return-entry correlation alone would not identify that behavior.</p></details></div>
+<p class="source">Source: Proposition 3; Propositions A.5 through A.10; Appendix A.3 through A.7; Online Appendix B for the certificate, C for the numerical exercises, and D for the proposed empirical study. The <a href="../reference/proof-map.html?revision=20260906-final">proof map</a> and <a href="../reference/formula-sheet.html?revision=20260906-final">formula sheet</a> are available for reference after retrieval practice.</p>
+<p><a href="../index.html?revision=20260906-final">Return to the course home</a>. To review, explain one argument aloud first, then reopen the relevant lesson to find the step you could not reconstruct.</p>
+</body></html>

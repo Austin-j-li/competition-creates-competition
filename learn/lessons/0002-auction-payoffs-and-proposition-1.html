@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 2: Calculate what the buyer keeps and the seller receives</title>
+<link rel="stylesheet" href="../assets/course.css?revision=20260906-final">
+<script defer src="../assets/quiz.js"></script>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<nav class="course"><span>Lesson 2 of 5</span><span><a href="0001-the-story-and-the-institutions.html?revision=20260906-final">← Previous</a> · <a href="../index.html?revision=20260906-final">Course home</a> · <a href="0003-prices-beliefs-and-the-investors-edge.html?revision=20260906-final">Next →</a></span></nav>
+<h1>Calculate what the buyer keeps and the seller receives</h1>
+<p class="subtitle">We will calculate one auction, average over possible rival bids, and then prove Proposition 1.</p>
+<div class="meta"><span>Paper: Section 3.1 and Appendix A.1</span><span>Pause after each calculation</span></div>
+<div class="eli5">Buyer B's profit is its value minus what it pays, if it wins. Target's shareholders receive the winning payment, whichever buyer wins. We need both quantities because preparation depends on B's profit, while informed stock trading depends on Target's payment.</div>
+<h2>1. Give the quantities short names</h2>
+<p>Keep Target, Buyer A, and Buyer B from Lesson 1. We now introduce the notation used in the paper.</p>
+<ul><li>\(R\) is A's actual value. A knows it before bidding.</li><li>\(r\) is the upper limit of A's possible values. Everyone knows this limit. A's value is uniformly distributed between 0 and \(r\).</li><li>\(\theta\), pronounced theta, is B's actual value. It is either the low value \(\ell\) or the high value \(h\).</li><li>\(p\) is the reserve: the smallest sale payment the seller accepts.</li></ul>
+<p>Capital \(R\) is one realization. Lowercase \(r\) describes the distribution. Changing \(r\) changes the range from which A's value is drawn; it does not reveal A's realized value to B.</p>
+<p>The benchmark uses \(h=10\), \(\ell=1\), and \(p=0.5\). For most calculations here set \(r=3\). Thus</p>
+$$0&lt;p&lt;\ell&lt;r&lt;h.$$
+<p>Both possible values of B exceed the reserve. A can outbid a low-value B but cannot outbid a high-value B.</p>
+<h2>2. Why can we use truthful bids?</h2>
+<p>Suppose your value is \(v\). Let \(y\) be the larger of the reserve and the rival's bid. This is what you would pay if you won. Your own bid affects whether you win, but does not change \(y\).</p>
+<p>If \(v&gt;y\), winning earns \(v-y&gt;0\). Bidding your value wins. Bidding more gives the same payoff, while bidding so little that you lose gives zero.</p>
+<p>If \(v&lt;y\), winning would lose money. Bidding your value avoids that loss. A higher bid that makes you win is worse.</p>
+<p>If \(v=y\), winning and losing both yield zero. So bidding your value is never worse than another bid, whatever the competing bid. Economists call that a <em>weakly dominant strategy</em>.</p>
+<p>This argument applies after preparation, when values are known. It does not remove the earlier preparation decision.</p>
+<div class="checkpoint"><h3>Try the rule</h3><div class="quiz" data-answer="b"><div class="q">Your value is 10, the rival bids 3, and the reserve is 0.5. Would bidding 12 instead of 10 raise your profit?</div><label><input type="radio" value="a">Yes, because it raises your winning margin.</label><label><input type="radio" value="b">No. You win and pay 3 with either bid.</label><label><input type="radio" value="c">No. You would pay 12 instead of 10.</label><div class="fb ok">Yes. Both bids win at the same payment of 3, leaving profit 7.</div><div class="fb no">The payment is set by the reserve and the competing bid. Raising an already winning bid does not change it.</div></div></div>
+<h2>3. Work out one auction before averaging</h2>
+<h3>B has not prepared</h3>
+<p>A is the only bidder. If \(R\ge p\), A pays \(p\). Otherwise there is no sale. The model sets Target's standalone payoff to zero.</p>
+$$\text{Target payment}=p\,\mathbf1\{R\ge p\}.$$
+<p>The symbol \(\mathbf1\{\cdot\}\) is an indicator. It equals 1 when the statement in braces is true and 0 otherwise. This formula says “pay \(p\) if A meets the reserve, otherwise pay zero.”</p>
+<h3>B has prepared and its value is high</h3>
+<p>Because \(h&gt;r\ge R\), B always wins. It pays whichever is larger, the reserve or A's bid:</p>
+$$\text{Target payment}=\max\{p,R\},\qquad
+\text{B's profit}=h-\max\{p,R\}.$$
+<h3>B has prepared and its value is low</h3>
+<p>If \(R&lt;\ell\), B wins and pays \(\max\{p,R\}\). If \(R&gt;\ell\), A wins and pays B's bid of \(\ell\).</p>
+<p>For our numbers, A bidding 0.2 means B wins and pays 0.5. A bidding 0.8 means B wins and pays 0.8. A bidding 2 means A wins and pays 1.</p>
+<p>We can write those cases together:</p>
+$$\text{Target payment}=\max\{p,\min(R,\ell)\},$$
+$$\text{B's profit}=(\ell-\max\{p,R\})_+.$$
+<p>Here \(x_+=\max\{x,0\}\), the <em>positive part</em>. It sets a negative expression to zero. If the payment needed to win exceeds B's value, B loses rather than taking a negative acquisition profit.</p>
+<h2>4. What does “expected” mean here?</h2>
+<p>Before A's value is revealed, we average over its possible values. Uniform on \([0,r]\) means an interval of length 0.3 has the same probability wherever it lies inside that range. Its probability is \(0.3/r\).</p>
+<p>For a payoff function \(a(R)\), the average is</p>
+$$\mathbb E[a(R)]=\frac1r\int_0^r a(u)\,du.$$
+<p>The integral adds the area under the payoff curve. Dividing by the width \(r\) turns that area into the average height. The letter \(u\) simply marks a possible value of \(R\) while we add up the possibilities.</p>
+<p>We need only two area formulas:</p>
+$$\int_a^b c\,du=c(b-a),\qquad
+\int_a^b u\,du=\frac{b^2-a^2}{2}.$$
+<p>The first is a rectangle of height \(c\). The second is the area under a straight line of height \(u\). For example, \(\int_0^3u\,du=4.5\), so the average of a uniform value between 0 and 3 is \(4.5/3=1.5\).</p>
+<h2>5. Calculate the six auction quantities</h2>
+<p>The letter \(t\) will denote Target's expected payment. Its subscript says whether B is absent, high-value, or low-value. The letter \(g\) denotes B's expected acquisition profit before its preparation cost.</p>
+<h3>No B: calculate \(t_0\)</h3>
+<p>A meets the reserve on the fraction \((r-p)/r\) of its possible values. Each such sale pays \(p\). Therefore</p>
+$$t_0=p\frac{r-p}{r}=p\left(1-\frac pr\right).$$
+<p>With \(r=3\) and \(p=0.5\), this is \(0.5\times2.5/3=0.416667\), rounded. It is below 0.5 because some realizations produce no sale.</p>
+<h3>High-value B: calculate \(t_H\)</h3>
+<p>When \(R\) is between 0 and \(p\), the payment is \(p\). When \(R\) is between \(p\) and \(r\), the payment is \(R\). Add the two areas and divide by \(r\):</p>
+$$\begin{aligned}
+t_H&amp;=\frac1r\left[\int_0^p p\,du+\int_p^r u\,du\right]\\
+&amp;=\frac1r\left[p^2+\frac{r^2-p^2}{2}\right]\\
+&amp;=\frac{r^2+p^2}{2r}=\frac r2+\frac{p^2}{2r}.
+\end{aligned}$$
+<p>At our numbers, \(t_H=1.5+0.25/6=1.541667\).</p>
+<h3>Low-value B: calculate \(t_L\)</h3>
+<p>Now there are three ranges. The payment is \(p\) below \(p\), then \(R\) up to \(\ell\), then \(\ell\) above \(\ell\). The last range consists of auctions A wins.</p>
+$$\begin{aligned}
+t_L&amp;=\frac1r\left[\int_0^p p\,du+\int_p^\ell u\,du+\int_\ell^r\ell\,du\right]\\
+&amp;=\frac1r\left[p^2+\frac{\ell^2-p^2}{2}+\ell(r-\ell)\right]\\
+&amp;=\frac1r\left[\ell r-\frac{\ell^2-p^2}{2}\right]\\
+&amp;=\ell-\frac{\ell^2-p^2}{2r}.
+\end{aligned}$$
+<p>At our numbers, \(t_L=1-0.75/6=0.875\).</p>
+<h3>High-value B's profit: calculate \(g_H\)</h3>
+<p>A high-value B always wins. It receives value \(h\) and pays whatever Target receives, so</p>
+$$g_H=h-t_H=h-\frac r2-\frac{p^2}{2r}.$$
+<p>At our numbers, \(g_H=10-1.541667=8.458333\).</p>
+<h3>Low-value B's profit: calculate \(g_L\)</h3>
+<p>A low-value B earns \(\ell-p\) when \(R&lt;p\), earns \(\ell-R\) when \(p\le R&lt;\ell\), and earns zero when it loses.</p>
+$$\begin{aligned}
+g_L&amp;=\frac1r\left[\int_0^p(\ell-p)\,du+\int_p^\ell(\ell-u)\,du\right]\\
+&amp;=\frac1r\left[p(\ell-p)+\frac{(\ell-p)^2}{2}\right]\\
+&amp;=\frac{(\ell-p)(\ell+p)}{2r}=\frac{\ell^2-p^2}{2r}.
+\end{aligned}$$
+<p>At our numbers, \(g_L=0.75/6=0.125\). Losing auctions contribute zero to this average.</p>
+<p>In this auction, \(g_L=\ell-t_L\) also holds. In each realization, either B wins and payment plus its profit equals \(\ell\), or B loses and A pays \(\ell\). That identity follows from this particular payment rule; it is not a general definition of buyer profit.</p>
+<h3>The difference in Target's payments: calculate \(\Delta_T\)</h3>
+<p>Define \(\Delta_T=t_H-t_L\). Subtract the formulas:</p>
+$$\begin{aligned}
+\Delta_T&amp;=\frac r2+\frac{p^2}{2r}-\ell+\frac{\ell^2-p^2}{2r}\\
+&amp;=\frac{r^2-2r\ell+\ell^2}{2r}
+=\frac{(r-\ell)^2}{2r}.
+\end{aligned}$$
+<p>The reserve cancels. Below \(\ell\), both types of B lead to the same payment. The difference arises only when A outbids a low-value B. At our numbers, \(\Delta_T=4/6=0.666667\).</p>
+<div class="checkpoint"><h3>Do one calculation yourself</h3><div class="quiz" data-answer="c"><div class="q">Keep ℓ = 1 and p = 0.5, but set r = 2. What is the target-payoff spread?</div><label><input type="radio" value="a">0.5</label><label><input type="radio" value="b">1</label><label><input type="radio" value="c">0.25</label><div class="fb ok">Yes. \((2-1)^2/(2\times2)=1/4\).</div><div class="fb no">Use \((r-\ell)^2/(2r)\). The numerator is 1 and the denominator is 4.</div></div></div>
+<h2>6. Put B's uncertainty back in</h2>
+<p>Before preparing, B does not know its value. Write \(\mu\), pronounced mu, for its probability of having the high value. Its expected acquisition profit is the weighted average</p>
+$$B_r(\mu)=(1-\mu)g_L+\mu g_H=g_L+\mu(g_H-g_L).$$
+<p>The subscript \(r\) reminds us that A's strength affects the profits. At a 50% probability of a high value and \(r=3\),</p>
+$$B_3(1/2)=\frac{0.125+8.458333}{2}\approx4.291667.$$
+<p>Preparation costs 1 with probability \(\rho=0.25\), and otherwise costs 6 in the benchmark. Thus B prepares at the prior belief when the cost is 1, but not when it is 6. Lesson 3 will explain how prices can change \(\mu\).</p>
+<h2>7. Check what changes when A strengthens</h2>
+<p>A derivative measures how a quantity changes when \(r\) rises a little. In these calculations, \(p,\ell,h\) stay fixed. The useful rule is \(d(c/r)/dr=-c/r^2\) for a constant \(c\).</p>
+$$\Delta_T'(r)=\frac12-\frac{\ell^2}{2r^2}&gt;0,$$
+$$g_H'(r)=-\frac12+\frac{p^2}{2r^2}&lt;0,\qquad
+g_L'(r)=-\frac{\ell^2-p^2}{2r^2}&lt;0.$$
+<p>The first sign follows from \(r&gt;\ell\), the second from \(r&gt;p\), and the third from \(\ell&gt;p\). Both of B's possible expected profits fall. Their weighted average therefore falls at every fixed \(\mu\).</p>
+<p>Moving from \(r=1.2\) to \(r=3\), the prior expected profit falls from 4.804167 to 4.291667. Target's payment difference rises from 0.016667 to 0.666667. These are the two opposing changes we need. A wider payment difference alone does not yet prove profitable trading or greater preparation.</p>
+<h2>8. Proposition 1: remove the uniform assumption</h2>
+<p>The result also holds when A's value has another continuous distribution. Let \(F(u)=\Pr(R\le u)\). This is the <em>cumulative distribution function</em>, usually shortened to CDF.</p>
+<p>A stronger distribution puts less probability below every cutoff. If \(\widetilde F\) is the stronger distribution, then \(\widetilde F(u)\le F(u)\) for all \(u\). This is called <em>first-order stochastic dominance</em>. Comparing only average values would not be enough.</p>
+<p>Assume the support ends at \(\bar r&lt;h\), with \(p&lt;\ell&lt;\bar r\). Set \(F(u)=1\) for \(u\) above that endpoint.</p>
+<h3>First identity: Target's payment difference</h3>
+<p>For any fixed \(R\), the two payments coincide if \(R\le\ell\). Otherwise their difference is \(R-\ell\). Therefore</p>
+$$\Delta_T(F)=\mathbb E[(R-\ell)_+].$$
+<p>Imagine adding up small horizontal lengths from \(\ell\) to \(R\). A point \(u\) contributes exactly when \(R&gt;u\). This gives</p>
+$$ (R-\ell)_+=\int_\ell^{\bar r}\mathbf1\{R&gt;u\}\,du.$$
+<p>Average both sides. The average of the indicator is its probability, \(\Pr(R&gt;u)=1-F(u)\):</p>
+$$\Delta_T(F)=\int_\ell^{\bar r}[1-F(u)]\,du.$$
+<h3>Second identity: B's profit</h3>
+<p>For either value \(\theta\), B's realized profit is \((\theta-\max\{p,R\})_+\). It is the length from \(\max\{p,R\}\) to \(\theta\), if positive. Consequently</p>
+$$ (\theta-\max\{p,R\})_+=\int_p^\theta\mathbf1\{R&lt;u\}\,du.$$
+<p>Average again. Continuity of the distribution lets us write \(\Pr(R&lt;u)=F(u)\):</p>
+$$G_\theta(F)=\int_p^\theta F(u)\,du.$$
+<p>Capital \(G_\theta\) is the general-distribution version of \(g_H\) or \(g_L\). When \(\theta=h\), the integral extends above A's support, where \(F=1\).</p>
+<p>Both steps exchange an average and an integral. That exchange is valid because the quantities being added are nonnegative. The formal result is Tonelli's theorem. Its role here is to justify changing the order of two ways of adding the same nonnegative pieces.</p>
+<h3>Now compare the distributions</h3>
+<p>Replacing \(F\) by the smaller \(\widetilde F\) makes \(1-F\) larger. The first integral rises. It makes the second integral smaller, so B's profit falls for both possible values.</p>
+$$\begin{aligned}
+\Delta_T(\widetilde F)-\Delta_T(F)
+&amp;=\int_\ell^{\bar r}[F(u)-\widetilde F(u)]\,du\ge0,\\
+G_\theta(F)-G_\theta(\widetilde F)
+&amp;=\int_p^\theta[F(u)-\widetilde F(u)]\,du\ge0.
+\end{aligned}$$
+<p>Each comparison is strict if its displayed integral is positive. Finally, \((1-\mu)G_\ell+\mu G_h\) cannot rise when both components fall and the weight \(\mu\) stays fixed. That completes Proposition 1.</p>
+<div class="claim">Proposition 1 proves an auction-payoff comparison. It does not solve the stock market or show that preparation rises. The next two lessons do that additional work.</div>
+<div class="checkpoint"><h3>Check the scope</h3><div class="quiz" data-answer="a"><div class="q">What does Proposition 1 establish?</div><label><input type="radio" value="a">A stronger rival weakly widens Target's payment difference and lowers B's profit at fixed beliefs.</label><label><input type="radio" value="b">Every stronger rival makes B more likely to prepare.</label><label><input type="radio" value="c">The result requires uniformly distributed rival values.</label><div class="fb ok">Yes. Trading and changes in beliefs still need to be solved.</div><div class="fb no">The proof compares two auction payoffs under a stronger distribution. It does not yet compare equilibrium preparation.</div></div></div>
+<h2>9. Rebuild the calculation</h2>
+<div class="recall"><details><summary>Derive the low-value payment without recalling its formula.</summary><p>Split A's values at the reserve and at B's low value. Target receives \(p\), then \(R\), then \(\ell\). Average those three pieces to obtain \(t_L=\ell-(\ell^2-p^2)/(2r)\).</p></details><details><summary>Why is B's low-value profit zero when A wins?</summary><p>B does not acquire Target and makes no auction payment. Its acquisition profit is zero. Its preparation cost, already paid, is a separate expense.</p></details><details><summary>Explain why the reserve disappears from the spread.</summary><p>The high and low payments are identical wherever the reserve affects them. Their difference is positive only above \(\ell\), where the reserve is irrelevant.</p></details><details><summary>Explain the two integral identities in words.</summary><p>Target's difference adds the probabilities that A's value exceeds each cutoff above \(\ell\). B's profit adds the probabilities that A's value lies below each cutoff between the reserve and B's value.</p></details><details><summary>What must stay fixed for the profit comparison to imply less preparation?</summary><p>B's information and preparation-cost distribution. If stronger competition changes the information B receives, its beliefs can change too.</p></details></div>
+<p class="source">Source: equations (4)–(6), Proposition 1, and Appendix A.1 of the paper. The proof of truthful bidding is the second-price auction argument associated with Vickrey. The <a href="../reference/formula-sheet.html?revision=20260906-final">formula sheet</a> collects the final expressions.</p>
+<p><a href="0003-prices-beliefs-and-the-investors-edge.html?revision=20260906-final">Continue to Lesson 3: what can B learn from a stock price? →</a></p>
+</body></html>

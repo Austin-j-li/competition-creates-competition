@@ -1,0 +1,57 @@
+/* Shared course stylesheet: Tufte-flavoured, print-friendly. */
+:root{--ink:#1a1a1a;--muted:#5b5b5b;--rule:#d9d4c7;--paper:#fffdf8;--accent:#8a3b12;--accent2:#1f4e79;--box:#f4efe3;--ok:#2e7d32;--bad:#b3261e;--code:#f0ece2}
+@media(prefers-color-scheme:dark){:root{--ink:#e8e4dc;--muted:#a8a39a;--rule:#3a3730;--paper:#161513;--accent:#e08a5a;--accent2:#7fb0e0;--box:#211f1b;--ok:#7bc47f;--bad:#f28b82;--code:#232019}}
+html{background:var(--paper);color:var(--ink);font:18px/1.55 Georgia,"Iowan Old Style",Palatino,serif}
+body{margin:0;padding:3rem 1.5rem 6rem;max-width:44rem;margin-inline:auto}
+h1{font-size:2.1rem;font-weight:400;font-style:italic;margin:.2em 0 .3em;line-height:1.15}
+h2{font-size:1.45rem;font-weight:400;font-style:italic;margin:2.2em 0 .5em;border-top:1px solid var(--rule);padding-top:.8em}
+h3{font-size:1.1rem;font-weight:600;margin:1.6em 0 .4em}
+p{margin:.7em 0}
+.subtitle{color:var(--muted);font-style:italic;margin-top:0}
+.meta{color:var(--muted);font-size:.85rem;display:flex;gap:1.5rem;flex-wrap:wrap;margin:.4em 0 2em}
+a{color:var(--accent2);text-decoration:none;border-bottom:1px solid var(--rule)}a:hover{border-color:var(--accent2)}
+nav.course{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--rule);padding-bottom:.6em;margin-bottom:1.5em}
+.eli5{background:var(--box);border-left:4px solid var(--accent);padding:.9em 1.1em;margin:1.3em 0;border-radius:0 6px 6px 0}
+.eli5::before{content:"In plain words";display:block;font-variant:small-caps;letter-spacing:.06em;color:var(--accent);font-size:.85rem;margin-bottom:.3em}
+.math-box{background:var(--code);border:1px solid var(--rule);padding:.8em 1.1em;margin:1.2em 0;border-radius:6px}
+.math-box.proof::before{content:"Proof";font-weight:600;display:block;margin-bottom:.3em}
+.math-box.derivation::before{content:"Derivation";font-weight:600;display:block;margin-bottom:.3em}
+.claim{border:1px solid var(--rule);padding:.8em 1.1em;margin:1.2em 0;border-radius:6px}
+.claim strong:first-child{color:var(--accent2)}
+.sidenote{font-size:.85rem;color:var(--muted);border-top:1px dotted var(--rule);margin:1em 0;padding-top:.4em}
+.timeline{list-style:none;padding:0;margin:1em 0;counter-reset:step}
+.timeline li{position:relative;padding-left:2.6rem;margin:.55em 0;counter-increment:step}
+.timeline li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;font-family:system-ui}
+table{border-collapse:collapse;margin:1em 0;font-size:.92rem;width:100%}
+th,td{text-align:left;padding:.4em .6em;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;font-variant:small-caps;letter-spacing:.04em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.table-scroll{overflow-x:auto}
+code{font:.88em ui-monospace,Menlo,monospace;background:var(--code);padding:.1em .3em;border-radius:3px}
+.checkpoint{border:2px solid var(--accent2);border-radius:8px;padding:1em 1.2em;margin:1.8em 0}
+.checkpoint h3{margin-top:0}
+.quiz{margin:1.2em 0;padding:1em 1.2em;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.quiz .q{font-weight:600;margin-bottom:.6em}
+.quiz label{display:block;padding:.45em .7em;margin:.3em 0;border:1px solid var(--rule);border-radius:6px;cursor:pointer;font-family:ui-monospace,Menlo,monospace;font-size:.9rem}
+.quiz label:hover{border-color:var(--accent2)}
+.quiz input{margin-right:.6em}
+.quiz .fb{margin-top:.6em;font-size:.92rem;display:none}
+.quiz.correct .fb.ok{display:block;color:var(--ok)}
+.quiz.wrong .fb.no{display:block;color:var(--bad)}
+.quiz.correct label.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.quiz.wrong label.chosen{border-color:var(--bad)}
+.recall{background:var(--box);padding:1em 1.2em;border-radius:8px;margin:1.2em 0}
+.recall summary{cursor:pointer;font-weight:600}
+.recall details{margin:.5em 0}
+.ask{border-top:1px solid var(--rule);margin-top:3em;padding-top:1em;color:var(--muted);font-size:.9rem}
+.source{border:1px dashed var(--rule);padding:.8em 1.1em;margin:1.4em 0;border-radius:6px}
+.source::before{content:"Primary source";font-variant:small-caps;letter-spacing:.06em;color:var(--muted);display:block;font-size:.85rem}
+kbd.tag{font:.72rem system-ui;background:var(--accent2);color:#fff;padding:.1em .5em;border-radius:10px;vertical-align:middle;margin-left:.4em}
+figure{margin:1.4em 0}figcaption{font-size:.85rem;color:var(--muted)}
+svg text{font-family:system-ui;fill:var(--ink)}
+@media print{body{padding:0;max-width:none;font-size:11pt}.quiz,.ask,nav.course{display:none}.recall details{display:block}.recall details>*{display:block}}
+
+/* Keep long proof equations readable in a narrow lesson panel. */
+mjx-container[display="true"]{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:.25em 0}
+.quiz label{font-family:inherit}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}

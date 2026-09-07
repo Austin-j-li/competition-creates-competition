@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 4: Prove that the stronger rival can bring B in</title>
+<link rel="stylesheet" href="../assets/course.css?revision=20260906-final">
+<script defer src="../assets/quiz.js"></script>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<nav class="course"><span>Lesson 4 of 5</span><span><a href="0003-prices-beliefs-and-the-investors-edge.html?revision=20260906-final">← Previous</a> · <a href="../index.html?revision=20260906-final">Course home</a> · <a href="0005-certificates-robustness-welfare-and-design.html?revision=20260906-final">Next →</a></span></nav>
+<h1>Prove that the stronger rival can bring B in</h1>
+<p class="subtitle">We now combine the auction payoffs, the information in prices, and the investor's choice of order.</p>
+<div class="meta"><span>Paper: Proposition 2</span><span>Appendix A.2 and A.4</span></div>
+<div class="eli5">We must show that the weak rival leaves informed trading unprofitable, while the stronger rival makes full informed trading optimal. Then we check that the resulting information induces extra preparation. Assuming informative trading from the start would skip the main economic question.</div>
+<h2>1. What must be true in an equilibrium?</h2>
+<p>An equilibrium is a collection of decisions and beliefs that fit together. The investor prefers its chosen orders, dealers price the shares correctly given those orders and preparation, and B prepares when its expected acquisition profit covers its cost.</p>
+<p>We will first show which orders every equilibrium must use. Then we will build the corresponding price and preparation rules and verify that they work. The first part excludes alternatives. The second establishes existence.</p>
+<p>Keep the benchmark values:</p>
+$$h=10,\quad\ell=1,\quad p=0.5,\quad
+\rho=0.25,\quad c_L=1,\quad c_H=6,\quad b=2,\quad k=0.02.$$
+<p>Here k is the trading cost per unit. We compare A's strength \(r_0=1.2\) with \(r_1=3\). Later we consider \(r_2=3.6\). Every other input stays fixed.</p>
+<h2>2. Read the theorem's conditions as economic statements</h2>
+<h3>A1: cheap preparation is worthwhile even after bad news</h3>
+$$0\le c_L&lt;B_{r_1}(m).\tag{A1}$$
+<p>m is the lowest feasible probability of a high-value B. This condition says low-cost preparation pays even at that pessimistic belief against the stronger A.</p>
+<p>Since B's profit is larger against the weaker A, the condition covers both economies. It supplies an entry probability of at least \(\rho\) at every reachable price. Some possibility of preparation is what makes Target's payout depend on B's value before additional high-cost preparation begins.</p>
+<h3>A2: good news can change the high-cost decision</h3>
+$$B_{r_0}(1/2)&lt;c_H&lt;B_{r_1}(M).\tag{A2}$$
+<p>The left inequality says high-cost preparation is too expensive at the prior against the weak A. The right says it is worthwhile after sufficiently favorable information against the stronger A. M is the most optimistic feasible belief.</p>
+<p>These inequalities compare different beliefs. At the same belief, the stronger rival still lowers B's profit.</p>
+<h3>A3: trading cost lies between two bounds</h3>
+$$\Delta_T(r_0)&lt;k&lt;\left(1-\frac1b\right)\rho m\Delta_T(r_1).\tag{A3}$$
+<p>The left side will make every nonzero order unprofitable against the weak A. The right side will make each increase in a correctly signed order profitable against the stronger A.</p>
+<p>A “correctly signed” order means buying after H or selling after L. The factor \(1-1/b\) allows for the fact that increasing an order also changes the price evidence the market sees. We will derive it below.</p>
+<h3>Check that these are actual restrictions, not wishes</h3>
+<p>Using the payoff formulas from Lesson 2:</p>
+$$B_3(m)\approx2.36618&gt;1,$$
+$$B_{1.2}(1/2)\approx4.804167&lt;6&lt;6.217155\approx B_3(M),$$
+$$0.016667&lt;0.02&lt;0.022412.$$
+<p>These establish A1, A2, and A3 at the benchmark. In A3, the upper bound is only a little above the trading cost. That is why a proof of optimal trading needs more than a verbal claim that the information is valuable.</p>
+<div class="checkpoint"><h3>Understand the conditions</h3><div class="quiz" data-answer="b"><div class="q">Why does A2 not contradict deterrence?</div><label><input type="radio" value="a">Because deterrence applies only to low-value buyers.</label><label><input type="radio" value="b">Because it compares a prior belief in one economy with a more favorable belief in the other.</label><label><input type="radio" value="c">Because the stronger rival lowers preparation costs.</label><div class="fb ok">Yes. At any one fixed belief, acquisition profit is still lower against the stronger rival.</div><div class="fb no">The costs are unchanged and deterrence remains. A2 allows the information improvement to outweigh the reduction in profit.</div></div></div>
+<h2>3. Steps 1 and 2: establish what B can infer</h2>
+<p><strong>Step 1.</strong> Lesson 3 proved \(m\le\mu_X\le M\) for every feasible trading strategy, including randomized orders. The price posterior inherits the same interval by averaging.</p>
+<p>A1 therefore makes low-cost preparation optimal at every reachable price in both economies. This conclusion comes before we assume any particular pricing pattern.</p>
+<p><strong>Step 2.</strong> With that preparation floor, rearranging the pricing equation reveals \(\mu_X\) from P. The entry and price rules must therefore be</p>
+$$e_r(\mu)=\rho+(1-\rho)\mathbf1\{B_r(\mu)\ge c_H\},$$
+$$P_r(\mu)=t_0+e_r(\mu)[t_L-t_0+\Delta_T\mu].$$
+<p>The correctly signed per-unit advantages obey</p>
+$$\rho m\Delta_T\le A_H(x),A_L(x)\le\Delta_T.$$
+<p>These conclusions constrain every candidate equilibrium. We are now ready to test trading incentives.</p>
+<h2>4. Step 3: rule out every informed trade against the weak A</h2>
+<p>Let s be a positive order magnitude. The investor's average advantage per unit cannot exceed \(\Delta_T(r_0)\), because that bound holds at every flow.</p>
+$$\text{Expected profit from a correctly signed order}
+\le s[\Delta_T(r_0)-k]&lt;0.$$
+<p>Zero trading earns zero. Buying in L or selling in H has a negative gross expected payoff, and still incurs a trading cost. Thus every nonzero order is worse than zero.</p>
+<p>Randomizing does not help. A mixture of losing orders and zero cannot beat zero. Hence both states must choose \(q=0\).</p>
+<p>Now construct the equilibrium. With zero informed orders, total flow is just unrelated demand: \(X=Z\). It has the same distribution in H and L. Dealers and B keep the prior belief of 1/2. A1 admits low-cost preparation and A2 excludes high-cost preparation, so entry equals \(\rho\).</p>
+$$P=t_0+\rho\left[\frac{t_H+t_L}{2}-t_0\right].$$
+<p>This constant price correctly averages Target's eventual payout. Preparation is optimal and the investor prefers zero. The weak economy's equilibrium trading and on-path entry are therefore unique.</p>
+<h2>5. Step 4: rule out every smaller order against the strong A</h2>
+<p>This is the proof's hardest step. Work through it in three pieces: average the gain, bound how quickly that average can fall, and then differentiate total profit.</p>
+<h3>First, average over unrelated demand</h3>
+<p>Fix a candidate price and preparation schedule. If the high-state investor buys s, flow x has density \(f(x-s)\). If the low-state investor sells s, flow x has density \(f(x+s)\). Define</p>
+$$F_H(s)=\int_{-\infty}^{\infty}f(x-s)A_H(x)\,dx,$$
+$$F_L(s)=\int_{-\infty}^{\infty}f(x+s)A_L(x)\,dx.$$
+<p>These are expected advantages per unit, as functions of the deviating order size. Here F is an expected-gain function. It is unrelated to the CDF F used in Proposition 1.</p>
+<p>Each integral averages a fixed advantage schedule with a shifted noise density. This kind of averaging is called a convolution. The total expected profit for either state is</p>
+$$U_\theta(s)=sF_\theta(s)-ks,\qquad 0\le s\le1.$$
+<h3>Second, bound how much price effects can reduce the gain</h3>
+<p>The Laplace density satisfies \(|f'(z)|\le f(z)/b\), except at its harmless corner at zero. Differentiate the shifted density inside the integral:</p>
+$$|F_\theta'(s)|\le\int\frac{f(x\mp s)}b A_\theta(x)\,dx
+=\frac{F_\theta(s)}b.$$
+<p>In particular, \(F_\theta'(s)\ge-F_\theta(s)/b\). As s rises, the average advantage may shrink, but this bound limits how fast it can shrink.</p>
+<p>Why differentiate the density instead of the price? We are holding the candidate price and entry schedules fixed during the deviation. Those schedules can jump when B starts preparing. Moving the density accounts for changing the probabilities of reaching either side of that jump, without pretending the price schedule is smooth.</p>
+<details class="recall"><summary>The calculus justification, one step further</summary><p>The Laplace density is absolutely continuous: differences in its values can be recovered by integrating its derivative. For \(s_2&gt;s_1\),</p>$$F_\theta(s_2)-F_\theta(s_1)=\int_{s_1}^{s_2}\int\partial_u f(x\mp u)A_\theta(x)\,dx\,du.$$<p>The absolute double integral is bounded by \(\|A_\theta\|_\infty(s_2-s_1)\|f'\|_1\), which is finite. Thus Fubini's theorem permits exchanging the integrals. The resulting F is absolutely continuous and the derivative bound holds almost everywhere. That is enough to integrate the profit bound over any interval. We do not assume the entry jump has a classical derivative.</p></details>
+<h3>Third, show total profit rises all the way to s = 1</h3>
+<p>Apply the product rule, then the bound just obtained:</p>
+$$\begin{aligned}
+U_\theta'(s)&amp;=F_\theta(s)+sF_\theta'(s)-k\\
+&amp;\ge\left(1-\frac sb\right)F_\theta(s)-k\\
+&amp;\ge\left(1-\frac1b\right)\rho m\Delta_T(r_1)-k&gt;0.
+\end{aligned}$$
+<p>The last line uses \(s\le1\), the lower bound on the advantage, and A3. Because \(b&gt;1\), the coefficient \(1-1/b\) is positive.</p>
+<p>This proves more than a positive derivative at one proposed order. For any \(s_2&gt;s_1\), integrate the positive lower bound between them:</p>
+$$U_\theta(s_2)-U_\theta(s_1)&gt;0.$$
+<p>Every larger correctly signed order is better, all the way to the allowed maximum. Thus every equilibrium must have \(q_H=1\) and \(q_L=-1\). Wrong signs lose money and mixing cannot improve on the unique best action.</p>
+<div class="checkpoint"><h3>What did the derivative prove?</h3><div class="quiz" data-answer="a"><div class="q">Why is this a global optimality argument?</div><label><input type="radio" value="a">It proves profit rises across the whole allowed order interval.</label><label><input type="radio" value="b">It checks that profit is positive at s = 1.</label><label><input type="radio" value="c">It tests a large but finite set of order sizes.</label><div class="fb ok">Yes. Integrating the positive bound compares any two magnitudes.</div><div class="fb no">A profitable order need not be the best order. Here every increase in correctly signed magnitude raises expected profit.</div></div></div>
+
+<h2>6. Step 5: construct the strong equilibrium</h2>
+<p>Showing that an equilibrium must use full orders is not enough. We must show there is an equilibrium with those orders.</p>
+<p>Set \((q_H,q_L)=(1,-1)\). Bayes' rule gives the posterior from Lesson 3:</p>
+$$\mu_X(x)=\left[1+\exp\left(-\frac{|x+1|-|x-1|}{b}\right)\right]^{-1}.$$
+<p>Use this posterior in the preparation and pricing rules from Step 2. The price rises strictly with the posterior, so B can infer the correct belief from its observed price and choose preparation optimally. Dealers' price is the conditional expected share payoff by construction. The global profit bound proves the full orders are optimal against these schedules.</p>
+<p>All the pieces fit. This establishes existence, and Step 4 has already ruled out other trading outcomes. The uniqueness claim concerns trading and preparation at prices that actually occur, under truthful auction bidding.</p>
+<h2>7. Step 6: calculate the extra preparation</h2>
+<h3>Find the probability B needs to justify cost 6</h3>
+<p>Solve \(B_r(\mu)\ge c_H\). Since \(g_H&gt;g_L\), division preserves the inequality:</p>
+$$g_L+\mu(g_H-g_L)\ge c_H
+\quad\Longleftrightarrow\quad
+\mu\ge\tau:=\frac{c_H-g_L}{g_H-g_L}.$$
+<p>The symbol \(\tau\), pronounced tau, is the threshold belief for high-cost preparation. At \(r=3\),</p>
+$$\tau=\frac{6-0.125}{8.458333-0.125}=0.705.$$
+<p>A2 guarantees \(1/2&lt;\tau&lt;M\). For the first inequality, B's profit at the strong prior is below its profit at the weak prior, which is below \(c_H\). For the second, A2 says the strong economy's ceiling profit exceeds \(c_H\).</p>
+<h3>Turn that belief into a flow cutoff</h3>
+<p>Between −1 and 1, posterior log odds equal \(2x/b\). Set the posterior to \(\tau\) and solve:</p>
+$$\log\frac\tau{1-\tau}=\frac{2x^*}{b}
+\quad\Longrightarrow\quad
+x^*=\frac b2\log\frac\tau{1-\tau}.$$
+<p>Because \(\tau\in(1/2,M)\), we have \(x^*\in(0,1)\). At the benchmark, \(x^*\approx0.871222\). B can infer whether this cutoff was crossed from the price, without seeing the flow itself.</p>
+<h3>Calculate how often the cutoff is crossed</h3>
+<p>For Laplace noise, the probability of exceeding a cutoff z is</p>
+$$\Pr(Z\ge z)=\begin{cases}
+1-\tfrac12 e^{z/b},&amp;z&lt;0,\\
+\tfrac12 e^{-z/b},&amp;z\ge0.
+\end{cases}$$
+<p>In H, total flow is \(1+Z\), so crossing \(x^*\) requires \(Z\ge x^*-1\), a negative cutoff. In L, flow is \(-1+Z\), so it requires \(Z\ge x^*+1\), a positive cutoff. Hence</p>
+$$\alpha_H=1-\frac12e^{(x^*-1)/b},\qquad
+\alpha_L=\frac12e^{-(x^*+1)/b}.$$
+<p>These are the probabilities of receiving evidence strong enough for expensive preparation, conditional on each state. Both are positive. Also \(\alpha_H&gt;\alpha_L\), because the distribution of flow in H is shifted two units to the right.</p>
+<h3>Average over costs and states</h3>
+<p>Low-cost B prepares with probability 1. High-cost B prepares when the cutoff is crossed. H and L each have prior probability 1/2, so total preparation probability is</p>
+$$\mathsf E=\rho+\frac{1-\rho}{2}(\alpha_H+\alpha_L)&gt;\rho.$$
+<p>A high-value B always wins once prepared, because \(h&gt;r\). Its ownership probability is</p>
+$$\mathsf O_H=\frac12[\rho+(1-\rho)\alpha_H]&gt;\frac\rho2.$$
+<p>Numerically, preparation rises from 0.25 to 0.522757 and high-value B ownership rises from 0.125 to 0.324192. Extra preparation is more likely when B really is high-value, although mistaken preparation can still occur in L.</p>
+<h3>What does “more informative” mean in the theorem?</h3>
+<p>The weak price carries no information about H versus L. The strong price does. You can reproduce the weak information by taking the strong price and ignoring it. Starting from a constant, uninformative observation, state-independent randomization cannot reproduce an informative signal.</p>
+<p>This is strict Blackwell dominance of the strong experiment over the weak one. It compares information about B's state, not the average level of the two prices. It does not rank every pair of noise distributions.</p>
+<div class="checkpoint"><h3>Interpret the extra entry</h3><div class="quiz" data-answer="c"><div class="q">What makes preparation exceed ρ in the strong economy?</div><label><input type="radio" value="a">There are now two different challengers.</label><label><input type="radio" value="b">Low-cost preparation becomes cheaper.</label><label><input type="radio" value="c">Favorable prices sometimes justify the high preparation cost.</label><div class="fb ok">Yes. The extra probability is \((1-\rho)(\alpha_H+\alpha_L)/2\).</div><div class="fb no">There is still one B with the same cost distribution. The new preparation occurs in high-cost realizations after sufficiently favorable information.</div></div></div>
+<h2>8. Why preparation falls again at a still stronger A</h2>
+<p>At \(r_2=3.6\), check three separate conditions:</p>
+$$c_L&lt;B_{r_2}(m),\qquad B_{r_2}(M)&lt;c_H,$$
+$$k&lt;\left(1-\frac1b\right)\rho m\Delta_T(r_2).$$
+<p>The first preserves low-cost preparation. The last preserves unique full informed orders. The middle says even the best feasible belief does not justify the high preparation cost.</p>
+<p>Thus the price remains informative, but preparation returns to \(\rho=0.25\). More information can be useful without being enough to change a particular decision.</p>
+<p>This proves a rise and a subsequent fall across the three specified economies. It does not prove a smooth, single-peaked curve over every value of r. Intermediate strengths can have several equilibria.</p>
+<h2>9. Two comparisons that isolate the information effect</h2>
+<h3>Hold the information fixed</h3>
+<p>Give B the same signal experiment at both strengths. That means the joint distribution of the signal and B's value stays fixed, as does the cost distribution. For each signal realization B has the same posterior in both economies.</p>
+<p>Since \(B_{r_1}(\mu)\le B_{r_0}(\mu)\),</p>
+$$\mathbf1\{C\le B_{r_0}(\mu)\}-\mathbf1\{C\le B_{r_1}(\mu)\}
+=\mathbf1\{B_{r_1}(\mu)&lt;C\le B_{r_0}(\mu)\}\ge0.$$
+<p>Average this inequality to prove Proposition A.3: with information fixed, preparation weakly falls. It falls strictly if a positive-probability set of costs lies between the two profits.</p>
+<p>Forcing full informative orders in both benchmark economies gives entry of 0.562178 against the weak A and 0.522757 against the stronger A. The weak forced-order case is a control, not an investor equilibrium: the investor would not voluntarily trade that way there.</p>
+<h3>Hide the price from B</h3>
+<p>Alternatively, let trading occur but prevent B from seeing the price. B uses the prior and prepares only at low cost at both strengths. Entry is 0.25 in each economy.</p>
+<p>The reversal requires both parts: rival strength must change the information produced, and B must be able to use it before preparing.</p>
+<h2>10. Different thresholds answer different questions</h2>
+<p>All thresholds here apply in the maintained region where low-cost preparation occurs at every feasible belief and high-cost preparation is excluded at the prior.</p>
+<h3>When can no trade be an equilibrium?</h3>
+<p>Against the constant no-trade price, the posterior remains 1/2 and preparation stays at \(\rho\). A unilateral correctly signed order of magnitude s earns</p>
+$$s\left[\frac{\rho\Delta_T(r)}2-k\right].$$
+<p>No trade is an equilibrium exactly when \(\rho\Delta_T(r)/2\le k\). This tests one particular constant schedule. It can hold even when other, informative schedules also support equilibria.</p>
+<p>To solve for the boundary, first solve \(\Delta_T(r)=d\):</p>
+$$\begin{aligned}
+(r-\ell)^2&amp;=2rd,\\
+r^2-2(\ell+d)r+\ell^2&amp;=0,\\
+\mathfrak r(d)&amp;=\ell+d+\sqrt{d^2+2\ell d}.
+\end{aligned}$$
+<p>We take the root above \(\ell\), as required by the benchmark support. The no-trade existence boundary is</p>
+$$r_N=\mathfrak r(2k/\rho)\approx1.747877538.$$
+<h3>When do our bounds guarantee uniqueness?</h3>
+<p>The stronger condition \(\Delta_T&lt;k\) rules out trades against every candidate schedule, not just the constant one. It guarantees unique no trade for</p>
+$$r&lt;\mathfrak r(k)\approx1.220997512.$$
+<p>The global derivative bound guarantees unique full orders for</p>
+$$r&gt;r_U:=\mathfrak r\left(\frac{k}{(1-1/b)\rho m}\right)
+\approx2.837416964.$$
+<p>These are sufficient uniqueness bounds. Failure of either bound does not establish multiplicity or identify the first appearance of an informative equilibrium.</p>
+<h3>When does high-cost preparation become impossible?</h3>
+<p>Use the largest possible belief M. Combining the auction profits gives</p>
+$$B_r(M)=Mh-\frac{Mr}{2}+\frac{(1-M)\ell^2-p^2}{2r}.$$
+<p>Set this equal to \(c_H\), multiply by \(2r\), and rearrange:</p>
+$$Mr^2-2(Mh-c_H)r-[(1-M)\ell^2-p^2]=0.$$
+<p>The crossing in the maintained domain is</p>
+$$r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}M
+\approx3.592658519.$$
+<p>Above this strength, high-cost preparation is impossible under any trading strategy. At equality, the tie rule matters. Full Laplace orders put positive probability on the upper plateau, where B is exactly indifferent and prepares.</p>
+$$\mathsf E(r_C)=\rho+\frac{1-\rho}{4}(1+e^{-2/b}).$$
+<p>Strictly above \(r_C\), entry is only \(\rho\) under the remaining conditions. The jump is caused by the positive probability of the plateau, not by rounding the cutoff.</p>
+<h2>11. A sharper test for one full-order candidate</h2>
+<p>Sometimes we can verify a particular full-order equilibrium even when the theorem's uniform lower bound is too conservative. Against that candidate define</p>
+$$J=F_H(1)=F_L(1)=\Delta_T\int e(x)
+\frac{f(x-1)f(x+1)}{f(x-1)+f(x+1)}\,dx.$$
+<p>The equality follows by substituting Bayes' rule into each residual. The Laplace ratio bound gives</p>
+$$F_\theta(s)\ge e^{-(1-s)/b}J.$$
+<p>Substituting this into the derivative inequality yields</p>
+$$U_\theta'(s)\ge(1-s/b)e^{-(1-s)/b}J-k
+\ge(1-1/b)J-k.$$
+<p>For the last inequality, differentiating the factor gives \(-s e^{-(1-s)/b}/b^2\le0\), so its minimum on \([0,1]\) occurs at 1. Therefore \(k&lt;(1-1/b)J\) proves full orders are optimal against this candidate.</p>
+<p>This establishes existence for that candidate. It does not rule out other equilibria, because J depends on the candidate's own schedules.</p>
+<h2>12. Why the theorem covers an open, nonempty set</h2>
+<p>“Open” means small changes in inputs preserve the inequalities. Each inequality is strict and its two sides change continuously away from support boundaries, so a small enough perturbation leaves all the signs intact.</p>
+<p>“Nonempty” means there really are inputs satisfying the conditions. The benchmark is one example. We can also construct them for any value gap \(h&gt;\ell\).</p>
+<p>At the limiting strength \(r=\ell\),</p>
+$$g_H-g_L=h-\ell&gt;0,$$
+$$B_\ell(M)-B_\ell(1/2)=(M-1/2)(h-\ell)&gt;0.$$
+<p>First choose \(r_1&gt;\ell\) close enough to \(\ell\) that \(B_{r_1}(M)&gt;B_\ell(1/2)\). Then choose \(r_0\) still closer to \(\ell\). The weak spread \(\Delta_T(r_0)\) approaches zero, so we can put k strictly between it and \((1-1/b)\rho m\Delta_T(r_1)\).</p>
+<p>Choose \(c_H\) strictly between \(B_{r_0}(1/2)\) and \(B_{r_1}(M)\), and choose a nonnegative \(c_L\) below \(B_{r_1}(m)\). The latter profit is positive. Also \(B_{r_1}(m)&lt;B_{r_0}(1/2)&lt;c_H\), so the cost ordering holds. This constructs A1–A3. It proves possibility for any positive value gap, not a large effect for every possible calibration.</p>
+<h2>13. Reproduce the proof in your own words</h2>
+<div class="recall"><details><summary>Name the six steps and what each contributes.</summary><p>Bound beliefs; recover beliefs from prices; rule out weak-economy trades and construct no trade; force strong-economy full orders; construct the full-order equilibrium; calculate additional entry, ownership, and the information comparison.</p></details><details><summary>Why is it insufficient to check only q = 0 and q = 1?</summary><p>An intermediate order might be better than both. The derivative argument compares every allowed magnitude and excludes mixed strategies as well.</p></details><details><summary>Derive the high-state cutoff probability.</summary><p>In H, \(X=1+Z\). Crossing \(x^*\) requires \(Z\ge x^*-1&lt;0\), whose Laplace probability is \(1-\tfrac12e^{(x^*-1)/b}\).</p></details><details><summary>What is the difference between rN and rU?</summary><p>rN is the exact no-trade existence boundary in the maintained domain. rU is a sufficient bound above which full orders are uniquely optimal. They test different things.</p></details><details><summary>Why can entry fall while trading stays informative?</summary><p>Acquisition profit can become so small that even the highest possible posterior no longer covers the high preparation cost.</p></details><details><summary>What is still unresolved after Proposition 2?</summary><p>The full equilibrium set at intermediate strengths, the paths between the specified economies, and the seller's optimal terms. Lesson 5 explains what the additional results establish.</p></details></div>
+<p class="source">Source: Proposition 2, equation (12), Propositions A.3–A.4, and equations (A.4)–(A.14). The nonemptiness construction is in Appendix A.4. Use the <a href="../reference/proof-map.html?revision=20260906-final">proof map</a> to locate these arguments in the paper.</p>
+<p><a href="0005-certificates-robustness-welfare-and-design.html?revision=20260906-final">Continue to Lesson 5: what else is proved, and what remains open? →</a></p>
+</body></html>

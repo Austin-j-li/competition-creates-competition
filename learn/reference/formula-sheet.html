@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Formula Sheet</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+.math-box{page-break-inside:avoid}
+.gloss{color:var(--muted);font-size:.9rem;margin:.2em 0 0}
+.math-box mjx-container[display="true"]{margin:.5em 0!important}
+</style>
+</head>
+<body>
+<nav class="course">
+  <span><a href="../lessons/0001-the-story-and-the-institutions.html">Lesson 1</a></span>
+  <span><a href="glossary.html">Glossary</a> · <a href="proof-map.html">Proof map</a></span>
+</nav>
+
+<h1>Formula Sheet</h1>
+<p class="subtitle">Every equation in the paper, grouped by role, each with a one-line gloss.</p>
+<p class="meta"><span>Reference document</span><span>Numbers in parentheses are the manuscript's equation labels</span></p>
+
+<h2>1. Primitives and assumptions</h2>
+<div class="math-box">
+$$0\lt p\lt \ell\lt r\lt h \tag{1}$$
+<p class="gloss">Reserve below the low value, low value below incumbent strength, strength below the high value.</p>
+</div>
+<div class="math-box">
+$$q\{V_T-P(X)\}-k|q|,\qquad X=q+Z,\qquad f(z)=\frac{1}{2b}e^{-|z|/b},\quad b\gt 1 \tag{2}$$
+<p class="gloss">Investor profit, order flow, and Laplace noise density.</p>
+</div>
+<div class="math-box">
+$$P(X)=\mathbb E[V_T\mid X] \tag{3}$$
+<p class="gloss">Competitive market makers set the price equal to the expected share payoff given flow.</p>
+</div>
+
+<h2>2. Auction payoffs</h2>
+<div class="math-box">
+$$\begin{aligned}
+t_0&=p\Big(1-\frac pr\Big), & t_H&=\frac r2+\frac{p^2}{2r}, & t_L&=\ell-\frac{\ell^2-p^2}{2r},\\
+g_H&=h-\frac r2-\frac{p^2}{2r}, & g_L&=\frac{\ell^2-p^2}{2r}, & \Delta_T(r)&=\frac{(r-\ell)^2}{2r}.
+\end{aligned}\tag{4}$$
+<p class="gloss">Expected proceeds without entry, with a high or low entrant; challenger gross profit by type; target-payoff spread.</p>
+</div>
+<div class="math-box">
+$$B_r(\mu)=g_L+\mu(g_H-g_L),\qquad \Delta_T'(r)=\frac12-\frac{\ell^2}{2r^2}\gt 0,\qquad g_H'(r)=-\frac12+\frac{p^2}{2r^2}\lt 0,\qquad g_L'(r)=-\frac{\ell^2-p^2}{2r^2}\lt 0 \tag{5}$$
+<p class="gloss">Profit at belief \(\mu\); a stronger incumbent widens the spread and lowers profit.</p>
+</div>
+<div class="math-box">
+$$\Delta_T(F)=\mathbb E_F[(R-\ell)_+]=\int_\ell^{\bar r}[1-F(u)]\,du,\qquad G_\theta(F)=\mathbb E_F[(\theta-\max\{p,R\})_+]=\int_p^\theta F(u)\,du \tag{6}$$
+<p class="gloss">Distribution-free spread and profit; FOSD raises the first, lowers the second (Proposition 1).</p>
+</div>
+<div class="math-box">
+$$t_H=\frac1r\Big[\int_0^p p\,du+\int_p^r u\,du\Big],\quad t_L=\frac1r\Big[\int_0^p p\,du+\int_p^\ell u\,du+\int_\ell^r\ell\,du\Big],\quad g_L=\frac1r\Big[\int_0^p(\ell-p)\,du+\int_p^\ell(\ell-u)\,du\Big] \tag{A.1}$$
+<p class="gloss">The integrals behind (4): pay the reserve, pay the rival's value, or pay the low value.</p>
+</div>
+
+<h2>3. Beliefs and prices</h2>
+<div class="math-box">
+$$a_\theta(x)=\int f(x-q)\,d\sigma_\theta(q),\qquad \mu_X(x)=\frac{a_H(x)}{a_H(x)+a_L(x)},\qquad m=\frac{1}{1+e^{2/b}},\quad M=1-m \tag{7}$$
+<p class="gloss">Flow density by state, the posterior, and its floor and ceiling.</p>
+</div>
+<div class="math-box">
+$$e^{-2/b}\le\frac{f(x-q)}{f(x-q')}\le e^{2/b}\quad\text{for all }q,q'\in[-1,1] \tag{8}$$
+<p class="gloss">Bounded likelihood ratio: no order can move the posterior outside \([m,M]\).</p>
+</div>
+<div class="math-box">
+$$e_r(\mu)=\rho+(1-\rho)\mathbf 1\{B_r(\mu)\ge c_H\},\qquad P_r(\mu)=t_0+e_r(\mu)[t_L-t_0+\Delta_T\mu] \tag{9}$$
+<p class="gloss">Entry rule and the strictly increasing candidate price.</p>
+</div>
+<div class="math-box">
+$$P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X],\qquad \mu_X=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T} \tag{10}$$
+<p class="gloss">Price sufficiency: the challenger reads the market's belief off the price.</p>
+</div>
+<div class="math-box">
+$$A_H(x)=e_r(\mu_X)\Delta_T[1-\mu_X],\qquad A_L(x)=e_r(\mu_X)\Delta_T\mu_X,\qquad \rho m\Delta_T\le A_H,A_L\le\Delta_T \tag{11}$$
+<p class="gloss">Residual edge equals entry times spread times remaining uncertainty.</p>
+</div>
+
+<h2>4. Proposition 2: conditions and outcomes</h2>
+<div class="math-box">
+$$0\le c_L\lt B_{r_1}(m)\tag{A1}\qquad\qquad B_{r_0}(1/2)\lt c_H\lt B_{r_1}(M)\tag{A2}$$
+$$\Delta_T(r_0)\lt k\lt \Big(1-\frac1b\Big)\rho m\Delta_T(r_1)\tag{A3}$$
+<p class="gloss">Cheap entry always pays; expensive entry pays only after good news against the strong rival; trading cost sits between the weak-economy ceiling and the strong-economy floor.</p>
+</div>
+<div class="math-box">
+$$\begin{aligned}
+\tau&=\frac{c_H-g_L}{g_H-g_L}, & x^*&=\frac b2\log\frac{\tau}{1-\tau},\\
+\alpha_H&=1-\tfrac12e^{(x^*-1)/b}, & \alpha_L&=\tfrac12e^{-(x^*+1)/b},\\
+\mathsf E&=\rho+\frac{1-\rho}{2}(\alpha_H+\alpha_L), & \mathsf O_H&=\tfrac12[\rho+(1-\rho)\alpha_H].
+\end{aligned}\tag{12}$$
+<p class="gloss">Threshold belief, threshold flow, crossing probabilities by state, total entry, and high-type ownership.</p>
+</div>
+<div class="math-box">
+$$\mu_X(x)=\Big[1+\exp\Big\{-\frac{|x+1|-|x-1|}{b}\Big\}\Big]^{-1}\tag{A.8}$$
+<p class="gloss">Posterior under full orders: \(m\) for \(x\le-1\), logistic\((2x/b)\) in between, \(M\) for \(x\ge1\).</p>
+</div>
+<div class="math-box">
+$$\mathsf E(r)\to\rho+\frac{1-\rho}{4}(1+e^{-2/b})\quad\text{as }r\uparrow r_C\tag{A.14}$$
+<p class="gloss">Entry just below the participation ceiling; above it, entry drops to \(\rho\).</p>
+</div>
+
+<h2>5. Trading-bound machinery</h2>
+<div class="math-box">
+$$F_H(s)=\int f(x-s)A_H(x)\,dx,\qquad F_L(s)=\int f(x+s)A_L(x)\,dx,\qquad U_\theta(s)=sF_\theta(s)-ks\tag{A.4}$$
+<p class="gloss">Average edge and net profit of a correctly signed order of size \(s\).</p>
+</div>
+<div class="math-box">
+$$U_\theta'(s)\ge\Big(1-\frac sb\Big)F_\theta(s)-k\ge\Big(1-\frac1b\Big)\rho m\Delta_T-k\gt 0\tag{A.6}$$
+<p class="gloss">Under (A3) the strong-economy profit rises at every order size, so the full order is uniquely optimal.</p>
+</div>
+<div class="math-box">
+$$J=F_H(1)=F_L(1)=\Delta_T\int e(x)\frac{f(x-1)f(x+1)}{f(x-1)+f(x+1)}\,dx,\qquad F_\theta(s)\ge e^{-(1-s)/b}J\tag{A.7}$$
+<p class="gloss">Existence test for one fixed full-order candidate: \(k\lt(1-1/b)J\) makes every correctly signed marginal profit positive against that schedule only.</p>
+</div>
+<div class="math-box">
+$$F(s_2)-F(s_1)=\int_{s_1}^{s_2}\!\!\int\partial_uf(x\mp u)A(x)\,dx\,du\tag{A.5}$$
+<p class="gloss">Translation formula: \(F\) is absolutely continuous and \(|F'|\le F/b\).</p>
+</div>
+<div class="math-box">
+$$s\Big(\frac{\rho\Delta_T(r)}2-k\Big)\tag{A.12}$$
+<p class="gloss">Payoff of a deviation of size \(s\) against no trade; zero is optimal iff this is nonpositive.</p>
+</div>
+
+<h2>6. Thresholds</h2>
+<div class="math-box">
+$$\mathfrak r(d)=\ell+d+\sqrt{d^2+2\ell d},\qquad r_N=\mathfrak r(2k/\rho),\qquad r_U=\mathfrak r\Big(\frac{k}{(1-1/b)\rho m}\Big)\tag{A.10}$$
+<p class="gloss">Strength at which \(\Delta_T=d\); no-trade existence boundary; full-order uniqueness bound. Uniqueness of no trade holds below \(\mathfrak r(k)\).</p>
+</div>
+<div class="math-box">
+$$r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}{M}\tag{A.11}$$
+<p class="gloss">Unique solution of \(B_r(M)=c_H\): the ceiling for expensive entry.</p>
+</div>
+<div class="math-box">
+$$B_r(M)=Mh-\frac{Mr}2+\frac{(1-M)\ell^2-p^2}{2r}\tag{A.13}$$
+<p class="gloss">Gross profit at the highest attainable belief; strictly decreasing in \(r\).</p>
+</div>
+
+<h2>7. Certified equilibria (Proposition 3)</h2>
+<div class="math-box">
+$$x^*(r,v)=\frac{b\,\mathrm{logit}(\tau)+1-v}{2},\qquad \mathsf E(r,v)=\rho+\frac{1-\rho}2\Big[1-\tfrac12e^{(x^*-1)/b}+\tfrac12e^{-(x^*+v)/b}\Big]\tag{A.15}$$
+<p class="gloss">Threshold flow and entry under the asymmetric profile \((1,-v)\), with \(\mu_v=\mathrm{logistic}((|x+v|-|x-1|)/b)\).</p>
+</div>
+<div class="math-box">
+$$F_L'(s)=-\int f(x+s)\,dA_L(x)\lt 0,\qquad |F_L''(s)|\le-\frac1bF_L'(s)\tag{A.16}$$
+<p class="gloss">Stieltjes-measure derivative; gives \(U_L''\lt 0\), so the low type's problem is globally concave.</p>
+</div>
+<div class="math-box">
+$$\Psi(r_j,v_{j,-})\gt 0,\qquad \Psi(r_j,v_{j,+})\lt 0\quad(j=\mathrm a,\mathrm b,\mathrm c)\tag{A.17}$$
+<p class="gloss">Interval sign change of the low type's marginal profit at bracket endpoints; an exact root lies inside.</p>
+</div>
+<div class="math-box">
+$$F_H''(s)=\frac{F_H(s)-A_H(s)}{b^2}\ \text{a.e.},\qquad |U_H''(s)|\le L_U:=\frac{2\Delta_T}b+\frac{\Delta_T}{b^2}\tag{A.18}$$
+<p class="gloss">Lipschitz bound on the high type's marginal profit.</p>
+</div>
+<div class="math-box">
+$$\inf_{s\in[0,1]}U_H'(s)\ge\min_j\underline{U_H'(s_j)}-\frac{L_U}{2n}\gt 0\tag{A.19}$$
+<p class="gloss">Mesh cover: interval lower bounds at \(n+1\) grid points certify full purchases everywhere.</p>
+</div>
+<div class="math-box">
+$$\text{primitives of }e^{\pm x/b}(1-\mu_v),\ e^{\pm x/b}\mu_v:\quad be^{c/b}\arctan t,\quad be^{-c/b}(-t^{-1}-\arctan t),\quad be^{c/b}(t-\arctan t),\quad be^{-c/b}\arctan t\tag{A.20}$$
+<p class="gloss">Elementary antiderivatives with \(c=(1-v)/2\), \(t=e^{(x-c)/b}\); tails integrate as exponentials.</p>
+</div>
+
+<h2>8. Logistic noise</h2>
+<div class="math-box">
+$$f_{\log}(z)=\frac1{4b}\operatorname{sech}^2\Big(\frac z{2b}\Big),\quad b\gt 1\tag{A.21}$$
+<p class="gloss">Alternative noise law; its log-density slope is also bounded by \(1/b\).</p>
+</div>
+<div class="math-box">
+$$x^*_{\log}=b\log\frac{Aw-1}{A-w},\qquad \alpha_H^{\log}=\frac1{1+e^{(x^*_{\log}-1)/b}},\qquad \alpha_L^{\log}=\frac1{1+e^{(x^*_{\log}+1)/b}},\qquad A=e^{1/b},\ w=\sqrt{\tau/(1-\tau)}\tag{A.23}$$
+<p class="gloss">Logistic threshold flow and crossing probabilities under full orders.</p>
+</div>
+<div class="math-box">
+$$\log\frac{\mu}{1-\mu}=2\log\cosh\Big(\frac{x+1}{2b}\Big)-2\log\cosh\Big(\frac{x-1}{2b}\Big)\tag{A.22}$$
+<p class="gloss">Logistic posterior log odds: increasing, limits \(\mp2/b\), bounds \(m,M\) reached only in the limit.</p>
+</div>
+
+<h2>9. Atomless costs and nonemptiness</h2>
+<div class="math-box">
+$$c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C\lt B_{r_1}(m),\qquad B_{r_0}(1/2)\lt c_H-\varepsilon_C\lt c_H+\varepsilon_C\lt B_{r_1}(M)\tag{A.24}$$
+<p class="gloss">Support restrictions so every cheap realization enters and expensive ones enter only after good news against the strong rival.</p>
+</div>
+<div class="math-box">
+$$B_\ell(M)-B_\ell(1/2)=(M-1/2)(h-\ell)\gt 0\tag{A.25}$$
+<p class="gloss">At \(r=\ell\) the belief gap opens a cost window; strengths near \(\ell\) then satisfy (A1) to (A3) for any \(h\gt \ell\).</p>
+</div>
+
+<h2>10. Complementary private signals</h2>
+<div class="math-box">
+$$\Pr(T=+\mid H)=\Pr(T=-\mid L)=a,\qquad \Pr(Y=+\mid H)=\Pr(Y=-\mid L)=d,\qquad a,d\in(1/2,1)\tag{A.26}$$
+<p class="gloss">Investor signal \(T\) with accuracy \(a\), buyer signal \(Y\) with accuracy \(d\), conditionally independent.</p>
+</div>
+<div class="math-box">
+$$\mu_X=(1-a)+(2a-1)\lambda_X,\quad \mu_\pm=(1-a)+(2a-1)\{M,m\},\quad \phi_+(\mu)=\frac{d\mu}{d\mu+(1-d)(1-\mu)},\quad \phi_-(\mu)=\frac{(1-d)\mu}{(1-d)\mu+d(1-\mu)}\tag{A.27}$$
+<p class="gloss">Public belief from the market's belief about \(T\); its bounds; the buyer's combined posteriors.</p>
+</div>
+<div class="math-box">
+$$e_H=\rho+(1-\rho)[dI_++(1-d)I_-],\quad e_L=\rho+(1-\rho)[(1-d)I_++dI_-],\quad D=e_Hw_H-e_Lw_L\tag{A.28}$$
+$$D=e_L\Delta_T+(e_H-e_L)w_H\in\big[\rho\Delta_T,\ \Delta_T+(1-\rho)(2d-1)w_H\big],\qquad D\ge\rho\Delta_T\gt 0\tag{A.33}$$
+<p class="gloss">State-dependent entry with \(I_y=\mathbf 1\{B_r(\phi_y(\mu))\ge c_H\}\); the price coefficient \(D\) stays positive.</p>
+</div>
+<div class="math-box">
+$$P=t_0+e_L(P)w_L+\mu_XD(P),\qquad \mu_X=\frac{P-t_0-e_L(P)w_L}{D(P)}\tag{A.34}$$
+<p class="gloss">Pricing and inversion with private signals.</p>
+</div>
+<div class="math-box">
+$$A_+=(2a-1)(1-\lambda_X)D,\qquad A_-=(2a-1)\lambda_XD\tag{A.35}$$
+$$m(2a-1)\rho\Delta_T\le A_+,A_-\le(2a-1)[\Delta_T+(1-\rho)(2d-1)w_H]\tag{A.36}$$
+$$U'(s)\ge(1-1/b)\,m(2a-1)\rho\Delta_T(r_1)-k\gt 0\tag{A.37}$$
+<p class="gloss">Residuals by investor signal, their bounds, and the strong-economy derivative bound that forces full signal-contingent orders.</p>
+</div>
+<div class="math-box">
+$$c_L\lt B_{r_1}(\phi_-(\mu_-)),\qquad B_{r_0}(d)\lt c_H\lt B_{r_1}(\phi_+(\mu_+)),\qquad (2a-1)\{\Delta_T(r_0)+(1-\rho)(2d-1)w_H(r_0)\}\lt k\lt \Big(1-\frac1b\Big)m(2a-1)\rho\Delta_T(r_1)\tag{A.29}$$
+<p class="gloss">Proposition A.7's analogue of (A1) to (A3).</p>
+</div>
+
+<h2>11. Welfare</h2>
+<div class="math-box">
+$$W_\theta(R)-W_0(R)=(\theta-\max\{p,R\})_++p\mathbf 1\{R\lt p\}\tag{A.39}$$
+<p class="gloss">Pointwise ownership-value gain from a challenger of value \(\theta\).</p>
+</div>
+<div class="math-box">
+$$\Delta\mathcal W=(1-\rho)\mathbb E\Big[\Big(B_r(\mu_X)-c_H+\frac{p^2}r\Big)\mathbf 1\{\mu_X\ge\tau\}\Big]\gt 0,\qquad \Delta\mathcal R_T=\frac{1-\rho}2[\alpha_H(t_H-t_0)+\alpha_L(t_L-t_0)]\gt 0\tag{A.41}$$
+<p class="gloss">Gains in acquisition surplus net of costs and in target proceeds from price access at fixed \(r_1\).</p>
+</div>
+
+<h2>12. Bargaining</h2>
+<div class="math-box">
+$$T_\eta(R,\theta)=(1-\eta)\min\{R,\theta\}+\eta\max\{R,\theta\},\qquad G_{\theta,\eta}=(1-\eta)\mathbb E[(\theta-R)_+],\qquad \Delta_\eta=\eta(h-\ell)+(1-2\eta)\mathbb E[(R-\ell)_+]\tag{14}$$
+<p class="gloss">Nash bargaining with seller weight \(\eta\): competition widens the spread iff \(\eta\lt 1/2\).</p>
+</div>
+
+<h2>13. Seller's continuation problem</h2>
+<div class="math-box">
+$$\mathcal R_T(p,r;\sigma)=t_0(p,r)+\frac12\sum_{\theta}e_\theta(p,r;\sigma)[t_\theta(p,r)-t_0(p,r)],\qquad p^*\in\arg\max_{p\in[0,h]}\mathcal R_T(p,r;\sigma^*(p))\tag{A.44}$$
+<p class="gloss">Revenue given a continuation, and the reserve problem given a selection from the continuation set.</p>
+</div>
+<div class="math-box">
+$$t_0(p,r)=\mathbb E[p\mathbf 1\{R\ge p\}],\qquad t_v(p,r)=\begin{cases}\mathbb E[\max\{p,\min(R,v)\}],&v\ge p\\ t_0(p,r),&v\lt p\end{cases},\qquad g_v(p,r)=\mathbb E[(v-\max\{p,R\})_+]\tag{A.42}$$
+<p class="gloss">Payoffs over the whole reserve domain.</p>
+</div>
+<div class="math-box">
+$$\frac{d\mathcal R_T}{dp}=(1-\mathsf E)\Big(1-\frac{2p}r\Big)+\mathsf E\frac pr+\frac12\sum_\theta\frac{de_\theta}{dp}(t_\theta-t_0)\tag{A.53}$$
+$$\frac{de_\theta}{dp}=\int f(z)h_C(B_{p,r}(\mu_\theta))\Big[-\frac pr+(g_H-g_L)\frac{d\mu_\theta(z;p)}{dp}\Big]dz\tag{A.54}$$
+<p class="gloss">Local revenue decomposition: fixed-entry terms plus a participation term with a direct and an information component.</p>
+</div>
+
+<div class="math-box">
+$$P_c(x)=\begin{cases}0,&x\lt c\\ \tfrac74\mu_X(x),&x\ge c\end{cases},\qquad \bar\mu_c=\Pr(H\mid X\lt c)=\frac{F_Z(c-1)}{F_Z(c-1)+F_Z(c+1)}\tag{A.45, A.46}$$
+$$J_c\gt\frac{7}{32},\qquad U_\theta'(s)\gt\frac{7}{64}-\frac1{50}=\frac{143}{1600}\gt0\tag{A.48}$$
+<p class="gloss">Price pooling at fixed orders (Proposition A.10): benchmark primitives, \(r=r_0\), reserve \(p=7\), full orders, any cutoff \(c\in[-\log2,0]\). Same orders, different prices, beliefs, and entry.</p>
+</div>
+<div class="math-box">
+$$p_L=h-\frac{c_L}{m},\qquad p_H=\sqrt{2r\Big(h-\frac{c_H}{M}\Big)-r^2}\tag{A.50, A.51}$$
+<p class="gloss">Exact reserve events: cheap-type floor with the incumbent excluded (at \(r_0\)); expensive-type indifference at the top belief with \(\ell\lt p\lt r\) (at \(r_1\)).</p>
+</div>
+<div class="math-box">
+$$\mathsf E=\Pr(I=1),\quad \mathsf A=\Pr(I=1,V\ge p),\quad \mathsf S=\Pr(R\ge p\ \text{or}\ [I=1,V\ge p]),\quad \mathsf C_2=\Pr(R\ge p,I=1,V\ge p)\tag{A.52}$$
+<p class="gloss">Preparation, admissible challenger, sale, and two admissible bidders; \(\mathsf S=\Pr(R\ge p)+\mathsf A-\mathsf C_2\) and \(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\).</p>
+</div>
+
+<h2>14. Parameter vectors</h2>
+<div class="math-box">
+$$(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.25,1,6,2,0.02),\qquad (r_0,r_1,r_2)=(1.2,3,3.6)\tag{A.55}$$
+<p class="gloss">Benchmark.</p>
+</div>
+<div class="math-box">
+$$(h,\ell,p,\rho,c_L,c_H,b,k)=(2,1,0.5,0.25,0.3,0.89,2,0.002),\qquad (r_0,r_1)=(1.05,1.5)\tag{A.56}$$
+<p class="gloss">Moderate values.</p>
+</div>
+<div class="math-box">
+$$(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.85,1,7.14,2,0.015),\qquad (r_0,r_1,a,d)=(1.1,2.3,0.70,0.75)\tag{A.57}$$
+<p class="gloss">Complementary signals. Also \(\varepsilon_C=0.1\), \(\varepsilon_V=0.05\).</p>
+</div>
+
+<h3>Headline benchmark numbers (Section 4.2 and 4.3)</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Quantity</th><th class="num">\(r_0=1.2\)</th><th class="num">\(r_1=3\)</th><th class="num">\(r_2=3.6\)</th></tr>
+<tr><td>\(B_r(1/2)\)</td><td class="num">4.804167</td><td class="num">4.291667</td><td class="num"></td></tr>
+<tr><td>\(\Delta_T(r)\)</td><td class="num">0.016667</td><td class="num">0.666667</td><td class="num"></td></tr>
+<tr><td>Entry \(\mathsf E\) (equilibrium)</td><td class="num">0.250000</td><td class="num">0.522757</td><td class="num">0.250000</td></tr>
+<tr><td>High-type ownership \(\mathsf O_H\)</td><td class="num">0.125000</td><td class="num">0.324192</td><td class="num"></td></tr>
+<tr><td>Entry, orders frozen at \((1,-1)\)</td><td class="num">0.562178</td><td class="num">0.522757</td><td class="num"></td></tr>
+<tr><td>Entry, price hidden</td><td class="num">0.250000</td><td class="num">0.250000</td><td class="num"></td></tr>
+<tr><td>Expected proceeds, price access / hidden</td><td class="num"></td><td class="num">0.872392 / 0.614583</td><td class="num"></td></tr>
+<tr><td>Entry under logistic noise</td><td class="num"></td><td class="num">0.301509</td><td class="num"></td></tr>
+</table>
+</div>
+<div class="table-scroll">
+<table>
+<tr><th>Threshold</th><th class="num">Value</th><th>Meaning</th></tr>
+<tr><td>\(\mathfrak r(k)\)</td><td class="num">1.220997512</td><td>No trade unique below</td></tr>
+<tr><td>\(r_N\)</td><td class="num">1.747877538</td><td>No trade exists up to</td></tr>
+<tr><td>\(r_U\)</td><td class="num">2.837416964</td><td>Full orders unique above</td></tr>
+<tr><td>\(r_C\)</td><td class="num">3.592658519</td><td>Expensive entry impossible above</td></tr>
+</table>
+</div>
+<div class="table-scroll">
+<table>
+<tr><th>Certified (Prop. 3)</th><th class="num">\(r_j\)</th><th class="num">\(v_j\)</th><th class="num">\(\mathsf E_j\)</th></tr>
+<tr><td>a</td><td class="num">1.55</td><td class="num">[0.46031618, 0.46031620]</td><td class="num">[0.5450528898, 0.5450528922]</td></tr>
+<tr><td>b</td><td class="num">1.60</td><td class="num">[0.70747537, 0.70747539]</td><td class="num">[0.5487563062, 0.5487563085]</td></tr>
+<tr><td>c</td><td class="num">1.65</td><td class="num">[0.90333198, 0.90333201]</td><td class="num">[0.5513607988, 0.5513608020]</td></tr>
+</table>
+</div>
+
+<p class="ask">Rebuilding this sheet from memory is the end goal of the course. Ask the teaching agent to quiz you on any block.</p>
+</body>
+</html>
