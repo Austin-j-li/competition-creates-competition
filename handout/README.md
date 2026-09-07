@@ -23,7 +23,7 @@ navigation. No browser package is added to this repository.
 
 The build uses only Python's standard library. The focused display check also uses Node's
 standard library. No package installation or bundler is needed. The build writes
-`docs/index.html`, `.nojekyll`, the two linked PDFs, and
+`docs/index.html`, `.nojekyll`, the two linked PDFs, `docs/fonts/`, and
 `numerics/manifests/handout.json`. It exits nonzero without replacing the handout on failure.
 `--out DIRECTORY` changes the artifact destination; the manifest still goes in the repository.
 `--verify-vendor` also verifies the pinned CDN files in `vendor.lock.json`.
@@ -35,8 +35,8 @@ The handout builder does not alter research sources or run numerical searches.
 ## Publishing
 
 GitHub Pages serves the root of `gh-pages`. Build and check the source branch first, then
-copy only `index.html`, `.nojekyll`, `main_filled.pdf`, and `online_appendix_filled.pdf`
-from `docs/` into an isolated checkout of the current remote `gh-pages` commit.
+copy only `index.html`, `.nojekyll`, `main_filled.pdf`, `online_appendix_filled.pdf`, and the
+`fonts/` directory from `docs/` into an isolated checkout of the current remote `gh-pages` commit.
 Commit the generated files there and push normally, without force. Do not switch the source
 checkout to the deployment branch or publish other files from `docs/`.
 
@@ -69,6 +69,9 @@ PDF links also remain available with JavaScript disabled or the CDN blocked.
 - PDF links point to `main_filled.pdf` and `online_appendix_filled.pdf` beside the HTML.
   These are byte-identical to the returned peer-circulation PDFs. Keep the three files
   together for review. The existing pinned Plotly and KaTeX assets load from their CDN.
+- Typefaces are self-hosted latin subsets (Literata, Libre Franklin, Courier Prime; all SIL OFL)
+  under `handout/fonts/`, pinned by sha256 in `fonts.lock.json` and copied to `docs/fonts/`.
+  The build fails if a file is missing, altered, unlocked, or not referenced by `style.css`.
 
 ## Figures and interaction
 

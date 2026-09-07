@@ -77,6 +77,18 @@ def load_vendor(rep: Report, verify: bool) -> dict:
     return lock
 
 
+def load_fonts(rep: Report) -> dict:
+    """Self-hosted faces: every file in fonts.lock.json must exist under handout/fonts with its hash."""
+    lock = json.loads((HERE / "fonts.lock.json").read_text(encoding="utf-8"))
+    for name, v in lock.items():
+        path = HERE / "fonts" / name
+        ok = path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == v["sha256"]
+        rep.check(ok, f"font {name} present with locked sha256")
+    extra = sorted(q.name for q in (HERE / "fonts").glob("*") if q.name not in lock)
+    rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
+    return lock
+
+
 # ----------------------------------------------------------------------------------------------
 # Placeholders
 
@@ -196,8 +208,9 @@ def main() -> int:
     rep = Report(args.quiet)
     out_dir = ROOT / args.out
 
-    # (1) vendor
+    # (1) vendor and self-hosted fonts
     vendor = load_vendor(rep, args.verify_vendor)
+    fonts = load_fonts(rep)
 
     # (2) registry and manifest
     registry = {r["name"]: r for r in data_mod.read_csv(ROOT, "numerics/quantity_registry.csv")}
@@ -282,6 +295,8 @@ def main() -> int:
         page = template_path.read_text(encoding="utf-8")
         css = (HERE / "style.css").read_text(encoding="utf-8") if (HERE / "style.css").exists() else ""
         rep.check(bool(css), "style.css present")
+        css_fonts = set(re.findall(r'url\("fonts/([^"]+)"\)', css))
+        rep.check(css_fonts == set(fonts), f"style.css @font-face files match fonts.lock.json ({len(css_fonts)})")
         scripts = {}
         for slot, fname in (("APP", "app.js"), ("CHARTS", "charts.js"), ("EXPLORER", "explorer.js")):
             p = HERE / fname
@@ -355,6 +370,10 @@ def main() -> int:
             if src.exists():
                 shutil.copyfile(src, out_dir / src.name)
                 rep.check((out_dir / src.name).stat().st_size > 0, f"copied {src.name}")
+        (out_dir / "fonts").mkdir(exist_ok=True)
+        for name in fonts:
+            shutil.copyfile(HERE / "fonts" / name, out_dir / "fonts" / name)
+        rep.check(all((out_dir / "fonts" / n).is_file() for n in fonts), f"copied {len(fonts)} font files")
 
     # (10) manifest
     passed = not rep.failures
@@ -371,7 +390,8 @@ def main() -> int:
         "outputs": {f"{args.out}/index.html": hashlib.sha256(out_html.read_bytes()).hexdigest()} if out_html.exists() else {},
         "checks": rep.checks,
         "passed": passed,
-        "notes": ["vendor: " + ", ".join(f"{k} {v['version']}" for k, v in vendor.items())],
+        "notes": ["vendor: " + ", ".join(f"{k} {v['version']}" for k, v in vendor.items()),
+                  "fonts: " + ", ".join(f"{k} sha256:{v['sha256'][:12]}" for k, v in fonts.items())],
     }
     (man_dir / "handout.json").write_text(json.dumps(manifest_obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 

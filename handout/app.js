@@ -90,7 +90,7 @@
       var doc = document.documentElement;
       var max = doc.scrollHeight - window.innerHeight;
       var frac = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      bar.style.width = (frac * 100).toFixed(2) + "%";
+      bar.style.transform = "scaleX(" + frac.toFixed(4) + ")";
     }
     function onScroll() {
       if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
