@@ -1,4 +1,4 @@
-/* Closed-form explorer for the handout.
+/* Explore incumbent strength for the handout.
  *
  * Shared formula block (keep byte-identical with the docstring in handout/crosscheck.py):
  *
@@ -6,9 +6,9 @@
  *   g_H = h - r/2 - p^2/(2r);  g_L = (ell^2 - p^2)/(2r);  Delta_T = (r - ell)^2/(2r)
  *   m = 1/(1 + exp(2/b));  M = 1 - m;  B(mu) = g_L + mu (g_H - g_L)
  *   tau = (c_H - g_L)/(g_H - g_L)
- *     tau >= M   : E = rho, O_H = rho/2, x* = +inf, alpha_H = alpha_L = 0
- *     tau <= 1/2 : x* = -inf, alpha_H = alpha_L = 1, E = 1, O_H = 1/2
- *     otherwise  : x* = (b/2) log(tau/(1-tau)); alpha_H = 1 - exp((x*-1)/b)/2; alpha_L = exp(-(x*+1)/b)/2
+ *     c_H > B(M): E = rho, O_H = rho/2, x* = +inf, alpha_H = alpha_L = 0
+ *     c_H <= B(m): x* = -inf, alpha_H = alpha_L = 1, E = 1, O_H = 1/2
+ *     otherwise  : x* = (b/2) log(tau/(1-tau)); alpha_H = S_Laplace(x*-1); alpha_L = S_Laplace(x*+1)
  *                  E = rho + (1-rho)/2 (alpha_H + alpha_L);  O_H = (rho + (1-rho) alpha_H)/2
  *   chips: A1 = B(m) - c_L; A2a = c_H - B(1/2); A2b = B(M) - c_H;
  *          A3_no_trade = k - Delta_T; A3_full = (1 - 1/b) rho m Delta_T - k
@@ -74,14 +74,14 @@
     var B = function (mu) { return g_L + mu * (g_H - g_L); };
     var tau = (c_H - g_L) / (g_H - g_L);
     var x_star, alpha_H, alpha_L;
-    if (tau >= M) {
+    if (c_H > B(M)) {
       x_star = Infinity; alpha_H = 0; alpha_L = 0;
-    } else if (tau <= 0.5) {
+    } else if (c_H <= B(m)) {
       x_star = -Infinity; alpha_H = 1; alpha_L = 1;
     } else {
       x_star = (b / 2) * Math.log(tau / (1 - tau));
-      alpha_H = 1 - Math.exp((x_star - 1) / b) / 2;
-      alpha_L = Math.exp(-(x_star + 1) / b) / 2;
+      alpha_H = x_star <= 1 ? 1 - Math.exp((x_star - 1) / b) / 2 : Math.exp(-(x_star - 1) / b) / 2;
+      alpha_L = x_star <= -1 ? 1 - Math.exp((x_star + 1) / b) / 2 : Math.exp(-(x_star + 1) / b) / 2;
     }
     var E = rho + (1 - rho) / 2 * (alpha_H + alpha_L);
     var O_H = (rho + (1 - rho) * alpha_H) / 2;
@@ -204,15 +204,16 @@
     return xs;
   }
 
-  function builder(D, t, narrow) {
+  function builder(D, t, opts) {
+    var narrow = !!(opts && opts.narrow);
     var P = state.P;
     var xs = rGrid();
     var Es = [], hover = [];
     for (var i = 0; i < xs.length; i++) {
       var cf = closedForms(P, xs[i]);
       Es.push(cf.E);
-      hover.push('τ = ' + fmt6(cf.tau) + ' · x* = ' + fmt6(cf.x_star) +
-        ' · α_H = ' + fmt6(cf.alpha_H) + ' · α_L = ' + fmt6(cf.alpha_L));
+      hover.push('τ = ' + fmt6(cf.tau) + '<br>x* = ' + fmt6(cf.x_star) +
+        '<br>α_H = ' + fmt6(cf.alpha_H) + '<br>α_L = ' + fmt6(cf.alpha_L));
     }
     var b0 = closedForms(P, P.r_strong);
     var broken = brokenSeries(xs, Es, R_STEP * 1.5, 0.02);
@@ -247,8 +248,9 @@
       });
     }
     var layout = baseLayout(t);
+    layout.height = 450;
     layout.xaxis = Object.assign({}, layout.xaxis, {
-      title: { text: 'incumbent strength r', font: { color: ink } }, range: [R_MIN, R_MAX],
+      title: { text: 'Incumbent strength r', font: { color: ink } }, range: [R_MIN, R_MAX],
       tickvals: [1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
     });
     layout.yaxis = Object.assign({}, layout.yaxis, {
@@ -257,8 +259,8 @@
     });
     layout.hovermode = 'x unified';
     layout.showlegend = true;
-    layout.legend = { orientation: 'h', x: 0, y: 1.14, font: { size: 11, color: muted }, bgcolor: 'rgba(0,0,0,0)' };
-    layout.margin = Object.assign({}, layout.margin, { t: narrow ? 64 : 48 });
+    layout.legend = { orientation: 'h', x: 0, y: 1.08, yanchor: 'bottom', font: { size: 11, color: muted }, bgcolor: 'rgba(0,0,0,0)' };
+    layout.margin = Object.assign({}, layout.margin, { t: narrow ? 110 : 80 });
     var regA = tok(t, 'regionA', '--region-a'), regB = tok(t, 'regionB', '--region-b');
     var shapes = [
       { type: 'rect', xref: 'x', yref: 'paper', x0: R_MIN, x1: b0.r_k, y0: 0, y1: 1, fillcolor: regA, line: { width: 0 }, layer: 'below' },
@@ -301,20 +303,20 @@
     while (root.firstChild) root.removeChild(root.firstChild);
 
     var head = el('div', 'explorer-head');
-    head.appendChild(el('span', 'explorer-title', 'Closed-form explorer'));
+    head.appendChild(el('span', 'explorer-title', 'Explore incumbent strength'));
     var badge = el('span', 'badge');
     badge.hidden = true;
     head.appendChild(badge);
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
-    var label = el('label', 'explorer-label', 'incumbent strength r');
+    var label = el('label', 'explorer-label', 'Incumbent strength r');
     label.setAttribute('for', 'explorer-r');
     controls.appendChild(label);
     var range = document.createElement('input');
     range.type = 'range'; range.id = 'explorer-r'; range.min = String(R_MIN); range.max = String(R_MAX);
     range.step = String(R_STEP); range.value = String(P.r_weak);
-    range.setAttribute('aria-label', 'incumbent strength r');
+    range.setAttribute('aria-label', 'Incumbent strength r');
     controls.appendChild(range);
     var rValue = el('output', 'live explorer-r-value', fmt6(P.r_weak));
     rValue.setAttribute('for', 'explorer-r');
@@ -326,7 +328,7 @@
       btn.addEventListener('click', function () { setR(pr[1]); });
       presets.appendChild(btn);
     });
-    var resetBtn = el('button', 'preset reset', 'reset');
+    var resetBtn = el('button', 'preset reset', 'Reset');
     resetBtn.type = 'button';
     resetBtn.addEventListener('click', reset);
     presets.appendChild(resetBtn);
@@ -378,9 +380,9 @@
     root.appendChild(mount);
 
     root.appendChild(el('p', 'explorer-note',
-      'Arithmetic on the sufficient conditions of Proposition 2 and the full-order candidate (12), ' +
-      'evaluated at the benchmark primitives with only r moving. It is not an equilibrium solve. ' +
-      'Validated branches, certified points, and the multiplicity window are in Figure 2.'));
+      'These formulas check Proposition 2 and preparation under full investor orders, ' +
+      'holding all parameters except incumbent strength fixed. They do not solve for an equilibrium. ' +
+      'Figure 2 distinguishes certified equilibria from numerical search results.'));
 
     state.el = { root: root, badge: badge, range: range, rValue: rValue, warn: warn,
       readouts: readoutEls, chips: chipEls, bounds: boundEls, mount: mount };
@@ -423,7 +425,7 @@
     });
     var showBadge = cf.inDomain && isBenchmark(r) && state.lastSelfTest && state.lastSelfTest.ok;
     E.badge.hidden = !showBadge;
-    E.badge.textContent = showBadge ? 'at a benchmark strength: closed forms agree with the CSV to 1e-9' : '';
+    E.badge.textContent = showBadge ? "Benchmark verified against the paper's numerical results" : '';
     moveMarker(r);
   }
 
@@ -461,8 +463,8 @@
   function num(s) {
     if (typeof s === 'number') return s;
     var t = String(s).trim().toLowerCase();
-    if (t === 'inf') return Infinity;
-    if (t === '-inf') return -Infinity;
+    if (t === 'inf' || t === 'unattainable') return Infinity;
+    if (t === '-inf' || t === 'always') return -Infinity;
     return Number(s);
   }
 
@@ -543,7 +545,7 @@
     }
     if (CCC.charts && typeof CCC.charts.mount === 'function' && typeof CCC.charts.register === 'function') {
       CCC.charts.mount('explorer');
-      state.mounted = true;
+      state.mounted = !!CCC.charts.status().explorer.mounted;
       return;
     }
     if (typeof Plotly === 'undefined') {
@@ -577,7 +579,7 @@
   }
 
   function status() {
-    return { initialised: state.initialised, r: state.r, mounted: state.mounted, selfTest: state.lastSelfTest };
+    return { initialised: state.initialised, r: state.r, mounted: CCC.charts && CCC.charts.status().explorer ? CCC.charts.status().explorer.mounted : state.mounted, selfTest: state.lastSelfTest };
   }
 
   CCC.explorer = { init: init, setR: setR, reset: reset, selfTest: selfTest, status: status, closedForms: closedForms, builder: builder };

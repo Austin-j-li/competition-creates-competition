@@ -15,6 +15,7 @@ import platform
 import re
 import shutil
 import sys
+from decimal import Decimal
 import urllib.request
 from base64 import b64encode
 from pathlib import Path
@@ -26,7 +27,7 @@ sys.path.insert(0, str(HERE))
 import data as data_mod  # noqa: E402
 import tables_html  # noqa: E402
 
-PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)\]\]")
+PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::(percent))?\]\]")
 TABLE_SLOT = re.compile(r"^[ \t]*<!-- @@TABLE:([a-z_]+)@@ -->[ \t]*$", re.M)
 SLOT = re.compile(r"<!-- @@([A-Z_]+)@@ -->")
 MATH = re.compile(r"((?<!\\)\\\(.*?(?<!\\)\\\)|(?<!\\)\\\[.*?(?<!\\)\\\])", re.S)
@@ -109,7 +110,13 @@ def resolve_placeholders(text: str, registry: dict, manifest: dict, rep: Report,
         if disp is None:
             return m.group(0)
         row = registry[name]
-        title = f"{row['status']} · {row['source_file']} · {row['source_row']}".replace('"', "&quot;")
+        exact = disp
+        if m.group(2) == "percent":
+            value = Decimal(row["value"])
+            if not value.is_finite() or not 0 <= value <= 1:
+                raise ValueError(f"invalid probability: {name}")
+            disp = f"{value * 100:.1f}%"
+        title = f"{exact} · {row['status']} · {row['source_file']} · {row['source_row']}".replace('"', "&quot;")
         return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" title="{title}">'
                 f"{disp}</span>")
 
@@ -171,11 +178,7 @@ def build_toc(sections: list[str]) -> str:
         h2 = re.search(r"<h2\b[^>]*>(.*?)</h2>", text, re.S)
         if not sec or not h2:
             continue
-        subs = []
-        for m in re.finditer(r'<h3\b[^>]*\sid="([^"]+)"[^>]*>(.*?)</h3>', text, re.S):
-            subs.append(f'<li><a href="#{m.group(1)}">{strip_tags(m.group(2))}</a></li>')
-        inner = f"<ol>{''.join(subs)}</ol>" if subs else ""
-        items.append(f'<li><a href="#{sec.group(1)}">{strip_tags(h2.group(1))}</a>{inner}</li>')
+        items.append(f'<li><a href="#{sec.group(1)}">{strip_tags(h2.group(1))}</a></li>')
     return f'<ol class="toc-list">{"".join(items)}</ol>'
 
 
@@ -320,21 +323,9 @@ def main() -> int:
         page = resolve_placeholders(page, registry, manifest, rep, "template.html")
         rep.check("@@" not in page, "no slot markers left in the page")
 
-    # (8) write
-    if page:
-        out_dir.mkdir(parents=True, exist_ok=True)
-        (out_dir / "index.html").write_text(page, encoding="utf-8")
-        (out_dir / ".nojekyll").write_text("", encoding="utf-8")
-        for rel in PDFS:
-            src = ROOT / rel
-            if src.exists():
-                shutil.copyfile(src, out_dir / src.name)
-                rep.check((out_dir / src.name).stat().st_size > 0, f"copied {src.name}")
-            else:
-                rep.check(args.allow_missing_pdf, f"{rel} present for copying")
-
-        # (9) post-build checks
-        rep.check(PLACEHOLDER.search(page) is None, "output has no [[name]] placeholders left")
+    # (8) validate the complete page before replacing artifacts
+    if page and not rep.failures:
+        rep.check(not PLACEHOLDER.search(page), "output has no [[name]] placeholders left")
         m = re.search(r"<script>window\.CCC_DATA = (.*?);</script>", page, re.S)
         ok = False
         if m:
@@ -353,6 +344,18 @@ def main() -> int:
         rep.check(not re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", page), "output carries no timestamps")
         rep.note(f"docs/index.html: {len(page.encode('utf-8'))} bytes")
 
+    for rel in PDFS:
+        rep.check(args.allow_missing_pdf or (ROOT / rel).is_file(), f"{rel} present for copying")
+    if page and not rep.failures:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "index.html").write_text(page, encoding="utf-8", newline="\n")
+        (out_dir / ".nojekyll").write_text("", encoding="utf-8")
+        for rel in PDFS:
+            src = ROOT / rel
+            if src.exists():
+                shutil.copyfile(src, out_dir / src.name)
+                rep.check((out_dir / src.name).stat().st_size > 0, f"copied {src.name}")
+
     # (10) manifest
     passed = not rep.failures
     man_dir = ROOT / "numerics" / "manifests"
@@ -370,7 +373,7 @@ def main() -> int:
         "passed": passed,
         "notes": ["vendor: " + ", ".join(f"{k} {v['version']}" for k, v in vendor.items())],
     }
-    (man_dir / "handout.json").write_text(json.dumps(manifest_obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    (man_dir / "handout.json").write_text(json.dumps(manifest_obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 
     if not args.quiet and rep.placeholders_used:
         print("\nplaceholders used:")

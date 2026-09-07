@@ -55,23 +55,30 @@
   /* Sort by x and insert null where consecutive nodes are farther apart than gap*1.5 or |dy| > jump.
    * Returns {x, y, idx}; idx maps each output position to the input index (null at breaks) so the
    * caller can align customdata. Mirrors _broken_series in numerics/render/figures.py. */
-  function brokenSeries(xs, ys, gap, jump) {
+  function brokenSeries(xs, ys, gap, jump, nodes) {
     gap = gap === undefined ? GAP : gap;
     jump = jump === undefined ? 0.02 : jump;
-    var order = [];
-    for (var i = 0; i < xs.length; i++) order.push(i);
-    order.sort(function (a, b) { return xs[a] - xs[b]; });
+    var groups = {};
+    xs.forEach(function (x, i) { (groups[String(x)] || (groups[String(x)] = [])).push(i); });
+    var grid = nodes || Object.keys(groups).map(Number).sort(function (a, b) { return a - b; });
     var x = [], y = [], idx = [];
-    for (var k = 0; k < order.length; k++) {
-      var i0 = order[k];
-      if (k > 0) {
-        var ip = order[k - 1];
-        if (xs[i0] - xs[ip] > gap * 1.5 || Math.abs(ys[i0] - ys[ip]) > jump) {
-          x.push(null); y.push(null); idx.push(null);
-        }
+    function point(i) {
+      var xx = i === null ? null : xs[i], yy = i === null ? null : ys[i];
+      var last = x.length - 1;
+      if (i !== null && last >= 0 && x[last] !== null &&
+          (xx - x[last] > gap * 1.5 || Math.abs(yy - y[last]) > jump)) {
+        x.push(null); y.push(null); idx.push(null);
       }
-      x.push(xs[i0]); y.push(ys[i0]); idx.push(i0);
+      x.push(xx); y.push(yy); idx.push(i);
     }
+    grid.forEach(function (r) {
+      var sub = groups[String(r)] || [];
+      if (sub.length === 1) point(sub[0]);
+      else {
+        point(null);
+        sub.forEach(function (i) { point(i); point(null); });
+      }
+    });
     return { x: x, y: y, idx: idx };
   }
 
@@ -191,10 +198,11 @@
     { key: 'pooling', name: 'no trade', color: 'accent', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
     { key: 'full_orders', name: 'full orders', color: 'c2', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
     { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'accent', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
-    { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 }
+    { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 },
+    { key: 'mixed', name: 'mixed diagnostic', color: 'c3', dash: 'dash', width: 1.2, ycol: 'q_H', jumpB: 0.2 }
   ];
 
-  function fig2(D, t) {
+  function fig2(D, t, opts) {
     var F = D.fig2;
     var traces = [];
     var th = F.thresholds || {};
@@ -207,33 +215,59 @@
       var col = t[s.color];
       var cd = br.r.map(function (_, i) {
         return [formatNumber(br.E[i]), formatNumber(br.q_H[i]), formatNumber(br.q_L[i]),
-          formatNumber(br.O_H ? br.O_H[i] : null), br.uniqueness_status ? br.uniqueness_status[i] : ''];
+          formatNumber(br.O_H ? br.O_H[i] : null), br.uniqueness_status ? br.uniqueness_status[i] : '', br.result_status[i]];
       });
-      var a = brokenSeries(br.r, br.E, GAP, 0.02);
+      var a = brokenSeries(br.r, br.E, GAP, 0.02, F.nodes);
       traces.push({
-        type: 'scatter', mode: 'lines', name: s.name, legendgroup: s.key,
+        type: 'scatter', mode: s.key === 'mixed' ? 'markers' : 'lines+markers', name: s.name, legendgroup: s.key,
+        marker: {size: s.key === 'mixed' ? 9 : 2, symbol: s.key === 'mixed' ? 'diamond-open' : 'circle', color: col},
         x: a.x, y: a.y, customdata: pick(cd, a.idx), connectgaps: false,
         line: line(col, s.dash, s.width), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'E = %{customdata[0]}<br>O<sub>H</sub> = %{customdata[3]}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<br>uniqueness: %{customdata[4]}<extra>' + s.name + '</extra>'
+        hovertemplate: 'E = %{customdata[0]}<br>O<sub>H</sub> = %{customdata[3]}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<br>evidence: %{customdata[5]}<br>uniqueness: %{customdata[4]}<extra>' + s.name + '</extra>'
       });
+      if (s.key === "mixed") return;
       var yb = br[s.ycol];
-      var b = brokenSeries(br.r, yb, GAP, s.jumpB);
+      var b = brokenSeries(br.r, yb, GAP, s.jumpB, F.nodes);
       var what = s.ycol === 'v' ? 'v' : (s.key === 'symmetric_interior' ? 'u' : 'q<sub>H</sub>');
       traces.push({
-        type: 'scatter', mode: 'lines', name: s.name, legendgroup: s.key, showlegend: false,
+        type: 'scatter', mode: 'lines+markers', name: s.name, legendgroup: s.key, showlegend: false,
+        marker: {size: 2, color: col},
         x: b.x, y: b.y, customdata: pick(cd, b.idx), connectgaps: false,
         line: line(col, s.dash, s.width), xaxis: 'x2', yaxis: 'y2',
         hovertemplate: what + ' = %{y}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<extra>' + s.name + '</extra>'
       });
     });
 
+    ['H', 'L'].forEach(function (state) {
+      var support = F.mixed_supports.filter(function (row) { return row.state === state; });
+      traces.push({type: 'scatter', mode: 'markers', name: 'mixed supports ' + state,
+        legendgroup: 'mixed', showlegend: false, xaxis: 'x2', yaxis: 'y2',
+        x: support.map(function (row) { return row.r; }), y: support.map(function (row) { return Math.abs(row.q); }),
+        customdata: support.map(function (row) { return [row.q, row.weight]; }),
+        marker: {color: t.c3, symbol: state === 'H' ? 'triangle-up' : 'triangle-down',
+          size: support.map(function (row) { return 4 + 5 * row.weight; })},
+        hovertemplate: 'order = %{customdata[0]}<br>weight = %{customdata[1]}<extra>mixed diagnostic ' + state + '</extra>'});
+    });
+    var full = F.branches.full_orders;
+    var ceiling = Number(th.high_cost_ceiling.value);
+    var atCeiling = full.r.findIndex(function (r) { return Math.abs(r - ceiling) < 1e-12; });
+    if (atCeiling < 0) throw new Error('missing validated ceiling outcome');
+    traces.push({type: 'scatter', mode: 'markers', name: 'preparation ceiling', showlegend: false,
+      x: [ceiling, ceiling], y: [full.E[atCeiling], Number(D.inputs.rho)], xaxis: 'x', yaxis: 'y',
+      marker: {symbol: ['circle', 'circle-open'], size: 7, color: t.c2},
+      text: ['At equality: plateau prepares', 'Right-hand limit, strictly above ceiling'],
+      hovertemplate: '%{text}<br>E = %{y:.6f}<extra></extra>'});
+    traces.push({type: 'scatter', mode: 'markers', name: 'open search coverage',
+      x: F.unresolved_nodes, y: F.unresolved_nodes.map(function () { return 0.135; }),
+      marker: {symbol: 'line-ns', size: 5, color: t.muted}, xaxis: 'x', yaxis: 'y',
+      hovertemplate: 'r = %{x}<extra>unresolved search; not nonexistence</extra>'});
     var certs = (F.certificates || []).filter(function (c) { return c.accepted === 'true'; });
     if (certs.length) {
       var cx = certs.map(function (c) { return Number(c.r); });
       var eMid = certs.map(function (c) { return Number(c.E_mid); });
       var vMid = certs.map(function (c) { return Number(c.v_mid); });
       var cdC = certs.map(function (c) {
-        return [c.r, chunk(c.E_lower, 32), chunk(c.E_upper, 32), c.E_halfwidth, c.v_lower, c.v_upper, c.v_halfwidth];
+        return [c.r, chunk(c.E_lower, opts && opts.narrow ? 18 : 32), chunk(c.E_upper, opts && opts.narrow ? 18 : 32), c.E_halfwidth, c.v_lower, c.v_upper, c.v_halfwidth];
       });
       var marker = { symbol: 'diamond', size: 9, color: t.ink, line: { width: 1, color: t.surface } };
       traces.push({
@@ -255,8 +289,8 @@
     }
 
     var layout = baseLayout(t);
-    layout.height = HEIGHT.fig2;
-    layout.margin = { l: 56, r: 16, t: 84, b: 52 };
+    layout.height = opts && opts.narrow ? 720 : 600;
+    layout.margin = { l: 56, r: 16, t: opts && opts.narrow ? 210 : 120, b: 52 };
     layout.dragmode = 'zoom';
     layout.xaxis = axis(t, { range: xr.slice(), tick0: 1, dtick: 0.5, showticklabels: false, domain: [0, 1], anchor: 'y' });
     layout.yaxis = axis(t, { title: { text: 'total entry <i>E</i>' }, range: [0.12, 0.62],
@@ -266,7 +300,7 @@
     layout.yaxis2 = axis(t, { title: { text: 'order magnitude' }, range: [-0.05, 1.12],
       tickvals: [0, 0.25, 0.5, 0.75, 1], domain: [0, 0.44], anchor: 'x2' });
     // legend sits above the threshold labels: paper y offset computed from the fixed height
-    var plotH = HEIGHT.fig2 - layout.margin.t - layout.margin.b;
+    var plotH = layout.height - layout.margin.t - layout.margin.b;
     layout.legend.y = 1 + 30 / plotH;
 
     function regionShape(range, color) {
@@ -274,8 +308,14 @@
       return { type: 'rect', xref: 'x', yref: 'paper', x0: range[0], x1: range[1], y0: 0, y1: 1,
         fillcolor: color, line: { width: 0 }, layer: 'below' };
     }
-    [regionShape(regions.no_trade_unique, t.regionA), regionShape(regions.full_orders_unique, t.regionB),
-      regionShape(regions.multiplicity, t.regionC)].forEach(function (s) { if (s) layout.shapes.push(s); });
+    [regionShape(regions.no_trade_unique, t.regionA), regionShape(regions.full_orders_unique, t.regionB)]
+      .forEach(function (s) { if (s) layout.shapes.push(s); });
+    F.multiplicity_nodes.forEach(function (r) {
+      ['y', 'y2'].forEach(function (axis) {
+        layout.shapes.push({type: 'line', xref: 'x', yref: axis + ' domain', x0: r, x1: r, y0: 0, y1: 0.025,
+          line: {color: t.c3, width: 1}, layer: 'above'});
+      });
+    });
 
     var thKeys = [['pooling_existence', 'r<sub>N</sub>'], ['full_orders_unique_sufficient', 'r<sub>U</sub>'], ['high_cost_ceiling', 'r<sub>C</sub>']];
     thKeys.forEach(function (k) {
@@ -295,7 +335,7 @@
         yref: 'y domain', y: 0.03, yanchor: 'bottom', font: { size: 11, color: t.muted }, align: 'center' });
     }
     caption(regions.no_trade_unique, 'no trade<br>unique');
-    caption(regions.multiplicity, 'several<br>equilibria');
+
     caption(regions.full_orders_unique, 'full orders unique');
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
@@ -308,7 +348,7 @@
     var traces = [];
     var styles = [
       { key: 'Laplace', color: t.accent, dash: 'solid', endName: 'Laplace, plateau (tie rule)', open: false },
-      { key: 'logistic', color: t.c2, dash: 'dash', endName: 'logistic, bound unattained', open: true }
+      { key: 'logistic', color: t.c2, dash: 'dash', endName: 'logistic, zero tail at bound', open: false }
     ];
     styles.forEach(function (s) {
       var S = F[s.key];
@@ -379,7 +419,9 @@
       });
     });
     styles.forEach(function (s) {
-      var S = F[s.key];
+      var raw = F[s.key];
+      var S = {};
+      Object.keys(raw).forEach(function (key) { S[key] = raw[key].filter(function (_, i) { return raw.eta[i] < 1; }); });
       if (!S) return;
       var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
       traces.push({
@@ -435,6 +477,11 @@
   function buildSpec(id, el) {
     var narrow = el.clientWidth > 0 && el.clientWidth < 640;
     var spec = builders[id](window.CCC_DATA, tokens(), { narrow: narrow });
+    if (narrow) {
+      spec.layout.hovermode = "closest";
+      spec.layout.hoverlabel.namelength = 18;
+      spec.layout.hoverlabel.font.size = 11;
+    }
     spec.narrow = narrow;
     return spec;
   }
@@ -447,6 +494,10 @@
       return records[id];
     }
     if (mounted[id]) return records[id];
+    if (el.closest('details:not([open])') || !el.getClientRects().length || el.clientWidth === 0) {
+      records[id] = {mounted: false, traces: 0, reason: 'collapsed'};
+      return records[id];
+    }
     if (typeof Plotly === 'undefined' || !window.CCC_DATA) {
       el.innerHTML = notice(id);
       records[id] = { mounted: false, traces: 0, reason: typeof Plotly === 'undefined' ? 'plotly unavailable' : 'no data' };
@@ -484,7 +535,7 @@
 
   function react(id) {
     var m = mounted[id];
-    if (!m || typeof Plotly === 'undefined') return;
+    if (!m || typeof Plotly === 'undefined' || m.el.closest('details:not([open])') || !m.el.getClientRects().length || !m.el.clientWidth) return;
     var spec = buildSpec(id, m.el);
     m.narrow = spec.narrow;
     records[id] = { mounted: true, traces: spec.traces.length, narrow: spec.narrow };
@@ -548,6 +599,12 @@
     });
     return out;
   }
+
+  document.addEventListener('toggle', function (event) {
+    if (event.target.tagName === 'DETAILS' && event.target.open) {
+      window.requestAnimationFrame(function () { mountAll().then(rerender); });
+    }
+  }, true);
 
   document.addEventListener('ccc:themechange', function () { rerender(); });
 

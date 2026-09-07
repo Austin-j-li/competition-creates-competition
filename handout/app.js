@@ -140,7 +140,7 @@
     var nav = document.getElementById("toc");
     var main = document.getElementById("main");
     if (!nav || !main) return;
-    var headings = Array.prototype.slice.call(main.querySelectorAll("section.sec > h2, h3[id]"));
+    var headings = Array.prototype.slice.call(main.querySelectorAll("section.sec > h2"));
     // an h2 without an id borrows its section's id so the TOC link (#sec-…) matches
     headings.forEach(function (h) {
       if (!h.id) { var sec = h.closest("section.sec"); if (sec && sec.id) h.id = sec.id + "-h2"; }
@@ -209,12 +209,15 @@
     }
   }
   function revealHash() {
-    var id = window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : "";
+    var id;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); } catch (e) { return; }
     if (!id) return;
     var target = document.getElementById(id);
     if (!target) return;
     openAncestors(target);
     if (target.tagName === "DETAILS") target.open = true;
+    // A browser cannot scroll to an anchor until its enclosing disclosure is open.
+    window.requestAnimationFrame(function () { target.scrollIntoView({ behavior: "instant", block: "start" }); });
   }
   function initDetails() {
     if (CCC.openAll) {
@@ -366,7 +369,7 @@
         if (CCC.explorer && typeof CCC.explorer.init === "function") CCC.explorer.init();
       } catch (e) { recordError("explorer.init: " + e.message); }
       // give lazy mounts and the explorer's first draw a tick before resolving
-      window.setTimeout(function () { readyResolve(CCC.selfCheck()); }, 0);
+      window.setTimeout(function () { revealHash(); readyResolve(CCC.selfCheck()); }, 0);
     });
   }
 

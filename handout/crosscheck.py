@@ -6,9 +6,9 @@ Shared formula block (keep byte-identical with the header comment in handout/exp
     g_H = h - r/2 - p^2/(2r);  g_L = (ell^2 - p^2)/(2r);  Delta_T = (r - ell)^2/(2r)
     m = 1/(1 + exp(2/b));  M = 1 - m;  B(mu) = g_L + mu (g_H - g_L)
     tau = (c_H - g_L)/(g_H - g_L)
-      tau >= M   : E = rho, O_H = rho/2, x* = +inf, alpha_H = alpha_L = 0
-      tau <= 1/2 : x* = -inf, alpha_H = alpha_L = 1, E = 1, O_H = 1/2
-      otherwise  : x* = (b/2) log(tau/(1-tau)); alpha_H = 1 - exp((x*-1)/b)/2; alpha_L = exp(-(x*+1)/b)/2
+      c_H > B(M): E = rho, O_H = rho/2, x* = +inf, alpha_H = alpha_L = 0
+      c_H <= B(m): x* = -inf, alpha_H = alpha_L = 1, E = 1, O_H = 1/2
+      otherwise  : x* = (b/2) log(tau/(1-tau)); alpha_H = S_Laplace(x*-1); alpha_L = S_Laplace(x*+1)
                    E = rho + (1-rho)/2 (alpha_H + alpha_L);  O_H = (rho + (1-rho) alpha_H)/2
     chips: A1 = B(m) - c_L; A2a = c_H - B(1/2); A2b = B(M) - c_H;
            A3_no_trade = k - Delta_T; A3_full = (1 - 1/b) rho m Delta_T - k
@@ -63,14 +63,14 @@ def closed_forms(P: dict, r: float) -> dict:
         return g_L + mu * (g_H - g_L)
 
     tau = (c_H - g_L) / (g_H - g_L)
-    if tau >= M:
+    if c_H > B(M):
         x_star, alpha_H, alpha_L = math.inf, 0.0, 0.0
-    elif tau <= 0.5:
+    elif c_H <= B(m):
         x_star, alpha_H, alpha_L = -math.inf, 1.0, 1.0
     else:
         x_star = (b / 2) * math.log(tau / (1 - tau))
-        alpha_H = 1 - math.exp((x_star - 1) / b) / 2
-        alpha_L = math.exp(-(x_star + 1) / b) / 2
+        alpha_H = 1 - math.exp((x_star - 1) / b) / 2 if x_star <= 1 else math.exp(-(x_star - 1) / b) / 2
+        alpha_L = 1 - math.exp((x_star + 1) / b) / 2 if x_star <= -1 else math.exp(-(x_star + 1) / b) / 2
     E = rho + (1 - rho) / 2 * (alpha_H + alpha_L)
     O_H = (rho + (1 - rho) * alpha_H) / 2
 
@@ -95,9 +95,9 @@ def closed_forms(P: dict, r: float) -> dict:
 
 def as_number(s: str) -> float:
     t = s.strip().lower()
-    if t == "inf":
+    if t in ("inf", "unattainable"):
         return math.inf
-    if t == "-inf":
+    if t in ("-inf", "always"):
         return -math.inf
     return float(s)
 

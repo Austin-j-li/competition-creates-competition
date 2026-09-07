@@ -36,15 +36,27 @@ def _rows(root: Path, rel: str) -> list[dict]:
 
 def d6(x: str) -> str:
     try:
+        if x == "n/a":
+            return "n/a"
+        if not Decimal(x).is_finite():
+            raise TableError(f"nonfinite displayed scalar: {x}")
         return format(Decimal(x).quantize(Decimal("0.000001"), rounding=ROUND_HALF_EVEN), "f")
+    except TableError:
+        raise
     except (InvalidOperation, ValueError):
         return "n/a"
 
 
 def sci(x: str) -> str:
     try:
+        if x == "n/a":
+            return "n/a"
+        if not Decimal(x).is_finite():
+            raise TableError(f"nonfinite displayed scalar: {x}")
         mantissa, exponent = f"{Decimal(x):.2E}".split("E")
         return f'{mantissa}<span class="times">×</span>10<sup>{int(exponent)}</sup>'
+    except TableError:
+        raise
     except (InvalidOperation, ValueError):
         return "n/a"
 
@@ -52,13 +64,13 @@ def sci(x: str) -> str:
 def status_word(text: str) -> str:
     t = (text or "").lower()
     if t.startswith("analytical"):
-        return "proved"
+        return "analytical"
     if t.startswith("computer-assisted"):
-        return "verified computation"
+        return "computer-assisted"
     if "fixed full-order profile" in t or "level-matching" in t:
         return "control"
     if t.startswith("numerical diagnostic"):
-        return "illustration"
+        return "numerical diagnostic"
     if t.startswith("rejected"):
         return "rejected"
     return html.escape(text.split(" (")[0])
@@ -136,7 +148,7 @@ def t_auction_primitives(root: Path, tk: Tokens) -> str:
 
 def _controls_base(root: Path) -> list[dict]:
     eq = _rows(root, "tables/equilibrium_controls.csv")
-    return [r for r in eq if r["noise"] == "Laplace" and r["cost_law"] == "atoms" and r["accepted"] == "true"]
+    return [r for r in eq if r["parameter_set"] == "base" and r["noise"] == "Laplace" and r["cost_law"] == "atoms" and r["accepted"] == "true"]
 
 
 def _eq_row(base: list[dict], exp: str, rs: str) -> dict:
@@ -148,7 +160,7 @@ def _eq_row(base: list[dict], exp: str, rs: str) -> dict:
 
 def t_equilibrium_controls(root: Path, tk: Tokens) -> str:
     base = _controls_base(root)
-    cols = ["q<sub>H</sub>", "q<sub>L</sub>", "E", "O<sub>H</sub>", "R<sub>T</sub>", "Basis"]
+    cols = ["High-value order q<sub>H</sub>", "Low-value order q<sub>L</sub>", "Preparation E", "High-value ownership O<sub>H</sub>", "Target proceeds R<sub>T</sub>", "Evidence"]
     n = len(cols) + 1
     body = [panel("Panel A. Equilibrium", n)]
 
@@ -161,8 +173,7 @@ def t_equilibrium_controls(root: Path, tk: Tokens) -> str:
     for rs, name in (("1.2", "Weak incumbent"), ("3", "Strong incumbent"), ("3.6", "Very strong incumbent")):
         body.append(line(f"{name} (r = {rs})", _eq_row(base, "feedback", rs)))
     body.append(panel("Panel B. Information controls", n))
-    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden from the challenger"),
-                     ("matched_dividend", "Matched dividend")):
+    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden from the challenger")):
         for rs in ("1.2", "3"):
             body.append(line(f"{lab}, r = {rs}", _eq_row(base, exp, rs)))
     return table("equilibrium_controls", head(cols), body)
@@ -221,7 +232,21 @@ def t_extensions(root: Path, tk: Tokens) -> str:
 
 def t_reserve_comparisons(root: Path, tk: Tokens) -> str:
     comp = _rows(root, "tables/reserve_comparisons.csv")
-    cols = ["q<sub>H</sub>", "q<sub>L</sub>", "E", "R<sub>T</sub>", "Margin", "Basis"]
+    events = _rows(root, "numerics/reserve_events.csv")
+    identity = ("parameter_set_id", "continuation_id", "institution_id", "information_structure_id", "p_exact", "branch", "event_id")
+    for row in comp:
+        matches = [event for event in events if event["accepted"] == "true"
+                   and all(event[k] == row[k] for k in identity)]
+        if len(matches) != 1:
+            raise TableError("reserve comparison has missing or ambiguous event outcomes")
+        event = matches[0]
+        for a, b in (("E", "preparation_probability"), ("R_T", "seller_revenue")):
+            if abs(Decimal(row[a]) - Decimal(event[b])) > Decimal("1e-9"):
+                raise TableError("reserve comparison disagrees with event outcomes")
+        for key in ("sale_probability", "two_admissible_bidders_probability"):
+            row[key] = event[key]
+        row["__src"] += " + " + event["__src"]
+    cols = ["Preparation", "Sale", "Two admissible bidders", "Target proceeds", "Basis"]
     n = len(cols) + 1
     body = []
     for law, label in (("binary", "Panel A. Binary values"),
@@ -232,9 +257,10 @@ def t_reserve_comparisons(root: Path, tk: Tokens) -> str:
                 continue
             basis = status_word(r["status"]) + ("" if r["accepted"] == "true" else " (not accepted)")
             body.append("<tr>" + f'<th scope="row">r = {html.escape(r["r"])}, reserve p = {html.escape(r["p"])}</th>'
-                        + cell(order(r["q_H"]), r["q_H"], r["__src"], tk) + cell(order(r["q_L"]), r["q_L"], r["__src"], tk)
-                        + cell(d6(r["E"]), r["E"], r["__src"], tk) + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk)
-                        + cell(sci(r["trading_margin"]), r["trading_margin"], r["__src"], tk)
+                        + cell(d6(r["E"]), r["E"], r["__src"], tk)
+                        + cell(d6(r["sale_probability"]), r["sale_probability"], r["__src"], tk)
+                        + cell(d6(r["two_admissible_bidders_probability"]), r["two_admissible_bidders_probability"], r["__src"], tk)
+                        + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk)
                         + text_cell(basis, "basis") + "</tr>")
     return table("reserve_comparisons", head(cols), body)
 
@@ -275,7 +301,7 @@ def t_comparative_statics(root: Path, tk: Tokens) -> str:
         raws = [src[rs][key] for rs in ("1.2", "3", "3.6")]
         tds = [f'<th scope="row">{label}</th>']
         for rs, raw in zip(("1.2", "3", "3.6"), raws):
-            shown = "∞" if raw == "inf" else ("n/a" if raw == "nan" else d6(raw))
+            shown = "∞" if raw in ("inf", "unattainable") else ("n/a" if raw == "nan" else d6(raw))
             tds.append(cell(shown, raw, src[rs]["__src"], tk))
         tds.append(text_cell(_direction(raws), "dir"))
         body.append("<tr>" + "".join(tds) + "</tr>")
@@ -316,12 +342,26 @@ def t_certificates(root: Path, tk: Tokens) -> str:
                     + f'<td class="num interval" data-src="{html.escape(c["__src"])}">{v}</td>'
                     + f'<td class="num interval" data-src="{html.escape(c["__src"])}">{e}</td>'
                     + text_cell("yes" if c["accepted"] == "true" else "no", "basis") + "</tr>")
-    thead = ('<thead><tr><th scope="col">Strength</th><th scope="col" class="num">Enclosure of v</th>'
-             '<th scope="col" class="num">Enclosure of E</th><th scope="col">All predicates true</th></tr></thead>')
+    thead = ('<thead><tr><th scope="col">Strength</th><th scope="col" class="num">Short-order magnitude v</th>'
+             '<th scope="col" class="num">Preparation probability E</th><th scope="col">Certificate verified</th></tr></thead>')
     return table("certificates", thead, body, cls="intervals")
 
 
+def t_core_comparison(root: Path, tk: Tokens) -> str:
+    base = _controls_base(root)
+    body = []
+    for exp, label in (("feedback", "Equilibrium information"), ("frozen", "Same informative orders"),
+                       ("price_hidden", "Price withheld from the buyer")):
+        cells = [f'<th scope="row">{label}</th>']
+        for r in ("1.2", "3"):
+            row = _eq_row(base, exp, r)
+            cells.append(cell(f'{Decimal(row["E"]) * 100:.1f}%', row["E"], row["__src"], tk))
+        body.append("<tr>" + "".join(cells) + "</tr>")
+    return table("core_comparison", head(["Weak incumbent", "Strong incumbent"], "Information when the buyer decides"), body)
+
+
 GENERATORS = {
+    "core_comparison": t_core_comparison,
     "auction_primitives": t_auction_primitives,
     "equilibrium_controls": t_equilibrium_controls,
     "welfare": t_welfare,

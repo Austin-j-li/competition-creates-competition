@@ -20,15 +20,15 @@ REGISTRY_FIELDS = ("display", "value", "lower", "upper", "units", "status", "exe
 INPUT_NAMES = {"h": "base_h", "ell": "base_ell", "p": "base_p", "rho": "base_rho", "c_L": "base_c_low",
                "c_H": "base_c_high", "b": "base_b", "k": "base_k", "r_weak": "base_r_weak",
                "r_strong": "base_r_strong", "r_collapse": "base_r_collapse"}
-PLOTTED_BRANCHES = ("pooling", "full_orders", "asymmetric", "symmetric_interior")
-BRANCH_FIELDS = ("r", "E", "O_H", "q_H", "q_L", "v", "tau", "existence_status", "uniqueness_status", "multiplicity_found")
+PLOTTED_BRANCHES = ("pooling", "full_orders", "asymmetric", "symmetric_interior", "mixed")
+BRANCH_FIELDS = ("r", "E", "O_H", "q_H", "q_L", "v", "tau", "existence_status", "uniqueness_status", "multiplicity_found", "candidate_id", "result_status")
 THRESHOLD_NAMES = ("pooling_unique_sufficient", "pooling_existence", "full_orders_unique_sufficient",
                    "high_cost_ceiling", "m", "M", "laplace_entry_left_limit")
 SOURCES = ("numerics/quantity_registry.csv", "figures_data/two_returns.csv", "numerics/correspondence.csv",
            "numerics/certificates.csv", "numerics/thresholds.csv", "figures_data/posterior_tails.csv",
            "figures_data/bargaining.csv", "tables/auction_primitives.csv", "tables/equilibrium_controls.csv",
            "tables/extensions.csv", "numerics/moderate_values.csv", "tables/reserve_comparisons.csv",
-           "numerics/feedback_comparisons.csv")
+           "numerics/feedback_comparisons.csv", "numerics/mixed_supports.csv", "numerics/two_signals.csv", "numerics/reserve_events.csv")
 
 
 class DataError(ValueError):
@@ -148,16 +148,43 @@ def _sig17(d: Decimal) -> str:
 
 
 def _fig2(root: Path) -> dict:
-    corr = [r for r in read_csv(root, "numerics/correspondence.csv") if r["accepted"] == "true"]
-    labels = {r["branch"] for r in corr}
-    if labels != set(PLOTTED_BRANCHES):
-        raise DataError(f"correspondence: accepted branch labels {sorted(labels)} differ from plotted set {sorted(PLOTTED_BRANCHES)}")
+    rows = read_csv(root, "numerics/correspondence.csv")
+    corr = [r for r in rows if r["accepted"] == "true"]
+    identities, counts = set(), {}
+    for row in corr:
+        for key in ("candidate_id", "continuation_id", "parameter_set_id", "result_status"):
+            if row.get(key) in (None, "", "n/a"):
+                raise DataError(f"correspondence: missing {key}")
+        identity = row["parameter_set_id"], row["continuation_id"]
+        if identity in identities or row.get("duplicate_of"):
+            raise DataError("correspondence: duplicate accepted continuation")
+        identities.add(identity)
+        r = Decimal(row["r"])
+        counts[r] = counts.get(r, 0) + 1
+        if row["result_status"] not in ("analytical", "computer-assisted", "numerical diagnostic"):
+            raise DataError("correspondence: unsupported evidence status")
+        if not Decimal(row["E"]).is_finite() or not 0 <= Decimal(row["E"]) <= 1:
+            raise DataError("correspondence: invalid preparation probability")
+    for row in corr:
+        count = counts[Decimal(row["r"])]
+        if int(row["n_distinct_accepted"]) != count or (row["multiplicity_found"] == "true") != (count > 1):
+            raise DataError("correspondence: multiplicity disagrees with distinct identities")
+    if not {r["branch"] for r in corr} <= set(PLOTTED_BRANCHES):
+        raise DataError("correspondence: accepted branch has no display style")
     branches = {}
-    for b in PLOTTED_BRANCHES:
-        rows = sorted((r for r in corr if r["branch"] == b), key=lambda x: Decimal(x["r"]))
-        if not rows:
-            raise DataError(f"correspondence: branch {b} has no accepted rows")
-        branches[b] = {f: [num_or_str(x[f]) for x in rows] for f in BRANCH_FIELDS}
+    for branch in sorted({r["branch"] for r in corr}):
+        sub = sorted((r for r in corr if r["branch"] == branch), key=lambda x: Decimal(x["r"]))
+        branches[branch] = {f: [num_or_str(x[f]) for x in sub] for f in BRANCH_FIELDS}
+    support_rows = read_csv(root, "numerics/mixed_supports.csv")
+    supports = []
+    for row in corr:
+        if row["q_H"] != "mixed":
+            continue
+        matched = [r for r in support_rows if r["accepted"] == "true"
+                   and r["candidate_id"] == row["candidate_id"] and r["continuation_id"] == row["continuation_id"]]
+        if not matched or {r["state"] for r in matched} != {"H", "L"}:
+            raise DataError("mixed continuation has no complete support records")
+        supports.extend({k: num_or_str(r[k]) for k in ("r", "q", "weight", "state", "candidate_id")} for r in matched)
     certs = read_csv(root, "numerics/certificates.csv")
     if not certs or any(c["accepted"] != "true" for c in certs):
         raise DataError("certificates: missing or not all accepted")
@@ -180,18 +207,21 @@ def _fig2(root: Path) -> dict:
     missing = [n for n in THRESHOLD_NAMES if n not in thr]
     if missing:
         raise DataError(f"thresholds: missing {missing}")
-    multi = [Decimal(r["r"]) for r in corr if r["multiplicity_found"] == "true"]
+    multi = sorted({Decimal(r["r"]) for r in corr if r["multiplicity_found"] == "true"})
     if not multi:
         raise DataError("correspondence: no accepted row with multiplicity_found=true")
     return {
         "x_range": [num("1.0"), num("3.8")],
         "branches": branches,
+        "nodes": [num(str(r)) for r in sorted({Decimal(row["r"]) for row in rows})],
+        "multiplicity_nodes": [num(str(r)) for r in multi],
+        "unresolved_nodes": [num(str(r)) for r in sorted({Decimal(row["r"]) for row in rows if row["result_status"] == "open"})],
+        "mixed_supports": supports,
         "certificates": cert_out,
         "thresholds": thr,
         "regions": {
             "no_trade_unique": [num("1.0"), thr["pooling_unique_sufficient"]["value"]],
             "full_orders_unique": [thr["full_orders_unique_sufficient"]["value"], num("3.8")],
-            "multiplicity": [num(str(min(multi))), num(str(max(multi)))],
         },
     }
 
@@ -206,6 +236,9 @@ def _fig3(root: Path) -> dict:
         zero = [i for i, r in enumerate(sub) if Decimal(r["M_minus_tau"]) == 0]
         if zero != [0]:
             raise DataError(f"posterior_tails {noise}: zero-distance rows at indices {zero}, expected [0]")
+        if noise == "logistic" and (sub[0]["x_star"] != "unattainable"
+                or Decimal(sub[0]["posterior_upper_tail_mass"]) != 0):
+            raise DataError("logistic endpoint must be unattainable with zero tail mass")
         out[noise] = {
             "M_minus_tau": [num(r["M_minus_tau"]) for r in sub],
             "posterior_upper_tail_mass": [num(r["posterior_upper_tail_mass"]) for r in sub],
@@ -216,12 +249,13 @@ def _fig3(root: Path) -> dict:
 
 
 def _fig4(root: Path) -> dict:
-    rows = [r for r in read_csv(root, "figures_data/bargaining.csv") if r["eta"] != "1"]
+    rows = read_csv(root, "figures_data/bargaining.csv")
     out = {}
     for rs in sorted({r["r"] for r in rows}, key=Decimal):
         sub = sorted((r for r in rows if r["r"] == rs), key=lambda x: Decimal(x["eta"]))
-        if any(Decimal(r["eta"]) == 1 for r in sub):
-            raise DataError("bargaining: eta == 1 row survived the filter")
+        endpoint = [r for r in sub if Decimal(r["eta"]) == 1]
+        if len(endpoint) != 1 or any(Decimal(endpoint[0][k]) != 0 for k in ("G_H_eta", "G_L_eta")):
+            raise DataError("bargaining: missing zero-profit endpoint")
         out[rs] = {f: [num(r[f]) for r in sub] for f in ("eta", "Delta_eta", "G_H_eta", "G_L_eta")}
     if set(out) != {"1.2", "3"}:
         raise DataError(f"bargaining: strengths {sorted(out)}, expected 1.2 and 3")
@@ -254,6 +288,17 @@ def build_data(root: Path | str, vendor: dict | None = None) -> tuple[dict, dict
     if vendor is None:
         vendor = json.loads((root / "handout" / "vendor.lock.json").read_text(encoding="utf-8"))
     hashes = {rel: sha256(root, rel) for rel in SOURCES}
+    # Bind the presentation to the audited output bytes; fail before rendering stale data.
+    recorded = {}
+    for path in sorted((root / "numerics/manifests").glob("*.json")):
+        if path.stem == "handout":
+            continue
+        manifest = json.loads(path.read_text())
+        if manifest.get("passed"):
+            recorded.update(manifest.get("outputs", {}))
+    for rel, digest in hashes.items():
+        if recorded.get(rel) != digest:
+            raise DataError(f"source differs from a passed numerical manifest: {rel}")
     registry, inputs = _registry(root)
     data = {
         "meta": {
