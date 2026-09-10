@@ -1,7 +1,6 @@
 // Run with the existing Playwright browser_run_code_unsafe tool's filename argument.
 // Serve docs/ at http://127.0.0.1:8765 first. No added package is required.
-async (page) => {
-  const base = 'http://127.0.0.1:8765/';
+async (page, base = 'http://127.0.0.1:8765/') => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   function check(ok, message) { if (!ok) throw new Error(message); }
   const results = [];

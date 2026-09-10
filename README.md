@@ -27,10 +27,11 @@ Install the local environment using `replication/README.md`; virtual environment
 and private Claude settings stay on each machine. Shared Claude instructions, skills, and
 preview configuration are tracked.
 
-The supervisor brief is at https://austinjunyuli.github.io/competition-creates-competition/.
+The supervisor brief is at https://competition.dealextract.org/.
 Its sources and build instructions are in `handout/README.md`; the course is in `learn/`.
 The current delivery PDFs are in `peer_release/` and the site copies in `docs/`.
-Publishing the website still requires updating `gh-pages` after building the handout.
+Publish reviewed website changes with `python3 handout/publish.py`; use `--dry-run`
+to build and check without uploading. The source repository remains private.
 
 Both VM checkouts were reconciled on 2026-09-07. Their previous working states, including
 historical source archives, are preserved as Git stashes:

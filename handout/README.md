@@ -35,7 +35,44 @@ The handout builder does not alter research sources or run numerical searches.
 
 ## Publishing
 
-GitHub Pages serves the root of `gh-pages`. Build and check the source branch first, then
+The public handout is https://competition.dealextract.org/, hosted by Cloudflare Workers
+Static Assets. The source repository remains private. No VM or Worker script is required.
+
+```sh
+# Once per machine: sign in to the Cloudflare account that owns dealextract.org.
+npx --yes wrangler@4.130.0 login --scopes account:read user:read workers:write workers_scripts:write workers_routes:write zone:read ssl_certs:write
+python3 handout/publish.py --dry-run
+python3 handout/publish.py
+```
+
+Requires Python, Node.js and npm. The publisher rebuilds the handout, runs
+`check_display.py`, and stages only the HTML, both PDFs and the five locked font files
+in a temporary directory. A failed check stops publication. Wrangler is version-pinned;
+credentials stay in its machine-local login store, never in this repository.
+The builder refreshes `numerics/manifests/handout.json` with the local build environment.
+Publishing is explicit; pushing research changes to GitHub does not update the website.
+
+Run `handout/check_browser.js` against the deployed address after publishing and compare
+the live HTML and PDF hashes with `docs/`. In Cloudflare's Workers dashboard, select
+`competition-creates-competition` > Deployments to inspect or roll back a deployment.
+The custom domain and disabled alternate URLs are declared in `wrangler.jsonc`.
+
+The migration on 2026-09-10 deployed version `8c42fb77-3ffa-4e21-9fd0-9cc9392282f2`.
+Live HTML, both PDFs and all five fonts matched the local files byte for byte. Browser
+checks passed at 1440, 390 and 320 pixels in both themes, including all five plots,
+mathematics, keyboard controls and legacy anchors. Unpublished source paths returned 404.
+This verified the hosting migration; it did not rerun the research acceptance gate.
+
+The browser check accepts an optional second argument for its base URL. To check production,
+load the file's function and invoke it as `check(page, 'https://competition.dealextract.org/')`
+through the existing Playwright tool. The default still checks the local server.
+
+### Historical GitHub Pages deployment
+
+GitHub Pages previously served the root of `gh-pages`. That site stopped serving because
+the account plan did not support Pages from the private repository. The deployment branch
+is retained as a historical copy. Its former publishing procedure was to build and check
+the source branch, then
 copy only `index.html`, `.nojekyll`, `main_filled.pdf`, `online_appendix_filled.pdf`, and the
 `fonts/` directory from `docs/` into an isolated checkout of the current remote `gh-pages` commit.
 Commit the generated files there and push normally, without force. Do not switch the source
