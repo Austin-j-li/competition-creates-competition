@@ -1,6 +1,6 @@
 # Project guidance
 
-Read `CLAUDE.md` before editing. Follow `handout/README.md` for the supervisor handout,
+`CLAUDE.md` contains the canonical project rules. Follow `handout/README.md` for the supervisor handout,
 `learn/MISSION.md` for the teaching course, and `replication/README.md` for research builds.
 `VM_START_HERE.md` and the VM checkpoints describe a completed revision, not pending work.
 

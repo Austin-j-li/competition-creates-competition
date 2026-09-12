@@ -6,16 +6,13 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Source of truth
 
-- `paper/online_appendix.md` section C is the complete numerical contract: input declarations
+- `paper/online_appendix.md` section C is the numerical contract for numerical work: input declarations
   (C.0), one subsection per exercise (C.1 to C.7), the scalar registry (C.8). Section E is the
-  implementation contract and rendering rules. Do not restate them here; read them.
+  implementation contract and rendering rules. Consult those sections for changes to numerics or rendering.
 - `paper/quantity_manifest.csv` defines every `[[name]]` placeholder in `paper/main.md`:
   definition, exercise, source file, row selector, display format. Rows with `input_value`
   are declarations; every other row is filled only from validated output.
-- `paper/main.md` is the manuscript source. On 2026-09-05 the author requested and approved a
-  full rewrite of its prose (single-author voice, finance-journal structure, three numbered
-  propositions), so requested prose edits go to `paper/main.md` directly, never to the generated copies;
-  the numerical layer still fills placeholders into generated copies (`paper/*_filled.md`).
+- `paper/main.md` is the manuscript source; edit prose there. The numerical layer fills placeholders into generated copies (`paper/*_filled.md`).
   Figure and table positions are marked by `<!-- FIGURE N: path -->` or `<!-- TABLE N: path -->`
   followed by a `> **Figure N.** caption` blockquote; captions are the author's text.
 

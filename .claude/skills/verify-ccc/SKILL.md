@@ -9,7 +9,7 @@ description: "Verify affected numerical exercises and derived artifacts, or run 
 
 For a focused edit, run checks that cover the changed behavior. Documentation-only work and read-only assessments need relevant static/source checks, not unrelated full pipeline runs. Use all applicable gates for pipeline-affecting changes, release readiness, or an explicitly requested full verification; report skipped gates and do not label a scoped check as a full PASS.
 
-Keep live/model-backed extraction opt-in. A verification-only request reports failures without editing. When implementation is authorized, the caller fixes failures caused by its changes and reruns the affected checks; unrelated failures or missing access must be reported with evidence. Preserve existing research tolerances, provenance, immutable rulings, and release gates.
+A verification-only request reports failures without editing. When implementation is authorized, the caller fixes failures caused by its changes and reruns the affected checks; unrelated failures or missing access must be reported with evidence. Preserve existing research tolerances, provenance, immutable rulings, and release gates.
 
 Run from the repository root with the project virtual environment. The commands below use
 the Unix interpreter path; on Windows use `.venv/Scripts/python.exe`.
