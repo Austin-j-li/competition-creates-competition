@@ -10,6 +10,19 @@ Research repository for the paper and its numerical layer.
 - `tables/`, `figures/`, `figures_data/`: generated CSV outputs, LaTeX tables, and vector figures.
 - `verification/`: the collaborator's distributed node checks and interval certificates (E.2), kept as delivered.
 
+## Repository and collaboration
+
+The canonical repository is [austin.junyu.li/competition-creates-competition](https://gitlab.com/austin.junyu.li/competition-creates-competition).
+Use GitLab for issues, merge requests, and repository management. `origin` must use
+`git@gitlab.com:austin.junyu.li/competition-creates-competition.git` on every machine.
+For an existing checkout, set it with:
+
+```bash
+git remote set-url origin git@gitlab.com:austin.junyu.li/competition-creates-competition.git
+```
+
+The website is hosted separately on Cloudflare; follow `handout/README.md` to publish it.
+
 ## Working across machines
 
 `main` is the shared branch for the current paper, supervisor handout, and teaching course.
@@ -31,7 +44,7 @@ The supervisor brief is at https://competition.dealextract.org/.
 Its sources and build instructions are in `handout/README.md`; the course is in `learn/`.
 The current delivery PDFs are in `peer_release/` and the site copies in `docs/`.
 Publish reviewed website changes with `python3 handout/publish.py`; use `--dry-run`
-to build and check without uploading. The source repository remains private.
+to build and check without uploading. The source repository is hosted on GitLab.
 
 Both VM checkouts were reconciled on 2026-09-07. Their previous working states, including
 historical source archives, are preserved as Git stashes:
