@@ -28,4 +28,3 @@ commit to undo that content revision while retaining the redesigned typography a
 The revision was checked at desktop and mobile sizes in both themes. The main reading path
 contains approximately 1,700 words of prose plus four mathematical stops, excluding expanded details. Prose, the benchmark table and
 PDF links also remain available with JavaScript disabled or the CDN blocked.
-
