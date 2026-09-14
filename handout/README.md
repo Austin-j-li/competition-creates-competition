@@ -35,8 +35,8 @@ The handout builder does not alter research sources or run numerical searches.
 
 ## Publishing
 
-The public handout is https://competition.dealextract.org/, hosted by Cloudflare Workers
-Static Assets. The source repository is hosted on GitLab. No VM or Worker script is required.
+The public handout is https://competition.dealextract.org/ and the interactive talk is
+https://competition.dealextract.org/talk/, both hosted by Cloudflare Workers Static Assets. The source repository is hosted on GitLab. No VM or Worker script is required.
 
 ```sh
 # Once per machine: sign in to the Cloudflare account that owns dealextract.org.
@@ -46,8 +46,11 @@ python3 handout/publish.py
 ```
 
 Requires Python, Node.js and npm. The publisher rebuilds the handout, runs
-`check_display.py`, and stages only the HTML, both PDFs and the five locked font files
-in a temporary directory. A failed check stops publication. Wrangler is version-pinned;
+`check_display.py`, rebuilds the talk (`presentation/build.py`, `presentation/check_deck.mjs`),
+and stages an explicit file list in a temporary directory: the handout HTML, both PDFs and
+the five locked font files at the root, and under `talk/` the deck, its locked fonts and
+KaTeX assets, the two PDFs, `provenance.json`, and `presentation.pdf` when it has been
+exported. Speaker notes and QA output are never staged. A failed check stops publication. Wrangler is version-pinned;
 credentials stay in its machine-local login store, never in this repository.
 The builder refreshes `numerics/manifests/handout.json` with the local build environment.
 Publishing is explicit; pushing research changes to GitLab does not update the website.

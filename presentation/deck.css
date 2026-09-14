@@ -1,0 +1,407 @@
+/* Competition creates competition — deck stylesheet ("After hours").
+   Blue-black ground, one warm amber accent. Instrument Serif for the big words,
+   JetBrains Mono for every number, Libre Franklin for running text.
+   Design surface is a fixed 1600 x 900 stage; all sizes are absolute pixels. */
+
+/* ---------- 1. Fonts (self-hosted, offline) ---------- */
+@font-face{font-family:Franklin;src:url('LibreFranklin-normal-300-900.woff2') format('woff2');font-weight:300 900;font-style:normal;font-display:swap}
+@font-face{font-family:Prime;src:url('CourierPrime-normal-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url('uifonts/AtkinsonHyperlegible-400-normal-latin.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url('uifonts/AtkinsonHyperlegible-700-normal-latin.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url('uifonts/AtkinsonHyperlegible-400-italic-latin.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url('uifonts/AtkinsonHyperlegible-700-italic-latin.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url('uifonts/InstrumentSerif-Regular-latin.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url('uifonts/InstrumentSerif-Italic-latin.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url('uifonts/JetBrainsMono-400-700-latin.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"JetBrains Mono";src:url('uifonts/JetBrainsMono-400-700-greek.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap;unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+
+/* ---------- 2. Tokens ---------- */
+:root{
+  --g:#0c1117;--g2:#121a24;--g3:#18222e;--t:#ece5d8;--t2:#c9c2b4;--m:#8e98a6;
+  --l:#26303d;--a:#e2a13a;--a2:#f0c46b;--a-soft:rgba(226,161,58,.14);--ghost:#5d6b7c;
+  --serif:"Instrument Serif",Georgia,serif;--sans:"Atkinson Hyperlegible",Franklin,"Libre Franklin",Arial,sans-serif;
+  --spring:cubic-bezier(.32,.72,0,1);--hi:rgba(255,255,255,.08);--edge:rgba(255,255,255,.07);--lo:rgba(0,0,0,.8);
+  --mono:"JetBrains Mono",Prime,"Courier Prime",monospace;
+  color-scheme:dark;
+}
+/* Projector variant: warm off-white ground, same identity. */
+:root[data-theme=light]{
+  --g:#f4efe4;--g2:#ece6d8;--g3:#e3dccb;--t:#1a1710;--t2:#3d382e;
+  --m:#6a6459;--l:#d3cbb9;--a:#b4761a;--a2:#8f5c10;--a-soft:rgba(180,118,26,.14);
+  --ghost:#a39c8c;--hi:rgba(255,255,255,.75);--edge:rgba(40,30,10,.09);--lo:rgba(60,45,20,.28);
+  color-scheme:light;
+}
+
+/* ---------- 3. Base ---------- */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;overflow:hidden;background:var(--g);color:var(--t);font:400 24px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+button,input{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+button{background:transparent;border:0;padding:0;cursor:pointer;white-space:nowrap}
+button:disabled{opacity:.3;cursor:default}
+button:active{transform:translateY(1px) scale(.98)}
+a{color:var(--a);text-underline-offset:4px}
+:focus-visible{outline:2px solid var(--a);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.skip{position:fixed;top:-200px;left:16px;z-index:9;background:var(--g2);color:var(--t);border:1px solid var(--l);border-radius:2px;padding:10px 14px;font:400 13px/1 var(--mono)}
+.skip:focus{top:16px}
+
+/* ---------- 4. Stage geometry ---------- */
+#stage{position:fixed;inset:0 0 56px 0;overflow:hidden;outline:none}
+/* The 1600 x 900 design surface: centred on the stage, scaled about its top centre. */
+#deck{position:absolute;top:0;left:50%;margin-left:-800px;width:1600px;height:900px;transform:scale(var(--stage-scale,1));transform-origin:top center}
+.slide{position:absolute;inset:0;display:none;padding:64px 88px 56px}
+.slide.active{display:flex;flex-direction:column}
+.slide-head{flex:none}
+.slide-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.slide-foot{flex:none;display:flex;align-items:center;gap:18px;padding-top:24px}
+.slide-foot .detail{margin-left:auto}
+.source{font:400 13px/1.4 var(--mono);color:var(--m)}
+.source a{color:var(--m)}
+.detail{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--m);border:1px solid var(--l);border-radius:2px;padding:7px 11px}
+.detail:hover{color:var(--a);border-color:var(--a)}
+
+/* ---------- 5. Chrome: hud and rail ---------- */
+.hud{position:fixed;top:14px;right:18px;z-index:7;display:flex;gap:18px;padding:9px 18px;background:var(--g2);border:1px solid var(--edge);border-radius:999px;backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 var(--hi),0 14px 34px -22px var(--lo);opacity:.3;transition:opacity .7s var(--spring)}
+.hud button{font:400 12px/1 var(--mono);color:var(--m);padding:4px 2px;transition:color .4s var(--spring)}
+.hud button:hover{color:var(--a)}
+.hud:hover,.hud:focus-within,body.hud-visible .hud{opacity:1}
+.rail{position:fixed;left:50%;transform:translateX(-50%);bottom:9px;width:min(1240px,calc(100% - 36px));height:46px;z-index:7;background:var(--g2);border:1px solid var(--edge);border-radius:999px;backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 var(--hi),0 14px 34px -22px var(--lo);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px;padding:0 20px}
+.acts{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;list-style:none;margin:0;padding:0}
+.acts li{position:relative;padding-bottom:7px;font:400 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acts li::before{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--l)}
+.acts li[data-current]{color:var(--t)}
+.acts li[data-current]::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:calc(var(--p,0) * 100%);background:var(--a)}
+.pager{display:flex;align-items:center;gap:18px}
+.pager button{font-size:22px;line-height:1;color:var(--m);padding:2px 8px}
+.pager button:hover{color:var(--a)}
+#counter{font:400 13px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--t2);min-width:104px;text-align:center}
+#return{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--l);border-radius:2px;padding:7px 11px}
+#progress-label{font:400 12px/1 var(--mono);color:var(--m);text-align:right}
+
+/* ---------- 6. Grain and title ambience ---------- */
+.grain{position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#s01::after{content:'';position:absolute;right:-90px;bottom:-130px;width:820px;height:600px;border-radius:50%;z-index:0;pointer-events:none;background:var(--a-soft);filter:blur(100px);animation:drift 14s ease-in-out infinite alternate}
+#s01>*{position:relative;z-index:1}
+@keyframes drift{from{transform:translate3d(-3%,2%,0) scale(1)}to{transform:translate3d(4%,-3%,0) scale(1.14)}}
+#title-ambient{display:block;width:100%;min-width:0}
+#title-ambient svg{display:block;width:100%;height:auto}
+body.motion .vl-breathe{animation:breathe 14s ease-in-out infinite alternate;transform-origin:left center}
+@keyframes breathe{from{transform:scaleX(var(--breathe,.4))}to{transform:scaleX(1)}}
+
+/* ---------- 7. Type scale (1600 x 900) ---------- */
+.slide-head h2{font:400 58px/1.04 var(--serif);letter-spacing:-.012em;max-width:23ch}
+h1 i,h2 i,.display i{font-style:italic;color:var(--a)}
+.kicker{font:400 14px/1 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--m);margin-bottom:18px}
+.sub{font:400 24px/1.45 var(--sans);color:var(--m);max-width:60ch;margin-top:16px}
+.display{font:400 48px/1.14 var(--serif);letter-spacing:-.015em;color:var(--t);max-width:26ch}
+:where(.slide-body p){font-size:22px;color:var(--t2)}
+.small{font-size:18px;line-height:1.5}
+.muted{color:var(--m)}
+.accent{color:var(--a)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.metric{display:block;font:400 104px/1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--t)}
+.metric.accent{color:var(--a)}
+.metric-label{font:400 14px/1.3 var(--mono);color:var(--m);margin-top:10px}
+.endline{font:400 64px/1.12 var(--serif);letter-spacing:-.018em;max-width:22ch}
+.byline{font:400 14px/1.6 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--m)}
+.print-only{display:none}
+
+/* KaTeX equations: left aligned, in text colour. */
+.equation{font-size:30px;color:var(--t);overflow:visible;padding:4px 0;max-width:100%}
+.equation.eq-small{font-size:24px}
+.equation.eq-big{font-size:40px}
+.equation .katex-display{margin:0;text-align:left}
+.equation .katex-display>.katex{text-align:left}
+.equation .katex,.math-inline .katex{color:var(--t)}
+.math-inline{white-space:nowrap}
+
+/* ---------- 8. Layout vocabulary ---------- */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:72px;flex:1;min-height:0}
+.hero h1{font:400 138px/.95 var(--serif);letter-spacing:-.02em}
+.hero .sub{font-size:28px;margin-top:28px}
+.hero .byline{margin-top:40px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.split.wide{grid-template-columns:1.45fr 1fr}
+.split.narrow{grid-template-columns:.8fr 1.2fr}
+.split>*{min-width:0}
+.stack{display:flex;flex-direction:column;gap:24px;min-width:0}
+.row{display:flex;align-items:center;gap:32px;flex-wrap:wrap;min-width:0}
+.center{display:flex;flex-direction:column;justify-content:center;gap:28px;flex:1;min-height:0}
+
+/* ---------- 9. Components ---------- */
+.callout{border-left:3px solid var(--a);padding:6px 0 6px 28px;font:400 32px/1.25 var(--serif);color:var(--t);max-width:30ch}
+
+.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+.timeline article{border-top:3px solid var(--a);padding-top:18px}
+.timeline article.reveal:not(.shown){border-top-color:var(--l)}
+.timeline strong{display:block;font:400 26px/1.15 var(--serif);margin-bottom:10px}
+.timeline p{font-size:17px;line-height:1.4;color:var(--m)}
+
+.cast{display:grid;grid-template-columns:1fr 1fr;gap:0 64px}
+.cast .role{display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:start;padding:22px 0;border-top:1px solid var(--l)}
+.cast .symbol{font:400 72px/1 var(--serif);color:var(--a);grid-row:1/3}
+.cast h3{font:500 26px/1.2 var(--sans);margin-bottom:6px}
+.cast p{font-size:19px;line-height:1.4;color:var(--m)}
+
+.conditions{display:flex;flex-direction:column;gap:22px}
+.conditions .cond{display:grid;grid-template-columns:110px 1fr;gap:8px 20px;align-items:start}
+.conditions .cond b{grid-row:1/3}
+.conditions b{font:400 44px/1 var(--serif);color:var(--a)}
+.conditions .job{font:400 26px/1.3 var(--sans);color:var(--t)}
+.conditions .formal{font-size:20px;color:var(--t2);margin-top:8px}
+.conditions .formal .equation{font-size:22px;color:var(--t2)}
+
+.data-table{width:100%;border-collapse:collapse;font-size:21px}
+.data-table th,.data-table td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--l);font-weight:400}
+.data-table th{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--m)}
+.data-table td:not(:first-child){font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:19px}
+.data-table .highlight{color:var(--a);font-weight:600}
+
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.economy{position:relative;background:var(--g2);border:1px solid var(--edge);border-radius:22px;padding:30px 32px;box-shadow:inset 0 1px 0 var(--hi),0 36px 70px -48px var(--lo)}
+.economy::before{content:"";position:absolute;inset:7px;border-radius:15px;border:1px solid var(--edge);pointer-events:none}
+.economy.strong{background:var(--a-soft);box-shadow:inset 0 0 0 1px rgba(226,161,58,.35),inset 0 1px 0 var(--hi),0 36px 70px -48px var(--lo)}
+.economy h3{font:400 28px/1.2 var(--serif);margin-bottom:18px}
+.economy p{font-size:19px;color:var(--t2)}
+.economy .metric{margin:6px 0}
+
+.references{columns:2;column-gap:56px;font-size:18px;line-height:1.5}
+.references p{break-inside:avoid;margin-bottom:18px;color:var(--t2)}
+
+/* Instrument strip under a diagram. */
+.controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;width:max-content;max-width:100%;background:var(--g2);border:1px solid var(--edge);border-radius:999px;padding:9px 12px 9px 20px;box-shadow:inset 0 1px 0 var(--hi)}
+.controls label{font:400 14px/1 var(--mono);color:var(--m);text-transform:uppercase;letter-spacing:.08em}
+.controls output{font:400 16px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--t);min-width:56px}
+.controls input[type=range]{width:260px;height:16px;background:transparent;accent-color:var(--a);cursor:pointer;-webkit-appearance:none;appearance:none}
+.controls input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--l)}
+.controls input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:-6.5px;border-radius:50%;background:var(--a);border:0}
+.controls input[type=range]::-moz-range-track{height:3px;background:var(--l)}
+.controls input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--a);border:0}
+.controls button{font:400 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--m);border:1px solid var(--l);transition:color .4s var(--spring),border-color .4s var(--spring),background-color .4s var(--spring),transform .4s var(--spring);border-radius:2px;padding:8px 13px}
+.controls button:hover{color:var(--a);border-color:var(--a)}
+.controls button[aria-pressed=true]{background:var(--a);border-color:var(--a);color:var(--g)}
+.segmented{display:inline-flex}
+.segmented button{border-radius:0;margin-left:-1px}
+.segmented button:first-child{margin-left:0;border-radius:999px 0 0 999px}
+.segmented button:last-child{border-radius:0 999px 999px 0}
+.controls button{border-radius:999px}
+.segmented button{border-radius:0}
+#tape-demo,#economies-compare{display:inline-flex;align-items:center;gap:10px;padding-right:5px}
+#tape-demo::after,#economies-compare::after{content:"→";width:26px;height:26px;border-radius:50%;background:var(--a-soft);color:var(--a);display:grid;place-items:center;font-size:14px;transition:transform .5s var(--spring),background-color .4s var(--spring)}
+#tape-demo:hover::after,#economies-compare:hover::after{transform:translate(2px,-1px) scale(1.08)}
+#economies-compare[aria-pressed=true]::after{background:rgba(0,0,0,.18);color:var(--g)}
+.segmented button[aria-pressed=true]{position:relative;z-index:1}
+
+.plot-shell{min-width:0}
+#dial-curves{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#dial-curves svg{max-height:270px}
+#coexist-plot svg{max-height:330px}
+/* Slide-specific fits: the floor chain is four statements, the coexistence slide pairs a plot with a statement. */
+#s12 .display,#s16 .display{font-size:40px;line-height:1.15}
+#s12 .stack{gap:14px}
+#s16 .slide-body{gap:14px}
+#control-plot svg,#bargaining-plot svg,#tape-plot svg{max-height:420px}
+#dial-vline svg,#auction-vline svg{max-height:150px}
+.plot-caption{font:400 13px/1.4 var(--mono);color:var(--m);margin-top:8px}
+.readout{display:flex;flex-direction:column;gap:6px}
+.readout .kicker{margin-bottom:0}
+#reserve-table .dense{font-size:17px}
+#reserve-table .dense th,#reserve-table .dense td{padding:9px 12px}
+#certificate-table,#reserve-table{overflow-x:auto}
+
+/* Puzzle grid: 40 dots, ten to a row. */
+.dots{display:grid;grid-template-columns:repeat(10,22px);gap:12px}
+.dots span{width:22px;height:22px;border-radius:50%;background:var(--l)}
+.dots span.on{background:var(--a)}
+
+
+/* Definition strips and the glossary: one source, three surfaces. */
+.defs{background:var(--g2);border:1px solid var(--edge);border-radius:18px;padding:16px 20px;box-shadow:inset 0 1px 0 var(--hi),0 24px 48px -36px var(--lo)}
+.defs dl{display:grid;grid-template-columns:auto 1fr;gap:8px 22px;margin:0;align-items:baseline}
+.defs dl>div{display:contents}
+.defs dt{font-size:22px;color:var(--a);white-space:nowrap}
+.defs dt .katex{color:var(--a)}
+.defs dd{margin:0;font:400 19px/1.4 var(--sans);color:var(--t2)}
+.stack>.defs{margin-top:4px}
+#glossary-table .group td,#panel-body .group td{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--m);padding-top:22px;border-bottom:0}
+#glossary-table td:first-child .katex,#panel-body .glossary td:first-child .katex{color:var(--a)}
+#glossary-table .dense,#panel-body .glossary{font-size:16px}
+#glossary-table .dense td,#panel-body .glossary td{padding:7px 12px}
+/* b6: 41 entries do not fit one column; flow the rows into two columns of symbol / meaning / slide. */
+#glossary-table table{display:block}
+#glossary-table thead{display:none}
+#glossary-table tbody{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto minmax(0,1fr) auto;column-gap:14px;align-items:baseline}
+#glossary-table tr{display:contents}
+#glossary-table td{border-bottom:1px solid var(--l);padding:3px 6px;font-size:13px;line-height:1.3}
+#glossary-table .group td{grid-column:1/-1;padding-top:10px;border-bottom:0}
+#glossary-table td:nth-child(3){font-family:var(--mono);color:var(--m);font-size:12px}
+#access-table .data-table{font-size:20px}
+.references{font-size:17px;line-height:1.45}
+.references p{margin-bottom:12px}
+#s03 .display,#s04 .display{font-size:36px}
+#s03 .callout{font-size:22px;padding-left:18px}
+#s13 #tape-plot svg{max-height:240px}
+#s15 .conditions{gap:6px}
+#s15 .cond .formal .equation{padding:0}
+#s15 .display{font-size:32px}
+#s03 .slide-body,#s06 .slide-body,#s15 .slide-body,#s13 .slide-body{gap:14px}
+#s03 .references,#s06 .references{font-size:16px;columns:1}
+#s06 .references.three{columns:3;column-gap:40px}
+#s15 .display{font-size:36px;line-height:1.15}
+#s15 .cond .job{font-size:21px}
+#s13 .row .equation{padding:0}
+#s13 .defs dd,#s11 .defs dd{font-size:16px}
+#s13 #tape-readout .metric,#s11 #auction-readout .metric{font-size:60px}
+#s11 .stack,#s13 .stack{gap:12px}
+#s11 .controls input[type=range]{width:170px}
+#s13 #tape-readout .small.muted{display:none}
+#s13 .slide-body{gap:10px}
+#s13 #tape-readout .small{font-size:15px;line-height:1.3}
+#s13 .defs dd,#s11 .defs dd{font-size:13px;line-height:1.3}
+#s16 .equation{font-size:20px}
+#s11 .defs,#s13 .defs{padding:12px 16px}
+#s11 .defs dl,#s13 .defs dl{gap:2px 14px}
+#s13 .controls input[type=range]{width:200px}
+#s13 .controls{gap:12px}
+#b4 .equation{font-size:30px}
+#s11 .slide-body{gap:8px}
+#s11 .readout .kicker,#s13 .readout .kicker{margin-bottom:8px}
+#s11 .controls{padding-top:6px;padding-bottom:6px}
+#s11 #auction-readout .metric,#s13 #tape-readout .metric{font-size:50px}
+#s13 #tape-plot svg{max-height:220px}
+#s13 .stack{gap:10px}
+#s18 .defs dd{font-size:16px}
+#s18 .slide-body{gap:16px}
+#s15 .display{font-size:31px}
+
+#s13 .defs dl,#s11 .defs dl{gap:3px 16px}
+#s13 .defs dt,#s11 .defs dt{font-size:17px}
+#s02 .callout{font-size:24px}
+#s14 .display{font-size:40px}
+#b6 .slide-head h2{font-size:40px}
+#b6 .slide-body{justify-content:flex-start}
+#glossary-table{max-height:640px;overflow:auto}
+#glossary-table td:nth-child(2),#panel-body .glossary td:nth-child(2){font-family:var(--sans)}
+#s03 .callout,#s06 .callout{font-size:26px}
+#s12 .conditions .cond{gap:4px 16px}
+#s12 .conditions .cond b{font-size:30px}
+#s12 .cond .job{font-size:19px}
+#s12 .defs dd{font-size:16px}
+#s12 .defs{padding:12px 16px}
+#s12 .slide-body,#s11 .slide-body{gap:16px}
+#s11 .row .equation{padding:0}
+
+/* ---------- 10. Result stamps ---------- */
+.stamp{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;padding:5px 9px;border:1px solid transparent;border-radius:2px;color:var(--m);white-space:nowrap}
+.stamp[data-status=analytical]{border-color:var(--a);color:var(--a)}
+.stamp[data-status="computer-assisted"]{border-style:dashed;border-color:var(--a);color:var(--a)}
+.stamp[data-status="numerical diagnostic"]{border-color:var(--ghost);color:var(--m)}
+.stamp[data-status=open]{border-color:var(--ghost);color:var(--m)}
+.stamp[data-status=input]{border-color:transparent;padding-left:0;color:var(--m)}
+
+/* ---------- 11. SVG plots ---------- */
+.plot{width:100%;height:auto;display:block;overflow:visible}
+.plot text{font-family:var(--mono);fill:var(--m);font-size:15px}
+.plot .tick{font-size:14px}
+.plot .label{font-family:var(--sans);fill:var(--t);font-size:18px;font-weight:500}
+.plot .axis{stroke:var(--l)}
+.plot .grid{stroke:var(--l);stroke-dasharray:2 4}
+.plot .curve{fill:none;stroke:var(--a);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--a-soft))}
+.plot .curve.secondary{stroke:var(--ghost);filter:none}
+.plot .point{fill:var(--a);stroke:var(--g);stroke-width:3}
+.plot .node{fill:var(--a)}
+.plot .cert{stroke:var(--a);stroke-width:6;stroke-linecap:round;stroke-dasharray:none}
+.plot .shade{fill:var(--a-soft)}
+.plot .marked{stroke:var(--a);stroke-width:1.5;stroke-dasharray:6 5}
+.plot .bar-fill{fill:var(--a);transform-origin:bottom}
+/* Value line */
+.plot .vl-axis{stroke:var(--t2);stroke-width:2}
+.plot .vl-support{fill:var(--a);opacity:.28;transform-origin:left center}
+.plot .vl-marker{fill:var(--a);stroke:var(--g);stroke-width:3}
+.plot .vl-reserve{stroke:var(--m);stroke-dasharray:3 4}
+.plot .vl-tick{stroke:var(--t2)}
+.plot .vl-label{font-family:var(--mono);fill:var(--t);font-size:16px}
+:root[data-theme=light] .plot .curve{filter:none}
+
+/* ---------- 12. Motion ---------- */
+.reveal{opacity:0;transform:translateY(18px);visibility:hidden}
+.reveal.shown{opacity:1;transform:none;visibility:visible}
+.reveal{filter:blur(6px)}.reveal.shown{filter:blur(0)}
+body.motion .reveal{transition:opacity .7s var(--spring),transform .7s var(--spring),filter .7s var(--spring),visibility .7s}
+body.motion .slide.active .slide-head{animation:rise .65s var(--spring) both}
+body.motion .slide.active .slide-body{animation:rise .65s var(--spring) .08s both}
+@keyframes rise{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+body.motion .plot .vl-support{transition:transform .7s var(--spring)}
+body.motion .plot .bar-fill{transition:transform .7s var(--spring)}
+body.motion .controls input[type=range]::-webkit-slider-thumb{transition:transform .4s var(--spring)}
+body.motion .controls input[type=range]:active::-webkit-slider-thumb{transform:scale(1.25)}
+
+/* ---------- 13. Dialog: overview, help, notes ---------- */
+dialog{background:var(--g2);color:var(--t);border:1px solid var(--l);border-radius:6px;max-width:1040px;width:88vw;max-height:86dvh;padding:28px;z-index:10}
+dialog::backdrop{background:rgba(6,10,16,.7)}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:26px}
+.panel-heading h2{font:400 28px/1.2 var(--serif)}
+#close-panel{font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--m);border:1px solid var(--l);border-radius:2px;padding:7px 11px}
+#panel-body{font-size:20px}
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.overview-grid button{text-align:left;white-space:normal;padding:14px 4px;border-top:1px solid var(--l);font:400 22px/1.2 var(--serif);color:var(--t)}
+.overview-grid button:hover{border-top-color:var(--a)}
+.overview-grid small{display:block;font:400 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--m);margin-bottom:10px}
+.help-grid{display:grid;grid-template-columns:170px 1fr;gap:12px;font-size:18px}
+kbd{font:400 16px/1 var(--mono);color:var(--t)}
+.notes-pane{font:400 22px/1.6 var(--sans);color:var(--t2)}
+.notes-pane p{margin-bottom:18px}
+.note-time{font:400 16px/1 var(--mono);color:var(--a)}
+
+/* ---------- 14. Print and the PDF export path ---------- */
+body.print-mode{overflow:auto}
+body.print-mode #stage{position:static;inset:auto;height:auto;overflow:visible}
+body.print-mode #deck{position:static;left:auto;margin:0 auto;width:1600px;height:auto;transform:none}
+body.print-mode .slide,body.print-mode .slide.active{position:relative;inset:auto;display:flex;flex-direction:column;width:1600px;height:900px;overflow:hidden;break-after:page}
+body.print-mode .slide:last-child{break-after:auto}
+body.print-mode .reveal{opacity:1;visibility:visible;transform:none;filter:none}
+body.print-mode .hud,body.print-mode .rail,body.print-mode .grain,body.print-mode .skip,body.print-mode .controls,body.print-mode .detail{display:none}
+body.print-mode .print-only{display:block}
+
+@media print{.reveal{filter:none!important}
+  @page{size:16in 9in;margin:0}
+  /* Projector token set, forced for paper. */
+  :root,:root[data-theme=dark],:root[data-theme=light]{
+    --g:#f4efe4;--g2:#ece6d8;--g3:#e3dccb;--t:#1a1710;--t2:#3d382e;
+    --m:#6a6459;--l:#d3cbb9;--a:#b4761a;--a2:#8f5c10;--a-soft:rgba(180,118,26,.14);
+    --ghost:#a39c8c;color-scheme:light;
+  }
+  html,body{height:auto;overflow:visible;background:var(--g);color:var(--t);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  #stage{position:static;inset:auto;height:auto;overflow:visible}
+  /* Slides stay 1600 x 900 design pixels; zoom maps them onto the 16in x 9in sheet
+     (1536 x 864 CSS px) so one slide lays out per page. */
+  #deck{position:static;left:auto;margin:0;width:1600px;height:auto;transform:none;zoom:.96}
+  .slide,.slide.active{position:relative;inset:auto;display:flex!important;flex-direction:column;width:1600px;height:900px;overflow:hidden;break-after:page;page-break-after:always}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .reveal{opacity:1!important;visibility:visible!important;transform:none!important}
+  .hud,.rail,dialog,.grain,.skip,.controls,.detail,.sr-only{display:none!important}
+  #s01::after{animation:none}
+  .plot .curve{filter:none}
+  .print-only{display:block}
+}
+
+/* ---------- 15. Reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;visibility:visible;transform:none}
+}
+
+/* ---------- 16. Small screens: stage scaling does the work; keep chrome clear ---------- */
+/* Narrow windows: keep only the current act's name; the segments still show progress. */
+@media (max-width:1280px){.acts li{color:transparent;overflow:visible}.acts li[data-current]{color:var(--t)}}
+@media (max-width:767px){
+  .hud{padding:10px 12px;gap:10px}
+  .rail{gap:12px;padding:0 12px}
+  .acts{display:none}
+  #progress-label{display:none}
+  .rail{grid-template-columns:1fr}
+  .pager{justify-content:center}
+}
