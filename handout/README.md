@@ -61,6 +61,8 @@ the live HTML and PDF hashes with `docs/`. In Cloudflare's Workers dashboard, se
 The custom domain and disabled alternate URLs are declared in `wrangler.jsonc`.
 
 The migration on 2026-09-10 deployed version `8c42fb77-3ffa-4e21-9fd0-9cc9392282f2`.
+The first deployment with the talk under `/talk/`, on 2026-09-14, is version
+`94018472-5374-4d16-87bf-73a2dd78d858`.
 Live HTML, both PDFs and all five fonts matched the local files byte for byte. Browser
 checks passed at 1440, 390 and 320 pixels in both themes, including all five plots,
 mathematics, keyboard controls and legacy anchors. Unpublished source paths returned 404.
