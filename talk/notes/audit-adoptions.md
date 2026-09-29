@@ -1,0 +1,108 @@
+# Audit adoptions for the slides
+
+Follow these on every slide. Locked C.0 symbols (h, ell, p, rho, c_L, c_H, b, k, r, Delta_T, B_prior, q_H, q_L, e_H, e_L, E, O_H, R_T, tau, x_star) stay unchanged.
+
+- F01 - Write "challenger quality $\theta\in\{H,L\}$, worth $h$ or $\ell$ to the buyer; public belief $\mu=\Pr(H)$". Never write theta as a number. If a formula needs the value, write $v_\theta$ (with $v_H=h$, $v_L=\ell$) or use $h$ and $\ell$ directly.
+- F02 - Show only the accuracies $a$ (investor) and $d$ (challenger), in words where possible. Never show flow densities $a_H,a_L,a_\pm$. If the price-inversion formula is needed, write $\mu_X(x)=\Pr(H\mid X=x)$.
+- F03 - $c$ appears only as the preparation costs $c_L<c_H$. For the price-pool result say "prices pool below a cutoff" in words, or write the cutoff as $\kappa$. Never write $c$ for it.
+- F04 - Say "the investor's private signal (accuracy $a$)" with no symbol. Keep $T$ only as the subscript in $\Delta_T$, introduced once as "target-payoff spread $\Delta_T=t_H-t_L$". If the bargaining extension appears, write the transfer as $t_\eta$.
+- F05 - Use the locked symbols only: "high type buys $q_H=1$; low type sells a partial amount $q_L\in(-1,0)$". Report the three certified equilibria as $q_L\approx-0.460,\,-0.707,\,-0.903$ at $r=1.55,\,1.60,\,1.65$, with the certified intervals taken from the registry rows and negated (e.g. $q_L\in[-0.46031620,-0.46031618]$ at $r=1.55$). Label them "computer-assisted". Do not introduce $v$ or $s_L$ on slides.
+- F06 - Not for the main slides. If a bargaining backup slide exists, write in words only: "seller gets $t_\eta=(1-\eta)\cdot$runner-up value$+\eta\cdot$winner value". Never use $P$ for the transfer.
+- F07 - Do not show the signal-posterior object. If needed, write "posterior on the investor's signal" or $\Pr(T=+\mid X)$. Never use $\lambda$ on slides.
+- F08 - On the Table 2 slide, head Panel B "Information controls". Label rows "Frozen informative orders (control, not an equilibrium at $r_0$)" and "Price hidden from challenger (equilibrium of the no-price-access game)". Never call the price-hidden rows "fixed-profile controls". Say "Panel A = equilibria of the feedback game".
+- F09 - Show only $\mathsf E$ and $\mathsf O_H$ as headline outcomes. If per-state entry is needed: $e_H=\rho+(1-\rho)\alpha_H$, $e_L=\rho+(1-\rho)\alpha_L$, $\mathsf E=(e_H+e_L)/2$, $\mathsf O_H=e_H/2$, with no bar and no price argument.
+- F10 - Text: "Invariance diagnostic: add a dividend $D_0=0.257809$ (the revenue gain from price access) to the traded claim in the price-hidden economy. Mean prices then match, but entry does not, so the information matters, not the price level." Tag it "diagnostic", never "analytical". The revenue gain itself may carry "analytical".
+- F11 - Label certified nodes by value: "$r=1.55,\,1.60,\,1.65$". Never write $r_1,r_2,r_3$ or $r_c$ for them. Reserve $r_0,r_1,r_2$ for weak, strong and collapse economies and $r_C$ for the high-cost ceiling. If an index is needed use $r^{(j)}$.
+- F12 - Say "no-trade equilibrium" ($q_H=q_L=0$) and "no-trade existence boundary $r_N$". Never say "pooling equilibrium". Use "price pooling" only for flows sharing the no-entry price.
+- F13 - Use only four role words: incumbent, challenger, investor, market makers (plus "noise traders" in the order-flow equation). Never write "buyer" or "trader" for a model agent. Signal economy: "investor signal $T$ (accuracy $a$), challenger signal $Y$ (accuracy $d$)". Payment rule: "highest-value bidder", "runner-up bidder".
+- F15 - Welfare slide: "Hold the incumbent at $r_1$. Price access raises target proceeds from 0.614583 to 0.872392 and net acquisition surplus from 2.302083 to 2.382301 (+0.080218) (analytical)." Add if space allows: "At $r_0$ prices are uninformative, so there is no gain." Never say "at any fixed strength".
+- F16 - Complementary-signals slide: state the declared example ($a=0.70$, $d=0.75$: entry 0.850000 to 0.879438, analytical). Footnote: "Grid of 25 $(a,d)$: rises in 6 cells meeting Prop. A.7 (analytical); unchanged in 9 cells with $d\le0.75$; falls about 4 pp when $d\ge0.76$, because the challenger's own good signal already triggers entry against the weak incumbent (numerical diagnostic)." Prepare a Q&A line: the price matters when the challenger's own signal is informative but not decisive.
+- F17 - Backup only: if the global order bound is shown, write $U_\theta(s)=s\,\Pi_\theta(s)-ks$, never $F_\theta$.
+- F18 - Use plain $\alpha_H,\alpha_L$ ("probability that order flow crosses the entry threshold in state $H$/$L$"). Show logistic and signal versions in words or on backup slides; if a formula is needed write $\alpha_{\theta,y}$, never $Q$.
+- F19 - On any slide stating the general-support result (Prop. 1 and bargaining): "$R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$". Never use $R_{\max}$. On benchmark slides with $R\sim U[0,r]$, say once that $\bar r=r$.
+- F20 - Avoid survival-function notation. Write entry probabilities as $\alpha_\theta=\Pr(X\ge x^*\mid\theta)$ or in words. If a formula is needed use $S_Z$ only.
+- F21 - Write $e_H$, $e_L$ without bars. If the pooling example is shown, label the pool posterior $\bar\mu=\Pr(H\mid\text{pool})$ in words, with no cutoff subscript.
+- F22 - Show the cost distribution only as two atoms: $c_L$ with probability $\rho$, $c_H$ otherwise. If a continuous cost law is mentioned call it $F_C$. Never write $H_C$ or $h_C$.
+- F23 - Use $B_r(\mu)=g_L+\mu(g_H-g_L)$ with strength as the only subscript. On reserve slides say "at reserve $p$" in words or write $B_{p,r}$ once. Never write $B_p$.
+- F24 - Not for slides. If the investor's deviation payoff is mentioned, write $U_H$ and $U_L$ only.
+- F28 - Prop. 1 slide, lowercase throughout: "Stronger incumbent (FOSD): target spread $\Delta_T(F)=\mathbb E_F[(R-\ell)_+]\uparrow$, challenger profit $g_\theta(F)=\mathbb E_F[(\theta-\max\{p,R\})_+]\downarrow$". Then use $B_r(\mu)=g_L+\mu(g_H-g_L)$. Bargaining backup: $g_{\theta,\eta}$ and $\Delta_\eta$. (This lowercase $g_\theta(F)$ follows the F28 proposal; it overrides the capital $G_\theta(F)$ in F01's fix, and the slides and the paper's eventual eq. (6) should agree.)
+- F29 - Keep $\mathsf E$ but always label it in words ("Entry $\mathsf E$ = Pr(challenger prepares)"). Use a serif math font in Beamer (e.g. `\usefonttheme[onlymath]{serif}`) so `\mathsf` stays distinct. Avoid $\mathbb E$ on slides that show $\mathsf E$; write "expected" in words. Do not show $\mathcal E(p,r)$.
+- F30 - Model slide: "Preparation cost $C\in\{c_L,c_H\}$, $\Pr(C=c_L)=\rho$, independent of value $\theta$". Say "cheap/expensive preparation" for cost and reserve "high/low" for value. Use a separate colour for cost objects. Annotate $c_H$ as "expensive cost" beside $\tau=(c_H-g_L)/(g_H-g_L)$.
+- F31 - Model slide legend: "$p$ = reserve price; $P(X)$ = stock price; incumbent value $R\sim U[0,r]$, so $r$ = incumbent strength; $b$ = noise scale". Say "reserve $p$" and "incumbent strength $r$" aloud at first use. Later write "strength $r_0\to r_1$", never a bare $r$. Do not put $p$ next to $P$, or $r$ next to $R$, without labels.
+- F32 - If the price-pooling family appears (backup), cite it only as "Prop. A.10" and say "same orders, different prices, beliefs, and entry". Never cite "OA.3".
+- F35 - Never show "(A1)" or "(A.1)". Present Prop. 2's conditions by name: "low-cost floor" (a low-cost challenger always prepares), "high-cost window" (a high-cost challenger stays out at the prior when the incumbent is weak, and prepares after good news when it is strong), "trading-cost window" ($\Delta_T(r_0)<k<(1-1/b)\rho m\Delta_T(r_1)$).
+- F36 - Always write "target-payoff spread $\Delta_T=t_H-t_L$". Never "information spread". If Figure 1 or 4 is used before the renderer is fixed, re-render it with the corrected axis label or overlay the label so slide and axis agree.
+- F37 - Prop. 2 footnote: "Uniqueness: arbitrary mixed orders; every unilateral deviation $q\in[-1,1]$." Never write "continuous deviation". Correct talk/notes/paper-digest.md:51 before building slides from it.
+- F38 - Use "logistic threshold $x^*\approx5.42$, about 1.5 noise s.d. from the center". Footnote cites the registry value.
+- F39 - Reserve slide: label each Table 4 panel with its reserve: "Binary values: $p=0.5$ vs $p=1.01$" and "Value classes: $p=0.5$ vs $p=1.1$". Say aloud that the alternative sits just above $\ell=1$, so it excludes the low-value challenger.
+- F40 - Define $m$ and $M=1-m$ on the slide before any figure uses them. Write orders as $(q_H,q_L)$ with the gloss "order after high / low challenger value" at first use. Annotate thresholds by meaning ("$r_N$: no trade stops being an equilibrium"), not by defining equations. Welfare in words: "$\Delta$ acquisition surplus $>0$, $\Delta$ target proceeds $>0$".
+- F41 - Threshold slide and Fig. 2 annotation: "no trade unique for $r<r_P\approx1.22$; no trade an equilibrium up to $r_N\approx1.75$; full orders unique above $r_U$; high-cost entry impossible above $r_C$". Never show $\mathfrak r(\cdot)$ or $\Delta_T^{-1}$.
+- F42 - Appendix detail; if $m$ at $b=2$ is shown write "$m=1/(1+e^{2/b})\approx0.27$".
+- F43 - If shown, use $\mu_X(x)$ and say "logistic noise" in words rather than $f_{\mathrm{log}}$. Say "probability the posterior crosses $\tau$" instead of tail-probability superscripts.
+- F44 - (Refuted; no paper change.) Keep $\tau$ as in the paper, glossed once as "belief threshold for costly preparation". Do not show $\phi_\pm$; write $\Pr(H\mid P,\,Y=y)$. Describe $\Gamma_H$ and $\Psi$ in words ("high-type cover margin", "low type's marginal profit at its own order"), and call the $\zeta$ margins "theorem margins".
+- F46 - Headline: "entry rises from $r_0$ to $r_1$ on a nonempty open set of primitives (every $h>\ell$)". Non-monotonicity: "at a stronger incumbent $r_2$ (benchmark 3.6), trading stays fully informative but entry falls back to $\rho$: even the most favorable price cannot cover expensive preparation ($B_{r_2}(M)<c_H$)". Present the fall as holding at the benchmark and nearby parameters; do not claim it for every $h>\ell$ and do not stress the margin size.
+- F47 - Robustness slide: "The entry reversal ($r_0\to r_1$) survives logistic noise, atomless costs, complementary private signals, and a small value gap." Do not claim the $r_2$ fall is robust to these extensions.
+- F48 - "Multiplicity at intermediate strength (computer-assisted): at $r=1.55,\,1.60,\,1.65$, an informative equilibrium (buy fully / sell partially) coexists with no trade; entry is strictly ordered upward. Elsewhere the numerical search is not exhaustive, and the full correspondence is open." Keep "computer-assisted" and "numerical diagnostic" labels visible on the Figure 2 slide.
+- F49 - Bargaining/robustness: "Stronger incumbent: challenger profit falls weakly for every $\eta$. Spread $\Delta_\eta=\eta(h-\ell)+(1-2\eta)\,\mathbb E[(R-\ell)_+]$ rises (weakly) if $\eta<1/2$, falls (weakly) if $\eta>1/2$."
+- F50 - Frozen-order control: "Freeze orders: deterrence returns: E 0.562 to 0.523 (numerical diagnostic; sign analytical, Prop. A.3)". Label numbers "numerical diagnostic" and the sign "analytical".
+- F52 - Fig. 2 slide: show the three marked thresholds $r_N$ (no trade exists up to here), $r_U$ (full orders unique above), $r_C$ (expensive entry infeasible above). Mention the no-trade uniqueness bound in words ("no trade unique for weak enough incumbents"); if a symbol is needed use $r_P$.
+- F53 - Use probabilities consistently: "challenger signal accuracy $d=0.75$, investor accuracy $a=0.70$", with no percentages. Certified nodes $r\in\{1.55,1.60,1.65\}$ as a column are fine.
+- F55 - Model/timing slide: "Entry = the challenger pays preparation cost $C$ (learns $\theta$, can bid)". Then use only "entry", with $\mathsf E$ the entry probability and "entry floor $\rho$" for low-cost entry. Never "participation" or "investigation".
+- F56 - First use: "high-value challenger ownership $\mathsf O_H$ = Pr(high-value challenger acquires the target)". Afterwards "high-value ownership" or $\mathsf O_H$. Never "high-quality".
+
+## Paper-sync candidates
+
+Findings with paper_sync=true (fix in the paper later; slides use the consistent version above):
+
+- F01 - main.md:51, 91, 131-132, 197, 363-364, 481, 493, 554, 828, 906-914, 978, 1088-1100; OA:31, 216, 470
+- F02 - main.md:154-157, 330, 777-791, 870; OA:39-41, 336-368, 465-466, 892
+- F03 - main.md:681-688, 991-1047, 1148; OA:544-545, 684-778, 879-885, 969-970, 1370-1374; registry and manifest pool_* text
+- F04 - main.md:330, 363, 773-889; OA:336-447, 569, 988, 1411
+- F05 - main.md:275-287, 618-697; registry and manifest definition text
+- F06 - main.md:899-906; OA:484-491
+- F07 - main.md:784, 788, 832, 865, 870, 874, 889; OA:367-368, 406, 432-441, 455, 460
+- F08 - main.md:265, 267
+- F09 - main.md:239-253, 548, 796-806, 844-865; OA:111, 312, 385-406, 474-480, 555, 629-643, 1449; manifest and registry text
+- F10 - main.md:353; tables/table_matched_price.tex note
+- F11 - main.md:275-287, 645-656, 697
+- F12 - main.md:568, 595, 697; OA:242-244, 898, 1047, 1051, 1133, 1299, 1309
+- F13 - main.md:19, 35, 269, 330, 357, 464, 693, 895 and others listed in the report; OA:362, 1194-1200 and others; table_signal_grid.tex header
+- F14 - paper/quantity_manifest.csv:94-103; replication/quantity_dictionary.md:76-80, 154-158; numerics/exercises/common.py:24; numerics/search.py:18
+- F15 - main.md:23
+- F16 - main.md:8, 23, after 336
+- F17 - main.md:487-535, 633-679, 1027-1036; OA:131-182, 270-275, 742, 796-875
+- F18 - OA:303, 470-475; main.md:731
+- F19 - main.md:359, 897
+- F20 - OA:208, 216, 595, 710
+- F21 - OA:474-480, 555, 629-643, 1449; main.md:1009
+- F22 - main.md:755, 1097-1101; OA:305, 312, 541-545, 623-633, 1297-1299
+- F23 - main.md:1053, 1060; OA:720, 1297, 1299
+- F24 - OA:796-804, 879, 131-162
+- F25 - OA:330-332
+- F26 - main.md:681, 720-731; OA:303, 879-890
+- F27 - OA:31, 66, 108, 131-182, 532, 620, 1232
+- F28 - main.md:131-132, 364; OA:505-506 (conflicts with F01's capital G; the author must pick one)
+- F32 - OA:759
+- F33 - OA:898
+- F34 - main.md:515
+- F35 - main.md:219-229; OA:326, 330
+- F36 - main.md:897; numerics/render/tables.py:188; numerics/render/figures.py:246, 359 (then re-render Table 1 and Figures 1 and 4)
+- F37 - main.md:21, 233, 334, 821
+- F38 - paper/quantity_manifest.csv:63 (display decimal_9)
+- F39 - main.md:383, 1146; new manifest key binary_reserve_high
+- F40 - main.md:144, after 64, 296, before A.41
+- F41 - main.md:296, 572, 579, 595; OA:244, 1123
+- F42 - main.md:1027; OA:684, 748
+- F43 - OA:194, 279-303, 290
+- F46 - main.md:550, 548; three new registry keys
+- F47 - main.md:733
+- F48 - main.md:23
+- F49 - main.md:370, 897
+- F50 - main.md:267
+- F51 - main.md:1148
+- F52 - main.md:296
+- F53 - manifest input values or OA C.0 line 960; main.md:336
+- F54 - paper/quantity_manifest.csv rows 74, 77, 80
+- F55 - main.md:8, 23, 57, 235, 253
+- F56 - OA:216, 1527; paper/quantity_manifest.csv rows 50, 55
+- F57 - numerics C.6c event classifier; tables/table_reserve_exploratory.tex (re-render); numerics/reserve_events.csv
