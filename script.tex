@@ -1,0 +1,918 @@
+% script.tex -- rehearsal speaker script for talk/talk.tex (40-minute total session).
+% Contract: talk/structure-plan.md (sections 2-4, 8, 10, 11) and talk/notes/audit-adoptions.md.
+% One block per main frame, keyed to the exact frame title in talk.tex; the duplicated build
+% (F10a -> F10b) has one block per physical frame and an \Advance mark at the end of the first.
+% Spoken numbers are rounded forms of the numbers on the slides and carry the same registry key
+% in a "% source:" comment (numerics/quantity_registry.csv); none is stronger than its slide.
+% Check and compile:
+%   python check_script.py script.tex --deck talk.tex --slot-minutes 40
+%   python compile_deck.py script.tex --themes-dir talk
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in,headheight=14pt]{geometry}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb}
+
+\newcommand{\PaperTitle}{Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders}
+\newcommand{\PaperShortTitle}{Competition Creates Competition}
+
+\definecolor{ScriptBlue}{HTML}{1F4E79}
+\definecolor{ScriptGray}{HTML}{666666}
+\setstretch{1.12}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textcolor{ScriptGray}{\PaperShortTitle}}
+\rhead{\small\textcolor{ScriptGray}{Rehearsal script, 40-minute session}}
+\cfoot{\thepage}
+
+\newcommand{\Pause}{\textcolor{ScriptGray}{\textit{[pause]}}}
+\newcommand{\Advance}{\textcolor{ScriptGray}{\textit{[advance]}}}
+\newcommand{\Cue}[1]{\par\nobreak\smallskip\noindent
+  \textcolor{ScriptGray}{\footnotesize\textbf{Live cue:} #1}\par}
+\newcommand{\scriptopening}[2]{%
+  \Needspace{10\baselineskip}%
+  \section*{Opening \hfill\normalfont\small\textcolor{ScriptGray}{#1}}
+  #2\par}
+\newcommand{\scriptframe}[3]{%
+  \Needspace{9\baselineskip}%
+  \par\medskip\noindent\textcolor{ScriptBlue}{\rule{\linewidth}{0.55pt}}%
+  \par\smallskip\noindent
+  \textbf{#1}\hfill\textcolor{ScriptGray}{\small #2}\par\smallskip
+  #3\par}
+\newcommand{\ScriptAppendix}{%
+  \clearpage
+  \section*{\mbox{Q\&A appendix} \hfill
+    \normalfont\small\textcolor{ScriptGray}{conditional; excluded from talk time}}}
+
+\title{Speaker script\\[0.25em]\large \PaperTitle}
+\author{Austin Li}
+\date{40-minute session: about 30 minutes of prepared speech, about 10 for questions}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+{\small\textcolor{ScriptGray}{Spoken symbols: ``r-zero, r-one, r-two'' for the weak, strong and
+stronger-still incumbent; ``Delta-T'' for the target-payoff spread; ``c-L, c-H'' for the cheap and
+expensive preparation cost. Checkpoints (structure plan, section 10): frame 3 by 4.75 min; frame 5 by
+9.5 min, else skip frame 6 and say its two numbers on frame 5; frame 9 by 18.5 min, else skip frames
+12 and 14; frame 11 by 23.5 min, else skip frame 15 and give frame 13 as one sentence.}\par}
+
+% ======================================================================
+\scriptopening{about 0.4 min}{%
+  Thank you for having me. I'm Austin Li, and the paper is \emph{\PaperTitle}.
+  It is a single-authored theory paper about who shows up to compete for a
+  takeover target, and what the target's stock price has to do with it. Please
+  ask questions as we go.
+  \Cue{Thank you for having me; single-authored theory paper; questions welcome.}
+}
+
+% ======================================================================
+\scriptframe{Does a stronger incumbent keep the challenger out?}{about 2.3 min}{%
+  Here is the situation the paper is about. Read the three boxes from left to
+  right. An approach or a strategic review has been disclosed, so the target is
+  publicly in play. Its stock keeps trading. And a second bidder is deciding
+  whether to get ready to bid.
+
+  One bidder, the \emph{incumbent}, is already prepared. The market knows how
+  strong it is, in the sense of the distribution of its value, not the bid it
+  will make. The second bidder, the challenger, cannot just show up with a
+  number. To make an executable bid it has to pay for diligence, financing and
+  approvals. I will call paying that cost entry. A challenger that declines
+  simply stays out.
+
+  So does a stronger incumbent keep the challenger out? The received answer is
+  yes. Fishman, and Hirshleifer and Png, give the logic: a stronger rival raises
+  what a winner has to pay, so preparation earns less, and fewer challengers
+  prepare. I am not going to tell you that logic is wrong. It holds whenever
+  what the challenger knows is fixed.
+
+  But here the challenger decides while the stock trades, and it can watch the
+  price. The model needs an interval, not a date. A disclosed approach or an
+  open contest can create one; a wholly confidential process does not. The
+  Imprivata proxy shows the stages separately: an unsolicited approach,
+  outreach to other potential buyers, and indications of interest conditional
+  on more diligence. That is a costly preparation stage in the record. It is
+  not evidence that a price drew anyone in.
+
+  The twist is on the last line. That price is an equilibrium object, and what
+  it reveals depends on how strong the incumbent is. So my claim is not that
+  deterrence is wrong. It is that deterrence can be \emph{outweighed}, and I owe
+  you the set of primitives on which that happens.
+  \Cue{Here is the situation the paper is about.}
+}
+
+% ======================================================================
+\scriptframe{This paper}{about 2.2 min}{%
+  Here is what I do and what I find. I study a takeover auction in which an
+  informed investor trades the target's stock before the challenger decides
+  whether to prepare. Prices are rational: market makers price the entry that
+  each price will induce. Trading and entry are both solved in equilibrium.
+
+  The main result is the title. Competition creates competition. A stronger
+  incumbent can turn an uninformative stock price into an informative one, and
+  that raises entry. In the benchmark economy entry roughly doubles, from a
+  quarter to just over one half.
+  % source: base_entry_weak (0.250), base_entry_strong (0.523)
+  And that happens while the challenger's expected profit before any news
+  falls, from about four point eight to about four point three.
+  % source: base_profit_prior_weak (4.80), base_profit_prior_strong (4.29)
+  \Pause{} The challenger keeps \emph{less}, and more challengers come.
+
+  Why? One auction, two claims. The sale rule splits one surplus. The
+  challenger holds what it keeps if it wins; target shareholders hold what the
+  auction pays them. A strong incumbent can beat a low-value challenger but not
+  a high-value one. So when the incumbent gets stronger, the challenger keeps
+  less, but the sale price depends more on who the challenger is. That makes the
+  investor's information worth trading on. Trading puts it into the price, and
+  good news in the price is what justifies expensive preparation.
+
+  The second claim: information is the channel. Hold fixed what the price
+  reveals, and a stronger incumbent cannot raise entry. That is the textbook
+  result, and it is a theorem in this model too.
+
+  The implication is on the bottom line. When the target trades, a stronger
+  rival is not a pure deterrent, because who competes depends on what the
+  price reveals before anyone prepares.
+
+  Here is the route: the model, the two forces, the theorem, the numbers, and
+  then the control that shows information does the work.
+  \Cue{Here is what I do and what I find.}
+}
+
+% ======================================================================
+\scriptframe{What is new relative to learning from prices}{about 0.7 min}{%
+  Three literatures meet here. From the feedback literature, Dow, Goldstein and
+  Guembel, and Edmans, Goldstein and Jiang, I take the idea that prices guide
+  real decisions. What the sale rule adds is a split. One surplus divides into
+  a traded claim and the challenger's claim, and competition moves them in
+  opposite directions. From Fishman I keep deterrence intact; I add a market
+  that trades before preparation. From Levin and Smith, entry into auctions is
+  endogenous; here it responds to what the price reveals. The increment is that
+  opposition between the two claims, and the entry reversal it produces.
+  \Cue{Three literatures meet here.}
+}
+
+% ======================================================================
+\scriptframe{Model: who moves, who knows what, and when}{about 2.8 min}{%
+  Here is the model, in one timeline. Read the order of moves once, because it
+  is the load-bearing assumption.
+
+  Box one. The seller commits to a cash second-price auction with reserve $p$.
+  Commitment comes before any trading, so the seller is not reacting to the
+  price.
+
+  Box two. An investor knows the challenger's quality, theta, and trades the
+  target's stock against noise traders. The investor has no position, no
+  control rights and no way to bid. It knows theta, not the incumbent's value.
+  Neither bidder trades.
+
+  Box three. Market makers see only total order flow. They price the share at
+  expected sale proceeds, and that includes the entry each price will induce.
+  So nothing here rests on mispricing.
+
+  Box four. The challenger sees the price and its own preparation cost. It never
+  sees the order flow, theta, or the incumbent's value. Entry means paying the
+  cost; that is what reveals theta and lets it bid. Without preparation there is
+  no executable bid, so a challenger that declines stays out.
+
+  Box five. Both bidders bid truthfully. The incumbent's value, capital R, is
+  uniform between zero and small r, and I will call small r incumbent strength.
+  It is public. It is a distribution, not a bid. The challenger is worth h or
+  ell, equally likely.
+
+  Now the first legend line. The ordering is reserve $p$, below ell, below
+  strength, below h. So the incumbent can beat a low-value challenger but never
+  a high-value one. Hold on to that; the next slide lives on it. And $p$ is the
+  reserve, not the stock price.
+
+  The green line is the preparation cost. It is cheap, c-L, with probability
+  rho, and expensive, c-H, otherwise, independent of the challenger's value. The
+  two costs have different jobs. Cheap preparation gives an entry floor.
+  Expensive preparation is the margin a good price can recruit.
+
+  If preparation came before trading, there would be nothing to learn. That
+  order is the whole point.
+
+  You may be wondering why an investor would know theta when the challenger
+  does not. The benchmark gives the investor perfect information only to make
+  the mechanism easy to see. Section 5.3 removes both extremes, and the result
+  survives a challenger whose own signal is more accurate than the investor's.
+  \Cue{Here is the model, in one timeline.}
+}
+
+% ======================================================================
+\scriptframe{One auction, two claims, opposite responses}{about 2.3 min}{%
+  This table is the whole paper in one place. It is the cash second-price
+  auction, once the challenger has prepared. Read the rows by the incumbent's
+  realized value, capital R.
+
+  Top row: R below ell. Either type of challenger wins and pays the larger of
+  the reserve and R. Target shareholders get the same amount whoever the
+  challenger is, so the gap in the last column is zero.
+
+  Bottom row: R above ell. Now the types split. A high-value challenger still
+  wins, but pays R. A low-value challenger loses; the incumbent wins and pays
+  ell, the low-value challenger's bid. So a \emph{losing} low-value challenger
+  sets what the incumbent pays, and the gap in target proceeds is R minus ell.
+  That asymmetry is the source of everything that follows.
+
+  Now make the incumbent stronger, which shifts R up. Two things happen.
+  \Pause{} First, the orange line. The target-payoff spread, Delta-T, is the
+  difference in expected target proceeds between a high-value and a low-value
+  challenger. It is the expected gap from the last column, so it rises: more of
+  the incumbent's values sit above ell. Second, the black line. The challenger's
+  gross profit falls, because what it pays when it wins goes up. That holds for
+  both types.
+
+  So one shift has opposite signs. The challenger keeps less. Target proceeds
+  depend more on who the challenger is. Proposition 1 says both signs hold for
+  any first-order strengthening of the incumbent, not just the uniform case.
+
+  You might ask: why a second-price auction? With private values, an open
+  ascending contest ends at the runner-up's value, just as this rule does, which
+  is why takeover-contest models commonly use it. The property that matters is
+  that a losing low-value challenger sets the incumbent's price. It is not free.
+  Under bargaining the spread effect can flip sign, and there is a backup on
+  that. First-price equilibria I do not solve.
+  \Cue{This table is the whole paper in one place.}
+}
+
+% ======================================================================
+\scriptframe{A stronger incumbent: spread up, profit down}{about 1.6 min}{%
+  Here are the two claims at benchmark scale. Both panels put incumbent
+  strength on the horizontal axis. The dotted lines mark the two economies I
+  will compare: a weak incumbent, r-zero, at 1.2, and a strong one, r-one, at 3.
+  % source: base_r_weak (1.2), base_r_strong (3)
+
+  Panel (a), in orange, is the target-payoff spread. Against the weak incumbent
+  it is almost nothing, because the incumbent rarely draws a value above ell.
+  It climbs steadily with strength, to about two thirds at r-one.
+  % source: base_spread_weak (0.0167), base_spread_strong (0.667)
+
+  Panel (b) is the challenger's expected profit at the prior, before any news.
+  It slopes down, gently, from about four point eight to about four point three.
+  % source: base_profit_prior_weak (4.80), base_profit_prior_strong (4.29)
+
+  Notice the proportions. The spread moves by a large multiple; profit moves by
+  about a tenth. But the size of the profit fall is not what the result turns
+  on. What matters is whether the spread clears the cost of trading on it.
+
+  These are auction-stage payoffs only. Nothing here is an equilibrium of
+  trading or entry yet.
+
+  So deterrence holds at every fixed belief: a challenger with no news wants to
+  prepare less against the strong incumbent. But there is now much more for the
+  stock to reveal. The spread goes from almost nothing to something worth
+  trading on. The next question is whether anyone trades on it.
+  \Cue{Here are the two claims at benchmark scale.}
+}
+
+% ======================================================================
+\scriptframe{Trading pays only against a strong incumbent}{about 3.0 min}{%
+  Now the investor. The question is when informed trading pays. After seeing
+  theta, the investor places an order: q-H after a high value, q-L after a low
+  value. Orders are bounded, each unit costs k to trade, and prices anticipate
+  entry.
+
+  First, what the price can say. It reveals the market's belief, mu, that the
+  challenger is high value. Noise keeps that belief inside a band, from small m
+  to capital M. With Laplace noise of scale two, small m is about a quarter,
+  % source: base_m (0.27), base_b (2)
+  so even the best order flow never makes the market certain.
+
+  Next, what the investor earns. Market makers already price the entry each
+  price will induce. What the investor keeps is the residual advantage: what it
+  knows a share pays, minus its price. The table breaks that into three
+  factors. The probability the challenger enters, times the target-payoff
+  spread, times the market's remaining uncertainty. \Pause{} Entry is at least
+  rho, because cheap preparation pays after any price; that is the low-cost
+  floor on the next slide. Remaining uncertainty is at least m. So the advantage
+  sits between rho times m times Delta-T, and Delta-T itself.
+
+  Now the two economies. Against the weak incumbent the advantage is at most the
+  spread, which is under two hundredths. The trading cost is two hundredths.
+  % source: base_spread_weak (0.0167), base_k (0.02)
+  Every order loses money, so the unique outcome is no trade.
+
+  Against the strong incumbent, each extra unit earns at least that lower bound,
+  times a haircut of one half for the order's own price impact. With Laplace
+  noise, one more unit erodes the per-unit advantage by at most a fraction one
+  over b. That bound comes out just above k.
+  % source: base_k + base_margin_strong_trade (0.0224 > 0.02)
+  So every marginal unit pays, and the investor trades fully: buy one unit after
+  good news, sell one after bad.
+
+  That is the trading-cost window in the gray line: k sits above the weak spread
+  and below the strong bound. The margin on the strong side is small at the
+  benchmark; I will say what that does and does not mean when we get to the
+  theorem.
+
+  Two things this is not. It is not a toehold story: the investor has no
+  position, no control rights and no route to bidding. And it is not
+  manipulation. A wrong-signed order, such as buying on bad news to fake good
+  news, loses against every price schedule the market could use.
+
+  So the same shift that lowers the challenger's profit switches informed
+  trading \emph{on}.
+  \Cue{Now the investor.}
+}
+
+% ======================================================================
+\scriptframe{Only good news makes expensive preparation pay}{about 2.3 min}{%
+  Now the challenger's side: what does a moving price tell it? The figure plots
+  the challenger's expected gross profit against incumbent strength, at three
+  beliefs. The solid curve is the best belief a price can induce, capital M. The
+  dashed curve is the prior, one half. The dotted curve is the worst belief,
+  small m. The two green lines are the costs: cheap at one, expensive at six.
+  % source: base_c_low (1), base_c_high (6)
+
+  All three curves slope down. That is deterrence again, now at every belief.
+
+  First, the low-cost floor. The dashed green line sits below even the
+  worst-belief curve at r-one. So a cheap challenger enters after any price,
+  which gives entry of at least rho, the bound we used on the last slide.
+
+  Second, the high-cost window. Look at the expensive-cost line at six. Against
+  the weak incumbent, profit at the prior is about four point eight, below six,
+  % source: base_profit_prior_weak (4.80), base_c_high (6)
+  so with no news the expensive challenger stays out. Against the strong
+  incumbent, the best-price curve is above six. So good news, and only good
+  news, brings the expensive challenger in.
+
+  Think of the price as a coarse reading of the challenger's quality. The cheap
+  challenger does not need it; it prepares anyway. The expensive challenger
+  needs it, and only a good enough reading is worth paying six for. So the price
+  acts on exactly one margin, the expensive challenger.
+
+  Further right, the best-price curve crosses the expensive-cost line. Beyond
+  that ceiling strength, even the best price falls short. The r-two marker sits
+  there; hold it for later.
+
+  Now notice something. Against the weak incumbent the best-price curve also
+  clears six. That does not help. We just saw that the weak incumbent's price
+  never moves, because nobody trades. What the weak incumbent lacks is not a
+  good curve. It is a price that \emph{moves}. Hold that thought for the control.
+  \Cue{Now the challenger's side: what does a moving price tell it?}
+}
+
+% ======================================================================
+\scriptframe{Proposition 2: a stronger incumbent can raise entry}{about 2.6 min}{%
+  Here is the main theorem, in words first. Take three economies that differ
+  only in incumbent strength.
+
+  Part one. Against the weak incumbent, r-zero, the unique outcome is no trade.
+  The price is uninformative, and only cheap challengers enter, so entry equals
+  rho.
+
+  Part two. Against the strong incumbent, r-one, the unique outcome is full
+  orders. The price is informative. Entry is strictly above rho, and a
+  high-value challenger acquires the target more often. Ownership rises too
+  because good news is likelier when the challenger really is high value, so
+  the extra entry tilts toward high values.
+
+  Part three. Stronger still, at r-two, the floor and profitable trading still
+  hold. Only the best price stops covering expensive preparation. Trading stays
+  fully informative, but entry falls back to rho.
+
+  Why is it true? Against the weak incumbent there is nothing worth trading on,
+  so the price is flat and the challenger learns nothing. Against the strong
+  incumbent the spread is large enough that the investor must trade. The price
+  moves, and good news pushes the belief past the point where expensive
+  preparation pays. Deterrence is still there. It is just smaller than what the
+  price now tells the challenger.
+
+  The three conditions are the ones we have built, now by name. The low-cost
+  floor: cheap preparation pays even at the worst belief. The high-cost window:
+  expensive preparation fails at the weak prior but pays at the best strong
+  price. The trading-cost window: k sits between the weak spread and the strong
+  bound.
+
+  On scope, in the gray note. Parts one and two hold on a nonempty open set of
+  primitives, for every h above ell. Part three I show at the benchmark and
+  nearby. Uniqueness allows arbitrary mixed orders and every unilateral
+  deviation in the order interval, so no candidate profile is assumed.
+
+  The bottom line is the chain. A stronger incumbent widens the spread; informed
+  trading pays; the price becomes informative; good news clears the expensive
+  cost; and the expensive challenger enters. That chain has to beat deterrence,
+  which never goes away. Under these three conditions, it \emph{does}.
+  \Cue{Here is the main theorem, in words first.}
+}
+
+% ======================================================================
+\scriptframe{At the benchmark, entry rises from 0.250 to 0.523}{about 1.4 min}{%
+  Now the numbers. Let me orient the table first. Two columns, weak and strong.
+  The top two rows are the auction payoffs. The middle rows are trading and the
+  price. The bottom rows are the outcomes. Entry is the probability that the
+  challenger prepares; high-value ownership is the probability that a
+  high-value challenger ends up owning the target.
+
+  Start at the top. The challenger's profit at the prior falls, from about four
+  point eight to about four point three. The spread rises from almost nothing
+  to about two thirds.
+  % source: base_profit_prior_weak (4.80), base_profit_prior_strong (4.29),
+  % base_spread_weak (0.0167), base_spread_strong (0.667)
+  Against the weak incumbent the investor does not trade and the price is
+  uninformative. Against the strong incumbent it trades fully and the price is
+  informative.
+
+  Now the bottom. Entry goes from a quarter to just over a half, about
+  twenty-seven percentage points.
+  % source: base_entry_weak (0.250), base_entry_strong (0.523), base_entry_change_pp (27.28)
+  High-value ownership goes from one eighth to just under a third.
+  % source: base_ownership_weak (0.125), base_ownership_strong (0.324)
+  Extra entry follows good news, which is likelier when the challenger is high
+  value, so ownership rises too.
+
+  So the challenger's prize shrinks, and entry rises. The price, not the prize,
+  brings it in. These are unique equilibrium outcomes at declared parameters;
+  the units are arbitrary. \Advance
+  \Cue{Now the numbers. \textit{End: advance to the same title with the $r_2$ column.}}
+}
+
+\scriptframe{At the benchmark, entry rises from 0.250 to 0.523}{about 1.0 min}{%
+  Now add a third column: an incumbent stronger still, r-two, at 3.6.
+  % source: base_r_collapse (3.6)
+  Profit at the prior is lower still, and the spread is wider still. Trading
+  stays fully informative. But entry is back at a quarter, and high-value
+  ownership is back at one eighth.
+  % source: base_entry_collapse (0.250); ownership 0.125 from tables/table2_equilibrium_controls.tex Panel A
+
+  Why? We saw it on the profit figure. Past a ceiling strength, even the best
+  price cannot cover expensive preparation, so only cheap challengers enter,
+  informative price or not. Any stronger incumbent at which the floor and
+  profitable trading persist, but the best price falls short, gives the same
+  fall; 3.6 is simply the declared node.
+
+  So the effect is rise, then fall. It is not monotone in strength. And the
+  reversal compares economies in which trading is unique, so no equilibrium
+  selection is needed.
+  \Cue{Now add a third column. \textit{(Build: $r_2$ column.)}}
+}
+
+% ======================================================================
+\scriptframe{Freeze the information and deterrence returns}{about 2.3 min}{%
+  This is the slide to come back to whenever someone doubts the channel. Does
+  the rise really come from information? Orient the table: two strengths, a
+  direction and a status.
+
+  The top row is the equilibrium you just saw: price seen, trading re-solved in
+  each economy. Entry rises, from a quarter to just over a half.
+  % source: base_entry_weak (0.250), base_entry_strong (0.523)
+
+  Now the information controls. First, freeze the investor's orders at full
+  size in both economies, so the price carries the same information in both.
+  Entry now \emph{falls}, from about 0.56 to about 0.52.
+  % source: base_frozen_entry_weak (0.562), base_frozen_entry_strong (0.523)
+  That is the textbook deterrence force, back in plain sight. The numbers are a
+  numerical diagnostic; the sign is a theorem. Proposition A.3 says that at any
+  fixed information experiment, a stronger incumbent cannot raise entry.
+
+  Where does the difference come from? In the strong economy the frozen profile
+  is the equilibrium, so the two entries coincide. The whole gap is in the weak
+  economy. There, full orders would lose money, so the frozen weak profile is a
+  control, not an equilibrium. Its job is to hold information fixed and isolate
+  deterrence. If you believed deterrence were the whole story, this is the row
+  you would expect to see, and you do see it once the information is held
+  fixed. That is why I call the main result a reversal of the received
+  comparative static, not an absence of deterrence.
+
+  Second, hide the price from the challenger. Entry is a quarter at both
+  strengths.
+  % source: base_hidden_entry_weak (0.250), base_hidden_entry_strong (0.250)
+  This row is not a second test. It is implied by the high-cost window: without
+  the price, expensive preparation never pays, so only the entry floor remains.
+  What it shows is that the rise needs the price.
+
+  So hold the price's information fixed and a stronger incumbent weakly lowers
+  entry, as the textbook says. The rise comes from what the price reveals.
+  \Cue{This is the slide to come back to whenever someone doubts the channel.}
+}
+
+% ======================================================================
+\scriptframe{At intermediate strength, equilibria coexist}{about 1.6 min}{%
+  What happens between the weak and the strong incumbent? The honest answer is:
+  partly known. At three strengths, 1.55, 1.60 and 1.65, I can prove that an
+  informative equilibrium exists.
+  % source: cert_a_r, cert_b_r, cert_c_r
+  The proof is computer-assisted: interval arithmetic on exact decimal inputs.
+
+  In each one the investor buys fully after good news and sells partially after
+  bad news. The partial sale grows with strength, from a bit under half a unit
+  to about nine tenths.
+  % source: cert_a_v_interval (q_L about -0.460), cert_c_v_interval (q_L about -0.903), negated
+  Certified entry is about 0.55, rising slightly from one strength to the next,
+  and above its level at r-one.
+  % source: cert_a_entry_interval (0.545), cert_b_entry_interval (0.549), cert_c_entry_interval (0.551); base_entry_strong (0.523)
+
+  Each of these economies also has a no-trade equilibrium, with entry at the
+  floor of a quarter.
+  % source: base_rho (0.25)
+  Why can both exist? Entry is one of the three factors in the investor's
+  advantage. When the price is informative, good news draws in the expensive
+  challenger, which raises the advantage and supports the trade. When the price
+  is flat, only cheap challengers enter, and a single order cannot cover its
+  cost. So here the two equilibria coexist.
+
+  Elsewhere the numerical search is not exhaustive, and the full correspondence
+  is open. I report every branch I can certify and read no monotone path into
+  the gaps. The main theorem does not need this region: it compares economies
+  where trading is unique.
+  \Cue{What happens between the weak and the strong incumbent?}
+}
+
+% ======================================================================
+\scriptframe{The entry reversal survives four model changes}{about 1.4 min}{%
+  Is the benchmark doing the work? Each row here is its own analytical result,
+  with its own declared parameters, so compare within a row, not across rows.
+
+  Atomless costs, a smooth cost distribution instead of two atoms: the numbers
+  barely move. The cost atoms are not doing the work.
+  % source: cost_mix_laplace_entry_strong (0.523)
+
+  Logistic noise: same sign, smaller size, with entry about 0.3 against the
+  strong incumbent.
+  % source: logistic_entry_strong (0.302)
+  Why does it shrink? With logistic noise the posterior only approaches its
+  bound in the tails, so good news is less decisive.
+
+  A small value gap, h equal to two instead of ten: the rise is about as large
+  as in the benchmark.
+  % source: moderate_h (2), base_h (10), moderate_entry_weak (0.250), moderate_entry_strong (0.527)
+
+  And complementary signals. Here the challenger has its own signal, more
+  accurate than the investor's, 0.75 against 0.70. Entry still rises, from 0.85
+  to about 0.88.
+  % source: signal_buyer_accuracy_value (0.75), signal_trader_accuracy_value (0.70),
+  % signal_entry_weak (0.850), signal_entry_strong (0.879)
+  The price matters when the challenger's own signal is informative but not
+  decisive. With a very accurate own signal, the challenger already enters
+  against the weak incumbent, and then entry falls by a few points.
+  % source: tables/table_signal_grid.tex (falls about 4 pp when challenger accuracy >= 0.76)
+
+  So the reversal from r-zero to r-one survives all four. I do not claim that
+  the fall at r-two survives them.
+  \Cue{Is the benchmark doing the work?}
+}
+
+% ======================================================================
+\scriptframe{Price access raises proceeds and surplus at $r_1$}{about 1.0 min}{%
+  One welfare comparison. Hold the incumbent at r-one, and let the challenger
+  either see the price or not. Trading is re-solved in both, and the investor
+  trades fully in both, so trading costs coincide.
+
+  Seeing the price raises expected target proceeds from about 0.61 to about
+  0.87, a gain of about a quarter.
+  % source: base_revenue_hidden (0.615), base_revenue_feedback (0.872), base_revenue_gain (0.258)
+  Acquisition surplus net of preparation costs rises by about 0.08.
+  % source: base_net_surplus_gain (0.0802)
+  The surplus gain is not an accident of accounting: each extra entry happens
+  only when its expected profit covers its cost, and the gain also includes
+  sales that would otherwise fail the reserve.
+
+  At r-zero, prices are uninformative, so there is no gain. This is a
+  comparison of economies at r-one. It does not rank incumbent strengths, and it
+  is not a recommendation on process design.
+  \Cue{One welfare comparison.}
+}
+
+% ======================================================================
+\scriptframe{What an empirical test would have to measure}{about 1.1 min}{%
+  Can you test this? The paper gives a design, not a result. There are four
+  requirements.
+
+  The outcome has to be the decision to prepare: the start of substantive
+  diligence, or a proposal that needs costly preparation. Counting public offers
+  is not enough. Strength has to be measured from information that was public
+  before that decision. The price has to come before preparation; a stock that
+  merely trades during confidential negotiations does not qualify.
+
+  And the hard one: target returns can reflect anticipated bidder arrival. So
+  returns followed by entry do not, by themselves, show that anyone learned from
+  prices. The online appendix proposes a pilot that rebuilds these chronologies
+  from disclosure records, separating when an event happened from when it
+  became public. That is why timing has to come from the records, not from
+  announcement dates. There is no sample and no estimate yet.
+  \Cue{Can you test this?}
+}
+
+% ======================================================================
+\begin{samepage}
+\scriptframe{Conclusion}{about 0.9 min}{%
+  Let me close with the answer. A stronger incumbent can bring the challenger
+  in. At the benchmark, entry roughly doubles, from a quarter to just over a
+  half, while the challenger's expected profit falls.
+  % source: base_entry_weak (0.250), base_entry_strong (0.523)
+
+  The reason is one auction with two claims. Competition makes target proceeds
+  more sensitive to who the challenger is. Informed trading puts that into the
+  price, and good news draws in the expensive challenger. Freeze that
+  information, and deterrence returns.
+
+  The next theorem belongs to the seller: which sale terms to choose, when terms
+  move both what the winner pays and what the price reveals.
+
+  So when the target trades, a stronger rival is not a pure deterrent. Who
+  competes depends on what the price reveals before anyone prepares.
+  \Cue{Let me close with the answer.}
+}
+\end{samepage}
+
+\Needspace{14\baselineskip}
+\section*{Live cue layer}
+{\raggedright\small
+\begin{enumerate}\setlength{\itemsep}{0.25em}
+  \item \textbf{Opening (title)} --- Thank you for having me.
+  \item \textbf{Does a stronger incumbent keep the challenger out?} --- Here is the situation the paper is about.
+  \item \textbf{This paper} --- Here is what I do and what I find.
+  \item \textbf{What is new relative to learning from prices} --- Three literatures meet here.
+  \item \textbf{Model: who moves, who knows what, and when} --- Here is the model, in one timeline.
+  \item \textbf{One auction, two claims, opposite responses} --- This table is the whole paper in one place.
+  \item \textbf{A stronger incumbent: spread up, profit down} --- Here are the two claims at benchmark scale.
+  \item \textbf{Trading pays only against a strong incumbent} --- Now the investor.
+  \item \textbf{Only good news makes expensive preparation pay} --- Now the challenger's side: what does a moving price tell it?
+  \item \textbf{Proposition 2: a stronger incumbent can raise entry} --- Here is the main theorem, in words first.
+  \item \textbf{At the benchmark, entry rises from 0.250 to 0.523} --- Now the numbers. \textit{[advance at the end]}
+  \item \textbf{At the benchmark, entry rises from 0.250 to 0.523} ($r_2$ column) --- Now add a third column.
+  \item \textbf{Freeze the information and deterrence returns} --- This is the slide to come back to whenever someone doubts the channel.
+  \item \textbf{At intermediate strength, equilibria coexist} --- What happens between the weak and the strong incumbent?
+  \item \textbf{The entry reversal survives four model changes} --- Is the benchmark doing the work?
+  \item \textbf{Price access raises proceeds and surplus at $r_1$} --- One welfare comparison.
+  \item \textbf{What an empirical test would have to measure} --- Can you test this?
+  \item \textbf{Conclusion} --- Let me close with the answer.
+\end{enumerate}\par}
+
+% ######################################################################
+\ScriptAppendix
+
+\scriptframe{Which deals have a decision interval}{if asked (A1)}{%
+  If asked whether this is realistic, jump to A1. Whether a deal fits is a
+  question about its chronology. A disclosed approach, an announced strategic
+  review or an open contest can create an interval; none does so automatically.
+  A wholly confidential process does not, because no challenger could watch the
+  price while it mattered. Strength is the public distribution of the
+  incumbent's value, not an announced bid. The paper settles this for no
+  specific transaction.
+}
+
+\scriptframe{Evidence: a design, not a result}{if asked (A2)}{%
+  If asked for evidence: the paper has a design, not a result. The pilot
+  rebuilds from disclosure records when approaches, contacts, diligence and
+  proposals happened, and separately when each became public. The outcome is
+  the decision to prepare, and prices must come before it. The hard part is that
+  later returns can reflect anticipated arrival. There is no sample, effect or
+  identification strategy yet.
+}
+
+\scriptframe{Related work in more detail}{if asked (A3)}{%
+  If asked how this differs from feedback models: in Dow, Goldstein and Guembel
+  the price guides the firm's own investment. Here the sale rule splits one
+  surplus into a traded claim and the challenger's claim, and competition moves
+  them in opposite directions. The informed party is not a bidder, and it trades
+  before entry. Only after checking both papers, if Kyle and Vila or Schwert come
+  up: there the informed trader is the raider, and run-ups follow an anticipated
+  bid. Here the price moves before the challenger decides.
+}
+
+\scriptframe{What the model leaves out, and why}{if asked (A4)}{%
+  If asked about toeholds or an incumbent moving the price: neither bidder
+  trades in the model, and the investor knows theta, not the incumbent's value.
+  Toeholds, free riding, jump bids as signals, and incumbent or target
+  manipulation are outside the model. The paper does not solve toeholds, so I
+  do not guess the direction of their effect. Inside the model, the investor
+  cannot profit by faking good news.
+}
+
+\scriptframe{Complementary, not superior, information}{if asked (A5)}{%
+  If asked why an investor would know more than the challenger: it need not
+  know more; it knows different things. The challenger knows its integration
+  plans; a specialist investor may know the target's customers, technology and
+  demand. Preparation is what reveals the exact value. The benchmark's perfect
+  investor only makes the mechanism visible. The reversal holds when the
+  challenger's own signal is more accurate, 0.75 against 0.70.
+  % source: signal_buyer_accuracy_value (0.75), signal_trader_accuracy_value (0.70)
+}
+
+\scriptframe{The price helps a challenger with its own signal}{if asked (A6)}{%
+  If pressed on the signal economy: the challenger combines its own signal with
+  the price. In the declared example entry rises from 0.85 to about 0.88, and
+  that is analytical.
+  % source: signal_entry_weak (0.850), signal_entry_strong (0.879)
+  Across the twenty-five-cell grid, entry rises in the six cells that meet the
+  condition, is unchanged in nine, and falls by about four points when the
+  challenger's signal is very accurate. Those last two are numerical
+  diagnostics. The price matters when the own signal is informative but not
+  decisive.
+  % source: tables/table_signal_grid.tex
+}
+
+\scriptframe{Equilibrium and the two comparisons}{if asked (A7)}{%
+  If asked about the equilibrium concept: order distributions after each value,
+  with mixing allowed; a rational price that anticipates entry; Bayesian beliefs
+  from the price; optimal entry; truthful bids. Keep two comparisons apart. A
+  deviation is evaluated against fixed price and entry schedules. A comparison
+  across economies re-solves everything. Uniqueness refers to trading and
+  on-path entry under truthful bidding.
+}
+
+\scriptframe{Acquisition payoffs in closed form}{if asked (A8)}{%
+  If asked whether this is a uniform-distribution artifact: no. The closed forms
+  are the uniform case, but Proposition 1 holds for any incumbent distribution
+  whose top lies between ell and h. The spread is the expected amount by which
+  the incumbent's value exceeds ell, which rises under any first-order
+  strengthening, while the challenger's profit falls.
+}
+
+\scriptframe{Why trading is unique: a global bound}{if asked (A10)}{%
+  If asked whether I assumed the informative profile: no. Against the weak
+  incumbent the gross advantage per unit is capped by the spread, which is below
+  k, so every nonzero order loses. Against the strong incumbent the marginal
+  profit of every unit exceeds k under every candidate price and entry schedule,
+  mixed orders included. It is a global bound, not a first-order condition. The
+  same inequalities make a wrong-signed order lose, so faking good news does not
+  pay.
+}
+
+\scriptframe{Orders, units and the trading cost}{if asked (A11)}{%
+  If asked why a corner, unlike Kyle: the per-unit advantage never falls below
+  rho times m times the spread, because beliefs stay in the band. And one more
+  unit erodes it by at most a fraction one over b. So marginal profit stays above
+  k across the whole interval. The order bound is a normalized trading unit, not
+  ownership, and k is an execution friction separate from price impact. If k
+  were near zero, trading would pay against the weak incumbent too, and the
+  theorem is silent.
+}
+
+\scriptframe{The challenger can read the market's belief off the price}{if asked (A13)}{%
+  If asked whether the challenger can really read the belief off the price: yes.
+  The price is proceeds without a challenger plus entry probability times a term
+  that rises with the belief. Because entry is at least rho and the spread is
+  positive, the price strictly increases in the belief, even with atoms and
+  entry jumps. So the price is a sufficient statistic for the market's belief,
+  and seeing the order flow would add nothing.
+}
+
+\scriptframe{Why Laplace noise, and what logistic noise changes}{if asked (A14)}{%
+  If asked whether Laplace noise does the work: Laplace and logistic noise
+  satisfy the same derivative bound, so the global trading bounds hold for both.
+  The difference is where the mass sits. Under Laplace the posterior reaches its
+  bound at finite flow; under logistic, only in the limit. So good news is less
+  decisive, and entry against the strong incumbent is about 0.3 instead of just
+  over a half. Same sign, smaller size, and not a Blackwell ranking.
+  % source: logistic_entry_strong (0.302), base_entry_strong (0.523)
+}
+
+\scriptframe{Why the model needs a low-cost floor}{if asked (A15)}{%
+  If asked whether the cheap-type floor does all the work: the floor is part of
+  the mechanism, not a regularizer. Without entry after every price, target
+  proceeds would not depend on the challenger's quality, so there would be
+  nothing to trade on. But the floor alone gives entry of a quarter at both
+  strengths when the price is hidden. It is necessary, and it does not produce
+  the rise by itself.
+  % source: base_hidden_entry_weak, base_hidden_entry_strong (0.250)
+}
+
+\scriptframe{Proof logic in four steps}{if asked (A16)}{%
+  If asked what does the work in the proof: step two, the global bound that
+  forces full orders against the strong incumbent. Step one rules out trading
+  against the weak incumbent. Step three uses the high-cost window, so good news
+  crosses the entry threshold, and more often when the challenger is high value.
+  Step four is Blackwell: the strong price experiment strictly dominates the
+  uninformative one.
+}
+
+\scriptframe{Conditions are jointly satisfiable for every $h>\ell$}{if asked (A17)}{%
+  If asked whether this is a knife edge: the smallest benchmark margin is small,
+  about a quarter of a hundredth against a trading cost of two hundredths.
+  % source: base_minimum_theorem_margin (0.00241), base_k (0.02)
+  But nonemptiness for every h above ell does not come from slack at the
+  benchmark. It comes from a construction: put the two strengths close to ell,
+  then place k and the costs strictly inside their windows. The conditions are
+  strict inequalities, so the set is open. Part three is not claimed for every h.
+}
+
+\scriptframe{Two forces from one payment rule}{if asked (A18)}{%
+  If asked which force wins: put them side by side. Deterrence lowers the
+  challenger's profit at every belief; it needs nothing, and at fixed
+  information it weakly lowers entry. Information widens the spread; it needs
+  the low-cost floor and a price seen before entry, and it raises entry once
+  trading pays and good news clears the expensive cost. The three named
+  conditions decide which one wins.
+}
+
+\scriptframe{Benchmark scale: declared, not calibrated}{if asked (A19)}{%
+  If asked whether the magnitudes are calibrated: no. The units are arbitrary,
+  and the benchmark is declared to show that the conditions hold together and to
+  scale the effect. The signs are the theorem. A moderate economy, with h equal
+  to two and much smaller costs, gives a rise of similar size, from a quarter to
+  about 0.53. So the tenfold value gap is not the mechanism.
+  % source: moderate_h (2), moderate_entry_weak (0.250), moderate_entry_strong (0.527)
+}
+
+\scriptframe{How entry and ownership are computed}{if asked (A20)}{%
+  If asked why ownership rises, or why entry falls at r-two: the expensive
+  challenger enters when order flow crosses a threshold. High-value challengers
+  cross it more often, so the extra entry tilts toward them and ownership rises.
+  Above the ceiling strength, about 3.6, the entry threshold exceeds the best
+  belief a price can induce, so no order flow brings the expensive challenger
+  in.
+  % source: base_r_high_cost_ceiling (3.59)
+}
+
+\scriptframe{Which equilibrium? What the proof certifies}{if asked (A21)}{%
+  If asked which equilibrium I select: none. The reversal compares economies
+  where trading and on-path entry are unique, so there is nothing to select;
+  multiplicity appears only in between. At the three certified strengths,
+  interval arithmetic brackets the low type's optimal order and verifies that
+  the high type's full purchase dominates. Not proved: uniqueness of the
+  informative profile, absence of mixed equilibria, or a branch between nodes.
+}
+
+\scriptframe{Information controls in detail}{if asked (A22)}{%
+  If asked whether the frozen control is fair: it is a control, not an
+  equilibrium at r-zero, and that is its purpose. It holds the information
+  experiment fixed so that only deterrence moves. Its numbers are a numerical
+  diagnostic; its sign is Proposition A.3. The hidden-price row is implied by
+  the high-cost window, so it is not a test of deterrence. It shows that without
+  the price the rise disappears.
+}
+
+\scriptframe{Price level or information?}{if asked (A23)}{%
+  If asked whether this is just a higher price level: no. Add a dividend equal
+  to the revenue gain, about a quarter, to the traded claim in the price-hidden
+  economy. Mean prices then match, but entry does not, so what matters is the
+  information in the price, not its level. That is a diagnostic; the revenue
+  gain itself is analytical. The dividend is not a sale mechanism, and I do not
+  rank strengths or mechanisms.
+  % source: base_matched_dividend (0.258), base_revenue_gain (0.258)
+}
+
+\scriptframe{Trading and entry across strengths: entry}{if asked (A24)}{%
+  If asked what the whole correspondence looks like: no trade is unique for weak
+  enough incumbents and remains an equilibrium up to about 1.75. Full orders are
+  unique above about 2.84. Expensive entry is impossible above about 3.6. In
+  between, the black points are certified and the curves are numerical
+  diagnostics, broken where unresolved. The search is not exhaustive, and the
+  correspondence is open.
+  % source: base_r_no_trade_exact (1.75), base_r_full_unique_sufficient (2.84), base_r_high_cost_ceiling (3.59)
+}
+
+\scriptframe{Robustness in full}{if asked (A26)}{%
+  If asked whether the rows share parameters: no. Each row has its own declared
+  parameters, so the table is not one joint calibration. Every row gives the
+  rise from r-zero to r-one analytically, and the smallest theorem margins are
+  listed underneath. The fall at r-two is shown for the benchmark only.
+}
+
+\scriptframe{A higher reserve can raise proceeds; optimal terms are open}{if asked (A27)}{%
+  If asked what the seller should do: I do not have the optimal terms. At the
+  listed nodes, raising the reserve from one half to 1.1 raises expected
+  proceeds against both incumbents.
+  % source: base_p (0.5), value_reserve_high (1.1), value_revenue_* (0.393 to 0.432; 0.872 to 1.01)
+  The value 1.1 sits just above ell, so it excludes the low-value challenger,
+  and preparation, sale and two admissible bidders come apart. That is a
+  feasible improvement, not an optimal reserve. The seller's problem is the next
+  theorem.
+}
+
+\scriptframe{Same orders, different prices}{if asked (A28)}{%
+  If asked why the seller's problem is hard: the same orders can support
+  different prices. At a high reserve, full orders support price pools below
+  different cutoffs, with different pooled beliefs, entry and proceeds. So a
+  continuation has to specify the price rule, not just the orders. This does not
+  arise on the benchmark support.
+}
+
+\Needspace{12\baselineskip}
+\section*{Standing Q\&A stance}
+Hear the whole question and count to three. Give the economic answer first,
+then the backup slide only if it makes the answer more precise. Explain rather
+than capitulate; concede a genuine scope condition directly, bad news first and
+then the good news. Keep the status words the slides use: analytical,
+computer-assisted, numerical diagnostic, open.
+
+\textit{Why a second-price auction? What about negotiation?} (frame 5, then A9;
+kept as prose here because A9 carries no script block): under Nash bargaining
+with seller weight eta, challenger profit still falls weakly with strength for
+every eta, but the spread effect rises weakly below one half and falls weakly
+above. So the opposition itself depends on the payment rule. No entry reversal
+is claimed under bargaining, and first-price equilibria are not solved.
+
+Answers that live on main frames, with no backup: \textit{Why can't the challenger
+bid without preparing?} (frames 1 and 4: there is no executable bid without
+preparation, so a challenger that declines stays out). \textit{What if the
+challenger saw order flow?} (A13: the price already carries the market's belief).
+\textit{Does the fall at $r_2$ survive the extensions?} (frame 13: shown at the
+benchmark and nearby only). \textit{Why must the price come before preparation?}
+(frame 4: otherwise there is nothing to learn; frame 11: hiding the price leaves
+only the floor).
+
+
+
+\end{document}
