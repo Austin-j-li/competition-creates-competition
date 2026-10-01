@@ -54,13 +54,13 @@ Scores (1-10) on the seven criteria:
 | Content frames | 16. Frame 10 is a two-step build (10a, 10b) made by duplicating the frame and counts once, so there are 17 physical main frames after the title |
 | Appendix | 29 backup frames after `\AppendixStart`. Each is reached from exactly one origin (a main frame, or for A6, A25 and A28 the backup before it) via `\PlaceNav` and returns there via `\BackButton`. Every backup that answers a likely question hangs off a frame that is never cut (section 10) |
 | Punchline | Frame 2 opens at 2.25 min. The headline numbers are on screen and spoken by about 2.75 min, and the punchline frame is complete by 4.25 min |
-| Class and theme | `\documentclass[11pt,aspectratio=169]{beamer}`, `\usetheme{Madrid}`, `\usepackage{econ-slides-compat}`, `\usefonttheme[onlymath]{serif}` (F29), XeLaTeX |
-| Title page | `[plain]`, uncounted. Paper title on two balanced lines; `\author{Austin Li}`; `\institute{}`; `\date{}`. Footline short title "Competition Creates Competition". No affiliation, venue or date |
+| Class and theme | `\documentclass[10pt,aspectratio=169]{beamer}`, `\usetheme{moloch}` (maintained metropolis successor) in the UCL brand palette with a frame-title progress bar, Fira Sans text, `\usepackage{econ-slides-compat}`, `\usefonttheme[onlymath]{serif}` (F29), XeLaTeX. Text margins keep Madrid's 433 pt text width, which the frames were laid out for |
+| Title page | `[plain]`, uncounted, full-bleed UCL dark purple with white text. Paper title on two balanced lines; `\author{Austin Li}`; `\institute{Department of Economics\\University College London}`; `\date{}`. No venue or date |
 | Overlays | None: no `\pause`, `\only`, `\onslide` or `\uncover`. The single build (10a → 10b) is a duplicated frame. Backup figure panels (A24 → A25) are separate frames |
 | Density caps | ≤ 7 items, ≤ 2 display equations and ≤ 2 colored boxes per frame. The deck has one `ResultBox`, on frame 9. At most 5 new symbols per frame; frame 4 introduces four grouped objects (R and r; θ with h and ℓ; p; the cost law C, c_L, c_H, ρ), the deck's one symbol-dense frame, carried by the timeline boxes and a two-item legend. Text-only main frames: 2, 3, 15, 16 (4 of 16, 25% ≤ 30%). Frame 1 opens with a three-box timeline, so the first picture is on screen at 0.25 min |
 | Ending | Frame 16 (Conclusion) is the last main frame and has no navigation. No "Thank you / Questions" frame. References live in the appendix (A29), so the generic "references slide, then thank-you slide, then backups" order is overridden |
 | Literature | No review section. Frame 3 is a one-frame positioning against four antecedents |
-| Titles | One rendered line, at most 52 characters. Verify in the render: Madrid's frame title at 11 pt, 16:9 holds about 55 characters |
+| Titles | One rendered line, at most 52 characters. Verify in the render: the moloch frame title at 10 pt, 16:9 holds about 85 characters |
 | PowerPoint | Every frame can be rebuilt 1:1 in native PowerPoint: text, native tables (including the one-row, three-cell table on frame 7), equations, pictures of figures (paper PDF or a CSV rebuild exported as SVG and 300-dpi PNG), two simple timelines (three boxes on frame 1, five boxes on frame 4) and one text chain (frame 9). Cost lines in X2 are drawn inside the picture, never overlaid as separate shapes. Any white-box relabels on the X5 fallback are also native shapes. The ResultBox becomes a rounded rectangle with a title bar. No TikZ plots, no underbraced text displays |
 | Files | Deck `talk/talk.tex`. Shared number and phrase macros in `talk/results.tex`, each with a registry-name comment. Figures in `talk/figures/`, written by one script `talk/figures/build_talk_figures.py` that reads CSV only and never solves, changes a parameter or drops a branch |
 | Number rule | Every number on a slide is either a registry value (`numerics/quantity_registry.csv`) or a value printed in `paper/main_filled.md` or its inserted tables. Slides show 3 significant digits rounded from the registry display. Main-line tables show entry levels, not percentage-point changes; the one pp figure on the main line is 27.28 (`base_entry_change_pp`, frame 10a), and backups show pp changes as printed (27.28, 27.27, 5.15, 27.68, 2.94). Certificate enclosures are shown exactly as the registry displays them and never re-rounded. m is shown once on the main line, as ≈ 0.27 (F42); the one derived main-line number, the bound 0.0224 on frame 7, is written with m symbolic and checked as k + theorem margin 0.00241 (`base_k`, `base_margin_strong_trade`), so no second rounding of m appears. r_C ≈ 3.59 stays off the main line (words: "a ceiling strength") and appears in A20 and A24. Values that exist only in validated CSV output stay off the slides unless a registry key is added first: τ = 0.705, x* = 0.871, B_{r0}(M), B_{r1}(M) = 6.217, B_{r2}(M) = 5.997, the r = 3.6 row of Table 1, the frozen deviation gain 1.619e-2, and the atomless-cost entry at 3.6. Curves in rebuilt figures are plotted from `figures_data/*.csv` (the paper's own figure data); no number is read off a plot |
@@ -170,7 +170,7 @@ Frames 12-15 (coexistence, robustness, welfare, empirical design) are secondary 
 
 ## 5. Color ledger
 
-Madrid's structure blue (#3333B3) carries chrome only: title bar, footline, `\KeyIdea`, `\RunIn`, the ResultBox frame and the navigation buttons. It has no economic meaning. Two concept colors are declared once in the preamble and never used as a good/bad pair:
+UCL dark purple (#361A54) carries chrome only: title bar, cover, `\KeyIdea`, `\RunIn`, the ResultBox frame and the navigation buttons. UCL bright purple (#993BFF) marks only the progress bar and the cover's title rule, and mid purple (#BA82FF) only the cover's affiliation. None of the three has economic meaning, and none is close to either concept color. Two concept colors are declared once in the preamble and never used as a good/bad pair:
 
 ```latex
 \colorlet{cInfo}{cAccentB!80!black}  % #AA4B00, contrast 5.65:1 on white: information force (new)
@@ -186,7 +186,7 @@ Madrid's structure blue (#3333B3) carries chrome only: title bar, footline, `\Ke
 | Result-status labels (analytical, computer-assisted, numerical diagnostic, open, input) | bookkeeping | gray `\scriptsize`, never colored or boxed | 2, 5-14 and backups |
 
 Unused on purpose:
-- `cAccentA`: Okabe-Ito blue sits too close to Madrid's structure blue, so a cost color would read as chrome.
+- `cAccentA`: two concept colors suffice, so Okabe-Ito blue stays free (it was first excluded because it sat too close to Madrid's structure blue).
 - `cAccentD`: amber is below 4.5:1 on white.
 - `cHighlight`: no overlays.
 

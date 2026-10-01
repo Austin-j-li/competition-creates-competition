@@ -15,9 +15,3 @@ talk:
 	$(PYTHON) talk/figures/make_correspondence_figure.py
 	cd talk && latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build talk.tex
 	cd talk && latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build script.tex
-
-# Editable PowerPoint twin of the talk (needs python-pptx, lxml, Pillow, PyMuPDF, XeLaTeX, pandoc).
-TALK_PYTHON ?= python3
-.PHONY: talk-pptx
-talk-pptx: talk
-	$(TALK_PYTHON) talk/pptx/build_pptx.py

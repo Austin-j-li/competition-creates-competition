@@ -7,12 +7,50 @@
 % Navigation: main frames carry \hypertarget{main:...}; backups carry \hypertarget{app:...}
 % and a \BackButton to their single origin. No overlays: the one build (F10a -> F10b) is a
 % duplicated frame.
-\documentclass[11pt,aspectratio=169]{beamer}
-\usetheme{Madrid}
+% Look: moloch (maintained metropolis successor) in the UCL brand palette, Fira Sans text at 10 pt
+% (reads at about the size of the previous 11 pt Latin Modern Sans), serif math (F29), XeLaTeX.
+\documentclass[10pt,aspectratio=169]{beamer}
+\usetheme[progressbar=frametitle,
+  frametitle margin left=10.95pt,frametitle margin right=10.95pt]{moloch}
+\setbeamertemplate{page number in head/foot}[totalframenumber]
+% Keep the Madrid text width (433 pt) the frames were laid out for; moloch's default 1 cm margins
+% leave 398 pt. Frame titles start at the same left edge as the body.
+\setbeamersize{text margin left=10.95pt,text margin right=10.95pt}
+\usepackage{fontspec}
+% Fira Sans by file name, so the deck compiles wherever TeX Live's fira package is installed
+\setsansfont{FiraSans}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold,
+  ItalicFont=*-Italic, BoldItalicFont=*-SemiBoldItalic]
+% UCL brand palette: dark purple leads; bright and mid purple are accents
+\definecolor{uclDark}{HTML}{361A54}
+\definecolor{uclBright}{HTML}{993BFF}
+\definecolor{uclMid}{HTML}{BA82FF}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg=uclDark}
+\setbeamercolor{frametitle}{bg=uclDark,fg=white}
+\setbeamercolor{progress bar}{fg=uclBright,bg=uclDark!60}
+\setbeamerfont{framesubtitle}{series=\mdseries,size=\small}
 \usepackage{econ-slides-compat}
+% Moloch sizes its progress bar by \insertframenumber, which the adapter turns into "A1, A2, ..."
+% in the appendix. Drive the bar from the frame counter instead and leave it out of the appendix.
+\makeatletter
+\newif\iftalk@appendix
+\let\talk@AppendixStart\AppendixStart
+\renewcommand{\AppendixStart}{\global\talk@appendixtrue\talk@AppendixStart}
+\setbeamertemplate{progress bar in head/foot}{%
+  \nointerlineskip
+  \iftalk@appendix\else
+  \pgfmathsetlength{\moloch@progressinheadfoot}{%
+    \paperwidth*min(1,\number\value{framenumber}/max(1,\inserttotalframenumber))}%
+  \begin{beamercolorbox}[wd=\paperwidth]{progress bar in head/foot}
+    \begin{tikzpicture}
+      \fill[bg] (0,0) rectangle (\paperwidth,\moloch@progressinheadfoot@linewidth);
+      \fill[fg] (0,0) rectangle (\moloch@progressinheadfoot,\moloch@progressinheadfoot@linewidth);
+    \end{tikzpicture}
+  \end{beamercolorbox}\fi}
+\makeatother
 % The adapter captures the structure color with an ungrouped \usebeamercolor{structure} at
-% \begin{document}; under Madrid that leaks structure blue into every itemize body. Re-select the
-% normal text color afterwards (hooks run in order), so list text stays black.
+% \begin{document}; that leaks structure purple into every itemize body. Re-select the normal
+% text color afterwards (hooks run in order), so list text stays black.
 \AtBeginDocument{\usebeamercolor{normal text}}
 \usefonttheme[onlymath]{serif}
 \usepackage{amsmath,amssymb,mathtools}
@@ -23,7 +61,7 @@
 \graphicspath{{figures/}}
 
 % COLOR LEDGER (structure-plan section 5; one color per concept, held for the whole talk):
-%   Madrid structure blue = chrome only (title bar, footline, \KeyIdea, ResultBox, buttons)
+%   UCL purple = chrome only (title bar, progress bar, cover, \KeyIdea, ResultBox, buttons)
 %   cInfo = target-payoff spread Delta_T, the information force, "trading-cost window", the chain
 %   cCost = preparation costs C, c_L, c_H, rho; "low-cost floor", "high-cost window"
 %   deterrence objects (g_H, g_L, B_r) = neutral black; status labels = gray \scriptsize
@@ -40,7 +78,7 @@
 \providecommand{\graycite}{}
 \renewcommand{\graycite}[1]{{\color{cGrayText}\footnotesize #1}}
 \newcommand{\NavSep}{\hspace{0.35em}}
-% Navigation buttons in saturated structure blue with white text (Madrid's pale default is about 2.5:1)
+% Navigation buttons in structure purple with white text (beamer's pale default is about 2.5:1)
 \setbeamercolor{button}{use=structure,bg=structure.fg,fg=white}
 \setbeamercolor{button border}{use=structure,fg=structure.fg}
 % Status text readable from the back of the room, for status cells inside main-frame tables
@@ -73,17 +111,21 @@
 \title[Competition Creates Competition]{Competition Creates Competition:\texorpdfstring{\\[2pt]}{ }%
 Stock Prices and the Discovery of Takeover Bidders}
 \author{Austin Li}
-\institute{}
+\institute{Department of Economics\\University College London}
 \date{}
 
 \begin{document}
 
 % ======================================================================
-% Frame 0. Title (plain, uncounted)
+% Frame 0. Title (plain, uncounted): full-bleed UCL dark purple, white text
 % ======================================================================
+{\setbeamercolor{background canvas}{bg=uclDark}
+\setbeamercolor{normal text}{fg=white}\usebeamercolor[fg]{normal text}
+\setbeamercolor{title}{fg=white}\setbeamercolor{author}{fg=white}
+\setbeamercolor{institute}{fg=uclMid}\setbeamercolor{title separator}{fg=uclBright}
 \begin{frame}[plain,noframenumbering,label=F0]
 \titlepage
-\end{frame}
+\end{frame}}
 
 % ======================================================================
 % Frame 1. Key question
@@ -125,12 +167,12 @@ Stock Prices and the Discovery of Takeover Bidders}
 An informed investor trades the target's stock, which pays off from the sale price, before a challenger decides whether to pay to prepare a takeover bid; prices are rational, and trading and entry are solved in equilibrium.
 \vspace{1pt}
 \begin{itemize}\setlength{\itemsep}{2pt}
-\item \KeyIdea{Competition creates competition} \Status{(analytical)}: a stronger incumbent can turn an uninformative stock price into an informative one and raise entry\par
+\item \KeyIdea{Competition creates competition}: a stronger incumbent can turn an uninformative stock price into an informative one and raise entry\par
   \vspace{1pt}{\small Benchmark: entry \textbf{0.250 % source: base_entry_weak
   $\boldsymbol{\to}$ 0.523} % source: base_entry_strong
   while the challenger's profit before any news falls \textbf{4.80 % source: base_profit_prior_weak
   $\boldsymbol{\to}$ 4.29}\par}% source: base_profit_prior_strong
-\item \textbf{One auction, two claims:} a strong incumbent can beat a low-value challenger but not a high-value one, so the challenger keeps less while the sale price depends more on who shows up; informed trading puts that into the stock price, and good news justifies expensive preparation
+\item \textbf{Two possible outcomes of one auction}: a strong incumbent can beat a low-value challenger but not a high-value one, so the challenger keeps less while the sale price depends more on who shows up; informed trading puts that into the stock price, and good news justifies expensive preparation
 \item \textbf{Information is the channel:} hold fixed what the price reveals, and a stronger incumbent cannot raise entry, as the textbook says \Status{(sign analytical, Prop.~A.3)}
 \end{itemize}
 \Takeaway[0.45em]{\textbf{Implication:} when the target trades, a stronger rival is not a pure deterrent, because who competes depends on what the price reveals before anyone prepares.}
