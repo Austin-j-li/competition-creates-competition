@@ -36,7 +36,7 @@ The handout builder does not alter research sources or run numerical searches.
 ## Publishing
 
 The public handout is https://competition.dealextract.org/ and the interactive talk is
-https://competition.dealextract.org/talk/, both hosted by Cloudflare Workers Static Assets. The source repository is hosted on GitLab. No VM or Worker script is required.
+https://competition.dealextract.org/talk/, both hosted by Cloudflare Workers Static Assets. The source repository is hosted on GitHub. No VM or Worker script is required.
 
 ```sh
 # Once per machine: sign in to the Cloudflare account that owns dealextract.org.
@@ -53,7 +53,7 @@ KaTeX assets, the two PDFs, `provenance.json`, and `presentation.pdf` when it ha
 exported. Speaker notes and QA output are never staged. A failed check stops publication. Wrangler is version-pinned;
 credentials stay in its machine-local login store, never in this repository.
 The builder refreshes `numerics/manifests/handout.json` with the local build environment.
-Publishing is explicit; pushing research changes to GitLab does not update the website.
+Publishing is explicit; pushing research changes to GitHub does not update the website.
 
 Run `handout/check_browser.js` against the deployed address after publishing and compare
 the live HTML and PDF hashes with `docs/`. In Cloudflare's Workers dashboard, select

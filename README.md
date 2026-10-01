@@ -12,13 +12,13 @@ Research repository for the paper and its numerical layer.
 
 ## Repository and collaboration
 
-The canonical repository is [austin.junyu.li/competition-creates-competition](https://gitlab.com/austin.junyu.li/competition-creates-competition).
-Use GitLab for issues, merge requests, and repository management. `origin` must use
-`git@gitlab.com:austin.junyu.li/competition-creates-competition.git` on every machine.
+The canonical repository is [Austin-j-li/competition-creates-competition](https://github.com/Austin-j-li/competition-creates-competition).
+Use GitHub for issues, pull requests, and repository management. `origin` must use
+`https://github.com/Austin-j-li/competition-creates-competition.git` on every machine.
 For an existing checkout, set it with:
 
 ```bash
-git remote set-url origin git@gitlab.com:austin.junyu.li/competition-creates-competition.git
+git remote set-url origin https://github.com/Austin-j-li/competition-creates-competition.git
 ```
 
 The website is hosted separately on Cloudflare; follow `handout/README.md` to publish it.
@@ -44,7 +44,7 @@ The supervisor brief is at https://competition.dealextract.org/.
 Its sources and build instructions are in `handout/README.md`; the course is in `learn/`.
 The current delivery PDFs are in `peer_release/` and the site copies in `docs/`.
 Publish reviewed website changes with `python3 handout/publish.py`; use `--dry-run`
-to build and check without uploading. The source repository is hosted on GitLab.
+to build and check without uploading. The source repository is hosted on GitHub.
 
 Both VM checkouts were reconciled on 2026-09-07. Their previous working states, including
 historical source archives, are preserved as Git stashes:
