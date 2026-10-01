@@ -52,6 +52,10 @@ def build():
     with ThreadPoolExecutor(max_workers=8) as pool:
         lock.update(dict(pool.map(font, sorted(font_urls))))
     lock_path.write_text(json.dumps(lock, indent=2, sort_keys=True) + '\n')
+    motion_lock = json.loads((vendor / 'motion.lock.json').read_text())
+    for name, entry in motion_lock.items():
+        if digest((vendor / name).read_bytes()) != entry['sha256']:
+            raise ValueError('Motion asset integrity mismatch: ' + name)
     out = HERE / 'dist'
     out.mkdir(exist_ok=True)
     shutil.copytree(vendor, out / 'vendor', dirs_exist_ok=True)
@@ -86,8 +90,13 @@ def build():
         html = html.replace(key, value)
     if re.search(r'@@[A-Z]+@@', html):
         raise ValueError('Unresolved build slot')
-    (out / 'index.html').write_text(html)
+    previous = out / 'index.html'
+    if previous.exists() and previous.read_text() != html:
+        (out / 'presentation.pdf').unlink(missing_ok=True)
+    previous.write_text(html)
     sources = dict(hashes)
+    sources.update({'presentation/vendor/' + name: entry['sha256'] for name, entry in motion_lock.items()})
+    sources.update({'presentation/vendor/uifonts/' + name: entry['sha256'] for name, entry in uilock.items()})
     for name in ['paper/main.md', 'paper/online_appendix.md', 'handout/explorer.js', 'presentation/content.js', 'presentation/deck.js', 'presentation/deck.css', 'presentation/template.html']:
         sources[name] = digest((ROOT / name).read_bytes())
     (out / 'provenance.json').write_text(json.dumps({'sources': sources, 'scope': 'Presentation build; existing passed-manifest outputs. No new equilibrium search or research release claim.'}, indent=2) + '\n')

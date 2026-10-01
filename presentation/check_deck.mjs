@@ -1,5 +1,5 @@
 /* Offline structural check: the slide records satisfy DESIGN.md.
- * Ids, acts, statuses, minutes, widget elements, "If asked" notes, no hedge in slide copy,
+ * Ids, acts, statuses, minutes, widget elements, "If asked" notes, visible scientific qualifications,
  * no registry number in a headline, and the notation rule: every symbol that appears in
  * LaTeX on a slide is defined on that slide or an earlier one. */
 import {createRequire} from 'node:module';
@@ -14,10 +14,9 @@ const glossary=typeof window.createGlossary==='function'?window.createGlossary(H
 if(!glossary)problems.push('content.js does not export createGlossary');
 const keys=new Set((glossary||[]).map(g=>g.key));
 
-const need={preview:['preview-vline'],auction:['auction-vline','auction-r','auction-r-value','auction-readout','data-choice="quality"','data-reset="auction"'],dial:['dial-vline','dial-r','dial-r-value','dial-profit','dial-spread','dial-curves','data-choice="dial-preset"'],tape:['tape-plot','tape-x','tape-x-value','tape-demo','tape-readout','data-reset="tape"'],economies:['economies-compare','economies-view','data-choice="benchmark"'],control:['control-plot','control-readout','data-choice="experiment"'],coexist:['coexist-plot'],bargaining:['seller-weight','seller-weight-value','bargaining-plot','bargaining-readout','data-choice="eta"'],certificates:['certificate-table'],reserve:['reserve-table'],access:['access-table'],glossary:['glossary-table'],title:['title-ambient']};
+const need={preview:['preview-vline'],auction:['auction-vline','auction-r','auction-r-value','auction-readout','data-choice="quality"','data-reset="auction"'],dial:['dial-vline','dial-r','dial-r-value','dial-profit','dial-spread','dial-curves','data-choice="dial-preset"'],tape:['tape-plot','tape-x','tape-x-value','tape-demo','tape-readout','data-reset="tape"'],economies:['economies-compare','economies-view','data-choice="benchmark"'],control:['control-plot','control-readout','data-choice="experiment"'],coexist:['coexist-plot'],bargaining:['seller-weight','seller-weight-value','bargaining-plot','bargaining-readout','data-choice="eta"'],certificates:['certificate-table'],reserve:['reserve-table'],access:['access-table'],glossary:['data-glossary-groups'],title:['title-ambient']};
 const statuses=new Set(['','analytical','computer-assisted','numerical diagnostic','open','input']);
-const acts=['question','preview','model','equilibrium','results','next'];
-const hedge=/not an empirical estimate|not an equilibrium simulation|not a joint calibration|no claim of/i;
+const acts=['puzzle','model','mechanism','results','scope','next'];
 const headline=/<(h1|h2|p class="display[^"]*"|div class="callout"|p class="metric[^"]*")[^>]*>[^<]*§[PFV]§/;
 
 let defined=new Set();
@@ -28,7 +27,7 @@ for(const s of slides){
   if(!/If asked:/.test(s.notes))problems.push(`${s.id}: notes lack an "If asked:" line`);
   if(s.widget&&!need[s.widget])problems.push(`${s.id}: unknown widget ${s.widget}`);
   for(const n of need[s.widget]||[])if(!s.body.includes(n))problems.push(`${s.id}: widget ${s.widget} lacks ${n}`);
-  if(hedge.test(s.body))problems.push(`${s.id}: hedge in slide copy`);
+
   if(!s.backup&&(headline.test(s.body)||/§[PFV]§/.test(s.title)))problems.push(`${s.id}: registry number in a headline element`);
   for(const k of s.defines||[]){if(!keys.has(k))problems.push(`${s.id}: defines unknown key ${k}`);defined.add(k);}
   for(const d of s.body.matchAll(/data-defs="([^"]*)"/g))for(const k of d[1].split(','))if(!keys.has(k.trim()))problems.push(`${s.id}: definition strip names unknown key ${k}`);
@@ -40,7 +39,13 @@ for(const s of slides){
 }
 for(const k of keys)if(!slides.some(s=>(s.defines||[]).includes(k)))problems.push(`glossary key never defined on a slide: ${k}`);
 const minutes=main.reduce((a,s)=>a+s.minutes,0);
+const speaking=main.reduce((a,s)=>a+s.speakingMinutes,0);
+if(Math.abs(speaking-38)>1e-9)problems.push(`Expected 38 minutes of exposition plus 2 minutes of buffer, got ${speaking}`);
 if(Math.abs(minutes-40)>1e-9)problems.push(`main slides sum to ${minutes} minutes, not 40`);
+if(main.length!==24)problems.push('Expected the agreed 24 main slides');
+if(new Set(slides.map(s=>s.id)).size!==slides.length)problems.push('Duplicate slide ids');
+const ids=new Set(slides.map(s=>s.id));
+for(const s of slides)for(const match of s.body.matchAll(/data-goto="([^"]+)"/g))if(!ids.has(match[1]))problems.push(`${s.id}: broken slide link ${match[1]}`);
 console.log(`${slides.length} slides (${main.length} main, ${slides.length-main.length} backup), ${minutes} minutes, ${keys.size} glossary keys`);
 if(problems.length){console.error(problems.join('\n'));process.exit(1);}
 console.log('Deck contract satisfied.');

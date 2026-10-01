@@ -35,11 +35,11 @@ window.createGlossary = function (H) {
       'preparation', String.raw`(?<![A-Za-z\\])C(?![A-Za-z_])`),
 
     g('c_L', String.raw`c_L`,
-      'the cheap cost realisation, worth paying even after the worst feasible news',
+      'the low preparation cost; under A1 it is worthwhile at every feasible belief',
       'preparation', String.raw`c_L`),
 
     g('c_H', String.raw`c_H`,
-      'the expensive cost realisation, worth paying only after favourable news',
+      'the high preparation cost; A2 makes preparation responsive to favourable information',
       'preparation', String.raw`c_H`),
 
     g('rho', String.raw`\rho`,
@@ -175,327 +175,94 @@ window.createGlossary = function (H) {
 
 window.createSlides = function (H) {
   const {m, mi, v, pct, fmt} = H;
-  const S = (id, o) => ({
-    id,
-    act: o.act || '',
-    kicker: o.kicker || '',
-    title: o.title || '',
-    subtitle: o.subtitle || '',
-    body: o.body || '',
-    notes: o.notes || '',
-    source: o.source || '',
-    minutes: o.minutes === undefined ? 0 : o.minutes,
-    widget: o.widget || '',
-    backup: o.backup === true,
-    status: o.status || '',
-    defines: o.defines || []
-  });
+  const S = (id, o) => ({id, act:'', kicker:'', title:'', subtitle:'', body:'', notes:'', source:'', minutes:0, widget:'', backup:false, status:'', defines:[], theme:'light', speakingMinutes:o.minutes||0, ...o});
   const rev = (n, html) => `<div class="reveal" data-step="${n}">${html}</div>`;
-  const controls = (name, options) => `<div class="segmented" role="group" aria-label="${name}">${options.map(([value, label]) => `<button data-choice="${name}" data-value="${value}" aria-pressed="false">${label}</button>`).join('')}</div>`;
+  const controls = (name, options) => `<div class="segmented" role="group" aria-label="${name}">${options.map(([value,label])=>`<button data-choice="${name}" data-value="${value}" aria-pressed="false">${label}</button>`).join('')}</div>`;
   const defs = keys => `<div class="defs" data-defs="${keys}"></div>`;
-  const declaration = `Benchmark declaration: h = ${v('base_h')}, ℓ = ${v('base_ell')}, p = ${v('base_p')}, ρ = ${v('base_rho')}, c<sub>L</sub> = ${v('base_c_low')}, c<sub>H</sub> = ${v('base_c_high')}, b = ${v('base_b')}, k = ${v('base_k')}.`;
-
+  const declaration = `h = ${v('base_h')}, ℓ = ${v('base_ell')}, p = ${v('base_p')}, ρ = ${v('base_rho')}, c<sub>L</sub> = ${v('base_c_low')}, c<sub>H</sub> = ${v('base_c_high')}, b = ${v('base_b')}, k = ${v('base_k')}`;
+  const arrow = '<span class="connector" aria-hidden="true">→</span>';
+  const flow = (items, cls='') => `<div class="flow ${cls}">${items.map((x,i)=>`${i?arrow:''}<div class="flow-node">${x}</div>`).join('')}</div>`;
+  const notes = (text, answer) => `${text} If asked: ${answer}`;
   return [
-
-    S('s01', {
-      act: 'question',
-      kicker: '',
-      title: '',
-      subtitle: '',
-      widget: 'title',
-      status: '',
-      minutes: 0.5,
-      body: `<div class="hero"><div class="stack"><h1>Competition<br><i>creates</i><br>competition.</h1><p class="sub">Stock prices and the discovery of takeover bidders</p><p class="byline">Austin Li</p></div><div id="title-ambient"></div></div>`,
-      notes: 'Open with the sentence and hold for a beat. The title is a claim about direction, not about magnitude: a stronger rival lowers what a prospective buyer earns from winning, and can still bring that buyer into the contest, because the stock price it watches before committing to preparation becomes more informative. Everything in the next forty minutes is a comparison between declared economies, not an empirical estimate and not a calibration to any transaction. Say who I am, that the paper is single-authored, and that I would rather take questions as they arise than save them. If asked: the whole talk is the benchmark paper; the endogenous-research fork is separate work and is not in this deck.',
-      source: 'Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders.'
-    }),
-
-    S('s02', {
-      act: 'question',
-      kicker: 'The institution',
-      title: 'A public sale, a traded stock, and a buyer deciding whether to <i>prepare</i>.',
-      subtitle: 'The interval this paper is about, described before any notation.',
-      widget: '',
-      status: '',
-      minutes: 2.5,
-      body: `<div class="timeline"><article><strong>Sale opportunity</strong><p>The chance to buy the target becomes publicly understood.</p></article><article><strong>The stock trades</strong><p>Investors who follow the target can still act on what they know.</p></article><article class="reveal" data-step="1"><strong>One buyer prepared</strong><p>An approaching party has done its diligence and can bid.</p></article><article class="reveal" data-step="1"><strong>Another deciding</strong><p>A second buyer has not committed the verification, financing and capacity an offer requires.</p></article><article class="reveal" data-step="2"><strong>Executable bids</strong><p>Only prepared buyers can submit binding offers.</p></article><article class="reveal" data-step="2"><strong>Acquisition</strong><p>Ownership is settled.</p></article></div>${rev(3, '<div class="callout">Imprivata’s definitive proxy separates an unsolicited approach, outreach to a list of potential buyers, and indications of interest conditional on further diligence: three distinct dates, in that order, in one disclosure record.</div>')}`,
-      notes: 'The model needs an interval, not a date. A disclosed approach, an announced strategic review or an open contest can create one; none does so automatically. A wholly confidential process that becomes public only after the buyer set is fixed does not qualify, because no prospective buyer could have watched the price when it mattered. Preparation is a participation cost, not an optional report: a buyer that declines it stays out rather than bidding its prior expected value. The Imprivata chronology shows that this staged structure exists in the disclosure record. It is not evidence that a price drew any buyer in, which is what an empirical study would have to establish. If asked: whether a given deal fits is a question about its own chronology, and this paper settles it for no transaction.',
-      source: 'Section 1.1; Online Appendix D. Imprivata (2016); Boone and Mulherin (2007).'
-    }),
-
-    S('s03', {
-      act: 'question',
-      kicker: 'The myth',
-      title: 'Stronger rivals <i>deter</i> entry.',
-      subtitle: 'Hold the buyer’s information fixed and the logic is airtight.',
-      widget: '',
-      status: '',
-      minutes: 2,
-      body: `<div class="split"><div class="stack"><p class="display">A stronger rival means less profit from winning.</p><p class="display muted">Less profit means less reason to pay to compete.</p>${rev(1, '<div class="callout">Every one of these holds the information available before the entry decision fixed. That is the assumption this paper moves.</div>')}</div><div class="references"><p><strong>Fishman (1988)</strong><br>A preemptive high bid deters a rival that must pay an investigation cost before it can bid at all.</p><p><strong>Hirshleifer and Png (1989)</strong><br>Costly information acquisition before entry is discouraged when the expected surplus from winning falls.</p><p><strong>Levin and Smith (1994)</strong><br>Entry is an equilibrium object: bidders mix into an auction until the expected return to participating is driven to zero.</p><p><strong>Gentry and Stroup (2019)</strong><br>Takeover competition forms before public bidding, and the identity of who enters is selected, not random.</p><p><strong>Roberts and Sweeting (2013)</strong><br>When entry is selective, the seller’s choice of procedure changes who shows up, not only what they pay.</p></div></div>`,
-      notes: 'Take the received logic seriously before departing from it. A stronger rival raises the payment a winning buyer must make, so the return to the costly preparation that precedes an executable bid falls, and fewer buyers find that preparation worthwhile. Nothing in my paper overturns any of these results; the deterrence force survives intact and reappears as a formal statement two acts from now. What they share is a fixed information environment before the entry decision. Once the price a buyer can watch is itself an equilibrium object, competition moves it, and the two forces can point in opposite directions. If asked: yes, this is the standard comparative static, and I reproduce it exactly when I hold the price experiment fixed on the control slide.',
-      source: 'Section 1; Proposition 1. Fishman (1988); Hirshleifer and Png (1989); Levin and Smith (1994); Gentry and Stroup (2019); Roberts and Sweeting (2013).'
-    }),
-
-    S('s04', {
-      act: 'question',
-      kicker: 'The question',
-      title: 'Can a stronger rival <i>bring</i> a buyer in?',
-      subtitle: 'One question, one answer, and three things the rest of the talk has to show.',
-      widget: '',
-      status: '',
-      minutes: 2,
-      body: `<p class="display">Yes, on an open set of primitives, because competition changes what the price <i>reveals</i> before the buyer decides.</p><div class="split">${rev(1, '<div class="stack"><p class="kicker">Reversal</p><p>Preparation rises with rival strength, and so does the chance that the better buyer ends up owning the target.</p></div>')}${rev(2, '<div class="stack"><p class="kicker">Control</p><p>Hold the information the price carries fixed and ordinary deterrence comes straight back.</p></div>')}${rev(3, '<div class="stack"><p class="kicker">Coexistence</p><p>In between, informative and uninformative outcomes can both be equilibria at the same primitives.</p></div>')}</div>`,
-      notes: 'State the question in the form a theorist can refuse. I am not claiming that deterrence is wrong; I am claiming that it can be outweighed, and I owe you the set of primitives on which that happens. The answer has three parts and the talk delivers them in order. The reversal is the theorem. The control is the diagnostic that says the information channel, and not something else in the model, is doing the work. The coexistence result is the honest boundary: I do not have the full correspondence between the two economies, and I will not pretend that a monotone path joins them. If asked: the open set is described by three strict inequalities, and I show them explicitly rather than asserting non-emptiness.',
-      source: 'Sections 1 and 4; Propositions 2 and 3; Proposition A.3.'
-    }),
-
-    S('s05', {
-      act: 'preview',
-      kicker: 'The mechanism in one picture',
-      title: 'Two claims on one <i>surplus</i>.',
-      subtitle: 'No notation yet. Just the value line and what each party holds.',
-      widget: 'preview',
-      status: '',
-      minutes: 1.5,
-      body: `<div class="split wide"><div class="plot-shell"><div id="preview-vline"></div><p class="plot-caption">One value line: the reserve, the two values a challenger can have, and the range the rival’s value is drawn from.</p></div><div class="stack">${rev(1, '<div class="callout">Stretch the rival’s range upward and what the challenger keeps if it wins shrinks at every belief.</div>')}${rev(2, '<div class="callout">The same stretch widens the gap between what shareholders receive from a high-value challenger and from a low-value one.</div>')}${rev(3, '<div class="callout">An investor who knows which challenger this is can trade on that gap, and the price it moves reaches the challenger before it has to pay to prepare.</div>')}</div></div>`,
-      notes: 'This is the whole paper without a symbol in it. The sale rule splits one acquisition surplus into two claims. The buyer holds what it keeps if it prepares, bids and wins. Target shareholders hold what the auction pays them. A stronger rival raises the payment a winning high-value buyer must make, which shrinks the first claim, and at the same time widens the spread in the second, because a losing low-value buyer merely sets what the rival pays. Those two movements are the opposition the rest of the talk formalises. Draw the brackets slowly; most of the questions later are really questions about this picture. If asked: the direction of both movements is a property of the payment rule, and the bargaining slide shows an institution where the second one reverses.',
-      source: 'Sections 1 and 3.1; Proposition 1.'
-    }),
-
-    S('s06', {
-      act: 'preview',
-      kicker: 'Antecedents',
-      title: 'Learning from prices, and what is <i>new</i> here.',
-      subtitle: 'Where the mechanism sits, and the one thing it adds.',
-      widget: '',
-      status: '',
-      minutes: 1,
-      body: `<div class="references three"><p><strong>Dow, Goldstein and Guembel (2017)</strong><br>A real investment decision that responds to the price creates the incentive to produce information about it.</p><p><strong>Edmans, Goldstein and Jiang (2015)</strong><br>Corrective real decisions can discourage trading on bad news, because rational pricing anticipates the correction.</p><p><strong>Luo (2005)</strong><br>Acquirers learn from announcement returns, but at the completion stage, after the participation decision studied here.</p><p><strong>Persico (2000)</strong><br>The auction format changes bidders’ incentives to acquire information; here the informed party is outside the auction.</p><p><strong>Betton, Eckbo, Thompson and Thorburn (2014)</strong><br>Takeover negotiations with stock-market feedback, once a deal has been initiated rather than before a buyer decides to prepare.</p></div>${rev(1, '<div class="callout">The increment: two claims on one surplus that respond to competition in opposite directions, and the participation reversal that opposition makes possible.</div>')}`,
-      notes: 'One minute, placed here so the audience knows what kind of object is coming. The closest antecedent is Dow, Goldstein and Guembel, where a real decision feeds back into information production. What the sale rule adds is a division: the traded claim and the entrant’s claim are two parts of one surplus, and a change in competition moves them against each other. That opposition, and the reversal in participation it can produce, is the increment over generic learning from prices. The informed party here trades a payoff that is not the entrant’s profit, which is what separates this from information acquisition inside an auction. If asked: I also exclude toeholds, free riding and endogenous investor research, and I say why in the model section.',
-      source: 'Section 1. Dow, Goldstein and Guembel (2017); Edmans, Goldstein and Jiang (2015); Luo (2005); Persico (2000); Betton et al. (2014).'
-    }),
-
-    S('s07', {
-      act: 'model',
-      kicker: 'Players and values',
-      title: 'Two bidders, one target, one <i>reserve</i>.',
-      subtitle: 'The incumbent is already prepared. The challenger is not.',
-      widget: '',
-      status: 'input',
-      minutes: 1.5,
-      defines: ['R', 'r', 'theta', 'ell', 'h', 'p'],
-      body: `<div class="split"><div class="stack">${m(String.raw`R\sim U[0,r]`)}${m(String.raw`\theta\in\{\ell,h\}`)}${m(String.raw`0<p<\ell<r<h`)}<p class="small muted">Standalone value is normalised to zero; everything is per target share.</p></div>${defs('R,r,theta,ell,h,p')}</div>`,
-      notes: 'Only what the mechanism needs. The incumbent has already prepared and bids its own value, which stays private until the auction. Its strength is the public distribution of that value, conditional on what the record reveals when the opportunity becomes visible, so raising it is a first-order stochastic shift rather than an announced offer, which keeps signalling and negotiation outside the paper. The challenger does not know its own value: preparation is what reveals it. Values, the preparation cost and noise demand are mutually independent. The seller commits to a cash second-price auction with the reserve before any trading happens. If asked: the uniform distribution is for the closed forms only; Proposition 1 is stated for any continuous incumbent distribution.',
-      source: 'Sections 2.1 and 2.2; equation (1); Online Appendix C.0.'
-    }),
-
-    S('s08', {
-      act: 'model',
-      kicker: 'Preparation',
-      title: 'A cost that must be paid before an <i>executable</i> bid.',
-      subtitle: 'One challenger, one realised cost, drawn after the price is seen.',
-      widget: '',
-      status: 'input',
-      minutes: 1.5,
-      defines: ['C', 'c_L', 'c_H', 'rho', 'e'],
-      body: `<div class="split"><div class="stack">${m(String.raw`\Pr(C=c_L)=\rho,\quad \Pr(C=c_H)=1-\rho`, 'eq-small')}${m(String.raw`0\le c_L<c_H`, 'eq-small')}${m(String.raw`e\in\{0,1\}`, 'eq-small')}<p class="small muted">Paying the cost reveals the challenger’s value and permits a bid; declining leaves it outside the sale.</p></div>${defs('C,c_L,c_H,rho,e')}</div>`,
-      notes: 'One challenger with one realised cost, not a cheap buyer and an expensive buyer side by side. The two realisations have different jobs. The cheap one is a participation floor: some preparation happens at every feasible price, which keeps target proceeds sensitive to who the challenger is. The expensive one is the responsive margin that a favourable price recruits. Without a floor the two sides unravel together: nobody prepares, proceeds carry no information about quality, and there is nothing left to trade on. So information here means information about the challenger’s acquisition value, valuable only because participation is already positive. If asked: why not drop the stochastic cost? The low-cost floor is what keeps the investor an insider at every price; removing it is a different model and outside this talk.',
-      source: 'Section 2.1; Proposition 2, condition (A1); Proposition A.6.'
-    }),
-
-    S('s09', {
-      act: 'model',
-      kicker: 'Trading',
-      title: 'An informed investor, noise demand, and a <i>competitive</i> price.',
-      subtitle: 'Neither bidder trades. The investor cannot acquire the target.',
-      widget: '',
-      status: 'input',
-      minutes: 2,
-      defines: ['q', 'Z', 'b', 'X', 'k', 'P', 'mu'],
-      body: `<div class="split"><div class="stack">${m(String.raw`q\in[-1,1]`, 'eq-small')}${m(String.raw`X=q+Z,\quad Z\sim\mathrm{Laplace}(0,b)`, 'eq-small')}${m(String.raw`P(X)=\mathbb E[\,\text{target proceeds}\mid X\,]`, 'eq-small')}${m(String.raw`\mu=\Pr(\theta=h\mid X)`, 'eq-small')}<p class="small muted">The investor pays a linear cost k per unit traded and holds no initial position.</p></div>${defs('q,Z,b,X,k,P,mu')}</div>`,
-      notes: 'Four information sets and no overlap between trading and bidding. The investor observes the challenger’s value and nothing about the incumbent beyond its public distribution; it has no position, no control rights and no route to acquiring the target, so this is not a toehold or a free-riding story. Market makers see aggregate flow and only aggregate flow, and they price the preparation each price will induce, so nothing here rests on mispricing. The trading cost is an execution or carrying friction, separate from the adverse-selection impact the pricing rule already generates. The benchmark gives the investor perfect information and the buyer none, which is the extreme case; the robustness slide removes both extremes. If asked: the bound on orders is a normalised trading unit, not ownership, and uniqueness allows arbitrary mixtures within it.',
-      source: 'Section 2.2; equations (2) and (3); Online Appendix C.0.'
-    }),
-
-    S('s10', {
-      act: 'model',
-      kicker: 'Timing',
-      title: 'Sale rule, order, price, cost, preparation, <i>bids</i>.',
-      subtitle: 'The price arrives before the buyer has to commit.',
-      widget: '',
-      status: 'input',
-      minutes: 1.5,
-      body: `<div class="timeline"><article><strong>Sale rule</strong><p>The seller commits publicly to the auction and its reserve ${mi(String.raw`p`)}.</p></article><article><strong>Order</strong><p>The investor learns the challenger’s value and submits ${mi(String.raw`q`)}.</p></article><article><strong>Price</strong><p>Market makers see flow and set ${mi(String.raw`P(X)`)}.</p></article><article class="reveal" data-step="1"><strong>Cost</strong><p>The challenger draws ${mi(String.raw`C`)} privately.</p></article><article class="reveal" data-step="1"><strong>Preparation</strong><p>It observes the price and its cost and chooses ${mi(String.raw`e`)}.</p></article><article class="reveal" data-step="2"><strong>Bids</strong><p>Prepared bidders learn ${mi(String.raw`R`)} and ${mi(String.raw`\theta`)} and bid truthfully.</p></article></div><p class="small muted">${declaration}</p>`,
-      notes: 'Read the order of moves out loud once; it is the only thing on this slide that matters. The sale rule is committed before any trading, so the seller is not reacting to the price. The challenger sees the price and its own cost, never the order flow, the investor’s information or the incumbent’s realised value. Bids are truthful and weakly dominant, so the auction stage adds no strategic content. The parameter line at the bottom is a declaration, not an estimate and not a calibration: it fixes the economy in which the later figures are drawn. Everything in the talk is a comparison between declared economies. If asked: press G at any point and the full notation panel opens, so no symbol has to be remembered.',
-      source: 'Section 2.2; Online Appendix C.0 input declarations.'
-    }),
-
-    S('s11', {
-      act: 'model',
-      kicker: 'The auction',
-      title: 'Who wins, who pays, who <i>keeps</i> the surplus.',
-      subtitle: 'Acquisition arithmetic, conditional on the challenger having prepared.',
-      widget: 'auction',
-      status: 'analytical',
-      minutes: 2,
-      defines: ['g_H', 'g_L', 't', 'Delta_T', 'B'],
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="auction-vline"></div><p class="plot-caption">Challenger value and realised incumbent value, per target share.</p></div><div class="controls">${controls('quality', [['H', 'High challenger'], ['L', 'Low challenger']])}<label for="auction-r">Realised incumbent value R</label><input id="auction-r" type="range" min="0" max="3" step="0.05" value="0.8"><output id="auction-r-value" for="auction-r"></output><button data-reset="auction">Reset</button></div><div class="row">${m(String.raw`g_H=h-\frac r2-\frac{p^2}{2r},\qquad g_L=\frac{\ell^2-p^2}{2r}`, 'eq-small')}</div><div class="row">${m(String.raw`\Delta_T=t_H-t_L=\frac{(r-\ell)^2}{2r},\qquad B_r(\mu)=\mu\,g_H+(1-\mu)\,g_L`, 'eq-small')}</div></div><div class="stack"><div id="auction-readout" class="stack"></div>${defs('g_H,g_L,t,Delta_T,B')}</div></div>`,
-      notes: 'Walk the value line rather than the algebra. Start with a high-value challenger and a low realised incumbent value: the challenger wins and pays the reserve. Drag the realised value upward and the challenger still wins but pays more, so its profit falls one for one with the payment. Now switch to the low-value challenger and cross its value: below it the challenger wins and pays the incumbent’s bid; above it the incumbent wins and the challenger’s own bid sets what the incumbent pays. That asymmetry is the entire source of the spread. This display is auction arithmetic conditional on preparation, not an equilibrium simulation, and ties are broken toward the incumbent for drawing only. If asked: the same comparison holds for any continuous incumbent distribution, which is what Proposition 1 states.',
-      source: 'Section 3.1; equations (4) and (5); Table 1.'
-    }),
-
-    S('s12', {
-      act: 'equilibrium',
-      kicker: 'Equilibrium',
-      title: 'Prices are Bayesian; deviations hold schedules <i>fixed</i>.',
-      subtitle: 'What an equilibrium is here, and the two comparisons that must not be confused.',
-      widget: '',
-      status: '',
-      minutes: 2,
-      defines: ['sigma', 'mu_P', 'e_schedule'],
-      body: `<div class="split wide"><div class="stack">${m(String.raw`(\sigma_H,\sigma_L;\;P,\;\mu_P,\;e)`)}<div class="conditions"><div class="cond"><b>1</b><p class="job">Pricing is Bayesian: the price is the expected terminal payoff of a target share given order flow, anticipating the preparation it will induce.</p><div class="formal">${m(String.raw`P(X)=\mathbb E[\,\text{target proceeds}\mid X\,]`, 'eq-small')}</div></div><div class="cond"><b>2</b><p class="job">The investor’s orders are optimal against a fixed price rule and a fixed preparation schedule, and may be arbitrary mixtures.</p></div><div class="cond"><b>3</b><p class="job">The challenger prepares exactly when expected gross profit at the posterior it reads off the price covers its realised cost.</p><div class="formal">${m(String.raw`B_r(\mu_P)\ge C`, 'eq-small')}</div></div><div class="cond"><b>4</b><p class="job">Prepared bidders bid truthfully, which is weakly dominant in the second-price auction.</p></div></div></div><div class="stack"><div class="split"><div class="stack"><p class="kicker">A deviation</p><p>The investor changes its order against a fixed price function and preparation schedule. It does not get to reprice the market.</p></div><div class="stack"><p class="kicker">A comparison</p><p>A primitive changes, and prices, trading and preparation are re-solved together.</p></div></div>${defs('sigma,mu_P,e_schedule')}</div></div>`,
-      notes: 'One slide, and it prevents half the objections. An equilibrium is conditional order distributions, a measurable price function, Bayesian beliefs given the observed price, optimal preparation and truthful bidding. Beliefs are Bayesian including at atoms, so price jumps and entry jumps are permitted and the arguments never need differentiable prices. The uniqueness claims later use the deviation notion and allow every continuous deviation from arbitrary mixtures, so no candidate order profile is assumed anywhere. The comparison notion is what the two economies later are: strength changes and everything is re-solved. Confusing the two is the fastest way to misread the control slide. If asked: yes, the price can have atoms, and price sufficiency still holds, which is Proposition A.2.',
-      source: 'Section 2.3; Propositions A.1 and A.2.'
-    }),
-
-    S('s13', {
-      act: 'equilibrium',
-      kicker: 'What the price reveals',
-      title: 'Bounded posteriors, a threshold, and a residual <i>advantage</i>.',
-      subtitle: 'One order-flow realisation in the strong economy, at full orders.',
-      widget: 'tape',
-      status: 'analytical',
-      minutes: 3,
-      defines: ['m', 'M', 'tau', 'x_star', 'A_H'],
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="tape-plot"></div><p class="plot-caption">Posterior against order flow; break-even belief marked; at the declared benchmark.</p></div><div class="controls"><label for="tape-x">Order flow X</label><input id="tape-x" type="range" min="-3" max="3" step="0.02" value="-1.5"><output id="tape-x-value" for="tape-x"></output><button id="tape-demo">Cross the threshold</button><button data-reset="tape">Reset</button></div><div class="row">${m(String.raw`m=\frac1{1+e^{2/b}},\quad M=1-m,\quad \tau=\frac{c_H-g_L}{g_H-g_L},\quad x^*=\frac b2\log\frac{\tau}{1-\tau}`, 'eq-small')}</div><div class="row">${m(String.raw`A_H(x)=e(x)\,\Delta_T\,[1-\mu(x)]`, 'eq-small')}</div></div><div class="stack"><div id="tape-readout" class="stack"></div>${defs('m,M,tau,x_star,A_H')}</div></div>`,
-      notes: 'Drag the tape from a heavy sale to a heavy purchase. Bounded likelihood ratios under this noise law keep the posterior inside a band and flat outside the full-order interval, which is why the plateau matters later. Market makers price the preparation each flow induces, so the anticipated increase in proceeds is already in the price; what the investor keeps is the residual, which is preparation probability times the payoff spread times the market’s remaining uncertainty. When the posterior crosses the break-even belief, the expensive cost realisation prepares as well. This is one realisation inside a declared economy, not a re-solved model, and the readout averages over cost realisations at that flow. The challenger sees the price, not the flow. If asked: the bounds come from the noise law alone and hold for every candidate order distribution, mixtures included.',
-      source: 'Sections 3.2 and 3.3; equations (7) to (12); Propositions A.1 and A.2.'
-    }),
-
-    S('s14', {
-      act: 'results',
-      kicker: 'Proposition 1',
-      title: 'One auction, two claims, <i>opposite</i> responses.',
-      subtitle: 'Move the distribution of incumbent value, not a realised draw.',
-      widget: 'dial',
-      status: 'analytical',
-      minutes: 2.5,
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="dial-vline"></div><p class="plot-caption">The incumbent’s range stretches as strength rises.</p></div><div class="plot-shell"><div id="dial-curves"></div><p class="plot-caption">Gross challenger profit and the target-payoff spread against strength, annotated at the declared benchmark.</p></div><div class="controls"><label for="dial-r">Incumbent strength r</label><input id="dial-r" type="range" min="1.01" max="3.6" step="0.01" value="1.2"><output id="dial-r-value" for="dial-r"></output>${controls('dial-preset', [['weak', 'Weak'], ['strong', 'Strong']])}</div></div><div class="stack"><div class="readout" id="dial-profit"><p class="kicker">Gross profit at the prior</p><p class="metric"></p></div><div class="readout" id="dial-spread"><p class="kicker">Target-payoff spread</p><p class="metric"></p></div>${rev(1, '<p class="display">The challenger keeps <i>less</i> at every belief; shareholders’ proceeds become more sensitive to who the challenger is.</p>')}</div></div>`,
-      notes: 'This is the engine of the paper, so give it the time. Keep the distinction from the auction slide explicit: there we moved a realised draw, here we move the distribution. Drag from the weak preset to the strong preset and the two readouts move against each other. Gross acquisition profit at the prior falls because the winning payment rises. The spread rises because the gap between what shareholders receive from a winning high-value challenger and from a winning incumbent widens. Both are acquisition-stage payoffs, with no claim that any point along the slider is an equilibrium, and nothing is solved in the deck. If asked: the spread is the expectation of the incumbent value above the low value, truncated below, so it rises under any first-order strengthening, not only the uniform one.',
-      source: 'Proposition 1; equations (4) to (6); Figure 1.'
-    }),
-
-    S('s15', {
-      act: 'results',
-      kicker: 'Proposition 2',
-      title: 'Three conditions, one <i>open</i> set.',
-      subtitle: 'Strict inequalities, jointly satisfiable, and not a knife edge.',
-      widget: '',
-      status: 'analytical',
-      minutes: 2,
-      defines: ['r_0', 'r_1'],
-      body: `<div class="conditions"><div class="cond"><b>A1</b><p class="job">Cheap preparation is worthwhile even after the worst feasible news.</p><div class="formal reveal" data-step="1">${m(String.raw`0\le c_L<B_{r_1}(m)`, 'eq-small')}</div></div><div class="cond"><b>A2</b><p class="job">Expensive preparation needs favourable news, and only the strong economy can supply it.</p><div class="formal reveal" data-step="2">${m(String.raw`B_{r_0}(1/2)<c_H<B_{r_1}(M)`, 'eq-small')}</div></div><div class="cond"><b>A3</b><p class="job">Trading loses money in the weak economy and pays at every correctly signed order in the strong one.</p><div class="formal reveal" data-step="3">${m(String.raw`\Delta_T(r_0)<k<\left(1-\tfrac1b\right)\rho\,m\,\Delta_T(r_1)`, 'eq-small')}</div></div></div>${rev(4, '<p class="display">Then trading and on-path preparation are <i>unique</i> in both economies, and preparation is strictly higher against the stronger incumbent.</p>')}${defs('r_0,r_1')}`,
-      notes: 'Read each condition by its job before showing the inequality. A1 is the participation floor. A2 places the expensive cost above anything the weak economy can justify and below what the best feasible strong-economy belief delivers, which puts the break-even belief strictly inside the feasible band. A3 puts the trading cost above every possible informational return in the weak economy and below a global bound on marginal trading profit in the strong one. These are strict inequalities on a nonempty open set, so this is not a knife edge, and uniqueness comes from global bounds rather than from searching over candidate profiles. If asked: why not drop the stochastic cost? The low-cost floor is what keeps the investor an insider at every price; endogenising it is a different model and outside this talk.',
-      source: 'Proposition 2, parts (i) and (ii); conditions (A1) to (A3); Appendix A.'
-    }),
-
-    S('s16', {
-      act: 'results',
-      kicker: 'Proposition 2, seen',
-      title: 'Stronger competition <i>raises</i> preparation.',
-      subtitle: 'Same primitives in both economies. Only incumbent strength differs.',
-      widget: 'economies',
-      status: 'analytical',
-      minutes: 2,
-      defines: ['E', 'O_H'],
-      body: `<div class="split wide"><div class="stack"><div id="economies-view"></div><p class="plot-caption">Preparation and high-value ownership in the two economies, at the declared benchmark.</p><div class="controls">${controls('benchmark', [['weak', 'Weak incumbent'], ['strong', 'Strong incumbent']])}<button id="economies-compare">Compare both</button></div></div><div class="stack">${m(String.raw`\mathsf E=\Pr(\text{the challenger prepares})`, 'eq-small')}${m(String.raw`\mathsf O_H=\Pr(\text{a high-value challenger owns the target})`, 'eq-small')}${defs('E,O_H')}</div></div>`,
-      notes: 'Show the weak economy first: no trade, an uninformative price, preparation at the floor, because the investor’s best possible gross advantage is below its trading cost. Then the strong economy: correctly signed full orders, an informative price, and the expensive cost realisation preparing after favourable flows. Then compare them side by side. In each economy the trading outcome and the on-path preparation outcome are unique, allowing arbitrary mixtures and every continuous deviation, so neither is a selected equilibrium. These are model outputs at declared primitives, not empirical estimates and not a joint calibration. High-value ownership rises with preparation because the extra entry is tilted toward high values. If asked: the deterrence force is unchanged between the panels; what moves is the information experiment, and the next slide isolates exactly that.',
-      source: 'Proposition 2; Section 4.2; Table 2, Panel A.'
-    }),
-
-    S('s17', {
-      act: 'results',
-      kicker: 'Control one',
-      title: 'Freeze the information and deterrence <i>returns</i>.',
-      subtitle: 'Hold the investor’s orders at their informative level while strength rises.',
-      widget: 'control',
-      status: 'numerical diagnostic',
-      minutes: 2,
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="control-plot"></div><p class="plot-caption">Preparation in the weak and strong economies, at the declared benchmark.</p></div><div class="controls">${controls('experiment', [['feedback', 'Endogenous information'], ['frozen', 'Fixed information']])}</div></div><div class="stack"><div id="control-readout" class="stack"></div>${rev(1, '<p class="display">With the price experiment held fixed, a stronger rival can only <i>remove</i> a reason to prepare.</p>')}</div></div>`,
-      notes: 'This is the decisive diagnostic, and the slide to come back to whenever someone doubts the channel. Under endogenous information, preparation rises with strength. Switch to the frozen experiment, which holds the investor’s orders at their informative level in both economies, and preparation falls, exactly as the received logic predicts. That statement is general: at every belief and every cost realisation, lower gross acquisition profit can only remove a preparation incentive, for any fixed information experiment. The frozen weak-incumbent profile is a control and not an investor equilibrium, since full orders are unprofitable there and admit profitable deviations. Its only job is to isolate the ordinary deterrence force. If asked: in the strong economy the frozen profile coincides with the equilibrium profile, so the whole difference between the panels comes from the weak economy.',
-      source: 'Proposition A.3; Section 4.2; Table 2, Panel B.'
-    }),
-
-    S('s18', {
-      act: 'results',
-      kicker: 'Control two',
-      title: 'Change the payment rule and the sign <i>flips</i>.',
-      subtitle: 'A zero-reserve, verifiable-value bargaining institution instead of the auction.',
-      widget: 'bargaining',
-      status: 'analytical',
-      minutes: 2,
-      defines: ['eta', 'Delta_eta'],
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="bargaining-plot"></div><p class="plot-caption">Target-payoff spread against the seller’s bargaining weight, at the declared benchmark.</p></div><div class="controls"><label for="seller-weight">Seller bargaining weight &eta;</label><input id="seller-weight" type="range" min="0" max="1" step="0.01" value="0.25"><output id="seller-weight-value" for="seller-weight"></output>${controls('eta', [['0.25', 'Below one half'], ['0.5', 'At one half'], ['0.75', 'Above one half']])}</div></div><div class="stack"><div id="bargaining-readout" class="stack"></div>${m(String.raw`\Delta_\eta=\eta\,(h-\ell)+(1-2\eta)\,\mathbb E[(R-\ell)_+]`, 'eq-small')}${defs('eta,Delta_eta')}</div></div>`,
-      notes: 'Drag the weight and watch the sign of the comparative static change. Take a realised incumbent value above the low challenger value. A winning high-value challenger pays a blend of that value and its own, with sensitivity to the rival equal to one minus the seller’s weight. A losing low-value challenger leaves the rival paying, with sensitivity equal to the weight. Competition widens the spread precisely when the first exceeds the second, so the effect is positive below one half, zero at one half and negative above it, and the readout draws that flip. Challenger profit still weakly falls everywhere. This is payment-stage comparative statics only: trading, preparation and welfare under bargaining are not solved. If asked: no entry reversal is claimed under bargaining, and the weight equal to one is excluded from the declared domain.',
-      source: 'Proposition A.8; Section 6.2; equation (14); Figure 4.'
-    }),
-
-    S('s19', {
-      act: 'results',
-      kicker: 'Proposition 3',
-      title: 'Between the two economies, equilibria <i>coexist</i>.',
-      subtitle: 'Three established nodes, certified intervals, and no path between them.',
-      widget: 'coexist',
-      status: 'computer-assisted',
-      minutes: 3,
-      defines: ['r_2'],
-      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="coexist-plot"></div><p class="plot-caption">Preparation against incumbent strength; certified intervals at the declared benchmark.</p></div></div><div class="stack">${rev(3, `<p class="display">Push strength far enough and even the best feasible news cannot cover the <i>expensive</i> cost.</p>`)}${rev(3, m(String.raw`B_{r_2}(M)<c_H\quad\Longrightarrow\quad \mathsf E=\rho`, 'eq-small'))}${defs('r_2')}</div></div>`,
-      notes: 'Three things in order. First the analytical nodes: the two economies plus the collapse strength. They are points, and I do not join them. Second the certified nodes, where interval arithmetic encloses exact informative equilibria with strictly ordered preparation, each coexisting with no trade at the same parameters, because against an uninformative price a unilateral order cannot cover its cost. Third the collapse: where even the upper posterior bound fails to justify the expensive cost, trading stays informative but preparation returns to the floor. Participation is therefore not monotone in strength. The intermediate correspondence is open; the searches return continuations found, and absence of a branch establishes nothing. If asked: which equilibrium and why? I select none. I report every branch I can certify and read no monotone path into the gaps.',
-      source: 'Proposition 2, part (iii); Proposition 3; Figure 2; Section 4.3.'
-    }),
-
-    S('s20', {
-      act: 'next',
-      kicker: 'Robustness',
-      title: 'The mechanism <i>survives</i> changes in primitives.',
-      subtitle: 'Preparation in the weak and the strong economy, specification by specification.',
-      widget: '',
-      status: 'analytical',
-      minutes: 1.5,
-      body: `<table class="data-table"><thead><tr><th>Specification</th><th>Weak incumbent</th><th>Strong incumbent</th></tr></thead><tbody><tr><td>Laplace noise, atomic costs</td><td>${pct('base_entry_weak')}</td><td class="highlight">${pct('base_entry_strong')}</td></tr><tr><td>Logistic noise, atomic costs</td><td>${pct('base_entry_weak')}</td><td>${pct('logistic_entry_strong')}</td></tr><tr><td>Laplace noise, atomless costs</td><td>${pct('base_entry_weak')}</td><td>${pct('cost_mix_laplace_entry_strong')}</td></tr><tr><td>Moderate acquisition values</td><td>${pct('moderate_entry_weak')}</td><td>${pct('moderate_entry_strong')}</td></tr><tr><td>Complementary private signals</td><td>${pct('signal_entry_weak')}</td><td>${pct('signal_entry_strong')}</td></tr></tbody></table><p class="small muted">Each row is its own declared comparison at the declared benchmark, with its own sufficient conditions; levels are not comparable across rows.</p>`,
-      notes: 'Take the rows as separate theorems rather than as a robustness sweep. Logistic noise has the same bounded log-density derivative, so the global trading bounds survive; what changes is where posterior mass sits, which is why the level differs. Narrow atomless cost supports preserve both the participation floor and the responsive expensive margin, so the cost atom is not doing the work. The moderate-value row removes the tenfold gap between acquisition values; what matters is where incumbent strength sits relative to the low value. The last row is the one that answers the obvious objection: the buyer there holds a more accurate private signal than the investor and the reversal still happens, because the signals are about different things. If asked: the moderate-value and private-signal rows use distinct parameter vectors, so this is not one joint calibration.',
-      source: 'Propositions A.5, A.6 and A.7; Sections 5.1 to 5.3; Table 3.'
-    }),
-
-    S('s21', {
-      act: 'next',
-      kicker: 'What comes next',
-      title: 'Evidence, and the <i>seller’s</i> problem.',
-      subtitle: 'What I would have to build, and what the theory still owes.',
-      widget: '',
-      status: 'open',
-      minutes: 1.5,
-      body: `<div class="split"><div class="conditions"><div class="cond"><b>When</b><p class="job">Was the sale opportunity publicly visible, and from which date?</p></div><div class="cond reveal" data-step="1"><b>What</b><p class="job">When did costly preparation begin, rather than a public bid?</p></div><div class="cond reveal" data-step="2"><b>Why</b><p class="job">Could the price have changed that decision, rather than anticipated it?</p></div></div><div class="stack"><p class="kicker">The seller’s problem</p><p>Terms change both what a winner pays and what the price can reveal before anyone prepares.</p>${rev(3, '<p>Fixed-reserve comparisons with supported trading continuations establish feasible improvements.</p>')}${rev(4, '<p class="muted">The optimal reserve stays open: several continuations can share the same orders because the price-pooling rule differs, so an envelope of found revenues is not the seller’s solution.</p>')}</div></div>`,
-      notes: 'Three empirical requirements in order of difficulty. A publicly understood sale opportunity that remains contestable while a buyer decides; a stock that merely trades during a confidential negotiation does not qualify, and the date an event occurred differs from the date it became public. An outcome closer to the model than counts of announced offers: the start of substantive diligence, or a proposal that required costly preparation. And separation of learning from prices from prices that already reflect anticipated bidder arrival. The Online Appendix proposes an institutional pilot that reconstructs those chronologies from disclosure records. It is a design only; no sample has been assembled and no identification strategy is reported. If asked: the welfare comparison behind the seller’s problem, and the matched-price diagnostic that separates level from content, are on the access backup slide.',
-      source: 'Sections 6.3 and 7; Appendix A.7; Online Appendix C.6 and D.'
-    }),
-
-    S('s22', {
-      act: 'next',
-      kicker: '',
-      title: 'Competition <i>creates</i> competition.',
-      subtitle: '',
-      widget: '',
-      status: '',
-      minutes: 0.5,
-      body: `${rev(1, '<p class="endline">A stronger rival can make information worth <i>trading</i> on.</p>')}${rev(2, '<p class="endline">That information can make preparation worth <i>paying</i> for.</p>')}<div class="controls"><button data-goto="s14">The two claims</button><button data-goto="s15">Proposition 2</button><button data-goto="s17">The control</button><button data-goto="b1">Technical slides</button></div>`,
-      notes: 'Two lines, then stop talking. The first is the trading margin, the second the participation margin, and the paper is the claim that the second can outweigh the direct deterrence force on an open set of primitives. Say plainly what the result is not: it is a sufficient-condition result resting on a participation floor and on a payment rule that loads weight on the runner-up, and it is a comparison between declared economies rather than an estimate of anything. Stay here for the discussion and use the buttons to jump back to the dial, the theorem or the information control. If asked: the sources, both PDFs and the provenance hashes are on the last backup slide.',
-      source: 'Section 8; Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders.'
-    }),
+    S('s01', {act:'puzzle', theme:'dark', minutes:0.5,
+      body:`<div class="hero"><p class="author">Austin Li <span>UCL School of Management</span></p><h1>Competition<br><span>creates competition.</span></h1><div class="hero-bottom"><p class="hero-subtitle">Stock prices and the discovery<br>of takeover bidders</p><div class="hero-signal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div>`,
+      notes:notes('A stronger incumbent can make a second buyer more willing to incur preparation costs. The claim concerns an equilibrium information channel. Introduce the question verbally and move promptly to the decision facing the buyer.','The talk develops sufficient conditions in a theoretical model. The benchmark numbers are model illustrations.'),source:'Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders.'}),
+    S('s02', {act:'puzzle',minutes:1.5,title:'A buyer must decide<br>before it knows enough.',
+      subtitle:'Preparing an executable bid requires a costly commitment.',
+      body:`<div class="decision-window"><div class="window-edge"><span>Public sale opportunity</span><p>The target can be acquired.</p></div><div class="window-middle"><div class="market-line"><span></span></div><strong>The stock keeps trading</strong><p>The potential buyer can observe the market while deciding.</p></div><div class="window-edge"><span>Executable proposal</span><p>Preparation costs have been incurred.</p></div></div>${rev(1,'<div class="takeaway">The relevant interval is public and still open to another buyer.</div>')}<p class="small">Imprivata’s 2016 proxy distinguishes approaches, outreach, and indications conditional on diligence. This motivates the stage structure, not the price-learning mechanism.</p>`,
+      notes:notes('Explain preparation as diligence, verification, financing and the capacity needed to submit an executable proposal. One buyer is already prepared. The challenger can watch prices before committing. A confidential sale revealed only after participation is settled does not fit. The institutional example documents stages, not a causal effect of prices.','An empirical application must establish the public decision window transaction by transaction. See Section 1.1 and Online Appendix D.'),source:'Section 1.1; Imprivata (2016); Boone and Mulherin (2007).'}),
+    S('s03', {act:'puzzle',minutes:1,title:'A stronger rival leaves<br>less to win.',
+      subtitle:'The conventional deterrence force, holding information fixed.',
+      body:`${flow(['<span>Stronger incumbent</span><strong>A tougher auction</strong>','<span>Challenger</span><strong>Lower acquisition profit</strong>','<span>Preparation</span><strong>Less reason to pay</strong>'])}${rev(1,'<p class="large-note">That logic remains intact in this paper.</p>')}`,
+      notes:notes('Start from acquisition-stage economics. At every fixed posterior a first-order strengthening of the incumbent reduces the challenger’s expected gross acquisition profit. For a fixed cost draw this can only remove an incentive to prepare. Do not describe this as a false claim or claim that all previous papers assume away learning.','Proposition 1 establishes the payoff comparison. Proposition A.3 gives the fixed-experiment preparation comparison.'),source:'Proposition 1; Proposition A.3. Entry literature: Levin and Smith (1994); Gentry and Stroup (2019).'}),
+    S('s04', {act:'puzzle',minutes:1.25,title:'The buyer’s information<br>need not stay fixed.',
+      body:`<div class="channel-diagram">${flow(['<span>Competition</span><strong>Target payments change</strong>','<span>Investor</span><strong>Trading incentives change</strong>'])}${rev(1,flow(['<span>Stock market</span><strong>The price reveals information</strong>','<span>Challenger</span><strong>The preparation decision changes</strong>'],'return-flow'))}</div>${rev(2,'<p class="takeaway">Competition changes the information available before commitment.</p>')}`,
+      notes:notes('Introduce the possible feedback in words. A traded target share is a claim on acquisition payments. A change in the payment sensitivity to challenger quality affects informed trading. The resulting price may help the buyer learn before paying to prepare. This is a candidate mechanism whose equilibrium validity is established later.','The price is competitively set and already anticipates preparation. The mechanism does not rely on market makers ignoring the real response.'),source:'Sections 1 and 3.'}),
+    S('s05', {act:'puzzle',theme:'dark',minutes:1,title:'When does competition<br>recruit another bidder?',
+      body:`<div class="question-frame"><p class="display">Can the information effect<br>outweigh direct deterrence?</p><div class="question-balance"><div><span>At a fixed belief</span><strong>Less profit</strong></div><span class="balance-mark">/</span><div><span>In equilibrium</span><strong>More useful information</strong></div></div></div>`,
+      notes:notes('State the exact research question. Compare economies that differ only in incumbent strength and solve the trading, pricing and preparation schedules again in each. The object is costly preparation, not a count of expressions of interest or public bids.','The theorem identifies a nonempty open set of primitives. It is not a general monotonicity result across all strengths.'),source:'Section 4.1; Proposition 2.'}),
+    S('s06', {act:'puzzle',minutes:1.25,title:'Bidder participation meets<br>learning from prices.',
+      body:`<div class="literature-map"><article><h3>Endogenous participation</h3><p>Preparation costs shape who enters the auction.</p><p class="citation">Levin &amp; Smith (1994)<br>Gentry &amp; Stroup (2019)<br>Persico (2000): information acquisition</p></article><article><h3>Prices and real decisions</h3><p>Real decisions and incentives to produce information interact.</p><p class="citation">Dow, Goldstein &amp; Guembel (2017)<br>Edmans, Goldstein &amp; Jiang (2015)<br>Luo (2005): completion decisions</p></article></div><div class="literature-bridge"><strong>This paper</strong><p>The sale rule links the entrant’s profit to the information sensitivity of a different claim: target shares.</p></div>`,
+      notes:notes('Spend just over one minute locating the paper. The closest antecedent is Dow, Goldstein and Guembel, where a real investment decision feeds back into information production. Here acquisition surplus is split into two claims, and competition moves the returns to information in opposite directions. Persico studies information acquisition by bidders; here the informed investor is outside the auction. Luo studies learning at completion, after the preparation margin here.','The fuller related-work discussion is Section 1, including negotiations with market feedback, toeholds and tendering. Avoid a blanket priority claim.'),source:'Section 1, related research.'}),
+    S('s07', {act:'puzzle',minutes:1.5,title:'The payment rule links<br>competition to information.',
+      body:`<div class="contribution-list"><article><span>Mechanism</span><p>A stronger incumbent lowers buyer profits but increases the sensitivity of target proceeds to challenger value.</p></article>${rev(1,'<article><span>Result</span><p>Under sufficient conditions, informative trading recruits additional preparation against the stronger incumbent.</p></article>')}${rev(2,'<article><span>Comparison</span><p>Holding the information experiment fixed restores the deterrence prediction.</p></article>')}</div>`,
+      notes:notes('Preview the answer before the formal setup. The contribution is the opposition between returns to information, plus a sufficient-condition theorem that resolves trading and preparation jointly. Uniqueness concerns trading and on-path preparation in the compared economies. The fixed-information control establishes what explains the reversal.','Off-path pricing rules need not be unique. Intermediate strengths may admit multiple equilibria.'),source:'Propositions 1 and 2; Proposition A.3.'}),
+    S('s08', {act:'model',minutes:1.5,status:'input',title:'Who knows what?',defines:['R','r','theta','ell','h','p'],
+      body:`<div class="cast-new"><article><span class="role-symbol">${mi('R')}</span><h3>Incumbent</h3><p>Already prepared. Knows its own acquisition value.</p>${m(String.raw`R\sim U[0,r]`,'eq-small')}</article><article><span class="role-symbol">${mi(String.raw`\theta`)}</span><h3>Challenger</h3><p>Learns its value by preparing. Equal prior probabilities.</p>${m(String.raw`\theta\in\{\ell,h\}`,'eq-small')}</article><article><span class="role-symbol">${mi(String.raw`\theta`)}</span><h3>Investor</h3><p>Knows challenger value. Trades target shares and cannot acquire the target.</p></article></div><div class="model-line">${m(String.raw`0<p<\ell<r<h`,'eq-small')}<p>The seller commits to a cash second-price auction with reserve ${mi('p')}. A larger ${mi('r')} strengthens the incumbent’s value distribution.</p></div>`,
+      notes:notes('Define the three economic roles and the seller. Incumbent strength is the public distribution of acquisition value, not an announced bid. The challenger has equal prior odds of high and low value. All agents are risk neutral. Values, cost and noise demand are mutually independent. Standalone value is zero and all quantities are per target share.','Neither bidder trades. There are no toeholds, tendering or shareholder holdout. The uniform distribution gives closed forms; Proposition 1 allows general continuous incumbent distributions.'),source:'Sections 2.1–2.2; equation (1).'}),
+    S('s09', {act:'model',minutes:1.5,status:'input',title:'Preparation makes<br>an executable bid possible.',defines:['C','c_L','c_H','rho','e'],
+      body:`<div class="split"><div class="stack"><p class="large-note">One challenger.<br>One privately realised cost.</p>${m(String.raw`C=\begin{cases}c_L&\text{with probability }\rho\\c_H&\text{with probability }1-\rho\end{cases}`,'eq-small')}${m(String.raw`0\le c_L<c_H,\qquad 0<\rho<1`,'eq-small')}</div><div class="choice-tree"><article><span>Prepare: ${mi('e=1')}</span><h3>Pay ${mi('C')}</h3><p>Learn acquisition value and become eligible to bid.</p></article><article><span>Stay out: ${mi('e=0')}</span><h3>No executable offer</h3><p>The buyer cannot submit a bid at its prior expected value.</p></article></div></div>`,
+      notes:notes('The cost is required for an executable proposal, rather than an optional research report. The draw occurs privately after the price is seen and is independent of values. There is one challenger, not simultaneous low-cost and high-cost buyers. Under the theorem, low-cost draws create a preparation floor, while high-cost draws respond to favourable information.','The extension with narrow atomless cost supports shows the reversal need not depend on cost atoms.'),source:'Section 2.1; Proposition A.6.'}),
+    S('s10', {act:'model',minutes:2,status:'input',title:'Trading precedes<br>the preparation decision.',defines:['q','Z','b','X','k','P','mu','V_T'],
+      body:`<div class="market-model"><div class="stack">${m(String.raw`q\in[-1,1],\quad X=q+Z`)}${m(String.raw`Z\sim\mathrm{Laplace}(0,b),\quad b>1`,'eq-small')}${m(String.raw`\text{Investor profit: }q[V_T-P(X)]-k|q|`,'eq-small')}<p>The investor sees ${mi(String.raw`\theta`)} and pays ${mi('k|q|')}, with ${mi('k>0')}. Market makers observe only aggregate flow ${mi('X')}.</p></div><div class="equation-feature">${m(String.raw`P(X)=\mathbb E[V_T\mid X]`)}<p>${mi('V_T')} is the terminal payoff of a target share. The challenger observes the price and its cost.</p></div></div><div class="timeline compact"><article><strong>Sale rule</strong></article><article><strong>Trade</strong></article><article><strong>Price</strong></article><article><strong>Cost draw</strong></article><article><strong>Prepare</strong></article><article><strong>Bid</strong></article></div><p class="small">Write ${mi(String.raw`\mu`)} for the posterior probability of high challenger value. The challenger does not observe order flow.</p>`,
+      notes:notes('Read the timing once. The seller commits before trading; the investor observes quality and trades; market makers set the price from flow; the challenger observes price, draws cost and decides; prepared bidders bid truthfully. The market price incorporates expected participation. The linear trading cost is a separate friction from price impact.','Bounded orders are small normalised trading units, not ownership. The investor has no initial position. The investor payoff is q times the difference between terminal proceeds and price, less the trading cost.'),source:'Section 2.2; equations (2)–(3).'}),
+    S('s11', {act:'model',minutes:1.5,status:'analytical',title:'Who wins, and who pays?',widget:'auction',defines:['t'],
+      body:`<div class="split wide"><div class="stack"><div id="auction-vline" class="plot-shell"></div><div class="controls">${controls('quality',[['H','High value'],['L','Low value']])}<label for="auction-r">Incumbent value</label><input id="auction-r" type="range" min="0" max="3" step="0.05" value="0.8"><output id="auction-r-value"></output><button data-reset="auction">Reset</button></div><p class="large-note">A high-value challenger wins.<br>A low-value challenger can lose.</p><p class="small">Conditional on preparation, ${mi('t_H')} and ${mi('t_L')} denote expected target proceeds by challenger type. Without preparation, proceeds are ${mi('t_0')}.</p></div><div id="auction-readout" class="stack"></div></div>`,
+      notes:notes('Move the realised incumbent value. A high-value challenger wins and pays the larger of the reserve and incumbent value. A low-value challenger wins below its own value and loses above it. When it loses, its bid sets the incumbent’s payment. All expected payoffs integrate over the incumbent distribution. The display is auction arithmetic conditional on preparation.','A bid at the reserve is admissible. With continuous incumbent value, acquisition-value ties have probability zero. Do not confuse changing a realised draw here with shifting the distribution later.'),source:'Section 3.1; equation (4).'}),
+    S('s12', {act:'model',minutes:1.5,status:'input',title:'Prices and preparation<br>must be jointly consistent.',defines:['sigma','mu_P','e_schedule'],
+      body:`<div class="equilibrium-chain">${flow(['<span>Investor</span><strong>Optimal orders</strong>','<span>Market makers</span><strong>Competitive price</strong>','<span>Challenger</span><strong>Optimal preparation</strong>'])}<p class="loop-caption">Anticipated preparation determines the payoff that investors trade.</p></div><div class="split"><div class="rule-block"><h3>Test a deviation</h3><p>Hold the candidate price and preparation schedules fixed. Allow every order and arbitrary mixtures.</p></div><div class="rule-block"><h3>Compare economies</h3><p>Change incumbent strength and solve those schedules again.</p></div></div><p class="small">${mi(String.raw`\sigma_H,\sigma_L`)} are conditional order distributions. ${mi(String.raw`\mu_P`)} is the belief given price. ${mi(String.raw`e(\cdot)`)} is the preparation schedule.</p>`,
+      notes:notes('Define equilibrium as conditional investor order distributions, a measurable competitive price, Bayesian beliefs from price, optimal preparation and truthful bidding. The distinction between deviations and comparative statics is essential. Changing an order does not cause market makers to re-solve their strategy. Comparing strengths does.','All continuous deviations and arbitrary mixed orders are allowed. The appendix gives the measure-theoretic treatment and null-set invariance.'),source:'Section 2.3; Online Appendix A.'}),
+    S('s13', {act:'mechanism',minutes:2,status:'analytical',title:'A stronger incumbent<br>reduces acquisition profit.',defines:['g_H','g_L','B'],
+      body:`<div class="split wide"><div class="stack"><p class="small">Expected acquisition profit before preparation costs</p>${m(String.raw`B_r(\mu)=\mu g_H(r)+(1-\mu)g_L(r)`)}<div class="equation-feature">${m(String.raw`\text{Prepare iff }B_r(\mu_P)\ge C`)}</div><p>${mi('g_H')} and ${mi('g_L')} are profits conditional on high and low value.</p></div><div class="derivative-statement">${m(String.raw`\left.\frac{\partial B_r(\mu)}{\partial r}\right|_\mu<0`,'eq-big')}<p>At every fixed belief,<br>the preparation incentive falls.</p></div></div>`,
+      notes:notes('Tie the formal preparation rule to the institutional decision. Conditional profits fall because a stronger incumbent raises the price the challenger must beat. A posterior is the probability weight on high quality. Holding it fixed, the weighted profit falls. Equality leads to preparation under the declared convention.','The comparative static extends to first-order stochastic strengthening of a continuous incumbent distribution. The closed forms are in the payoff appendix slide.'),source:'Proposition 1; equations (4)–(6); Proposition A.3.'}),
+    S('s14', {act:'mechanism',minutes:2.5,status:'analytical',title:'The same competition<br>widens the target-payoff spread.',defines:['Delta_T'],
+      body:`<div class="payoff-cases"><article><h3>Incumbent value below ${mi(String.raw`\ell`)}</h3><p>Either challenger type wins and pays the same amount.</p><strong>No difference in target proceeds</strong></article><article class="accent-case"><h3>Incumbent value above ${mi(String.raw`\ell`)}</h3><p>A high-value challenger pays ${mi('R')}. A low-value challenger loses, and the incumbent pays ${mi(String.raw`\ell`)}.</p><strong>The difference is ${mi(String.raw`R-\ell`)}</strong></article></div><div class="equation-ribbon">${m(String.raw`\Delta_T(r)\equiv t_H-t_L=\mathbb E[(R-\ell)_+]=\frac{(r-\ell)^2}{2r}`)}${m(String.raw`\Delta_T'(r)>0`,'eq-small')}</div>`,
+      notes:notes('This is the key payment argument. Below the low value both challenger types face the same winning payment. Above it, payments diverge across types. The stronger incumbent increases the expected positive part of its value above the low value. This makes the investor’s information more relevant to the traded payoff. A wider spread alone is not yet an equilibrium trading result.','For a general incumbent distribution the spread is the integral of its survival function above the low value. This yields the first-order stochastic comparative static.'),source:'Proposition 1; equations (4)–(6).'}),
+    S('s15', {act:'mechanism',minutes:2.5,status:'analytical',title:'A price can reveal<br>the belief needed to prepare.',defines:['m','M'],
+      body:`<div class="inference-steps"><article><span>Noise limits learning</span>${m(String.raw`m\le\mu_X\le M,\quad m=\frac{1}{1+e^{2/b}},\quad M=1-m`,'eq-small')}<p>The same bounds hold for the price posterior.</p></article><article><span>Low-cost preparation sustains the claim</span>${m(String.raw`c_L<B_r(m)\quad\Longrightarrow\quad e(P)\ge\rho>0`,'eq-small')}</article><article class="reveal" data-step="1"><span>Competitive pricing can be inverted</span>${m(String.raw`P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X]`,'eq-small')}${m(String.raw`\mu_X=\frac{P-t_0-e(P)(t_L-t_0)}{e(P)\Delta_T}`,'eq-small')}</article></div>`,
+      notes:notes('Spend time on the bridge from market makers to the buyer. Noise bounds the market-maker posterior for all order strategies. The low-cost floor ensures positive preparation, so the denominator of the inversion is positive. Although the buyer observes price alone, the equilibrium schedule lets it recover the posterior based on flow. The argument permits price jumps and atoms. The detailed threshold display is available in backup.','This result requires the preparation floor and positive spread. Without a floor, pooling and price sufficiency require separate analysis. See Propositions A.1 and A.2.'),source:'Section 3.2; equations (7)–(10); Propositions A.1–A.2.'}),
+    S('s16', {act:'mechanism',minutes:2,status:'analytical',title:'Two claims respond<br>in opposite directions.',widget:'dial',defines:['A_H'],
+      body:`<div class="split wide"><div class="stack"><div id="dial-vline"></div><div id="dial-curves"></div><div class="controls"><label for="dial-r">Strength r</label><input id="dial-r" type="range" min="1.01" max="3.6" step="0.01" value="1.2"><output id="dial-r-value"></output>${controls('dial-preset',[['weak','Weak'],['strong','Strong']])}</div></div><div class="stack"><div class="paired-readouts"><div id="dial-profit" class="readout"><p>Buyer profit at the prior</p><p class="metric"></p></div><div id="dial-spread" class="readout"><p>Target-payoff spread</p><p class="metric"></p></div></div>${m(String.raw`A_H(x)=e(P(x))\Delta_T[1-\mu_X(x)]`,'eq-small')}<p class="small">${mi('A_H')} is the investor’s residual advantage from buying in the high state. Preparation and residual uncertainty also matter.</p></div></div>`,
+      notes:notes('Move between the declared weak and strong settings. The slider displays acquisition-stage payoffs, not an equilibrium solution at each strength. The profit curve falls while the spread rises. Competitive pricing incorporates expected preparation, but leaves a quality-informed investor a residual advantage. This advantage scales with the spread, preparation probability and remaining uncertainty. The theorem will compare global bounds to trading costs.','The low-state selling advantage has the analogous posterior factor. The global trading proof accounts for the way a larger order shifts the distribution of prices.'),source:'Figure 1; equations (5) and (11). Slider: acquisition-stage arithmetic.'}),
+    S('s17', {act:'results',minutes:2,status:'analytical',title:'Three conditions establish<br>the reversal.',defines:['r_0','r_1'],
+      subtitle:'Compare weak and strong incumbents: ℓ < r₀ < r₁ < h. Hold all other primitives fixed.',
+      body:`<div class="theorem-conditions"><article><div><span>A1</span><h3>A preparation floor</h3><p>Low-cost preparation is worthwhile even at the worst feasible belief.</p></div>${m(String.raw`0\le c_L<B_{r_1}(m)`,'eq-small')}</article><article class="reveal" data-step="1"><div><span>A2</span><h3>A responsive high-cost margin</h3><p>The weak prior is insufficient. Favourable strong-economy news can justify preparation.</p></div>${m(String.raw`B_{r_0}(1/2)<c_H<B_{r_1}(M)`,'eq-small')}</article><article class="reveal" data-step="2"><div><span>A3</span><h3>Trading incentives switch</h3><p>Global bounds exclude trade in the weak economy and force full orders in the strong one.</p></div>${m(String.raw`\Delta_T(r_0)<k<\left(1-\frac1b\right)\rho m\Delta_T(r_1)`,'eq-small')}</article></div>`,
+      notes:notes('Define r0 and r1 explicitly as the two strengths. Read each assumption by its job. A2 does not say the weak economy could never have favourable information; it compares the weak prior with a strong upper posterior. A3 is what forces the actual weak outcome to be uninformative. All declared benchmark assumptions remain in force. These sufficient conditions hold on a nonempty open set.','The right-hand side of A3 bounds marginal trading profits globally. It is stronger than merely evaluating profits at full orders.'),source:'Proposition 2, assumptions (A1)–(A3).'}),
+    S('s18', {act:'results',theme:'dark',minutes:2,status:'analytical',title:'Stronger competition<br>can raise preparation.',defines:['E','O_H'],
+      body:`<div class="theorem-result"><article><span>Weak incumbent</span>${m(String.raw`(q_H,q_L)=(0,0)`)}${m(String.raw`\mathsf E(r_0)=\rho`)}<p>An uninformative price.<br>Only low-cost preparation.</p></article><article class="reveal" data-step="1"><span>Strong incumbent</span>${m(String.raw`(q_H,q_L)=(1,-1)`)}${m(String.raw`\mathsf E(r_1)>\rho`)}<p>An informative price.<br>Additional high-cost preparation.</p></article></div><div class="theorem-scope"><p>Unique trading and on-path preparation under A1–A3, allowing arbitrary mixed orders.</p><p>${mi(String.raw`\mathsf O_H(r_1)>\mathsf O_H(r_0)`)}: high-value challenger ownership also rises. Off-path pricing rules need not be unique.</p></div>`,
+      notes:notes('State Proposition 2. E is the probability the challenger prepares. OH is the unconditional probability the challenger has high value and acquires the target. In the weak economy every nonzero order has a gross advantage below its cost. In the strong economy every increase in a correctly signed order raises profit. Full orders generate favourable prices that recruit the high-cost margin.','The strong experiment strictly Blackwell dominates the uninformative weak experiment. Uniqueness does not extend to all off-path pricing specifications or every intermediate strength.'),source:'Proposition 2; analytical result.'}),
+    S('s19', {act:'results',minutes:2,status:'analytical',title:'The benchmark makes<br>the reversal concrete.',widget:'economies',
+      body:`<div id="economies-view"></div><div class="controls">${controls('benchmark',[['weak','Weak incumbent'],['strong','Strong incumbent']])}<button id="economies-compare">Compare both</button></div><p class="small">Declared model illustration: ${declaration}. Only incumbent strength differs between these economies.</p>`,
+      notes:notes('Compare the two economies side by side. Distinguish preparation from high-value ownership. The additional preparation is tilted toward high challenger value. All values are illustrative outputs under the declared parameters; none is an empirical estimate. The theorem supports the endpoints rather than a continuous path between them.','The registry and Table 2 bind the displayed values. A comparison of strengths re-solves investor orders and preparation, whereas the next slide fixes the information experiment.'),source:'Section 4.2; Table 2, Panel A; validated benchmark registry.'}),
+    S('s20', {act:'results',minutes:2,status:'numerical diagnostic',title:'Hold information fixed<br>and deterrence returns.',widget:'control',
+      body:`<div class="split wide"><div class="stack"><div id="control-plot"></div><div class="controls">${controls('experiment',[['feedback','Equilibrium information'],['frozen','Same informative orders']])}</div></div><div class="stack"><div id="control-readout"></div><p class="large-note">The changing information experiment explains the reversal.</p><p class="small">Full informative orders are a counterfactual in the weak economy. They would not be chosen there in equilibrium.</p></div></div>`,
+      notes:notes('Switch from feedback to the fixed-order comparison. When the information experiment is held fixed, lower acquisition profit at every posterior can only reduce preparation. In the strong economy the informative orders coincide with the equilibrium profile. In the weak economy they are imposed and unprofitable. The general fixed-experiment statement is analytical; these magnitudes are its numerical illustration.','The control holds informative orders fixed and constructs consistent prices. It does not hold a price level constant. Proposition A.3 gives the general comparison.'),source:'Proposition A.3; Section 4.2; Table 2, Panel B.'}),
+    S('s21', {act:'scope',minutes:2.5,speakingMinutes:2,title:'The reversal has<br>a defined scope.',
+      body:`<div class="scope-layout"><div class="stack"><h3>What survives</h3><div class="scope-row"><strong>Different noise</strong><span>Logistic example</span></div><div class="scope-row"><strong>Continuous costs</strong><span>Narrow atomless supports</span></div><div class="scope-row"><strong>Different knowledge</strong><span>A better-informed buyer can still learn from price</span></div><p class="small">Each extension has its own sufficient conditions and declared primitives.</p></div><div class="scope-boundary"><h3>What the theorem does not trace</h3><p>At intermediate strengths, informative and uninformative equilibria can coexist.</p><p>A still stronger incumbent can make high-cost preparation unprofitable even at the best feasible belief.</p><p class="small">Analytical endpoints, computer-assisted existence at selected nodes, and numerical searches remain distinct.</p></div></div>`,
+      notes:notes('This slide deliberately separates robustness from the scope of the correspondence. Extensions show the mechanism under alternative primitives; they are not one common calibration. In the private-signal example the buyer has a more accurate signal, but the investor contributes complementary information. Intermediate coexistence prevents reading a smooth hump from the endpoints. Pause here if questions have accumulated; the planned timing includes some discussion allowance.','Backup slides show the full robustness table, the certified intervals, and the unjoined correspondence nodes. A failed search is not proof that an equilibrium does not exist.'),source:'Propositions 2–3 and A.5–A.7; Sections 4.3 and 5.'}),
+    S('s22', {act:'scope',minutes:2.5,speakingMinutes:2,title:'Information access matters.<br>So does the payment rule.',
+      body:`<div class="implication-grid"><article><h3>Access to prices</h3><p>At fixed incumbent strength and sale terms, price access raises expected target proceeds and net acquisition surplus in the benchmark.</p><div class="small-results"><span>Expected target proceeds</span><strong>${fmt('base_revenue_hidden',3)} <span>to</span> ${fmt('base_revenue_feedback',3)}</strong></div><p class="small">Analytical comparison. Per target share. Trading and pricing are re-solved in both economies.</p></article><article><h3>Sale terms</h3><p>Reserves and bargaining alter the sensitivity of target proceeds to challenger value.</p><p class="large-note">They change the information incentives as well as the payments.</p><p class="small">The optimal sale mechanism remains open. Bargaining results describe acquisition-stage payoffs.</p></article></div>`,
+      notes:notes('Keep the comparison precise. Proposition A.9 changes price access under fixed strength and sale rule. Both economies have full orders, so trading costs are equal. The comparison does not rank incumbent strengths or alternative mechanisms. Changing the payment rule can reverse the spread response; solving trading and preparation under bargaining is separate work.','The access backup includes the matched-price dividend diagnostic. Reserve comparisons establish feasible supported outcomes, not an optimum over all equilibrium continuations.'),source:'Propositions A.8–A.9; Section 6; Table 2, Panel C.'}),
+    S('s23', {act:'next',minutes:1,speakingMinutes:0.5,status:'open',title:'The seller’s design problem<br>is the next step.',
+      body:`<div class="split"><div class="stack"><h3>Theory</h3><p class="large-note">Choose terms while accounting for the information and preparation they induce.</p><p>Multiple trading and price-pooling continuations make the seller’s objective an equilibrium-design problem.</p></div><div class="stack"><h3>Empirical work</h3><div class="research-steps"><p>Establish the public decision window.</p><p>Date substantive preparation.</p><p>Separate price learning from anticipated entry.</p></div><p class="small">A research agenda, not an empirical finding.</p></div></div>`,
+      notes:notes('Spend one minute on the agenda, or shorten it if discussion has consumed the two-minute allowance. The next theory problem is the seller’s choice of terms and commitment timing with endogenous trading and possible price pooling. The empirical programme starts from process chronology, not a regression on announced bidder counts.','An envelope of found reserve revenues is not the seller’s solution. The empirical design and its outstanding identification challenges are in Online Appendix D.'),source:'Sections 6.3 and 7; Online Appendix C.6 and D.'}),
+    S('s24', {act:'next',theme:'dark',minutes:1,speakingMinutes:0.5,title:'Competition changes<br>what a buyer can learn.',
+      body:`<div class="closing"><p class="display">A stronger rival can make information<br>worth trading on.</p><p class="display accent">That information can make preparation<br>worth paying for.</p><p class="closing-author">Austin Li <span>Competition Creates Competition</span></p></div><div class="controls closing-links"><button data-goto="s17">The conditions</button><button data-goto="s20">The comparison</button><button data-goto="b1">Technical appendix</button><a href="main_filled.pdf" target="_blank" rel="noopener">Read the paper</a></div>`,
+      notes:notes('Return to the original puzzle and stop. The payment rule links the entrant’s claim to a traded claim with different information incentives. Under the theorem’s conditions the information effect outweighs the direct deterrence force. The talk contains 38 minutes of planned exposition plus two minutes for interruptions, allocated within the final four slides in the running schedule.','Use the conditions, fixed-information comparison, or appendix links for discussion. The result remains conditional on the specified information and participation environment.'),source:'Section 8; Proposition 2.'}),
 
     S('b1', {
       act: 'backup',
-      kicker: 'Global bounds',
+      kicker: '',
       title: 'The trading outcome is pinned by <i>global</i> bounds.',
       subtitle: 'Arbitrary mixed orders and every continuous deviation are allowed.',
       widget: '',
@@ -509,7 +276,7 @@ window.createSlides = function (H) {
 
     S('b2', {
       act: 'backup',
-      kicker: 'Why Laplace',
+      kicker: '',
       title: 'Bounded posteriors and the <i>plateau</i>.',
       subtitle: 'The noise law sets where posterior mass sits, not only where the bounds are.',
       widget: '',
@@ -522,7 +289,7 @@ window.createSlides = function (H) {
 
     S('b3', {
       act: 'backup',
-      kicker: 'Certificates',
+      kicker: '',
       title: 'Three <i>computer-assisted</i> equilibria.',
       subtitle: 'Enclosures at declared nodes, each coexisting with no trade.',
       widget: 'certificates',
@@ -535,7 +302,7 @@ window.createSlides = function (H) {
 
     S('b4', {
       act: 'backup',
-      kicker: 'Access to prices',
+      kicker: '',
       title: 'Seeing the price <i>improves</i> acquisition outcomes.',
       subtitle: 'Fixed incumbent strength. Trading and pricing re-solved in both economies.',
       widget: 'access',
@@ -549,7 +316,7 @@ window.createSlides = function (H) {
 
     S('b5', {
       act: 'backup',
-      kicker: 'Reserve comparisons',
+      kicker: '',
       title: 'Fixed-reserve comparisons with <i>supported</i> continuations.',
       subtitle: 'Preparation, a completed sale, and two admissible bidders are different events.',
       widget: 'reserve',
@@ -560,22 +327,9 @@ window.createSlides = function (H) {
       source: 'Section 6.3; Appendix A.7; Table 4; Online Appendix C.6.'
     }),
 
-    S('b6', {
-      act: 'backup',
-      kicker: 'Notation',
-      title: 'Every symbol in the <i>talk</i>.',
-      subtitle: 'One definition, grouped by the role the symbol plays.',
-      widget: 'glossary',
-      status: '',
-      backup: true,
-      body: `<div id="glossary-table"></div>`,
-      notes: 'This table is the same source as the definition strips on the model slides and the panel that opens with G, so a symbol is defined once and rendered in three places. Groups follow the structure of the model rather than the order of introduction: values and the sale rule, the preparation cost, trading, prices and beliefs, the derived objects that carry the mechanism, and the outcome measures reported in the tables. If a question turns on notation, open this rather than scrolling back, because every slide in the talk introduces its symbols where they first appear and none of them is reused with a second meaning. If asked: the transliterations here are the same column names used in the recorded numerical outputs, so the table and the data agree by construction.',
-      source: 'Section 2; Online Appendix C.0 notation.'
-    }),
-
     S('b7', {
       act: 'backup',
-      kicker: 'Sources',
+      kicker: '',
       title: 'Sources and research <i>boundaries</i>.',
       subtitle: 'The benchmark paper and its recorded numerical outputs.',
       widget: '',
@@ -584,7 +338,69 @@ window.createSlides = function (H) {
       body: `<div class="split"><div class="stack"><p><a href="main_filled.pdf" target="_blank" rel="noopener">The working paper</a></p><p><a href="online_appendix_filled.pdf" target="_blank" rel="noopener">The Online Appendix</a></p><p><a href="provenance.json" target="_blank" rel="noopener">Data-source hashes</a></p></div><div class="references"><p><strong>Auction entry</strong><br>Fishman (1988); Hirshleifer and Png (1989); Levin and Smith (1994); Gentry and Stroup (2019); Roberts and Sweeting (2013); Persico (2000).</p><p><strong>Prices and real decisions</strong><br>Dow, Goldstein and Guembel (2017); Edmans, Goldstein and Jiang (2015); Goldstein and Guembel (2008); Luo (2005).</p><p><strong>Takeover setting</strong><br>Boone and Mulherin (2007); Betton et al. (2014); Cornelli and Li (2002); Imprivata (2016).</p></div></div>`,
       notes: 'Everything numerical in this deck is bound to recorded outputs by hash; the presentation build reruns no solver and establishes no result of its own, and the interactive panels only evaluate existing closed forms. Results keep separate labels throughout: analytical, computer-assisted, numerical diagnostic and open, with declared parameters marked as declarations. The boundaries I would name without prompting are the participation floor, the dependence of the sign on the payment rule, the open intermediate correspondence, the unsolved seller problem, and the absence of any empirical sample. Both PDFs and the provenance file are local, so they open offline during discussion. If asked: the full bibliography and the contribution discussion are in the manuscript rather than on this slide.',
       source: 'paper/main.md; paper/online_appendix.md; quantity registry and passed run manifests.'
-    })
+    }),
 
+    S('b8', {
+      act: 'backup',
+      kicker: '',
+      title: 'Between the two economies, equilibria <i>coexist</i>.',
+      subtitle: 'Three established nodes, certified intervals, and no path between them.',
+      widget: 'coexist',
+      status: 'computer-assisted',
+      minutes: 0,
+      backup: true,
+      defines: ['r_2'],
+      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="coexist-plot"></div><p class="plot-caption">Preparation against incumbent strength; certified intervals at the declared benchmark.</p></div></div><div class="stack">${rev(3, `<p class="display">Push strength far enough and even the best feasible news cannot cover the <i>expensive</i> cost.</p>`)}${rev(3, m(String.raw`B_{r_2}(M)<c_H\quad\Longrightarrow\quad \mathsf E=\rho`, 'eq-small'))}${defs('r_2')}</div></div>`,
+      notes: 'Three things in order. First the analytical nodes: the two economies plus the collapse strength. They are points, and I do not join them. Second the certified nodes, where interval arithmetic encloses exact informative equilibria with strictly ordered preparation, each coexisting with no trade at the same parameters, because against an uninformative price a unilateral order cannot cover its cost. Third the collapse: where even the upper posterior bound fails to justify the expensive cost, trading stays informative but preparation returns to the floor. Participation is therefore not monotone in strength. The intermediate correspondence is open; the searches return continuations found, and absence of a branch establishes nothing. If asked: which equilibrium and why? I select none. I report every branch I can certify and read no monotone path into the gaps.',
+      source: 'Proposition 2, part (iii); Proposition 3; Figure 2; Section 4.3.'
+    }),
+
+    S('b9', {
+      act: 'backup',
+      kicker: '',
+      title: 'The mechanism <i>survives</i> changes in primitives.',
+      subtitle: 'Preparation in the weak and the strong economy, specification by specification.',
+      widget: '',
+      status: 'analytical',
+      minutes: 0,
+      backup: true,
+      body: `<table class="data-table"><thead><tr><th>Specification</th><th>Weak incumbent</th><th>Strong incumbent</th></tr></thead><tbody><tr><td>Laplace noise, atomic costs</td><td>${pct('base_entry_weak')}</td><td class="highlight">${pct('base_entry_strong')}</td></tr><tr><td>Logistic noise, atomic costs</td><td>${pct('base_entry_weak')}</td><td>${pct('logistic_entry_strong')}</td></tr><tr><td>Laplace noise, atomless costs</td><td>${pct('base_entry_weak')}</td><td>${pct('cost_mix_laplace_entry_strong')}</td></tr><tr><td>Moderate acquisition values</td><td>${pct('moderate_entry_weak')}</td><td>${pct('moderate_entry_strong')}</td></tr><tr><td>Complementary private signals</td><td>${pct('signal_entry_weak')}</td><td>${pct('signal_entry_strong')}</td></tr></tbody></table><p class="small muted">Each row is its own declared comparison at the declared benchmark, with its own sufficient conditions; levels are not comparable across rows.</p>`,
+      notes: 'Take the rows as separate theorems rather than as a robustness sweep. Logistic noise has the same bounded log-density derivative, so the global trading bounds survive; what changes is where posterior mass sits, which is why the level differs. Narrow atomless cost supports preserve both the participation floor and the responsive expensive margin, so the cost atom is not doing the work. The moderate-value row removes the tenfold gap between acquisition values; what matters is where incumbent strength sits relative to the low value. The last row is the one that answers the obvious objection: the buyer there holds a more accurate private signal than the investor and the reversal still happens, because the signals are about different things. If asked: the moderate-value and private-signal rows use distinct parameter vectors, so this is not one joint calibration.',
+      source: 'Propositions A.5, A.6 and A.7; Sections 5.1 to 5.3; Table 3.'
+    }),
+
+    S('b10', {
+      act: 'backup',
+      kicker: '',
+      title: 'Change the payment rule and the sign <i>flips</i>.',
+      subtitle: 'A zero-reserve, verifiable-value bargaining institution instead of the auction.',
+      widget: 'bargaining',
+      status: 'analytical',
+      minutes: 0,
+      backup: true,
+      defines: ['eta', 'Delta_eta'],
+      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="bargaining-plot"></div><p class="plot-caption">Target-payoff spread against the seller’s bargaining weight, at the declared benchmark.</p></div><div class="controls"><label for="seller-weight">Seller bargaining weight &eta;</label><input id="seller-weight" type="range" min="0" max="1" step="0.01" value="0.25"><output id="seller-weight-value" for="seller-weight"></output>${controls('eta', [['0.25', 'Below one half'], ['0.5', 'At one half'], ['0.75', 'Above one half']])}</div></div><div class="stack"><div id="bargaining-readout" class="stack"></div>${m(String.raw`\Delta_\eta=\eta\,(h-\ell)+(1-2\eta)\,\mathbb E[(R-\ell)_+]`, 'eq-small')}${defs('eta,Delta_eta')}</div></div>`,
+      notes: 'Drag the weight and watch the sign of the comparative static change. Take a realised incumbent value above the low challenger value. A winning high-value challenger pays a blend of that value and its own, with sensitivity to the rival equal to one minus the seller’s weight. A losing low-value challenger leaves the rival paying, with sensitivity equal to the weight. Competition widens the spread precisely when the first exceeds the second, so the effect is positive below one half, zero at one half and negative above it, and the readout draws that flip. Challenger profit still weakly falls everywhere. This is payment-stage comparative statics only: trading, preparation and welfare under bargaining are not solved. If asked: no entry reversal is claimed under bargaining, the weight equal to one is a payment-stage endpoint with zero challenger profit.',
+      source: 'Proposition A.8; Section 6.2; equation (14); Figure 4.'
+    }),
+
+    S('b11', {
+      act: 'backup',
+      kicker: '',
+      title: 'Bounded posteriors, a threshold, and a residual <i>advantage</i>.',
+      subtitle: 'One order-flow realisation in the strong economy, at full orders.',
+      widget: 'tape',
+      status: 'analytical',
+      minutes: 0,
+      backup: true,
+      defines: ['m', 'M', 'tau', 'x_star', 'A_H'],
+      body: `<div class="split wide"><div class="stack"><div class="plot-shell"><div id="tape-plot"></div><p class="plot-caption">Posterior against order flow; break-even belief marked; at the declared benchmark.</p></div><div class="controls"><label for="tape-x">Order flow X</label><input id="tape-x" type="range" min="-3" max="3" step="0.02" value="-1.5"><output id="tape-x-value" for="tape-x"></output><button id="tape-demo">Cross the threshold</button><button data-reset="tape">Reset</button></div><div class="row">${m(String.raw`m=\frac1{1+e^{2/b}},\quad M=1-m,\quad \tau=\frac{c_H-g_L}{g_H-g_L},\quad x^*=\frac b2\log\frac{\tau}{1-\tau}`, 'eq-small')}</div><div class="row">${m(String.raw`A_H(x)=e(x)\,\Delta_T\,[1-\mu(x)]`, 'eq-small')}</div></div><div class="stack"><div id="tape-readout" class="stack"></div>${defs('m,M,tau,x_star,A_H')}</div></div>`,
+      notes: 'Drag the tape from a heavy sale to a heavy purchase. Bounded likelihood ratios under this noise law keep the posterior inside a band and flat outside the full-order interval, which is why the plateau matters later. Market makers price the preparation each flow induces, so the anticipated increase in proceeds is already in the price; what the investor keeps is the residual, which is preparation probability times the payoff spread times the market’s remaining uncertainty. When the posterior crosses the break-even belief, the expensive cost realisation prepares as well. This is one realisation inside a declared economy, not a re-solved model, and the readout averages over cost realisations at that flow. The challenger sees the price, not the flow. If asked: the bounds come from the noise law alone and hold for every candidate order distribution, mixtures included.',
+      source: 'Sections 3.2 and 3.3; equations (7) to (12); Propositions A.1 and A.2.'
+    }),
+    S('b12', {act:'backup',backup:true,status:'analytical',title:'The acquisition-stage payoffs.',
+      body:`<div class="split"><div class="stack">${m(String.raw`t_0=p(1-p/r)`)}${m(String.raw`t_H=r/2+p^2/(2r)`)}${m(String.raw`t_L=\ell-(\ell^2-p^2)/(2r)`)}</div><div class="stack">${m(String.raw`g_H=h-r/2-p^2/(2r)`)}${m(String.raw`g_L=(\ell^2-p^2)/(2r)`)}${m(String.raw`\Delta_T=(r-\ell)^2/(2r)`)}</div></div><p>All expectations integrate over the incumbent’s uniform value distribution. Quantities are per target share.</p>`,
+      notes:notes('These are the exact closed forms used by the main deck widgets. Profit is conditional on challenger type and before preparation cost. Expected target proceeds without preparation depend on whether the incumbent clears the reserve.','Proposition 1 extends the directional comparisons to general continuous incumbent distributions.'),source:'Section 3.1; equation (4).'}),
+    ...['values,institutions','preparation,trading','prices','derived,outcomes'].map((groups,i)=>S('b'+(13+i),{act:'backup',backup:true,title:['Values and sale terms.','Preparation and trading.','Prices and beliefs.','Derived payoffs and outcomes.'][i],widget:'glossary',body:`<div class="glossary-page" data-glossary-groups="${groups}"></div>`,notes:notes('Notation definitions use the same glossary source as the main presentation and the G-key panel.','The definitions retain the paper’s notation and identify the first slide where each symbol appears.'),source:'Section 2; Online Appendix C.0.'}))
   ];
 };

@@ -1,100 +1,72 @@
-# Interactive research presentation
+# Interactive seminar talk
 
-A 40-minute seminar talk: 22 main slides in six blocks and seven technical discussion
-slides. The content covers the benchmark paper only. The endogenous-insider fork is excluded.
+A redesigned 40-minute talk: **24 main slides and 15 technical slides**. The schedule
+allocates 38 minutes to exposition and two minutes to discussion/transitions. The opening
+moves from institutional motivation and the conventional deterrence intuition to the
+information feedback, research question, literature and contribution before the model.
 
 ## Open and present
 
-The published talk is https://competition.dealextract.org/talk/ (published together with
-the handout by `handout/publish.py`). Locally, open `dist/index.html` in a current desktop
-browser. Fonts, equations, data, the working
-paper and the Online Appendix are local; no network is required. For a local preview:
-
-```sh
-python3 -m http.server 8766 --bind 127.0.0.1 --directory presentation/dist
-```
-
-Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
-
-- Right arrow / Space: next reveal, then next slide.
-- Left arrow: undo a reveal, then previous slide.
-- O: slide overview. N: speaker notes. G: notation. T: projector theme. F: fullscreen.
-- R: reset the current slide's interaction and reveals.
-- Escape: close a panel or return from a technical slide.
-- Home / End: title / close. A focused slider keeps its arrow keys.
-
-The deck is a fixed 1600 x 900 design surface scaled to the window, so layouts are identical
-on a laptop and a projector. The default theme ("After hours", blue-black with amber) suits a
-dim room or a screen share; the projector theme (warm off-white, same identity) is for a lit
-seminar room. The choice persists in the browser. Speaker notes open in a dialog on the
-presentation screen; `dist/speaker-notes.md` carries the same notes for a second device.
-
-## Content and design
-
-`DESIGN.md` is the contract between the three deck files: slide record, chrome markup, class
-vocabulary, widget ids, tokens, type scale, motion, and the arc with acts, statuses and
-minutes. `content.js` owns slide copy, speaker notes, sources and timing. `deck.js` owns
-navigation, the stage, and the widgets. `deck.css` owns the visual system and print.
-
-The talk runs in six blocks: the question (institution, myth, research question; 7 min),
-one qualitative preview of the mechanism and the antecedents (2.5), the model with
-progressive notation (8.5), two equilibrium slides (what an equilibrium is; what the price
-reveals; 5), the propositions visualised with two controls (14), and robustness and next
-steps (3.5). The literature is placed twice: the entry and deterrence papers as the myth,
-the feedback papers after the preview as the increment. Registry numbers appear on main
-slides only as annotations inside a result figure or in the robustness table, labelled "at
-the declared benchmark"; never as a headline. Seven widgets are live: the preview value
-line, the auction value line, the incumbent-strength dial, the order-flow tape, the two
-economies, the fixed-information control, and the bargaining weight. Every number comes from
-the bound registry or from the benchmark closed forms in `handout/explorer.js`; no widget
-solves an equilibrium.
-
-Notation is progressive. `content.js` exports a glossary (41 symbols: LaTeX, meaning, group,
-and a pattern that matches the symbol in LaTeX source). Each model slide carries a
-definition strip rendered from that glossary for the symbols it introduces; the G key opens
-the full grouped table; backup slide B6 prints it. `check_deck.mjs` fails the build if any
-symbol appears in slide LaTeX before the slide that defines it.
-
-Result status appears as a stamp in each slide's footer using the paper's vocabulary:
-analytical, computer-assisted, numerical diagnostic, open; declarations are stamped
-"declaration". The hedges that qualify each result live in the speaker notes and the source
-line, not in slide copy. Each note ends with an "If asked" line for the question a theorist or
-the supervisor is likely to raise.
-
-Type: Instrument Serif for titles, statements and metrics; JetBrains Mono for numbers, ticks,
-kickers and stamps; Atkinson Hyperlegible for running text, chosen for width and legibility
-at distance. The faces are self-hosted under `vendor/uifonts/` with their SIL Open Font
-License texts and a hash lock.
-
-## Build and checks
+The existing public talk is at https://competition.dealextract.org/talk/.
+Local changes do not update it. Preview the new build with:
 
 ```sh
 python3 presentation/build.py
 node presentation/check_deck.mjs
+python3 -m http.server 8776 --bind 127.0.0.1 --directory presentation/dist
 ```
 
-The build verifies KaTeX and every font against their locks, binds 16 research CSV sources
-through `handout/data.py`, fills the template, writes `dist/speaker-notes.md` from the slide
-records, and records source hashes in `dist/provenance.json`. `check_deck.mjs` confirms the
-slide records satisfy `DESIGN.md`: ids, acts, statuses, widget elements, the "If asked"
-lines, no hedge in slide copy, no registry number in a headline element, the notation rule,
-and 40 minutes over the main slides. In the browser,
-`DECK.selfCheck()` reports formula, equation and runtime status, and `await DECK.audit()`
-walks every slide with all reveals shown and lists any body that overflows the stage or any
-column whose content is wider than the column; it must return an empty list.
+Open `http://127.0.0.1:8776/`, or open `presentation/dist/index.html` directly.
+The HTML, fonts, math, animation libraries, data and linked papers work offline.
 
-## PDF
+- Right arrow / Space: next reveal, then next slide.
+- Left arrow: undo a reveal, then previous slide.
+- O: slide overview. N: notes. G: notation. F: fullscreen.
+- T: cycle automatic, light and dark themes. R: reset the current interaction.
+- Escape: close a panel, exit reading mode or return from a technical slide.
+- Home / End: title / conclusion. Focused sliders retain their arrow keys.
+- Read: see all slides in a scrolling view. Present returns to the selected slide.
 
-With the preview server running:
+Automatic theme uses cream paper for technical material and warm charcoal at the opening,
+question, main theorem and conclusion. Light mode supports bright projectors. Instrument
+Serif carries headings and display lines, Geist the running text and Geist Mono the
+numerals. Motion follows the presenter; there is no automatic advance. Reduced-motion
+preferences are respected.
 
-```sh
-presentation/export_pdf.sh
-```
+The stage is a scaled 1600 × 900 surface. It fits smaller screens without layout changes;
+landscape is preferable on a phone. The notes dialog appears on the presentation screen.
+For private notes, use `dist/speaker-notes.md` on a separate device.
 
-Headless Chrome prints all 29 slides with every reveal visible, in the projector theme, to
-`dist/presentation.pdf` at 16 by 9 inches. The interactive slides print their deterministic
-comparison state. Inspect the rendered PDF after any edit.
+## Sources and checks
 
-These are presentation checks against existing research output. They do not rerun the
-research acceptance gate and establish no new equilibrium or release-readiness claim. The
-paper and handout are unchanged. Publication is the explicit action in `handout/README.md`.
+`content.js` owns the slide copy, speaker notes, sources, timing and glossary. `deck.css`
+owns the visual system. `deck.js` owns navigation and interactive figures. `DESIGN.md`
+documents the academic and implementation requirements.
+
+The builder binds 16 research CSVs to their passed manifests and verifies local KaTeX,
+font and GSAP hashes. The browser's `DECK.selfCheck()` checks 49 existing formula values,
+math rendering and runtime errors. `await DECK.audit()` walks the whole deck for overflow.
+
+Run `check_browser.js` through the Playwright `browser_run_code_unsafe` tool against the
+preview server. It checks all 39 slides at 1600 × 1000, 1366 × 768 and 390 × 844 in automatic,
+light and dark themes, then exercises the presentation controls. If the tool cannot read
+an isolated checkout path, pass the file's contents as its `code` argument.
+
+Screenshot and PDF inspection supplement automated checks. The tests verify presentation
+behaviour against existing research outputs; they do not rerun numerical searches or
+establish research acceptance.
+
+## Export and publication
+
+With the preview server running, `presentation/export_pdf.sh` exports the PDF when a local
+Chrome executable is available (set `CHROME` for another installation). Alternatively,
+use Playwright's `page.pdf({printBackground:true, preferCSSPageSize:true})` after awaiting
+`DECK.ready`. Output is 39 pages, each 16 × 9 inches, with all reveals visible. The builder
+removes a stale PDF when the generated HTML changes, so regenerate it after editing.
+
+The build also creates `dist/speaker-notes.md` and `dist/provenance.json`. Keep `dist/`
+together when transferring the offline deck. Fonts retain their license texts. GSAP's
+bundled source headers identify its version and license URL.
+
+Publication uses `handout/publish.py` and includes the handout and talk. It remains separate
+from a GitLab push. Follow `handout/README.md` for the explicit publishing procedure.

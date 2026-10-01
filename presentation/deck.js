@@ -3,7 +3,7 @@
  * Reads window.CCC_DATA (registry, tables, fig1..fig4) and
  * window.CCC.explorer.closedForms for arithmetic on the declared primitives.
  * It never solves for an equilibrium and never rounds a certified interval inward.
- * Slides arrive as records from window.createSlides(H); see presentation/REDESIGN_SPEC.md.
+ * Slides arrive as records from window.createSlides(H); see presentation/DESIGN.md.
  */
 (function(){
 'use strict';
@@ -36,11 +36,11 @@ window.addEventListener('unhandledrejection',e=>errors.push(String(e.reason)));
 const H={m,mi,v,pct,fmt,link:()=>''};
 const slides=window.createSlides(H);
 const main=slides.filter(s=>!s.backup);
-const ACTS=['question','preview','model','equilibrium','results','next'];
-const DETAIL={s10:'b6',s12:'b1',s13:'b2',s15:'b1',s19:'b3',s21:'b4',s22:'b7'};
+const ACTS=['puzzle','model','mechanism','results','scope','next'];
+const DETAIL={s08:'b13',s10:'b14',s11:'b12',s12:'b1',s13:'b12',s15:'b11',s16:'b1',s17:'b1',s18:'b1',s20:'b4',s21:'b8',s22:'b10',s23:'b5',s24:'b7'};
 const stampWord=status=>status==='input'?'declaration':status;
 const near=(e,sel)=>e&&e.target&&e.target.closest?e.target.closest(sel):null;
-const plain=t=>String(t==null?'':t).replace(/<[^>]*>/g,'').replace(/&[a-z]+;/gi,' ').replace(/\s+/g,' ').trim();
+const plain=t=>String(t==null?'':t).replace(/<br\s*\/?>/gi,' ').replace(/<[^>]*>/g,'').replace(/&[a-z]+;/gi,' ').replace(/\s+/g,' ').trim();
 
 function slideHTML(s,i){
   const heading=plain(s.title)||'Competition creates competition';
@@ -48,7 +48,7 @@ function slideHTML(s,i){
   const foot=[s.status?`<span class="stamp" data-status="${esc(s.status)}">${esc(stampWord(s.status))}</span>`:'',
     `<span class="source">${esc(s.source||'')}</span>`,
     DETAIL[s.id]?`<button class="detail" data-goto="${DETAIL[s.id]}">Technical detail</button>`:''].join('');
-  return `<section class="slide" id="${esc(s.id)}" data-act="${esc(s.act||'')}" data-widget="${esc(s.widget||'')}" data-status="${esc(s.status||'')}" aria-label="${esc((i+1)+'. '+heading)}" aria-hidden="true" inert>`+
+  return `<section class="slide" id="${esc(s.id)}" data-act="${esc(s.act||'')}" data-widget="${esc(s.widget||'')}" data-status="${esc(s.status||'')}" data-slide-theme="${s.theme||'light'}" aria-label="${esc((i+1)+'. '+heading)}" aria-hidden="true" inert>`+
     `<header class="slide-head">${head}</header>`+
     `<div class="slide-body">${s.body||''}</div>`+
     `<footer class="slide-foot">${foot}</footer></section>`;
@@ -60,7 +60,7 @@ function math(root=document){root.querySelectorAll('[data-latex]').forEach(el=>{
 math();
 
 /* ---------- glossary: one source, three surfaces ----------
- * The definition strips, the notation panel and the b6 widget all read
+ * The definition strips, the notation panel and the appendix glossary pages all read
  * window.createGlossary. Nothing here invents an entry or drops one.
  */
 const GROUPS=['values','preparation','trading','prices','derived','outcomes','institutions'];
@@ -78,17 +78,18 @@ function introduced(key){
   return slides[i].backup?'B'+(i-main.length+1):String(i+1).padStart(2,'0');
 }
 function glossaryRow(e){return `<tr><td>${mi(e.latex)}</td><td>${esc(e.meaning)}</td><td>${esc(introduced(e.key))}</td></tr>`;}
-function glossaryHTML(tableClass){
+function glossaryHTML(tableClass, included=null){
   const placed=new Set();
   let rows='';
   GROUPS.forEach(group=>{
+    if(included&&!included.includes(group))return;
     const entries=glossary.filter(e=>e.group===group);
     if(!entries.length)return;
     entries.forEach(e=>placed.add(e.key));
     rows+=`<tr class="group"><td colspan="3">${esc(group)}</td></tr>`+entries.map(glossaryRow).join('');
   });
   /* An entry with an unrecognised group is shown, never silently dropped. */
-  const rest=glossary.filter(e=>!placed.has(e.key));
+  const rest=included?[]:glossary.filter(e=>!placed.has(e.key));
   if(rest.length){
     errors.push('Glossary entries outside the declared groups: '+rest.map(e=>e.key+' ('+e.group+')').join(', '));
     rows+=`<tr class="group"><td colspan="3">ungrouped</td></tr>`+rest.map(glossaryRow).join('');
@@ -113,17 +114,18 @@ fillDefs();
 /* ---------- interaction state ---------- */
 let index=0, step=0, returnTo=null, stageScale=1;
 const steps=new Map();
-const state={quality:'H',auctionR:0.8,dialR:P.r_weak,tapeX:-1.5,benchmark:'weak',compare:false,experiment:'feedback',eta:0.25};
+const state={quality:'H',auctionR:0.8,dialR:P.r_weak,tapeX:-1.5,benchmark:'weak',compare:true,experiment:'feedback',eta:0.25};
 const motion=matchMedia('(prefers-reduced-motion:reduce)');
 const printing=()=>document.documentElement.dataset.printing==='true';
-const still=()=>motion.matches||printing();
+const still=()=>motion.matches||printing()||document.documentElement.dataset.auditing==='true';
 const storage={get(k){try{return localStorage.getItem(k);}catch{return null;}},set(k,x){try{localStorage.setItem(k,x);}catch{}}};
 
 /* ---------- stage geometry ---------- */
 function scaleStage(){
   if(printing()){$('#stage').style.setProperty('--stage-scale','1');return;}
-  stageScale=Math.max(0.05,Math.min(innerWidth/1600,(innerHeight-56)/900));
+  stageScale=Math.max(0.05,Math.min(innerWidth/1600,(innerHeight-100)/900));
   $('#stage').style.setProperty('--stage-scale',String(stageScale));
+  document.body.style.setProperty('--reading-scale',String(Math.min(1,innerWidth/1600)));
 }
 addEventListener('resize',scaleStage);
 addEventListener('load',scaleStage);
@@ -159,7 +161,11 @@ function updateReveals(){
   const slide=slides[index], node=$('#'+slide.id);
   node.querySelectorAll('[data-step]').forEach(el=>{
     const shown=Number(el.dataset.step)<=step;
+    const wasShown=el.classList.contains('shown');
+    if(window.gsap)gsap.killTweensOf(el);
     el.classList.toggle('shown',shown);
+    if(shown&&!wasShown&&!still()&&window.gsap)gsap.fromTo(el,{opacity:0,y:14},{opacity:1,y:0,duration:.34,ease:'power2.out',clearProps:'opacity,transform'});
+    else if(window.gsap)gsap.set(el,{clearProps:'opacity,transform'});
     el.setAttribute('aria-hidden',String(!shown));
     el.inert=!shown;
   });
@@ -172,6 +178,7 @@ function updateReveals(){
   $('#next').disabled=(index===main.length-1||index===slides.length-1)&&step===maxStep();
 }
 function go(id,opts={}){
+  if(document.body.dataset.reading==='true')reading();
   const i=typeof id==='number'?id:slides.findIndex(s=>s.id===id);
   if(i<0||i>=slides.length)return;
   const previous=index;
@@ -179,7 +186,13 @@ function go(id,opts={}){
   index=i;
   step=Math.max(0,Math.min(maxStep(i),opts.step??steps.get(i)??0));
   $$('.slide').forEach((el,j)=>{const active=j===i;el.classList.toggle('active',active);el.setAttribute('aria-hidden',String(!active));el.inert=!active;});
+  applySlideTheme();
   $('#'+slides[i].id).scrollTop=0;
+  if(!opts.history&&!still()&&window.gsap){
+    const targets=$$('#'+slides[i].id+' > .slide-head, #'+slides[i].id+' > .slide-body');
+    gsap.killTweensOf(targets);
+    gsap.fromTo(targets,{opacity:0,y:12,scale:.992},{opacity:1,y:0,scale:1,duration:.36,stagger:.04,ease:'power2.out',clearProps:'opacity,transform'});
+  }
   $('#return').hidden=!slides[i].backup;
   updateRail();
   updateReveals();
@@ -195,15 +208,41 @@ window.addEventListener('popstate',()=>{const id=location.hash.slice(1);go(slide
 document.addEventListener('click',e=>{const b=near(e,'[data-goto]');if(b){if($('#panel').open)$('#panel').close();go(b.dataset.goto);}});
 
 /* ---------- chrome ---------- */
-function theme(value){
-  const doc=document.documentElement;
-  if(value==='light')doc.dataset.theme='light';else delete doc.dataset.theme;
-  $('#theme').textContent=value==='light'?'After hours':'Projector';
-  $('#theme').setAttribute('aria-pressed',String(value==='light'));
-  storage.set('ccc-deck-theme',value);
+let themeMode=storage.get('ccc-seminar-theme')||'auto';
+function applySlideTheme(){
+  const activeTheme=themeMode==='auto'?(slides[index].theme||'light'):themeMode;
+  document.documentElement.dataset.theme=activeTheme;
+  $$('.slide').forEach((el,i)=>el.dataset.slideTheme=themeMode==='auto'?(slides[i].theme||'light'):themeMode);
+  $('#theme').textContent='Theme: '+themeMode;
+  $('#theme').setAttribute('aria-label','Colour theme: '+themeMode+'. Switch to '+({auto:'light',light:'dark',dark:'auto'}[themeMode]));
 }
-theme(storage.get('ccc-deck-theme')==='light'?'light':'dark');
-$('#theme').onclick=()=>theme(document.documentElement.dataset.theme==='light'?'dark':'light');
+function theme(value){themeMode=['auto','light','dark'].includes(value)?value:'auto';applySlideTheme();storage.set('ccc-seminar-theme',themeMode);}
+theme(themeMode);
+$('#theme').onclick=()=>theme({auto:'light',light:'dark',dark:'auto'}[themeMode]);
+let readingAnimations=[];
+function reading(){
+  const enabled=document.body.dataset.reading!=='true';
+  readingAnimations.forEach(a=>{a.scrollTrigger?.kill();a.kill();});readingAnimations=[];
+  document.body.dataset.reading=String(enabled);
+  $('#reading').textContent=enabled?'Present':'Read';
+  $('#reading').setAttribute('aria-pressed',String(enabled));
+  if(enabled){
+    $$('.slide').forEach(el=>{el.inert=false;el.setAttribute('aria-hidden','false');el.querySelectorAll('[data-step]').forEach(r=>{r.inert=false;r.setAttribute('aria-hidden','false');r.classList.add('shown');});});
+    W.tape.shown=99;W.coexist.shown=99;W.preview.shown=99;renderAll();
+    if(!still()&&window.gsap&&window.ScrollTrigger){
+      gsap.registerPlugin(ScrollTrigger);
+      $$('.slide').forEach(el=>{
+        readingAnimations.push(gsap.fromTo(el.querySelector('.slide-body'),{opacity:.25},{opacity:1,ease:'none',scrollTrigger:{trigger:el,start:'top 95%',end:'top 50%',scrub:true}}));
+      });
+      ScrollTrigger.refresh();
+    }
+    $('#'+slides[index].id).scrollIntoView({block:'start'});
+  }else{
+    $$('.slide-head,.slide-body').forEach(el=>{if(window.gsap)gsap.set(el,{clearProps:'opacity,transform'});});
+    go(index,{history:true,step});window.scrollTo(0,0);
+  }
+}
+$('#reading').onclick=reading;
 
 let hudTimer=null;
 function showHud(hold){
@@ -250,6 +289,7 @@ $('#overview').onclick=overview;$('#notes').onclick=notes;$('#help').onclick=hel
 if($('#glossary'))$('#glossary').onclick=notation;
 document.addEventListener('keydown',e=>{
   if($('#panel').open){if(e.key==='Escape')return;return;}
+  if(document.body.dataset.reading==='true'){if(e.key==='Escape'){e.preventDefault();reading();}return;}
   if(e.target&&e.target.matches&&(e.target.matches('input,select,textarea')||e.target.isContentEditable))return;
   if(near(e,'button,a')&&[' ','Enter'].includes(e.key))return;
   const actions={'ArrowRight':next,'PageDown':next,' ':next,'ArrowLeft':previous,'PageUp':previous,
@@ -457,7 +497,7 @@ W.dial={
       const w=1000,h=150,g=vlGeometry(w),y=96;
       const full=(g.X(this.rMax)-g.X(0)).toFixed(1);
       let c=`<rect id="dial-support" class="vl-support" x="${g.X(0).toFixed(1)}" y="52" width="${full}" height="20" ${SHADEA} style="transform-box:fill-box;transform-origin:left center"/>`;
-      c+=text(g.X(0),44,'R ~ U[0, r]','vl-label','start',LABELA);
+      c+=text(g.X(this.rMax)+14,68,'R ~ U[0, r]','vl-label','start',LABELA);
       c+=vlAxis(g,y);
       c+=line(g.X(P.p),46,g.X(P.p),y+14,'vl-reserve',MARKEDA)+text(g.X(P.p),38,'p','vl-label','middle',LABELA);
       c+=text(g.X(P.ell),y+44,'ℓ','vl-label','middle',LABELA)+text(g.X(P.h),y+44,'h','vl-label','middle',LABELA);
@@ -544,7 +584,7 @@ function economyCard(r,label){
   return `<article class="economy ${Number(r)===P.r_strong?'strong':''}"><h3>${esc(label)} / r = ${esc(String(r))}</h3>`+
     `<p class="metric-label">Preparation probability</p><span class="metric ${Number(r)===P.r_strong?'accent':''}">${pc(row.E)}</span>`+
     `<p>${Number(row.q_H)===0?'No informed orders; no price information.':'Full informed orders; informative prices.'}</p>`+
-    `<p class="small muted">Orders: q<sub>H</sub> = ${esc(String(Number(row.q_H)))}, q<sub>L</sub> = ${esc(String(Number(row.q_L)))}</p></article>`;
+    `<p class="ownership">High-value challenger ownership <strong>${pc(row.O_H)}</strong></p><p class="small muted">Orders: q<sub>H</sub> = ${esc(String(Number(row.q_H)))}, q<sub>L</sub> = ${esc(String(Number(row.q_L)))}</p></article>`;
 }
 W.economies={
   render(){
@@ -577,10 +617,9 @@ W.control={
       });
     }
     const readout=$('#control-readout');
-    if(readout)readout.innerHTML=`<p class="display">${frozen?'Entry <i>falls.</i>':'Entry <i>rises.</i>'}</p>`+
+    if(readout)readout.innerHTML=`<p class="display">${frozen?'Preparation <i>falls.</i>':'Preparation <i>rises.</i>'}</p>`+
       `<p class="num">${pc(weak.E)} → ${pc(strong.E)}</p>`+
-      `<p>${frozen?'The information experiment stays fixed. Lower acquisition profits deter preparation.':'Rival strength changes trading incentives and the information available before preparation.'}</p>`+
-      `<p class="small muted">${frozen?'Fixed full-order diagnostic. The weak-incumbent profile is not an equilibrium; it admits profitable trading deviations.':'Analytical equilibrium comparison under Proposition 2. The information experiment is endogenous.'}</p>`;
+      `<p class="small muted">${frozen?'The informative orders are imposed in the weak economy.':'Proposition 2: information adjusts in equilibrium.'}</p>`;
   },
   reset(){state.experiment='feedback';this.render();}
 };
@@ -670,7 +709,7 @@ W.bargaining={
     const host=$('#bargaining-plot');
     if(host)host.innerHTML=graph({series,xmin:0,xmax:1,ymin:0,ymax:P.h-P.ell,yticks:[0,3,6,9],xticks:[0,0.5,1],
       xlabel:'Seller weight η',ylabel:'Target-payoff spread',marker:{x:eta,ys},
-      extra:({left})=>text(left+12,78,'Amber: strong incumbent','tick','start',TICKA)+text(left+12,100,'Grey: weak incumbent','tick','start',TICKA),
+      extra:({left})=>text(left+12,78,'Blue: strong incumbent','tick','start',TICKA)+text(left+12,100,'Grey: weak incumbent','tick','start',TICKA),
       w:760,h:340});
     const readout=$('#bargaining-readout');
     if(readout){
@@ -726,9 +765,7 @@ W.access={
 
 W.glossary={
   render(){
-    const host=$('#glossary-table');if(!host)return;
-    host.innerHTML=glossaryHTML('dense');
-    math(host);
+    $$('.glossary-page').forEach(host=>{host.innerHTML=glossaryHTML('dense',host.dataset.glossaryGroups.split(','));math(host);});
   },
   reset(){this.render();}
 };
@@ -796,7 +833,7 @@ let savedPrintState=null;
 window.addEventListener('beforeprint',()=>{
   document.documentElement.dataset.printing='true';
   document.getAnimations().forEach(a=>{try{a.finish();}catch{}});
-  savedPrintState={state:{...state},theme:document.documentElement.dataset.theme||'dark'};
+  savedPrintState={state:{...state},theme:themeMode};
   state.compare=true;state.experiment='frozen';state.tapeX=1.5;
   W.tape.shown=3;W.coexist.shown=3;W.preview.shown=2;
   renderAll();
@@ -823,6 +860,8 @@ window.addEventListener('afterprint',()=>{
  * stage or columns whose content is wider than the column. Run `await DECK.audit()` in the console. */
 async function audit(){
   const saved={index,step}, out=[];
+  document.documentElement.dataset.auditing='true';
+  if(window.gsap)gsap.globalTimeline.getChildren().forEach(a=>a.progress(1));
   for(const s of slides){
     go(s.id,{step:99,history:true});
     await new Promise(r=>setTimeout(r,40));
@@ -833,9 +872,10 @@ async function audit(){
     if(vertical>2||up>0||down>8||wide.length)out.push({id:s.id,vertical,up:Math.round(up),down:Math.round(down),wide});
   }
   go(saved.index,{step:saved.step,history:true});
+  delete document.documentElement.dataset.auditing;
   return out;
 }
-window.DECK={audit,go,next,previous,reset:resetCurrent,selfCheck,state,slides,widgets:Object.keys(W),eqRow,cf,posterior,renderAll,notesText,theme};
+window.DECK={audit,go,next,previous,reset:resetCurrent,selfCheck,state,slides,widgets:Object.keys(W),eqRow,cf,posterior,renderAll,notesText,theme,reading};
 const opening=location.hash.slice(1);
 go(slides.some(s=>s.id===opening)?opening:0,{history:true,step:0});
 window.DECK.ready=document.fonts.ready.then(()=>selfCheck());
