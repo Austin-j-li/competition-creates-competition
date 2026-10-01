@@ -12,8 +12,18 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 - `paper/quantity_manifest.csv` defines every `[[name]]` placeholder in `paper/main.md`:
   definition, exercise, source file, row selector, display format. Rows with `input_value`
   are declarations; every other row is filled only from validated output.
-- `paper/main.md` is the manuscript source; edit prose there. The numerical layer fills placeholders into generated copies (`paper/*_filled.md`).
-  Figure and table positions are marked by `<!-- FIGURE N: path -->` or `<!-- TABLE N: path -->`
+- From 30 September 2026, the editable manuscript masters are the Overleaf Git
+  working copy at `overleaf/paper/main.tex` and `overleaf/paper/online_appendix.tex`.
+  Read `overleaf/README.md` and the working copy's `AGENTS.md`; pull the author's
+  latest Overleaf edits before revising. The parent repository ignores these
+  independent Git working copies through its local `.git/info/exclude`.
+- `paper/main.md` and `paper/online_appendix.md` are preserved migration records;
+  the latter still defines the existing numerical contract in sections C and E.
+  The numerical layer fills placeholders into its historical generated copies
+  (`paper/*_filled.md`). Do not regenerate over the editable Overleaf LaTeX from
+  these older Markdown files. Numerical updates and exports to published paper
+  copies require an explicit, validated reconciliation step.
+  In the preserved Markdown, figure and table positions are marked by `<!-- FIGURE N: path -->` or `<!-- TABLE N: path -->`
   followed by a `> **Figure N.** caption` blockquote; captions are the author's text.
 
 ## Conventions (from Online Appendix E.3 and E.4)
