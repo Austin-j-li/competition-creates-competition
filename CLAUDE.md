@@ -41,8 +41,8 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Working rules
 
-- Use the GitLab repository and remote specified in `README.md` for source control, issues,
-  and merge requests. Website publishing is a separate Cloudflare action under `handout/README.md`.
+- Use the GitHub repository and remote specified in `README.md` for source control, issues,
+  and pull requests. Website publishing is a separate Cloudflare action under `handout/README.md`.
 
 - Verification for numerical changes and full release/readiness claims: a single script under `numerics/`
   that reruns every acceptance check and the placeholder substitution and exits nonzero on
