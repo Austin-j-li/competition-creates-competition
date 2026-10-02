@@ -296,7 +296,7 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
 } else fail('dist/index.html is missing; run python3 presentation/build.py');
 
 const mains = frames.filter((f) => !f.backup).length;
-console.log(`${frames.length} frames (${mains} main, ${frames.length - mains} backup) match talk.tex in order, titles, subtitles, targets and links; ` +
+console.log(`Compared ${frames.length} frames (${mains} main, ${frames.length - mains} backup) with talk.tex: order, titles, subtitles, targets and links; ` +
   `${numberPairs} sourced numbers paired with registry keys; ${keys.size} notation symbols; ${mainMinutes} planned minutes before questions.`);
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 console.log('Deck matches talk.tex and the deck contract.');

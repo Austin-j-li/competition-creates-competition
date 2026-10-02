@@ -785,19 +785,17 @@
     return true;
   }
 
-  /* Draw a spec into el. Used by the handout figures and by the slides. */
-  function draw(el, spec, t, state) {
-    state = state || {};
-    var hidden = state.hidden || (state.hidden = {});
-    // state.zoom > 1 draws a narrower plot that CSS scales up, so text and marks grow together.
-    var W = Math.max(280, Math.round((el.clientWidth || state.width || 640) / (state.zoom || 1)));
+  /* The SVG markup of a spec at width W. Pure: no DOM access, so the display check can call it. */
+  function svgMarkup(spec, t, W, opts) {
+    opts = opts || {};
+    var hidden = opts.hidden || {};
     var G = geometry(spec, W);
     var bg = t.bg;
     var below = '', above = '', body = '';
     (spec.layout.shapes || []).forEach(function (s) { if (s.layer === 'below') below += shapeSvg(G, s); else above += shapeSvg(G, s); });
     var anns = '';
     (spec.layout.annotations || []).forEach(function (a) { anns += annotationSvg(G, a, bg); });
-    var clips = '', clipId = 'clip-' + (el.id || 'chart') + '-';
+    var clips = '', clipId = 'clip-' + (opts.id || 'chart') + '-';
     var plots = {};
     spec.traces.forEach(function (tr) { plots[(tr.xaxis || 'x') + (tr.yaxis || 'y')] = [tr.xaxis || 'x', tr.yaxis || 'y']; });
     Object.keys(plots).forEach(function (k) {
@@ -812,11 +810,21 @@
       var k = (tr.xaxis || 'x') + (tr.yaxis || 'y');
       bySub[k] = (bySub[k] || '') + '<g class="trace" data-trace="' + i + '">' + traceSvg(G, tr, bg) + '</g>';
     });
-    body = '';
     Object.keys(bySub).forEach(function (k) { body += '<g clip-path="url(#' + clipId + k + ')">' + bySub[k] + '</g>'; });
-    var label = el.getAttribute('aria-label') || state.label || 'Chart';
-    var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(label) + '"' +
+    var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '"' +
       ' font-family="' + esc(t.fontSans) + '"><defs>' + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
+    return { svg: svg, G: G };
+  }
+
+  /* Draw a spec into el. Used by the handout figures and by the slides. */
+  function draw(el, spec, t, state) {
+    state = state || {};
+    var hidden = state.hidden || (state.hidden = {});
+    // state.zoom > 1 draws a narrower plot that CSS scales up, so text and marks grow together.
+    var W = Math.max(280, Math.round((el.clientWidth || state.width || 640) / (state.zoom || 1)));
+    var bg = t.bg;
+    var out = svgMarkup(spec, t, W, { hidden: hidden, id: el.id, label: el.getAttribute('aria-label') || state.label });
+    var G = out.G, svg = out.svg;
 
     // legend: one button per legend entry; a button toggles its legend group
     var legend = '', seenGroup = {}, seenTitle = {};
@@ -1044,6 +1052,6 @@
     mount: mount, mountAll: mountAll, rerender: rerender, update: update, status: status, register: register,
     tokens: tokens, baseLayout: baseLayout, brokenSeries: brokenSeries, panelLabels: panelLabels,
     twoPanels: twoPanels, axis: axis, formatNumber: formatNumber, builders: builders,
-    draw: draw, hoverText: hoverText, geometry: geometry
+    draw: draw, svgMarkup: svgMarkup, hoverText: hoverText, geometry: geometry
   };
 })();
