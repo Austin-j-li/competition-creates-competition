@@ -6,7 +6,12 @@
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:,">
 <title>Competition Creates Competition</title>
-<meta name="description" content="When can a stronger takeover bidder attract a rival? A research brief on stock prices, costly preparation, and the discovery of takeover bidders, with interactive figures and the revised paper.">
+<meta name="description" content="When can a stronger takeover bidder draw a second buyer into the sale? A research brief on stock prices, costly preparation, and the discovery of takeover bidders, with interactive figures and the revised paper.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://competition.dealextract.org/">
+<meta property="og:title" content="Competition Creates Competition">
+<meta property="og:description" content="When can a stronger takeover bidder draw a second buyer into the sale? A research brief on stock prices, costly preparation, and the discovery of takeover bidders.">
+<meta name="twitter:card" content="summary">
 <link rel="preload" href="fonts/Literata-normal-200-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/LibreFranklin-normal-300-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.18.5/katex.min.css" integrity="sha512-eLvr2vghJzBvLDxpgIyx3qrDj1chzZfD4SPOE4otnJPa6GsyJ/lBDGFhZO8OsmyYNnqqjqXOSjHAV1cBax33oA==" crossorigin="anonymous">
@@ -40,12 +45,13 @@
   --muted: #5e5b53;
   --grid: #e4e0d6;
   --line: #d3cfc4;
-  --accent: #1d4f9b;
-  --accent-soft: rgba(29, 79, 155, 0.10);
-  --c2: #9a6714;
-  --c3: #6b6a63;
-  --region-a: rgba(29, 79, 155, 0.08);
-  --region-b: rgba(154, 103, 20, 0.10);
+  --accent: #8f5c10;
+  --accent-fill: #b4761a;
+  --accent-soft: rgba(180, 118, 26, 0.12);
+  --c2: #1d4f9b;
+  --c3: #7d7b74;
+  --region-a: rgba(180, 118, 26, 0.11);
+  --region-b: rgba(29, 79, 155, 0.08);
   --region-c: rgba(107, 106, 99, 0.12);
   --pass: #1b7a48;
   --pass-soft: rgba(27, 122, 72, 0.12);
@@ -69,12 +75,13 @@
   --muted: #a8a398;
   --grid: #34322c;
   --line: #403d35;
-  --accent: #9dbbf2;
-  --accent-soft: rgba(157, 187, 242, 0.16);
-  --c2: #e0b25a;
-  --c3: #a6a39a;
-  --region-a: rgba(157, 187, 242, 0.12);
-  --region-b: rgba(224, 178, 90, 0.12);
+  --accent: #e2a13a;
+  --accent-fill: #e2a13a;
+  --accent-soft: rgba(226, 161, 58, 0.16);
+  --c2: #c4d6f7;
+  --c3: #8f8c84;
+  --region-a: rgba(226, 161, 58, 0.12);
+  --region-b: rgba(157, 187, 242, 0.12);
   --region-c: rgba(166, 163, 154, 0.14);
   --pass: #86d2a6;
   --pass-soft: rgba(134, 210, 166, 0.14);
@@ -93,12 +100,13 @@
     --muted: #a8a398;
     --grid: #34322c;
     --line: #403d35;
-    --accent: #9dbbf2;
-    --accent-soft: rgba(157, 187, 242, 0.16);
-    --c2: #e0b25a;
-    --c3: #a6a39a;
-    --region-a: rgba(157, 187, 242, 0.12);
-    --region-b: rgba(224, 178, 90, 0.12);
+    --accent: #e2a13a;
+    --accent-fill: #e2a13a;
+    --accent-soft: rgba(226, 161, 58, 0.16);
+    --c2: #c4d6f7;
+    --c3: #8f8c84;
+    --region-a: rgba(226, 161, 58, 0.12);
+    --region-b: rgba(157, 187, 242, 0.12);
     --region-c: rgba(166, 163, 154, 0.14);
     --pass: #86d2a6;
     --pass-soft: rgba(134, 210, 166, 0.14);
@@ -183,9 +191,10 @@ a:hover { text-decoration-color: currentColor; }
 
 h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; line-height: 1.15; letter-spacing: -0.012em; text-wrap: balance; }
 h2 { font-size: clamp(1.7rem, 2.3vw, 2.05rem); margin: 0 0 0.5rem; }
-h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 650; letter-spacing: 0; margin: 2.5rem 0 0.75rem; }
+h3 { font-family: var(--font-sans); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; margin: 2.75rem 0 0.75rem; }
 
-p { margin: 0 0 1.1rem; }
+p { margin: 0 0 1.1rem; text-wrap: pretty; }
+li, dd, figcaption { text-wrap: pretty; }
 p, li, dd, dt, figcaption { max-width: var(--measure); }
 ul, ol { padding-left: 1.4rem; }
 li { margin-bottom: 0.35rem; }
@@ -205,7 +214,7 @@ button { font-family: var(--font-sans); }
   left: 0;
   height: 2px;
   width: 100%;
-  background: var(--accent);
+  background: var(--accent-fill);
   transform: scaleX(0);
   transform-origin: 0 50%;
   z-index: 50;
@@ -235,6 +244,12 @@ button { font-family: var(--font-sans); }
 }
 .masthead-meta .status-line { display: flex; flex-direction: column; gap: 0.15rem; margin: 0 0 1.25rem; font-size: inherit; color: inherit; }
 .masthead-meta .dot { display: none; }
+/* Status items never break internally. On desktop they stack in the 12rem margin, so the
+   meta block is set slightly smaller and may extend half a gutter toward the title. */
+.masthead-meta .status-line > span { white-space: nowrap; }
+@media (min-width: 1024px) {
+  .masthead-meta { font-size: 0.75rem; margin-right: calc(var(--gutter) / -2); }
+}
 
 .masthead h1 {
   font-size: clamp(2.3rem, 4.8vw, 3.5rem);
@@ -251,8 +266,9 @@ button { font-family: var(--font-sans); }
   font-weight: 400;
   color: var(--muted);
   margin: 0 0 1.1rem;
-  max-width: 34ch;
+  max-width: 40ch;
   line-height: 1.3;
+  text-wrap: balance;
 }
 
 .byline { font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; margin: 0 0 1.75rem; }
@@ -355,7 +371,7 @@ nav.toc a::before {
 nav.toc a:hover { color: var(--ink); }
 nav.toc a:hover::before { border-color: var(--ink); }
 nav.toc a[aria-current="location"] { color: var(--ink); font-weight: 600; }
-nav.toc a[aria-current="location"]::before { background: var(--accent); border-color: var(--accent); transform: translateY(-0.05rem) scale(1); }
+nav.toc a[aria-current="location"]::before { background: var(--accent-fill); border-color: var(--accent-fill); transform: translateY(-0.05rem) scale(1); }
 
 nav.toc details.toc-drawer { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
 nav.toc details.toc-drawer summary {
@@ -443,14 +459,30 @@ details.proof > summary, details.fold > summary {
   color: var(--ink);
 }
 details.proof > summary::-webkit-details-marker, details.fold > summary::-webkit-details-marker { display: none; }
-details.proof > summary::before, details.fold > summary::before {
-  content: "+";
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--muted);
+/* Toggles read as controls, not headings: accent colour, lighter weight, a chevron. */
+details.proof > summary, details.fold > summary {
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-details.proof[open] > summary::before, details.fold[open] > summary::before { content: "\2212"; color: var(--accent); }
-details.proof[open] > summary, details.fold[open] > summary { color: var(--accent); }
+details.proof > summary::before, details.fold > summary::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  justify-self: start;
+  align-self: center;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateX(0.05rem) rotate(-45deg);
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+details.proof[open] > summary::before, details.fold[open] > summary::before { transform: translateY(-0.1rem) rotate(45deg); }
+details.proof > summary:hover, details.fold > summary:hover { text-decoration-color: currentColor; }
+details.proof > summary:focus-visible, details.fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; text-decoration-color: currentColor; }
 details.proof > *:not(summary), details.fold > *:not(summary) { margin-top: 0.85rem; }
 details.proof > :last-child, details.fold > :last-child { margin-bottom: 1.25rem; }
 details.proof > :not(summary), details.fold > :not(summary) { margin-left: 1.45rem; }
@@ -506,7 +538,7 @@ figcaption details.fold > :not(summary) { margin-left: 1.45rem; }
 .step-btn:hover::after { border-color: var(--ink); }
 .stepper li[aria-current="step"] .step-btn { color: var(--ink); font-weight: 600; }
 .stepper li[aria-current="step"] .step-btn::before { color: var(--ink); }
-.stepper li[aria-current="step"] .step-btn::after { background: var(--accent); border-color: var(--accent); transform: translateY(-0.05rem) scale(1); }
+.stepper li[aria-current="step"] .step-btn::after { background: var(--accent-fill); border-color: var(--accent-fill); transform: translateY(-0.05rem) scale(1); }
 .step-note { display: none; }
 
 /* app.js mirrors the current step's note into this panel, placed right after the list */
@@ -537,18 +569,42 @@ figcaption details.fold > :not(summary) { margin-left: 1.45rem; }
 
 /* ---------- number ledger ---------- */
 
-.strip { margin: 1.5rem 0 2rem; max-width: var(--measure); border-top: 1px solid var(--ink); }
-.stat {
+.strip {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1.5rem;
-  align-items: baseline;
-  padding: 0.75rem 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1.5rem 0 2rem;
+  max-width: none;
+  border-top: 1px solid var(--ink);
   border-bottom: 1px solid var(--line);
+}
+/* Label above, value below at display size; values share a baseline across columns. */
+.stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.9rem 1.25rem 1rem;
   min-width: 0;
 }
-.stat-value { order: 2; font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.2; white-space: nowrap; }
-.stat-label { order: 1; font-size: 0.95rem; color: var(--muted); line-height: 1.45; }
+.stat:first-child { padding-left: 0; }
+.stat + .stat { border-left: 1px solid var(--line); }
+.stat-value {
+  order: 2;
+  font-family: var(--font-mono);
+  font-size: clamp(2.25rem, 4vw, 2.85rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+  white-space: nowrap;
+}
+.stat-label { order: 1; font-family: var(--font-sans); font-size: 0.85rem; color: var(--muted); line-height: 1.4; max-width: none; text-wrap: pretty; }
+/* The first two stats are the weak-to-strong comparison: the strong value carries the
+   accent and an arrow from the weak value. */
+.stat:nth-child(2) .stat-value { color: var(--accent); }
+.stat:nth-child(2) .stat-value::before { content: "\2192\00a0" / ""; font-size: 0.55em; color: var(--muted); vertical-align: 0.25em; }
+.stat:nth-child(3) { border-left: 1px solid var(--ink); }
 
 /* ---------- parameter ledger ---------- */
 
@@ -715,6 +771,15 @@ td[title] { cursor: help; }
 /* ---------- math and provenance ---------- */
 
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.75rem 0 1rem; max-width: none; }
+/* Overflow cue: an edge shadow appears on whichever side has more equation to scroll to.
+   The covers scroll with the content (local); the shadows stay at the box edges (scroll). */
+.math-block {
+  background:
+    linear-gradient(to right, var(--bg) 30%, transparent) left center / 1.5rem 100% no-repeat local,
+    linear-gradient(to left, var(--bg) 30%, transparent) right center / 1.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--ink) 32%, transparent), transparent) left center / 0.7rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--ink) 32%, transparent), transparent) right center / 0.7rem 100% no-repeat scroll;
+}
 
 .q {
   text-decoration: underline dotted;
@@ -803,15 +868,19 @@ td[title] { cursor: help; }
   .colophon, .noscript-note { padding-left: 1rem; padding-right: 1rem; }
   .explorer-controls { grid-template-columns: 1fr auto; }
   .explorer-controls input[type="range"] { grid-column: 1 / -1; }
+  /* Charts stack their panels below 640px, so they fit without horizontal scrolling;
+     the scroll hint stays hidden. */
   figure.chart, .explorer { overflow-x: auto; }
-  .chart-mount { min-width: 360px; }
-  .figure-scroll-hint { display: block; color: var(--muted); font-family: var(--font-sans); font-size: 0.8125rem; margin: 0.25rem 0 0.75rem; }
+  .strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
 }
 
 @media (max-width: 480px) {
-  .stat { grid-template-columns: 1fr; gap: 0.15rem; }
-  .stat-value { order: 1; }
-  .stat-label { order: 2; }
+  .stat { padding-left: 0.9rem; padding-right: 0.5rem; }
+  .stat:first-child, .stat:nth-child(3) { padding-left: 0; }
+  /* Equation tags go under the equation instead of overlapping it. */
+  .math-block .katex-display .katex-tag { position: static; display: block; text-align: right; line-height: 1.2; }
+  .math-block .katex-display .katex-tag > .katex-strut { display: none; }
   .explorer-controls { grid-template-columns: minmax(0, 1fr) auto; }
   .explorer-controls input[type="range"] { grid-column: 1 / -1; grid-row: 2; }
   .explorer-controls label { white-space: normal; }
@@ -848,9 +917,9 @@ td[title] { cursor: help; }
       <a class="paper-link" href="talk/">Seminar talk <span>slides</span></a>
     </div>
     <aside class="opening-question" aria-label="Research question and contribution">
-      <p class="question">When can a stronger bidder attract a rival?</p>
-      <p>A stronger incumbent makes an acquisition less profitable for a challenger. It can also make information more valuable to investors, so their trades reveal more through the target's stock price.</p>
-      <p class="opening-answer">Under the paper's conditions, that information prompts a challenger to prepare when it would otherwise stay out.</p>
+      <p class="question">When can a stronger bidder draw a second buyer into the sale?</p>
+      <p>A stronger incumbent leaves a challenger less to gain from preparing a bid. It also makes what target shareholders receive depend more on the challenger's value, so investors who know that value trade on it.</p>
+      <p class="opening-answer">The stock price carries that information to the challenger before it commits. A stronger competitor can then bring in a buyer that would otherwise stay out: competition creates competition.</p>
     </aside>
     </div>
     </div>
@@ -869,7 +938,6 @@ td[title] { cursor: help; }
 <h2>Inside a takeover process</h2>
 <p class="section-time">1 · The setting · 2–3 minutes</p>
 
-<p class="lead">A stronger bidder usually discourages a rival from entering. This paper asks when it instead makes the target's stock price more informative and brings another buyer into the sale.</p>
 <div class="scenario">
 <p class="scenario-label">An illustrative sale process</p>
 <p>A listed software company announces a strategic review. One buyer is ready to bid. A second sees a possible fit but must investigate the technology, assess contracts and arrange financing. It watches the target's shares before deciding whether to pay for that work.</p>
@@ -902,10 +970,11 @@ C=\begin{cases}c_L&amp;\text{with probability }\rho,\\c_H&amp;\text{with probabi
 <li data-step><button type="button" class="step-btn">The target is sold</button><div class="step-note">The highest admissible bidder wins and pays the greater of the reserve and the competing bid. Without an admissible bidder, no sale occurs.</div></li>
 </ol>
 <p class="interaction-hint">Select a stage to see the information available at that point.</p>
-<p>The opportunity must be public while the challenger can still act. A strategic review or open contest can provide this window; a confidential sale revealed only after participation is settled cannot. The auction isolates payment incentives, rather than describing every takeover literally.</p>
-<p>Imprivata's proxy distinguishes initial interest from further diligence. It motivates the preparation margin, but does not establish that prices caused entry. The software-company example above is illustrative.</p>
+<p>The opportunity must be public while the challenger can still act. A strategic review or open contest can provide this window; a confidential sale revealed only after participation is settled cannot.</p>
+<p>Real sale records show this preparation stage. Imprivata's 2016 definitive merger proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence. The record documents the stage; whether a stock price drew any buyer into it is the question for empirical work.</p>
 <details class="fold" id="setting-detail"><summary>Institutional mapping and related literature</summary>
 <span id="sec-02-position" class="legacy-anchor" aria-hidden="true"></span>
+<p>The auction isolates payment incentives; it does not describe every takeover literally. The table maps each model object to what a sale record must show.</p>
 
 <figure class="table" id="table-dictionary">
 <div class="table-wrap">
@@ -944,7 +1013,7 @@ C=\begin{cases}c_L&amp;\text{with probability }\rho,\\c_H&amp;\text{with probabi
 <div class="mechanism-start">A stronger incumbent</div>
 <div class="mechanism-paths">
 <div class="mechanism-path"><p class="path-label">The direct effect</p><p><strong>Lower acquisition profit</strong><span>The challenger expects to keep less after paying for the target.</span></p><p class="path-end">Less reason to prepare at a fixed belief.</p></div>
-<div class="mechanism-path information-path"><p class="path-label">The information effect</p><p><strong>Target payments depend more on challenger value</strong><span>Information becomes more valuable to the investor.</span></p><p><strong>Informed trading becomes worthwhile</strong><span>The stock price reveals information the challenger can use.</span></p><p class="path-end">Favorable prices can justify costly preparation.</p></div>
+<div class="mechanism-path information-path"><p class="path-label">The information effect</p><p><strong>Target payments depend more on challenger value</strong><span>Information becomes more valuable to the investor.</span></p><p><strong>Informed trading becomes worthwhile</strong><span>The stock price reveals information the challenger can use.</span></p><p>Why payments depend more on challenger value: a high-value challenger wins and pays the incumbent's value, which rises with incumbent strength. A low-value challenger loses, and the incumbent pays the low value, which stays flat.</p><p class="path-end">Favorable prices can justify costly preparation.</p></div>
 </div>
 <figcaption id="mechanism-caption">The participation reversal occurs when the second effect outweighs the first. Proposition 2 gives conditions on preparation costs and trading costs that establish this comparison.</figcaption>
 </figure>
@@ -1170,6 +1239,7 @@ A_L(x)&amp;=P(x)-\mathbb E[V_T\mid L,x]=e_r(\mu_X(x))\Delta_T\mu_X(x),\\
 
 <h2>What the paper establishes</h2>
 <p class="section-time">3 · The result · 4 minutes</p>
+<p class="lead">In the benchmark, a challenger prepares with probability <span class="q" data-q="base_entry_weak" data-status="analytical" title="0.250000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">25.0%</span> against the weak incumbent and <span class="q" data-q="base_entry_strong" data-status="analytical" title="0.522757 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">52.3%</span> against the strong one. Proposition 2 gives conditions under which this reversal is the unique outcome.</p>
 
 <div class="prop" id="main-result">
 <p class="prop-title">Proposition 2 · Sufficient conditions for the reversal</p>
@@ -1216,10 +1286,11 @@ r_1:&amp;\quad(q_H,q_L)=(1,-1),\quad\mathsf E(r_1)\gt\rho,\\
 <figure class="table">
 <div class="table-wrap"><table data-table="core_comparison"><thead><tr><th scope="col">Information when the buyer decides</th><th scope="col" class="num">Weak incumbent</th><th scope="col" class="num">Strong incumbent</th></tr></thead><tbody><tr><th scope="row">Equilibrium information</th><td class="num" title="0.25000000000000006" data-src="tables/equilibrium_controls.csv:2">25.0%</td><td class="num" title="0.5227572972597381" data-src="tables/equilibrium_controls.csv:9">52.3%</td></tr><tr><th scope="row">Same informative orders</th><td class="num" title="0.5621780582084277" data-src="tables/equilibrium_controls.csv:4">56.2%</td><td class="num" title="0.5227572972597381" data-src="tables/equilibrium_controls.csv:10">52.3%</td></tr><tr><th scope="row">Price withheld from the buyer</th><td class="num" title="0.25000000000000006" data-src="tables/equilibrium_controls.csv:5">25.0%</td><td class="num" title="0.25000000000000006" data-src="tables/equilibrium_controls.csv:12">25.0%</td></tr></tbody></table></div>
 <figcaption>Preparation probabilities in the benchmark. Holding orders fixed isolates the information effect; these orders would not be chosen in equilibrium against the weak incumbent. When the price is withheld, the equilibrium is solved again. Percentages are rounded for reading; exact CSV values remain available on hover.</figcaption></figure>
-<p>Preparation, bidding and ownership are distinct. In the benchmark, preparation rises from <span class="q" data-q="base_entry_weak" data-status="analytical" title="0.250000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">25.0%</span> to <span class="q" data-q="base_entry_strong" data-status="analytical" title="0.522757 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">52.3%</span>, while high-value ownership rises from <span class="q" data-q="base_ownership_weak" data-status="analytical" title="0.125000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">12.5%</span> to <span class="q" data-q="base_ownership_strong" data-status="analytical" title="0.324192 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">32.4%</span>. These are model probabilities, not empirical estimates.</p>
-<p>A still stronger incumbent can make even the best attainable price insufficient to justify high-cost preparation. Participation then returns to <span class="q" data-q="base_entry_collapse" data-status="analytical" title="0.250000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse">25.0%</span>. The theorem compares specified economies; it does not establish a smooth hump. At intermediate strengths, equilibria can coexist. The certificates and numerical searches below retain that distinction.</p>
+<p>Preparation, bidding and ownership are distinct. The probability that a high-value challenger acquires the target rises from <span class="q" data-q="base_ownership_weak" data-status="analytical" title="0.125000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_weak">12.5%</span> to <span class="q" data-q="base_ownership_strong" data-status="analytical" title="0.324192 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">32.4%</span>.</p>
+<p>A still stronger incumbent can make even the best attainable price insufficient to justify high-cost preparation. Participation then returns to <span class="q" data-q="base_entry_collapse" data-status="analytical" title="0.250000 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_collapse">25.0%</span>. The theorem compares specified economies and does not trace a smooth hump; at intermediate strengths, equilibria can coexist. The certificates and numerical searches below retain that distinction.</p>
 <details class="fold" id="result-detail"><summary>Full theorem, preparation probabilities and proof</summary>
 <span id="sec-appendix" class="legacy-anchor" aria-hidden="true"></span>
+<p>All probabilities on this page are model probabilities, not empirical estimates.</p>
 
 <h3 id="sec-05-results-prop2">Proposition 2</h3>
 
@@ -1275,45 +1346,11 @@ x^*&amp;=\frac b2\log\frac\tau{1-\tau},\\
 <h2>Implications and next steps</h2>
 <p class="section-time">4 · Implications · 2–3 minutes</p>
 
-<p>The information channel does not require investors to be better informed overall than the buyer. In the private-information extension, the buyer's signal is more accurate than the investor's, yet the price adds useful information. A favorable private signal may leave preparation unattractive on its own; combined with a favorable price, it can make the investment worthwhile. This is why the target-specialist interpretation matters: different knowledge can be useful even to a knowledgeable acquirer.</p>
-<p>The reversal also survives the paper's logistic-noise example, continuously distributed preparation costs and a narrower gap between acquisition values. These comparisons preserve the mechanism, but change its size. How often a sufficiently favorable price occurs matters as well as how much the price could reveal. The extensions and their conditions are available below.</p>
 <h3 id="sec-implications-terms">Why sale terms matter</h3>
-<p>Holding incumbent strength at the strong benchmark, letting the challenger observe the price raises target proceeds and acquisition surplus net of preparation costs relative to withholding the price. This is a comparison of information access under a given sale rule. It does not establish that strengthening the incumbent always increases welfare, or that the benchmark auction is the seller's best mechanism.</p>
-<p>A reserve changes what a buyer must pay and what target shares reveal. If it excludes a low-value challenger, it changes how target proceeds differ across challenger types, and therefore changes the investor's incentive to trade. Bargaining can divide the surplus differently again. The paper's bargaining result characterizes acquisition-stage payments; a participation result for that institution would require solving its trading and preparation game.</p>
+<p>Holding incumbent strength at the strong benchmark, letting the challenger observe the price raises target proceeds and acquisition surplus net of preparation costs relative to withholding the price. The comparison ranks access to information under a fixed sale rule; it does not rank incumbent strengths or sale mechanisms.</p>
+<p>A reserve changes what a buyer must pay and what target shares reveal. If it excludes a low-value challenger, it changes how target proceeds differ across challenger types, and therefore changes the investor's incentive to trade. Bargaining can divide the surplus differently again; the paper characterizes its acquisition-stage payments.</p>
 <p>Choosing sale terms requires more than selecting the largest revenue in a table. When preparation can fall to zero, a single price may pool several order-flow observations. Different pooling rules can then give the buyer different information even with the same investor orders. The paper establishes a family of such outcomes. A seller must account for the resulting orders, prices, beliefs and preparation decisions together.</p>
-
-<span id="sec-09-outlook-theory" class="legacy-anchor" aria-hidden="true"></span><span id="sec-09-outlook-empirics" class="legacy-anchor" aria-hidden="true"></span>
-<h3 id="sec-implications-next">What I would pursue next</h3>
-<p>The next theoretical step is to solve the seller's choice of terms while accounting for the possible trading, pricing and preparation outcomes. A related question is whether committing before trading improves on revising terms after prices are observed. Empirical work would begin by establishing the public decision window, separating interest from substantive preparation, and dating the information buyers could observe. The paper reports a research design, not an estimated price-to-entry effect.</p>
-<p class="takeaway">The contribution is a link between the payment rule and the information that recruits bidders. A stronger competitor can make target shares more informative precisely when the prospective buyer's direct return to preparation falls.</p>
-<details class="fold" id="extensions-detail"><summary>Robustness: noise, costs and private information</summary>
-<span id="sec-06-robustness" class="legacy-anchor" aria-hidden="true"></span>
-
-
-
-<p>The paper checks the reversal with a different noise distribution, continuously distributed preparation costs, a smaller acquisition-value gap, and a buyer whose private signal is more accurate than the investor's. The argument retains a bound on what orders can reveal and positive preparation at every price. The size of the effect depends on how often a price is favorable enough to justify high-cost preparation.</p>
-
-<h3 id="sec-06-robustness-noise">Noise and preparation costs</h3>
-<p>For the trading argument, the key restriction on noise is a bound on the derivative of its log density. Logistic noise satisfies this restriction. Proposition A.5 therefore preserves the unique trading outcomes and the preparation comparison.</p><p>The magnitude changes. Preparation against the strong incumbent is <span class="q" data-q="logistic_entry_strong" data-status="analytical" title="0.301509 · analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=atoms; r=r_strong">0.301509</span> under logistic noise, compared with <span class="q" data-q="base_entry_strong" data-status="analytical" title="0.522757 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">0.522757</span> under Laplace noise. The logistic threshold lies <span class="q" data-q="logistic_threshold_noise_sd" data-status="analytical" title="1.495369 · analytical · figures_data/posterior_tails.csv · noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd">1.495369</span> noise standard deviations from zero, so favorable observations are rare. Proposition A.6 also preserves parts (i) and (ii) of Proposition 2 when preparation costs are continuously distributed over bands of half-width <span class="q" data-q="cost_halfwidth" data-status="input" title="0.1 · input · input manifest · cost_halfwidth">0.1</span>, under either noise law.</p>
-
-<figure class="chart" data-chart="fig3" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p>
-<div class="chart-mount" id="chart-fig3" role="img" aria-label="Two panels over the threshold distance M minus tau: the probability that the posterior crosses the threshold under full orders, and implied entry, for Laplace and logistic noise."></div>
-<figcaption><strong>Figure 3.</strong> Posterior tails and high-cost entry. Panel (a) plots \(\Pr(\mu_X\ge\tau)\) against \(M-\tau\) under full orders at the strong benchmark strength; panel (b) plots implied entry. At zero threshold distance the Laplace plateau induces entry under the tie rule, whereas the logistic bound is unattained. The plotted tail probability is nevertheless defined there: zero mass and baseline preparation are closed points.
-<details class="fold"><summary>Notes</summary><p>Scale \(b=2\), rather than variance, is held fixed. These are fixed-profile comparisons; Online Appendix C.5 records equilibrium validation for each implied cost. The figure does not establish a Blackwell ranking.</p></details></figcaption>
-</figure>
-
-<h3 id="sec-06-robustness-values">Acquisition values</h3>
-<p>With \(h=2\) and \(\ell=1\), every strict inequality of Proposition 2 holds and entry rises from <span class="q" data-q="moderate_entry_weak" data-status="analytical" title="0.250000 · analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_weak">0.250000</span> to <span class="q" data-q="moderate_entry_strong" data-status="analytical" title="0.526805 · analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_strong">0.526805</span> between \(r_0=1.05\) and \(r_1=1.5\). What the reversal needs is the placement of incumbent strength relative to the low acquisition value, not a large value gap.</p>
-
-<h3 id="sec-06-robustness-signals">Complementary private information</h3>
-<p>A more accurate private signal need not contain all the information in the price. A buyer may know its integration plans, while a specialist investor knows more about the target's customers or technology. The extension represents this distinction with conditionally independent signals of accuracy \(d\) for the buyer and \(a\) for the investor.</p><p>Positive preparation keeps the price informative about the public posterior. Proposition A.7 gives sufficient conditions for the same unique trading and preparation outcomes without requiring \(a\gt d\). With buyer accuracy \(d=75\%\) and investor accuracy \(a=70\%\), preparation rises from <span class="q" data-q="signal_entry_weak" data-status="analytical" title="0.850000 · analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_weak">0.850000</span> to <span class="q" data-q="signal_entry_strong" data-status="analytical" title="0.879438 · analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_strong">0.879438</span>. A favorable private signal alone does not justify the high preparation cost against the weak incumbent; combined with a favorable price, it does against the strong one.</p>
-
-<figure class="table" id="table-3">
-<div class="table-wrap"><table data-table="extensions"><thead><tr><th scope="col"></th><th scope="col" class="num">Entry weak</th><th scope="col" class="num">Entry strong</th><th scope="col" class="num">O<sub>H</sub> weak</th><th scope="col" class="num">O<sub>H</sub> strong</th><th scope="col" class="num">Minimum margin</th><th scope="col" class="num">Basis</th></tr></thead><tbody><tr class="panel"><td colspan="7">Panel A. Noise and preparation costs (r = 1.2 and 3)</td></tr><tr><th scope="row">Laplace, cost atoms</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:2">0.250000</td><td class="num" title="0.5227572972597381" data-src="tables/extensions.csv:2">0.522757</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:2">0.125000</td><td class="num" title="0.3241924257758909" data-src="tables/extensions.csv:2">0.324192</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:2">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">Laplace, cost mixture</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:3">0.250000</td><td class="num" title="0.5227147163813063" data-src="tables/extensions.csv:3">0.522715</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:3">0.125000</td><td class="num" title="0.324148008634032" data-src="tables/extensions.csv:3">0.324148</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:3">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">logistic, cost atoms</th><td class="num" title="0.25" data-src="tables/extensions.csv:4">0.250000</td><td class="num" title="0.3015088516350811" data-src="tables/extensions.csv:4">0.301509</td><td class="num" title="0.125" data-src="tables/extensions.csv:4">0.125000</td><td class="num" title="0.1619942904485151" data-src="tables/extensions.csv:4">0.161994</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:4">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">logistic, cost mixture</th><td class="num" title="0.25" data-src="tables/extensions.csv:5">0.250000</td><td class="num" title="0.30137412771940725" data-src="tables/extensions.csv:5">0.301374</td><td class="num" title="0.125" data-src="tables/extensions.csv:5">0.125000</td><td class="num" title="0.16185375668090243" data-src="tables/extensions.csv:5">0.161854</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:5">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr class="panel"><td colspan="7">Panel B. Moderate values (h = 2, ℓ = 1; r = 1.05 and 1.5)</td></tr><tr><th scope="row">Moderate values</th><td class="num" title="0.25000000000000006" data-src="numerics/moderate_values.csv:2">0.250000</td><td class="num" title="0.526804662192885" data-src="numerics/moderate_values.csv:2">0.526805</td><td class="num" title="0.12500000000000003" data-src="numerics/moderate_values.csv:2">0.125000</td><td class="num" title="0.3270320655140725" data-src="numerics/moderate_values.csv:2">0.327032</td><td class="num" title="0.0008014731392707837" data-src="numerics/moderate_values.csv:2">8.01<span class="times">×</span>10<sup>-4</sup></td><td class="basis">analytical</td></tr><tr class="panel"><td colspan="7">Panel C. Complementary private information (r = 1.1 and 2.3)</td></tr><tr><th scope="row">Investor accuracy a = 0.70, buyer accuracy d = 0.75</th><td class="num" title="0.8500000000000001" data-src="numerics/two_signals.csv:2">0.850000</td><td class="num" title="0.8794375515549993" data-src="numerics/two_signals.csv:4">0.879438</td><td class="num" title="0.42500000000000004" data-src="numerics/two_signals.csv:2">0.425000</td><td class="num" title="0.4489424006229813" data-src="numerics/two_signals.csv:4">0.448942</td><td class="num" title="0.0014545454545454636" data-src="numerics/two_signals.csv:2">1.45<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr></tbody></table></div>
-<figcaption><strong>Table 3.</strong> Robustness and complementary private information.</figcaption>
-</figure>
-
-</details><details class="fold" id="sale-detail"><summary>Welfare, bargaining and reserve comparisons</summary>
+<details class="fold" id="sale-detail"><summary>Welfare, bargaining and reserve comparisons</summary>
 <span id="sec-07-welfare" class="legacy-anchor" aria-hidden="true"></span>
 
 
@@ -1360,6 +1397,43 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 </figure>
 <p><strong>Proposition A.10 · analytical.</strong> At the declared high-reserve example, full investor orders support a family of rational price pools. A pooled price changes the buyer's posterior and its willingness to prepare, even though investor orders are fixed. The seller therefore cannot identify a continuation by orders alone. Appendix A.7 and Online Appendix C.6b give the construction and the validated family.</p>
 </details>
+
+<h3 id="sec-implications-robustness">What the reversal survives</h3>
+<p>The information channel does not require investors to be better informed overall than the buyer. In the private-information extension, the buyer's signal is more accurate than the investor's, yet the price adds useful information. A favorable private signal may leave preparation unattractive on its own; combined with a favorable price, it can make the investment worthwhile. This is why the target-specialist interpretation matters: different knowledge can be useful even to a knowledgeable acquirer.</p>
+<p>The reversal also survives the paper's logistic-noise example, continuously distributed preparation costs and a narrower gap between acquisition values. The mechanism holds in each; its size changes. How often a sufficiently favorable price occurs matters as well as how much the price could reveal.</p>
+<details class="fold" id="extensions-detail"><summary>Robustness: noise, costs and private information</summary>
+<span id="sec-06-robustness" class="legacy-anchor" aria-hidden="true"></span>
+
+
+
+<p>The paper checks the reversal with a different noise distribution, continuously distributed preparation costs, a smaller acquisition-value gap, and a buyer whose private signal is more accurate than the investor's. The argument retains a bound on what orders can reveal and positive preparation at every price. The size of the effect depends on how often a price is favorable enough to justify high-cost preparation.</p>
+
+<h3 id="sec-06-robustness-noise">Noise and preparation costs</h3>
+<p>For the trading argument, the key restriction on noise is a bound on the derivative of its log density. Logistic noise satisfies this restriction. Proposition A.5 therefore preserves the unique trading outcomes and the preparation comparison.</p><p>The magnitude changes. Preparation against the strong incumbent is <span class="q" data-q="logistic_entry_strong" data-status="analytical" title="0.301509 · analytical · tables/equilibrium_controls.csv · noise=logistic; cost_law=atoms; r=r_strong">30.2%</span> under logistic noise, compared with <span class="q" data-q="base_entry_strong" data-status="analytical" title="0.522757 · analytical · tables/equilibrium_controls.csv · experiment=feedback; noise=Laplace; cost_law=atoms; r=r_strong">52.3%</span> under Laplace noise. The logistic threshold lies <span class="q" data-q="logistic_threshold_noise_sd" data-status="analytical" title="1.495369 · analytical · figures_data/posterior_tails.csv · noise=logistic; tau=benchmark strong threshold; column=threshold_noise_sd">1.495369</span> noise standard deviations from zero, so favorable observations are rare. Proposition A.6 also preserves parts (i) and (ii) of Proposition 2 when preparation costs are continuously distributed over bands of half-width <span class="q" data-q="cost_halfwidth" data-status="input" title="0.1 · input · input manifest · cost_halfwidth">0.1</span>, under either noise law.</p>
+
+<figure class="chart" data-chart="fig3" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p>
+<div class="chart-mount" id="chart-fig3" role="img" aria-label="Two panels over the threshold distance M minus tau: the probability that the posterior crosses the threshold under full orders, and implied entry, for Laplace and logistic noise."></div>
+<figcaption><strong>Figure 3.</strong> Posterior tails and high-cost entry. Panel (a) plots \(\Pr(\mu_X\ge\tau)\) against \(M-\tau\) under full orders at the strong benchmark strength; panel (b) plots implied entry. At zero threshold distance the Laplace plateau induces entry under the tie rule, whereas the logistic bound is unattained. The plotted tail probability is nevertheless defined there: zero mass and baseline preparation are closed points.
+<details class="fold"><summary>Notes</summary><p>Scale \(b=2\), rather than variance, is held fixed. These are fixed-profile comparisons; Online Appendix C.5 records equilibrium validation for each implied cost. The figure does not establish a Blackwell ranking.</p></details></figcaption>
+</figure>
+
+<h3 id="sec-06-robustness-values">Acquisition values</h3>
+<p>With \(h=2\) and \(\ell=1\), every strict inequality of Proposition 2 holds and entry rises from <span class="q" data-q="moderate_entry_weak" data-status="analytical" title="0.250000 · analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_weak">25.0%</span> to <span class="q" data-q="moderate_entry_strong" data-status="analytical" title="0.526805 · analytical · numerics/moderate_values.csv · declared moderate comparison; column=E_strong">52.7%</span> between \(r_0=1.05\) and \(r_1=1.5\). What the reversal needs is the placement of incumbent strength relative to the low acquisition value, not a large value gap.</p>
+
+<h3 id="sec-06-robustness-signals">Complementary private information</h3>
+<p>A more accurate private signal need not contain all the information in the price. A buyer may know its integration plans, while a specialist investor knows more about the target's customers or technology. The extension represents this distinction with conditionally independent signals of accuracy \(d\) for the buyer and \(a\) for the investor.</p><p>Positive preparation keeps the price informative about the public posterior. Proposition A.7 gives sufficient conditions for the same unique trading and preparation outcomes without requiring \(a\gt d\). With buyer accuracy \(d=75\%\) and investor accuracy \(a=70\%\), preparation rises from <span class="q" data-q="signal_entry_weak" data-status="analytical" title="0.850000 · analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_weak">85.0%</span> to <span class="q" data-q="signal_entry_strong" data-status="analytical" title="0.879438 · analytical · numerics/two_signals.csv · a=0.70; d=0.75; r=r_strong">87.9%</span>. A favorable private signal alone does not justify the high preparation cost against the weak incumbent; combined with a favorable price, it does against the strong one.</p>
+
+<figure class="table" id="table-3">
+<div class="table-wrap"><table data-table="extensions"><thead><tr><th scope="col"></th><th scope="col" class="num">Entry weak</th><th scope="col" class="num">Entry strong</th><th scope="col" class="num">O<sub>H</sub> weak</th><th scope="col" class="num">O<sub>H</sub> strong</th><th scope="col" class="num">Minimum margin</th><th scope="col" class="num">Basis</th></tr></thead><tbody><tr class="panel"><td colspan="7">Panel A. Noise and preparation costs (r = 1.2 and 3)</td></tr><tr><th scope="row">Laplace, cost atoms</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:2">0.250000</td><td class="num" title="0.5227572972597381" data-src="tables/extensions.csv:2">0.522757</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:2">0.125000</td><td class="num" title="0.3241924257758909" data-src="tables/extensions.csv:2">0.324192</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:2">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">Laplace, cost mixture</th><td class="num" title="0.25000000000000006" data-src="tables/extensions.csv:3">0.250000</td><td class="num" title="0.5227147163813063" data-src="tables/extensions.csv:3">0.522715</td><td class="num" title="0.12500000000000003" data-src="tables/extensions.csv:3">0.125000</td><td class="num" title="0.324148008634032" data-src="tables/extensions.csv:3">0.324148</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:3">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">logistic, cost atoms</th><td class="num" title="0.25" data-src="tables/extensions.csv:4">0.250000</td><td class="num" title="0.3015088516350811" data-src="tables/extensions.csv:4">0.301509</td><td class="num" title="0.125" data-src="tables/extensions.csv:4">0.125000</td><td class="num" title="0.1619942904485151" data-src="tables/extensions.csv:4">0.161994</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:4">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr><th scope="row">logistic, cost mixture</th><td class="num" title="0.25" data-src="tables/extensions.csv:5">0.250000</td><td class="num" title="0.30137412771940725" data-src="tables/extensions.csv:5">0.301374</td><td class="num" title="0.125" data-src="tables/extensions.csv:5">0.125000</td><td class="num" title="0.16185375668090243" data-src="tables/extensions.csv:5">0.161854</td><td class="num" title="0.0024117851141662594" data-src="tables/extensions.csv:5">2.41<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr><tr class="panel"><td colspan="7">Panel B. Moderate values (h = 2, ℓ = 1; r = 1.05 and 1.5)</td></tr><tr><th scope="row">Moderate values</th><td class="num" title="0.25000000000000006" data-src="numerics/moderate_values.csv:2">0.250000</td><td class="num" title="0.526804662192885" data-src="numerics/moderate_values.csv:2">0.526805</td><td class="num" title="0.12500000000000003" data-src="numerics/moderate_values.csv:2">0.125000</td><td class="num" title="0.3270320655140725" data-src="numerics/moderate_values.csv:2">0.327032</td><td class="num" title="0.0008014731392707837" data-src="numerics/moderate_values.csv:2">8.01<span class="times">×</span>10<sup>-4</sup></td><td class="basis">analytical</td></tr><tr class="panel"><td colspan="7">Panel C. Complementary private information (r = 1.1 and 2.3)</td></tr><tr><th scope="row">Investor accuracy a = 0.70, buyer accuracy d = 0.75</th><td class="num" title="0.8500000000000001" data-src="numerics/two_signals.csv:2">0.850000</td><td class="num" title="0.8794375515549993" data-src="numerics/two_signals.csv:4">0.879438</td><td class="num" title="0.42500000000000004" data-src="numerics/two_signals.csv:2">0.425000</td><td class="num" title="0.4489424006229813" data-src="numerics/two_signals.csv:4">0.448942</td><td class="num" title="0.0014545454545454636" data-src="numerics/two_signals.csv:2">1.45<span class="times">×</span>10<sup>-3</sup></td><td class="basis">analytical</td></tr></tbody></table></div>
+<figcaption><strong>Table 3.</strong> Robustness and complementary private information.</figcaption>
+</figure>
+
+</details>
+
+<span id="sec-09-outlook-theory" class="legacy-anchor" aria-hidden="true"></span><span id="sec-09-outlook-empirics" class="legacy-anchor" aria-hidden="true"></span>
+<h3 id="sec-implications-next">What I would pursue next</h3>
+<p>The next theoretical step is to solve the seller's choice of terms while accounting for the possible trading, pricing and preparation outcomes. A related question is whether committing before trading improves on revising terms after prices are observed. Empirical work would begin by establishing the public decision window, separating interest from substantive preparation, and dating the information buyers could observe. The pilot design in Online Appendix D sets out that sequence.</p>
+<p class="takeaway">The contribution is a link between the payment rule and the information that recruits bidders. The rule a seller picks sets what a challenger would pay and what the stock price can tell it before it decides to prepare.</p>
 </section>
 
   </main>
@@ -1784,8 +1858,8 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 
   var FALLBACK = {
     bg: '#ffffff', surface: '#ffffff', ink: '#1a1a1a', muted: '#6b6b6b', grid: '#e6e6e6', line: '#cfcfcf',
-    accent: '#5b3df5', accentSoft: 'rgba(91,61,245,0.14)', c2: '#c98a1b', c3: '#5f6b7a',
-    regionA: 'rgba(91,61,245,0.08)', regionB: 'rgba(201,138,27,0.10)', regionC: 'rgba(95,107,122,0.10)',
+    accent: '#8f5c10', accentSoft: 'rgba(180,118,26,0.12)', c2: '#1d4f9b', c3: '#7d7b74',
+    regionA: 'rgba(180,118,26,0.11)', regionB: 'rgba(29,79,155,0.08)', regionC: 'rgba(95,107,122,0.10)',
     fontSans: 'ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
     fontMono: 'ui-monospace, SFMono-Regular, Menlo, monospace'
   };
@@ -1931,7 +2005,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     var cdA = F.r.map(function (_, i) { return [formatNumber(F.Delta_T[i]), formatNumber(F.d_Delta_T_dr[i])]; });
     traces.push({
       type: 'scatter', mode: 'lines', name: 'Δ<sub>T</sub>(r)',
-      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.accent, 'solid', 2.2),
+      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.ink, 'dashdot', 2.2),
       xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
       hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<br>dΔ<sub>T</sub>/dr = %{customdata[1]}<extra>Δ<sub>T</sub></extra>'
     });
@@ -1956,8 +2030,24 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     layout.xaxis = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
     layout.yaxis = axis(t, { title: { text: 'information spread Δ<sub><i>T</i></sub>(<i>r</i>)' }, range: [0, 1.1] });
     layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis2 = axis(t, { title: { text: 'challenger gross profit <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
+    layout.yaxis2 = axis(t, { title: { text: (narrow ? 'challenger profit' : 'challenger gross profit') + ' <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
+    layout.margin.l = narrow ? 72 : 64;
     twoPanels(layout, narrow);
+    // Reference levels from the declared inputs: trading cost k against the spread (A3),
+    // high preparation cost c_H against gross profit (A2). Drawn as shapes, not data.
+    var refs = [
+      { v: D.inputs && D.inputs.k, x: 'x', y: 'y', side: 1, above: true, text: 'trading cost <i>k</i> = ' + (D.inputs && D.inputs.k) },
+      { v: D.inputs && D.inputs.c_H, x: 'x2', y: 'y2', side: 0, above: false, text: 'high preparation cost <i>c<sub>H</sub></i> = ' + (D.inputs && D.inputs.c_H) }
+    ];
+    refs.forEach(function (ref) {
+      if (ref.v === undefined || ref.v === null || !isFinite(Number(ref.v))) return;
+      var v = Number(ref.v);
+      layout.shapes.push({ type: 'line', xref: ref.x + ' domain', yref: ref.y, x0: 0, x1: 1, y0: v, y1: v,
+        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
+      layout.annotations.push({ text: ref.text, showarrow: false, xref: ref.x + ' domain', x: ref.side,
+        xanchor: ref.side ? 'right' : 'left', xshift: ref.side ? -2 : 4, yref: ref.y, y: v, yanchor: ref.above ? 'bottom' : 'top', yshift: ref.above ? 2 : -2,
+        bgcolor: t.bg, borderpad: 1, font: { size: 11, color: t.muted } });
+    });
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
@@ -1966,7 +2056,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
   var BRANCH_STYLE = [
     { key: 'pooling', name: 'no trade', color: 'accent', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
     { key: 'full_orders', name: 'full orders', color: 'c2', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'accent', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
+    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'ink', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
     { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 },
     { key: 'mixed', name: 'mixed diagnostic', color: 'c3', dash: 'dash', width: 1.2, ycol: 'q_H', jumpB: 0.2 }
   ];
@@ -2105,7 +2195,9 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     }
     caption(regions.no_trade_unique, 'no trade<br>unique');
 
-    caption(regions.full_orders_unique, 'full orders unique');
+    // keep the label between r_U and r_C so neither threshold guide crosses it at phone width
+    var fo = regions.full_orders_unique, rC = th.high_cost_ceiling ? Number(th.high_cost_ceiling.value) : null;
+    caption(fo && rC !== null && rC > fo[0] && rC < fo[1] ? [fo[0], rC] : fo, 'full orders<br>unique');
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
@@ -2182,7 +2274,8 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
       var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
       var who = s.word + ' incumbent, r = ' + s.key;
       traces.push({
-        type: 'scatter', mode: 'lines', name: who, legendgroup: 'D' + s.key,
+        type: 'scatter', mode: 'lines', name: who, legendgroup: 'panelA',
+        legendgrouptitle: { text: '(a) Δ<sub>η</sub>', font: { size: 12, color: t.muted } },
         x: S.eta, y: S.Delta_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
         hovertemplate: 'Δ<sub>η</sub> = %{customdata[0]}<extra>' + who + '</extra>'
       });
@@ -2194,13 +2287,14 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
       if (!S) return;
       var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
       traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'GH' + s.key,
-        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, 'solid', 2.2), xaxis: 'x2', yaxis: 'y2',
+        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'panelB',
+        legendgrouptitle: { text: '(b) G<sub>θ,η</sub>', font: { size: 12, color: t.muted } },
+        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
         hovertemplate: 'G<sub>H,η</sub> = %{customdata[1]}<extra>G<sub>H</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
       });
       traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'GL' + s.key,
-        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dash', 2.2), xaxis: 'x2', yaxis: 'y2',
+        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'panelB',
+        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dot', 2.6), xaxis: 'x2', yaxis: 'y2',
         hovertemplate: 'G<sub>L,η</sub> = %{customdata[2]}<extra>G<sub>L</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
       });
     });
@@ -2209,14 +2303,31 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     layout.xaxis = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
     layout.yaxis = axis(t, { title: { text: 'information spread Δ<sub>η</sub>' }, range: [0, 10.5] });
     layout.xaxis2 = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
+    layout.legend.groupclick = 'toggleitem';
     layout.yaxis2 = axis(t, { title: { text: 'challenger profit <i>G</i><sub>θ,η</sub>' }, type: 'log',
       range: [Math.log10(3e-3), Math.log10(60)], tickvals: [0.01, 0.1, 1, 10], ticktext: ['0.01', '0.1', '1', '10'] });
     twoPanels(layout, narrow);
     [['x', 'y'], ['x2', 'y2']].forEach(function (k) {
       layout.shapes.push({ type: 'line', xref: k[0], yref: k[1] + ' domain', x0: 0.5, x1: 0.5, y0: 0, y1: 1,
         line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, yref: k[1] + ' domain', y: 0.02,
-        yanchor: 'bottom', font: { size: 11, color: t.muted } });
+      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, xanchor: 'left', xshift: 3,
+        yref: k[1] + ' domain', y: 1, yanchor: 'top', yshift: -2, bgcolor: t.bg, borderpad: 2,
+        font: { size: 11, color: t.muted } });
+    });
+    // direct labels: weak sits above strong at low η in both G pairs, so label weak above, strong below
+    var LX = 0.12;
+    function at(xs, ys) {
+      for (var i = 1; i < xs.length; i++) if (xs[i] >= LX) return ys[i - 1] + (ys[i] - ys[i - 1]) * (LX - xs[i - 1]) / (xs[i] - xs[i - 1]);
+      return null;
+    }
+    ['G_H_eta', 'G_L_eta'].forEach(function (col) {
+      styles.forEach(function (s, j) {
+        var S = F[s.key];
+        var y = S && at(S.eta, S[col]);
+        if (!(y > 0)) return;
+        layout.annotations.push({ text: s.word, showarrow: false, xref: 'x2', x: LX, yref: 'y2', y: Math.log10(y),
+          yanchor: j === 0 ? 'bottom' : 'top', yshift: j === 0 ? 3 : -3, font: { size: 11, color: s.color } });
+      });
     });
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
@@ -2506,8 +2617,25 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
 
   function fmtSigned(v) {
     if (!isFinite(v)) return fmt6(v);
-    var s = Math.abs(v).toFixed(6);
+    var s = fmt3(Math.abs(v));
     return (v < 0 ? '−' : '+') + s;
+  }
+
+  /* Display-only rounding; the exact value stays in each node's title attribute.
+     Three decimals, or three significant digits for magnitudes below 0.01 so that a
+     small nonzero margin never reads as zero. */
+  function fmt3(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var a = Math.abs(v);
+    if (a !== 0 && a < 0.01) return v.toPrecision(3);
+    return v.toFixed(3);
+  }
+
+  /* Slider value: two decimals, a third only when the 0.005 step needs it. */
+  function fmtR(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var s = v.toFixed(3);
+    return s.charAt(s.length - 1) === '0' ? v.toFixed(2) : s;
   }
 
   function el(tag, cls, text) {
@@ -2706,7 +2834,8 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     range.step = String(R_STEP); range.value = String(P.r_weak);
     range.setAttribute('aria-label', 'Incumbent strength r');
     controls.appendChild(range);
-    var rValue = el('output', 'live explorer-r-value', fmt6(P.r_weak));
+    var rValue = el('output', 'live explorer-r-value', fmtR(P.r_weak));
+    rValue.title = String(P.r_weak);
     rValue.setAttribute('for', 'explorer-r');
     controls.appendChild(rValue);
     var presets = el('div', 'explorer-presets');
@@ -2790,13 +2919,13 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     var P = state.P, E = state.el;
     state.r = r;
     var cf = closedForms(P, r);
-    E.rValue.textContent = fmt6(r);
+    E.rValue.textContent = fmtR(r);
     E.rValue.title = String(r);
     E.warn.hidden = cf.inDomain;
     READOUTS.forEach(function (pair) {
       var v = cf[pair[0]];
       var node = E.readouts[pair[0]];
-      node.textContent = cf.inDomain ? fmt6(v) : '—';
+      node.textContent = cf.inDomain ? fmt3(v) : '—';
       node.title = cf.inDomain ? String(v) : '';
     });
     CHIPS.forEach(function (pair) {
@@ -2808,7 +2937,7 @@ G_{\theta,\eta}&amp;=(1-\eta)\mathbb E[(\theta-R)_+],\\
     });
     BOUNDS.forEach(function (pair) {
       var node = E.bounds[pair[0]];
-      node.textContent = fmt6(cf[pair[0]]);
+      node.textContent = fmt3(cf[pair[0]]);
       node.title = String(cf[pair[0]]);
     });
     var showBadge = cf.inDomain && isBenchmark(r) && state.lastSelfTest && state.lastSelfTest.ok;

@@ -15,8 +15,8 @@
 
   var FALLBACK = {
     bg: '#ffffff', surface: '#ffffff', ink: '#1a1a1a', muted: '#6b6b6b', grid: '#e6e6e6', line: '#cfcfcf',
-    accent: '#5b3df5', accentSoft: 'rgba(91,61,245,0.14)', c2: '#c98a1b', c3: '#5f6b7a',
-    regionA: 'rgba(91,61,245,0.08)', regionB: 'rgba(201,138,27,0.10)', regionC: 'rgba(95,107,122,0.10)',
+    accent: '#8f5c10', accentSoft: 'rgba(180,118,26,0.12)', c2: '#1d4f9b', c3: '#7d7b74',
+    regionA: 'rgba(180,118,26,0.11)', regionB: 'rgba(29,79,155,0.08)', regionC: 'rgba(95,107,122,0.10)',
     fontSans: 'ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
     fontMono: 'ui-monospace, SFMono-Regular, Menlo, monospace'
   };
@@ -162,7 +162,7 @@
     var cdA = F.r.map(function (_, i) { return [formatNumber(F.Delta_T[i]), formatNumber(F.d_Delta_T_dr[i])]; });
     traces.push({
       type: 'scatter', mode: 'lines', name: 'Δ<sub>T</sub>(r)',
-      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.accent, 'solid', 2.2),
+      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.ink, 'dashdot', 2.2),
       xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
       hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<br>dΔ<sub>T</sub>/dr = %{customdata[1]}<extra>Δ<sub>T</sub></extra>'
     });
@@ -187,8 +187,24 @@
     layout.xaxis = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
     layout.yaxis = axis(t, { title: { text: 'information spread Δ<sub><i>T</i></sub>(<i>r</i>)' }, range: [0, 1.1] });
     layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis2 = axis(t, { title: { text: 'challenger gross profit <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
+    layout.yaxis2 = axis(t, { title: { text: (narrow ? 'challenger profit' : 'challenger gross profit') + ' <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
+    layout.margin.l = narrow ? 72 : 64;
     twoPanels(layout, narrow);
+    // Reference levels from the declared inputs: trading cost k against the spread (A3),
+    // high preparation cost c_H against gross profit (A2). Drawn as shapes, not data.
+    var refs = [
+      { v: D.inputs && D.inputs.k, x: 'x', y: 'y', side: 1, above: true, text: 'trading cost <i>k</i> = ' + (D.inputs && D.inputs.k) },
+      { v: D.inputs && D.inputs.c_H, x: 'x2', y: 'y2', side: 0, above: false, text: 'high preparation cost <i>c<sub>H</sub></i> = ' + (D.inputs && D.inputs.c_H) }
+    ];
+    refs.forEach(function (ref) {
+      if (ref.v === undefined || ref.v === null || !isFinite(Number(ref.v))) return;
+      var v = Number(ref.v);
+      layout.shapes.push({ type: 'line', xref: ref.x + ' domain', yref: ref.y, x0: 0, x1: 1, y0: v, y1: v,
+        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
+      layout.annotations.push({ text: ref.text, showarrow: false, xref: ref.x + ' domain', x: ref.side,
+        xanchor: ref.side ? 'right' : 'left', xshift: ref.side ? -2 : 4, yref: ref.y, y: v, yanchor: ref.above ? 'bottom' : 'top', yshift: ref.above ? 2 : -2,
+        bgcolor: t.bg, borderpad: 1, font: { size: 11, color: t.muted } });
+    });
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
@@ -197,7 +213,7 @@
   var BRANCH_STYLE = [
     { key: 'pooling', name: 'no trade', color: 'accent', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
     { key: 'full_orders', name: 'full orders', color: 'c2', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'accent', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
+    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'ink', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
     { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 },
     { key: 'mixed', name: 'mixed diagnostic', color: 'c3', dash: 'dash', width: 1.2, ycol: 'q_H', jumpB: 0.2 }
   ];
@@ -336,7 +352,9 @@
     }
     caption(regions.no_trade_unique, 'no trade<br>unique');
 
-    caption(regions.full_orders_unique, 'full orders unique');
+    // keep the label between r_U and r_C so neither threshold guide crosses it at phone width
+    var fo = regions.full_orders_unique, rC = th.high_cost_ceiling ? Number(th.high_cost_ceiling.value) : null;
+    caption(fo && rC !== null && rC > fo[0] && rC < fo[1] ? [fo[0], rC] : fo, 'full orders<br>unique');
     panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
@@ -413,7 +431,8 @@
       var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
       var who = s.word + ' incumbent, r = ' + s.key;
       traces.push({
-        type: 'scatter', mode: 'lines', name: who, legendgroup: 'D' + s.key,
+        type: 'scatter', mode: 'lines', name: who, legendgroup: 'panelA',
+        legendgrouptitle: { text: '(a) Δ<sub>η</sub>', font: { size: 12, color: t.muted } },
         x: S.eta, y: S.Delta_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
         hovertemplate: 'Δ<sub>η</sub> = %{customdata[0]}<extra>' + who + '</extra>'
       });
@@ -425,13 +444,14 @@
       if (!S) return;
       var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
       traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'GH' + s.key,
-        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, 'solid', 2.2), xaxis: 'x2', yaxis: 'y2',
+        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'panelB',
+        legendgrouptitle: { text: '(b) G<sub>θ,η</sub>', font: { size: 12, color: t.muted } },
+        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
         hovertemplate: 'G<sub>H,η</sub> = %{customdata[1]}<extra>G<sub>H</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
       });
       traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'GL' + s.key,
-        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dash', 2.2), xaxis: 'x2', yaxis: 'y2',
+        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'panelB',
+        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dot', 2.6), xaxis: 'x2', yaxis: 'y2',
         hovertemplate: 'G<sub>L,η</sub> = %{customdata[2]}<extra>G<sub>L</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
       });
     });
@@ -440,14 +460,31 @@
     layout.xaxis = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
     layout.yaxis = axis(t, { title: { text: 'information spread Δ<sub>η</sub>' }, range: [0, 10.5] });
     layout.xaxis2 = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
+    layout.legend.groupclick = 'toggleitem';
     layout.yaxis2 = axis(t, { title: { text: 'challenger profit <i>G</i><sub>θ,η</sub>' }, type: 'log',
       range: [Math.log10(3e-3), Math.log10(60)], tickvals: [0.01, 0.1, 1, 10], ticktext: ['0.01', '0.1', '1', '10'] });
     twoPanels(layout, narrow);
     [['x', 'y'], ['x2', 'y2']].forEach(function (k) {
       layout.shapes.push({ type: 'line', xref: k[0], yref: k[1] + ' domain', x0: 0.5, x1: 0.5, y0: 0, y1: 1,
         line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, yref: k[1] + ' domain', y: 0.02,
-        yanchor: 'bottom', font: { size: 11, color: t.muted } });
+      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, xanchor: 'left', xshift: 3,
+        yref: k[1] + ' domain', y: 1, yanchor: 'top', yshift: -2, bgcolor: t.bg, borderpad: 2,
+        font: { size: 11, color: t.muted } });
+    });
+    // direct labels: weak sits above strong at low η in both G pairs, so label weak above, strong below
+    var LX = 0.12;
+    function at(xs, ys) {
+      for (var i = 1; i < xs.length; i++) if (xs[i] >= LX) return ys[i - 1] + (ys[i] - ys[i - 1]) * (LX - xs[i - 1]) / (xs[i] - xs[i - 1]);
+      return null;
+    }
+    ['G_H_eta', 'G_L_eta'].forEach(function (col) {
+      styles.forEach(function (s, j) {
+        var S = F[s.key];
+        var y = S && at(S.eta, S[col]);
+        if (!(y > 0)) return;
+        layout.annotations.push({ text: s.word, showarrow: false, xref: 'x2', x: LX, yref: 'y2', y: Math.log10(y),
+          yanchor: j === 0 ? 'bottom' : 'top', yshift: j === 0 ? 3 : -3, font: { size: 11, color: s.color } });
+      });
     });
     panelLabels(layout, t);
     return { traces: traces, layout: layout };

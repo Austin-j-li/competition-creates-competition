@@ -118,8 +118,25 @@
 
   function fmtSigned(v) {
     if (!isFinite(v)) return fmt6(v);
-    var s = Math.abs(v).toFixed(6);
+    var s = fmt3(Math.abs(v));
     return (v < 0 ? '−' : '+') + s;
+  }
+
+  /* Display-only rounding; the exact value stays in each node's title attribute.
+     Three decimals, or three significant digits for magnitudes below 0.01 so that a
+     small nonzero margin never reads as zero. */
+  function fmt3(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var a = Math.abs(v);
+    if (a !== 0 && a < 0.01) return v.toPrecision(3);
+    return v.toFixed(3);
+  }
+
+  /* Slider value: two decimals, a third only when the 0.005 step needs it. */
+  function fmtR(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var s = v.toFixed(3);
+    return s.charAt(s.length - 1) === '0' ? v.toFixed(2) : s;
   }
 
   function el(tag, cls, text) {
@@ -318,7 +335,8 @@
     range.step = String(R_STEP); range.value = String(P.r_weak);
     range.setAttribute('aria-label', 'Incumbent strength r');
     controls.appendChild(range);
-    var rValue = el('output', 'live explorer-r-value', fmt6(P.r_weak));
+    var rValue = el('output', 'live explorer-r-value', fmtR(P.r_weak));
+    rValue.title = String(P.r_weak);
     rValue.setAttribute('for', 'explorer-r');
     controls.appendChild(rValue);
     var presets = el('div', 'explorer-presets');
@@ -402,13 +420,13 @@
     var P = state.P, E = state.el;
     state.r = r;
     var cf = closedForms(P, r);
-    E.rValue.textContent = fmt6(r);
+    E.rValue.textContent = fmtR(r);
     E.rValue.title = String(r);
     E.warn.hidden = cf.inDomain;
     READOUTS.forEach(function (pair) {
       var v = cf[pair[0]];
       var node = E.readouts[pair[0]];
-      node.textContent = cf.inDomain ? fmt6(v) : '—';
+      node.textContent = cf.inDomain ? fmt3(v) : '—';
       node.title = cf.inDomain ? String(v) : '';
     });
     CHIPS.forEach(function (pair) {
@@ -420,7 +438,7 @@
     });
     BOUNDS.forEach(function (pair) {
       var node = E.bounds[pair[0]];
-      node.textContent = fmt6(cf[pair[0]]);
+      node.textContent = fmt3(cf[pair[0]]);
       node.title = String(cf[pair[0]]);
     });
     var showBadge = cf.inDomain && isBenchmark(r) && state.lastSelfTest && state.lastSelfTest.ok;
