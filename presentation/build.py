@@ -27,43 +27,20 @@ def fetch(url):
 
 def build():
     research, hashes = data.build_data(ROOT)
-    vendor = HERE / 'vendor'
-    lock_path = vendor / 'lock.json'
-    lock = json.loads(lock_path.read_text()) if lock_path.exists() else {}
-    upstream = json.loads((ROOT / 'handout/vendor.lock.json').read_text())
-    for key, filename in [('katex_js', 'katex.min.js'), ('katex_css', 'katex.min.css')]:
-        path = vendor / filename
-        body = path.read_bytes() if path.exists() else fetch(upstream[key]['url'])
-        integrity = 'sha512-' + base64.b64encode(hashlib.sha512(body).digest()).decode()
-        if integrity != upstream[key]['integrity']:
-            raise ValueError('KaTeX integrity mismatch: ' + filename)
-        path.write_bytes(body)
-        lock[filename] = {'sha256': digest(body), 'url': upstream[key]['url']}
-    font_urls = {rel for rel in re.findall(r'url\((fonts/[^)]+)\)', (vendor / 'katex.min.css').read_text()) if rel.endswith('.woff2')}
-    def font(rel):
-        path = vendor / rel
-        url = upstream['katex_css']['url'].rsplit('/', 1)[0] + '/' + rel
-        body = path.read_bytes() if path.exists() else fetch(url)
-        if rel in lock and digest(body) != lock[rel]['sha256']:
-            raise ValueError('Font integrity mismatch: ' + rel)
-        path.parent.mkdir(exist_ok=True)
-        path.write_bytes(body)
-        return rel, {'sha256': digest(body), 'url': url}
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        lock.update(dict(pool.map(font, sorted(font_urls))))
-    lock_path.write_text(json.dumps(lock, indent=2, sort_keys=True) + '\n')
     out = HERE / 'dist'
     out.mkdir(exist_ok=True)
-    shutil.copytree(vendor, out / 'vendor', dirs_exist_ok=True)
+    # KaTeX: the handout's locked local copy, verified file by file.
+    lock = json.loads((ROOT / 'handout/vendor.lock.json').read_text())['katex']['files']
+    for rel, entry in lock.items():
+        body = (ROOT / 'handout/vendor' / rel).read_bytes()
+        if digest(body) != entry['sha256']:
+            raise ValueError('KaTeX integrity mismatch: ' + rel)
+        target = out / 'vendor' / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(body)
     # Chromium and current browsers use WOFF2; remove unused upstream fallback URLs.
     css_path = out / 'vendor/katex.min.css'
     css_path.write_text(re.sub(r',url\(fonts/[^)]+\.(?:woff|ttf)\) format\("[^"]+"\)', '', css_path.read_text()))
-    fonts = json.loads((ROOT / 'handout/fonts.lock.json').read_text())
-    for name in ['LibreFranklin-normal-300-900.woff2', 'CourierPrime-normal-400.woff2']:
-        body = (ROOT / 'handout/fonts' / name).read_bytes()
-        if digest(body) != fonts[name]['sha256']:
-            raise ValueError('Project font hash mismatch: ' + name)
-        (out / name).write_bytes(body)
     uifonts = HERE / 'vendor/uifonts'
     uilock = json.loads((uifonts / 'lock.json').read_text())
     (out / 'uifonts').mkdir(exist_ok=True)
