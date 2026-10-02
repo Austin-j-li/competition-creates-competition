@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import platform
 import re
@@ -27,7 +28,7 @@ sys.path.insert(0, str(HERE))
 import data as data_mod  # noqa: E402
 import tables_html  # noqa: E402
 
-PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::(percent))?\]\]")
+PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::([A-Za-z0-9_]+))?\]\]")
 TABLE_SLOT = re.compile(r"^[ \t]*<!-- @@TABLE:([a-z_]+)@@ -->[ \t]*$", re.M)
 SLOT = re.compile(r"<!-- @@([A-Z_]+)@@ -->")
 MATH = re.compile(r"((?<!\\)\\\(.*?(?<!\\)\\\)|(?<!\\)\\\[.*?(?<!\\)\\\])", re.S)
@@ -93,50 +94,77 @@ def load_fonts(rep: Report) -> dict:
 # Placeholders
 
 
+def shown_value(row: dict) -> tuple[str, str]:
+    """Display rule for a registry row: ``(text, precision)``. A declaration keeps its declared
+    display; a result shows three decimals of the registry value. Nothing is typed by hand."""
+    if row["status"] == "input":
+        return row["display"], "declared"
+    return tables_html.three_decimals(Decimal(row["value"])), "3"
+
+
 def resolve_placeholders(text: str, registry: dict, manifest: dict, rep: Report, where: str) -> str:
-    """Math-aware `[[name]]` substitution. Returns the new text; records failures on rep."""
+    """Math-aware `[[name]]` substitution. Returns the new text; records failures on rep.
+
+    Outside math a placeholder becomes a ``span.q`` with its key, status and precision. Inside
+    math it becomes the bare display, and the whole math segment is wrapped in a
+    ``span.q-math`` that lists the keys and displays, so provenance survives rendering."""
     problems: list[str] = []
 
-    def display_for(name: str, in_math: bool) -> str | None:
+    def display_for(name: str, modifier: str | None, in_math: bool) -> tuple[str, str] | None:
         if name not in manifest:
             problems.append(f"unknown placeholder {name}")
+            return None
+        if modifier:
+            problems.append(f"unknown placeholder modifier {name}:{modifier}")
             return None
         row = registry.get(name)
         if row is None or row["status"] == "open" or row["display"] == "[[unresolved]]":
             problems.append(f"unresolved placeholder {name}")
             return None
-        disp = row["display"]
+        disp, precision = shown_value(row)
         if "\\" in disp and not in_math:
             problems.append(f"TeX display outside math: {name} = {disp}")
             return None
         rep.placeholders_used[name] = row["source_file"]
-        return disp
+        return disp, precision
 
-    def sub_math(m: re.Match) -> str:
-        disp = display_for(m.group(1), True)
-        return disp if disp is not None else m.group(0)
+    def title_for(row: dict) -> str:
+        return html.escape(f"{row['display']} · {row['status']} · {row['source_file']} · {row['source_row']}")
 
     def sub_text(m: re.Match) -> str:
         name = m.group(1)
-        disp = display_for(name, False)
-        if disp is None:
+        found = display_for(name, m.group(2), False)
+        if found is None:
             return m.group(0)
+        disp, precision = found
         row = registry[name]
-        exact = disp
-        if m.group(2) == "percent":
-            value = Decimal(row["value"])
-            if not value.is_finite() or not 0 <= value <= 1:
-                raise ValueError(f"invalid probability: {name}")
-            disp = f"{value * 100:.1f}%"
-        title = f"{exact} · {row['status']} · {row['source_file']} · {row['source_row']}".replace('"', "&quot;")
-        return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" title="{title}">'
-                f"{disp}</span>")
+        return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" data-precision="{precision}" '
+                f'data-value="{html.escape(row["value"])}" title="{title_for(row)}">{disp}</span>')
+
+    def sub_math(segment: str) -> str:
+        keys: list[str] = []
+        shown: list[str] = []
+
+        def one(m: re.Match) -> str:
+            found = display_for(m.group(1), m.group(2), True)
+            if found is None:
+                return m.group(0)
+            keys.append(m.group(1))
+            shown.append(found[0])
+            return found[0]
+        body = PLACEHOLDER.sub(one, segment)
+        if not keys:
+            return body
+        statuses = "|".join(registry[k]["status"] for k in keys)
+        title = html.escape(" ; ".join(f"{k} = {registry[k]['display']} · {registry[k]['status']}" for k in keys))
+        return (f'<span class="q-math" data-q="{" ".join(keys)}" data-shown="{html.escape("|".join(shown))}" '
+                f'data-status="{statuses}" title="{title}">{body}</span>')
 
     parts = MATH.split(text)
     out = []
     for i, part in enumerate(parts):
         if i % 2 == 1:
-            out.append(PLACEHOLDER.sub(sub_math, part))
+            out.append(sub_math(part))
         else:
             out.append(PLACEHOLDER.sub(sub_text, part))
     for p in sorted(set(problems)):
