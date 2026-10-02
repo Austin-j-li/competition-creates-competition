@@ -789,7 +789,8 @@
   function draw(el, spec, t, state) {
     state = state || {};
     var hidden = state.hidden || (state.hidden = {});
-    var W = Math.max(280, Math.round(el.clientWidth || state.width || 640));
+    // state.zoom > 1 draws a narrower plot that CSS scales up, so text and marks grow together.
+    var W = Math.max(280, Math.round((el.clientWidth || state.width || 640) / (state.zoom || 1)));
     var G = geometry(spec, W);
     var bg = t.bg;
     var below = '', above = '', body = '';
@@ -889,9 +890,10 @@
       var title = titled ? titled.a.title.text.replace(/<[^>]+>/g, '') : 'x';
       tip.innerHTML = '<div class="tip-head">' + esc(title) + ' ≈ ' + esc(xa.log ? Math.pow(10, xv).toPrecision(3) : xv.toFixed(3)) + '</div>' + rows.join('');
       tip.hidden = false;
-      var box = svg.getBoundingClientRect(), scale = box.width / G.W;
+      // Layout pixels, not screen pixels: the slides scale the whole stage with a transform.
+      var cw = svg.parentNode.offsetWidth || svg.getBoundingClientRect().width, scale = cw / G.W;
       var left = sx * scale + 14, wTip = tip.offsetWidth;
-      if (left + wTip > box.width) left = Math.max(0, sx * scale - wTip - 14);
+      if (left + wTip > cw) left = Math.max(0, sx * scale - wTip - 14);
       tip.style.left = left + 'px';
       tip.style.top = Math.max(0, ya.p0 * scale) + 'px';
       state.cursor = { x: xa.key, y: ya.key, sx: sx };

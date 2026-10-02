@@ -31,13 +31,13 @@ def main() -> None:
     files = ["index.html", "main_filled.pdf", "online_appendix_filled.pdf"]
     files += [f"fonts/{name}" for name in fonts]
     files += [f"vendor/{name}" for name in vendor]
-    # The talk: the built deck, its locked fonts and KaTeX assets, the two PDFs it links,
-    # its provenance record, and the print export when it has been produced. Speaker notes
-    # and QA output stay private.
+    # The talk: the built slides, the same locked fonts and KaTeX files as the handout, the two
+    # PDFs it links, its provenance record, and the print export when it has been produced.
+    # Speaker notes in Markdown and QA output stay private.
     dist = ROOT / "presentation/dist"
     talk = ["index.html", "main_filled.pdf", "online_appendix_filled.pdf", "provenance.json"]
-    talk += [f"uifonts/{name}" for name in json.loads((ROOT / "presentation/vendor/uifonts/lock.json").read_text())]
-    talk += [str(p.relative_to(dist)) for p in (dist / "vendor").rglob("*") if p.is_file() and p.suffix in {".css", ".js", ".woff2", ".txt", ".json"}]
+    talk += [f"fonts/{name}" for name in fonts]
+    talk += [f"vendor/{name}" for name in vendor]
     if (dist / "presentation.pdf").exists():
         talk.append("presentation.pdf")
     with tempfile.TemporaryDirectory(prefix="ccc-publish-") as directory:
