@@ -1,6 +1,6 @@
-/* Page shell: theme, progress, table of contents, collapsibles, stepper, math, self-check.
-   Plain ES2019, no modules, no dependencies. Runs on DOMContentLoaded; CDN scripts are deferred
-   and therefore already executed by then. */
+/* Page shell: theme, tabs, progress, table of contents, collapsibles, stepper, math, self-check.
+   Plain ES2019, no modules. KaTeX is a local copy loaded before this script. Runs on
+   DOMContentLoaded. */
 (function () {
   "use strict";
 
@@ -35,6 +35,14 @@
   function readStored() {
     try { return window.localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
   }
+  /* The slides once stored their theme under "ccc-deck-theme"; one key now serves both. */
+  try {
+    var oldDeck = window.localStorage.getItem("ccc-deck-theme");
+    if (oldDeck !== null) {
+      if (readStored() === null && (oldDeck === "light" || oldDeck === "dark")) window.localStorage.setItem(STORAGE_KEY, oldDeck);
+      window.localStorage.removeItem("ccc-deck-theme");
+    }
+  } catch (e) { /* private mode */ }
   function writeStored(v) {
     try { window.localStorage.setItem(STORAGE_KEY, v); } catch (e) { /* private mode */ }
   }
@@ -78,6 +86,96 @@
       if (typeof mql.addEventListener === "function") mql.addEventListener("change", onChange);
       else if (typeof mql.addListener === "function") mql.addListener(onChange);
     }
+  }
+
+  /* ---------- tabs: research brief, read the paper, seminar talk ---------- */
+  var TABS = ["brief", "paper", "talk"];
+  function tabFromHash() {
+    var h = window.location.hash;
+    var m = /^#tab-(paper|talk)$/.exec(h);
+    return m ? m[1] : "brief";
+  }
+  function showTab(name, opts) {
+    opts = opts || {};
+    if (TABS.indexOf(name) < 0) name = "brief";
+    TABS.forEach(function (n) {
+      var tab = document.getElementById("tablink-" + n);
+      var panel = document.getElementById("panel-" + n);
+      var on = n === name;
+      if (tab) { tab.setAttribute("aria-selected", on ? "true" : "false"); tab.tabIndex = on ? 0 : -1; }
+      if (panel) panel.hidden = !on;
+    });
+    document.documentElement.setAttribute("data-tab", name);
+    if (opts.push) {
+      try { history.replaceState(null, "", name === "brief" ? window.location.pathname + window.location.search : "#tab-" + name); }
+      catch (e) { /* file URL */ }
+    }
+    if (name === "paper") mountViewer();
+    if (opts.focus) { var tb = document.getElementById("tablink-" + name); if (tb) tb.focus(); }
+    try { document.dispatchEvent(new CustomEvent("ccc:tabchange", { detail: { tab: name } })); }
+    catch (e) { recordError("tabchange dispatch: " + e.message); }
+  }
+  CCC.showTab = showTab;
+  function initTabs() {
+    var list = document.querySelector("[role=tablist]");
+    if (!list) return;
+    list.addEventListener("click", function (ev) {
+      var tab = ev.target.closest ? ev.target.closest("[role=tab]") : null;
+      if (!tab) return;
+      ev.preventDefault();
+      showTab(tab.getAttribute("data-tab"), { push: true });
+    });
+    list.addEventListener("keydown", function (ev) {
+      var tab = ev.target.closest ? ev.target.closest("[role=tab]") : null;
+      if (!tab) return;
+      var i = TABS.indexOf(tab.getAttribute("data-tab")), j = -1;
+      if (ev.key === "ArrowRight") j = (i + 1) % TABS.length;
+      else if (ev.key === "ArrowLeft") j = (i + TABS.length - 1) % TABS.length;
+      else if (ev.key === "Home") j = 0;
+      else if (ev.key === "End") j = TABS.length - 1;
+      if (j < 0) return;
+      ev.preventDefault();
+      showTab(TABS[j], { push: true, focus: true });
+    });
+    // links that open a tab from inside the page
+    document.addEventListener("click", function (ev) {
+      var a = ev.target.closest ? ev.target.closest("a[data-open-tab]") : null;
+      if (!a) return;
+      ev.preventDefault();
+      showTab(a.getAttribute("data-open-tab"), { push: true, focus: true });
+      window.scrollTo(0, 0);
+    });
+    showTab(tabFromHash());
+  }
+
+  /* The inline PDF viewer mounts on first visit to the paper tab, so the PDF loads only on demand. */
+  var viewerMounted = false;
+  function mountViewer() {
+    var host = document.querySelector("[data-viewer]");
+    if (!host) return;
+    if (!viewerMounted) {
+      viewerMounted = true;
+      host.addEventListener("click", function (ev) {
+        var b = ev.target.closest ? ev.target.closest("[data-viewer-src]") : null;
+        if (!b) return;
+        setViewer(b.getAttribute("data-viewer-src"), b.getAttribute("data-viewer-title"));
+      });
+      var first = host.querySelector("[data-viewer-src]");
+      if (first) setViewer(first.getAttribute("data-viewer-src"), first.getAttribute("data-viewer-title"));
+    }
+  }
+  function setViewer(src, title) {
+    var host = document.querySelector("[data-viewer]");
+    var frame = host.querySelector("iframe");
+    if (!frame) {
+      frame = document.createElement("iframe");
+      host.querySelector(".viewer-frame").appendChild(frame);
+    }
+    frame.title = title + ", inline viewer";
+    frame.src = src + "#view=FitH";
+    Array.prototype.forEach.call(host.querySelectorAll("[data-viewer-src]"), function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-viewer-src") === src ? "true" : "false");
+    });
   }
 
   /* ---------- progress bar ---------- */
@@ -212,8 +310,11 @@
     var id;
     try { id = decodeURIComponent(window.location.hash.slice(1)); } catch (e) { return; }
     if (!id) return;
+    if (/^tab-(paper|talk)$/.test(id)) { showTab(id.slice(4)); return; }
     var target = document.getElementById(id);
     if (!target) return;
+    var panel = target.closest ? target.closest("[role=tabpanel]") : null;
+    if (panel && panel.hidden) showTab(panel.getAttribute("data-panel"));
     openAncestors(target);
     if (target.tagName === "DETAILS") target.open = true;
     // A browser cannot scroll to an anchor until its enclosing disclosure is open.
@@ -226,7 +327,10 @@
       });
     }
     revealHash();
-    window.addEventListener("hashchange", revealHash);
+    window.addEventListener("hashchange", function () {
+      if (!window.location.hash) { showTab("brief"); return; }
+      revealHash();
+    });
     // links to ids inside closed details (same page) open them before the jump
     document.addEventListener("click", function (ev) {
       var a = ev.target.closest ? ev.target.closest("a[href^='#']") : null;
@@ -280,32 +384,48 @@
 
   /* ---------- math ---------- */
   var katexErrors = 0;
-  function renderMath() {
-    return new Promise(function (resolve) {
-      function run() {
-        if (typeof window.renderMathInElement !== "function") {
-          recordError("KaTeX auto-render unavailable; math left as source");
-          resolve(false);
-          return;
-        }
+  var SKIP = /^(SCRIPT|NOSCRIPT|STYLE|TEXTAREA|PRE|CODE)$/;
+  function renderMathIn(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var p = n.parentNode;
+        if (!p || SKIP.test(p.nodeName) || (p.closest && p.closest(".katex"))) return NodeFilter.FILTER_REJECT;
+        return /\\[\(\[]/.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+      }
+    });
+    var nodes = [], node;
+    while ((node = walker.nextNode())) nodes.push(node);
+    nodes.forEach(function (n) {
+      var text = n.nodeValue, frag = document.createDocumentFragment(), i = 0, m;
+      var re = /\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]/g;
+      while ((m = re.exec(text))) {
+        if (m.index > i) frag.appendChild(document.createTextNode(text.slice(i, m.index)));
+        var display = m[2] !== undefined;
+        var span = document.createElement("span");
         try {
-          window.renderMathInElement(document.body, {
-            delimiters: [
-              { left: "\\[", right: "\\]", display: true },
-              { left: "\\(", right: "\\)", display: false }
-            ],
-            throwOnError: false,
-            ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
-          });
+          window.katex.render(display ? m[2] : m[1], span, { displayMode: display, throwOnError: false, trust: false });
         } catch (e) {
           recordError("KaTeX render: " + e.message);
+          span.textContent = m[0];
+          span.className = "katex-error";
         }
-        katexErrors = document.querySelectorAll(".katex-error").length;
-        resolve(true);
+        frag.appendChild(span);
+        i = m.index + m[0].length;
       }
-      if (typeof window.renderMathInElement === "function") run();
-      else if (document.readyState === "complete") run();
-      else window.addEventListener("load", run, { once: true });
+      if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
+      n.parentNode.replaceChild(frag, n);
+    });
+  }
+  function renderMath() {
+    return new Promise(function (resolve) {
+      if (!window.katex || typeof window.katex.render !== "function") {
+        recordError("KaTeX unavailable; math left as source");
+        resolve(false);
+        return;
+      }
+      try { renderMathIn(document.body); } catch (e) { recordError("KaTeX render: " + e.message); }
+      katexErrors = document.querySelectorAll(".katex-error").length;
+      resolve(true);
     });
   }
 
@@ -344,7 +464,9 @@
       explorer: (CCC.explorer && typeof CCC.explorer.status === "function") ? CCC.explorer.status() : null,
       consoleErrors: errors.slice(),
       details: { total: details.length, open: open },
-      theme: currentTheme()
+      theme: currentTheme(),
+      tab: document.documentElement.getAttribute("data-tab"),
+      fonts: document.fonts ? Array.prototype.filter.call(document.fonts, function (f) { return f.status === "loaded"; }).map(function (f) { return f.family + " " + f.weight + " " + f.style; }) : []
     };
   };
 
@@ -354,6 +476,7 @@
 
   function boot() {
     try { initTheme(); } catch (e) { recordError("theme: " + e.message); }
+    try { initTabs(); } catch (e) { recordError("tabs: " + e.message); }
     try { initProgress(); } catch (e) { recordError("progress: " + e.message); }
     try { initTocDrawer(); } catch (e) { recordError("toc drawer: " + e.message); }
     try { initScrollspy(); } catch (e) { recordError("scrollspy: " + e.message); }

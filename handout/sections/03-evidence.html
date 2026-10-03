@@ -3,6 +3,7 @@
 
 <h2>What the paper establishes</h2>
 <p class="section-time">3 · The result · 4 minutes</p>
+<p class="lead">In the benchmark, a challenger prepares with probability [[base_entry_weak]] against the weak incumbent and [[base_entry_strong]] against the strong one. Proposition 2 gives conditions under which this reversal is the unique trading and on-path preparation outcome.</p>
 
 <div class="prop" id="main-result">
 <p class="prop-title">Proposition 2 · Sufficient conditions for the reversal</p>
@@ -32,25 +33,26 @@ r_1:&amp;\quad(q_H,q_L)=(1,-1),\quad\mathsf E(r_1)\gt\rho,\\
 &amp;\quad\mathsf O_H(r_1)\gt\mathsf O_H(r_0).
 \end{aligned}
 \]</div>
-<p>Here \(q_H,q_L\) are orders conditional on high and low challenger value, \(\mathsf E\) is preparation probability and \(\mathsf O_H\) is the probability that a high-value challenger acquires the target. The strong price experiment strictly Blackwell dominates the uninformative weak experiment. These comparisons hold on a nonempty open set of primitives, allowing arbitrary mixed orders and every continuous deviation. Off-path pricing rules need not be unique.</p>
+<p>Here \(q_H,q_L\) are orders conditional on high and low challenger value, \(\mathsf E\) is preparation probability and \(\mathsf O_H\) is the probability that a high-value challenger acquires the target. The strong price experiment strictly Blackwell dominates the uninformative weak experiment. These comparisons hold on a nonempty open set of primitives. Uniqueness refers to trading and on-path entry under truthful bidding and allows arbitrary mixed orders and every continuous deviation.</p>
 </div>
 </div>
 </div>
 <p><strong>Why uniqueness holds.</strong> Against the weak incumbent, the investor's gross advantage per unit is at most \(\Delta_T(r_0)\lt k\), so no trade is optimal. Against the strong incumbent, the preparation floor and noise bound make every increase in a correctly signed order profitable. Full orders are therefore necessary in every equilibrium; the proof constructs the associated price and preparation schedules. Favorable prices recruit high-cost preparation more often when challenger value is high.</p>
 <div class="strip">
-<div class="stat"><span class="stat-value">[[base_entry_weak:percent]]</span><span class="stat-label">prepare against the weak incumbent<br>\(r=[[base_r_weak]]\), uninformative price</span></div>
-<div class="stat"><span class="stat-value">[[base_entry_strong:percent]]</span><span class="stat-label">prepare against the strong incumbent<br>\(r=[[base_r_strong]]\), informative price</span></div>
-<div class="stat"><span class="stat-value">[[base_ownership_strong:percent]]</span><span class="stat-label">high-value challenger ownership<br>strong-incumbent benchmark</span></div>
+<div class="stat"><span class="stat-value">[[base_entry_weak]]</span><span class="stat-label">prepare against the weak incumbent<br>\(r=[[base_r_weak]]\), uninformative price</span></div>
+<div class="stat"><span class="stat-value">[[base_entry_strong]]</span><span class="stat-label">prepare against the strong incumbent<br>\(r=[[base_r_strong]]\), informative price</span></div>
+<div class="stat"><span class="stat-value">[[base_ownership_strong]]</span><span class="stat-label">high-value challenger ownership<br>strong-incumbent benchmark</span></div>
 </div>
+<p class="strip-note">All probabilities on this page are model probabilities, not empirical estimates.</p>
 
 <span id="sec-05-results-benchmark" class="legacy-anchor" aria-hidden="true"></span><span id="table-2" class="legacy-anchor" aria-hidden="true"></span>
 <h3 id="sec-evidence-control">Hold the information fixed</h3>
 <p>Hold the investor's informative orders fixed across economies: stronger competition reduces preparation. Let orders adjust in equilibrium: information changes, and the comparison reverses.</p>
 <figure class="table">
 <!-- @@TABLE:core_comparison@@ -->
-<figcaption>Preparation probabilities in the benchmark. Holding orders fixed isolates the information effect; these orders would not be chosen in equilibrium against the weak incumbent. When the price is withheld, the equilibrium is solved again. Percentages are rounded for reading; exact CSV values remain available on hover.</figcaption></figure>
-<p>Preparation, bidding and ownership are distinct. In the benchmark, preparation rises from [[base_entry_weak:percent]] to [[base_entry_strong:percent]], while high-value ownership rises from [[base_ownership_weak:percent]] to [[base_ownership_strong:percent]]. These are model probabilities, not empirical estimates.</p>
-<p>A still stronger incumbent can make even the best attainable price insufficient to justify high-cost preparation. Participation then returns to [[base_entry_collapse:percent]]. The theorem compares specified economies; it does not establish a smooth hump. At intermediate strengths, equilibria can coexist. The certificates and numerical searches below retain that distinction.</p>
+<figcaption>Preparation probabilities in the benchmark. Holding informative orders fixed restores deterrence: preparation falls as the incumbent strengthens. These orders would not be chosen in equilibrium against the weak incumbent. When the price is withheld, the equilibrium is solved again. Values are rounded to three decimals; exact CSV values remain available on hover.</figcaption></figure>
+<p>Preparation, bidding and ownership are distinct. The probability that a high-value challenger acquires the target rises from [[base_ownership_weak]] to [[base_ownership_strong]].</p>
+<p>A still stronger incumbent can make even the best attainable price insufficient to justify high-cost preparation. Participation then returns to [[base_entry_collapse]]. The theorem compares specified economies and does not trace a smooth hump; at intermediate strengths, equilibria can coexist. The certificates and numerical searches below retain that distinction.</p>
 <details class="fold" id="result-detail"><summary>Full theorem, preparation probabilities and proof</summary>
 <span id="sec-appendix" class="legacy-anchor" aria-hidden="true"></span>
 
@@ -86,7 +88,7 @@ x^*&amp;=\frac b2\log\frac\tau{1-\tau},\\
 
 <p><strong>Proposition 3 · computer-assisted.</strong> At three benchmark strengths, an informative equilibrium with full purchases and partial sales coexists with no trade. Outward interval arithmetic encloses each equilibrium and bounds every unilateral deviation. These certificates prove existence at the stated nodes; they do not establish an exhaustive correspondence.</p><figure class="table">
 <!-- @@TABLE:certificates@@ -->
-<figcaption>Certified enclosures for the short-order magnitude and preparation probability. Intervals retain their outward endpoints.</figcaption></figure><figure class="chart" data-chart="fig2" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p><div class="chart-mount" id="chart-fig2" role="img" aria-label="Preparation and order magnitudes across incumbent strength, with certified intervals and numerical search coverage"></div><figcaption><strong>Figure 2.</strong> Preparation and investor orders across incumbent strengths. Shading denotes analytical uniqueness regions. Small axis ticks mark searched nodes with multiple distinct accepted continuations. Other curves are numerical diagnostics, with gaps at missing nodes and unmatched roots. Diamonds mark the computer-assisted certificates. The open diamond identifies a mixed diagnostic, not a new interval proof. Hover for evidence status; use the legend to show or hide a series.</figcaption></figure><p>The revised search retains a mixed candidate as a numerical diagnostic. Finite-support and tested-deviation checks do not establish exact mixed-equilibrium existence or close its between-grid deviation bound. Open search coverage remains visible in the data; a missing branch does not prove nonexistence. At the high-cost preparation ceiling, the Laplace plateau still induces preparation under the tie rule. Participation drops only strictly above that ceiling.</p><figure class="table">
+<figcaption>Certified enclosures for the short-order magnitude and preparation probability. Intervals retain their outward endpoints.</figcaption></figure><figure class="chart" data-chart="fig2" tabindex="0"><p class="figure-scroll-hint">Scroll horizontally to see the full figure.</p><div class="chart-mount" id="chart-fig2" role="img" aria-label="Preparation and order magnitudes across incumbent strength, with certified intervals and numerical search coverage"></div><figcaption><strong>Figure 2.</strong> Preparation and investor orders across incumbent strengths. Shading denotes analytical uniqueness regions. Small axis ticks mark searched nodes with multiple distinct accepted continuations. Other curves are numerical diagnostics, with gaps at missing nodes and unmatched roots. Diamonds mark the certified intervals of Proposition 3 (computer-assisted). The open diamond identifies a mixed diagnostic, not a new interval proof. Hover for evidence status; use the legend to show or hide a series.</figcaption></figure><p>The revised search retains a mixed candidate as a numerical diagnostic. Finite-support and tested-deviation checks do not establish exact mixed-equilibrium existence or close its between-grid deviation bound. Open search coverage remains visible in the data; a missing branch does not prove nonexistence. At the high-cost preparation ceiling, the Laplace plateau still induces preparation under the tie rule. Participation drops only strictly above that ceiling.</p><figure class="table">
 <!-- @@TABLE:thresholds@@ -->
 <figcaption>Existence boundaries, sufficient uniqueness bounds and the preparation ceiling answer different questions.</figcaption></figure>
 </details><details class="fold" id="benchmark-detail"><summary>Benchmark tables and comparisons across strengths</summary>

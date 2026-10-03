@@ -118,8 +118,25 @@
 
   function fmtSigned(v) {
     if (!isFinite(v)) return fmt6(v);
-    var s = Math.abs(v).toFixed(6);
+    var s = fmt3(Math.abs(v));
     return (v < 0 ? '−' : '+') + s;
+  }
+
+  /* Display-only rounding; the exact value stays in each node's title attribute.
+     Three decimals, or three significant digits for magnitudes below 0.01 so that a
+     small nonzero margin never reads as zero. */
+  function fmt3(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var a = Math.abs(v);
+    if (a !== 0 && a < 0.01) return v.toPrecision(3);
+    return v.toFixed(3);
+  }
+
+  /* Slider value: two decimals, a third only when the 0.005 step needs it. */
+  function fmtR(v) {
+    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
+    var s = v.toFixed(3);
+    return s.charAt(s.length - 1) === '0' ? v.toFixed(2) : s;
   }
 
   function el(tag, cls, text) {
@@ -260,7 +277,7 @@
     layout.hovermode = 'x unified';
     layout.showlegend = true;
     layout.legend = { orientation: 'h', x: 0, y: 1.08, yanchor: 'bottom', font: { size: 11, color: muted }, bgcolor: 'rgba(0,0,0,0)' };
-    layout.margin = Object.assign({}, layout.margin, { t: narrow ? 110 : 80 });
+    layout.margin = Object.assign({}, layout.margin, { t: 30 });
     var regA = tok(t, 'regionA', '--region-a'), regB = tok(t, 'regionB', '--region-b');
     var shapes = [
       { type: 'rect', xref: 'x', yref: 'paper', x0: R_MIN, x1: b0.r_k, y0: 0, y1: 1, fillcolor: regA, line: { width: 0 }, layer: 'below' },
@@ -281,21 +298,28 @@
 
   /* ---------- DOM ---------- */
 
+  /* Labels are fixed markup with real subscripts; the locked faces carry every glyph. */
   var READOUTS = [
-    ['t_0', 't₀'], ['t_H', 'tʜ'], ['t_L', 'tʟ'], ['g_H', 'gʜ'], ['g_L', 'gʟ'], ['Delta_T', 'Δᴛ'],
-    ['B_m', 'Bᵣ(m)'], ['B_prior', 'Bᵣ(1/2)'], ['B_M', 'Bᵣ(M)'],
-    ['tau', 'τ'], ['x_star', 'x*'], ['alpha_H', 'αʜ'], ['alpha_L', 'αʟ'], ['E', 'E'], ['O_H', 'Oʜ']
+    ['t_0', 't<sub>0</sub>'], ['t_H', 't<sub>H</sub>'], ['t_L', 't<sub>L</sub>'], ['g_H', 'g<sub>H</sub>'], ['g_L', 'g<sub>L</sub>'], ['Delta_T', 'Δ<sub>T</sub>'],
+    ['B_m', 'B<sub>r</sub>(m)'], ['B_prior', 'B<sub>r</sub>(1/2)'], ['B_M', 'B<sub>r</sub>(M)'],
+    ['tau', 'τ'], ['x_star', 'x*'], ['alpha_H', 'α<sub>H</sub>'], ['alpha_L', 'α<sub>L</sub>'], ['E', 'E'], ['O_H', 'O<sub>H</sub>']
   ];
 
   var CHIPS = [
-    ['A1', '(A1) cʟ < Bᵣ(m)'],
-    ['A2a', '(A2) Bᵣ(1/2) < cʜ'],
-    ['A2b', '(A2) cʜ < Bᵣ(M)'],
-    ['A3_no_trade', '(A3) no trade: Δᴛ < k'],
-    ['A3_full', '(A3) full orders: (1−1/b)ρmΔᴛ > k']
+    ['A1', '(A1) c<sub>L</sub> &lt; B<sub>r</sub>(m)'],
+    ['A2a', '(A2) B<sub>r</sub>(1/2) &lt; c<sub>H</sub>'],
+    ['A2b', '(A2) c<sub>H</sub> &lt; B<sub>r</sub>(M)'],
+    ['A3_no_trade', '(A3) no trade: Δ<sub>T</sub> &lt; k'],
+    ['A3_full', '(A3) full orders: (1−1/b)ρmΔ<sub>T</sub> &gt; k']
   ];
 
-  var BOUNDS = [['r_k', 'r(k)'], ['r_N', 'rɴ'], ['r_U', 'rᴜ'], ['r_C', 'rᴄ']];
+  var BOUNDS = [['r_k', 'r(k)'], ['r_N', 'r<sub>N</sub>'], ['r_U', 'r<sub>U</sub>'], ['r_C', 'r<sub>C</sub>']];
+
+  function markup(tag, cls, html) {
+    var e = el(tag, cls);
+    e.innerHTML = html;
+    return e;
+  }
 
   function buildDOM(root) {
     var P = state.P;
@@ -318,7 +342,8 @@
     range.step = String(R_STEP); range.value = String(P.r_weak);
     range.setAttribute('aria-label', 'Incumbent strength r');
     controls.appendChild(range);
-    var rValue = el('output', 'live explorer-r-value', fmt6(P.r_weak));
+    var rValue = el('output', 'live explorer-r-value', fmtR(P.r_weak));
+    rValue.title = String(P.r_weak);
     rValue.setAttribute('for', 'explorer-r');
     controls.appendChild(rValue);
     var presets = el('div', 'explorer-presets');
@@ -343,7 +368,7 @@
     var readoutEls = {};
     READOUTS.forEach(function (pair) {
       var cell = el('div', 'readout');
-      cell.appendChild(el('span', 'readout-label', pair[1]));
+      cell.appendChild(markup('span', 'readout-label', pair[1]));
       var v = el('span', 'live readout-value', '');
       cell.appendChild(v);
       readouts.appendChild(cell);
@@ -354,7 +379,7 @@
     var chips = el('div', 'explorer-chips');
     var chipEls = {};
     CHIPS.forEach(function (pair) {
-      var c = el('span', 'chip na', pair[1]);
+      var c = markup('span', 'chip na', pair[1]);
       chips.appendChild(c);
       chipEls[pair[0]] = c;
     });
@@ -364,7 +389,7 @@
     var boundEls = {};
     BOUNDS.forEach(function (pair) {
       var bnd = el('span', 'bound');
-      bnd.appendChild(el('span', 'bound-label', pair[1] + ' = '));
+      bnd.appendChild(markup('span', 'bound-label', pair[1] + ' = '));
       var v = el('span', 'live bound-value', '');
       bnd.appendChild(v);
       bounds.appendChild(bnd);
@@ -375,7 +400,6 @@
 
     var mount = el('div', 'chart-mount');
     mount.id = 'chart-explorer';
-    mount.setAttribute('role', 'img');
     mount.setAttribute('aria-label', 'Full-order candidate entry against incumbent strength');
     root.appendChild(mount);
 
@@ -402,25 +426,25 @@
     var P = state.P, E = state.el;
     state.r = r;
     var cf = closedForms(P, r);
-    E.rValue.textContent = fmt6(r);
+    E.rValue.textContent = fmtR(r);
     E.rValue.title = String(r);
     E.warn.hidden = cf.inDomain;
     READOUTS.forEach(function (pair) {
       var v = cf[pair[0]];
       var node = E.readouts[pair[0]];
-      node.textContent = cf.inDomain ? fmt6(v) : '—';
+      node.textContent = cf.inDomain ? fmt3(v) : '—';
       node.title = cf.inDomain ? String(v) : '';
     });
     CHIPS.forEach(function (pair) {
       var chip = cf.chips[pair[0]];
       var node = E.chips[pair[0]];
       node.className = 'chip ' + (cf.inDomain ? (chip.ok ? 'pass' : 'fail') : 'na');
-      node.textContent = pair[1] + ' · margin ' + (cf.inDomain ? fmtSigned(chip.margin) : '—');
+      node.innerHTML = pair[1] + ' · margin ' + (cf.inDomain ? fmtSigned(chip.margin) : '—');
       node.title = cf.inDomain ? String(chip.margin) : '';
     });
     BOUNDS.forEach(function (pair) {
       var node = E.bounds[pair[0]];
-      node.textContent = fmt6(cf[pair[0]]);
+      node.textContent = fmt3(cf[pair[0]]);
       node.title = String(cf[pair[0]]);
     });
     var showBadge = cf.inDomain && isBenchmark(r) && state.lastSelfTest && state.lastSelfTest.ok;
@@ -429,13 +453,10 @@
     moveMarker(r);
   }
 
+  /* The builder draws the marker at state.r, so a redraw moves it. SVG redraws are cheap. */
   function moveMarker(r) {
-    var mount = state.el.mount;
-    if (!mount || state.markerIndex < 0 || typeof Plotly === 'undefined' || !mount.layout) return;
-    var upd = {};
-    upd['shapes[' + state.markerIndex + '].x0'] = r;
-    upd['shapes[' + state.markerIndex + '].x1'] = r;
-    try { Plotly.relayout(mount, upd); } catch (e) { /* chart not mounted yet */ }
+    if (!state.el.mount || !CCC.charts || typeof CCC.charts.update !== 'function') return;
+    try { CCC.charts.update('explorer'); } catch (e) { /* chart not mounted yet */ }
   }
 
   function scheduleUpdate(r) {
@@ -540,27 +561,13 @@
   function mountChart() {
     var mount = state.el.mount;
     if (!mount) return;
-    if (CCC.charts && typeof CCC.charts.register === 'function') {
-      CCC.charts.register('explorer', builder);
-    }
-    if (CCC.charts && typeof CCC.charts.mount === 'function' && typeof CCC.charts.register === 'function') {
-      CCC.charts.mount('explorer');
-      state.mounted = !!CCC.charts.status().explorer.mounted;
+    if (!CCC.charts || typeof CCC.charts.register !== 'function') {
+      mount.textContent = 'The chart could not be drawn; the readouts above remain live.';
       return;
     }
-    if (typeof Plotly === 'undefined') {
-      mount.textContent = 'Chart library unavailable; the readouts above remain live.';
-      return;
-    }
-    var spec = builder(window.CCC_DATA, tokens(), mount.clientWidth < 640);
-    Plotly.newPlot(mount, spec.traces, spec.layout, { displayModeBar: false, responsive: true }).then(function () {
-      state.mounted = true;
-      moveMarker(state.r);
-    });
-    document.addEventListener('ccc:themechange', function () {
-      var s = builder(window.CCC_DATA, tokens(), mount.clientWidth < 640);
-      Plotly.react(mount, s.traces, s.layout, { displayModeBar: false, responsive: true }).then(function () { moveMarker(state.r); });
-    });
+    CCC.charts.register('explorer', builder);
+    CCC.charts.mount('explorer');
+    state.mounted = !!CCC.charts.status().explorer.mounted;
   }
 
   function init() {
@@ -572,9 +579,6 @@
     selfTest();
     render(state.P.r_weak);
     mountChart();
-    document.addEventListener('ccc:themechange', function () {
-      window.setTimeout(function () { moveMarker(state.r); }, 0);
-    });
     state.initialised = true;
   }
 

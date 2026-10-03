@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import platform
 import re
@@ -17,6 +18,7 @@ import shutil
 import sys
 from decimal import Decimal
 import urllib.request
+import zlib
 from base64 import b64encode
 from pathlib import Path
 
@@ -27,7 +29,7 @@ sys.path.insert(0, str(HERE))
 import data as data_mod  # noqa: E402
 import tables_html  # noqa: E402
 
-PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::(percent))?\]\]")
+PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::([A-Za-z0-9_]+))?\]\]")
 TABLE_SLOT = re.compile(r"^[ \t]*<!-- @@TABLE:([a-z_]+)@@ -->[ \t]*$", re.M)
 SLOT = re.compile(r"<!-- @@([A-Z_]+)@@ -->")
 MATH = re.compile(r"((?<!\\)\\\(.*?(?<!\\)\\\)|(?<!\\)\\\[.*?(?<!\\)\\\])", re.S)
@@ -58,22 +60,34 @@ class Report:
 
 
 # ----------------------------------------------------------------------------------------------
-# Vendor
+# Vendor, fonts and the paper files
 
 
 def load_vendor(rep: Report, verify: bool) -> dict:
+    """KaTeX is a local copy under handout/vendor. Every file must match its locked sha256, and the
+    script and stylesheet must also match the upstream sha512 integrity recorded in the lock."""
     lock = json.loads((HERE / "vendor.lock.json").read_text(encoding="utf-8"))
-    ok = all({"url", "version", "integrity", "as"} <= set(v) for v in lock.values())
-    rep.check(ok, "vendor lock complete (url, version, integrity, as)")
+    files = lock["katex"]["files"]
+    for rel, v in files.items():
+        path = HERE / "vendor" / rel
+        body = path.read_bytes() if path.is_file() else b""
+        ok = bool(body) and hashlib.sha256(body).hexdigest() == v["sha256"]
+        if ok and "integrity" in v:
+            ok = "sha512-" + b64encode(hashlib.sha512(body).digest()).decode() == v["integrity"]
+        rep.check(ok, f"vendor {rel} present with locked hash")
+    extra = sorted(q.relative_to(HERE / "vendor").as_posix() for q in (HERE / "vendor").rglob("*")
+                   if q.is_file() and q.relative_to(HERE / "vendor").as_posix() not in files)
+    rep.check(not extra, f"no unlocked files under handout/vendor ({len(extra)})")
     if verify:
-        for name, v in lock.items():
+        for rel, v in files.items():
+            if not v.get("url", "").startswith("https://cdnjs."):
+                continue
             try:
                 with urllib.request.urlopen(v["url"], timeout=60) as resp:  # noqa: S310
                     body = resp.read()
-                digest = "sha512-" + b64encode(hashlib.sha512(body).digest()).decode()
-                rep.check(digest == v["integrity"], f"vendor {name} integrity matches {v['url']}")
+                rep.check(hashlib.sha256(body).hexdigest() == v["sha256"], f"vendor {rel} matches {v['url']}")
             except Exception as exc:  # noqa: BLE001
-                rep.check(False, f"vendor {name} fetch: {exc}")
+                rep.check(False, f"vendor {rel} fetch: {exc}")
     return lock
 
 
@@ -86,57 +100,156 @@ def load_fonts(rep: Report) -> dict:
         rep.check(ok, f"font {name} present with locked sha256")
     extra = sorted(q.name for q in (HERE / "fonts").glob("*") if q.name not in lock)
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
+    faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
+    families = sorted({v["family"] for v in faces.values()})
+    rep.check(families == ["CCC Symbols", "Fira Mono", "Fira Sans"],
+              f"faces are Fira Sans, Fira Mono and the symbol fallback ({', '.join(families)})")
+    rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
+
+
+def font_faces(lock: dict, prefix: str = "fonts/") -> str:
+    """@font-face rules generated from the lock, so the stylesheet cannot drift from the files."""
+    rules = []
+    for name, v in lock.items():
+        if v.get("kind") != "face":
+            continue
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]}; '
+                     f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
+    return "\n".join(rules) + "\n"
+
+
+def katex_css(lock: dict) -> str:
+    """The locked KaTeX stylesheet without the woff and ttf fallbacks, which are not shipped."""
+    css = (HERE / "vendor" / "katex.min.css").read_text(encoding="utf-8")
+    return re.sub(r',url\(fonts/[^)]+\.(?:woff|ttf)\) format\("[^"]+"\)', "", css)
+
+
+def pdf_facts(path: Path) -> dict:
+    """Page count, size, sha256 and creation date of a PDF, read with the standard library."""
+    data = path.read_bytes()
+    chunks = [data]
+    for m in re.finditer(rb"stream\r?\n", data):
+        end = data.find(b"endstream", m.end())
+        if end < 0:
+            continue
+        try:
+            chunks.append(zlib.decompress(data[m.end():end]))
+        except zlib.error:
+            pass
+    counts = []
+    for c in chunks:
+        for m in re.finditer(rb"/Type\s*/Pages\b", c):
+            lo, hi = c.rfind(b"<<", 0, m.start()), c.find(b">>", m.end())
+            n = re.search(rb"/Count\s+(\d+)", c[lo:hi])
+            if n:
+                counts.append(int(n.group(1)))
+    date = re.search(rb"/CreationDate\s*\(D:(\d{4})(\d{2})(\d{2})", data)
+    months = ("January", "February", "March", "April", "May", "June", "July", "August",
+              "September", "October", "November", "December")
+    created = f"{int(date.group(3))} {months[int(date.group(2)) - 1]} {int(date.group(1))}" if date else ""
+    return {"pages": max(counts) if counts else 0, "bytes": len(data),
+            "sha256": hashlib.sha256(data).hexdigest(), "created": created}
+
+
+def paper_panel(facts: dict) -> str:
+    """The Read-the-paper tab, written from the PDF facts. No date or count is typed by hand."""
+    main, oa = facts["main_filled.pdf"], facts["online_appendix_filled.pdf"]
+
+    def card(name: str, label: str, f: dict) -> str:
+        return (f'<article class="pdf-card"><h3>{label}</h3>'
+                f'<p class="meta"><span class="num">{f["pages"]} pages</span> · <span class="num">{round(f["bytes"] / 1024)} KB</span> · PDF</p>'
+                f'<p class="hash"><span>sha256</span> <code>{f["sha256"]}</code></p>'
+                f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
+                f'<a class="button" href="{name}" download>Download</a></p></article>')
+    return (f'<p class="kicker">The paper</p>\n<h2>Read the paper</h2>\n'
+            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the peer-circulation revision. '
+            f'Manuscript {main["pages"]} pages, online appendix {oa["pages"]} pages.</p>\n'
+            f'<div class="pdf-cards">{card("main_filled.pdf", "Manuscript", main)}{card("online_appendix_filled.pdf", "Online appendix", oa)}</div>\n'
+            '<section class="viewer" data-viewer aria-label="Inline PDF viewer"><div class="viewer-bar" role="group" aria-label="Choose a document">'
+            '<span class="viewer-label">Inline viewer</span>'
+            '<button type="button" data-viewer-src="main_filled.pdf" data-viewer-title="Manuscript" aria-pressed="true">Manuscript</button>'
+            '<button type="button" data-viewer-src="online_appendix_filled.pdf" data-viewer-title="Online appendix" aria-pressed="false">Online appendix</button>'
+            '</div><div class="viewer-frame"></div>'
+            '<p class="viewer-note">Some phone browsers do not show a PDF inside a page. Use “Open the PDF” instead.</p></section>\n'
+            '<p class="note">These are the files of the peer-circulation revision. Their bytes equal the release copies, and the build checks the hashes above.</p>')
 
 
 # ----------------------------------------------------------------------------------------------
 # Placeholders
 
 
+def shown_value(row: dict) -> tuple[str, str]:
+    """Display rule for a registry row: ``(text, precision)``. A declaration keeps its declared
+    display; a result shows three decimals of the registry value. Nothing is typed by hand."""
+    if row["status"] == "input":
+        return row["display"], "declared"
+    return tables_html.three_decimals(Decimal(row["value"])), "3"
+
+
 def resolve_placeholders(text: str, registry: dict, manifest: dict, rep: Report, where: str) -> str:
-    """Math-aware `[[name]]` substitution. Returns the new text; records failures on rep."""
+    """Math-aware `[[name]]` substitution. Returns the new text; records failures on rep.
+
+    Outside math a placeholder becomes a ``span.q`` with its key, status and precision. Inside
+    math it becomes the bare display, and the whole math segment is wrapped in a
+    ``span.q-math`` that lists the keys and displays, so provenance survives rendering."""
     problems: list[str] = []
 
-    def display_for(name: str, in_math: bool) -> str | None:
+    def display_for(name: str, modifier: str | None, in_math: bool) -> tuple[str, str] | None:
         if name not in manifest:
             problems.append(f"unknown placeholder {name}")
+            return None
+        if modifier:
+            problems.append(f"unknown placeholder modifier {name}:{modifier}")
             return None
         row = registry.get(name)
         if row is None or row["status"] == "open" or row["display"] == "[[unresolved]]":
             problems.append(f"unresolved placeholder {name}")
             return None
-        disp = row["display"]
+        disp, precision = shown_value(row)
         if "\\" in disp and not in_math:
             problems.append(f"TeX display outside math: {name} = {disp}")
             return None
         rep.placeholders_used[name] = row["source_file"]
-        return disp
+        return disp, precision
 
-    def sub_math(m: re.Match) -> str:
-        disp = display_for(m.group(1), True)
-        return disp if disp is not None else m.group(0)
+    def title_for(row: dict) -> str:
+        return html.escape(f"{row['display']} · {row['status']} · {row['source_file']} · {row['source_row']}")
 
     def sub_text(m: re.Match) -> str:
         name = m.group(1)
-        disp = display_for(name, False)
-        if disp is None:
+        found = display_for(name, m.group(2), False)
+        if found is None:
             return m.group(0)
+        disp, precision = found
         row = registry[name]
-        exact = disp
-        if m.group(2) == "percent":
-            value = Decimal(row["value"])
-            if not value.is_finite() or not 0 <= value <= 1:
-                raise ValueError(f"invalid probability: {name}")
-            disp = f"{value * 100:.1f}%"
-        title = f"{exact} · {row['status']} · {row['source_file']} · {row['source_row']}".replace('"', "&quot;")
-        return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" title="{title}">'
-                f"{disp}</span>")
+        return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" data-precision="{precision}" '
+                f'data-value="{html.escape(row["value"])}" title="{title_for(row)}">{disp}</span>')
+
+    def sub_math(segment: str) -> str:
+        keys: list[str] = []
+        shown: list[str] = []
+
+        def one(m: re.Match) -> str:
+            found = display_for(m.group(1), m.group(2), True)
+            if found is None:
+                return m.group(0)
+            keys.append(m.group(1))
+            shown.append(found[0])
+            return found[0]
+        body = PLACEHOLDER.sub(one, segment)
+        if not keys:
+            return body
+        statuses = "|".join(registry[k]["status"] for k in keys)
+        title = html.escape(" ; ".join(f"{k} = {registry[k]['display']} · {registry[k]['status']}" for k in keys))
+        return (f'<span class="q-math" data-q="{" ".join(keys)}" data-shown="{html.escape("|".join(shown))}" '
+                f'data-status="{statuses}" title="{title}">{body}</span>')
 
     parts = MATH.split(text)
     out = []
     for i, part in enumerate(parts):
         if i % 2 == 1:
-            out.append(PLACEHOLDER.sub(sub_math, part))
+            out.append(sub_math(part))
         else:
             out.append(PLACEHOLDER.sub(sub_text, part))
     for p in sorted(set(problems)):
@@ -295,27 +408,41 @@ def main() -> int:
         page = template_path.read_text(encoding="utf-8")
         css = (HERE / "style.css").read_text(encoding="utf-8") if (HERE / "style.css").exists() else ""
         rep.check(bool(css), "style.css present")
-        css_fonts = set(re.findall(r'url\("fonts/([^"]+)"\)', css))
-        rep.check(css_fonts == set(fonts), f"style.css @font-face files match fonts.lock.json ({len(css_fonts)})")
+        rep.check("@font-face" not in css and "url(" not in css,
+                  "style.css declares no font file; the faces come from fonts.lock.json")
+        faces = font_faces(fonts)
+        face_files = set(re.findall(r'url\("fonts/([^"]+)"\)', faces))
+        rep.check(face_files == {k for k, v in fonts.items() if v.get("kind") == "face"},
+                  f"generated @font-face rules match fonts.lock.json ({len(face_files)})")
         scripts = {}
         for slot, fname in (("APP", "app.js"), ("CHARTS", "charts.js"), ("EXPLORER", "explorer.js")):
             p = HERE / fname
             scripts[slot] = p.read_text(encoding="utf-8") if p.exists() else ""
             rep.check(bool(scripts[slot]), f"{fname} present")
             rep.check("</script" not in scripts[slot], f"{fname} contains no </script")
-        k_css = vendor["katex_css"]
-        vendor_head = (f'<link rel="stylesheet" href="{k_css["url"]}" integrity="{k_css["integrity"]}" '
-                       f'crossorigin="anonymous">')
-        vendor_scripts = "\n".join(
-            f'<script defer src="{vendor[n]["url"]}" integrity="{vendor[n]["integrity"]}" crossorigin="anonymous"></script>'
-            for n in ("katex_js", "katex_auto_render", "plotly"))
+        vendor_head = '<link rel="stylesheet" href="vendor/katex.min.css">'
+        vendor_scripts = '<script src="vendor/katex.min.js"></script>'
+        preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
+                             for n in ("fira-sans-latin-400-normal.woff2", "fira-sans-latin-600-normal.woff2"))
+        facts = {}
+        for rel in PDFS:
+            if (ROOT / rel).is_file():
+                facts[Path(rel).name] = pdf_facts(ROOT / rel)
+        ok = len(facts) == 2 and all(f["pages"] > 0 and f["created"] for f in facts.values())
+        rep.check(ok, "paper facts read from both PDFs (pages, bytes, sha256, date): "
+                  + ", ".join(f"{k} {v['pages']} pages" for k, v in facts.items()))
+        revision = facts["main_filled.pdf"]["created"] if ok else ""
+        paper = paper_panel(facts) if ok else ""
         meta_items = [f"registry {hashes.get('numerics/quantity_registry.csv', '')[:12]}"] + [
             f"{k} {v[:12]}" for k, v in sorted(hashes.items()) if k != "numerics/quantity_registry.csv"]
         build_meta = '<p class="build-meta">Sources (sha256, first 12 hex): ' + "; ".join(meta_items) + ".</p>"
         fills = {
             "VENDOR_HEAD": vendor_head,
+            "FONT_PRELOAD": preload,
             "THEME_BOOT": "",
-            "STYLE": "<style>\n" + css + "\n</style>",
+            "STYLE": "<style>\n" + faces + css + "\n</style>",
+            "PAPER": paper,
+            "TEXT_REVISION": revision,
             "TOC": build_toc(sections),
             "SECTIONS": "\n".join(sections),
             "DATA": "<script>window.CCC_DATA = " + data_js + ";</script>",
@@ -328,7 +455,8 @@ def main() -> int:
         present = set(SLOT.findall(page))
         if "THEME_BOOT" not in present:
             fills.pop("THEME_BOOT")
-        for slot in ("VENDOR_HEAD", "STYLE", "TOC", "SECTIONS", "DATA", "APP", "CHARTS", "EXPLORER", "VENDOR_SCRIPTS", "BUILD_META"):
+        for slot in ("VENDOR_HEAD", "FONT_PRELOAD", "STYLE", "TOC", "SECTIONS", "PAPER", "TEXT_REVISION", "DATA", "APP",
+                     "CHARTS", "EXPLORER", "VENDOR_SCRIPTS", "BUILD_META"):
             rep.check(slot in present, f"template has slot @@{slot}@@")
 
         def fill(m: re.Match) -> str:
@@ -350,9 +478,9 @@ def main() -> int:
             except json.JSONDecodeError:
                 ok = False
         rep.check(ok, "embedded CCC_DATA parses as JSON")
-        tags = re.findall(r"<(?:script|link)\b[^>]*cdnjs\.cloudflare\.com[^>]*>", page)
-        rep.check(len(tags) == 4 and all("integrity=" in t and 'crossorigin="anonymous"' in t for t in tags),
-                  f"four vendor tags carry integrity and crossorigin ({len(tags)})")
+        remote = re.findall(r"<(?:script|link|img|iframe)\b[^>]*(?:src|href)=\"(?:https?:)?//[^>]*>", page)
+        rep.check(not remote, f"no script, style, image or frame loads from the network ({len(remote)})")
+        rep.check("Plotly" not in page and "plotly" not in page, "no chart library is loaded")
         for cid in CHART_IDS:
             rep.check(page.count(f'id="chart-{cid}"') == 1, f"output has one chart-{cid} mount")
         rep.check(page.count('id="explorer"') == 1, "output has one explorer mount")
@@ -370,10 +498,23 @@ def main() -> int:
             if src.exists():
                 shutil.copyfile(src, out_dir / src.name)
                 rep.check((out_dir / src.name).stat().st_size > 0, f"copied {src.name}")
-        (out_dir / "fonts").mkdir(exist_ok=True)
+        if (out_dir / "fonts").is_dir():
+            shutil.rmtree(out_dir / "fonts")
+        (out_dir / "fonts").mkdir()
         for name in fonts:
             shutil.copyfile(HERE / "fonts" / name, out_dir / "fonts" / name)
         rep.check(all((out_dir / "fonts" / n).is_file() for n in fonts), f"copied {len(fonts)} font files")
+        if (out_dir / "vendor").is_dir():
+            shutil.rmtree(out_dir / "vendor")
+        for rel in vendor["katex"]["files"]:
+            target = out_dir / "vendor" / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if rel == "katex.min.css":
+                target.write_text(katex_css(vendor), encoding="utf-8", newline="\n")
+            else:
+                shutil.copyfile(HERE / "vendor" / rel, target)
+        rep.check(all((out_dir / "vendor" / r).is_file() for r in vendor["katex"]["files"]),
+                  f"copied {len(vendor['katex']['files'])} KaTeX files")
 
     # (10) manifest
     passed = not rep.failures
@@ -390,7 +531,7 @@ def main() -> int:
         "outputs": {f"{args.out}/index.html": hashlib.sha256(out_html.read_bytes()).hexdigest()} if out_html.exists() else {},
         "checks": rep.checks,
         "passed": passed,
-        "notes": ["vendor: " + ", ".join(f"{k} {v['version']}" for k, v in vendor.items()),
+        "notes": ["vendor: KaTeX " + vendor["katex"]["version"] + " (local copy)",
                   "fonts: " + ", ".join(f"{k} sha256:{v['sha256'][:12]}" for k, v in fonts.items())],
     }
     (man_dir / "handout.json").write_text(json.dumps(manifest_obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
