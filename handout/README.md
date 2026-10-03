@@ -90,6 +90,8 @@ The custom domain and disabled alternate URLs are declared in `wrangler.jsonc`.
 The migration on 2026-09-10 deployed version `8c42fb77-3ffa-4e21-9fd0-9cc9392282f2`.
 The first deployment with the talk under `/talk/`, on 2026-09-14, is version
 `94018472-5374-4d16-87bf-73a2dd78d858`. Those records describe the earlier design.
+The redesigned handout and talk of 2 October 2026 went live on 2026-10-03 as version
+`ca5d847f-6e9f-4221-afc0-605587396ab5`.
 
 The browser check accepts its base URL as the second argument. To check production, load the
 file's function and invoke it as `check(page, 'https://competition.dealextract.org/',
