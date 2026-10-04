@@ -216,8 +216,8 @@ def build() -> None:
         f["subtitleHtml"] = f.get("subtitle", "")
 
     notes, fallback = read_notes(frames)
-    for name in ("main_filled.pdf", "online_appendix_filled.pdf"):
-        shutil.copyfile(ROOT / "paper" / name, out / name)
+    for name, rel in handout_build.PDFS.items():
+        shutil.copyfile(ROOT / rel, out / name)
 
     meta = {
         "frames": [{k: f.get(k) for k in ("id", "label", "num", "part", "minutes", "backup", "origin", "targets", "widget")}

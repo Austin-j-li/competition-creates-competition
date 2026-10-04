@@ -37,7 +37,9 @@ OPEN_INLINE, CLOSE_INLINE = re.compile(r"(?<!\\)\\\("), re.compile(r"(?<!\\)\\\)
 OPEN_DISPLAY, CLOSE_DISPLAY = re.compile(r"(?<!\\)\\\["), re.compile(r"(?<!\\)\\\]")
 SECTION_ORDER_LAST = "appendix.html"
 CHART_IDS = ("fig1", "fig2", "fig3", "fig4")
-PDFS = ("paper/main_filled.pdf", "paper/online_appendix_filled.pdf")
+# Published name -> source. The names stay those of the first public release so links keep working.
+PDFS = {"main_filled.pdf": "working_release/main.pdf",
+        "online_appendix_filled.pdf": "working_release/online_appendix.pdf"}
 
 
 class Report:
@@ -163,7 +165,7 @@ def paper_panel(facts: dict) -> str:
                 f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
                 f'<a class="button" href="{name}" download>Download</a></p></article>')
     return (f'<p class="kicker">The paper</p>\n<h2>Read the paper</h2>\n'
-            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the peer-circulation revision. '
+            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the working-paper revision. '
             f'Manuscript {main["pages"]} pages, online appendix {oa["pages"]} pages.</p>\n'
             f'<div class="pdf-cards">{card("main_filled.pdf", "Manuscript", main)}{card("online_appendix_filled.pdf", "Online appendix", oa)}</div>\n'
             '<section class="viewer" data-viewer aria-label="Inline PDF viewer"><div class="viewer-bar" role="group" aria-label="Choose a document">'
@@ -172,7 +174,7 @@ def paper_panel(facts: dict) -> str:
             '<button type="button" data-viewer-src="online_appendix_filled.pdf" data-viewer-title="Online appendix" aria-pressed="false">Online appendix</button>'
             '</div><div class="viewer-frame"></div>'
             '<p class="viewer-note">Some phone browsers do not show a PDF inside a page. Use “Open the PDF” instead.</p></section>\n'
-            '<p class="note">These are the files of the peer-circulation revision. Their bytes equal the release copies, and the build checks the hashes above.</p>')
+            '<p class="note">These are the files of the working-paper revision, built from the manuscript master. The build reads the page counts, sizes and hashes above from the files.</p>')
 
 
 # ----------------------------------------------------------------------------------------------
@@ -425,9 +427,9 @@ def main() -> int:
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
                              for n in ("fira-sans-latin-400-normal.woff2", "fira-sans-latin-600-normal.woff2"))
         facts = {}
-        for rel in PDFS:
+        for name, rel in PDFS.items():
             if (ROOT / rel).is_file():
-                facts[Path(rel).name] = pdf_facts(ROOT / rel)
+                facts[name] = pdf_facts(ROOT / rel)
         ok = len(facts) == 2 and all(f["pages"] > 0 and f["created"] for f in facts.values())
         rep.check(ok, "paper facts read from both PDFs (pages, bytes, sha256, date): "
                   + ", ".join(f"{k} {v['pages']} pages" for k, v in facts.items()))
@@ -487,17 +489,17 @@ def main() -> int:
         rep.check(not re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", page), "output carries no timestamps")
         rep.note(f"docs/index.html: {len(page.encode('utf-8'))} bytes")
 
-    for rel in PDFS:
+    for rel in PDFS.values():
         rep.check(args.allow_missing_pdf or (ROOT / rel).is_file(), f"{rel} present for copying")
     if page and not rep.failures:
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "index.html").write_text(page, encoding="utf-8", newline="\n")
         (out_dir / ".nojekyll").write_text("", encoding="utf-8")
-        for rel in PDFS:
+        for name, rel in PDFS.items():
             src = ROOT / rel
             if src.exists():
-                shutil.copyfile(src, out_dir / src.name)
-                rep.check((out_dir / src.name).stat().st_size > 0, f"copied {src.name}")
+                shutil.copyfile(src, out_dir / name)
+                rep.check((out_dir / name).stat().st_size > 0, f"copied {rel} as {name}")
         if (out_dir / "fonts").is_dir():
             shutil.rmtree(out_dir / "fonts")
         (out_dir / "fonts").mkdir()

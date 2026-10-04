@@ -6,7 +6,7 @@ Python and Node standard libraries only. Each block prints PASS or raises. The c
 guarantees of the display rules in handout/README.md:
 
 - source manifest binding, continuation deduplication and finite table values;
-- the two published PDFs are the peer-circulation bytes, and the Read-the-paper tab states
+- the two published PDFs are the pinned working-paper files, and the Read-the-paper tab states
   their page counts and text date as read from the files;
 - every displayed number equals the registry value under the builder's display rule, carries
   its registry key and status, and no unbound decimal sits in the prose;
@@ -42,8 +42,8 @@ _spec.loader.exec_module(build)
 
 VOCABULARY = ("analytical", "computer-assisted", "numerical diagnostic", "open", "input")
 PDF_SHA256 = {
-    "main_filled.pdf": "e912d0db3746763d0d1c8e28003ea548609379970786a15081e25891a952eceb",
-    "online_appendix_filled.pdf": "4567b920b2f9a9fe88d846812e7f3da88db78907e961e02e1f80dc08f4da832b",
+    "main_filled.pdf": "d67ae249d7a971383031ecad3e16377e3727b58739f1442bdd53075606cbbfde",
+    "online_appendix_filled.pdf": "70f739fdf9dcc676da79d70c8fac1e1ed6bbf249f3fdb16cdf69d921dd3cfcbd",
 }
 # Anchors that external links use. The legacy anchors are retired section and table names.
 LEGACY_ANCHORS = (
@@ -112,7 +112,7 @@ print("PASS source manifest binding, continuation deduplication and finite table
 page = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
 for name, expected in PDF_SHA256.items():
     body = (ROOT / "docs" / name).read_bytes()
-    assert hashlib.sha256(body).hexdigest() == expected, f"{name} is not the peer-circulation file"
+    assert hashlib.sha256(body).hexdigest() == expected, f"{name} is not the pinned working-paper file"
     facts = build.pdf_facts(ROOT / "docs" / name)
     assert f'{facts["pages"]} pages' in page and facts["sha256"] in page, f"the paper tab misstates {name}"
 main = build.pdf_facts(ROOT / "docs" / "main_filled.pdf")
