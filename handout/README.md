@@ -31,7 +31,7 @@ library. No package installation or bundler is needed. The build writes `docs/in
 `check_display.py` checks the built page and the chart code:
 
 - source manifest binding, continuation deduplication and finite table values;
-- the two PDFs are the peer-circulation bytes (sha256 in the script), and the paper tab states
+- the two PDFs are the pinned `working_release/` files (sha256 in the script), and the paper tab states
   the page counts and the text date that the build reads from the files;
 - every number span equals the registry value under the display rule and carries its key,
   status, precision and exact value; numbers inside formulas carry the same; no decimal is
@@ -125,7 +125,8 @@ as a historical record only.
   `window.CCC_DATA`. Numeric tokens are emitted verbatim, with Decimal used for sorting.
   Source hashes are available in the footer disclosure.
 - PDF links point to `main_filled.pdf` and `online_appendix_filled.pdf` beside the HTML.
-  These are byte-identical to the returned peer-circulation PDFs (`peer_release/`). The build
+  The build copies them from `working_release/main.pdf` and `working_release/online_appendix.pdf`,
+  the PDFs built from the Overleaf master (see `working_release/README.md`). The build
   reads their page counts, sizes, sha256 and creation date with the standard library and writes
   the paper tab and the "Text revised" stamp from them. No date or count is typed by hand.
 - Typefaces are Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
