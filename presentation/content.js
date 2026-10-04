@@ -322,7 +322,7 @@
           'A wholly confidential process does not: no prospective challenger could watch the price while it mattered',
           'Strength = the public distribution of the incumbent\'s value, not an announced bid',
           'Imprivata\'s proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on diligence, which is evidence of a costly preparation stage, not that a price drew anyone in ' + cite('Imprivata 2016; Boone and Mulherin 2007; Gentry and Stroup 2019')], 'roomy') +
-        gray('Whether a deal fits is a question about its chronology; the paper settles it for no specific transaction (Section 1.1).') +
+        gray('Whether a deal fits is a question about its chronology; Online Appendix D shows how to date it (Section 2.1).') +
         nav(back('main:interval')) });
 
     backup({ id: 'a2', label: 'A2', origin: 'f1', targets: ['app:evidence'], defines: [], widget: '',
@@ -481,9 +481,9 @@
     backup({ id: 'a15', label: 'A15', origin: 'f8', targets: ['app:floor'], defines: [], widget: '',
       title: 'Why the model needs a low-cost floor', subtitle: '',
       body:
-        ul(['Without entry after every price, target proceeds do not depend on quality, so no informative trading is consistent: nobody prepares and there is nothing to trade on',
-          'The ' + cost('low-cost floor') + ' is part of the mechanism, not a numerical regularizer',
-          'It gives the lower bound ' + m(T`\rho m\Delta_T`) + ' on the residual advantage',
+        ul(['The ' + cost('low-cost floor') + ' keeps entry ' + m(T`\ge\rho`) + ' after every price: the price reveals the posterior, the investor\'s edge is at least ' + m(T`\rho m\Delta_T`) + ', and information can only add entry',
+          'If cheap preparation fails only at bad prices, bad prices deter it and flows can pool at one price',
+          'If cheap preparation fails at the prior, no preparation and no trade form an equilibrium',
           'Theorem margin at the benchmark: ' + q('base_margin_low_cost', '1.37'),
           'The floor alone gives entry ' + q('base_hidden_entry_weak base_hidden_entry_strong', '0.250') + ' at both strengths when the price is hidden',
           'Atomless cost supports keep it ' + st('(Prop. A.6, analytical)')], 'roomy') +
