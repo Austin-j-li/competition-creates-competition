@@ -286,7 +286,7 @@
       var o = {}; Object.keys(s).forEach(function (k) { o[k] = s[k]; }); if (o.yref === keepY + ' domain') o.yref = 'y domain'; return o;
     });
     var anns = L.annotations.filter(function (a) { return !a.panel && (a.yref === 'y domain'); });
-    return { traces: traces, layout: { height: 360, margin: { l: 64, r: 20, t: 36, b: 56 }, xaxis: xa, yaxis: ya, shapes: shapes, annotations: anns } };
+    return { traces: traces, layout: { height: 310, margin: { l: 64, r: 20, t: 36, b: 56 }, xaxis: xa, yaxis: ya, shapes: shapes, annotations: anns } };
   }
   function bigger(spec, height) {
     spec.layout.height = height;
