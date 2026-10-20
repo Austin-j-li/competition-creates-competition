@@ -143,7 +143,7 @@
   function closePanel() { var d = $('#panel'); if (d.open) d.close(); $('#stage').focus({ preventScroll: true }); }
   function partName(p) { var x = (META.parts || []).filter(function (q) { return String(q.n) === String(p); })[0]; return x ? x.name : ''; }
   function overview() {
-    var html = '<p class="notes-meta">All 50 frames of the Beamer deck in their order. F13a and F13b share number 13; backups A1 to A29 follow the conclusion.</p>';
+    var html = '<p class="notes-meta">All 50 frames of the Beamer deck in their order. F10a and F10b share number 13; backups A1 to A29 follow the conclusion.</p>';
     (META.parts || []).forEach(function (p) {
       var items = (META.frames || []).filter(function (f) { return String(f.part) === String(p.n); });
       if (!items.length) return;
@@ -305,11 +305,11 @@
 
   /* ---------- widgets ---------- */
   var INFOSETS = {
-    seller: 'Seller: commits to the sale rule, a cash second-price auction with reserve p, before any trading. The rule is public.',
+    seller: 'Seller: announces the sale rule, a cash second-price auction with reserve p, before any trade. The rule is public.',
     investor: 'Investor: knows the challenger\'s value θ. Trades the target\'s stock against noise traders; has no control rights and cannot bid.',
     makers: 'Market makers: see only total order flow, not who traded. Price the share at expected sale proceeds, which anticipates entry.',
-    challenger: 'Challenger: sees the stock price and its own cost C, never the order flow, θ or R. Paying C reveals θ and permits a bid.',
-    bidders: 'Bidders: the incumbent knows its value R ~ U[0, r], and r is public. A prepared challenger knows θ. Both bid truthfully.'
+    challenger: 'Challenger: sees the stock price and its own preparation cost, never the order flow, θ or R. Paying the cost reveals θ and permits a bid.',
+    bidders: 'Bidders: the incumbent knows its value R ~ U[0, r], and r is public. A prepared challenger knows θ. Each bids its value.'
   };
   widgets.infosets = {
     render: function (s) {

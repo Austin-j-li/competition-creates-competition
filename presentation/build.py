@@ -32,11 +32,11 @@ _spec.loader.exec_module(handout_build)
 
 TABLE_FILES = ("table1_auction_primitives.tex", "table2_equilibrium_controls.tex", "table3_extensions.tex",
                "table4_reserve_comparisons.tex", "table_signal_grid.tex")
-PARTS = [(1, "Question"), (2, "Literature"), (3, "Model"), (4, "Two claims"), (5, "Price"), (6, "Theorem"),
-         (7, "Numbers"), (8, "Boundaries"), (9, "Close"), ("B", "Backups")]
-CHECKPOINTS = ("Checkpoints: frame 4 by 4.5 min, else give frames 4 and 5 their takeaway lines only; frame 8 by "
-               "13.0 min, else skip frame 9 and say its two numbers on frame 8; frame 12 by 22.0 min, else skip "
-               "frames 15 and 17; frame 14 by 27.0 min, else skip frame 18 and give frame 16 as one sentence.")
+PARTS = [(1, "Question"), (2, "Model"), (3, "Two claims"), (4, "Price"), (5, "Theorem"), (6, "Numbers"),
+         (7, "Boundaries"), (8, "Close"), ("B", "Backups")]
+CHECKPOINTS = ("Checkpoints: frame 3 by 3.5 min, else give frame 3 its takeaway line only; frame 7 by 11.0 min, "
+               "else skip frame 9 and say its two numbers on frame 8; frame 12 by 19.75 min, else skip frames 15 "
+               "and 17; frame 14 by 24.75 min, else skip frame 18 and give frame 16 as one sentence.")
 
 
 def digest(body: bytes) -> str:
@@ -262,7 +262,7 @@ def build() -> None:
     }, indent=2) + "\n")
 
     md = ["# Competition Creates Competition", "",
-          "Speaker notes, 40-minute session: 21 main frames (F13a and F13b share number 13) and 29 backups.", "", CHECKPOINTS, ""]
+          "Speaker notes, 40-minute session: 21 main frames (F10a and F10b share number 13) and 29 backups.", "", CHECKPOINTS, ""]
     for f in frames:
         n = notes.get(f["label"], {})
         md.append(f"## {f['label']}. {re.sub(r'[$]', '', f['title'])}")

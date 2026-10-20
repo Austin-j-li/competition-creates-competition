@@ -3,11 +3,9 @@
 % Contract: talk/structure-plan.md (sections 1-11) and talk/notes/audit-adoptions.md.
 % Every number on a slide carries a "% source:" comment naming its registry key in
 % numerics/quantity_registry.csv, or the paper table file (tables/table*.tex) it comes from.
-% Frame labels: F0-F19 (F13a, F13b) for the main deck, A1-A29 for the appendix. F1-F6 are the
-% opening of 20 October 2026 (setting, received view, what is overlooked, two literature frames,
-% synthesis); F7-F19 are the plan's F4-F16 renumbered by three.
+% Frame labels: F0-F16 (with F1b, F4b, F5b, F10a, F10b) for the main deck, A1-A29 for the appendix (plan ids).
 % Navigation: main frames carry \hypertarget{main:...}; backups carry \hypertarget{app:...}
-% and a \BackButton to their single origin. No overlays: the one build (F13a -> F13b) is a
+% and a \BackButton to their single origin. No overlays: the one build (F10a -> F10b) is a
 % duplicated frame.
 % Look: moloch (maintained metropolis successor) in the UCL brand palette, Fira Sans text at 10 pt
 % (reads at about the size of the previous 11 pt Latin Modern Sans), serif math (F29), XeLaTeX.
@@ -103,8 +101,8 @@
   \end{minipage}}
 \renewcommand{\Takeaway}[2][\ExhibitReadingGap]{\par\vspace{#1}\noindent\TakeawayBody{#2}\par}
 \renewcommand{\TakeawayWithNav}[2][\ExhibitReadingGap]{\par\vspace{#1}\noindent\TakeawayBody{#2}\par\vspace{0.45cm}}
-% Frame 7 timeline box: every box the same fixed height, text top-aligned and ragged right
-\newcommand{\ModelBox}[2]{\parbox[t][2.3cm][t]{2.45cm}{\footnotesize\raggedright\hyphenpenalty=10000\relax
+% Frame 4 timeline box: every box the same fixed height, text top-aligned and ragged right
+\newcommand{\ModelBox}[2]{\parbox[t][1.85cm][t]{2.45cm}{\footnotesize\raggedright\hyphenpenalty=10000\relax
   \hspace*{7pt}\textbf{#1}\par\vspace{1pt}#2}}
 \newcommand{\NavGap}{\par\vspace{0.45cm}}% bottom reserve on a frame with buttons and no takeaway
 \let\AdapterBackButton\BackButton
@@ -130,170 +128,96 @@ Stock Prices and the Discovery of Takeover Bidders}
 \end{frame}}
 
 % ======================================================================
-% Frame 1. Institutional setting
+% Frame 1. The setting (decision interval)
 % ======================================================================
-\begin{frame}[label=F1]{A target in play while its stock trades}
-\framesubtitle{The decision interval this paper is about}
-\hypertarget{main:interval}{}\hypertarget{main:evidence}{}
+\begin{frame}[label=F1]{The target is for sale, and its stock still trades}
+\framesubtitle{The setup}
+\hypertarget{main:interval}{}
 \begin{center}
 \begin{tikzpicture}[
   box/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=center,
     text width=3.9cm, minimum height=0.85cm, font={\footnotesize\hyphenpenalty=10000\relax}, inner sep=3pt},
   arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
-  \node[box] (a) {Approach or review disclosed};
-  \node[box, right=0.8cm of a] (b) {Target stock keeps trading};
+  \node[box] (a) {Sale is public; one bidder is already in};
+  \node[box, right=0.8cm of a] (b) {Target stock still trades};
   \node[box, right=0.8cm of b, draw=cCost, line width=1.1pt] (c)
-    {Challenger decides whether to pay to prepare};
+    {Second bidder decides: pay to prepare, or stay out};
   \draw[arr] (a) -- (b);
   \draw[arr] (b) -- (c);
 \end{tikzpicture}
 \end{center}
 \vspace{-6pt}
-{\small
-\begin{itemize}\setlength{\itemsep}{1pt}
-\item Much of the competition for a target forms before public bids, through private contacts and diligence \graycite{Boone and Mulherin 2007; Gentry and Stroup 2019}
-\item The \textbf{incumbent} bidder is already prepared; the market knows how strong it is (strategic or financial, say), not what it will bid \graycite{Gorbenko and Malenko 2014}
-\item A \textbf{challenger} must first pay to prepare an executable bid (diligence, financing, approvals); paying is \textbf{entry}
-\item Specialist investors know other facts about the match (customers, technology, demand) and trade the target's stock
-% source: Imprivata chronology, paper/main_filled.md line 39 (no registry number)
-\item[] {\color{cGrayText}\footnotesize Imprivata's 2016 proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence: a costly preparation stage, not a price drawing anyone in\par}
-\end{itemize}}
-\TakeawayWithNav[0.5em]{The challenger decides during an interval in which the target's price moves}
-\PlaceNav{\hyperlink{app:interval}{\beamergotobutton{Which deals fit}}\NavSep\hyperlink{app:evidence}{\beamergotobutton{Evidence: a design}}}
-\end{frame}
-
-% ======================================================================
-% Frame 2. Received knowledge
-% ======================================================================
-\begin{frame}[label=F2]{Received view: a stronger rival deters entry}
-\framesubtitle{The chain that the takeover and auction literatures share}
-\begin{center}
-\begin{tikzpicture}[
-  box/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=center,
-    text width=2.75cm, minimum height=0.8cm, font={\footnotesize\hyphenpenalty=10000\relax}, inner sep=3pt},
-  arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
-  \node[box] (a) {Stronger incumbent};
-  \node[box, right=0.5cm of a] (b) {A winner must pay more};
-  \node[box, right=0.5cm of b] (c) {Preparation earns less};
-  \node[box, right=0.5cm of c, draw=cCost, line width=1.1pt] (d) {Fewer challengers prepare};
-  \draw[arr] (a) -- (b);
-  \draw[arr] (b) -- (c);
-  \draw[arr] (c) -- (d);
-\end{tikzpicture}
-\end{center}
-\begin{itemize}\setlength{\itemsep}{6pt}
-\item \textbf{Preemption} \graycite{Fishman 1988}: a high first bid signals a high value, so the rival does not pay to investigate
-\item \textbf{Deter or invite} \graycite{Hirshleifer and Png 1989}: the first bidder chooses a deterring bid or a low bid that invites the rival; deterrence can even raise the target's price
-\item \textbf{Auctions with entry} \graycite{Samuelson 1985; McAfee and McMillan 1987; Levin and Smith 1994}: bidders enter only when expected profit covers the cost, so what lowers profit lowers entry
+\begin{itemize}\setlength{\itemsep}{3pt}
+\item One bidder is ready: NDA signed, due diligence done. Call it the \textbf{incumbent}
+\item Its type, strategic or financial, is a public clue to its strength. What it would pay stays private \graycite{Gorbenko and Malenko 2014}
+\item A second bidder is not ready. Call it the \textbf{challenger}
+\item To bid, the challenger must first \textbf{prepare}: due diligence, finance, approvals
+\item This step costs money and time. The paper calls it \textbf{entry}
 \end{itemize}
-\GrayLine{In each model, what the entrant knows when it decides is fixed, or comes only from the rival's bid}
-\Takeaway{\textbf{Kept here:} at any fixed information, a stronger incumbent weakly lowers entry \Status{(analytical, Prop.~A.3)}}
+\TakeawayWithNav[0.5em]{This paper is about that window: after the sale turns public, before the challenger decides whether to enter.}
+\PlaceNav{\hyperlink{app:interval}{\beamergotobutton{Which deals fit}}}
 \end{frame}
 
 % ======================================================================
-% Frame 3. What is overlooked
+% Frame 2. Key question (label F1b keeps every later label unchanged)
 % ======================================================================
-\begin{frame}[label=F3]{What is overlooked: the entrant reads the price}
-\framesubtitle{What the challenger learns is an equilibrium outcome, not a primitive}
-\begin{itemize}\setlength{\itemsep}{6pt}
-\item The challenger decides while the target's stock trades, and it can \textbf{watch the price}
-\item The price is an equilibrium object: it reveals what informed investors know only when \Info{informed trading pays}
-\item Informed trading pays more when the target's sale price \Info{depends more on who the challenger is}
-\item A stronger incumbent does exactly that: it can beat a low-value challenger but not a high-value one
+\begin{frame}[label=F1b]{Does a stronger incumbent keep the challenger out?}
+\framesubtitle{The received answer, and what it takes as given}
+\hypertarget{main:evidence}{}
+\begin{itemize}\setlength{\itemsep}{8pt}
+\item The \textbf{received answer} is yes
+\item A stronger incumbent raises the price the challenger pays when it wins
+\item So preparation pays less, and fewer challengers enter \graycite{Fishman 1988; Hirshleifer and Png 1989}
+\item The answer takes one thing as given: what the challenger knows stays the same
+\item Here it does not: the challenger sees the stock price first, then decides whether to enter
 \end{itemize}
-\vspace{4pt}
-\noindent{\setlength{\fboxsep}{6pt}\colorbox{uclMid!15}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{\raggedright\textbf{Question:} if the challenger can learn from the target's price, does a stronger incumbent still keep it out?}}}
-\Takeaway{\KeyIdea{Not always:} a stronger incumbent can make the price informative and draw the challenger in}
+\TakeawayWithNav[\ExhibitReadingGapRoomy]{\KeyIdea{The claim:} the stock price can flip the answer. A stronger incumbent can pull the challenger in.}
+\PlaceNav{\hyperlink{app:evidence}{\beamergotobutton{Evidence: a design}}}
 \end{frame}
 
 % ======================================================================
-% Frame 4. Literature review: competition for takeover targets
+% Frame 3. What past work shows
 % ======================================================================
-\begin{frame}[label=F4]{Related work 1: competition for targets}
-\framesubtitle{What each strand studies and what it concludes}
-\vspace{2pt}
-{\footnotesize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{6.3cm}@{}}
-\toprule
-Work & Studies & Concludes\\
-\midrule
-Fishman (1988);\newline Hirshleifer and Png (1989) & costly investigation and preemptive bids & a high first bid deters a rival; deterrence can raise the target's price\\\addlinespace[2pt]
-Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994) & auctions with entry costs & the bidder pool is an equilibrium outcome; a seller can gain from fewer potential bidders\\\addlinespace[2pt]
-Roberts and Sweeting (2013) & selective entry and the sale procedure & with costly entry, a sequential sale can beat a simultaneous auction\\\addlinespace[2pt]
-Boone and Mulherin (2007);\newline Gentry and Stroup (2019) & how targets are sold; entry in takeover auctions & much competition forms before public bids; uncertainty draws bidders into auctions\\\addlinespace[2pt]
-Gorbenko and Malenko (2014) & strategic and financial bidders & the two types value targets differently in a systematic way\\\addlinespace[2pt]
-Persico (2000);\newline Pernoud and Gleyze (2026) & what bidders choose to learn & the auction format and the rivals shape what bidders learn about their own values\\
-\bottomrule
-\end{tabular}\par}
-\Takeaway{\textbf{Common ground:} the entrant learns from its own research or from rival bids; nobody outside the auction moves what it knows}
-\end{frame}
-
-% ======================================================================
-% Frame 5. Literature review: prices that guide decisions
-% ======================================================================
-\begin{frame}[label=F5]{Related work 2: prices that guide decisions}
-\framesubtitle{What each strand studies and what it concludes}
-\vspace{2pt}
-{\footnotesize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{6.3cm}@{}}
-\toprule
-Work & Studies & Concludes\\
-\midrule
-Bond, Edmans and Goldstein (2012) & real effects of financial markets (survey) & decision makers learn from prices, so prices affect real outcomes\\\addlinespace[2pt]
-Dow, Goldstein and Guembel (2017) & information production when investment follows the price & information is worth more when the project is more likely to go ahead; a small shock can stop its production\\\addlinespace[2pt]
-Edmans, Goldstein and Jiang (2015) & corrective actions that follow the price & speculators trade less on bad news, so prices show bad news less\\\addlinespace[2pt]
-Edmans, Goldstein and Jiang (2012);\newline Foucault and Fr\'esard (2014) & prices and takeovers; prices of peer firms & a lower target price raises the chance of a takeover; firms invest on their peers' prices\\\addlinespace[2pt]
-Luo (2005);\newline Betton et al.\ (2014) & market feedback inside an announced deal & acquirers complete more often the deals the market likes; offer terms treat the run-up as deal anticipation\\\addlinespace[2pt]
-Goldstein and Guembel (2008) & manipulation when decisions follow prices & short sales can push the price down and distort the decision\\
-\bottomrule
-\end{tabular}\par}
-\Takeaway{\textbf{Common ground:} the price informs a decision about one firm's value; competition between buyers does not set how much the stock pays on information}
-\end{frame}
-
-% ======================================================================
-% Frame 6. What this paper brings together (punchline)
-% ======================================================================
-\begin{frame}[label=F6]{What this paper brings together}
+\begin{frame}[label=F3]{What past work shows, and what it does not cover}
+\framesubtitle{Three lines of work meet in this paper}
 \hypertarget{main:lit}{}\hypertarget{main:refs}{}
-\begin{center}
-\begin{tikzpicture}[
-  lit/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=left,
-    text width=6.6cm, inner sep=4pt, font=\footnotesize},
-  here/.style={draw=uclDark, rounded corners=3pt, line width=1pt, fill=uclMid!12, align=left,
-    text width=14.08cm, inner sep=4pt, font=\footnotesize},
-  arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
-  \node[lit] (a) {\textbf{Competition for targets}\\a stronger rival deters entry, at fixed information};
-  \node[lit, right=0.6cm of a] (b) {\textbf{Prices that guide decisions}\\a price informs a decision when informed trading pays};
-  \node[here, below=0.45cm of a.south west, anchor=north west] (c) {\textbf{This paper:} one sale rule splits one surplus into two claims; a stronger incumbent lowers the challenger's claim and makes target proceeds, the traded claim, \Info{depend more on who the challenger is}};
-  \draw[arr] (a.south) -- (a.south |- c.north);
-  \draw[arr] (b.south) -- (b.south |- c.north);
-\end{tikzpicture}
-\end{center}
-\vspace{-4pt}
 {\small
-\begin{itemize}\setlength{\itemsep}{2pt}
-\item \textbf{Model:} an informed investor trades the target's stock before the challenger decides whether to pay to prepare; prices are rational, and trading and entry are solved in equilibrium
-\item \KeyIdea{Competition creates competition}: a stronger incumbent can turn an uninformative price into an informative one and raise entry \Status{(analytical, Prop.~2)}\par
-  \vspace{1pt}Benchmark: entry \textbf{0.250 % source: base_entry_weak
-  $\boldsymbol{\to}$ 0.523} % source: base_entry_strong
-  while the challenger's profit before any news falls \textbf{4.80 % source: base_profit_prior_weak
-  $\boldsymbol{\to}$ 4.29}\par% source: base_profit_prior_strong
-\item \textbf{Information is the channel:} hold fixed what the price reveals, and a stronger incumbent cannot raise entry \Status{(sign analytical, Prop.~A.3)}
-\end{itemize}}
-\TakeawayWithNav[0.3em]{\textbf{Implication:} when the target trades, a stronger rival is not a pure deterrent, because who competes depends on what the price reveals before anyone prepares.}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{4.75cm}>{\raggedright\arraybackslash}p{4.75cm}@{}}
+\toprule
+ & \textbf{It shows} & \textbf{It does not cover}\\
+\midrule
+\textbf{Strong incumbents deter entry} & A stronger incumbent cuts the gain from entry & A stock market before entry\\
+\textbf{Entry into auctions is a choice} & Costs and rules decide who enters and what bidders learn & What a market price tells bidders before they enter\\
+\textbf{Firms learn from stock prices} & Prices carry information that firms use for real decisions & An incumbent whose strength changes what the price reveals\\
+\bottomrule
+\end{tabular}\par}
+\GrayLine{Fishman 1988; Hirshleifer and Png 1989 \,|\, Samuelson 1985; Levin and Smith 1994; Persico 2000 \,|\, Dow, Goldstein and Guembel 2017; Edmans, Goldstein and Jiang 2012, 2015}
+\TakeawayWithNav[\ExhibitReadingGapRoomy]{A stronger incumbent makes entry pay less but can make the price more informative. The second effect is new.}
 \PlaceNav{\hyperlink{app:lit}{\beamergotobutton{Related work}}\NavSep\hyperlink{app:refs}{\beamergotobutton{References}}}
 \end{frame}
 
 % ======================================================================
-% Frame 7. Model (D1 timeline)
+% Frame 4. This paper (punchline; label F2 kept from the earlier order)
 % ======================================================================
-\begin{frame}[label=F7]{Model: who moves, who knows what, and when}
-\framesubtitle{The challenger sees the price and its own cost, never the order flow, $\theta$ or $R$}
-\hypertarget{main:omit}{}\hypertarget{main:info}{}\hypertarget{main:eq}{}
+\begin{frame}[label=F2]{This paper}
+An investor who knows the challenger's value trades the target's stock before the challenger decides. The stock is worth what the sale pays. The model solves for trade and entry in equilibrium.
+\vspace{2pt}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item \KeyIdea{Competition creates competition.} A stronger incumbent can make an uninformative stock price informative. Entry rises, even though the challenger expects to earn less
+\item \textbf{Why:} a strong incumbent can beat a low-value challenger, but cannot beat a high-value one. Therefore, the sale price depends more on the challenger's value. The investor trades on this, and good news in the price makes costly preparation pay
+\item \textbf{The channel is information.} Freeze what the price reveals, and a stronger incumbent cannot raise entry
+\end{itemize}
+\Takeaway[0.6em]{A stronger incumbent does not always keep the challenger out. When the target's stock trades, entry depends on what the price reveals first.}
+\end{frame}
+
+% ======================================================================
+% Frame 5. Model: sale rule, values, costs (D1 timeline; label F4 kept)
+% ======================================================================
+\begin{frame}[label=F4]{Model: a second-price auction for the target}
+\framesubtitle{Who moves, who knows what, and when}
+\hypertarget{main:omit}{}\hypertarget{main:info}{}
 \begin{center}
 \begin{tikzpicture}[
   box/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=left,
@@ -301,30 +225,50 @@ Goldstein and Guembel (2008) & manipulation when decisions follow prices & short
   num/.style={circle, fill=black!65, text=white, font=\scriptsize\bfseries,
     inner sep=0pt, minimum size=11pt},
   arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
-  \node[box] (s) {\ModelBox{Seller}{commits to a cash second-price auction, reserve $p$}};
-  \node[box, right=0.33cm of s] (i) {\ModelBox{Investor}{knows $\theta$; trades the target's stock against noise traders}};
-  \node[box, right=0.33cm of i] (m) {\ModelBox{Market makers}{see only total order flow; price the share at expected sale proceeds}};
+  \node[box] (s) {\ModelBox{Seller}{announces the sale rule before any trade}};
+  \node[box, right=0.33cm of s] (i) {\ModelBox{Investor}{learns the challenger's value; trades the target's stock}};
+  \node[box, right=0.33cm of i] (m) {\ModelBox{Market makers}{see total order flow only; set the stock price}};
   \node[box, right=0.33cm of m, draw=cCost, line width=1.1pt] (c)
-    {\ModelBox{Challenger}{sees the price and its cost $C$; entry $=$ pay $C$, learn $\theta$, can bid}};
-  \node[box, right=0.33cm of c] (b) {\ModelBox{Bidders}{incumbent value $R\sim U[0,r]$; challenger worth $h$ or $\ell$; bid truthfully}};
+    {\ModelBox{Challenger}{sees the price and its own cost; enters or stays out}};
+  \node[box, right=0.33cm of c] (b) {\ModelBox{Bidders}{the incumbent and an entered challenger bid their values}};
   \foreach \x/\n in {s/1, i/2, m/3, c/4, b/5} {\node[num] at ([xshift=2pt,yshift=-1pt]\x.north west) {\n};}
   \draw[arr] (s) -- (i); \draw[arr] (i) -- (m); \draw[arr] (m) -- (c); \draw[arr] (c) -- (b);
 \end{tikzpicture}
 \end{center}
 \vspace{-2pt}
 {\small
-\begin{itemize}\setlength{\itemsep}{4pt}
-\item $0<p<\ell<r<h$ ($p$ = reserve, not the stock price): the incumbent can beat a low-value challenger, never a high-value one. Strength $r$ is public; only the incumbent knows its value $R$. Quality $\theta\in\{H,L\}$ (worth $h$ or $\ell$), equally likely, learned only by preparing.
-\item \Cost{\textbf{Cost:} preparation cost $C\in\{c_L,c_H\}$, $\Pr(C=c_L)=\rho$, independent of $\theta$ (cheap / expensive preparation)}
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \textbf{Sale rule:} a cash second-price auction with reserve price $p$, the minimum the seller accepts (not the stock price). The highest bid wins and pays the larger of $p$ and the other bid. Each bidder bids its value
+\item \textbf{Incumbent:} value $R$, uniform on $[0,r]$. The strength $r$ is public; only the incumbent knows $R$
+\item \textbf{Challenger:} type $\theta=H$ or $L$, equally likely, with value $h$ or $\ell$. It learns $\theta$ only if it prepares
+\item $0<p<\ell<r<h$: the incumbent can beat a low-value challenger, but cannot beat a high-value one
+\item \Cost{\textbf{Cost:} preparation costs $c_L$ with probability $\rho$, otherwise $c_H$, independent of $\theta$}
 \end{itemize}}
 \NavGap
-\PlaceNav{\hyperlink{app:omit}{\beamergotobutton{What is left out}}\NavSep\hyperlink{app:info}{\beamergotobutton{Why would the investor know?}}\NavSep\hyperlink{app:eq}{\beamergotobutton{Equilibrium}}}
+\PlaceNav{\hyperlink{app:omit}{\beamergotobutton{What is left out}}\NavSep\hyperlink{app:info}{\beamergotobutton{Why would the investor know?}}}
 \end{frame}
 
 % ======================================================================
-% Frame 8. One auction, two claims
+% Frame 6. Trading and the stock price (new; label F4b keeps later labels)
 % ======================================================================
-\begin{frame}[label=F8]{One auction, two claims, opposite responses}
+\begin{frame}[label=F4b]{Trading and the stock price}
+\framesubtitle{The challenger sees the price and its own cost, never the order flow, $\theta$ or $R$}
+\hypertarget{main:eq}{}\hypertarget{main:orders}{}\hypertarget{main:laplace}{}\hypertarget{main:notation}{}
+\begin{itemize}\setlength{\itemsep}{6pt}
+\item \textbf{Investor:} knows $\theta$ and places an order $q$ in $[-1,1]$, at a trading cost of $k$ per unit. Its orders after $H$ and after $L$ are $(q_H,q_L)$
+\item \textbf{Order flow:} $X=q+Z$, where the noise $Z$ is Laplace with scale $b$
+\item \textbf{Price:} market makers see only $X$ and set $P=\mathbb{E}[\text{target payoff}\mid X]$. The price allows for later entry and the auction
+\item \textbf{Belief:} $\mu=\Pr(\theta=H\mid P)$, the challenger's belief after the price. For any orders, the noise keeps $\mu$ between $m=1/(1+e^{2/b})$ and $M=1-m$
+\item \textbf{Equilibrium:} orders, price, beliefs, entry and bids are each optimal, given the others. The investor can mix, and can deviate to any $q$ in $[-1,1]$
+\end{itemize}
+\NavGap
+\PlaceNav{\hyperlink{app:eq}{\beamergotobutton{Equilibrium}}\NavSep\hyperlink{app:orders}{\beamergotobutton{Orders, units, costs}}\NavSep\hyperlink{app:laplace}{\beamergotobutton{Why Laplace noise}}\NavSep\hyperlink{app:notation}{\beamergotobutton{Notation}}}
+\end{frame}
+
+% ======================================================================
+% Frame 7. One auction, two claims
+% ======================================================================
+\begin{frame}[label=F5]{One auction, two claims, opposite responses}
 \framesubtitle{Cash second-price auction with reserve $p$: who wins and who pays at incumbent value $R$}
 \hypertarget{main:payoffs}{}\hypertarget{main:payrule}{}
 \vspace{4pt}
@@ -343,102 +287,115 @@ $R>\ell$ & wins, pays $R$ & loses; incumbent pays $\ell$ & $R-\ell$\\
 \vspace{-8pt}
 \begin{align*}
 \Info{\Delta_T=t_H-t_L=\mathbb{E}[(R-\ell)_+]}\ &\Info{\uparrow} && \text{\Info{target-payoff spread = expected gap (last column)}}\\
-g_H=\mathbb{E}[(h-\max\{p,R\})_+]\ &\downarrow && \text{challenger's gross profit ($g_L$ likewise)}
+g_H=\mathbb{E}[(h-\max\{p,R\})_+]\ &\downarrow && \text{challenger's gross profit ($g_L$ likewise)}\\
+B_r(\mu)=g_L+\mu(g_H-g_L)\ &\downarrow && \text{challenger's expected gross profit at belief $\mu$}
 \end{align*}
 \vspace{-6pt}
-\GrayLine{$t_\theta$ = expected target proceeds when a $\theta$-challenger enters. Proposition 1 (analytical): both signs hold weakly for any first-order strengthening, $R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$ (strictly in the uniform benchmark, $\bar r=r$).}
-\TakeawayWithNav{One shift, opposite signs: challenger keeps less; target proceeds depend more on who it is.}
+\GrayLine{$t_\theta$ = expected target proceeds when a $\theta$-challenger enters. Proposition 1: both signs hold weakly for any first-order strengthening, $R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$ (strictly in the uniform case, $\bar r=r$).}
+\TakeawayWithNav{One shift, opposite signs: the challenger keeps less, and target proceeds depend more on its value.}
 \PlaceNav{\hyperlink{app:payoffs}{\beamergotobutton{Closed forms}}\NavSep\hyperlink{app:payrule}{\beamergotobutton{Other payment rules}}}
+\end{frame}
+
+% ======================================================================
+% Frame 8. The benchmark: declared inputs (new; label F5b)
+% ======================================================================
+\begin{frame}[label=F5b]{Numerical Exercise: the benchmark}
+\hypertarget{main:scale}{}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{@{}llp{6.4cm}@{}}
+\toprule
+Input & Value & Meaning\\
+\midrule
+$h$ & 10 & high challenger value\\ % source: base_h
+$\ell$ & 1 & low challenger value\\ % source: base_ell
+$p$ & 0.5 & reserve price\\ % source: base_p
+$\rho$ & 0.25 & probability of the cheap cost\\ % source: base_rho
+$c_L$ & 1 & cheap preparation cost\\ % source: base_c_low
+$c_H$ & 6 & expensive preparation cost\\ % source: base_c_high
+$b$ & 2 & noise scale; then $m\approx0.27$\\ % source: base_b, base_m
+$k$ & 0.02 & trading cost per unit\\ % source: base_k
+$r_0,r_1,r_2$ & 1.2, 3, 3.6 & weak, strong, stronger still incumbent\\ % source: base_r_weak, base_r_strong, base_r_collapse
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{-4pt}
+\GrayLine{Units are arbitrary. The inputs are declared, not calibrated; the signs come from the theorem.}
+\TakeawayWithNav[0.5em]{Only the incumbent's strength changes between $r_0$, $r_1$ and $r_2$.}
+\PlaceNav{\hyperlink{app:scale}{\beamergotobutton{Benchmark scale}}}
 \end{frame}
 
 % ======================================================================
 % Frame 9. X1: spread up, profit down
 % ======================================================================
-\begin{frame}[label=F9]{A stronger incumbent: spread up, profit down}
-\framesubtitle{Declared benchmark; weak $r_0=1.2$, % source: base_r_weak
-strong $r_1=3$; % source: base_r_strong
-auction-stage payoffs, before trading and entry}
+\begin{frame}[label=F6]{A stronger incumbent: spread up, profit down}
+\framesubtitle{Benchmark inputs; auction-stage payoffs, before trading and entry}
 \centering
 \includegraphics[width=0.92\linewidth,height=0.6\textheight,keepaspectratio]{two_returns_talk.pdf}
-\par\vspace{-2pt}{\raggedleft\Status{analytical (Proposition 1)}\par}
-\Takeaway{From $r_0$ to $r_1$ the \Info{spread} rises 0.0167 % source: base_spread_weak
+\Takeaway{From $r_0$ to $r_1$, the \Info{spread} rises 0.0167 % source: base_spread_weak
 $\to$ 0.667 % source: base_spread_strong
-while profit at the prior (before any news) falls 4.80 % source: base_profit_prior_weak
-$\to$ 4.29: % source: base_profit_prior_strong
-deterrence at every fixed belief, and more for the stock to reveal.}
+and the challenger's profit at the prior falls 4.80 % source: base_profit_prior_weak
+$\to$ 4.29. % source: base_profit_prior_strong
+Deterrence holds at every fixed belief, but the stock has more to reveal.}
 \end{frame}
 
 % ======================================================================
-% Frame 10. Trading pays only against a strong incumbent
+% Frame 10. X2: only good news makes expensive preparation pay (label F8 kept; now before F7)
 % ======================================================================
-\begin{frame}[label=F10]{Trading pays only against a strong incumbent}
-\framesubtitle{Orders $(q_H,q_L)\in[-1,1]$ after a high / low challenger value; trading cost $k$ per unit; prices anticipate entry}
-\hypertarget{main:bound}{}\hypertarget{main:orders}{}\hypertarget{main:notation}{}
-\vspace{4pt}
-{\small The price reveals the market's belief $\mu=\Pr(H)$, kept by noise within $[m,M]$: $m=1/(1+e^{2/b})\approx0.27$, % source: base_m
-$M=1-m$ % source: base_M
-(Laplace noise, scale $b=2$)\par} % source: base_b
+\begin{frame}[label=F8]{Only good news makes expensive preparation pay}
+\framesubtitle{What the challenger does at each belief $\mu$; benchmark picture at left}
+\hypertarget{main:suff}{}\hypertarget{main:floor}{}
+\begin{columns}[T,onlytextwidth]
+\column{0.53\textwidth}
+% X2 is drawn at 3.6 x 2.5 in; here scaled to the column so the four statements fit beside it
+\includegraphics[width=\linewidth]{profit_thresholds_talk.pdf}
+\column{0.45\textwidth}
+\raggedright\small
+\Cost{\textbf{Low-cost floor}}\enspace $c_L<B_{r_1}(m)$: a cheap challenger enters after any price, so entry $\ge\rho$\par
 \vspace{3pt}
-{\small \textbf{Residual advantage} = what the investor knows a share pays minus its price; entry $\ge\rho$ because cheap preparation pays after any price (the low-cost floor, next frame).\par}
+\textbf{Entry rule:} entry~$=\Pr(\text{the challenger prepares})=\rho$, or $1$ when $B_r(\mu)\ge c_H$\par
+\vspace{3pt}
+\Cost{\textbf{High-cost window}}\enspace $B_{r_0}(1/2)<c_H<B_{r_1}(M)$: the expensive challenger stays out at the weak prior, and enters after the best news against $r_1$. Beyond a ceiling strength $r_2$, even the best price falls short\par
+\vspace{3pt}
+\textbf{The price reveals $\mu$:} the price rises with $\mu$, so the challenger can read $\mu$ off the price\par
+\end{columns}
+\NavGap
+\PlaceNav{\hyperlink{app:suff}{\beamergotobutton{Reading the price}}\NavSep\hyperlink{app:floor}{\beamergotobutton{Is the floor doing the work?}}}
+\end{frame}
+
+% ======================================================================
+% Frame 11. Trading pays only against a strong incumbent (label F7 kept; now after F8)
+% ======================================================================
+\begin{frame}[label=F7]{Trading pays only against a strong incumbent}
+\framesubtitle{When does what the investor knows cover the trading cost $k$?}
+\hypertarget{main:bound}{}
+\vspace{4pt}
+{\small \textbf{Residual advantage} = what the investor knows a share pays, minus its price.\par}
 \vspace{2pt}
 {\centering\small
 \begin{tabular}{@{}l>{\centering\arraybackslash}p{2.5cm}c>{\centering\arraybackslash}p{2.5cm}c>{\centering\arraybackslash}p{2.8cm}@{}}
 \toprule
-Residual advantage per unit $=$ & entry probability\newline $(\ge\rho)$ & $\times$ & \Info{target-payoff spread $\Delta_T$} & $\times$ & market's remaining uncertainty $(\ge m)$\\
+Residual advantage per unit $=$ & entry probability\newline ($\ge\rho$, low-cost floor) & $\times$ & \Info{target-payoff spread $\Delta_T$} & $\times$ & market's remaining uncertainty $(\ge m)$\\
 \bottomrule
 \end{tabular}\par\vspace{3pt}
 $\rho\,m\,\Info{\Delta_T}\ \le\ \text{advantage}\ \le\ \Info{\Delta_T}$\par}
 {\small
-\begin{itemize}\setlength{\itemsep}{0pt}
-\item \textbf{Weak $r_0=1.2$:} % source: base_r_weak
-advantage $\le\Delta_T(r_0)=0.0167$% source: base_spread_weak
-${}<k=0.02$, % source: base_k
-so every order loses; no trade $(0,0)$
-\item \textbf{Strong $r_1=3$:} % source: base_r_strong
-each extra unit earns $\ge(1-1/b)\,\rho m\Delta_T(r_1)=0.0224>k$, % source: base_k + base_margin_strong_trade (0.02 + 0.00241 = 0.0224)
-so full orders $(1,-1)$
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \textbf{Weak $r_0$:} advantage $\le\Delta_T(r_0)<k$, so every order loses: no trade, $(0,0)$
+\item \textbf{Strong $r_1$:} each extra unit earns at least $(1-1/b)\,\rho m\Delta_T(r_1)>k$, so full orders $(1,-1)$
 \end{itemize}}
-% Spoken (plan section 8, frame 7 render fallback): (1 - 1/b) is a haircut for the order's own price impact:
-% with Laplace noise, one more unit erodes the per-unit advantage by at most a fraction 1/b.
-% source: base_b (2), base_rho (0.25), base_m (m), base_spread_strong (0.667), base_k (0.02), base_margin_strong_trade (0.00241)
-\GrayLine{\Info{\textbf{Trading-cost window}} $\Delta_T(r_0)<k<(1-1/b)\,\rho m\Delta_T(r_1)$ (analytical): with $\rho=0.25$, $(1-1/2)\times0.25\times m\times0.667=0.0224=k+{}$theorem margin 0.00241.}
-\TakeawayWithNav[0.2em]{The same shift that lowers the challenger's profit switches informed trading on.}
-\PlaceNav{\hyperlink{app:bound}{\beamergotobutton{Global trading bound}}\NavSep\hyperlink{app:orders}{\beamergotobutton{Orders, units, costs}}\NavSep\hyperlink{app:notation}{\beamergotobutton{Notation}}}
+\GrayLine{\Info{\textbf{Trading-cost window}} $\Delta_T(r_0)<k<(1-1/b)\,\rho m\Delta_T(r_1)$. The factor $1-1/b$ allows for the order's own price impact.}
+\TakeawayWithNav[0.3em]{The same shift that lowers the challenger's profit switches informed trading on.}
+\PlaceNav{\hyperlink{app:bound}{\beamergotobutton{Global trading bound}}}
 \end{frame}
 
 % ======================================================================
-% Frame 11. X2: only good news makes expensive preparation pay
+% Frame 9. Proposition 2
 % ======================================================================
-\begin{frame}[label=F11]{Only good news makes expensive preparation pay}
-\framesubtitle{$B_r(\mu)=g_L+\mu(g_H-g_L)$ at the worst, prior and best belief a price induces; $c_L=1$ % source: base_c_low
-(prob.\ $\rho=0.25$), % source: base_rho
-$c_H=6$} % source: base_c_high
-\hypertarget{main:suff}{}\hypertarget{main:laplace}{}\hypertarget{main:floor}{}
-\begin{columns}[T,onlytextwidth]
-\column{0.6\textwidth}
-% X2 is drawn at its final size (3.6 x 2.5 in, 10 pt text): included at natural width, no rescaling
-\includegraphics[width=0.94\linewidth]{profit_thresholds_talk.pdf}
-\column{0.38\textwidth}
-\raggedright\small
-\vspace{2pt}
-\Cost{\textbf{Low-cost floor}}\enspace $c_L<B_{r_1}(m)$: a cheap challenger enters after any price, so entry $\ge\rho$ (the bound used on the previous frame)\par
-\vspace{6pt}
-\Cost{\textbf{High-cost window}}\enspace $B_{r_0}(1/2)=4.80<c_H=6<B_{r_1}(M)$: % source: base_profit_prior_weak (4.80), base_c_high (6)
-the expensive challenger stays out at the weak prior and enters after the best news against $r_1$. Beyond a ceiling strength, even the best price falls short ($r_2$)\par
-\vspace{4pt}
-\Status{analytical (Props.~A.1, A.2, A.4); costs are inputs}\par
-\end{columns}
-\NavGap
-\PlaceNav{\hyperlink{app:suff}{\beamergotobutton{Reading the price}}\NavSep\hyperlink{app:laplace}{\beamergotobutton{Why Laplace noise}}\NavSep\hyperlink{app:floor}{\beamergotobutton{Is the floor doing the work?}}}
-\end{frame}
-
-% ======================================================================
-% Frame 12. Proposition 2
-% ======================================================================
-\begin{frame}[label=F12]{Proposition 2: a stronger incumbent can raise entry}
+\begin{frame}[label=F9]{Proposition 2: a stronger incumbent can raise entry}
 \framesubtitle{Weak $r_0$, strong $r_1$, stronger still $r_2$; all other primitives equal}
 \hypertarget{main:proof}{}\hypertarget{main:margins}{}\hypertarget{main:forces}{}
-\begin{ResultBox}[Proposition 2 (analytical), under the three conditions below]
+\begin{ResultBox}[Proposition 2, under the three conditions below]
 \small
 \PropItem{(i)}\textbf{Weak $r_0$:} unique outcome no trade, $(q_H,q_L)=(0,0)$; the price is uninformative; entry $=\rho$
 \PropItem{(ii)}\textbf{Strong $r_1$:} unique outcome full orders $(1,-1)$; the price is informative; entry $>\rho$; a high-value challenger acquires the target more often
@@ -463,13 +420,13 @@ the expensive challenger stays out at the weak prior and enters after the best n
 \end{frame}
 
 % ======================================================================
-% Frame 13a. Benchmark table (build step 1)
+% Frame 10a. Benchmark table (build step 1)
 % ======================================================================
-\begin{frame}[label=F13a]{At the benchmark, entry rises from 0.250 to 0.523}
+\begin{frame}[label=F10a]{At the benchmark, entry rises from 0.250 to 0.523}
 % source (title): base_entry_weak (0.250), base_entry_strong (0.523)
-\framesubtitle{Declared benchmark; units arbitrary (inputs in backup); unique equilibrium outcomes (analytical)}
-{\footnotesize Entry = Pr(challenger prepares); entry $\rho=0.25$ = only the cheap challenger enters; % source: base_rho
-high-value challenger ownership = Pr(high-value challenger acquires the target)\par}
+\framesubtitle{Benchmark inputs; unique equilibrium outcomes}
+{\footnotesize Entry $\rho=0.25$: only the cheap challenger enters. % source: base_rho
+High-value ownership = Pr(a high-value challenger acquires the target).\par}
 \vspace{4pt}
 \makebox[\textwidth][l]{\hspace*{0.7cm}\small
 \begin{tabular}{@{}p{6.1cm}>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}@{}}
@@ -489,19 +446,23 @@ High-value ownership & 0.125 % source: base_ownership_weak
  & \textbf{0.324}\\ % source: base_ownership_strong
 \bottomrule
 \end{tabular}}
+\par\vspace{3pt}
+{\small Trading check: $\Delta_T(r_0)=0.0167$% source: base_spread_weak
+${}<k=0.02$% source: base_k
+${}<0.0224=(1-1/b)\,\rho m\Delta_T(r_1)$\par}% source: base_k + base_margin_strong_trade (0.02 + 0.00241 = 0.0224)
 \Takeaway{Entry rises 27.28 percentage points % source: base_entry_change_pp
 while the challenger's profit at the prior falls: the price, not the prize, brings it in.}
 \end{frame}
 
 % ======================================================================
-% Frame 13b. Benchmark table with the r2 column (build step 2; same frame number)
+% Frame 10b. Benchmark table with the r2 column (build step 2; same frame number)
 % ======================================================================
-\begin{frame}[noframenumbering,label=F13b]{At the benchmark, entry rises from 0.250 to 0.523}
+\begin{frame}[noframenumbering,label=F10b]{At the benchmark, entry rises from 0.250 to 0.523}
 % source (title): base_entry_weak (0.250), base_entry_strong (0.523)
-\framesubtitle{Declared benchmark; units arbitrary (inputs in backup); unique equilibrium outcomes (analytical)}
-\hypertarget{main:scale}{}\hypertarget{main:entry}{}\hypertarget{main:cert}{}
-{\footnotesize Entry = Pr(challenger prepares); entry $\rho=0.25$ = only the cheap challenger enters; % source: base_rho
-high-value challenger ownership = Pr(high-value challenger acquires the target)\par}
+\framesubtitle{Benchmark inputs; unique equilibrium outcomes}
+\hypertarget{main:entry}{}\hypertarget{main:cert}{}
+{\footnotesize Entry $\rho=0.25$: only the cheap challenger enters. % source: base_rho
+High-value ownership = Pr(a high-value challenger acquires the target).\par}
 \vspace{4pt}
 \makebox[\textwidth][l]{\hspace*{0.7cm}\small
 \begin{tabular}{@{}p{6.1cm}>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}@{}}
@@ -526,34 +487,38 @@ High-value ownership & 0.125 % source: base_ownership_weak
  & 0.125\\ % source: tables/table2_equilibrium_controls.tex Panel A
 \bottomrule
 \end{tabular}}
+\par\vspace{3pt}
+{\small Trading check: $\Delta_T(r_0)=0.0167$% source: base_spread_weak
+${}<k=0.02$% source: base_k
+${}<0.0224=(1-1/b)\,\rho m\Delta_T(r_1)$\par}% source: base_k + base_margin_strong_trade (0.02 + 0.00241 = 0.0224)
 \TakeawayWithNav{Rise, then fall: past a ceiling strength even the best price cannot cover $c_H$.}
-\PlaceNav{\hyperlink{app:scale}{\beamergotobutton{Benchmark scale}}\NavSep\hyperlink{app:entry}{\beamergotobutton{How entry is computed}}\NavSep\hyperlink{app:cert}{\beamergotobutton{Which equilibrium?}}}
+\PlaceNav{\hyperlink{app:entry}{\beamergotobutton{How entry is computed}}\NavSep\hyperlink{app:cert}{\beamergotobutton{Which equilibrium?}}}
 \end{frame}
 
 % ======================================================================
-% Frame 14. Freeze the information
+% Frame 11. Freeze the information
 % ======================================================================
-\begin{frame}[label=F14]{Freeze the information and deterrence returns}
+\begin{frame}[label=F11]{Freeze the information and deterrence returns}
 \framesubtitle{Entry at $r_0=1.2$ % source: base_r_weak
 and $r_1=3$; % source: base_r_strong
 equilibria of the feedback game, then information controls}
 \hypertarget{main:controls}{}\hypertarget{main:welfare}{}
 \begin{center}\small
-\begin{tabular}{@{}m{5.9cm}ccc>{\raggedright\arraybackslash}m{3.9cm}@{}}
+\begin{tabular}{@{}m{7.9cm}ccc@{}}
 \toprule
- & $r_0=1.2$ & $r_1=3$ & Direction & Status\\ % source: base_r_weak, base_r_strong
+ & $r_0=1.2$ & $r_1=3$ & Direction\\ % source: base_r_weak, base_r_strong
 \midrule
 Equilibrium of the feedback game\newline{\footnotesize (price seen, trading re-solved)} & 0.250 % source: base_entry_weak
  & \textbf{0.523} % source: base_entry_strong
- & $\uparrow$ & \StatusF{analytical}\\
+ & $\uparrow$\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Information controls}}\\
+\multicolumn{4}{@{}l}{\emph{Information controls}}\\
 Frozen informative orders $(1,-1)$\newline{\footnotesize (imposed at both strengths; control, not an equilibrium at $r_0$)} & 0.562 % source: base_frozen_entry_weak
  & 0.523 % source: base_frozen_entry_strong
- & $\downarrow$ & \StatusF{numerical diagnostic;\newline sign analytical (Prop.~A.3)}\\
+ & $\downarrow$\\
 Price hidden from challenger\newline{\footnotesize (equilibrium of the no-price-access game)} & 0.250 % source: base_hidden_entry_weak
  & 0.250 % source: base_hidden_entry_strong
- & flat & \StatusF{analytical}\\
+ & flat\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -564,17 +529,17 @@ Price hidden from challenger\newline{\footnotesize (equilibrium of the no-price-
 \end{frame}
 
 % ======================================================================
-% Frame 15. Coexistence
+% Frame 12. Coexistence
 % ======================================================================
-\begin{frame}[label=F15]{At intermediate strength, equilibria coexist}
-\framesubtitle{Computer-assisted (Proposition 3): interval arithmetic on exact decimal inputs}
+\begin{frame}[label=F12]{At intermediate strength, equilibria coexist}
+\framesubtitle{Proposition 3: interval arithmetic on exact decimal inputs}
 \hypertarget{main:corr}{}
 \vspace{4pt}
 \begin{center}\small
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular*}{0.92\textwidth}{@{\extracolsep{\fill}}cccc@{}}
 \toprule
-Strength $r$ & $q_H$ & $q_L$ (certified) & Entry (certified)\\
+Strength $r$ & $q_H$ & $q_L$ & Entry\\
 \midrule
 1.55 % source: cert_a_r
  & 1 & $\approx-0.460$ % source: cert_a_v_interval (negated)
@@ -590,22 +555,21 @@ Strength $r$ & $q_H$ & $q_L$ (certified) & Entry (certified)\\
 \end{center}
 \vspace{-4pt}
 \begin{itemize}\setlength{\itemsep}{3pt}
-\item Buy fully after good news, sell partially after bad news; certified entry rises from one strength to the next, above the 0.523 at $r_1$ % source: base_entry_strong
+\item Buy fully after good news, sell partially after bad news; entry rises from one strength to the next, above the 0.523 at $r_1$ % source: base_entry_strong
 \item Each economy also has a no-trade equilibrium with entry $\rho=0.25$ % source: base_rho
-\Status{(analytical, Prop.~A.4)}
 \item Elsewhere the numerical search is not exhaustive; the full correspondence is open
 \end{itemize}
 % Spoken: the theorem compares r0 with r1, where trading is unique; it does not say entry rises
 % monotonically in between (A24).
-\TakeawayWithNav{At three certified strengths an informative equilibrium coexists with no trade; I claim nothing about entry between them.}
+\TakeawayWithNav{At three strengths, an informative equilibrium coexists with no trade; the paper claims nothing about entry between them.}
 \PlaceNav{\hyperlink{app:corr}{\beamergotobutton{Correspondence}}}
 \end{frame}
 
 % ======================================================================
-% Frame 16. Robustness
+% Frame 13. Robustness
 % ======================================================================
-\begin{frame}[label=F16]{The entry reversal survives four model changes}
-\framesubtitle{Entry, weak to strong; each row its own analytical result and declared parameters (Prop.~2 (i)--(ii))}
+\begin{frame}[label=F13]{The entry reversal survives four model changes}
+\framesubtitle{Entry, weak to strong; each row has its own parameters}
 \hypertarget{main:robust}{}
 \vspace{2pt}
 \begin{center}\small
@@ -624,7 +588,7 @@ Small value gap, $h=2$, % source: moderate_h
 $\ell=1$ % source: moderate_ell
  & 0.250 % source: moderate_entry_weak
  & 0.527\\ % source: moderate_entry_strong
-Complementary signals (declared example): investor accuracy 0.70, % source: signal_trader_accuracy_value
+Complementary signals: investor accuracy 0.70, % source: signal_trader_accuracy_value
 challenger accuracy 0.75; % source: signal_buyer_accuracy_value
 $\rho=0.85$, % source: signal_rho
 strengths 1.1 % source: signal_r_weak
@@ -638,17 +602,17 @@ vs 2.3 % source: signal_r_strong
 % source: tables/table_signal_grid.tex (25-cell grid; 6 met, 9 unchanged with d <= 0.75, 10 fall with d >= 0.76)
 {\color{cGrayText}\footnotesize Rows differ in $\rho$ and strengths; compare within a row, not across rows.\par
 \vspace{2pt}
-Signal grid, 25 accuracy cells: entry rises in the 6 meeting Prop.~A.7 (analytical) and is unchanged in 9 with challenger accuracy ${}\le0.75$; it falls about 4~pp when challenger accuracy is ${}\ge0.76$, because its own good signal already triggers entry against the weak incumbent (numerical diagnostic).\par}
-\TakeawayWithNav[0.5em]{The $r_0\to r_1$ reversal survives atomless costs, logistic noise, a small value gap and complementary private signals (declared example).}
+Signal grid, 25 accuracy cells: entry rises in the 6 meeting Prop.~A.7 and is unchanged in 9 with challenger accuracy ${}\le0.75$; it falls about 4~pp when challenger accuracy is ${}\ge0.76$, because its own good signal already triggers entry against the weak incumbent.\par}
+\TakeawayWithNav[0.5em]{The $r_0\to r_1$ reversal survives atomless costs, logistic noise, a small value gap and complementary private signals.}
 \PlaceNav{\hyperlink{app:robust}{\beamergotobutton{Full table}}}
 \end{frame}
 
 % ======================================================================
-% Frame 17. Price access and welfare
+% Frame 14. Price access and welfare
 % ======================================================================
-\begin{frame}[t,label=F17]{Price access raises proceeds and surplus at $r_1$}
+\begin{frame}[t,label=F14]{Price access raises proceeds and surplus at $r_1$}
 \framesubtitle{Incumbent held at $r_1=3$; % source: base_r_strong
-price seen or hidden; trading re-solved in both (Prop.~A.9, analytical)}
+price seen or hidden; trading re-solved in both}
 \hypertarget{main:reserve}{}
 \vspace{6pt}
 \begin{center}
@@ -678,23 +642,23 @@ Acquisition surplus net of preparation costs & 2.38 % source: tables/table2_equi
 \end{frame}
 
 % ======================================================================
-% Frame 18. Three predictions (paper Section 7)
+% Frame 15. Three predictions (paper Section 7)
 % ======================================================================
-\begin{frame}[label=F18]{Three predictions}
+\begin{frame}[label=F15]{Three predictions}
 \framesubtitle{Public sale processes with one prepared bidder and a further buyer still deciding}
 \begin{itemize}\setlength{\itemsep}{8pt}
-\item \textbf{A stronger bidder can draw a buyer in} when the price comes before the buyer's decision; without the price, a stronger bidder weakly lowers entry \Status{(analytical, Prop.~2; Prop.~A.3)}
+\item \textbf{A stronger bidder can draw a buyer in} when the price comes before the buyer's decision; without the price, a stronger bidder weakly lowers entry
 \item \textbf{Buyers that prepare after good news win more often:} among buyers that prepare at a price, the share of high-value buyers is the price-implied posterior
-\item \textbf{Against a very strong bidder, entry stops responding} to the price, while the price stays informative \Status{(analytical, Prop.~2(iii))}
+\item \textbf{Against a very strong bidder, entry stops responding} to the price, while the price stays informative
 \end{itemize}
 \medskip
 \GrayLine{Outcome: the start of diligence, not public offers. Pre-bid returns also reflect anticipation of the bid, so each test dates the price before the decision (Schwert 1996; Online Appendix D).}
 \end{frame}
 
 % ======================================================================
-% Frame 19. Conclusion (no navigation)
+% Frame 16. Conclusion (no navigation)
 % ======================================================================
-\begin{frame}[label=F19]{Conclusion}
+\begin{frame}[label=F16]{Conclusion}
 \begin{itemize}\setlength{\itemsep}{20pt}
 \item \KeyIdea{A stronger incumbent can bring the challenger in:} at the benchmark, entry rises from 0.250 % source: base_entry_weak
 to 0.523 % source: base_entry_strong
@@ -794,7 +758,6 @@ Pernoud and Gleyze (2026);\newline Liu and Bernhardt (2022);\newline Carlin et a
 \item The benchmark's perfectly informed investor and uninformed challenger make the mechanism visible; Section 5.3 removes both extremes
 \item The reversal holds with challenger accuracy $d=0.75$ % source: signal_buyer_accuracy_value
 above investor accuracy $a=0.70$ % source: signal_trader_accuracy_value
-\Status{(Prop.~A.7, analytical)}
 \end{itemize}
 \NavGap
 \PlaceNav{\hyperlink{app:signals}{\beamergotobutton{The signal economy}}\NavSep\hyperlink{main:info}{\beamerreturnbutton{Back}}}
@@ -807,11 +770,11 @@ above investor accuracy $a=0.70$ % source: signal_trader_accuracy_value
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item Investor signal $T$ (accuracy $a$), challenger signal $Y$ (accuracy $d$); the challenger uses $\Pr(H\mid P,\,Y=y)$, $P$ = stock price
 \item Entry is state dependent: $e_H$, $e_L$ = entry probability when the challenger is high / low value; the price still reveals the market posterior
-\item Declared example $a=0.70$, % source: signal_trader_accuracy_value
+\item Example: $a=0.70$, % source: signal_trader_accuracy_value
 $d=0.75$: % source: signal_buyer_accuracy_value
 entry 0.850 % source: signal_entry_weak
-$\to$ 0.879 % source: signal_entry_strong
-\Status{(analytical, Prop.~A.7)}; $\rho=0.85$, % source: signal_rho
+$\to$ 0.879; % source: signal_entry_strong
+$\rho=0.85$, % source: signal_rho
 $c_H=7.14$, % source: signal_c_high
 $k=0.015$, % source: signal_k
 strengths 1.1 % source: signal_r_weak
@@ -820,13 +783,13 @@ vs 2.3 % source: signal_r_strong
 \vspace{2pt}
 % source: tables/table_signal_grid.tex (all 25 cells; counts and pp ranges as printed)
 \begin{center}\small
-\begin{tabular}{@{}clcl@{}}
+\begin{tabular}{@{}clc@{}}
 \toprule
-Cells & Accuracy grid (25 cells) & Entry change (pp) & Status\\
+Cells & Accuracy grid (25 cells) & Entry change (pp)\\
 \midrule
-6 & meet Prop.~A.7 & rises 2.81 to 3.09 & \Status{analytical}\\
-9 & $d\le0.75$, condition not met & unchanged & \Status{numerical diagnostic}\\
-10 & $d\ge0.76$ & falls 4.03 to 4.49 & \Status{numerical diagnostic}\\
+6 & meet Prop.~A.7 & rises 2.81 to 3.09\\
+9 & $d\le0.75$, condition not met & unchanged\\
+10 & $d\ge0.76$ & falls 4.03 to 4.49\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -872,7 +835,7 @@ Expected gross profit at the prior, $B_r(1/2)$ & 4.80 & 4.29\\ % source: base_pr
 \bottomrule
 \end{tabular}\par}
 \vspace{4pt}
-\GrayLine{Proposition 1 (analytical) holds for any $F$ on $[0,\bar r]$, $\ell<\bar r<h$; strict when the change in $F$ has positive integral over the relevant range.}
+\GrayLine{Proposition 1 holds for any $F$ on $[0,\bar r]$, $\ell<\bar r<h$; strict when the change in $F$ has positive integral over the relevant range.}
 \Takeaway[0.4em]{The closed forms are the uniform case; the two signs are not a uniform-distribution artifact.}
 \BackButton{main:payoffs}
 \end{frame}
@@ -889,7 +852,7 @@ Expected gross profit at the prior, $B_r(1/2)$ & 4.80 & 4.29\\ % source: base_pr
 \vspace{4pt}
 Zero-reserve verifiable-value institution, Nash weight $\eta$: seller gets $t_\eta=(1-\eta)\cdot{}$runner-up value${}+\eta\cdot{}$winner value\par
 \vspace{6pt}
-Stronger incumbent: challenger profit falls weakly for every $\eta$. Spread $\Info{\Delta_\eta}=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]$ rises (weakly) if $\eta<1/2$, falls (weakly) if $\eta>1/2$, for any $R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$, $0\le\eta<1$ \Status{(Prop.~A.8, analytical)}\par
+Stronger incumbent: challenger profit falls weakly for every $\eta$. Spread $\Info{\Delta_\eta}=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]$ rises (weakly) if $\eta<1/2$, falls (weakly) if $\eta>1/2$, for any $R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$, $0\le\eta<1$\par
 \end{columns}
 \Takeaway{Payment stage only: an entry reversal under bargaining is not solved, and first-price equilibria are not solved.}
 \BackButton{main:payrule}
@@ -983,7 +946,7 @@ $r_2$ & stronger still incumbent\\
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item $t_0$ = expected target proceeds without a challenger
 \item The price is strictly increasing in $\mu$, because entry $\ge\rho>0$ and $\Delta_T>0$
-\item Atoms and entry jumps allowed; no differentiability needed \Status{(Props.~A.1--A.2, analytical)}
+\item Atoms and entry jumps allowed; no differentiability needed
 \end{itemize}
 \Takeaway{The price is a sufficient statistic for the market's belief, so the challenger loses nothing by seeing the price rather than the flow.}
 \BackButton{main:suff}
@@ -1006,7 +969,7 @@ vs 0.523; % source: base_entry_strong
 atomless costs ($\varepsilon_C=0.1$): % source: cost_halfwidth
 0.523 % source: cost_mix_laplace_entry_strong
 and 0.301. % source: cost_mix_logistic_entry_strong
-Common scale $b$, not common variance; not a Blackwell ranking \Status{(analytical, Props.~A.5--A.6)}
+Common scale $b$, not common variance; not a Blackwell ranking
 \end{itemize}}
 \BackButton{main:laplace}
 \end{frame}
@@ -1021,7 +984,7 @@ Common scale $b$, not common variance; not a Blackwell ranking \Status{(analytic
 \item Theorem margin at the benchmark: 1.37 % source: base_margin_low_cost
 \item The floor alone gives entry 0.250 % source: base_hidden_entry_weak, base_hidden_entry_strong
 at both strengths when the price is hidden
-\item Atomless cost supports keep it \Status{(Prop.~A.6, analytical)}
+\item Atomless cost supports keep it
 \end{itemize}
 \BackButton{main:floor}
 \end{frame}
@@ -1189,7 +1152,6 @@ and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 \item \textbf{High type:} cover margin strictly positive over the whole bracket (last column)
 \item \textbf{Not proved:} uniqueness of the informative profile, absence of mixed equilibria, a branch between nodes
 \end{itemize}}
-\Status{computer-assisted (Proposition 3): interval arithmetic on exact decimal inputs}\par
 \BackButton{main:cert}
 \end{frame}
 
@@ -1198,7 +1160,7 @@ and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 \hypertarget{app:controls}{}
 {\small
 \begin{itemize}\setlength{\itemsep}{0pt}
-\item Prop.~A.3 \Status{(analytical)}: at any fixed information experiment and cost law, entry weakly falls with strength; within fixed orders, not across order profiles that change with $r$
+\item Prop.~A.3: at any fixed information experiment and cost law, entry weakly falls with strength; within fixed orders, not across order profiles that change with $r$
 \item The frozen weak profile is a control, not an equilibrium: full orders lose money there because $\Delta_T(r_0)<k$; at $r_1$ it coincides with the equilibrium
 \end{itemize}}
 \vspace{-2pt}
@@ -1207,21 +1169,21 @@ and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 {\scriptsize
 \renewcommand{\arraystretch}{0.86}
 \setlength{\tabcolsep}{5pt}
-\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.1cm}cc>{\centering\arraybackslash}p{3.3cm}>{\centering\arraybackslash}p{2.1cm}l@{}}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.1cm}cc>{\centering\arraybackslash}p{3.3cm}>{\centering\arraybackslash}p{2.1cm}@{}}
 \toprule
- & $r$ & Entry $\mathsf E$ & High-value ownership $\mathsf O_H$ & Target proceeds & Status\\
+ & $r$ & Entry $\mathsf E$ & High-value ownership $\mathsf O_H$ & Target proceeds\\
 \midrule
-\emph{Equilibria of the feedback game} & 1.2 & 0.250 & 0.125 & 0.393 & \Status{analytical}\\
- & 3 & 0.523 & 0.324 & 0.872 & \Status{analytical}\\
- & 3.6 & 0.250 & 0.125 & 0.664 & \Status{analytical}\\
+\emph{Equilibria of the feedback game} & 1.2 & 0.250 & 0.125 & 0.393\\
+ & 3 & 0.523 & 0.324 & 0.872\\
+ & 3.6 & 0.250 & 0.125 & 0.664\\
 \midrule
-\multicolumn{6}{@{}l}{\emph{Frozen informative orders} (control, not an equilibrium at $r_0$)}\\
- & 1.2 & 0.562 & 0.351 & 0.520 & \Status{numerical diagnostic}\\
- & 3 & 0.523 & 0.324 & 0.872 & \Status{numerical diagnostic}\\
+\multicolumn{5}{@{}l}{\emph{Frozen informative orders} (control, not an equilibrium at $r_0$)}\\
+ & 1.2 & 0.562 & 0.351 & 0.520\\
+ & 3 & 0.523 & 0.324 & 0.872\\
 \midrule
-\multicolumn{6}{@{}l}{\emph{Price hidden from challenger} (equilibrium of the no-price-access game)}\\
- & 1.2 & 0.250 & 0.125 & 0.393 & \Status{analytical}\\
- & 3 & 0.250 & 0.125 & 0.615 & \Status{analytical}\\
+\multicolumn{5}{@{}l}{\emph{Price hidden from challenger} (equilibrium of the no-price-access game)}\\
+ & 1.2 & 0.250 & 0.125 & 0.393\\
+ & 3 & 0.250 & 0.125 & 0.615\\
 \bottomrule
 \end{tabular}\par}
 \GrayLine{Price hidden: the challenger enters only at low cost (high-cost window); at $r_1$ the investor still trades full orders.}
@@ -1232,9 +1194,8 @@ and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 \begin{frame}[label=A23]{Price level or information?}
 \hypertarget{app:welfare}{}
 \begin{itemize}\setlength{\itemsep}{6pt}
-\item \textbf{Invariance diagnostic:} add a dividend $D_0=0.257809$ % source: base_matched_dividend
-(the revenue gain from price access) to the traded claim in the price-hidden economy. Mean prices then match, but entry does not, so the information matters, not the price level. \Status{(diagnostic)}
-\item The revenue gain itself, 0.258, is analytical % source: base_revenue_gain
+\item \textbf{Invariance check:} add a dividend $D_0=0.257809$ % source: base_matched_dividend
+(the revenue gain from price access) to the traded claim in the price-hidden economy. Mean prices then match, but entry does not, so the information matters, not the price level.
 \item Prop.~A.9 at $r_1$: each extra entry is chosen only when expected gross profit covers its cost; the allocation gain includes that profit and sales that would otherwise fail the reserve; transfers excluded
 \item The dividend is not a sale mechanism and is excluded from surplus; no ranking of strengths or mechanisms
 \end{itemize}
@@ -1253,7 +1214,7 @@ and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 an equilibrium up to $r_N\approx1.75$; % source: base_r_no_trade_exact
 full orders unique above $r_U\approx2.84$; % source: base_r_full_unique_sufficient
 expensive entry impossible above $r_C\approx3.59$ % source: base_r_high_cost_ceiling
-\Status{(analytical, Prop.~A.4; shaded: unique)}; full correspondence open.\par}
+(shaded: unique); full correspondence open.\par}
 \NavGap
 \PlaceNav{\hyperlink{app:corrb}{\beamergotobutton{Order sizes}}\NavSep\hyperlink{main:corr}{\beamerreturnbutton{Back}}}
 \end{frame}
@@ -1264,8 +1225,8 @@ expensive entry impossible above $r_C\approx3.59$ % source: base_r_high_cost_cei
 \centering
 \includegraphics[width=0.9\linewidth]{equilibrium_correspondence_b_talk.pdf}
 \par\raggedright
-{\footnotesize No trade is $(0,0)$. Certified nodes: $|q_L|\approx0.460,\,0.707,\,0.903$ % source: cert_a_v_interval, cert_b_v_interval, cert_c_v_interval (negated q_L; absolute values)
-(computer-assisted); the curve through them and the mixed candidate are numerical diagnostics; no branch between nodes is claimed.\par}
+{\footnotesize No trade is $(0,0)$. Nodes: $|q_L|\approx0.460,\,0.707,\,0.903$. % source: cert_a_v_interval, cert_b_v_interval, cert_c_v_interval (negated q_L; absolute values)
+The curve through them, the mixed candidate and any branch between nodes are not claimed.\par}
 \BackButton{app:corr}
 \end{frame}
 
@@ -1295,7 +1256,7 @@ Signals ($a=0.70$, $d=0.75$) & 0.85; $1.1\to2.3$ & 0.850 & 0.879 & 2.94 & 0.425 
 \item Minimum theorem margins: base $2.41\times10^{-3}$, % source: base_minimum_theorem_margin
 moderate $8.01\times10^{-4}$, % source: moderate_minimum_theorem_margin
 signals $1.45\times10^{-3}$ % source: signal_minimum_theorem_margin
-\item Distinct parameter vectors, not one joint calibration; all rows analytical (Props.~2, A.5--A.7); entry $\mathsf E$ = Pr(challenger prepares), $\mathsf O_H$ = high-value ownership; pp from unrounded probabilities
+\item Distinct parameter vectors, not one joint calibration; entry $\mathsf E$ = Pr(challenger prepares), $\mathsf O_H$ = high-value ownership; pp from unrounded probabilities
 \end{itemize}}
 \Takeaway{The rise from $r_0$ to $r_1$ holds in every row; the $r_2$ fall is shown for the benchmark only.}
 \BackButton{main:robust}
@@ -1322,7 +1283,7 @@ Strong $r=3$, $p=1.1$ & 0.512 & 0.749 & 0.200 & 1.01 & full orders\\ % source: v
 \end{tabular}
 \end{center}
 \vspace{2pt}
-\GrayLine{Binary values: $p=0.5$ vs $p=1.01$. \Status{Analytical at the listed nodes.}} % source: base_p; tables/table4_reserve_comparisons.tex Panel A
+\GrayLine{Binary values: $p=0.5$ vs $p=1.01$.} % source: base_p; tables/table4_reserve_comparisons.tex Panel A
 \vspace{4pt}
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item Preparation, sale and two admissible bidders come apart
@@ -1334,7 +1295,7 @@ Strong $r=3$, $p=1.1$ & 0.512 & 0.749 & 0.200 & 1.01 & full orders\\ % source: v
 % ---------------------------------------------------------------- A28
 \begin{frame}[label=A28]{Same orders, different prices}
 \hypertarget{app:pool}{}
-{\small Prop.~A.10 (analytical existence): at reserve $p=7$ % source: pool_reserve
+{\small Prop.~A.10: at reserve $p=7$ % source: pool_reserve
 and $r_0$, the same full orders $(1,-1)$ support price pools below a cutoff $\kappa\in[-\log2,\,0]$.\par} % source: pool_posterior_cutoff_low / pool_posterior_cutoff_high branch labels (c=-log2*(1-0/16), c=-log2*(1-16/16))
 \vspace{4pt}
 \begin{center}\small
@@ -1368,7 +1329,6 @@ Expected target proceeds & 0.687 % source: pool_revenue_cutoff_low
 \column{0.49\textwidth}
 \raggedright
 Betton, Eckbo, Thompson and Thorburn (2014). \emph{J. Finance} 69.\par\smallskip
-Bond, Edmans and Goldstein (2012). \emph{Annu. Rev. Financ. Econ.} 4.\par\smallskip
 Boone and Mulherin (2007). \emph{J. Finance} 62.\par\smallskip
 Bulow, Huang and Klemperer (1999). \emph{J. Polit. Econ.} 107.\par\smallskip
 Carlin, Liu, Officer, Pernoud and Tu (2026). NBER Working Paper 34846.\par\smallskip
@@ -1376,13 +1336,12 @@ Cornelli and Li (2002). \emph{Rev. Financ. Stud.} 15.\par\smallskip
 Dow, Goldstein and Guembel (2017). \emph{J. Eur. Econ. Assoc.} 15.\par\smallskip
 Edmans, Goldstein and Jiang (2012). \emph{J. Finance} 67.\par\smallskip
 Edmans, Goldstein and Jiang (2015). \emph{Amer. Econ. Rev.} 105.\par\smallskip
-Fishman (1988). \emph{RAND J. Econ.} 19.\par\smallskip
-Foucault and Fr\'esard (2014). \emph{J. Financ. Econ.} 111.\par\smallskip
-Gentry and Stroup (2019). \emph{J. Financ. Econ.} 132.\par\smallskip
-Goldstein and Guembel (2008). \emph{Rev. Econ. Stud.} 75.\par\smallskip
-Gorbenko and Malenko (2014). \emph{J. Finance} 69.
+Fishman (1988). \emph{RAND J. Econ.} 19.
 \column{0.49\textwidth}
 \raggedright
+Gentry and Stroup (2019). \emph{J. Financ. Econ.} 132.\par\smallskip
+Goldstein and Guembel (2008). \emph{Rev. Econ. Stud.} 75.\par\smallskip
+Gorbenko and Malenko (2014). \emph{J. Finance} 69.\par\smallskip
 Grossman and Hart (1980). \emph{Bell J. Econ.} 11.\par\smallskip
 Hirshleifer and Png (1989). \emph{Rev. Financ. Stud.} 2.\par\smallskip
 Imprivata, Inc. (2016). Definitive merger proxy, Form DEFM14A.\par\smallskip
@@ -1390,7 +1349,6 @@ Levin and Smith (1994). \emph{Amer. Econ. Rev.} 84.\par\smallskip
 Lin, Ma, Yang and Zhu (2025). Working paper.\par\smallskip
 Liu and Bernhardt (2022). Working paper.\par\smallskip
 Luo (2005). \emph{J. Finance} 60.\par\smallskip
-McAfee and McMillan (1987). \emph{Econ. Lett.} 23.\par\smallskip
 Pernoud and Gleyze (2026). Working paper.\par\smallskip
 Persico (2000). \emph{Econometrica} 68.\par\smallskip
 Roberts and Sweeting (2013). \emph{Amer. Econ. Rev.} 103.\par\smallskip

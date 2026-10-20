@@ -1,8 +1,8 @@
 # Seminar slides (the /talk/ page)
 
 The web version of the Beamer talk in `talk/talk.tex`: all 50 frames in the Beamer order, with
-the same titles, numbers and backup links. F0 to F19 (F13a and F13b share number 13), then the
-backups A1 to A29. The content covers the benchmark paper only.
+the same titles, numbers and backup links. The main frames are F0 to F16 with F1b, F4b and F5b,
+numbered 0 to 19 (F10a and F10b share number 13); then the backups A1 to A29. The content covers the benchmark paper only.
 
 ## Open and present
 
@@ -44,11 +44,11 @@ dim room. The choice persists in the browser under the same key as the handout.
   A9, A12, A25 and A29 have no block there; their notes come from `talk/structure-plan.md`,
   section 9.
 
-Interactive parts: the F7 timeline shows each agent's information set; F8 highlights a case of
-the payment table; F9, F11, A9, A14, A24 and A25 draw the paper's figure data with the handout's
-SVG renderer (hover or arrow keys for values); F11 has a strength slider with closed-form
-readouts; F14 switches between the equilibrium and the two information controls; F17
-highlights a column; F10 and F16 open their footnotes on demand. No widget solves an
+Interactive parts: the F4 timeline shows each agent's information set; F5 highlights a case of
+the payment table; F6, F8, A9, A14, A24 and A25 draw the paper's figure data with the handout's
+SVG renderer (hover or arrow keys for values); F8 has a strength slider with closed-form
+readouts; F11 switches between the equilibrium and the two information controls; F14
+highlights a column; F13 opens its footnote on demand. No widget solves an
 equilibrium.
 
 ## Build and checks
@@ -69,9 +69,9 @@ that `talk.tex` tags with a `% source:` comment. A tagged number must appear on 
 in a span with the same registry key that rounds from the registry value; a formula reference
 must carry its key; table numbers must appear. It also checks that status words come from the
 paper's vocabulary, that every number span names a registry key or a paper table, that no
-registry number sits in a headline unless `talk.tex` prints it there (the F13 titles), that every
+registry number sits in a headline unless `talk.tex` prints it there (the F10 titles), that every
 notation symbol is defined on its slide or an earlier one, that the main frames follow the
-timing plan (33.75 minutes before questions), and that every frame has notes.
+timing plan (31.5 minutes before questions), and that every frame has notes.
 
 In the browser, `DECK.selfCheck()` reports runtime errors, mathematics errors and the number
 of number spans, and `DECK.audit()` walks every slide with all reveals shown and lists any body

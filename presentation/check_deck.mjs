@@ -229,7 +229,7 @@ talk.forEach((t, i) => {
       if (!hit) fail(`${where}: talk.tex prints ${n} on a sourced line; the slide does not (${s.line})`);
     }
   }
-  // the title numbers of F13a and F13b
+  // the title numbers of F10a and F10b
   const tm = /%\s*source \(title\):([^\n]*)/.exec(t.body);
   if (tm) {
     for (const pair of tm[1].matchAll(/([a-z][a-z0-9_]+) \(([\d.]+)\)/g)) {
@@ -265,7 +265,7 @@ for (const f of frames) {
   }
 }
 for (const s of statuses) if (!VOCABULARY.some((w) => s.toLowerCase().includes(w))) fail(`status "${s}" names no word of the paper's vocabulary`);
-if (Math.abs(mainMinutes - 33.75) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 33.75 of the timing plan`);
+if (Math.abs(mainMinutes - 31.5) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 31.5 of the timing plan`);
 
 /* every symbol is defined on its slide or an earlier one, in deck order */
 const keys = new Set(deck.glossary.map((g) => g.key));
