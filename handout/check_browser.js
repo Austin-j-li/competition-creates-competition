@@ -98,14 +98,14 @@ async (page, base = 'http://127.0.0.1:8765/', deck = '') => {
     await page.goto(deck);
     await page.waitForFunction(() => window.DECK);
     const s = await page.evaluate(() => ({ check: DECK.selfCheck(), audit: DECK.audit() }));
-    check(s.check.slides === 47 && !s.check.errors.length && !s.check.mathErrors && !s.audit.length, JSON.stringify(s));
-    await page.evaluate(() => DECK.go('f10b', { step: 0 }));
-    await page.locator('#f10b button[data-target="app:scale"]').click();
+    check(s.check.slides === 50 && !s.check.errors.length && !s.check.mathErrors && !s.audit.length, JSON.stringify(s));
+    await page.evaluate(() => DECK.go('f13b', { step: 0 }));
+    await page.locator('#f13b button[data-target="app:scale"]').click();
     check(await page.evaluate(() => DECK.selfCheck().active) === 'a19', 'Backup link');
     await page.keyboard.press('Escape');
-    check(await page.evaluate(() => DECK.selfCheck().active) === 'f10b', 'Back from a backup');
+    check(await page.evaluate(() => DECK.selfCheck().active) === 'f13b', 'Back from a backup');
     await page.keyboard.press('End');
-    check(await page.evaluate(() => DECK.selfCheck().active) === 'f16', 'End key');
+    check(await page.evaluate(() => DECK.selfCheck().active) === 'f19', 'End key');
     slides = s.check;
   }
   await page.emulateMedia({ reducedMotion: null });

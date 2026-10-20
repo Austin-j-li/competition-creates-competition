@@ -1,4 +1,4 @@
-/* content.js: the 47 frames of talk/talk.tex as web slides, in the Beamer order.
+/* content.js: the 50 frames of talk/talk.tex as web slides, in the Beamer order.
  *
  * This file is kept by hand. presentation/check_deck.mjs compares it with talk/talk.tex on every
  * build: frame order, labels, titles, subtitles, hypertargets, the link graph, and every number
@@ -64,8 +64,8 @@
         '<p class="cover-author">Austin Li</p><p class="cover-inst">Department of Economics<br>University College London</p>' +
         '<p class="hint">→ or Space to advance · O overview · N notes · G notation · ? help</p></div>' });
 
-    frame({ id: 'f1', label: 'F1', num: '1', part: 1, minutes: 2.0, targets: ['main:interval', 'main:evidence'], defines: [], widget: '',
-      title: 'Does a stronger incumbent keep the challenger out?',
+    frame({ id: 'f1', label: 'F1', num: '1', part: 1, minutes: 1.5, targets: ['main:interval', 'main:evidence'], defines: [], widget: '',
+      title: 'A target in play while its stock trades',
       subtitle: 'The decision interval this paper is about',
       body:
         '<div class="flow flow-3">' +
@@ -73,35 +73,91 @@
           '<div class="box" data-step="2">Target stock keeps trading</div><span class="arrow" data-step="3" aria-hidden="true">→</span>' +
           '<div class="box box-cost" data-step="3">Challenger decides whether to pay to prepare</div>' +
         '</div>' +
-        ul([[4, 'The <b>incumbent</b> bidder is already prepared; the market knows how strong it is, not what it will bid'],
-          [4, 'A <b>challenger</b> must first pay to prepare an executable bid (diligence, financing, approvals); paying is <b>entry</b>'],
-          [4, '<b>Received answer:</b> a stronger rival lowers what preparation earns, so it deters entry ' + cite('Fishman 1988; Hirshleifer and Png 1989')],
-          [4, '<b>But</b> the challenger decides while the stock trades, and it can watch the price']], 'small') +
-        '<p class="grayline small-note" data-step="4">Imprivata\'s 2016 proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence: a costly preparation stage, not a price drawing anyone in</p>' +
-        take(key('The twist:') + ' what that price reveals depends on how strong the incumbent is', 5) +
+        ul([[4, 'Much of the competition for a target forms before public bids, through private contacts and diligence ' + cite('Boone and Mulherin 2007; Gentry and Stroup 2019')],
+          [5, 'The <b>incumbent</b> bidder is already prepared; the market knows how strong it is (strategic or financial, say), not what it will bid ' + cite('Gorbenko and Malenko 2014')],
+          [6, 'A <b>challenger</b> must first pay to prepare an executable bid (diligence, financing, approvals); paying is <b>entry</b>'],
+          [7, 'Specialist investors know other facts about the match (customers, technology, demand) and trade the target\'s stock']], 'small') +
+        '<p class="grayline small-note" data-step="7">Imprivata\'s 2016 proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence: a costly preparation stage, not a price drawing anyone in</p>' +
+        take('The challenger decides during an interval in which the target\'s price moves', 8) +
         nav(go('app:interval', 'Which deals fit'), go('app:evidence', 'Evidence: a design')) });
 
-    frame({ id: 'f2', label: 'F2', num: '2', part: 1, minutes: 2.0, targets: [], defines: [], widget: '',
-      title: 'This paper', subtitle: '',
+    frame({ id: 'f2', label: 'F2', num: '2', part: 1, minutes: 1.0, targets: [], defines: [], widget: '',
+      title: 'Received view: a stronger rival deters entry',
+      subtitle: 'The chain that the takeover and auction literatures share',
       body:
-        '<p class="lead">An informed investor trades the target\'s stock, which pays off from the sale price, before a challenger decides whether to pay to prepare a takeover bid; prices are rational, and trading and entry are solved in equilibrium.</p>' +
-        ul([[0, key('Competition creates competition') + ': a stronger incumbent can turn an uninformative stock price into an informative one and raise entry' +
-              '<span class="bench">Benchmark: entry <b>' + q('base_entry_weak', '0.250') + ' → ' + q('base_entry_strong', '0.523') + '</b> while the challenger\'s profit before any news falls <b>' + q('base_profit_prior_weak', '4.80') + ' → ' + q('base_profit_prior_strong', '4.29') + '</b></span>'],
-          [1, '<b>Two possible outcomes of one auction</b>: a strong incumbent can beat a low-value challenger but not a high-value one, so the challenger keeps less while the sale price depends more on who shows up; informed trading puts that into the stock price, and good news justifies expensive preparation'],
-          [2, '<b>Information is the channel:</b> hold fixed what the price reveals, and a stronger incumbent cannot raise entry, as the textbook says ' + st('(sign analytical, Prop. A.3)')]], 'claims') +
-        take('<b>Implication:</b> when the target trades, a stronger rival is not a pure deterrent, because who competes depends on what the price reveals before anyone prepares.', 3) });
+        '<div class="flow flow-4">' +
+          '<div class="box">Stronger incumbent</div><span class="arrow" aria-hidden="true">→</span>' +
+          '<div class="box">A winner must pay more</div><span class="arrow" aria-hidden="true">→</span>' +
+          '<div class="box">Preparation earns less</div><span class="arrow" aria-hidden="true">→</span>' +
+          '<div class="box box-cost">Fewer challengers prepare</div>' +
+        '</div>' +
+        ul([[1, '<b>Preemption</b> ' + cite('Fishman 1988') + ': a high first bid signals a high value, so the rival does not pay to investigate'],
+          [2, '<b>Deter or invite</b> ' + cite('Hirshleifer and Png 1989') + ': the first bidder chooses a deterring bid or a low bid that invites the rival; deterrence can even raise the target\'s price'],
+          [3, '<b>Auctions with entry</b> ' + cite('Samuelson 1985; McAfee and McMillan 1987; Levin and Smith 1994') + ': bidders enter only when expected profit covers the cost, so what lowers profit lowers entry']], 'roomy') +
+        '<p class="grayline" data-step="4">In each model, what the entrant knows when it decides is fixed, or comes only from the rival\'s bid</p>' +
+        take('<b>Kept here:</b> at any fixed information, a stronger incumbent weakly lowers entry ' + st('(analytical, Prop. A.3)'), 5) });
 
-    frame({ id: 'f3', label: 'F3', num: '3', part: 1, minutes: 0.75, targets: ['main:lit', 'main:refs'], defines: [], widget: '',
-      title: 'What is new relative to learning from prices',
-      subtitle: 'Four closest antecedents',
+    frame({ id: 'f3', label: 'F3', num: '3', part: 1, minutes: 1.25, targets: [], defines: [], widget: '',
+      title: 'What is overlooked: the entrant reads the price',
+      subtitle: 'What the challenger learns is an equilibrium outcome, not a primitive',
       body:
-        ul([[0, '<b>Prices guide real decisions</b> ' + cite('Dow, Goldstein and Guembel 2017; Edmans, Goldstein and Jiang 2015') + ': here the sale rule splits one surplus into a traded claim and the challenger\'s claim, and competition moves them in opposite directions'],
-          [1, '<b>Stronger incumbents deter</b> ' + cite('Fishman 1988') + ': kept intact; I add a market that trades before preparation'],
-          [2, '<b>Auction entry is endogenous</b> ' + cite('Levin and Smith 1994') + ': here entry responds to what the price reveals']], 'roomy') +
-        take('Increment: one sale rule moves the two claims oppositely, producing the entry reversal.', 3) +
+        ul([[0, 'The challenger decides while the target\'s stock trades, and it can <b>watch the price</b>'],
+          [1, 'The price is an equilibrium object: it reveals what informed investors know only when ' + info('informed trading pays')],
+          [2, 'Informed trading pays more when the target\'s sale price ' + info('depends more on who the challenger is')],
+          [3, 'A stronger incumbent does exactly that: it can beat a low-value challenger but not a high-value one']], 'roomy') +
+        '<p class="question" data-step="4"><b>Question:</b> if the challenger can learn from the target\'s price, does a stronger incumbent still keep it out?</p>' +
+        take(key('Not always:') + ' a stronger incumbent can make the price informative and draw the challenger in', 5) });
+
+    /* The literature review: one row per strand, what it studies and what it concludes. Rows show
+       two at a time. The full table with the increment of this paper is backup A3. */
+    var review = function (rows) {
+      return '<table class="t-review"><thead><tr><th>Work</th><th>Studies</th><th>Concludes</th></tr></thead><tbody>' +
+        rows.map(function (r, i) { return '<tr data-step="' + Math.floor(i / 2) + '"><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') +
+        '</tbody></table>';
+    };
+    frame({ id: 'f4', label: 'F4', num: '4', part: 2, minutes: 1.25, targets: [], defines: [], widget: '',
+      title: 'Related work 1: competition for targets',
+      subtitle: 'What each strand studies and what it concludes',
+      body:
+        review([
+          ['Fishman (1988);<br>Hirshleifer and Png (1989)', 'costly investigation and preemptive bids', 'a high first bid deters a rival; deterrence can raise the target\'s price'],
+          ['Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994)', 'auctions with entry costs', 'the bidder pool is an equilibrium outcome; a seller can gain from fewer potential bidders'],
+          ['Roberts and Sweeting (2013)', 'selective entry and the sale procedure', 'with costly entry, a sequential sale can beat a simultaneous auction'],
+          ['Boone and Mulherin (2007);<br>Gentry and Stroup (2019)', 'how targets are sold; entry in takeover auctions', 'much competition forms before public bids; uncertainty draws bidders into auctions'],
+          ['Gorbenko and Malenko (2014)', 'strategic and financial bidders', 'the two types value targets differently in a systematic way'],
+          ['Persico (2000);<br>Pernoud and Gleyze (2026)', 'what bidders choose to learn', 'the auction format and the rivals shape what bidders learn about their own values']]) +
+        take('<b>Common ground:</b> the entrant learns from its own research or from rival bids; nobody outside the auction moves what it knows', 3) });
+
+    frame({ id: 'f5', label: 'F5', num: '5', part: 2, minutes: 1.25, targets: [], defines: [], widget: '',
+      title: 'Related work 2: prices that guide decisions',
+      subtitle: 'What each strand studies and what it concludes',
+      body:
+        review([
+          ['Bond, Edmans and Goldstein (2012)', 'real effects of financial markets (survey)', 'decision makers learn from prices, so prices affect real outcomes'],
+          ['Dow, Goldstein and Guembel (2017)', 'information production when investment follows the price', 'information is worth more when the project is more likely to go ahead; a small shock can stop its production'],
+          ['Edmans, Goldstein and Jiang (2015)', 'corrective actions that follow the price', 'speculators trade less on bad news, so prices show bad news less'],
+          ['Edmans, Goldstein and Jiang (2012);<br>Foucault and Frésard (2014)', 'prices and takeovers; prices of peer firms', 'a lower target price raises the chance of a takeover; firms invest on their peers\' prices'],
+          ['Luo (2005);<br>Betton et al. (2014)', 'market feedback inside an announced deal', 'acquirers complete more often the deals the market likes; offer terms treat the run-up as deal anticipation'],
+          ['Goldstein and Guembel (2008)', 'manipulation when decisions follow prices', 'short sales can push the price down and distort the decision']]) +
+        take('<b>Common ground:</b> the price informs a decision about one firm\'s value; competition between buyers does not set how much the stock pays on information', 3) });
+
+    frame({ id: 'f6', label: 'F6', num: '6', part: 2, minutes: 2.0, targets: ['main:lit', 'main:refs'], defines: [], widget: '',
+      title: 'What this paper brings together', subtitle: '',
+      body:
+        '<div class="join">' +
+          '<div class="lit"><b>Competition for targets</b>a stronger rival deters entry, at fixed information</div>' +
+          '<div class="lit"><b>Prices that guide decisions</b>a price informs a decision when informed trading pays</div>' +
+          '<span class="down" aria-hidden="true">↓</span><span class="down" aria-hidden="true">↓</span>' +
+          '<div class="here"><b>This paper:</b> one sale rule splits one surplus into two claims; a stronger incumbent lowers the challenger\'s claim and makes target proceeds, the traded claim, ' + info('depend more on who the challenger is') + '</div>' +
+        '</div>' +
+        ul([[1, '<b>Model:</b> an informed investor trades the target\'s stock before the challenger decides whether to pay to prepare; prices are rational, and trading and entry are solved in equilibrium'],
+          [2, key('Competition creates competition') + ': a stronger incumbent can turn an uninformative price into an informative one and raise entry ' + st('(analytical, Prop. 2)') +
+              '<span class="bench">Benchmark: entry <b>' + q('base_entry_weak', '0.250') + ' → ' + q('base_entry_strong', '0.523') + '</b> while the challenger\'s profit before any news falls <b>' + q('base_profit_prior_weak', '4.80') + ' → ' + q('base_profit_prior_strong', '4.29') + '</b></span>'],
+          [3, '<b>Information is the channel:</b> hold fixed what the price reveals, and a stronger incumbent cannot raise entry ' + st('(sign analytical, Prop. A.3)')]], 'claims small') +
+        take('<b>Implication:</b> when the target trades, a stronger rival is not a pure deterrent, because who competes depends on what the price reveals before anyone prepares.', 4) +
         nav(go('app:lit', 'Related work'), go('app:refs', 'References')) });
 
-    frame({ id: 'f4', label: 'F4', num: '4', part: 2, minutes: 2.75, targets: ['main:omit', 'main:info', 'main:eq'],
+    frame({ id: 'f7', label: 'F7', num: '7', part: 3, minutes: 2.75, targets: ['main:omit', 'main:info', 'main:eq'],
       defines: ['R', 'r', 'theta', 'h', 'ell', 'p', 'C', 'c_L', 'c_H', 'rho'], widget: 'infosets',
       title: 'Model: who moves, who knows what, and when',
       subtitle: 'The challenger sees the price and its own cost, never the order flow, ' + m(T`\theta`) + ' or ' + m(T`R`),
@@ -118,7 +174,7 @@
           cost('<b>Cost:</b> preparation cost ' + m(T`C\in\{c_L,c_H\}`) + ', ' + m(T`\Pr(C=c_L)=\rho`) + ', independent of ' + m(T`\theta`) + ' (cheap / expensive preparation)')], 'small') +
         nav(go('app:omit', 'What is left out'), go('app:info', 'Why would the investor know?'), go('app:eq', 'Equilibrium')) });
 
-    frame({ id: 'f5', label: 'F5', num: '5', part: 3, minutes: 2.5, targets: ['main:payoffs', 'main:payrule'],
+    frame({ id: 'f8', label: 'F8', num: '8', part: 4, minutes: 2.5, targets: ['main:payoffs', 'main:payrule'],
       defines: ['Delta_T', 't_theta', 'g_HL', 'F_rbar'], widget: 'cases',
       title: 'One auction, two claims, opposite responses',
       subtitle: 'Cash second-price auction with reserve ' + m('p') + ': who wins and who pays at incumbent value ' + m('R'),
@@ -137,7 +193,7 @@
         take('One shift, opposite signs: challenger keeps less; target proceeds depend more on who it is.', 2) +
         nav(go('app:payoffs', 'Closed forms'), go('app:payrule', 'Other payment rules')) });
 
-    frame({ id: 'f6', label: 'F6', num: '6', part: 3, minutes: 1.5, targets: [], defines: ['r_01'], widget: 'x1',
+    frame({ id: 'f9', label: 'F9', num: '9', part: 4, minutes: 1.5, targets: [], defines: ['r_01'], widget: 'x1',
       title: 'A stronger incumbent: spread up, profit down',
       subtitle: 'Declared benchmark; weak ' + qm('r_0=1.2', 'base_r_weak', '1.2') + ', strong ' + qm('r_1=3', 'base_r_strong', '3') + '; auction-stage payoffs, before trading and entry',
       body:
@@ -145,7 +201,7 @@
         '<p class="status-right">' + st('analytical (Proposition 1)') + '</p>' +
         take('From ' + m('r_0') + ' to ' + m('r_1') + ' the ' + info('spread') + ' rises ' + q('base_spread_weak', '0.0167') + ' → ' + q('base_spread_strong', '0.667') + ' while profit at the prior (before any news) falls ' + q('base_profit_prior_weak', '4.80') + ' → ' + q('base_profit_prior_strong', '4.29') + ': deterrence at every fixed belief, and more for the stock to reveal.') });
 
-    frame({ id: 'f7', label: 'F7', num: '7', part: 4, minutes: 3.0, targets: ['main:bound', 'main:orders', 'main:notation'],
+    frame({ id: 'f10', label: 'F10', num: '10', part: 5, minutes: 3.0, targets: ['main:bound', 'main:orders', 'main:notation'],
       defines: ['mu', 'm_M', 'b', 'k', 'q_HL'], widget: '',
       title: 'Trading pays only against a strong incumbent',
       subtitle: 'Orders ' + m(T`(q_H,q_L)\in[-1,1]`) + ' after a high / low challenger value; trading cost ' + m('k') + ' per unit; prices anticipate entry',
@@ -164,7 +220,7 @@
         take('The same shift that lowers the challenger\'s profit switches informed trading on.', 6) +
         nav(go('app:bound', 'Global trading bound'), go('app:orders', 'Orders, units, costs'), go('app:notation', 'Notation')) });
 
-    frame({ id: 'f8', label: 'F8', num: '8', part: 4, minutes: 2.25, targets: ['main:suff', 'main:laplace', 'main:floor'],
+    frame({ id: 'f11', label: 'F11', num: '11', part: 5, minutes: 2.25, targets: ['main:suff', 'main:laplace', 'main:floor'],
       defines: ['B', 'r_2'], widget: 'x2',
       title: 'Only good news makes expensive preparation pay',
       subtitle: m(T`B_r(\mu)=g_L+\mu(g_H-g_L)`) + ' at the worst, prior and best belief a price induces; ' + qm('c_L=1', 'base_c_low', '1') + ' (prob. ' + qm(T`\rho=0.25`, 'base_rho', '0.25') + '), ' + qm('c_H=6', 'base_c_high', '6'),
@@ -183,7 +239,7 @@
         '</div>' +
         nav(go('app:suff', 'Reading the price'), go('app:laplace', 'Why Laplace noise'), go('app:floor', 'Is the floor doing the work?')) });
 
-    frame({ id: 'f9', label: 'F9', num: '9', part: 5, minutes: 2.5, targets: ['main:proof', 'main:margins', 'main:forces'], defines: ['q'], widget: '',
+    frame({ id: 'f12', label: 'F12', num: '12', part: 6, minutes: 2.5, targets: ['main:proof', 'main:margins', 'main:forces'], defines: ['q'], widget: '',
       title: 'Proposition 2: a stronger incumbent can raise entry',
       subtitle: 'Weak ' + m('r_0') + ', strong ' + m('r_1') + ', stronger still ' + m('r_2') + '; all other primitives equal',
       body:
@@ -218,20 +274,20 @@
         '</tbody></table>';
     }
 
-    frame({ id: 'f10a', label: 'F10a', num: '10', part: 6, minutes: 1.5, targets: [], defines: [], widget: '',
+    frame({ id: 'f13a', label: 'F13a', num: '13', part: 7, minutes: 1.5, targets: [], defines: [], widget: '',
       title: 'At the benchmark, entry rises from 0.250 to 0.523', titleQ: { '0.250': 'base_entry_weak', '0.523': 'base_entry_strong' },
       subtitle: 'Declared benchmark; units arbitrary (inputs in backup); unique equilibrium outcomes (analytical)',
       body: benchmarkTable(false) +
         take('Entry rises ' + q('base_entry_change_pp', '27.28') + ' percentage points while the challenger\'s profit at the prior falls: the price, not the prize, brings it in.', 4) });
 
-    frame({ id: 'f10b', label: 'F10b', num: '10', part: 6, minutes: 1.0, targets: ['main:scale', 'main:entry', 'main:cert'], defines: [], widget: '', noframenumbering: true,
+    frame({ id: 'f13b', label: 'F13b', num: '13', part: 7, minutes: 1.0, targets: ['main:scale', 'main:entry', 'main:cert'], defines: [], widget: '', noframenumbering: true,
       title: 'At the benchmark, entry rises from 0.250 to 0.523', titleQ: { '0.250': 'base_entry_weak', '0.523': 'base_entry_strong' },
       subtitle: 'Declared benchmark; units arbitrary (inputs in backup); unique equilibrium outcomes (analytical)',
       body: benchmarkTable(true) +
         take('Rise, then fall: past a ceiling strength even the best price cannot cover ' + m('c_H') + '.') +
         nav(go('app:scale', 'Benchmark scale'), go('app:entry', 'How entry is computed'), go('app:cert', 'Which equilibrium?')) });
 
-    frame({ id: 'f11', label: 'F11', num: '11', part: 6, minutes: 2.25, targets: ['main:controls', 'main:welfare'], defines: [], widget: 'controls',
+    frame({ id: 'f14', label: 'F14', num: '14', part: 7, minutes: 2.25, targets: ['main:controls', 'main:welfare'], defines: [], widget: 'controls',
       title: 'Freeze the information and deterrence returns',
       subtitle: 'Entry at ' + qm('r_0=1.2', 'base_r_weak', '1.2') + ' and ' + qm('r_1=3', 'base_r_strong', '3') + '; equilibria of the feedback game, then information controls',
       body:
@@ -249,7 +305,7 @@
         take('Hold the price\'s information fixed and a stronger incumbent weakly lowers entry.') +
         nav(go('app:controls', 'Controls in detail'), go('app:welfare', 'Price level or information?')) });
 
-    frame({ id: 'f12', label: 'F12', num: '12', part: 7, minutes: 1.5, targets: ['main:corr'], defines: [], widget: '',
+    frame({ id: 'f15', label: 'F15', num: '15', part: 8, minutes: 1.5, targets: ['main:corr'], defines: [], widget: '',
       title: 'At intermediate strength, equilibria coexist',
       subtitle: 'Computer-assisted (Proposition 3): interval arithmetic on exact decimal inputs',
       body:
@@ -265,7 +321,7 @@
         take('At three certified strengths an informative equilibrium coexists with no trade; I claim nothing about entry between them.', 2) +
         nav(go('app:corr', 'Correspondence')) });
 
-    frame({ id: 'f13', label: 'F13', num: '13', part: 7, minutes: 1.5, targets: ['main:robust'], defines: [], widget: 'footnote',
+    frame({ id: 'f16', label: 'F16', num: '16', part: 8, minutes: 1.5, targets: ['main:robust'], defines: [], widget: 'footnote',
       title: 'The entry reversal survives four model changes',
       subtitle: 'Entry, weak to strong; each row its own analytical result and declared parameters (Prop. 2 (i)–(ii))',
       body:
@@ -281,7 +337,7 @@
         take('The ' + m(T`r_0\to r_1`) + ' reversal survives atomless costs, logistic noise, a small value gap and complementary private signals (declared example).', 5) +
         nav(go('app:robust', 'Full table')) });
 
-    frame({ id: 'f14', label: 'F14', num: '14', part: 7, minutes: 1.0, targets: ['main:reserve'], defines: [], widget: 'access',
+    frame({ id: 'f17', label: 'F17', num: '17', part: 8, minutes: 1.0, targets: ['main:reserve'], defines: [], widget: 'access',
       title: 'Price access raises proceeds and surplus at $r_1$',
       subtitle: 'Incumbent held at ' + qm('r_1=3', 'base_r_strong', '3') + '; price seen or hidden; trading re-solved in both (Prop. A.9, analytical)',
       body:
@@ -294,7 +350,7 @@
         gray('Gain from unrounded values. At ' + m('r_0') + ' prices are uninformative, so there is no gain. The comparison holds the sale rule and the incumbent distribution fixed.') +
         nav(go('app:reserve', 'Reserve')) });
 
-    frame({ id: 'f15', label: 'F15', num: '15', part: 8, minutes: 1.0, targets: [], defines: [], widget: '',
+    frame({ id: 'f18', label: 'F18', num: '18', part: 9, minutes: 1.0, targets: [], defines: [], widget: '',
       title: 'Three predictions',
       subtitle: 'Public sale processes with one prepared bidder and a further buyer still deciding',
       body:
@@ -303,7 +359,7 @@
           [2, '<b>Against a very strong bidder, entry stops responding</b> to the price, while the price stays informative ' + st('(analytical, Prop. 2(iii))')]], 'roomy') +
         gray('Outcome: the start of diligence, not public offers. Pre-bid returns also reflect anticipation of the bid, so each test dates the price before the decision (Schwert 1996; Online Appendix D).') });
 
-    frame({ id: 'f16', label: 'F16', num: '16', part: 8, minutes: 1.0, targets: [], defines: [], widget: '',
+    frame({ id: 'f19', label: 'F19', num: '19', part: 9, minutes: 1.0, targets: [], defines: [], widget: '',
       title: 'Conclusion', subtitle: '',
       body:
         ul([key('A stronger incumbent can bring the challenger in:') + ' at the benchmark, entry rises from ' + q('base_entry_weak', '0.250') + ' to ' + q('base_entry_strong', '0.523') + ' although the challenger\'s expected profit before any news falls',
@@ -348,7 +404,7 @@
       ['Cornelli and Li (2002)', 'arbitrage positions affect tenders', 'the investor does not tender'],
       ['Pernoud and Gleyze (2026);<br>Liu and Bernhardt (2022);<br>Carlin et al. (2026)', 'learning own values and rivals;<br>post-auction feedback;<br>bidder-pool choice', 'the informed party trades outside the auction, before entry']
     ];
-    backup({ id: 'a3', label: 'A3', origin: 'f3', targets: ['app:lit'], defines: [], widget: 'rows',
+    backup({ id: 'a3', label: 'A3', origin: 'f6', targets: ['app:lit'], defines: [], widget: 'rows',
       title: 'Related work in more detail',
       subtitle: 'Increment: under one sale rule the two returns move oppositely, which produces the entry reversal',
       body:
@@ -356,7 +412,7 @@
         LIT.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') +
         '</tbody></table>' + nav(back('main:lit')) });
 
-    backup({ id: 'a4', label: 'A4', origin: 'f4', targets: ['app:omit'], defines: [], widget: '',
+    backup({ id: 'a4', label: 'A4', origin: 'f7', targets: ['app:omit'], defines: [], widget: '',
       title: 'What the model leaves out, and why', subtitle: '',
       body:
         '<table class="t-omit"><tbody>' +
@@ -366,7 +422,7 @@
         take('The paper does not solve toeholds, so it makes no statement on the direction of a toehold effect.') +
         nav(back('main:omit')) });
 
-    backup({ id: 'a5', label: 'A5', origin: 'f4', targets: ['app:info'], defines: ['a_d'], widget: '',
+    backup({ id: 'a5', label: 'A5', origin: 'f7', targets: ['app:info'], defines: ['a_d'], widget: '',
       title: 'Complementary, not superior, information', subtitle: '',
       body:
         ul(['The challenger knows its own integration plans; a specialist investor may know the target\'s customers, technology and product demand',
@@ -390,7 +446,7 @@
         take('The price matters when the challenger\'s own signal is informative but not decisive.') +
         nav(back('app:info')) });
 
-    backup({ id: 'a7', label: 'A7', origin: 'f4', targets: ['app:eq'], defines: ['sigma', 'q', 'X_Z'], widget: '',
+    backup({ id: 'a7', label: 'A7', origin: 'f7', targets: ['app:eq'], defines: ['sigma', 'q', 'X_Z'], widget: '',
       title: 'Equilibrium and the two comparisons', subtitle: '',
       body:
         ul(['<b>Definition:</b> order distributions ' + m(T`\sigma_H,\sigma_L`) + ' (mixing allowed; any deviation ' + m(T`q\in[-1,1]`) + '); a rational price that anticipates entry; Bayesian beliefs from the price; optimal entry; truthful bids',
@@ -402,7 +458,7 @@
     function t1(row, a, b) {
       return '<td>' + tx('table1_auction_primitives.tex', row, 1, a) + '</td><td>' + tx('table1_auction_primitives.tex', row, 2, b) + '</td>';
     }
-    backup({ id: 'a8', label: 'A8', origin: 'f5', targets: ['app:payoffs'], defines: ['t_0', 'F_rbar'], widget: '',
+    backup({ id: 'a8', label: 'A8', origin: 'f8', targets: ['app:payoffs'], defines: ['t_0', 'F_rbar'], widget: '',
       title: 'Acquisition payoffs in closed form', subtitle: '',
       body:
         d(T`\begin{aligned}&t_0=p(1-p/r), && t_H=r/2+p^2/(2r), && t_L=\ell-(\ell^2-p^2)/(2r),\\ &g_H=h-r/2-p^2/(2r), && g_L=(\ell^2-p^2)/(2r), && \Delta_T=(r-\ell)^2/(2r)\end{aligned}`) +
@@ -419,7 +475,7 @@
         take('The closed forms are the uniform case; the two signs are not a uniform-distribution artifact.') +
         nav(back('main:payoffs')) });
 
-    backup({ id: 'a9', label: 'A9', origin: 'f5', targets: ['app:payrule'], defines: ['eta'], widget: 'x4',
+    backup({ id: 'a9', label: 'A9', origin: 'f8', targets: ['app:payrule'], defines: ['eta'], widget: 'x4',
       title: 'The payment rule decides the sign of the spread effect', subtitle: '',
       body:
         '<div class="split">' +
@@ -432,7 +488,7 @@
         take('Payment stage only: an entry reversal under bargaining is not solved, and first-price equilibria are not solved.') +
         nav(back('main:payrule')) });
 
-    backup({ id: 'a10', label: 'A10', origin: 'f7', targets: ['app:bound'], defines: ['U_Pi'], widget: '',
+    backup({ id: 'a10', label: 'A10', origin: 'f10', targets: ['app:bound'], defines: ['U_Pi'], widget: '',
       title: 'Why trading is unique: a global bound', subtitle: '',
       body:
         ul(['<b>Weak:</b> gross advantage per unit ' + m(T`\le\Delta_T(r_0)<k`) + ', so every nonzero order loses and the posterior stays at ' + m('1/2'),
@@ -443,7 +499,7 @@
           'Incumbent or target manipulation and toeholds: outside the model (A4)']) +
         nav(back('main:bound')) });
 
-    backup({ id: 'a11', label: 'A11', origin: 'f7', targets: ['app:orders'], defines: [], widget: '',
+    backup({ id: 'a11', label: 'A11', origin: 'f10', targets: ['app:orders'], defines: [], widget: '',
       title: 'Orders, units and the trading cost', subtitle: '',
       body:
         ul([m(T`q\in[-1,1]`) + ' is a normalized small trading unit, not ownership of the target, measured in the same units as the noise (scale ' + m('b') + '); the investor has no initial position',
@@ -453,11 +509,11 @@
           'Against the weak incumbent the same bounds make every order lose'], 'roomy') +
         nav(back('main:orders')) });
 
-    backup({ id: 'a12', label: 'A12', origin: 'f7', targets: ['app:notation'], defines: [], widget: 'notation',
+    backup({ id: 'a12', label: 'A12', origin: 'f10', targets: ['app:notation'], defines: [], widget: 'notation',
       title: 'Notation', subtitle: '',
       body: '<div class="notation" id="notation-table"></div>' + nav(back('main:notation')) });
 
-    backup({ id: 'a13', label: 'A13', origin: 'f8', targets: ['app:suff'], defines: ['mu_X'], widget: '',
+    backup({ id: 'a13', label: 'A13', origin: 'f11', targets: ['app:suff'], defines: ['mu_X'], widget: '',
       title: 'The challenger can read the market\'s belief off the price', subtitle: '',
       body:
         ul(['Under any mixed orders the posterior from order flow is bounded (Laplace likelihood ratio within ' + m(T`e^{\pm2/b}`) + '):']) +
@@ -468,7 +524,7 @@
         take('The price is a sufficient statistic for the market\'s belief, so the challenger loses nothing by seeing the price rather than the flow.') +
         nav(back('main:suff')) });
 
-    backup({ id: 'a14', label: 'A14', origin: 'f8', targets: ['app:laplace'], defines: ['f', 'x_star', 'eps_C'], widget: 'x3',
+    backup({ id: 'a14', label: 'A14', origin: 'f11', targets: ['app:laplace'], defines: ['f', 'x_star', 'eps_C'], widget: 'x3',
       title: 'Why Laplace noise, and what logistic noise changes', subtitle: '',
       body:
         '<div class="figure wide" id="x3" tabindex="0" aria-label="Figure X3. Posterior tail and entry against the threshold distance, Laplace and logistic noise; arrow keys move the cursor."></div>' +
@@ -477,7 +533,7 @@
           'Entry ' + q('logistic_entry_strong', '0.302') + ' vs ' + q('base_entry_strong', '0.523') + '; atomless costs (' + qm(T`\varepsilon_C=0.1`, 'cost_halfwidth', '0.1') + '): ' + q('cost_mix_laplace_entry_strong', '0.523') + ' and ' + q('cost_mix_logistic_entry_strong', '0.301') + '. Common scale ' + m('b') + ', not common variance; not a Blackwell ranking ' + st('(analytical, Props. A.5–A.6)')], 'small') +
         nav(back('main:laplace')) });
 
-    backup({ id: 'a15', label: 'A15', origin: 'f8', targets: ['app:floor'], defines: [], widget: '',
+    backup({ id: 'a15', label: 'A15', origin: 'f11', targets: ['app:floor'], defines: [], widget: '',
       title: 'Why the model needs a low-cost floor', subtitle: '',
       body:
         ul(['The ' + cost('low-cost floor') + ' keeps entry ' + m(T`\ge\rho`) + ' after every price: the price reveals the posterior, the investor\'s edge is at least ' + m(T`\rho m\Delta_T`) + ', and information can only add entry',
@@ -488,7 +544,7 @@
           'Atomless cost supports keep it ' + st('(Prop. A.6, analytical)')], 'roomy') +
         nav(back('main:floor')) });
 
-    backup({ id: 'a16', label: 'A16', origin: 'f9', targets: ['app:proof'], defines: ['alpha'], widget: '',
+    backup({ id: 'a16', label: 'A16', origin: 'f12', targets: ['app:proof'], defines: ['alpha'], widget: '',
       title: 'Proof logic in four steps', subtitle: '',
       body:
         '<ol class="steps">' +
@@ -501,7 +557,7 @@
         take('What does the work: step 2, a bound that holds against every candidate schedule.', 4) +
         nav(back('main:proof')) });
 
-    backup({ id: 'a17', label: 'A17', origin: 'f9', targets: ['app:margins'], defines: [], widget: '',
+    backup({ id: 'a17', label: 'A17', origin: 'f12', targets: ['app:margins'], defines: [], widget: '',
       title: 'Conditions are jointly satisfiable for every $h>\\ell$', subtitle: '',
       body:
         '<table class="t-margins"><thead><tr><th colspan="3">Theorem margins at the benchmark</th></tr></thead><tbody>' +
@@ -517,7 +573,7 @@
           'Part (iii) is not claimed for every ' + m(T`h>\ell`)], 'small') +
         nav(back('main:margins')) });
 
-    backup({ id: 'a18', label: 'A18', origin: 'f9', targets: ['app:forces'], defines: [], widget: 'columns',
+    backup({ id: 'a18', label: 'A18', origin: 'f12', targets: ['app:forces'], defines: [], widget: 'columns',
       title: 'Two forces from one payment rule', subtitle: '',
       body:
         '<table class="t-forces hover-cols"><thead><tr><th></th><th data-col="1">Deterrence</th><th data-col="2" class="info">Information</th></tr></thead><tbody>' +
@@ -532,7 +588,7 @@
     var A19_IN = [['h', 'base_h', '10', 'moderate_h', '2'], [T`\ell`, 'base_ell', '1', 'moderate_ell', '1'], ['p', 'base_p', '0.5', 'moderate_p', '0.5'],
       [T`\rho`, 'base_rho', '0.25', 'moderate_rho', '0.25'], ['c_L', 'base_c_low', '1', 'moderate_c_low', '0.3'], ['c_H', 'base_c_high', '6', 'moderate_c_high', '0.89'],
       ['b', 'base_b', '2', 'moderate_b', '2'], ['k', 'base_k', '0.02', 'moderate_k', '0.002']];
-    backup({ id: 'a19', label: 'A19', origin: 'f10b', targets: ['app:scale'], defines: [], widget: '',
+    backup({ id: 'a19', label: 'A19', origin: 'f13b', targets: ['app:scale'], defines: [], widget: '',
       title: 'Benchmark scale: declared, not calibrated', subtitle: '',
       body:
         '<div class="split narrow">' +
@@ -549,7 +605,7 @@
         take('A moderate economy with ' + qm('h=2', 'moderate_h', '2') + ' gives a rise of similar size (' + q('moderate_entry_weak', '0.250') + ' → ' + q('moderate_entry_strong', '0.527') + '), so the benchmark scale is a declaration, not the mechanism.') +
         nav(back('main:scale')) });
 
-    backup({ id: 'a20', label: 'A20', origin: 'f10b', targets: ['app:entry'], defines: ['tau', 'x_star', 'alpha', 'e_HL', 'E_O', 'r_C'], widget: '',
+    backup({ id: 'a20', label: 'A20', origin: 'f13b', targets: ['app:entry'], defines: ['tau', 'x_star', 'alpha', 'e_HL', 'E_O', 'r_C'], widget: '',
       title: 'How entry and ownership are computed', subtitle: '',
       body:
         d(T`\begin{gathered}\tau=\frac{c_H-g_L}{g_H-g_L}\quad\text{($c_H$ = expensive cost)},\qquad x^*=\frac b2\log\frac{\tau}{1-\tau},\qquad \alpha_\theta=\Pr(X\ge x^*\mid\theta)\\ e_H=\rho+(1-\rho)\alpha_H,\qquad e_L=\rho+(1-\rho)\alpha_L,\qquad \mathsf E=\frac{e_H+e_L}{2},\qquad \mathsf O_H=\frac{e_H}{2}\end{gathered}`) +
@@ -562,10 +618,10 @@
     function certRow(letter, r, v, e, cover) {
       return '<tr><td>' + q('cert_' + letter + '_r', r) + '</td><td>' + qm(v, '-cert_' + letter + '_v_interval', v) + '</td><td>' + qm(e, 'cert_' + letter + '_entry_interval', e) + '</td><td>' + q('cert_' + letter + '_high_derivative_lower', cover) + '</td></tr>';
     }
-    backup({ id: 'a21', label: 'A21', origin: 'f10b', targets: ['app:cert'], defines: [], widget: '',
+    backup({ id: 'a21', label: 'A21', origin: 'f13b', targets: ['app:cert'], defines: [], widget: '',
       title: 'Which equilibrium? What the proof certifies', subtitle: '',
       body:
-        '<p class="small">The reversal (frames 9–10) compares economies in which trading and on-path entry are unique, so no selection is needed; multiplicity arises only between them (frame 12).</p>' +
+        '<p class="small">The reversal (frames 12–13) compares economies in which trading and on-path entry are unique, so no selection is needed; multiplicity arises only between them (frame 15).</p>' +
         '<table class="t-enclosures"><thead><tr><th>' + m('r') + '</th><th>' + m(T`q_L\in`) + '</th><th>Entry ' + m(T`\mathsf E\in`) + '</th><th>High-type cover margin ' + m(T`\ge`) + '</th></tr></thead><tbody>' +
           certRow('a', '1.55', T`[-0.46031620,\,-0.46031618]`, T`[0.5450528898,\,0.5450528922]`, '0.0000761777') +
           certRow('b', '1.60', T`[-0.70747539,\,-0.70747537]`, T`[0.5487563062,\,0.5487563085]`, '0.0027531948') +
@@ -580,7 +636,7 @@
     function t2(row, a, b, c) {
       return '<td>' + tx('table2_equilibrium_controls.tex', row, 3, a) + '</td><td>' + tx('table2_equilibrium_controls.tex', row, 4, b) + '</td><td>' + tx('table2_equilibrium_controls.tex', row, 5, c) + '</td>';
     }
-    backup({ id: 'a22', label: 'A22', origin: 'f11', targets: ['app:controls'], defines: [], widget: '',
+    backup({ id: 'a22', label: 'A22', origin: 'f14', targets: ['app:controls'], defines: [], widget: '',
       title: 'Information controls in detail', subtitle: '',
       body:
         ul(['Prop. A.3 ' + st('(analytical)') + ': at any fixed information experiment and cost law, entry weakly falls with strength; within fixed orders, not across order profiles that change with ' + m('r'),
@@ -599,7 +655,7 @@
         gray('Price hidden: the challenger enters only at low cost (high-cost window); at ' + m('r_1') + ' the investor still trades full orders.') +
         nav(back('main:controls')) });
 
-    backup({ id: 'a23', label: 'A23', origin: 'f11', targets: ['app:welfare'], defines: ['D_0'], widget: '',
+    backup({ id: 'a23', label: 'A23', origin: 'f14', targets: ['app:welfare'], defines: ['D_0'], widget: '',
       title: 'Price level or information?', subtitle: '',
       body:
         ul(['<b>Invariance diagnostic:</b> add a dividend ' + qm('D_0=0.257809', 'base_matched_dividend', '0.257809') + ' (the revenue gain from price access) to the traded claim in the price-hidden economy. Mean prices then match, but entry does not, so the information matters, not the price level. ' + st('(numerical diagnostic)'),
@@ -608,7 +664,7 @@
           'The dividend is not a sale mechanism and is excluded from surplus; no ranking of strengths or mechanisms'], 'roomy') +
         nav(back('main:welfare')) });
 
-    backup({ id: 'a24', label: 'A24', origin: 'f12', targets: ['app:corr'], defines: ['r_PNU'], widget: 'x5a',
+    backup({ id: 'a24', label: 'A24', origin: 'f15', targets: ['app:corr'], defines: ['r_PNU'], widget: 'x5a',
       title: 'Trading and entry across strengths: entry', subtitle: '',
       body:
         '<div class="figure wide" id="x5a" tabindex="0" aria-label="Figure X5, panel (a). Entry across incumbent strength: branches broken at unresolved nodes, certified intervals, uniqueness shading; arrow keys move the cursor."></div>' +
@@ -625,7 +681,7 @@
     function t3(row, cells) {
       return cells.map(function (c) { return '<td>' + tx('table3_extensions.tex', row, c[0], c[1]) + '</td>'; }).join('');
     }
-    backup({ id: 'a26', label: 'A26', origin: 'f13', targets: ['app:robust'], defines: [], widget: '',
+    backup({ id: 'a26', label: 'A26', origin: 'f16', targets: ['app:robust'], defines: [], widget: '',
       title: 'Robustness in full', subtitle: '',
       body:
         '<table class="t-full"><thead><tr><th></th><th>' + m(T`\rho`) + '; strengths</th><th>' + m(T`\mathsf E`) + ' weak</th><th>' + m(T`\mathsf E`) + ' strong</th><th>Change (pp)</th><th>' + m(T`\mathsf O_H`) + ' weak</th><th>' + m(T`\mathsf O_H`) + ' strong</th></tr></thead><tbody>' +
@@ -645,7 +701,7 @@
       return cells.map(function (c) { return '<td>' + (c[2] ? q(c[2], c[1]) : tx('table4_reserve_comparisons.tex', row, c[0], c[1])) + '</td>'; }).join('');
     }
     var PB = 'Panel B:';
-    backup({ id: 'a27', label: 'A27', origin: 'f14', targets: ['app:reserve'], defines: ['eps_V'], widget: '',
+    backup({ id: 'a27', label: 'A27', origin: 'f17', targets: ['app:reserve'], defines: ['eps_V'], widget: '',
       title: 'A higher reserve can raise proceeds; optimal terms are open', subtitle: '',
       body:
         '<p class="small">Value classes: ' + qm('p=0.5', 'base_p', '0.5') + ' vs ' + qm('p=1.1', 'value_reserve_high', '1.1') + ' (' + qm(T`\varepsilon_V=0.05`, 'value_band_halfwidth', '0.05') + ')</p>' +
@@ -674,15 +730,18 @@
         nav(back('app:reserve')) });
 
     var REFS = [
-      ['Betton, Eckbo, Thompson and Thorburn (2014). <em>J. Finance</em> 69.', 'Boone and Mulherin (2007). <em>J. Finance</em> 62.', 'Bulow, Huang and Klemperer (1999). <em>J. Polit. Econ.</em> 107.',
+      ['Betton, Eckbo, Thompson and Thorburn (2014). <em>J. Finance</em> 69.', 'Bond, Edmans and Goldstein (2012). <em>Annu. Rev. Financ. Econ.</em> 4.', 'Boone and Mulherin (2007). <em>J. Finance</em> 62.', 'Bulow, Huang and Klemperer (1999). <em>J. Polit. Econ.</em> 107.',
         'Carlin, Liu, Officer, Pernoud and Tu (2026). NBER Working Paper 34846.', 'Cornelli and Li (2002). <em>Rev. Financ. Stud.</em> 15.', 'Dow, Goldstein and Guembel (2017). <em>J. Eur. Econ. Assoc.</em> 15.',
-        'Edmans, Goldstein and Jiang (2012). <em>J. Finance</em> 67.', 'Edmans, Goldstein and Jiang (2015). <em>Amer. Econ. Rev.</em> 105.', 'Fishman (1988). <em>RAND J. Econ.</em> 19.'],
-      ['Gentry and Stroup (2019). <em>J. Financ. Econ.</em> 132.', 'Goldstein and Guembel (2008). <em>Rev. Econ. Stud.</em> 75.', 'Grossman and Hart (1980). <em>Bell J. Econ.</em> 11.',
+        'Edmans, Goldstein and Jiang (2012). <em>J. Finance</em> 67.', 'Edmans, Goldstein and Jiang (2015). <em>Amer. Econ. Rev.</em> 105.', 'Fishman (1988). <em>RAND J. Econ.</em> 19.',
+        'Foucault and Fr\u00e9sard (2014). <em>J. Financ. Econ.</em> 111.', 'Gentry and Stroup (2019). <em>J. Financ. Econ.</em> 132.', 'Goldstein and Guembel (2008). <em>Rev. Econ. Stud.</em> 75.',
+        'Gorbenko and Malenko (2014). <em>J. Finance</em> 69.'],
+      ['Grossman and Hart (1980). <em>Bell J. Econ.</em> 11.',
         'Hirshleifer and Png (1989). <em>Rev. Financ. Stud.</em> 2.', 'Imprivata, Inc. (2016). Definitive merger proxy, Form DEFM14A.', 'Levin and Smith (1994). <em>Amer. Econ. Rev.</em> 84.',
-        'Lin, Ma, Yang and Zhu (2025). Working paper.', 'Liu and Bernhardt (2022). Working paper.', 'Luo (2005). <em>J. Finance</em> 60.', 'Pernoud and Gleyze (2026). Working paper.',
-        'Persico (2000). <em>Econometrica</em> 68.', 'Roberts and Sweeting (2013). <em>Amer. Econ. Rev.</em> 103.']
+        'Lin, Ma, Yang and Zhu (2025). Working paper.', 'Liu and Bernhardt (2022). Working paper.', 'Luo (2005). <em>J. Finance</em> 60.', 'McAfee and McMillan (1987). <em>Econ. Lett.</em> 23.',
+        'Pernoud and Gleyze (2026). Working paper.', 'Persico (2000). <em>Econometrica</em> 68.', 'Roberts and Sweeting (2013). <em>Amer. Econ. Rev.</em> 103.', 'Samuelson (1985). <em>Econ. Lett.</em> 17.',
+        'Schwert (1996). <em>J. Financ. Econ.</em> 41.']
     ];
-    backup({ id: 'a29', label: 'A29', origin: 'f3', targets: ['app:refs'], defines: [], widget: '',
+    backup({ id: 'a29', label: 'A29', origin: 'f6', targets: ['app:refs'], defines: [], widget: '',
       title: 'References', subtitle: '',
       body: '<div class="refs">' + REFS.map(function (col) { return '<ul>' + col.map(function (r) { return '<li>' + r + '</li>'; }).join('') + '</ul>'; }).join('') + '</div>' + nav(back('main:refs')) });
 

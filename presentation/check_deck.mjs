@@ -1,6 +1,6 @@
 /* Offline check of the slides against talk/talk.tex and the deck contract. Node standard library.
  *
- * Drift against talk.tex (the Beamer master): the 47 frames in the same order and labels; the
+ * Drift against talk.tex (the Beamer master): the 50 frames in the same order and labels; the
  * same titles and subtitles; the same \hypertarget names; the same link graph (\hyperlink
  * buttons, Back buttons and their order); and every number that talk.tex tags with a
  * "% source:" comment. A tagged number must be on the web slide as a span that carries the
@@ -181,8 +181,8 @@ const spans = (html) => [...html.matchAll(/<span class="q[^"]*" data-q="([^"]*)"
 const qkeys = (html) => [...html.matchAll(/data-q="([^"]*)"/g)].flatMap((m) => m[1].split(' '));
 
 /* ---------------------------------------------------------------- drift */
-if (frames.length !== 47) fail(`content.js has ${frames.length} frames; talk.tex has 47`);
-if (talk.length !== 47) fail(`talk.tex parsed into ${talk.length} frames, not 47`);
+if (frames.length !== 50) fail(`content.js has ${frames.length} frames; talk.tex has 50`);
+if (talk.length !== 50) fail(`talk.tex parsed into ${talk.length} frames, not 50`);
 const asPrinted = [];
 let numberPairs = 0;
 talk.forEach((t, i) => {
@@ -229,7 +229,7 @@ talk.forEach((t, i) => {
       if (!hit) fail(`${where}: talk.tex prints ${n} on a sourced line; the slide does not (${s.line})`);
     }
   }
-  // the title numbers of F10a and F10b
+  // the title numbers of F13a and F13b
   const tm = /%\s*source \(title\):([^\n]*)/.exec(t.body);
   if (tm) {
     for (const pair of tm[1].matchAll(/([a-z][a-z0-9_]+) \(([\d.]+)\)/g)) {
@@ -265,7 +265,7 @@ for (const f of frames) {
   }
 }
 for (const s of statuses) if (!VOCABULARY.some((w) => s.toLowerCase().includes(w))) fail(`status "${s}" names no word of the paper's vocabulary`);
-if (Math.abs(mainMinutes - 30.25) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 30.25 of the timing plan`);
+if (Math.abs(mainMinutes - 33.75) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 33.75 of the timing plan`);
 
 /* every symbol is defined on its slide or an earlier one, in deck order */
 const keys = new Set(deck.glossary.map((g) => g.key));
@@ -292,7 +292,7 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
   const fb = (prov.notes_from_structure_plan || []).join(',');
   if (fb !== 'A9,A12,A25,A29') fail(`notes fall back to the structure plan for ${fb}, expected A9,A12,A25,A29`);
   const sections = (page.match(/<section class="slide/g) || []).length;
-  if (sections !== 47) fail(`dist/index.html has ${sections} slides, not 47`);
+  if (sections !== 50) fail(`dist/index.html has ${sections} slides, not 50`);
 } else fail('dist/index.html is missing; run python3 presentation/build.py');
 
 const mains = frames.filter((f) => !f.backup).length;

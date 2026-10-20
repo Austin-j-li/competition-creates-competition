@@ -1,6 +1,6 @@
 /* deck.js: the slide engine of the /talk/ page.
  *
- * The 47 slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
+ * The 50 slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
  * the 1600 x 900 stage, steps through reveals ([data-step]), follows the backup links of
  * talk.tex (a goto button jumps to a \hypertarget; Back returns to the frame and step it came
  * from), and opens the overview, the speaker notes and the notation. Widgets draw figures with
@@ -66,8 +66,8 @@
     });
     steps[index] = step;
     var num = s.dataset.num;
-    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / 16).toFixed(1) + '%');
-    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / 16');
+    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / 19).toFixed(1) + '%');
+    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / 19');
     var ms = maxStep();
     $('#progress-label').textContent = ms ? 'step ' + (step + 1) + ' of ' + (ms + 1) : (backup ? 'backup' : '');
     $('#previous').disabled = index === 0 && step === 0;
@@ -143,7 +143,7 @@
   function closePanel() { var d = $('#panel'); if (d.open) d.close(); $('#stage').focus({ preventScroll: true }); }
   function partName(p) { var x = (META.parts || []).filter(function (q) { return String(q.n) === String(p); })[0]; return x ? x.name : ''; }
   function overview() {
-    var html = '<p class="notes-meta">All 47 frames of the Beamer deck in their order. F10a and F10b share number 10; backups A1 to A29 follow the conclusion.</p>';
+    var html = '<p class="notes-meta">All 50 frames of the Beamer deck in their order. F13a and F13b share number 13; backups A1 to A29 follow the conclusion.</p>';
     (META.parts || []).forEach(function (p) {
       var items = (META.frames || []).filter(function (f) { return String(f.part) === String(p.n); });
       if (!items.length) return;
@@ -175,7 +175,7 @@
       '<span><kbd>→</kbd> <kbd>Space</kbd></span><span>next step, then the next slide</span>' +
       '<span><kbd>←</kbd></span><span>previous step or slide</span>' +
       '<span><kbd>Home</kbd> <kbd>End</kbd></span><span>title, conclusion</span>' +
-      '<span><kbd>O</kbd></span><span>overview of all 47 frames</span>' +
+      '<span><kbd>O</kbd></span><span>overview of all 50 frames</span>' +
       '<span><kbd>N</kbd></span><span>speaker notes</span>' +
       '<span><kbd>G</kbd></span><span>notation</span>' +
       '<span><kbd>T</kbd></span><span>dark or light theme</span>' +

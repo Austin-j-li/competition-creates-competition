@@ -50,7 +50,7 @@ with the existing Playwright browser tool's run-code function and the file's abs
 Fira Sans, the explorer slider, the hover readout, the theme toggle, the three tabs and the
 inline viewer, legacy anchors, the timeline, the mobile contents drawer, the skip link and a
 malformed fragment. With a second and third argument (the handout and the slides addresses)
-it also checks the slides: 47 slides, no overflow, a backup link, Back and End. The tab must be
+it also checks the slides: 50 slides, no overflow, a backup link, Back and End. The tab must be
 in front: a hidden tab runs no animation frames. No browser package is added to this
 repository.
 
