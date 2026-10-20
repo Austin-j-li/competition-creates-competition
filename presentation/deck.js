@@ -304,24 +304,6 @@
   }
 
   /* ---------- widgets ---------- */
-  var INFOSETS = {
-    seller: 'Seller: announces the sale rule, a cash second-price auction with reserve p, before any trade. The rule is public.',
-    investor: 'Investor: knows the challenger\'s value θ. Trades the target\'s stock against noise traders; has no control rights and cannot bid.',
-    makers: 'Market makers: see only total order flow, not who traded. Price the share at expected sale proceeds, which anticipates entry.',
-    challenger: 'Challenger: sees the stock price and its own preparation cost, never the order flow, θ or R. Paying the cost reveals θ and permits a bid.',
-    bidders: 'Bidders: the incumbent knows its value R ~ U[0, r], and r is public. A prepared challenger knows θ. Each bids its value.'
-  };
-  widgets.infosets = {
-    render: function (s) {
-      $$('.tl', s).forEach(function (b) {
-        b.setAttribute('aria-pressed', 'false');
-        b.onclick = b.onfocus = b.onmouseenter = function () {
-          $$('.tl', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          $('#f4-infoset').textContent = INFOSETS[b.dataset.info];
-        };
-      });
-    }
-  };
   widgets.cases = {
     render: function (s) {
       $$('.segmented button', s).forEach(function (b) {

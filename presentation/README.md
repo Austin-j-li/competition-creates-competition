@@ -44,10 +44,9 @@ dim room. The choice persists in the browser under the same key as the handout.
   A9, A12, A25 and A29 have no block there; their notes come from `talk/structure-plan.md`,
   section 9.
 
-Interactive parts: the F4 timeline shows each agent's information set; F5 highlights a case of
-the payment table; F6, F8, A9, A14, A24 and A25 draw the paper's figure data with the handout's
-SVG renderer (hover or arrow keys for values); F8 has a strength slider with closed-form
-readouts; F11 switches between the equilibrium and the two information controls; F14
+Interactive parts: F5 highlights a case of the payment table; F6, F8, A9, A14, A24 and
+A25 draw the paper's figure data with the handout's SVG renderer (hover or arrow keys for
+values); F8 has a strength slider with closed-form readouts; F11 switches between the equilibrium and the two information controls; F14
 highlights a column; F13 opens its footnote on demand. No widget solves an
 equilibrium.
 

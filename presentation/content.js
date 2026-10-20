@@ -120,18 +120,17 @@
         take('A stronger incumbent does not always keep the challenger out. When the target\'s stock trades, entry depends on what the price reveals first.', 3) });
 
     frame({ id: 'f4', label: 'F4', num: '5', part: 2, minutes: 2.0, targets: ['main:omit', 'main:info'],
-      defines: ['R', 'r', 'theta', 'h', 'ell', 'p', 'C', 'c_L', 'c_H', 'rho'], widget: 'infosets',
+      defines: ['R', 'r', 'theta', 'h', 'ell', 'p', 'C', 'c_L', 'c_H', 'rho'], widget: '',
       title: 'Model: a second-price auction for the target',
       subtitle: 'Who moves, who knows what, and when',
       body:
-        '<div class="timeline" role="group" aria-label="Timeline; select a step to see its information set">' +
-          '<button type="button" class="tl" data-info="seller"><span class="tl-n">1</span><b>Seller</b>announces the sale rule before any trade</button>' +
-          '<button type="button" class="tl" data-info="investor"><span class="tl-n">2</span><b>Investor</b>learns the challenger\'s value; trades the target\'s stock</button>' +
-          '<button type="button" class="tl" data-info="makers"><span class="tl-n">3</span><b>Market makers</b>see total order flow only; set the stock price</button>' +
-          '<button type="button" class="tl tl-cost" data-info="challenger"><span class="tl-n">4</span><b>Challenger</b>sees the price and its own cost; enters or stays out</button>' +
-          '<button type="button" class="tl" data-info="bidders"><span class="tl-n">5</span><b>Bidders</b>the incumbent and an entered challenger bid their values</button>' +
+        '<div class="timeline" role="group" aria-label="Timeline of moves">' +
+          '<div class="tl"><span class="tl-n">1</span><b>Seller</b>announces the sale rule before any trade</div>' +
+          '<div class="tl"><span class="tl-n">2</span><b>Investor</b>learns the challenger\'s value; trades the target\'s stock</div>' +
+          '<div class="tl"><span class="tl-n">3</span><b>Market makers</b>see total order flow only; set the stock price</div>' +
+          '<div class="tl tl-cost"><span class="tl-n">4</span><b>Challenger</b>sees the price and its own cost; enters or stays out</div>' +
+          '<div class="tl"><span class="tl-n">5</span><b>Bidders</b>the incumbent and an entered challenger bid their values</div>' +
         '</div>' +
-        '<p class="infoset" id="f4-infoset" aria-live="polite">Select a step to see what that agent observes.</p>' +
         ul(['<b>Sale rule:</b> a cash second-price auction with reserve price ' + m('p') + ', the minimum the seller accepts (not the stock price). The highest bid wins and pays the larger of ' + m('p') + ' and the other bid. Each bidder bids its value',
           '<b>Incumbent:</b> value ' + m('R') + ', uniform on ' + m('[0,r]') + '. The strength ' + m('r') + ' is public; only the incumbent knows ' + m('R'),
           '<b>Challenger:</b> type ' + m(T`\theta=H`) + ' or ' + m('L') + ', equally likely, with value ' + m('h') + ' or ' + m(T`\ell`) + '. It learns ' + m(T`\theta`) + ' only if it prepares',

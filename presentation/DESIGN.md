@@ -93,7 +93,7 @@ title with value, status and source); formula numbers add `.q-tex`; table number
 
 Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.bench`, `.keyidea`,
 `.info`, `.cost`, `.grayline`, `.graycite`, `.status`, `.takeaway`, `.nav`, `.flow > .box`,
-`.timeline > .tl`, `.infoset`, `.segmented`, `.two-lines`, `.resultbox > .propitem > .propnum`,
+`.timeline > .tl`, `.segmented`, `.two-lines`, `.resultbox > .propitem > .propnum`,
 `.split` (`.narrow`, `.wide`), `.figure`, `.slider`, `.readout`, `.bars`, `.notation`, `.refs`,
 `.steps`, and the table classes named after their frame (`.t-bench`, `.t-controls`, …).
 
@@ -102,7 +102,6 @@ Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.bench`,
 | `widget` | Frame | Elements | Behaviour |
 |---|---|---|---|
 | `title` | F0 | `.cover` | static title page |
-| `infosets` | F4 | `.tl[data-info]`, `#f4-infoset` | focus, hover or click shows the agent's information set |
 | `cases` | F5 | `.segmented [data-case]`, `tr[data-row]` | highlights the row R ≤ ℓ or R > ℓ |
 | `x1` | F6 | `#x1` | spread and profit at the prior from `fig1`, markers at r0 and r1 |
 | `x2` | F8 | `#x2`, `#x2-r`, `#x2-r-value`, `#x2-readout` | profit at three beliefs from `fig1` with the cost lines; the slider moves a marker and reads the closed forms (a fixed-order calculation) |
