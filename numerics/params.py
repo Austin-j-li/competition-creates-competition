@@ -142,6 +142,8 @@ BENCHMARK_EXTRA = {
     "atomless_alternative_reserve": "1.1",
 }
 
+REVISION_EXTRA = {"student_degrees_freedom": "3"}
+
 MODERATE = Primitives(
     h="2", ell="1", p="0.5", rho="0.25", c_L="0", c_H="0.89", b="2", k="0.002",
     parameter_set="moderate",

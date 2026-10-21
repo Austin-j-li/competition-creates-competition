@@ -153,11 +153,14 @@ def main() -> None:
     output_diff = []
     for path in sorted(paths):
         if path in figure_refs:
-            old = (ROOT/figure_refs[path]['local_reference']).read_bytes()
+            reference = ROOT/figure_refs[path]['local_reference']
+            old = reference.read_bytes() if reference.exists() else None
         else:
             old = prior_bytes(path)
         new = current_bytes(path)
         old_hash, new_hash = digest(old), digest(new)
+        if path in figure_refs and old is None:
+            old_hash = figure_refs[path]['sha256']
         note = 'file SHA-256; a changed manifest includes new provenance'
         detail = {'file':path, 'old_sha256':old_hash, 'new_sha256':new_hash, 'changed':old_hash != new_hash}
         if path.endswith('.csv'):
@@ -171,6 +174,9 @@ def main() -> None:
         if path in figure_refs and new is not None:
             raster_hashes = []
             for label, file in [('old',ROOT/figure_refs[path]['local_reference']),('new',ROOT/path)]:
+                if label == 'old' and not file.exists():
+                    raster_hashes.append(figure_refs[path]['raster_sha256_150dpi'])
+                    continue
                 prefix=HERE/'figure_comparison'/f'{Path(path).stem}_{label}'
                 prefix.parent.mkdir(parents=True,exist_ok=True)
                 subprocess.run(['pdftoppm','-singlefile','-r','150','-png',str(file),str(prefix)],check=True,capture_output=True)
@@ -185,10 +191,14 @@ def main() -> None:
         writer=csv.DictWriter(stream,fieldnames=FIELDS);writer.writeheader();writer.writerows(records)
     (HERE/'output_diff.json').write_text(json.dumps(output_diff,indent=2)+'\n')
     original=[r for r in records if r['name'] in old_registry]
+    scalar_rows = [r for r in records if not r['name'].startswith(('file.', 'figure_content.'))]
     summary={'reference_commit':BASE,'original_registry_quantities':len(original),
         'original_registry_changed':sum(r['changed']=='yes' for r in original),
         'registry_retired':len(set(old_registry)-set(new_registry)), 'registry_new':len(set(new_registry)-set(old_registry)),
         'original_registry_display_changes':sum(name not in new_registry or old_registry[name]['display'] != new_registry[name]['display'] for name in old_registry),
+        'scalar_rows':len(scalar_rows),
+        'existing_scalar_rows_changed':sum(r['changed']=='yes' and r['old_value'] != '' for r in scalar_rows),
+        'new_scalar_rows':sum(r['old_value'] == '' for r in scalar_rows),
         'reconciliation_rows':len(records), 'changed_table_files':[d['file'] for d in output_diff if d['file'].startswith('tables/') and d['file'].endswith('.tex') and d['changed']],
         'changed_figure_content':[d['file'] for d in output_diff if d.get('raster_changed')],
         'outputs_compared':len(output_diff)}

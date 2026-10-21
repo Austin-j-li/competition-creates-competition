@@ -46,11 +46,11 @@ def main(argv: list[str] | None = None) -> int:
               "tables/auction_primitives.csv", "tables/equilibrium_controls.csv", "tables/extensions.csv", "tables/reserve_comparisons.csv",
               "numerics/correspondence.csv", "numerics/mixed_supports.csv", "numerics/certificates.csv", "numerics/thresholds.csv", "numerics/moderate_values.csv",
               "numerics/two_signals.csv", "numerics/feedback_comparisons.csv", "numerics/reserve_events.csv", "numerics/reserve_ranges.csv",
-              "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"]
+              "numerics/revision_quantities.csv", "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"]
     write_manifest("render", {"sources": ["figures_data/*.csv", "tables/*.csv", "numerics/correspondence.csv", "numerics/certificates.csv",
                                           "numerics/thresholds.csv", "numerics/moderate_values.csv", "numerics/two_signals.csv",
                                           "numerics/feedback_comparisons.csv", "numerics/reserve_events.csv", "numerics/reserve_ranges.csv",
-                                          "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"],
+                                          "numerics/revision_quantities.csv", "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"],
                               "source_hashes": {p: sha256(p) for p in inputs}},
                    "matplotlib PDF backend, embedded Type 42 fonts, no in-figure titles, (a)/(b) panel labels, broken lines at gaps in accepted "
                    "nodes, interval bars at certified points; booktabs LaTeX tables assembled from validated rows only, with identity checks "

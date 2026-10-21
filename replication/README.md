@@ -40,6 +40,7 @@ These commands rebuild the calculations. The presentation commands alone do not 
 | `python numerics/exercises/c6_reserve.py --workers=20` | Fixed-reserve comparisons, broad reserve continuation attempts, found ranges and coverage records. |
 | `python numerics/exercises/c6c_reserve_events.py --workers=8` | Exact reserve events, one-sided neighborhoods, preparation/sale/admissibility outcomes and event checks. |
 | `python numerics/exercises/c7_bargaining.py` | Acquisition-payment bargaining comparisons and the figure data. |
+| `python numerics/exercises/c9_revision.py` | Gross trade profits, sufficient stake bounds, and entry under two additional noise laws at full orders. |
 
 Each producer writes its manifest in `numerics/manifests/`, with exact inputs, method, tolerances, checks, software versions and output SHA-256 hashes. Search attempts and unresolved nodes remain in the audit data. A diagnostic best-response mesh does not become an interval certificate merely because it is accepted numerically.
 

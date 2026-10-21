@@ -8,6 +8,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
+(HERE / 'logs').mkdir(parents=True, exist_ok=True)
 label = sys.argv[1] if len(sys.argv) > 1 else 'first'
 env = dict(os.environ)
 env.update({key:'1' for key in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS')})

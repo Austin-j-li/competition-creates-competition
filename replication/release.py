@@ -23,7 +23,7 @@ ENV = {**os.environ, **{key: "1" for key in ("OPENBLAS_NUM_THREADS", "OMP_NUM_TH
        "SOURCE_DATE_EPOCH": "1788652800", "TZ": "UTC", "PYTHONHASHSEED": "0"}
 ENV["PATH"] = str(Path(sys.executable).parent) + os.pathsep + ENV.get("PATH", "")
 PRODUCERS = ("c1_baseline", "c2_correspondence", "c3_signals", "c4_moderate", "c5_noise", "c6_reserve",
-             "c6c_reserve_events", "c7_bargaining")
+             "c6c_reserve_events", "c7_bargaining", "c9_revision")
 
 
 def digest(path: Path) -> str:
@@ -151,6 +151,7 @@ def reproduce(workers: int) -> None:
         for job in jobs:
             job.result()
     run(destination, ["numerics/exercises/c6c_reserve_events.py", f"--workers={min(workers,8)}"], records)
+    run(destination, ["numerics/exercises/c9_revision.py"], records)
     pdfs = build(destination, records)
     compare_reproduction(destination, records, pdfs)
 

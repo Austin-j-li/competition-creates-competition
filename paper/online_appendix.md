@@ -816,6 +816,13 @@ noise = Laplace; cost = atomic; fundamental_prior_H = 0.5;
 T_and_Y_independent_given_fundamental = yes.
 ```
 
+**Input declaration: additional noise laws in C.9.**
+
+C.9 uses the benchmark vector and atomic costs. Its additional noise laws have score bound $1/b$.
+The hyperbolic secant density is $\operatorname{sech}(z/b)/(\pi b)$.
+The Student law has $\nu=3$ and scale $s=b(\nu+1)/(2\sqrt{\nu})$.
+The scale matches the score bound, not the variance. The prescribed orders are $(1,-1)$.
+
 **Input declaration: numerical controls.**
 
 ```text
@@ -1269,7 +1276,7 @@ Feed: Figure 4 and [Proposition A.8](main.md#result-proposition-a-8). Parameter 
 
 ### C.8. Quantity definitions and provenance {#oa-c-registry}
 
-Every quantitative placeholder in the two manuscripts resolves to one row of the [quantity registry](../numerics/quantity_registry.csv), generated from the [quantity manifest](quantity_manifest.csv) and the validated exercise outputs in C.1 to C.7. The manifest specifies each key's definition, producing exercise, source file, row selector, display rule, units, and exact value for a declared input. The registry records the resulting value, outward bounds for an enclosure, evidence status, and the source row used. The complete key list and definitions are in the distributed [quantity dictionary](../replication/quantity_dictionary.md), generated from the same manifest. This subsection states their common rules.
+Every quantitative placeholder in the two manuscripts resolves to one row of the [quantity registry](../numerics/quantity_registry.csv), generated from the [quantity manifest](quantity_manifest.csv) and the validated exercise outputs in C.1 to C.7 and C.9. The manifest specifies each key's definition, producing exercise, source file, row selector, display rule, units, and exact value for a declared input. The registry records the resulting value, outward bounds for an enclosure, evidence status, and the source row used. The complete key list and definitions are in the distributed [quantity dictionary](../replication/quantity_dictionary.md), generated from the same manifest. This subsection states their common rules.
 
 **Rules.** A declared input is echoed with status `input` and printed as its exact decimal. A derived quantity is filled only from an accepted source row selected by the full parameter declaration, information regime, cost and noise law, continuation identity, and branch label, never by a rounded scalar. The selector must match exactly one row. A difference records both rows used to form it. The row's result status must permit the statement the manuscript makes with it: an analytical claim needs an analytical row, a certified interval needs every certificate predicate, and a numerical diagnostic is printed as one. An unresolved source leaves the placeholder unfilled with its reason, and the substitution step refuses to produce a filled manuscript in that state. Mathematical constants, equation and result labels, bibliographic identifiers, and schema labels are literal text, not registry quantities. No renderer replaces a registry value with a cached or typed number.
 
@@ -1289,10 +1296,53 @@ Every quantitative placeholder in the two manuscripts resolves to one row of the
 | Complementary signals | C.3 | probability; percentage |
 | Certified asymmetric nodes | C.2 | order; probability; model units |
 | Class-economy reserve comparison | C.6 | probability; model units |
+| Gross trade profits and sufficient stake bounds | C.9 | payoff per share; order units |
+| Entry under additional noise laws at fixed orders | C.9 | probability |
 
 The basic definitions the families share are $\mathsf E=(\bar e_H+\bar e_L)/2$, $\mathsf O_H=\bar e_H/2$ on the benchmark support and the allocation-event value elsewhere, $\mathcal R_T=t_0+[\bar e_H(t_H-t_0)+\bar e_L(t_L-t_0)]/2$, the margins \eqref{eq:oa-oa-77} and \eqref{eq:oa-oa-29}, the thresholds of A.5, the certificate predicates of B.6, and the outcome measures of C.0. Within a parameter set, `r_weak`, `r_strong`, and `r_collapse` select the declared strengths; the certified keys refer to the three declared nodes in order, not to roots chosen from a larger search; the reserve keys select on `value_law`, `epsilon_V`, `r`, and `p` exactly. The minimum-margin keys are a convenience for acceptance and do not replace the recorded components. A figure is never the source of a scalar, and an apparent curve is never used to fill a missing certificate.
 
 **Production order.** The benchmark, moderate-value, and complementary-signal inputs and margins come first, then the threshold boundaries, the benchmark entry, control, ownership, and welfare quantities, and the certified brackets; these determine which theorem regions the text can populate. The correspondence and reserve sweeps and the event exercise follow. `numerics/check_registry.py` regenerates the registry in fresh processes under several ambient decimal precisions and import orders and requires identical output, so the printed values do not depend on the environment that produced them.
+
+### C.9. Gross trade profits, stake bounds, and additional noise laws {#oa-c-revision}
+
+This exercise uses the benchmark with zero low cost. The first calculation uses $r_1=3$ and full orders in both price regimes.
+Write $a_H(x)=f(x-1)$, $a_L(x)=f(x+1)$, and $\mu(x)=a_H(x)/(a_H(x)+a_L(x))$.
+The expected gross trade profit is
+$$
+\Pi=\Delta_T\int_{\mathbb R}e(x)\frac{a_H(x)a_L(x)}{a_H(x)+a_L(x)}\,dx.
+$$
+Price access sets $e(x)=\rho+(1-\rho)\mathbf 1\{B_r(\mu(x))\ge c_H\}$.
+Hidden prices set $e(x)=\rho$. Gross profit excludes the trade cost $k$.
+The proceeds gain is
+$$
+\Delta R_T=\frac{1-\rho}{2}\big[(t_H-t_0)\alpha_H+(t_L-t_0)\alpha_L\big].
+$$
+The results are $\Pi_{\rm acc}\approx[[Pi_acc]]$, $\Pi_{\rm hid}\approx[[Pi_hid]]$, and $\Delta R_T\approx[[Delta_R_T]]$.
+The break-even trade scale is $\Delta R_T/\Pi_{\rm acc}\approx[[break_even_trade_scale]]$ order units.
+These are numerical diagnostics at the stated profile.
+
+The stake calculations use the sufficient bounds
+$$
+\Omega_U=\frac{2b[(1-1/b)\rho m\Delta_T(r_1)-k]}{(1-\rho)(t_H(r_1)-t_0(r_1))},
+\qquad
+\Omega_0=\frac{2b[k-\Delta_T(r_0)]}{(1-\rho)(t_H(r_0)-t_0(r_0))}.
+$$
+Their numerical values are $\Omega_U\approx[[Omega_U]]$ and $\Omega_0\approx[[Omega_0]]$ order units.
+Use the unrounded formulas for a strict stake comparison.
+They do not locate an exact equilibrium transition.
+
+The additional noise calculations keep full orders fixed at $r_1$.
+For each density, the code solves $\mu(x)\ge\tau$ and integrates the two state densities over the complete entry set.
+Hyperbolic secant noise gives a half-line. Student noise gives a bounded interval with two endpoints.
+The entry probabilities are approximately [[sech_entry_strong]] and [[student_t3_entry_strong]], respectively.
+These calculations do not search for equilibria under the additional laws.
+
+Outputs are `numerics/revision_quantities.csv`, `numerics/revision_diagnostics.json`, and `numerics/manifests/c9_revision.json`.
+Each scalar records its inputs, profile, independent value, discrepancy, and status.
+Independent fifty-digit formulas and density integrals validate profits and stakes.
+Independent density roots and quadrature validate the noise values.
+Both Laplace regimes also pass the existing continuation validator.
+C.0 controls apply. Any failure leaves the result open and stops the producer.
 
 ## D. Institutional pilot and empirical design {#oa-d}
 
@@ -1401,6 +1451,7 @@ $PY numerics/exercises/c5_noise.py
 $PY numerics/exercises/c6_reserve.py --workers=20
 $PY numerics/exercises/c6c_reserve_events.py --workers=8
 $PY numerics/exercises/c7_bargaining.py
+$PY numerics/exercises/c9_revision.py
 ```
 
 The broad exercises use twenty workers on the replication VM, and the event exercise uses eight. The thread settings prevent numerical libraries from multiplying process concurrency. A smaller worker count changes runtime without changing the scientific grid or tolerances. Reduced diagnostic runs use `--quick` and a separate `--out` directory where supported. They do not replace the declared release corpus. The presentation layer then runs in this order:

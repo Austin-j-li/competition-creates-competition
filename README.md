@@ -71,6 +71,7 @@ python3 -m venv .venv && .venv/bin/pip install numpy scipy mpmath matplotlib
 .venv/bin/python numerics/exercises/c6_reserve.py         # C.6 (about an hour on 8 cores)
 .venv/bin/python numerics/exercises/c6c_reserve_events.py --workers=8 # C.6c
 .venv/bin/python numerics/exercises/c7_bargaining.py      # C.7
+.venv/bin/python numerics/exercises/c9_revision.py        # C.9 profits, stakes, fixed-profile noise
 .venv/bin/python numerics/check_registry.py               # precision and import-order regression
 .venv/bin/python numerics/registry.py                     # C.8 registry
 .venv/bin/python numerics/substitute.py                   # filled manuscripts (fails on an open required placeholder)

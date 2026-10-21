@@ -1,0 +1,85 @@
+C.6 initial: 20/1024 nodes completed
+C.6 initial: 40/1024 nodes completed
+C.6 initial: 60/1024 nodes completed
+C.6 initial: 80/1024 nodes completed
+C.6 initial: 100/1024 nodes completed
+C.6 initial: 120/1024 nodes completed
+C.6 initial: 140/1024 nodes completed
+C.6 initial: 160/1024 nodes completed
+C.6 initial: 180/1024 nodes completed
+C.6 initial: 200/1024 nodes completed
+C.6 initial: 220/1024 nodes completed
+C.6 initial: 240/1024 nodes completed
+C.6 initial: 260/1024 nodes completed
+C.6 initial: 280/1024 nodes completed
+C.6 initial: 300/1024 nodes completed
+C.6 initial: 320/1024 nodes completed
+C.6 initial: 340/1024 nodes completed
+C.6 initial: 360/1024 nodes completed
+C.6 initial: 380/1024 nodes completed
+C.6 initial: 400/1024 nodes completed
+C.6 initial: 420/1024 nodes completed
+C.6 initial: 440/1024 nodes completed
+C.6 initial: 460/1024 nodes completed
+C.6 initial: 480/1024 nodes completed
+C.6 initial: 500/1024 nodes completed
+C.6 initial: 520/1024 nodes completed
+C.6 initial: 540/1024 nodes completed
+C.6 initial: 560/1024 nodes completed
+C.6 initial: 580/1024 nodes completed
+C.6 initial: 600/1024 nodes completed
+C.6 initial: 620/1024 nodes completed
+C.6 initial: 640/1024 nodes completed
+C.6 initial: 660/1024 nodes completed
+C.6 initial: 680/1024 nodes completed
+C.6 initial: 700/1024 nodes completed
+C.6 initial: 720/1024 nodes completed
+C.6 initial: 740/1024 nodes completed
+C.6 initial: 760/1024 nodes completed
+C.6 initial: 780/1024 nodes completed
+C.6 initial: 800/1024 nodes completed
+C.6 initial: 820/1024 nodes completed
+C.6 initial: 840/1024 nodes completed
+C.6 initial: 860/1024 nodes completed
+C.6 initial: 880/1024 nodes completed
+C.6 initial: 900/1024 nodes completed
+C.6 initial: 920/1024 nodes completed
+C.6 initial: 940/1024 nodes completed
+C.6 initial: 960/1024 nodes completed
+C.6 initial: 980/1024 nodes completed
+C.6 initial: 1000/1024 nodes completed
+C.6 initial: 1020/1024 nodes completed
+C.6 initial: 1024/1024 nodes completed
+C.6 refinement: 20/96 nodes completed
+C.6 refinement: 40/96 nodes completed
+C.6 refinement: 60/96 nodes completed
+C.6 refinement: 80/96 nodes completed
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib64/python3.12/concurrent/futures/process.py", line 264, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uctpiaj/work/Projects/ccc-revision-numerics/numerics/exercises/c6_reserve.py", line 340, in solve_reserve
+    raise ValueError(f"Economic identity remained unresolved after bounded root refinement: {node}")
+ValueError: Economic identity remained unresolved after bounded root refinement: EventNode(law='uniform_classes', r='1.2', p_exact='0.9701', p_decimal='0.97010000000000000000000000000000', event_id='grid', event_defining_relation='declared reserve grid point (C.6)', applicable=True, note='', tie_at_floor=False, tie_at_ceiling=False, is_exact_event=False)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/uctpiaj/work/Projects/ccc-revision-numerics/numerics/exercises/c6_reserve.py", line 559, in <module>
+    sys.exit(0 if run(workers=w, quick="--quick" in sys.argv, out=o, declared_only="--declared-only" in sys.argv, replay=replay) else 1)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uctpiaj/work/Projects/ccc-revision-numerics/numerics/exercises/c6_reserve.py", line 472, in run
+    for rows, rng, dg in collect(refine, "refinement"):
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uctpiaj/work/Projects/ccc-revision-numerics/numerics/exercises/c6_reserve.py", line 408, in collect
+    result = future.result()
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+ValueError: Economic identity remained unresolved after bounded root refinement: EventNode(law='uniform_classes', r='1.2', p_exact='0.9701', p_decimal='0.97010000000000000000000000000000', event_id='grid', event_defining_relation='declared reserve grid point (C.6)', applicable=True, note='', tie_at_floor=False, tie_at_ceiling=False, is_exact_event=False)

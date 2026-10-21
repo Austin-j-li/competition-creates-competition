@@ -1,5 +1,8 @@
 # Numerical contract changes: 21 October 2026
 
+New symbols: `Pi_acc`, `Pi_hid`, `Delta R_T`, `Omega_U`, and `Omega_0` follow the requested memo definitions.
+For the additional noise law, `nu` denotes degrees of freedom and `s` denotes its scale.
+
 The reference is commit `1eb6d2cfd70fdfca98bbf4557d666bd04417e1df`.
 The author sets the low preparation cost to zero.
 No numerical tolerance changes.
@@ -49,3 +52,10 @@ No unresolved result receives a replacement value.
     Every proposal faces the complete validation again.
     The raw prior candidates and all unconverged starts remain in the ledger.
     An unresolved identity still stops the exercise.
+12. C.9 adds eight quantities after the first release gates passed.
+    Gross trade profit excludes the trade cost. The stake bounds are sufficient bounds.
+    Additional noise laws keep the prescribed full orders and score bound `1/b`.
+    The Student law has three degrees of freedom and scale `b*(nu+1)/(2*sqrt(nu))`.
+    Its entry set has two finite endpoints. The hyperbolic secant set is a half-line.
+    C.9 has its own producer, independent acceptance layer, manifest, and registry rows.
+    The final gate now requires this stage. C.0 tolerances remain unchanged.
