@@ -265,3 +265,113 @@ No unresolved result receives a replacement value.
 
 A separate documentation commit records this report with the subject `Document the validated numerical revision and reconciliation`.
 The complete branch sequence is available with `git log --reverse 1eb6d2c..revision/alex-2026-10-21`.
+
+
+## Round 2
+
+**Result: PASS.** The presentation pipeline and both full numerical release gates passed.
+All numerical values remain unchanged from Round 1.
+The comparison starts at commit `d28acdc9b43e816df9eb4d322e75d1373278afd0`.
+This section supersedes the earlier presentation hashes in this report.
+
+**U1: margin notes.** The revised manuscript has two high-cost bounds in (A1) and two trade bounds in (A2).
+Table 2 now calls these the four strict margins of Proposition 2.
+Its note reports the same low-cost value separately as a diagnostic.
+Table 3 distinguishes the four atomic-cost conditions from the additional support condition for the cost mixture.
+
+No margin column was removed.
+Online Appendix (OA.77) still records the low-cost diagnostic, and C.3 retains its counterpart for the signal example.
+Proposition A.6 still requires the low-support margin for atomless costs.
+The online margins note states these distinct roles and retains the minimum of all five recorded quantities.
+The diagnostic never attains that minimum in the six extension rows or the 25 signal pairs.
+Thus each reported minimum also equals the minimum of the four surviving sufficient margins.
+
+The margins table drops the low-cost slot from its displayed parameter vectors and states the zero atom in words.
+The signal note uses the same convention and describes the four conditions in (OA.29).
+The reserve note defines the floor diagnostic as gross profit at the lowest feasible belief.
+Table 4 describes the automatic entry floor from zero-cost preparation.
+Table 1 uses "challenger classes".
+
+**U2: profit labels.** Figure 4 uses lowercase \(g_{\theta,\eta}\) on the profit axis.
+Its four curve labels use \(g_{H,\eta}\) and \(g_{L,\eta}\).
+The alternate caption in the renderer uses the same notation.
+The data columns `G_H_eta` and `G_L_eta` keep their source schema; their values and file hash remain unchanged.
+All edits originate in the renderer. No generated table received a hand edit.
+
+**Numerical comparison.** `round2_before.json` records the 80 files present before this round.
+`round2_comparison.json` records their final hashes and the following comparisons:
+
+- All 30 numerical CSV files remain byte-identical, including both registry copies and all figure data.
+- All 129 registry entries remain unchanged.
+- All nine generated table bodies remain byte-identical; only seven sets of notes change.
+- All three other figure PDFs remain byte-identical.
+- Reconciliation changes 11 artifact or raster hash rows and zero scalar rows.
+- Every current file hash recorded in the reconciliation matches its artifact.
+- The registry manifest changes only its timestamp.
+- The render manifest changes only its timestamp and output hashes.
+
+The baseline reconciliation still compares this release with the original pre-revision reference.
+The separate Round 2 comparison isolates this round from the numerical changes in Round 1.
+No producer, parameter, tolerance, grid, result status, or open search record changes.
+
+**Release gate.** This command ran the complete presentation sequence and both gates:
+
+```bash
+cd /home/uctpiaj/work/Projects/ccc-revision-numerics
+/home/uctpiaj/work/Projects/competition-creates-competition/.venv/bin/python audit/revision_v2_2026_10_21/run_presentation.py round2
+```
+
+The sequence checks and builds the registry, substitutes quantities, renders all exhibits, builds both legacy PDFs, and updates the reconciliation.
+It then runs `numerics/verify.py --final` and `numerics/release_checks.py`.
+All eight commands exit with code zero.
+The numerical gate reports `VERIFY PASSED`; all six release-boundary categories pass.
+Substitution fills 103 placeholders, with zero unresolved and zero unknown keys.
+The full sequence takes 24.39 seconds and uses no worker pool; native numerical threads are limited to one.
+
+`presentation_round2_runs.json` records each command, duration, exit code, and log path.
+The eight command logs have the prefix `logs/round2_`.
+No test was written or extended. No test suite ran.
+
+**Visual inspection.** Figure 4 and every affected table were inspected in the actual presentation output.
+The inspected main-PDF pages are 19, 20, 28, 31, and 33.
+The inspected appendix-PDF pages are 27, 33, and 37.
+All revised notes and labels are readable, with no clipping or overlap.
+`round2_visual_review.json` records the scope, PDF hashes, and preview hashes.
+This review covers the affected exhibits, not every manuscript page.
+The separate revised manuscript clone remains read-only throughout this work.
+
+**Changed artifacts.** The table lists every changed pre-existing file in the Round 2 inventory.
+`round2_artifacts.csv` also records each previous hash.
+The generated Figure 4 remains at its usual ignored path; the commit includes its renderer and recorded hash.
+The two legacy manuscript PDFs are tracked build outputs.
+
+| File | SHA-256 after Round 2 |
+|---|---|
+| `audit/revision_v2_2026_10_21/output_diff.json` | `b68e2c51c4b362f99815c55064aea8ea941b8044b86e4992fe7e68f9afdf9779` |
+| `audit/revision_v2_2026_10_21/reconciliation.csv` | `e9cee1778ae02a75b55ae3719d70f88de7be9d90c09b6161023b1ef18713ecb8` |
+| `audit/revision_v2_2026_10_21/reconciliation_summary.json` | `b74480b96e4038d28d92e35396d895939e5e17c73e15659dbe1716d1af5f58bb` |
+| `figures/bargaining_weight.pdf` | `e981d3f27d7858904b862b8769eddae251f27db697b287f1d2b0d11a2d39f7b6` |
+| `numerics/manifests/c8_registry.json` | `544cca660629bad45af6158d0bbe1084c470037b89f0032a92ed77c2752a8533` |
+| `numerics/manifests/render.json` | `98b805b5f493c096c1d28764952456042c251e27c8cca427249199ba48fd6a56` |
+| `numerics/render/figures.py` | `c0bdde5a1863c70c23b5be741811bf89da042ca26d6556648caa72bcf2257ec9` |
+| `numerics/render/latex.py` | `14b8e1ec37cbac842d5654ae5fd79ad23858652a64df3e0bc95823725b1c8153` |
+| `numerics/render/tables.py` | `1b896883cbb96aaea43af778ba46eb3fa708772923025d9b18ed46b71f20a9d8` |
+| `paper/main_filled.pdf` | `c9229dc878d212b25c46304c6d5e97e4cb1233ee9801fa55a79dd2ed438c4d48` |
+| `paper/online_appendix_filled.pdf` | `fee9ce24362ecc5922492ca6776650adc44f58df90ffcb4192352694b1498778` |
+| `tables/table1_auction_primitives.tex` | `ebeade4fb8bd116881e61880f8478eab7f83ac5a2c54da30e990f117545906a7` |
+| `tables/table2_equilibrium_controls.tex` | `533ef7e15f77f4f74f80ab82ada3291d2d2aa7cd4fef6e8cff19ece23dcea3d9` |
+| `tables/table3_extensions.tex` | `323bfed91e995a32734d5bf1b3002ddaa40c6818a963569ae9327b37c9bf3bf3` |
+| `tables/table4_reserve_comparisons.tex` | `c5128fb2f6d2bd8051d18f1cb5530d54d1435e1cbe6de3b741ace75c0728dc9d` |
+| `tables/table_extensions_margins.tex` | `cb53d3547cbce8dc7cb5b41537ed6912cac4e0a6a5648c14f5698036b25eebf0` |
+| `tables/table_reserve_details.tex` | `fcee1a14685b35eb07b7213774fe08c0aa3fb042cd387714719d6a5337353bdf` |
+| `tables/table_signal_grid.tex` | `a183760be44695670ed5109a6af92a082e6db56f2b51fdfd3d1f5b6884843c32` |
+
+New audit files are `round2_before.json`, `round2_comparison.json`, `round2_artifacts.csv`,
+`round2_visual_review.json`, `presentation_round2_runs.json`, and the eight `logs/round2_*.log` files.
+This report receives the present section.
+The shared handoff copies receive the updated report and reconciliation, plus the Round 2 evidence files.
+
+**Commits.** Commit `259f528b7957527f263f7081b4e10bd3ea67e465` contains the renderer changes, generated outputs, reconciliation, and verification evidence.
+Its subject is `Align rendered margins and profit labels with the zero-cost manuscript`.
+A separate documentation commit records this section with the subject `Document Round 2 numerical presentation checks`.
+Both commits are on `revision/alex-2026-10-21`. No push occurred.
