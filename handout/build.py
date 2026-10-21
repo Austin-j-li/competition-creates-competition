@@ -411,7 +411,7 @@ def main() -> int:
         page = template_path.read_text(encoding="utf-8")
         css = (HERE / "style.css").read_text(encoding="utf-8") if (HERE / "style.css").exists() else ""
         rep.check(bool(css), "style.css present")
-        rep.check("@font-face" not in css and "url(" not in css,
+        rep.check("@font-face" not in css and not re.search(r"url\([^)]*\.(?:woff2?|ttf|otf)", css),
                   "style.css declares no font file; the faces come from fonts.lock.json")
         faces = font_faces(fonts)
         face_files = set(re.findall(r'url\("fonts/([^"]+)"\)', faces))

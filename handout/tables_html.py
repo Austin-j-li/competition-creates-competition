@@ -112,7 +112,14 @@ def cell(shown: str, raw: str, src: str, tokens: Tokens, cls: str = "num") -> st
 
 def text_cell(shown: str, cls: str = "") -> str:
     c = f' class="{cls}"' if cls else ""
+    if cls == "basis":
+        word, _, rest = shown.partition(" (")
+        if word in STATUS_WORDS:
+            shown = f'<span class="st" data-status="{word}">{word}</span>' + (" (" + rest if rest else "")
     return f"<td{c}>{shown}</td>"
+
+
+STATUS_WORDS = ("analytical", "computer-assisted", "numerical diagnostic", "open", "input")
 
 
 def head(cols: list[str], first: str = "") -> str:
