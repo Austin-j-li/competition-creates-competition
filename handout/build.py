@@ -104,8 +104,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["CCC Symbols", "Fira Mono", "Fira Sans", "STIX Two Text"],
-              f"faces are Fira Sans, STIX Two Text, Fira Mono and the symbol fallback ({', '.join(families)})")
+    rep.check(families == ["Archivo", "CCC Symbols", "Fira Mono", "STIX Two Text"],
+              f"faces are Archivo, STIX Two Text, Fira Mono and the symbol fallback ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -116,7 +116,8 @@ def font_faces(lock: dict, prefix: str = "fonts/") -> str:
     for name, v in lock.items():
         if v.get("kind") != "face":
             continue
-        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]}; '
+        stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
                      f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 
@@ -425,7 +426,7 @@ def main() -> int:
         vendor_head = '<link rel="stylesheet" href="vendor/katex.min.css">'
         vendor_scripts = '<script src="vendor/katex.min.js"></script>'
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
-                             for n in ("fira-sans-latin-400-normal.woff2", "fira-sans-latin-600-normal.woff2"))
+                             for n in ("archivo-latin-wdth-normal.woff2", "stix-two-text-latin-400-normal.woff2"))
         facts = {}
         for name, rel in PDFS.items():
             if (ROOT / rel).is_file():

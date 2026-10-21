@@ -23,10 +23,10 @@
   --link: #1e2530;
   --heading: #1e2530;
   --chart-1: #1e2530;
-  --chart-2: #a84700;
+  --chart-2: #b54b00;
   --chart-3: #5b6573;
-  --c-info: #a84700;
-  --c-cost: #006b4e;
+  --c-info: #b54b00;
+  --c-cost: #006459;
   --region-a: rgba(30, 37, 48, 0.07);
   --region-b: rgba(168, 71, 0, 0.09);
   --region-c: rgba(91, 101, 115, 0.10);
@@ -39,7 +39,7 @@
   --shadow-soft: 0 4px 16px rgba(30, 37, 48, 0.12);
   --exhibit: transparent;
   --font-serif: "STIX Two Text", "CCC Symbols", Georgia, "Times New Roman", serif;
-  --font-sans: "Fira Sans", "CCC Symbols", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-sans: "Archivo", "CCC Symbols", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   --font-mono: "Fira Mono", "CCC Symbols", ui-monospace, Menlo, Consolas, monospace;
   --measure: 66ch;
   --radius: 2px;
@@ -67,8 +67,8 @@
   --chart-1: #e8ecf1;
   --chart-2: #f0953f;
   --chart-3: #a3adb9;
-  --c-info: #f0953f;
-  --c-cost: #41c495;
+  --c-info: #f6a157;
+  --c-cost: #46b3a8;
   --region-a: rgba(232, 236, 241, 0.10);
   --region-b: rgba(240, 149, 63, 0.12);
   --region-c: rgba(163, 173, 185, 0.12);
@@ -119,8 +119,8 @@ a:hover { text-decoration-color: currentColor; }
 .skip-link:focus { top: 0.5rem; }
 
 h1, h2, h3 { font-family: var(--font-sans); line-height: 1.15; text-wrap: balance; color: var(--heading); }
-h2 { font-size: clamp(1.7rem, 2.5vw, 2.1rem); font-weight: 600; margin: 0; letter-spacing: -0.015em; }
-h3 { font-size: 1.2rem; font-weight: 600; margin: 2.5rem 0 0.6rem; letter-spacing: -0.005em; }
+h2 { font-size: clamp(1.7rem, 2.5vw, 2.1rem); font-weight: 640; margin: 0; letter-spacing: -0.015em; }
+h3 { font-size: 1.2rem; font-weight: 620; margin: 2.5rem 0 0.6rem; letter-spacing: -0.005em; }
 h3 + p { margin-top: 0; }
 
 p { margin: 0 0 1rem; text-wrap: pretty; }
@@ -180,7 +180,7 @@ a.button.primary:hover { background: var(--muted); border-color: var(--muted); }
 
 .masthead { position: relative; font-family: var(--font-sans); }
 .masthead-inner { position: relative; max-width: var(--page); margin: 0 auto; padding: 1.5rem 2rem 0; border-top: 2px solid var(--rule); margin-top: 1.25rem; }
-.masthead h1 { font-size: clamp(2.3rem, 4.6vw, 3.5rem); font-weight: 600; line-height: 1.02; letter-spacing: -0.025em; margin: 1.6rem 0 0.55rem; max-width: 22ch; }
+.masthead h1 { font-size: clamp(2.2rem, 4.2vw, 3.3rem); font-weight: 640; font-stretch: 112%; line-height: 1.02; letter-spacing: -0.02em; margin: 1.6rem 0 0.55rem; max-width: none; }
 .subtitle { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.2rem, 1.9vw, 1.5rem); line-height: 1.3; margin: 0 0 1.1rem; max-width: 38ch; color: var(--ink); }
 .byline { font-size: 1rem; color: var(--ink); margin: 0 0 0.25rem; max-width: none; }
 .masthead .record { font-size: 0.88rem; color: var(--muted); margin: 0 0 1.75rem; display: flex; flex-wrap: wrap; gap: 0 0.1rem; max-width: none; }
@@ -313,7 +313,7 @@ nav.toc details.toc-drawer ol { margin: 0 0 0.4rem; }
   border-bottom: 1px solid var(--line);
   max-width: none;
 }
-.opening-question .question { font-family: var(--font-sans); font-size: clamp(1.45rem, 2.3vw, 1.85rem); line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 1rem; color: var(--heading); text-wrap: balance; max-width: 24ch; }
+.opening-question .question { font-family: var(--font-sans); font-size: clamp(1.45rem, 2.3vw, 1.85rem); line-height: 1.2; font-weight: 620; letter-spacing: -0.015em; margin-bottom: 1rem; color: var(--heading); text-wrap: balance; max-width: 24ch; }
 .opening-question .opening-answer::before { content: "Answer. "; font-family: var(--font-sans); font-weight: 600; font-size: 0.95em; }
 
 /* ---------- exhibits ---------- */
@@ -331,7 +331,8 @@ nav.toc details.toc-drawer ol { margin: 0 0 0.4rem; }
 
 .prop { margin: 2rem 0; padding-top: 0.8rem; border-top: 1px solid var(--line); max-width: none; }
 .prop-title { font-family: var(--font-sans); font-weight: 600; color: var(--heading); margin-bottom: 0.5rem; max-width: none; }
-#main-result { padding-top: 1rem; border-top: 2px solid var(--rule); }
+/* The certificate frame: the one framed object on the page, for the main result. */
+#main-result { border: 1px solid var(--ink); outline: 3px solid var(--ink); outline-offset: 3px; padding: 1.1rem 1.4rem 0.4rem; margin: 2.75rem 0.4rem; }
 .prop-body > :last-child { margin-bottom: 0; }
 .prop-body .math-block, .prop-body em { font-style: normal; }
 .prop-body > p > em { font-style: italic; }
@@ -511,8 +512,8 @@ td[title] { cursor: help; }
 /* ---------- chips, readouts, badges ---------- */
 
 .chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.55rem; font-family: var(--font-sans); font-variant-numeric: tabular-nums; font-size: 0.8rem; line-height: 1.45; border: 1px solid currentColor; border-radius: var(--radius); white-space: nowrap; }
-.chip.pass { color: var(--pass); }
-.chip.fail { color: var(--fail); }
+.chip.pass { color: var(--ink); border-style: solid; }
+.chip.fail { color: var(--muted); border-style: dashed; }
 .chip.na { color: var(--muted); border-color: var(--line); }
 .live { font-variant-numeric: tabular-nums; }
 .badge { display: inline-block; padding: 0.1rem 0.5rem; border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 500; }
@@ -546,7 +547,7 @@ td[title] { cursor: help; }
 
 /* ---------- mathematics and provenance ---------- */
 
-.math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.75rem 0 1rem; max-width: none; }
+.math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.75rem 0 1rem; max-width: var(--measure); }
 .katex { font-size: 1.06em; }
 
 .q { text-decoration: underline dotted; text-decoration-color: var(--muted); text-decoration-thickness: 1px; text-underline-offset: 0.2em; cursor: help; font-variant-numeric: tabular-nums; }

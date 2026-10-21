@@ -9,7 +9,7 @@ name in it.
 
 The web version of `talk/talk.tex`, the Beamer deck of the 40-minute seminar talk (31.5 planned
 minutes and a question reserve). All 50 frames stay in the Beamer order and organisation. The
-look is the ruled document system of the handout: ink on cool white paper, Fira Sans, two rule
+look is the ruled document system of the handout: ink on cool white paper, Archivo, two rule
 weights (a 1 px hairline and a 2 px ink rule) and no fills, cards, pills or gradients. The 2 px
 rule under each frame title is the progress rule of the metropolis Beamer deck.
 
@@ -24,8 +24,8 @@ Invariants:
 - Status words: analytical, computer-assisted, numerical diagnostic, open; declarations carry
   `input`. Each status line on a slide names one of them.
 - The chrome has no accent colour: links, buttons, the rail and the focus ring are ink.
-  `--c-info` (#A84700) marks the target-payoff spread and the information chain; `--c-cost`
-  (#006B4E) marks preparation costs, the floor and the window. Nothing else is coloured.
+  `--c-info` (#B54B00) marks the target-payoff spread and the information chain; `--c-cost`
+  (#006459) marks preparation costs, the floor and the window. Nothing else is coloured.
 - The deviation phrase follows `talk.tex` ("every unilateral deviation").
 - Benchmark paper only.
 
@@ -126,18 +126,19 @@ Figures draw with `CCC.charts.draw` from
 
 ```css
 :root { --bg:#fbfcfc; --page:#e7eaee; --surface:#f1f3f5; --ink:#1e2530; --muted:#5b6573;
-  --line:#c7cdd5; --grid:#e4e8ec; --c-info:#a84700; --c-cost:#006b4e;
+  --line:#c7cdd5; --grid:#e4e8ec; --c-info:#b54b00; --c-cost:#006459;
   --pass:#1b7a48; --fail:#b0261c; --selection:rgba(168,71,0,.22);
-  --font-sans:"Fira Sans","CCC Symbols",system-ui,Arial,sans-serif;
+  --font-sans:"Archivo","CCC Symbols",system-ui,Arial,sans-serif;
   --font-mono:"Fira Mono","CCC Symbols",ui-monospace,Menlo,monospace }
 ```
 
 The dark theme is a slate paper, not an inversion: `--bg` #1a1f26, `--ink` #e8ecf1, `--muted`
-#a3adb9, `--line` #3d4652, `--c-info` #f0953f, `--c-cost` #41c495. The tokens are the handout's
+#a3adb9, `--line` #3d4652, `--c-info` #f6a157, `--c-cost` #46b3a8. The tokens are the handout's
 (`handout/style.css`), so a figure drawn by `handout/charts.js` reads the same on both surfaces.
-The faces are the handout's locked files (`handout/fonts.lock.json`): Fira Sans 400 to 700 with
-italic, Fira Mono 400 to 700, and the "CCC Symbols" fallback for arrows and relations. The slides
-do not use the handout's text serif.
+The faces are the handout's locked files (`handout/fonts.lock.json`): Archivo, a variable font
+(weight 100 to 900, width 62% to 125%, upright and italic), Fira Mono 400 to 700 for hashes, and
+the "CCC Symbols" fallback for arrows and relations. The slides do not use the handout's text
+serif. Archivo's width axis is used once: the title frame is set expanded (112%).
 
 Rules do the structural work. The 1 px hairline (`--line`) bounds the tools bar, the rail, the
 frame head, table rows, folds, figures and dialog heads; the 2 px ink rule opens the title block,
@@ -145,11 +146,12 @@ the takeaway, the result box and the booktabs table, and is the progress rule. R
 2 px on buttons, chips and the hover readout. No shadow except the dialog and the hover readout.
 Reveals are the one motion: opacity and a 6 px rise over 200 ms.
 
-Type scale at 1600 x 900: frame title 44 px Fira Sans 500 in ink, with the frame number at the
+Type scale at 1600 x 900: frame title 44 px Archivo 620 in ink, with the frame number at the
 right in 44 px 400 muted; subtitle 25 px muted; body 31 px; small 27 px; grey lines 23 px;
 status 21 px; tables 27 px (dense backups 20 to 24 px); takeaway 31 px 500 over a 2 px rule;
-link buttons 19 px 500 as ruled rectangles; footer 15 px; title frame 58 px 600 between a 2 px
-rule and a hairline. Slide padding 26 px 56 px. The progress rule under the frame head is 2 px
+link buttons 19 px 500 as ruled rectangles; footer 15 px; title frame 56 px 620 expanded between
+a 2 px rule and a hairline. The result box is the certificate frame: a 1 px border inside a 3 px
+outline at a 3 px offset, the only framed object on either surface. Slide padding 26 px 56 px. The progress rule under the frame head is 2 px
 ink over a 1 px hairline, as long as the frame number over 19; backups show the hairline only.
 
 ## 7. Parts

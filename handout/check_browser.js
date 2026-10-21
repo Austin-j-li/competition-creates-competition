@@ -35,11 +35,11 @@ async (page, base = 'http://127.0.0.1:8765/', deck = '') => {
         errors: CCC.errors,
         overflow: document.documentElement.scrollWidth > innerWidth,
         theme: document.documentElement.dataset.theme,
-        fira: [...document.fonts].some(f => f.family.replace(/"/g, '') === 'Fira Sans' && f.status === 'loaded'),
+        fira: [...document.fonts].some(f => f.family.replace(/"/g, '') === 'Archivo' && f.status === 'loaded'),
         charts: Object.values(CCC.charts.status()).every(s => s.mounted)
       }));
       check(state.plots === 5 && state.charts && !state.mathErrors && !state.errors.length && !state.overflow, JSON.stringify(state));
-      check(state.fira, 'Fira Sans is loaded');
+      check(state.fira, 'Archivo is loaded');
       check(state.theme === theme, 'Requested theme');
       // hover readout on Figure 2
       await page.locator('#chart-fig2').scrollIntoViewIfNeeded();
