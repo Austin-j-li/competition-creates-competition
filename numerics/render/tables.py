@@ -67,7 +67,8 @@ def esc(s: str) -> str:
 
 
 def identity_text(s: str) -> str:
-    return esc(s).replace(r"\_", r"\_\allowbreak{}").replace(r"$|$", r"$|$\allowbreak{}").replace(";", r";\allowbreak{}")
+    return (esc(s).replace(r"\_", r"\_\allowbreak{}").replace(r"$|$", r"$|$\allowbreak{}")
+            .replace(";", r";\allowbreak{}").replace("=", r"=\allowbreak{}"))
 
 
 def evidence(text: str) -> str:
@@ -594,16 +595,20 @@ def reserve_details() -> Path:
             if n["unresolved"]:
                 body.append([n["label"]] + ["[[unresolved]]"] * 8 + ["open", "n/a"])
                 continue
-            ids.add((n["institution_id"], n["information_structure_id"], n["tie_rule_id"]))
+            # State the zero-cost rule in the note; preserve the stored identifier.
+            tie_rule = n["tie_rule_id"]
+            if Decimal(BENCHMARK.c_L) == 0:
+                tie_rule = tie_rule.replace("lower_plateau_enters_at_B(m)=c_L", "lower_plateau_enters_at_B(m)>=0")
+            ids.add((n["institution_id"], n["information_structure_id"], tie_rule))
             body.append([n["label"], order(n["q_H"]), order(n["q_L"]), d6(n["E"]), d6(n["A"]), d6(n["O_H"]), d6(n["R_T"]),
                          sci(n["low_cost_floor_margin"]), sci(n["trading_margin"]), evidence(n["status"]), unique_field(n["uniqueness_scope"])])
     resolved = [n for n in nodes if not n["unresolved"]]
     ident = resolved[0]["parameter_set_id"] if resolved else ""
     common = "|".join(part for part in ident.split("|") if not part.startswith(("p=", "r=", "value_law=", "eps_V=")))
     notes = [
-        r"Complete parameter identity of every node: \texttt{" + identity_text(common) + r"} with \texttt{r}, \texttt{p}, \texttt{value\_law} "
+        r"{\raggedright Complete parameter identity of every node: \texttt{" + identity_text(common) + r"} with \texttt{r}, \texttt{p}, \texttt{value\_law} "
         r"$\in\{$binary, uniform\_classes$\}$ and \texttt{eps\_V} $\in\{0, 0.05\}$ as listed. Institution, information structure, and tie rule: "
-        + "; ".join(r"\texttt{" + identity_text(a) + r"}, \texttt{" + identity_text(b_) + r"}, \texttt{" + identity_text(t) + "}" for a, b_, t in sorted(ids)) + ".",
+        + "; ".join(r"\texttt{" + identity_text(a) + r"}, \texttt{" + identity_text(b_) + r"}, \texttt{" + identity_text(t) + "}" for a, b_, t in sorted(ids)) + r".\par}",
         r"$\mathsf A$ is the probability of an admissible prepared challenger. Floor margin records $B_r(m)$, gross profit at the lowest feasible belief. "
         r"It is a diagnostic; zero-cost preparation supplies the entry floor without an additional condition. Trading margin is $k-\Delta_T$ for "
         r"no trade and $(1-1/b)\,e(m)\,m\,\Delta_T-k$ for full orders. Evidence is the result status; Unique reports the uniqueness scope recorded "

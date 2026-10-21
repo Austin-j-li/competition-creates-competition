@@ -68,6 +68,8 @@ INSTITUTION_RESERVE_AUCTION = "reserve_auction:uniform_incumbent[0,r];sale_to_hi
 INFO_FEEDBACK_STATE = "public_price_feedback;investor_observes=fundamental_state;buyer_observes=price_only"
 INFO_FEEDBACK_CLASS = "public_price_feedback;investor_observes=value_class_not_within_class_value;buyer_observes=price_only"
 INFO_HIDDEN = "price_hidden;investor_observes=fundamental_state;buyer_observes=prior_only"
+# Preserve the serialized identifier for existing continuation records.
+# With c_L = 0, the lower plateau enters at B(m) >= 0, including equality.
 TIE_RULE = "entry_at_indifference=yes;bid_equal_reserve_is_admissible=yes;upper_plateau_enters_at_tau=M;lower_plateau_enters_at_B(m)=c_L"
 
 

@@ -855,7 +855,7 @@ event_arithmetic_digits = 50;
 event_sign_resolution = 1e-40;
 event_offsets = {1e-4, 1e-6, 1e-8};
 tie_rule = entry_at_indifference; bid_equal_reserve_admissible;
-           upper plateau enters at tau = M; lower plateau enters at B(m) = c_L;
+           upper plateau enters at tau = M; lower plateau enters at B(m) >= 0;
 outcome_measures = {E, A, S, C2, O_H} with S = Pr(R >= p) + A - C2;
 C2_mixed_search_minimum_starts = 3;
 ```
