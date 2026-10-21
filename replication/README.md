@@ -50,3 +50,9 @@ Each producer writes its manifest in `numerics/manifests/`, with exact inputs, m
 The presentation sequence is `numerics/registry.py`, `numerics/substitute.py`, `numerics/render/render_all.py`, and `numerics/render/latex.py`. `numerics/verify.py --final` and `numerics/release_checks.py` are the final numerical gates. `python -m pytest -q numerics/tests` includes isolated corruption tests against the release boundary. The peer build does not rebuild the unrelated handout.
 
 `quantity_dictionary.md` defines every scalar key; `quantity_registry.csv` records its source row, units, evidence class and display. Manuscript quantities are substituted from that registry. The actual command records and source/output hashes are in `run_manifest.json`, `build_manifest.json`, the exercise manifests and the audit completion report.
+
+## Zero-cost revision (21 October 2026)
+
+Exercise C.6b is retired. The current numerical gates are `numerics/verify.py --final` and `numerics/release_checks.py`.
+Run the producer and presentation commands directly. The historical build wrapper also runs a test suite and the positive-cost seed checks.
+That wrapper does not define acceptance for this revision. The revision record is in `audit/revision_v2_2026_10_21/NUMERICS.md`.

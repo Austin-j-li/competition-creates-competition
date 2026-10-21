@@ -69,6 +69,7 @@ python3 -m venv .venv && .venv/bin/pip install numpy scipy mpmath matplotlib
 .venv/bin/python numerics/exercises/c4_moderate.py        # C.4
 .venv/bin/python numerics/exercises/c5_noise.py           # C.5
 .venv/bin/python numerics/exercises/c6_reserve.py         # C.6 (about an hour on 8 cores)
+.venv/bin/python numerics/exercises/c6c_reserve_events.py --workers=8 # C.6c
 .venv/bin/python numerics/exercises/c7_bargaining.py      # C.7
 .venv/bin/python numerics/check_registry.py               # precision and import-order regression
 .venv/bin/python numerics/registry.py                     # C.8 registry
@@ -81,3 +82,8 @@ python3 -m venv .venv && .venv/bin/pip install numpy scipy mpmath matplotlib
 `numerics/verify.py` exits nonzero on any breached acceptance bound, any output file that differs from its manifest hash, or any unresolved required placeholder.
 
 To rebuild the paper from the validated exercise outputs, start with `numerics/check_registry.py`; no new equilibrium search is needed. Registry arithmetic uses a local 60-digit decimal context. The final gate checks the registry and presentation manifests as well as the numerical exercises.
+
+The 21 October 2026 revision fixes zero low preparation cost. C.6b is retired.
+The atomless low-cost component is uniform on `[0, 0.2]`.
+For the numerical release gate, run `numerics/verify.py --final` and `numerics/release_checks.py`.
+The revision commands omit the historical test-suite wrapper.

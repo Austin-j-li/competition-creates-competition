@@ -738,11 +738,11 @@ Laplace and logistic noise are compared at a common scale parameter $b$. They do
 
 #### Atomless preparation costs
 
-For atomless low- and high-cost component distributions with probabilities $\rho$ and $1-\rho$, supported within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$, the sufficient support restrictions are
+For atomless low- and high-cost component distributions with probabilities $\rho$ and $1-\rho$, supported within $[0,2\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$, the sufficient support restrictions are
 
 $$
 \begin{gathered}
-c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C<B_{r_1}(m),\\
+2\varepsilon_C<B_{r_1}(m),\\
 B_{r_0}(1/2)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M),
 \end{gathered}
 \tag{A.24}\label{eq:paper-a-24}
@@ -984,67 +984,9 @@ $$
 
 for a selection $\sigma^*(p)\in\mathcal E(p,r)$ specified after every reserve, including reserves the seller does not choose. Existence of a feasible selection and attainment of the maximum require separate arguments; the optimistic and pessimistic envelopes of $\mathcal E(p,r)$ are not the seller's objective. In the atomless-value extension the reserve domain extends to $h+\varepsilon_V$.
 
-#### Price pooling at fixed orders
+#### Retired positive-cost pool example
 
-On the benchmark support, $c_L<B_r(m)$ gives entry at least $\rho$ at every price, and [Proposition A.2](#result-proposition-a-2) then ties the price experiment to the orders, so fixed orders imply a fixed price experiment. Outside that support entry can vanish on a set of flows, those flows can pool at the no-entry price, and the pooled posterior can support more than one price mapping at the same orders. The following example, in the reserve game itself, shows this and is the regression that the numerical continuation record must reproduce. The phenomenon itself is not new; @DowGoldsteinGuembel2017 already distinguish continuations with different pooling regions.
-
-Take the benchmark primitives with $r=r_0$ and reserve $p=7$, so $p>r>\ell$ and the auction objects are $t_0=t_L=g_L=0$, $t_H=7$, $g_H=3$, and $\Delta_T=7$. Fix full orders $(q_H,q_L)=(1,-1)$ and $b=2$, so that $f(z)=\tfrac14e^{-|z|/2}$ and $\mu_X$ is \eqref{eq:paper-a-8} with $b=2$; on $(-1,1)$ it equals $\operatorname{logistic}(x)$. Let $F_Z$ be the noise CDF, $F_Z(z)=\tfrac12e^{z/2}$ for $z\le0$ and $1-\tfrac12e^{-z/2}$ for $z>0$, and $S_Z=1-F_Z$ its survival function. For each cutoff $c\in[-\log2,0]$ define the price rule
-
-$$
-P_c(x)=
-\begin{cases}
-0,&x<c,\\
-\tfrac74\mu_X(x),&x\ge c,
-\end{cases}
-\tag{A.45}\label{eq:paper-a-45}
-$$
-
-with no preparation at price zero, low-cost preparation at every positive price, and no high-cost preparation.
-
-[**Proposition A.10 (price pooling at fixed orders; analytical).**]{#result-proposition-a-10} *For every $c\in[-\log2,0]$, the price rule \eqref{eq:paper-a-45} with the stated preparation policy and full orders $(1,-1)$ is a continuation equilibrium in $\mathcal E(7,r_0)$. The orders are the same in all members of the family; prices, beliefs, and entry differ.*
-
-*Buyer at price zero.* The zero price is the pool $\{X<c\}$. Conditioning on the whole pool, not on the raw flow,
-
-$$
-\bar\mu_c=\Pr(H\mid X<c)=\frac{F_Z(c-1)}{F_Z(c-1)+F_Z(c+1)}.
-\tag{A.46}\label{eq:paper-a-46}
-$$
-
-By the monotone likelihood ratio, $\bar\mu_c$ is nondecreasing in $c$, so for the whole family $\bar\mu_c\le\bar\mu_0=\tfrac12e^{-1/2}<\tfrac13$. Gross profit at the pool is $3\bar\mu_c<1=c_L$, so nonpreparation is strictly optimal at price zero even for the low-cost type. For $c=0$, raw flow posteriors on $(-\log2,0)$ exceed $1/3$ and would justify low-cost preparation if those flows were observed separately; they are not, and the pooled posterior governs.
-
-*Buyer at positive prices.* On $x\ge c$ the price $\tfrac74\mu_X$ is strictly increasing in the posterior on $(-1,1)$, with the plateau $x\ge1$ forming an actual atom at $\tfrac74M$; it never collides with zero. The buyer recovers $\mu_X$ and $\mu_X(x)\ge\mu_X(-\log2)=\tfrac13$, so $3\mu_X\ge c_L$ and low-cost preparation is optimal under the tie rule. High-cost preparation is impossible because gross profit is at most $3<6=c_H$.
-
-*Conditional pricing.* For $x<c$ no entrant is prepared and neither the incumbent nor a low-value challenger meets the reserve, so $\mathbb E[V_T\mid X=x]=0$. For $x\ge c$ preparation occurs with probability $\rho$ and a sale at $7$ occurs only in state $H$, so $\mathbb E[V_T\mid X=x]=\rho\,7\,\mu_X(x)=\tfrac74\mu_X(x)$. Competitive pricing holds on both regions; the unconditional average is not the test.
-
-*Global investor bound.* Against each member of the family the residuals are
-
-$$
-A_H(x)=\rho p[1-\mu_X(x)]\mathbf1\{x\ge c\},\qquad
-A_L(x)=\rho p\,\mu_X(x)\mathbf1\{x\ge c\},
-\tag{A.47}\label{eq:paper-a-47}
-$$
-
-zero in the pool and nonnegative elsewhere, so wrong-signed orders are dominated by zero. Let $J_c=F_H(1)=F_L(1)$ as in \eqref{eq:paper-a-7}. Every $c\le0$ leaves the tail $x\ge1$ active, on which $1-\mu_X=m=(1+e)^{-1}>\tfrac14$ and whose probability in state $H$ is $\tfrac12$. Hence
-
-$$
-J_c\ge\frac{\rho p\,m}{2}>\frac{7}{32},
-\qquad
-U_\theta'(s)\ge\left(1-\frac1b\right)J_c-k>\frac{7}{64}-\frac{1}{50}=\frac{143}{1600}>0
-\tag{A.48}\label{eq:paper-a-48}
-$$
-
-for every $s\in[0,1]$ and both types, using the ratio bound $F_\theta(s)\ge e^{-(1-s)/b}J_c$ and the derivative bound of Appendix A.2. Full correctly signed orders are globally optimal against every price rule in the family. $\square$
-
-The common rational lower bound in \eqref{eq:paper-a-48} is the proof; a positive derivative found on a grid only checks its implementation. The proposition establishes analytical existence for the whole cutoff family. It does not establish uniqueness of that family within $\mathcal E(7,r_0)$, and it does not arise on the benchmark support, where the positive floor $c_L<B_r(m)$ rules out pooling distinct raw posteriors at one price. Constant-posterior tail atoms remain possible. The outcome measures are
-
-$$
-\Pr(P=0)=\frac{F_Z(c-1)+F_Z(c+1)}{2},\qquad
-\mathsf E_c=\frac\rho2\{S_Z(c-1)+S_Z(c+1)\},\qquad
-\mathcal R_{T,c}=\frac{\rho p}{2}S_Z(c-1),
-\tag{A.49}\label{eq:paper-a-49}
-$$
-
-with sale probability $\tfrac\rho2S_Z(c-1)$ and probability zero of two admissible bidders. At the endpoints $c=-\log2$ and $c=0$ the pooled posteriors are 0.272979 and 0.303265, preparation probabilities are 0.151805 and 0.125000, and expected seller revenues are 0.687364 and 0.609643. The less informative price rule suppresses preparation at flows that would justify it if observed separately, and both preparation and revenue fall as the cutoff rises.
+[**Retired Proposition A.10.**]{#result-proposition-a-10} The former price-pool example required positive low preparation cost. Zero-cost preparation under the tie rule removes its premise. Exercise C.6b and its seven quantitative references are retired; the baseline commit preserves their prior values.
 
 #### Exact reserve events
 
@@ -1053,11 +995,11 @@ Two reserves at which a participation inequality holds with equality are analyti
 *Weak-incumbent floor.* When the reserve exceeds incumbent support and excludes the low class, $g_H=h-p$, $g_L=0$, $t_H=p$, and $t_0=t_L=0$. The low-cost floor $B_p(m)=m(h-p)=c_L$ holds with equality at
 
 $$
-p_L=h-\frac{c_L}{m}.
+p_L=h.
 \tag{A.50}\label{eq:paper-a-50}
 $$
 
-At $r=r_0$ the benchmark has $r_0<p_L<h$. Every price posterior is at least $m$ under any strategy, so $B(\mu)\ge c_L$ at every price and the tie rule admits the low-cost type there; under full orders the equality holds on the positive-probability lower plateau $x\le-1$. Since $B(M)=Mc_L/m<c_H$, the high-cost type stays out. Entry is therefore $\rho$ at every price, no pool combines distinct raw posteriors, and the inversion and global bound of [Appendix A.2](#pa-proofs) apply with $e\ge\rho$ under equality, giving unique full orders. Then $\mathsf E=\rho$, the sale probability is $\rho/2$, and $\mathcal R_T=\rho p_L/2$. Preparation here never produces two admissible bidders: the incumbent is excluded.
+At $r=r_0$ the benchmark has $r_0<p_L=h$. Every price posterior is at least $m$ under any strategy, so $B(\mu)\ge c_L$ at every price and the tie rule admits the low-cost type there; under full orders the equality holds on the positive-probability lower plateau $x\le-1$. Since $B(M)=Mc_L/m<c_H$, the high-cost type stays out. Entry is therefore $\rho$ at every price, no pool combines distinct raw posteriors, and the inversion and global bound of [Appendix A.2](#pa-proofs) apply with $e\ge\rho$ under equality, giving unique full orders. Then $\mathsf E=\rho$, the sale probability is $\rho/2$, and $\mathcal R_T=\rho p_L/2$. Preparation here never produces two admissible bidders: the incumbent is excluded.
 
 *Strong-incumbent expensive entry.* With the low class excluded and $\ell<p<r$, $g_H=h-r/2-p^2/(2r)$ and $g_L=0$. The upper-posterior entry event $Mg_H=c_H$ occurs at
 
@@ -1114,7 +1056,7 @@ The benchmark parameter vector is
 $$
 \begin{aligned}
 (h,\ell,p,\rho,c_L,c_H,b,k)
-&=(10,1,0.5,0.25,1,6,2,0.02),\\
+&=(10,1,0.5,0.25,0,6,2,0.02),\\
 (r_0,r_1,r_2)&=(1.2,3,3.6).
 \end{aligned}
 \tag{A.55}\label{eq:paper-a-55}
@@ -1125,7 +1067,7 @@ The moderate-value vector is
 $$
 \begin{aligned}
 (h,\ell,p,\rho,c_L,c_H,b,k)
-&=(2,1,0.5,0.25,0.3,0.89,2,0.002),\\
+&=(2,1,0.5,0.25,0,0.89,2,0.002),\\
 (r_0,r_1)&=(1.05,1.5).
 \end{aligned}
 \tag{A.56}\label{eq:paper-a-56}
@@ -1136,7 +1078,7 @@ For complementary signals I use
 $$
 \begin{aligned}
 (h,\ell,p,\rho,c_L,c_H,b,k)
-&=(10,1,0.5,0.85,1,7.14,2,0.015),\\
+&=(10,1,0.5,0.85,0,7.14,2,0.015),\\
 (r_0,r_1,a,d)
 &=(1.1,2.3,0.70,0.75).
 \end{aligned}
@@ -1145,4 +1087,4 @@ $$
 
 The atomless-cost half-width is $\varepsilon_C=$ 0.1 and the atomless-value half-width is $\varepsilon_V=$ 0.05. These are separate experiments.
 
-The price-pool family of [Proposition A.10](#result-proposition-a-10) uses the benchmark vector \eqref{eq:paper-a-55} with $r=r_0$, reserve $p=$ 7, full orders $(1,-1)$, entry at indifference, and admissible bids at the reserve. The declared cutoffs are the endpoints $c\in\{-\log2,0\}$ and the grid $c_j=-\log2\,(1-j/16)$ for $j=0,\dots,16$; the negative controls $c=-1$ and $c=1$ are declared as expected failures. The exact reserve events are $p_L=h-c_L/m$ at $r=r_0$ and $p_H=\sqrt{2r_1(h-c_H/M)-r_1^2}$ at $r=r_1$, evaluated from these identities under the benchmark vector, with the tie rule of Section 2. [Online Appendix C](online_appendix.md#oa-c) defines the exact input values, the derived quantities, their formatting, and the acceptance criteria behind every number reported in the text.
+The price-pool exercise is retired after the zero-cost revision. The exact floor event is $p_L=h$ for binary values and $p_L=h+\varepsilon_V$ for uniform classes. The expensive-entry event remains $p_H=\sqrt{2r_1(h-c_H/M)-r_1^2}$ at $r=r_1$. [Online Appendix C](online_appendix.md#oa-c) defines the exact input values, the derived quantities, their formatting, and the acceptance criteria behind every number reported in the text.

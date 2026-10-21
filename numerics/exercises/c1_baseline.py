@@ -253,6 +253,8 @@ def run() -> bool:
     outputs = ["tables/auction_primitives.csv", "tables/equilibrium_controls.csv", "tables/extensions.csv",
                "numerics/baseline_deviations.csv", "numerics/feedback_comparisons.csv", "figures_data/two_returns.csv"]
     write_manifest("c1_baseline", {"benchmark": BENCHMARK.__dict__, "strengths": BENCHMARK_STRENGTHS, "extra": BENCHMARK_EXTRA,
+                                   "atomless_cost_supports": {"low": list(BENCHMARK.with_(cost_halfwidth=eps_C).low_cost_interval),
+                                                               "high": [BENCHMARK.fc_H - float(eps_C), BENCHMARK.fc_H + float(eps_C)]},
                                    "economies": [f"{p.noise.value}/{p.cost_law.value}" for p in economies]},
                    "Closed-form auction payoffs checked against direct integration of OA.50; candidate schedules (pooling, full "
                    "orders) validated by flow- and cost-based entry integration, pointwise price identity, entry optimality, "

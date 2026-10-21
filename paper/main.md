@@ -738,11 +738,11 @@ Laplace and logistic noise are compared at a common scale parameter $b$. They do
 
 #### Atomless preparation costs
 
-For atomless low- and high-cost component distributions with probabilities $\rho$ and $1-\rho$, supported within $[c_L-\varepsilon_C,c_L+\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$, the sufficient support restrictions are
+For atomless low- and high-cost component distributions with probabilities $\rho$ and $1-\rho$, supported within $[0,2\varepsilon_C]$ and $[c_H-\varepsilon_C,c_H+\varepsilon_C]$, the sufficient support restrictions are
 
 $$
 \begin{gathered}
-c_L-\varepsilon_C\ge0,\qquad c_L+\varepsilon_C<B_{r_1}(m),\\
+2\varepsilon_C<B_{r_1}(m),\\
 B_{r_0}(1/2)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M),
 \end{gathered}
 \tag{A.24}\label{eq:paper-a-24}
