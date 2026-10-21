@@ -542,3 +542,73 @@ The run manifest is `numerics/manifests/c10_classes.json`.
 Its subject is “Add validated general-prior class exhibits and benchmark windows”.
 A separate documentation commit records this section with the subject “Document Round 3 class results and benchmark intervals”.
 Both commits belong to `revision/alex-2026-10-21`. No push occurred.
+
+## Round 4: zero-cost controls and reserve table layout
+
+**Result: PASS.** The final presentation pipeline and both numerical release gates passed.
+The implementation commit is `8eb6c2ea0a96e9f4ad8c56de9917b049015eab70` on `revision/alex-2026-10-21`.
+The reference for this round is `0ee9c02a4eff21337543e838a0c9d0e803ff3baf`.
+No push occurred.
+
+**C15.** The C.0 contract now states that the lower plateau enters at $B(m) \ge 0$.
+The reserve table note states the same rule when $c_L=0$.
+A source comment explains the zero-cost rule beside the legacy serialized identifier.
+That identifier stays unchanged to preserve the numerical records and their joins.
+No solver, parameter, tolerance, or numerical value changes.
+
+**Table layout.** The renderer already allowed breaks after semicolons, underscores, and vertical separators.
+It now also allows breaks after equals signs.
+The parameter-identity note uses left alignment with a ragged right edge.
+This removes the three underfull lines in that note without extra space between words.
+The appendix has two other underfull paragraphs outside the table.
+It also reports an overfull line at the unchanged release command in Appendix E.
+These paragraphs remain outside this small revision.
+
+**Verification.** All 35 numerical CSV files remain byte-identical to the reference for this round.
+All 253 registry rows remain identical in every field, including values, intervals, and displays.
+The complete reserve table body also remains byte-identical.
+The four figure PDFs and the main manuscript PDF remain byte-identical.
+The registry manifest changes only its timestamp.
+The render manifest records its new timestamp and the reserve table hash.
+`round4_before.json` preserves the reference hashes and registry rows.
+`round4_comparison.json` records the final comparison and command results.
+
+The final command was:
+
+    /home/uctpiaj/work/Projects/competition-creates-competition/.venv/bin/python audit/revision_v2_2026_10_21/run_presentation.py round4_accepted
+
+All eight commands returned zero in 28.23 seconds.
+The numerical gate reports `VERIFY PASSED`.
+All seven release-boundary categories pass.
+Substitution fills 115 placeholders, with zero unresolved and zero unknown keys.
+The run record is `presentation_round4_accepted_runs.json`.
+The final logs have the prefix `logs/round4_accepted_`.
+No test was written or extended. No test suite ran.
+The sequence used one numerical process at a time, with one native numerical thread.
+
+Visual inspection covers appendix page 20 for the controls and page 37 for the reserve table.
+Both pages show readable text, complete rows, and no clipping or overlap.
+`round4_visual_review.json` records the scope, PDF hash, and page-image hashes.
+
+**Changed artifacts.** The implementation files and their SHA-256 hashes follow.
+The full list, including audit evidence and both handoff files, is `round4_artifacts.sha256`.
+Paths in that index are relative to this worktree; the index omits its own hash.
+The reconciliation adds one Round 4 row per changed source, output, or evidence artifact.
+It omits itself and the checksum index to avoid circular hashes.
+The final checksum index includes the reconciliation hash.
+Both copies of this report and `reconciliation.csv` are byte-identical.
+
+```text
+7ed01bea92b258764fa4b2e646605d1255ed0d24f669eff30d07cca81b93aa0a  numerics/continuations.py
+2f2bc5df4a9b21174b2bc2ec8511084f5b5f4dea7aafe6b58618143700dfc6a0  numerics/manifests/c8_registry.json
+b52d0a5bd5eb2fa866c66043e54847f0b2299e0e80545e9b3e4637ce5b178a79  numerics/manifests/render.json
+c76238fe4cfdc740ea80a3b3b06d961855c854ea2cb1015491e3ab0e5cb2674a  numerics/render/tables.py
+99a9426dab5ae574a2b3ee8e44c8098c910ba02510e8acd54963799c68c54409  paper/online_appendix.md
+ae0c8caf2f18753636e788efebcf1a11e799be3df86c0fbb6e1374e911010dd5  paper/online_appendix_filled.md
+79e375ab1f97e9a7252b29557fb383c8eadc8e0ddf0e33100918fb00324376d5  paper/online_appendix_filled.pdf
+b71af561cfec0450766a4a2ea4a5e1ef00c76af969f4dd0fcb598790abfe5d86  paper/online_appendix_filled.tex
+46f08b3f6af4156d76455f982ac05217f415518e967ac48923bb0b84197c7dcf  paper/online_appendix_filled.tex.md
+a6b42e5c5b2871b401bbcc3e1482220a08efdb85c043b04b146205639c09031b  tables/table_reserve_details.tex
+```
+
+A separate documentation commit records this section, the reconciliation, and the complete audit evidence.
