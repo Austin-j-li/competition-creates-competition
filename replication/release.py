@@ -23,7 +23,7 @@ ENV = {**os.environ, **{key: "1" for key in ("OPENBLAS_NUM_THREADS", "OMP_NUM_TH
        "SOURCE_DATE_EPOCH": "1788652800", "TZ": "UTC", "PYTHONHASHSEED": "0"}
 ENV["PATH"] = str(Path(sys.executable).parent) + os.pathsep + ENV.get("PATH", "")
 PRODUCERS = ("c1_baseline", "c2_correspondence", "c3_signals", "c4_moderate", "c5_noise", "c6_reserve",
-             "c6b_price_pools", "c6c_reserve_events", "c7_bargaining")
+             "c6c_reserve_events", "c7_bargaining")
 
 
 def digest(path: Path) -> str:
@@ -73,7 +73,7 @@ def pdf_checks(root: Path) -> dict:
 
 def build(root: Path, records: list[dict]) -> dict:
     sources = source_hashes(root)
-    run(root, ["numerics/verify.py", "--stage", "c1", "c2", "c3", "c4", "c5", "c6", "c6b", "c6c", "c7"], records)
+    run(root, ["numerics/verify.py", "--stage", "c1", "c2", "c3", "c4", "c5", "c6", "c6c", "c7"], records)
     run(root, ["numerics/release_checks.py"], records)
     run(root, ["audit/peer_polish/verify_core_bindings.py", "--reserve-comparisons=tables/reserve_comparisons.csv"], records)
     run(root, ["-m", "pytest", "-q", "numerics/tests"], records)
@@ -143,7 +143,7 @@ def reproduce(workers: int) -> None:
             raise ValueError(f"producer manifest output escapes fresh copy: {relative}")
         if path.is_file():
             path.unlink()
-    for name in ("c1_baseline", "c3_signals", "c4_moderate", "c5_noise", "c7_bargaining", "c6b_price_pools"):
+    for name in ("c1_baseline", "c3_signals", "c4_moderate", "c5_noise", "c7_bargaining"):
         run(destination, [f"numerics/exercises/{name}.py"], records)
     with ThreadPoolExecutor(max_workers=2) as executor:
         jobs = [executor.submit(run, destination, [f"numerics/exercises/{name}.py", f"--workers={workers}"], records)

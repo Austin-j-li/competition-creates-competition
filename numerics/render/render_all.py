@@ -46,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
               "tables/auction_primitives.csv", "tables/equilibrium_controls.csv", "tables/extensions.csv", "tables/reserve_comparisons.csv",
               "numerics/correspondence.csv", "numerics/mixed_supports.csv", "numerics/certificates.csv", "numerics/thresholds.csv", "numerics/moderate_values.csv",
               "numerics/two_signals.csv", "numerics/feedback_comparisons.csv", "numerics/reserve_events.csv", "numerics/reserve_ranges.csv",
-              "numerics/price_pool_regression.csv", "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"]
+              "numerics/quantity_registry.csv", "paper/quantity_manifest.csv"]
     write_manifest("render", {"sources": ["figures_data/*.csv", "tables/*.csv", "numerics/correspondence.csv", "numerics/certificates.csv",
                                           "numerics/thresholds.csv", "numerics/moderate_values.csv", "numerics/two_signals.csv",
                                           "numerics/feedback_comparisons.csv", "numerics/reserve_events.csv", "numerics/reserve_ranges.csv",

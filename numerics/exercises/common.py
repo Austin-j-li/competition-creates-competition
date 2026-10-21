@@ -17,7 +17,7 @@ def effective_costs(prim: Primitives) -> tuple[float, float, float]:
     if prim.cost_law == CostLaw.ATOMS:
         return prim.fc_L, prim.fc_H, prim.fc_H
     e = prim.feps_C
-    return prim.fc_L + e, prim.fc_H - e, prim.fc_H + e
+    return prim.low_cost_interval[1], prim.fc_H - e, prim.fc_H + e
 
 
 def theorem_margins(prim: Primitives, pay0: AuctionPayoffs, pay1: AuctionPayoffs) -> dict:

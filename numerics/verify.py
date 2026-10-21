@@ -37,7 +37,6 @@ STAGES = {
     "c4": ("c4_moderate", ["C.4"]),
     "c5": ("c5_noise", ["C.5"]),
     "c6": ("c6_reserve", ["C.6", "C.0/C.6"]),
-    "c6b": ("c6b_price_pools", ["C.6b"]),
     "c6c": ("c6c_reserve_events", ["C.6c"]),
     "c7": ("c7_bargaining", ["C.7"]),
     "c8": ("c8_registry", ["C.8"]),

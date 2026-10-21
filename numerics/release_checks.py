@@ -82,28 +82,6 @@ def certificates() -> None:
                 f"certificate sign {strength}")
 
 
-def pools() -> None:
-    from numerics.exercises.c6b_price_pools import closed_forms, cutoff_family, evaluate_member
-    import mpmath as mp
-    data = [r for r in rows("numerics/price_pool_regression.csv") if r["accepted"] == "true"]
-    require(len(data) == 17, "price-pool family must retain all17 members")
-    require(len({r["continuation_id"] for r in data}) == 17, "distinct price pools merged by orders")
-    family = dict(cutoff_family())
-    for row in data:
-        for key, expected in {"h":"10", "ell":"1", "p":"7", "r":"1.2", "rho":"0.25", "c_L":"1", "c_H":"6", "b":"2", "k":"0.02", "q_H":"1", "q_L":"-1"}.items():
-            require(number(row[key]) == number(expected), f"pool parameter {key}")
-        with mp.workdps(60):
-            expected = closed_forms(mp.mpf(row["cutoff_decimal"]))
-        for column, key in (("pool_posterior", "pool_posterior"), ("preparation_probability", "E"),
-                            ("sale_probability", "sale"), ("seller_revenue", "revenue")):
-            require(abs(number(row[column]) - Decimal(str(expected[key]))) <= Decimal("1e-9"), f"pool price-information identity {column}")
-        require(number(row["buyer_slack_zero_price_c_L"]) >= 0, "buyer deviation inside observed-price pool")
-        require(row["cutoff_exact"] in family, "undeclared price-pool cutoff")
-        expected_row, _, validation = evaluate_member(row["cutoff_exact"], family[row["cutoff_exact"]])
-        require(expected_row["accepted"] and row["continuation_id"] == expected_row["continuation_id"],
-                "pool preparation/pricing policy differs from validated observed-price policy")
-
-
 def endpoints() -> None:
     data = rows("figures_data/posterior_tails.csv")
     for row in data:
@@ -130,7 +108,7 @@ def candidates() -> None:
 def finite() -> None:
     # Only numerical boundary files; audit attempts retain their explicit failure witnesses.
     for path in ("tables/equilibrium_controls.csv", "tables/reserve_comparisons.csv", "numerics/certificates.csv",
-                 "numerics/price_pool_regression.csv", "figures_data/posterior_tails.csv", "tables/auction_primitives.csv",
+                 "figures_data/posterior_tails.csv", "tables/auction_primitives.csv",
                  "tables/extensions.csv", "numerics/two_signals.csv", "numerics/moderate_values.csv",
                  "figures_data/bargaining.csv", "figures_data/two_returns.csv"):
         for index, row in enumerate(rows(path), 2):
@@ -142,7 +120,7 @@ def finite() -> None:
                 require(parsed.is_finite(), f"nonfinite untagged field {path}:{index}/{key}")
 
 
-CHECKS = {fn.__name__: fn for fn in (registry, controls, certificates, pools, endpoints, candidates, finite)}
+CHECKS = {fn.__name__: fn for fn in (registry, controls, certificates, endpoints, candidates, finite)}
 
 
 if __name__ == "__main__":

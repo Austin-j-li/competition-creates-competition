@@ -189,17 +189,17 @@ def payoffs_class_closed_form(prim: Primitives, r: float, p: float, eps_V: float
                 tot_t += t_0 * (b_ - a)
             elif mid < r:
                 # t_v = v - (v^2 - p^2)/(2r); g_v = (v^2 - p^2)/(2r)
-                I1 = (b_ ** 2 - a ** 2) / 2
-                I2 = (b_ ** 3 - a ** 3) / 3
-                tot_t += I1 - (I2 - p * p * (b_ - a)) / (2 * r)
-                tot_g += (I2 - p * p * (b_ - a)) / (2 * r)
+                width = b_ - a
+                gross = width * ((mid - p) * (mid + p) + width * width / 12) / (2 * r)
+                tot_t += width * mid - gross
+                tot_g += gross
             elif p <= r:
                 t_v = r / 2 + p * p / (2 * r)
                 tot_t += t_v * (b_ - a)
-                tot_g += (b_ ** 2 - a ** 2) / 2 - t_v * (b_ - a)
+                tot_g += (b_ - a) * ((a - t_v) + (b_ - t_v)) / 2
             else:
                 tot_t += p * (b_ - a)
-                tot_g += (b_ ** 2 - a ** 2) / 2 - p * (b_ - a)
+                tot_g += (b_ - a) * ((a - p) + (b_ - p)) / 2
         return tot_t / (hi - lo), tot_g / (hi - lo)
 
     t_H, g_H = avg(h)

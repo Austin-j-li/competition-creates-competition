@@ -38,7 +38,6 @@ These commands rebuild the calculations. The presentation commands alone do not 
 | `python numerics/exercises/c4_moderate.py` | Moderate-value example, controls and nonemptiness construction. |
 | `python numerics/exercises/c5_noise.py` | Posterior tails, cutoffs, noise-standardized distances and endpoint values. |
 | `python numerics/exercises/c6_reserve.py --workers=20` | Fixed-reserve comparisons, broad reserve continuation attempts, found ranges and coverage records. |
-| `python numerics/exercises/c6b_price_pools.py` | The 17-member price-pool family, invalid controls and complete continuation identities. |
 | `python numerics/exercises/c6c_reserve_events.py --workers=8` | Exact reserve events, one-sided neighborhoods, preparation/sale/admissibility outcomes and event checks. |
 | `python numerics/exercises/c7_bargaining.py` | Acquisition-payment bargaining comparisons and the figure data. |
 

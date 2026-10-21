@@ -2,7 +2,7 @@
 
 Runs the C.6 node solver (repaired continuation identity, tie rules applied to declared identities) on the
 event grid only: 0, ell, r, h, ell +- eps_V, h +- eps_V, the declared reserve alternatives, the exact events
-p_L = h - c_L/m and p_H = sqrt(2r(h - c_H/M) - r^2), each with one-sided offsets 1e-4, 1e-6, 1e-8, and the
+p_L = h (binary) or h + epsilon_V (classes), and p_H = sqrt(2r(h - c_H/M) - r^2), each with one-sided offsets 1e-4, 1e-6, 1e-8, and the
 published sampled weak reserve 6.280. Writes numerics/reserve_events.csv (the C.6 continuation schema plus
 event classification) and numerics/reserve_event_ranges.csv, and a manifest. The full C.6 sweep is untouched.
 """
@@ -28,13 +28,12 @@ from numerics.reserve_events import EventNode, classify_node, event_grid, full_o
 RUN_ID = "c6c"
 SAMPLED_WEAK_RESERVE = "6.280"
 EVENT_CLASSIFICATION = {
-    "floor_equality_p_L": "analytically supported event candidate: B_r(m) = c_L holds exactly and entry is admitted by the tie rule; "
-                          "supported by the inversion/global-bound argument with e >= rho under equality; NOT an interior point of the strict "
-                          "low-cost inequality region",
+    "floor_equality_p_L": "zero-cost preparation at the upper support endpoint: the tie rule gives E = rho; "
+                          "binary values permit a sale at h; an atomless class has zero mass at its upper endpoint",
     "ceiling_equality_p_H": "analytically supported event candidate: M g_H = c_H holds exactly, tau = M and x* = 1; the upper plateau "
                             "(positive probability) enters by the tie rule; low-cost floor strictly positive and full-order bound checked separately",
 }
-LANDMARKS = {"p_L": {"value": "6.2817181715", "E": "0.25", "sale": "0.125", "R_T": "0.7852147714"},
+LANDMARKS = {"p_L": {"value_binary": "10", "value_classes": "10.05", "E": "0.25", "sale_binary": "0.125", "R_T_binary": "1.25", "sale_classes": "0", "R_T_classes": "0"},
              "p_H": {"value": "1.3252698283", "E": "0.5064773952", "R_T": "1.0688544444", "alpha_H": "0.5", "x_star": "1"},
              "sampled_6.280": {"E": "0.25", "sale": "0.125", "two_admissible": "0", "R_T": "0.785"}}
 
@@ -101,30 +100,40 @@ def run(workers: int | None = None, replay: str | None = None) -> bool:
         return [x for x in cont if x["value_law"] == law and x["r"] == rs and x["event_id"] == event_id and x["accepted"] is True
                 and (branch is None or x["branch"] == branch)]
 
-    # --- T21: exact floor event -------------------------------------------------------------------
-    t21 = {}
+    # Exact zero-cost floor: binary endpoint sale versus the atomless upper edge.
+    floor_checks = {}
     for law in ("binary", "uniform_classes"):
         for rs in STRENGTHS.values():
             eps_V = BENCHMARK_EXTRA["value_band_halfwidth"] if law == "uniform_classes" else "0"
             node = next(n for n in nodes if n.law == law and n.r == rs and n.event_id == "floor_equality_p_L")
             cls = classify_node(PRIM, node, eps_V)
             fo = full_order_objects_mp(PRIM, cls, False, True)
-            rows = acc_rows(law, rs, "floor_equality_p_L", "full_orders")
+            branch = "full_orders" if law == "binary" else "pooling"
+            rows = acc_rows(law, rs, "floor_equality_p_L", branch)
+            with mp.workdps(50):
+                expected_sale = mp.mpf(PRIM.rho) / 2 if law == "binary" else mp.mpf(0)
+                expected_revenue = expected_sale * node.p_mp
             ok = (cls["low_cost_floor_relation"] == "equality_event" and len(rows) == 1
-                  and _close(rows[0]["E"], LANDMARKS["p_L"]["E"], 1e-10) and _close(rows[0]["sale_probability"], LANDMARKS["p_L"]["sale"], 1e-10)
-                  and _close(rows[0]["R_T"], LANDMARKS["p_L"]["R_T"], 1e-10) and _close(float(fo["R_T"]), LANDMARKS["p_L"]["R_T"], 1e-10)
-                  and _close(node.p_float, LANDMARKS["p_L"]["value"], 1e-10) and rows[0]["two_admissible_bidders_probability"] == 0.0
-                  and "equality" in rows[0]["status"] and "strict" not in rows[0]["status"].split("equality")[0])
-            # both sides classify strictly (no rounded tie): below the event the floor is strictly positive, above strictly negative
+                  and _close(rows[0]["E"], PRIM.rho, 1e-10)
+                  and _close(rows[0]["sale_probability"], str(expected_sale), 1e-10)
+                  and _close(rows[0]["R_T"], str(expected_revenue), 1e-10)
+                  and _close(float(fo["R_T"]), str(expected_revenue), 1e-10)
+                  and rows[0]["two_admissible_bidders_probability"] == 0.0)
             below = [d for d in diags if d["law"] == law and d["r"] == rs and d["event_id"].startswith("offset:floor_equality_p_L-")]
             above = [d for d in diags if d["law"] == law and d["r"] == rs and d["event_id"].startswith("offset:floor_equality_p_L+")]
-            sides_ok = all(d["low_cost_floor_relation"] == "strict_positive" for d in below) and all(d["low_cost_floor_relation"] == "strict_negative" for d in above) \
-                and len(below) == 3 and len(above) == 3
-            t21[f"{law}_r{rs}"] = {"p_L": node.p_decimal, "floor_relation": cls["low_cost_floor_relation"], "accepted_full_order_rows": len(rows),
-                                  "E": rows[0]["E"] if rows else None, "sale": rows[0]["sale_probability"] if rows else None, "R_T": rows[0]["R_T"] if rows else None,
-                                  "R_T_mp": mp.nstr(fo["R_T"], 16), "status": rows[0]["status"] if rows else None, "sides_strict": sides_ok,
-                                  "classification": EVENT_CLASSIFICATION["floor_equality_p_L"], "pass": bool(ok and sides_ok)}
-    checks["T21_floor_event"] = {**t21, "pass": all(v["pass"] for v in t21.values())}
+            sides_ok = (len(below) == 3 and len(above) == 3
+                        and all(d["low_cost_floor_relation"] == "strict_positive" for d in below)
+                        and all(d["low_cost_floor_relation"] == "equality_event" for d in above))
+            beyond = [x for x in cont if x["value_law"] == law and x["r"] == rs
+                      and x["event_id"].startswith("offset:floor_equality_p_L+") and x["accepted"]]
+            beyond_ok = len(beyond) == 3 and all(_close(x["E"], PRIM.rho, 1e-10)
+                                               and _close(x["sale_probability"], "0", 1e-10) for x in beyond)
+            floor_checks[f"{law}_r{rs}"] = {"p_L": node.p_decimal, "floor_relation": cls["low_cost_floor_relation"],
+                "accepted_branch": branch, "accepted_rows": len(rows), "E": rows[0]["E"] if rows else None,
+                "sale": rows[0]["sale_probability"] if rows else None, "R_T": rows[0]["R_T"] if rows else None,
+                "expected_revenue": str(expected_revenue), "sides_resolved": sides_ok,
+                "preparation_above_support": beyond_ok, "pass": bool(ok and sides_ok and beyond_ok)}
+    checks["zero_cost_floor_event"] = {**floor_checks, "pass": all(v["pass"] for v in floor_checks.values())}
     # --- T22: exact ceiling event (defined only at r = 3) -------------------------------------------
     t22 = {}
     for law in ("binary", "uniform_classes"):
@@ -172,7 +181,7 @@ def run(workers: int | None = None, replay: str | None = None) -> bool:
     write_csv("numerics/reserve_event_ranges.csv", RANGE_COLS, ranges)
     passed = all(c.get("pass", True) for c in checks.values())
     write_manifest("c6c_reserve_events", {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED, "strengths": STRENGTHS,
-                                          "events": "0, ell, r, h, ell+-eps_V, h+-eps_V (classes), declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)",
+                                          "events": "0, ell, r, h, ell+-eps_V, h+-eps_V (classes), declared reserves, p_L = h (binary) or h+eps_V (classes), p_H = sqrt(2r(h - c_H/M) - r^2)",
                                           "offsets": ["1e-4", "1e-6", "1e-8"], "sampled_weak_reserve": SAMPLED_WEAK_RESERVE, "landmarks": LANDMARKS, "workers": workers, "replay_source": replay, "run_id": run_id, "attempt_ledger": str(ledger_path)},
                    "Event nodes solved with the C.6 node solver: exact events classified algebraically at 50 digits with the tie rule applied to the "
                    "declared identity; offsets classified by high-precision sign; payoff oracle by direct OA.50 integration; continuation candidates "

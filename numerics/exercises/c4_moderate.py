@@ -47,7 +47,7 @@ def nonemptiness_rows(checks: dict) -> list[dict]:
             B = lambda gH, gL, mu: gL + mu * (gH - gL)
             k = (D0 + (1 - 1 / b) * rho * m * D1) / 2
             cH = (B(gH0, gL0, mp.mpf("0.5")) + B(gH1, gL1, M)) / 2
-            cL = B(gH1, gL1, m) / 2
+            cL = mp.mpf(0)
             margins = {
                 "zeta_L": B(gH1, gL1, m) - cL,
                 "zeta_H0": cH - B(gH0, gL0, mp.mpf("0.5")),
@@ -58,7 +58,6 @@ def nonemptiness_rows(checks: dict) -> list[dict]:
                 "support_r0": r0 - ell,
                 "support_r1_below_h": h - r1,
                 "order_r0_r1": r1 - r0,
-                "cL_positive": cL,
             }
             mn = min(margins.values())
             feasible = mn > 0
@@ -140,7 +139,7 @@ def run() -> bool:
     passed = ok and all(c.get("pass", True) for c in checks.values())
     write_manifest("c4_moderate", {"moderate": prim.__dict__, "strengths": MODERATE_STRENGTHS, "ratios": ["1.05", "1.10", "1.25", "1.50", "2.00"], "j": "1..20"},
                    "Moderate declaration solved with the C.1 machinery (independent auction integration, analytical margins, validated "
-                   "pooling/full-order candidates and controls); nonemptiness sequence per A.6 with OA.69 choices in 50-digit arithmetic.",
+                   "pooling/full-order candidates and controls); nonemptiness sequence with zero low cost and the remaining OA.69 choices in 50-digit arithmetic.",
                    CONTROLS.as_dict(), ["numerics/moderate_values.csv", "numerics/moderate_controls.csv", "numerics/nonemptiness_construction.csv"],
                    checks, passed, notes)
     print("C.4 passed" if passed else "C.4 FAILED", {k: v for k, v in checks.items() if "first_feasible" in k}, "E:", vw.E, vs.E)

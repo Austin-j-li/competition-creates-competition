@@ -139,8 +139,8 @@ def conditional_entry_cost_based(sched: Schedule, state: str) -> float:
     m, M = posterior_bounds(prim.fb)
     plateau = [pay.B(m), pay.B(M)]
     tot = 0.0
-    for w, c0 in ((rho, cL), (1 - rho, cH)):
-        pts = sorted({c0 - e, c0 + e, *[c for c in plateau if c0 - e < c < c0 + e]})
+    for w, (lo_cost, hi_cost) in ((rho, prim.low_cost_interval), (1 - rho, (cH - e, cH + e))):
+        pts = sorted({lo_cost, hi_cost, *[c for c in plateau if lo_cost < c < hi_cost]})
         v = 0.0
         for a, b_ in zip(pts[:-1], pts[1:]):
             val, _ = integrate.quad(tail, a, b_, epsabs=1e-13, epsrel=1e-13, limit=200)
@@ -152,6 +152,10 @@ def conditional_entry_cost_based(sched: Schedule, state: str) -> float:
 def price_inverse(sched: Schedule, P_obs: float) -> float:
     """Recover the posterior from an observed price using the strictly increasing map P_r(mu)."""
     pay, prim = sched.pay, sched.prim
+    if pay.Delta_T == 0 and sched.profile.q_H == sched.profile.q_L and sched.profile.w_H == sched.profile.w_L:
+        # Identical state densities imply the prior at the constant-price atom.
+        # The flat price map has no inverse; Bayes' rule on its full preimage applies.
+        return float(prim.fundamental_prior_H)
     m, M = posterior_bounds(prim.fb)
     Pmu = lambda mu: pay.t_0 + entry_at_posterior(prim, pay, mu) * (pay.w_L + pay.Delta_T * mu) + sched.dividend
     lo, hi = m - 1e-12, M + 1e-12
@@ -223,7 +227,7 @@ def validate(sched: Schedule, controls: Controls, refine: bool = True, scan_extr
     # entry optimality: reversing any cost type's decision at any tested posterior
     B = pay.B(mu_pub)
     costs = [prim.fc_L, prim.fc_H] if prim.cost_law == CostLaw.ATOMS else \
-        [prim.fc_L - prim.feps_C, prim.fc_L, prim.fc_L + prim.feps_C, prim.fc_H - prim.feps_C, prim.fc_H, prim.fc_H + prim.feps_C]
+        [*prim.low_cost_interval, sum(prim.low_cost_interval) / 2, prim.fc_H - prim.feps_C, prim.fc_H, prim.fc_H + prim.feps_C]
     eps_e = 0.0
     for c in costs:
         enters = B >= c

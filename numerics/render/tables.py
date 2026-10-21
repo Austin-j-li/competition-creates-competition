@@ -364,7 +364,7 @@ def _extension_records() -> list[dict]:
                  **{k: row[k] for k in MARGIN_KEYS}, "status": row["status"], "accepted": row["accepted"]})
     weak, strong = next((w, s) for w, s in signal_comparisons() if (w["a"], w["d"]) == ("0.70", "0.75"))
     recs.append({"panel": "C", "label": "$a=0.70$, $d=0.75$", "parameter_set": "signal", "noise": "Laplace", "cost_law": "atoms",
-                 "h": "10", "ell": "1", "p": "0.5", "rho": "0.85", "c_L": "1", "c_H": "7.14", "b": "2", "k": "0.015",
+                 "h": "10", "ell": "1", "p": "0.5", "rho": "0.85", "c_L": "0", "c_H": "7.14", "b": "2", "k": "0.015",
                  "a": weak["a"], "d": weak["d"], "r_weak": weak["r"], "r_strong": strong["r"],
                  "E_weak": weak["E"], "E_strong": strong["E"], "O_H_weak": weak["O_H"], "O_H_strong": strong["O_H"],
                  **{mk: weak[sk] for mk, sk in zip(MARGIN_KEYS, SIGNAL_MARGIN_KEYS)},
@@ -431,8 +431,8 @@ def extensions_margins() -> list[Path]:
         r"trade, strong-economy trade), in the order of \eqref{eq:oa-oa-77} for Panels A and B and of \eqref{eq:oa-oa-29} for Panel C, and their minimum. A positive minimum "
         r"places the row inside the analytical uniqueness region; a nonpositive minimum would mean the comparison condition is not met, not that a "
         r"candidate is rejected.",
-        r"Parameter vectors: Panel A $(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.25,1,6,2,0.02)$ with $(r_0,r_1)=(1.2,3)$; Panel B "
-        r"$(2,1,0.5,0.25,0.3,0.89,2,0.002)$ with $(1.05,1.5)$; Panel C $(10,1,0.5,0.85,1,7.14,2,0.015)$ with $(1.1,2.3)$ and $(a,d)=(0.70,0.75)$. "
+        r"Parameter vectors: Panel A $(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.25,0,6,2,0.02)$ with $(r_0,r_1)=(1.2,3)$; Panel B "
+        r"$(2,1,0.5,0.25,0,0.89,2,0.002)$ with $(1.05,1.5)$; Panel C $(10,1,0.5,0.85,0,7.14,2,0.015)$ with $(1.1,2.3)$ and $(a,d)=(0.70,0.75)$. "
         r"The complete records, including the preparation change in percentage points, are in \texttt{tables/extensions\_margins.csv}.",
     ]
     tex = online_table("Sufficient-condition margins behind Table 3.", "tab:oa-margins",
@@ -466,7 +466,7 @@ def signal_grid() -> Path:
         lines.append(" & ".join([weak["a"] + mark, weak["d"], d6(weak["E"]), d6(strong["E"]), d2(pp_change(strong["E"], weak["E"])),
                                   d6(weak["O_H"]), d6(strong["O_H"]), sci(margin), joint_evidence(weak["status"], strong["status"]), condition]) + r" \\")
     notes = (r"\textit{Notes.} All " + str(len(pairs)) + r" accuracy combinations in the declaration in Section C.3 are reported; none is dropped. "
-             r"Other parameters are $h=10$, $\ell=1$, $p=0.5$, $\rho=0.85$, $c_L=1$, $c_H=7.14$, $b=2$, $k=0.015$, "
+             r"Other parameters are $h=10$, $\ell=1$, $p=0.5$, $\rho=0.85$, $c_L=0$, $c_H=7.14$, $b=2$, $k=0.015$, "
              r"with strengths $r_0=1.1$ and $r_1=2.3$. $\mathsf E$ and $\mathsf O_H$ are probabilities; $\Delta\mathsf E$ is the change in "
              r"preparation in percentage points from the same validated probabilities. "
              r"The minimum margin is the smallest of the five conditions in \eqref{eq:oa-oa-29}; the comparison condition is met when it is strictly positive "
@@ -706,7 +706,7 @@ def reserve_exploratory(path: str = "numerics/reserve_ranges.csv") -> Path:
         r"attempted, exact-event nodes among them, nodes with several accepted continuations, nodes left unresolved, nodes with no accepted "
         r"continuation, candidates evaluated, rejected, unresolved, and duplicates merged by the continuation identity. The following exact-event table lists every "
         r"exact-event node (reserve at zero, at $\ell$, at $r$, at $h$, at the class-band edges, at the declared reserves, at the published sampled "
-        r"weak reserve, at the weak-incumbent floor equality $p_L=h-c_L/m$, and at the high-cost ceiling equality $p_H$) with the candidates found "
+        r"weak reserve, at the weak-incumbent floor equality $p_L=h$ (binary) or $h+\varepsilon_V$ (classes), and at the high-cost ceiling equality $p_H$) with the candidates found "
         r"there; one-sided offsets from each event are separate nodes counted in Panel B. Earlier attempts that triggered identity refinement "
         r"are preserved separately in the numerical diagnostics archive. Known limits: the searches "
         r"cover the declared candidate families and the declared pricing family only (Online Appendix C.6).",

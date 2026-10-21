@@ -167,7 +167,7 @@ def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tu
     cls = classify_node(PRIM, node, eps_V)
     # exact classification overrides the float sign where the two disagree (equality event or unresolved sign)
     floor_rel, ceil_rel = cls["low_cost_floor_relation"], cls["ceiling_relation"]
-    tie_floor = node.tie_at_floor and node.applicable and floor_rel == "equality_event"
+    tie_floor = floor_rel == "equality_event" and (PRIM.fc_L == 0 or node.tie_at_floor and node.applicable)
     tie_ceiling = node.tie_at_ceiling and node.applicable and ceil_rel == "equality_event"
     floor_ok = floor_rel in ("strict_positive", "equality_event")
     rows, diag = [], {"law": law, "r": rs, "p": ps, "p_exact": node.p_exact, "event_id": node.event_id, "payoff_oracle_error": oracle_err, **ab,
@@ -180,7 +180,7 @@ def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tu
     e_M = float(entry_at_posterior(PRIM, pay, np.array([M]))[0])
     if tie_ceiling:
         e_M = 1.0
-    degenerate = pay.Delta_T <= 0 or pay.g_H <= 0 or e_M <= 0
+    degenerate = pay.Delta_T <= 0 or e_M <= 0
     if floor_rel == "unresolved" or ceil_rel == "unresolved":
         unresolved = True
         diag["classification_unresolved"] = f"floor={floor_rel}, ceiling={ceil_rel}"
@@ -196,7 +196,7 @@ def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tu
                      uniqueness="unique (Delta_T < k)" if ab["no_trade_unique_margin"] > 0 else "not established"))
     if degenerate:
         diag["skipped_searches"] = ("all entry impossible (H_C(B_r(M)) = 0): constant-price candidate only" if e_M <= 0 else
-                                    "degenerate payoff (Delta_T <= 0 or g_H <= 0): constant-price candidate only")
+                                    "degenerate payoff (Delta_T <= 0): constant-price candidate only")
     elif ab["no_trade_unique_margin"] > 0:
         diag["skipped_searches"] = "Delta_T < k excludes every nonzero order against any candidate schedule"
     else:
@@ -538,7 +538,7 @@ def run(workers: int | None = None, quick: bool = False, max_refine_nodes: int |
         original_manifest_dir = io.MANIFEST_DIR
         io.MANIFEST_DIR = output_root / "numerics/manifests"
     write_manifest(exercise, {"benchmark": PRIM.__dict__, "epsilon_V": BENCHMARK_EXTRA["value_band_halfwidth"], "declared": DECLARED,
-                                  "strengths": STRENGTHS, "run_id": run_id, "replay_source": replay, "workers": workers, "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained", "attempt_ledger": str(checkpoint.relative_to(output_root)), "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, "
+                                  "strengths": STRENGTHS, "run_id": run_id, "replay_source": replay, "workers": workers, "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained", "attempt_ledger": str(checkpoint.relative_to(output_root)), "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h (binary) or h+eps_V (classes), "
                                           "p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8", "quick": quick, "declared_only": declared_only},
                    "Payoff oracle: direct integration of OA.50 over R (and over class bands) versus OA.51/OA.52; continuation candidates "
                    "(pooling, full, asymmetric, pure, mixed) validated with price-pool handling (OA.70) at every reserve; analytical uniqueness "

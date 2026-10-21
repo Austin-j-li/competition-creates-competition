@@ -77,6 +77,12 @@ class Primitives:
     def feps_C(self) -> float:
         return float(Decimal(self.cost_halfwidth))
 
+    @property
+    def low_cost_interval(self) -> tuple[float, float]:
+        """Atomless low costs retain width 2 epsilon and have a nonnegative lower bound."""
+        lower = max(Decimal(0), Decimal(self.c_L) - Decimal(self.cost_halfwidth))
+        return float(lower), float(lower + 2 * Decimal(self.cost_halfwidth))
+
     def with_(self, **kw) -> "Primitives":
         return replace(self, **kw)
 
@@ -125,7 +131,7 @@ CONTROLS = Controls()
 
 # --- Declarations (C.0) -------------------------------------------------------
 BENCHMARK = Primitives(
-    h="10", ell="1", p="0.5", rho="0.25", c_L="1", c_H="6", b="2", k="0.02",
+    h="10", ell="1", p="0.5", rho="0.25", c_L="0", c_H="6", b="2", k="0.02",
     parameter_set="base",
 )
 BENCHMARK_STRENGTHS = {"r_weak": "1.2", "r_strong": "3", "r_collapse": "3.6"}
@@ -137,13 +143,13 @@ BENCHMARK_EXTRA = {
 }
 
 MODERATE = Primitives(
-    h="2", ell="1", p="0.5", rho="0.25", c_L="0.3", c_H="0.89", b="2", k="0.002",
+    h="2", ell="1", p="0.5", rho="0.25", c_L="0", c_H="0.89", b="2", k="0.002",
     parameter_set="moderate",
 )
 MODERATE_STRENGTHS = {"r_weak": "1.05", "r_strong": "1.5"}
 
 SIGNAL = Primitives(
-    h="10", ell="1", p="0.5", rho="0.85", c_L="1", c_H="7.14", b="2", k="0.015",
+    h="10", ell="1", p="0.5", rho="0.85", c_L="0", c_H="7.14", b="2", k="0.015",
     parameter_set="signal",
 )
 SIGNAL_STRENGTHS = {"r_weak": "1.1", "r_strong": "2.3"}

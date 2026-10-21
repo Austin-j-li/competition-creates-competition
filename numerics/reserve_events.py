@@ -62,12 +62,17 @@ def posterior_bounds_mp(b):
 def event_value_mp(node: EventNode):
     """Recompute an exact event value from its defining relation (not from the stored decimal)."""
     with mp.workdps(DPS):
-        h, ell, cL, cH, b = (mp.mpf(s) for s in node.p_exact.split("|")[1].split(","))
+        values = [mp.mpf(s) for s in node.p_exact.split("|")[1].split(",")]
+        h, ell, cL, cH, b = values[:5]
         r = mp.mpf(node.r)
         m, M = posterior_bounds_mp(b)
         tag = node.p_exact.split("|")[0]
         if tag == "p_L=h-c_L/m":
             return h - cL / m
+        if tag == "p_L=h":
+            return h
+        if tag == "p_L=h+epsilon_V":
+            return h + values[5]
         if tag == "p_H=sqrt(2r(h-c_H/M)-r^2)":
             return mp.sqrt(2 * r * (h - cH / M) - r * r)
         raise ValueError(f"unknown event tag {tag}")
@@ -80,15 +85,18 @@ def exact_events(prim: Primitives, law: str, r: str, eps_V: str) -> list[EventNo
         rr, eV = mp.mpf(r), mp.mpf(eps_V) if law == "uniform_classes" else mp.mpf(0)
         m, M = posterior_bounds_mp(b)
         params = f"{prim.h},{prim.ell},{prim.c_L},{prim.c_H},{prim.b}"
-        pL = h - cL / m
+        pL = h + eV if cL == 0 else h - cL / m
         pH = mp.sqrt(2 * rr * (h - cH / M) - rr * rr) if 2 * rr * (h - cH / M) - rr * rr > 0 else mp.mpf("nan")
         # p_L is defined where the low class is entirely excluded, the incumbent is excluded (p >= r), and the high
         # class lies entirely above the reserve: then g_H = h - p (class mean) and B(m) = m (h - p).
-        pL_ok = (pL > ell + eV) and (pL >= rr) and (pL < h - eV)
+        pL_ok = (pL > ell + eV) and (pL >= rr) and (cL == 0 or pL < h - eV)
         # p_H is defined for ell < p < r with the low class excluded and the high class above the incumbent support.
         pH_ok = (not mp.isnan(pH)) and (ell + eV < pH < rr) and (h - eV > rr)
-        out = [EventNode(law, r, f"p_L=h-c_L/m|{params}", _dec30(pL), "floor_equality_p_L",
-                         "B_r(m) = c_L with g_H = h - p, g_L = 0 (low-cost floor equality; entry admitted by the tie rule)",
+        floor_exact = (f"p_L=h+epsilon_V|{params},{eps_V}" if law == "uniform_classes" else f"p_L=h|{params}") if cL == 0 else f"p_L=h-c_L/m|{params}"
+        floor_relation = ("B_r(m) = 0 at the top of the value support; zero-cost preparation follows the tie rule"
+                          if cL == 0 else "B_r(m) = c_L with g_H = h - p, g_L = 0; preparation follows the tie rule")
+        out = [EventNode(law, r, floor_exact, _dec30(pL), "floor_equality_p_L",
+                         floor_relation,
                          bool(pL_ok), "" if pL_ok else "event outside its defining regime at this strength",
                          tie_at_floor=True, is_exact_event=True)]
         if not mp.isnan(pH):
@@ -102,7 +110,8 @@ def exact_events(prim: Primitives, law: str, r: str, eps_V: str) -> list[EventNo
 def event_grid(prim: Primitives, law: str, r: str, eps_V: str, declared: list[str], offsets: tuple[str, ...] = OFFSETS) -> list[EventNode]:
     """Support/participation events with one-sided offsets on both sides (where feasible in [0, top])."""
     top = Decimal(prim.h) + (Decimal(eps_V) if law == "uniform_classes" else Decimal(0))
-    base: list[EventNode] = []
+    # Exact floor events take precedence when they coincide with support endpoints.
+    base: list[EventNode] = exact_events(prim, law, r, eps_V)
 
     def dec_node(val: Decimal, eid: str, rel: str) -> EventNode:
         s = format(val.normalize(), "f") if val != val.to_integral() else str(val.quantize(Decimal(1)))
@@ -120,7 +129,6 @@ def event_grid(prim: Primitives, law: str, r: str, eps_V: str, declared: list[st
         base.append(dec_node(h + eV, "reserve_equals_h_plus_epsV", "p = h + eps_V (top of the high band)"))
     for d in declared:
         base.append(dec_node(Decimal(d), f"declared_reserve_{d}", "declared reserve alternative (C.0)"))
-    base.extend(exact_events(prim, law, r, eps_V))
     nodes: list[EventNode] = []
     seen: set[str] = set()
     for n in base:
@@ -133,7 +141,7 @@ def event_grid(prim: Primitives, law: str, r: str, eps_V: str, declared: list[st
             for off in offsets:
                 for sgn in (-1, 1):
                     x = pv + sgn * mp.mpf(off)
-                    if x < 0 or x > mp.mpf(str(top)):
+                    if x < 0 or (x > mp.mpf(str(top)) and n.event_id != "floor_equality_p_L"):
                         continue
                     if n.is_exact_event:
                         pe = f"{n.p_exact}{'+' if sgn > 0 else '-'}{off}"
@@ -178,7 +186,8 @@ def classify_node(prim: Primitives, node: EventNode, eps_V: str) -> dict:
         B_m = ex["g_L"] + m * (ex["g_H"] - ex["g_L"])
         B_M = ex["g_L"] + M * (ex["g_H"] - ex["g_L"])
         B_half = ex["g_L"] + (ex["g_H"] - ex["g_L"]) / 2
-        floor = _sign_relation(B_m - cL, node.event_id == "floor_equality_p_L" and node.applicable)
+        zero_rent_identity = cL == 0 and ex["g_H"] == 0 and ex["g_L"] == 0
+        floor = _sign_relation(B_m - cL, zero_rent_identity or (node.event_id == "floor_equality_p_L" and node.applicable))
         ceiling = _sign_relation(B_M - cH, node.event_id == "ceiling_equality_p_H" and node.applicable)
         prior_excl = _sign_relation(cH - B_half, False)
         Delta = ex["Delta_T"]

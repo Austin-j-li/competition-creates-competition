@@ -69,7 +69,7 @@ def cost_cdf(prim: Primitives, c: np.ndarray) -> np.ndarray:
     if prim.cost_law == CostLaw.ATOMS:
         return rho * (c >= cL) + (1 - rho) * (c >= cH)
     e = prim.feps_C
-    return rho * uniform_cdf(c, cL - e, cL + e) + (1 - rho) * uniform_cdf(c, cH - e, cH + e)
+    return rho * uniform_cdf(c, *prim.low_cost_interval) + (1 - rho) * uniform_cdf(c, cH - e, cH + e)
 
 
 def entry_at_posterior(prim: Primitives, pay: AuctionPayoffs, mu: np.ndarray) -> np.ndarray:
@@ -85,13 +85,12 @@ def expected_paid_cost_at_posterior(prim: Primitives, pay: AuctionPayoffs, mu: n
         return rho * cL * (B >= cL) + (1 - rho) * cH * (B >= cH)
     e = prim.feps_C
 
-    def comp(c0: float) -> np.ndarray:
-        lo, hi = c0 - e, c0 + e
+    def comp(lo: float, hi: float) -> np.ndarray:
         top = np.clip(B, lo, hi)
         # integral of c/(2e) from lo to top
         return (top ** 2 - lo ** 2) / (2 * (hi - lo))
 
-    return rho * comp(cL) + (1 - rho) * comp(cH)
+    return rho * comp(*prim.low_cost_interval) + (1 - rho) * comp(cH - e, cH + e)
 
 
 # --- schedule ----------------------------------------------------------------------
@@ -190,7 +189,7 @@ def make_schedule(prim: Primitives, pay: AuctionPayoffs, profile: OrderProfile,
             costs = [cL, cH]
         else:
             e = prim.feps_C
-            costs = [cL - e, cL + e, cH - e, cH + e]
+            costs = [*prim.low_cost_interval, cH - e, cH + e]
         for c in costs:
             tau = pay.tau(c)
             for xc in _threshold_crossings(sched.mu, tau, lo - pad - 1e-9, hi + pad + 1e-9):
