@@ -1,13 +1,13 @@
 {
  "exercise": "c2_correspondence",
- "timestamp_utc": "2026-09-05T23:59:35.310946+00:00",
+ "timestamp_utc": "2026-10-21T17:56:03.808161+00:00",
  "inputs": {
   "benchmark": {
    "h": "10",
    "ell": "1",
    "p": "0.5",
    "rho": "0.25",
-   "c_L": "1",
+   "c_L": "0",
    "c_H": "6",
    "b": "2",
    "k": "0.02",
@@ -46,8 +46,8 @@
   "grid_size": 580,
   "quick": false,
   "nodes": null,
-  "runtime_seconds": 822.5863503290166,
-  "workers": 20,
+  "runtime_seconds": 677.5114085688256,
+  "workers": 24,
   "thread_limits": {
    "OPENBLAS_NUM_THREADS": "1",
    "OMP_NUM_THREADS": "1",
@@ -123,12 +123,12 @@
   "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
  },
  "outputs": {
-  "numerics/correspondence.csv": "db420043887539fee4a87e8a977378d97ff29a596e062fc50e4bcf69e34ed870",
-  "numerics/correspondence_attempts.csv": "e3fef5fb3d1b23f0ee1b46536f87bc7d341f7c0f674545edaccacb09df4d3da8",
-  "numerics/mixed_supports.csv": "145c859502d2c72da08cbc7ead14a4963e18867a9e918b37ec9a4e6d9081d66f",
+  "numerics/correspondence.csv": "06b670f2638a583b2c94d2120735ffc3b1e8a14038219b8048dcfdf4af8eb2f9",
+  "numerics/correspondence_attempts.csv": "40c99cfd4658752add8a399d2cef53bc26366a756c8cb71f7a04edb90b40ed77",
+  "numerics/mixed_supports.csv": "56492f124318333588eb26770060e7911fb83f7d8d3cab6c1765dccab904d5e2",
   "numerics/mixed_search_attempts.csv": "103aa65ffc62eb8ee69b8363509d38945c08c6a0207c916a908bedad0803f278",
   "numerics/thresholds.csv": "7483ca9d8c286dc2516296d5e0204564e67019259155830f2d88ca50f489314a",
-  "numerics/certificates.csv": "a1057225886f42fdbf6b220b7e6792f2e4da226a015059a5788597764ced97fa"
+  "numerics/certificates.csv": "fd92e75b59acc328a999bc98a7dbe8a7188f73521e03a8fa5dbc4d1ad3f74c70"
  },
  "checks": {
   "threshold_pooling_unique_sufficient": {
@@ -391,51 +391,6 @@
   "Refinement rule for the quadrature targets: the x10 tightening is implemented by raising the Gauss-Legendre order 48 -> 64 and the order intervals 400 -> 800; the refined error estimate is compared with target/10 on every row.",
   "No retries beyond the documented starts: 9 pure initialisations (40 damped iterations each) and 3 mixed starts per mesh (120 replicator iterations each, then the support indifference/simplex solve); mesh-pure outcomes are polished by both continuous best responses from that one profile for at most 40 iterations. Unconverged starts produce open rows.",
   "Tangency rule: a local |Psi| minimum without sign change on the 41-point sub-mesh is open when within the numerical resolution (10 x quadrature error + tail bound, floor 1e-8) and 'no candidate' otherwise; the same rule is proposed for C.6.",
-  "Mixed-search outcomes are search records only; they never assert that mixed equilibria do not exist.",
-  "Interior pure fixed points are polished by the two held-schedule first-order conditions, then revalidated. A bounded 23-node replay removed a numerical duplicate at r=1.79; no identity or acceptance tolerance changed."
- ],
- "validation_replay": {
-  "method": "Full producer plus all 23 interior-pure nodes rerun after direct FOC polishing; unaffected node records retained byte-for-byte.",
-  "nodes": [
-   "1.7479775382679625",
-   "1.7488775382679625",
-   "1.75",
-   "1.755",
-   "1.76",
-   "1.765",
-   "1.77",
-   "1.775",
-   "1.78",
-   "1.785",
-   "1.79",
-   "1.795",
-   "1.8",
-   "1.805",
-   "1.81",
-   "1.815",
-   "1.82",
-   "1.825",
-   "1.83",
-   "1.831",
-   "1.832",
-   "1.833",
-   "1.834"
-  ],
-  "baseline_manifest": "audit/peer_polish/c2_full_before_interior_polish/c2_correspondence.json",
-  "patch_manifest": "audit/peer_polish/c2_interior_polish/c2_correspondence.json",
-  "baseline_hash": "6f4f1553f11c0936151d26ce067261bea0820346f820022dca6baf75e7df4985",
-  "patch_hash": "2f2df84a38ec5b5789fd29c9203fead45045f66d015db790a0da091a55a6f975",
-  "script": "audit/peer_polish/c2_merge_revalidation.py",
-  "additional_runtime_seconds": 91.51327440398745
- },
- "validated_source_hashes": {
-  "numerics/exercises/c2_correspondence.py": "58f52e3a380183929f8c1a4cda31f200d686fea2ad60d993ae42336f9f1d5c92",
-  "numerics/mixed_search.py": "37b9932c72f1f6b1ea9dafbf48a846e66cffdbe225ce1798901f218b22c17fc9",
-  "numerics/error_budget.py": "4eb6720c5436d9088995831aa0ac41129b531e722ad489b94912a4e8c7c5f56c",
-  "numerics/status_rules.py": "65b21ec259aeed3db3f6b65a5be95e1297e6493af87bd453fcfa60f0c352d5df",
-  "numerics/continuations.py": "8db4c0ccc882b720dc48354f7d2d6b0d5dfab9c4c0aa47bb22ed9c7ce5692b74",
-  "numerics/validation.py": "3b9a4280152893257cf25c6b6e09181de4c9c53325bd6e17f4e776b7a8988bc0",
-  "numerics/params.py": "9c95c25278a3fab6f5978311d7e592d36471755f84b305cad39ed493e350ac3a",
-  "numerics/search.py": "240415140e5aa0897d80b4b7b4cab9c10c528f16dee1827966da3a0ffd3a595f"
- }
+  "Mixed-search outcomes are search records only; they never assert that mixed equilibria do not exist."
+ ]
 }
