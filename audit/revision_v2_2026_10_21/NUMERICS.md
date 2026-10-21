@@ -612,3 +612,61 @@ a6b42e5c5b2871b401bbcc3e1482220a08efdb85c043b04b146205639c09031b  tables/table_r
 ```
 
 A separate documentation commit records this section, the reconciliation, and the complete audit evidence.
+
+## Round 5: final manuscript sync
+
+**Result: PASS.** The full presentation pipeline and both numerical release gates passed.
+The implementation commit is `7eedc08c9e97a586bfced9f4bd5af29813c60ebb` on `revision/alex-2026-10-21`.
+The reference for this round is `f222ba3f83b389660fa3a818b5302d4032c88e33`.
+The manuscript reference is `f94b10de76f50ca724029e6800623769588ca18b` in the separate revision clone.
+Every tracked file in that clone remains unchanged. No push occurred.
+
+**Source sync.** The reserve-details caption now refers to Table 5.
+The other generated table notes correctly refer to Table 3.
+The generated figures contain no table-number reference.
+The class exhibit remains Table 4 in the manuscript.
+The contract now includes these manuscript edits:
+
+- C.8 includes C.10 in the exercise list.
+- C.8 states the C.10 display rules and includes both quantity-family rows.
+- E.1 includes the C.10 producer command.
+- C.6 points to Table 5.
+- C.10 points to Table 4 of the paper, including its declaration notes and feed line.
+- The C.10 pointer replaces the local table input, as in the manuscript clone.
+
+The legacy reserve-table filename and the class-table label remain unchanged.
+The historical reserve-event identifier remains unchanged in the numerical records.
+The existing Round 4 reserve-note layout remains in the generated table.
+
+**Numerical invariance.** All 36 CSV files in the recorded numerical scope remain byte-identical.
+This scope includes the numerical outputs, table inputs, figure inputs, verification outputs, both registries, and the quantity manifest.
+All 253 registry rows remain identical in every field, including values, intervals, and displays.
+The complete reserve table remains byte-identical except for its caption reference.
+The class table and all four figure PDFs remain byte-identical.
+No numerical value, parameter, solver, or tolerance changes.
+The registry manifest changes only its timestamp.
+The render manifest changes its timestamp and reserve-table hash.
+`round5_before.json` records the reference hashes and registry rows.
+`round5_comparison.json` records the comparison, source checks, and command results.
+
+**Verification.** The command was:
+
+    /home/uctpiaj/work/Projects/competition-creates-competition/.venv/bin/python audit/revision_v2_2026_10_21/run_presentation.py round5
+
+All eight commands returned zero in 30.21 seconds.
+The numerical gate reports `VERIFY PASSED`.
+All seven release-boundary categories pass, including direct revalidation of C.10.
+Substitution fills 115 placeholders, with zero unresolved and zero unknown keys.
+The generated appendix text contains every requested addition and the corrected reserve caption.
+The run record is `presentation_round5_runs.json`; the logs use the prefix `logs/round5_`.
+No test was written or extended. No test suite ran.
+The sequence used one numerical process at a time and one native numerical thread.
+
+**Artifacts and handoff.** `round5_artifacts.sha256` lists every changed source, output, and audit artifact with its SHA-256.
+Its paths are relative to this worktree. The index omits its own hash.
+The reconciliation retains the prior rows and adds one Round 5 row per changed artifact.
+All file-hash rows use the current artifact hash; their old-value columns retain their original references.
+The reconciliation omits itself and the checksum index to avoid circular hashes.
+The checksum index includes the final reconciliation hash.
+Both copies of this report and `reconciliation.csv` are byte-identical.
+A separate documentation commit records this section, the reconciliation, and the audit evidence.
