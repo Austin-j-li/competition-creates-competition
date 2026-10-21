@@ -104,8 +104,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["CCC Symbols", "Fira Mono", "Fira Sans"],
-              f"faces are Fira Sans, Fira Mono and the symbol fallback ({', '.join(families)})")
+    rep.check(families == ["CCC Symbols", "Fira Mono", "Fira Sans", "STIX Two Text"],
+              f"faces are Fira Sans, STIX Two Text, Fira Mono and the symbol fallback ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -164,7 +164,7 @@ def paper_panel(facts: dict) -> str:
                 f'<p class="hash"><span>sha256</span> <code>{f["sha256"]}</code></p>'
                 f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
                 f'<a class="button" href="{name}" download>Download</a></p></article>')
-    return (f'<p class="kicker">The paper</p>\n<h2>Read the paper</h2>\n'
+    return (f'<h2>Read the paper</h2>\n'
             f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the working-paper revision. '
             f'Manuscript {main["pages"]} pages, online appendix {oa["pages"]} pages.</p>\n'
             f'<div class="pdf-cards">{card("main_filled.pdf", "Manuscript", main)}{card("online_appendix_filled.pdf", "Online appendix", oa)}</div>\n'

@@ -9,10 +9,12 @@ the price-inference argument and the theorem conditions are visible; derivations
 native `details` controls. Retired public section and table anchors remain as spans near their
 replacement content.
 
-The design is the "UCL family" direction: a UCL dark-purple masthead with the tabs, a white
-body with cards, pill controls and a dark theme. Purple is chrome only. Two concept colours
-hold on the page and on the slides: `--c-info` for the target-payoff spread and the
-information chain, `--c-cost` for preparation costs.
+The design is the ruled document: ink on cool white paper, a ruled title block with the tabs
+on a hairline, a text serif (STIX Two Text) for the reading column, Fira Sans for titles, tables
+and chrome, and two rule weights (a 1 px hairline and a 2 px ink rule) in place of cards, pills,
+fills and gradients. The chrome has no accent colour. Two concept colours hold on the page and
+on the slides: `--c-info` for the target-payoff spread and the information chain, `--c-cost` for
+preparation costs. The slides (`presentation/`) use the same tokens; see `presentation/DESIGN.md`.
 
 ## Build and checks
 
@@ -129,7 +131,7 @@ as a historical record only.
   the PDFs built from the Overleaf master (see `working_release/README.md`). The build
   reads their page counts, sizes, sha256 and creation date with the standard library and writes
   the paper tab and the "Text revised" stamp from them. No date or count is typed by hand.
-- Typefaces are Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
+- Typefaces are STIX Two Text, Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
   "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the Fira
   subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
   generates the font-face rules from the lock and fails if a file is missing, altered or

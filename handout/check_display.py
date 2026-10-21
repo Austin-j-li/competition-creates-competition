@@ -160,10 +160,10 @@ for i in LEGACY_ANCHORS:
 for i in PUBLIC_IDS:
     assert f'id="{i}"' in page, f"public id {i} is missing"
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Fira Sans", "Fira Mono", "CCC Symbols"}, families
+assert families == {"Fira Sans", "STIX Two Text", "Fira Mono", "CCC Symbols"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
 print(f"PASS {len(LEGACY_ANCHORS)} legacy anchors and {len(PUBLIC_IDS)} public ids present; "
-      "only Fira Sans, Fira Mono and the symbol fallback; no network request")
+      "only Fira Sans, STIX Two Text, Fira Mono and the symbol fallback; no network request")
 
 # ------------------------------------------------------------------ charts: builders and renderer
 script = r'''
