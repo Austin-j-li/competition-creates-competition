@@ -375,3 +375,170 @@ The shared handoff copies receive the updated report and reconciliation, plus th
 Its subject is `Align rendered margins and profit labels with the zero-cost manuscript`.
 A separate documentation commit records this section with the subject `Document Round 2 numerical presentation checks`.
 Both commits are on `revision/alex-2026-10-21`. No push occurred.
+
+## Round 3
+
+**Result: PASS.** C.10, the presentation pipeline, and both full release gates passed.
+The comparison starts at `0444ad22ec7e7ef6ea2adcd897bcbe8326825d28`.
+All 129 earlier registry entries retain their complete records.
+All 27 earlier numerical CSV files, all nine earlier tables, and all four figures remain byte-identical.
+The legacy main PDF also remains byte-identical.
+The revised manuscript clone received no edit.
+
+**Inputs and choice.** All cases retain $h=10$, $\ell=1$, $p=0.5$, $\rho=0.25$, $c_L=0$, and $b=2$.
+The supports in C have means $\ell$ and $h$; D replaces them with point masses.
+
+| Case | Prior | High cost | Trade cost | Strengths $(r_0,r_1,r_2)$ | Low class | High class |
+|---|---:|---:|---:|---|---|---|
+| A | 0.3 | 4.5 | 0.01 | (1.1,3,3.6) | $\delta_{1}$ | $\delta_{10}$ |
+| B | 0.7 | 7.2 | 0.01 | (1.1,3,3.6) | $\delta_{1}$ | $\delta_{10}$ |
+| C | 0.7 | 6.7 | 0.02 | (1,4.5,5.5) | $U[0.6,1.4]$ | $U[1,19]$ |
+| D | 0.7 | 6.7 | 0.02 | (1,4.5,5.5) | $\delta_{1}$ | $\delta_{10}$ |
+
+A and B each change three of the five adjustable inputs: $c_H$, $k$, and $r_0$.
+Both higher strengths retain their benchmark values.
+The new high costs lie between the collapse ceiling and the favorable strong-economy return.
+The weak strength moves toward the low value, so the weak spread falls below the new trade cost.
+The original trade window is empty at either prior; a cost change alone cannot repair it.
+With the trade cost fixed instead, the strong strength must exceed the original collapse strength.
+That choice also requires three changes: the high cost and both higher strengths.
+
+C uses broad classes above the reserve and a prior away from one half.
+Its high class can lose to the incumbent, which makes the ownership condition substantive.
+D isolates dispersion: class means, costs, prior, and incumbent strengths all match C.
+
+**Outcomes.** The table gives the unique outcome at each strength.
+A dash means no trade and no operative flow threshold.
+“Unattainable” means the high-cost threshold exceeds the largest feasible posterior.
+
+| Case | Strength | Entry | High-class ownership | $W_H$ | Threshold flow |
+|---|---:|---:|---:|---:|---|
+| A | 1.1 | 0.250000 | 0.075000 | 1.000000 | — |
+| A | 3 | 0.464564 | 0.190421 | 1.000000 | 0.947381 |
+| A | 3.6 | 0.250000 | 0.075000 | 1.000000 | unattainable |
+| B | 1.1 | 0.250000 | 0.175000 | 1.000000 | — |
+| B | 3 | 0.571808 | 0.452851 | 1.000000 | 0.879481 |
+| B | 3.6 | 0.250000 | 0.175000 | 1.000000 | unattainable |
+| C | 1 | 0.250000 | 0.175000 | 1.000000 | — |
+| C | 4.5 | 0.563404 | 0.411984 | 0.924383 | 0.936639 |
+| C | 5.5 | 0.250000 | 0.157102 | 0.897727 | unattainable |
+| D | 1 | 0.250000 | 0.175000 | 1.000000 | — |
+| D | 4.5 | 0.250000 | 0.175000 | 1.000000 | unattainable |
+| D | 5.5 | 0.250000 | 0.175000 | 1.000000 | unattainable |
+
+All weak rows have orders $(0,0)$. Both higher strengths have orders $(1,-1)$.
+C raises strong-economy entry to 0.563404; D stays at 0.250000.
+C raises strong-economy ownership to 0.411984; D stays at 0.175000.
+At the collapse strength, C has lower ownership than at the weak strength because $W_H$ falls.
+
+**All conditions.** The numerical condition file has 38 rows per case.
+It records parameter domains, support widths, class order, equal admissibility, the mean gap, and the strength order.
+It also records all four strict margins, collapse conditions, ownership conditions, and low-cost diagnostics.
+A, B, and C satisfy every required condition.
+A zero equality or weak-inequality margin has its stated relation; it is not treated as a failed strict inequality.
+
+| Case | (A1) lower | (A1) upper | (A2) lower | (A2) upper |
+|---|---:|---:|---:|---:|
+| A | 1.460455 | 0.109179 | 0.005455 | 0.001349 |
+| B | 0.562273 | 0.123413 | 0.005455 | 0.001349 |
+| C | 0.021000 | 0.058891 | 0.006667 | 0.001770 |
+| D | 0.025000 | -0.018122 | 0.020000 | 0.003171 |
+
+| Case | Collapse exclusion | Collapse trade | Sufficient ownership | Exact ownership |
+|---|---:|---:|---:|---:|
+| A | 0.058137 | 0.005983 | 0.750000 | 0.384737 |
+| B | 0.132569 | 0.005983 | 0.750000 | 0.396930 |
+| C | 0.314551 | 0.008810 | 0.655478 | 0.338549 |
+| D | 0.447727 | 0.011339 | 0.750000 | 0.000000 |
+
+D retains its negative (A1) upper margin and zero exact ownership change.
+Its analytical outcome label does not claim satisfaction of the complete proposition.
+The global trade bounds still establish uniqueness at all three nodes.
+
+**Registry intervals.** The referee’s approximate interval describes only a nonempty trade-cost window.
+It does not describe the complete conditions at fixed benchmark costs.
+The three open intervals are:
+
+| Scope | Lower endpoint | Upper endpoint |
+|---|---:|---:|
+| Nonempty (A2) window | 0.40460967519168966482107943244773370178875092640359 | 0.59539032480831033517892056755226629821124907359641 |
+| Fixed benchmark vector; parts (i)–(ii) | 0.46785002968614851183510213549029473648121592947564 | 0.53809590165309027184560734770108902187925039997012 |
+| Fixed benchmark vector and collapse strength; parts (i)–(iii) | 0.46785002968614851183510213549029473648121592947564 | 0.50042430732006322816216753996977594675353215510280 |
+
+The exact endpoint formulas are $(e/(4+e),4/(4+e))$,
+$\left(141/(141+59e),19/(19+6e)\right)$, and
+$\left(141/(141+59e),4245/(4245+1559e)\right)$, respectively.
+The middle interval binds through the high-cost ceiling at its lower end and the fixed trade cost at its upper end.
+The final interval binds through the collapse condition at its upper end.
+The files retain fifty-digit evaluations; display rules use six decimals for the prior endpoints.
+
+The benchmark trade-cost window is $(1/60,1/[12(1+e)])$.
+Its bounds are 0.0166666666666666666666666666666666666666666666667 and 0.022411785114166260062403396514846977136237946652913.
+The fixed $k=0.02$ has lower and upper margins 0.003333 and 0.002412.
+The four-decimal display is $(0.0167,0.0224)$.
+The spread ratio is 0.025 against the displayed bound 0.034.
+
+The four-law entry range is $[0.301509,0.522757]$.
+The endpoints come from logistic and Laplace noise with atomic costs.
+The hyperbolic secant and Student values retain their status as diagnostics at fixed full orders.
+No new equilibrium claim applies to those two laws.
+
+**Validation and gate.** Exact decimal inputs enter the declared fifty-digit context directly.
+Independent realized-auction integrals validate receipts, profits, and win probabilities.
+Independent density roots and full-line integrals validate the threshold, entry, mean posterior, and mean price.
+Both order signs use the 400- and 800-interval grids against each fixed candidate schedule.
+The refined pass uses the required tighter quadrature target.
+The analytical bounds cover every order and arbitrary mixtures; the mesh supplies a diagnostic.
+Maximum independent formula discrepancy: 1.88738e-15.
+Maximum initial quadrature estimate: 2.44725e-12.
+Maximum refined quadrature estimate: 5.91825e-13.
+Maximum posterior inversion error: 4.64073e-14.
+Both deviation passes report zero profitable deviation.
+The analytic Laplace tails have zero truncation error.
+Every C.0 tolerance remains unchanged.
+
+The first full gate stopped at a serialization mismatch.
+Four derived CSV columns used ambient decimal precision instead of the declared local context.
+The standalone producer used 28 digits; the gate used 50 after an earlier stage.
+The serializer now applies the local fifty-digit context to the complete row.
+The final producer and full pipeline then passed.
+The first manifest, failed gate log, and repair note remain in the audit record.
+
+The final producer took 3.60 seconds.
+The full presentation sequence and both gates took 27.85 seconds.
+All eight commands returned zero.
+The numerical gate reports `VERIFY PASSED`.
+Substitution fills 115 placeholders, with zero unresolved and zero unknown keys.
+All seven release-boundary categories pass, including the new class category.
+C.10 direct revalidation reproduces every saved CSV row.
+The registry has 253 entries, including 124 new entries.
+No test was written or extended. No test suite ran.
+All work used one process and one native numerical thread.
+
+The final commands were:
+
+    /home/uctpiaj/work/Projects/competition-creates-competition/.venv/bin/python numerics/exercises/c10_classes.py
+    /home/uctpiaj/work/Projects/competition-creates-competition/.venv/bin/python audit/revision_v2_2026_10_21/run_presentation.py round3_accepted
+
+The presentation command invokes both final gates after the registry, substitution, renderer, typeset build, and reconciliation.
+The run record is `presentation_round3_accepted_runs.json`.
+The final logs have the prefix `logs/round3_accepted_`.
+
+**Presentation and reconciliation.** The project renderer produces `tables/table_class_exhibit.tex`.
+The legacy appendix contains the C.10 contract and the table.
+Visual inspection covers appendix pages 47–49, including the table on page 48.
+The inspected rows, notes, equations, and labels are readable, with no clipping or overlap.
+The scope and final hashes appear in `round3_visual_review.json`.
+This review covers the new material, not every manuscript page.
+
+The reconciliation adds 3685 rows with the note “new, round 3”.
+Every current file hash in that reconciliation matches its artifact.
+The separate `round3_comparison.json` isolates this round from the earlier numerical revision.
+The full condition margins are in `numerics/class_conditions.csv`.
+The outcomes, bounds, deviations, and diagnostic records have the common prefix `numerics/class_`.
+The run manifest is `numerics/manifests/c10_classes.json`.
+
+**Commits.** `9e7ab4df4c69209c0429577db29cceaffe8747a4` contains the exercise, validated outputs, renderer, registry, contract, reconciliation, and gate evidence.
+Its subject is “Add validated general-prior class exhibits and benchmark windows”.
+A separate documentation commit records this section with the subject “Document Round 3 class results and benchmark intervals”.
+Both commits belong to `revision/alex-2026-10-21`. No push occurred.
