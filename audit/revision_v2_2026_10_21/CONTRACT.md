@@ -42,3 +42,10 @@ No unresolved result receives a replacement value.
 10. Verification uses the producer commands and the two release gates directly.
     No test suite runs, and no test or assertion script is written.
     The historical release wrapper and independent seed do not define this revision's acceptance.
+11. The first C.6 sweep stopped at the weak class node `p=0.9701`.
+    Interior pure starts differed by about `4e-8` in orders and failed the stricter atom identity comparison.
+    The bounded refinement now solves both held-schedule first-order equations, as C.2 already does.
+    A proposal requires residual below `1e-10` and movement within the unchanged order identity tolerance.
+    Every proposal faces the complete validation again.
+    The raw prior candidates and all unconverged starts remain in the ledger.
+    An unresolved identity still stops the exercise.

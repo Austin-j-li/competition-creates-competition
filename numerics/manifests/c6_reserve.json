@@ -1,13 +1,13 @@
 {
  "exercise": "c6_reserve",
- "timestamp_utc": "2026-09-05T23:54:41.376600+00:00",
+ "timestamp_utc": "2026-10-21T18:01:43.643116+00:00",
  "inputs": {
   "benchmark": {
    "h": "10",
    "ell": "1",
    "p": "0.5",
    "rho": "0.25",
-   "c_L": "1",
+   "c_L": "0",
    "c_H": "6",
    "b": "2",
    "k": "0.02",
@@ -32,12 +32,12 @@
    "r_weak": "1.2",
    "r_strong": "3"
   },
-  "run_id": "c6_20260905T235301335190Z",
-  "replay_source": "audit/peer_polish/c6_20260905T233640627218Z",
-  "workers": 20,
+  "run_id": "c6_20261021T175944175123Z",
+  "replay_source": null,
+  "workers": 24,
   "endpoint_refinement": "orders within solver tolerance 1e-7 of -1,0,1 proposed at exact boundary and fully revalidated; raw solver profiles retained",
-  "attempt_ledger": "audit/peer_polish/c6_20260905T235301335190Z",
-  "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h - c_L/m, p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8",
+  "attempt_ledger": "audit/peer_polish/c6_20261021T175944175123Z",
+  "grid": "0..h (+eps_V for classes) by 0.05 plus events {0, ell, r, h, ell+-eps_V, h+-eps_V, declared reserves, p_L = h (binary) or h+eps_V (classes), p_H = sqrt(2r(h - c_H/M) - r^2)} with one-sided offsets 1e-4, 1e-6, 1e-8",
   "quick": false,
   "declared_only": false
  },
@@ -66,9 +66,9 @@
   "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
  },
  "outputs": {
-  "tables/reserve_comparisons.csv": "23522419e05c96516fda4924453827b8cac6f2423e3f4a181d83aee462752af7",
-  "numerics/reserve_continuations.csv": "13a4742d5bb69140b06aa5b16df3e4b7610953a9538831f8a3c706e6a071d9b8",
-  "numerics/reserve_ranges.csv": "edea909d5da3854b9cc2bb7e3e1eaa4c496e6f71b8c358d5b12860a95dc5a301"
+  "tables/reserve_comparisons.csv": "086ec6a6cbbc514839bb27e547209613e20f67598e6a38029fcb6dd22ba1b753",
+  "numerics/reserve_continuations.csv": "10a5dedde85cf7c7112fc11cf58308b9ec69ce8ecc7ea947449c85d6caf6a664",
+  "numerics/reserve_ranges.csv": "e4f263d9685f596893904325709f2781d3ed2943f177c47df64fd09713b87e45"
  },
  "checks": {
   "declared_binary_r1.2_p0.5": {
@@ -93,17 +93,17 @@
   },
   "declared_uniform_classes_r1.2_p0.5": {
    "accepted_continuations": 1,
-   "payoff_oracle_error": 1.7763568394002505e-15,
+   "payoff_oracle_error": 1.1102230246251565e-16,
    "pass": true
   },
   "declared_uniform_classes_r1.2_p1.1": {
    "accepted_continuations": 1,
-   "payoff_oracle_error": 1.7763568394002505e-15,
+   "payoff_oracle_error": 4.163336342344337e-17,
    "pass": true
   },
   "declared_uniform_classes_r3_p0.5": {
    "accepted_continuations": 1,
-   "payoff_oracle_error": 1.7763568394002505e-15,
+   "payoff_oracle_error": 2.7755575615628914e-17,
    "pass": true
   },
   "declared_uniform_classes_r3_p1.1": {
@@ -126,113 +126,29 @@
    "E_alternative": 0.513372798985137
   },
   "revenue_comparison_uniform_classes_r1.2": {
-   "R_T_original": 0.3926649305555555,
-   "R_T_alternative": 0.43217263192739963,
+   "R_T_original": 0.39266493055555557,
+   "R_T_alternative": 0.43217263192739974,
    "alternative_higher": true,
    "E_original": 0.25000000000000006,
-   "E_alternative": 0.5403091180516092
+   "E_alternative": 0.5403091180516093
   },
   "revenue_comparison_uniform_classes_r3": {
-   "R_T_original": 0.8723672029559061,
+   "R_T_original": 0.8723672029559062,
    "R_T_alternative": 1.01449970228611,
    "alternative_higher": true,
-   "E_original": 0.5227602449522809,
+   "E_original": 0.522760244952281,
    "E_alternative": 0.5116375544805927
   },
   "payoff_oracle": {
-   "max_error": 2.1269444538951632e-14,
+   "max_error": 3.552713678800501e-15,
    "pass": true
   },
   "sweep": {
-   "nodes_attempted": 1664,
-   "initial_nodes": 1040,
-   "refined_nodes": 624,
-   "refinement_planned_nodes": 624,
+   "nodes_attempted": 1120,
+   "initial_nodes": 1024,
+   "refined_nodes": 96,
+   "refinement_planned_nodes": 96,
    "refinement_intervals": [
-    [
-     "binary",
-     "1.2",
-     "8",
-     "8.05",
-     "branch change"
-    ],
-    [
-     "binary",
-     "1.2",
-     "8.4",
-     "8.45",
-     "branch change; unresolved"
-    ],
-    [
-     "binary",
-     "1.2",
-     "8.45",
-     "8.5",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "1.2",
-     "8.5",
-     "8.55",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "1.2",
-     "8.55",
-     "8.6",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "1.2",
-     "8.6",
-     "8.65",
-     "branch change; unresolved"
-    ],
-    [
-     "binary",
-     "3",
-     "8",
-     "8.05",
-     "branch change"
-    ],
-    [
-     "binary",
-     "3",
-     "8.4",
-     "8.45",
-     "branch change; unresolved"
-    ],
-    [
-     "binary",
-     "3",
-     "8.45",
-     "8.5",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "3",
-     "8.5",
-     "8.55",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "3",
-     "8.55",
-     "8.6",
-     "unresolved"
-    ],
-    [
-     "binary",
-     "3",
-     "8.6",
-     "8.65",
-     "branch change; unresolved"
-    ],
     [
      "uniform_classes",
      "1.2",
@@ -250,99 +166,29 @@
     [
      "uniform_classes",
      "1.2",
-     "8",
-     "8.05",
-     "branch change"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "8.4",
-     "8.45",
-     "branch change; unresolved"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "8.45",
-     "8.5",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "8.5",
-     "8.55",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "8.55",
-     "8.6",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "1.2",
-     "8.6",
-     "8.65",
-     "branch change; unresolved"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "8",
-     "8.05",
+     "10.0001",
+     "10.049900000000000000000000000000",
      "branch change"
     ],
     [
      "uniform_classes",
      "3",
-     "8.4",
-     "8.45",
-     "branch change; unresolved"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "8.45",
-     "8.5",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "8.5",
-     "8.55",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "8.55",
-     "8.6",
-     "unresolved"
-    ],
-    [
-     "uniform_classes",
-     "3",
-     "8.6",
-     "8.65",
-     "branch change; unresolved"
+     "10.0001",
+     "10.049900000000000000000000000000",
+     "branch change"
     ]
    ],
    "refinement_skipped_nodes": 0,
-   "identity_refinement_nodes": 2,
-   "prior_identity_candidates_preserved": 28,
-   "event_nodes": 40,
-   "candidates_evaluated": 11414,
-   "candidates_rejected": 1323,
-   "candidates_unresolved": 484,
-   "duplicates_merged": 7344,
-   "unresolved_nodes": 503,
+   "identity_refinement_nodes": 3,
+   "prior_identity_candidates_preserved": 42,
+   "event_nodes": 36,
+   "candidates_evaluated": 2646,
+   "candidates_rejected": 1073,
+   "candidates_unresolved": 32,
+   "duplicates_merged": 414,
+   "unresolved_nodes": 45,
    "nodes_without_accepted_continuation": 0,
-   "nodes_analytically_unique": 707,
+   "nodes_analytically_unique": 1075,
    "refinement_rule": "intervals with a change in the accepted branch set, an unresolved endpoint, or the found revenue maximum are refined to 0.002"
   }
  },

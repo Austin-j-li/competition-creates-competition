@@ -257,6 +257,25 @@ def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tu
                     nearby = [root for root in ar["roots"] if abs(root - v) <= ORDER_IDENTITY_TOL]
                     if nearby:
                         v = min(nearby, key=lambda root: abs(root - v))
+                if refine_identity and 0.0 < u < 1.0 and 0.0 < v < 1.0:
+                    from scipy import optimize
+                    from numerics.continuations import ORDER_IDENTITY_TOL
+                    from numerics.deviations import dU
+
+                    def foc(z):
+                        schedule = make_schedule(PRIM, pay, OrderProfile.pure(float(z[0]), -float(z[1])))
+                        return [dU(schedule, "H", float(z[0])).value, dU(schedule, "L", float(z[1])).value]
+
+                    root = optimize.root(foc, [u, v], tol=1e-10)
+                    residual = max(abs(x) for x in foc(root.x))
+                    movement = max(abs(float(root.x[0]) - u), abs(float(root.x[1]) - v))
+                    proposed = bool(root.success and all(0 < x < 1 for x in root.x)
+                                    and residual < 1e-10 and movement <= ORDER_IDENTITY_TOL)
+                    diag.setdefault("interior_identity_refinements", []).append({
+                        "initial": [u, v], "proposal": list(root.x), "residual": residual,
+                        "movement": movement, "proposed_for_full_validation": proposed})
+                    if proposed:
+                        u, v = map(float, root.x)
                 # every converged start is validated and recorded; economic duplicates are merged below by the
                 # continuation identity (complete strategies plus price information), never by orders alone
                 sched = make_schedule(PRIM, pay, OrderProfile.pure(u, -v))
@@ -335,6 +354,8 @@ def solve_reserve(args, run_id: str = "c6", refine_identity: bool = False) -> tu
         refined_diag["prior_identity_attempt"] = result
         refined_diag["identity_refinement_method"] = ("A pure high-type endpoint with a nearby independently solved asymmetric root proposes that root "
                                                       "within the existing order-identity tolerance, then rebuilds and fully validates the schedule. "
+                                                      "Interior pure candidates use the held-schedule first-order equations, with residual below 1e-10 "
+                                                      "and movement within the existing order-identity tolerance, followed by full validation. "
                                                       "Raw prior profiles and validations remain in prior_identity_attempt.")
         if any(row["identity_note"] for row in refined_rows):
             raise ValueError(f"Economic identity remained unresolved after bounded root refinement: {node}")

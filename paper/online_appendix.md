@@ -1186,7 +1186,7 @@ At reserves with $\Delta_T=0$, all entry impossible, or a degenerate payoff, ana
 
 The online summary of the sweep is headed "highest revenue among continuations found", never "optimal reserve". It lists, per economy and strength, the reserve and continuation with the highest accepted revenue, the number of reserve nodes attempted, the number with more than one distinct accepted continuation, and the number of unresolved nodes, all computed from the attempt ledger. It carries its known limits in the same table note: the search covers the declared candidate classes only, the pricing family at each node is the benchmark construction, and no envelope is certified. It is not in the paper.
 
-The coverage counts use the final pass at each reserve. Earlier attempts that triggered continuation-identity refinement remain in the numerical archive, with their inputs and outcomes; they are not counted as additional final-pass nodes. A bounded refinement of near-root candidates is followed by full revalidation before economically identical continuations are merged.
+The coverage counts use the final pass at each reserve. Earlier attempts that triggered continuation-identity refinement remain in the numerical archive, with their inputs and outcomes; they are not counted as additional final-pass nodes. A bounded refinement of near-root candidates is followed by full revalidation before economically identical continuations are merged. For interior pure candidates, the refinement solves both held-schedule first-order equations. It requires residual below `1e-10` and movement within the existing order identity tolerance. Raw candidates and unconverged starts remain in the ledger.
 
 ```{=latex}
 \input{tables/table_reserve_exploratory.tex}
@@ -1413,6 +1413,8 @@ $PY numerics/render/render_all.py
 $PY numerics/render/latex.py
 $PY numerics/verify.py --final
 ```
+
+For the zero-cost revision, run the producer and presentation commands above, then `numerics/release_checks.py`. The historical wrappers below also run a test suite; they are not part of this revision procedure.
 
 Two entry points wrap these sequences. `make peer-release` validates the existing completed calculation outputs, runs the tests, regenerates presentation, typesets, runs the final gate, and assembles the deliverables after checking a matching visual-inspection record. For a new revision, the release script's `--build-only` option produces the files for inspection and `--package-only` validates and packages them afterward. `make peer-reproduce` runs the same declared sequence in a fresh working and output directory, without any accepted result carried over from a previous run, and compares the canonical numerical outputs, exact input declarations, certificate validity, resolved references, and extracted manuscript text with the release. The release runner fixes creation-date metadata with `SOURCE_DATE_EPOCH`; the comparison requires identical substantive content rather than relying on byte-identical PDFs. `replication/README.md` lists every producer command and the role of every file.
 
