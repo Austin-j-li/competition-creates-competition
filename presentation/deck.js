@@ -1,6 +1,6 @@
 /* deck.js: the slide engine of the /talk/ page.
  *
- * The 47 slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
+ * The 50 slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
  * the 1600 x 900 stage, steps through reveals ([data-step]), follows the backup links of
  * talk.tex (a goto button jumps to a \hypertarget; Back returns to the frame and step it came
  * from), and opens the overview, the speaker notes and the notation. Widgets draw figures with
@@ -66,8 +66,8 @@
     });
     steps[index] = step;
     var num = s.dataset.num;
-    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / 16).toFixed(1) + '%');
-    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / 16');
+    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / 19).toFixed(1) + '%');
+    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / 19');
     var ms = maxStep();
     $('#progress-label').textContent = ms ? 'step ' + (step + 1) + ' of ' + (ms + 1) : (backup ? 'backup' : '');
     $('#previous').disabled = index === 0 && step === 0;
@@ -143,7 +143,7 @@
   function closePanel() { var d = $('#panel'); if (d.open) d.close(); $('#stage').focus({ preventScroll: true }); }
   function partName(p) { var x = (META.parts || []).filter(function (q) { return String(q.n) === String(p); })[0]; return x ? x.name : ''; }
   function overview() {
-    var html = '<p class="notes-meta">All 47 frames of the Beamer deck in their order. F10a and F10b share number 10; backups A1 to A29 follow the conclusion.</p>';
+    var html = '<p class="notes-meta">All 50 frames of the Beamer deck in their order. F10a and F10b share number 13; backups A1 to A29 follow the conclusion.</p>';
     (META.parts || []).forEach(function (p) {
       var items = (META.frames || []).filter(function (f) { return String(f.part) === String(p.n); });
       if (!items.length) return;
@@ -175,7 +175,7 @@
       '<span><kbd>→</kbd> <kbd>Space</kbd></span><span>next step, then the next slide</span>' +
       '<span><kbd>←</kbd></span><span>previous step or slide</span>' +
       '<span><kbd>Home</kbd> <kbd>End</kbd></span><span>title, conclusion</span>' +
-      '<span><kbd>O</kbd></span><span>overview of all 47 frames</span>' +
+      '<span><kbd>O</kbd></span><span>overview of all 50 frames</span>' +
       '<span><kbd>N</kbd></span><span>speaker notes</span>' +
       '<span><kbd>G</kbd></span><span>notation</span>' +
       '<span><kbd>T</kbd></span><span>dark or light theme</span>' +
@@ -286,7 +286,7 @@
       var o = {}; Object.keys(s).forEach(function (k) { o[k] = s[k]; }); if (o.yref === keepY + ' domain') o.yref = 'y domain'; return o;
     });
     var anns = L.annotations.filter(function (a) { return !a.panel && (a.yref === 'y domain'); });
-    return { traces: traces, layout: { height: 360, margin: { l: 64, r: 20, t: 36, b: 56 }, xaxis: xa, yaxis: ya, shapes: shapes, annotations: anns } };
+    return { traces: traces, layout: { height: 310, margin: { l: 64, r: 20, t: 36, b: 56 }, xaxis: xa, yaxis: ya, shapes: shapes, annotations: anns } };
   }
   function bigger(spec, height) {
     spec.layout.height = height;
@@ -304,24 +304,6 @@
   }
 
   /* ---------- widgets ---------- */
-  var INFOSETS = {
-    seller: 'Seller: commits to the sale rule, a cash second-price auction with reserve p, before any trading. The rule is public.',
-    investor: 'Investor: knows the challenger\'s value θ. Trades the target\'s stock against noise traders; has no control rights and cannot bid.',
-    makers: 'Market makers: see only total order flow, not who traded. Price the share at expected sale proceeds, which anticipates entry.',
-    challenger: 'Challenger: sees the stock price and its own cost C, never the order flow, θ or R. Paying C reveals θ and permits a bid.',
-    bidders: 'Bidders: the incumbent knows its value R ~ U[0, r], and r is public. A prepared challenger knows θ. Both bid truthfully.'
-  };
-  widgets.infosets = {
-    render: function (s) {
-      $$('.tl', s).forEach(function (b) {
-        b.setAttribute('aria-pressed', 'false');
-        b.onclick = b.onfocus = b.onmouseenter = function () {
-          $$('.tl', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          $('#f4-infoset').textContent = INFOSETS[b.dataset.info];
-        };
-      });
-    }
-  };
   widgets.cases = {
     render: function (s) {
       $$('.segmented button', s).forEach(function (b) {

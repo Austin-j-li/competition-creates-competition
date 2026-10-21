@@ -2,7 +2,7 @@
 
     python3 presentation/build.py
 
-Steps: bind the research data through handout/data.py; render the 47 slide records of
+Steps: bind the research data through handout/data.py; render the 50 slide records of
 content.js with presentation/render.mjs (KaTeX at build time, a registry guard on every number);
 read the speaker notes from talk/script.tex; assemble dist/index.html with the locked Fira faces
 and the local KaTeX copy of the handout; record source hashes; then run check_deck.mjs, which
@@ -34,9 +34,9 @@ TABLE_FILES = ("table1_auction_primitives.tex", "table2_equilibrium_controls.tex
                "table4_reserve_comparisons.tex", "table_signal_grid.tex")
 PARTS = [(1, "Question"), (2, "Model"), (3, "Two claims"), (4, "Price"), (5, "Theorem"), (6, "Numbers"),
          (7, "Boundaries"), (8, "Close"), ("B", "Backups")]
-CHECKPOINTS = ("Checkpoints: frame 3 by 4.75 min; frame 5 by 9.5 min, else skip frame 6 and say its two "
-               "numbers on frame 5; frame 9 by 18.5 min, else skip frames 12 and 14; frame 11 by 23.5 min, "
-               "else skip frame 15 and give frame 13 as one sentence.")
+CHECKPOINTS = ("Checkpoints: frame 3 by 3.5 min, else give frame 3 its takeaway line only; frame 7 by 11.0 min, "
+               "else skip frame 9 and say its two numbers on frame 8; frame 12 by 19.75 min, else skip frames 15 "
+               "and 17; frame 14 by 24.75 min, else skip frame 18 and give frame 16 as one sentence.")
 
 
 def digest(body: bytes) -> str:
@@ -208,8 +208,8 @@ def build() -> None:
         raise SystemExit("Slide rendering failed: a number, a formula or a status word did not pass.")
     rendered = json.loads(run.stdout)
     frames = rendered["frames"]
-    if len(frames) != 47:
-        raise SystemExit(f"Expected 47 frames, found {len(frames)}")
+    if len(frames) != 50:
+        raise SystemExit(f"Expected 50 frames, found {len(frames)}")
 
     # Subtitles: render through the same helper output (content.js returns HTML already).
     for f in frames:
@@ -262,7 +262,7 @@ def build() -> None:
     }, indent=2) + "\n")
 
     md = ["# Competition Creates Competition", "",
-          "Speaker notes, 40-minute session: 18 main frames (F10a and F10b share number 10) and 29 backups.", "", CHECKPOINTS, ""]
+          "Speaker notes, 40-minute session: 21 main frames (F10a and F10b share number 13) and 29 backups.", "", CHECKPOINTS, ""]
     for f in frames:
         n = notes.get(f["label"], {})
         md.append(f"## {f['label']}. {re.sub(r'[$]', '', f['title'])}")

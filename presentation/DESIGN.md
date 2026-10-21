@@ -1,4 +1,4 @@
-# Slides design contract ("UCL family")
+# Slides design contract (the ruled document)
 
 The contract between the slide files: `content.js` (the frames), `render.mjs` (build-time
 rendering and the number guard), `deck.js` and `template.html` (the engine), `deck.css` (the
@@ -7,9 +7,11 @@ name in it.
 
 ## 1. Brief
 
-The web version of `talk/talk.tex`, the Beamer deck of the 40-minute seminar talk (30.25 planned
-minutes and a question reserve). All 47 frames stay in the Beamer order and organisation. The
-look copies the Beamer deck (moloch in the UCL palette) and the handout of the same design.
+The web version of `talk/talk.tex`, the Beamer deck of the 40-minute seminar talk (31.5 planned
+minutes and a question reserve). All 50 frames stay in the Beamer order and organisation. The
+look is the ruled document system of the handout: ink on cool white paper, Archivo, two rule
+weights (a 1 px hairline and a 2 px ink rule) and no fills, cards, pills or gradients. The 2 px
+rule under each frame title is the progress rule of the metropolis Beamer deck.
 
 Invariants:
 
@@ -21,8 +23,9 @@ Invariants:
   source at the precision shown.
 - Status words: analytical, computer-assisted, numerical diagnostic, open; declarations carry
   `input`. Each status line on a slide names one of them.
-- Purple is chrome only. `--c-info` (#AA4B00) marks the target-payoff spread and the
-  information chain; `--c-cost` (#006F50) marks preparation costs, the floor and the window.
+- The chrome has no accent colour: links, buttons, the rail and the focus ring are ink.
+  `--c-info` (#B54B00) marks the target-payoff spread and the information chain; `--c-cost`
+  (#006459) marks preparation costs, the floor and the window. Nothing else is coloured.
 - The deviation phrase follows `talk.tex` ("every unilateral deviation").
 - Benchmark paper only.
 
@@ -54,8 +57,9 @@ exactly. Intervals must equal the registry display, or its negation with the bou
   backup, origin, noframenumbering }
 ```
 
-- `id`: `f0` … `f16`, `f10a`, `f10b`, `a1` … `a29`. `label`: the `talk.tex` label.
-- `num`: the displayed number; `F10a` and `F10b` both show 10; backups show their label.
+- `id`: `f0` … `f16`, `f1b`, `f4b`, `f5b`, `f10a`, `f10b`, `a1` … `a29`. `label`: the `talk.tex` label.
+- `num`: the displayed number, 0 to 19 in deck order; `F10a` and `F10b` both show 13; backups show
+  their label.
 - `part`: 1 to 8 for the main frames, `B` for backups (section 7).
 - `title`: the `talk.tex` title argument verbatim; `$...$` is mathematics. `titleQ` maps a
   number in the title to its registry key (only F10a and F10b, as in `talk.tex`).
@@ -92,7 +96,7 @@ title with value, status and source); formula numbers add `.q-tex`; table number
 
 Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.bench`, `.keyidea`,
 `.info`, `.cost`, `.grayline`, `.graycite`, `.status`, `.takeaway`, `.nav`, `.flow > .box`,
-`.timeline > .tl`, `.infoset`, `.segmented`, `.two-lines`, `.resultbox > .propitem > .propnum`,
+`.timeline > .tl`, `.segmented`, `.two-lines`, `.resultbox > .propitem > .propnum`,
 `.split` (`.narrow`, `.wide`), `.figure`, `.slider`, `.readout`, `.bars`, `.notation`, `.refs`,
 `.steps`, and the table classes named after their frame (`.t-bench`, `.t-controls`, …).
 
@@ -101,11 +105,10 @@ Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.bench`,
 | `widget` | Frame | Elements | Behaviour |
 |---|---|---|---|
 | `title` | F0 | `.cover` | static title page |
-| `infosets` | F4 | `.tl[data-info]`, `#f4-infoset` | focus, hover or click shows the agent's information set |
 | `cases` | F5 | `.segmented [data-case]`, `tr[data-row]` | highlights the row R ≤ ℓ or R > ℓ |
 | `x1` | F6 | `#x1` | spread and profit at the prior from `fig1`, markers at r0 and r1 |
 | `x2` | F8 | `#x2`, `#x2-r`, `#x2-r-value`, `#x2-readout` | profit at three beliefs from `fig1` with the cost lines; the slider moves a marker and reads the closed forms (a fixed-order calculation) |
-| `controls` | F11 | `.segmented [data-row]`, `#f11-bars` | highlights a row and draws its two entry values with its status |
+| `controls` | F11 | `.segmented [data-row]`, `#f11-bars` | highlights a row and draws its two entry values |
 | `footnote` | F13 | `[data-toggle]` | opens the signal-grid line |
 | `access` | F14 | `.segmented [data-col]` | highlights a column |
 | `rows` | A3 | `.hover-rows` | row highlight on hover |
@@ -115,55 +118,69 @@ Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.bench`,
 | `x3` | A14 | `#x3` | Figure 3 builder |
 | `x5a`, `x5b` | A24, A25 | `#x5a`, `#x5b` | one panel each of the Figure 2 builder, with every display rule |
 
-F7 also uses `[data-toggle]` for its arithmetic line. Figures draw with `CCC.charts.draw` from
+Figures draw with `CCC.charts.draw` from
 `handout/charts.js` at a zoom of 1.4, so text reads at a distance. The closed forms come from
 `handout/explorer.js`.
 
 ## 6. Tokens and type
 
 ```css
-:root { --ucl-dark:#361A54; --ucl-bright:#993BFF; --ucl-mid:#BA82FF; --bg:#ffffff;
-  --surface:#f6f3fa; --ink:#14111a; --muted:#5d5866; --gray-text:#616161; --line:#d9d3e2;
-  --c-info:#AA4B00; --c-cost:#006F50;
-  --font-sans:"Fira Sans","CCC Symbols",system-ui,Arial,sans-serif;
+:root { --bg:#fbfcfc; --page:#e7eaee; --surface:#f1f3f5; --ink:#1e2530; --muted:#5b6573;
+  --line:#c7cdd5; --grid:#e4e8ec; --c-info:#b54b00; --c-cost:#006459;
+  --pass:#1b7a48; --fail:#b0261c; --selection:rgba(168,71,0,.22);
+  --font-sans:"Archivo","CCC Symbols",system-ui,Arial,sans-serif;
   --font-mono:"Fira Mono","CCC Symbols",ui-monospace,Menlo,monospace }
 ```
 
-The dark theme swaps the ground to #17101f and lightens the concept colours. The faces are the
-handout's locked files (`handout/fonts.lock.json`): Fira Sans 400 to 700 with italic, Fira Mono
-400 to 700, and the "CCC Symbols" fallback for arrows and relations.
+The dark theme is a slate paper, not an inversion: `--bg` #1a1f26, `--ink` #e8ecf1, `--muted`
+#a3adb9, `--line` #3d4652, `--c-info` #f6a157, `--c-cost` #46b3a8. The tokens are the handout's
+(`handout/style.css`), so a figure drawn by `handout/charts.js` reads the same on both surfaces.
+The faces are the handout's locked files (`handout/fonts.lock.json`): Archivo, a variable font
+(weight 100 to 900, width 62% to 125%, upright and italic), Fira Mono 400 to 700 for hashes, and
+the "CCC Symbols" fallback for arrows and relations. The slides do not use the handout's text
+serif. Archivo's width axis is used once: the title frame is set expanded (112%).
 
-Type scale at 1600 x 900: slide title 48 px Fira Sans 500 on the purple band; subtitle 25 px;
-body 31 px; small 27 px; grey lines 23 px; status 21 px; tables 27 px (dense backups 20 to
-24 px); link buttons 19 px. Slide padding 26 px 56 px. The progress rule under the title band
-is 5 px, bright purple, as long as the frame number over 16.
+Rules do the structural work. The 1 px hairline (`--line`) bounds the tools bar, the rail, the
+frame head, table rows, folds, figures and dialog heads; the 2 px ink rule opens the title block,
+the takeaway, the result box and the booktabs table, and is the progress rule. Radius is 0, or
+2 px on buttons, chips and the hover readout. No shadow except the dialog and the hover readout.
+Reveals are the one motion: opacity and a 6 px rise over 200 ms.
+
+Type scale at 1600 x 900: frame title 44 px Archivo 620 in ink, with the frame number at the
+right in 44 px 400 muted; subtitle 25 px muted; body 31 px; small 27 px; grey lines 23 px;
+status 21 px; tables 27 px (dense backups 20 to 24 px); takeaway 31 px 500 over a 2 px rule;
+link buttons 19 px 500 as ruled rectangles; footer 15 px; title frame 56 px 620 expanded between
+a 2 px rule and a hairline. The result box is the certificate frame: a 1 px border inside a 3 px
+outline at a 3 px offset, the only framed object on either surface. Slide padding 26 px 56 px. The progress rule under the frame head is 2 px
+ink over a 1 px hairline, as long as the frame number over 19; backups show the hairline only.
 
 ## 7. Parts
 
 | Part | Name | Frames |
 |---|---|---|
-| 1 | Question | F0, F1, F2, F3 |
-| 2 | Model | F4 |
-| 3 | Two claims | F5, F6 |
-| 4 | Price | F7, F8 |
+| 1 | Question | F0, F1, F1b, F3, F2 |
+| 2 | Model | F4, F4b |
+| 3 | Two claims | F5, F5b, F6 |
+| 4 | Price | F8, F7 |
 | 5 | Theorem | F9 |
 | 6 | Numbers | F10a, F10b, F11 |
 | 7 | Boundaries | F12, F13, F14 |
 | 8 | Close | F15, F16 |
 | B | Backups | A1 to A29 |
 
-Links and origins (from `talk.tex`): F1 → A1, A2; F3 → A3, A29; F4 → A4, A5, A7; A5 → A6;
-F5 → A8, A9; F7 → A10, A11, A12; F8 → A13, A14, A15; F9 → A16, A17, A18; F10b → A19, A20,
-A21; F11 → A22, A23; F12 → A24; A24 → A25; F13 → A26; F14 → A27; A27 → A28.
+Links and origins (from `talk.tex`): F1 → A1; F1b → A2; F3 → A3, A29; F4 → A4, A5; A5 → A6;
+F4b → A7, A11, A12, A14; F5 → A8, A9; F5b → A19; F8 → A13, A15; F7 → A10; F9 → A16, A17,
+A18; F10b → A20, A21; F11 → A22, A23; F12 → A24; A24 → A25; F13 → A26; F14 → A27; A27 → A28.
 
 ## 8. Notation
 
 `glossary` lists every symbol the slides use, with a pattern that finds it in a slide's
 LaTeX. `defines` on a frame introduces symbols. `check_deck.mjs` walks the frames in deck order
 (the main frames, then the backups) and fails if a pattern matches before the frame that
-defines it. The order follows `talk/structure-plan.md`, section 6.1: R, r, θ, h, ℓ, p, C,
-c_L, c_H, ρ on F4; Δ_T, t_θ, g_H, g_L and the general-support F, r̄ on F5; r0, r1 on F6; μ, m,
-M, b, k, (q_H, q_L) on F7; B_r and r2 on F8; the dummy q on F9; backup-only symbols on the
+defines it. The order follows the deck (section 6.1 of `talk/structure-plan.md` records the
+earlier plan): R, r, θ, h, ℓ, p, C,
+c_L, c_H, ρ on F4; μ, m, M, b, k, (q_H, q_L), the order q, X, Z and P on F4b; Δ_T, t_θ, g_H,
+g_L, the general-support F, r̄ and B_r on F5; r0, r1 and r2 on F5b; backup-only symbols on the
 first backup that shows them. `notation` holds the A12 rows; the A12 slide and the G panel
 render from it.
 

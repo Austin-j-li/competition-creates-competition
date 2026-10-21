@@ -35,11 +35,11 @@ async (page, base = 'http://127.0.0.1:8765/', deck = '') => {
         errors: CCC.errors,
         overflow: document.documentElement.scrollWidth > innerWidth,
         theme: document.documentElement.dataset.theme,
-        fira: [...document.fonts].some(f => f.family.replace(/"/g, '') === 'Fira Sans' && f.status === 'loaded'),
+        fira: [...document.fonts].some(f => f.family.replace(/"/g, '') === 'Archivo' && f.status === 'loaded'),
         charts: Object.values(CCC.charts.status()).every(s => s.mounted)
       }));
       check(state.plots === 5 && state.charts && !state.mathErrors && !state.errors.length && !state.overflow, JSON.stringify(state));
-      check(state.fira, 'Fira Sans is loaded');
+      check(state.fira, 'Archivo is loaded');
       check(state.theme === theme, 'Requested theme');
       // hover readout on Figure 2
       await page.locator('#chart-fig2').scrollIntoViewIfNeeded();
@@ -98,12 +98,12 @@ async (page, base = 'http://127.0.0.1:8765/', deck = '') => {
     await page.goto(deck);
     await page.waitForFunction(() => window.DECK);
     const s = await page.evaluate(() => ({ check: DECK.selfCheck(), audit: DECK.audit() }));
-    check(s.check.slides === 47 && !s.check.errors.length && !s.check.mathErrors && !s.audit.length, JSON.stringify(s));
-    await page.evaluate(() => DECK.go('f10b', { step: 0 }));
-    await page.locator('#f10b button[data-target="app:scale"]').click();
+    check(s.check.slides === 50 && !s.check.errors.length && !s.check.mathErrors && !s.audit.length, JSON.stringify(s));
+    await page.evaluate(() => DECK.go('f5b', { step: 0 }));
+    await page.locator('#f5b button[data-target="app:scale"]').click();
     check(await page.evaluate(() => DECK.selfCheck().active) === 'a19', 'Backup link');
     await page.keyboard.press('Escape');
-    check(await page.evaluate(() => DECK.selfCheck().active) === 'f10b', 'Back from a backup');
+    check(await page.evaluate(() => DECK.selfCheck().active) === 'f5b', 'Back from a backup');
     await page.keyboard.press('End');
     check(await page.evaluate(() => DECK.selfCheck().active) === 'f16', 'End key');
     slides = s.check;

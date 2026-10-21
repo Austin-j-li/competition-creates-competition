@@ -4,6 +4,12 @@ Paper: "Competition Creates Competition: Stock Prices and the Discovery of Takeo
 Stance: author presentation. Genre: conference or job-market talk for a generalist finance-economics room.
 Sources: `talk/notes/paper-digest.md`, `talk/notes/audit-adoptions.md` (binding for notation and wording), `audit/talk_consistency/report.md`, `paper/main_filled.md` (line numbers are main.md = main_filled.md lines), `numerics/quantity_registry.csv` (registry names in parentheses), `references.bib`. Built from `talk/notes/plan-A.md` (base) and `talk/notes/plan-B.md` (grafts), then revised in place after an external critique (section 12 logs every point).
 
+Revision of 20 October 2026: the author's Overleaf revision of `talk/talk.tex` rewrote the opening and reordered the price frames. Frame 1 now gives the setting, frame 2 the received answer, frame 3 past work as a table, and frame 4 the punchline. Three frames are new: F1b (the question), F4b (trading and the stock price) and F5b (the benchmark inputs). F8 now comes before F7, and the status labels left the slides. Sections 1 and 10 and the A29 row follow the revised deck; `talk/talk.tex` and `presentation/content.js` are the frame list. Sections 2 to 9 and 11 to 12 record the earlier plan and use its frame numbers. The labels did not change, so map a number through its label:
+
+| Label | F0 | F1 | F1b | F3 | F2 | F4 | F4b | F5 | F5b | F6 | F8 | F7 | F9 | F10a/b | F11 | F12 | F13 | F14 | F15 | F16 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Frame number | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+
 ---
 
 ## 0. Judge's scores and grafts
@@ -49,11 +55,11 @@ Scores (1-10) on the seven criteria:
 | Item | Setting |
 |---|---|
 | Total session | 40 minutes, including questions and interruptions (fixed) |
-| Planned speech | 30.25 minutes (75.6%): title 0.25 + 16 content frames 30.0 |
-| Question reserve | 9.75 minutes (24.4%) |
-| Content frames | 16. Frame 10 is a two-step build (10a, 10b) made by duplicating the frame and counts once, so there are 17 physical main frames after the title |
+| Planned speech | 31.5 minutes (78.8%): title 0.25 + 19 content frames 31.25 |
+| Question reserve | 8.5 minutes (21.3%) |
+| Content frames | 19. Frame 13 is a two-step build (labels F10a, F10b) made by duplicating the frame and counts once, so there are 20 physical main frames after the title |
 | Appendix | 29 backup frames after `\AppendixStart`. Each is reached from exactly one origin (a main frame, or for A6, A25 and A28 the backup before it) via `\PlaceNav` and returns there via `\BackButton`. Every backup that answers a likely question hangs off a frame that is never cut (section 10) |
-| Punchline | Frame 2 opens at 2.25 min. The headline numbers are on screen and spoken by about 2.75 min, and the punchline frame is complete by 4.25 min |
+| Punchline | The setting, the received answer and past work come first (frames 1 to 3). The punchline frame opens at 4.5 min and is complete by 6.25 min. The headline numbers come with the benchmark table on frame 13 |
 | Class and theme | `\documentclass[10pt,aspectratio=169]{beamer}`, `\usetheme{moloch}` (maintained metropolis successor) in the UCL brand palette with a frame-title progress bar, Fira Sans text, `\usepackage{econ-slides-compat}`, `\usefonttheme[onlymath]{serif}` (F29), XeLaTeX. Text margins keep Madrid's 433 pt text width, which the frames were laid out for |
 | Title page | `[plain]`, uncounted, full-bleed UCL dark purple with white text. Paper title on two balanced lines; `\author{Austin Li}`; `\institute{Department of Economics\\University College London}`; `\date{}`. No venue or date |
 | Overlays | None: no `\pause`, `\only`, `\onslide` or `\uncover`. The single build (10a → 10b) is a duplicated frame. Backup figure panels (A24 → A25) are separate frames |
@@ -586,8 +592,8 @@ All backups follow `\AppendixStart` in this order (displayed A1, A2, ...), group
 | A1 `app:interval` | Which deals have a decision interval | A disclosed approach, strategic review or open contest can create one; none does so automatically; a wholly confidential process does not. Strength = the public distribution of the incumbent's value, not an announced bid. Imprivata's proxy separates approach, outreach and indications of interest conditional on diligence `\graycite{Imprivata 2016; Boone and Mulherin 2007; Gentry and Stroup 2019}`: evidence of a costly preparation stage, not that a price drew anyone in. The paper settles no specific transaction (main.md 33-39) | 1 | "Is this realistic? Which deals fit? Isn't the process usually confidential?" |
 | A2 `app:evidence` | Evidence: a design, not a result | Online Appendix D pilot: reconstruct from disclosure records the timing of approaches, public visibility, buyer contacts, diligence, proposals and final selection, separating when an event occurred from when it first became public. First requirement: a publicly understood sale opportunity that stays contestable while a challenger decides. Outcome is the decision to prepare; prices must precede it; later returns can reflect anticipated arrival. Design only: no sample, effect, instrument or identification strategy (main.md 398-400) | 1 | "Can you test it? Is there evidence?" |
 | A3 `app:lit` | Related work in more detail | Two lines each, "shows / here", metadata from `references.bib`: Dow, Goldstein and Guembel 2017; Edmans, Goldstein and Jiang 2012, 2015; Fishman 1988; Hirshleifer and Png 1989; Levin and Smith 1994; Roberts and Sweeting 2013; Gentry and Stroup 2019; Persico 2000; Luo 2005; Betton, Eckbo, Thompson and Thorburn 2014; Lin, Ma, Yang and Zhu 2025; Cornelli and Li 2002. Increment line: the opposition of the two returns under a sale rule, and the entry reversal (main.md 27) | 3 | "How is this different from feedback-effect models or auction-entry models?" |
-| A4 `app:omit` | What the model leaves out, and why | Native two-row table. **In the model:** neither bidder trades; the investor has no initial position, cannot bid, tender or acquire, and has no control rights; the sale binds all shares (no tendering or holdout); every wrong-signed order loses against every candidate schedule, so the investor cannot profit by faking good news (C33). **Outside the model:** toeholds `\graycite{Bulow, Huang and Klemperer 1999}`; free riding `\graycite{Grossman and Hart 1980}`; announced or jump bids as signals `\graycite{Fishman 1988}` (strength here is a distribution); incumbent or target manipulation and endogenous investor research `\graycite{Goldstein and Guembel 2008}`; first-price and bargaining-with-trading equilibria. No statement on the direction of a toehold effect: the paper does not solve it | 4 | "Wouldn't the incumbent manipulate the price, buy a toehold, or trade on its own value?" |
-| A5 `app:info` | Complementary, not superior, information | The challenger knows its own integration plans; a specialist investor may know the target's customers, technology and product demand: different facts about the same acquisition match (main.md 17, 37). Preparation (diligence) is what reveals the exact value to the challenger (main.md 35, 330). The benchmark's perfectly informed investor and uninformed challenger make the mechanism visible; Section 5.3 removes both extremes. The reversal holds with challenger accuracy d = 0.75 above investor accuracy a = 0.70 (Prop. A.7, analytical). Forward button [The signal economy → A6] | 4 | "Why would an investor know the challenger's value when the challenger does not?" |
+| A4 `app:omit` | What the model includes and leaves out | Native two-row table. **In the model:** neither bidder trades; the investor has no initial position, cannot bid, tender or acquire, and has no control rights; the sale binds all shares (no tendering or holdout); every wrong-signed order loses against every candidate schedule, so the investor cannot profit by faking good news (C33). **Outside the model:** toeholds `\graycite{Bulow, Huang and Klemperer 1999}`; free riding `\graycite{Grossman and Hart 1980}`; announced or jump bids as signals `\graycite{Fishman 1988}` (strength here is a distribution); incumbent or target manipulation and endogenous investor research `\graycite{Goldstein and Guembel 2008}`; first-price and bargaining-with-trading equilibria. No statement on the direction of a toehold effect: the paper does not solve it | 4 | "Wouldn't the incumbent manipulate the price, buy a toehold, or trade on its own value?" |
+| A5 `app:info` | The challenger and investor can know different facts | The challenger knows its own integration plans; a specialist investor may know the target's customers, technology and product demand: different facts about the same acquisition match (main.md 17, 37). Preparation (diligence) is what reveals the exact value to the challenger (main.md 35, 330). The benchmark's perfectly informed investor and uninformed challenger make the mechanism visible; Section 5.3 removes both extremes. The reversal holds with challenger accuracy d = 0.75 above investor accuracy a = 0.70 (Prop. A.7, analytical). Forward button [The signal economy → A6] | 4 | "Why would an investor know the challenger's value when the challenger does not?" |
 | A6 `app:signals` | The price helps a challenger with its own signal | Investor signal T (accuracy a), challenger signal Y (accuracy d); the challenger uses Pr(H ∣ P, Y = y) (F44); entry is state dependent (e_H, e_L) but the price still reveals the market posterior. Declared example a = 0.70, d = 0.75: 0.850 → 0.879 (analytical, Prop. A.7). Native summary table from `tables/table_signal_grid.tex`: 6 cells meeting the condition, rise 2.81-3.09 pp (analytical); 9 cells with d ≤ 0.75, unchanged; 10 cells with d ≥ 0.76, fall 4.03-4.49 pp, because the challenger's own good signal already triggers expensive entry against the weak incumbent (numerical diagnostic). Other inputs: ρ = 0.85, c_H = 7.14, k = 0.015, r = 1.1 vs 2.3 (`signal_rho`, `signal_c_high`, `signal_k`, `signal_r_weak`, `signal_r_strong`). Q&A line: the price matters when the challenger's own signal is informative but not decisive | A5 | "What if the challenger knows more than the investor?" |
 | A7 `app:eq` | Equilibrium and the two comparisons | Definition (main.md 89): order distributions σ_H, σ_L (mixing allowed; any deviation q ∈ [-1, 1]); a rational price that anticipates entry; Bayesian beliefs from the price; optimal entry; truthful bids. Order flow X = q + Z, Laplace noise with scale b; stock price P(X) = expected target payoff given X (labeled; F31). Two comparisons kept apart: a unilateral deviation is evaluated against fixed price and entry schedules; a cross-economy comparison re-solves them. Uniqueness refers to trading and on-path entry under truthful bidding | 4 | "What is the equilibrium concept? How are deviations evaluated? What exactly is unique?" |
 | A8 `app:payoffs` | Acquisition payoffs in closed form | One aligned display (eqs. 4-5): t_0 = p(1 − p/r); t_H = r/2 + p²/(2r); t_L = ℓ − (ℓ² − p²)/(2r); g_H = h − r/2 − p²/(2r); g_L = (ℓ² − p²)/(2r); Δ_T = (r − ℓ)²/(2r). Native table of Table 1 at r0 and r1 (7 rows, printed values; row relabeled "target-payoff spread", F36). Gray line: Prop. 1 for any F on [0, r̄], ℓ < r̄ < h; strict when the change in F has positive integral (main.md 125-137) | 5 | "Where do the curves come from? Is this a uniform-distribution artifact?" |
@@ -611,48 +617,51 @@ All backups follow `\AppendixStart` in this order (displayed A1, A2, ...), group
 | A26 `app:robust` | Robustness in full | Table 3 rebuilt natively: 𝖤 weak / strong / change (pp) / 𝖮_H weak / strong for six rows (Laplace atoms, Laplace mixture, logistic atoms, logistic mixture, moderate values, signals; printed values), each row with its declared ρ and strengths (Table 3 note: distinct parameter vectors, not one joint calibration). Minimum theorem margins: base 2.41e-3, moderate 8.01e-4, signals 1.45e-3 (`base_minimum_theorem_margin`, `moderate_minimum_theorem_margin`, `signal_minimum_theorem_margin`). Note (F47): the r2 fall is shown for the benchmark only | 13 | "Are these the same parameters? How close to the boundary is each row?" |
 | A27 `app:reserve` | A higher reserve can raise proceeds; optimal terms are open | Native Table 4 Panel B, labeled "Value classes: p = 0.5 vs p = 1.1" (ε_V = 0.05, `value_band_halfwidth`; F39). Columns: preparation, sale, two admissible bidders, expected proceeds, trading (printed values). Weak proceeds 0.393 → 0.432; strong 0.872 → 1.01; preparation at p = 1.1: 0.540 (weak), 0.512 (strong) (`value_*`). Gray line: "Binary values: p = 0.5 vs p = 1.01." Say aloud: 1.1 sits just above ℓ = 1, so it excludes the low-value challenger. Preparation, sale and two admissible bidders come apart. A feasible improvement, not an optimal reserve. Forward button [Same orders, different prices → A28] | 14 | "What should the seller do? Is there an optimal reserve? Should sellers keep processes public?" |
 | A28 `app:pool` | Same orders, different prices | Prop. A.10 (analytical existence; F32): at reserve p = 7 (`pool_reserve`) and r0, the same full orders support price pools below a cutoff κ ∈ [−log 2, 0] (F03). Pooled belief 0.273 vs 0.303, entry 0.152 vs 0.125, proceeds 0.687 vs 0.610 (`pool_posterior_cutoff_low/high`, `pool_entry_cutoff_low/high`, `pool_revenue_cutoff_low/high`). "Same orders, different prices, beliefs, and entry": a continuation must include the price rule. Does not arise on the benchmark support | A27 | "Why can't you just solve the seller's problem? Is the price rule unique given orders?" |
-| A29 `app:refs` | References | `\small` list, metadata from `references.bib`: Fishman (1988, RAND J. Econ.); Hirshleifer and Png (1989, RFS); Dow, Goldstein and Guembel (2017, JEEA); Edmans, Goldstein and Jiang (2015, AER); Levin and Smith (1994, AER); Roberts and Sweeting (2013, AER); Gentry and Stroup (2019, JFE); Goldstein and Guembel (2008, REStud); Bulow, Huang and Klemperer (1999, JPE); Grossman and Hart (1980, Bell J. Econ.); Boone and Mulherin (2007, JF); Imprivata (2016, DEFM14A); plus the A3 works as verified. Kyle and Vila (1991) and Schwert (1996) are not listed unless the author first adds them to the paper and the bib | 3 | Citation lookup |
+| A29 `app:refs` | References | `\small` list, metadata from `references.bib`: Fishman (1988, RAND J. Econ.); Hirshleifer and Png (1989, RFS); Dow, Goldstein and Guembel (2017, JEEA); Edmans, Goldstein and Jiang (2015, AER); Levin and Smith (1994, AER); Roberts and Sweeting (2013, AER); Gentry and Stroup (2019, JFE); Goldstein and Guembel (2008, REStud); Bulow, Huang and Klemperer (1999, JPE); Grossman and Hart (1980, Bell J. Econ.); Boone and Mulherin (2007, JF); Imprivata (2016, DEFM14A); plus the A3 works as verified. Revision of 20 October 2026: Gorbenko and Malenko (2014, JF), Samuelson (1985, Econ. Lett.) and Schwert (1996, JFE) are listed, because frames 1 and 3 cite the first two and the paper cites all three (Overleaf `references.bib`). Kyle and Vila (1991) is not listed unless the author first adds it to the paper and the bib | 3 | Citation lookup |
 
 ## 10. Timing table
 
 | Frame | Title (short) | Minutes | Start | End (cumulative) |
 |---|---|---|---|---|
 | 0 | Title | 0.25 | 0.00 | 0.25 |
-| 1 | Does a stronger incumbent keep the challenger out? (D0) | 2.00 | 0.25 | 2.25 |
-| 2 | This paper (**punchline**) | 2.00 | 2.25 | 4.25 |
-| 3 | What is new | 0.75 | 4.25 | 5.00 |
-| 4 | Model: who moves, who knows what (D1) | 2.75 | 5.00 | 7.75 |
-| 5 | One auction, two claims | 2.50 | 7.75 | 10.25 |
-| 6 | Spread up, profit down (X1) | 1.50 | 10.25 | 11.75 |
-| 7 | Trading pays only against a strong incumbent | 3.00 | 11.75 | 14.75 |
-| 8 | Only good news pays for expensive preparation (X2) | 2.25 | 14.75 | 17.00 |
-| 9 | Proposition 2 | 2.50 | 17.00 | 19.50 |
-| 10a | Benchmark rise | 1.50 | 19.50 | 21.00 |
-| 10b | Benchmark fall | 1.00 | 21.00 | 22.00 |
-| 11 | Freeze the information | 2.25 | 22.00 | 24.25 |
-| 12 | Equilibria coexist | 1.50 | 24.25 | 25.75 |
-| 13 | Robustness | 1.50 | 25.75 | 27.25 |
-| 14 | Price access and welfare | 1.00 | 27.25 | 28.25 |
-| 15 | What a test would measure | 1.00 | 28.25 | 29.25 |
-| 16 | Conclusion | 1.00 | 29.25 | 30.25 |
-| | Question reserve | 9.75 | 30.25 | 40.00 |
+| 1 | The target is for sale, and its stock still trades (setting) | 1.50 | 0.25 | 1.75 |
+| 2 | Does a stronger incumbent keep the challenger out? | 1.25 | 1.75 | 3.00 |
+| 3 | What past work shows | 1.50 | 3.00 | 4.50 |
+| 4 | This paper (**punchline**) | 1.75 | 4.50 | 6.25 |
+| 5 | Model: a second-price auction for the target (D1) | 2.00 | 6.25 | 8.25 |
+| 6 | Trading and the stock price | 1.50 | 8.25 | 9.75 |
+| 7 | One auction, two claims | 2.25 | 9.75 | 12.00 |
+| 8 | Numerical exercise: the benchmark | 0.75 | 12.00 | 12.75 |
+| 9 | Spread up, profit down (X1) | 1.25 | 12.75 | 14.00 |
+| 10 | Only good news makes expensive preparation pay (X2) | 2.00 | 14.00 | 16.00 |
+| 11 | Trading pays only against a strong incumbent | 2.25 | 16.00 | 18.25 |
+| 12 | Proposition 2 | 2.50 | 18.25 | 20.75 |
+| 13a | Benchmark rise | 1.50 | 20.75 | 22.25 |
+| 13b | Benchmark fall | 1.00 | 22.25 | 23.25 |
+| 14 | Freeze the information | 2.25 | 23.25 | 25.50 |
+| 15 | Equilibria coexist | 1.50 | 25.50 | 27.00 |
+| 16 | Robustness | 1.50 | 27.00 | 28.50 |
+| 17 | Price access and welfare | 1.00 | 28.50 | 29.50 |
+| 18 | What a test would measure | 1.00 | 29.50 | 30.50 |
+| 19 | Conclusion | 1.00 | 30.50 | 31.50 |
+| | Question reserve | 8.50 | 31.50 | 40.00 |
 
-- **Punchline:** frame 2 opens at 2.25 min. The headline numbers (entry 0.250 → 0.523; profit 4.80 → 4.29) are spoken by about 2.75 min, and the full punchline, with both supports and the implication, is done by 4.25 min. The model is on screen at 5.0 min and the theorem at 17.0 min.
+- **Punchline:** frame 4 opens at 4.5 min and is done by 6.25 min. The model is on screen at 6.25 min, the theorem at 18.25 min, and the headline numbers (entry 0.250 → 0.523; profit 4.80 → 4.29) at 20.75 min.
 - **Checkpoints and the cut each one triggers** (every cut is decided at a checkpoint that comes before the frame it removes):
-  - Frame 3 starts by 4.75 min (planned 4.25). If later, skip frame 3 (cut 1).
-  - Frame 5 starts by 9.5 min (planned 7.75; the early checkpoint, since job-market interruptions cluster on frames 1-5). If later, skip frame 6 (cut 2) and speak its two numbers on frame 5.
-  - Frame 9 starts by 18.5 min (planned 17.0). If later, skip frames 12 and 14 (cuts 3 and 4).
-  - Frame 11 starts by 23.5 min (planned 22.0). If later, also skip frame 15 and give frame 13 as its takeaway sentence (cuts 5 and 6).
+  - Frame 3 starts by 3.5 min (planned 3.0). If later, give frame 3 its takeaway line only (cut 1).
+  - Frame 7 starts by 11.0 min (planned 9.75; the early checkpoint, since interruptions cluster on frames 1 to 7). If later, skip frame 9 (cut 2) and speak its two numbers on frame 8.
+  - Frame 12 starts by 19.75 min (planned 18.25). If later, skip frames 15 and 17 (cuts 3 and 4).
+  - Frame 14 starts by 24.75 min (planned 23.25). If later, also skip frame 18 and give frame 16 as its takeaway sentence (cuts 5 and 6).
 - **Frames to skip if behind, in this order.** Each becomes one spoken sentence; the frame stays in the deck.
-  1. Frame 3 (−0.75): fold its takeaway into frame 2's spoken route.
-  2. Frame 6 (−1.25 net): speak "spread 0.0167 → 0.667, profit at the prior 4.80 → 4.29" on frame 5.
-  3. Frame 12 (−1.25 net): the F48 sentence on 10b: "At three certified strengths between r0 and r1, an informative equilibrium coexists with no trade; the full correspondence is open."
-  4. Frame 14 (−0.75 net): "At r1, seeing the price raises proceeds and surplus; a comparison of economies, not a recommendation on process design."
-  5. Frame 15 (−0.75 net): "A test needs the decision to prepare as the outcome, timed against public prices; the paper gives a design, not an estimate."
-  6. Frame 13 (−1.0): 30 seconds, the F47 takeaway only, with "(declared example)".
+  1. Frame 3 (−1.0): read its takeaway only: "A stronger incumbent makes entry pay less but can make the price more informative. The second effect is new."
+  2. Frame 9 (−1.0 net): speak "spread 0.0167 → 0.667, profit at the prior 4.80 → 4.29" on frame 8.
+  3. Frame 15 (−1.25 net): the F48 sentence on 13b: "At three certified strengths between r0 and r1, an informative equilibrium coexists with no trade; the full correspondence is open."
+  4. Frame 17 (−0.75 net): "At r1, seeing the price raises proceeds and surplus; a comparison of economies, not a recommendation on process design."
+  5. Frame 18 (−0.75 net): "A test needs the decision to prepare as the outcome, timed against public prices; the paper gives a design, not an estimate."
+  6. Frame 16 (−1.0): 30 seconds, the F47 takeaway only, with "(declared example)".
 
-  Together these recover up to 5.75 minutes. Never cut frames 1, 2, 4, 5, 7, 8, 9, 10a/10b, 11 or 16. Every backup for a likely early or central question hangs off one of these: A1, A2 (1); A4-A7 (4); A8, A9 (5); A10-A12 (7); A13-A15 (8); A16-A18 (9); A19-A21 (10b); A22, A23 (11). Only A3, A29 (3), A24-A25 (12), A26 (13) and A27-A28 (14) hang off cuttable frames.
-- **If ahead:** open A10 (global bound) from frame 7 or A24 (correspondence) from frame 12, then return.
+  Together these recover up to 5.75 minutes. Never cut frames 1, 2, 4 to 8, 10 to 14 or 19. Every backup for a likely early or central question hangs off one of these: A1 (1); A2 (2); A4, A5 (5); A7, A11, A12, A14 (6); A8, A9 (7); A19 (8); A13, A15 (10); A10 (11); A16 to A18 (12); A20, A21 (13b); A22, A23 (14). Only A3, A29 (3, which is shortened, never removed), A24 and A25 (15), A26 (16) and A27 and A28 (17) hang off cuttable frames.
+- **If ahead:** open A10 (global bound) from frame 11 or A24 (correspondence) from frame 15, then return.
 
 ## 11. Anticipated questions (job-market audience)
 

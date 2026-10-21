@@ -9,10 +9,12 @@ the price-inference argument and the theorem conditions are visible; derivations
 native `details` controls. Retired public section and table anchors remain as spans near their
 replacement content.
 
-The design is the "UCL family" direction: a UCL dark-purple masthead with the tabs, a white
-body with cards, pill controls and a dark theme. Purple is chrome only. Two concept colours
-hold on the page and on the slides: `--c-info` for the target-payoff spread and the
-information chain, `--c-cost` for preparation costs.
+The design is the ruled document: ink on cool white paper, a ruled title block with the tabs
+on a hairline, a text serif (STIX Two Text) for the reading column, Archivo for titles, tables
+and chrome (expanded for the title alone), and two rule weights (a 1 px hairline and a 2 px ink rule) in place of cards, pills,
+fills and gradients. The chrome has no accent colour. Two concept colours hold on the page and
+on the slides: `--c-info` for the target-payoff spread and the information chain, `--c-cost` for
+preparation costs. The slides (`presentation/`) use the same tokens; see `presentation/DESIGN.md`.
 
 ## Build and checks
 
@@ -36,8 +38,9 @@ library. No package installation or bundler is needed. The build writes `docs/in
 - every number span equals the registry value under the display rule and carries its key,
   status, precision and exact value; numbers inside formulas carry the same; no decimal is
   typed into the prose;
-- status words come from the paper's vocabulary (analytical, computer-assisted, numerical
-  diagnostic, open, input), in spans and in the evidence columns of the tables;
+- status words in number spans come from the paper's vocabulary (analytical, computer-assisted,
+  numerical diagnostic, open, input); the page prints no evidence labels, and the status
+  stays in each number's hover title;
 - every legacy anchor and every public id of the 2 October 2026 page is present;
 - only the locked faces load, and the page makes no network request;
 - the chart builders and the SVG renderer keep the display rules below, and neither changes
@@ -50,7 +53,7 @@ with the existing Playwright browser tool's run-code function and the file's abs
 Fira Sans, the explorer slider, the hover readout, the theme toggle, the three tabs and the
 inline viewer, legacy anchors, the timeline, the mobile contents drawer, the skip link and a
 malformed fragment. With a second and third argument (the handout and the slides addresses)
-it also checks the slides: 47 slides, no overflow, a backup link, Back and End. The tab must be
+it also checks the slides: 50 slides, no overflow, a backup link, Back and End. The tab must be
 in front: a hidden tab runs no animation frames. No browser package is added to this
 repository.
 
@@ -119,8 +122,8 @@ as a historical record only.
   `\gt` instead of raw angle brackets. No dollar delimiters or inline styles or scripts.
 - Table slots are `<!-- @@TABLE:name@@ -->`. `tables_html.py` selects validated CSV rows,
   uses Decimal for formatting, and keeps raw values and row locations in cell attributes.
-  The core comparison shows three decimals and an Evidence column. The controls table prints
-  the evidence class; "(control)" is a role and sits in the row label.
+  The core comparison shows three decimals. The tables print no evidence-class column;
+  "(control)" is a role and sits in the row label.
 - `data.py` binds every input CSV to a passed numerical manifest before emitting
   `window.CCC_DATA`. Numeric tokens are emitted verbatim, with Decimal used for sorting.
   Source hashes are available in the footer disclosure.
@@ -129,7 +132,7 @@ as a historical record only.
   the PDFs built from the Overleaf master (see `working_release/README.md`). The build
   reads their page counts, sizes, sha256 and creation date with the standard library and writes
   the paper tab and the "Text revised" stamp from them. No date or count is typed by hand.
-- Typefaces are Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
+- Typefaces are Archivo (variable weight and width), STIX Two Text and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
   "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the Fira
   subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
   generates the font-face rules from the lock and fails if a file is missing, altered or

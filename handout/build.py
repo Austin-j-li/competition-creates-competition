@@ -104,8 +104,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["CCC Symbols", "Fira Mono", "Fira Sans"],
-              f"faces are Fira Sans, Fira Mono and the symbol fallback ({', '.join(families)})")
+    rep.check(families == ["Archivo", "CCC Symbols", "Fira Mono", "STIX Two Text"],
+              f"faces are Archivo, STIX Two Text, Fira Mono and the symbol fallback ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -116,7 +116,8 @@ def font_faces(lock: dict, prefix: str = "fonts/") -> str:
     for name, v in lock.items():
         if v.get("kind") != "face":
             continue
-        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]}; '
+        stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
                      f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 
@@ -164,7 +165,7 @@ def paper_panel(facts: dict) -> str:
                 f'<p class="hash"><span>sha256</span> <code>{f["sha256"]}</code></p>'
                 f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
                 f'<a class="button" href="{name}" download>Download</a></p></article>')
-    return (f'<p class="kicker">The paper</p>\n<h2>Read the paper</h2>\n'
+    return (f'<h2>Read the paper</h2>\n'
             f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the working-paper revision. '
             f'Manuscript {main["pages"]} pages, online appendix {oa["pages"]} pages.</p>\n'
             f'<div class="pdf-cards">{card("main_filled.pdf", "Manuscript", main)}{card("online_appendix_filled.pdf", "Online appendix", oa)}</div>\n'
@@ -410,7 +411,7 @@ def main() -> int:
         page = template_path.read_text(encoding="utf-8")
         css = (HERE / "style.css").read_text(encoding="utf-8") if (HERE / "style.css").exists() else ""
         rep.check(bool(css), "style.css present")
-        rep.check("@font-face" not in css and "url(" not in css,
+        rep.check("@font-face" not in css and not re.search(r"url\([^)]*\.(?:woff2?|ttf|otf)", css),
                   "style.css declares no font file; the faces come from fonts.lock.json")
         faces = font_faces(fonts)
         face_files = set(re.findall(r'url\("fonts/([^"]+)"\)', faces))
@@ -425,7 +426,7 @@ def main() -> int:
         vendor_head = '<link rel="stylesheet" href="vendor/katex.min.css">'
         vendor_scripts = '<script src="vendor/katex.min.js"></script>'
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
-                             for n in ("fira-sans-latin-400-normal.woff2", "fira-sans-latin-600-normal.woff2"))
+                             for n in ("archivo-latin-wdth-normal.woff2", "stix-two-text-latin-400-normal.woff2"))
         facts = {}
         for name, rel in PDFS.items():
             if (ROOT / rel).is_file():

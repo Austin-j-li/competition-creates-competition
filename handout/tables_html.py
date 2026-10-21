@@ -1,7 +1,7 @@
 """CSV rows to ``<table>`` HTML for the handout (handout/README.md, table slots).
 
 Row selection and number formatting mirror ``numerics/render/tables.py`` (``d6``, ``sci``,
-``status_word``, ``order``) without importing it. Every numeric cell carries the raw CSV token in
+``order``) without importing it. The handout tables print no evidence-class column. Every numeric cell carries the raw CSV token in
 ``title`` and its source in ``data-src``. Stdlib only.
 """
 from __future__ import annotations
@@ -69,21 +69,6 @@ def sci(x: str) -> str:
         raise
     except (InvalidOperation, ValueError):
         return "n/a"
-
-
-def status_word(text: str) -> str:
-    """The evidence class in the paper's vocabulary. An experiment role such as "control"
-    is not an evidence class; tables put the role in the row label instead."""
-    t = (text or "").lower()
-    if t.startswith("analytical"):
-        return "analytical"
-    if t.startswith("computer-assisted"):
-        return "computer-assisted"
-    if t.startswith("numerical diagnostic"):
-        return "numerical diagnostic"
-    if t.startswith("rejected"):
-        return "rejected"
-    return html.escape(text.split(" (")[0])
 
 
 def order(q: str) -> str:
@@ -170,7 +155,7 @@ def _eq_row(base: list[dict], exp: str, rs: str) -> dict:
 
 def t_equilibrium_controls(root: Path, tk: Tokens) -> str:
     base = _controls_base(root)
-    cols = ["High-value order q<sub>H</sub>", "Low-value order q<sub>L</sub>", "Preparation E", "High-value ownership O<sub>H</sub>", "Target proceeds R<sub>T</sub>", "Evidence"]
+    cols = ["High-value order q<sub>H</sub>", "Low-value order q<sub>L</sub>", "Preparation E", "High-value ownership O<sub>H</sub>", "Target proceeds R<sub>T</sub>"]
     n = len(cols) + 1
     body = [panel("Panel A. Equilibrium", n)]
 
@@ -178,7 +163,7 @@ def t_equilibrium_controls(root: Path, tk: Tokens) -> str:
         return ("<tr>" + f'<th scope="row">{label}</th>'
                 + cell(order(r["q_H"]), r["q_H"], r["__src"], tk) + cell(order(r["q_L"]), r["q_L"], r["__src"], tk)
                 + cell(d6(r["E"]), r["E"], r["__src"], tk) + cell(d6(r["O_H"]), r["O_H"], r["__src"], tk)
-                + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk) + text_cell(status_word(r["status"]), "basis") + "</tr>")
+                + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk) + "</tr>")
 
     for rs, name in (("1.2", "Weak incumbent"), ("3", "Strong incumbent"), ("3.6", "Very strong incumbent")):
         body.append(line(f"{name} (r = {rs})", _eq_row(base, "feedback", rs)))
@@ -205,24 +190,24 @@ def t_welfare(root: Path, tk: Tokens) -> str:
 def t_extensions(root: Path, tk: Tokens) -> str:
     ext = _rows(root, "tables/extensions.csv")
     mod = _rows(root, "numerics/moderate_values.csv")
-    cols = ["Entry weak", "Entry strong", "O<sub>H</sub> weak", "O<sub>H</sub> strong", "Minimum margin", "Basis"]
+    cols = ["Entry weak", "Entry strong", "O<sub>H</sub> weak", "O<sub>H</sub> strong", "Minimum margin"]
     n = len(cols) + 1
     body = [panel("Panel A. Noise and preparation costs (r = 1.2 and 3)", n)]
 
-    def line(label: str, r: dict, margin_keys: tuple, status: str, ew="E_weak", es="E_strong", ow="O_H_weak", os_="O_H_strong") -> str:
+    def line(label: str, r: dict, margin_keys: tuple, ew="E_weak", es="E_strong", ow="O_H_weak", os_="O_H_strong") -> str:
         mkey = min(margin_keys, key=lambda k: Decimal(r[k]))
         return ("<tr>" + f'<th scope="row">{label}</th>'
                 + cell(d6(r[ew]), r[ew], r["__src"], tk) + cell(d6(r[es]), r[es], r["__src"], tk)
                 + cell(d6(r[ow]), r[ow], r["__src"], tk) + cell(d6(r[os_]), r[os_], r["__src"], tk)
-                + cell(sci(r[mkey]), r[mkey], r["__src"], tk) + text_cell(status_word(status), "basis") + "</tr>")
+                + cell(sci(r[mkey]), r[mkey], r["__src"], tk) + "</tr>")
 
     for row in ext:
         cost = "cost atoms" if row["cost_law"] == "atoms" else "cost mixture"
-        body.append(line(f"{row['noise']}, {cost}", row, MARGIN_KEYS, row["status"]))
+        body.append(line(f"{row['noise']}, {cost}", row, MARGIN_KEYS))
     body.append(panel("Panel B. Moderate values (h = 2, ℓ = 1; r = 1.05 and 1.5)", n))
     if len(mod) != 1:
         raise TableError(f"moderate_values: expected 1 row, found {len(mod)}")
-    body.append(line("Moderate values", mod[0], MARGIN_KEYS, mod[0]["status"]))
+    body.append(line("Moderate values", mod[0], MARGIN_KEYS))
     # Panel C: the declared signal example (a = 0.70, d = 0.75) at r = 1.1 and 2.3
     sig = _rows(root, "numerics/two_signals.csv")
     weak = [r for r in sig if (r["a"], r["d"], r["r"], r["accepted"]) == ("0.70", "0.75", "1.1", "true")]
@@ -234,7 +219,7 @@ def t_extensions(root: Path, tk: Tokens) -> str:
         body.append("<tr>" + '<th scope="row">Investor accuracy a = 0.70, buyer accuracy d = 0.75</th>'
                     + cell(d6(w["E"]), w["E"], w["__src"], tk) + cell(d6(s["E"]), s["E"], s["__src"], tk)
                     + cell(d6(w["O_H"]), w["O_H"], w["__src"], tk) + cell(d6(s["O_H"]), s["O_H"], s["__src"], tk)
-                    + cell(sci(w[mkey]), w[mkey], w["__src"], tk) + text_cell(status_word(s["status"]), "basis") + "</tr>")
+                    + cell(sci(w[mkey]), w[mkey], w["__src"], tk) + "</tr>")
     else:
         raise TableError(f"two_signals: declared example not uniquely identified (weak {len(weak)}, strong {len(strong)})")
     return table("extensions", head(cols), body)
@@ -256,7 +241,7 @@ def t_reserve_comparisons(root: Path, tk: Tokens) -> str:
         for key in ("sale_probability", "two_admissible_bidders_probability"):
             row[key] = event[key]
         row["__src"] += " + " + event["__src"]
-    cols = ["Preparation", "Sale", "Two admissible bidders", "Target proceeds", "Basis"]
+    cols = ["Preparation", "Sale", "Two admissible bidders", "Target proceeds"]
     n = len(cols) + 1
     body = []
     for law, label in (("binary", "Panel A. Binary values"),
@@ -265,13 +250,12 @@ def t_reserve_comparisons(root: Path, tk: Tokens) -> str:
         for r in comp:
             if r["value_law"] != law:
                 continue
-            basis = status_word(r["status"]) + ("" if r["accepted"] == "true" else " (not accepted)")
-            body.append("<tr>" + f'<th scope="row">r = {html.escape(r["r"])}, reserve p = {html.escape(r["p"])}</th>'
+            flag = "" if r["accepted"] == "true" else " (not accepted)"
+            body.append("<tr>" + f'<th scope="row">r = {html.escape(r["r"])}, reserve p = {html.escape(r["p"])}{flag}</th>'
                         + cell(d6(r["E"]), r["E"], r["__src"], tk)
                         + cell(d6(r["sale_probability"]), r["sale_probability"], r["__src"], tk)
                         + cell(d6(r["two_admissible_bidders_probability"]), r["two_admissible_bidders_probability"], r["__src"], tk)
-                        + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk)
-                        + text_cell(basis, "basis") + "</tr>")
+                        + cell(d6(r["R_T"]), r["R_T"], r["__src"], tk) + "</tr>")
     return table("reserve_comparisons", head(cols), body)
 
 
@@ -363,17 +347,12 @@ def t_core_comparison(root: Path, tk: Tokens) -> str:
     for exp, label in (("feedback", "Equilibrium information"), ("frozen", "Same informative orders"),
                        ("price_hidden", "Price withheld from the buyer")):
         cells = [f'<th scope="row">{label}</th>']
-        words = set()
         for r in ("1.2", "3"):
             row = _eq_row(base, exp, r)
             cells.append(cell(three_decimals(Decimal(row["E"])), row["E"], row["__src"], tk))
-            words.add(status_word(row["status"]))
-        if len(words) != 1:
-            raise TableError(f"core_comparison: {exp} rows carry different evidence classes {sorted(words)}")
-        cells.append(text_cell(words.pop(), "basis"))
         body.append("<tr>" + "".join(cells) + "</tr>")
     thead = ('<thead><tr><th scope="col">Information when the buyer decides</th><th scope="col" class="num">Weak incumbent</th>'
-             '<th scope="col" class="num">Strong incumbent</th><th scope="col">Evidence</th></tr></thead>')
+             '<th scope="col" class="num">Strong incumbent</th></tr></thead>')
     return table("core_comparison", thead, body)
 
 
