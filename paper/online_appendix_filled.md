@@ -1240,7 +1240,7 @@ candidates_rejected, candidates_unresolved, duplicates_merged, search_outcome
 
 **Data dictionary for the continuation schema.** `p` is the exact declared decimal, or the thirty-two-digit decimal of an event value; `p_exact` is the declaration or the event's defining relation with the primitives it uses. `regime` is the reserve's position on the full payoff domain; `band_status` says whether a class reserve lies below, inside, or above each value band. `low_cost_floor_relation` and `ceiling_relation` take the values strict positive, strict negative, equality event, or unresolved, from the fifty-digit evaluation. `candidate_id` is the attempt identity and `continuation_id` the economic identity defined above; `duplicate_of` is empty or the representative's candidate identity; `identity_note` records same-orders-different-atoms cases. `parameter_set_id` is the canonical string of exact declarations (not a hash); `institution_id`, `information_structure_id`, and `tie_rule_id` are the literal definitions of the sale rule, of who observes what, and of the tie conventions. `order_rule_id` is the canonical order profile; `price_rule_id` names the pricing family, its pool sets, and the positive-entry price map. `pricing_family_coverage` and `exhaustive_pricing_search` are as declared in C.0. `pool_id`, `pool_set_definition`, `pool_cutoff_exact`, `price_atom_value`, `state_H_pool_mass`, `state_L_pool_mass`, `pool_probability`, and `pool_posterior` describe the zero-entry atom when one exists and are `n/a` otherwise; a positive-price plateau atom in a flat posterior tail is a different kind of atom and is not written as a no-entry pool. `preparation_rule_id` is the buyer's action by price region and cost. `event_id` and `event_defining_relation` identify the node on the event grid. `preparation_probability`, `admissible_challenger_probability`, `sale_probability`, `two_admissible_bidders_probability`, and `high_value_ownership_probability` are $\mathsf E,\mathsf A,\mathsf S,\mathsf C_2,\mathsf O_H$ of C.0; `seller_revenue` is $\mathcal R_T$ and `mean_financial_price` is $\mathbb E P$, which must agree with it. `pricing_error`, `belief_error`, and `entry_deviation_gain` are the pointwise price, pooled-belief, and buyer-optimality diagnostics; `investor_deviation_gain_estimate` is the maximal gain found on the declared and refined order grids, and `investor_deviation_gain_upper_bound` is a rigorous bound when one exists (zero when an analytical bound covers the whole order interval) and `n/a` otherwise, never zero by default. `error_budget` is the quadrature plus tail term. `result_status` uses the vocabulary of C.0; `existence_scope`, `uniqueness_scope`, and `search_coverage_scope` state, in words, what the row establishes and what was searched. `rejection_reason` carries the breach witness of a rejected candidate; `unresolved_reason` the reason an open row is open. `run_id` names the producing exercise. In the range file, `search_outcome` is one of the four outcomes listed under Reporting, and `global_envelope_certified` is false unless an additional exhaustive argument establishes the full envelope.
 
-Feed: Table 4 and the sale-design discussion. The research question about seller-optimal discovery is not assigned an answer by this exploratory file.
+Feed: Table 5 and the sale-design discussion. The research question about seller-optimal discovery is not assigned an answer by this exploratory file.
 
 ### C.6b. Retired price-pool exercise {#oa-c-price-pools}
 
@@ -1276,11 +1276,11 @@ Feed: Figure 4 and [Proposition A.8](main.md#result-proposition-a-8). Parameter 
 
 ### C.8. Quantity definitions and provenance {#oa-c-registry}
 
-Every quantitative placeholder in the two manuscripts resolves to one row of the [quantity registry](../numerics/quantity_registry.csv), generated from the [quantity manifest](quantity_manifest.csv) and the validated exercise outputs in C.1 to C.7 and C.9. The manifest specifies each key's definition, producing exercise, source file, row selector, display rule, units, and exact value for a declared input. The registry records the resulting value, outward bounds for an enclosure, evidence status, and the source row used. The complete key list and definitions are in the distributed [quantity dictionary](../replication/quantity_dictionary.md), generated from the same manifest. This subsection states their common rules.
+Every quantitative placeholder in the two manuscripts resolves to one row of the [quantity registry](../numerics/quantity_registry.csv), generated from the [quantity manifest](quantity_manifest.csv) and the validated exercise outputs in C.1 to C.7, C.9, and C.10. The manifest specifies each key's definition, producing exercise, source file, row selector, display rule, units, and exact value for a declared input. The registry records the resulting value, outward bounds for an enclosure, evidence status, and the source row used. The complete key list and definitions are in the distributed [quantity dictionary](../replication/quantity_dictionary.md), generated from the same manifest. This subsection states their common rules.
 
 **Rules.** A declared input is echoed with status `input` and printed as its exact decimal. A derived quantity is filled only from an accepted source row selected by the full parameter declaration, information regime, cost and noise law, continuation identity, and branch label, never by a rounded scalar. The selector must match exactly one row. A difference records both rows used to form it. The row's result status must permit the statement the manuscript makes with it: an analytical claim needs an analytical row, a certified interval needs every certificate predicate, and a numerical diagnostic is printed as one. An unresolved source leaves the placeholder unfilled with its reason, and the substitution step refuses to produce a filled manuscript in that state. Mathematical constants, equation and result labels, bibliographic identifiers, and schema labels are literal text, not registry quantities. No renderer replaces a registry value with a cached or typed number.
 
-**Units and rounding.** Probabilities are stored as probabilities and displayed by `decimal_6`; `percent_integer` converts a declared accuracy to a percentage at display time only. Margins and bounds use `scientific_10`; thresholds and standardized distances use `decimal_9`. Enclosures use `outward_interval_8` or `outward_interval_10`, rounding the lower endpoint down and the upper endpoint up; one-sided bounds use `lower_bound_10`, `lower_bound_12`, or `upper_bound_12`, rounding conservatively. Rounding is applied after every validation on the unrounded value. A displayed lower bound that supports a strict inequality must remain strictly positive after rounding; if outward rounding would print a zero, more digits are printed rather than rounding inward. Model units are the per-share normalization of A.1.
+**Units and rounding.** Probabilities are stored as probabilities and displayed by `decimal_6`; `percent_integer` converts a declared accuracy to a percentage at display time only. Margins and bounds use `scientific_10`; thresholds and standardized distances use `decimal_9`. Enclosures use `outward_interval_8` or `outward_interval_10`, rounding the lower endpoint down and the upper endpoint up; one-sided bounds use `lower_bound_10`, `lower_bound_12`, or `upper_bound_12`, rounding conservatively. Rounding is applied after every validation on the unrounded value. A displayed lower bound that supports a strict inequality must remain strictly positive after rounding; if outward rounding would print a zero, more digits are printed rather than rounding inward. Model units are the per-share normalization of A.1. The C.10 rows, margins included, use `decimal_6`, except the benchmark trade-cost bounds (`decimal_4`) and the spread ratio and its bound (`decimal_3`).
 
 **Quantity families.**
 
@@ -1298,6 +1298,8 @@ Every quantitative placeholder in the two manuscripts resolves to one row of the
 | Class-economy reserve comparison | C.6 | probability; model units |
 | Gross trade profits and sufficient stake bounds | C.9 | payoff per share; order units |
 | Entry under additional noise laws at fixed orders | C.9 | probability |
+| Class exhibits: outcomes and margins | C.10 | probability; model units; order units |
+| Benchmark prior and trade-cost windows; four-law entry range | C.10 | probability; model units |
 
 The basic definitions the families share are $\mathsf E=(\bar e_H+\bar e_L)/2$, $\mathsf O_H=\bar e_H/2$ on the benchmark support and the allocation-event value elsewhere, $\mathcal R_T=t_0+[\bar e_H(t_H-t_0)+\bar e_L(t_L-t_0)]/2$, the margins \eqref{eq:oa-oa-77} and \eqref{eq:oa-oa-29}, the thresholds of A.5, the certificate predicates of B.6, and the outcome measures of C.0. Within a parameter set, `r_weak`, `r_strong`, and `r_collapse` select the declared strengths; the certified keys refer to the three declared nodes in order, not to roots chosen from a larger search; the reserve keys select on `value_law`, `epsilon_V`, `r`, and `p` exactly. The minimum-margin keys are a convenience for acceptance and do not replace the recorded components. A figure is never the source of a scalar, and an apparent curve is never used to fill a missing certificate.
 
@@ -1348,7 +1350,7 @@ C.0 controls apply. Any failure leaves the result open and stops the producer.
 
 **Inputs.** This exercise uses the general form of Proposition 2 in the revised manuscript.
 Its high-cost conditions are (A1), and its trade conditions are (A2).
-The exact declarations appear in the table below and in the run manifest.
+The exact declarations appear in the notes to Table 4 of the paper and in the run manifest.
 Cases A and B each change three benchmark inputs: the high cost, the trade cost, and the weak strength.
 The other two strengths stay fixed.
 Case C uses uniform classes above the reserve, with the same means as the point masses.
@@ -1385,9 +1387,7 @@ Its trade bounds still imply unique no trade at the weak strength and unique ful
 High-cost preparation is infeasible at both higher strengths, so total entry stays at its floor.
 Analytical status comes from these global bounds; an order mesh supplies only a numerical diagnostic.
 
-~~~{=latex}
-\input{tables/table_class_exhibit.tex}
-~~~
+Table 4 of the paper reports the outcomes and the margins of all four cases.
 
 **Benchmark intervals.** Three different prior intervals answer three different questions.
 The trade-cost window is nonempty for priors in approximately
@@ -1420,6 +1420,7 @@ The manifest is numerics/manifests/c10_classes.json.
 It records complete inputs, methods, tolerances, software versions, source hashes, output hashes, and acceptance.
 The registry and table consume only these validated CSV files.
 The full gate repeats the calculation and compares every saved row.
+Feed: Table 4 and Sections 4.2 and 5.2 of the paper.
 
 ## D. Institutional pilot and empirical design {#oa-d}
 
@@ -1529,6 +1530,7 @@ $PY numerics/exercises/c6_reserve.py --workers=20
 $PY numerics/exercises/c6c_reserve_events.py --workers=8
 $PY numerics/exercises/c7_bargaining.py
 $PY numerics/exercises/c9_revision.py
+$PY numerics/exercises/c10_classes.py
 ```
 
 The broad exercises use twenty workers on the replication VM, and the event exercise uses eight. The thread settings prevent numerical libraries from multiplying process concurrency. A smaller worker count changes runtime without changing the scientific grid or tolerances. Reduced diagnostic runs use `--quick` and a separate `--out` directory where supported. They do not replace the declared release corpus. The presentation layer then runs in this order:

@@ -489,7 +489,7 @@ def signal_grid() -> Path:
 
 
 # ---------------------------------------------------------------------------------------------
-# Table 4, the online reserve details, and the online exploratory summary
+# Table 5, the online reserve details, and the online exploratory summary
 # ---------------------------------------------------------------------------------------------
 def _declared_reserve_nodes() -> list[dict]:
     """The eight declared fixed-reserve nodes, joined on the full parameter identity, the exact reserve, the event
@@ -616,7 +616,7 @@ def reserve_details() -> Path:
         r"\texttt{numerics/reserve\_events.csv} joined with \texttt{tables/reserve\_comparisons.csv} on the full parameter identity, the exact "
         r"reserve, and the branch.",
     ]
-    tex = online_table("Reserve comparisons: orders, margins, evidence, and identity behind Table 4.", "tab:oa-reserve-details",
+    tex = online_table("Reserve comparisons: orders, margins, evidence, and identity behind Table 5.", "tab:oa-reserve-details",
                        threeparttable(header, body, r"p{0.24\linewidth}rrrrrrrrll", notes), landscape=True)
     out = TAB / "table_reserve_details.tex"
     out.write_text(tex)

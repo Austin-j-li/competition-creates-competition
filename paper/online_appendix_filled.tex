@@ -127,14 +127,14 @@
   pdfcreator={LaTeX via pandoc}}
 
 \ifXeTeX
-\special{pdf:trailerid [ <39bd016bcf10cdb6c60bf78fc1f0405c> <39bd016bcf10cdb6c60bf78fc1f0405c> ]}
+\special{pdf:trailerid [ <86998f75cf27f1d49a83236a9baf6c7f> <86998f75cf27f1d49a83236a9baf6c7f> ]}
 \fi
 \ifPDFTeX
 \pdftrailerid{}
-\pdftrailer{/ID [ <39bd016bcf10cdb6c60bf78fc1f0405c> <39bd016bcf10cdb6c60bf78fc1f0405c> ]}
+\pdftrailer{/ID [ <86998f75cf27f1d49a83236a9baf6c7f> <86998f75cf27f1d49a83236a9baf6c7f> ]}
 \fi
 \ifLuaTeX
-\pdfvariable trailerid {[ <39bd016bcf10cdb6c60bf78fc1f0405c> <39bd016bcf10cdb6c60bf78fc1f0405c> ]}
+\pdfvariable trailerid {[ <86998f75cf27f1d49a83236a9baf6c7f> <86998f75cf27f1d49a83236a9baf6c7f> ]}
 \fi
 
 \title{Online Appendix to Competition Creates Competition}
@@ -2685,7 +2685,7 @@ outcomes listed under Reporting, and
 \texttt{global\_envelope\_certified} is false unless an additional
 exhaustive argument establishes the full envelope.
 
-Feed: Table 4 and the sale-design discussion. The research question
+Feed: Table 5 and the sale-design discussion. The research question
 about seller-optimal discovery is not assigned an answer by this
 exploratory file.
 
@@ -2789,12 +2789,12 @@ provenance}\label{oa-c-registry}
 Every quantitative placeholder in the two manuscripts resolves to one
 row of the \href{../numerics/quantity_registry.csv}{quantity registry},
 generated from the \href{quantity_manifest.csv}{quantity manifest} and
-the validated exercise outputs in C.1 to C.7 and C.9. The manifest
-specifies each key's definition, producing exercise, source file, row
-selector, display rule, units, and exact value for a declared input. The
-registry records the resulting value, outward bounds for an enclosure,
-evidence status, and the source row used. The complete key list and
-definitions are in the distributed
+the validated exercise outputs in C.1 to C.7, C.9, and C.10. The
+manifest specifies each key's definition, producing exercise, source
+file, row selector, display rule, units, and exact value for a declared
+input. The registry records the resulting value, outward bounds for an
+enclosure, evidence status, and the source row used. The complete key
+list and definitions are in the distributed
 \href{../replication/quantity_dictionary.md}{quantity dictionary},
 generated from the same manifest. This subsection states their common
 rules.
@@ -2828,7 +2828,10 @@ after every validation on the unrounded value. A displayed lower bound
 that supports a strict inequality must remain strictly positive after
 rounding; if outward rounding would print a zero, more digits are
 printed rather than rounding inward. Model units are the per-share
-normalization of A.1.
+normalization of A.1. The C.10 rows, margins included, use
+\texttt{decimal\_6}, except the benchmark trade-cost bounds
+(\texttt{decimal\_4}) and the spread ratio and its bound
+(\texttt{decimal\_3}).
 
 \textbf{Quantity families.}
 
@@ -2863,6 +2866,10 @@ Class-economy reserve comparison & C.6 & probability; model units \\
 Gross trade profits and sufficient stake bounds & C.9 & payoff per
 share; order units \\
 Entry under additional noise laws at fixed orders & C.9 & probability \\
+Class exhibits: outcomes and margins & C.10 & probability; model units;
+order units \\
+Benchmark prior and trade-cost windows; four-law entry range & C.10 &
+probability; model units \\
 \end{longtable}
 }
 
@@ -2941,12 +2948,12 @@ windows}\label{oa-c-classes}
 
 \textbf{Inputs.} This exercise uses the general form of Proposition 2 in
 the revised manuscript. Its high-cost conditions are (A1), and its trade
-conditions are (A2). The exact declarations appear in the table below
-and in the run manifest. Cases A and B each change three benchmark
-inputs: the high cost, the trade cost, and the weak strength. The other
-two strengths stay fixed. Case C uses uniform classes above the reserve,
-with the same means as the point masses. Case D replaces those classes
-by point masses and retains every other input.
+conditions are (A2). The exact declarations appear in the notes to Table
+4 of the paper and in the run manifest. Cases A and B each change three
+benchmark inputs: the high cost, the trade cost, and the weak strength.
+The other two strengths stay fixed. Case C uses uniform classes above
+the reserve, with the same means as the point masses. Case D replaces
+those classes by point masses and retains every other input.
 
 The posterior bounds are \[
 m(\pi)=\frac{\pi}{\pi+(1-\pi)e^{2/b}},\qquad
@@ -2981,7 +2988,8 @@ strengths. High-cost preparation is infeasible at both higher strengths,
 so total entry stays at its floor. Analytical status comes from these
 global bounds; an order mesh supplies only a numerical diagnostic.
 
-\input{tables/table_class_exhibit.tex}
+Table 4 of the paper reports the outcomes and the margins of all four
+cases.
 
 \textbf{Benchmark intervals.} Three different prior intervals answer
 three different questions. The trade-cost window is nonempty for priors
@@ -3016,7 +3024,8 @@ under numerics/. The manifest is numerics/manifests/c10\_classes.json.
 It records complete inputs, methods, tolerances, software versions,
 source hashes, output hashes, and acceptance. The registry and table
 consume only these validated CSV files. The full gate repeats the
-calculation and compares every saved row.
+calculation and compares every saved row. Feed: Table 4 and Sections 4.2
+and 5.2 of the paper.
 
 \section{D. Institutional pilot and empirical design}\label{oa-d}
 
@@ -3275,6 +3284,7 @@ its files, including both C.2 attempt ledgers. Commands are:
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c6c\_reserve\_events.py }\AttributeTok{{-}{-}workers}\OperatorTok{=}\NormalTok{8}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c7\_bargaining.py}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c9\_revision.py}
+\VariableTok{$PY}\NormalTok{ numerics/exercises/c10\_classes.py}
 \end{Highlighting}
 \end{Shaded}
 
