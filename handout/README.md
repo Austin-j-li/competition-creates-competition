@@ -38,8 +38,9 @@ library. No package installation or bundler is needed. The build writes `docs/in
 - every number span equals the registry value under the display rule and carries its key,
   status, precision and exact value; numbers inside formulas carry the same; no decimal is
   typed into the prose;
-- status words come from the paper's vocabulary (analytical, computer-assisted, numerical
-  diagnostic, open, input), in spans and in the evidence columns of the tables;
+- status words in number spans come from the paper's vocabulary (analytical, computer-assisted,
+  numerical diagnostic, open, input); the page prints no evidence labels, and the status
+  stays in each number's hover title;
 - every legacy anchor and every public id of the 2 October 2026 page is present;
 - only the locked faces load, and the page makes no network request;
 - the chart builders and the SVG renderer keep the display rules below, and neither changes
@@ -121,8 +122,8 @@ as a historical record only.
   `\gt` instead of raw angle brackets. No dollar delimiters or inline styles or scripts.
 - Table slots are `<!-- @@TABLE:name@@ -->`. `tables_html.py` selects validated CSV rows,
   uses Decimal for formatting, and keeps raw values and row locations in cell attributes.
-  The core comparison shows three decimals and an Evidence column. The controls table prints
-  the evidence class; "(control)" is a role and sits in the row label.
+  The core comparison shows three decimals. The tables print no evidence-class column;
+  "(control)" is a role and sits in the row label.
 - `data.py` binds every input CSV to a passed numerical manifest before emitting
   `window.CCC_DATA`. Numeric tokens are emitted verbatim, with Decimal used for sorting.
   Source hashes are available in the footer disclosure.
