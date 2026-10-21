@@ -343,12 +343,12 @@ def figure4() -> Path:
         i05 = int(np.argmin(np.abs(eta - 0.05)))
         if name == "weak":
             label_line(a, float(eta[i30]), float(D[i30]), f"weak incumbent\n($r={rs}$)", col, dx=4, dy=-8, ha="left", va="top")
-            label_line(b, float(eta[i05]), float(GH[i05]), "$G_{H,\\eta}$, weak", col, dx=0, dy=8, ha="left", va="bottom")
-            label_line(b, float(eta[i05]), float(GL[i05]), "$G_{L,\\eta}$, weak", col, dx=0, dy=8, ha="left", va="bottom")
+            label_line(b, float(eta[i05]), float(GH[i05]), "$g_{H,\\eta}$, weak", col, dx=0, dy=8, ha="left", va="bottom")
+            label_line(b, float(eta[i05]), float(GL[i05]), "$g_{L,\\eta}$, weak", col, dx=0, dy=8, ha="left", va="bottom")
         else:
             label_line(a, float(eta[i05]), float(D[i05]), f"strong incumbent\n($r={rs}$)", col, dx=0, dy=40, ha="left", va="bottom")
-            label_line(b, float(eta[i05]), float(GH[i05]), "$G_{H,\\eta}$, strong", col, dx=0, dy=-12, ha="left", va="top")
-            label_line(b, float(eta[i05]), float(GL[i05]), "$G_{L,\\eta}$, strong", col, dx=0, dy=-10, ha="left", va="top")
+            label_line(b, float(eta[i05]), float(GH[i05]), "$g_{H,\\eta}$, strong", col, dx=0, dy=-12, ha="left", va="top")
+            label_line(b, float(eta[i05]), float(GL[i05]), "$g_{L,\\eta}$, strong", col, dx=0, dy=-10, ha="left", va="top")
     for ax in (a, b):
         ax.axvline(0.5, color=MUTED, lw=0.7, ls=DOTTED)
         ax.set_xlabel(r"seller bargaining weight $\eta$")
@@ -358,7 +358,7 @@ def figure4() -> Path:
     b.text(0.5, 0.02, r"$\eta = 1/2$", transform=b.get_xaxis_transform(), ha="center", va="bottom", fontsize=8, color=MUTED)
     a.set_ylabel(r"information spread $\Delta_\eta$")
     a.set_ylim(0, 10.5)
-    b.set_ylabel(r"challenger profit $G_{\theta,\eta}$")
+    b.set_ylabel(r"challenger profit $g_{\theta,\eta}$")
     b.set_yscale("log")
     b.set_ylim(0.8 * min(float(r[k]) for r in rows for k in ("G_H_eta", "G_L_eta")), 60)
     panel_label(a, "(a)")

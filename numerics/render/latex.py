@@ -30,7 +30,7 @@ FALLBACK_FIGS = {
     3: ("figures/posterior_tail_entry.pdf",
         r"The upper tail of price information under full orders at the strong benchmark strength and scale $b=2$. Panel (a): $\Pr(\mu_X\ge\tau)$ against the threshold distance $M-\tau$. Panel (b): implied total entry. At $M-\tau=0$ the Laplace plateau enters under the tie rule (filled dot) while the logistic mass is zero (open circle)."),
     4: ("figures/bargaining_weight.pdf",
-        r"Bargaining and the division of information-sensitive returns in the verifiable-value institution with zero reserve, benchmark $h=10$, $\ell=1$, and uniform incumbents with $r=1.2$ (weak) and $r=3$ (strong). Panel (a): $\Delta_\eta$ against the seller weight $\eta$. Panel (b): challenger profits $G_{H,\eta}$ and $G_{L,\eta}$ on a log scale."),
+        r"Bargaining and the division of information-sensitive returns in the verifiable-value institution with zero reserve, benchmark $h=10$, $\ell=1$, and uniform incumbents with $r=1.2$ (weak) and $r=3$ (strong). Panel (a): $\Delta_\eta$ against the seller weight $\eta$. Panel (b): challenger profits $g_{H,\eta}$ and $g_{L,\eta}$ on a log scale."),
 }
 FALLBACK_TABS = {
     1: ("tables/table1_auction_primitives.tex", "Auction primitives at the benchmark specification."),

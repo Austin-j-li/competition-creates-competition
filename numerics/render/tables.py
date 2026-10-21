@@ -189,7 +189,7 @@ def table1() -> Path:
                      ("B_prior", "Expected gross profit at the prior, $B_r(1/2)$")):
         body.append([lab, d6(weak[key]), d6(strong[key])])
     notes = [r"Benchmark primitives $h=10$, $\ell=1$, $p=0.5$; values are incremental value per target share. $\Delta_T$ is the spread in "
-             r"expected target proceeds across challenger types, not total merger value and not the trader's expected profit. Closed forms in "
+             r"expected target proceeds across challenger classes, not total merger value and not the trader's expected profit. Closed forms in "
              r"the text agree with direct integration of the realized sale rule to within $10^{-9}$ (Online Appendix C.1)."]
     out = TAB / "table1_auction_primitives.tex"
     out.write_text(threeparttable(["", "Weak ($r=1.2$)", "Strong ($r=3$)"], body, r"p{0.58\linewidth}rr", notes))
@@ -242,8 +242,10 @@ def table2() -> Path:
         r"$r=1.2$ and coincides with the equilibrium profile at $r=3$ while its role remains that of a control, so its Unique field is not "
         r"applicable. The price-hidden rows are the reoptimized equilibria of the economy in which the price is withheld from the challenger. "
         r"The matched-dividend invariance diagnostic of Section 6.1 is reported in the online matched-price panel.",
-        r"Panel C: $\mathcal{W}$ is allocation value net of paid preparation costs, not target revenue. The five strict margins of Proposition 2 at "
-        r"$(r_0,r_1)=(1.2,3)$ are " + ", ".join(f"{lab} = {sci(e[k])}" for lab, k in zip(MARGIN_LABELS, MARGIN_KEYS)) + ".",
+        r"Panel C: $\mathcal{W}$ is allocation value net of paid preparation costs, not target revenue. The four strict margins of Proposition 2 at "
+        r"$(r_0,r_1)=(1.2,3)$ are " + ", ".join(f"{lab} = {sci(e[k])}" for lab, k in zip(MARGIN_LABELS[1:], MARGIN_KEYS[1:]))
+        + r". The recorded low-cost diagnostic is $\zeta_L$ = " + sci(e["zeta_L"])
+        + r". It is gross profit at the lowest feasible belief, not a hypothesis of Proposition 2.",
     ]
     out = TAB / "table2_equilibrium_controls.tex"
     out.write_text(threeparttable(header, body, r"p{0.325\linewidth}rrrrrll", notes, extra=welfare))
@@ -399,9 +401,9 @@ def table3() -> Path:
         r"moderate-value vector with $(1.05,1.5)$; Panel C uses the complementary-signal vector with $(1.1,2.3)$, investor accuracy $a$ and buyer "
         r"accuracy $d$. Panels B and C are separate illustrations, not one joint calibration. The cost mixture uses half-width "
         r"$\varepsilon_C=0.1$; noise laws share the scale $b$, not the variance.",
-        r"Evidence is the result status of the comparison; Unique records whether the sufficient uniqueness conditions of the relevant "
-        r"proposition hold (all five margins strictly positive). The individual margins and their minimum are in the online table of "
-        r"sufficient-condition margins; the complete accuracy grid is the online accuracy-grid table.",
+        r"Evidence is the result status of the comparison. Unique records whether the sufficient uniqueness conditions of the relevant proposition hold. "
+        r"For cost atoms, these are four strict sufficient conditions. The cost mixture also requires the low-support margin in Proposition A.6. "
+        r"The online margins table retains all five recorded quantities and their minimum; the online accuracy-grid table reports the complete accuracy grid.",
     ]
     out = TAB / "table3_extensions.tex"
     out.write_text(threeparttable(header, body, r"p{0.26\linewidth}rrrrrll", notes))
@@ -427,12 +429,15 @@ def extensions_margins() -> list[Path]:
             body.append([titles[current]])
         body.append([r["label"], *[sci(r[k]) for k in MARGIN_KEYS], sci(r["minimum_margin"]), r["evidence"], r["unique"]])
     notes = [
-        r"The five strict sufficient inequalities of the relevant proposition (low cost, high cost at the prior, high cost at the ceiling, weak-economy "
-        r"trade, strong-economy trade), in the order of \eqref{eq:oa-oa-77} for Panels A and B and of \eqref{eq:oa-oa-29} for Panel C, and their minimum. A positive minimum "
-        r"places the row inside the analytical uniqueness region; a nonpositive minimum would mean the comparison condition is not met, not that a "
-        r"candidate is rejected.",
-        r"Parameter vectors: Panel A $(h,\ell,p,\rho,c_L,c_H,b,k)=(10,1,0.5,0.25,0,6,2,0.02)$ with $(r_0,r_1)=(1.2,3)$; Panel B "
-        r"$(2,1,0.5,0.25,0,0.89,2,0.002)$ with $(1.05,1.5)$; Panel C $(10,1,0.5,0.85,0,7.14,2,0.015)$ with $(1.1,2.3)$ and $(a,d)=(0.70,0.75)$. "
+        r"Columns $\zeta_{H0},\zeta_{H1},\zeta_0,\zeta_1$ report the four strict sufficient margins: high-cost exclusion, high-cost entry, weak-economy trade, and strong-economy trade. "
+        r"Their order follows \eqref{eq:oa-oa-77} for Panels A and B and \eqref{eq:oa-oa-29} for Panel C.",
+        r"For cost atoms, $\zeta_L$ records gross profit at the lowest feasible belief as a diagnostic, not an additional condition. "
+        r"For the cost mixture, $\zeta_L=B_{r_1}(m)-2\varepsilon_C$ is the support margin required by Proposition A.6. "
+        r"Minimum covers all five recorded quantities; the low-cost column does not attain the minimum in any listed row. "
+        r"A positive minimum places the row inside the analytical uniqueness region. A nonpositive minimum means the comparison condition is not met, not that a candidate is rejected.",
+        r"Parameter vectors: Panel A $(h,\ell,p,\rho,c_H,b,k)=(10,1,0.5,0.25,6,2,0.02)$ with $(r_0,r_1)=(1.2,3)$; Panel B "
+        r"$(2,1,0.5,0.25,0.89,2,0.002)$ with $(1.05,1.5)$; Panel C $(10,1,0.5,0.85,7.14,2,0.015)$ with $(1.1,2.3)$ and $(a,d)=(0.70,0.75)$. "
+        r"The low-cost atom is zero in each panel. "
         r"The complete records, including the preparation change in percentage points, are in \texttt{tables/extensions\_margins.csv}.",
     ]
     tex = online_table("Sufficient-condition margins behind Table 3.", "tab:oa-margins",
@@ -466,10 +471,12 @@ def signal_grid() -> Path:
         lines.append(" & ".join([weak["a"] + mark, weak["d"], d6(weak["E"]), d6(strong["E"]), d2(pp_change(strong["E"], weak["E"])),
                                   d6(weak["O_H"]), d6(strong["O_H"]), sci(margin), joint_evidence(weak["status"], strong["status"]), condition]) + r" \\")
     notes = (r"\textit{Notes.} All " + str(len(pairs)) + r" accuracy combinations in the declaration in Section C.3 are reported; none is dropped. "
-             r"Other parameters are $h=10$, $\ell=1$, $p=0.5$, $\rho=0.85$, $c_L=0$, $c_H=7.14$, $b=2$, $k=0.015$, "
-             r"with strengths $r_0=1.1$ and $r_1=2.3$. $\mathsf E$ and $\mathsf O_H$ are probabilities; $\Delta\mathsf E$ is the change in "
+             r"Other parameters are $h=10$, $\ell=1$, $p=0.5$, $\rho=0.85$, $c_H=7.14$, $b=2$, $k=0.015$, "
+             r"with strengths $r_0=1.1$ and $r_1=2.3$. The low-cost atom is zero. $\mathsf E$ and $\mathsf O_H$ are probabilities; $\Delta\mathsf E$ is the change in "
              r"preparation in percentage points from the same validated probabilities. "
-             r"The minimum margin is the smallest of the five conditions in \eqref{eq:oa-oa-29}; the comparison condition is met when it is strictly positive "
+             r"The minimum covers the four sufficient margins in \eqref{eq:oa-oa-29} and the recorded low-cost diagnostic in C.3. "
+             r"The diagnostic is positive and never attains the minimum on this grid; it is not an additional condition. "
+             r"The comparison condition is met when the minimum is strictly positive "
              r"(" + str(n_met) + r" rows), which places the row inside the analytical uniqueness region. A condition that is not met is not a "
              r"rejection: every row is a validated equilibrium of the finite check, and its evidence is then numerical diagnostic unless a separate "
              r"analytical or interval argument supports more. The asterisk marks the example used in the main text. All rows pass the declared "
@@ -549,11 +556,11 @@ def table4() -> Path:
                  and unique_field(n["uniqueness_scope"]) == "yes"]
     if len(supported) == len(nodes):
         support = (r"Analytical support: at every listed node the trading outcome is the unique continuation under the global bound "
-                   r"($k-\Delta_T>0$ for no trade; the uniform derivative bound with a positive low-cost floor for full orders).")
+                   r"($k-\Delta_T>0$ for no trade; the uniform derivative bound with the automatic zero-cost entry floor for full orders).")
     else:
         lacking = [n["label"] for n in nodes if n not in supported]
         support = (r"Analytical support: the trading outcome is the unique continuation under the global bound ($k-\Delta_T>0$ for no trade; "
-                   r"the uniform derivative bound with a positive low-cost floor for full orders) at every listed node except " + "; ".join(lacking) + ".")
+                   r"the uniform derivative bound with the automatic zero-cost entry floor for full orders) at every listed node except " + "; ".join(lacking) + ".")
     notes = [
         r"Preparation is the probability that the challenger pays its preparation cost. Sale is the probability that at least one bidder submits "
         r"an admissible bid, whether the incumbent or a prepared challenger whose realized value meets the reserve. Two admissible bidders is the "
@@ -597,7 +604,8 @@ def reserve_details() -> Path:
         r"Complete parameter identity of every node: \texttt{" + identity_text(common) + r"} with \texttt{r}, \texttt{p}, \texttt{value\_law} "
         r"$\in\{$binary, uniform\_classes$\}$ and \texttt{eps\_V} $\in\{0, 0.05\}$ as listed. Institution, information structure, and tie rule: "
         + "; ".join(r"\texttt{" + identity_text(a) + r"}, \texttt{" + identity_text(b_) + r"}, \texttt{" + identity_text(t) + "}" for a, b_, t in sorted(ids)) + ".",
-        r"$\mathsf A$ is the probability of an admissible prepared challenger. Floor margin is $B_r(m)-c_L$; trading margin is $k-\Delta_T$ for "
+        r"$\mathsf A$ is the probability of an admissible prepared challenger. Floor margin records $B_r(m)$, gross profit at the lowest feasible belief. "
+        r"It is a diagnostic; zero-cost preparation supplies the entry floor without an additional condition. Trading margin is $k-\Delta_T$ for "
         r"no trade and $(1-1/b)\,e(m)\,m\,\Delta_T-k$ for full orders. Evidence is the result status; Unique reports the uniqueness scope recorded "
         r"with the continuation (unique within all continuations under the stated bound, or not established). Each node is a validated row of "
         r"\texttt{numerics/reserve\_events.csv} joined with \texttt{tables/reserve\_comparisons.csv} on the full parameter identity, the exact "
