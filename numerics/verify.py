@@ -41,6 +41,7 @@ STAGES = {
     "c7": ("c7_bargaining", ["C.7"]),
     "c8": ("c8_registry", ["C.8"]),
     "c9": ("c9_revision", ["C.9"]),
+    "c10": ("c10_classes", ["C.10"]),
     "render": ("render", []),
 }
 RERUN = {"c1": "numerics/exercises/c1_baseline.py", "c3": "numerics/exercises/c3_signals.py", "c4": "numerics/exercises/c4_moderate.py",
@@ -82,6 +83,9 @@ def main() -> int:
         check(man["passed"] is True, f"manifest {mname} passed", failures)
         for out, h in man["outputs"].items():
             check((ROOT / out).exists() and sha256(out) == h, f"output hash unchanged: {out}", failures)
+        if s == "c10":
+            for source, h in man["inputs"]["source_hashes"].items():
+                check(sha256(source) == h, f"C.10 source hash unchanged: {source}", failures)
 
     # (2) direct re-validation of the declared benchmark nodes and the certificates
     if "c1" in stages:
@@ -97,6 +101,10 @@ def main() -> int:
             if row["boundary"] in ("pooling_unique_sufficient", "pooling_existence", "full_orders_unique_sufficient", "high_cost_ceiling"):
                 check(abs(float(row["defining_residual"])) <= CONTROLS.independent_formula_acceptance,
                       f"threshold {row['boundary']} residual {row['defining_residual']:.1e}", failures)
+
+    if "c10" in stages:
+        from numerics.exercises.c10_classes import run as revalidate_classes
+        check(revalidate_classes(revalidate=True), "C.10 direct revalidation and saved CSV agreement", failures)
 
     # (3) registry: rebuild and check stage keys
     from numerics.registry import build_registry

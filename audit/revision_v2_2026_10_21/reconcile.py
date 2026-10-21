@@ -61,6 +61,8 @@ def main() -> None:
         old_value = old['value'] or f"[{old['lower']}, {old['upper']}]" if old else ''
         new_value = new['value'] or f"[{new['lower']}, {new['upper']}]" if new else 'retired'
         note = 'new' if old is None else 'retired: C.6b has no premise at zero low cost' if new is None else 'registry quantity'
+        if old is None and new['exercise'] == 'C.10':
+            note = 'new, round 3'
         if old and new and old['display'] == new['display'] and not equal(old_value, new_value):
             note += '; serialized value differs; displayed value is unchanged'
         add(name, row['source_file'], row['source_row'], old_value, new_value, note)
@@ -79,6 +81,13 @@ def main() -> None:
         'numerics/thresholds.csv': ['boundary'],
         'numerics/reserve_event_ranges.csv': ['value_law', 'r', 'event_id'],
     }
+    class_keys = ['case', 'h', 'ell', 'p', 'rho', 'c_L', 'c_H', 'b', 'k', 'fundamental_prior_H',
+                  'noise', 'cost_law', 'value_law', 'a_L', 'b_L', 'a_H', 'b_H', 'r_0', 'r_1', 'r_2']
+    sources.update({
+        'numerics/class_exhibit.csv': class_keys + ['node', 'r', 'branch'],
+        'numerics/class_conditions.csv': class_keys + ['condition'],
+        'numerics/class_bounds.csv': class_keys + ['quantity', 'branch'],
+    })
 
     def index_rows(rows: list[dict[str, str]], keys: list[str], path: str) -> dict[tuple, dict]:
         indexed, counts = {}, Counter()
@@ -109,7 +118,7 @@ def main() -> None:
                 name = f"cell.{Path(path).stem}.{'.'.join(identity[:-1])}.{identity[-1]}.{column}"
                 note = 'table or certificate source; revisions align on the declared scenario'
                 if not old:
-                    note = 'new source row'
+                    note = 'new, round 3' if path.startswith('numerics/class_') else 'new source row'
                 elif not new:
                     note = 'source row no longer belongs to the declared scenario'
                 elif column in ('c_L', 'zeta_L', 'low_cost_margin', 'low_cost_floor_margin'):
@@ -162,6 +171,7 @@ def main() -> None:
         if path in figure_refs and old is None:
             old_hash = figure_refs[path]['sha256']
         note = 'file SHA-256; a changed manifest includes new provenance'
+        round3_file = path.startswith('numerics/class_') or path in ('numerics/manifests/c10_classes.json', 'tables/table_class_exhibit.tex')
         detail = {'file':path, 'old_sha256':old_hash, 'new_sha256':new_hash, 'changed':old_hash != new_hash}
         if path.endswith('.csv'):
             old_rows, new_rows = csv_rows(old), csv_rows(new)
@@ -185,6 +195,8 @@ def main() -> None:
             note += '; rendered content ' + ('changed' if detail['raster_changed'] else 'unchanged at 150 dpi; PDF metadata may differ')
             add(f'figure_content.{Path(path).stem}',path,'150 dpi rendered page',*raster_hashes,note)
         output_diff.append(detail)
+        if round3_file:
+            note = 'new, round 3; ' + note
         add('file.'+path.replace('/','.'),path,'whole file SHA-256',old_hash,new_hash,note)
 
     with (HERE/'reconciliation.csv').open('w',newline='') as stream:

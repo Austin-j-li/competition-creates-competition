@@ -1344,6 +1344,83 @@ Independent density roots and quadrature validate the noise values.
 Both Laplace regimes also pass the existing continuation validator.
 C.0 controls apply. Any failure leaves the result open and stops the producer.
 
+### C.10. Quality classes, general priors, and benchmark windows {#oa-c-classes}
+
+**Inputs.** This exercise uses the general form of Proposition 2 in the revised manuscript.
+Its high-cost conditions are (A1), and its trade conditions are (A2).
+The exact declarations appear in the table below and in the run manifest.
+Cases A and B each change three benchmark inputs: the high cost, the trade cost, and the weak strength.
+The other two strengths stay fixed.
+Case C uses uniform classes above the reserve, with the same means as the point masses.
+Case D replaces those classes by point masses and retains every other input.
+
+The posterior bounds are
+$$
+m(\pi)=\frac{\pi}{\pi+(1-\pi)e^{2/b}},\qquad
+M(\pi)=\frac{\pi}{\pi+(1-\pi)e^{-2/b}},\qquad
+\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}.
+$$
+Class payoffs are the exact integrals of the auction polynomials.
+The high-class win probability is $W_H(r)=E_H[\min\{\theta/r,1\}]$, since both supports exceed the reserve.
+At an interior threshold,
+$$
+\tau=\frac{c_H-g_L}{g_H-g_L},\qquad
+x^*=\frac b2\left[\log\frac{\tau}{1-\tau}-\log\frac{\pi}{1-\pi}\right].
+$$
+Conditional entry follows the Laplace tails at $x^*-1$ and $x^*+1$.
+Total entry is $\pi e_H+(1-\pi)e_L$, and high-class ownership is $\pi e_HW_H$.
+No-trade rows have no flow threshold.
+A threshold above $M(\pi)$ is unattainable; equality retains the positive mass on the upper plateau.
+
+**Conditions and status.** Each case records every parameter restriction, both class supports, their order, and equal admissibility.
+The record also gives all four margins in (A1)--(A2), the collapse margin, and the trade bound at the collapse strength.
+The sufficient ownership margin is $(1+\rho)W_H(r_1)-2\rho W_H(r_0)$.
+The exact ownership margin is $e_H(r_1)W_H(r_1)-\rho W_H(r_0)$.
+Gross profit at the lowest posterior is a diagnostic; zero cost gives preparation without an extra strict condition.
+Cases A--C satisfy the complete proposition, including part (iii) and the sufficient ownership condition.
+
+Case D fails the upper high-cost condition at the strong strength.
+The record retains this negative margin.
+Its trade bounds still imply unique no trade at the weak strength and unique full orders at both higher strengths.
+High-cost preparation is infeasible at both higher strengths, so total entry stays at its floor.
+Analytical status comes from these global bounds; an order mesh supplies only a numerical diagnostic.
+
+~~~{=latex}
+\input{tables/table_class_exhibit.tex}
+~~~
+
+**Benchmark intervals.** Three different prior intervals answer three different questions.
+The trade-cost window is nonempty for priors in approximately
+$([[base_prior_window_lower]],[[base_prior_window_upper]])$.
+With both benchmark costs fixed, all hypotheses for parts (i)--(ii) hold on
+$([[base_prior_prop2_lower]],[[base_prior_prop2_upper]])$.
+With the collapse strength fixed as well, parts (i)--(iii) require
+$([[base_prior_prop2_all_lower]],[[base_prior_prop2_all_upper]])$.
+These intervals are open; the calculations use the unrounded endpoints.
+The broader first interval does not establish the proposition at the fixed benchmark costs.
+
+At the equal prior, the trade-cost window is
+$(1/60,\,1/[12(1+e)])$, approximately
+$([[base_trade_cost_lower]],[[base_trade_cost_upper]])$.
+The fixed cost is $k=0.02$.
+The spread ratio is [[base_spread_ratio]], against the sufficient bound [[base_spread_ratio_bound]].
+Across the four noise laws with atomic costs, strong entry ranges from [[four_noise_entry_min]] to [[four_noise_entry_max]].
+The hyperbolic secant and Student values retain their status as diagnostics at fixed full orders.
+This range establishes no additional equilibrium claim.
+
+**Validation and outputs.** Exact decimal strings enter fifty-digit arithmetic directly.
+Independent integration over realized bids validates target receipts, challenger profits, and class win probabilities.
+Independent density roots and full-line integrals validate the threshold, conditional entry, mean posterior, and mean price.
+Held-schedule deviations use both signs and both declared order grids, with the required tighter quadrature pass.
+The analytical Laplace tails have zero truncation error.
+All C.0 tolerances stay unchanged; a breach leaves the result open and stops the producer.
+
+The outputs are class_exhibit.csv, class_conditions.csv, class_bounds.csv, class_deviations.csv, and class_diagnostics.json under numerics/.
+The manifest is numerics/manifests/c10_classes.json.
+It records complete inputs, methods, tolerances, software versions, source hashes, output hashes, and acceptance.
+The registry and table consume only these validated CSV files.
+The full gate repeats the calculation and compares every saved row.
+
 ## D. Institutional pilot and empirical design {#oa-d}
 
 The proposed pilot identifies publicly visible sale opportunities in which a prospective buyer can still decide whether to investigate while target shares trade. This appendix specifies eligibility, event coding, and the evidence needed to establish the decision interval. It reports a research design, without an extracted sample or estimated effects.

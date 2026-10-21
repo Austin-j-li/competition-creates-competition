@@ -1,0 +1,392 @@
+{
+ "exercise": "c10_classes",
+ "timestamp_utc": "2026-10-21T19:42:53.513251+00:00",
+ "inputs": {
+  "cases": [
+   {
+    "h": "10",
+    "ell": "1",
+    "p": "0.5",
+    "rho": "0.25",
+    "c_L": "0",
+    "c_H": "4.5",
+    "b": "2",
+    "k": "0.01",
+    "case": "prior_03",
+    "fundamental_prior_H": "0.3",
+    "noise": "Laplace",
+    "cost_law": "atoms",
+    "value_law": "point_mass",
+    "a_L": "1",
+    "b_L": "1",
+    "a_H": "10",
+    "b_H": "10",
+    "r_0": "1.1",
+    "r_1": "3",
+    "r_2": "3.6",
+    "proposition_required": true
+   },
+   {
+    "h": "10",
+    "ell": "1",
+    "p": "0.5",
+    "rho": "0.25",
+    "c_L": "0",
+    "c_H": "7.2",
+    "b": "2",
+    "k": "0.01",
+    "case": "prior_07",
+    "fundamental_prior_H": "0.7",
+    "noise": "Laplace",
+    "cost_law": "atoms",
+    "value_law": "point_mass",
+    "a_L": "1",
+    "b_L": "1",
+    "a_H": "10",
+    "b_H": "10",
+    "r_0": "1.1",
+    "r_1": "3",
+    "r_2": "3.6",
+    "proposition_required": true
+   },
+   {
+    "h": "10",
+    "ell": "1",
+    "p": "0.5",
+    "rho": "0.25",
+    "c_L": "0",
+    "c_H": "6.7",
+    "b": "2",
+    "k": "0.02",
+    "case": "wide_07",
+    "fundamental_prior_H": "0.7",
+    "noise": "Laplace",
+    "cost_law": "atoms",
+    "value_law": "uniform_classes",
+    "a_L": "0.6",
+    "b_L": "1.4",
+    "a_H": "1",
+    "b_H": "19",
+    "r_0": "1",
+    "r_1": "4.5",
+    "r_2": "5.5",
+    "proposition_required": true
+   },
+   {
+    "h": "10",
+    "ell": "1",
+    "p": "0.5",
+    "rho": "0.25",
+    "c_L": "0",
+    "c_H": "6.7",
+    "b": "2",
+    "k": "0.02",
+    "case": "matched_point_07",
+    "fundamental_prior_H": "0.7",
+    "noise": "Laplace",
+    "cost_law": "atoms",
+    "value_law": "point_mass",
+    "a_L": "1",
+    "b_L": "1",
+    "a_H": "10",
+    "b_H": "10",
+    "r_0": "1",
+    "r_1": "4.5",
+    "r_2": "5.5",
+    "proposition_required": false
+   }
+  ],
+  "benchmark": {
+   "h": "10",
+   "ell": "1",
+   "p": "0.5",
+   "rho": "0.25",
+   "c_L": "0",
+   "c_H": "6",
+   "b": "2",
+   "k": "0.02",
+   "case": "benchmark_bounds",
+   "fundamental_prior_H": "0.5",
+   "noise": "Laplace",
+   "cost_law": "atoms",
+   "value_law": "point_mass",
+   "a_L": "1",
+   "b_L": "1",
+   "a_H": "10",
+   "b_H": "10",
+   "r_0": "1.2",
+   "r_1": "3",
+   "r_2": "3.6"
+  },
+  "source_hashes": {
+   "numerics/class_exhibit.py": "a304eade107db10bd3b8c2a72092f2fea2b93809909fd9f4d3c92c606c0205be",
+   "numerics/class_bounds.py": "6f647dfd22b534cb74ae7b450c92f5ffec53eda6c22a99c8f1a95be28fdd0cc9",
+   "numerics/class_validation.py": "22fa11c85d2af832053350d9034b994862d6fe96ad6d2982ebf20b401a966954",
+   "numerics/exercises/c10_classes.py": "4727c289acd848f3b033279d37d86532ee5f9cbc12f799441ae05e1120bd2f3b",
+   "numerics/params.py": "efdf58faeef5544e9ae959d72c8058eed79fab6eec6513d4d5a59e1baccc1ad8",
+   "numerics/deviations.py": "8f06cd5c0afeabbb0eccf78aa80f680a01e784707339e7dba1242a4af0a7836d",
+   "numerics/quadrature.py": "fde9f98c4d8660b85e92aff1d7da5e5232acd30b898a064effd2207f2b483798",
+   "tables/equilibrium_controls.csv": "5eb3d78f311cfa96574e5895412c7e932e1a686b33bef2234ea1f919e00f88f9",
+   "numerics/revision_quantities.csv": "612fe75c9e63d4fe2ff86b1ff7c01474ea70b41f7115100d1e72657d7a6349c4"
+  },
+  "arithmetic_digits": 50,
+  "sign_resolution": "1e-40",
+  "tie_rule": "entry_at_indifference; upper Laplace plateau enters at equality",
+  "workers": 1
+ },
+ "method": "Decimal auction polynomials and general-prior Laplace formulas; independent realized-auction integrals, density roots, full-line flow integrals, and held-schedule deviations at both declared resolutions. Benchmark prior endpoints use closed inverse maps and independent roots of the defining margins.",
+ "tolerances": {
+  "quadrature_absolute_target": 1e-11,
+  "quadrature_relative_target": 1e-11,
+  "probability_acceptance": 1e-08,
+  "price_identity_acceptance": 1e-08,
+  "entry_optimality_acceptance": 1e-08,
+  "deviation_gain_acceptance": 1e-07,
+  "independent_formula_acceptance": 1e-09,
+  "initial_order_intervals": 400,
+  "refined_order_intervals": 800,
+  "initial_flow_halfwidth": 40.0,
+  "interval_decimal_precision": 50,
+  "certificate_derivative_intervals": 200,
+  "certificate_refined_intervals": 400,
+  "probability_display_decimals": 6
+ },
+ "software": {
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "mpmath": "1.4.1",
+  "platform": "Linux-6.12.0-211.20.1.el10_2.x86_64_v2-x86_64-with-glibc2.39"
+ },
+ "outputs": {
+  "numerics/class_exhibit.csv": "99677030e3bc374b24028b0fbebfc24d2803dddd4e8e2b07f854917b70bc0177",
+  "numerics/class_conditions.csv": "e1fbb23773c7e66609381a1ac92c126a1b5e432f7c945bb11a65f81a0fe27681",
+  "numerics/class_bounds.csv": "c0ae93468e4602e00b3e96df63953e96f25299a8ea9e026dbab6e54e2aa37e7a",
+  "numerics/class_deviations.csv": "9ec333d2adc99a338cddc9b501825e7919bb0fa802ed5df1dc8b71e91c16a647",
+  "numerics/class_diagnostics.json": "19cf5aee744d66dd463fb745777cc176e26d7ce241320757046ce866c1b92b37"
+ },
+ "checks": {
+  "cases": [
+   {
+    "case": "prior_03",
+    "accepted": true,
+    "formula_error": 6.661338147750939e-16,
+    "quadrature_error": 2.447116578601882e-12,
+    "quadrature_error_refined": 5.910933095764727e-13,
+    "epsilon_P": 6.661338147750939e-16,
+    "epsilon_e": 0.0,
+    "epsilon_q": 0.0,
+    "epsilon_q_refined": 0.0,
+    "posterior_inversion_error": 4.6407322429331543e-14,
+    "probability_error": 2.220446049250313e-16,
+    "tail_bound": 0.0,
+    "breaches": []
+   },
+   {
+    "case": "prior_07",
+    "accepted": true,
+    "formula_error": 4.440892098500626e-16,
+    "quadrature_error": 2.4472519425188045e-12,
+    "quadrature_error_refined": 5.918253042068791e-13,
+    "epsilon_P": 6.661338147750939e-16,
+    "epsilon_e": 0.0,
+    "epsilon_q": 0.0,
+    "epsilon_q_refined": 0.0,
+    "posterior_inversion_error": 2.6867397195928788e-14,
+    "probability_error": 2.220446049250313e-16,
+    "tail_bound": 0.0,
+    "breaches": []
+   },
+   {
+    "case": "wide_07",
+    "accepted": true,
+    "formula_error": 1.887379141862766e-15,
+    "quadrature_error": 2.4471383007557384e-12,
+    "quadrature_error_refined": 5.480820990949709e-13,
+    "epsilon_P": 4.440892098500626e-16,
+    "epsilon_e": 0.0,
+    "epsilon_q": 0.0,
+    "epsilon_q_refined": 0.0,
+    "posterior_inversion_error": 3.3306690738754696e-15,
+    "probability_error": 2.220446049250313e-16,
+    "tail_bound": 0.0,
+    "breaches": []
+   },
+   {
+    "case": "matched_point_07",
+    "accepted": true,
+    "formula_error": 1.7763568394002505e-15,
+    "quadrature_error": 1.8473598066771827e-12,
+    "quadrature_error_refined": 5.49686964717011e-13,
+    "epsilon_P": 3.3306690738754696e-16,
+    "epsilon_e": 0.0,
+    "epsilon_q": 0.0,
+    "epsilon_q_refined": 0.0,
+    "posterior_inversion_error": 3.3306690738754696e-16,
+    "probability_error": 2.220446049250313e-16,
+    "tail_bound": 0.0,
+    "breaches": []
+   }
+  ],
+  "bounds": [
+   {
+    "name": "base_prior_window_lower",
+    "independent_value": 0.4046096751916909,
+    "absolute_difference": 1.2212453270876722e-15,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_window_upper",
+    "independent_value": 0.5953903248083092,
+    "absolute_difference": 1.1102230246251565e-15,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_fixed_k_lower",
+    "independent_value": 0.46190409834690993,
+    "absolute_difference": 2.220446049250313e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_fixed_k_upper",
+    "independent_value": 0.53809590165309,
+    "absolute_difference": 3.3306690738754696e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_A1_lower",
+    "independent_value": 0.4678500296861484,
+    "absolute_difference": 1.1102230246251565e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_A1_upper",
+    "independent_value": 0.6331168831168831,
+    "absolute_difference": 0.0,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_prop2_lower",
+    "independent_value": 0.4678500296861484,
+    "absolute_difference": 1.1102230246251565e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_prop2_upper",
+    "independent_value": 0.53809590165309,
+    "absolute_difference": 3.3306690738754696e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_collapse_upper",
+    "independent_value": 0.500424307320063,
+    "absolute_difference": 2.220446049250313e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_prop2_all_lower",
+    "independent_value": 0.4678500296861484,
+    "absolute_difference": 1.1102230246251565e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_prop2_all_upper",
+    "independent_value": 0.500424307320063,
+    "absolute_difference": 2.220446049250313e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_trade_cost_lower",
+    "independent_value": 0.01666666666666672,
+    "absolute_difference": 5.204170427930421e-17,
+    "accepted": true
+   },
+   {
+    "name": "base_trade_cost_upper",
+    "independent_value": 0.022411785114166242,
+    "absolute_difference": 1.734723475976807e-17,
+    "accepted": true
+   },
+   {
+    "name": "base_trade_cost_lower_margin",
+    "independent_value": 0.003333333333333282,
+    "absolute_difference": 5.160802341031001e-17,
+    "accepted": true
+   },
+   {
+    "name": "base_trade_cost_upper_margin",
+    "independent_value": 0.002411785114166242,
+    "absolute_difference": 1.8214596497756474e-17,
+    "accepted": true
+   },
+   {
+    "name": "base_spread_ratio",
+    "independent_value": 0.025000000000000095,
+    "absolute_difference": 9.367506770274758e-17,
+    "accepted": true
+   },
+   {
+    "name": "base_spread_ratio_bound",
+    "independent_value": 0.03361767767124939,
+    "absolute_difference": 0.0,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_03_cost_lower",
+    "independent_value": 3.0075000000000003,
+    "absolute_difference": 4.440892098500626e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_03_cost_upper",
+    "independent_value": 4.609179385203741,
+    "absolute_difference": 0.0,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_03_trade_upper",
+    "independent_value": 0.011349205951849009,
+    "absolute_difference": 6.938893903907228e-18,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_07_cost_lower",
+    "independent_value": 6.600833333333334,
+    "absolute_difference": 8.881784197001252e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_07_cost_upper",
+    "independent_value": 7.323412738148432,
+    "absolute_difference": 8.881784197001252e-16,
+    "accepted": true
+   },
+   {
+    "name": "base_prior_07_trade_upper",
+    "independent_value": 0.011349205951849009,
+    "absolute_difference": 6.938893903907228e-18,
+    "accepted": true
+   },
+   {
+    "name": "four_noise_entry_min",
+    "independent_value": 0.3015088516350811,
+    "absolute_difference": 0.0,
+    "accepted": true
+   },
+   {
+    "name": "four_noise_entry_max",
+    "independent_value": 0.5227572972597381,
+    "absolute_difference": 0.0,
+    "accepted": true
+   }
+  ],
+  "elapsed_seconds": 3.4555484498851
+ },
+ "passed": true,
+ "notes": [
+  "The matched point-mass comparison retains its failed recruiting condition and its unchanged entry.",
+  "Every accepted outcome has an analytical global uniqueness argument. Order meshes are numerical diagnostics.",
+  "The four-noise range retains the fixed-profile status of the two additional noise laws.",
+  "No tolerance changes. Thresholds outside the feasible posterior range remain tagged."
+ ]
+}

@@ -110,7 +110,8 @@ def finite() -> None:
     for path in ("tables/equilibrium_controls.csv", "tables/reserve_comparisons.csv", "numerics/certificates.csv",
                  "figures_data/posterior_tails.csv", "tables/auction_primitives.csv",
                  "tables/extensions.csv", "numerics/two_signals.csv", "numerics/moderate_values.csv",
-                 "figures_data/bargaining.csv", "figures_data/two_returns.csv"):
+                 "figures_data/bargaining.csv", "figures_data/two_returns.csv",
+                 "numerics/class_exhibit.csv", "numerics/class_conditions.csv", "numerics/class_bounds.csv"):
         for index, row in enumerate(rows(path), 2):
             for key, value in row.items():
                 try:
@@ -120,7 +121,27 @@ def finite() -> None:
                 require(parsed.is_finite(), f"nonfinite untagged field {path}:{index}/{key}")
 
 
-CHECKS = {fn.__name__: fn for fn in (registry, controls, certificates, endpoints, candidates, finite)}
+def classes() -> None:
+    from numerics.class_exhibit import CASES
+    data, conditions = rows("numerics/class_exhibit.csv"), rows("numerics/class_conditions.csv")
+    require(len(data) == 3*len(CASES), "class exhibit node count")
+    for case in CASES:
+        selected = [r for r in data if r["case"] == case.name]
+        require({r["node"] for r in selected} == {"r_0", "r_1", "r_2"}, f"class node identity {case.name}")
+        for row in selected:
+            require(all(row[key] == value for key, value in case.columns().items()), f"class declaration {case.name}")
+            require(row["accepted"] == "true" and row["status"] == "analytical" and row["uniqueness_status"] == "unique",
+                    f"class acceptance {case.name}")
+            require(row["proposition_satisfied"] == str(case.proposition_required).lower(), f"class theorem scope {case.name}")
+        relevant = [r for r in conditions if r["case"] == case.name and r["scope"] != "diagnostic"]
+        require(all(r["accepted"] == "true" for r in relevant), f"class margin validation {case.name}")
+        if case.proposition_required:
+            require(all(r["satisfied"] == "true" for r in relevant), f"class hypothesis {case.name}")
+    comparison = next(r for r in conditions if r["case"] == "matched_point_07" and r["condition"] == "A1_upper")
+    require(number(comparison["margin"]) < 0 and comparison["satisfied"] == "false", "retain failed matched comparison condition")
+
+
+CHECKS = {fn.__name__: fn for fn in (registry, controls, certificates, endpoints, candidates, finite, classes)}
 
 
 if __name__ == "__main__":

@@ -59,3 +59,40 @@ No unresolved result receives a replacement value.
     Its entry set has two finite endpoints. The hyperbolic secant set is a half-line.
     C.9 has its own producer, independent acceptance layer, manifest, and registry rows.
     The final gate now requires this stage. C.0 tolerances remain unchanged.
+
+## Round 3: C.10
+
+The new exercise uses the general class model and the revised Proposition 2.
+Its (A1) replaces the old high-cost condition, and its (A2) replaces the old trade condition.
+The entry floor follows from zero cost.
+The benchmark declaration and all earlier exercises retain their values.
+
+The symbols are the prior $\pi$, bounds $m(\pi),M(\pi)$, constant $\kappa(\pi)$, and win probability $W_H$.
+The table uses $B_i(\mu)=B_{r_i}(\mu)$ and $\Delta_i=\Delta_T(r_i)$.
+Its two short labels are $u_1=(1-1/b)\rho\kappa(\pi)\Delta_1$ and
+$s_W=(1+\rho)W_H(r_1)-2\rho W_H(r_0)$.
+
+1. C.10 declares three examples and a matched point-mass comparison.
+   Every input enters as an exact decimal string.
+   The class supports are part of each complete parameter declaration.
+2. The producer computes class payoffs, posterior bounds, entry, ownership, and every required margin.
+   It records separate labels for an analytical outcome and satisfaction of the complete proposition.
+   The comparison retains its negative high-cost margin.
+3. Independent realized-auction integrals, density roots, and full-line integrals validate the formulas.
+   Held-schedule deviations use both order signs and the initial and refined grids.
+   The analytic Laplace tails have zero truncation error.
+   The established global bounds justify uniqueness beyond the diagnostic grids.
+4. The prior interval for a nonempty trade-cost window differs from the interval at fixed benchmark costs.
+   The fixed collapse strength imposes another upper endpoint.
+   C.10 records all three intervals separately and treats each endpoint as open.
+5. The registry adds the benchmark trade bounds, the spread ratio, and the four-law entry range.
+   The two additional noise laws retain their diagnostic status at fixed full orders.
+6. C.10 has its own manifest, source hashes, output hashes, and acceptance record.
+   Its serializer uses a local fifty-digit context, independent of other release stages.
+   The final gate repeats the calculation and compares every saved CSV row.
+7. The renderer consumes only the validated CSV files.
+   The legacy appendix records the exercise contract and includes its table.
+   The revised manuscript clone remains read-only.
+8. The reconciliation marks each new quantity and source row with the note “new, round 3”.
+   All tolerances and prior search records stay unchanged.
+   The producer uses one process and one native numerical thread.

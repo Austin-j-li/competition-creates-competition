@@ -746,8 +746,71 @@ def render_main() -> list[Path]:
     return [table1(), table2(), table3(), table4()]
 
 
+def class_exhibit() -> Path:
+    """Render C.10 from full declarations, including the failed comparison condition."""
+    data = read_csv("numerics/class_exhibit.csv")
+    conditions = read_csv("numerics/class_conditions.csv")
+    names = ("prior_03", "prior_07", "wide_07", "matched_point_07")
+    letters = dict(zip(names, "ABCD"))
+    declarations = {}
+    body = []
+    for name in names:
+        weak = one(data, "class exhibit declaration", case=name, node="r_0")
+        keys = {key: weak[key] for key in ("case", "h", "ell", "p", "rho", "c_L", "c_H", "b", "k",
+                "fundamental_prior_H", "noise", "cost_law", "value_law", "a_L", "b_L", "a_H", "b_H", "r_0", "r_1", "r_2")}
+        declarations[name] = keys
+        for index in range(3):
+            row = one(data, "class exhibit outcome", **keys, node=f"r_{index}", r=keys[f"r_{index}"],
+                      branch="pooling" if index == 0 else "full_orders")
+            if row["status"] != "analytical" or row["uniqueness_status"] != "unique":
+                raise ValueError(f"class exhibit has no analytical uniqueness statement: {name}")
+            cutoff = {"n/a": r"\textemdash", "unattainable": "none", "always": "all"}.get(row["x_star"])
+            if cutoff is None:
+                cutoff = d6(row["x_star"])
+            body.append([letters[name] if index == 0 else "", row["r"],
+                         r"$(0,0)$" if index == 0 else r"$(1,-1)$",
+                         d6(row["E"]), d6(row["O_H"]), d6(row["W_H"]), cutoff])
+        if name != names[-1]:
+            body.append([r"\midrule"])
+    margins = []
+    for name in names:
+        keys = declarations[name]
+        margins.append([letters[name], *[d6(one(conditions, "class exhibit margin", **keys, condition=key)["margin"])
+                        for key in ("A1_lower", "A1_upper", "A2_lower", "A2_upper", "collapse_exclusion", "ownership_sufficient")]])
+    extra = tabular(["Case", r"$c_H-B_0$", r"$B_1(M)-c_H$", r"$k-\Delta_0$",
+                     r"$u_1-k$", r"$c_H-B_2(M)$", r"$s_W$"], margins, "lrrrrrr")
+    inputs = []
+    for name in names:
+        d = declarations[name]
+        inputs.append(rf"{letters[name]}: $(\pi,c_H,k)=({d['fundamental_prior_H']},{d['c_H']},{d['k']})$"
+                      rf" and $(r_0,r_1,r_2)=({d['r_0']},{d['r_1']},{d['r_2']})$.")
+    wide = declarations["wide_07"]
+    base = declarations["prior_03"]
+    notes = [
+        rf"All cases use $(h,\ell,p,\rho,b)=({base['h']},{base['ell']},{base['p']},{base['rho']},{base['b']})$, "
+        rf"zero low cost, and Laplace noise. {' '.join(inputs)}",
+        rf"A, B, and D have point masses at $\ell$ and $h$. C has "
+        rf"$G_L=U[{wide['a_L']},{wide['b_L']}]$ and $G_H=U[{wide['a_H']},{wide['b_H']}]$; "
+        r"D has the same class means and all other inputs as C.",
+        r"$\mathsf E$ is preparation; $\mathsf O_H=\pi e_HW_H$ is high-class ownership. "
+        r"All displayed outcomes are unique by analytical bounds. The dash denotes no trade; "
+        r"\emph{none} denotes an unattainable high-cost threshold.",
+        r"The first four margins are (A1)--(A2). Here $B_i=B_{r_i}(\pi)$ unless its argument is shown, "
+        r"$\Delta_i=\Delta_T(r_i)$, $u_1=(1-1/b)\rho\kappa(\pi)\Delta_1$, and "
+        r"$s_W=(1+\rho)W_H(r_1)-2\rho W_H(r_0)$. "
+        r"A--C satisfy Proposition 2, part (iii), and its sufficient ownership condition. "
+        r"D fails the upper bound in (A1); its full orders induce no high-cost entry. "
+        r"All hypotheses and independent checks appear in Online Appendix C.10.",
+    ]
+    rendered = threeparttable(["Case", "$r$", r"$(q_H,q_L)$", r"$\mathsf E$", r"$\mathsf O_H$", r"$W_H$", r"$x^*$"],
+                              body, "lrlrrrr", notes, extra=extra)
+    path = TAB / "table_class_exhibit.tex"
+    path.write_text(online_table("Quality classes and general priors.", "tab:oa-class-exhibit", rendered))
+    return path
+
+
 def render_online() -> list[Path]:
-    out = [*matched_price_panel(), *extensions_margins(), signal_grid(), reserve_details(), reserve_exploratory()]
+    out = [*matched_price_panel(), *extensions_margins(), signal_grid(), reserve_details(), reserve_exploratory(), class_exhibit()]
     return out
 
 
