@@ -709,7 +709,7 @@ although the challenger's expected auction profit before any news falls
 
 % ---------------------------------------------------------------- A3
 \begin{frame}[label=A3]{Related work in more detail}
-\framesubtitle{A stronger incumbent lowers auction profit but can make the stock price more informative}
+\framesubtitle{A stronger incumbent lowers the challenger's auction profit but can make the stock price more informative}
 \hypertarget{app:lit}{}
 \vspace{3pt}
 {\scriptsize
@@ -719,7 +719,7 @@ although the challenger's expected auction profit before any news falls
 \toprule
 Earlier work & Result & This paper\\
 \midrule
-Dow, Goldstein and Guembel (2017) & investment feeds back on information & auction profit falls; the target-payoff spread rises\\\addlinespace[1pt]
+Dow, Goldstein and Guembel (2017) & investment feeds back on information & challenger profit falls; the target-payoff spread rises\\\addlinespace[1pt]
 Edmans, Goldstein and Jiang (2015) & real actions curb bad-news trading & incumbent strength changes what the price reveals\\\addlinespace[1pt]
 Edmans, Goldstein and Jiang (2012) & prices affect takeover activity & a challenger learns its own value\\\addlinespace[1pt]
 Fishman (1988);\newline Hirshleifer and Png (1989) & stronger rivals deter preparation & deterrence holds at fixed information (Prop.~A.3)\\\addlinespace[1pt]
@@ -736,14 +736,14 @@ Pernoud and Gleyze (2026);\newline Liu and Bernhardt (2022);\newline Carlin et a
 \end{frame}
 
 % ---------------------------------------------------------------- A4
-\begin{frame}[label=A4]{What the model leaves out, and why}
+\begin{frame}[label=A4]{What the model includes and leaves out}
 \hypertarget{app:omit}{}
 \vspace{4pt}
 \begin{center}\small
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{11.0cm}@{}}
 \toprule
-\textbf{In the model} & Neither bidder trades. The investor has no initial position, cannot bid, tender or acquire, and has no control rights. The sale applies to all target shares. No shareholder can hold out. An investor who knows the challenger has low value cannot profit in expectation from a purchase that mimics good news.\\
+\textbf{In the model} & Neither bidder trades. The investor starts with no target shares. It can trade small positions but cannot bid for the target, tender shares, or control the sale. The sale applies to all target shares. No shareholder can hold out. An investor who knows the challenger has low value cannot profit in expectation from a purchase that mimics good news.\\
 \midrule
 \textbf{Outside the model} & A bidder's advance target-share stake (a toehold) \graycite{Bulow, Huang and Klemperer 1999}; shareholder holdouts \graycite{Grossman and Hart 1980}; announced bids or large initial bids as signals \graycite{Fishman 1988} (strength here is a distribution); incumbent or target manipulation and the investor's choice to acquire information \graycite{Goldstein and Guembel 2008}; trading and entry under first-price auctions or bargaining.\\
 \bottomrule
@@ -754,7 +754,7 @@ Pernoud and Gleyze (2026);\newline Liu and Bernhardt (2022);\newline Carlin et a
 \end{frame}
 
 % ---------------------------------------------------------------- A5
-\begin{frame}[label=A5]{Complementary, not superior, information}
+\begin{frame}[label=A5]{The challenger and investor can know different facts}
 \hypertarget{app:info}{}
 \begin{itemize}\setlength{\itemsep}{6pt}
 \item The challenger knows its own integration plans; a specialist investor may know the target's customers, technology and product demand
@@ -790,11 +790,11 @@ vs 2.3 % source: signal_r_strong
 \begin{center}\small
 \begin{tabular}{@{}clc@{}}
 \toprule
-Pairs & Signal accuracies (25 pairs) & Entry change (pp)\\
+Pairs (25 total) & Group of accuracy pairs & Entry change (percentage points)\\
 \midrule
 6 & meet Prop.~A.7 & rises 2.81 to 3.09\\
-9 & $d\le0.75$, condition not met & unchanged\\
-10 & $d\ge0.76$ & falls 4.03 to 4.49\\
+9 & $d\le0.75$, Prop.~A.7 conditions not met & unchanged\\
+10 & $d\ge0.76$, Prop.~A.7 conditions not met & falls 4.03 to 4.49\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -857,7 +857,7 @@ Expected gross profit at the prior, $B_r(1/2)$ & 4.80 & 4.29\\ % source: base_pr
 \vspace{4pt}
 Alternative rule: values are verifiable and the reserve is zero. The seller receives the runner-up's value plus share $\eta$ of the gap to the winner's value\par
 \vspace{6pt}
-A stronger incumbent cannot raise challenger profit. The spread $\Info{\Delta_\eta}=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]$ weakly rises if $\eta<1/2$, stays unchanged at $\eta=1/2$, and weakly falls if $\eta>1/2$, for any $R\sim F$ on $[0,\bar r]$, $\ell<\bar r<h$, $0\le\eta<1$\par
+For any $R\sim F$ on $[0,\bar r]$, with $\ell<\bar r<h$ and $0\le\eta<1$, a stronger incumbent cannot raise challenger profit. The spread is $\Info{\Delta_\eta}=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]$. It weakly rises if $\eta<1/2$, stays unchanged at $\eta=1/2$, and weakly falls if $\eta>1/2$.\par
 \end{columns}
 \Takeaway{This result covers sale payments. Trading and entry under bargaining or first-price auctions remain unsolved.}
 \BackButton{main:payrule}
@@ -968,25 +968,25 @@ P=t_0+e(P)[t_L-t_0+\Delta_T\mu_X]\\
 {\footnotesize
 \begin{itemize}\setlength{\itemsep}{0pt}
 \item Both noise densities $f$ satisfy $|f'|\le f/b$, so the same trading bound applies
-\item With Laplace noise, beliefs reach $m$ and $M$ at finite flows. With logistic noise, they approach those bounds only in the tails ($x^*\approx5.42$, % source: logistic_flow_threshold
-about 1.5 noise standard deviations from the center) % source: logistic_threshold_noise_sd
-\item Entry with logistic noise is 0.302 % source: logistic_entry_strong
-versus 0.523 with Laplace noise; % source: base_entry_strong
-continuous costs ($\varepsilon_C=0.1$): Laplace % source: cost_halfwidth
+\item With Laplace noise, beliefs reach $m$ and $M$ at finite flows. With logistic noise, they approach those bounds only in the tails. In the logistic benchmark, high-cost entry starts at $x^*\approx5.42$, % source: logistic_flow_threshold
+about 1.5 noise standard deviations from the center. % source: logistic_threshold_noise_sd
+\item Entry: logistic 0.302; % source: logistic_entry_strong
+Laplace 0.523. % source: base_entry_strong
+With continuous costs ($\varepsilon_C=0.1$): Laplace % source: cost_halfwidth
 0.523 % source: cost_mix_laplace_entry_strong
 and logistic 0.301. % source: cost_mix_logistic_entry_strong
-The noise laws share $b$ but have different variances. These values do not rank their information content
+Equal $b$ does not imply equal variance. These numbers do not rank information content
 \end{itemize}}
 \BackButton{main:laplace}
 \end{frame}
 
 % ---------------------------------------------------------------- A15
-\begin{frame}[label=A15]{Why low-cost preparation must pay after every price}
+\begin{frame}[label=A15]{Why the theorem assumes low-cost preparation always pays}
 \hypertarget{app:floor}{}
 \begin{itemize}\setlength{\itemsep}{6pt}
 \item The \Cost{low-cost floor} keeps entry $\ge\rho$ after every price. The price reveals the market's belief; the investor's gain per unit is at least $\rho m\Delta_T$
 \item If low-cost preparation does not pay after bad news, entry can stop there. Different flows can then receive the same price
-\item If low-cost preparation does not pay at the prior, no preparation and no trade can be an equilibrium, provided no other source links target value to challenger value
+\item If low-cost preparation does not pay at the prior, no preparation and no trade can be an equilibrium. This statement assumes that no other source links target value to challenger value
 \item At the benchmark, $B_{r_1}(m)-c_L=1.37$: low-cost preparation pays even after the worst news % source: base_margin_low_cost
 \item With the price hidden, entry is 0.250 % source: base_hidden_entry_weak, base_hidden_entry_strong
 at both strengths: only low-cost preparation pays
@@ -1035,7 +1035,7 @@ Smallest gap & & 0.00241\\ % source: base_minimum_theorem_margin
 \begin{itemize}\setlength{\itemsep}{2pt}
 \item For every $h>\ell$, choose $r_0<r_1$ near $\ell$. Then choose $k$, $c_H$ and $c_L$ strictly inside the stated intervals
 \item This proves that suitable inputs exist. It does not estimate a typical effect. In the separate example with $h=2$: % source: moderate_h
-minimum margin $8.01\times10^{-4}$ % source: moderate_minimum_theorem_margin
+smallest gap $8.01\times10^{-4}$ % source: moderate_minimum_theorem_margin
 \item Part (iii) is not claimed for every $h>\ell$
 \end{itemize}}
 \BackButton{main:margins}
@@ -1054,11 +1054,11 @@ minimum margin $8.01\times10^{-4}$ % source: moderate_minimum_theorem_margin
 What changes & challenger profit $B_r(\mu)\downarrow$ at every belief & \Info{target-payoff spread $\Delta_T\uparrow$}\\
 Who responds & the challenger, at a given belief & the investor, then the price, then the challenger's belief\\
 What it needs & hold information fixed & positive entry after every price; the challenger sees the price before preparation\\
-Effect on entry & \textbf{weakly $\downarrow$} \Status{(Prop.~A.3)} & can rise when trading pays and good news covers \Cost{$c_H$}\\
+Effect on entry & \textbf{weakly $\downarrow$} \Status{(Prop.~A.3)} & can rise when trade pays and good news makes expected auction profit cover \Cost{$c_H$}\\
 \bottomrule
 \end{tabular}
 \end{center}
-\Takeaway{Under Proposition 2's conditions: \Info{stronger incumbent $\to$ wider $\Delta_T$ $\to$ informed trading pays $\to$ informative price $\to$ good news clears} \Cost{$c_H$} \Info{$\to$ the challenger prepares at high cost}}
+\Takeaway{Under Proposition 2's conditions: \Info{stronger incumbent $\to$ wider $\Delta_T$ $\to$ informed trading pays $\to$ informative price $\to$ expected auction profit covers} \Cost{$c_H$} \Info{$\to$ the challenger prepares at high cost}}
 \BackButton{main:forces}
 \end{frame}
 
@@ -1092,7 +1092,7 @@ $k$ & 0.02 & 0.002\\ % source: base_k, moderate_k
 \midrule
 Strengths & $1.2\to3$ & $1.05\to1.5$\\ % source: base_r_weak, base_r_strong, moderate_r_weak, moderate_r_strong
 Entry & $0.250\to0.523$ & $0.250\to0.527$\\ % source: base_entry_weak, base_entry_strong, moderate_entry_weak, moderate_entry_strong
-Minimum theorem margin & 0.00241 & $8.01\times10^{-4}$\\ % source: base_minimum_theorem_margin, moderate_minimum_theorem_margin
+Smallest condition gap & 0.00241 & $8.01\times10^{-4}$\\ % source: base_minimum_theorem_margin, moderate_minimum_theorem_margin
 \bottomrule
 \end{tabular}
 \end{columns}}
@@ -1100,7 +1100,7 @@ Minimum theorem margin & 0.00241 & $8.01\times10^{-4}$\\ % source: base_minimum_
 \GrayLine{Units are arbitrary. These values illustrate the theorem; they are not estimates from data. Suitable inputs exist for every $h>\ell$ (A17).}
 \Takeaway{A separate example with $h=2$ % source: moderate_h
 gives a rise of similar size (0.250 % source: moderate_entry_weak
-$\to$ 0.527), % source: moderate_entry_strong
+$\to$ 0.527). % source: moderate_entry_strong
 Other inputs change too; this comparison does not isolate the effect of $h$.}
 \BackButton{main:scale}
 \end{frame}
@@ -1116,7 +1116,7 @@ e_H=\rho+(1-\rho)\alpha_H,\qquad e_L=\rho+(1-\rho)\alpha_L,\qquad \mathsf E=\fra
 \end{gather*}
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
-\item $\tau$ is the belief needed to cover $c_H$. $\alpha_\theta$ is the chance of $X\ge x^*$ given type $\theta$. $\mathsf E$ is preparation probability. Every prepared high-value challenger wins, so $\mathsf O_H=e_H/2$
+\item $\tau$ is the belief needed to cover $c_H$. $\alpha_\theta$ is the chance of $X\ge x^*$ given type $\theta$. $e_H$ and $e_L$ are preparation probabilities conditional on value. $\mathsf E$ is overall preparation probability. Every prepared high-value challenger wins, so $\mathsf O_H=e_H/2$
 \item The high-cost window puts $\tau\in(1/2,M)$ and $x^*\in(0,1)$; $\alpha_H>\alpha_L$
 \item The benchmark ceiling is $r_C\approx3.59$. % source: base_r_high_cost_ceiling
 As $r$ approaches $r_C$ from below, entry approaches 0.506. Above that strength, $\tau>M$, so high-cost preparation stops % source: base_laplace_entry_ceiling_left_limit
@@ -1134,7 +1134,7 @@ As $r$ approaches $r_C$ from below, entry approaches 0.506. Above that strength,
 \begin{center}\footnotesize
 \begin{tabular}{@{}cccc@{}}
 \toprule
-$r$ & $q_L\in$ & Entry $\mathsf E\in$ & $H$ marginal profit $\ge$\\
+$r$ & Range for $q_L$ & Range for entry $\mathsf E$ & \shortstack{Lower bound on\\marginal profit after $H$}\\
 \midrule
 1.55 % source: cert_a_r
  & $[-0.46031620,\,-0.46031618]$ % source: cert_a_v_interval (negated)
@@ -1157,7 +1157,7 @@ $r$ & $q_L\in$ & Entry $\mathsf E\in$ & $H$ marginal profit $\ge$\\
 \item \textbf{After low value:} profit is strictly concave in sale size. Marginal profit changes sign inside each listed interval (0.000000000114 % source: cert_a_psi_left_lower
 and $-0.000000000096$ at $r=1.55$) % source: cert_a_psi_right_upper
 \item \textbf{After high value:} marginal profit stays positive at every purchase size, for every order in the listed interval
-\item \textbf{The proof does not:} establish a unique informative equilibrium, rule out other equilibria with random investor orders, or connect these strengths with a continuous branch
+\item \textbf{The proof does not:} establish a unique informative equilibrium, rule out other equilibria in which the investor randomizes its order, or connect these strengths with a continuous branch
 \end{itemize}}
 \BackButton{main:cert}
 \end{frame}
@@ -1265,7 +1265,7 @@ Signals ($a=0.70$, $d=0.75$) & 0.85; $1.1\to2.3$ & 0.850 & 0.879 & 2.94 & 0.425 
 \item Smallest positive gaps in the theorem conditions: benchmark $2.41\times10^{-3}$, % source: base_minimum_theorem_margin
 smaller gap $8.01\times10^{-4}$, % source: moderate_minimum_theorem_margin
 signals $1.45\times10^{-3}$ % source: signal_minimum_theorem_margin
-\item Each row uses its own inputs. $\mathsf E$ is preparation probability; $\mathsf O_H$ is high-value ownership probability. Percentage-point changes use unrounded values
+\item Each row uses its own inputs. $\mathsf E$ is preparation probability; $\mathsf O_H$ is high-value ownership probability. Percentage-point changes use unrounded values. In the signal row, $a$ is investor accuracy and $d$ is challenger accuracy
 \end{itemize}}
 \Takeaway{The rise from $r_0$ to $r_1$ holds in every row; the $r_2$ fall is shown for the benchmark only.}
 \BackButton{main:robust}
@@ -1282,7 +1282,7 @@ vs $p=1.1$ % source: value_reserve_high
 \begin{center}\footnotesize
 \begin{tabular}{@{}lccccl@{}}
 \toprule
-Economy, reserve & Preparation & Sale & Two admissible bidders & Expected proceeds & Trading\\
+Economy, reserve & \shortstack{Preparation\\probability} & \shortstack{Sale\\probability} & \shortstack{Probability of two\\admissible bidders} & Expected proceeds & Trading\\
 \midrule
 Weak $r=1.2$, $p=0.5$ & 0.250 & 0.688 & 0.146 & 0.393 & no trade\\ % source: tables/table4_reserve_comparisons.tex Panel B; value_revenue_weak_low_p
 Weak $r=1.2$, $p=1.1$ & 0.540 & 0.392 & 0.0280 & 0.432 & full orders\\ % source: value_entry_weak_high_p; tables/table4_reserve_comparisons.tex Panel B; value_revenue_weak_high_p

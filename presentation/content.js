@@ -389,7 +389,7 @@
         nav(back('main:evidence')) });
 
     var LIT = [
-      ['Dow, Goldstein and Guembel (2017)', 'investment feeds back on information', 'auction profit falls; the target-payoff spread rises'],
+      ['Dow, Goldstein and Guembel (2017)', 'investment feeds back on information', 'challenger profit falls; the target-payoff spread rises'],
       ['Edmans, Goldstein and Jiang (2015)', 'real actions curb bad-news trading', 'incumbent strength changes what the price reveals'],
       ['Edmans, Goldstein and Jiang (2012)', 'prices affect takeover activity', 'a challenger learns its own value'],
       ['Fishman (1988);<br>Hirshleifer and Png (1989)', 'stronger rivals deter preparation', 'deterrence holds at fixed information (Prop. A.3)'],
@@ -403,24 +403,24 @@
     ];
     backup({ id: 'a3', label: 'A3', origin: 'f3', targets: ['app:lit'], defines: [], widget: 'rows',
       title: 'Related work in more detail',
-      subtitle: 'A stronger incumbent lowers auction profit but can make the stock price more informative',
+      subtitle: 'A stronger incumbent lowers the challenger\'s auction profit but can make the stock price more informative',
       body:
         '<table class="t-lit hover-rows"><thead><tr><th>Earlier work</th><th>Result</th><th>This paper</th></tr></thead><tbody>' +
         LIT.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') +
         '</tbody></table>' + nav(back('main:lit')) });
 
     backup({ id: 'a4', label: 'A4', origin: 'f4', targets: ['app:omit'], defines: [], widget: '',
-      title: 'What the model leaves out, and why', subtitle: '',
+      title: 'What the model includes and leaves out', subtitle: '',
       body:
         '<table class="t-omit"><tbody>' +
-          '<tr><th>In the model</th><td>Neither bidder trades. The investor has no initial position, cannot bid, tender or acquire, and has no control rights. The sale applies to all target shares. No shareholder can hold out. An investor who knows the challenger has low value cannot profit in expectation from a purchase that mimics good news.</td></tr>' +
+          '<tr><th>In the model</th><td>Neither bidder trades. The investor starts with no target shares. It can trade small positions but cannot bid for the target, tender shares, or control the sale. The sale applies to all target shares. No shareholder can hold out. An investor who knows the challenger has low value cannot profit in expectation from a purchase that mimics good news.</td></tr>' +
           '<tr><th>Outside the model</th><td>A bidder\'s advance target-share stake (a toehold) ' + cite('Bulow, Huang and Klemperer 1999') + '; shareholder holdouts ' + cite('Grossman and Hart 1980') + '; announced bids or large initial bids as signals ' + cite('Fishman 1988') + ' (strength here is a distribution); incumbent or target manipulation and the investor\'s choice to acquire information ' + cite('Goldstein and Guembel 2008') + '; trading and entry under first-price auctions or bargaining.</td></tr>' +
         '</tbody></table>' +
         take('The model makes no claim about how a bidder\'s advance target-share stake affects entry.') +
         nav(back('main:omit')) });
 
     backup({ id: 'a5', label: 'A5', origin: 'f4', targets: ['app:info'], defines: ['a_d'], widget: '',
-      title: 'Complementary, not superior, information', subtitle: '',
+      title: 'The challenger and investor can know different facts', subtitle: '',
       body:
         ul(['The challenger knows its own integration plans; a specialist investor may know the target\'s customers, technology and product demand',
           'These are different facts about the same acquisition match',
@@ -435,10 +435,10 @@
         ul(['Investor signal ' + m('T') + ' (accuracy ' + m('a') + '), challenger signal ' + m('Y') + ' (accuracy ' + m('d') + '); the challenger uses ' + m(T`\Pr(H\mid P,\,Y=y)`) + ', ' + m('P') + ' = stock price',
           'Entry can differ by value: ' + m('e_H') + ' and ' + m('e_L') + ' are preparation probabilities for high- and low-value challengers. The price still reveals the market\'s belief',
           'Example: ' + qm('a=0.70', 'signal_trader_accuracy_value', '0.70') + ', ' + qm('d=0.75', 'signal_buyer_accuracy_value', '0.75') + ': entry ' + q('signal_entry_weak', '0.850') + ' → ' + q('signal_entry_strong', '0.879') + '; ' + qm(T`\rho=0.85`, 'signal_rho', '0.85') + ', ' + qm('c_H=7.14', 'signal_c_high', '7.14') + ', ' + qm('k=0.015', 'signal_k', '0.015') + ', strengths ' + q('signal_r_weak', '1.1') + ' vs ' + q('signal_r_strong', '2.3')], 'small') +
-        '<table class="t-grid"><thead><tr><th>Pairs</th><th>Signal accuracies (25 pairs)</th><th>Entry change (pp)</th></tr></thead><tbody>' +
+        '<table class="t-grid"><thead><tr><th>Pairs (25 total)</th><th>Group of accuracy pairs</th><th>Entry change (percentage points)</th></tr></thead><tbody>' +
           '<tr><td>' + tx('table_signal_grid.tex', '#count:met', 0, '6') + '</td><td>meet Prop. A.7</td><td>rises ' + tx('table_signal_grid.tex', '0.71 & 0.74', 4, '2.81') + ' to ' + tx('table_signal_grid.tex', '0.72 & 0.75', 4, '3.09') + '</td></tr>' +
-          '<tr><td>' + tx('table_signal_grid.tex', '#count:unchanged', 0, '9') + '</td><td>' + m(T`d\le0.75`) + ', condition not met</td><td>unchanged</td></tr>' +
-          '<tr><td>' + tx('table_signal_grid.tex', '#count:falls', 0, '10') + '</td><td>' + m(T`d\ge0.76`) + '</td><td>falls ' + tx('table_signal_grid.tex', '0.72 & 0.77', 4, '-4.03', '4.03') + ' to ' + tx('table_signal_grid.tex', '0.68 & 0.76', 4, '-4.49', '4.49') + '</td></tr>' +
+          '<tr><td>' + tx('table_signal_grid.tex', '#count:unchanged', 0, '9') + '</td><td>' + m(T`d\le0.75`) + ', Prop. A.7 conditions not met</td><td>unchanged</td></tr>' +
+          '<tr><td>' + tx('table_signal_grid.tex', '#count:falls', 0, '10') + '</td><td>' + m(T`d\ge0.76`) + ', Prop. A.7 conditions not met</td><td>falls ' + tx('table_signal_grid.tex', '0.72 & 0.77', 4, '-4.03', '4.03') + ' to ' + tx('table_signal_grid.tex', '0.68 & 0.76', 4, '-4.49', '4.49') + '</td></tr>' +
         '</tbody></table>' +
         take('The theorem covers ' + tx('table_signal_grid.tex', '#count:met', 0, '6') + ' pairs; the other 19 report computed entry. The price can help a challenger that has its own signal.') +
         nav(back('app:info')) });
@@ -479,7 +479,7 @@
           '<div class="col"><div class="figure" id="x4" tabindex="0" aria-label="Figure X4. Target-payoff spread and challenger profit against the seller bargaining weight; arrow keys move the cursor."></div></div>' +
           '<div class="col text">' +
             '<p>Alternative rule: values are verifiable and the reserve is zero. The seller receives the runner-up\'s value plus share ' + m(T`\eta`) + ' of the gap to the winner\'s value</p>' +
-            '<p>A stronger incumbent cannot raise challenger profit. The spread ' + info(m(T`\Delta_\eta`)) + m(T`=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]`) + ' weakly rises if ' + m(T`\eta<1/2`) + ', stays unchanged at ' + m(T`\eta=1/2`) + ', and weakly falls if ' + m(T`\eta>1/2`) + ', for any ' + m(T`R\sim F`) + ' on ' + m(T`[0,\bar r]`) + ', ' + m(T`\ell<\bar r<h`) + ', ' + m(T`0\le\eta<1`) + '</p>' +
+            '<p>For any ' + m(T`R\sim F`) + ' on ' + m(T`[0,\bar r]`) + ', with ' + m(T`\ell<\bar r<h`) + ' and ' + m(T`0\le\eta<1`) + ', a stronger incumbent cannot raise challenger profit. The spread is ' + info(m(T`\Delta_\eta`)) + m(T`=\eta(h-\ell)+(1-2\eta)\,\mathbb{E}[(R-\ell)_+]`) + '. It weakly rises if ' + m(T`\eta<1/2`) + ', stays unchanged at ' + m(T`\eta=1/2`) + ', and weakly falls if ' + m(T`\eta>1/2`) + '.</p>' +
           '</div>' +
         '</div>' +
         take('This result covers sale payments. Trading and entry under bargaining or first-price auctions remain unsolved.') +
@@ -526,16 +526,16 @@
       body:
         '<div class="figure wide" id="x3" tabindex="0" aria-label="Figure X3. Posterior tail and entry against the threshold distance, Laplace and logistic noise; arrow keys move the cursor."></div>' +
         ul(['Both noise densities ' + m('f') + ' satisfy ' + m(T`|f'|\le f/b`) + ', so the same trading bound applies',
-          'With Laplace noise, beliefs reach ' + m('m') + ' and ' + m('M') + ' at finite flows. With logistic noise, they approach those bounds only in the tails (' + qm(T`x^*\approx5.42`, 'logistic_flow_threshold', '5.42') + ', about ' + q('logistic_threshold_noise_sd', '1.5') + ' noise standard deviations from the center)',
-          'Entry with logistic noise is ' + q('logistic_entry_strong', '0.302') + ' versus ' + q('base_entry_strong', '0.523') + ' with Laplace noise; continuous costs (' + qm(T`\varepsilon_C=0.1`, 'cost_halfwidth', '0.1') + '): Laplace ' + q('cost_mix_laplace_entry_strong', '0.523') + ' and logistic ' + q('cost_mix_logistic_entry_strong', '0.301') + '. The noise laws share ' + m('b') + ' but have different variances. These values do not rank their information content'], 'small') +
+          'With Laplace noise, beliefs reach ' + m('m') + ' and ' + m('M') + ' at finite flows. With logistic noise, they approach those bounds only in the tails. In the logistic benchmark, high-cost entry starts at ' + qm(T`x^*\approx5.42`, 'logistic_flow_threshold', '5.42') + ', about ' + q('logistic_threshold_noise_sd', '1.5') + ' noise standard deviations from the center',
+          'Entry: logistic ' + q('logistic_entry_strong', '0.302') + '; Laplace ' + q('base_entry_strong', '0.523') + '. With continuous costs (' + qm(T`\varepsilon_C=0.1`, 'cost_halfwidth', '0.1') + '): Laplace ' + q('cost_mix_laplace_entry_strong', '0.523') + ' and logistic ' + q('cost_mix_logistic_entry_strong', '0.301') + '. Equal ' + m('b') + ' does not imply equal variance. These numbers do not rank information content'], 'small') +
         nav(back('main:laplace')) });
 
     backup({ id: 'a15', label: 'A15', origin: 'f8', targets: ['app:floor'], defines: [], widget: '',
-      title: 'Why low-cost preparation must pay after every price', subtitle: '',
+      title: 'Why the theorem assumes low-cost preparation always pays', subtitle: '',
       body:
         ul(['The ' + cost('low-cost floor') + ' keeps entry ' + m(T`\ge\rho`) + ' after every price. The price reveals the market\'s belief; the investor\'s gain per unit is at least ' + m(T`\rho m\Delta_T`),
           'If low-cost preparation does not pay after bad news, entry can stop there. Different flows can then receive the same price',
-          'If low-cost preparation does not pay at the prior, no preparation and no trade can be an equilibrium, provided no other source links target value to challenger value',
+          'If low-cost preparation does not pay at the prior, no preparation and no trade can be an equilibrium. This statement assumes that no other source links target value to challenger value',
           'At the benchmark, ' + qm(T`B_{r_1}(m)-c_L=1.37`, 'base_margin_low_cost', '1.37') + ': low-cost preparation pays even after the worst news',
           'With the price hidden, entry is ' + q('base_hidden_entry_weak base_hidden_entry_strong', '0.250') + ' at both strengths: only low-cost preparation pays',
           'The extension with continuous costs also keeps low-cost entry positive after every price'], 'roomy') +
@@ -566,7 +566,8 @@
           '<tr class="total"><td>Smallest gap</td><td></td><td>' + q('base_minimum_theorem_margin', '0.00241') + '</td></tr>' +
         '</tbody></table>' +
         ul(['For every ' + m(T`h>\ell`) + ', choose ' + m('r_0<r_1') + ' near ' + m(T`\ell`) + '. Then choose ' + m('k') + ', ' + m('c_H') + ' and ' + m('c_L') + ' strictly inside the stated intervals',
-          'This proves that suitable inputs exist. It does not estimate a typical effect. In the separate example with ' + qm('h=2', 'moderate_h', '2') + ': minimum margin ' + qm(T`8.01\times10^{-4}`, 'moderate_minimum_theorem_margin', T`8.01\times10^{-4}`),
+          'This proves that suitable inputs exist. It does not estimate a typical effect',
+          'In the separate example with ' + qm('h=2', 'moderate_h', '2') + ': smallest gap ' + qm(T`8.01\times10^{-4}`, 'moderate_minimum_theorem_margin', T`8.01\times10^{-4}`),
           'Part (iii) is not claimed for every ' + m(T`h>\ell`)], 'small') +
         nav(back('main:margins')) });
 
@@ -577,9 +578,9 @@
           '<tr><th>What changes</th><td data-col="1">challenger profit ' + m(T`B_r(\mu)\downarrow`) + ' at every belief</td><td data-col="2">' + info('target-payoff spread ' + m(T`\Delta_T\uparrow`)) + '</td></tr>' +
           '<tr><th>Who responds</th><td data-col="1">the challenger, at a given belief</td><td data-col="2">the investor, then the price, then the challenger\'s belief</td></tr>' +
           '<tr><th>What it needs</th><td data-col="1">hold information fixed</td><td data-col="2">positive entry after every price; the challenger sees the price before preparation</td></tr>' +
-          '<tr><th>Effect on entry</th><td data-col="1"><b>weakly ' + m(T`\downarrow`) + '</b> ' + cite('(Prop. A.3)') + '</td><td data-col="2">can rise when trading pays and good news covers ' + cost(m('c_H')) + '</td></tr>' +
+          '<tr><th>Effect on entry</th><td data-col="1"><b>weakly ' + m(T`\downarrow`) + '</b> ' + cite('(Prop. A.3)') + '</td><td data-col="2">can rise when trade pays and good news makes expected auction profit cover ' + cost(m('c_H')) + '</td></tr>' +
         '</tbody></table>' +
-        take('Under Proposition 2\'s conditions: ' + info('stronger incumbent → wider ' + m(T`\Delta_T`) + ' → informed trading pays → informative price → good news clears') + ' ' + cost(m('c_H')) + ' ' + info('→ the challenger prepares at high cost')) +
+        take('Under Proposition 2\'s conditions: ' + info('stronger incumbent → wider ' + m(T`\Delta_T`) + ' → informed trading pays → informative price → expected auction profit covers') + ' ' + cost(m('c_H')) + ' ' + info('→ the challenger prepares at high cost')) +
         nav(back('main:forces')) });
 
     var A19_IN = [['h', 'base_h', '10', 'moderate_h', '2'], [T`\ell`, 'base_ell', '1', 'moderate_ell', '1'], ['p', 'base_p', '0.5', 'moderate_p', '0.5'],
@@ -595,7 +596,7 @@
           '<table class="t-outcomes"><thead><tr><th></th><th>Benchmark</th><th>Smaller gap</th></tr></thead><tbody>' +
             '<tr><th>Strengths</th><td>' + q('base_r_weak', '1.2') + ' → ' + q('base_r_strong', '3') + '</td><td>' + q('moderate_r_weak', '1.05') + ' → ' + q('moderate_r_strong', '1.5') + '</td></tr>' +
             '<tr><th>Entry</th><td>' + q('base_entry_weak', '0.250') + ' → ' + q('base_entry_strong', '0.523') + '</td><td>' + q('moderate_entry_weak', '0.250') + ' → ' + q('moderate_entry_strong', '0.527') + '</td></tr>' +
-            '<tr><th>Minimum theorem margin</th><td>' + q('base_minimum_theorem_margin', '0.00241') + '</td><td>' + qm(T`8.01\times10^{-4}`, 'moderate_minimum_theorem_margin', T`8.01\times10^{-4}`) + '</td></tr>' +
+            '<tr><th>Smallest condition gap</th><td>' + q('base_minimum_theorem_margin', '0.00241') + '</td><td>' + qm(T`8.01\times10^{-4}`, 'moderate_minimum_theorem_margin', T`8.01\times10^{-4}`) + '</td></tr>' +
           '</tbody></table>' +
         '</div>' +
         gray('Units are arbitrary. These values illustrate the theorem; they are not estimates from data. Suitable inputs exist for every ' + m(T`h>\ell`) + ' (A17).') +
@@ -607,7 +608,7 @@
       body:
         '<p class="small">At ' + m('r_1') + ', full orders ' + m('(1,-1)') + ' and Laplace noise give:</p>' +
         d(T`\begin{gathered}\tau=\frac{c_H-g_L}{g_H-g_L}\quad\text{($c_H$ = expensive cost)},\qquad x^*=\frac b2\log\frac{\tau}{1-\tau},\qquad \alpha_\theta=\Pr(X\ge x^*\mid\theta)\\ e_H=\rho+(1-\rho)\alpha_H,\qquad e_L=\rho+(1-\rho)\alpha_L,\qquad \mathsf E=\frac{e_H+e_L}{2},\qquad \mathsf O_H=\frac{e_H}{2}\end{gathered}`) +
-        ul([m(T`\tau`) + ' is the belief needed to cover ' + m('c_H') + '. ' + m(T`\alpha_\theta`) + ' is the chance of ' + m(T`X\ge x^*`) + ' given type ' + m(T`\theta`) + '. ' + m(T`\mathsf E`) + ' is preparation probability. Every prepared high-value challenger wins, so ' + m(T`\mathsf O_H=e_H/2`),
+        ul([m(T`\tau`) + ' is the belief needed to cover ' + m('c_H') + '. ' + m(T`\alpha_\theta`) + ' is the chance of ' + m(T`X\ge x^*`) + ' given type ' + m(T`\theta`) + '. ' + m('e_H') + ' and ' + m('e_L') + ' are preparation probabilities conditional on value. ' + m(T`\mathsf E`) + ' is overall preparation probability. Every prepared high-value challenger wins, so ' + m(T`\mathsf O_H=e_H/2`),
           'The high-cost window puts ' + m(T`\tau\in(1/2,M)`) + ' and ' + m(T`x^*\in(0,1)`) + '; ' + m(T`\alpha_H>\alpha_L`),
           'The benchmark ceiling is ' + qm(T`r_C\approx3.59`, 'base_r_high_cost_ceiling', '3.59') + '. As ' + m('r') + ' approaches ' + m('r_C') + ' from below, entry approaches ' + q('base_laplace_entry_ceiling_left_limit', '0.506') + '. Above that strength, ' + m(T`\tau>M`) + ', so high-cost preparation stops',
           'Expected target proceeds are ' + tx('table2_equilibrium_controls.tex', 'Weak incumbent ($r=1.2$)', 5, '0.393') + ' at ' + m('r_0') + ', ' + tx('table2_equilibrium_controls.tex', 'Strong incumbent ($r=3$)', 5, '0.872') + ' at ' + m('r_1') + ', and ' + tx('table2_equilibrium_controls.tex', 'Very strong incumbent ($r=3.6$)', 5, '0.664') + ' at ' + m('r_2')], 'small') +
@@ -620,14 +621,14 @@
       title: 'Which outcomes are unique, and which coexist?', subtitle: '',
       body:
         '<p class="small">Orders and entry at equilibrium prices are unique at the two strengths in the main comparison. At three intermediate strengths, informative trade and no trade coexist.</p>' +
-        '<table class="t-enclosures"><thead><tr><th>' + m('r') + '</th><th>' + m(T`q_L\in`) + '</th><th>Entry ' + m(T`\mathsf E\in`) + '</th><th>' + m('H') + ' marginal profit ' + m(T`\ge`) + '</th></tr></thead><tbody>' +
+        '<table class="t-enclosures"><thead><tr><th>' + m('r') + '</th><th>Range for ' + m('q_L') + '</th><th>Range for entry ' + m(T`\mathsf E`) + '</th><th>Lower bound on marginal<br>profit after ' + m('H') + '</th></tr></thead><tbody>' +
           certRow('a', '1.55', T`[-0.46031620,\,-0.46031618]`, T`[0.5450528898,\,0.5450528922]`, '0.0000761777') +
           certRow('b', '1.60', T`[-0.70747539,\,-0.70747537]`, T`[0.5487563062,\,0.5487563085]`, '0.0027531948') +
           certRow('c', '1.65', T`[-0.90333201,\,-0.90333198]`, T`[0.5513607988,\,0.5513608020]`, '0.0054921767') +
         '</tbody></table>' +
         ul(['<b>After low value:</b> profit is strictly concave in sale size. Marginal profit changes sign inside each listed interval (' + q('cert_a_psi_left_lower', '0.000000000114') + ' and ' + qm('-0.000000000096', 'cert_a_psi_right_upper', '-0.000000000096') + ' at ' + qm('r=1.55', 'cert_a_r', '1.55') + ')',
           '<b>After high value:</b> marginal profit stays positive at every purchase size, for every order in the listed interval',
-          '<b>The proof does not:</b> establish a unique informative equilibrium, rule out other equilibria with random investor orders, or connect these strengths with a continuous branch'], 'small') +
+          '<b>The proof does not:</b> establish a unique informative equilibrium, rule out other equilibria in which the investor randomizes its order, or connect these strengths with a continuous branch'], 'small') +
         nav(back('main:cert')) });
 
     function t2(row, a, b, c) {
@@ -691,7 +692,7 @@
           '<tr><th>Signals (' + m('a=0.70') + ', ' + m('d=0.75') + ')</th><td>' + q('signal_rho', '0.85') + '; ' + q('signal_r_weak', '1.1') + '→' + q('signal_r_strong', '2.3') + '</td><td>' + q('signal_entry_weak', '0.850') + '</td><td>' + q('signal_entry_strong', '0.879') + '</td><td>' + q('signal_entry_change_pp', '2.94') + '</td>' + t3('$a=0.70$, $d=0.75$', [[4, '0.425'], [5, '0.449']]) + '</tr>' +
         '</tbody></table>' +
         ul(['Smallest positive gaps in the theorem conditions: benchmark ' + qm(T`2.41\times10^{-3}`, 'base_minimum_theorem_margin', T`2.41\times10^{-3}`) + ', smaller gap ' + qm(T`8.01\times10^{-4}`, 'moderate_minimum_theorem_margin', T`8.01\times10^{-4}`) + ', signals ' + qm(T`1.45\times10^{-3}`, 'signal_minimum_theorem_margin', T`1.45\times10^{-3}`),
-          'Each row uses its own inputs. ' + m(T`\mathsf E`) + ' is preparation probability; ' + m(T`\mathsf O_H`) + ' is high-value ownership probability. Percentage-point changes use unrounded values'], 'small') +
+          'Each row uses its own inputs. ' + m(T`\mathsf E`) + ' is preparation probability; ' + m(T`\mathsf O_H`) + ' is high-value ownership probability. Percentage-point changes use unrounded values. In the signal row, ' + m('a') + ' is investor accuracy and ' + m('d') + ' is challenger accuracy'], 'small') +
         take('The rise from ' + m('r_0') + ' to ' + m('r_1') + ' holds in every row; the ' + m('r_2') + ' fall is shown for the benchmark only.') +
         nav(back('main:robust')) });
 
@@ -703,7 +704,7 @@
       title: 'A higher reserve can raise proceeds; the best reserve is unknown', subtitle: '',
       body:
         '<p class="small">Values are uniform around the low and high class centers: compare ' + qm('p=0.5', 'base_p', '0.5') + ' vs ' + qm('p=1.1', 'value_reserve_high', '1.1') + ' (class half-width ' + qm(T`\varepsilon_V=0.05`, 'value_band_halfwidth', '0.05') + '). A bid is admissible if it meets the reserve.</p>' +
-        '<table class="t-reserve"><thead><tr><th>Economy, reserve</th><th>Preparation</th><th>Sale</th><th>Two admissible bidders</th><th>Expected proceeds</th><th>Trading</th></tr></thead><tbody>' +
+        '<table class="t-reserve"><thead><tr><th>Economy, reserve</th><th>Preparation<br>probability</th><th>Sale<br>probability</th><th>Probability of two<br>admissible bidders</th><th>Expected proceeds</th><th>Trading</th></tr></thead><tbody>' +
           '<tr><th>Weak ' + m('r=1.2') + ', ' + m('p=0.5') + '</th>' + t4(PB + 'Weak ($r=1.2$), $p=0.5$', [[1, '0.250'], [2, '0.688'], [3, '0.146'], [4, '0.393', 'value_revenue_weak_low_p']]) + '<td>no trade</td></tr>' +
           '<tr><th>Weak ' + m('r=1.2') + ', ' + m('p=1.1') + '</th>' + t4(PB + 'Weak ($r=1.2$), $p=1.1$', [[1, '0.540', 'value_entry_weak_high_p'], [2, '0.392'], [3, '0.0280'], [4, '0.432', 'value_revenue_weak_high_p']]) + '<td>full orders</td></tr>' +
           '<tr><th>Strong ' + m('r=3') + ', ' + m('p=0.5') + '</th>' + t4(PB + 'Strong ($r=3$), $p=0.5$', [[1, '0.523'], [2, '0.920'], [3, '0.436'], [4, '0.872', 'value_revenue_strong_low_p']]) + '<td>full orders</td></tr>' +
