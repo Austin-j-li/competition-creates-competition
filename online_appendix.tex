@@ -185,18 +185,66 @@ and extensions, and states the regularity conditions used in the
 sale-design calculations. Sections B and C describe the equilibrium
 certificates and numerical exercises.
 
+\protect\phantomsection\label{oa-a-quality-class-scope}
+\noindent\textbf{Scope under quality classes.}
+The class is \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\).
+The investor observes \(j\).
+Preparation reveals the value \(\theta\sim G_j\).
+Conditional on \(j\), the value is independent of flow and of the preparation decision.
+Finite class means imply integrable auction payoffs.
+\par
+The probability and deviation arguments use the class expectations
+\(t_j,g_j\), the spread \(\Delta_T\), and the stated properties of Laplace noise.
+They therefore apply to the quality-class model.
+A.1--A.4 and A.6 state them at a general prior, with the posterior bounds
+\(m(\pi),M(\pi)\) and \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\) of the paper.
+The point-mass formulas are special cases.
+A.5, A.7, A.9, A.10, and A.14 keep the point-mass benchmark with \(\pi=1/2\) in their displayed formulas, and each says so.
+Two further points need care.
+
+\begin{enumerate}
+\item
+In A.7 the conditional-independence arguments apply to quality classes.
+So do the conditional price equation, the measurable inverse, and the convolution argument.
+At another prior, Bayes' rule gives the investor-signal probabilities and the class probabilities conditional on the signal.
+Those weights enter the posterior identity \eqref{eq:oa-oa-30}, the residuals \eqref{eq:oa-oa-37}--\eqref{eq:oa-oa-38}, and the outcome probabilities after \eqref{eq:oa-oa-41}.
+The buyer's private-signal maps update the public class posterior by Bayes' rule.
+
+\item
+The reserve enters the auction calculation in A.2 through a boundary term.
+With \(D(u)=G_L(u)-G_H(u)\), the general spread is
+\[
+\Delta_T(F)=pF(p)D(p^-)+\int_p^\infty[1-F(u)]D(u)\,du.
+\]
+Under the restrictions of Section 2.2 of the paper both class supports lie above the reserve, so \(D(p^-)=0\).
+Equal admissibility also gives \(D(p^-)=0\).
+The boundary term then vanishes.
+Together with the rank condition above the reserve, it gives the spread comparison used in A.4--A.6.
+If equal admissibility fails, the boundary term can offset the increase in the integral when the incumbent becomes stronger.
+The price and deviation arguments use the resulting \(t_0,t_j,g_j,\Delta_T\).
+A.7 uses \(w_j=t_j-t_0\) as well.
+\end{enumerate}
+
+The price construction in A.3 requires \(t_L-t_0\ge0\) and \(\Delta_T>0\).
+Strict positivity of \(t_L-t_0\) is unnecessary.
+The reserve adds no separate term to the residuals.
+The common payoff level cancels.
+
 \subsection{A.1. Probability space, strategies, and conditional
 information}\label{oa-a-foundations}
 
-The benchmark has a risk-neutral seller, an incumbent, a potential
+The model has a risk-neutral seller, an incumbent, a potential
 challenger, a strategic investor, competitive market makers, and
 exogenous noise demand. A known target standalone value is normalized to
 zero. The seller commits before trading to a binding second-price cash
 auction with reserve \(p\). The incumbent has value \(R\sim U[0,r]\),
 pays no incremental participation cost at the modeled stage, and learns
-its value before bidding. The challenger has value \(\ell\) or \(h\)
-with equal probability, where \(0<p<\ell<r<h\). Neither bidder trades
-target equity. An outside investor observes challenger quality and
+its value before bidding. The challenger belongs to class
+\(j\in\{H,L\}\) with prior \(\pi=\Pr(j=H)\), and given its class its value
+\(\theta\) has the law \(G_j\) with a finite mean. In the point-mass
+benchmark the values are \(h\) and \(\ell\), \(\pi=1/2\), and
+\(0<p<\ell<r<h\). Neither bidder trades target equity. An outside investor
+observes the challenger's class and
 chooses an order in \([-1,1]\), pays \(k|q|\), and earns
 \(q(V_T-P)-k|q|\). Its order unit is not a controlling ownership stake.
 All payoffs and preparation costs use the same per-share normalization.
@@ -204,8 +252,8 @@ All payoffs and preparation costs use the same per-share normalization.
 Noise has density \(f(z)=e^{-|z|/b}/(2b)\), with \(b>1\) and \(k>0\).
 Market makers observe \(X=q+Z\) and price \(P(X)=\mathbb E[V_T\mid X]\).
 The challenger observes \(P\) but not \(X\), then its independent
-preparation cost, equal to \(c_L\) with probability \(\rho\) and \(c_H\)
-otherwise, where \(0<\rho<1\) and \(0\le c_L<c_H\). Paying the cost
+preparation cost, equal to \(0\) with probability \(\rho\) and \(c_H\)
+otherwise, where \(0<\rho<1\) and \(c_H>0\). Paying the cost
 reveals its value and permits bidding; declining means absence. Both
 bidders bid truthfully once informed. A bid meeting the reserve is
 admissible. I prescribe preparation at equality of gross expected profit
@@ -216,53 +264,56 @@ against the fixed equilibrium price and preparation schedules,
 permitting mixed orders.
 
 I write \(t_0\) for expected target proceeds without challenger entry,
-\(t_H,t_L\) for proceeds conditional on entry and quality, and
+\(t_H,t_L\) for proceeds conditional on entry and class, and
 \(g_H,g_L\) for conditional gross challenger profits. Set
-\(\Delta_T=t_H-t_L\), \(B_r(\mu)=g_L+\mu(g_H-g_L)\),
-\(m=(1+e^{2/b})^{-1}\), and \(M=1-m\). For the comparison
-\(p<\ell<r_0<r_1<h\), the hypotheses of Proposition 2, referred to below
-as (A1) to (A3), are
+\(\Delta_T=t_H-t_L\) and \(B_r(\mu)=g_L+\mu(g_H-g_L)\), and use the
+posterior bounds of the paper,
+\(m(\pi)=\pi/[\pi+(1-\pi)e^{2/b}]\),
+\(M(\pi)=\pi/[\pi+(1-\pi)e^{-2/b}]\), and
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\). In the benchmark,
+\(m=m(1/2)=(1+e^{2/b})^{-1}\) and \(M=M(1/2)=1-m\). For uniform
+incumbents with \(r_0<r_1\), the hypotheses of Proposition 2 are
 
 \[
 \begin{aligned}
-&0\le c_L<B_{r_1}(m),\\
-&B_{r_0}(1/2)<c_H<B_{r_1}(M),\\
-&\Delta_T(r_0)<k<(1-1/b)\rho m\Delta_T(r_1).
+&B_{r_0}(\pi)<c_H<B_{r_1}(M(\pi)),\\
+&\Delta_T(r_0)<k<(1-1/b)\rho\kappa(\pi)\Delta_T(r_1),
 \end{aligned}
 \tag{OA.1}\label{eq:oa-oa-1}
 \]
 
-To define beliefs and deviations, let \(\Theta\in\{L,H\}\) have equal
-probabilities, with acquisition values \(v_L=\ell\) and \(v_H=h\).
-Independently draw incumbent value \(R\), preparation cost \(C\), noise
-demand \(Z\), and an auxiliary random variable \(U\) uniform on
-\([0,1]\). A mixed trader strategy is a probability kernel
-\(\sigma_\Theta\) on the Borel subsets of \([-1,1]\). It can be
-implemented by a Borel quantile map \(q_\Theta(U)\). Conditional
-randomization therefore contains no information about the other
-primitives beyond the trader's specified signal.
+To define beliefs and deviations, let \(J\in\{L,H\}\) have
+\(\Pr(J=H)=\pi\), and given \(J\) draw the acquisition value \(\theta\)
+from \(G_J\); in the benchmark \(\theta=\ell\) or \(h\). Independently of
+\((J,\theta)\) and of each other, draw incumbent value \(R\), preparation
+cost \(C\), noise demand \(Z\), and an auxiliary random variable \(U\)
+uniform on \([0,1]\). A mixed trader strategy is a probability kernel
+\(\sigma_J\) on the Borel subsets of \([-1,1]\). It can be implemented
+by a Borel quantile map \(q_J(U)\). Conditional randomization therefore
+contains no information about the other primitives beyond the trader's
+specified signal.
 
 All spaces are standard Borel. Prices, entry policies, and payoffs are
-Borel functions. Because values and the order interval are bounded, all
-acquisition and trading payoffs are integrable. A regular conditional
+Borel functions. Because the class means are finite and the order
+interval is bounded, all acquisition and trading payoffs are integrable. A regular conditional
 distribution of quality given price exists. Expectations conditional on
 a price atom use its complete preimage, not a pointwise inversion that
 presumes injectivity.
 
-For the benchmark, define
+Define
 
 \[
 \begin{aligned}
-a_\theta(x)&=\int_{[-1,1]}f(x-q)\,\sigma_\theta(dq),\\
-\nu(dx)&=\frac{a_H(x)+a_L(x)}2\,dx,\\
-\mu_X(x)&=\frac{a_H(x)}{a_H(x)+a_L(x)}.
+a_j(x)&=\int_{[-1,1]}f(x-q)\,\sigma_j(dq),\\
+\nu(dx)&=[\pi a_H(x)+(1-\pi)a_L(x)]\,dx,\\
+\mu_X(x)&=\frac{\pi a_H(x)}{\pi a_H(x)+(1-\pi)a_L(x)}.
 \end{aligned}
 \tag{OA.2}\label{eq:oa-oa-2}
 \]
 
 The density \(f\) is positive everywhere, bounded, continuous, and
-integrates to unity. Tonelli's theorem gives \(\int a_\theta=1\).
-Dominated convergence in \(q\) implies continuity of \(a_\theta(x)\),
+integrates to unity. Tonelli's theorem gives \(\int a_j=1\).
+Dominated convergence in \(q\) implies continuity of \(a_j(x)\),
 and positivity gives a continuous posterior. The distribution of \(X\)
 under every pure or mixed unilateral order deviation is absolutely
 continuous with respect to Lebesgue measure. Moreover, \(\nu\) is
@@ -272,7 +323,7 @@ almost surely under every unilateral trading deviation. No deviation can
 exploit a different version of prices or beliefs on a null set.
 
 Write \(\mathcal G=\sigma(P(X))\) and
-\(\mu_P=\mathbb E[\mathbf1\{\Theta=H\}\mid\mathcal G]\). Since \(P(X)\)
+\(\mu_P=\mathbb E[\mathbf1\{J=H\}\mid\mathcal G]\). Since \(P(X)\)
 is measurable with respect to \(X\),
 
 \[
@@ -289,14 +340,17 @@ For any \(q,q'\in[-1,1]\), the triangle inequality implies
 
 Exponentiating and integrating with respect to
 \(\sigma_H(dq)\sigma_L(dq')\) gives
-\(e^{-2/b}a_L\le a_H\le e^{2/b}a_L\), hence \(m\le\mu_X\le M\). Equation
+\(e^{-2/b}a_L\le a_H\le e^{2/b}a_L\). The likelihood ratio adds to the
+prior log odds, hence \(m(\pi)\le\mu_X\le M(\pi)\). Equation
 \eqref{eq:oa-oa-3} preserves these bounds for \(\mu_P\). These
 conclusions do not impose pure trading, monotone orders, or an
 informative price.
 
 The bidder's preparation rule is \(\mathbf1\{C\le B_r(\mu_P)\}\), with
-entry at equality. When \(c_L<B_r(m)\), the cost-averaged rule is
-bounded below by \(\rho\). Conditional on \(\Theta\) and \(X\), the
+entry at equality. The cost-averaged rule is
+bounded below by \(\rho\) at every belief, because gross profit is
+nonnegative at every belief and the zero-cost realization prepares
+whenever it is, by the tie rule at zero. Conditional on \(J\) and \(X\), the
 variables \(R,C\) remain independent of the investor's action and retain
 their specified laws. This is why the auction-stage expectations can be
 used inside the pricing equation. It also explains why a unilateral
@@ -304,10 +358,10 @@ order deviation shifts the density of \(X\) without changing the
 conditional auction formulas.
 
 For the complementary-signal extension, I replace the investor's
-observation of \(\Theta\) by \(T\) and add \(Y\). The randomization
+observation of \(J\) by \(T\) and add \(Y\). The randomization
 \(U\), noise \(Z\), incumbent \(R\), and cost \(C\) remain independent
-of \((\Theta,T,Y)\); \(T\) and \(Y\) are independent conditional on
-\(\Theta\). Sections A.7 and C.3 specify the resulting conditional laws
+of \((J,T,Y)\); \(T\) and \(Y\) are independent conditional on
+\(J\). Sections A.7 and C.3 specify the resulting conditional laws
 rather than treating the buyer's private signal as public.
 
 \subsection{A.2. Auction implementation and Proposition
@@ -322,8 +376,8 @@ price or information conveyed by entry changes beliefs about other
 bidders but not this pointwise dominance argument. I use truthful
 implementation to fix payoff-equivalent bid descriptions.
 
-Without the challenger, the seller receives \(p\) if \(R\ge p\). A
-high-value challenger wins almost surely and pays \(\max(p,R)\) because
+In the point-mass benchmark, without the challenger, the seller receives
+\(p\) if \(R\ge p\). A high-value challenger wins almost surely and pays \(\max(p,R)\) because
 \(h\) exceeds incumbent support. When the challenger has value \(\ell\),
 the winning value is \(\max(R,\ell)\) and the runner-up is
 \(\min(R,\ell)\), so seller payment is \(\max(p,\min(R,\ell))\). The
@@ -351,32 +405,35 @@ fixed posterior. In particular \(g_H-g_L>0\), since the high challenger
 has a strictly higher value in a mechanism whose allocation is monotone
 in its own value.
 
-For a general continuous incumbent CDF \(F\) on \([0,\bar r]\), the
-payment difference is zero for \(R\le\ell\) and \(R-\ell\) for
-\(R>\ell\). By writing a positive part as an integral of indicators,
+For a general continuous incumbent distribution, let \(D=G_L-G_H\). At
+a fixed incumbent value, the expected class difference in payments is
 
 \[
-(R-\ell)_+=\int_\ell^{\bar r}\mathbf1\{R>u\}\,du,
+\xi(R)=
+\begin{cases}
+pD(p^-),&R<p,\\
+\int_p^RD(u)\,du,&R\ge p.
+\end{cases}
+\]
+
+Class expectation and Tonelli's theorem give
+
+\[
+\Delta_T(F)=pF(p)D(p^-)+\int_p^\infty[1-F(u)]D(u)\,du,
 \qquad
-(\theta-\max(p,R))_+=\int_p^\theta\mathbf1\{R<u\}\,du.
+g_j(F)=\int_p^\infty[1-G_j(u)]F(u)\,du.
 \tag{OA.6}\label{eq:oa-oa-6}
 \]
 
-Tonelli applies because the integrands are nonnegative and the domains
-bounded. CDF continuity removes the distinction between \(R<u\) and
-\(R\le u\) in expectation; even without continuity the Lebesgue integral
-over \(u\) is unaffected by countably many atoms. Thus the two
-expressions are respectively \(\int_\ell^{\bar r}(1-F(u))du\) and
-\(\int_p^\theta F(u)du\), extending \(F=1\) above support. A first-order
-stochastic strengthening lowers \(F\) pointwise. Nonnegative integral
-differences prove weak ordering; a strictly positive integral difference
-proves strictness. Posterior-weighted challenger profits inherit the
-ordering. This completes Proposition 1.
+Appendix A.1 of the paper proves the comparison, its strictness
+conditions, and the necessity result. With point masses at \(\ell\) and
+\(h\), the kernel is \(\min\{(R-\ell)_+,h-\ell\}\). It reduces to
+\((R-\ell)_+\) when incumbent support lies below \(h\).
 
 \subsection{A.3. Price sufficiency, residuals, and convolution
 regularity}\label{oa-a-inference}
 
-For any candidate equilibrium with the low-cost entry floor, the
+For any candidate equilibrium, the
 independent cost distribution gives a Borel function \(e(P)\ge\rho\).
 Conditional on \(X=x\), expected target payoff is
 
@@ -385,9 +442,9 @@ P(x)=t_0+e(P(x))\{t_L-t_0+\Delta_T\mu_X(x)\}.
 \tag{OA.7}\label{eq:oa-oa-7}
 \]
 
-The function \(g(P)=[P-t_0-e(P)(t_L-t_0)]/[e(P)\Delta_T]\) is Borel on
+The function \(\iota(P)=[P-t_0-e(P)(t_L-t_0)]/[e(P)\Delta_T]\) is Borel on
 the realized price range because its denominator is strictly positive.
-It satisfies \(\mu_X(X)=g(P(X))\) almost surely. Equation
+It satisfies \(\mu_X(X)=\iota(P(X))\) almost surely. Equation
 \eqref{eq:oa-oa-3} then gives \(\mu_P=\mu_X\) almost surely. The entry
 function is consequently
 
@@ -396,7 +453,7 @@ e(\mu)=\rho+(1-\rho)\mathbf1\{g_L+\mu(g_H-g_L)\ge c_H\}.
 \tag{OA.8}\label{eq:oa-oa-8}
 \]
 
-For construction, put \(w_L=t_L-t_0>0\). For \(\mu_2>\mu_1\),
+For construction, put \(w_L=t_L-t_0\ge0\). For \(\mu_2>\mu_1\),
 
 \[
 \begin{aligned}
@@ -415,11 +472,11 @@ values inside a skipped interval are not generated by any flow and need
 not receive artificial posterior mass. By contrast, a flat posterior
 tail maps into an actual price atom and is conditioned on as an atom.
 
-Conditional on fundamental quality, expected terminal value under a
-unilateral trading deviation is still \(t_0+e(P(x))(t_\theta-t_0)\).
+Conditional on the class \(j\), expected terminal value under a
+unilateral trading deviation is still \(t_0+e(P(x))(t_j-t_0)\).
 Subtracting \eqref{eq:oa-oa-7} gives \(A_H=e\Delta_T(1-\mu_X)\) and
-\(A_L=e\Delta_T\mu_X\). Both residuals are bounded in
-\([\rho m\Delta_T,\Delta_T]\). The signs exclude incorrectly signed
+\(A_L=e\Delta_T\mu_X\). Both residuals are bounded below by
+\(\rho\kappa(\pi)\Delta_T\) and above by \(\Delta_T\). The signs exclude incorrectly signed
 orders. This derivation accounts for the endogenous preparation response
 before taking the investor's expectation over shifted noise.
 
@@ -429,7 +486,7 @@ almost everywhere, and let \(A\) be bounded, measurable, and
 nonnegative. For sign \(\epsilon\in\{-1,1\}\), define
 
 \[
-F_\epsilon(s)=\int_{\mathbb R}f(x-\epsilon s)A(x)\,dx.
+\bar A_\epsilon(s)=\int_{\mathbb R}f(x-\epsilon s)A(x)\,dx.
 \tag{OA.10}\label{eq:oa-oa-10}
 \]
 
@@ -445,11 +502,11 @@ f(x-\epsilon s_2)-f(x-\epsilon s_1)
 The absolute integral of the right-hand side after multiplication by
 \(A\) is at most \(\|A\|_\infty(s_2-s_1)\|f'\|_1\). Fubini therefore
 permits interchanging the integrals. This proves absolute continuity of
-\(F_\epsilon\) and
+\(\bar A_\epsilon\) and
 
 \[
-F_\epsilon'(s)=-\epsilon\int f'(x-\epsilon s)A(x)\,dx,
-\qquad |F_\epsilon'(s)|\le L F_\epsilon(s)
+\bar A_\epsilon'(s)=-\epsilon\int f'(x-\epsilon s)A(x)\,dx,
+\qquad |\bar A_\epsilon'(s)|\le L \bar A_\epsilon(s)
 \tag{OA.12}\label{eq:oa-oa-12}
 \]
 
@@ -470,10 +527,11 @@ atom to the first weak derivative because the density itself is
 continuous. Hence \(L=1/b\). This argument differentiates the translated
 density, not the discontinuous entry policy.
 
-For \(U(s)=sF(s)-ks\), absolute continuity and the product rule imply
+For \(U(s)=s\bar A(s)-ks\), with \(\bar A=\bar A_\epsilon\), absolute continuity and the
+product rule imply
 
 \[
-U'(s)=F(s)+sF'(s)-k\ge(1-sL)F(s)-k.
+U'(s)=\bar A(s)+s\bar A'(s)-k\ge(1-sL)\bar A(s)-k.
 \tag{OA.13}\label{eq:oa-oa-13}
 \]
 
@@ -487,17 +545,17 @@ first-order condition.
 The proof first restricts the trading strategy in any candidate
 equilibrium, then constructs prices and entry that support it.
 
-\textbf{Weak incumbent.} Proposition A.1 and (A1) give the entry floor
+\textbf{Weak incumbent.} Proposition A.1 and the zero preparation cost give the entry floor
 under every conditional mixed order. \hyperref[oa-a-inference]{Section
 A.3} gives the residual upper bound. For a correctly signed order of
 magnitude \(s>0\),
 
 \[
-\mathbb E[\text{trading profit}\mid\Theta]\le s\{\Delta_T(r_0)-k\}<0.
+\mathbb E[\text{trading profit}\mid J]\le s\{\Delta_T(r_0)-k\}<0.
 \tag{OA.14}\label{eq:oa-oa-14}
 \]
 
-An incorrectly signed order has strictly negative gross expected profit.
+An incorrectly signed order has nonpositive gross expected profit and strictly negative net expected profit.
 Zero gives zero. Thus each type has the unique best response zero,
 irrespective of the candidate equilibrium schedules. A mixed
 distribution placing positive probability on a nonzero order cannot be
@@ -507,20 +565,20 @@ issue from arbitrarily small trades; a nonpositive integrable random
 payoff that is strictly negative on a positive-probability set has a
 negative expectation.
 
-Under zero orders, \(X=Z\) is independent of quality. Set \(e=\rho\) and
-\(P=t_0+\rho[(t_H+t_L)/2-t_0]\). Condition (A2) excludes high-cost
-preparation at the prior, and (A1) admits low-cost preparation.
+Under zero orders, \(X=Z\) is independent of the class. Set \(e=\rho\) and
+\(P=t_0+\rho[\pi t_H+(1-\pi)t_L-t_0]\). Condition (A1) excludes high-cost
+preparation at the prior, and the zero-cost realization prepares there.
 Competitive pricing is correct and the previous payoff calculation
 validates zero. This constructs the unique trading and on-path
 preparation outcome.
 
 \textbf{Strong incumbent.} Again consider any candidate equilibrium,
 including mixed orders. \hyperref[oa-a-inference]{Section A.3} gives
-\(F_\theta(s)\ge\rho m\Delta_T(r_1)\), and \eqref{eq:oa-oa-13} with
+\(\bar A_j(s)\ge\rho\kappa(\pi)\Delta_T(r_1)\), and \eqref{eq:oa-oa-13} with
 \(L=1/b\) gives
 
 \[
-U_\theta'(s)\ge(1-1/b)\rho m\Delta_T(r_1)-k>0.
+U_j'(s)\ge(1-1/b)\rho\kappa(\pi)\Delta_T(r_1)-k>0.
 \tag{OA.15}\label{eq:oa-oa-15}
 \]
 
@@ -534,9 +592,9 @@ rule gives the piecewise posterior
 \[
 \mu(x)=
 \begin{cases}
-m,&x\le-1,\\
-(1+e^{-2x/b})^{-1},&-1<x<1,\\
-M,&x\ge1.
+m(\pi),&x\le-1,\\
+\left[1+\frac{1-\pi}{\pi}e^{-2x/b}\right]^{-1},&-1<x<1,\\
+M(\pi),&x\ge1.
 \end{cases}
 \tag{OA.16}\label{eq:oa-oa-16}
 \]
@@ -552,10 +610,10 @@ unrealized price values or flow null sets without creating a different
 economic outcome.
 
 \textbf{Entry and allocation.} Since \(g_H>g_L\), expensive preparation
-requires \(\mu\ge\tau\). The strict inequalities
-\(B_{r_1}(1/2)<B_{r_0}(1/2)<c_H<B_{r_1}(M)\) imply \(\tau\in(1/2,M)\).
-Solving \eqref{eq:oa-oa-16} gives
-\(x^*=b\operatorname{logit}(\tau)/2\in(0,1)\). The Laplace survival
+requires \(\mu\ge\tau\). The inequalities
+\(B_{r_1}(\pi)\le B_{r_0}(\pi)<c_H<B_{r_1}(M(\pi))\) imply
+\(\tau\in(\pi,M(\pi))\). Solving \eqref{eq:oa-oa-16} gives
+\(x^*=\frac b2[\operatorname{logit}\tau-\operatorname{logit}\pi]\in(0,1)\). The Laplace survival
 function is
 
 \[
@@ -569,10 +627,11 @@ function is
 
 Hence \(\alpha_H=\overline F_Z(x^*-1)\) and
 \(\alpha_L=\overline F_Z(x^*+1)\) give the main-text formulas. Both are
-positive. State-specific entry is
-\(e_\theta=\rho+(1-\rho)\alpha_\theta\), total entry is \((e_H+e_L)/2\),
-and high-quality ownership is \(e_H/2\) because \(h>r\). Each comparison
-is strict.
+positive. Class-conditional entry is
+\(e_j=\rho+(1-\rho)\alpha_j\), total entry is \(\pi e_H+(1-\pi)e_L\),
+and high-class ownership is \(\pi e_HW_H(r_1)\), which equals \(\pi e_H\)
+in the benchmark because \(h>r\). Entry rises strictly, and ownership
+rises under the condition in part (ii) of Proposition 2.
 
 \textbf{Information ordering.} A signal experiment is its pair of
 conditional distributions given quality. Applying a constant Markov
@@ -586,8 +645,10 @@ in mean payoffs across economies do not affect this comparison of signal
 experiments.
 
 \textbf{Nonemptiness.} \hyperref[oa-a-extensions]{Section A.6} gives a
-direct primitive construction for every \(h>\ell\). The specified
-benchmark is also strictly inside the condition region. All inequalities
+direct primitive construction in the point-mass benchmark for every
+\(h>\ell\), and Appendix A.4 of the paper gives one for every ranked pair
+of classes. The specified benchmark is also strictly inside the
+condition region. All inequalities
 involve continuous primitive expressions away from the support
 boundaries, so their strict satisfaction persists on an open
 neighborhood.
@@ -595,15 +656,15 @@ neighborhood.
 \subsection{A.5. Fixed experiments, threshold distinctions, and finite
 nonmonotonicity}\label{oa-a-thresholds}
 
-For Proposition A.3, fix one joint distribution of \((S,\Theta)\) for
+For Proposition A.3, fix one joint distribution of \((S,J)\) for
 both strengths, and keep the preparation cost \(C\) independent of
-\((S,\Theta)\) with its law also fixed as strength varies. Only \(r\)
+\((S,J)\) with its law also fixed as strength varies. Only \(r\)
 changes between the two economies; the signal experiment and the cost
 law do not. Cost independence is what makes the buyer's posterior
 \(\mu(S)=\Pr(H\mid S)\) the right object: with a cost that carried
 information about quality, the comparison would need \(\Pr(H\mid S,C)\)
 and an independence condition between the incumbent's value and the
-buyer's full information, and I do not claim that version. For
+buyer's full information. For
 \(r_1>r_0\), the difference in entry indicators is
 
 \[
@@ -619,10 +680,13 @@ comparison holds within a fixed full-order regime because both
 conditional flow laws are unchanged when only \(r\) changes. It need not
 hold across different informative order profiles.
 
-For Proposition A.4, define the maintained domain
+Proposition A.4 is a point-mass statement, and the rest of this section
+keeps the benchmark prior \(\pi=1/2\); the paper's proof of Proposition
+A.4 states the general-prior conditions. For Proposition A.4, define the
+maintained domain
 
 \[
-\mathcal D=\{r\in(\ell,h):c_L<B_r(m),\ B_r(1/2)<c_H\}.
+\mathcal D=\{r\in(\ell,h):B_r(1/2)<c_H\}.
 \tag{OA.19}\label{eq:oa-oa-19}
 \]
 
@@ -660,7 +724,7 @@ most one root in the economic domain. The larger quadratic root gives
 that root when it lies in the domain; if both algebraic roots are
 positive, the other cannot lie in this strictly decreasing domain as a
 second crossing. Numerical specifications must verify the discriminant,
-the root residual, and the support and floor conditions rather than
+the root residual, and the support conditions, including \(B_r(m)>0\) at the node, rather than
 treating the formula as globally applicable.
 
 For Laplace noise, the posterior \(M\) is attained on \(x\ge1\). At
@@ -680,31 +744,154 @@ the strict comparisons on either side. With logistic noise the upper
 posterior is approached only as \(x\to\infty\); its survival probability
 tends to zero, and entry converges continuously to \(\rho\).
 
-For Proposition 2(iii), impose (A1) to (A3) at \(r_0,r_1\), the low-cost floor at \(r_2\), and \(B_{r_2}(M)<c_H\); the global derivative bound at \(r_2\) follows from (A3) because \(\Delta_T\) increases in \(r\). Parts (i) and (ii) of Proposition 2 give the first
+For Proposition 2(iii), impose the conditions in \eqref{eq:oa-oa-1} at \(r_0,r_1\) and \(B_{r_2}(M)<c_H\) at \(r_2\); the global derivative bound at \(r_2\) follows from (A2) because \(\Delta_T\) increases in \(r\). Parts (i) and (ii) of Proposition 2 give the first
 two unique outcomes; the bound and infeasibility condition give unique
 full orders but entry \(\rho\) at \(r_2\). This proves a finite rise and
 fall without a selection or uniqueness assertion for strengths between
 them.
 
 A useful full-profile existence test is sharper than the uniform
-uniqueness bound. At a fixed full-order candidate,
+uniqueness bound. At a fixed full-order candidate in the benchmark,
 
 \[
-J=F_H(1)=F_L(1)
-=\Delta_T\int e(x)\frac{f(x-1)f(x+1)}{f(x-1)+f(x+1)}\,dx.
+\bar A_H(1)=\bar A_L(1)
+=\Delta_T\int e(x)\frac{f(x-1)f(x+1)}{f(x-1)+f(x+1)}\,dx;
 \tag{OA.22}\label{eq:oa-oa-22}
 \]
 
-The equality follows by substituting Bayes' rule into both residuals.
-The pointwise density-ratio bound implies
-\(F_\theta(s)\ge e^{-(1-s)/b}J\). Since \((1-s/b)e^{-(1-s)/b}\) is
-decreasing on \([0,1]\), \(k<(1-1/b)J\) makes every correctly signed
+(A.7) of the paper gives the general prior. The equality follows by
+substituting Bayes' rule into both residuals. The pointwise
+density-ratio bound implies \(\bar A_j(s)\ge e^{-(1-s)/b}\bar A_j(1)\).
+Since \((1-s/b)e^{-(1-s)/b}\) is decreasing on \([0,1]\),
+\(k<(1-1/b)\bar A_H(1)\) makes every correctly signed
 marginal profit positive. It verifies existence of that profile, not
 uniqueness over other candidate schedules. The distinction is preserved
 in the numerical classifications.
 
 \subsection{A.6. Smooth noise, atomless costs, and primitive
 nonemptiness}\label{oa-a-extensions}
+
+\protect\phantomsection\label{oa-a-laplace-extreme}
+\noindent\textbf{Laplace is the extreme member of the class.}
+Write \(\mathcal N_L\) for the positive, absolutely continuous densities
+with \(|f'|\le Lf\) almost everywhere.
+This class has no location restriction.
+Part (i) imposes median zero only for the tail comparison.
+\par
+Set \(b=1/L\) and write \(f^{\mathrm{Lap}}_b(z)=e^{-|z|/b}/(2b)\) for the Laplace density.
+The score bound gives \(\int|f'|\le L\).
+The convolution argument in A.3 therefore applies.
+The three claims below hold for every \(L>0\).
+The equilibrium result requires \(L<1\) in addition.
+\par
+All experiments use the same prior \(0<\pi<1\) and the same order profile.
+The price comparison also fixes the auction primitives.
+Let \(\beta_f(\alpha)=\sup_{\varphi:\Pr_L(\varphi)\le\alpha}\Pr_H(\varphi)\)
+denote the ROC curve of the flow experiment.
+Here \(\Pr_j(\varphi)=\mathbb E_j\varphi(X)\).
+
+\Needspace{8\baselineskip}
+
+\protect\phantomsection\label{result-lemma-oa-laplace-extreme}{\textbf{Lemma
+OA.1 (Laplace extremality; analytical).}} \emph{(i) If \(f\in\mathcal N_L\)
+has median zero, then \(\Pr_f(|Z|>t)\ge e^{-Lt}\) for every \(t\ge0\).
+Equality at a positive \(t\) requires \(f=f^{\mathrm{Lap}}_b\).
+(ii) At every pure order profile, the Laplace flow experiment Blackwell-dominates the experiment from any \(f\in\mathcal N_L\).
+This dominance carries to prices if each price is a measurable function of its flow and the Laplace price reveals its flow posterior.
+(iii) At a common scale, logistic noise equals Laplace noise plus independent noise:
+\(Z_{\mathrm{log}}\overset d=Z_{\mathrm{Lap}}+\sum_{n=2}^{\infty}Z_n\), where
+\(Z_{\mathrm{Lap}}\) and the \(Z_n\) are independent Laplace variables with scales \(b\) and \(b/n\).
+The flow comparison holds at mixed order profiles as well.
+It carries to prices under the same hypotheses.}
+
+\emph{Proof of (i).} Put \(S(t)=\int_t^\infty f(z)\,dz\) for \(t\ge0\).
+The log-density bound gives \(f(z)\ge f(t)e^{-L(z-t)}\) for \(z\ge t\).
+Hence \(S(t)\ge f(t)/L\).
+Thus \(S'(t)=-f(t)\ge-LS(t)\).
+With \(S(0)=1/2\), this gives \(S(t)\ge e^{-Lt}/2\).
+Apply the same argument to \(f(-z)\) and add the two tail bounds.
+\par
+If their sum equals \(e^{-Lt}\) at a positive \(t\), equality holds in both tail bounds.
+Monotonicity of \(e^{Lu}S(u)\) gives \(S(u)=e^{-Lu}/2\) on \([0,t]\).
+Differentiation gives \(f(u)=(L/2)e^{-Lu}\) almost everywhere on \((0,t)\).
+Continuity extends this identity to every point of \([0,t]\).
+In particular, \(f(t)=Le^{-Lt}/2\), so \(S(t)=f(t)/L\).
+\par
+The continuous function \(f(z)-f(t)e^{-L(z-t)}\) is nonnegative on \([t,\infty)\).
+Its integral is zero, so it vanishes at every point there.
+Thus \(f(z)=(L/2)e^{-Lz}\) for every \(z\ge0\).
+Reflection fixes the left tail. \(\square\)
+
+\emph{Proof of (ii).} Equal orders give constant information.
+If \(q_H<q_L\), reflect the observation and the noise density.
+Reflection preserves the score bound and the Laplace law.
+It therefore suffices to prove the claim for \(q_L<q_H\).
+\par
+For a statistical decision rule \(0\le\varphi\le1\), put \(h_\varphi(s)=\int\varphi(x)f(x-s)\,dx\).
+Section A.3 gives \(|h_\varphi'|\le Lh_\varphi\).
+Applied to \(1-\varphi\), it gives \(|h_\varphi'|\le L(1-h_\varphi)\) as well.
+Let \(v'=\Phi(v)=L\min\{v,1-v\}\), with \(v(q_L)=h_\varphi(q_L)=\alpha\).
+Since \(\Phi\) is Lipschitz, \((h_\varphi-v)_+'\le L(h_\varphi-v)_+\) almost everywhere.
+Integration gives \(h_\varphi\le v\).
+\par
+For Laplace noise, a half-line rule satisfies \(h'=\Phi(h)\) exactly.
+Such rules attain every \(\alpha\in(0,1)\).
+\par
+Half-lines are optimal by monotone likelihood ratio.
+The ROC curves therefore satisfy \(\beta_f(\alpha)\le\beta_{\mathrm{Lap}}(\alpha)\).
+Continuity gives the endpoints.
+For \(0\le t\le1\), Bayes' rule gives \(\mathbb E(\mu-t)_+=\sup_{0\le\alpha\le1}\{\pi(1-t)\beta(\alpha)-(1-\pi)t\alpha\}\).
+The ROC inequality orders every posterior call value.
+Both posterior means equal \(\pi\), so the order is convex order.
+\par
+With two states, convex order is Blackwell dominance.
+A price that reveals its flow posterior is Blackwell-equivalent to that flow experiment.
+Any measurable function of the other flow is a garbling of that experiment.
+The stated price comparison follows by transitivity. \(\square\)
+
+\emph{Proof of (iii).} For the logistic density in (A.21), Euler's product gives the characteristic function
+\(\chi_{\mathrm{log}}(t)=\prod_{n=1}^{\infty}(1+b^2t^2/n^2)^{-1}\).
+Each factor is the characteristic function of a centered Laplace variable with scale \(b/n\).
+Take independent \(Z_n\), \(n\ge1\), with these laws.
+Their total variance is \(2b^2\sum_{n\ge1}n^{-2}<\infty\).
+The partial sums converge almost surely and in \(L^2\).
+Their characteristic functions converge to the product.
+\par
+Separate the first term.
+\(Z_{\mathrm{Lap}}=Z_1\) is independent of the remainder \(\sum_{n\ge2}Z_n\).
+The product identity gives \(Z_{\mathrm{log}}\overset d=Z_1+\sum_{n\ge2}Z_n\).
+The kernel that adds the remainder does not depend on the class or on the investor's order.
+It gives Blackwell dominance at every pure or mixed order profile.
+The same transitivity argument proves the conditional price comparison. \(\square\)
+
+\emph{Price construction.}
+The model satisfies the price hypotheses at fixed orders under the following maintained conditions.
+The pair \((j,\theta)\), the incumbent value, the preparation cost, and noise are mutually independent.
+Conditional on its class, the challenger value is independent of flow.
+The auction objects satisfy \(t_L-t_0\ge0\), \(\Delta_T>0\), and \(g_H\ge g_L\ge0\).
+Costs lie in \(\{0,c_H\}\), with probability \(\rho>0\) on zero cost and entry at equality.
+Fix the incumbent strength \(r\). Then the schedules of equation (9) of the paper read
+\[
+e(\mu)=\rho+(1-\rho)\mathbf1\{B_r(\mu)\ge c_H\},\qquad
+P(\mu)=t_0+e(\mu)[t_L-t_0+\Delta_T\mu].
+\]
+Entry is nondecreasing in \(\mu\), and for \(\mu_2>\mu_1\),
+\[
+P(\mu_2)-P(\mu_1)\ge\rho\Delta_T(\mu_2-\mu_1)>0.
+\]
+Thus \(P\) has a measurable inverse on its image.
+For each noise law, apply \(P\) to its flow posterior.
+The resulting price is measurable in flow and reveals that posterior.
+\par
+A flow posterior is a sufficient statistic for its two-class experiment.
+Bayes' rule makes the conditional flow law, given its posterior, independent of the class.
+These constructed prices therefore satisfy the hypotheses of both comparisons.
+This construction does not require the fixed order profile to be an equilibrium.
+
+Part (ii) asserts no mixed-profile dominance for a general member of the class.
+Part (iii) gives the mixed-profile comparison for logistic noise.
+Blackwell dominance orders the value of information.
+It does not order the probability of expensive preparation.
 
 For logistic noise,
 
@@ -721,7 +908,8 @@ posterior log odds equal
 
 \[
 \log\frac{\mu(x)}{1-\mu(x)}
-=2\log\cosh\left(\frac{x+1}{2b}\right)
+=\operatorname{logit}\pi
++2\log\cosh\left(\frac{x+1}{2b}\right)
 -2\log\cosh\left(\frac{x-1}{2b}\right).
 \tag{OA.24}\label{eq:oa-oa-24}
 \]
@@ -733,43 +921,46 @@ Their derivative equals
 \tag{OA.25}\label{eq:oa-oa-25}
 \]
 
-The limits are \(-2/b\) and \(2/b\), giving the open posterior range
-\((m,M)\). Every strictly interior threshold is crossed with positive
+The limits are \(\operatorname{logit}\pi-2/b\) and
+\(\operatorname{logit}\pi+2/b\), giving the open posterior range
+\((m(\pi),M(\pi))\). Every strictly interior threshold is crossed with positive
 probability. To derive its inverse, set \(y=e^{x/b}\), \(A=e^{1/b}\),
-and \(w=\sqrt{\tau/(1-\tau)}\). The square root of the likelihood ratio
+and \(w=\sqrt{\tau(1-\pi)/[(1-\tau)\pi]}\). The square root of the likelihood ratio
 equals \((Ay+1)/(y+A)\). Solving \(w=(Ay+1)/(y+A)\) gives
 \(y=(Aw-1)/(A-w)>0\). Thus \(x^*_{\log}=b\log[(Aw-1)/(A-w)]\). Its
 conditional survival probabilities are
 \(\alpha_H=[1+e^{(x^*_{\log}-1)/b}]^{-1}\) and
 \(\alpha_L=[1+e^{(x^*_{\log}+1)/b}]^{-1}\). These formulas and
-\(\mathsf E=\rho+(1-\rho)(\alpha_H+\alpha_L)/2\) supply the complete
+\(\mathsf E=\rho+(1-\rho)[\pi\alpha_H+(1-\pi)\alpha_L]\) supply the complete
 entry comparison. The trade and information-ordering arguments complete
 Proposition A.5.
 
-For Proposition A.6, let \(H_C=\rho H_L+(1-\rho)H_H\), with atomless
+For Proposition A.6, let \(H_C=\rho H_C^0+(1-\rho)H_C^1\), with atomless
 component laws supported within
-\([c_L-\varepsilon_C,c_L+\varepsilon_C]\) and
-\([c_H-\varepsilon_C,c_H+\varepsilon_C]\). Retain (A3) and impose
-\(c_L-\varepsilon_C\ge0\), \(c_L+\varepsilon_C<B_{r_1}(m)\), and
+\([0,2\varepsilon_C]\) and
+\([c_H-\varepsilon_C,c_H+\varepsilon_C]\). Retain (A2) and impose
+\(2\varepsilon_C<B_{r_1}(m(\pi))\), and
 
 \[
-B_{r_0}(1/2)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M).
+B_{r_0}(\pi)<c_H-\varepsilon_C<c_H+\varepsilon_C<B_{r_1}(M(\pi)).
 \tag{OA.26}\label{eq:oa-oa-26}
 \]
 
 Use either the Laplace or logistic noise law. The entry rule is
 \(e(\mu)=H_C(B_r(\mu))\). It is continuous and nondecreasing, and
-\(e\ge\rho\) under the low-cost support restriction. Equation
+\(e\ge\rho\) because the whole first support lies below gross profit at the
+lowest feasible belief \(m(\pi)\) in both economies. Equation
 \eqref{eq:oa-oa-9} remains strictly positive even if the component
 densities are discontinuous or vanish on subintervals. In the weak
-economy, \(e(1/2)=\rho\). In the strong economy, a posterior
-sufficiently close to \(M\) satisfies \(B_r(\mu)>c_H+\varepsilon_C\); an
+economy, \(e(\pi)=\rho\). In the strong economy, a posterior
+sufficiently close to \(M(\pi)\) satisfies \(B_r(\mu)>c_H+\varepsilon_C\); an
 event with positive probability then gives \(e=1\). All global trading
 comparisons are unchanged. This proof requires an atomless distribution,
 not a differentiable density. Differentiability is imposed separately
 when differentiating a seller objective.
 
-For primitive nonemptiness, fix \(h>\ell>p>0\), \(b>1\), and
+For primitive nonemptiness in the point-mass benchmark with
+\(\pi=1/2\), fix \(h>\ell>p>0\), \(b>1\), and
 \(0<\rho<1\). At the continuous limit \(r=\ell\),
 
 \[
@@ -784,51 +975,27 @@ every \(r_0\in(\ell,r_1)\) then satisfies \(B_{r_0}(1/2)<B_{r_1}(M)\).
 Choose \(r_0\) sufficiently near \(\ell\) that
 \(\Delta_T(r_0)<(1-1/b)\rho m\Delta_T(r_1)\). Select \(k\) strictly
 inside this interval and \(c_H\) strictly between the two profit bounds.
-The quantity \(B_{r_1}(m)\) is positive, so choose \(c_L\) strictly
-between zero and that bound. The constructed \(c_L<c_H\) follows because
-\(B_{r_1}(m)<B_{r_0}(1/2)\), using \(m<1/2\) and the monotonicity in
+The quantity \(B_{r_1}(m)\) is positive, so the zero cost lies below
+\(c_H\): \(0<B_{r_1}(m)<B_{r_0}(1/2)<c_H\), using \(m<1/2\) and the monotonicity in
 both arguments. All inequalities have strict slack and persist by
-continuity. This is a mathematical nonemptiness construction, not a
-statement about empirical effect size at every value ratio.
+continuity.
 
-Two further stability results are recorded for completeness.
+One further stability result is recorded for completeness.
 
 \Needspace{8\baselineskip}
 
-\protect\phantomsection\label{result-lemma-oa-1}{\textbf{Lemma OA.1
+\protect\phantomsection\label{result-lemma-oa-1}{\textbf{Lemma OA.2
 (analytical).}} \emph{Replace the trading cost by
-\(K(s)=ks+\gamma_qs^2/2\), \(\gamma_q\ge0\). Under (A1) and (A2),
-\(\Delta_T(r_0)<k\), and \(k+\gamma_q<(1-1/b)\rho m\Delta_T(r_1)\), the
+\(K(s)=ks+\gamma_qs^2/2\), \(\gamma_q\ge0\). Under (A1),
+\(\Delta_T(r_0)<k\), and \(k+\gamma_q<(1-1/b)\rho\kappa(\pi)\Delta_T(r_1)\), the
 unique trading outcomes and entry reversal in parts (i) and (ii) of
 Proposition 2 remain valid.}
 
 Indeed \(K(s)\ge ks\) preserves the weak-economy exclusion. At high
 strength, subtracting \(K'(s)=k+\gamma_qs\) from the gross marginal
 profit leaves a strictly positive bound. The price construction,
-threshold, and information comparison are unchanged. This perturbation
-retains the position bound; it does not solve an unbounded-order game.
-
-\Needspace{8\baselineskip}
-
-\protect\phantomsection\label{result-lemma-oa-2}{\textbf{Lemma OA.2
-(analytical).}} \emph{For prior \(\pi\in(0,1)\), let
-\(\mu_-=\operatorname{logistic}(\operatorname{logit}\pi-2/b)\),
-\(\mu_+=\operatorname{logistic}(\operatorname{logit}\pi+2/b)\), and
-\(\omega=\min\{\mu_-,1-\mu_+\}\). Replace (A1)--(A3) by
-\(c_L<B_{r_1}(\mu_-)\), \(B_{r_0}(\pi)<c_H<B_{r_1}(\mu_+)\), and
-\(\Delta_T(r_0)<k<(1-1/b)\rho\omega\Delta_T(r_1)\). Then the benchmark
-entry reversal and unique trading outcomes hold.}
-
-Prior odds multiply the order-flow likelihood ratio. The uniform
-residual lower bound is therefore \(\rho\omega\Delta_T\), while the
-upper bound is still \(\Delta_T\). Every inference and global deviation
-argument follows with these bounds. Under full Laplace orders,
-\(x^*=b[\operatorname{logit}\tau-\operatorname{logit}\pi]/2\) lies in
-\((0,1)\), and total entry is
-\(\rho+(1-\rho)[\pi\alpha_H+(1-\pi)\alpha_L]>\rho\). Strict feasibility
-at the equal prior persists for nearby priors. Neither supplemental
-lemma is required to generate a reported numerical value in the present
-manuscript.
+threshold, and information comparison are unchanged. The position bound
+stays at one.
 
 \subsection{A.7. Full proof and probability formulas for Proposition
 A.7}\label{oa-a-signals}
@@ -852,7 +1019,6 @@ The complete sufficient conditions for Proposition A.7 are
 
 \[
 \begin{aligned}
-&c_L<B_{r_1}(\phi_-(\mu_-)),\\
 &B_{r_0}(d)<c_H<B_{r_1}(\phi_+(\mu_+)),\\
 &(2a-1)\{\Delta_T(r_0)+(1-\rho)(2d-1)w_H(r_0)\}<k\\
 &\hspace{25mm}<(1-1/b)m(2a-1)\rho\Delta_T(r_1).
@@ -860,13 +1026,18 @@ The complete sufficient conditions for Proposition A.7 are
 \tag{OA.29}\label{eq:oa-oa-29}
 \]
 
+No condition on the low cost joins them. Gross profit at the lowest joint posterior,
+\(B_{r_1}(\phi_-(\mu_-))\), is positive on this support, so the zero-cost
+realization prepares at every reachable price after either private signal.
+That quantity remains a recorded margin in C.3; it is no longer a hypothesis.
+
 I prove unique zero orders and entry \(\rho\) at \(r_0\), unique maximum
 correctly signed signal-contingent orders at \(r_1\), and strictly
 higher entry at \(r_1\). The result allows \(d>a\) and arbitrary mixed
 orders conditional on the investor's signal.
 
 I use \(T\) for the trader's signal, \(Y\) for the buyer's private
-signal, and \(\Theta\) for fundamental quality. Conditional on \(H\),
+signal, and \(J\) for the class. Conditional on \(H\),
 the probabilities of \(T=+\) and \(Y=+\) are \(a\) and \(d\);
 conditional on \(L\) they are \(1-a\) and \(1-d\). Conditional
 independence gives the joint signal law as the product of these
@@ -883,9 +1054,9 @@ For arbitrary signal-contingent mixed orders, let
 \tag{OA.30}\label{eq:oa-oa-30}
 \]
 
-Since \(X\) depends on quality only through \(T\), \(\Theta\) and \(X\)
+Since \(X\) depends on quality only through \(T\), \(J\) and \(X\)
 are conditionally independent given \(T\). Also \(Y\) is independent of
-\(X\) conditional on \(\Theta\). The latter remains true after applying
+\(X\) conditional on \(J\). The latter remains true after applying
 a measurable price function, and implies
 
 \[
@@ -897,14 +1068,14 @@ The maps \(\phi_+,\phi_-\) are continuous and strictly increasing on
 \((0,1)\); the favorable private signal gives the larger posterior. The
 public posterior based on price inherits \([\mu_-,\mu_+]\) by
 conditional expectation. The lowest possible joint posterior is
-consequently \(\phi_-(\mu_-)\). The low-cost restriction in
-\eqref{eq:oa-oa-29} and declining gross profits in \(r\) make low-cost
-preparation optimal in both economies under any candidate equilibrium.
+consequently \(\phi_-(\mu_-)\). Gross profit there is positive, and
+gross profits decline in \(r\), so the zero-cost realization prepares
+in both economies under any candidate equilibrium.
 
 Define high-cost indicators
 \(I_y(P)=\mathbf1\{B_r(\phi_y(\mu_P))\ge c_H\}\). They obey
 \(I_+\ge I_-\). Since \(Y\)'s law conditional on quality does not change
-with \(X\) or the trader's signal, true-state entry conditional on \(P\)
+with \(X\) or the trader's signal, class-conditional entry given \(P\)
 is
 
 \[
@@ -921,17 +1092,18 @@ e_H\ge e_L\ge\rho.
 \tag{OA.33}\label{eq:oa-oa-33}
 \]
 
-Let \(D=e_Hw_H-e_Lw_L\). As \(w_H-w_L=\Delta_T\) and \(w_L>0\),
+Let \(\Delta_P=e_Hw_H-e_Lw_L\) be the price loading on the public
+posterior. As \(w_H-w_L=\Delta_T\) and \(w_L>0\),
 
 \[
-D=e_L\Delta_T+(e_H-e_L)w_H
+\Delta_P=e_L\Delta_T+(e_H-e_L)w_H
 \in[\rho\Delta_T,\ \Delta_T+(1-\rho)(2d-1)w_H].
 \tag{OA.34}\label{eq:oa-oa-34}
 \]
 
-Conditional pricing is \(P=t_0+e_L(P)w_L+\mu_XD(P)\). Both entry
+Conditional pricing is \(P=t_0+e_L(P)w_L+\mu_X\Delta_P(P)\). Both entry
 probabilities are functions of price, even before proving sufficiency.
-The positive coefficient \(D(P)\) therefore makes \(\mu_X\) measurable
+The positive loading \(\Delta_P(P)\) therefore makes \(\mu_X\) measurable
 with respect to price by the explicit inversion. The tower property
 gives \(\mu_P=\mu_X\) and hence also reveals \(\lambda_X\) through the
 affine inverse in \eqref{eq:oa-oa-30}.
@@ -951,7 +1123,7 @@ entry probabilities and an entry change evaluated at the new belief:
 \[
 \begin{aligned}
 P(\mu_2)-P(\mu_1)
-={}&(\mu_2-\mu_1)D(\mu_1)
+={}&(\mu_2-\mu_1)\Delta_P(\mu_1)
 +\mu_2[e_H(\mu_2)-e_H(\mu_1)]w_H\\
 &+(1-\mu_2)[e_L(\mu_2)-e_L(\mu_1)]w_L>0.
 \end{aligned}
@@ -968,13 +1140,13 @@ specified. Conditional on \(T=-\), it assigns \(1-a\). This remains
 valid under unilateral orders because the deviation introduces no
 additional quality information conditional on the signal. Its expected
 terminal target payoff at a flow \(x\) is therefore
-\(t_0+e_L(P(x))w_L+aD(P(x))\) for \(T=+\), and the corresponding
+\(t_0+e_L(P(x))w_L+a\Delta_P(P(x))\) for \(T=+\), and the corresponding
 expression with \(1-a\) for \(T=-\). Subtracting \eqref{eq:oa-oa-35} and
 using \eqref{eq:oa-oa-30} gives
 
 \[
-A_+=(2a-1)(1-\lambda_X)D,\qquad
-A_-=(2a-1)\lambda_XD.
+A_+=(2a-1)(1-\lambda_X)\Delta_P,\qquad
+A_-=(2a-1)\lambda_X\Delta_P.
 \tag{OA.37}\label{eq:oa-oa-37}
 \]
 
@@ -982,12 +1154,12 @@ The residuals have strict signs and obey
 
 \[
 m(2a-1)\rho\Delta_T\le A_+,A_-
-\le(2a-1)\{\Delta_T+(1-\rho)(2d-1)w_H\}=: \overline A.
+\le(2a-1)\{\Delta_T+(1-\rho)(2d-1)w_H\}=: A^+.
 \tag{OA.38}\label{eq:oa-oa-38}
 \]
 
 The weak restriction in \eqref{eq:oa-oa-29} makes any correctly signed
-order of magnitude \(s>0\) earn at most \(s(\overline A-k)<0\). Hence
+order of magnitude \(s>0\) earn at most \(s(A^+-k)<0\). Hence
 zero is necessary under all candidate equilibria. With zero orders the
 public posterior is the prior, the buyer's favorable posterior is \(d\),
 and the expensive-entry exclusion in \eqref{eq:oa-oa-29} gives entry
@@ -1034,7 +1206,7 @@ f_L^X(x)=(1-a)f(x-1)+a f(x+1).
 \tag{OA.40}\label{eq:oa-oa-40}
 \]
 
-Let \(Q_{\theta,y}=\Pr(X\ge x_y^*\mid\Theta=\theta)\), with the
+Let \(Q_{j,y}=\Pr(X\ge x_y^*\mid J=j)\), with the
 always/never cases evaluated accordingly. Conditional entry is
 
 \[
@@ -1047,7 +1219,7 @@ always/never cases evaluated accordingly. Conditional entry is
 
 Thus \(\mathsf E=(\bar e_H+\bar e_L)/2\), \(\mathsf O_H=\bar e_H/2\),
 and \(\mathcal R_T=t_0+(\bar e_Hw_H+\bar e_Lw_L)/2\). Independently
-integrating the joint law of \((\Theta,T,Y,Z,C)\) must reproduce these
+integrating the joint law of \((J,T,Y,Z,C)\) must reproduce these
 expressions. Using the marginal law of \(Y\) instead of its conditional
 law given quality would give the wrong entry and pricing objects.
 
@@ -1090,8 +1262,8 @@ FOSD yields its sign comparisons. For a uniform incumbent,
 \[
 \begin{aligned}
 \Delta_\eta&=\eta(h-\ell)+(1-2\eta)\frac{(r-\ell)^2}{2r},\\
-G_{H,\eta}&=(1-\eta)(h-r/2),\\
-G_{L,\eta}&=(1-\eta)\frac{\ell^2}{2r}.
+g_{H,\eta}&=(1-\eta)(h-r/2),\\
+g_{L,\eta}&=(1-\eta)\frac{\ell^2}{2r}.
 \end{aligned}
 \tag{OA.44}\label{eq:oa-oa-44}
 \]
@@ -1108,13 +1280,15 @@ institution.
 \subsection{A.9. Matched welfare and the external-dividend
 diagnostic}\label{oa-a-welfare}
 
-I couple the feedback and price-hidden economies at \(r=r_1\) using the
-same \((\Theta,R,C,Z)\) and full informed orders. The strong trading
+This section computes in the point-mass benchmark with \(\pi=1/2\);
+(A.39)--(A.41) of the paper give the general class formulas. I couple
+the feedback and price-hidden economies at \(r=r_1\) using the same
+\((J,R,C,Z)\) and full informed orders. The strong trading
 bound applies in the price-hidden economy with entry probability
 \(\rho\), so this coupling uses equilibrium behavior in both
-environments. The high-cost type remains out when price information is
-unavailable because \(B_{r_1}(1/2)<c_H\); all low-cost realizations
-enter in both environments.
+environments. The high-cost realization stays out when price information
+is unavailable because \(B_{r_1}(1/2)<c_H\); the zero-cost realization
+enters in both environments and pays no preparation cost in either.
 
 Without challenger entry, allocation value is \(R\mathbf1\{R\ge p\}\).
 With entry it is \(\max(R,\theta)\) because \(\theta>p\). Splitting at
@@ -1142,42 +1316,42 @@ about conditional expectations: each additional preparation decision
 contributes at least \(p^2/r\) in conditional expectation, given price
 information and preparation cost. A realized low-value preparation need
 not generate a positive realized net gain, since \((\ell-\max(p,R))_+\)
-can fall short of the cost paid. For atomic costs, integrate against the
-marginal full-order flow density \(g(x)=[f(x-1)+f(x+1)]/2\) to obtain
+can fall short of a positive cost paid. For atomic costs, integrate against the
+marginal full-order flow density \(\bar f(x)=[f(x-1)+f(x+1)]/2\) to obtain
 
 \[
-\Delta\mathcal W=(1-\rho)\int g(x)
+\Delta\mathcal W=(1-\rho)\int \bar f(x)
 \left[B_r(\mu_X(x))-c_H+\frac{p^2}{r}\right]
 \mathbf1\{B_r(\mu_X(x))\ge c_H\}\,dx>0.
 \tag{OA.47}\label{eq:oa-oa-47}
 \]
 
-For an atomless high-cost component \(H_H\), replace the integrand by
+For an atomless high-cost component \(H_C^1\), replace the integrand by
 
 \[
 (1-\rho)\int\left[B_r(\mu_X(x))-c+\frac{p^2}{r}\right]
-\mathbf1\{c\le B_r(\mu_X(x))\}\,H_H(dc).
+\mathbf1\{c\le B_r(\mu_X(x))\}\,H_C^1(dc).
 \tag{OA.48}\label{eq:oa-oa-48}
 \]
 
-The strict-support conditions ensure positive additional entry. Fubini
+The support conditions in A.6 ensure positive additional entry. Fubini
 is valid because values and the specified cost supports are bounded. The
 realized trading cost is the same in both environments; any resource
 interpretation of that cost therefore cancels. Transfers between
 bidders, shareholders, market makers, and noise traders are not
 additional allocation surplus.
 
-Target proceeds increase by averaging \(t_\theta-t_0>0\) over each
-state's additional-entry probability. For atomic costs the difference is
+Target proceeds increase by averaging \(t_j-t_0>0\) over each
+class's additional-entry probability. For atomic costs the difference is
 \((1-\rho)\{\alpha_H(t_H-t_0)+\alpha_L(t_L-t_0)\}/2>0\); for atomless
-costs integrate the corresponding state-specific tail probabilities over
+costs integrate the corresponding class-conditional tail probabilities over
 the high-cost component. As an independent numerical check, compute
 total expected allocation minus the full expected preparation cost in
 each environment:
 
 \[
 \mathcal W=\frac{r^2-p^2}{2r}
-+\frac12\sum_\theta\bar e_\theta\left(g_\theta+\frac{p^2}{r}\right)
++\frac12\sum_j\bar e_j\left(g_j+\frac{p^2}{r}\right)
 -\mathbb E[C\mathbf1\{\text{entry}\}],
 \tag{OA.49}\label{eq:oa-oa-49}
 \]
@@ -1206,13 +1380,16 @@ p\mathbf1\{R\ge p\},&v<p,\\
 \max\{p,\min(R,v)\},&v\ge p,
 \end{cases}
 \qquad
-G(R,v,p)=(v-\max(p,R))_+.
+g(R,v,p)=(v-\max(p,R))_+.
 \tag{OA.50}\label{eq:oa-oa-50}
 \]
 
-These formulas include no sale when both values fail the reserve. They
-are bounded, Borel, and can be integrated first over \(R\) and then over
-any conditional challenger distribution. The latter order is convenient
+These formulas include no sale when both values fail the reserve. The
+revenue kernel is at most \(\max\{p,R\}\), bounded on the incumbent's
+support. The profit kernel satisfies \(0\le g(R,v,p)\le v\). Finite class
+means therefore make both kernels integrable. Both are Borel and can be
+integrated first over \(R\) and then over any conditional challenger
+distribution. The latter order is convenient
 when a reserve cuts through a value band. At a value atom equal to the
 reserve, the bid meets the reserve even when its acquisition rent is
 zero; the cost of preparation was paid before the realized value was
@@ -1256,7 +1433,7 @@ When \(p<\ell-\varepsilon_V<\ell+\varepsilon_V<r<h-\varepsilon_V\),
 t_L&=\ell-\frac{\ell^2+\varepsilon_V^2/3-p^2}{2r},\qquad
 g_L=\frac{\ell^2+\varepsilon_V^2/3-p^2}{2r},\\
 t_H&=\frac r2+\frac{p^2}{2r},\qquad g_H=h-t_H,\qquad
-\Delta_T=\frac{(r-\ell)^2}{2r}+\frac{\varepsilon_V^2}{6r}.
+\Delta_T=\frac{(r-\ell)^2+\varepsilon_V^2/3}{2r}.
 \end{aligned}
 \tag{OA.52}\label{eq:oa-oa-52}
 \]
@@ -1265,8 +1442,10 @@ When the reserve is above the entire low band but below \(r\),
 \(t_L=t_0\), \(g_L=0\), and the high-class formulas are unchanged.
 Conditional on class and flow, exact \(V\) retains its within-class
 distribution, so the benchmark price and residual proof applies to these
-class-averaged payoffs whenever \(\Delta_T>0\) and a positive entry
-floor holds. In this region \(t_L=t_0\) is permitted: the price
+class-averaged payoffs whenever \(\Delta_T>0\). Entry is at least
+\(\rho\) at every posterior: the zero-cost realization prepares because
+class gross profit is nonnegative at each belief in this region and
+positive at each belief above zero. In this region \(t_L=t_0\) is permitted: the price
 construction remains strictly increasing on the bounded posterior
 interval because \(\Delta_T\mu>0\).
 
@@ -1281,38 +1460,39 @@ is a complete continuation
 the conditional order distributions, the price mapping on flow, the
 buyer's beliefs at every realized price including price atoms, and the
 preparation rule at every price and cost. Its beliefs are the public
-price posterior, not necessarily the raw order-flow posterior. If entry
-vanishes on a set of flows, the inversion denominator vanishes there,
-those flows share the no-entry price, and the buyer conditions on the
-whole preimage of that price. The construction used in C.6, which prices
-every positive-entry flow by the benchmark inversion and pools exactly
-the zero-entry preimage at \(t_0\), is one admissible member of
-\(\mathcal E(p,r)\) when it validates. It is not the only one.
-\hyperref[oa-a-pools]{Section A.11} exhibits, in the reserve game
-itself, a one-parameter family of continuations with the same orders and
-different pools, each of which validates. Two continuations with the
-same orders but different price mappings are different elements of
+price posterior, not necessarily the raw order-flow posterior. Under the
+declared two-point cost law entry is at least \(\rho\) at every flow, so
+the inversion denominator cannot vanish through missing entry. A price
+atom can still arise where the raw posterior is constant, as on a Laplace
+plateau. The buyer then conditions on the whole preimage of that price,
+whose members share the one plateau posterior. The construction used in C.6,
+which prices each flow by the benchmark inversion wherever
+\(\Delta_T>0\), is therefore the only pricing rule at its orders on that
+part of the domain, up to those constant-posterior atoms.
+\hyperref[oa-a-pools]{Section A.11} states this point and the reason a wider
+family of pooling regions at fixed orders cannot arise under the zero cost.
+Two continuations with the same orders but different price mappings would
+still be different elements of
 \(\mathcal E(p,r)\), and the numerical record identifies a continuation
-by the whole object \eqref{eq:oa-oa-53}. If \(\Delta_T=0\) or all entry
-is impossible, the informative-price argument cannot be imported.
+by the whole object \eqref{eq:oa-oa-53}. The whole-object rule remains necessary,
+because distinct order profiles occur. If \(\Delta_T=0\) or no sale is possible, the informative-price argument cannot be imported.
 \hyperref[oa-c-reserve]{Section C.6} therefore requires direct pricing,
 posterior, and entry verification at such reserves.
 
-For the local decomposition in the paper, impose a neighborhood \(I\)
-contained strictly in \(0<p<\ell\), a pure strategy branch
-\(q_\theta(p)\) continuously differentiable on \(I\), and an atomless
+For the local decomposition in the paper, which keeps the benchmark prior
+\(\pi=1/2\), impose a neighborhood \(I\) contained strictly in \(0<p<\ell\), a pure strategy branch
+\(q_j(p)\) continuously differentiable on \(I\), and an atomless
 preparation-cost CDF \(H_C\) continuously differentiable on the compact
-profit range. Suppose \(\mu_\theta(z;p)\) is differentiable in \(p\) for
-almost every \(z\) and there is an integrable function \(J(z)\)
+profit range. Suppose \(\mu_j(z;p)\) is differentiable in \(p\) for
+almost every \(z\) and there is an integrable function \(\Lambda(z)\)
 dominating
 
 \[
-f(z)\left|h_C(B_{p,r}(\mu_\theta))\left[-p/r+(g_H-g_L)\partial_p\mu_\theta\right]\right|
+f(z)\left|h_C(B_{p,r}(\mu_j))\left[-p/r+(g_H-g_L)\partial_p\mu_j\right]\right|
 \tag{OA.54}\label{eq:oa-oa-54}
 \]
 
-uniformly on a compact neighborhood of the reserve. These assumptions
-are sufficient, not an assertion that every continuation has them. For
+uniformly on a compact neighborhood of the reserve. For
 positive smooth noise with bounded log-density derivative and a bounded
 derivative of each pure order, posterior derivatives can be bounded
 directly by likelihood-ratio differentiation; bounded \(h_C\) then
@@ -1320,24 +1500,24 @@ supplies domination by a constant times \(f\). For Laplace noise, the
 same calculation holds away from the finite shifted kinks, a null set in
 \(z\), and the bounded log slope again supplies domination.
 
-For \(\bar e_\theta(p)=\int f(z)H_C(B_{p,r}(\mu_\theta(z;p)))\,dz\),
+For \(\bar e_j(p)=\int f(z)H_C(B_{p,r}(\mu_j(z;p)))\,dz\),
 dominated differentiation gives
 
 \[
-\frac{d\bar e_\theta}{dp}
-=\int f(z)h_C(B_{p,r}(\mu_\theta))
-\left[-\frac p r+(g_H-g_L)\frac{\partial\mu_\theta}{\partial p}\right]dz.
+\frac{d\bar e_j}{dp}
+=\int f(z)h_C(B_{p,r}(\mu_j))
+\left[-\frac p r+(g_H-g_L)\frac{\partial\mu_j}{\partial p}\right]dz.
 \tag{OA.55}\label{eq:oa-oa-55}
 \]
 
 With \(\mathsf E=(\bar e_H+\bar e_L)/2\) and
-\(\mathcal R_T=t_0+\sum_\theta\bar e_\theta(t_\theta-t_0)/2\), the
+\(\mathcal R_T=t_0+\sum_j\bar e_j(t_j-t_0)/2\), the
 product rule gives
 
 \[
 \frac{d\mathcal R_T}{dp}
 =(1-\mathsf E)\left(1-\frac{2p}{r}\right)+\mathsf E\frac p r
-+\frac12\sum_\theta\frac{d\bar e_\theta}{dp}(t_\theta-t_0).
++\frac12\sum_j\frac{d\bar e_j}{dp}(t_j-t_0).
 \tag{OA.56}\label{eq:oa-oa-56}
 \]
 
@@ -1354,259 +1534,330 @@ problem, not a proof of existence, measurable selection, global
 attainment, or optimality. These are the explicit open parts of the
 sale-design result.
 
-\subsection{A.11. Price pooling when preparation can
-vanish}\label{oa-a-pools}
+\subsection{A.11. Price atoms under zero preparation
+cost}\label{oa-a-pools}
 
-When preparation can vanish, identical investor orders can support
-different price pools and different preparation outcomes. This
-subsection proves the explicit family in Proposition A.10. Dow et al.
-(\citeproc{ref-DowGoldsteinGuembel2017}{2017}) discuss continuations
-distinguished by their pooling regions following their Lemma 1. The
-reserve-game example makes the price rule part of the continuation that
-the seller must face.
+With a positive low preparation cost, flows whose gross profit fell below that
+cost could share a no-entry price, and the pooled posterior over that preimage
+could support more than one price mapping at one order profile.
+That construction has no counterpart under the declared cost law.
+Gross profit is nonnegative at every belief on the reserve domain, and the
+zero-cost realization prepares by the tie rule even where gross profit is zero.
+Entry is therefore at least \(\rho\) at every price. Any candidate that
+prescribes zero preparation at a pooled price violates the zero-cost
+buyer's optimality condition and the tie rule.
 
-\textbf{Inputs and institution.} Take the benchmark declaration of C.0
-with \(r=r_0\) and change only the reserve, to the value declared as
-\texttt{pool\_reserve} in the registry:
+What remains is narrower. Where \(\Delta_T>0\), the increment argument in
+Appendix A.7 of the paper ties the price to the raw posterior at fixed orders.
+Distinct raw posteriors give distinct prices.
+A price atom collects only flows with one common posterior, as on a Laplace
+plateau \(x\ge1\) or \(x\le-1\) under full orders.
+At such an atom the buyer's information set is still the whole preimage of the
+price, and its posterior is the conditional probability over that preimage.
+C.6 writes that formula as \eqref{eq:oa-oa-79} and validates each atom from its
+full preimage. A candidate that let the buyer act on finer flow information
+inside an atom would still fail, because that action is not measurable with
+respect to the price.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{h = 10; ell = 1; r = 1.2; p = 7;}
-\NormalTok{rho = 0.25; c\_L = 1; c\_H = 6;}
-\NormalTok{b = 2; k = 0.02; prior\_H = 0.5;}
-\NormalTok{q\_H = 1; q\_L = {-}1;}
-\NormalTok{entry\_at\_indifference = yes;}
-\NormalTok{bid\_equal\_reserve\_is\_admissible = yes.}
-\end{Highlighting}
-\end{Shaded}
+Dow et al. (\citeproc{ref-DowGoldsteinGuembel2017}{2017}) discuss continuations
+distinguished by their pooling regions following their Lemma 1.
+In this model that distinction survives only through different order profiles,
+and through degenerate reserves with no target-payoff spread, where the price
+need not reveal beliefs. Continuation identity therefore keeps the whole-object
+rule of \eqref{eq:oa-oa-53}: orders, price mapping with every atom, beliefs,
+and preparation rule. No numerical exercise searches over alternative pooling
+regions at fixed orders, and no registry quantity reports one.
 
-The reserve exceeds incumbent support and excludes the low-value
-challenger, so this is the expanded reserve domain of A.10, not the
-benchmark support \(p<\ell\). From \eqref{eq:oa-oa-51} with \(r<p\le v\)
-for \(v=h\) and \(v<p\) for \(v=\ell\),
+\subsection{A.12. An informed shareholder}\label{oa-a-stake}
+
+Give the informed investor an initial stake of \(\omega\ge 0\) target
+shares, in the same unit as the order \(q\). The stake cost is sunk.
+The stake carries no control rights, and the investor still cannot
+acquire the target. Its payoff in class \(j\in\{H,L\}\) becomes
 
 \[
-t_0=t_L=g_L=0,\qquad t_H=7,\qquad g_H=3,\qquad \Delta_T=7.
-\]
-
-A payoff routine written for \(p<\ell\) must not be applied here; C.6b
-evaluates these objects in exact rational arithmetic and by direct
-integration of \eqref{eq:oa-oa-50}.
-
-\textbf{Densities and the price family.} With \(b=2\) and full orders,
-
-\[
-\begin{aligned}
-f(z)&=\frac14e^{-|z|/2},\qquad a_H(x)=f(x-1),\qquad a_L(x)=f(x+1),\\
-\mu_X(x)&=\left[1+\exp\left\{-\frac{|x+1|-|x-1|}{2}\right\}\right]^{-1},
-\end{aligned}
+\omega V_T+q(V_T-P)-k|q|.
 \tag{OA.57}\label{eq:oa-oa-57}
 \]
 
-which is \eqref{eq:oa-oa-16} at \(b=2\): the plateau \(m=(1+e)^{-1}\) on
-\(x\le-1\), \(\operatorname{logistic}(x)\) on \((-1,1)\), and \(M=1-m\)
-on \(x\ge1\). For each cutoff \(c\in[-\log2,0]\) define the price rule
+Fix a candidate price and entry schedule. Write \(e(x)\) for entry
+at flow \(x\), averaged over preparation costs, and \(\mu_X(x)\) for
+the market posterior. Write \(w_j=t_j-t_0\) for the entry gain in
+proceeds. Entry raises expected proceeds at each challenger value
+above the reserve and leaves proceeds unchanged at a value with no
+admissible bid. In the ranked cases \(w_H\ge w_L\ge 0\), with
+\(w_H>w_L\) when \(\Delta_T>0\). Conditional on
+class and flow,
 
 \[
-P_c(x)=
-\begin{cases}
-0,&x<c,\\
-\tfrac74\mu_X(x),&x\ge c,
-\end{cases}
+\mathbb E[V_T\mid j,x]=t_0+w_j e(x),\qquad
+P(x)=t_0+e(x)[w_L+\Delta_T\mu_X(x)].
 \tag{OA.58}\label{eq:oa-oa-58}
 \]
 
-with the preparation policy: at price zero neither cost type prepares;
-at every positive price the low-cost type prepares and the high-cost
-type does not. The upper plateau \(x\ge1\) maps to the price
-\(\tfrac74M\), a positive-price atom with probability
-\(\tfrac12[S_Z(0)+S_Z(2)]\); the buyer conditions on it as an atom, and
-its posterior is \(M\) because the plateau is a level set of \(\mu_X\).
-
-\textbf{Noise CDF versus survival.} I write \(F_Z\) for the noise CDF
-and \(S_Z=1-F_Z\) for its survival function, and keep the two apart
-throughout, because the pooled posterior uses the CDF and the outcome
-quantities use the survival function:
+The trading residuals keep the form of equation (11) of the main
+text. The stake adds a second term. Let
+\(\mathcal X_\tau=\{x:\mu_X(x)\ge\tau\}\) be the flow set with high-cost entry,
+where \(\tau\) is the threshold belief with gross profit equal to
+\(c_H\). Let \(\alpha(q)=\int_{\mathcal X_\tau}f(x-q)\,dx\) and
+\(\bar e(q)=\rho+(1-\rho)\alpha(q)\), the expected entry after order
+\(q\) against the fixed schedule. Let
 
 \[
-F_Z(z)=
-\begin{cases}
-\tfrac12e^{z/2},&z\le0,\\
-1-\tfrac12e^{-z/2},&z>0,
-\end{cases}
-\qquad
-S_Z(z)=1-F_Z(z).
+\bar A_H(q)=\int f(x-q)e(x)\Delta_T[1-\mu_X(x)]\,dx,\qquad
+\bar A_L(q)=\int f(x-q)e(x)\Delta_T\mu_X(x)\,dx.
 \tag{OA.59}\label{eq:oa-oa-59}
 \]
 
-Equation \eqref{eq:oa-oa-17} is \(S_Z\) at general \(b\).
-
-\textbf{Buyer at price zero.} The zero price is one atom whose preimage
-is the whole pool \(\{X<c\}\). Its posterior follows \eqref{eq:oa-oa-79}
-with that preimage:
-
-\[
-\bar\mu_c=\Pr(H\mid X<c)=\frac{\int_{-\infty}^ca_H}{\int_{-\infty}^ca_H+\int_{-\infty}^ca_L}
-=\frac{F_Z(c-1)}{F_Z(c-1)+F_Z(c+1)}.
-\tag{OA.60}\label{eq:oa-oa-60}
-\]
-
-The likelihood ratio \(a_H/a_L\) is nondecreasing, so \(\bar\mu_c\) is
-nondecreasing in \(c\) and, over the declared family,
-\(\bar\mu_c\le\bar\mu_0=\tfrac12e^{-1/2}<\tfrac13\). Gross profit at the
-pool is \(B(\bar\mu_c)=g_H\bar\mu_c=3\bar\mu_c<1=c_L\), so not preparing
-is strictly optimal at price zero for both cost types. The point that
-matters for the numerical layer is the case \(c=0\). There the raw flow
-posterior \(\mu_X(x)\) exceeds \(\tfrac13\) on \((-\log2,0)\), and a
-buyer who observed those flows one by one would prepare at low cost.
-Those flows are not individually observed. They all produce price zero,
-the buyer's information set at price zero is the pool, and the pooled
-posterior governs. A candidate that lets the buyer act on \(\mu_X\)
-inside the pool is not measurable with respect to the price and is
-rejected for that reason, not for a numerical breach. C.6b carries this
-as a negative control.
-
-\textbf{Buyer at positive prices.} On \(x\ge c\) the price
-\(\tfrac74\mu_X(x)\) is strictly increasing in \(\mu_X\), so the buyer
-recovers \(\mu_X\) from the price on \((-1,1)\) and the plateau atom on
-\(x\ge1\) carries posterior \(M\). Since \(c\ge-\log2\) and \(\mu_X\) is
-nondecreasing, \(\mu_X(x)\ge\mu_X(-\log2)=\tfrac13\) on the
-positive-price region, so \(3\mu_X\ge c_L\) and low-cost preparation is
-optimal under the equality convention, with equality at \(c=-\log2\)
-exactly at the cutoff. High-cost preparation is impossible at any price:
-gross profit is at most \(g_H=3<6=c_H\). The zero-price and
-positive-price regions do not collide, since
-\(\tfrac74\mu_X\ge\tfrac7{12}>0\) on \(x\ge c\).
-
-\textbf{Conditional pricing.} For \(x<c\) nobody is prepared, neither
-the incumbent nor a low-value challenger can meet the reserve, and the
-terminal value is zero. For \(x\ge c\) preparation occurs with
-probability \(\rho\), and a sale, at exactly \(p\), occurs only when the
-prepared challenger has value \(h\):
-
-\[
-\mathbb E[V_T\mid X=x]=\rho\,p\,\mu_X(x)=\tfrac74\mu_X(x)\quad(x\ge c),\qquad
-\mathbb E[V_T\mid X=x]=0\quad(x<c).
-\tag{OA.61}\label{eq:oa-oa-61}
-\]
-
-So \(P_c\) is the competitive price pointwise in flow on both regions.
-This is the test. Average price equal to average payoff is implied by
-it, and a wrong pointwise schedule can pass the average check, so C.6b
-verifies \eqref{eq:oa-oa-61} on a flow mesh that includes the cutoff
-from both sides and every breakpoint, and treats the average identity as
-a separate necessary check.
-
-\textbf{Global investor validation.} Against a fixed member of the
-family the residuals of A.3, after the preparation response, are
-
-\[
-A_H(x)=\rho p[1-\mu_X(x)]\mathbf1\{x\ge c\},\qquad
-A_L(x)=\rho p\,\mu_X(x)\mathbf1\{x\ge c\}.
-\tag{OA.62}\label{eq:oa-oa-62}
-\]
-
-They vanish inside the pool, where the price carries no information and
-no entry follows, and are nonnegative elsewhere; wrong-signed orders are
-therefore dominated by zero. Let \(J_c=F_H(1)=F_L(1)\) as in
-\eqref{eq:oa-oa-22}. The equality holds pointwise inside the integral by
-Bayes' rule, since \(f(x-1)[1-\mu_X(x)]=f(x+1)\mu_X(x)\). The Laplace
-density-ratio bound gives \(F_\theta(s)\ge e^{-(1-s)/b}J_c\) and
-\(|F_\theta'(s)|\le F_\theta(s)/b\) by \eqref{eq:oa-oa-12}, hence by
-\eqref{eq:oa-oa-13}
-
-\[
-U_\theta'(s)\ge\left(1-\frac1b\right)J_c-k
-\]
-
-for every \(s\in[0,1]\). Every cutoff in the family satisfies
-\(c\le0<1\), so the tail \(x\ge1\) is active with entry \(\rho\) under
-each member. On that tail \(1-\mu_X=m=(1+e)^{-1}>\tfrac14\), and its
-probability in state \(H\) is \(S_Z(0)=\tfrac12\). Dropping the rest of
-the active region,
-
-\[
-J_c\ge\frac{\rho p\,m}{2}>\frac{7}{32},
-\qquad
-U_\theta'(s)>\frac{7}{64}-\frac{1}{50}=\frac{143}{1600}>0.
-\tag{OA.63}\label{eq:oa-oa-63}
-\]
-
-The rational bound \eqref{eq:oa-oa-63} is the proof, common to every
-member of the family and to both types. A positive derivative found on a
-finite grid is not the proof; it is an implementation check, and C.6b
-keeps the two apart by writing the rational bound and the mesh minimum
-in separate columns. Full correctly signed orders are globally optimal
-against every price rule in the family. This is analytical existence for
-the whole family. It says nothing about whether other continuations
-exist in \(\mathcal E(7,r_0)\).
-
-\Needspace{8\baselineskip}
-
-\protect\phantomsection\label{result-proposition-oa-3}{\textbf{Proposition
-OA.3 (price pooling at fixed orders; analytical).}} \emph{For every
-\(c\in[-\log2,0]\), the price rule \eqref{eq:oa-oa-58} with the stated
-preparation policy and full orders \((1,-1)\) is a continuation
-equilibrium in \(\mathcal E(7,r_0)\): prices are competitive pointwise
-in flow, beliefs at the zero-price atom are \eqref{eq:oa-oa-60}, the
-buyer's preparation decision is optimal at every price information set,
-and full correctly signed orders are globally optimal for both investor
-types against the fixed price and preparation schedule. The orders are
-the same in all members of the family; prices, beliefs, and preparation
-differ.}
-
-The proof is the four validations above. The statement does not
-establish uniqueness of this family within \(\mathcal E(7,r_0)\), and it
-is confined to lower-interval pools \(\{X<c\}\); other measurable pool
-sets are not searched, and the numerical record says so through
-\texttt{pricing\_family\_coverage} and
-\texttt{exhaustive\_pricing\_search\ =\ false}. On the benchmark support
-the family cannot arise: there \(c_L<B_r(m)\) gives entry at least
-\(\rho\) at every flow and Proposition A.2 ties the price experiment to
-the orders.
-
-\textbf{Output quantities.} With \(S_Z\) from \eqref{eq:oa-oa-59},
+Here the argument is the signed order. Appendix A.2 of the paper uses the
+order magnitude \(s\), so its \(\bar A_L(s)\) equals \(\bar A_L(-s)\) here.
+Expected payoffs then split into a trading term and a stake term:
 
 \[
 \begin{aligned}
-\Pr(P=0)&=\frac{F_Z(c-1)+F_Z(c+1)}2,\\
-\mathsf E_c&=\frac\rho2\{S_Z(c-1)+S_Z(c+1)\},\qquad
-\Pr(\text{sale})=\frac\rho2S_Z(c-1),\\
-\mathcal R_{T,c}&=\frac{\rho p}{2}S_Z(c-1),\qquad
-\Pr(\text{two admissible bidders})=0.
+U_H(q;\omega)&=\omega[t_0+w_H\bar e(q)]+q\bar A_H(q)-k|q|,\\
+U_L(q;\omega)&=\omega[t_0+w_L\bar e(q)]-q\bar A_L(q)-k|q|.
 \end{aligned}
+\tag{OA.60}\label{eq:oa-oa-60}
+\]
+
+For \(q\ne 0\), the derivatives split in the same way:
+
+\[
+\begin{aligned}
+U_H'(q;\omega)&=
+\underbrace{\bar A_H(q)+q\bar A_H'(q)-k\operatorname{sgn}(q)}_{\text{trade and its cost}}
++\underbrace{\omega w_H\bar e'(q)}_{\text{initial stake}},\\
+U_L'(q;\omega)&=
+\underbrace{-\bar A_L(q)-q\bar A_L'(q)-k\operatorname{sgn}(q)}_{\text{trade and its cost}}
++\underbrace{\omega w_L\bar e'(q)}_{\text{initial stake}}.
+\end{aligned}
+\tag{OA.61}\label{eq:oa-oa-61}
+\]
+
+The constant \(\omega t_0\) drops from each order comparison. The
+stake term equals \(\omega\) times the change in expected terminal
+proceeds through entry. It does not equal \(\omega\) times a change
+in the interim price. A price change alone moves cash between buyer
+and seller. An entry change moves \(V_T\) itself, by \(w_j\) per
+unit of entry probability.
+
+The entry set stays fixed under a deviation, so the derivative
+falls on the density:
+
+\[
+\begin{gathered}
+\alpha'(q)=\frac1b\left[\int_{\mathcal X_\tau\cap(q,\infty)}f(x-q)\,dx
+-\int_{\mathcal X_\tau\cap(-\infty,q)}f(x-q)\,dx\right],\\
+|\alpha'(q)|\le\frac{\min\{\alpha(q),1-\alpha(q)\}}b\le\frac1{2b}.
+\end{gathered}
+\tag{OA.62}\label{eq:oa-oa-62}
+\]
+
+Hence \(|\omega w_j\bar e'(q)|\le\omega(1-\rho)w_j/(2b)\) for each
+candidate schedule, with no monotonicity condition on \(\mathcal X_\tau\). The
+same step gives \(|\bar A_j'(q)|\le \bar A_j(q)/b\). Against an uninformative
+candidate price, \(\mu_X=\pi\) at each flow and entry is constant.
+Then \(\bar e'(q)=0\) at each deviation order. The stake adds a
+constant and leaves each order comparison at its baseline value.
+In particular, the no-trade outcome remains an equilibrium at each
+stake. The same point holds against each constant-entry schedule.
+Against the full-order schedule, \(\mathcal X_\tau=[x^*,\infty)\) and
+\(\bar e'(q)=(1-\rho)f(x^*-q)>0\). A stake then rewards a higher
+order in each class with \(w_j>0\). It reinforces the purchase in
+class \(H\) and opposes the sale in class \(L\).
+
+Two sufficient bounds keep the baseline outcomes. The residuals
+satisfy \(\bar A_H\ge\rho[1-M(\pi)]\Delta_T\) and
+\(\bar A_L\ge\rho m(\pi)\Delta_T\). With
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\), each trading part keeps a
+margin of at least \((1-1/b)\rho\kappa(\pi)\Delta_T-k\) in the
+correct direction. Since \(w_H\ge w_L\ge0\), the stake bound with \(w_H\)
+covers each class. Define
+
+\[
+\Omega_U:=
+\frac{2b\{(1-1/b)\rho\kappa(\pi)\Delta_T(r_1)-k\}}
+{(1-\rho)[t_H(r_1)-t_0(r_1)]}.
+\tag{OA.63}\label{eq:oa-oa-63}
+\]
+
+For \(0\le\omega<\Omega_U\), the unique trading outcome at \(r_1\)
+remains \((q_H,q_L)=(1,-1)\) (analytical). At the benchmark,
+\(\Omega_U=0.011434\) order units. At \(r_0\), each residual is
+at most \(\Delta_T(r_0)\), so
+\(U_j(q;\omega)-U_j(0;\omega)\le
+|q|[\Delta_T(r_0)-k+\omega(1-\rho)w_H(r_0)/(2b)]\). Define
+
+\[
+\Omega_0:=
+\frac{2b[k-\Delta_T(r_0)]}
+{(1-\rho)[t_H(r_0)-t_0(r_0)]}.
 \tag{OA.64}\label{eq:oa-oa-64}
 \]
 
-The admissible-challenger probability equals the sale probability,
-because only a prepared high-value challenger can meet the reserve and
-the incumbent never does. Both \(\mathsf E_c\) and \(\mathcal R_{T,c}\)
-are strictly decreasing in \(c\). A higher cutoff pools more flows into
-the uninformative price and suppresses preparation at flows that would
-have justified it if observed separately. C.6b recomputes
-\eqref{eq:oa-oa-64} in fifty-digit arithmetic and by independent
-conditional integration, and reports the endpoints \(c=-\log2\) and
-\(c=0\) through the registry keys \texttt{pool\_posterior\_cutoff\_*},
-\texttt{pool\_entry\_cutoff\_*}, and \texttt{pool\_revenue\_cutoff\_*}.
+For \(0\le\omega<\Omega_0\), no trade at \(r_0\) remains unique
+(analytical). At the benchmark, \(\Omega_0=0.043098\) order
+units. A stake below \(\min\{\Omega_0,\Omega_U\}\) therefore keeps
+parts (i) and (ii) of Proposition 2 of the main text. Part (iii)
+needs no stake bound, because entry there equals \(\rho\) at each
+belief and the stake term vanishes. Each bound is sufficient, in
+order units. Exact stake cutoffs remain open.
 
-\textbf{The seventeen-cutoff grid and the negative controls.} The
-declared grid is \(c_j=-\log2\,(1-j/16)\) for \(j=0,\dots,16\), with the
-endpoints included. Every grid member must pass the price, buyer, and
-global-investor validations, and preparation and revenue must decrease
-along the grid. That ordered check is a check of the implementation of
-\eqref{eq:oa-oa-64}, not a continuum theorem. Three controls must fail,
-each for its own economic reason. At \(c=-1\) some positive prices have
-\(3\mu_X<1\), so the prescribed low-cost preparation is not optimal
-there. At \(c=1\) the pooled zero-price posterior \(\bar\mu_1\) makes
-low-cost preparation profitable, so the prescribed nonpreparation fails.
-Inside the \(c=0\) pool, a buyer who acts on the raw posterior is
-rejected as inconsistent with the observed-price information structure,
-whatever its arithmetic. A fourth control is about identity rather than
-validation: a deduplication key built from orders alone merges the two
-valid endpoint continuations, which have the same orders and different
-atoms, and the C.6b ledger must show that merge so that the key is never
-used. Failed controls are stored as expected failures with their reason,
-never as accepted rows.
+The sign pattern differs from Edmans et al.
+(\citeproc{ref-EdmansGoldsteinJiang2015}{2015}, Section II.E). In
+that model the real action corrects course in each state. Correct
+investment raises the stake value after good news, and correct
+disinvestment raises it after bad news. The stake motive is then
+symmetric across purchases and sales, and it cancels from the
+trading asymmetry. Here entry raises target proceeds in each class,
+but the price recruits high-cost entry only after favorable flow. A
+sale after bad news lowers the entry probability at the margin and
+so lowers the value of the stake. The stake therefore works against
+revelation of bad news, and it does not cancel.
+
+\subsection{A.13. More than two classes}\label{oa-a-classes}
+
+Price sufficiency does not need two classes, and the main comparison
+extends to two groups of classes. Let the class take finitely many
+values \(j\) with prior probabilities \(\pi_j>0\), class value
+distributions \(G_j\) with finite means, and class objects \(t_j,g_j\)
+as in Section 2.4 of the paper; the investor observes
+the class. The low cost is zero, so entry at every price is at least
+\(\rho\), and competitive pricing gives \(P=t_0+e(P)(\bar t_X-t_0)\), where
+\(\bar t_X\) is the posterior mean of the class proceeds at flow \(X\). The
+price therefore reveals \(\bar t_X\).
+
+\emph{Price sufficiency with many classes (analytical).} In every
+equilibrium the price reveals the whole posterior over classes, with no
+restriction on how the class profits \(g_j\) relate to the class
+proceeds \(t_j\). Fix a candidate schedule, and let
+\(\bar e(q)=\int e(P(x))f(x-q)\,dx\) be the expected entry rate when the
+order is \(q\). A class-\(j\) investor who deviates to \(q\) earns
+\(t_jq\bar e(q)\) minus a term that does not depend on the class. The
+translation bound gives
+\([q\bar e(q)]'\ge(1-|q|/b)\bar e(q)\ge(1-1/b)\rho>0\), so
+\(q\bar e(q)\) is strictly increasing. Adding the optimality conditions
+of two classes with \(t_j<t_l\) gives
+\((t_l-t_j)[q_l\bar e(q_l)-q_j\bar e(q_j)]\ge0\), so the class with
+lower proceeds never chooses a larger order, also within mixtures. For
+flows \(x_1<x_2\) the likelihood ratio \(f(x_2-q)/f(x_1-q)\) is
+nondecreasing in \(q\), and
+
+\[
+\bar t_X(x_2)-\bar t_X(x_1)
+=\frac{\operatorname{Cov}_{x_1}\!\left[t_j,\,f(x_2-q)/f(x_1-q)\right]}
+{\mathbb E_{x_1}\!\left[f(x_2-q)/f(x_1-q)\right]}\ge0,
+\]
+
+where the moments are over class and order under the posterior at
+\(x_1\). The covariance is half the expectation of the product of the
+difference in class proceeds and the difference in likelihood ratios
+over two independent draws, and every such product is nonnegative. If
+the class proceeds are not all equal, equality forces the likelihood
+ratio to be constant on the joint support of class and order, and then
+the whole posterior is the same at \(x_1\) and \(x_2\). If two classes
+have equal proceeds, compare each with a class whose proceeds differ;
+equality then forces the same likelihood ratio on their supports too.
+Thus the posterior vector \((\mu_j(x))_j\) is constant on each level set
+of \(\bar t_X\), and each level set is an interval because \(\bar t_X\)
+is nondecreasing. Each flow density and each posterior component are
+continuous, so \(\bar t_X\) is continuous. Under Laplace noise every
+order lies in \([-1,1]\), so for \(x\ge1\) each flow density is
+\(e^{-x/b}\) times a constant that depends on the class, and for
+\(x\le-1\) it is \(e^{x/b}\) times such a constant. All posterior
+components are therefore constant outside \([-1,1]\), and
+\(\bar t_X(\mathbb R)=\bar t_X([-1,1])\). For \(t\) in this range let
+\(x(t)=\inf\{x\in[-1,1]:\bar t_X(x)\ge t\}\). The map \(t\mapsto x(t)\)
+is nondecreasing, hence Borel, and continuity gives
+\(\bar t_X(x(t))=t\), so \(x(t)\) lies in the level set of \(t\). For
+each class the Borel map \(t\mapsto\mu_j(x(t))\) therefore recovers the
+posterior component: \(\mu_j(X)=\mu_j(x(\bar t_X(X)))\). The price
+reveals \(\bar t_X\), so the tower property gives
+\(\Pr(j\mid P)=\mu_j(X)\) almost surely. The argument uses the Laplace
+law and \(b>1\); it does not establish the many-class result for every
+bounded-score density. If all
+class proceeds are equal, no order earns a residual and the posterior
+stays at the prior.
+
+\emph{Two groups of classes (analytical).} Split the classes into a low
+group and a high group, with prior mass \(\bar\pi\) on the high group.
+Let \(\mathcal M_\pi\) be the set of posteriors whose likelihood ratios
+relative to the prior differ by at most the factor \(e^{2/b}\) across
+classes; every flow and price posterior lies in \(\mathcal M_\pi\). In
+the strong economy let \(\gamma\) be the smallest distance between a
+class's proceeds and the range \(\{\mu\cdot t:\mu\in\mathcal M_\pi\}\)
+of feasible posterior means, with the low group below that range and
+the high group above it. Suppose \(\gamma>0\) and
+\(\max_jt_j-\min_jt_j<k<(1-1/b)\rho\gamma\), with the first difference
+taken in the weak economy; gross profit at the prior is below \(c_H\) in
+the weak economy; and in the strong economy the high group has the
+higher mean profit, with gross profit above \(c_H\) at the group
+posterior \(M(\bar\pi)\). Then the weak economy has unique zero orders
+and entry \(\rho\), and the strong economy has unique orders \(-1\) in
+the low group and \(+1\) in the high group, an informative price, and
+entry above \(\rho\). The proof repeats Steps 3 to 6 of the proof of
+Proposition 2 of the paper. In the weak economy
+every residual is at most \(\max_jt_j-\min_jt_j\) in absolute value. In
+the strong economy every residual has the sign of its group and
+magnitude at least \(\rho\gamma\). Under the forced orders, flow
+carries information only about the group, so expected proceeds and
+gross profit are increasing affine functions of the group posterior,
+which lies in \([m(\bar\pi),M(\bar\pi)]\). With two classes
+\(\gamma=\kappa(\pi)\Delta_T\), and the conditions reduce to
+(A1) and (A2) of the paper. Ownership by the high group
+needs a separate comparison, as in part (ii) of Proposition 2. The
+argument does not cover a class whose proceeds lie inside the range of
+feasible posterior means: its residual can change sign with flow, and
+its equilibrium orders remain open.
+
+\subsection{A.14. Exact reserve events}\label{oa-a-reserve-events}
+
+This section works in the point-mass benchmark of Appendix A.7 of the paper,
+with \(\pi=1/2\). One participation equality remains in the interior of the reserve domain, the
+expensive-entry event. The zero-cost equality sits at the endpoint of the
+domain. Neither event is an interior point of a strict-inequality region, and
+the same continuation need not be supported on both sides of the interior event.
+
+\emph{Domain endpoint at the high value.} When the reserve exceeds incumbent support
+and excludes the low class, \(g_H=h-p\), \(g_L=0\), \(t_H=p\), and
+\(t_0=t_L=0\). At the lowest feasible belief gross profit is \(B_{p,r}(m)=m(h-p)\), which does not
+depend on \(r\) in this region.
+It is strictly positive for every \(p<h\) and equals the zero preparation cost only at
+
+\[
+p_L=h.
+\]
+
+At that endpoint the high-value challenger earns no rent. The tie rule admits
+the zero-cost realization at every price, with equality \(B(\mu)=0\) at each
+belief; the high-cost realization stays out because \(0<c_H\).
+Entry is therefore \(\rho\) at every price. The inversion in Appendix A.7 of the paper and the global
+bound of its Appendix A.2 apply with \(e\ge\rho\) under
+equality, giving unique full orders. Then \(\mathsf E=\rho\), the sale
+probability is \(\rho/2\), and \(\mathcal R_T=\rho h/2\). Preparation
+here never produces two admissible bidders: the incumbent is excluded.
+Offsets below this event lie inside the domain, where the zero-cost
+comparison is strict. There is no interior low-cost floor event left
+to locate.
+
+\emph{Strong-incumbent expensive entry.} With the low class excluded and
+\(\ell<p<r\), \(g_H=h-r/2-p^2/(2r)\) and \(g_L=0\). The upper-posterior
+entry event \(Mg_H=c_H\) occurs at
+
+\[
+p_H=\sqrt{2r\left(h-\frac{c_H}{M}\right)-r^2},
+\]
+
+which at \(r=r_1\) lies in \((\ell,r_1)\). There \(\tau=M\) and
+\(x^*=1\), so \(\alpha_H=\tfrac12\) and \(\alpha_L=\tfrac12e^{-2/b}\):
+the plateau has positive probability and entry at indifference admits
+the high-cost realization on it. The zero-cost realization prepares strictly there,
+since at the lowest belief \(mg_H=mc_H/M>0\). No separate floor condition
+is needed. The global full-order bound is checked
+separately from this equality. Both events are evaluated from their
+defining identities, not from a rounded reserve and a floating-point
+comparison.
 
 \section{B. Computer-assisted equilibrium certificates}\label{oa-b}
 
@@ -1638,8 +1889,8 @@ For a signed direction \(\epsilon\in\{-1,1\}\) and magnitude
 are
 
 \[
-F_\epsilon(s)=\int f(x-\epsilon s)A_\epsilon(x)\,dx,
-\qquad U_\epsilon'(s)=F_\epsilon(s)+sF_\epsilon'(s)-k,
+\bar A_\epsilon(s)=\int f(x-\epsilon s)A_\epsilon(x)\,dx,
+\qquad U_\epsilon'(s)=\bar A_\epsilon(s)+s\bar A_\epsilon'(s)-k,
 \tag{OA.66}\label{eq:oa-oa-66}
 \]
 
@@ -1663,7 +1914,7 @@ Integration by parts on finite intervals, followed by passage to the
 infinite endpoints, gives
 
 \[
-F_L'(s)=\int f'(x+s)A_L(x)\,dx=-\int f(x+s)\,dA_L(x).
+\bar A_L'(s)=\int f'(x+s)A_L(x)\,dx=-\int f(x+s)\,dA_L(x).
 \tag{OA.67}\label{eq:oa-oa-67}
 \]
 
@@ -1674,23 +1925,23 @@ positive before the minus sign because \(f>0\) and the measure is
 nonzero. An entry jump contributes its positive atom to this measure.
 
 The function \(f\) is globally Lipschitz. Therefore
-\(s\mapsto\int f(x+s)dA_L(x)\) is Lipschitz, implying that \(F_L'\) is
+\(s\mapsto\int f(x+s)dA_L(x)\) is Lipschitz, implying that \(\bar A_L'\) is
 absolutely continuous and differentiable almost everywhere. Except when
 \(-s\) hits an atom of \(dA_L\), its derivative follows by dominated
 differentiation. The exceptional set of such atoms is at most countable,
 so
 
 \[
-F_L''(s)=-\int f'(x+s)\,dA_L(x),\qquad
-|F_L''(s)|\le\frac1b\int f(x+s)\,dA_L(x)=-\frac1bF_L'(s)
+\bar A_L''(s)=-\int f'(x+s)\,dA_L(x),\qquad
+|\bar A_L''(s)|\le\frac1b\int f(x+s)\,dA_L(x)=-\frac1b\bar A_L'(s)
 \tag{OA.68}\label{eq:oa-oa-68}
 \]
 
 almost everywhere. Hence
 
 \[
-U_L''(s)=2F_L'(s)+sF_L''(s)
-\le(2-s/b)F_L'(s)<0
+U_L''(s)=2\bar A_L'(s)+s\bar A_L''(s)
+\le(2-s/b)\bar A_L'(s)<0
 \tag{OA.69}\label{eq:oa-oa-69}
 \]
 
@@ -1711,7 +1962,7 @@ boundary. The density and its derivative are translated by bounded
 amounts; they are dominated by constant multiples of \(f(x)\), with an
 additional factor \(1/b\) for the derivative. The residuals are bounded
 by \(\Delta_T\). Dominated convergence therefore gives continuity of
-both \(F_L(v;v)\) and its unilateral derivative component, except for
+both \(\bar A_L(v;v)\) and its unilateral derivative component, except for
 individual density kink points that have zero Lebesgue mass and do not
 change the integral. Thus \(\Psi(r,v)\) is continuous.
 
@@ -1744,24 +1995,24 @@ contributing the atom \(-\delta_0/b^2\). This verifies
 compactly supported smooth test function.
 
 Convolving with a bounded measurable \(A_H\) yields
-\(F_H''=(F_H-A_H)/b^2\) as distributions and almost everywhere as
-functions. Since \(F_H,A_H\in[0,\Delta_T]\), the weak second derivative
+\(\bar A_H''=(\bar A_H-A_H)/b^2\) as distributions and almost everywhere as
+functions. Since \(\bar A_H,A_H\in[0,\Delta_T]\), the weak second derivative
 is bounded by \(\Delta_T/b^2\) in absolute value. The first derivative
 has an absolutely continuous, Lipschitz representative; combined with
-\(|F_H'|\le\Delta_T/b\), this gives
+\(|\bar A_H'|\le\Delta_T/b\), this gives
 
 \[
 |U_H''(s)|\le L_U=\frac{2\Delta_T}{b}+\frac{\Delta_T}{b^2},\qquad s\in[0,1]\ \text{a.e.}
 \tag{OA.72}\label{eq:oa-oa-72}
 \]
 
-For \(s_j=j/n\), evaluate interval enclosures of \(U_H'(s_j)\)
+For \(s_i=i/n\), evaluate interval enclosures of \(U_H'(s_i)\)
 \textbf{uniformly for every \(v\) in the root bracket}. Every point of
 the order interval lies within \(1/(2n)\) of a mesh point, so the global
 bound is
 
 \[
-\Gamma_H:=\min_j\inf U_H'(s_j;[v_-,v_+])-\frac{L_U}{2n}.
+\Gamma_H:=\min_i\inf U_H'(s_i;[v_-,v_+])-\frac{L_U}{2n}.
 \tag{OA.73}\label{eq:oa-oa-73}
 \]
 
@@ -1793,7 +2044,7 @@ For \(x<\zeta\), the density multiplier is \(e^{-\zeta/b}e^{x/b}/(2b)\);
 for \(x>\zeta\) it is \(e^{\zeta/b}e^{-x/b}/(2b)\). Multiply the
 relevant primitive by this constant, by \(e\Delta_T\), and evaluate it
 at the segment endpoints. On each segment the marginal-density
-multiplier for \(F_\epsilon'\) is
+multiplier for \(\bar A_\epsilon'\) is
 \(\epsilon\operatorname{sgn}(x-\zeta)/b\), so the same segment integral
 gives the derivative. This avoids differentiating the candidate entry
 threshold during a unilateral deviation.
@@ -1825,7 +2076,7 @@ The starting precision and mesh are specified in Appendix C.2. An
 enclosure must retain its full endpoint representation; a printed
 floating-point midpoint is not the certificate. For a bracket to
 establish the stated result, I require all of the following: the model
-support inequalities, low-cost participation and high-cost prior
+support inequalities, zero-cost participation read as \(B_r(m)>0\) and high-cost prior
 exclusion, strict threshold ordering throughout the bracket, opposite
 enclosed endpoint signs in \eqref{eq:oa-oa-70}, positive \(\Gamma_H\) in
 \eqref{eq:oa-oa-73}, and a positive pooling-existence margin at the same
@@ -1875,11 +2126,12 @@ separate presentation step.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{h = 10; ell = 1; p = 0.5; rho = 0.25;}
-\NormalTok{c\_L = 1; c\_H = 6; b = 2; k = 0.02;}
+\NormalTok{c\_L = 0; c\_H = 6; b = 2; k = 0.02;}
 \NormalTok{r\_weak = 1.2; r\_strong = 3; r\_collapse = 3.6;}
 \NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5;}
 \NormalTok{entry\_at\_indifference = yes; bid\_equal\_reserve\_is\_admissible = yes;}
-\NormalTok{cost\_halfwidth = 0.1; value\_band\_halfwidth = 0.05;}
+\NormalTok{cost\_halfwidth = 0.1; low\_cost\_uniform\_support = [0, 0.2];}
+\NormalTok{value\_band\_halfwidth = 0.05;}
 \NormalTok{binary\_alternative\_reserve = 1.01; atomless\_alternative\_reserve = 1.1.}
 \end{Highlighting}
 \end{Shaded}
@@ -1891,7 +2143,7 @@ separate presentation step.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{h = 2; ell = 1; p = 0.5; rho = 0.25;}
-\NormalTok{c\_L = 0.3; c\_H = 0.89; b = 2; k = 0.002;}
+\NormalTok{c\_L = 0; c\_H = 0.89; b = 2; k = 0.002;}
 \NormalTok{r\_weak = 1.05; r\_strong = 1.5;}
 \NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5.}
 \end{Highlighting}
@@ -1904,12 +2156,23 @@ separate presentation step.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{h = 10; ell = 1; p = 0.5; rho = 0.85;}
-\NormalTok{c\_L = 1; c\_H = 7.14; b = 2; k = 0.015;}
+\NormalTok{c\_L = 0; c\_H = 7.14; b = 2; k = 0.015;}
 \NormalTok{r\_weak = 1.1; r\_strong = 2.3; a = 0.70; d = 0.75;}
 \NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5;}
 \NormalTok{T\_and\_Y\_independent\_given\_fundamental = yes.}
 \end{Highlighting}
 \end{Shaded}
+
+\Needspace{5\baselineskip}
+
+\textbf{Input declaration: additional noise laws in C.9.}
+
+C.9 uses the benchmark vector and atomic costs. Its additional noise
+laws have score bound \(1/b\). The hyperbolic secant density is
+proportional to \(\operatorname{sech}(z/b)\). The Student law has
+three degrees of freedom and scale \(2b/\sqrt3\). The
+scale matches the score bound, not the variance. The prescribed orders
+are \((1,-1)\).
 
 \Needspace{5\baselineskip}
 
@@ -1942,10 +2205,6 @@ separate presentation step.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pool\_reserve = 7;}
-\NormalTok{price\_pool\_cutoff\_grid = {-}log2 * (1 {-} j/16), j = 0..16;}
-\NormalTok{price\_pool\_negative\_controls = \{c = {-}1, c = 1, raw posterior inside the c = 0 pool,}
-\NormalTok{                                orders{-}only deduplication key\};}
 \NormalTok{pricing\_family\_coverage = recorded per row (text);}
 \NormalTok{exhaustive\_pricing\_search = false unless a separate exhaustive argument is recorded;}
 \NormalTok{order\_identity\_tolerance = 1e{-}6;}
@@ -1954,22 +2213,28 @@ separate presentation step.
 \NormalTok{event\_sign\_resolution = 1e{-}40;}
 \NormalTok{event\_offsets = \{1e{-}4, 1e{-}6, 1e{-}8\};}
 \NormalTok{tie\_rule = entry\_at\_indifference; bid\_equal\_reserve\_admissible;}
-\NormalTok{           upper plateau enters at tau = M; lower plateau enters at B(m) = c\_L;}
+\NormalTok{           upper plateau enters at tau = M; lower plateau enters at B(m) \textgreater{}= 0;}
 \NormalTok{outcome\_measures = \{E, A, S, C2, O\_H\} with S = Pr(R \textgreater{}= p) + A {-} C2;}
 \NormalTok{C2\_mixed\_search\_minimum\_starts = 3;}
 \end{Highlighting}
 \end{Shaded}
 
 These controls govern the continuation records of C.2 and C.6 and the
-two regression exercises C.6b and C.6c. A price atom is validated by the
+event exercise C.6c. Exercise C.6b is retired because zero-cost
+preparation never vanishes under the tie rule. A price atom is validated by the
 rule in \eqref{eq:oa-oa-79} applied to its full preimage, followed by
-the four checks of A.11: the buyer's preparation decision is optimal at
+four checks: the buyer's preparation decision is optimal at
 its price information set, the conditional target payoff equals the
-price pointwise in flow, positive-price and zero-price regions do not
+price pointwise in flow, distinct price regions do not
 collide (a collision is one preimage), and every unilateral investor
 deviation is evaluated against the entire fixed price and preparation
-schedule. Average price equal to average payoff is a necessary identity
-and is recorded, but it accepts nothing on its own. An exact declared
+schedule. Under the declared cost laws an atom with no entry can arise only
+at a degenerate reserve; the checks apply in the same form to plateau atoms.
+Average price equal to average payoff is a necessary identity
+and is recorded, but it accepts nothing on its own. At a zero-spread
+constant-price node with identical state order laws, Bayes' rule gives
+the prior on the full price preimage; the code does not invert a
+constant map. An exact declared
 event is evaluated from its defining identity in fifty-digit arithmetic
 with the tie rule applied to the identity; a non-event input has its
 sign evaluated at that precision and is reported unresolved if the sign
@@ -1991,11 +2256,12 @@ or lose to the incumbent.
 
 The flow halfwidth determines a diagnostic mesh, not an integration
 truncation. Integrals are evaluated over the full line, or their omitted
-tails are explicitly bounded. For a bounded residual \(A\le\overline A\)
-and \(|q|\le1\), a Laplace truncation outside \([-T,T]\), \(T>1\), loses
-at most \(\overline A e^{-(T-1)/b}\) in per-unit gross profit. Multiply
+tails are explicitly bounded. For a bounded residual \(A\le A^+\)
+and \(|q|\le1\), a Laplace truncation outside \([-\bar x,\bar x]\),
+\(\bar x>1\), loses at most \(A^+e^{-(\bar x-1)/b}\) in per-unit gross
+profit. Multiply
 by the order magnitude for total payoff. Under logistic noise a valid
-bound is \(2\overline A/[1+e^{(T-1)/b}]\). Include these bounds in the
+bound is \(2A^+/[1+e^{(\bar x-1)/b}]\). Include these bounds in the
 error budget; do not compare a tail-truncated integral with a full
 integral as though both were exact.
 
@@ -2029,7 +2295,7 @@ maximum does not establish equilibrium. For each candidate, evaluate
 and
 
 \[
-\epsilon_q=\max_\theta\left\{\sup_{q\in[-1,1]}U_\theta(q;\sigma)-\int U_\theta(q;\sigma)\,d\sigma_\theta(q)\right\}.
+\epsilon_q=\max_j\left\{\sup_{q\in[-1,1]}U_j(q;\sigma)-\int U_j(q;\sigma)\,d\sigma_j(q)\right\}.
 \tag{OA.76}\label{eq:oa-oa-76}
 \]
 
@@ -2043,8 +2309,8 @@ must attain the same maximal payoff within the stated tolerance.
 Recompute the price and entry schedules once per candidate, then hold
 them fixed during each unilateral-deviation calculation.
 
-Mandatory probability identities are \(\int a_\theta=1\),
-\(\mathbb E\mu_X=1/2\), and \(\mathbb E P=\mathbb E V_T\). Signal
+Mandatory probability identities are \(\int a_j=1\),
+\(\mathbb E\mu_X=\pi\), and \(\mathbb E P=\mathbb E V_T\). Signal
 exercises add the joint-posterior identities in A.7. Independent auction
 integration must match closed forms; independent cost-based and
 flow-based entry integrations must agree. Repeat numerical diagnostics
@@ -2058,7 +2324,8 @@ interpolated.
 CSV is the boundary between numerical calculations and presentation.
 Files use UTF-8 and quoted headers when a mathematical symbol contains
 punctuation. Parameter columns use the symbols
-\texttt{h,\ ell,\ p,\ rho,\ c\_L,\ c\_H,\ b,\ k,\ r}; additional columns
+\texttt{h,\ ell,\ p,\ rho,\ c\_L,\ c\_H,\ b,\ k,\ r}, with \texttt{c\_L}
+recorded as \texttt{0} in every declaration; additional columns
 such as
 \texttt{Delta\_T,\ B\_prior,\ q\_H,\ q\_L,\ e\_H,\ e\_L,\ E,\ O\_H,\ R\_T,\ tau,\ x\_star}
 are transliterations of the paper's notation. The data dictionary below
@@ -2108,9 +2375,12 @@ reproduction}\label{oa-c-baseline}
 collapse strengths. Evaluate the atomic-cost model with Laplace noise
 first. Then replace the noise law by logistic noise, retaining the scale
 parameter, and replace cost atoms by a mixture of uniforms on
-\([c_L-\varepsilon_C,c_L+\varepsilon_C]\) and
-\([c_H-\varepsilon_C,c_H+\varepsilon_C]\). Their mixture weights remain
-\(\rho,1-\rho\). These replacements define separate economies.
+\([0,2\varepsilon_C]\) and \([c_H-\varepsilon_C,c_H+\varepsilon_C]\).
+Their mixture weights remain \(\rho,1-\rho\). The low interval keeps
+width \(2\varepsilon_C\) and has no negative costs. Its upper endpoint
+stays below the gross-profit floor at every declared baseline strength.
+Its mean is \(\varepsilon_C\), so its surplus change differs from the
+atomic case. These replacements define separate economies.
 
 \textbf{Acquisition layer.} Compute the pointwise auction outcomes from
 \eqref{eq:oa-oa-50}. Integrate independently over \(R\), splitting at
@@ -2119,7 +2389,7 @@ parameter, and replace cost atoms by a mixture of uniforms on
 
 \[
 \begin{aligned}
-\zeta_L&=B_{r_1}(m)-c_L,\qquad
+\zeta_L&=B_{r_1}(m),\qquad
 \zeta_{H0}=c_H-B_{r_0}(1/2),\qquad
 \zeta_{H1}=B_{r_1}(M)-c_H,\\
 \zeta_0&=k-\Delta_T(r_0),\qquad
@@ -2128,10 +2398,16 @@ parameter, and replace cost atoms by a mixture of uniforms on
 \tag{OA.77}\label{eq:oa-oa-77}
 \]
 
-The collapse node additionally requires \(c_H-B_{r_2}(M)>0\),
-\(B_{r_2}(m)-c_L>0\), and its full-order margin. For atomless costs
-replace the appropriate cost endpoints as in Proposition A.6. Verify all
-margins before assigning an analytical equilibrium label.
+Here \(\zeta_L\) is gross profit at the lowest feasible belief. It is the margin
+by which the zero-cost realization prepares at that belief, and a recorded
+quantity rather than a hypothesis on a cost. The collapse node additionally requires \(c_H-B_{r_2}(M)>0\) and its
+full-order margin. Record \(B_{r_2}(m)\) as a diagnostic; zero-cost
+preparation also occurs at equality. For atomless costs
+replace the appropriate cost endpoints as in Proposition A.6: the low margin
+then reads \(B_{r_1}(m)-2\varepsilon_C\) and is a strict condition. Verify the
+strict margins before assigning an analytical equilibrium label: four for
+cost atoms, where \(\zeta_L\) needs no strict sign, and five for the
+atomless mixture.
 
 \textbf{Financial and entry layer.} Pooling has \(q_H=q_L=0\),
 \(\mu=1/2\), \(e=\rho\), and \(P=t_0+\rho[(t_H+t_L)/2-t_0]\). Full
@@ -2292,7 +2568,7 @@ The certificate input brackets are exact decimals:
 \end{Shaded}
 
 \textbf{Analytically classified outcomes.} First verify membership in
-the maintained floor/prior domain at each node. Pooling existence is
+the maintained domain \(\mathcal D\) and \(B_r(m)>0\) at each node. Pooling existence is
 given by \(k-\rho\Delta_T/2\ge0\) there; its sufficient uniqueness bound
 is \(k-\Delta_T>0\). Full-order uniqueness is established by
 \((1-1/b)\rho m\Delta_T-k>0\). Record these margins individually.
@@ -2347,9 +2623,9 @@ exclusion of low-type mixing in every equilibrium. A mesh check of
 residual monotonicity is recorded, but does not supply the global
 premise of the Stieltjes lemma for an arbitrary mixed profile.
 
-A mixed candidate with support points \(q_{\theta j}\) and weights
-\(\omega_{\theta j}\) has conditional density
-\(a_\theta(x)=\sum_j\omega_{\theta j}f(x-q_{\theta j})\). Recompute its
+A mixed candidate with support points \(q_{jn}\) and weights
+\(\omega_{jn}\) has conditional density
+\(a_j(x)=\sum_n\omega_{jn}f(x-q_{jn})\). Recompute its
 posterior, entry, and competitive price. Its payoff is the weighted
 average of the support payoffs. All positive-weight points must be best
 responses within tolerance, and every off-support deviation must be
@@ -2369,7 +2645,7 @@ revalidated before deduplication. Each start appears in
 \texttt{numerics/mixed\_search\_attempts.csv}, including its initial
 values, domain, budget, stopping reason, removed support points and
 their residuals, and final support.
-\texttt{numerics/mixed\_supports.csv} records each state's final support
+\texttt{numerics/mixed\_supports.csv} records each class's final support
 action, weight, payoff, and gap to the best tested deviation. Any
 unresolved start gives the node an explicit open search row in
 \texttt{numerics/correspondence.csv}; that row does not invalidate a
@@ -2383,8 +2659,9 @@ their induced price information (every positive-mass price atom's value,
 state masses, and kind within the atom identity tolerance) agree,
 together with the preparation rule; this is the rule of
 \eqref{eq:oa-oa-53} applied numerically, and C.6 uses the same one. On
-the benchmark strength grid the low-cost floor \(c_L<B_r(m)\) holds at
-every node, entry is positive at every flow, and no price pool combines
+the benchmark strength grid gross profit at the lowest belief, \(B_r(m)\), is
+positive at
+every node, entry is positive at every flow, and no price combines
 distinct raw posteriors. Constant-posterior atoms remain possible, and
 their prices are fixed by the orders, so identity reduces to the
 complete order profile there; the code applies the full rule regardless.
@@ -2496,17 +2773,22 @@ A.7.
 
 \textbf{Objects.} Compute \(m,M\), public fundamental bounds
 \(\mu_-,\mu_+\), the worst joint buyer posterior \(\phi_-(\mu_-)\), and
-the best joint posterior \(\phi_+(\mu_+)\). Compute the five strict
-margins from \eqref{eq:oa-oa-29}: the low-cost floor, high-cost
+the best joint posterior \(\phi_+(\mu_+)\). Compute the four strict
+condition margins from \eqref{eq:oa-oa-29}: high-cost
 exclusion using the buyer's favorable private signal at weak strength,
 high-cost profitability after a favorable strong public price and
 private signal, weak residual exclusion, and strong global derivative
-margin. If a margin fails, withhold the analytical theorem label; do not
+margin. Record \(B_{r_1}(\phi_-(\mu_-))\) beside them as
+\texttt{low\_cost\_margin}. It measures how strictly the zero-cost realization
+prepares at the worst joint posterior; it is not a condition in
+\eqref{eq:oa-oa-29}, and its sign carries no theorem label on its own.
+If a condition margin fails, withhold the analytical theorem label; do not
 conclude that the economic reversal is absent.
 
 At both strengths construct signal-contingent order laws and the correct
 state-dependent entry policy. For the theorem-supported weak node public
-belief is the prior and both high-cost private-signal types stay out.
+belief is the prior and the high-cost realization stays out after either
+private signal.
 For the strong node use full orders by \(T\), then compute the public
 posterior from \(\lambda_X\), each buyer posterior \(\phi_Y(\mu_X)\),
 and both private-signal cutoffs in \eqref{eq:oa-oa-39}. Always handle
@@ -2577,24 +2859,25 @@ theorem-supported example.
 For the nonemptiness construction, set \texttt{ell\ =\ 1},
 \texttt{p\ =\ 0.5}, \texttt{rho\ =\ 0.25}, \texttt{b\ =\ 2}, and use
 high-to-low ratios \texttt{\{1.05,\ 1.10,\ 1.25,\ 1.50,\ 2.00\}}. For
-each ratio let \(D=h-\ell\) and examine \(\delta_j=D2^{-j}\) for integer
-\(j\) from \texttt{1} through \texttt{20}. Define \(r_1=\ell+\delta_j\)
-and \(r_0=\ell+\delta_j^2/D\). Test the conditions needed in A.6. When
+each ratio let \(\Gamma=h-\ell\) and examine \(\delta_n=\Gamma2^{-n}\) for
+integer \(n\) from \texttt{1} through \texttt{20}. Define
+\(r_1=\ell+\delta_n\) and \(r_0=\ell+\delta_n^2/\Gamma\). Test the conditions needed in A.6. When
 the intervals are nonempty choose
 
 \[
 \begin{aligned}
 k&=\frac{\Delta_T(r_0)+(1-1/b)\rho m\Delta_T(r_1)}2,\\
-c_H&=\frac{B_{r_0}(1/2)+B_{r_1}(M)}2,
-\qquad c_L=\frac{B_{r_1}(m)}2.
+c_H&=\frac{B_{r_0}(1/2)+B_{r_1}(M)}2.
 \end{aligned}
 \tag{OA.78}\label{eq:oa-oa-78}
 \]
 
+No low cost is chosen: it is zero in the declaration, and the construction
+records \(B_{r_1}(m)\) so that \(0<B_{r_1}(m)<c_H\) can be checked on the row.
 Every chosen value is an output of the construction, not a fixed
-calibration imposed on all ratios. Check \(c_L<c_H\), support, and all
+calibration imposed on all ratios. Check \(0<c_H\), support, and all
 theorem inequalities explicitly. Keep the sequence of failed and
-successful \(j\) values. Small margins require adequate arithmetic
+successful \(n\) values. Small margins require adequate arithmetic
 precision; floating-point cancellation is not evidence against
 nonemptiness. Report the first certified feasible member of the declared
 sequence and the numerical scale of \(k\), not an invented uniform lower
@@ -2622,14 +2905,16 @@ illustration of its scale.
 \subsection{C.5. Noise laws, threshold distance, and posterior upper
 tails}\label{oa-c-noise}
 
-\textbf{Inputs.} Fix benchmark strong strength, \(b\), and \(\rho\). Use
-full orders. Form \texttt{401} equally spaced points for the normalized
-threshold distance \(d_\tau=(M-\tau)/(M-1/2)\) on \([0,1]\), and add the
-benchmark \(\tau\), \(M-10^{-4}\), \(M-10^{-6}\), and \(M+10^{-6}\). At
-the endpoints use the stated mathematical limits and tie convention
-rather than unstable logarithms. Compare Laplace and logistic laws at
-the same scale parameter; do not claim equal variance or a Blackwell
-ordering between the laws.
+\textbf{Inputs.} Fix the benchmark strong strength, \(b\), and \(\rho\).
+Use full orders.
+Take \texttt{401} equally spaced points for the normalized threshold distance
+\(d_\tau=(M-\tau)/(M-1/2)\) on \([0,1]\).
+Add the benchmark \(\tau\), \(M-10^{-4}\), \(M-10^{-6}\), and \(M+10^{-6}\).
+At the endpoints, use the stated mathematical limits and the tie convention, not unstable logarithms.
+Compare Laplace and logistic laws at the same scale parameter.
+Do not claim equal variance.
+At a common scale, the Laplace experiment Blackwell-dominates the logistic experiment.
+Do not infer an order of entry probabilities from this dominance.
 
 \textbf{Objects.} For each threshold, compute the order-flow cutoff,
 \(\alpha_H(\tau),\alpha_L(\tau)\), posterior upper-tail mass
@@ -2643,7 +2928,7 @@ both standardized cutoffs are reported.
 A threshold scan is first an information-experiment comparison. To
 interpret a row as an equilibrium with changed preparation cost, set
 \(c_H(\tau)=g_L+\tau(g_H-g_L)\), keep the other primitives fixed, and
-recheck the low-cost floor, cost ordering, and global full-order bound.
+recheck \(B_r(m)>0\), the ordering \(0<c_H(\tau)\), and the global full-order bound.
 Label only validated rows as such. At the strong benchmark the
 full-order bound does not depend on the high-cost threshold, but that
 fact must not be presumed after changing other primitives.
@@ -2700,55 +2985,62 @@ declared numbers and written to the row.
 \textbf{Complete continuations.} A candidate at a reserve is accepted
 only as a complete continuation in the sense of \eqref{eq:oa-oa-53}: the
 investor's state- or class-contingent order distribution, the pricing
-rule with every positive-mass price pool, the buyer's information at
-each price (the pooled posterior on an atom, the inverted posterior
+rule with every positive-mass price atom, the buyer's information at
+each price (the atom posterior on an atom, the inverted posterior
 elsewhere), the preparation rule by observed price and cost, and the
 validation evidence. For a candidate order profile, compute its raw flow
-posterior \(\mu_X\). When \(\Delta_T>0\) and there is positive entry,
-the benchmark inversion applies to the positive-entry prices. If entry
-vanishes on a set of flows, those flows pool at \(P=t_0\), and their
-posterior is the integral over the full preimage of that price:
+posterior \(\mu_X\). When \(\Delta_T>0\), the benchmark inversion applies to
+each price, because entry is at least \(\rho\) at every flow under the
+declared cost laws. A positive-mass atom can still arise where \(\mu_X\) is
+constant, as on a posterior plateau. Its posterior is the integral over the
+full preimage of that price:
 
 \[
-\mu(P=t_0)=\frac{\int_{\{x:P(x)=t_0\}}a_H(x)\,dx}
-{\int_{\{x:P(x)=t_0\}}[a_H(x)+a_L(x)]\,dx}.
+\mu(P=P_a)=\frac{\int_{\{x:P(x)=P_a\}}a_H(x)\,dx}
+{\int_{\{x:P(x)=P_a\}}[a_H(x)+a_L(x)]\,dx}
 \tag{OA.79}\label{eq:oa-oa-79}
 \]
 
-The formula is used only when the denominator is positive. The buyer's
-entry rule at that price uses this pooled posterior and nothing finer; a
-candidate whose buyer acts on the raw posterior inside the pool is not
+for an atom at price \(P_a\). At a degenerate reserve \(P_a\) can be \(t_0\)
+itself. The formula is used only when the denominator is positive.
+The buyer's entry rule at that price uses this atom posterior and nothing finer; a
+candidate whose buyer acts on the raw posterior inside an atom with one
+posterior value loses nothing, and a candidate that assigns one price to flows
+with distinct raw posteriors while the buyer acts on those posteriors is not
 measurable with respect to the price and is rejected. The convenient
 construction for independent costs,
 \(P(\mu)=t_0+H_C(B(\mu))[t_L-t_0+\Delta_T\mu]\), prices every
-positive-entry flow by the inversion and pools exactly the zero-entry
-preimage; it is strictly increasing wherever entry is positive and
-\(\Delta_T>0\). It is the one pricing family the C.6 node solver
+flow by the inversion; it is strictly increasing wherever
+\(\Delta_T>0\) and the cost law gives \(H_C(B(\mu))\ge\rho\).
+It is the one pricing family the C.6 node solver
 constructs, and the row says so: \texttt{pricing\_family\_coverage}
-records that alternative cutoffs were not scanned at that node and
-\texttt{exhaustive\_pricing\_search} is false.
-\hyperref[oa-a-pools]{Section A.11} shows why this matters. In the
-example of A.11, the same orders admit a family of pools, each a
-different continuation, and the convenient construction is one member.
-This example does not establish such a family at every reserve. Every
-accepted candidate must pass the price-atom validation of C.0: pooled
-posterior from the full preimage, buyer optimality at the pooled
-posterior and pointwise on positive prices, competitive pricing
-pointwise in flow on both regions, no collision between the atom and the
-positive-price range, and every unilateral deviation against the whole
+records that no other pricing family was scanned at that node and
+\texttt{exhaustive\_pricing\_search} is false. That record is now a coverage
+statement about order profiles and degenerate reserves, not about pooling
+regions: \hyperref[oa-a-pools]{Section A.11} shows that at fixed orders with
+\(\Delta_T>0\) no second price mapping survives the buyer check.
+This does not establish uniqueness of the order profile at a reserve. Every
+accepted candidate must pass the price-atom validation of C.0: atom
+posterior from the full preimage, buyer optimality at the atom
+posterior and pointwise on other prices, competitive pricing
+pointwise in flow on both regions, no collision between an atom and the
+rest of the price range, and every unilateral deviation against the whole
 fixed schedule.
 
-At reserves with \(\Delta_T=0\), all entry impossible, or a degenerate
-payoff, analyze the constant-price candidate directly. Pooling uses the
-actual prior entry probability \(e_0=H_C(B(1/2))\), and its correctly
-signed deviation coefficient is \(e_0\Delta_T/2-k\); it is not
-automatically \(\rho\Delta_T/2-k\). When \(e_0=0\), no trade and no
+At reserves with \(\Delta_T=0\), no sale possible, or a degenerate
+payoff, analyze the constant-price candidate directly. Zero orders use the
+actual prior entry probability \(e_0=H_C(B(1/2))\), and their correctly
+signed deviation coefficient is \(e_0\Delta_T/2-k\); under the declared
+atomic law \(e_0\ge\rho\), so that coefficient starts from
+\(\rho\Delta_T/2-k\), while a cost law with no atom at zero can still give a
+smaller \(e_0\) at a reserve where gross profit is zero. When \(e_0=0\), no trade and no
 entry are supported by constant pricing. All accepted candidates must
 satisfy the original conditional pricing and entry conditions.
 
 \textbf{Specified comparisons.} At the declared reserves, verify the
 relevant strict no-trade or full-order bounds using the class payoff
-spread and the actual floor \(e(m)=H_C(B_r(m))\). Compute entry and
+spread and the entry value at the lowest belief \(e(m)=H_C(B_r(m))\),
+which is at least \(\rho\) under the declared laws. Compute entry and
 seller revenue and compare each alternative reserve with the original
 one at the same strength. This reproduces the profitable alternatives,
 not a global reserve optimum.
@@ -2759,21 +3051,25 @@ not a global reserve optimum.
 rule. Beyond the declared reserve mesh, every node set contains the
 support and participation events \(0\), \(\ell\), \(r\), \(h\); in the
 class economy \(\ell\pm\varepsilon_V\) and \(h\pm\varepsilon_V\); the
-declared reserve alternatives; and the two exact events of the paper
-appendix, the low-cost floor equality \(p_L=h-c_L/m\) and the
-expensive-entry ceiling equality \(p_H=\sqrt{2r(h-c_H/M)-r^2}\), each
+declared reserve alternatives; and the two exact events of A.14, the
+zero-cost floor equality, which is the endpoint
+\(p_L=h\) for binary values and \(p_L=h+\varepsilon_V\) for uniform
+classes, and the expensive-entry ceiling equality \(p_H=\sqrt{2r(h-c_H/M)-r^2}\), each
 attached to the strength at which its defining regime applies. Every
 event carries one-sided offsets \texttt{1e-4}, \texttt{1e-6}, and
 \texttt{1e-8} on both sides where the offset stays in \([0,h]\) (or
 \([0,h+\varepsilon_V]\)), so that the regime classification on each side
-is tested separately. An exact event is stored by its defining relation
+is tested separately. The floor endpoint also carries the three
+offsets above it, beyond the value support, where gross profit and the
+zero cost are equal.
+An exact event is stored by its defining relation
 and recomputed from it at fifty digits; its decimal expansion is
 reference only and never decides a tie. The tie rule is applied to the
-identity: at \(p_L\) the low-cost type enters on the lower plateau under
-\(B(m)=c_L\), and at \(p_H\) the high-cost type enters on the upper
+identity: at \(p_L\) the zero-cost realization enters at every belief under
+\(B(\mu)=0\), and at \(p_H\) the high-cost realization enters on the upper
 plateau under \(\tau=M\) with \(x^*=1\). A node whose inequality sign
 cannot be resolved at that precision is written as unresolved. The same
-continuation need not be supported on both sides of an event, and the
+continuation need not be supported on both sides of the interior event, and the
 record does not assume it.
 
 \textbf{Exploratory sweep.} The initial binary-value reserve mesh runs
@@ -2846,7 +3142,11 @@ that triggered continuation-identity refinement remain in the numerical
 archive, with their inputs and outcomes; they are not counted as
 additional final-pass nodes. A bounded refinement of near-root
 candidates is followed by full revalidation before economically
-identical continuations are merged.
+identical continuations are merged. For interior pure candidates, the
+refinement solves both held-schedule first-order equations. It requires
+residual below \texttt{1e-10} and movement within the existing order
+identity tolerance. Raw candidates and unconverged starts remain in the
+ledger.
 
 \input{tables/table_reserve_exploratory.tex}
 
@@ -2899,7 +3199,10 @@ position on the full payoff domain; \texttt{band\_status} says whether a
 class reserve lies below, inside, or above each value band.
 \texttt{low\_cost\_floor\_relation} and \texttt{ceiling\_relation} take
 the values strict positive, strict negative, equality event, or
-unresolved, from the fifty-digit evaluation. \texttt{candidate\_id} is
+unresolved, from the fifty-digit evaluation. The first relation now compares
+gross profit at the lowest belief, \(B_r(m)\) in the node's regime, with the
+zero preparation cost; its equality event is the endpoint \(p_L=h\) for
+binary values and \(p_L=h+\varepsilon_V\) for uniform classes. \texttt{candidate\_id} is
 the attempt identity and \texttt{continuation\_id} the economic identity
 defined above; \texttt{duplicate\_of} is empty or the representative's
 candidate identity; \texttt{identity\_note} records
@@ -2909,16 +3212,18 @@ canonical string of exact declarations (not a hash);
 \texttt{tie\_rule\_id} are the literal definitions of the sale rule, of
 who observes what, and of the tie conventions. \texttt{order\_rule\_id}
 is the canonical order profile; \texttt{price\_rule\_id} names the
-pricing family, its pool sets, and the positive-entry price map.
+pricing family, its price atoms, and the positive-entry price map.
 \texttt{pricing\_family\_coverage} and
 \texttt{exhaustive\_pricing\_search} are as declared in C.0.
 \texttt{pool\_id}, \texttt{pool\_set\_definition},
 \texttt{pool\_cutoff\_exact}, \texttt{price\_atom\_value},
 \texttt{state\_H\_pool\_mass}, \texttt{state\_L\_pool\_mass},
-\texttt{pool\_probability}, and \texttt{pool\_posterior} describe the
-zero-entry atom when one exists and are \texttt{n/a} otherwise; a
-positive-price plateau atom in a flat posterior tail is a different kind
-of atom and is not written as a no-entry pool.
+\texttt{pool\_probability}, and \texttt{pool\_posterior} describe a
+constant-price atom when one exists and are \texttt{n/a} otherwise. Under the
+declared cost laws such an atom has entry at least \(\rho\) at each reserve
+with \(\Delta_T>0\); a no-entry atom is possible only at a degenerate reserve.
+A plateau atom in a flat posterior tail is recorded through the same columns,
+with its preimage stated in \texttt{pool\_set\_definition}.
 \texttt{preparation\_rule\_id} is the buyer's action by price region and
 cost. \texttt{event\_id} and \texttt{event\_defining\_relation} identify
 the node on the event grid. \texttt{preparation\_probability},
@@ -2949,91 +3254,28 @@ outcomes listed under Reporting, and
 \texttt{global\_envelope\_certified} is false unless an additional
 exhaustive argument establishes the full envelope.
 
-Feed: Table 4 and the sale-design discussion. The research question
+Feed: Table 5 and the sale-design discussion. The research question
 about seller-optimal discovery is not assigned an answer by this
 exploratory file.
 
-\subsection{C.6b. Price pooling at fixed orders}\label{oa-c-price-pools}
+\subsection{C.6b. Retired exercise: price pooling at fixed orders}\label{oa-c-price-pools}
 
-This exercise is the regression for A.11. It runs the declared cutoff
-family at the price-pool reserve and the negative controls, and it is
-the smallest test that the continuation representation above is right.
+This exercise is retired. It was the regression for a one-parameter family of
+continuations in which one order profile supported many pooling regions at a
+high reserve. That family needed a positive low preparation cost.
+At its pooled price, gross profit fell below that cost, so the
+buyer stayed out at the pooled price and prepared at each separate positive price.
+Under the declared cost law the low cost is zero. A candidate that prescribes
+zero preparation at a pooled price then violates the zero-cost buyer's
+optimality condition and the tie rule, so no member of the family is a
+continuation.
+A.11 states the argument.
 
-\textbf{Inputs.} The benchmark declaration with the reserve replaced by
-the declared \texttt{pool\_reserve}, at strength \texttt{1.2}, full
-orders \((1,-1)\), atomic costs, Laplace noise, and the cutoff grid
-declared in C.0. The auction objects are computed in exact rational
-arithmetic and by direct integration of \eqref{eq:oa-oa-50}, and both
-must give \(t_0=t_L=g_L=0\), \(t_H=7\), \(g_H=3\).
-
-\textbf{Method.} For each cutoff, build the complete pooled schedule
-\eqref{eq:oa-oa-58} with its prescribed preparation policy and validate
-it as a continuation. The pool masses \(\int_{-\infty}^ca_\theta\) are
-computed in fifty-digit arithmetic from \eqref{eq:oa-oa-59} and by
-segment-wise Gauss-Legendre integration, and the two must agree within
-the independent-formula acceptance. The pooled posterior is
-\eqref{eq:oa-oa-60} from the full preimage. Buyer optimality is checked
-at the zero-price atom against the pooled posterior for both cost types,
-and pointwise on the positive-price region on a flow mesh that starts at
-the cutoff and includes every breakpoint; the row stores the minimum
-slack in each case. Competitive pricing \eqref{eq:oa-oa-61} is checked
-pointwise on a mesh spanning both regions and including the cutoff from
-both sides, together with the residual identities \eqref{eq:oa-oa-62}
-against direct conditional payoffs; the collision test requires a
-positive gap between the positive-price range and the zero atom. The
-upper plateau is recorded as a positive-entry atom with its own masses
-and posterior. Investor deviations are scanned on the declared and
-refined order grids for both signs and both types against the fixed
-schedule. The global bound \eqref{eq:oa-oa-63} is evaluated in exact
-rational arithmetic with an outward-rounded \(e^{2/b}\), and the row
-stores the rational lower bounds on \(J_c\) and on \(U_\theta'\); the
-numerical \(J_c\) from both types and the minimum of \(U_\theta'\) on a
-two-hundred-point mesh are stored beside them as the implementation
-check, and a numerical value below the rational bound is a breach. The
-output quantities \eqref{eq:oa-oa-64} are computed in closed form and by
-conditional integration; both are compared with each other and, at the
-two endpoints, must agree to ten decimals with the values written into
-the manifest as landmarks.
-
-\textbf{Acceptance.} Every grid member passes every validation.
-Preparation and revenue strictly decrease along the grid. The rational
-bounds satisfy \(J_c\ge7/32\) and \(U'_\theta\ge143/1600\). The two
-endpoints survive deduplication as distinct continuations, a repeated
-construction of one endpoint from a second start merges into it with a
-different \texttt{candidate\_id} and the same \texttt{continuation\_id},
-and the orders-only key merges the two endpoints, which the ledger
-records as the reason that key is forbidden. The controls \(c=-1\),
-\(c=1\), and the raw-posterior buyer inside the \(c=0\) pool fail, and
-each fails with the breach named in A.11. A control that does not fail
-as required stops the exercise.
-
-\textbf{Outputs.}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{numerics/price\_pool\_regression.csv:}
-\NormalTok{h, ell, p, rho, c\_L, c\_H, b, k, r, noise, cost, prior\_H, q\_H, q\_L,}
-\NormalTok{t\_0, t\_H, t\_L, g\_H, g\_L, cutoff\_exact, cutoff\_decimal,}
-\NormalTok{pool\_probability, state\_H\_pool\_mass, state\_L\_pool\_mass, pool\_posterior,}
-\NormalTok{buyer\_slack\_zero\_price\_c\_L, buyer\_slack\_zero\_price\_c\_H,}
-\NormalTok{buyer\_slack\_positive\_price\_c\_L\_min, buyer\_slack\_positive\_price\_c\_H\_min,}
-\NormalTok{global\_bound\_J\_lower\_rational, global\_bound\_Uprime\_lower\_rational,}
-\NormalTok{J\_numeric, min\_dU\_mesh,}
-\NormalTok{preparation\_probability, sale\_probability, admissible\_challenger\_probability,}
-\NormalTok{two\_admissible\_bidders\_probability, high\_value\_ownership\_probability,}
-\NormalTok{seller\_revenue, mean\_financial\_price, closed\_form\_vs\_integration\_error,}
-\NormalTok{pricing\_error, entry\_deviation\_gain, investor\_deviation\_gain\_estimate,}
-\NormalTok{investor\_deviation\_gain\_upper\_bound, validation\_status, accepted,}
-\NormalTok{expected\_failure\_reason, candidate\_id, continuation\_id, run\_id}
-\end{Highlighting}
-\end{Shaded}
-
-\texttt{cutoff\_exact} is the symbolic cutoff and
-\texttt{cutoff\_decimal} its thirty-two-digit expansion. Negative
-controls and the duplicate start appear with \texttt{accepted\ =\ false}
-and an \texttt{expected\_failure\_reason}; they are not accepted rows.
-Feed: the registry keys \texttt{pool\_*} of C.8, Proposition A.10 in the
-paper appendix, and A.11.
+Nothing replaces the exercise. Continuation identity, atom validation from the
+full preimage, and the ban on an orders-only deduplication key all stay in force
+through C.0, C.2, and C.6, where the live exercises use them.
+The registry keys \texttt{pool\_*} that this exercise fed are withdrawn with it.
+A run that still produces them reads a stale contract.
 
 \subsection{C.6c. Exact reserve events and admissible-bid
 outcomes}\label{oa-c-reserve-events}
@@ -3045,39 +3287,43 @@ measures can be checked without the hour-long scan.
 
 \textbf{Inputs.} Both economies at both strengths, on the event grid of
 C.6: \(0\), \(\ell\), \(r\), \(h\), the band edges in the class economy,
-the declared reserve alternatives, \(p_L\) at every strength and \(p_H\)
-where \(\ell<p_H<r\), each with the three one-sided offsets on both
-sides, and the reserve \texttt{6.280} used as the sampled weak maximum
-in the previous sweep.
+the declared reserve alternatives, the floor endpoint \(p_L\) at every
+strength and \(p_H\) where \(\ell<p_H<r\), each with the three one-sided
+offsets on both sides, and the reserve \texttt{6.280}, which an earlier
+sweep reported as the sampled weak maximum.
 
-\textbf{Method and acceptance.} At \(p_L\) in the weak economy, the row
-must show the equality-event classification of the floor, a single
-accepted full-order continuation whose status names the equality and the
-tie rule rather than the strict inequality, \(\mathsf E=\rho\), sale
-probability \(\rho/2\), \(\mathsf C_2=0\), and
-\(\mathcal R_T=\rho p_L/2\) from both the row and a fifty-digit
-evaluation; the three offsets below the event must classify the floor as
-strictly positive and the three above as strictly negative. At \(p_H\)
-in the strong economy, the row must show the equality-event
-classification of the ceiling with a strictly positive floor and a
-strictly positive full-order bound, \(\tau=M\), \(x^*=1\),
-\(\alpha_H=1/2\), \(\alpha_L=e^{-2/b}/2\), and entry and revenue
-agreeing with the fifty-digit evaluation; where \(p_H\) falls outside
-its defining regime the node is an ordinary reserve node and must not be
-classified as an event. At the sampled reserve \texttt{6.280},
-\(\mathsf E=\rho\), sale \(\rho/2\), \(\mathsf C_2=0\), and
-\(\mathcal R_T=\rho\,(6.280)/2\): preparation there does not mean two
-admissible bidders, because the incumbent is excluded. On every row the
-union identity for \(\mathsf S\) and the ordering
-\(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\) hold, and the payoff
-oracle error is within tolerance. Deduplication follows the C.6 rule,
-and every count in the manifest comes from the ledger.
+\textbf{Method and acceptance.} In the binary economy, \(p_L=h\). Both
+strengths have one accepted full-order continuation there. Gross profit
+at the lowest belief equals the zero cost, and the tie rule gives
+\(\mathsf E=\rho\), sale probability \(\rho/2\), \(\mathsf C_2=0\), and
+\(\mathcal R_T=\rho h/2\), from both the row and a fifty-digit
+evaluation. In the class economy, gross profit first equals zero at
+\(p_L=h+\varepsilon_V\). That endpoint has no mass, so the accepted
+continuation has no trade, preparation \(\rho\), and zero sale and
+revenue. The three offsets below each endpoint have strictly positive
+gross profit at the lowest belief. The three offsets above each endpoint
+have zero gross profit and zero cost: preparation remains \(\rho\), but
+sale and revenue are zero. The offset grid extends beyond the value
+support only for this endpoint check. At \(p_H\) in the strong economy,
+the row must show the equality-event classification of the ceiling with
+gross profit \(mc_H/M>0\) at the lowest belief and a strictly positive
+full-order bound, \(\tau=M\), \(x^*=1\), \(\alpha_H=1/2\),
+\(\alpha_L=e^{-2/b}/2\), and entry and revenue agreeing with the
+fifty-digit evaluation; where \(p_H\) falls outside its defining regime
+the node is an ordinary reserve node and must not be classified as an
+event. At the reserve \texttt{6.280}, \(\mathsf E=\rho\), sale
+\(\rho/2\), \(\mathsf C_2=0\), and \(\mathcal R_T=\rho\,(6.280)/2\):
+preparation there does not mean two admissible bidders, because the
+incumbent is excluded. On every row the union identity for \(\mathsf S\)
+and the ordering \(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\) hold,
+and the payoff oracle error is within tolerance. Deduplication follows
+the C.6 rule, and every count in the manifest comes from the ledger.
 
 \textbf{Outputs.} \texttt{numerics/reserve\_events.csv}, with the
 continuation schema of C.6 and an added \texttt{event\_classification}
 text column, and \texttt{numerics/reserve\_event\_ranges.csv} with the
-range schema of C.6. Feed: the exact-event paragraphs of the paper
-appendix and the online summary of C.6. Event candidates improve sampled
+range schema of C.6. Feed: A.14, the exact-event summary in Appendix A.7
+of the paper, and the online summary of C.6. Event candidates improve sampled
 maxima; they prove neither global optimality nor envelope completeness,
 and a node without an accepted candidate is a node where the declared
 searches found none.
@@ -3098,7 +3344,7 @@ incumbent. Independently compare the results with \eqref{eq:oa-oa-44},
 including no-entry revenue \(\eta r/2\). Verify feasibility of each
 transfer between fallback and winning value and the Nash first-order
 condition for interior weights. Compute differences between strong and
-weak distributions for \(\Delta_\eta\) and \(G_{\theta,\eta}\). The
+weak distributions for \(\Delta_\eta\) and \(g_{\theta,\eta}\). The
 spread difference must change sign at the midpoint, with zero at that
 exact weight. This is an acquisition-stage exercise; do not append a
 trader or entry prediction without solving the new continuation game.
@@ -3115,7 +3361,9 @@ trader or entry prediction without solving the new continuation game.
 \end{Highlighting}
 \end{Shaded}
 
-Feed: Figure 4 and Proposition A.8. Parameter values and the change of
+The columns \texttt{G\_H\_eta} and \texttt{G\_L\_eta} keep their schema names
+and hold \(g_{H,\eta}\) and \(g_{L,\eta}\). Feed: Figure 4 and Proposition A.8.
+Parameter values and the change of
 institution are stated in the figure caption.
 
 \subsection{C.8. Quantity definitions and
@@ -3124,7 +3372,7 @@ provenance}\label{oa-c-registry}
 Every quantitative placeholder in the two manuscripts resolves to one
 row of the \href{../numerics/quantity_registry.csv}{quantity registry},
 generated from the \href{quantity_manifest.csv}{quantity manifest} and
-the validated exercise outputs in C.1 to C.7. The manifest specifies
+the validated exercise outputs in C.1 to C.7, C.9, and C.10. The manifest specifies
 each key's definition, producing exercise, source file, row selector,
 display rule, units, and exact value for a declared input. The registry
 records the resulting value, outward bounds for an enclosure, evidence
@@ -3163,7 +3411,10 @@ after every validation on the unrounded value. A displayed lower bound
 that supports a strict inequality must remain strictly positive after
 rounding; if outward rounding would print a zero, more digits are
 printed rather than rounding inward. Model units are the per-share
-normalization of A.1.
+normalization of A.1. The C.10 rows, margins included, use
+\texttt{decimal\_6}, except the benchmark trade-cost bounds
+(\texttt{decimal\_4}) and the spread ratio and its bound
+(\texttt{decimal\_3}).
 
 \textbf{Quantity families.}
 
@@ -3195,7 +3446,13 @@ normalized distance \\
 Complementary signals & C.3 & probability; percentage \\
 Certified asymmetric nodes & C.2 & order; probability; model units \\
 Class-economy reserve comparison & C.6 & probability; model units \\
-Price-pool endpoints & C.6b & probability; model units \\
+Gross trade profits and sufficient stake bounds & C.9 & payoff per share;
+order units \\
+Entry under additional noise laws at fixed orders & C.9 & probability \\
+Class exhibits: outcomes and margins & C.10 & probability; model units;
+order units \\
+Benchmark prior and trade-cost windows; four-law entry range & C.10 &
+probability; model units \\
 \end{longtable}
 }
 
@@ -3209,22 +3466,192 @@ Within a parameter set, \texttt{r\_weak}, \texttt{r\_strong}, and
 \texttt{r\_collapse} select the declared strengths; the certified keys
 refer to the three declared nodes in order, not to roots chosen from a
 larger search; the reserve keys select on \texttt{value\_law},
-\texttt{epsilon\_V}, \texttt{r}, and \texttt{p} exactly; the price-pool
-keys select on the symbolic cutoff. The minimum-margin keys are a
+\texttt{epsilon\_V}, \texttt{r}, and \texttt{p} exactly. The minimum-margin keys are a
 convenience for acceptance and do not replace the recorded components. A
 figure is never the source of a scalar, and an apparent curve is never
-used to fill a missing certificate.
+used to fill a missing certificate. The seven registry keys of the
+retired exercise C.6b are withdrawn and supply no current quantity.
 
 \textbf{Production order.} The benchmark, moderate-value, and
 complementary-signal inputs and margins come first, then the threshold
 boundaries, the benchmark entry, control, ownership, and welfare
 quantities, and the certified brackets; these determine which theorem
-regions the text can populate. The correspondence and reserve sweeps,
-the price-pool regression, and the event exercise follow.
+regions the text can populate. The correspondence and reserve sweeps
+and the event exercise follow.
 \texttt{numerics/check\_registry.py} regenerates the registry in fresh
 processes under several ambient decimal precisions and import orders and
 requires identical output, so the printed values do not depend on the
 environment that produced them.
+
+\subsection{C.9. Gross trade profits, stake bounds, and additional noise
+laws}\label{oa-c-revision}
+
+This exercise uses the benchmark with zero low cost. The first
+calculation uses \(r_1=3\) and full orders in both price regimes. Write
+\(a_H(x)=f(x-1)\), \(a_L(x)=f(x+1)\), and
+\(\mu(x)=a_H(x)/(a_H(x)+a_L(x))\). The expected gross trade profit is
+
+\[
+\Pi=\Delta_T\int_{\mathbb R}e(x)\frac{a_H(x)a_L(x)}{a_H(x)+a_L(x)}\,dx.
+\]
+
+Price access sets \(e(x)=\rho+(1-\rho)\mathbf1\{B_r(\mu(x))\ge c_H\}\).
+Hidden prices set \(e(x)=\rho\). Gross profit excludes the trade cost
+\(k\). The proceeds gain is the second line of (A.41) in the paper at
+\(\pi=1/2\),
+
+\[
+\Delta\mathcal R_T=\frac{1-\rho}{2}\left[(t_H-t_0)\alpha_H+(t_L-t_0)\alpha_L\right].
+\]
+
+The results are \(\Pi_{\mathrm{acc}}\approx0.140731\),
+\(\Pi_{\mathrm{hid}}\approx0.069104\), and
+\(\Delta\mathcal R_T\approx0.257809\). The break-even trade scale
+is \(\Delta\mathcal R_T/\Pi_{\mathrm{acc}}\approx1.831923\)
+order units. These are numerical diagnostics at the stated profile.
+
+The stake calculations use the sufficient bounds of
+\hyperref[oa-a-stake]{Section A.12} at the benchmark, where
+\(\kappa(1/2)=m\):
+
+\[
+\Omega_U=\frac{2b[(1-1/b)\rho m\Delta_T(r_1)-k]}{(1-\rho)(t_H(r_1)-t_0(r_1))},
+\qquad
+\Omega_0=\frac{2b[k-\Delta_T(r_0)]}{(1-\rho)(t_H(r_0)-t_0(r_0))}.
+\]
+
+Their numerical values are \(\Omega_U\approx0.011434\) and
+\(\Omega_0\approx0.043098\) order units. Use the unrounded formulas
+for a strict stake comparison. They do not locate an exact equilibrium
+transition.
+
+The additional noise calculations keep full orders fixed at \(r_1\).
+For each density, the code solves \(\mu(x)\ge\tau\) and integrates the
+two state densities over the complete entry set. Hyperbolic secant noise
+gives a half-line. Student noise gives a bounded interval with two
+endpoints. The entry probabilities are approximately
+0.376606 and 0.374995, respectively.
+These calculations do not search for equilibria under the additional
+laws.
+
+\textbf{Outputs.} \texttt{numerics/revision\_quantities.csv},
+\texttt{numerics/revision\_diagnostics.json}, and
+\texttt{numerics/manifests/c9\_revision.json}. Each scalar records its
+inputs, profile, independent value, discrepancy, and status. Independent
+fifty-digit formulas and density integrals validate profits and stakes.
+Independent density roots and quadrature validate the noise values. Both
+Laplace regimes also pass the existing continuation validator. C.0
+controls apply. Any failure leaves the result open and stops the
+producer. Feed: Sections 5.1 and 6.1 of the paper and A.12.
+
+\subsection{C.10. Quality classes, general priors, and benchmark
+windows}\label{oa-c-classes}
+
+\textbf{Inputs.} This exercise uses the general form of Proposition 2
+of the paper. Its high-cost conditions are (A1), and its trade
+conditions are (A2). The exact declarations appear in the notes to
+Table 4 of the paper and in the run manifest. Cases A and B each change
+four benchmark inputs: the prior, the high cost, the trade cost, and
+the weak strength. The other two strengths stay fixed. Case C uses uniform
+classes above the reserve, with the same means as the point masses.
+Case D replaces those classes by point masses and retains every other
+input.
+
+The posterior bounds are
+
+\[
+m(\pi)=\frac{\pi}{\pi+(1-\pi)e^{2/b}},\qquad
+M(\pi)=\frac{\pi}{\pi+(1-\pi)e^{-2/b}},\qquad
+\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}.
+\]
+
+Class payoffs are the exact integrals of the auction polynomials. The
+high-class win probability is
+\(W_H(r)=\mathbb E_H[\min\{\theta/r,1\}]\), since both supports exceed
+the reserve. At an interior threshold,
+
+\[
+\tau=\frac{c_H-g_L}{g_H-g_L},\qquad
+x^*=\frac b2\left[\log\frac{\tau}{1-\tau}-\log\frac{\pi}{1-\pi}\right].
+\]
+
+Conditional entry follows the Laplace tails at \(x^*-1\) and
+\(x^*+1\). Total entry is \(\pi e_H+(1-\pi)e_L\), and high-class
+ownership is \(\pi e_HW_H\). No-trade rows have no flow threshold. A
+threshold above \(M(\pi)\) is unattainable; equality retains the
+positive mass on the upper plateau.
+
+\textbf{Conditions and status.} Each case records every parameter
+restriction, both class supports, their order, and equal admissibility.
+The record also gives all four margins in (A1)--(A2), the collapse
+margin, and the trade bound at the collapse strength. The sufficient
+ownership margin is \((1+\rho)W_H(r_1)-2\rho W_H(r_0)\). The exact
+ownership margin is \(e_H(r_1)W_H(r_1)-\rho W_H(r_0)\). Gross profit at
+the lowest posterior is a diagnostic; zero cost gives preparation
+without an extra strict condition. Cases A--C satisfy the complete
+proposition, including part (iii) and the sufficient ownership
+condition.
+
+Case D fails the upper high-cost condition at the strong strength. The
+record retains this negative margin. Its trade bounds still imply unique
+no trade at the weak strength and unique full orders at both higher
+strengths. High-cost preparation is infeasible at both higher strengths,
+so total entry stays at its floor. Analytical status comes from these
+global bounds; an order mesh supplies only a numerical diagnostic.
+Table 4 of the paper reports the outcomes and the margins of all four
+cases.
+
+\textbf{Benchmark intervals.} Three different prior intervals answer
+three different questions. The trade-cost window is nonempty for priors
+in approximately
+\((0.404610,0.595390)\). With
+both benchmark costs fixed, all hypotheses for parts (i)--(ii) hold on
+\((0.467850,0.538096)\). With the
+collapse strength fixed as well, parts (i)--(iii) require
+\((0.467850,0.500424)\).
+These intervals are open; the calculations use the unrounded endpoints.
+The broader first interval does not establish the proposition at the
+fixed benchmark costs.
+
+At the equal prior, the trade-cost window is \((1/60,\,1/[12(1+e)])\),
+approximately
+\((0.0167,0.0224)\). The fixed
+cost is \(k=0.02\). The spread ratio is
+0.025, against the sufficient bound
+0.034. Across the four noise laws with atomic
+costs, strong entry ranges from 0.301509 to
+0.522757. The hyperbolic secant and Student values
+retain their status as diagnostics at fixed full orders. This range
+establishes no additional equilibrium claim.
+
+\textbf{Validation and outputs.} Exact decimal strings enter fifty-digit
+arithmetic directly. Independent integration over realized bids
+validates target receipts, challenger profits, and class win
+probabilities. Independent density roots and full-line integrals
+validate the threshold, conditional entry, mean posterior, and mean
+price. Held-schedule deviations use both signs and both declared order
+grids, with the required tighter quadrature pass. The analytical Laplace
+tails have zero truncation error. All C.0 tolerances stay unchanged; a
+breach leaves the result open and stops the producer.
+
+The outputs and the run manifest are:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numerics/class\_exhibit.csv}
+\NormalTok{numerics/class\_conditions.csv}
+\NormalTok{numerics/class\_bounds.csv}
+\NormalTok{numerics/class\_deviations.csv}
+\NormalTok{numerics/class\_diagnostics.json}
+\NormalTok{numerics/manifests/c10\_classes.json}
+\end{Highlighting}
+\end{Shaded}
+
+The manifest records complete inputs, methods, tolerances, software
+versions, source hashes, output hashes, and acceptance. The registry and
+table consume only these validated CSV files. The full gate repeats the
+calculation and compares every saved row. Feed: Table 4 and Sections
+4.2 and 5.2 of the paper.
 
 \section{D. Institutional pilot and empirical design}\label{oa-d}
 
@@ -3479,9 +3906,10 @@ its files, including both C.2 attempt ledgers. Commands are:
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c4\_moderate.py}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c5\_noise.py}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c6\_reserve.py }\AttributeTok{{-}{-}workers}\OperatorTok{=}\NormalTok{20}
-\VariableTok{$PY}\NormalTok{ numerics/exercises/c6b\_price\_pools.py}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c6c\_reserve\_events.py }\AttributeTok{{-}{-}workers}\OperatorTok{=}\NormalTok{8}
 \VariableTok{$PY}\NormalTok{ numerics/exercises/c7\_bargaining.py}
+\VariableTok{$PY}\NormalTok{ numerics/exercises/c9\_revision.py}
+\VariableTok{$PY}\NormalTok{ numerics/exercises/c10\_classes.py}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3503,6 +3931,11 @@ declared release corpus. The presentation layer then runs in this order:
 \VariableTok{$PY}\NormalTok{ numerics/verify.py }\AttributeTok{{-}{-}final}
 \end{Highlighting}
 \end{Shaded}
+
+For this version, the release gate runs the producer and presentation
+commands above and then the release checks in
+\texttt{numerics/release\_checks.py}. The wrappers described next also run a
+test suite and are not part of that gate.
 
 Two entry points wrap these sequences. \texttt{make\ peer-release}
 validates the existing completed calculation outputs, runs the tests,
@@ -3569,7 +4002,7 @@ files}\label{oa-e-files}
 The core verifier computes auction expectations, theorem margins,
 full-order objects, threshold distinctions, moderate values, noise-law
 comparisons, and the specified class-value reserve alternatives. Its
-signal mode uses the conditional laws of Appendix A.7. The exploratory
+signal mode uses the conditional laws of Appendix A.7 above. The exploratory
 asymmetric search identifies candidate roots and checks numerical
 deviations. The certificate evaluator uses the antiderivatives and
 derivative cover of \hyperref[oa-b]{Appendix B} to establish selected
@@ -3697,6 +4130,12 @@ Dow, James, Itay Goldstein, and Alexander Guembel. 2017. {``Incentives
 for Information Production in Markets Where Prices Affect Real
 Investment.''} \emph{Journal of the European Economic Association} 15
 (4): 877--909. \url{https://doi.org/10.1093/jeea/jvw023}.
+
+\bibitem[\citeproctext]{ref-EdmansGoldsteinJiang2015}
+Edmans, Alex, Itay Goldstein, and Wei Jiang. 2015. {``Feedback Effects,
+Asymmetric Trading, and the Limits to Arbitrage.''} \emph{American
+Economic Review} 105 (12): 3766--97.
+\url{https://doi.org/10.1257/aer.20141271}.
 
 \end{CSLReferences}
 
