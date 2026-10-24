@@ -1,47 +1,61 @@
 <section class="sec" id="sec-setting">
-<span id="sec-01-claim" class="legacy-anchor" aria-hidden="true"></span>
 
 <h2>Inside a takeover process</h2>
-<p class="section-time">1 · The setting · 2–3 minutes</p>
+<p class="section-time">1 · The setting · 2 minutes</p>
 
 <div class="scenario">
 <p class="scenario-label">An illustrative sale process</p>
-<p>A listed software company announces a strategic review. One buyer is ready to bid. A second sees a possible fit but must investigate the technology, assess contracts and arrange financing. It watches the target's shares before deciding whether to pay for that work.</p>
+<p>A listed software company announces a strategic review. One buyer is ready to bid. A second sees a possible fit but must investigate the technology, check the contracts and arrange financing first. Before it pays for that work, it watches the target's shares.</p>
 </div>
-<p><em>Preparation</em> means paying for the work needed to learn acquisition value and submit an executable offer. Interest or a confidentiality agreement alone does not establish this commitment. A buyer that declines to prepare stays out; it cannot bid on its prior valuation.</p>
-<span id="sec-03-model-ingredients" class="legacy-anchor" aria-hidden="true"></span>
-<h3 id="sec-setting-information">The model and information sets</h3>
-<div id="model-brief">
-<p>The prepared <em>incumbent</em> knows its acquisition value \(R\). The <em>challenger</em> initially does not know its own value \(\theta\). The seller commits to a cash second-price auction with reserve \(p\):</p>
-<div class="math-block">\[
-R\sim U[0,r],\qquad
-\Pr(\theta=\ell)=\Pr(\theta=h)=\tfrac12,
-\qquad 0\lt p\lt\ell\lt r\lt h.
-\]</div>
-<p>A higher \(r\) shifts incumbent values upward; it is not a higher announced bid. There is one challenger, with preparation cost \(C\):</p>
-<div class="math-block">\[
-C=\begin{cases}c_L&amp;\text{with probability }\rho,\\c_H&amp;\text{with probability }1-\rho,\end{cases}
-\qquad 0\le c_L\lt c_H,\quad 0\lt\rho\lt1.
-\]</div>
-<p>An investor observes \(\theta\) and trades target shares, without control rights. Market makers observe total order flow; the challenger observes only the resulting price and its cost. Paying \(C\) reveals \(\theta\) and permits truthful bidding. Values, cost and noise demand are independent; agents are risk neutral and standalone target value is zero.</p>
-</div>
-<p>The buyer can know its own business while investors know more about the target's customers or technology. The benchmark isolates this information channel. An extension gives the buyer and the investor imperfect signals about different facts, including a buyer signal more accurate than the investor's.</p>
-<span id="sec-03-model-timing" class="legacy-anchor" aria-hidden="true"></span>
-<ol class="stepper" data-stepper>
-<li data-step><button type="button" class="step-btn">Sale terms</button><div class="step-note">The sale opportunity is publicly understood. The seller commits to a cash auction and a minimum acceptable price. One bidder is prepared; the challenger is still deciding.</div></li>
-<li data-step><button type="button" class="step-btn">Investors trade</button><div class="step-note">An informed investor trades target shares alongside noise demand. Investor information concerns what the target would be worth to the challenger.</div></li>
-<li data-step><button type="button" class="step-btn">The price forms</button><div class="step-note">Competitive market makers observe total order flow. They price target proceeds, anticipating how the resulting price affects preparation.</div></li>
-<li data-step><button type="button" class="step-btn">The buyer decides</button><div class="step-note">The challenger observes the stock price and its own preparation cost. It pays to learn its value when expected acquisition profit covers that cost.</div></li>
-<li data-step><button type="button" class="step-btn">Prepared buyers bid</button><div class="step-note">Prepared buyers bid their values in the second-price auction. Only bids meeting the reserve are admissible.</div></li>
-<li data-step><button type="button" class="step-btn">The target is sold</button><div class="step-note">The highest admissible bidder wins and pays the greater of the reserve and the competing bid. Without an admissible bidder, no sale occurs.</div></li>
-</ol>
-<p class="interaction-hint">Select a stage to see the information available at that point.</p>
-<p>The opportunity must become public before the buyer set is fixed; only then can the challenger watch the price while it decides. A disclosed approach, a strategic review or an open contest can create this window.</p>
-<p>Real sale records show this preparation stage. Imprivata's 2016 definitive merger proxy separates an unsolicited approach, outreach to potential buyers, and indications of interest conditional on further diligence. The record documents the stage; the <a href="#sec-implications-predictions">three predictions</a> below say how to test whether prices draw buyers into it.</p>
-<details class="fold" id="setting-detail"><summary>Institutional mapping and related literature</summary>
-<span id="sec-02-position" class="legacy-anchor" aria-hidden="true"></span>
-<p>The auction isolates payment incentives; it does not describe every takeover literally. The table maps each model object to what a sale record must show.</p>
+<p><em>Preparation</em> is the costly work that turns interest into an executable offer. A buyer that does not prepare stays out of the sale; it cannot bid on a guess. Preparation costs are sunk, and they differ across buyers: a buyer with capacity in place or prior familiarity with the target prepares cheaply, and others do not.</p>
 
+<h3 id="sec-setting-information">Who knows what</h3>
+<div id="model-brief">
+<p>The prepared <em>incumbent</em> knows its acquisition value \(R\). Its strength is public: \(R\) has a distribution \(F\), uniform on \([0,r]\) in the benchmark, and a higher \(r\) is a stronger incumbent, not a higher announced bid. The <em>challenger</em> belongs to a high or a low quality class, \(j\in\{H,L\}\), and its value \(\theta\) has a class distribution \(G_j\). It knows neither its class nor its value. After it sees the stock price, it learns its preparation cost:</p>
+<div class="math-block">\[
+\Pr(j=H)=\pi,\qquad
+C=\begin{cases}0&amp;\text{w.p. }\rho,\\c_H&amp;\text{w.p. }1-\rho.\end{cases}
+\]</div>
+<p>Paying \(C\) reveals \(\theta\) and permits a bid. The seller has committed to a cash second-price auction with reserve \(p\), so each prepared bidder bids its value.</p>
+<p>An outside specialist investor knows the challenger's class, though not its value. It holds no position and has no control rights. Trade happens in one public <em>order slot</em> before the challenger decides. With probability \(\lambda\) the investor fills the slot with a sale, no order or a purchase of one unit, at cost \(k\) for a nonzero order. Otherwise a liquidity trader fills it:</p>
+<div class="math-block">\[
+\begin{gathered}
+\Pr(\text{sale})=\Pr(\text{purchase})=\beta,\\
+\Pr(\text{no order})=1-2\beta,\qquad 0\lt\beta\le\tfrac13 .
+\end{gathered}
+\]</div>
+<p>No one sees who filled the slot. Competitive market makers see the order and set the price at the expected terminal value of a share. The challenger sees the price and its own cost, and nothing else.</p>
+</div>
+<ol class="stepper" data-stepper>
+<li data-step><button type="button" class="step-btn">Sale terms</button><div class="step-note">The sale opportunity is public. The seller commits to a cash second-price auction with reserve \(p\). One bidder is prepared; the challenger has not decided.</div></li>
+<li data-step><button type="button" class="step-btn">The investor learns</button><div class="step-note">The investor learns the challenger's class \(j\). The challenger, the market makers and the incumbent do not.</div></li>
+<li data-step><button type="button" class="step-btn">One order arrives</button><div class="step-note">With probability \(\lambda\) the investor places its order; otherwise a liquidity trader sells, abstains or buys. Only the order is public, not who placed it.</div></li>
+<li data-step><button type="button" class="step-btn">The price forms</button><div class="step-note">Market makers price the order. They anticipate how the price will change the challenger's decision and therefore the sale proceeds.</div></li>
+<li data-step><button type="button" class="step-btn">The challenger decides</button><div class="step-note">The challenger reads a belief about its class from the price, learns its cost, and prepares when expected acquisition profit covers that cost.</div></li>
+<li data-step><button type="button" class="step-btn">Bids and sale</button><div class="step-note">Prepared bidders learn their values and bid them. The highest admissible bidder wins and pays the larger of the reserve and the other admissible bid.</div></li>
+</ol>
+<p class="interaction-hint">Select a stage to see who knows what at that point.</p>
+<p>The sale must become public before the set of buyers is fixed; only then can a prospective buyer watch the price while it decides. A disclosed approach, an announced review or an open contest can create that window. Imprivata's 2016 definitive proxy shows the stage the model describes: an unsolicited approach, outreach to other buyers, and indications of interest that still depend on diligence.</p>
+
+<details class="fold" id="setting-detail"><summary>The model in full, the benchmark and related literature</summary>
+<p>All agents are risk neutral, the target's standalone value is zero, and values and costs are per share. The pair consisting of class and challenger value, the incumbent's value, the preparation cost, and the slot draws are mutually independent. Bids are truthful and weakly dominant. Without a challenger, the incumbent buys at the reserve when its value meets it, so expected proceeds without entry are \(t_0=p[1-F(p)]\). They are positive when the incumbent can meet the reserve, as in the benchmark. A zero-cost challenger prepares after every price, because its gross profit is an auction rent and never negative. The classes satisfy the class ranking: \(G_H\) dominates \(G_L\), and both lie above the reserve.</p>
+<p>An equilibrium gives each class a distribution over the three orders, a posterior and a price after each order, the challenger's belief and preparation at each price, and truthful bids. The investor may mix and may place a wrong-signed order. A deviation by the investor is evaluated at the candidate's prices and entry; a comparison across incumbent strengths solves for the equilibrium again in each economy. An indifferent investor may mix over its best orders, and an indifferent high-cost challenger prepares.</p>
+<h3 id="sec-setting-benchmark">The benchmark</h3>
+<p>Point-mass classes put the high class at \(h\) and the low class at \(\ell\), so class and value coincide, and \(0\lt p\lt\ell\lt r\lt h\). Money is measured in units of the low value. The slot has \(1+u=\mathrm e\), where \(u=\lambda/b\) is the informed presence relative to the liquidity mass \(b=(1-\lambda)\beta\) in one direction.</p>
+<dl class="params">
+<div><dt>\(h\)</dt><dd>[[prim_h]]</dd></div>
+<div><dt>\(\ell\)</dt><dd>[[prim_ell]]</dd></div>
+<div><dt>\(p\)</dt><dd>[[prim_p]]</dd></div>
+<div><dt>\(\pi\)</dt><dd>[[prim_pi]]</dd></div>
+<div><dt>\(\rho\)</dt><dd>[[prim_rho]]</dd></div>
+<div><dt>\(c_H\)</dt><dd>[[prim_cH]]</dd></div>
+<div><dt>\(k\)</dt><dd>[[prim_k]]</dd></div>
+<div><dt>\(\beta\)</dt><dd>[[beta_B]]</dd></div>
+<div><dt>\(\lambda\)</dt><dd>[[lambda_B]]</dd></div>
+<div><dt>\(r_0\)</dt><dd>[[prim_r0]]</dd></div>
+<div><dt>\(r_1\)</dt><dd>[[prim_r1]]</dd></div>
+<div><dt>\(r_2\)</dt><dd>[[prim_r2]]</dd></div>
+</dl>
 <figure class="table" id="table-dictionary">
 <div class="table-wrap">
 <table>
@@ -49,21 +63,20 @@ C=\begin{cases}c_L&amp;\text{with probability }\rho,\\c_H&amp;\text{with probabi
 <tr><th>In the model</th><th>In the record</th><th>What the record must show</th></tr>
 </thead>
 <tbody>
-<tr><td>The sale rule is announced and the opportunity is publicly understood</td><td>A public strategic review, a disclosed approach, or an open contest</td><td>Visibility dated separately from the challenger's decision. A target that traded only during confidential negotiations does not qualify.</td></tr>
-<tr><td>A prepared incumbent of strength \(r\)</td><td>A lead buyer already able to bid: its disclosed initial proposal, financing capacity, measurable complementarity with the target</td><td>Measured before the challenger decides. A final offer already reflects entry.</td></tr>
-<tr><td>The investor trades and the price \(P\) forms</td><td>Target shares trading while the opportunity is visible</td><td>Returns and trading activity timestamped before the participation decision.</td></tr>
-<tr><td>The challenger pays \(C\) to learn \(\theta\)</td><td>Commitment to substantive diligence, or a proposal that requires costly preparation</td><td>A confidentiality agreement alone does not establish preparation. A firm named by an adviser is not an entrant.</td></tr>
-<tr><td>Entry \(\mathsf E\)</td><td>Commitment to investigation or substantive bidding</td><td>Not the count of public offers, a narrower outcome.</td></tr>
-<tr><td>High-value ownership \(\mathsf O_H\)</td><td>A challenger that wins</td><td>Winning alone is not evidence of a high acquisition value.</td></tr>
+<tr><td>The sale opportunity is public</td><td>A disclosed approach, an announced strategic review or an open contest</td><td>Visibility dated before the further buyer's decision</td></tr>
+<tr><td>Incumbent strength \(r\)</td><td>What the public can infer about the prepared bidder's value: a strategic acquirer with clear synergies, or a leveraged financial buyer</td><td>Measured before the further buyer decides</td></tr>
+<tr><td>The order slot</td><td>The first prespecified public order opportunity after the sale becomes public, such as the opening auction of the next trading day</td><td>The sign of the net imbalance; an imbalance below a size fixed in advance is the zero order</td></tr>
+<tr><td>Preparation</td><td>The start of substantive diligence, or a proposal that requires costly preparation</td><td>Dated after the price; public offers are a narrower outcome</td></tr>
+<tr><td>The investor</td><td>Outside flow with a view on the further buyer's fit, such as sector specialists</td><td>No stake and no role in the sale</td></tr>
 </tbody>
 </table>
 </div>
-<figcaption><strong>From the model to the record.</strong> Eligibility and measurement rules of the pilot in Online Appendix D.</figcaption>
-</figure><details class="fold">
-<summary>Positioning in the literature</summary>
-<p><strong>Feedback effects.</strong> The paper belongs to the literature on the real effects of financial markets (Bond, Edmans and Goldstein 2012). The closest antecedent is Dow, Goldstein and Guembel (2017), where a firm's investment decision feeds back into the incentive to produce information about its stock. Here the sale rule divides acquisition surplus between a traded claim and a buyer that decides whether to participate. Edmans, Goldstein and Jiang (2015) show that corrective real decisions can discourage trading on bad news under rational pricing; here the real decision is the buyer's participation itself. Firms learn from peers' stock prices (Foucault and Frésard 2014), and target prices affect takeover activity (Edmans, Goldstein and Jiang 2012); in this model a prospective challenger learns about its own acquisition value from the target's price before it commits. Learning from announcement returns in completion decisions (Luo 2005) occurs after this participation margin.</p>
-<p><strong>Auction entry and information.</strong> The auction-entry literature makes the bidder pool endogenous (Samuelson 1985; McAfee and McMillan 1987; Levin and Smith 1994; Gentry and Stroup 2019) and shows how selective entry affects the choice of sale procedure (Roberts and Sweeting 2013). I keep the direct deterrence force of that literature and add a market that operates before preparation. Bidders' own information acquisition responds to the format (Persico 2000); here the informed party is an investor outside the auction, trading a payoff that differs from the entrant's profit. Bidder learning about own values and competitors (Pernoud and Gleyze 2026), post-auction feedback in security-payment design (Liu and Bernhardt 2022), and bidder-pool choice with correlated values (Carlin et al. 2026) are the closest recent work.</p>
-<p><strong>Takeover models with trading.</strong> Other models connect trading to later stages of a deal: negotiations with stock-market feedback (Betton et al. 2014) and payment choice within an initiated deal (Lin, Ma, Yang and Zhu 2025); I hold cash consideration fixed and study entry. Arbitrageurs' positions can affect tendering (Cornelli and Li 2002); the investor here has information about a prospective acquirer and no role in tendering. The model abstracts from toeholds and free riding (Bulow, Huang and Klemperer 1999; Grossman and Hart 1980) and takes the investor's information as given; endogenous research would add manipulation incentives through the real decision that responds to the price (Goldstein and Guembel 2008).</p>
+<figcaption><strong>From the model to the record.</strong> Section 8 of the paper states how to date the decision interval in a given transaction.</figcaption>
+</figure>
+<details class="fold">
+<summary>Related literature</summary>
+<p>The paper belongs to the literature on the real effects of financial markets (Bond, Edmans and Goldstein 2012). The closest antecedent is Dow, Goldstein and Guembel (2017), where a firm's investment decision feeds back into the incentive to produce information about its stock; here the sale rule divides acquisition surplus between a traded claim and a buyer that decides whether to enter. Edmans, Goldstein and Jiang (2015) show that corrective real decisions can discourage trade on bad news; here the real decision is the buyer's entry. Firms learn from peers' prices (Foucault and Frésard 2014), and target prices affect takeover activity (Edmans, Goldstein and Jiang 2012).</p>
+<p>The auction-entry literature makes the bidder pool endogenous (Samuelson 1985; McAfee and McMillan 1987; Levin and Smith 1994; Gentry and Stroup 2019). Under selective entry, a bidder's information before entry indexes the distribution of its value, and paying the entry cost reveals the value (Roberts and Sweeting 2013). Here that information is the target's stock price, which moves with the orders of an investor who knows the challenger's class. The slot follows the alternative-arrival structure of Dow and Gorton (1997), and the unit order menu, the presence probability and the unit cost follow Edmans, Goldstein and Jiang (2015).</p>
 </details>
 </details>
 </section>

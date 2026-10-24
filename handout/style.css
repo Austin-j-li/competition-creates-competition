@@ -297,10 +297,8 @@ nav.toc details.toc-drawer summary::-webkit-details-marker { display: none; }
 nav.toc details.toc-drawer summary::after { content: "+"; font-family: var(--font-mono); color: var(--muted); }
 nav.toc details.toc-drawer[open] summary::after { content: "\2212"; }
 nav.toc details.toc-drawer ol { margin: 0 0 0.6rem; }
-.legend-key { display: flex; flex-wrap: wrap; gap: 0.3rem; max-width: none; margin: 0 0 0 0.85rem; padding-top: 1rem; border-top: 1px solid var(--grid); }
 
 /* status words in the paper's vocabulary */
-.st {
   display: inline-block;
   font-size: 0.7rem;
   font-weight: 600;
@@ -312,10 +310,6 @@ nav.toc details.toc-drawer ol { margin: 0 0 0.6rem; }
   color: var(--muted);
   line-height: 1.5;
 }
-.st[data-status="analytical"] { border-color: var(--ink); color: var(--ink); }
-.st[data-status="computer-assisted"] { border: 1px dashed var(--ink); color: var(--ink); }
-.st[data-status="open"] { border-style: dotted; }
-.st[data-status="input"] { border-color: transparent; padding-left: 0; }
 
 /* ---------- sections ---------- */
 
@@ -604,6 +598,46 @@ td[title] { cursor: help; }
 .explorer .chart-mount { margin-top: 0.25rem; }
 .explorer-note { font-size: 0.85rem; color: var(--muted); margin: 0.6rem 0 0.5rem; line-height: 1.5; }
 
+/* ---------- explorer: the equilibria at one strength ---------- */
+
+.eq-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.2rem 0 0.8rem; max-width: none; }
+.eq-picker-label { font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-right: 0.35rem; }
+.eq-picker button { font: inherit; font-size: 0.85rem; padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.eq-picker button b { font-family: var(--font-mono); margin-right: 0.2rem; }
+.eq-picker button[aria-pressed="true"] { background: var(--ucl-dark); border-color: var(--ucl-dark); color: #ffffff; }
+:root[data-theme="dark"] .eq-picker button[aria-pressed="true"] { background: var(--ucl-mid); border-color: var(--ucl-mid); color: var(--bg); }
+.explorer .explorer-readouts { grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); }
+.eq-detail { max-width: none; }
+.eq-summary { font-size: 0.95rem; margin: 0 0 0.4rem; max-width: 70ch; }
+svg.belief-line { display: block; width: 100%; max-width: 46rem; height: auto; margin: 0 0 0.4rem; font-family: var(--font-sans); }
+.belief-line .bl-band { fill: var(--region-c); }
+.belief-line .bl-axis, .belief-line .bl-tick { stroke: var(--line); stroke-width: 1; }
+.belief-line .bl-tick-label, .belief-line .bl-band-label { fill: var(--muted); font-size: 11px; }
+.belief-line .bl-band-label { font-style: italic; }
+.belief-line .bl-tau { stroke: var(--c-cost); stroke-width: 2; }
+.belief-line .bl-tau-label { fill: var(--c-cost); font-size: 11px; font-weight: 600; }
+.belief-line .bl-mark { stroke-width: 1.6; }
+.belief-line .bl-recruit { fill: var(--c-info); stroke: var(--c-info); }
+.belief-line .bl-buy { fill: var(--bg); stroke: var(--c-info); }
+.belief-line .bl-sell { fill: var(--bg); stroke: var(--ink); }
+.belief-line .bl-none { fill: var(--muted); stroke: var(--muted); }
+.belief-line .bl-mark-label { fill: var(--ink); font-size: 11px; }
+table.eq-table { margin: 0 0 0.6rem; }
+table.eq-table th, table.eq-table td { padding: 0.4rem 0.75rem 0.4rem 0; }
+.eq-totals { display: flex; flex-wrap: wrap; gap: 0.3rem 1.6rem; font-size: 0.9rem; color: var(--muted); margin: 0 0 1rem; max-width: none; }
+.eq-totals b { color: var(--ink); font-weight: 600; }
+.explorer figure.explorer-figure { margin: 1rem 0 0.6rem; min-height: 0; }
+.explorer figure.explorer-figure figcaption { margin-top: 0.6rem; }
+.earlier { margin: 1.5rem 0 0; font-size: 0.95rem; }
+.pdf-card > p:not(.meta):not(.hash):not(.actions) { font-size: 0.95rem; }
+
+@media (max-width: 600px) {
+  div.strip { grid-template-columns: minmax(0, 1fr); }
+  .strip .stat, .strip .stat:first-child { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+  .strip .stat:first-child { border-top: 0; }
+  .strip .stat:nth-child(3) { grid-column: auto; }
+}
+
 /* ---------- math and provenance ---------- */
 
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.75rem 0 1rem; max-width: none; }
@@ -682,7 +716,6 @@ dl.keys dd { margin: 0; color: var(--muted); }
   .masthead-inner { padding: 2.25rem 1.5rem 0; }
   #theme-toggle { right: 1.5rem; }
   .panel-inner { padding: 2rem 1.5rem 3rem; }
-  .legend-key { display: none; }
   nav.toc { margin-bottom: 1.25rem; }
   .toc-kicker { display: none; }
   .sec { margin-bottom: 3rem; }

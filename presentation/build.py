@@ -1,19 +1,20 @@
-"""Build the offline slides (the /talk/ page) from talk/talk.tex content and validated data.
+"""Build the offline slides (the /talk/ page) from the order-slot talk and the slot registry.
 
     python3 presentation/build.py
 
-Steps: bind the research data through handout/data.py; render the 47 slide records of
-content.js with presentation/render.mjs (KaTeX at build time, a registry guard on every number);
-read the speaker notes from talk/script.tex; assemble dist/index.html with the locked Fira faces
-and the local KaTeX copy of the handout; record source hashes; then run check_deck.mjs, which
-compares the deck with talk/talk.tex. Any failure stops the build. Python and Node standard
-libraries only.
+Steps: read the slot registry (audit/slot_manuscript_2026_10_23/registry/registry.csv); render the
+slide records of content.js with presentation/render.mjs (KaTeX at build time; every number is the
+registry display of its key, as \\reg{key} prints it in slot/manuscript/slides.tex); compute the
+figure curves with presentation/figdata.py; read the speaker notes from presentation/notes.md; assemble
+dist/index.html with the locked Fira faces and the local KaTeX copy of the handout; record source
+hashes; then run check_deck.mjs, which compares the deck with slot/manuscript/slides.tex. Any failure
+stops the build. Python and Node standard libraries only.
 """
 from __future__ import annotations
 
+import csv
 import hashlib
 import html
-import importlib.util
 import json
 import re
 import shutil
@@ -23,122 +24,76 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-sys.path.insert(0, str(ROOT / "handout"))
-import data  # noqa: E402
+sys.path.insert(0, str(HERE))
+import figdata  # noqa: E402
 
-_spec = importlib.util.spec_from_file_location("handout_build", ROOT / "handout" / "build.py")
-handout_build = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(handout_build)
-
-TABLE_FILES = ("table1_auction_primitives.tex", "table2_equilibrium_controls.tex", "table3_extensions.tex",
-               "table4_reserve_comparisons.tex", "table_signal_grid.tex")
-PARTS = [(1, "Question"), (2, "Model"), (3, "Two claims"), (4, "Price"), (5, "Theorem"), (6, "Numbers"),
-         (7, "Boundaries"), (8, "Close"), ("B", "Backups")]
-CHECKPOINTS = ("Checkpoints: frame 3 by 4.75 min; frame 5 by 9.5 min, else skip frame 6 and say its two "
-               "numbers on frame 5; frame 9 by 18.5 min, else skip frames 12 and 14; frame 11 by 23.5 min, "
-               "else skip frame 15 and give frame 13 as one sentence.")
+REGISTRY = ROOT / "audit/slot_manuscript_2026_10_23/registry/registry.csv"
+SLIDES_TEX = ROOT / "slot/manuscript/slides.tex"
+PARTS = [(1, "Question"), (2, "Setting"), (3, "Price"), (4, "Mechanism"), (5, "Result"), (6, "Beyond"),
+         (7, "Close"), ("B", "Backups")]
 
 
 def digest(body: bytes) -> str:
     return hashlib.sha256(body).hexdigest()
 
 
+def read_registry() -> dict[str, dict[str, str]]:
+    with REGISTRY.open(newline="", encoding="utf-8") as fh:
+        return {r["key"]: {"value": r["value"], "display": r["display"]} for r in csv.DictReader(fh)}
+
+
 # ------------------------------------------------------------------------------------------------
-# Speaker notes from talk/script.tex
+# Locked static files (the handout's fonts and KaTeX)
 
 
-def balanced(text: str, i: int) -> tuple[str, int]:
-    """The brace group that opens at text[i] == '{'; returns (content, index after it)."""
-    assert text[i] == "{"
-    depth, j = 0, i
-    while True:
-        c = text[j]
-        if c == "\\":
-            j += 2
+def font_faces(lock: dict, prefix: str = "fonts/") -> str:
+    """@font-face rules generated from the lock, so the stylesheet cannot drift from the files."""
+    rules = []
+    for name, v in lock.items():
+        if v.get("kind") != "face":
             continue
-        if c == "{":
-            depth += 1
-        elif c == "}":
-            depth -= 1
-            if depth == 0:
-                return text[i + 1:j], j + 1
-        j += 1
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]}; '
+                     f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
+    return "\n".join(rules) + "\n"
+
+
+def katex_css() -> str:
+    """The locked KaTeX stylesheet without the woff and ttf fallbacks, which are not shipped."""
+    css = (ROOT / "handout/vendor/katex.min.css").read_text(encoding="utf-8")
+    return re.sub(r',url\(fonts/[^)]+\.(?:woff|ttf)\) format\("[^"]+"\)', "", css)
+
+
+# ------------------------------------------------------------------------------------------------
+# Speaker notes from presentation/notes.md
 
 
 def note_html(body: str) -> str:
-    sources = [s.strip() for s in re.findall(r"%\s*source:\s*(.+)", body)]
-    body = re.sub(r"(?m)^\s*%.*$", "", body)
-    body = re.sub(r"(?<!\\)%.*$", "", body, flags=re.M)
-    cue = ""
-    m = re.search(r"\\Cue\{", body)
-    if m:
-        content, end = balanced(body, m.end() - 1)
-        cue = content
-        body = body[:m.start()] + body[end:]
-    for macro in ("emph", "textit"):
-        while True:
-            m = re.search(r"\\" + macro + r"\{", body)
-            if not m:
-                break
-            content, end = balanced(body, m.end() - 1)
-            body = body[:m.start()] + "<em>" + content + "</em>" + body[end:]
-
     def plain(s: str) -> str:
-        s = s.replace(r"\PaperTitle", "Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders")
-        s = s.replace(r"\Pause{}", "[pause]").replace(r"\Pause", "[pause]").replace(r"\Advance", "[advance]")
-        s = s.replace("~", " ").replace(r"\&", "&amp;").replace(r"\%", "%").replace("``", "“").replace("''", "”")
-        s = s.replace("---", "—").replace("--", "–")
-        s = re.sub(r"\$([^$]+)\$", lambda mm: '<span class="tex" data-tex="' + html.escape(mm.group(1)) + '"></span>', s)
+        s = html.escape(s, quote=False)
+        s = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", s)
+        s = re.sub(r"\$([^$]+)\$", lambda mm: '<span class="tex" data-tex="' + html.escape(mm.group(1).replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")) + '"></span>', s)
         return s
-    paras = [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", body) if p.strip()]
-    out = "".join(f"<p>{plain(p)}</p>" for p in paras)
-    if cue:
-        out += f'<p class="cue"><b>Live cue:</b> {plain(cue)}</p>'
-    if sources:
-        out += '<p class="note-sources">Number sources in the script: ' + html.escape("; ".join(sources)) + "</p>"
-    return out
-
-
-def read_notes(frames: list[dict]) -> tuple[dict, list[str]]:
-    script = (ROOT / "talk" / "script.tex").read_text(encoding="utf-8")
-    notes: dict[str, dict] = {}
-    m = re.search(r"\\scriptopening\{", script)
-    timing, end = balanced(script, m.end() - 1)
-    body, _ = balanced(script, end)
-    notes["F0"] = {"timing": timing, "html": note_html(body), "source": "talk/script.tex, Opening"}
-    mains = [f for f in frames if not f.get("backup")]
-    used: set[str] = set()
-    for m in re.finditer(r"\\scriptframe\{", script):
-        title, i = balanced(script, m.end() - 1)
-        timing, i = balanced(script, i)
-        body, _ = balanced(script, i)
-        backup = re.search(r"\(A(\d+)\)", timing)
-        if backup:
-            label = "A" + backup.group(1)
+    out = []
+    for para in [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", body) if p.strip()]:
+        if para.startswith("Cue:"):
+            out.append(f'<p class="cue"><b>Live cue:</b> {plain(para[4:].strip())}</p>')
         else:
-            hit = next((f for f in mains if f["title"] == title and f["label"] not in used), None)
-            if hit is None:
-                raise SystemExit(f"script.tex block without a frame: {title}")
-            label = hit["label"]
-        used.add(label)
-        notes[label] = {"timing": timing, "html": note_html(body), "source": f"talk/script.tex, block “{title}”"}
-    # Backups without a script block fall back to the structure plan (section 9).
-    plan = (ROOT / "talk" / "structure-plan.md").read_text(encoding="utf-8")
-    fallback = []
-    for f in frames:
-        if f["label"] in notes:
-            continue
-        row = re.search(r"^\| " + f["label"] + r" `[^`]+` \| [^|]+ \| ([^|]+) \|", plan, re.M)
-        text = html.escape(row.group(1).strip()) if row else ""
-        extra = ""
-        if f["label"] == "A9":
-            q = re.search(r"\\textit\{Why a second-price auction\? What about negotiation\?\}(.*?)\n\n", script, re.S)
-            if q:
-                extra = note_html(q.group(1))
-        notes[f["label"]] = {"timing": "if asked (" + f["label"] + ")", "html": f"<p>{text}</p>" + extra,
-                             "source": "talk/structure-plan.md, section 9 (no block in talk/script.tex)"}
-        fallback.append(f["label"])
-    return notes, fallback
+            out.append(f"<p>{plain(para)}</p>")
+    return "".join(out)
+
+
+def read_notes(frames: list[dict]) -> dict:
+    text = (HERE / "notes.md").read_text(encoding="utf-8")
+    notes: dict[str, dict] = {}
+    for block in re.split(r"(?m)^## ", text)[1:]:
+        head, _, body = block.partition("\n")
+        label, _, timing = head.partition("|")
+        notes[label.strip()] = {"timing": timing.strip(), "html": note_html(body), "source": "presentation/notes.md"}
+    missing = [f["label"] for f in frames if f["label"] not in notes]
+    extra = [k for k in notes if k not in {f["label"] for f in frames}]
+    if missing or extra:
+        raise SystemExit(f"notes.md: frames without a block: {missing}; blocks without a frame: {extra}")
+    return notes
 
 
 # ------------------------------------------------------------------------------------------------
@@ -146,28 +101,32 @@ def read_notes(frames: list[dict]) -> tuple[dict, list[str]]:
 
 
 def slide_html(f: dict) -> str:
+    plain_title = re.sub(r"\$([^$]*)\$", r"\1", f["title"]) or f["short"]
     attrs = {
         "id": f["id"], "data-label": f["label"], "data-num": f["num"], "data-part": str(f["part"]),
-        "data-title": re.sub(r"\$([^$]*)\$", r"\1", f["title"]), "data-minutes": str(f.get("minutes", 0)),
+        "data-title": plain_title, "data-minutes": str(f.get("minutes", 0)),
         "data-widget": f.get("widget", ""), "data-targets": " ".join(f.get("targets", [])),
     }
     if f.get("backup"):
         attrs["data-backup"] = "true"
         attrs["data-origin"] = f["origin"]
     attr = " ".join(f'{k}="{html.escape(v)}"' for k, v in attrs.items())
-    cls = "slide" + (" title-slide" if f["id"] == "f0" else "") + (" backup" if f.get("backup") else "")
+    cls = "slide" + (" title-slide" if f["id"] == "f0" else "") + (" backup" if f.get("backup") else "") + (" nohead" if not f["title"] and f["id"] != "f0" else "")
+    label = f'{html.escape(f["num"])}. {html.escape(plain_title)}'
     if f["id"] == "f0":
         return f'<section class="{cls}" {attr} aria-label="Title">{f["body"]}</section>'
-    sub = f'<p class="sub">{f["subtitleHtml"]}</p>' if f.get("subtitleHtml") else ""
-    return (f'<section class="{cls}" {attr} aria-label="{html.escape(f["num"])}. {html.escape(attrs["data-title"])}">'
+    foot = (f'<footer class="slide-foot"><span class="foot-title">Competition Creates Competition</span>'
+            f'<span class="foot-num">{html.escape(f["num"])}</span></footer>')
+    if not f["title"]:
+        return f'<section class="{cls}" {attr} aria-label="{label}"><div class="slide-body">{f["body"]}</div>{foot}</section>'
+    sub = f'<p class="sub">{f["subtitle"]}</p>' if f.get("subtitle") else ""
+    return (f'<section class="{cls}" {attr} aria-label="{label}">'
             f'<header class="slide-head"><h2>{f["titleHtml"]}</h2>{sub}</header>'
-            f'<div class="slide-body">{f["body"]}</div>'
-            f'<footer class="slide-foot"><span class="foot-title">Competition Creates Competition</span>'
-            f'<span class="foot-num">{html.escape(f["num"])}</span></footer></section>')
+            f'<div class="slide-body">{f["body"]}</div>{foot}</section>')
 
 
 def build() -> None:
-    research, hashes = data.build_data(ROOT)
+    registry = read_registry()
     out = HERE / "dist"
     if out.exists():
         for child in out.iterdir():
@@ -184,7 +143,7 @@ def build() -> None:
         if digest(body) != entry["sha256"]:
             raise ValueError("Font hash mismatch: " + name)
         (out / "fonts" / name).write_bytes(body)
-    faces = handout_build.font_faces(fonts, "fonts/")
+    faces = font_faces(fonts, "fonts/")
 
     # KaTeX: the handout's locked local copy.
     vendor = json.loads((ROOT / "handout/vendor.lock.json").read_text())
@@ -195,47 +154,48 @@ def build() -> None:
         target = out / "vendor" / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         if rel == "katex.min.css":
-            target.write_text(handout_build.katex_css(vendor), encoding="utf-8")
+            target.write_text(katex_css(), encoding="utf-8")
         else:
             target.write_bytes(body)
 
-    # Render the slide records; render.mjs guards every number.
-    tables = {name: (ROOT / "tables" / name).read_text(encoding="utf-8") for name in TABLE_FILES}
-    payload = json.dumps({"data": json.loads(data.emit_js(research)), "tables": tables})
-    run = subprocess.run(["node", str(HERE / "render.mjs")], input=payload, capture_output=True, text=True)
+    # Render the slide records; render.mjs resolves every registry key.
+    run = subprocess.run(["node", str(HERE / "render.mjs")], input=json.dumps({"registry": registry}),
+                         capture_output=True, text=True)
     if run.returncode != 0:
         sys.stderr.write(run.stderr)
-        raise SystemExit("Slide rendering failed: a number, a formula or a status word did not pass.")
+        raise SystemExit("Slide rendering failed: a registry key or a formula did not pass.")
     rendered = json.loads(run.stdout)
     frames = rendered["frames"]
-    if len(frames) != 47:
-        raise SystemExit(f"Expected 47 frames, found {len(frames)}")
-
-    # Subtitles: render through the same helper output (content.js returns HTML already).
     for f in frames:
-        f["subtitleHtml"] = f.get("subtitle", "")
+        f.setdefault("subtitle", "")
 
-    notes, fallback = read_notes(frames)
-    for name, rel in handout_build.PDFS.items():
-        shutil.copyfile(ROOT / rel, out / name)
+    notes = read_notes(frames)
+    figures = figdata.build(registry)
+    used = {k: registry[k] for k in rendered["used"]}
+    for key in ("rA", "rF_B", "rN", "rJ", "rS_B", "rC_B", "res_rR", "res_rcap", "res_rUR", "prim_r0", "prim_r1", "prim_r2"):
+        used[key] = registry[key]
+    total = max(int(f["num"]) for f in frames if not f.get("backup"))
+    minutes = sum(f["minutes"] for f in frames if not f.get("backup"))
+    checkpoints = ("Checkpoints: slide 6 by 9 min; slide 8 by 12.5 min, else skip slide 9; slide 12 by 20.25 min, else skip "
+                   "slides 15 and 17; slide 14 by 23.5 min, else give slide 16 as one sentence and skip slide 18.")
 
     meta = {
         "frames": [{k: f.get(k) for k in ("id", "label", "num", "part", "minutes", "backup", "origin", "targets", "widget")}
-                   | {"title": re.sub(r"<[^>]+>", "", f["titleHtml"]) if "katex" not in f["titleHtml"] else re.sub(r"\$([^$]*)\$", r"\1", f["title"])}
-                   for f in frames],
+                   | {"title": re.sub(r"\$([^$]*)\$", r"\1", f["title"]) or f["short"]} for f in frames],
         "parts": [{"n": n, "name": name} for n, name in PARTS],
         "notation": rendered["notation"],
-        "checkpoints": CHECKPOINTS,
+        "total": total,
+        "minutes": minutes,
+        "checkpoints": checkpoints,
     }
     page = (HERE / "template.html").read_text(encoding="utf-8")
     fills = {
         "@@STYLE@@": faces + (HERE / "deck.css").read_text(encoding="utf-8"),
         "@@SLIDES@@": "\n".join(slide_html(f) for f in frames),
-        "@@DATA@@": data.emit_js(research),
+        "@@DATA@@": json.dumps({"registry": used, "fig": figures}, ensure_ascii=False, separators=(",", ":")),
         "@@META@@": json.dumps(meta, ensure_ascii=False),
         "@@NOTES@@": json.dumps(notes, ensure_ascii=False),
-        "@@CHARTS@@": (ROOT / "handout/charts.js").read_text(encoding="utf-8"),
-        "@@FORMULAS@@": (ROOT / "handout/explorer.js").read_text(encoding="utf-8"),
+        "@@CHARTS@@": (HERE / "charts.js").read_text(encoding="utf-8"),
         "@@APP@@": (HERE / "deck.js").read_text(encoding="utf-8"),
     }
     for slot, value in fills.items():
@@ -248,28 +208,27 @@ def build() -> None:
         raise ValueError("The slides must not load anything from the network")
     (out / "index.html").write_text(page, encoding="utf-8")
 
-    sources = dict(hashes)
-    for name in ("talk/talk.tex", "talk/script.tex", "talk/structure-plan.md", "presentation/content.js",
-                 "presentation/render.mjs", "presentation/deck.js", "presentation/deck.css", "presentation/template.html",
-                 "presentation/check_deck.mjs", "handout/charts.js", "handout/explorer.js", "handout/fonts.lock.json",
-                 "handout/vendor.lock.json", *("tables/" + t for t in TABLE_FILES)):
+    sources = {}
+    for name in ("audit/slot_manuscript_2026_10_23/registry/registry.csv", "slot/manuscript/slides.tex",
+                 "presentation/content.js", "presentation/render.mjs", "presentation/figdata.py", "presentation/notes.md",
+                 "presentation/deck.js", "presentation/deck.css", "presentation/template.html", "presentation/check_deck.mjs",
+                 "presentation/charts.js", "handout/fonts.lock.json", "handout/vendor.lock.json"):
         sources[name] = digest((ROOT / name).read_bytes())
     (out / "provenance.json").write_text(json.dumps({
-        "sources": sources,
-        "frames": len(frames), "numbers_guarded": len(rendered["numbers"]),
-        "notes_from_structure_plan": fallback,
-        "scope": "Presentation build; existing passed-manifest outputs. No new equilibrium search or research release claim.",
+        "sources": sources, "frames": len(frames), "registry_keys_used": len(rendered["used"]),
+        "numbers_printed": len(rendered["numbers"]),
     }, indent=2) + "\n")
 
     md = ["# Competition Creates Competition", "",
-          "Speaker notes, 40-minute session: 18 main frames (F10a and F10b share number 10) and 29 backups.", "", CHECKPOINTS, ""]
+          f"Speaker notes: {len([f for f in frames if not f.get('backup')])} main frames "
+          f"({minutes:g} planned minutes) and {len([f for f in frames if f.get('backup')])} backups.", "", checkpoints, ""]
     for f in frames:
-        n = notes.get(f["label"], {})
-        md.append(f"## {f['label']}. {re.sub(r'[$]', '', f['title'])}")
+        n = notes[f["label"]]
+        md.append(f"## {f['label']}. {re.sub(r'[$]', '', f['title']) or f['short']}")
         md.append("")
-        md.append(f"*{n.get('timing', '')}* · {n.get('source', '')}")
+        md.append(f"*{n['timing']}*")
         md.append("")
-        md.append(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r'<span class="tex" data-tex="([^"]*)"></span>', lambda m: html.unescape(m.group(1)), n.get("html", "")))).strip())
+        md.append(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r'<span class="tex" data-tex="([^"]*)"></span>', lambda m: html.unescape(m.group(1)), n["html"]))).strip())
         md.append("")
     (out / "speaker-notes.md").write_text("\n".join(md), encoding="utf-8")
 
@@ -277,9 +236,9 @@ def build() -> None:
     sys.stdout.write(check.stdout)
     if check.returncode != 0:
         sys.stderr.write(check.stderr)
-        raise SystemExit("The deck differs from talk/talk.tex or breaks the deck contract.")
-    print(f"Built {out / 'index.html'} ({len(page):,} characters); {len(hashes)} research sources verified; "
-          f"{len(frames)} frames; {len(rendered['numbers'])} numbers guarded; notes from the structure plan for {', '.join(fallback)}.")
+        raise SystemExit("The deck differs from slides.tex or breaks the deck contract.")
+    print(f"Built {out / 'index.html'} ({len(page):,} characters); {len(frames)} frames; "
+          f"{len(rendered['used'])} registry keys, {len(rendered['numbers'])} numbers printed.")
 
 
 if __name__ == "__main__":

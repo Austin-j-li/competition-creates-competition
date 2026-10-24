@@ -1,11 +1,12 @@
 /* deck.js: the slide engine of the /talk/ page.
  *
- * The 47 slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
+ * The slides are pre-rendered sections in the page (build.py, render.mjs). This script scales
  * the 1600 x 900 stage, steps through reveals ([data-step]), follows the backup links of
- * talk.tex (a goto button jumps to a \hypertarget; Back returns to the frame and step it came
+ * slides.tex (a goto button jumps to a \hypertarget; Back returns to the frame and step it came
  * from), and opens the overview, the speaker notes and the notation. Widgets draw figures with
- * handout/charts.js from window.CCC_DATA and the closed forms in handout/explorer.js; none
- * solves an equilibrium.
+ * CCC.charts.draw (presentation/charts.js) from the curves in window.CCC_DATA.fig, which build.py
+ * computes from the closed forms of the paper (presentation/figdata.py); a widget reads those
+ * curves and solves nothing.
  * Keys: Right, Space, PageDown next; Left, PageUp previous; Home, End; O overview; N notes;
  * G notation; T theme; F fullscreen; R reset the slide; Escape back from a backup or close.
  * ES2019, no modules, no network. Exposes window.DECK for inspection.
@@ -17,6 +18,7 @@
   window.addEventListener('error', function (e) { errors.push(String(e.message)); });
   window.addEventListener('unhandledrejection', function (e) { errors.push(String(e.reason)); });
   var doc = document.documentElement, D = window.CCC_DATA, META = window.CCC_DECK || {}, NOTES = window.CCC_NOTES || {};
+  var TOTAL = META.total || 20;
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -66,8 +68,8 @@
     });
     steps[index] = step;
     var num = s.dataset.num;
-    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / 16).toFixed(1) + '%');
-    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / 16');
+    if (!backup) s.style.setProperty('--progress', (100 * Number(num) / TOTAL).toFixed(1) + '%');
+    $('#counter').textContent = backup ? num : (num === '0' ? 'title' : num + ' / ' + TOTAL);
     var ms = maxStep();
     $('#progress-label').textContent = ms ? 'step ' + (step + 1) + ' of ' + (ms + 1) : (backup ? 'backup' : '');
     $('#previous').disabled = index === 0 && step === 0;
@@ -143,14 +145,16 @@
   function closePanel() { var d = $('#panel'); if (d.open) d.close(); $('#stage').focus({ preventScroll: true }); }
   function partName(p) { var x = (META.parts || []).filter(function (q) { return String(q.n) === String(p); })[0]; return x ? x.name : ''; }
   function overview() {
-    var html = '<p class="notes-meta">All 47 frames of the Beamer deck in their order. F10a and F10b share number 10; backups A1 to A29 follow the conclusion.</p>';
+    var html = '<p class="notes-meta">All ' + slides.length + ' frames of the Beamer deck in their order: the title, slides 1 to ' + TOTAL + ', then the backups A1 to A' + (slides.length - mainCount) + '.</p>';
+    var numOf = {};
+    (META.frames || []).forEach(function (f) { numOf[f.id] = f.num; });
     (META.parts || []).forEach(function (p) {
       var items = (META.frames || []).filter(function (f) { return String(f.part) === String(p.n); });
       if (!items.length) return;
       html += '<section class="overview-part"><h3>' + esc(p.n === 'B' ? 'Backups' : p.n + ' · ' + p.name) + '</h3><div class="overview-grid">';
       items.forEach(function (f) {
         var cur = slides[index].id === f.id;
-        html += '<button type="button" class="ov' + (f.backup ? ' backup' : '') + (cur ? ' current' : '') + '" data-jump="' + esc(f.id) + '"' + (cur ? ' aria-current="true"' : '') + '><small>' + esc(f.label) + (f.backup ? ' · from ' + esc(f.origin.toUpperCase()) : '') + '</small>' + esc(f.title) + '</button>';
+        html += '<button type="button" class="ov' + (f.backup ? ' backup' : '') + (cur ? ' current' : '') + '" data-jump="' + esc(f.id) + '"' + (cur ? ' aria-current="true"' : '') + '><small>' + (f.backup ? esc(f.label) + ' · from slide ' + esc(numOf[f.origin]) : f.num === '0' ? 'title' : 'slide ' + esc(f.num)) + '</small>' + esc(f.title) + '</button>';
       });
       html += '</div></section>';
     });
@@ -158,10 +162,9 @@
   }
   function notes() {
     var s = slides[index], n = NOTES[s.dataset.label] || {};
-    panel('Speaker notes · ' + s.dataset.label,
+    panel('Speaker notes · ' + (s.dataset.backup === 'true' ? s.dataset.label : 'slide ' + s.dataset.num),
       '<p class="notes-meta">' + esc(n.timing || '') + (s.dataset.backup === 'true' ? '' : ' · planned ' + esc(s.dataset.minutes) + ' min') + '</p>' +
       '<h3>' + esc(s.dataset.title) + '</h3><div class="notes-body">' + (n.html || '<p>No notes.</p>') + '</div>' +
-      '<p class="notes-meta">Source: ' + esc(n.source || '') + '</p>' +
       (s.dataset.backup === 'true' ? '' : '<p class="notes-meta">' + esc(META.checkpoints || '') + '</p>'));
   }
   function notationTable() {
@@ -175,14 +178,14 @@
       '<span><kbd>→</kbd> <kbd>Space</kbd></span><span>next step, then the next slide</span>' +
       '<span><kbd>←</kbd></span><span>previous step or slide</span>' +
       '<span><kbd>Home</kbd> <kbd>End</kbd></span><span>title, conclusion</span>' +
-      '<span><kbd>O</kbd></span><span>overview of all 47 frames</span>' +
+      '<span><kbd>O</kbd></span><span>overview of all ' + slides.length + ' frames</span>' +
       '<span><kbd>N</kbd></span><span>speaker notes</span>' +
       '<span><kbd>G</kbd></span><span>notation</span>' +
       '<span><kbd>T</kbd></span><span>dark or light theme</span>' +
       '<span><kbd>F</kbd></span><span>fullscreen</span>' +
       '<span><kbd>R</kbd></span><span>reset the slide</span>' +
       '<span><kbd>Esc</kbd></span><span>back from a backup slide, or close a panel</span></div>' +
-      '<p class="notes-meta">Numbers carry their registry key, status and source on hover. Figures read the paper\'s figure data; slider readouts evaluate closed forms and solve no equilibrium.</p>');
+      '<p class="notes-meta">Numbers carry their registry key on hover. Figures draw closed forms of the paper at the benchmark; the slider reads those curves and solves no equilibrium.</p>');
   }
   function fullscreen() {
     try { if (document.fullscreenElement) document.exitFullscreen(); else doc.requestFullscreen(); }
@@ -200,104 +203,153 @@
 
   /* ---------- charts ---------- */
   function tokens() { return CCC.charts.tokens(); }
-  function P() { return CCC.explorer.closedForms ? readInputs() : null; }
-  function readInputs() {
-    var o = {};
-    Object.keys(D.inputs).forEach(function (k) { o[k] = Number(D.inputs[k]); });
-    return o;
+  function reg(key) { return String(D.registry[key].display).replace(/\\%/g, '%'); }
+  function regNum(key) { var p = String(D.registry[key].value).split('/'); return p.length === 2 ? Number(p[0]) / Number(p[1]) : Number(p[0]); }
+  function vline(x, color, dash, xref) {
+    return { type: 'line', xref: xref || 'x', yref: (xref === 'x2' ? 'y2' : 'y') + ' domain', x0: x, x1: x, y0: 0, y1: 1, line: { color: color, width: 1.2, dash: dash || 'dot' }, layer: 'below' };
   }
-  function vline(x, color, dash) {
-    return { type: 'line', xref: 'x', yref: 'y domain', x0: x, x1: x, y0: 0, y1: 1, line: { color: color, width: 1, dash: dash || 'dot' }, layer: 'below' };
+  function band(x0, x1, color, ax) {
+    return { type: 'rect', xref: ax || 'x', yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', x0: x0, x1: x1, y0: 0, y1: 1, fillcolor: color, layer: 'below' };
   }
-  function label(x, text, color, yref, side) {
-    return { text: text, xref: 'x', x: x, yref: yref || 'y domain', y: 1, yanchor: 'bottom', xanchor: side || 'center', yshift: 3, font: { size: 15, color: color } };
+  function label(x, text, color, o) {
+    o = o || {};
+    return { text: text, xref: o.xref || 'x', x: x, yref: (o.yref || 'y') + ' domain', y: o.y === undefined ? 1 : o.y, yanchor: o.yanchor || 'bottom', xanchor: o.xanchor || 'center', yshift: o.yshift === undefined ? 4 : o.yshift, xshift: o.xshift || 0, bgcolor: o.bg, font: { size: o.size || 15, color: color } };
   }
-  /* X1: the target-payoff spread and challenger profit at the prior against strength. */
-  function specX1(t) {
-    var F = D.fig1, half = F.mu.filter(function (m) { return Number(m) === 0.5; })[0];
-    var inp = readInputs();
-    var cd = F.r.map(function (_, i) { return [F.Delta_T[i]]; }), cdB = F.r.map(function (_, i) { return [F.B[half][i]]; });
+  function at(label, x, y, color, o) {
+    o = o || {};
+    return { text: label, xref: o.xref || 'x', x: x, yref: o.yref || 'y', y: y, xanchor: o.xanchor || 'left', yanchor: o.yanchor || 'bottom', xshift: o.xshift || 0, yshift: o.yshift === undefined ? 3 : o.yshift, bgcolor: true, font: { size: o.size || 15, color: color } };
+  }
+  function panelTag(text, xa, ya, t) {
+    return { text: text, panel: true, xref: xa + ' domain', yref: ya + ' domain', x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -62, yshift: 4, font: { size: 16, color: t.ink } };
+  }
+  function pts(xs, ys, k) { return xs.map(function (_, i) { return [ys[i], k]; }); }
+  function line(t, color, dash, w) { return { color: color, width: w || 3, dash: dash || 'solid' }; }
+  function dot(x, y, color, open, xa, ya, size) {
+    return { mode: 'markers', x: x, y: y, showlegend: false, hovertemplate: 'skip', xaxis: xa || 'x', yaxis: ya || 'y', marker: { symbol: open ? 'circle-open' : 'circle', size: size || 9, color: color } };
+  }
+
+  /* F7: the gain of a correctly signed order lies between its floor and its ceiling; compared with k. */
+  function specGain(t) {
+    var G = D.fig.gain, I = D.fig.inputs, B = D.fig.bounds, rS = B.rS_B;
     var traces = [
-      { mode: 'lines', name: 'target-payoff spread Δ<sub>T</sub>', x: F.r, y: F.Delta_T, customdata: cd, line: { color: t.info, width: 3 }, xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<extra>figure data</extra>' },
-      { mode: 'lines', name: 'challenger profit at the prior B<sub>r</sub>(1/2)', x: F.r, y: F.B[half], customdata: cdB, line: { color: t.ink, width: 3 }, xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'B<sub>r</sub>(1/2) = %{customdata[0]}<extra>figure data</extra>' }
+      { mode: 'lines', name: 'ceiling Δ<sub>T</sub>', x: G.r, y: G.upper, customdata: pts(G.r, G.upper), line: line(t, t.info), hovertemplate: '%{customdata[0]} <i>k</i><extra>ceiling Δ<sub>T</sub></extra>' },
+      { mode: 'lines', name: 'floor ρκΔ<sub>T</sub>', x: G.r, y: G.lower, customdata: pts(G.r, G.lower), line: line(t, t.info, 'dash'), hovertemplate: '%{customdata[0]} <i>k</i><extra>floor ρκΔ<sub>T</sub></extra>' }
     ];
-    var layout = { height: 330, margin: { l: 70, r: 20, t: 40, b: 56 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 0.45], anchor: 'y', range: [1, 3.8], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', range: [0, 1.1], title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' } },
-      xaxis2: { domain: [0.57, 1], anchor: 'y2', range: [1, 3.8], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
-      yaxis2: { domain: [0, 1], anchor: 'x2', range: [3.8, 5.2], title: { text: 'profit at the prior <i>B<sub>r</sub></i>(1/2)' } } };
-    [['x', 'y'], ['x2', 'y2']].forEach(function (k, j) {
-      [[inp.r_weak, 'weak <i>r</i><sub>0</sub> = ' + D.inputs.r_weak], [inp.r_strong, 'strong <i>r</i><sub>1</sub> = ' + D.inputs.r_strong]].forEach(function (m) {
-        layout.shapes.push({ type: 'line', xref: k[0], yref: k[1] + ' domain', x0: m[0], x1: m[0], y0: 0, y1: 1, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
-        layout.annotations.push({ text: m[1], xref: k[0], x: m[0], yref: k[1] + ' domain', y: 1, yanchor: 'bottom', yshift: 4, font: { size: 15, color: t.muted } });
-      });
-      layout.annotations.push({ text: j ? '(b)' : '(a)', panel: true, xref: k[0] + ' domain', yref: k[1] + ' domain', x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -62, yshift: 4, font: { size: 16, color: t.ink } });
-    });
+    var layout = { height: 395, margin: { l: 78, r: 20, t: 66, b: 56 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [1, 3.2], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', type: 'log', range: [-1.7, 1.8], tickvals: [0.1, 1, 10], ticktext: ['0.1', '1', '10'], title: { text: 'gain per correct order, in units of <i>k</i>' } } };
+    layout.shapes.push(band(1, G.r_k, t.regionA), band(rS, 3.2, t.regionB));
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: t.cost, width: 2.4 }, layer: 'below' });
+    layout.shapes.push(vline(I.r0, t.muted), vline(I.r1, t.muted));
+    layout.annotations.push(at('cost <i>k</i>', 1.56, 1, t.cost, { xanchor: 'left', yshift: 4 }));
+    layout.annotations.push(label(1.005, 'no trade only', t.muted, { xanchor: 'left', size: 14 }));
+    layout.annotations.push(label((G.r_k + rS) / 2, 'Bounds inconclusive', t.muted, { size: 14, yshift: 24 }));
+    layout.annotations.push(label(3.19, 'full orders only', t.muted, { xanchor: 'right', size: 14 }));
+    layout.annotations.push({ text: 'weak <i>r</i><sub>0</sub>', xref: 'x', x: I.r0, xanchor: 'left', yref: 'y domain', y: 0, yanchor: 'bottom', xshift: 4, yshift: 6, font: { size: 15, color: t.muted } });
+    layout.annotations.push({ text: 'strong <i>r</i><sub>1</sub>', xref: 'x', x: I.r1, xanchor: 'right', yref: 'y domain', y: 0, yanchor: 'bottom', xshift: -4, yshift: 6, font: { size: 15, color: t.muted } });
+    var i0 = G.r.indexOf(I.r0), i1 = G.r.indexOf(I.r1);
+    traces.push(dot([I.r0], [G.upper[i0]], t.info, false), dot([I.r1], [G.lower[i1]], t.info, false));
     return { traces: traces, layout: layout };
   }
-  /* X2: profit at the worst, prior and best belief, with the two cost lines and a strength marker. */
-  function specX2(t, r) {
-    var F = D.fig1, inp = readInputs();
-    var mus = F.mu.slice().sort(function (a, b) { return Number(b) - Number(a); });
-    var names = ['best price <i>M</i>', 'prior 1/2', 'worst price <i>m</i>'], dashes = ['solid', 'dash', 'dot'];
-    var traces = mus.map(function (mu, j) {
-      return { mode: 'lines', name: 'B<sub>r</sub>(' + F.mu_label[mu] + '), ' + names[j].replace(/<[^>]+>/g, ''), x: F.r, y: F.B[mu], customdata: F.r.map(function (_, i) { return [F.B[mu][i]]; }),
-        line: { color: j === 2 ? t.c3 : t.ink, width: 2.6, dash: dashes[j] }, xaxis: 'x', yaxis: 'y', hovertemplate: 'B<sub>r</sub>(' + F.mu_label[mu] + ') = %{customdata[0]}<extra>figure data</extra>' };
+
+  /* F8: the threshold belief against strength, the band of beliefs a price can induce, and the slider's strength. */
+  var beliefsIndex = 180;
+  function specBeliefs(t, i) {
+    var Bf = D.fig.belief, I = D.fig.inputs, B = D.fig.bounds, r = Bf.r[i];
+    var traces = [{ mode: 'lines', name: 'threshold belief τ(<i>r</i>)', x: Bf.r, y: Bf.tau, customdata: pts(Bf.r, Bf.tau), line: line(t, t.cost, 'solid', 3.4), hovertemplate: '%{customdata[0]}<extra>threshold belief τ(<i>r</i>)</extra>' }];
+    var layout = { height: 330, margin: { l: 70, r: 20, t: 44, b: 54 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [1.2, 3.6], dtick: 0.4, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', range: [0.2, 0.8], dtick: 0.1, tick0: 0.2, title: { text: 'belief' } } };
+    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.m, y1: I.M, fillcolor: t.regionB, layer: 'below' });
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dash' }, layer: 'below' });
+    [['prim_r0', 'weak <i>r</i><sub>0</sub>'], ['prim_r1', 'strong <i>r</i><sub>1</sub>'], ['prim_r2', 'still <i>r</i><sub>2</sub>']].forEach(function (mk) {
+      var x = regNum(mk[0]); layout.shapes.push(vline(x, t.muted)); layout.annotations.push(label(x, mk[1], t.muted, { size: 14 }));
     });
-    var c = CCC.explorer.closedForms(inp, r);
-    traces.push({ mode: 'markers', name: 'closed forms at the slider', showlegend: false, x: [r, r, r], y: [c.B_M, c.B_prior, c.B_m],
-      marker: { symbol: 'circle', size: 11, color: t.accent, line: { width: 2, color: t.bg } }, hovertemplate: 'skip' });
-    var layout = { height: 300, margin: { l: 64, r: 16, t: 34, b: 52 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 1], anchor: 'y', range: [1, 3.8], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', range: [0.5, 7.5], dtick: 1, tick0: 1, title: { text: 'expected gross profit <i>B<sub>r</sub></i>(μ)' } } };
-    [[inp.c_H, 'expensive cost <i>c<sub>H</sub></i> = ' + D.inputs.c_H, 'solid'], [inp.c_L, 'cheap cost <i>c<sub>L</sub></i> = ' + D.inputs.c_L, 'dash']].forEach(function (cst) {
-      layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: cst[0], y1: cst[0], line: { color: t.cost, width: 2, dash: cst[2] }, layer: 'below' });
-      layout.annotations.push({ text: cst[1], xref: 'x domain', x: 0, xanchor: 'left', xshift: 8, yref: 'y', y: cst[0], yanchor: 'bottom', yshift: 3, bgcolor: t.bg, font: { size: 15, color: t.cost } });
-    });
-    [[inp.r_weak, 'weak <i>r</i><sub>0</sub>'], [inp.r_strong, 'strong <i>r</i><sub>1</sub>'], [inp.r_collapse, 'stronger still <i>r</i><sub>2</sub>']].forEach(function (mk) {
-      layout.shapes.push(vline(mk[0], t.muted));
-      layout.annotations.push(label(mk[0], mk[1], t.muted));
-    });
+    layout.annotations.push(at('<i>M</i> = ' + reg('M_half_B'), 1.22, I.M, t.info, { yshift: 3 }));
+    layout.annotations.push(at('prior ' + reg('prim_pi'), 1.22, I.pi, t.muted, { yshift: 3 }));
+    layout.annotations.push(at('<i>m</i> = ' + reg('m_half_B'), 1.22, I.m, t.info, { yanchor: 'top', yshift: -3 }));
+    layout.annotations.push(at('<i>r</i><sub>C</sub>', B.rC_B, I.M, t.cost, { xanchor: 'center', yanchor: 'top', yshift: -8 }));
+    traces.push(dot([B.rC_B], [I.M], t.cost, true, 'x', 'y', 11));
     layout.shapes.push({ type: 'line', xref: 'x', yref: 'y domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.accent, width: 2 } });
-    var iL = F.r.length - 1;
-    mus.forEach(function (mu, j) {
-      layout.annotations.push({ text: names[j], xref: 'x', x: Number(F.r[iL]), xanchor: 'right', yref: 'y', y: Number(F.B[mu][iL]), yanchor: 'bottom', yshift: 4, bgcolor: t.bg, font: { size: 14, color: t.muted } });
-    });
-    return { traces: traces, layout: layout, closed: c };
+    traces.push({ mode: 'markers', name: 'slider', showlegend: false, x: [r], y: [Bf.tau[i]], hovertemplate: 'skip', marker: { symbol: 'circle', size: 12, color: t.accent, line: { width: 2, color: t.bg } } });
+    return { traces: traces, layout: layout };
   }
-  /* One panel of Figure 2 (Figure X5 of the talk), keeping every display rule of the builder. */
-  function specX5(t, which) {
-    var full = CCC.charts.builders.fig2(D, t, { narrow: false });
-    var L = full.layout, keepX = which === 'a' ? 'x' : 'x2', keepY = which === 'a' ? 'y' : 'y2';
-    var traces = full.traces.filter(function (tr) { return (tr.xaxis || 'x') === keepX; }).map(function (tr) {
-      var o = {}; Object.keys(tr).forEach(function (k) { o[k] = tr[k]; });
-      o.xaxis = 'x'; o.yaxis = 'y';
-      if (which === 'b' && tr.showlegend === false && tr.legendgroup && !/mixed supports/.test(tr.name)) o.showlegend = true;
-      return o;
+
+  /* F12: entry on each branch at the prior, whole path (a) and the strengths where the thresholds sit (b). */
+  function specCoex(t) {
+    var E = D.fig.entry, I = D.fig.inputs, B = D.fig.bounds;
+    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 292, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], range: [1.2, 3.6], dtick: 0.4, tick0: 1.2 }, { x: 'x2', y: 'y2', dom: [0.57, 1], range: [1.2, 2.4], dtick: 0.2, tick0: 1.2 }];
+    panels.forEach(function (P, j) {
+      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: 'incumbent strength <i>r</i>' } };
+      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, title: { text: j ? '' : 'entry' } };
+      layout.shapes.push(band(B.rA, B.rN, t.regionA, P.x));
+      layout.annotations.push(panelTag(j ? '(b)' : '(a)', P.x, P.y, t));
+      function add(name, br, color, dash, w, tpl, grp) {
+        traces.push({ mode: 'lines', name: name, legendgroup: grp || name, showlegend: j === 0, x: br.r, y: br.y, customdata: pts(br.r, br.y), xaxis: P.x, yaxis: P.y,
+          line: line(t, color, dash, w), hovertemplate: tpl + ' = %{customdata[0]}<extra>' + name + '</extra>' });
+      }
+      add('N: no informed trade', E.N, navy, 'solid', 3.2, 'entry');
+      add('Q: mixed orders at the floor', E.Q, grey, 'dashdot', 3, 'entry');
+      add('R: mixed purchase', E.R, brick, 'dash', 3.2, 'entry');
+      add('F: full purchase', E.F, brick, 'solid', 3.2, 'entry');
+      add('F above r_C', E.F_floor, brick, 'solid', 3.2, 'entry', 'F: full purchase');
+      var end = function (a) { return a[a.length - 1]; };
+      traces.push(dot([end(E.N.r), E.R.r[0], E.F.r[0], end(E.F.r)], [end(E.N.y), E.R.y[0], E.F.y[0], end(E.F.y)], navy, false, P.x, P.y, 8));
+      traces.push(dot([E.Q.r[0], end(E.Q.r), E.F_floor.r[0]], [E.Q.y[0], end(E.Q.y), E.F_floor.y[0]], grey, true, P.x, P.y, 9));
     });
-    var xa = {}, ya = {};
-    Object.keys(L[keepX === 'x' ? 'xaxis2' : 'xaxis2']).forEach(function (k) { xa[k] = L.xaxis2[k]; });
-    xa.domain = [0, 1]; xa.anchor = 'y'; delete xa.matches;
-    Object.keys(L[keepY === 'y' ? 'yaxis' : 'yaxis2']).forEach(function (k) { ya[k] = L[keepY === 'y' ? 'yaxis' : 'yaxis2'][k]; });
-    ya.domain = [0, 1]; ya.anchor = 'x';
-    var shapes = L.shapes.filter(function (s) { return s.yref === 'paper' || s.yref === keepY + ' domain'; }).map(function (s) {
-      var o = {}; Object.keys(s).forEach(function (k) { o[k] = s[k]; }); if (o.yref === keepY + ' domain') o.yref = 'y domain'; return o;
+    var lab = function (txt, x, ax, lvl) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + lvl * 17, xanchor: 'center', font: { size: 14, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
+    lab('<i>r</i><sub>0</sub>', I.r0, 'x', 0); lab('<i>r</i><sub>1</sub>', I.r1, 'x', 0); lab('<i>r</i><sub>2</sub>', I.r2, 'x', 0); lab('<i>r</i><sub>C</sub>', B.rC_B, 'x', 1);
+    lab('<i>r</i><sub>A</sub>', B.rA, 'x2', 0); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2', 1); lab('<i>r</i><sub>N</sub>', B.rN, 'x2', 0); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2', 1); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2', 0);
+    layout.annotations.push({ text: 'N and<br>informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.45, yanchor: 'middle', xanchor: 'center', font: { size: 14, color: t.accent } });
+    layout.annotations.push(at('N: no trade', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yshift: 4 }));
+    layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, E.Q.y[0], t.c3, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 4 }));
+    layout.annotations.push(at('R: mixed purchase', 1.455, 0.455, t.info, { xref: 'x2', yref: 'y2', yshift: 0 }));
+    layout.annotations.push(at('F: full purchase', 1.62, E.F.y[0], t.info, { xref: 'x2', yref: 'y2', yshift: 4 }));
+    layout.annotations.push(at('F', 2.6, E.F.y[0], t.info, { xref: 'x', yref: 'y', xanchor: 'center', yshift: 4 }));
+    layout.annotations.push(at('N', 1.35, E.N.y[0], t.accent, { xref: 'x', yref: 'y', xanchor: 'center', yshift: 4 }));
+    return { traces: traces, layout: layout };
+  }
+
+  /* F13: research intensity (a) and entry (b) on the strengths where the research branch lives. */
+  function specResearch(t) {
+    var R = D.fig.research, I = D.fig.inputs, B = D.fig.bounds, rho = I.rho;
+    var navy = t.accent, brick = t.info, traces = [], layout = { height: 262, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], name: 'λ', ylab: 'research intensity λ', range: [-0.03, 0.42], dtick: 0.1, tick0: 0 },
+      { x: 'x2', y: 'y2', dom: [0.57, 1], name: 'E', ylab: 'total entry', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2 }];
+    panels.forEach(function (P, j) {
+      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: [1.2, 2.0], dtick: 0.2, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } };
+      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: P.ylab } };
+      layout.shapes.push(band(B.rN, 2.0, t.regionC, P.x));
+      layout.annotations.push(panelTag(j ? '(b)' : '(a)', P.x, P.y, t));
+      var zero = j ? rho : 0, cap = j ? R.plateau : R.cap_value, ys = j ? R.branch.entry : R.branch.lambda;
+      traces.push({ mode: 'lines', name: 'zero research', legendgroup: 'zero', showlegend: j === 0, x: R.zero.r, y: R.zero.r.map(function () { return zero; }), xaxis: P.x, yaxis: P.y, line: line(t, navy), customdata: R.zero.r.map(function () { return [zero]; }), hovertemplate: P.name + ' = %{customdata[0]}<extra>zero research</extra>' });
+      traces.push({ mode: 'lines', name: 'research branch', legendgroup: 'branch', showlegend: j === 0, x: R.branch.r, y: ys, xaxis: P.x, yaxis: P.y, line: line(t, brick, 'dash'), customdata: pts(R.branch.r, ys), hovertemplate: P.name + ' = %{customdata[0]}<extra>research branch</extra>' });
+      traces.push({ mode: 'lines', name: 'research at the cap', legendgroup: 'cap', showlegend: j === 0, x: R.cap.r, y: R.cap.r.map(function () { return cap; }), xaxis: P.x, yaxis: P.y, line: line(t, brick), customdata: R.cap.r.map(function () { return [cap]; }), hovertemplate: P.name + ' = %{customdata[0]}<extra>research at the cap</extra>' });
+      traces.push(dot([B.rN], [zero], navy, false, P.x, P.y, 8), dot([B.res_rR], [ys[0]], brick, false, P.x, P.y, 8), dot([B.res_rcap], [cap], brick, false, P.x, P.y, 8), dot([B.rN], [cap], brick, true, P.x, P.y, 9));
+      [[B.res_rR, 'r<sub>R</sub>', 0], [B.res_rcap, 'r̄<sub>R</sub>', 0], [B.rN, 'r<sub>N</sub>', 1]].forEach(function (mk) {
+        layout.shapes.push(vline(mk[0], t.muted, 'dot', P.x));
+        layout.annotations.push({ text: mk[1].replace(/^r/, '<i>r</i>').replace('r̄', '<i>r̄</i>'), xref: P.x, x: mk[0], yref: P.y + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + mk[2] * 17, xanchor: 'center', font: { size: 14, color: t.muted } });
+      });
+      layout.annotations.push({ text: 'beyond <i>r</i><sub>N</sub>', xref: P.x, x: (B.rN + 2.0) / 2, yref: P.y + ' domain', y: 0.5, yanchor: 'middle', xanchor: 'center', font: { size: 15, color: t.muted } });
     });
-    var anns = L.annotations.filter(function (a) { return !a.panel && (a.yref === 'y domain'); });
-    return { traces: traces, layout: { height: 360, margin: { l: 64, r: 20, t: 36, b: 56 }, xaxis: xa, yaxis: ya, shapes: shapes, annotations: anns } };
+    layout.annotations.push(at('cap λ̄ = ' + reg('res_cap'), 1.21, D.fig.research.cap_value, t.muted, { yshift: 4, size: 14 }));
+    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 1.2, x1: B.res_rcap, y0: R.cap_value, y1: R.cap_value, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
+    layout.annotations.push(at('zero research', 1.21, 0, t.accent, { yshift: 5, size: 14 }));
+    layout.annotations.push(at('research branch', 1.58, 0.14, t.info, { yshift: 0, size: 14 }));
+    layout.annotations.push(at('zero research', 1.21, I.rho, t.accent, { xref: 'x2', yref: 'y2', yshift: 5, size: 14 }));
+    layout.annotations.push(at('research branch', 1.50, 0.40, t.info, { xref: 'x2', yref: 'y2', yshift: 0, size: 14 }));
+    layout.annotations.push(at(reg('res_entry_rR'), B.res_rR - 0.012, R.branch.entry[0], t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yanchor: 'top', yshift: -8, size: 14 }));
+    layout.annotations.push(at(reg('res_entry_cap'), B.res_rcap, R.plateau, t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 8, size: 14 }));
+    return { traces: traces, layout: layout };
   }
-  function bigger(spec, height) {
-    spec.layout.height = height;
-    spec.layout.margin = { l: 70, r: 20, t: 40, b: 60 };
-    return spec;
-  }
+
   var chartState = {};
   function drawChart(el, spec, key) {
     var st = chartState[key] || (chartState[key] = { hidden: {} });
     st.width = 0;
     st.zoom = 1.4; // slides are read from a distance: draw narrow and scale up
+    if (el.classList.contains('nolegend')) spec.traces.forEach(function (tr) { tr.showlegend = false; });
     CCC.charts.draw(el, spec, tokens(), st);
     el.setAttribute('data-mounted', 'true');
     return st;
@@ -305,11 +357,11 @@
 
   /* ---------- widgets ---------- */
   var INFOSETS = {
-    seller: 'Seller: commits to the sale rule, a cash second-price auction with reserve p, before any trading. The rule is public.',
-    investor: 'Investor: knows the challenger\'s value θ. Trades the target\'s stock against noise traders; has no control rights and cannot bid.',
-    makers: 'Market makers: see only total order flow, not who traded. Price the share at expected sale proceeds, which anticipates entry.',
-    challenger: 'Challenger: sees the stock price and its own cost C, never the order flow, θ or R. Paying C reveals θ and permits a bid.',
-    bidders: 'Bidders: the incumbent knows its value R ~ U[0, r], and r is public. A prepared challenger knows θ. Both bid truthfully.'
+    seller: 'Seller: announces the sale rule, a cash second-price auction with reserve p, before any trade. The rule is public.',
+    slot: 'Order slot: one public slot. With probability λ the informed investor fills it and sees the challenger’s class; otherwise a liquidity trader fills it. No one sees who filled it.',
+    makers: 'Market makers: see the order X in the slot, not who placed it. They set the stock price P at expected sale proceeds per share, given X.',
+    challenger: 'Challenger: sees the stock price and its own preparation cost. It does not see the order, the class or the incumbent’s value R. Paying the cost reveals its value.',
+    bidders: 'Bidders: the incumbent knows R ∼ U[0, r], and r is public. An entered challenger knows its value. Each bids its value.'
   };
   widgets.infosets = {
     render: function (s) {
@@ -317,7 +369,7 @@
         b.setAttribute('aria-pressed', 'false');
         b.onclick = b.onfocus = b.onmouseenter = function () {
           $$('.tl', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          $('#f4-infoset').textContent = INFOSETS[b.dataset.info];
+          $('#f2-infoset').textContent = INFOSETS[b.dataset.info];
         };
       });
     }
@@ -334,37 +386,58 @@
     },
     reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); $$('tr.hl', s).forEach(function (tr) { tr.classList.remove('hl'); }); }
   };
-  widgets.x1 = { render: function (s) { drawChart($('#x1', s), specX1(tokens()), 'x1'); } };
-  var x2r = null;
-  widgets.x2 = {
+  /* F5: select an order to see the belief it induces under full orders. */
+  widgets.orders = {
     render: function (s) {
-      var input = $('#x2-r', s), inp = readInputs();
-      if (x2r === null) x2r = inp.r_strong;
-      input.value = String(x2r);
-      input.oninput = function () { x2r = Number(input.value); widgets.x2.draw(s); };
-      widgets.x2.draw(s);
+      var say = {
+        '-1': 'A sale comes from the informed investor in class L or from a liquidity sale in either class. The belief falls to m(π) = ' + reg('m_half_B') + ', the floor for every investor strategy.',
+        '0': 'Only a liquidity trader abstains, in both classes with the same chance. The belief stays at the prior ' + reg('prim_pi') + '.',
+        '1': 'A buy comes from the informed investor in class H or from a liquidity buy in either class. The belief rises to M(π) = ' + reg('M_half_B') + ', the ceiling for every investor strategy.'
+      };
+      var pos = { '-1': regNum('m_half_B'), '0': 0.5, '1': regNum('M_half_B') };
+      var pick = function (o) {
+        $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.order === o)); });
+        $$('[data-order]', $('.t-orders', s)).forEach(function (c) { c.classList.toggle('hl', c.dataset.order === o); });
+        var pin = $('#f5-pin', s); pin.hidden = false; pin.style.left = (100 * pos[o]).toFixed(2) + '%';
+        $('#f5-say', s).textContent = say[o];
+      };
+      $$('.segmented button', s).forEach(function (b) { b.onclick = function () { pick(b.dataset.order); }; });
+      widgets.orders.pick = pick;
+    },
+    reset: function (s) {
+      $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+      $$('.hl', s).forEach(function (c) { c.classList.remove('hl'); });
+      $('#f5-pin', s).hidden = true; $('#f5-say', s).textContent = 'Select an order to see where the belief goes.';
+    }
+  };
+  widgets.gain = { render: function (s) { drawChart($('#gain', s), specGain(tokens()), 'gain'); } };
+  widgets.beliefs = {
+    render: function (s) {
+      var input = $('#beliefs-r', s);
+      input.value = String(beliefsIndex);
+      input.oninput = function () { beliefsIndex = Number(input.value); widgets.beliefs.draw(s); };
+      widgets.beliefs.draw(s);
     },
     draw: function (s) {
-      var spec = specX2(tokens(), x2r), c = spec.closed, inp = readInputs();
-      drawChart($('#x2', s), spec, 'x2');
-      $('#x2-r-value', s).textContent = x2r.toFixed(2);
-      var f = function (x) { return x.toFixed(3); };
-      var chip = function (ok, text, margin) { return '<span class="chip ' + (ok ? 'ok' : 'no') + '">' + text + ' ' + (ok ? 'holds' : 'fails') + ' (' + (margin >= 0 ? '+' : '−') + Math.abs(margin).toFixed(3) + ')</span>'; };
-      $('#x2-readout', s).innerHTML = '<p>At <i>r</i> = <b>' + x2r.toFixed(2) + '</b>: B<sub>r</sub>(M) = <b>' + f(c.B_M) + '</b>, B<sub>r</sub>(1/2) = <b>' + f(c.B_prior) + '</b>, B<sub>r</sub>(m) = <b>' + f(c.B_m) + '</b></p>' +
-        '<p>' + chip(inp.c_L < c.B_m, 'cheap entry after any price', c.B_m - inp.c_L) + chip(c.B_M > inp.c_H, 'expensive entry after the best price', c.B_M - inp.c_H) + '</p>' +
-        '<p class="note">Closed forms at the declared inputs with only r moving: a fixed-order calculation, not an equilibrium solver.</p>';
+      var Bf = D.fig.belief, I = D.fig.inputs, i = beliefsIndex, r = Bf.r[i];
+      drawChart($('#beliefs', s), specBeliefs(tokens(), i), 'beliefs');
+      $('#beliefs-r-value', s).textContent = r.toFixed(2);
+      var clears = Bf.tau[i] <= I.M, f = function (x) { return x.toFixed(3); };
+      $('#beliefs-readout', s).innerHTML =
+        '<p>At <i>r</i> = <b>' + r.toFixed(2) + '</b>: τ(<i>r</i>) = <b>' + f(Bf.tau[i]) + '</b>, top belief <i>M</i> = <b>' + reg('M_half_B') + '</b>, <i>B<sub>r</sub></i>(<i>M</i>) = <b>' + f(Bf.B_M[i]) + '</b> against <i>c<sub>H</sub></i> = <b>' + reg('prim_cH') + '</b></p>' +
+        '<p><span class="chip ' + (clears ? 'ok' : 'no') + '">' + (clears ? 'a buy order clears the threshold' : 'no order clears the threshold') + '</span></p>' +
+        '<p class="note">Values on the plotted curve; the ceiling <i>r</i><sub>C</sub> = ' + reg('rC_B') + '.</p>';
     },
-    reset: function () { x2r = readInputs().r_strong; }
+    reset: function () { beliefsIndex = 180; }
   };
   widgets.controls = {
     render: function (s) {
       var pick = function (row) {
         $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.row === row)); });
         $$('tr[data-row]', s).forEach(function (tr) { tr.classList.toggle('hl', tr.dataset.row === row); });
-        var tr = $('tr[data-row="' + row + '"]', s), vals = $$('td .q', tr).map(function (q) { return q.dataset.shown; });
-        var status = $('.status', tr) ? $('.status', tr).innerHTML : '';
-        var bar = function (lab, v) { return '<div class="bar-row"><span>' + lab + '</span><div class="bar' + (row === 'eq' ? ' info' : '') + '" style="transform:scaleX(' + Number(v) + ')"></div><span class="num">' + v + '</span></div>'; };
-        $('#f11-bars', s).innerHTML = '<p class="small">Entry</p>' + bar('<i>r</i><sub>0</sub>', vals[0]) + bar('<i>r</i><sub>1</sub>', vals[1]) + '<span class="status">' + status + '</span>';
+        var tr = $('tr[data-row="' + row + '"]', s), vals = $$('td .q', tr).map(function (q) { return { shown: q.textContent, v: regNum(q.dataset.q) }; });
+        var bar = function (lab, o) { return '<div class="bar-row"><span>' + lab + '</span><div class="bar' + (row === 'eq' ? ' info' : '') + '" style="transform:scaleX(' + o.v + ')"></div><span class="num">' + o.shown + '</span></div>'; };
+        $('#f11-bars', s).innerHTML = '<p class="small">Entry</p>' + bar('<i>r</i><sub>0</sub>', vals[0]) + bar('<i>r</i><sub>1</sub>', vals[1]);
       };
       $$('.segmented button', s).forEach(function (b) { b.onclick = function () { pick(b.dataset.row); }; });
       pick(($('.segmented button[aria-pressed="true"]', s) || {}).dataset ? $('.segmented button[aria-pressed="true"]', s).dataset.row : 'eq');
@@ -383,10 +456,8 @@
     },
     reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); $$('.hl', s).forEach(function (c) { c.classList.remove('hl'); }); }
   };
-  widgets.x3 = { render: function (s) { drawChart($('#x3', s), bigger(CCC.charts.builders.fig3(D, tokens(), { narrow: false }), 300), 'x3'); } };
-  widgets.x4 = { render: function (s) { drawChart($('#x4', s), bigger(CCC.charts.builders.fig4(D, tokens(), { narrow: false }), 330), 'x4'); } };
-  widgets.x5a = { render: function (s) { drawChart($('#x5a', s), specX5(tokens(), 'a'), 'x5a'); } };
-  widgets.x5b = { render: function (s) { drawChart($('#x5b', s), specX5(tokens(), 'b'), 'x5b'); } };
+  widgets.coex = { render: function (s) { drawChart($('#coex', s), specCoex(tokens()), 'coex'); } };
+  widgets.research = { render: function (s) { drawChart($('#research', s), specResearch(tokens()), 'research'); } };
   widgets.notation = {
     render: function (s) {
       var host = $('#notation-table', s);
@@ -397,23 +468,15 @@
       host.dataset.done = '1';
     }
   };
-  widgets.columns = {
-    render: function (s) {
-      $$('[data-col]', s).forEach(function (c) {
-        c.onmouseenter = function () { $$('[data-col]', s).forEach(function (x) { x.style.opacity = x.dataset.col === c.dataset.col ? '1' : '0.4'; }); };
-        c.onmouseleave = function () { $$('[data-col]', s).forEach(function (x) { x.style.opacity = ''; }); };
-      });
-    }
-  };
 
   function renderWidget(force) {
     var s = slides[index], w = widgets[s.dataset.widget];
     if (!w || !w.render) return;
-    if (!force && s.dataset.rendered === '1' && !/^x/.test(s.dataset.widget)) return;
+    if (!force && s.dataset.rendered === '1' && !/^(gain|beliefs|coex|research)$/.test(s.dataset.widget)) return;
     try { w.render(s); s.dataset.rendered = '1'; } catch (e) { errors.push(s.id + ': ' + e.message); }
   }
 
-  /* Disclosures inside slides: the arithmetic line of F7 and the signal-grid line of F13. */
+  /* Disclosures inside slides, and the link buttons. */
   document.addEventListener('click', function (e) {
     var tg = e.target.closest && e.target.closest('[data-toggle]');
     if (tg) {
@@ -470,6 +533,11 @@
   });
   var start = location.hash.slice(1);
   go(ids.indexOf(start) >= 0 ? start : 0, { step: 0, keepHash: true });
+  /* ?print=1 (the PDF export) draws every figure and table before the browser prints. */
+  if (/[?&]print=1/.test(location.search)) {
+    slides.forEach(function (s, i) { go(i, { step: 'last', keepHash: true }); });
+    go(0, { step: 0, keepHash: true });
+  }
   window.DECK = {
     go: go, next: next, previous: previous, back: back, follow: follow, reset: reset, setTheme: setTheme,
     slides: function () { return slides.map(function (s) { return s.id; }); },

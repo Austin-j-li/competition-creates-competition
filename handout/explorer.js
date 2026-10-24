@@ -1,590 +1,333 @@
-/* Explore incumbent strength for the handout.
+/* Explore the benchmark path of the order-slot version.
  *
- * Shared formula block (keep byte-identical with the docstring in handout/crosscheck.py):
+ * A slider on incumbent strength r. At each r the widget lists the equilibria that Appendix A4 of
+ * the manuscript gives on the benchmark path (prior 1/2; an indifferent investor may mix; an
+ * indifferent high-cost challenger prepares), and for the chosen one it shows the posterior after
+ * each order against the preparation threshold, entry and the price after each order, total entry
+ * and high-class ownership. The chart below is Figure 3: entry along the whole path, every form.
  *
- *   t_0 = p (1 - p/r);  t_H = r/2 + p^2/(2r);  t_L = ell - (ell^2 - p^2)/(2r)
- *   g_H = h - r/2 - p^2/(2r);  g_L = (ell^2 - p^2)/(2r);  Delta_T = (r - ell)^2/(2r)
- *   m = 1/(1 + exp(2/b));  M = 1 - m;  B(mu) = g_L + mu (g_H - g_L)
- *   tau = (c_H - g_L)/(g_H - g_L)
- *     c_H > B(M): E = rho, O_H = rho/2, x* = +inf, alpha_H = alpha_L = 0
- *     c_H <= B(m): x* = -inf, alpha_H = alpha_L = 1, E = 1, O_H = 1/2
- *     otherwise  : x* = (b/2) log(tau/(1-tau)); alpha_H = S_Laplace(x*-1); alpha_L = S_Laplace(x*+1)
- *                  E = rho + (1-rho)/2 (alpha_H + alpha_L);  O_H = (rho + (1-rho) alpha_H)/2
- *   chips: A1 = B(m) - c_L; A2a = c_H - B(1/2); A2b = B(M) - c_H;
- *          A3_no_trade = k - Delta_T; A3_full = (1 - 1/b) rho m Delta_T - k
- *   rr(d) = ell + d + sqrt(d^2 + 2 ell d); r_k = rr(k); r_N = rr(2k/rho); r_U = rr(k/((1-1/b) rho m))
- *   r_C = (M h - c_H + sqrt((M h - c_H)^2 + M ((1-M) ell^2 - p^2))) / M
- *
- * Sources: paper/main.md eq. (4), (7), (12), conditions (A1) to (A3), and (A.1), (A.2).
- * This is arithmetic on the sufficient conditions of Proposition 2 and the full-order
- * candidate (12) at the benchmark primitives with only r moving. It never solves for an
- * equilibrium; validated branches live in window.CCC_DATA.fig2 (Figure 2).
+ * All arithmetic is CCC.slot in figures.js: the closed forms of the manuscript at the registry
+ * declarations. The marked strengths are registry rows. Nothing here searches for an equilibrium.
  * ES2019, no modules. Exposes window.CCC.explorer.
  */
 (function () {
   'use strict';
 
-  var TOL = 1e-9;
-  var R_MIN = 1.0;
-  var R_MAX = 3.8;
-  var R_STEP = 0.005;
-
   var CCC = (window.CCC = window.CCC || {});
-  var state = {
-    initialised: false,
-    P: null,
-    r: NaN,
-    lastSelfTest: null,
-    el: {},
-    markerIndex: -1,
-    rafPending: false,
-    pendingR: NaN,
-    mounted: false
-  };
+  var STEP = 0.005;
+  var NAMES = { N: 'No informed trade', R: 'Mixed purchase that recruits', F: 'Full purchase', Q: 'Mixed orders at the floor' };
+  var ORDERS = [['-1', 'Sale'], ['0', 'No order'], ['1', 'Purchase']];
+  var state = { initialised: false, P: null, r: NaN, preset: null, sel: null, el: {}, rafPending: false, pendingR: NaN };
 
-  /* ---------- inputs ---------- */
-
-  function readInputs() {
-    var D = window.CCC_DATA || {};
-    var src = D.inputs || {};
-    var keys = ['h', 'ell', 'p', 'rho', 'c_L', 'c_H', 'b', 'k', 'r_weak', 'r_strong', 'r_collapse'];
-    var P = {};
-    for (var i = 0; i < keys.length; i++) {
-      P[keys[i]] = Number(src[keys[i]]);
-      if (!isFinite(P[keys[i]])) {
-        throw new Error('[ccc] explorer: missing or non-numeric input ' + keys[i]);
-      }
-    }
-    return P;
+  function d6(v) { return isFinite(v) ? v.toFixed(6) : '—'; }
+  function prob(v) {
+    if (Math.abs(v - 1) < 1e-12) return 'probability one';
+    if (Math.abs(v) < 1e-12) return 'probability zero';
+    return 'probability ' + d6(v);
   }
-
-  /* ---------- closed forms ---------- */
-
-  function closedForms(P, r) {
-    var h = P.h, ell = P.ell, p = P.p, rho = P.rho, c_L = P.c_L, c_H = P.c_H, b = P.b, k = P.k;
-    var inDomain = p < ell && ell < r && r < h;
-    var t_0 = p * (1 - p / r);
-    var t_H = r / 2 + p * p / (2 * r);
-    var t_L = ell - (ell * ell - p * p) / (2 * r);
-    var g_H = h - r / 2 - p * p / (2 * r);
-    var g_L = (ell * ell - p * p) / (2 * r);
-    var Delta_T = (r - ell) * (r - ell) / (2 * r);
-    var m = 1 / (1 + Math.exp(2 / b));
-    var M = 1 - m;
-    var B = function (mu) { return g_L + mu * (g_H - g_L); };
-    var tau = (c_H - g_L) / (g_H - g_L);
-    var x_star, alpha_H, alpha_L;
-    if (c_H > B(M)) {
-      x_star = Infinity; alpha_H = 0; alpha_L = 0;
-    } else if (c_H <= B(m)) {
-      x_star = -Infinity; alpha_H = 1; alpha_L = 1;
-    } else {
-      x_star = (b / 2) * Math.log(tau / (1 - tau));
-      alpha_H = x_star <= 1 ? 1 - Math.exp((x_star - 1) / b) / 2 : Math.exp(-(x_star - 1) / b) / 2;
-      alpha_L = x_star <= -1 ? 1 - Math.exp((x_star + 1) / b) / 2 : Math.exp(-(x_star + 1) / b) / 2;
-    }
-    var E = rho + (1 - rho) / 2 * (alpha_H + alpha_L);
-    var O_H = (rho + (1 - rho) * alpha_H) / 2;
-    var rr = function (d) { return ell + d + Math.sqrt(d * d + 2 * ell * d); };
-    var r_k = rr(k);
-    var r_N = rr(2 * k / rho);
-    var r_U = rr(k / ((1 - 1 / b) * rho * m));
-    var disc = (M * h - c_H) * (M * h - c_H) + M * ((1 - M) * ell * ell - p * p);
-    var r_C = disc >= 0 ? (M * h - c_H + Math.sqrt(disc)) / M : NaN;
-    var chips = {
-      A1: { ok: c_L < B(m), margin: B(m) - c_L },
-      A2a: { ok: B(0.5) < c_H, margin: c_H - B(0.5) },
-      A2b: { ok: c_H < B(M), margin: B(M) - c_H },
-      A3_no_trade: { ok: Delta_T < k, margin: k - Delta_T },
-      A3_full: { ok: (1 - 1 / b) * rho * m * Delta_T > k, margin: (1 - 1 / b) * rho * m * Delta_T - k }
-    };
-    return {
-      r: r, inDomain: inDomain,
-      t_0: t_0, t_H: t_H, t_L: t_L, g_H: g_H, g_L: g_L, Delta_T: Delta_T,
-      m: m, M: M, B_m: B(m), B_prior: B(0.5), B_M: B(M),
-      tau: tau, x_star: x_star, alpha_H: alpha_H, alpha_L: alpha_L, E: E, O_H: O_H,
-      chips: chips, r_k: r_k, r_N: r_N, r_U: r_U, r_C: r_C
-    };
-  }
-
-  /* ---------- formatting ---------- */
-
-  function fmt6(v) {
-    if (v === Infinity) return '∞';
-    if (v === -Infinity) return '−∞';
-    if (typeof v !== 'number' || isNaN(v)) return '—';
-    return v.toFixed(6);
-  }
-
-  function fmtSigned(v) {
-    if (!isFinite(v)) return fmt6(v);
-    var s = fmt3(Math.abs(v));
-    return (v < 0 ? '−' : '+') + s;
-  }
-
-  /* Display-only rounding; the exact value stays in each node's title attribute.
-     Three decimals, or three significant digits for magnitudes below 0.01 so that a
-     small nonzero margin never reads as zero. */
-  function fmt3(v) {
-    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
-    var a = Math.abs(v);
-    if (a !== 0 && a < 0.01) return v.toPrecision(3);
-    return v.toFixed(3);
-  }
-
-  /* Slider value: two decimals, a third only when the 0.005 step needs it. */
-  function fmtR(v) {
-    if (typeof v !== 'number' || !isFinite(v)) return fmt6(v);
-    var s = v.toFixed(3);
-    return s.charAt(s.length - 1) === '0' ? v.toFixed(2) : s;
-  }
-
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text !== undefined && text !== null) e.textContent = String(text);
     return e;
   }
+  function markup(tag, cls, html) { var e = el(tag, cls); e.innerHTML = html; return e; }
+  function fmtR(v) { var s = v.toFixed(3); return s.charAt(s.length - 1) === '0' ? v.toFixed(2) : s; }
 
-  /* ---------- tokens and layout helpers (fall back if charts.js lacks them) ---------- */
+  /* ---------- the sentence that describes one form ---------- */
+  function describe(f, P) {
+    var low;
+    if (f.t === 0) low = 'class <i>L</i> abstains';
+    else if (Math.abs(f.sellL - 1) < 1e-12) low = 'class <i>L</i> sells with probability one';
+    else low = 'class <i>L</i> sells with ' + prob(f.sellL);
+    if (f.id === 'N') return 'Neither class trades. Every order leaves the posterior at the prior and has the same price, so only a zero-cost challenger prepares.';
+    if (f.id === 'R') return 'Class <i>H</i> buys with ' + prob(f.buyH) + ' and otherwise abstains; ' + low + '. ' +
+      (Math.abs(f.mu['1'] - f.A.tau) < 1e-9 ? 'A purchase just reaches the threshold and recruits a high-cost challenger; the purchase earns exactly the trading cost.'
+        : 'A purchase lifts the posterior above the threshold and recruits a high-cost challenger.');
+    if (f.id === 'Q') return 'Class <i>H</i> buys and class <i>L</i> sells, each with ' + prob(f.buyH) + '. The purchase posterior stays below the threshold, so no order recruits a high-cost challenger.';
+    return 'Class <i>H</i> buys with probability one; ' + low + '. ' + (f.e['1'] === 1
+      ? 'A purchase reaches the top posterior and recruits a high-cost challenger.'
+      : 'Above the entry ceiling the top posterior falls short of the threshold, so no order recruits a high-cost challenger and entry is at its floor.');
+  }
 
-  var TOKEN_DEFAULTS = {
-    '--bg': '#ffffff', '--surface': '#f7f7fa', '--ink': '#161616', '--muted': '#6b6b76',
-    '--grid': '#e6e6ec', '--line': '#d8d8e0', '--accent': '#5b3df5', '--accent-soft': '#ece7ff',
-    '--c2': '#c98a1b', '--c3': '#5f6b7a', '--region-a': 'rgba(91,61,245,0.08)',
-    '--region-b': 'rgba(201,138,27,0.10)', '--region-c': 'rgba(95,107,122,0.10)',
-    '--font-sans': 'ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
-    '--font-mono': 'ui-monospace, SFMono-Regular, Menlo, monospace'
-  };
-
-  function tokens() {
-    if (CCC.charts && typeof CCC.charts.tokens === 'function') {
-      try { return CCC.charts.tokens(); } catch (e) { /* fall through */ }
+  /* ---------- the posterior after each order, on a belief line ---------- */
+  function beliefLine(f, P) {
+    var wide = !state.el.root || state.el.root.clientWidth > 560;
+    var W = wide ? 640 : 380, H = 118, lo = 0.2, hi = 0.8, L = 16, R = 16, y = 70, gap = wide ? 52 : 40;
+    function X(v) { return L + (v - lo) / (hi - lo) * (W - L - R); }
+    var tau = f.A.tau, out = '';
+    out += '<rect class="bl-band" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32"/>';
+    out += '<line class="bl-axis" x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '"/>';
+    for (var v = lo; v <= hi + 1e-9; v += (wide ? 0.1 : 0.2)) {
+      out += '<line class="bl-tick" x1="' + X(v).toFixed(1) + '" x2="' + X(v).toFixed(1) + '" y1="' + y + '" y2="' + (y + 5) + '"/>' +
+        '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 19) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
     }
-    var cs = getComputedStyle(document.documentElement);
-    var t = {};
-    Object.keys(TOKEN_DEFAULTS).forEach(function (name) {
-      var v = cs.getPropertyValue(name).trim();
-      t[name.slice(2).replace(/-([a-z0-9])/g, function (_, c) { return c.toUpperCase(); })] = v || TOKEN_DEFAULTS[name];
+    out += '<line class="bl-tau" x1="' + X(tau).toFixed(1) + '" x2="' + X(tau).toFixed(1) + '" y1="' + (y - 30) + '" y2="' + (y + 8) + '"/>' +
+      '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold τ(r)</text>';
+    out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="start">m</text>' +
+      '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="end">M</text>';
+    var used = [];
+    ORDERS.forEach(function (o, i) {
+      var mu = f.mu[o[0]], x = X(mu), lift = 0;
+      used.forEach(function (u) { if (Math.abs(u - x) < gap) lift += 1; });
+      used.push(x);
+      var cls = 'bl-mark ' + (o[0] === '1' ? (f.e['1'] === 1 ? 'bl-recruit' : 'bl-buy') : (o[0] === '-1' ? 'bl-sell' : 'bl-none'));
+      var path = o[0] === '1' ? 'M' + x + ',' + (y - 8) + 'l7,12h-14z' : (o[0] === '-1' ? 'M' + x + ',' + (y + 8) + 'l7,-12h-14z' : '');
+      out += path ? '<path class="' + cls + '" d="' + path + '"/>' : '<circle class="' + cls + '" cx="' + x.toFixed(1) + '" cy="' + y + '" r="6"/>';
+      out += '<text class="bl-mark-label" x="' + x.toFixed(1) + '" y="' + (y - 14 - 13 * lift) + '" text-anchor="middle">' + o[1].toLowerCase() + '</text>';
     });
-    return t;
+    return '<svg class="belief-line" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Posterior after each order against the threshold">' + out + '</svg>';
   }
 
-  function tok(t, key, fallbackVar) {
-    if (t && t[key] !== undefined) return t[key];
-    var alt = key.replace(/[A-Z0-9]/g, function (c) { return '-' + c.toLowerCase(); });
-    if (t && t[alt] !== undefined) return t[alt];
-    return TOKEN_DEFAULTS[fallbackVar];
-  }
-
-  function baseLayout(t) {
-    if (CCC.charts && typeof CCC.charts.baseLayout === 'function') {
-      try { return CCC.charts.baseLayout(t); } catch (e) { /* fall through */ }
+  /* ---------- Figure 3: entry along the benchmark path ---------- */
+  function path(D, t, opts) {
+    var S = CCC.slot, P = S.inputs(D), narrow = !!(opts && opts.narrow), C = CCC.charts, ENT = S.plateau(P), traces = [];
+    function seg(name, group, lo, hi, fy, color, dash, width, show, ax, ay, n) {
+      var xs = S.grid(lo, hi, n || 80);
+      return { type: 'scatter', mode: 'lines', name: name, legendgroup: group, showlegend: show, x: xs, y: xs.map(fy),
+        line: { color: color, dash: dash || 'solid', width: width || 2.6 }, xaxis: ax, yaxis: ay,
+        customdata: xs.map(function (r) { return [fy(r).toFixed(6)]; }), hovertemplate: 'entry = %{customdata[0]}<extra>' + group + '</extra>' };
     }
-    var ink = tok(t, 'ink', '--ink'), grid = tok(t, 'grid', '--grid'), muted = tok(t, 'muted', '--muted');
-    return {
-      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
-      font: { family: tok(t, 'fontSans', '--font-sans'), color: ink, size: 13 },
-      margin: { l: 56, r: 16, t: 28, b: 48 },
-      xaxis: { gridcolor: grid, zeroline: false, ticks: 'outside', tickcolor: grid, linecolor: grid, color: muted, title: { font: { color: ink } } },
-      yaxis: { gridcolor: grid, zeroline: false, ticks: 'outside', tickcolor: grid, linecolor: grid, color: muted, title: { font: { color: ink } } },
-      hoverlabel: { font: { family: tok(t, 'fontSans', '--font-sans') } },
-      uirevision: 'ccc'
-    };
-  }
-
-  function brokenSeries(xs, ys, gap, jump) {
-    if (CCC.charts && typeof CCC.charts.brokenSeries === 'function') {
-      try { return CCC.charts.brokenSeries(xs, ys, gap, jump); } catch (e) { /* fall through */ }
+    function dot(x, y, color, open, ax, ay, key, size, symbol) {
+      return { type: 'scatter', mode: 'markers', name: key, showlegend: false, x: [x], y: [y], xaxis: ax, yaxis: ay,
+        marker: { symbol: symbol || (open ? 'circle-open' : 'circle'), size: size || 8, color: color }, hovertemplate: 'skip' };
     }
-    var X = [], Y = [];
-    for (var i = 0; i < xs.length; i++) {
-      if (i > 0) {
-        var dx = xs[i] - xs[i - 1];
-        var dy = Math.abs(ys[i] - ys[i - 1]);
-        if (dx > gap || dy > jump) { X.push(xs[i - 1] + dx / 2); Y.push(null); }
-      }
-      X.push(xs[i]); Y.push(ys[i]);
-    }
-    return { x: X, y: Y };
-  }
-
-  /* ---------- chart builder ---------- */
-
-  function rGrid() {
-    var xs = [];
-    var n = Math.round((R_MAX - R_MIN) / R_STEP);
-    for (var i = 0; i <= n; i++) {
-      var r = Math.round((R_MIN + i * R_STEP) * 1000) / 1000;
-      if (r > state.P.ell) xs.push(r);
-    }
-    return xs;
-  }
-
-  function builder(D, t, opts) {
-    var narrow = !!(opts && opts.narrow);
-    var P = state.P;
-    var xs = rGrid();
-    var Es = [], hover = [];
-    for (var i = 0; i < xs.length; i++) {
-      var cf = closedForms(P, xs[i]);
-      Es.push(cf.E);
-      hover.push('τ = ' + fmt6(cf.tau) + '<br>x* = ' + fmt6(cf.x_star) +
-        '<br>α_H = ' + fmt6(cf.alpha_H) + '<br>α_L = ' + fmt6(cf.alpha_L));
-    }
-    var b0 = closedForms(P, P.r_strong);
-    var broken = brokenSeries(xs, Es, R_STEP * 1.5, 0.02);
-    var hoverBroken = [];
-    for (var j = 0, k2 = 0; j < broken.x.length; j++) {
-      if (broken.y[j] === null) { hoverBroken.push(''); } else { hoverBroken.push(hover[k2++]); }
-    }
-    var accent = tok(t, 'accent', '--accent'), c2 = tok(t, 'c2', '--c2'), c3 = tok(t, 'c3', '--c3');
-    var muted = tok(t, 'muted', '--muted'), ink = tok(t, 'ink', '--ink');
-    var traces = [
-      {
-        type: 'scatter', mode: 'lines', name: 'full-order candidate E(r), eq. (12)',
-        x: broken.x, y: broken.y, connectgaps: false,
-        line: { color: accent, width: 2, dash: 'dash' },
-        customdata: hoverBroken,
-        hovertemplate: 'E = %{y:.6f}<br>%{customdata}<extra></extra>'
-      },
-      {
-        type: 'scatter', mode: 'lines', name: 'entry floor ρ',
-        x: [R_MIN, R_MAX], y: [P.rho, P.rho],
-        line: { color: c3, width: 1.4, dash: 'dot' },
-        hovertemplate: 'ρ = %{y:.6f}<extra></extra>'
-      }
-    ];
-    var fo = D && D.fig2 && D.fig2.branches && D.fig2.branches.full_orders;
-    if (fo && fo.r && fo.E) {
-      traces.push({
-        type: 'scatter', mode: 'markers', name: 'accepted full-order branch (Figure 2)',
-        x: fo.r, y: fo.E,
-        marker: { color: c2, size: 4, opacity: 0.75 },
-        hovertemplate: 'accepted E = %{y:.6f}<extra></extra>'
+    [['x', 'y', true], ['x2', 'y2', false]].forEach(function (p) {
+      var ax = p[0], ay = p[1], show = p[2];
+      traces.push(seg('N: no informed trade', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
+      traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.info, 'dash', 2.6, show, ax, ay));
+      traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
+      traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
+      traces.push(seg('Q: mixed orders at the floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
+      traces.push(seg('T: threshold branch (if an indifferent challenger may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
+      traces.push(dot(P.rA, P.entry_rA, t.info, false, ax, ay, 'R'));
+      traces.push(dot(P.rF, ENT, t.info, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, ENT, t.info, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, P.rho, t.info, true, ax, ay, 'F'));
+      // Q excludes both endpoints (large open circles); T, under challenger mixing, includes r_J;
+      // N includes r_N, so its filled marker is drawn last, inside Q's open circle.
+      traces.push(dot(P.rN, P.rho, t.c3, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.c3, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.muted, false, ax, ay, 'T', 7, 'diamond'));
+      traces.push(dot(P.rN, P.rho, t.ink, false, ax, ay, 'N', 6));
+    });
+    var r = isFinite(state.r) ? state.r : P.r0;
+    var eqs = S.equilibria(P, r);
+    var layout = C.baseLayout(t);
+    layout.height = narrow ? 640 : 400;
+    layout.margin.t = 46;
+    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6] });
+    layout.yaxis = C.axis(t, { title: { text: 'entry' }, range: [0.15, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.25, 2.35], tickvals: [1.4, 1.6, 1.8, 2, 2.2] });
+    layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.12, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.margin.l = 64;
+    C.twoPanels(layout, narrow);
+    if (!narrow) { layout.xaxis.domain = [0, 0.36]; layout.xaxis2.domain = [0.46, 1]; }
+    ['x', 'x2'].forEach(function (ax) {
+      var ay = ax === 'x2' ? 'y2' : 'y';
+      layout.shapes.push({ type: 'rect', xref: ax, yref: ay + ' domain', x0: P.rA, x1: P.rN, y0: 0, y1: 1, fillcolor: t.regionB, line: { width: 0 }, layer: 'below' });
+      var marks = ax === 'x' ? [['rA', 'A', 0], ['rN', 'N', 1], ['rC', 'C', 0]] : [['rA', 'A', 0], ['rF', 'F', 1], ['rN', 'N', 0], ['rJ', 'J', 1], ['rS', 'S', 0]];
+      marks.forEach(function (m) {
+        layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.line, width: 1, dash: '2 3' }, layer: 'below' });
+        layout.annotations.push({ text: '<i>r</i><sub>' + m[1] + '</sub>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
+          xanchor: 'center', yanchor: 'bottom', yshift: 2 + 15 * m[2], font: { size: 11, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
       });
-    }
-    var layout = baseLayout(t);
-    layout.height = 450;
-    layout.xaxis = Object.assign({}, layout.xaxis, {
-      title: { text: 'Incumbent strength r', font: { color: ink } }, range: [R_MIN, R_MAX],
-      tickvals: [1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
+      layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.ink, width: 1.4 } });
     });
-    layout.yaxis = Object.assign({}, layout.yaxis, {
-      title: { text: 'entry E under full orders', font: { color: ink } }, range: [0.12, 0.60],
-      tickvals: [0.25, 0.35, 0.45, 0.55]
+    layout.annotations.push({ text: 'T endpoint (challenger mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
+      xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
+    layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
+    eqs.forEach(function (f) {
+      var color = f.id === 'N' ? t.ink : (f.id === 'Q' ? t.c3 : t.info);
+      ['x', 'x2'].forEach(function (ax) {
+        traces.push({ type: 'scatter', mode: 'markers', name: 'at r: ' + f.id, showlegend: false, x: [r], y: [f.E], xaxis: ax, yaxis: ax === 'x2' ? 'y2' : 'y',
+          marker: { symbol: 'diamond', size: 11, color: color, line: { color: t.bg, width: 1.5 } }, customdata: [[f.E.toFixed(6)]],
+          hovertemplate: 'entry = %{customdata[0]}<extra>' + NAMES[f.id] + ' at the chosen r</extra>' });
+      });
     });
-    layout.hovermode = 'x unified';
-    layout.showlegend = true;
-    layout.legend = { orientation: 'h', x: 0, y: 1.08, yanchor: 'bottom', font: { size: 11, color: muted }, bgcolor: 'rgba(0,0,0,0)' };
-    layout.margin = Object.assign({}, layout.margin, { t: 30 });
-    var regA = tok(t, 'regionA', '--region-a'), regB = tok(t, 'regionB', '--region-b');
-    var shapes = [
-      { type: 'rect', xref: 'x', yref: 'paper', x0: R_MIN, x1: b0.r_k, y0: 0, y1: 1, fillcolor: regA, line: { width: 0 }, layer: 'below' },
-      { type: 'rect', xref: 'x', yref: 'paper', x0: b0.r_U, x1: R_MAX, y0: 0, y1: 1, fillcolor: regB, line: { width: 0 }, layer: 'below' },
-      { type: 'line', xref: 'x', yref: 'paper', x0: b0.r_C, x1: b0.r_C, y0: 0, y1: 1, line: { color: muted, width: 1, dash: 'dot' }, layer: 'below' }
-    ];
-    var rNow = isFinite(state.r) ? state.r : P.r_weak;
-    shapes.push({ type: 'line', xref: 'x', yref: 'paper', x0: rNow, x1: rNow, y0: 0, y1: 1, line: { color: ink, width: 1.2 } });
-    state.markerIndex = shapes.length - 1;
-    layout.shapes = shapes;
-    layout.annotations = [
-      { xref: 'x', yref: 'paper', x: (R_MIN + b0.r_k) / 2, y: 0.03, text: 'Δ<sub>T</sub> &lt; k', showarrow: false, font: { size: 10, color: muted } },
-      { xref: 'x', yref: 'paper', x: (b0.r_U + b0.r_C) / 2, y: 0.03, text: '(1−1/b)ρmΔ<sub>T</sub> &gt; k', showarrow: false, font: { size: 10, color: muted } },
-      { xref: 'x', yref: 'paper', x: b0.r_C, y: 1.0, text: 'r<sub>C</sub>', showarrow: false, xanchor: 'left', yanchor: 'bottom', font: { size: 11, color: muted } }
-    ];
+    C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
 
   /* ---------- DOM ---------- */
-
-  /* Labels are fixed markup with real subscripts; the locked faces carry every glyph. */
-  var READOUTS = [
-    ['t_0', 't<sub>0</sub>'], ['t_H', 't<sub>H</sub>'], ['t_L', 't<sub>L</sub>'], ['g_H', 'g<sub>H</sub>'], ['g_L', 'g<sub>L</sub>'], ['Delta_T', 'Δ<sub>T</sub>'],
-    ['B_m', 'B<sub>r</sub>(m)'], ['B_prior', 'B<sub>r</sub>(1/2)'], ['B_M', 'B<sub>r</sub>(M)'],
-    ['tau', 'τ'], ['x_star', 'x*'], ['alpha_H', 'α<sub>H</sub>'], ['alpha_L', 'α<sub>L</sub>'], ['E', 'E'], ['O_H', 'O<sub>H</sub>']
-  ];
-
-  var CHIPS = [
-    ['A1', '(A1) c<sub>L</sub> &lt; B<sub>r</sub>(m)'],
-    ['A2a', '(A2) B<sub>r</sub>(1/2) &lt; c<sub>H</sub>'],
-    ['A2b', '(A2) c<sub>H</sub> &lt; B<sub>r</sub>(M)'],
-    ['A3_no_trade', '(A3) no trade: Δ<sub>T</sub> &lt; k'],
-    ['A3_full', '(A3) full orders: (1−1/b)ρmΔ<sub>T</sub> &gt; k']
-  ];
-
-  var BOUNDS = [['r_k', 'r(k)'], ['r_N', 'r<sub>N</sub>'], ['r_U', 'r<sub>U</sub>'], ['r_C', 'r<sub>C</sub>']];
-
-  function markup(tag, cls, html) {
-    var e = el(tag, cls);
-    e.innerHTML = html;
-    return e;
+  /* Named presets set the exact registry strength. sub: the symbol's subscript (none for a plain
+     strength); exact: whether the registry display is the exact value (a declared fraction) or a
+     rounded root, printed with an approximation sign. */
+  function presets(P) {
+    return [{ sub: '0', key: 'r0', exact: true }, { sub: 'A', key: 'rA', exact: false }, { sub: '', key: 'r160', exact: true },
+      { sub: 'N', key: 'rN', exact: false }, { sub: 'S', key: 'rS', exact: false }, { sub: '1', key: 'r1', exact: true },
+      { sub: 'C', key: 'rC', exact: false }, { sub: '2', key: 'r2', exact: true }].map(function (p) {
+      p.value = P[p.key];
+      p.display = P.display[p.key];
+      return p;
+    });
+  }
+  function presetLabel(p, html) {
+    var sym = p.sub ? (html ? '<i>r</i><sub>' + p.sub + '</sub>' : 'r_' + p.sub) : '';
+    var r = html ? '<i>r</i>' : 'r', rel = p.exact ? ' = ' : ' ≈ ';
+    return sym ? r + ' = ' + sym + rel + p.display : r + ' = ' + p.display;
   }
 
   function buildDOM(root) {
     var P = state.P;
     root.classList.add('explorer');
     while (root.firstChild) root.removeChild(root.firstChild);
-
     var head = el('div', 'explorer-head');
-    head.appendChild(el('span', 'explorer-title', 'Explore incumbent strength'));
-    var badge = el('span', 'badge');
-    badge.hidden = true;
-    head.appendChild(badge);
+    head.appendChild(el('span', 'explorer-title', 'Explore the benchmark path'));
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
-    var label = el('label', 'explorer-label', 'Incumbent strength r');
-    label.setAttribute('for', 'explorer-r');
-    controls.appendChild(label);
+    var lab = el('label', 'explorer-label', 'Incumbent strength r');
+    lab.setAttribute('for', 'explorer-r');
+    controls.appendChild(lab);
     var range = document.createElement('input');
-    range.type = 'range'; range.id = 'explorer-r'; range.min = String(R_MIN); range.max = String(R_MAX);
-    range.step = String(R_STEP); range.value = String(P.r_weak);
-    range.setAttribute('aria-label', 'Incumbent strength r');
+    // step "any": a named preset keeps its exact registry strength; free movement snaps to a STEP grid in JS.
+    range.type = 'range'; range.id = 'explorer-r'; range.min = String(P.r0); range.max = String(P.r2); range.step = 'any';
+    range.value = String(P.r160);
     controls.appendChild(range);
-    var rValue = el('output', 'live explorer-r-value', fmtR(P.r_weak));
-    rValue.title = String(P.r_weak);
-    rValue.setAttribute('for', 'explorer-r');
-    controls.appendChild(rValue);
-    var presets = el('div', 'explorer-presets');
-    [['r = ' + P.r_weak, P.r_weak], ['r = ' + P.r_strong, P.r_strong], ['r = ' + P.r_collapse, P.r_collapse]].forEach(function (pr) {
-      var btn = el('button', 'preset', pr[0]);
-      btn.type = 'button';
-      btn.addEventListener('click', function () { setR(pr[1]); });
-      presets.appendChild(btn);
+    var out = el('output', 'live explorer-r-value', '');
+    out.setAttribute('for', 'explorer-r');
+    controls.appendChild(out);
+    var pre = el('div', 'explorer-presets');
+    presets(P).forEach(function (p) {
+      var b = markup('button', 'preset', p.sub ? '<i>r</i><sub>' + p.sub + '</sub>' : '<i>r</i> = ' + p.display);
+      b.type = 'button';
+      b.title = presetLabel(p, false);
+      b.addEventListener('click', function () { setR(p.value, p); });
+      pre.appendChild(b);
     });
-    var resetBtn = el('button', 'preset reset', 'Reset');
-    resetBtn.type = 'button';
-    resetBtn.addEventListener('click', reset);
-    presets.appendChild(resetBtn);
-    controls.appendChild(presets);
+    controls.appendChild(pre);
     root.appendChild(controls);
 
-    var warn = el('p', 'explorer-warning', 'outside the maintained ordering (1): p < ℓ < r < h');
-    warn.hidden = true;
-    root.appendChild(warn);
-
-    var readouts = el('div', 'explorer-readouts');
-    var readoutEls = {};
-    READOUTS.forEach(function (pair) {
+    var readouts = el('div', 'explorer-readouts'), cells = {};
+    [['Delta', 'Δ<sub>T</sub>(r)'], ['gH', 'g<sub>H</sub>'], ['gL', 'g<sub>L</sub>'], ['Bhalf', 'B<sub>r</sub>(1/2)'], ['BM', 'B<sub>r</sub>(M)'], ['tau', 'τ(r)']].forEach(function (c) {
       var cell = el('div', 'readout');
-      cell.appendChild(markup('span', 'readout-label', pair[1]));
+      cell.appendChild(markup('span', 'readout-label', c[1]));
       var v = el('span', 'live readout-value', '');
       cell.appendChild(v);
       readouts.appendChild(cell);
-      readoutEls[pair[0]] = v;
+      cells[c[0]] = v;
     });
     root.appendChild(readouts);
 
-    var chips = el('div', 'explorer-chips');
-    var chipEls = {};
-    CHIPS.forEach(function (pair) {
-      var c = markup('span', 'chip na', pair[1]);
-      chips.appendChild(c);
-      chipEls[pair[0]] = c;
-    });
-    root.appendChild(chips);
+    var picker = el('div', 'eq-picker');
+    picker.setAttribute('role', 'group');
+    picker.setAttribute('aria-label', 'Equilibria at this strength');
+    root.appendChild(picker);
+    var detail = el('div', 'eq-detail');
+    detail.setAttribute('aria-live', 'polite');
+    root.appendChild(detail);
 
-    var bounds = el('div', 'explorer-bounds');
-    var boundEls = {};
-    BOUNDS.forEach(function (pair) {
-      var bnd = el('span', 'bound');
-      bnd.appendChild(markup('span', 'bound-label', pair[1] + ' = '));
-      var v = el('span', 'live bound-value', '');
-      bnd.appendChild(v);
-      bounds.appendChild(bnd);
-      boundEls[pair[0]] = v;
-    });
-    bounds.appendChild(el('span', 'bounds-note', 'from (A.1) and (A.2)'));
-    root.appendChild(bounds);
-
+    var fig = el('figure', 'chart explorer-figure');
+    fig.tabIndex = 0;
     var mount = el('div', 'chart-mount');
     mount.id = 'chart-explorer';
-    mount.setAttribute('aria-label', 'Full-order candidate entry against incumbent strength');
-    root.appendChild(mount);
+    mount.setAttribute('aria-label', 'Entry against incumbent strength in every equilibrium of the benchmark path');
+    fig.appendChild(mount);
+    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the benchmark path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N has no informed trade, R is a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders without recruitment. The thin dashed T branch exists only when an indifferent high-cost challenger may prepare with any probability. Filled markers belong to a branch and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. Under challenger mixing, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
+    root.appendChild(fig);
 
-    root.appendChild(el('p', 'explorer-note',
-      'These formulas check Proposition 2 and preparation under full investor orders, ' +
-      'holding all parameters except incumbent strength fixed. They do not solve for an equilibrium. ' +
-      'Figure 2 distinguishes certified equilibria from numerical search results.'));
-
-    state.el = { root: root, badge: badge, range: range, rValue: rValue, warn: warn,
-      readouts: readoutEls, chips: chipEls, bounds: boundEls, mount: mount };
-
-    range.addEventListener('input', function () { scheduleUpdate(Number(range.value)); });
-    range.addEventListener('change', function () { scheduleUpdate(Number(range.value)); });
-  }
-
-  /* ---------- updates ---------- */
-
-  function isBenchmark(r) {
-    var P = state.P;
-    return Number(r) === Number(P.r_weak) || Number(r) === Number(P.r_strong) || Number(r) === Number(P.r_collapse);
+    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };
+    range.addEventListener('input', function () { schedule(snap(Number(range.value))); });
+    range.addEventListener('change', function () { schedule(snap(Number(range.value))); });
+    picker.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('button[data-eq]') : null;
+      if (!b) return;
+      state.sel = b.getAttribute('data-eq');
+      render(state.r);
+    });
   }
 
   function render(r) {
-    var P = state.P, E = state.el;
+    var S = CCC.slot, P = state.P, E = state.el;
     state.r = r;
-    var cf = closedForms(P, r);
-    E.rValue.textContent = fmtR(r);
-    E.rValue.title = String(r);
-    E.warn.hidden = cf.inDomain;
-    READOUTS.forEach(function (pair) {
-      var v = cf[pair[0]];
-      var node = E.readouts[pair[0]];
-      node.textContent = cf.inDomain ? fmt3(v) : '—';
-      node.title = cf.inDomain ? String(v) : '';
-    });
-    CHIPS.forEach(function (pair) {
-      var chip = cf.chips[pair[0]];
-      var node = E.chips[pair[0]];
-      node.className = 'chip ' + (cf.inDomain ? (chip.ok ? 'pass' : 'fail') : 'na');
-      node.innerHTML = pair[1] + ' · margin ' + (cf.inDomain ? fmtSigned(chip.margin) : '—');
-      node.title = cf.inDomain ? String(chip.margin) : '';
-    });
-    BOUNDS.forEach(function (pair) {
-      var node = E.bounds[pair[0]];
-      node.textContent = fmt3(cf[pair[0]]);
-      node.title = String(cf[pair[0]]);
-    });
-    var showBadge = cf.inDomain && isBenchmark(r) && state.lastSelfTest && state.lastSelfTest.ok;
-    E.badge.hidden = !showBadge;
-    E.badge.textContent = showBadge ? "Benchmark verified against the paper's numerical results" : '';
-    moveMarker(r);
+    if (state.preset && state.preset.value !== r) state.preset = null;
+    var A = S.auction(P, r), eqs = S.equilibria(P, r);
+    var shown = state.preset ? presetLabel(state.preset, false) : 'r = ' + fmtR(r);
+    E.out.innerHTML = state.preset ? presetLabel(state.preset, true) : fmtR(r);
+    E.out.title = shown;
+    if (E.range.value !== String(r)) E.range.value = String(r);
+    E.range.setAttribute('aria-valuetext', shown);
+    E.cells.Delta.textContent = d6(A.Delta);
+    E.cells.gH.textContent = d6(A.gH);
+    E.cells.gL.textContent = d6(A.gL);
+    E.cells.Bhalf.textContent = d6(A.B(0.5));
+    E.cells.BM.textContent = d6(A.B(P.M));
+    E.cells.tau.textContent = d6(A.tau);
+    if (!eqs.some(function (f) { return f.id === state.sel; })) state.sel = eqs.length ? eqs[eqs.length - 1].id : null;
+    E.picker.innerHTML = '<span class="eq-picker-label">' + (eqs.length > 1 ? eqs.length + ' equilibria at this strength' : 'One equilibrium at this strength') + '</span>' +
+      eqs.map(function (f) {
+        return '<button type="button" data-eq="' + f.id + '" aria-pressed="' + (f.id === state.sel ? 'true' : 'false') + '"><b>' + f.id + '</b> ' + NAMES[f.id] + '</button>';
+      }).join('');
+    var f = eqs.filter(function (x) { return x.id === state.sel; })[0];
+    if (!f) { E.detail.innerHTML = ''; moveMarker(); return; }
+    var rows = ORDERS.map(function (o) {
+      var x = o[0];
+      return '<tr><th scope="row">' + o[1] + '</th><td class="num">' + d6(f.fH[x]) + '</td><td class="num">' + d6(f.fL[x]) + '</td><td class="num">' + d6(f.mu[x]) +
+        '</td><td class="num">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
+    }).join('');
+    E.detail.innerHTML = '<p class="eq-summary">' + describe(f, P) + '</p>' + beliefLine(f, P) +
+      '<div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
+      '<th class="num">Posterior μ</th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="eq-totals"><span>Entry <b class="live">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
+      '<span>Gross profit at the top posterior <b class="live">' + d6(A.B(P.M)) + '</b> against the high cost <b>' + P.display.c_H + '</b></span></p>';
+    moveMarker();
   }
 
-  /* The builder draws the marker at state.r, so a redraw moves it. SVG redraws are cheap. */
-  function moveMarker(r) {
-    if (!state.el.mount || !CCC.charts || typeof CCC.charts.update !== 'function') return;
-    try { CCC.charts.update('explorer'); } catch (e) { /* chart not mounted yet */ }
+  function moveMarker() {
+    if (!CCC.charts || typeof CCC.charts.update !== 'function') return;
+    try { CCC.charts.update('explorer'); } catch (e) { /* not mounted yet */ }
   }
 
-  function scheduleUpdate(r) {
+  /* A dragged value snaps to the STEP grid from r_0, so the printed strength is the computed one. */
+  function snap(v) {
+    var P = state.P;
+    var g = Math.round((Math.round((v - P.r0) / STEP) * STEP + P.r0) * 1000) / 1000;
+    state.preset = null;
+    state.el.range.value = String(g);
+    return g;
+  }
+
+  function schedule(r) {
     state.pendingR = r;
     if (state.rafPending) return;
     state.rafPending = true;
-    window.requestAnimationFrame(function () {
-      state.rafPending = false;
-      render(state.pendingR);
-    });
+    window.requestAnimationFrame(function () { state.rafPending = false; render(state.pendingR); });
   }
 
-  function setR(r) {
-    var v = Number(r);
+  function setR(r, preset) {
+    var v = Math.min(state.P.r2, Math.max(state.P.r0, Number(r)));
     if (!isFinite(v)) return;
-    v = Math.min(R_MAX, Math.max(R_MIN, v));
-    if (state.el.range) state.el.range.value = String(v);
+    state.preset = preset && preset.value === v ? preset : null;
+    state.el.range.value = String(v);
     render(v);
   }
 
-  function reset() { setR(state.P.r_weak); }
-
-  /* ---------- self-test against the embedded CSV rows ---------- */
-
-  function num(s) {
-    if (typeof s === 'number') return s;
-    var t = String(s).trim().toLowerCase();
-    if (t === 'inf' || t === 'unattainable') return Infinity;
-    if (t === '-inf' || t === 'always') return -Infinity;
-    return Number(s);
-  }
-
-  function selfTest() {
-    var D = window.CCC_DATA || {};
-    var T = D.tables || {};
-    var P = state.P || readInputs();
-    var diffs = [], n = 0, worst = { name: null, diff: 0 };
-    function compare(name, ours, theirs) {
-      n += 1;
-      var ok, d;
-      if (!isFinite(ours) || !isFinite(theirs)) { ok = ours === theirs; d = ok ? 0 : Infinity; }
-      else { d = Math.abs(ours - theirs); ok = d <= TOL; }
-      if (d > worst.diff) worst = { name: name, diff: d };
-      if (!ok) diffs.push({ name: name, ours: ours, csv: theirs, diff: d });
-    }
-    var i, row, cf;
-    var prim = (T.auction_primitives || []).filter(function (r) { return r.parameter_set === 'base'; });
-    for (i = 0; i < prim.length; i++) {
-      row = prim[i]; cf = closedForms(P, num(row.r));
-      ['t_0', 't_H', 't_L', 'g_H', 'g_L', 'Delta_T', 'B_m', 'B_prior', 'B_M'].forEach(function (col) {
-        compare('auction_primitives r=' + row.r + ' ' + col, cf[col], num(row[col]));
-      });
-    }
-    if (!prim.length) diffs.push({ name: 'auction_primitives missing', ours: NaN, csv: NaN, diff: Infinity });
-    var ctrl = (T.equilibrium_controls || []).filter(function (r) {
-      return r.parameter_set === 'base' && r.noise === 'Laplace' && r.cost_law === 'atoms' && r.accepted === 'true';
-    });
-    var wanted = [['feedback', P.r_strong], ['feedback', P.r_collapse], ['frozen', P.r_weak]];
-    wanted.forEach(function (w) {
-      var hit = null;
-      for (i = 0; i < ctrl.length; i++) {
-        if (ctrl[i].experiment === w[0] && Number(ctrl[i].r) === Number(w[1])) { hit = ctrl[i]; break; }
-      }
-      if (!hit) { diffs.push({ name: 'equilibrium_controls missing ' + w[0] + ' r=' + w[1], ours: NaN, csv: NaN, diff: Infinity }); return; }
-      cf = closedForms(P, Number(hit.r));
-      var cols = w[0] === 'feedback' ? ['E', 'O_H', 'tau', 'x_star'] : ['E', 'O_H', 'x_star'];
-      cols.forEach(function (col) { compare('equilibrium_controls ' + w[0] + ' r=' + hit.r + ' ' + col, cf[col], num(hit[col])); });
-    });
-    var ext = (T.extensions || []).filter(function (r) {
-      return r.parameter_set === 'base' && r.noise === 'Laplace' && r.cost_law === 'atoms';
-    });
-    for (i = 0; i < ext.length; i++) {
-      row = ext[i];
-      var weak = closedForms(P, num(row.r_weak)), strong = closedForms(P, num(row.r_strong));
-      compare('extensions zeta_L', strong.chips.A1.margin, num(row.zeta_L));
-      compare('extensions zeta_H0', weak.chips.A2a.margin, num(row.zeta_H0));
-      compare('extensions zeta_H1', strong.chips.A2b.margin, num(row.zeta_H1));
-      compare('extensions zeta_0', weak.chips.A3_no_trade.margin, num(row.zeta_0));
-      compare('extensions zeta_1', strong.chips.A3_full.margin, num(row.zeta_1));
-    }
-    if (!ext.length) diffs.push({ name: 'extensions missing', ours: NaN, csv: NaN, diff: Infinity });
-    var thr = {};
-    (T.thresholds || []).forEach(function (r) { thr[r.boundary] = r; });
-    cf = closedForms(P, P.r_strong);
-    [['pooling_unique_sufficient', 'r_k'], ['pooling_existence', 'r_N'], ['full_orders_unique_sufficient', 'r_U'],
-      ['high_cost_ceiling', 'r_C'], ['m', 'm'], ['M', 'M']].forEach(function (pair) {
-      if (thr[pair[0]]) compare('thresholds ' + pair[0], cf[pair[1]], num(thr[pair[0]].value));
-      else diffs.push({ name: 'thresholds missing ' + pair[0], ours: NaN, csv: NaN, diff: Infinity });
-    });
-    var result = { ok: diffs.length === 0, n: n, worst: worst, diffs: diffs };
-    state.lastSelfTest = result;
-    if (!state.selfTestLogged) {
-      state.selfTestLogged = true;
-      if (result.ok) console.log('[ccc] self-test passed (' + n + ' comparisons)');
-      else console.error('[ccc] self-test FAILED', diffs);
-    }
-    return result;
-  }
-
-  /* ---------- lifecycle ---------- */
-
-  function mountChart() {
-    var mount = state.el.mount;
-    if (!mount) return;
-    if (!CCC.charts || typeof CCC.charts.register !== 'function') {
-      mount.textContent = 'The chart could not be drawn; the readouts above remain live.';
-      return;
-    }
-    CCC.charts.register('explorer', builder);
-    CCC.charts.mount('explorer');
-    state.mounted = !!CCC.charts.status().explorer.mounted;
-  }
+  var lastWide = null;
+  window.addEventListener('resize', function () {
+    if (!state.initialised) return;
+    var wide = state.el.root.clientWidth > 560;
+    if (wide !== lastWide) { lastWide = wide; render(state.r); }
+  });
 
   function init() {
     if (state.initialised) return;
     var root = document.getElementById('explorer');
-    if (!root) return;
-    state.P = readInputs();
+    if (!root || !CCC.slot) return;
+    state.P = CCC.slot.inputs();
     buildDOM(root);
-    selfTest();
-    render(state.P.r_weak);
-    mountChart();
+    setR(state.P.r160, presets(state.P).filter(function (p) { return p.key === 'r160'; })[0]);
+    if (CCC.charts && typeof CCC.charts.register === 'function') {
+      CCC.charts.register('explorer', path, 3);
+      CCC.charts.mount('explorer');
+    }
     state.initialised = true;
   }
 
   function status() {
-    return { initialised: state.initialised, r: state.r, mounted: CCC.charts && CCC.charts.status().explorer ? CCC.charts.status().explorer.mounted : state.mounted, selfTest: state.lastSelfTest };
+    var st = CCC.charts && CCC.charts.status ? CCC.charts.status().explorer : null;
+    return { initialised: state.initialised, r: state.r, selected: state.sel, mounted: !!(st && st.mounted) };
   }
 
-  CCC.explorer = { init: init, setR: setR, reset: reset, selfTest: selfTest, status: status, closedForms: closedForms, builder: builder };
+  CCC.explorer = { init: init, setR: setR, status: status, path: path, select: function (id) { state.sel = id; render(state.r); } };
 })();

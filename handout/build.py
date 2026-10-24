@@ -1,10 +1,12 @@
-"""Assemble docs/index.html from handout/ sources and the repo's validated CSVs.
+"""Assemble docs/index.html from handout/ sources, the slot registry and the slot manuscript.
 
-    python3 handout/build.py [--out docs] [--verify-vendor] [--allow-missing-pdf] [--quiet]
+    python3 handout/build.py [--out docs] [--paper-cache DIR] [--verify-vendor] [--quiet]
 
-Steps and checks follow handout/README.md. Every check prints ``PASS``/``FAIL`` like
-numerics/verify.py; the exit code is nonzero if any check fails. Stdlib only, no numerics imports.
-The output carries no timestamps, so rebuilds from unchanged inputs are byte-identical.
+Steps and checks follow handout/README.md. Every check prints ``PASS``/``FAIL``; the exit code is
+nonzero if any check fails, and the output directory is then left unchanged. Stdlib only, apart
+from latexmk, which builds the two PDFs outside the repository (``--paper-cache``, by default a
+folder in the system temporary directory). The build never writes inside slot/manuscript/.
+The page carries no timestamps, so rebuilds from unchanged inputs are byte-identical.
 """
 from __future__ import annotations
 
@@ -12,11 +14,13 @@ import argparse
 import hashlib
 import html
 import json
+import os
 import platform
 import re
 import shutil
+import subprocess
 import sys
-from decimal import Decimal
+import tempfile
 import urllib.request
 import zlib
 from base64 import b64encode
@@ -26,20 +30,18 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
-import data as data_mod  # noqa: E402
-import tables_html  # noqa: E402
+import slot_data  # noqa: E402
 
 PLACEHOLDER = re.compile(r"\[\[([A-Za-z0-9_]+)(?::([A-Za-z0-9_]+))?\]\]")
-TABLE_SLOT = re.compile(r"^[ \t]*<!-- @@TABLE:([a-z_]+)@@ -->[ \t]*$", re.M)
 SLOT = re.compile(r"<!-- @@([A-Z_]+)@@ -->")
 MATH = re.compile(r"((?<!\\)\\\(.*?(?<!\\)\\\)|(?<!\\)\\\[.*?(?<!\\)\\\])", re.S)
 OPEN_INLINE, CLOSE_INLINE = re.compile(r"(?<!\\)\\\("), re.compile(r"(?<!\\)\\\)")
 OPEN_DISPLAY, CLOSE_DISPLAY = re.compile(r"(?<!\\)\\\["), re.compile(r"(?<!\\)\\\]")
-SECTION_ORDER_LAST = "appendix.html"
-CHART_IDS = ("fig1", "fig2", "fig3", "fig4")
-# Published name -> source. The names stay those of the first public release so links keep working.
-PDFS = {"main_filled.pdf": "working_release/main.pdf",
-        "online_appendix_filled.pdf": "working_release/online_appendix.pdf"}
+CHART_IDS = ("payoffs", "beliefs", "research")
+SCRIPTS = (("APP", "app.js"), ("CHARTS", "charts.js"), ("FIGURES", "figures.js"), ("EXPLORER", "explorer.js"))
+MANUSCRIPT = ROOT / "slot" / "manuscript"
+# Published name -> LaTeX source in slot/manuscript/ (both pdfLaTeX, set in its latexmkrc).
+PAPERS = {"paper.pdf": "main.tex", "comparison.pdf": "comparison.tex"}
 
 
 class Report:
@@ -154,106 +156,139 @@ def pdf_facts(path: Path) -> dict:
             "sha256": hashlib.sha256(data).hexdigest(), "created": created}
 
 
+def source_epoch() -> int:
+    """The date the PDFs carry: the last commit that touched slot/manuscript/, or the newest
+    modification time of its changed files when the working tree differs from that commit."""
+    def git(*args: str) -> str:
+        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    try:
+        epoch = int(git("log", "-1", "--format=%ct", "--", "slot/manuscript"))
+        changed = [line[3:] for line in git("status", "--porcelain", "--", "slot/manuscript").splitlines()]
+        times = [int((ROOT / p).stat().st_mtime) for p in changed if (ROOT / p).is_file()]
+        return max([epoch, *times])
+    except (OSError, ValueError, subprocess.CalledProcessError):
+        return int(Path(MANUSCRIPT / "main.tex").stat().st_mtime)
+
+
+def build_papers(rep: Report, cache: Path) -> dict[str, Path]:
+    """Run latexmk for each paper with its output directory outside the repository. The source
+    date fixes the PDF dates and identifiers, so an unchanged manuscript gives the same bytes."""
+    cache.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, SOURCE_DATE_EPOCH=str(source_epoch()), FORCE_SOURCE_DATE="1")
+    built: dict[str, Path] = {}
+    for name, tex in PAPERS.items():
+        log = cache / (Path(tex).stem + ".latexmk.log")
+        try:
+            with log.open("w", encoding="utf-8") as fh:
+                done = subprocess.run(["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error",
+                                       f"-outdir={cache}", tex], cwd=MANUSCRIPT, env=env, stdout=fh,
+                                      stderr=subprocess.STDOUT, check=False)
+            ok = done.returncode == 0
+        except OSError as exc:
+            ok = False
+            rep.note(f"latexmk: {exc}")
+        pdf = cache / (Path(tex).stem + ".pdf")
+        if rep.check(ok and pdf.is_file(), f"latexmk built slot/manuscript/{tex} (log {log})"):
+            built[name] = pdf
+    return built
+
+
 def paper_panel(facts: dict) -> str:
     """The Read-the-paper tab, written from the PDF facts. No date or count is typed by hand."""
-    main, oa = facts["main_filled.pdf"], facts["online_appendix_filled.pdf"]
+    main, note = facts["paper.pdf"], facts["comparison.pdf"]
 
-    def card(name: str, label: str, f: dict) -> str:
-        return (f'<article class="pdf-card"><h3>{label}</h3>'
+    def card(name: str, label: str, blurb: str, f: dict) -> str:
+        return (f'<article class="pdf-card"><h3>{label}</h3><p>{blurb}</p>'
                 f'<p class="meta"><span class="num">{f["pages"]} pages</span> · <span class="num">{round(f["bytes"] / 1024)} KB</span> · PDF</p>'
                 f'<p class="hash"><span>sha256</span> <code>{f["sha256"]}</code></p>'
                 f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
                 f'<a class="button" href="{name}" download>Download</a></p></article>')
     return (f'<p class="kicker">The paper</p>\n<h2>Read the paper</h2>\n'
-            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}: the working-paper revision. '
-            f'Manuscript {main["pages"]} pages, online appendix {oa["pages"]} pages.</p>\n'
-            f'<div class="pdf-cards">{card("main_filled.pdf", "Manuscript", main)}{card("online_appendix_filled.pdf", "Online appendix", oa)}</div>\n'
+            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}. '
+            f'Manuscript with appendix {main["pages"]} pages; comparison note {note["pages"]} pages.</p>\n'
+            '<div class="pdf-cards">'
+            + card("paper.pdf", "Manuscript", "The paper with its appendix: every result in full, with proofs.", main)
+            + card("comparison.pdf", "Comparison note",
+                   "The order slot of this version beside the Laplace order flow of the earlier version.", note)
+            + '</div>\n'
             '<section class="viewer" data-viewer aria-label="Inline PDF viewer"><div class="viewer-bar" role="group" aria-label="Choose a document">'
             '<span class="viewer-label">Inline viewer</span>'
-            '<button type="button" data-viewer-src="main_filled.pdf" data-viewer-title="Manuscript" aria-pressed="true">Manuscript</button>'
-            '<button type="button" data-viewer-src="online_appendix_filled.pdf" data-viewer-title="Online appendix" aria-pressed="false">Online appendix</button>'
+            '<button type="button" data-viewer-src="paper.pdf" data-viewer-title="Manuscript" aria-pressed="true">Manuscript</button>'
+            '<button type="button" data-viewer-src="comparison.pdf" data-viewer-title="Comparison note" aria-pressed="false">Comparison note</button>'
             '</div><div class="viewer-frame"></div>'
             '<p class="viewer-note">Some phone browsers do not show a PDF inside a page. Use “Open the PDF” instead.</p></section>\n'
-            '<p class="note">These are the files of the working-paper revision, built from the manuscript master. The build reads the page counts, sizes and hashes above from the files.</p>')
+            '<p class="earlier"><a href="laplace/">Earlier version: Laplace order flow</a></p>')
 
 
 # ----------------------------------------------------------------------------------------------
 # Placeholders
 
 
-def shown_value(row: dict) -> tuple[str, str]:
-    """Display rule for a registry row: ``(text, precision)``. A declaration keeps its declared
-    display; a result shows three decimals of the registry value. Nothing is typed by hand."""
-    if row["status"] == "input":
-        return row["display"], "declared"
-    return tables_html.three_decimals(Decimal(row["value"])), "3"
+def shown_value(row: dict, in_math: bool = False) -> str:
+    """Display rule: the registry display, exactly as the manuscript prints it through \\reg{key}.
+    Outside mathematics the one TeX escape in use, \\%, becomes a plain percent sign."""
+    disp = row["display"]
+    if in_math:
+        return re.sub(r"\\ensuremath\{(.*)\}", r"\1", disp)
+    return disp.replace("\\%", "%")
 
 
-def resolve_placeholders(text: str, registry: dict, manifest: dict, rep: Report, where: str) -> str:
-    """Math-aware `[[name]]` substitution. Returns the new text; records failures on rep.
-
-    Outside math a placeholder becomes a ``span.q`` with its key, status and precision. Inside
-    math it becomes the bare display, and the whole math segment is wrapped in a
-    ``span.q-math`` that lists the keys and displays, so provenance survives rendering."""
+def resolve_placeholders(text: str, registry: dict, rep: Report, where: str) -> str:
+    """Math-aware `[[key]]` substitution against the slot registry. Returns the new text and
+    records failures on rep. Outside math a placeholder becomes a ``span.q`` with its key and exact
+    value. Inside math it becomes the bare display, and the whole math segment is wrapped in a
+    ``span.q-math`` that lists the keys and displays, so the binding survives rendering."""
     problems: list[str] = []
 
-    def display_for(name: str, modifier: str | None, in_math: bool) -> tuple[str, str] | None:
-        if name not in manifest:
-            problems.append(f"unknown placeholder {name}")
+    def display_for(name: str, modifier: str | None, in_math: bool) -> str | None:
+        row = registry.get(name)
+        if row is None:
+            problems.append(f"unknown registry key {name}")
             return None
         if modifier:
             problems.append(f"unknown placeholder modifier {name}:{modifier}")
             return None
-        row = registry.get(name)
-        if row is None or row["status"] == "open" or row["display"] == "[[unresolved]]":
-            problems.append(f"unresolved placeholder {name}")
-            return None
-        disp, precision = shown_value(row)
+        disp = shown_value(row, in_math)
         if "\\" in disp and not in_math:
             problems.append(f"TeX display outside math: {name} = {disp}")
             return None
-        rep.placeholders_used[name] = row["source_file"]
-        return disp, precision
+        rep.placeholders_used[name] = row["source_script"]
+        return disp
 
-    def title_for(row: dict) -> str:
-        return html.escape(f"{row['display']} · {row['status']} · {row['source_file']} · {row['source_row']}")
+    def title_for(name: str) -> str:
+        row = registry[name]
+        return html.escape(f"{row['display']} · registry {name} · {row['source_script']}")
 
     def sub_text(m: re.Match) -> str:
         name = m.group(1)
-        found = display_for(name, m.group(2), False)
-        if found is None:
+        disp = display_for(name, m.group(2), False)
+        if disp is None:
             return m.group(0)
-        disp, precision = found
-        row = registry[name]
-        return (f'<span class="q" data-q="{name}" data-status="{row["status"]}" data-precision="{precision}" '
-                f'data-value="{html.escape(row["value"])}" title="{title_for(row)}">{disp}</span>')
+        return (f'<span class="q" data-q="{name}" data-value="{html.escape(registry[name]["value"])}" '
+                f'title="{title_for(name)}">{html.escape(disp)}</span>')
 
     def sub_math(segment: str) -> str:
         keys: list[str] = []
         shown: list[str] = []
 
         def one(m: re.Match) -> str:
-            found = display_for(m.group(1), m.group(2), True)
-            if found is None:
+            disp = display_for(m.group(1), m.group(2), True)
+            if disp is None:
                 return m.group(0)
             keys.append(m.group(1))
-            shown.append(found[0])
-            return found[0]
+            shown.append(disp)
+            return disp
         body = PLACEHOLDER.sub(one, segment)
         if not keys:
             return body
-        statuses = "|".join(registry[k]["status"] for k in keys)
-        title = html.escape(" ; ".join(f"{k} = {registry[k]['display']} · {registry[k]['status']}" for k in keys))
+        title = html.escape(" ; ".join(f"{k} = {registry[k]['display']}" for k in keys))
         return (f'<span class="q-math" data-q="{" ".join(keys)}" data-shown="{html.escape("|".join(shown))}" '
-                f'data-status="{statuses}" title="{title}">{body}</span>')
+                f'title="{title}">{body}</span>')
 
     parts = MATH.split(text)
     out = []
     for i, part in enumerate(parts):
-        if i % 2 == 1:
-            out.append(sub_math(part))
-        else:
-            out.append(PLACEHOLDER.sub(sub_text, part))
+        out.append(sub_math(part) if i % 2 == 1 else PLACEHOLDER.sub(sub_text, part))
     for p in sorted(set(problems)):
         rep.check(False, f"{where}: {p}")
     return "".join(out)
@@ -316,80 +351,51 @@ def build_toc(sections: list[str]) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="docs")
+    ap.add_argument("--paper-cache", default=str(Path(tempfile.gettempdir()) / "ccc-slot-paper-build"),
+                    help="latexmk output directory for the two PDFs (outside the repository)")
     ap.add_argument("--verify-vendor", action="store_true")
-    ap.add_argument("--allow-missing-pdf", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
     rep = Report(args.quiet)
-    out_dir = ROOT / args.out
+    out_dir = (ROOT / args.out).resolve()
+    cache = Path(args.paper_cache).resolve()
+    rep.check(ROOT not in cache.parents and cache != ROOT, f"paper build directory {cache} lies outside the repository")
 
     # (1) vendor and self-hosted fonts
     vendor = load_vendor(rep, args.verify_vendor)
     fonts = load_fonts(rep)
 
-    # (2) registry and manifest
-    registry = {r["name"]: r for r in data_mod.read_csv(ROOT, "numerics/quantity_registry.csv")}
-    manifest = {m["name"]: m for m in data_mod.read_csv(ROOT, "paper/quantity_manifest.csv")}
-    rep.check(len(registry) > 0 and len(manifest) > 0, f"registry ({len(registry)}) and manifest ({len(manifest)}) loaded")
-
-    # (3) crosscheck
-    try:
-        import crosscheck  # noqa: PLC0415
-        res = crosscheck.run(verbose=not args.quiet)
-        ok = bool(res[0]) if isinstance(res, tuple) else bool(res)
-        rep.check(ok, "crosscheck: closed forms agree with CSV rows (1e-9)")
-    except ImportError as exc:
-        rep.check(False, f"crosscheck module missing: {exc}")
-    except Exception as exc:  # noqa: BLE001
-        rep.check(False, f"crosscheck raised: {exc}")
-
-    # (4) data
+    # (2) the slot registry and the data script
+    registry: dict = {}
     data_js = ""
-    hashes: dict[str, str] = {}
     try:
-        payload, hashes = data_mod.build_data(ROOT, vendor)
-        data_js = data_mod.emit_js(payload)
+        registry = slot_data.read_registry(ROOT)
+        payload = slot_data.build_data(ROOT, registry)
+        data_js = slot_data.emit_js(payload)
         json.loads(data_js)
-        rep.check(True, f"CCC_DATA built ({len(data_js.encode('utf-8'))} bytes)")
-        b = payload["fig2"]["branches"]
-        rep.note("fig2 accepted rows per branch: " + ", ".join(f"{k}={len(v['r'])}" for k, v in b.items()))
-        for fig in ("fig1", "fig2", "fig3", "fig4"):
-            rep.check(bool(payload[fig]), f"{fig} slice nonempty")
+        rep.check(True, f"slot registry read ({len(registry)} rows) and CCC_DATA built ({len(data_js.encode('utf-8'))} bytes)")
         rep.check(not re.search(r"\b(NaN|Infinity)\b", data_js) and "</script" not in data_js and "<!--" not in data_js,
                   "data script free of NaN, Infinity, </script, <!--")
-    except Exception as exc:  # noqa: BLE001
-        rep.check(False, f"CCC_DATA build: {exc}")
+    except (OSError, slot_data.DataError, ValueError, ZeroDivisionError) as exc:
+        rep.check(False, f"slot registry and CCC_DATA: {exc}")
 
-    # (5) tables
-    tables: dict[str, str] = {}
-    try:
-        tables, _tokens = tables_html.render_tables(ROOT)
-        rep.check(len(tables) == len(tables_html.GENERATORS), f"tables rendered ({len(tables)})")
-    except Exception as exc:  # noqa: BLE001
-        rep.check(False, f"table rendering: {exc}")
+    # (3) the two PDFs
+    built = build_papers(rep, cache)
+    facts = {name: pdf_facts(path) for name, path in built.items()}
+    ok = len(facts) == len(PAPERS) and all(f["pages"] > 0 and f["created"] for f in facts.values())
+    rep.check(ok, "paper facts read from both PDFs (pages, bytes, sha256, date): "
+              + ", ".join(f"{k} {v['pages']} pages" for k, v in facts.items()))
 
-    # (6) fragments
+    # (4) fragments
     sec_dir = HERE / "sections"
-    files = sorted(p for p in sec_dir.glob("*.html") if p.name != SECTION_ORDER_LAST)
-    if (sec_dir / SECTION_ORDER_LAST).exists():
-        files.append(sec_dir / SECTION_ORDER_LAST)
+    files = sorted(sec_dir.glob("*.html"))
     rep.check(len(files) >= 1, f"section fragments found ({len(files)})")
     sections: list[str] = []
     ids: dict[str, str] = {}
     chart_counts = {cid: 0 for cid in CHART_IDS}
     explorer_count = 0
     for path in files:
-        text = path.read_text(encoding="utf-8")
-
-        def sub_table(m: re.Match) -> str:
-            name = m.group(1)
-            if name not in tables:
-                rep.check(False, f"{path.name}: no table generator for @@TABLE:{name}@@")
-                return m.group(0)
-            return tables[name]
-
-        text = TABLE_SLOT.sub(sub_table, text)
-        text = resolve_placeholders(text, registry, manifest, rep, path.name)
+        text = resolve_placeholders(path.read_text(encoding="utf-8"), registry, rep, path.name)
         rep.check(PLACEHOLDER.search(text) is None, f"{path.name}: no placeholders left")
         rep.check("@@" not in text, f"{path.name}: no slot markers left")
         check_fragment(text, path.name, rep, ids)
@@ -401,12 +407,10 @@ def main() -> int:
         rep.check(chart_counts[cid] == 1, f"chart mount chart-{cid} appears exactly once ({chart_counts[cid]})")
     rep.check(explorer_count == 1, f"explorer mount appears exactly once ({explorer_count})")
 
-    # (7) template assembly
-    template_path = HERE / "template.html"
+    # (5) template assembly
     page = ""
-    if not rep.check(template_path.exists(), "template.html present"):
-        page = ""
-    else:
+    template_path = HERE / "template.html"
+    if rep.check(template_path.exists(), "template.html present"):
         page = template_path.read_text(encoding="utf-8")
         css = (HERE / "style.css").read_text(encoding="utf-8") if (HERE / "style.css").exists() else ""
         rep.check(bool(css), "style.css present")
@@ -417,89 +421,66 @@ def main() -> int:
         rep.check(face_files == {k for k, v in fonts.items() if v.get("kind") == "face"},
                   f"generated @font-face rules match fonts.lock.json ({len(face_files)})")
         scripts = {}
-        for slot, fname in (("APP", "app.js"), ("CHARTS", "charts.js"), ("EXPLORER", "explorer.js")):
+        for slot, fname in SCRIPTS:
             p = HERE / fname
             scripts[slot] = p.read_text(encoding="utf-8") if p.exists() else ""
             rep.check(bool(scripts[slot]), f"{fname} present")
             rep.check("</script" not in scripts[slot], f"{fname} contains no </script")
-        vendor_head = '<link rel="stylesheet" href="vendor/katex.min.css">'
-        vendor_scripts = '<script src="vendor/katex.min.js"></script>'
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
                              for n in ("fira-sans-latin-400-normal.woff2", "fira-sans-latin-600-normal.woff2"))
-        facts = {}
-        for name, rel in PDFS.items():
-            if (ROOT / rel).is_file():
-                facts[name] = pdf_facts(ROOT / rel)
-        ok = len(facts) == 2 and all(f["pages"] > 0 and f["created"] for f in facts.values())
-        rep.check(ok, "paper facts read from both PDFs (pages, bytes, sha256, date): "
-                  + ", ".join(f"{k} {v['pages']} pages" for k, v in facts.items()))
-        revision = facts["main_filled.pdf"]["created"] if ok else ""
-        paper = paper_panel(facts) if ok else ""
-        meta_items = [f"registry {hashes.get('numerics/quantity_registry.csv', '')[:12]}"] + [
-            f"{k} {v[:12]}" for k, v in sorted(hashes.items()) if k != "numerics/quantity_registry.csv"]
-        build_meta = '<p class="build-meta">Sources (sha256, first 12 hex): ' + "; ".join(meta_items) + ".</p>"
+        revision = facts["paper.pdf"]["created"] if ok else ""
+        build_meta = ('<p class="build-meta">Sources (sha256, first 12 hex): '
+                      f'registry {slot_data.sha256(ROOT)[:12] if registry else ""}; '
+                      + "; ".join(f"{k} {v['sha256'][:12]}" for k, v in sorted(facts.items())) + ".</p>")
         fills = {
-            "VENDOR_HEAD": vendor_head,
+            "VENDOR_HEAD": '<link rel="stylesheet" href="vendor/katex.min.css">',
             "FONT_PRELOAD": preload,
-            "THEME_BOOT": "",
             "STYLE": "<style>\n" + faces + css + "\n</style>",
-            "PAPER": paper,
+            "PAPER": paper_panel(facts) if ok else "",
             "TEXT_REVISION": revision,
             "TOC": build_toc(sections),
             "SECTIONS": "\n".join(sections),
             "DATA": "<script>window.CCC_DATA = " + data_js + ";</script>",
-            "APP": "<script>\n" + scripts["APP"] + "\n</script>",
-            "CHARTS": "<script>\n" + scripts["CHARTS"] + "\n</script>",
-            "EXPLORER": "<script>\n" + scripts["EXPLORER"] + "\n</script>",
-            "VENDOR_SCRIPTS": vendor_scripts,
+            "VENDOR_SCRIPTS": '<script src="vendor/katex.min.js"></script>',
             "BUILD_META": build_meta,
         }
+        fills.update({slot: "<script>\n" + scripts[slot] + "\n</script>" for slot, _ in SCRIPTS})
         present = set(SLOT.findall(page))
-        if "THEME_BOOT" not in present:
-            fills.pop("THEME_BOOT")
-        for slot in ("VENDOR_HEAD", "FONT_PRELOAD", "STYLE", "TOC", "SECTIONS", "PAPER", "TEXT_REVISION", "DATA", "APP",
-                     "CHARTS", "EXPLORER", "VENDOR_SCRIPTS", "BUILD_META"):
+        for slot in fills:
             rep.check(slot in present, f"template has slot @@{slot}@@")
-
-        def fill(m: re.Match) -> str:
-            return fills.get(m.group(1), m.group(0))
-
-        page = SLOT.sub(fill, page)
-        page = resolve_placeholders(page, registry, manifest, rep, "template.html")
+        page = SLOT.sub(lambda m: fills.get(m.group(1), m.group(0)), page)
+        page = resolve_placeholders(page, registry, rep, "template.html")
         rep.check("@@" not in page, "no slot markers left in the page")
 
-    # (8) validate the complete page before replacing artifacts
+    # (6) validate the complete page before replacing artifacts
     if page and not rep.failures:
-        rep.check(not PLACEHOLDER.search(page), "output has no [[name]] placeholders left")
+        rep.check(not PLACEHOLDER.search(page), "output has no [[key]] placeholders left")
         m = re.search(r"<script>window\.CCC_DATA = (.*?);</script>", page, re.S)
-        ok = False
+        parsed = False
         if m:
             try:
                 json.loads(m.group(1))
-                ok = True
+                parsed = True
             except json.JSONDecodeError:
-                ok = False
-        rep.check(ok, "embedded CCC_DATA parses as JSON")
+                parsed = False
+        rep.check(parsed, "embedded CCC_DATA parses as JSON")
         remote = re.findall(r"<(?:script|link|img|iframe)\b[^>]*(?:src|href)=\"(?:https?:)?//[^>]*>", page)
         rep.check(not remote, f"no script, style, image or frame loads from the network ({len(remote)})")
-        rep.check("Plotly" not in page and "plotly" not in page, "no chart library is loaded")
         for cid in CHART_IDS:
             rep.check(page.count(f'id="chart-{cid}"') == 1, f"output has one chart-{cid} mount")
         rep.check(page.count('id="explorer"') == 1, "output has one explorer mount")
         rep.check(not re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", page), "output carries no timestamps")
-        rep.note(f"docs/index.html: {len(page.encode('utf-8'))} bytes")
+        rep.note(f"{args.out}/index.html: {len(page.encode('utf-8'))} bytes")
 
-    for rel in PDFS.values():
-        rep.check(args.allow_missing_pdf or (ROOT / rel).is_file(), f"{rel} present for copying")
     if page and not rep.failures:
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "index.html").write_text(page, encoding="utf-8", newline="\n")
         (out_dir / ".nojekyll").write_text("", encoding="utf-8")
-        for name, rel in PDFS.items():
-            src = ROOT / rel
-            if src.exists():
-                shutil.copyfile(src, out_dir / name)
-                rep.check((out_dir / name).stat().st_size > 0, f"copied {rel} as {name}")
+        for name in ("main_filled.pdf", "online_appendix_filled.pdf"):
+            (out_dir / name).unlink(missing_ok=True)  # the Laplace PDFs now live under /laplace/
+        for name, src in built.items():
+            shutil.copyfile(src, out_dir / name)
+            rep.check((out_dir / name).read_bytes() == src.read_bytes(), f"copied {src.name} as {name}")
         if (out_dir / "fonts").is_dir():
             shutil.rmtree(out_dir / "fonts")
         (out_dir / "fonts").mkdir()
@@ -518,19 +499,21 @@ def main() -> int:
         rep.check(all((out_dir / "vendor" / r).is_file() for r in vendor["katex"]["files"]),
                   f"copied {len(vendor['katex']['files'])} KaTeX files")
 
-    # (10) manifest
+    # (7) run manifest
     passed = not rep.failures
     man_dir = ROOT / "numerics" / "manifests"
     man_dir.mkdir(parents=True, exist_ok=True)
     out_html = out_dir / "index.html"
+    shown_out = out_html.relative_to(ROOT).as_posix() if ROOT in out_html.parents else str(out_html)
     manifest_obj = {
         "exercise": "handout",
         "timestamp_utc": None,  # omitted on purpose: the manifest is committed and must not churn
-        "inputs": hashes,
-        "method": "handout build: CSV to inline JSON, registry placeholders, table rendering, template assembly",
-        "tolerances": {"crosscheck_abs": 1e-9},
+        "inputs": {slot_data.REGISTRY: slot_data.sha256(ROOT) if registry else None,
+                   **{f"slot/manuscript/{PAPERS[k]} -> {k}": v["sha256"] for k, v in facts.items()}},
+        "method": "handout build: slot registry placeholders, closed-form figure inputs, latexmk PDFs, template assembly",
+        "tolerances": {},
         "software": {"python": sys.version.split()[0], "platform": platform.platform()},
-        "outputs": {f"{args.out}/index.html": hashlib.sha256(out_html.read_bytes()).hexdigest()} if out_html.exists() else {},
+        "outputs": {shown_out: hashlib.sha256(out_html.read_bytes()).hexdigest()} if passed and out_html.exists() else {},
         "checks": rep.checks,
         "passed": passed,
         "notes": ["vendor: KaTeX " + vendor["katex"]["version"] + " (local copy)",
@@ -539,9 +522,7 @@ def main() -> int:
     (man_dir / "handout.json").write_text(json.dumps(manifest_obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 
     if not args.quiet and rep.placeholders_used:
-        print("\nplaceholders used:")
-        for name in sorted(rep.placeholders_used):
-            print(f"  {name:40s} {rep.placeholders_used[name]}")
+        print(f"\nregistry keys used: {len(rep.placeholders_used)}")
     print("\nHANDOUT BUILD", "PASSED" if passed else f"FAILED ({len(rep.failures)} failures)")
     return 0 if passed else 1
 

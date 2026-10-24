@@ -1,10 +1,10 @@
 #!/bin/sh
-# Export dist/presentation.pdf with headless Chrome: all 47 slides, every reveal shown (print styles).
+# Export dist/presentation.pdf with headless Chrome: all slides (the title, slides 1 to 20 and the backups A1 to A12), every reveal shown (print styles).
 # Serve dist first:  python3 -m http.server 8766 --bind 127.0.0.1 --directory presentation/dist
 set -e
 HERE=$(cd "$(dirname "$0")" && pwd)
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
-URL="${1:-http://127.0.0.1:8766/}"
+URL="${1:-http://127.0.0.1:8766/?print=1}"
 PROFILE=$(mktemp -d)
 "$CHROME" --headless=new --disable-gpu --no-first-run --user-data-dir="$PROFILE" \
   --window-size=1600,956 --virtual-time-budget=8000 --no-pdf-header-footer \
