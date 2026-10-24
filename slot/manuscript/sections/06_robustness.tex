@@ -1,32 +1,33 @@
 \section{Robustness}\label{sec:robustness}
 
-This section varies one part of the model at a time. It changes the cost law, the value classes and the prior, and
-the challenger's information. Appendix~\ref{app:robustness} states each result in full, with its status, and
-proves it.
+I vary one part of the model at a time: the preparation-cost law, the value classes and the prior, and the
+challenger's information. Appendix~\ref{app:robustness} states each result in full, with its status, and proves
+it.
 
 \subsection{Preparation costs}\label{sec:costs}
 
-The two-point cost law of Section~\ref{sec:values} is not needed. Let the cost mix a low component \(H^0\) on
-\([0,L]\), with weight \(\rho\), and a high component \(H^1\) on \([c_-,c_+]\). Either component may be atomless or
-have atoms. Proposition~\ref{prop:atomless} keeps parts (i) and (ii) of Proposition~\ref{prop:ccc} under (H2),
-\(L<B_{F_1}(m(\pi))\) and \(B_{F_0}(\pi)<c_-<c_+<B_{F_1}(M(\pi))\). The low component then prepares at every feasible belief, so entry stays
-at least \(\rho\), and the trading bounds of Section~\ref{sec:informed} apply unchanged. Every entry comparison is
-strict, so the outcome is the same under every pair of tie rules.
+The rise of entry in Proposition~\ref{prop:ccc} survives other preparation-cost laws, with or without atoms
+(Proposition~\ref{prop:atomless}, analytical). The cost now mixes a low component with weight \(\rho\) and a high
+component in place of the two-point law of Section~\ref{sec:values}; either component may be atomless or have
+atoms. The proposition keeps parts (i) and (ii) of Proposition~\ref{prop:ccc} under the trading-cost window (H2)
+when every cost in the low component lies strictly below \(B_{F_1}(m(\pi))\) and every cost in the high component
+lies strictly between \(B_{F_0}(\pi)\) and \(B_{F_1}(M(\pi))\). The low component then prepares at every feasible
+belief, so entry stays at least \(\rho\), and the trading bounds of Section~\ref{sec:informed} apply unchanged.
 
-In the benchmark, take \(L=\reg{atom_L}\) and a high component uniform on \([c_H-\varepsilon,c_H+\varepsilon]\). With
-\(\varepsilon=\reg{atom_eps}\), entry at \(r_1\) is \(\reg{p4_atomless_r1_entry}\), the value of the two-point law. The
-return to the floor needs a narrower band. At \(r_2\), gross profit at the top posterior lies \(\reg{margin_return_B}\)
-below \(c_H\), inside this band, and entry at \(r_2\) is \(\reg{p4_atomless_r2_entry}\). Every half-width below
-\(\reg{p4_atomless_max_width_floor_r2}\) keeps all three parts of Proposition~\ref{prop:ccc}. An atomless high
-component turns the drop at the ceiling into a ramp: full-order entry
-\(\rho+(1-\rho)(b+\pi\lambda)\,H^1\bigl(B_r(M(\pi))\bigr)\) is continuous and nonincreasing in strength.
+At the benchmark, the low component runs from zero to \(\reg{atom_L}\), and the high component is uniform on
+\([c_H-\varepsilon,c_H+\varepsilon]\). Every half-width below \(\reg{p4_atomless_max_width_floor_r2}\) keeps all
+three parts of Proposition~\ref{prop:ccc} (computer-assisted). With half-width \(\varepsilon=\reg{atom_eps}\),
+entry at \(r_1\) is \(\reg{p4_atomless_r1_entry}\), the value under the two-point law. At \(r_2\), gross profit at
+the top posterior, which lies \(\reg{margin_return_B}\) below \(c_H\), falls inside this band, and entry at \(r_2\)
+is \(\reg{p4_atomless_r2_entry}\). With an atomless high component, the drop at the entry ceiling becomes a ramp:
+full-order entry is continuous and nonincreasing in strength.
 
 \subsection{Value classes and priors}\label{sec:classes}
 
-The reversal holds for every pair of ranked classes and every prior. Take classes that satisfy
-the class ranking~\eqref{eq:classes} with different means, and any reserve, prior, zero-cost probability and slot. For uniform
-incumbents, a nonempty open set of strengths and costs then satisfies (H1)--(H3) and the ownership condition of
-Proposition~\ref{prop:ccc} (Proposition~\ref{prop:classes}).
+The reversal holds for every pair of ranked classes and every prior. The classes satisfy the class
+ranking~\eqref{eq:classes} and have different means, and the reserve, the prior, the zero-cost probability and the
+slot are arbitrary. For uniform incumbents, a nonempty open set of strengths and costs then satisfies (H1)--(H3)
+and the ownership condition of Proposition~\ref{prop:ccc} (Proposition~\ref{prop:classes}, analytical).
 
 The construction puts the weak and the strong incumbent
 just above the lowest value \(v_*\) at which the classes start to differ above the reserve. The spread vanishes near
@@ -34,55 +35,53 @@ just above the lowest value \(v_*\) at which the classes start to differ above t
 gap there, so a high cost that only a favorable price justifies fits inside it. In the point-mass case
 \(v_*=\ell\), so the reversal holds for every \(h>\ell\).
 
-Table~\ref{tab:classes} in Appendix~\ref{app:robustness} reports six economies with their own costs and strengths.
-A prior away from one half needs its own costs. With the benchmark costs and strengths, a prior
-of \(\reg{p2_input_ex_a_pi}\) leaves entry at \(\reg{p2_fixed_prior_three_tenths_r1_entry}\) at all three strengths. A
-prior of \(\reg{p2_input_ex_b_pi}\) recruits every challenger at \(r_0\) already.
+Table~\ref{tab:classes} in Appendix~\ref{app:robustness} reports six economies with their own costs and strengths
+(computer-assisted). With wide uniform classes, entry rises from \(\reg{p2_ex_c_r0_entry}\) to
+\(\reg{p2_ex_c_r1_entry}\), and high-class ownership rises although the high class can lose to the strong
+incumbent; point masses at the same means leave entry at \(\reg{p2_ex_d_r1_entry}\). A prepared challenger keeps
+\((\theta-\max\{p,R\})_+\), a convex function of its value, so a mean-preserving spread within a class weakly
+raises gross profit at every belief.
 
-Dispersion within a class also matters. With wide uniform classes, entry rises from \(\reg{p2_ex_c_r0_entry}\) to \(\reg{p2_ex_c_r1_entry}\), and
-high-class ownership rises although the high class can lose to the strong incumbent. Point masses at the same means
-leave entry at \(\reg{p2_ex_d_r1_entry}\). A prepared challenger keeps \((\theta-\max\{p,R\})_+\), a convex function of
-its value, so a mean-preserving spread within a class weakly raises gross profit at every belief.
+With more than two classes, the reversal holds under a separation condition (Proposition~\ref{prop:manyclasses},
+analytical). The price reveals only the posterior mean of class proceeds. Separation asks for a gap between the
+proceeds of each high-group class and every feasible posterior mean, and the same gap for the low group. In the
+strong equilibrium, class proportions within each group then stay at their prior proportions, so the price reveals
+the whole posterior vector.
 
-With more than two classes, the result holds under a separation condition (Proposition~\ref{prop:manyclasses}). The
-price reveals only the posterior mean of class proceeds. Separation asks for a gap between the proceeds of each
-high-group class and every feasible posterior mean, and the same gap for the low group. In the strong equilibrium,
-class proportions within each group then stay at their prior proportions, so the price reveals the whole posterior
-vector.
-
-Without separation, a strict three-class equilibrium has two orders with different posterior vectors and one
-price. This collision is a knife-edge in the class laws. A four-class economy near the benchmark
-satisfies separation with distance \(\reg{p2_groups_gamma}\).
+A four-class economy near the benchmark satisfies separation with distance \(\reg{p2_groups_gamma}\)
+(computer-assisted). Without separation, one price can carry two posterior vectors: a strict three-class
+equilibrium has two orders with different posterior vectors and one price (computer-assisted).
 
 \subsection{Complementary private signals}\label{sec:signals}
 
 The challenger can gain from the price even when its own information is more accurate than the investor's. A buyer
 may know its integration plans, while investors who follow the target know its customers or its product market.
-Proposition~\ref{prop:signals} represents the two sources with conditionally independent binary signals. The
-investor's signal has accuracy \(a_T\), and the challenger's signal has accuracy \(d\).
+Proposition~\ref{prop:signals} (analytical) represents the two sources with conditionally independent binary
+signals. The investor's signal has accuracy \(a_T\), and the challenger's signal has accuracy \(d\).
 
-The zero-cost challenger still
-prepares after every price and signal, so the price still reveals the public posterior. The challenger combines that
-posterior with its own signal. Under strict conditions on the costs, the weak incumbent has zero orders and entry
-\(\rho\). The strong incumbent has full orders and entry above \(\rho\). The conditions allow \(d>a_T\).
+The zero-cost challenger still prepares after every price and signal, so the price still reveals the public
+posterior, and the challenger combines that posterior with its own signal. Under strict conditions on the costs,
+the weak incumbent has zero orders and entry \(\rho\); the strong incumbent has full orders and entry above
+\(\rho\). The conditions allow \(d>a_T\).
 
-The example uses its own parameter vector \(S(B)\). It keeps the slot, the values, the reserve and the prior of \(B\),
-and it sets \(\rho=\reg{sig_rho}\), \(c_H=\reg{sig_cH}\), \(k=\reg{sig_k}\), \(r_0=\reg{sig_r0}\) and
-\(r_1=\reg{sig_r1}\). With investor accuracy \(a_T=\reg{sig_aT}\) and challenger accuracy \(d=\reg{sig_d}\), entry
-rises from \(\reg{p4_s_signal_r0_entry}\) to \(\reg{p4_s_signal_r1_entry}\). A favorable signal
-alone does not justify high-cost preparation against the weak incumbent. A favorable signal and a favorable price
-together do so against the strong incumbent. Both sources are needed: without the challenger's signal, entry is
-\(\reg{p4_s_no_y_r0_entry}\) at both strengths.
+The signal example uses its own parameter vector \(S(B)\). It keeps the slot, the values, the reserve and the
+prior of the benchmark, and it sets \(\rho=\reg{sig_rho}\), \(c_H=\reg{sig_cH}\), \(k=\reg{sig_k}\),
+\(r_0=\reg{sig_r0}\) and \(r_1=\reg{sig_r1}\). With investor accuracy \(a_T=\reg{sig_aT}\) and challenger accuracy
+\(d=\reg{sig_d}\), entry rises from \(\reg{p4_s_signal_r0_entry}\) to \(\reg{p4_s_signal_r1_entry}\)
+(computer-assisted). A favorable signal alone does not justify high-cost preparation against the weak incumbent;
+a favorable signal and a favorable price together do so against the strong incumbent. Both sources are needed:
+without the challenger's signal, entry is \(\reg{p4_s_no_y_r0_entry}\) at both strengths.
 
-At the benchmark \(B\), the conditions cannot hold with \(d\ge a_T\): the strong trading bound needs an accurate
-investor signal, and then the weak bound fails. They hold at \(B\) with \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\).
-Entry then rises from \(\reg{p4_comp_b_r0_entry}\) to \(\reg{p4_comp_b_r1_entry}\), and without the challenger's signal
-it is \(\reg{p4_comp_b_no_y_r1_entry}\) at both strengths.
+With the accuracies of the signal example \(S(B)\), the benchmark has a unique equilibrium at each strength when
+an indifferent investor may mix over its best orders (computer-assisted). At \(r_0\), the investor mixes between
+trade and abstention after either signal, and it trades with probability \(\reg{p4_b_signal_r0_buy_rate}\). At
+\(r_1\), it buys with probability one after a favorable signal, and after an unfavorable signal it sells with
+probability \(\reg{p4_b_signal_r1_sell_rate}\). Entry falls from \(\reg{p4_b_signal_r0_entry}\) to
+\(\reg{p4_b_signal_r1_entry}\). When an investor that is indifferent between abstention and a nonzero order must
+abstain, neither strength has an equilibrium.
 
-With the accuracies of \(S(B)\), the benchmark \(B\) has a unique equilibrium at each strength under rule IM. At \(r_0\), the investor mixes between trade
-and abstention after either signal, and it trades with probability \(\reg{p4_b_signal_r0_buy_rate}\). At \(r_1\), it
-buys with probability one after a favorable signal, and after an unfavorable signal it sells with probability
-\(\reg{p4_b_signal_r1_sell_rate}\). Entry falls from \(\reg{p4_b_signal_r0_entry}\) to \(\reg{p4_b_signal_r1_entry}\).
-Under rule I0, neither strength has an equilibrium.
-
-% STRUCTURE: Section 6.4 (order sizes) and Remark 3 -> footnote in Section 2.3; labels sec:sizes and rem:sizes retired
+At the benchmark itself, the conditions hold with \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\)
+(computer-assisted). Entry then rises from \(\reg{p4_comp_b_r0_entry}\) to \(\reg{p4_comp_b_r1_entry}\), and
+without the challenger's signal it is \(\reg{p4_comp_b_no_y_r1_entry}\) at both strengths. A buyer signal at least
+as accurate as the investor's needs other costs and strengths, as in the signal example: at the benchmark the
+strong trading bound needs an accurate investor signal, and the weak bound then fails.
