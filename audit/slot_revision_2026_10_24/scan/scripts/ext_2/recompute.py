@@ -5,7 +5,7 @@ import csv, re, itertools
 from mpmath import mp, iv
 mp.dps=90
 iv.dps=80
-ROOT=Path('/Users/austinli/Projects/competition-creates-competition')
+ROOT = Path(__file__).resolve().parents[5]
 OUT=Path('scripts/ext_2')
 reg={x['key']:x for x in csv.DictReader((ROOT/'audit/slot_manuscript_2026_10_23/registry/registry.csv').open())}
 files=[ROOT/'slot/manuscript'/folder/(name+'.tex') for folder,names in [('sections',['05_research','06_robustness','07_welfare','08_empirical']),('appendix',['A5_research','A6_robustness','A7_welfare','A8_empirical'])] for name in names]

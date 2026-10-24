@@ -6,7 +6,7 @@ from decimal import Decimal, localcontext
 import csv, re, json
 
 OUT=Path('scripts/core_1')
-ROOT=Path('/Users/austinli/Projects/competition-creates-competition')
+ROOT = Path(__file__).resolve().parents[5]
 class I:
     def __init__(self, lo, hi=None):
         if isinstance(lo,I): self.lo,self.hi=lo.lo,lo.hi

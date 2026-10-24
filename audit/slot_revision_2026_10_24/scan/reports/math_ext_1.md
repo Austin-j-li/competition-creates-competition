@@ -3,7 +3,7 @@
 FINDING:
 - Name: The general control omits independence from incumbent value
 - Severity: High
-- Location: [A6_robustness.tex:8–22](/Users/austinli/Projects/competition-creates-competition/slot/manuscript/appendix/A6_robustness.tex:8), Proposition “Fixed information”; the definition of the fixed experiment.
+- Location: [A6_robustness.tex:8–22](slot/manuscript/appendix/A6_robustness.tex:8), Proposition “Fixed information”; the definition of the fixed experiment.
 - Problem: The stated experiment does not restrict the dependence between the signal and incumbent value, so marginal incumbent dominance does not suffice.
 - Proposed fix: Require the signal to be independent of incumbent value conditional on class, and retain the stated independence of challenger value and cost.
 - Evidence: The proof substitutes unconditional auction profits into the decision after each signal. This requires the conditional incumbent law to equal its unconditional law. The stated law of `(class, S)` does not impose that restriction.
@@ -17,7 +17,7 @@ FINDING:
 FINDING:
 - Name: The private-signal feasibility argument lacks an analytical witness
 - Severity: Mid
-- Location: [A6_robustness.tex:430–463](/Users/austinli/Projects/competition-creates-competition/slot/manuscript/appendix/A6_robustness.tex:430), Proposition “Complementary private signals,” especially its final proof sentence.
+- Location: [A6_robustness.tex:430–463](slot/manuscript/appendix/A6_robustness.tex:430), Proposition “Complementary private signals,” especially its final proof sentence.
 - Problem: The absence of an explicit order restriction between the accuracies does not prove that the joint inequalities admit a more accurate challenger signal.
 - Proposed fix: Add an exact rational witness to the analytical proof.
 - Evidence: The benchmark calculation at lines 492–494 itself shows that the joint inequalities can exclude \(d\ge a_T\). The existence claim is correct, but the stated inference does not establish it.
@@ -37,7 +37,7 @@ FINDING:
 FINDING:
 - Name: A sale payoff omits its execution cost
 - Severity: Mid
-- Location: [A6_robustness.tex:527–528](/Users/austinli/Projects/competition-creates-competition/slot/manuscript/appendix/A6_robustness.tex:527), the benchmark with the accuracies of \(S(B)\).
+- Location: [A6_robustness.tex:527–528](slot/manuscript/appendix/A6_robustness.tex:527), the benchmark with the accuracies of \(S(B)\).
 - Problem: The displayed sale return omits the cost, although the next clause calls its solution a zero-profit rate.
 - Proposed fix: Write the net payoff as \(U_-(-1)=b/[15(2b+t)]-k\), or label the existing expression as a gross return.
 - Evidence: Above the preparation threshold, the correct net payoff is
@@ -51,7 +51,7 @@ FINDING:
 FINDING:
 - Name: The dispersion claim omits “weakly”
 - Severity: Mid
-- Location: [06_robustness.tex:44–45](/Users/austinli/Projects/competition-creates-competition/slot/manuscript/sections/06_robustness.tex:44), compared with [A6_robustness.tex:263–264](/Users/austinli/Projects/competition-creates-competition/slot/manuscript/appendix/A6_robustness.tex:263).
+- Location: [06_robustness.tex:44–45](slot/manuscript/sections/06_robustness.tex:44), compared with [A6_robustness.tex:263–264](slot/manuscript/appendix/A6_robustness.tex:263).
 - Problem: The main text states an unqualified increase in gross profit, while convexity establishes only a weak increase.
 - Proposed fix: Replace “raises gross profit at every belief” with “weakly raises gross profit at every belief.”
 - Evidence: At \(r=3\) and \(p=1/2\), compare a high-class point mass at \(10\) with \(U[199/20,201/20]\). Both laws lie wholly above incumbent values. The acquisition-profit kernel is affine on that interval. Both laws therefore give \(g_H=203/24\). With the low class unchanged, gross profit stays unchanged at every belief. The appendix correctly states the weak conclusion.

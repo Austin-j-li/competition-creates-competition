@@ -7,7 +7,7 @@ import re
 from itertools import product
 from mpmath import mp, iv
 
-ROOT = Path('/Users/austinli/Projects/competition-creates-competition')
+ROOT = Path(__file__).resolve().parents[5]
 OUT = Path('scripts/ext_1')
 mp.dps = 85
 iv.dps = 85

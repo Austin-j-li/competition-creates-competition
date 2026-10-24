@@ -1,6 +1,6 @@
 All eleven math corrections are complete on `slot-revision`. Nine manuscript files changed. No commit was made. No tests were written or run.
 
-All source paths below are relative to `/Users/austinli/Projects/competition-creates-competition/slot/manuscript/`. Line numbers refer to the final source.
+All source paths below are relative to `slot/manuscript/`. Line numbers refer to the final source.
 
 1. **M1 — Lower boundary.** Changed `appendix/A3_proposition2.tex`, lines 169–170 and 207–209.
 

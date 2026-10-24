@@ -5,7 +5,7 @@ from math import factorial
 import csv, io, re
 from mpmath import iv
 iv.dps=85
-ROOT=Path('/Users/austinli/Projects/competition-creates-competition')
+ROOT = Path(__file__).resolve().parents[5]
 OUT=Path('scripts/core_2')
 def I(x):
     if hasattr(x,'_mpi_'): return x
