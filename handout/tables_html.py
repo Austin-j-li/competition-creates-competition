@@ -47,6 +47,16 @@ def d6(x: str) -> str:
         return "n/a"
 
 
+def three_decimals(value: Decimal) -> str:
+    """The reading precision of the handout and the slides: three decimals, or three significant
+    digits when a nonzero magnitude is below 0.01, so that a small value never reads as zero."""
+    if not value.is_finite():
+        raise TableError(f"nonfinite displayed scalar: {value}")
+    if value != 0 and abs(value) < Decimal("0.01"):
+        return format(value.quantize(Decimal(1).scaleb(value.adjusted() - 2), rounding=ROUND_HALF_EVEN), "f")
+    return format(value.quantize(Decimal("0.001"), rounding=ROUND_HALF_EVEN), "f")
+
+
 def sci(x: str) -> str:
     try:
         if x == "n/a":
@@ -62,13 +72,13 @@ def sci(x: str) -> str:
 
 
 def status_word(text: str) -> str:
+    """The evidence class in the paper's vocabulary. An experiment role such as "control"
+    is not an evidence class; tables put the role in the row label instead."""
     t = (text or "").lower()
     if t.startswith("analytical"):
         return "analytical"
     if t.startswith("computer-assisted"):
         return "computer-assisted"
-    if "fixed full-order profile" in t or "level-matching" in t:
-        return "control"
     if t.startswith("numerical diagnostic"):
         return "numerical diagnostic"
     if t.startswith("rejected"):
@@ -173,7 +183,7 @@ def t_equilibrium_controls(root: Path, tk: Tokens) -> str:
     for rs, name in (("1.2", "Weak incumbent"), ("3", "Strong incumbent"), ("3.6", "Very strong incumbent")):
         body.append(line(f"{name} (r = {rs})", _eq_row(base, "feedback", rs)))
     body.append(panel("Panel B. Information controls", n))
-    for exp, lab in (("frozen", "Frozen informative orders"), ("price_hidden", "Price hidden from the challenger")):
+    for exp, lab in (("frozen", "Frozen informative orders (control)"), ("price_hidden", "Price hidden from the challenger")):
         for rs in ("1.2", "3"):
             body.append(line(f"{lab}, r = {rs}", _eq_row(base, exp, rs)))
     return table("equilibrium_controls", head(cols), body)
@@ -353,11 +363,18 @@ def t_core_comparison(root: Path, tk: Tokens) -> str:
     for exp, label in (("feedback", "Equilibrium information"), ("frozen", "Same informative orders"),
                        ("price_hidden", "Price withheld from the buyer")):
         cells = [f'<th scope="row">{label}</th>']
+        words = set()
         for r in ("1.2", "3"):
             row = _eq_row(base, exp, r)
-            cells.append(cell(f'{Decimal(row["E"]) * 100:.1f}%', row["E"], row["__src"], tk))
+            cells.append(cell(three_decimals(Decimal(row["E"])), row["E"], row["__src"], tk))
+            words.add(status_word(row["status"]))
+        if len(words) != 1:
+            raise TableError(f"core_comparison: {exp} rows carry different evidence classes {sorted(words)}")
+        cells.append(text_cell(words.pop(), "basis"))
         body.append("<tr>" + "".join(cells) + "</tr>")
-    return table("core_comparison", head(["Weak incumbent", "Strong incumbent"], "Information when the buyer decides"), body)
+    thead = ('<thead><tr><th scope="col">Information when the buyer decides</th><th scope="col" class="num">Weak incumbent</th>'
+             '<th scope="col" class="num">Strong incumbent</th><th scope="col">Evidence</th></tr></thead>')
+    return table("core_comparison", thead, body)
 
 
 GENERATORS = {

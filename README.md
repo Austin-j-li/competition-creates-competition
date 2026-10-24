@@ -2,13 +2,22 @@
 
 Research repository for the paper and its numerical layer.
 
-- `paper/main.md`: manuscript with paper appendix (Markdown with LaTeX math; `[[name]]` placeholders are filled from validated numerical output).
+- From 30 September 2026, the editable paper and online appendix are in the
+  Overleaf working copy `overleaf/paper/`; the separate slide working copy is
+  `overleaf/talk/`. Both are independent Git repositories inside this project
+  and are locally ignored by the parent. See `overleaf/README.md` for project
+  links, compilers, synchronization and source-authority instructions.
+- `paper/main.md`: preserved pre-Overleaf manuscript with paper appendix (Markdown with LaTeX math; `[[name]]` placeholders are filled from validated numerical output).
 - `paper/online_appendix.md`: online appendix (full proofs, computer-assisted certificate method, numerical exercise contract in section C, empirical pilot design in D, reproducibility in E).
 - `paper/quantity_manifest.csv`: specification of every placeholder (name, definition, exercise, source file and row selector, display format). Inputs carry values; derived rows are filled only by validated output.
 - `paper/main_filled.md`, `paper/online_appendix_filled.md`: generated copies with placeholders substituted from `numerics/quantity_registry.csv`.
 - `numerics/`: the numerical layer (Online Appendix C, layered per E.3). Exercise scripts live in `numerics/exercises/`, renderers in `numerics/render/`, run manifests in `numerics/manifests/`.
 - `tables/`, `figures/`, `figures_data/`: generated CSV outputs, LaTeX tables, and vector figures.
 - `verification/`: the collaborator's distributed node checks and interval certificates (E.2), kept as delivered.
+
+The legacy Markdown presentation commands below reproduce earlier snapshots.
+They do not update the editable Overleaf masters. Do not overwrite Overleaf
+revisions or publish older exports as the current paper without reconciliation.
 
 ## Repository and collaboration
 

@@ -302,8 +302,7 @@ def build_data(root: Path | str, vendor: dict | None = None) -> tuple[dict, dict
     registry, inputs = _registry(root)
     data = {
         "meta": {
-            "plotly": vendor["plotly"]["version"],
-            "katex": vendor["katex_js"]["version"],
+            "katex": vendor["katex"]["version"],
             "registry_hash": hashes["numerics/quantity_registry.csv"],
             "sources": dict(hashes),
         },
