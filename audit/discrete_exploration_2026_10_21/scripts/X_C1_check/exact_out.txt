@@ -1,0 +1,202 @@
+==============================================================================
+A. Posteriors by direct convolution (claim 1)
+==============================================================================
+a = 0.6065306597126334236   d = 1-a = 0.3934693402873665764
+full (1,-1)              mu(x>=1) in [0.73105857863, 0.73105857863] spread 1.34e-51
+                         mu(0) = 0.5;  mu(x<=-1) in [0.26894142137, 0.26894142137] spread 6.68e-52
+                         region formula minus direct: 0.0, 0.0, -6.68e-52
+buy only (1,0)           mu(x>=1) in [0.622459331202, 0.622459331202] spread 1.34e-51
+                         mu(0) = 0.377540668798;  mu(x<=-1) in [0.377540668798, 0.377540668798] spread 1.34e-51
+                         region formula minus direct: 0.0, 6.68e-52, 6.68e-52
+sell only (0,-1)         mu(x>=1) in [0.622459331202, 0.622459331202] spread 2.67e-51
+                         mu(0) = 0.622459331202;  mu(x<=-1) in [0.377540668798, 0.377540668798] spread 1.34e-51
+                         region formula minus direct: 0.0, 0.0, -6.68e-52
+none (0,0)               mu(x>=1) in [0.5, 0.5] spread 0.0
+                         mu(0) = 0.5;  mu(x<=-1) in [0.5, 0.5] spread 0.0
+                         region formula minus direct: 0.0, 0.0, 0.0
+mixed, wrong orders 1    mu(x>=1) in [0.565132880202, 0.565132880202] spread 0.0
+                         mu(0) = 0.528710978981;  mu(x<=-1) in [0.423286875194, 0.423286875194] spread 2.0e-51
+                         region formula minus direct: -1.34e-51, 0.0, -6.68e-52
+mixed, wrong orders 2    mu(x>=1) in [0.344923899901, 0.344923899901] spread 6.68e-52
+                         mu(0) = 0.507282285519;  mu(x<=-1) in [0.663452284077, 0.663452284077] spread 1.34e-51
+                         region formula minus direct: 0.0, 0.0, 0.0
+mixed, wrong orders 3    mu(x>=1) in [0.572963866559, 0.572963866559] spread 1.34e-51
+                         mu(0) = 0.481853323309;  mu(x<=-1) in [0.437722117552, 0.437722117552] spread 6.68e-52
+                         region formula minus direct: 1.34e-51, 0.0, 6.68e-52
+Full orders: M = 0.731058578630005  m = 0.268941421369995
+  M - 1/(1+e^(-2/b)) = 0.0   m - 1/(1+e^(2/b)) = -6.68e-52
+  max |discrete posterior - paper eq. (A.8)| over integers -12..12 = 1.34e-51
+General prior pi = 0.3, full orders, posteriors by region: ['0.538101526224', '0.3', '0.136190471422']
+  direct at x = 4, 0, -4: ['0.538101526224', '0.3', '0.136190471422']
+Bounds over 66^2 strategy pairs: min mu = 0.26894142137, max mu = 0.73105857863
+  attained at sigma_H, sigma_L, region = ['0.0', '0.0', '1.0'] ['1.0', '0.0', '0.0'] 0 | min: ['0.0', '0.0', '1.0'] ['1.0', '0.0', '0.0'] 2
+
+==============================================================================
+B. Region masses: closed forms against summed pmf
+==============================================================================
+  alpha=P(Z>=1)   0.377540668798145  closed - summed = 1.34e-51
+  beta=P(Z>=0)    0.622459331201855  closed - summed = 2.67e-51
+  gamma=P(Z=0)    0.244918662403709  closed - summed = 0.0
+  delta=P(Z>=2)   0.228989990914488  closed - summed = 6.68e-52
+  phi=P(Z=1)      0.148550677883657  closed - summed = 3.34e-52
+  m1 = 0.377540668798  M1 = 0.622459331202  m = 0.26894142137  M = 0.73105857863
+
+==============================================================================
+C. Coefficients (gains are Delta_T times these)
+==============================================================================
+  beta*m = 0.167405097278443  delta*M = 0.167405097278443  diff = 0.0
+  full trade, entry (1,rho,rho): c_T = 0.227825206333511
+  full trade, entry rho everywhere: 0.102271383374679  (/rho = 0.409085533498715 )
+  no trade, entry rho: rho/2 = 0.125
+  recruitment adds (1-rho)*J = 0.125553822958832
+  P(X>=1) under full orders = 0.425724661058171   closed form (1+a^2)/(2(1+a)) = 0.425724661058171
+  full-trade entry E = 0.569293495793628   ownership O_H = 0.358422249200695
+  BNS (1,0) with recruitment: H coef 0.293754640251993  L-deviation coef 0.215308865216603
+    gap 0.0784457750353901   (1-a)alpha(beta-rho alpha) = 0.0784457750353901
+  SNB (0,1) with recruitment at + and 0: L coef 0.293754640251993  H-deviation coef 0.326721873629346
+    gap H-L 0.032967233377353   (1-a)alpha(alpha-rho beta) = 0.032967233377353   a - rho = 0.356531
+  BNS/SNB at constant entry: trader coef 0.117501856100797  deviation coef 0.10840614776919
+  cross-check at r=1.55, c_H=6 (region minus direct, full orders and (1,0)):
+    (1,1): H buy -4.18e-52, L sell -8.35e-53
+    (1,0): H buy 1.67e-52, L sell 2.09e-52
+    (0.4,0.7): H buy 6.26e-53, L sell -1.46e-52
+
+==============================================================================
+D. Auction primitives (memo section 5 table)
+==============================================================================
+  r=1.2   DT=0.016666667 B(1/2)=4.8041667 B(M1)=5.9042597 B(M)=6.8798429 tau5=0.52179963 tau6=0.63311688
+  r=1.55  DT=0.097580645 B(1/2)=4.6931452 B(M1)=5.7833295 B(M)=6.7501255 tau5=0.5344687 tau6=0.64679772
+  r=3.0   DT=0.66666667 B(1/2)=4.2916667 B(M1)=5.3121611 B(M)=6.2171548 tau5=0.585 tau6=0.705
+  r=3.6   DT=0.93888889 B(1/2)=4.1347222 B(M1)=5.1218805 B(M)=5.9973111 tau5=0.60733977 tau6=0.73139214
+
+==============================================================================
+E. c_H window and ceilings (claim 3)
+==============================================================================
+  B_r0(1/2) = 4.80416666666667   B_r1(M) = 6.21715482191671   B_r1(M1) = 5.31216109334879
+  two-sided window width - buy-only width = 0.9049937286
+  c_H=5.0: r_C (B_r(M)=c_H) = 6.32530176927799  residual B-c_H = 0.0
+         buy-only ceiling (B_r(M1)=c_H) = 3.9860965716384  residual = -1.07e-50
+  c_H=6.0: r_C (B_r(M)=c_H) = 3.59265851879466  residual B-c_H = 0.0
+         buy-only ceiling (B_r(M1)=c_H) = 0.939682356817757  residual = 1.07e-50
+  paper r_C (c_H=6) printed 3.592658519; discrete minus printed = -2.05e-10
+  B_1(M1) = 5.97713398082   B_(1+1e-6)(M1) = 5.97713360582
+
+==============================================================================
+F. Thresholds in r (k = 0.02)
+==============================================================================
+  r_N = rr(2k/rho) (no-trade existence)                1.747877538268
+  rr(k) (sufficient no-trade uniqueness)               1.220997512422
+  paper r_U = rr(k/((1-1/b) rho m))                    2.837416964099
+  discrete rr(k/(rho m)) (sufficient full uniqueness)  2.124148132815
+  full-trade existence rr(k/c_T)                       1.515898365433
+  BNS recruited, lower end rr(k/cBNS_H)                1.443321951458
+  BNS recruited, upper end rr(k/cBNS_L)                1.53380719769
+  BNS/SNB constant entry, lower end                    1.777986043193
+  BNS/SNB constant entry, upper end                    1.819329812931
+  full trade at constant entry exists above            1.850813213647
+  paper printed r_N = 1.747877538; discrete minus printed = 2.68e-10
+  paper printed rr(k) = 1.220997512; discrete minus printed = 4.22e-10
+  paper printed r_U = 2.837416964; formula minus printed = 9.89e-11
+
+==============================================================================
+G. Proposition 2 analog at the benchmark (claim 2) and claim 8
+==============================================================================
+  DT(r0) = 0.0166666666667   rho m DT(r1) = 0.0448235702283   (1-1/b) rho m DT(r1) = 0.0224117851142
+  c_H=5, r1, full orders: entry by region ['1.0', '0.25', '0.25'], prices ['1.3623724', '0.61458333', '0.57607357']
+  c_H=6, r1, full orders: entry by region ['1.0', '0.25', '0.25'], prices ['1.3623724', '0.61458333', '0.57607357']
+  t0, tL, tH at r1: 0.41666667 0.875 1.5416667
+  c_H=5 r=1.2: E = 0.25, O_H = 0.125
+  c_H=5 r=3.0: E = 0.5692934958, O_H = 0.3584222492
+  c_H=5 r=3.6: E = 0.5692934958, O_H = 0.3584222492
+  c_H=6 r=1.2: E = 0.25, O_H = 0.125
+  c_H=6 r=3.0: E = 0.5692934958, O_H = 0.3584222492
+  c_H=6 r=3.6: E = 0.25, O_H = 0.125
+  buy-only full buying at r1, c_H=5: E = 0.625, O_H = 0.3584222492
+  buy-only full buying at r1, c_H=6: E = 0.25, O_H = 0.125
+  r1 full trade net with recruitment: 0.1318834709  with entry rho everywhere: 0.04818092225
+  r1 buy-only net with recruitment: 0.1758364268  with entry rho everywhere: 0.05833457073
+  r1, c_H=5, candidate (1,0): L's sale earns (direct sum) 0.1235392435
+  r1, c_H=6, candidate (1,0): L's sale earns (direct sum) 0.05227076518
+  r0: best nonzero order payoff over all 66^2 candidates and both c_H = -0.010992615
+  r1: least margin of the correct order over every other order = 0.048300343
+
+==============================================================================
+H. Coexistence nets (claim 4)
+==============================================================================
+  r=1.515898: DT=0.087786496  NT net = -0.00902669  T net = -2.35124e-8  B(1/2)=4.70348  B(M)=6.76273
+  r=1.55: DT=0.097580645  NT net = -0.00780242  T net = 0.00223133  B(1/2)=4.69315  B(M)=6.75013
+  r=1.6: DT=0.1125  NT net = -0.0059375  T net = 0.00563034  B(1/2)=4.67812  B(M)=6.73166
+  r=1.65: DT=0.1280303  NT net = -0.00399621  T net = 0.00916853  B(1/2)=4.66326  B(M)=6.7132
+  r=1.747878: DT=0.16000016  NT net = 1.94123e-8  T net = 0.0164521  B(1/2)=4.63455  B(M)=6.6771
+  direct sums r=1.55 c_H=5: NT buy deviation -0.0078024194; T: H 0.0022313306, L 0.0022313306
+  direct sums r=1.55 c_H=6: NT buy deviation -0.0078024194; T: H 0.0022313306, L 0.0022313306
+  direct sums r=1.6 c_H=5: NT buy deviation -0.0059375; T: H 0.0056303357, L 0.0056303357
+  direct sums r=1.6 c_H=6: NT buy deviation -0.0059375; T: H 0.0056303357, L 0.0056303357
+  direct sums r=1.65 c_H=5: NT buy deviation -0.0039962121; T: H 0.0091685302, L 0.0091685302
+  direct sums r=1.65 c_H=6: NT buy deviation -0.0039962121; T: H 0.0091685302, L 0.0091685302
+
+==============================================================================
+I. Paper Laplace values for comparison (eq. 12, eq. A.14)
+==============================================================================
+  c_H=5: tau=0.585 x*=0.34333333 E=0.58576253 O_H=0.36497695
+  c_H=6: tau=0.705 x*=0.87122245 E=0.5227573 O_H=0.32419243
+  eq. (A.14) limit at r_C: 0.5064774
+
+==============================================================================
+J. Narrow branch (1, v(r)) with entry (1, rho, rho) (claim 6)
+==============================================================================
+  pattern (1,rho,rho): slope at v=0 times (1+a)^2 = a^2 + rho a d - rho/a = 0.01536192813  (positive => G_L(1,v) rises in v)
+  constant entry: slope sign at v=0, a^2 + a d - 1/a = -1.042190611 ; at v=1, d(1/(4a) - a/(1+a^2)^2) = 0.03463397451
+    constant entry, u=1, v=0: G_L/(rho DT) = 0.4336245911  G_H/(rho DT) = 0.4700074244
+    constant entry, u=1, v=0.2: G_L/(rho DT) = 0.4233169484  G_H/(rho DT) = 0.4617151485
+    constant entry, u=1, v=0.4: G_L/(rho DT) = 0.4160407651  G_H/(rho DT) = 0.4514612882
+    constant entry, u=1, v=0.6: G_L/(rho DT) = 0.4114008036  G_H/(rho DT) = 0.4392936662
+    constant entry, u=1, v=0.8: G_L/(rho DT) = 0.4091349227  G_H/(rho DT) = 0.4251942648
+    constant entry, u=1, v=0.9: G_L/(rho DT) = 0.4088394329  G_H/(rho DT) = 0.4173981953
+    constant entry, u=1, v=1: G_L/(rho DT) = 0.4090855335  G_H/(rho DT) = 0.4090855335
+  r=1.52: v=0.8633886248 E=0.5769036379 O_H=0.3584222492  H net=0.00122078  mu+=0.71403993 tau6=0.64563523 tau5=0.53341504
+  r=1.525: v=0.6705869754 E=0.5876439438 O_H=0.3584222492  H net=0.00283961  mu+=0.69132663 tau6=0.64582902 tau5=0.53359093
+  r=1.53: v=0.4189942234 E=0.6016592965 O_H=0.3584222492  H net=0.00474511  mu+=0.66377386 tau6=0.6460228 tau5=0.53376671
+  c_H=6 upper end (root meets mu+ = tau): r = 1.53231276342  v = 0.2464365654
+  c_H=5 upper end (root reaches v=0): r = 1.53380719769
+
+==============================================================================
+K. Challenger-mixing points at r = 1.55, 1.60, 1.65 (claims 6, 7)
+==============================================================================
+  r=1.55 c_H=6 (1,v*): v*=0.253307855 mu+=0.64679772 mu0=0.402512 e_L*=0.923036687 H net=0.00564053 E=0.573855477
+           mirror (u*,1): u*=0.170647194 mu0=0.605992 e_H*=0.699396154 L net at e_H*=-0.00220867
+         c_H=5 (u_p,0): u_p=0.228269507 e_H*=0.536787052 L net=-0.00462706 E=0.366290544
+  r=1.6 c_H=6 (1,v*): v*=0.272645769 mu+=0.64873418 mu0=0.404555 e_L*=0.739324273 H net=0.00492364 E=0.484752901
+           mirror (u*,1): u*=0.185240167 mu0=0.604517 e_H*=0.578315375 L net at e_H*=-0.00150824
+         c_H=5 (u_p,0): u_p=0.240748886 e_H*=0.444215213 L net=-0.00356049 E=0.329049984
+  r=1.65 c_H=6 (1,v*): v*=0.291865341 mu+=0.65067031 mu0=0.406606 e_L*=0.594346346 H net=0.00422166 E=0.414708296
+           mirror (u*,1): u*=0.19999242 mu0=0.603014 e_H*=0.481709351 L net at e_H*=-0.000801489
+         c_H=5 (u_p,0): u_p=0.2532597 e_H*=0.370460286 L net=-0.0024652 E=0.299214614
+
+==============================================================================
+L. Baseline-tie equilibria that memo C1 does not report (50-digit direct sums)
+==============================================================================
+  Entry uses the actual posteriors and the prepare-at-indifference rule. Payoffs are
+  direct sums over flows; an equilibrium needs: a mixing type at zero net, a type at a
+  full order with net >= 0, an abstaining type with net <= 0 for both orders.
+  PB-NS with recruitment: r=1.42 c_H=5 u=0.4709991783 v=0
+     posteriors ['0.56626349', '0.44893752', '0.44893752'] tau=0.52986968 entry ['1.0', '0.25', '0.25']
+     H: buy 4.17619e-53, sell -0.0327666;  L: sell -0.00657108, buy -0.0445251;  E=0.576414185 O_H=0.309836434
+  FB-PS at constant entry: r=1.825 c_H=6 u=1 v=0.08166467389
+     posteriors ['0.63010333', '0.38524605', '0.36548818'] tau=0.6574576 entry ['0.25', '0.25', '0.25']
+     H: buy 0.00176436, sell -0.0466182;  L: sell -3.75858e-52, buy -0.0448538;  E=0.25 O_H=0.125
+  mirror PB-FS at constant entry: r=1.825 c_H=6 u=0.08166467389 v=1
+     posteriors ['0.63451182', '0.61475395', '0.36989667'] tau=0.6574576 entry ['0.25', '0.25', '0.25']
+     H: buy -2.50572e-52, sell -0.0448538;  L: sell 0.00176436, buy -0.0466182;  E=0.25 O_H=0.125
+  symmetric interior at constant entry: r=1.78 c_H=6 u=0.3238963126 v=0.3238963126
+     posteriors ['0.58104041', '0.5', '0.41895959'] tau=0.65570954 entry ['0.25', '0.25', '0.25']
+     H: buy 0.0, sell -0.0427247;  L: sell -6.26429e-52, buy -0.0427247;  E=0.25 O_H=0.125
+  symmetric interior at constant entry: r=1.755 c_H=5 u=0.07275484885 v=0.07275484885
+     posteriors ['0.51878171', '0.5', '0.48121829'] tau=0.54158651 entry ['0.25', '0.25', '0.25']
+     H: buy -1.25286e-52, sell -0.0406001;  L: sell 1.25286e-52, buy -0.0406001;  E=0.25 O_H=0.125
+  PB-NS at constant entry: r=1.77 c_H=6 u=0.4834586403 v=0
+     posteriors ['0.56777875', '0.44744477', '0.44744477'] tau=0.65532141 entry ['0.25', '0.25', '0.25']
+     H: buy -6.26429e-52, sell -0.0419825;  L: sell -0.00011105, buy -0.0418715;  E=0.25 O_H=0.125
+  asymmetric interior at constant entry: r=1.766997731 c_H=6 u=0.1 v=0.2895693529
+     posteriors ['0.54582642', '0.52019523', '0.44712673'] tau=0.6552049 entry ['0.25', '0.25', '0.25']
+     H: buy -8.77001e-52, sell -0.0416162;  L: sell 3.75858e-52, buy -0.0416162;  E=0.25 O_H=0.125

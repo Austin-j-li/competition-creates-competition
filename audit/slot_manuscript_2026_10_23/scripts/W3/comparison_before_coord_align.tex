@@ -1,0 +1,737 @@
+% Comparison note: two microstructures for Competition Creates Competition.
+% pdfLaTeX. Build: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build comparison.tex
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage[authoryear,round]{natbib}
+\usepackage{xcolor}
+\definecolor{paperlink}{RGB}{31,59,115}
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={Two microstructures for Competition Creates Competition: results, trade-offs and proof method},
+  pdfauthor={Austin Li},
+  colorlinks=true, linkcolor=paperlink, citecolor=paperlink, urlcolor=paperlink}
+
+% Registry numbers: \reg{<key>}. Generated file; do not edit.
+\input{numbers}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\DT}{\Delta_T}
+\newcommand{\eu}{\mathrm{e}}
+\newcommand{\Ent}{\mathsf{E}}
+\newcommand{\Own}{\mathsf{O}}
+\newcommand{\fr}{\mathfrak{r}}
+\newcommand{\rUR}{r_U^{R}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\lap}[1]{\textit{Laplace.}\ #1}
+\newcommand{\slo}[1]{\textit{Slot.}\ #1}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\allowdisplaybreaks
+
+\title{Two microstructures for \emph{Competition Creates Competition}:\\ results, trade-offs and proof method}
+\author{Austin Li}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+This note compares two trading stages for the model of \emph{Competition Creates Competition}. In the first,
+the Laplace set-up, an investor chooses a continuous order and Laplace noise hides it. In the second, the
+order-slot set-up, the investor shares one unit order slot with a liquidity trader. The auction, the
+preparation costs and the challenger's decision are the same in both.
+
+Sections~\ref{sec:setups}
+to~\ref{sec:tradeoffs} state the set-ups, the results side by side, and the trade-offs as results with their
+conditions. Section~\ref{sec:method} sets out the proof method and works one proof in each set-up.
+Section~\ref{sec:standing} records where each manuscript stands against that method, and
+Section~\ref{sec:decisions} lists decision points.
+
+The Laplace manuscript is the version of 22 October 2026 (main text, Appendix A and the Online Appendix). The
+slot manuscript is complete: Sections 1 to 9 and Appendix A.1 to A.9. Slot citations use its numbering:
+Propositions 1 to 4 and Corollaries 2 and 3 in the main text, Propositions A.1 to A.14 in the appendix. Every
+slot number comes from the project registry. Every Laplace number comes from an independent outward
+recomputation of its benchmark or from its printed statements. Each result carries one status label: analytical,
+computer-assisted, numerical diagnostic or open.
+
+Symbols follow each manuscript. Where they collide, the note
+writes the slot's research bound as \(\rUR\) and keeps \(r_U\) for the Laplace full-order bound.
+
+%==========================================================================================
+\section{The two set-ups}\label{sec:setups}
+
+\paragraph{Shared primitives.} Both set-ups keep Sections 2.1, 2.2 and 3.1 of the Laplace manuscript. A
+challenger of class \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\), has a value \(\theta\sim G_j\). The class
+\(G_H\) dominates \(G_L\), and both supports lie above the reserve \(p\). The incumbent's value is \(R\sim F\),
+uniform on \([0,r]\) in the benchmark. The challenger's preparation cost is \(0\) with probability \(\rho\) and
+\(c_H\) otherwise. Prepared bidders bid their values in a second-price auction with reserve \(p\).
+
+The auction objects are \(t_0\), \(t_j\), \(g_j\) and \(\DT=t_H-t_L\). At a belief \(\mu\) the challenger's
+gross profit is \(B(\mu)=g_L+\mu(g_H-g_L)\), and the threshold belief is \(\tau=(c_H-g_L)/(g_H-g_L)\). A
+stronger incumbent lowers \(g_H\) and \(g_L\) and raises \(\DT\) (Proposition 1 of either manuscript;
+analytical). The benchmark auction is
+\((h,\ell,p,\rho,c_H,k)=(\reg{prim_h},\reg{prim_ell},\reg{prim_p},\reg{prim_rho},\reg{prim_cH},\reg{prim_k})\),
+with prior \(\reg{prim_pi}\) and strengths \(r_0=\reg{prim_r0}\), \(r_1=\reg{prim_r1}\), \(r_2=\reg{prim_r2}\).
+Entry \(\Ent\) is the probability that the challenger prepares, and high-class ownership \(\Own_H\) the
+probability that a class-\(H\) challenger acquires the target.
+
+\subsection{The Laplace set-up}\label{sec:laplace}
+
+\paragraph{Primitives and timing.} The investor observes the class and submits an order \(q\in[-1,1]\) at the
+linear cost \(k|q|\). Noise demand \(Z\) has the Laplace density \(f(z)=\eu^{-|z|/b}/(2b)\) with scale \(b>1\).
+Market makers see the flow \(X=q+Z\) and set \(P(X)=\E[V_T\mid X]\), where \(V_T\) is the terminal payoff of a
+target share (Section 2.3). The timing is the sale rule, the investor's trade, the pricing of the flow, the
+challenger's decision and the auction.
+
+\paragraph{What the challenger learns from the price.} For any two orders, the likelihood ratio of a flow lies in
+\([\eu^{-2/b},\eu^{2/b}]\). Under every mixed order profile the posterior after every flow therefore lies in
+\([m(\pi),M(\pi)]\), with \(m(\pi)=\pi/[\pi+(1-\pi)\eu^{2/b}]\) and \(M(\pi)=\pi/[\pi+(1-\pi)\eu^{-2/b}]\)
+(Proposition A.1; analytical). Every flow has a positive density in both classes, so every price is on path.
+The zero-cost challenger prepares after every price, so entry is at least \(\rho\). Competitive pricing gives
+\(P=t_0+e(P)[t_L-t_0+\DT\mu_X]\), and the challenger inverts this identity to recover \(\mu_X\) whenever
+\(\DT>0\) (Proposition A.2; analytical).
+
+The investor's residual advantage at a flow is \(A_H=e\DT(1-\mu_X)\) in class \(H\) and \(A_L=e\DT\mu_X\) in
+class \(L\). Both lie in \([\rho\kappa(\pi)\DT,\DT]\), with \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\)
+(equation (11)). Through the score bound \(|f'|\le f/b\), a correctly signed order of size \(s\) has marginal
+profit at least \((1-s/b)\bar A-k\) (Appendix A.2).
+
+\paragraph{Calibration.} The benchmark uses \(b=\reg{lap_b}\), so \(M(1/2)=\eu/(1+\eu)=\reg{lap_M_half}\) and
+\(m(1/2)=\reg{lap_m_half}\). Entry is \(\reg{entry_r0}\) at \(r_0\), \(\reg{lap_entry_r1}\) at \(r_1\) and
+\(\reg{entry_r2}\) at \(r_2\). High-class ownership is \(\reg{own_r0}\), \(\reg{lap_own_r1}\) and
+\(\reg{own_r2_B}\) (Proposition 2 and Table 2; analytical).
+
+\subsection{The order-slot set-up}\label{sec:slot}
+
+\paragraph{Primitives and timing.} One public order opportunity comes before the challenger's decision. With
+probability \(\lambda\in(0,1)\) the informed investor fills it. It sees the class and chooses \(q\in\{-1,0,1\}\),
+and a nonzero order costs \(k\). With probability \(1-\lambda\) a liquidity trader fills the slot. It sells,
+abstains or buys one unit with probabilities \(\beta\), \(1-2\beta\), \(\beta\), where \(0<\beta\le1/3\), and its
+motive is exogenous. No one observes who filled the slot.
+
+Market makers see the order \(X\in\{-1,0,1\}\) and set
+\(P=\E[V_T\mid X]\) (Section 2.3). The timing is that of the Laplace set-up, with the slot draw at the trading
+date; Section 5 adds a research stage before this date. The device is the alternative-arrival structure of
+\citet{DowGorton1997}; the unit menu, the presence probability and the unit cost follow
+\citet{EdmansGoldsteinJiang2015}.
+
+\paragraph{What the challenger learns from the price.} Two numbers summarize the slot. The first is
+\(b=(1-\lambda)\beta\), the probability of a liquidity order in one direction. The second is \(u=\lambda/b\),
+the informed presence mass relative to the liquidity mass in one direction. The largest likelihood ratio that
+one order can carry is \(1+u\). Under every investor strategy the posterior after a nonzero order lies in
+\([m(\pi),M(\pi)]\), with \(M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]\) and \(m(\pi)=\pi/[\pi+(1-\pi)(1+u)]\)
+(Lemma 1; analytical). The bound at the zero order needs \(\beta\le1/3\), and no other result needs it.
+
+Every order has positive probability in both classes, so every price is on path. Equal prices give equal entry
+and hence equal posteriors, so the price reveals the posterior (Lemma 2). Each class compares one gross return
+with \(k\). A purchase earns \(K_H-k\) with \(K_H=e(1)\DT[1-\mu(1)]\) in class \(H\), and a sale earns
+\(K_L-k\) with \(K_L=e(-1)\DT\mu(-1)\) in class \(L\). Under every candidate,
+\(\rho\kappa(\pi)\DT\le K_j\le\DT\) (Lemma 3; analytical).
+
+\paragraph{Calibration B.} The slot has two primitives: \(1+u=\eu\) and \(\beta=\reg{beta_B}\), an exact
+decimal. Then \(\lambda=u\beta/(1+u\beta)=\reg{lambda_B}\) and \(b=\reg{b_B}\). With \(1+u=\eu^{2/b}\) at the
+Laplace scale \(b=\reg{lap_b}\), the posterior bounds of the two set-ups coincide: \(M(1/2)=\reg{M_half_B}\) and
+\(m(1/2)=\reg{m_half_B}\). Entry is \(\reg{entry_r0}\), \(\reg{entry_r1_B}\) and \(\reg{entry_r2}\) at the three
+strengths. High-class ownership is \(\reg{own_r0}\), \(\reg{own_r1_B}\) and \(\reg{own_r2_B}\)
+(Proposition 2 and Table 3; computer-assisted).
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{The two set-ups.}\label{tab:setups}
+\begin{tabularx}{\linewidth}{@{}L{3.1cm}YY@{}}
+\toprule
+ & Laplace & Order slot\\
+\midrule
+Order menu & \(q\in[-1,1]\), cost \(k|q|\) & \(q\in\{-1,0,1\}\), cost \(k\) per nonzero order\\
+What hides the order & additive Laplace noise \(Z\), scale \(b>1\) & a liquidity trader fills the slot with probability \(1-\lambda\), orders \((\beta,1-2\beta,\beta)\)\\
+What market makers see & the flow \(X=q+Z\in\mathbb R\) & the order \(X\in\{-1,0,1\}\)\\
+Largest likelihood ratio & \(\eu^{2/b}\) & \(1+u\), \(u=\lambda/[(1-\lambda)\beta]\)\\
+Posterior bounds & \([m(\pi),M(\pi)]\) at every flow & \([m(\pi),M(\pi)]\) at every order; the zero order needs \(\beta\le1/3\)\\
+Price sufficiency & inversion through the entry floor, \(\DT>0\) & equal prices give equal posteriors, \(\DT>0\)\\
+Investor's problem & a derivative bound on \([0,1]\): \(U_j'(s)\ge(1-1/b)\rho\kappa\DT-k\) & one comparison per class: \(K_j\) against \(k\)\\
+Trade bound in Proposition 2 & \(k<(1-1/b)\rho\kappa\DT(F_1)\) & \(k<\rho\kappa\DT(F_1)\)\\
+Added assumptions & a continuous order; a Laplace law with \(b>1\) (Proposition A.5 extends to every bounded-score density) & a unit menu; a presence probability; an exogenous liquidity motive; with research, a quadratic cost and a cap\\
+Tie rules & challenger prepares at indifference; no investor rule needed in Propositions 2 and 3 & investor IM (any mixture over maximizers), challenger C1; I0 and CM stated where they change a result\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+In Table~\ref{tab:setups}, the posterior bounds, the entry floor, the price sufficiency and the residual
+bounds have the same form in both set-ups. The investor's problem differs. It is an integral derivative bound
+over a continuum of orders in the Laplace set-up, and one comparison per class in the slot. The slot's trade
+bound has no factor \(1-1/b\), because a unit order changes no density. Neither set-up needs an off-path
+belief.
+
+%==========================================================================================
+\section{Main results side by side}\label{sec:results}
+
+Table~\ref{tab:results} lists each result with its statement and status in the two manuscripts. References
+are to the propositions, corollaries, tables and sections of each manuscript.
+
+\begin{footnotesize}
+\begin{longtable}{@{}L{2.3cm}L{6.5cm}L{6.5cm}@{}}
+\caption{Main results in the two manuscripts.}\label{tab:results}\\
+\toprule
+Result & Laplace: statement and status & Slot: statement and status\\
+\midrule
+\endfirsthead
+\toprule
+Result & Laplace: statement and status & Slot: statement and status\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Payoffs and target value & Proposition 1: a strengthening lowers \(g_H\), \(g_L\) and raises \(\DT\). Analytical. & Proposition 1: the same proposition and proof. Analytical.\\
+Posterior bounds under every strategy & Proposition A.1: \(m(\pi)\le\mu\le M(\pi)\) at every flow, from the score bound. Analytical. & Lemma 1: the same bounds at every nonzero order; at the zero order when \(\beta\le1/3\). Analytical.\\
+Price sufficiency & Proposition A.2: with \(\DT>0\) the price reveals \(\mu_X\); residual bounds (11). Analytical. & Lemma 2: equal prices give equal posteriors; prices rise strictly with the posterior. Lemma 3: one comparison per class. Analytical.\\
+Proposition 2 (i)--(iii) & Unique no trade at \(F_0\); unique full orders at \(F_1\) (entry above \(\rho\)) and at \(F_2\) (entry \(\rho\)), against arbitrary mixed orders on \([-1,1]\). Conditions (A1), (A2) with the factor \(1-1/b\), and \(B_{F_2}(M)<c_H\). Analytical. & Proposition 2: the same three outcomes, unique on the unit menu, the same under all four tie-rule pairs. Conditions (H1)--(H3) without the factor \(1-1/b\); ownership rises iff \([\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)\). Analytical.\\
+Admissible region & Section 4.2: open in \((r_0,r_1,c_H,k)\), nonempty (Appendix A.4); prior windows \((\reg{lap_prior_lo},\reg{lap_prior_ii_hi})\) for (i)--(ii) and \((\reg{lap_prior_lo},\reg{lap_prior_hi})\) for all three parts; cost window \((\reg{lap_cH_lo},\reg{lap_cH_hi})\). Analytical; not tabulated. & Proposition A.1 and Table 2: the exact band \(\reg{u_lo_frac}<u<\reg{u_hi_frac}\), that is \(\tau(r_1)<M(1/2)<\tau(r_2)\); prior windows \((\reg{prior_lo_B},\reg{prior_ii_hi})\) and \((\reg{prior_lo_B},\reg{prior_hi_B})\); tabulated with margins. Analytical.\\
+Fixed-information control & Proposition A.3: at a fixed experiment entry falls weakly. Benchmark: full orders held fixed, entry falls from \reg{lap_frozen_r0_entry} to \reg{lap_frozen_r1_entry} (closed forms; Table 2 labels the rows numerical diagnostic). & Proposition A.3: entry does not rise under rule C1, for every experiment and every independent cost law. With full orders held fixed it is unchanged at \reg{p4_frozen_r0_entry} on \((1,r_C]\) and \(\rho\) above \(r_C\) (Table 3). Analytical; values computer-assisted.\\
+Coexistence at the benchmark & Proposition 3: equilibria \((1,-v)\) at \reg{str_r155}, \reg{str_r160}, \reg{str_r165} with entry \reg{lap_P3_entry_r155}, \reg{lap_P3_entry_r160}, \reg{lap_P3_entry_r165}, strictly ordered, each beside no trade. Computer-assisted at three nodes; the branch between them is a numerical diagnostic, and the full correspondence is open. & Proposition 3: the complete equilibrium set on \([r_0,r_2]\) at prior \(1/2\) for every slot in the band. Coexistence exactly on \([r_A,r_N]=[\reg{rA},\reg{rN}]\); entry rises strictly on \([r_A,r_F]\), \(r_F=\reg{rF_B}\), and is flat after. At \reg{str_r155} to \reg{str_r165} entry is \reg{entry_r1_B} beside no trade. Computer-assisted (two Sturm counts).\\
+Coexistence at other priors & Not stated. & Corollary 2: the coexistence set at every prior. Under C1 it is empty below \(\pi_A^{\mathrm{lo}}\approx\reg{piA_lo_B}\) and from \(\pi_{\max}\) on, with \(\pi_{\max}\approx\reg{pimax}\); it starts at \(r_A\) up to \(\pi_A^{\mathrm{hi}}\approx\reg{piA_hi}\). Under CM one point remains at \(\pi_{\max}\), with margin \reg{margin_cmend_B} (Section 4.3). Computer-assisted.\\
+Research & Not modeled; Section 8 names endogenous research as a next step. & Proposition 4, Corollary 3, Proposition A.2: zero research unique at \(r_0\); a research branch on \([\reg{res_rR},\reg{res_rcap})\) with entry \(\reg{res_entry_r155}<\reg{res_entry_r160}<\reg{res_entry_r165}\) at \reg{str_r155}, \reg{str_r160}, \reg{str_r165}, beside zero research; research at the cap unique at \(r_1\) and \(r_2\). Slope analytical; lists and values computer-assisted.\\
+Preparation cost laws & Proposition A.6: atomless costs keep (i)--(ii); entry \reg{lap_mixture_entry_r1} at half-width \(0.1\). Analytical. & Proposition A.4: any independent cost law with the stated supports, atoms allowed; entry \reg{p4_atomless_r1_entry}; the return at \(r_2\) needs a half-width below \reg{p4_atomless_max_width_floor_r2} (entry \reg{p4_atomless_r2_entry} at \(0.1\)). Analytical; values computer-assisted.\\
+Value classes and priors & Proposition A.5 and Appendix A.4: a nonempty open set for every ranked pair; Table 4 cases A to C hold and D fails (A1) by \reg{lap_caseD_A1_upper}. Analytical. & Proposition A.5 and Table A.4: the same for every ranked pair and prior; every Table 4 case with its own costs; D is a control. Analytical; values computer-assisted.\\
+Many classes & Online Appendix A.13: the price reveals the full posterior; two groups under a separation \(\gamma>0\). Analytical. & Proposition A.6: two groups under separation; a strict three-class equilibrium where two orders share one price (knife-edge). Analytical; example computer-assisted.\\
+Complementary signals & Proposition A.7 at vector (A.50): entry \(\reg{lap_signal_entry_r0}\to\reg{lap_signal_entry_r1}\). Analytical. & Proposition A.7: the same vector, \(\reg{p4_s_signal_r0_entry}\to\reg{p4_s_signal_r1_entry}\); at the benchmark, accuracies \((\reg{sig_comp_aT},\reg{sig_comp_d})\) give \(\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}\), with no rise when the challenger's signal is removed. Analytical; values computer-assisted.\\
+Access to prices & Proposition A.9: proceeds \(+\reg{lap_access_proceeds_gain}\), net surplus \(+\reg{lap_access_surplus_gain}\) at \(r_1\). Analytical. Break-even trade scale \reg{lap_break_even_scale} (numerical diagnostic). & Proposition A.8: \(+\reg{p2_access_proceeds_gain}\) and \(+\reg{p2_access_surplus_gain}\); the same with research at the cap. Break-even scale \reg{p2_access_break_even}. Analytical; values computer-assisted.\\
+Payment rule & Proposition A.8: the spread response has the sign of \(1-2\omega\) (\(\eta\) in the manuscript). Analytical. & Proposition A.9: the same, weakly; strictly when \(\E[(R-\ell)_+]\) changes strictly. Analytical.\\
+Reserves & Table 5: at the reserve \reg{lap_reserve_excl_p} preparation falls from \reg{lap_reserve_excl_r0_entry} to \reg{lap_reserve_excl_r1_entry}; unique continuations at each node. Analytical. & Proposition A.10 and Table 5: at the reserve \reg{rsv_points_excl} entry is \reg{p2_reserve_points_exclude_r0_entry} at both strengths; the reserve \reg{rsv_deter} restores strict deterrence and excludes the weak incumbent. Analytical; values computer-assisted.\\
+Empirical implications & Section 7: three predictions for visible sale processes; no observable is derived. & Section 8, Propositions A.11 to A.14: the conditional execution spread \(S(r_1)=\reg{ba_r1_B}\) with entry share \reg{ba_share_r1_B}, zero above \(r_C\); identification of \((\vartheta,\lambda,\beta)\) from sell impact and volume; orders predict the winner above \(r_C\); announcement returns. Analytical; values computer-assisted.\\
+\end{longtable}
+\end{footnotesize}
+
+Three facts organize the table. First, the reversal and its welfare consequence are the same results in both
+set-ups. Calibration B gives the slot the Laplace top posterior, so every margin that concerns the auction alone
+is the same number. The cost window \((\reg{lap_cH_lo},\reg{lap_cH_hi})\) and the three-part prior window
+\((\reg{prior_lo_B},\reg{prior_hi_B})\) are identical. Second, the slot replaces three certified points with a
+complete equilibrium set, and it adds research, coexistence at every prior and derived observables. Third, two
+comparative statements lose their strict form in the slot: the fixed-information control and reserve deterrence
+at the exclusion reserve.
+
+Uniqueness has a different scope in the two set-ups. In the Laplace set-up it covers arbitrary mixed orders on
+a continuum and every unilateral deviation in \([-1,1]\). It is proved at the three benchmark strengths and on
+the two outer regions, \(r<\fr(k)=\reg{lap_r_unique_zero}\) and \(r>r_U=\reg{lap_rU}\).
+
+In the slot it covers
+arbitrary mixtures on three orders. The whole set is known at every strength on the path (Proposition 3). Full
+orders are unique on \(r_S<r<h\), where \(r_S=\reg{rS_B}\) is the exact root of \(\rho\DT m=k\) (Section 8).
+The second is a weaker uniqueness claim per economy and a stronger completeness claim along the path.
+
+%==========================================================================================
+\section{Trade-offs}\label{sec:tradeoffs}
+
+Each trade-off below is a result with its condition. Section~\ref{sec:dynamics} concerns the dynamics each
+set-up generates. Section~\ref{sec:conclusions} concerns the conclusions each supports.
+
+\subsection{Dynamics}\label{sec:dynamics}
+
+\paragraph{The partial sale.}
+\lap{At \reg{str_r155}, \reg{str_r160} and \reg{str_r165} the certified equilibria have pure orders \((1,-v)\),
+with \(v=\reg{lap_P3_v_r155}\), \reg{lap_P3_v_r160} and \reg{lap_P3_v_r165} (Proposition 3; computer-assisted).
+The interior sale exists because the low class's marginal profit falls strictly with its order (Online Appendix
+B.2). A root of its first-order condition is therefore a global optimum. The branch between the nodes is a
+numerical diagnostic.}
+
+\slo{On the unit menu a sale is all or nothing, and the only continuous margin is a mixture probability. The low
+class abstains up to \(r_N=\reg{rN}\), mixes on \((r_N,r_S)\) and sells with probability one from
+\(r_S=\reg{rS_B}\) (Proposition 3; computer-assisted). The mixture needs the investor rule IM. Under I0 the
+equilibrium set is empty on \((r_N,r_S]\) (Remark 1).}
+
+The partial sale is therefore a property of the continuous order menu. Its condition is that the investor can
+choose a size, with a density that moves smoothly with it.
+
+\paragraph{Strictly rising entry at intermediate strengths.}
+\lap{Entry rises strictly across the three nodes,
+\(\reg{lap_P3_entry_r155}<\reg{lap_P3_entry_r160}<\reg{lap_P3_entry_r165}\), because the entry enclosures are
+disjoint (Proposition 3; computer-assisted). The sale magnitude carries the rise: a larger \(v\) makes a sale
+more informative and moves the threshold flow. The conditions are the continuous menu, a fixed presence of the
+investor and an interval certificate at each node.}
+
+\slo{With a fixed presence probability, entry rises strictly on \([r_A,r_F]=[\reg{rA},\reg{rF_B}]\), where class
+\(H\) mixes (Proposition 3(b); computer-assisted). Entry is \reg{entry_rA_B} at \(r_A\), \reg{entry_mb_r145_B}
+at \reg{str_r145} and \reg{entry_r1_B} from \(r_F\). The purchase rate \(s_+=b[\DT(r)/k-2]\) adjusts so that a
+purchase that recruits earns exactly \(k\). The rise needs rule IM, and entry is flat on \([r_F,r_C]\); at
+\reg{str_r155} to \reg{str_r165} it equals \reg{entry_r1_B}.}
+
+\slo{With research, entry rises strictly on \([\reg{res_rR},\reg{res_rcap})\), which contains the three
+strengths: \(\reg{res_entry_r155}<\reg{res_entry_r160}<\reg{res_entry_r165}\) (Proposition 4 and Corollary 3;
+slope analytical, values computer-assisted). The research intensity carries the rise. It solves
+\(2a\lambda=\DT(r)m_\lambda-k\), whose two sides meet once, and class \(H\) buys with probability one after a
+success. The conditions are a
+quadratic research cost and a cap in the strip \((\reg{res_cap_lo},\reg{res_cap_hi})\); at the benchmark cap the
+cost lies in \((\reg{res_a_lo},\reg{res_a_up})\) (Proposition A.2). Zero research is an equilibrium at every
+strength on the branch.}
+
+Each set-up therefore has a strict rise at intermediate strengths. A different object carries it in each case: a
+sale size, a mixture probability or a research intensity. The slot's fixed-presence rise sits at lower strengths
+than the Laplace nodes. Its research rise sits at the Laplace nodes with lower entry levels.
+
+\paragraph{Coexistence.}
+\lap{No trade is an equilibrium exactly on \(r\le r_N=\reg{lap_rN}\) and is unique below
+\(\fr(k)=\reg{lap_r_unique_zero}\). Full orders are unique above \(r_U=\reg{lap_rU}\) (Proposition A.4;
+analytical). Between the two bounds the manuscript certifies three informative equilibria, each beside no trade,
+and proves no uniqueness. The equilibrium set there is open.}
+
+\slo{No trade and an informative equilibrium coexist exactly on \([r_A,r_N]\), and the set at each strength is
+listed (Proposition 3; computer-assisted). Under rule CM the
+threshold pair is also an equilibrium on \((r_A,r_J]\), \(r_J=\reg{rJ}\), with entry that falls strictly from
+\reg{entry_rA_B} to \(\rho\) (Remark 1). At \(r_C\) under CM, entry after a purchase can take any value in
+\([\rho,1]\).}
+
+The slot's completeness follows from a finite support enumeration. Each class has three orders, and each gross
+return falls strictly with the class's own rate.
+
+\paragraph{Research.}
+Only the slot models research. The investor chooses an intensity \(z\in[0,\bar\lambda]\) at cost \((a/2)z^2\)
+before it learns the class, and the intensity is the presence probability (Section 5). Zero research is an
+equilibrium from \(r_0\) to \(r_N=\reg{res_rN}\), because a unit order against an uninformative price earns
+\(\rho\DT/2\le k\) there. The equilibrium set with research on
+\((r_N,\rUR)=(\reg{res_rN},\reg{res_rUR})\) is open.
+
+\paragraph{Timing.}
+Both set-ups price one trade before the challenger's decision, and neither models the choice of a trading date.
+The Laplace flow is the aggregate net demand of the decision interval. The slot is one public order opportunity
+at a known date. This is a stronger institutional assumption, whose counterpart is the first prespecified
+opportunity with a recorded zero. In both set-ups the ceiling \(r_C\) is a tie event with positive probability, so the
+challenger's tie rule decides entry at \(r_C\) itself.
+
+\subsection{Conclusions each set-up supports}\label{sec:conclusions}
+
+\paragraph{The fixed-information control: falls, or does not rise.}
+\lap{Hold full orders fixed and let the challenger decide again. Entry falls strictly from
+\reg{lap_frozen_r0_entry} at \(r_0\) to \reg{lap_frozen_r1_entry} at \(r_1\) (Section 4.2; closed forms). The
+threshold flow \(x^*\) moves continuously with strength, so the crossing probability has a density and the fall
+is strict.}
+
+\slo{With the same control, entry is unchanged at \reg{p4_frozen_r0_entry} on \((1,r_C]\) and equals \(\rho\)
+above \(r_C=\reg{rC_B}\) (Proposition A.3 and Table 3; analytical, values computer-assisted). The frozen
+posteriors are three atoms \(m<1/2<M\), and the threshold \(\tau(r)\) exceeds \(5/8\) for \(r>1\). Only the top
+atom can recruit, so entry is a step function of strength.}
+
+The condition is the number of prices. With three prices entry moves in steps, so a strict fall at fixed orders
+needs the threshold to cross an atom. The weak statement ``does not rise'' holds in both set-ups.
+
+\paragraph{Reserve deterrence: strict, or flat.}
+\lap{The reserve \reg{lap_reserve_excl_p} excludes the low class. There, preparation falls from
+\reg{lap_reserve_excl_r0_entry} at \(r_0\) to \reg{lap_reserve_excl_r1_entry} at \(r_1\), with unique
+continuations at both nodes (Table 5; analytical).}
+
+\slo{At the reserve \reg{rsv_points_excl}, entry is \reg{p2_reserve_points_exclude_r0_entry} at both strengths:
+full orders are unique at both, and only a purchase recruits at both. Strict deterrence returns at the reserve
+\reg{rsv_deter}, where entry falls from \reg{p2_reserve_points_deter_r0_entry} to
+\reg{p2_reserve_points_deter_r1_entry} (Proposition A.10 and Table 5; analytical, values computer-assisted).
+This reserve exceeds \(r_0\) and excludes the weak incumbent.}
+
+The condition is the same step structure. Strict deterrence in the slot needs the stronger incumbent to push the
+top-posterior profit below the high cost.
+
+\paragraph{The empirical mapping.}
+\lap{Section 7 states three predictions. A stronger prepared bidder raises the probability of further
+preparation when the price precedes the decision, and weakly lowers it when it does not. A buyer that prepares
+after a favorable return wins more often. Against a strong prepared bidder, preparation returns to its floor
+while the price stays informative. The flow is aggregate net demand, so its largest price gap is not a unit
+spread, and no observable is derived from it.}
+
+\slo{The same three predictions hold (Section 8), and the slot adds derived observables. The conditional
+execution spread is \(S=\rho\DT\vartheta+(1-\rho)J\,A(M)\), with \(\vartheta=u/(2+u)\) the informed share of
+nonzero orders (Proposition A.11). It is \reg{ba_r1_B} at \(r_1\), and \reg{ba_share_r1_B} of it is the entry
+component; the entry component is zero above \(r_C\). Sell impact and volume identify \((\vartheta,\lambda,\beta)\)
+under full orders, while counts alone leave the informed share in
+\([\reg{theta_min_counts_B},\reg{theta_max_full_eq_r1_B})\) (Proposition A.12). Orders predict the winner among
+prepared challengers above \(r_C\) (Proposition A.13).}
+
+The slot's formulas need an observation protocol: the first prespecified public opportunity, with a recorded
+zero. A sample of first executed trades cannot identify the neutral price effect. The data counterpart of each
+protocol is open.
+
+%==========================================================================================
+\section{The proof method}\label{sec:method}
+
+An equilibrium proof has three failure modes. A step can be circular. A step can use a property of the
+equilibrium before the proof establishes it. A conclusion can hold at one parameter point only.
+
+The method below removes all three. It has five parts, and Section~\ref{sec:worked} applies it to one result
+in each set-up. Each part is a rule with an instance from one of the two manuscripts.
+
+\subsection{The equilibrium as an explicit object}\label{sec:object}
+
+The proof starts from the equilibrium written out as one tuple. The tuple lists the order distribution of
+each class and the posterior and price after every order or flow. It also lists the challenger's belief at
+every price on the image, the entry rule at every price and cost, and the bids. The tuple is a proof artifact:
+each later step may use only what it states.
+
+In the slot manuscript, Definition 1 fixes the tuple \((\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)\) with truthful
+bids. Appendix A.3 displays one tuple for each of the three economies of Proposition 2. Section 4.3 displays
+the five forms of the high-class order on the path.
+
+In the Laplace manuscript the components of Proposition 2
+sit in four places. The orders are in the statement and the posterior in (A.8). The entry rule and the price
+are in equation (9), and the price belief in Proposition A.2. The components are complete, and the proof is sound. The
+five-part form displays them in one place, with the price function on all of \(\mathbb R\), its two atoms and
+their probabilities.
+
+\subsection{Verification against the fixed object}\label{sec:verification}
+
+The conditions are listed: Bayes consistency, challenger beliefs at each price, entry optimality, competitive
+prices, investor optimality and truthful bids (and research optimality with research). Each condition is checked
+by direct computation against the stated tuple. A unilateral deviation holds the candidate's price function and
+entry rule fixed and changes only the law of the order or flow that reaches them. A comparison across economies
+solves the equilibrium again in each economy; the two never mix.
+
+Two shortcuts break this part. The first uses price sufficiency before the proof establishes it. The rule: a
+constructed tuple first shows by direct algebra that its prices differ at different posteriors. Only then does
+the proof read the challenger's belief from the price. A lemma whose premises include the conditions under
+proof cannot supply that step.
+
+The slot appendix does this in one paragraph before any condition is checked
+(Appendix A.2, ``Constructed tuples''). The price increment identity uses only the price formula. A stated
+tuple therefore has distinct prices at distinct posteriors, and condition (E2) then gives the belief at each
+price. The Laplace manuscript reaches the same point through Proposition A.2, which it proves for every
+candidate from the entry floor.
+
+The second shortcut is the word ``symmetrically''. The wrong-sign order of class \(L\) in the Laplace proof of
+Section~\ref{sec:worked} needs its own line. A purchase of size \(s>0\) earns
+\(-s\int f(x-s)A_L(x)\,dx-ks<0=\Pi_L(0)\), because the residual \(A_L\) is nonnegative.
+
+\subsection{Uniqueness through bounds on every profile}\label{sec:bounds}
+
+A uniqueness claim rests on bounds that hold for every candidate profile, not only for the proposed one. The
+device that makes this possible is the posterior bound. Under every strategy the posterior after every flow or
+order lies in \([m(\pi),M(\pi)]\). The score bound gives this in the Laplace set-up, the liquidity floor in the
+slot. The bound lets the proof bound beliefs before it knows the equilibrium.
+
+Three further bounds follow in order. The zero-cost challenger gives the entry floor \(e\ge\rho\) at every
+price. The floor and the posterior bound give the residual bounds \(\rho\kappa\DT\le A_j\le\DT\) under every
+candidate. The residual bound and the trade bound force the orders: zero orders when \(\DT<k\), full orders when
+the lower residual bound exceeds \(k\). Only then does the proof read the posteriors, the entry and the prices
+of the forced profile.
+
+The proofs of part (iii) show two routes with different hypotheses. The entry-first route bounds every reachable
+belief below \(M(\pi)\) and concludes that entry is \(\rho\) in every candidate, before any price inversion.
+It then forces full orders. It needs the posterior bound at every flow or order, which in the slot is the
+zero-order bound and \(\beta\le1/3\).
+
+The orders-first route forces full orders from the bounds at the nonzero
+orders alone, then reads the three posteriors and excludes high-cost entry at each. It needs no bound at the
+zero order and holds for every \(\beta<1/2\). The Laplace worked proof uses the first route and the slot
+appendix the second; both are non-circular.
+
+\subsection{Strict margins and the open parameter set}\label{sec:margins}
+
+Every hypothesis is a strict inequality, and the proof records its margin at the benchmark in a table.
+Structural assumptions are listed apart from the strict economic hypotheses: weak dominance between the
+classes, supports above the reserve, continuity of \(F\), the bound \(\beta\le1/3\). The open set is stated in
+named coordinates. A printed interval in one coordinate is a slice through the benchmark with the other
+coordinates fixed, and the text says so.
+
+The admissible region is then a result. It is a table with each
+boundary, the benchmark point and its distance to the boundary (slot manuscript, Table 2 and Table A.6). A
+result on an open set survives a joint perturbation of the primitives, with a radius that the margins bound.
+
+\subsection{Certificates for finite steps}\label{sec:certificates}
+
+A finite step is certified by exact rational arithmetic when its inputs are rational. It is certified by
+outward interval arithmetic when a transcendental constant enters. Exact decimal inputs are parsed as decimals.
+A root is certified by a bracket with opposite endpoint signs, and a count of roots by a Sturm sequence. The
+named script and run log are part of the proof, and the status label is computer-assisted.
+
+The certificate is the exported endpoint, not the sign inside the computation. An interval routine can be exact
+and still write both endpoints through a nearest-rounded decimal format. Most rows then print equal endpoints,
+and the true value lies outside the printed pair. The rule: round the lower endpoint down and the upper
+endpoint up from exact endpoints, or mark a rounded decimal as an approximation.
+
+The slot manuscript applies it. Appendix A.3 names the file of exact rational endpoints as the certificate of each printed value, and the
+text writes \(\approx\) before the prior cut points and the research bounds. A pair of binary floats on either side of a computed
+value is not a certificate either.
+
+The four thresholds of the Laplace manuscript's Proposition A.4 are closed
+forms evaluated in floating point, with the two float neighbours as saved bounds. The enclosures that this
+note prints (Sections~\ref{sec:results} and~\ref{sec:dynamics}) certify the digits shown.
+
+\subsection{One worked proof in each set-up}\label{sec:worked}
+
+The result is part (iii) of Proposition 2 in each manuscript. At the strongest incumbent \(F_2\), the unique
+trading outcome is full orders, and entry returns to \(\rho\). The Laplace version expands the manuscript's
+Appendix A.2. That appendix proves part (iii) in three sentences, by reference to Steps 4 and 5 of parts (i)
+and (ii). The slot version follows Step 5 of Appendix A.3 of the slot manuscript. Each part gives the Laplace proof and
+then the slot proof.
+
+\paragraph{Hypotheses.}
+\lap{Structural: \(G_H\le G_L\) with both supports above \(p\); \(F_2\) continuous. Strict: (L1)
+\(\DT(F_2)>0\); (L2) \(0<k<(1-1/b)\rho\kappa(\pi)\DT(F_2)\); (L3) \(B_{F_2}(M(\pi))<c_H\); and \(b>1\),
+\(0<\rho<1\), \(0<\pi<1\), \(c_H>0\). In the manuscript, (L1) and (L2) follow from (A2) at \(F_1\) and
+Proposition 1(b). (L3) is the one new hypothesis of part (iii).}
+
+\slo{Structural: the same classes; \(F_2\) continuous; \(0<\beta<1/2\) (the model's \(\beta\le1/3\) is not used).
+Strict: (S1) \(0<k<\rho\kappa(\pi)\DT(F_2)\); (S2) \(B_{F_2}(M(\pi))<c_H\); and \(0<\lambda<1\), \(0<\rho<1\),
+\(0<\pi<1\), \(c_H>0\). (S1) implies \(\DT(F_2)>0\).}
+
+\paragraph{Part 1: the object.}
+\lap{\(\sigma_H^*=\delta_{+1}\), \(\sigma_L^*=\delta_{-1}\). The posterior on \(\mathbb R\) is
+\(\mu^*(x)=[1+\tfrac{1-\pi}{\pi}\exp\{-(|x+1|-|x-1|)/b\}]^{-1}\). It equals \(m(\pi)\) on \(x\le-1\), rises
+strictly on \((-1,1)\) and equals \(M(\pi)\) on \(x\ge1\). The price is
+\(P^*(x)=t_0+\rho[t_L-t_0+\DT\mu^*(x)]\), with image \([P_-,P_+]\) and atoms at both ends. The atom \(P_+\) has
+probability \(1/2\) in class \(H\) and \(\eu^{-2/b}/2\) in class \(L\). The belief at a price is the inverse,
+\(\beta^*(P)=(P-t_0-\rho[t_L-t_0])/(\rho\DT)\). The entry rule is \(e^*(P,0)=1\) and \(e^*(P,c_H)=0\) at every
+price, and bids are truthful.}
+
+\slo{\(\sigma_H=\delta_1\), \(\sigma_L=\delta_{-1}\). The posteriors after \((-1,0,1)\) are \((m,\pi,M)\). The
+prices are \(P(x)=t_0+\rho[t_L-t_0+\DT\mu(x)]\), three distinct numbers. At the benchmark they are
+\(\reg{price_r2_m1_B}\), \(\reg{price_r2_0_B}\) and \(\reg{price_r2_p1_B}\). The belief at each price is the
+posterior of its one order. The high-cost preparation probability is \(\zeta\equiv0\), so \(e\equiv\rho\), and
+bids are truthful.}
+
+\paragraph{Part 2: the conditions.}
+In both set-ups the conditions are:
+\begin{itemize}[leftmargin=2em,itemsep=0pt]
+\item[(C1)] Bayes consistency of the posterior and of the belief at each price;
+\item[(C2)] competitive prices;
+\item[(C3)] entry optimality at every reached price and cost, with the tie rule;
+\item[(C4)] investor optimality against the fixed \(P\) and \(e\), over pure and mixed orders;
+\item[(C5)] truthful bids.
+\end{itemize}
+The Laplace (C4) ranges over \(q\in[-1,1]\); the slot (C4) over \(q\in\{-1,0,1\}\).
+
+\paragraph{Part 3: verification.}
+\lap{(C1): under \(\sigma^*\) the flow densities are \(f(x-1)\) and \(f(x+1)\), and Bayes' rule gives
+\(\mu^*\). \(P^*\) is a strictly increasing affine image of \(\mu^*\), so \(\mu^*(X)=\beta^*(P^*(X))\). (C2):
+the cost is independent of the class, so \(\E[V_T\mid j,x]=t_0+\rho(t_j-t_0)\); average over the class. (C3): at
+every reached price the belief lies in \([m,M]\), so \(B_{F_2}\le B_{F_2}(M)<c_H\) by (L3). The high-cost
+challenger stays out, and the zero-cost challenger prepares. (C4): the residuals are \(A_H=\rho\DT(1-\mu^*)\)
+and \(A_L=\rho\DT\mu^*\), both in \([\rho\kappa\DT,\DT]\).}
+
+\lap{For a correctly signed order of size \(s\), \(U_j(s)=s\bar A_j(s)-ks\) with
+\(\bar A_j(s)=\int f(x\mp s)A_j(x)\,dx\). The translation lemma (Laplace manuscript, Online Appendix A.3) gives
+\(|\bar A_j'|\le\bar A_j/b\). Hence \(U_j'(s)\ge(1-1/b)\rho\kappa\DT-k>0\) almost everywhere by (L2), and the
+unit order strictly dominates every smaller size. A wrong-signed order of size \(s\) earns
+\(-s\int f(x\pm s)A_j(x)\,dx-ks<0\) in each class (Section~\ref{sec:verification}). (C5): weak dominance in a
+second-price auction.}
+
+\slo{(C1): the order probabilities are \(f_H=(b,b_0,b+\lambda)\) and \(f_L=(b+\lambda,b_0,b)\), with
+\(b_0=(1-\lambda)(1-2\beta)\), and Bayes' rule gives \((m,\pi,M)\). The three prices differ because \(\DT>0\)
+and \(m<\pi<M\), so each price has one order in its preimage. (C2): the price formula with \(e\equiv\rho\). (C3):
+\(B_{F_2}(\mu)\le B_{F_2}(M)<c_H\) at each of the three posteriors by (S2), with no tie. (C4):
+\(K_H=\rho\DT(1-M)>k\) and \(K_L=\rho\DT m>k\) by (S1), so \(U_H(1)>0=U_H(0)>U_H(-1)\) and
+\(U_L(-1)>0=U_L(0)>U_L(1)\). A mixture over other orders averages strictly smaller payoffs. (C5): as in the
+Laplace set-up.}
+
+\paragraph{Part 4: uniqueness through bounds on every profile.}
+\lap{Take any equilibrium with arbitrary mixed orders. Step 1: the triangle inequality gives
+\(\eu^{-2/b}\le a_H(x)/a_L(x)\le\eu^{2/b}\) for the mixed flow densities. Hence \(\mu(x)\in[m,M]\) at every
+flow and \(\beta(P)\in[m,M]\) at every price. Step 2: by (L3), the high-cost challenger stays out at every
+reached price, so \(e\equiv\rho\) in every equilibrium; this step uses no price inversion. Step 3: with
+\(e\equiv\rho\), \(P(x)=t_0+\rho[t_L-t_0+\DT\mu(x)]\) for almost every flow, and the residuals under a deviation
+lie in \([\rho\kappa\DT,\DT]\).}
+
+\lap{Step 4: the derivative bound of Part 3 holds against this profile's own \(P\) and \(e\), so both classes
+use the unit order. Step 5: the orders pin \(\mu=\mu^*\), \(P=P^*\) up to a flow-null set, \(\beta=\beta^*\)
+on the image and \(e\equiv\rho\). The null set is never reached, because every order gives the flow a positive
+density.}
+
+\slo{Take any equilibrium. Step 1: under every strategy \(b\le f_j(\pm1)\le b+\lambda\), so \(\mu(1)\le M\) and
+\(\mu(-1)\ge m\). Step 2: the floor \(e\ge\rho\) and Step 1 give \(K_H\ge\rho\DT(1-M)\ge\rho\kappa\DT>k\) and
+\(K_L\ge\rho\DT m>k\) by (S1). Every equilibrium therefore has \(\sigma_H=\delta_1\) and
+\(\sigma_L=\delta_{-1}\). Step 3: the forced orders give the posteriors \((m,\pi,M)\). Step 4: by (S2),
+\(B_{F_2}\) lies below \(c_H\) at each posterior and at every average of them, so \(\zeta\equiv0\) and
+\(e\equiv\rho\) with no tie. Step 5: the price formula fixes the three prices. Every comparison in Steps 2 and 4
+is strict, so the outcome is the same under all four tie-rule pairs.}
+
+\paragraph{Part 5: margins and the open set.}
+Table~\ref{tab:margins3} gives the margins at \(r_2=\reg{prim_r2}\) in both set-ups. The auction objects are
+exact rationals: \(g_H(r_2)=\reg{lap_gH_r2}\), \(g_L(r_2)=\reg{lap_gL_r2}\), \(\DT(r_2)=\reg{lap_Delta_r2}\) and
+\(\tau(r_2)=\reg{tau_r2_frac}\). Because \(M\) is the same, the exclusion margin, its posterior form and the
+position of \(r_2\) above the ceiling coincide. The trade margin differs by the factor \(1-1/b\).
+
+The open set, as slices through the benchmark, is \(r_2\in(r_C,h)\), \(c_H\in(\reg{lap_cH_lo},\reg{lap_cH_hi})\)
+and \(\pi\in(\reg{prior_lo_B},\reg{prior_hi_B})\) in both set-ups. The window for \(k\) starts at
+\(\DT(r_0)=\reg{lap_Delta_r0}\) in both. It ends \reg{lap_margin_A2_upper} above \(k\) in the Laplace set-up and
+\reg{margin_kstrong_B} above \(k\) in the slot. All hypotheses are strict and continuous in the primitives, so
+the joint region is open and contains the benchmark. Neither tie rule is used at \(r_2\). The zero-cost decision
+is strict because \(g_L(r_2)>0\), the high-cost decision is strict by the exclusion margin, and both investor
+comparisons are strict.
+
+\begin{table}[tbp]
+\centering\small
+\caption{Margins of Proposition 2(iii) at \(r_2=\reg{prim_r2}\), benchmark, prior \(1/2\).}\label{tab:margins3}
+\begin{tabularx}{\linewidth}{@{}L{3.6cm}YL{2.9cm}L{2.9cm}@{}}
+\toprule
+Hypothesis & Margin & Laplace & Slot\\
+\midrule
+Exclusion & \(c_H-B_{r_2}(M)\) & \reg{lap_return_cost} & \reg{margin_return_B}\\
+Exclusion, posterior units & \(\tau(r_2)-M\) & \reg{lap_return_post} & \reg{margin_return_post_B}\\
+Trade bound & Laplace \((1-1/b)\rho\kappa\DT(r_2)-k\); slot \(\rho\kappa\DT(r_2)-k\) & \reg{lap_return_trade} & \reg{margin_kstrong2_B}\\
+Spread & \(\DT(r_2)\) & \reg{lap_Delta_r2} & \reg{lap_Delta_r2}\\
+Strengthening & \(\DT(r_2)-\DT(r_1)\) & \reg{lap_spread_increase} & \reg{lap_spread_increase}\\
+Position above the ceiling & \(r_2-r_C\) & \reg{lap_r2_minus_rC} & \reg{gap_r2_rC_B}\\
+Zero-cost strictness & \(g_L(r_2)\) & \reg{lap_gL_r2} & \reg{lap_gL_r2}\\
+Score bound; presence & \(b-1\); \(\lambda\), \(1-\lambda\) & \(1\) & \reg{lambda_B}, \reg{margin_p2_lambda_upper_B}\\
+Floor, prior, cost, fee & \(\rho\), \(1-\rho\), \(\pi\), \(1-\pi\), \(c_H\), \(k\) & \(1/4\), \(3/4\), \(1/2\), \(1/2\), \(6\), \(1/50\) & the same\\
+\bottomrule
+\end{tabularx}
+\par\medskip
+\begin{minipage}{0.92\linewidth}\footnotesize
+\textit{Notes.} Laplace values are independent outward enclosures of the pinned benchmark; slot values are
+registry enclosures. The ceiling is \(r_C=\reg{lap_rC}\) in both set-ups
+(Laplace: (A.11); slot: \(\tau(r_C)=M\)).
+\end{minipage}
+\end{table}
+
+\paragraph{Status.} Both propositions are analytical, and both margins tables are computer-assisted. The Laplace
+manuscript's three-sentence proof is sound and non-circular. The five-part form adds the displayed tuple, the
+margins table, the wrong-sign line for class \(L\) and the structural-strict split. It also notes that Step 2
+needs no price inversion. The slot manuscript's Appendix A.3 already has
+the five parts.
+
+\subsection{A checklist}\label{sec:checklist}
+
+A reader can apply these questions to any equilibrium claim.
+\begin{enumerate}[leftmargin=2em,itemsep=0pt]
+\item Is the equilibrium displayed as one tuple, with every component on every reachable history?
+\item Are the conditions listed, and is each one checked by a computation against that tuple?
+\item Does every deviation hold the candidate's price function and entry rule fixed?
+\item Does any step use a property of the equilibrium (price sufficiency, a posterior, an entry rate) before
+  the proof establishes it for every candidate?
+\item Does the uniqueness argument start from bounds that hold for every profile, and in which order does it
+  force beliefs, residuals, orders, entry and prices?
+\item Is every hypothesis a strict inequality with a recorded margin, apart from the structural assumptions?
+\item Is the open set stated in named coordinates, with each printed interval identified as a slice?
+\item Is every finite step certified by exact or outward arithmetic, with a named script and run log, and are
+  the exported endpoints outward?
+\item Which conclusions depend on a tie rule, and is each rule stated?
+\item Does every number in the text match its certificate at the printed precision?
+\end{enumerate}
+
+%==========================================================================================
+\section{Where each set-up stands against the standard}\label{sec:standing}
+
+\paragraph{The Laplace manuscript.} Proposition 2 meets the core of the standard. Each condition is checked
+against a fixed candidate, and no step assumes its conclusion. Uniqueness rests on the posterior bounds, the
+entry floor, the residual bounds and the derivative bound, all of which hold for every profile. Eleven
+compressed steps across the appendices hide no gap. Four points fall short in
+form:
+\begin{itemize}[leftmargin=2em,itemsep=0pt]
+\item no result displays its equilibrium as one tuple;
+\item the part (iii) margin at the benchmark, \(c_H-B_{r_2}(M)=\reg{lap_return_cost}\), is not printed (the
+  notes of Table 2 print the four margins of parts (i) and (ii));
+\item the four thresholds of Proposition A.4 have no certificate (Section~\ref{sec:certificates});
+\item the region is asserted open and proved nonempty, with prior windows printed, but it is not tabulated.
+\end{itemize}
+
+Proposition 3 certifies seven things at each of three strengths:
+\begin{itemize}[leftmargin=2em,itemsep=0pt]
+\item an exact root in a stated bracket (at \reg{str_r155} the endpoint signs are of order
+  \reg{lap_P3_psi_left_r155} and \reg{lap_P3_psi_right_r155}: bracket widths, not hypothesis margins);
+\item the low class's unique best response against the schedule at that root;
+\item the high class's unique best response against every schedule in the bracket (global lower bounds
+  \reg{lap_P3_GammaH_r155}, \reg{lap_P3_GammaH_r160} and \reg{lap_P3_GammaH_r165});
+\item the exclusion of wrong-signed orders;
+\item Bayes consistency and competitive prices for the fixed candidate;
+\item coexistence with no trade (pooling margins \reg{lap_P3_pool_r155}, \reg{lap_P3_pool_r160} and
+  \reg{lap_P3_pool_r165}; the threshold order \(M_v-\tau\) is at least \reg{lap_P3_thr_r155} at \reg{str_r155});
+\item the strict order of the three entry enclosures.
+\end{itemize}
+It does not certify uniqueness of the equilibrium, a continuous branch between the nodes, or a parameter box
+around them. Two sentences of Section 4.3 rest on the numerical grid: the sale magnitude rises toward one, and
+entry rises along the continuation. The manuscript labels both as diagnostics.
+
+\paragraph{The slot manuscript.} Appendix A has the five parts for every result. Definition 1 fixes the tuple
+and the conditions (E1) to (E6), and Section 5 adds (E7). Each proof displays its tuple. The three economies of
+Proposition 2 are in A.3, the five forms on the path in Section 4.3 and A.4, the research tuples in A.5.
+
+Uniqueness starts from the bounds of Lemma 1, which hold under every profile, and on the path from an
+enumeration over the finite support. Table A.6 lists every strict hypothesis with its margin at the benchmark,
+and Table A.3 lists which conclusions depend on a tie rule. Two monotonicity steps on the path rest on exact
+Sturm counts, and every statement that involves \(\eu\) uses interval arithmetic. These are computer-assisted,
+the rest analytical.
+
+Three statements depend on the tie rules. The strict rise on \([r_A,r_F]\) needs IM. The threshold pair, with
+entry \reg{entry_th_r155_B}, \reg{entry_th_r160_B} and \reg{entry_th_r165_B} at the three intermediate
+strengths, and the entry interval at \(r_C\) exist only under CM. Under I0 the set is empty on \((r_N,r_S]\).
+Proposition 2 and the research equilibria at the six benchmark strengths hold under all four pairs.
+
+
+
+\paragraph{Margins that are thin in both.} Table~\ref{tab:thin} lists the smallest margins. The return margin
+at \(r_2\) is the same in both set-ups, and so is the prior window's upper end. In the Laplace manuscript the
+strong-trade margin, \reg{lap_margin_A2_upper}, is smaller than the return margin in the same units. The
+return margin is therefore not the thinnest. In the slot the thin margins are one distance in several coordinates. Margins in different units are not
+ranked against each other.
+
+\begin{table}[htbp]
+\centering\small
+\caption{The smallest margins at the benchmark.}\label{tab:thin}
+\begin{tabularx}{\linewidth}{@{}YL{2.2cm}L{2.6cm}L{2.6cm}@{}}
+\toprule
+Margin & Units & Laplace & Slot\\
+\midrule
+Return at \(r_2\): \(c_H-B_{r_2}(M)\) & cost & \reg{lap_return_cost} & \reg{margin_return_B}\\
+Return at \(r_2\): \(\tau(r_2)-M\) & posterior & \reg{lap_return_post} & \reg{margin_return_post_B}\\
+Prior window, upper end minus \(1/2\) & prior & \reg{margin_prior_hi_B} & \reg{margin_prior_hi_B}\\
+Position above the ceiling, \(r_2-r_C\) & strength & \reg{lap_r2_minus_rC} & \reg{gap_r2_rC_B}\\
+Strong trade bound at \(r_1\) & cost & \reg{lap_margin_A2_upper} & \reg{margin_kstrong_B}\\
+Weak trade bound, \(k-\DT(r_0)\) & cost & \reg{lap_margin_A2_lower} & \reg{margin_kweak_B}\\
+Slot band, upper end minus \(u\) & \(u\) & --- & \reg{margin_u_hi_B}\\
+Cap strip, upper end minus \(\bar\lambda\) & intensity & --- & \reg{margin_lambda_hi_B}\\
+Research cost window around \(a=\reg{res_a}\) & cost parameter & --- & \reg{res_a_lo} to \reg{res_a_up}\\
+Cost-law extension: the margin that binds & cost & \reg{lap_margin_A2_upper} & \reg{p4_atomless_max_width_floor_r2}\\
+\bottomrule
+\end{tabularx}
+\par\medskip
+\begin{minipage}{0.92\linewidth}\footnotesize
+\textit{Notes.} The last row reports the margin that binds each cost-law extension. The Laplace strong-trade
+margin is unchanged by the cost mixture. The slot's return at \(r_2\) survives a high-cost band of half-width
+below the value shown.
+\end{minipage}
+\end{table}
+
+%==========================================================================================
+\section{Decision points}\label{sec:decisions}
+
+\begin{enumerate}[leftmargin=2em,itemsep=1pt]
+\item \textbf{Which set-up carries the main text.} The Laplace set-up keeps the partial sale and three certified
+  nodes with a strict rise. The slot keeps a complete equilibrium set, research, coexistence at every prior and
+  derived observables. Its price is an exogenous liquidity motive and a unit menu. They can also be nested, one
+  as the model and the other as an appendix.
+\item \textbf{What the strict rise at intermediate strengths must carry.} A sale size (Laplace, three nodes); a
+  mixture probability (slot, \([r_A,r_F]\), rule IM); or a research intensity (slot,
+  \([\reg{res_rR},\reg{res_rcap})\), a quadratic cost and a cap).
+\item \textbf{The fixed-information control and reserve deterrence.} The Laplace set-up supports ``falls
+  strictly'' and strict deterrence at the exclusion reserve. The slot supports ``does not rise'' and flat entry at
+  that reserve, with strict deterrence at \reg{rsv_deter}.
+\item \textbf{The thin boundary at \(r_2\).} Both set-ups sit \reg{lap_return_post} below the ceiling in
+  posterior units. A larger \(r_2\) or a smaller \(c_H\) widens this margin in both.
+\item \textbf{Tie rules in the statements.} The slot results name IM and C1 and list where I0 and CM change a
+  conclusion. The Laplace manuscript uses the challenger's rule at \(r_C\) and at two reserve events, and needs
+  no investor rule.
+\item \textbf{The five-part form in the Laplace manuscript.} Four additions bring it to the standard: an
+  explicit tuple for Proposition 2, the part (iii) margin, outward certificates for the four thresholds and a
+  tabulated region. The saved pipeline that matches the Laplace tables is a separate branch of the repository;
+  the printed numbers also follow from the stated primitives. A note that names the revision settles the record.
+\item \textbf{Open items that a reader will ask about.} Laplace: the first informative equilibrium, the set
+  between \(r_N\) and \(r_U\), a certified branch. Slot: the set with research on \((r_N,\rUR)\), the
+  selection between the two outcomes on \([r_A,r_N]\) and the data counterpart of each observation protocol.
+  Both: the seller's reserve with the full continuation and the trading game under the bargaining
+  rule.
+\end{enumerate}
+
+\bibliographystyle{aer}
+\setlength{\bibsep}{3pt}
+{\small\bibliography{references}}
+
+\end{document}

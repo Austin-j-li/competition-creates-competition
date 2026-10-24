@@ -1,0 +1,728 @@
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A1_payoffs.tex overleaf/competition_slot/appendix/A1_payoffs.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A1_payoffs.tex	2026-10-23 16:15:25.495850627 +0000
++++ overleaf/competition_slot/appendix/A1_payoffs.tex	2026-10-23 16:26:04.714783006 +0000
+@@ -15,7 +15,7 @@
+ The bid \(v\) therefore earns \((v-\max\{p,Y\})_+\), the larger of the two possible payoffs, at every \(Y\).
+ Suppose \(v<p\). Every bid that wins pays at least \(p>v\), so no bid earns more than zero, the payoff of no
+ bid. Truthful bids, and no bid below the reserve, are therefore weakly dominant at every competing bid. This
+-verifies condition (E5) of Definition~\ref{def:equilibrium} for every tuple. No payoff below rests on a belief.
++verifies condition (E6) of Definition~\ref{def:equilibrium} for every tuple. No payoff below rests on a belief.
+ 
+ \paragraph{Proof of Proposition~\ref{prop:returns}.}
+ Without entry the target receives \(p\1\{R\ge p\}\). A prepared challenger with \(\theta\ge p\) wins at
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A2_beliefs_trading.tex overleaf/competition_slot/appendix/A2_beliefs_trading.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A2_beliefs_trading.tex	2026-10-23 16:15:25.495808955 +0000
++++ overleaf/competition_slot/appendix/A2_beliefs_trading.tex	2026-10-23 16:28:17.527188738 +0000
+@@ -21,8 +21,8 @@
+ \item Write \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
+ \(w(\mu)=(1-\mu)w_L+\mu w_H=t_L-t_0+\DT\mu\) for its average at the belief \(\mu\). Proposition~\ref{prop:returns}
+ and Section~\ref{sec:profits} give \(w_H\ge w_L\ge0\).
+-\item A computer-assisted step names its script and its run log. All script paths start at the folder
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/} of the project repository.
++\item A computer-assisted step names its script and its run log. Every script path in Appendix~\ref{app:proofs} is
++relative to the folder \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/} of the project repository.
+ \end{itemize}
+ 
+ \begin{proof}[Proof of Lemma~\ref{lem:beliefs}]
+@@ -94,7 +94,7 @@
+ 
+ \emph{Part (b): the price.} Average \eqref{eq:a2-terminal} over the class with the weights \(\mu(x)\) and
+ \(1-\mu(x)\) of (E1). Condition (E4) gives \(P(x)=t_0+e(x)\,w(\mu(x))\), which is \eqref{eq:price}. This step uses
+-only (E1), (E4) and the independence of the cost.
++only (E1), (E4), the truthful bids (E6) of Step 0, and the independence of the cost.
+ 
+ \emph{Part (c): sufficiency.} Let \(P(x)=P(x')\). Entry depends on the order only through the price, so
+ \(e(x)=e(x')=:\bar e\), and \(\bar e\ge\rho>0\) by part (a). Part (b) gives \(\bar e\,\DT\,[\mu(x)-\mu(x')]=0\), so
+@@ -124,7 +124,7 @@
+ (E2) by direct computation.
+ 
+ \begin{proof}[Proof of Lemma~\ref{lem:trading}]
+-Fix a tuple that satisfies (E1) and (E4), with \(e(x)\in[\rho,1]\) after every order, and let \(\DT\ge0\). A
++Fix a tuple that satisfies (E1), (E4) and (E6), with \(e(x)\in[\rho,1]\) after every order, and let \(\DT\ge0\). A
+ deviation to the order \(q\) reaches the tuple's price \(P(q)\) and entry \(e(q)\). By \eqref{eq:a2-terminal} and
+ part (b) of the proof of Lemma~\ref{lem:prices},
+ \[
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A3_proposition2.tex overleaf/competition_slot/appendix/A3_proposition2.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A3_proposition2.tex	2026-10-23 16:15:25.495654283 +0000
++++ overleaf/competition_slot/appendix/A3_proposition2.tex	2026-10-23 16:32:20.491235139 +0000
+@@ -137,13 +137,13 @@
+ prices are \(\reg{price_r1_m1_B}\), \(\reg{price_r1_0_B}\) and \(\reg{price_r1_p1_B}\). In \(\mathcal E_2\) the prices
+ are \(\reg{price_r2_m1_B}\), \(\reg{price_r2_0_B}\) and \(\reg{price_r2_p1_B}\), and in \(\mathcal E_0\) every order
+ has the price \(\reg{price_r0}\). The values come from
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_numbers.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_numbers.log}). This script evaluates every quantity
++\nolinkurl{P1_core/p1_numbers.py} (run log
++\nolinkurl{P1_core/p1_numbers.log}). This script evaluates every quantity
+ that depends on \(\eu\) in outward interval arithmetic (\texttt{mpmath.iv}, 50 digits). The independent
+-recomputation \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_numbers.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_numbers.log}) bounds \(\eu\) by its series through the
++recomputation \nolinkurl{XP1/xp1_numbers.py} (run log
++\nolinkurl{XP1/xp1_numbers.log}) bounds \(\eu\) by its series through the
+ term \(1/110!\) with a rational bound on the tail. It records exact rational endpoints for every printed value in
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_registry_recompute.csv}. These rational endpoints are
++\nolinkurl{XP1/xp1_registry_recompute.csv}. These rational endpoints are
+ the certificate of each display.
+ 
+ \paragraph{The open set.}
+@@ -165,9 +165,11 @@
+ \]
+ Since \(\lambda=u\beta/(1+u\beta)\) rises with \(u\), the band is an open interval of \(\lambda\) at each
+ \(\beta\).
+-\item Outside this band a conclusion of Proposition~\ref{prop:ccc} fails. If \(u<\reg{u_lo_frac}\), entry at
+-\(r_1\) is \(\rho\). If \(\reg{u_hi_frac}\le u<\reg{u_kstrong_frac}\), entry after a purchase at \(r_2\) is one.
+-If \(u\ge\reg{u_kstrong_frac}\), the right side of (H2) fails at \(r_1\).
++\item The open band is exactly the set on which the strict hypotheses hold. If \(u<\reg{u_lo_frac}\), entry at
++\(r_1\) is \(\rho\). At \(u=\reg{u_lo_frac}\), orders are uniquely full at all three strengths, and rule C1 gives
++every conclusion of Proposition~\ref{prop:ccc}. Under rule CM, entry after a purchase at \(r_1\) can take any value
++in \([\rho,1]\). If \(\reg{u_hi_frac}\le u<\reg{u_kstrong_frac}\), entry after a purchase at \(r_2\) is one under
++rule C1. If \(u\ge\reg{u_kstrong_frac}\), the right side of (H2) fails at \(r_1\).
+ \item With \(1+u=\eu\) and the other benchmark inputs fixed, (H1)--(H3) hold if and only if
+ \[
+ \frac{\tau(r_1)}{\tau(r_1)+[1-\tau(r_1)]\,\eu}<\pi<\frac{\tau(r_2)}{\tau(r_2)+[1-\tau(r_2)]\,\eu},
+@@ -199,9 +201,13 @@
+ \emph{Part (b).} For \(u<\reg{u_kstrong_frac}\), Step 2 of the proof of Proposition~\ref{prop:ccc} holds at \(r_1\),
+ and at \(r_2\) because \(\DT(r_2)>\DT(r_1)\). Orders are full at both strengths, and the posteriors are
+ \((m,1/2,M)\). If \(u<\reg{u_lo_frac}\), then \(M<\tau(r_1)\), no order recruits at \(r_1\), and entry at \(r_1\) is
+-\(\rho\). At \(u=\reg{u_lo_frac}\), a purchase leaves the challenger indifferent: rule C1 gives entry \(\Ent_1\), and
+-rule CM allows entry \(\rho\). If \(\reg{u_hi_frac}\le u<\reg{u_kstrong_frac}\), then \(M\ge\tau(r_2)\), and a purchase
+-recruits at \(r_2\) under rule C1. For \(u\ge\reg{u_kstrong_frac}\), the right side of (H2) fails at \(r_1\).
++\(\rho\). If \(\reg{u_hi_frac}\le u<\reg{u_kstrong_frac}\), then \(M\ge\tau(r_2)\), and a purchase recruits at \(r_2\)
++under rule C1. For \(u\ge\reg{u_kstrong_frac}\), the right side of (H2) fails at \(r_1\).
++
++At \(u=\reg{u_lo_frac}\), the left side of (H1), both sides of (H2) and (H3) still hold strictly. So orders are
++uniquely full, and parts (i) and (iii) hold. A purchase at \(r_1\) leaves the high-cost challenger indifferent, and
++rule C1 gives entry \(\Ent_1\). Rule CM allows entry after a purchase anywhere in \([\rho,1]\), so entry at \(r_1\)
++can take any value in \([\rho,\Ent_1]\).
+ 
+ \emph{Part (c).} Fix \(1+u=\eu\) and the other benchmark inputs, and vary \(\pi\). The inequality \(M(\pi)>\tau\) is
+ \(\pi/(1-\pi)>\tau/[(1-\tau)(1+u)]\), that is \(\pi>\tau/[\tau+(1-\tau)\eu]\). The right side of (H1) gives the
+@@ -219,6 +225,6 @@
+ prior windows complete it at calibration B. The trade bound \(\kappa(\pi)>3/25\) at \(k=\reg{prim_k}\) holds on
+ \((\reg{prior_kappa_lo_B},\reg{prior_kappa_hi_B})\). Some trade cost satisfies (H2) when
+ \(\DT(r_0)<\rho\kappa\DT(r_1)\), that is \(\kappa(\pi)>1/10\), on \((\reg{p2_prior_trade_lo},\reg{p2_prior_trade_hi})\)
+-(\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py}, run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/run.log}). The margins of every hypothesis at
++(\nolinkurl{P2_auction/derive.py}, run log
++\nolinkurl{P2_auction/run.log}). The margins of every hypothesis at
+ calibration B are in Table~\ref{tab:margins}.
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A4_coexistence.tex overleaf/competition_slot/appendix/A4_coexistence.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A4_coexistence.tex	2026-10-23 16:15:25.495885963 +0000
++++ overleaf/competition_slot/appendix/A4_coexistence.tex	2026-10-23 16:32:20.491702566 +0000
+@@ -41,8 +41,8 @@
+ \[
+ Q_J(r)=4r^6-160r^5+743r^4-12r^3-614r^2+40r-1 .
+ \]
+-The script \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_certificates.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_certificates.log}) builds \(Q_J\) from the
++The script \nolinkurl{P1_core/p1_certificates.py} (run log
++\nolinkurl{P1_core/p1_certificates.log}) builds \(Q_J\) from the
+ primitives in exact rational arithmetic. A Sturm sequence counts no real root of \(Q_J\) in \((r_0,r_2]\), and
+ \(Q_J(r_0)=\reg{QJ_r0}>0\). The two values follow from the closed form of \(J\).
+ 
+@@ -52,8 +52,8 @@
+ \]
+ The same script counts no real root in \((r_0,2]\) with a Sturm sequence in exact rational arithmetic, and it
+ evaluates the polynomial at \(r_0\) with a positive value. The independent script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_signs.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_signs.log}) derives both polynomials again and repeats
++\nolinkurl{XP1/xp1_signs.py} (run log
++\nolinkurl{XP1/xp1_signs.log}) derives both polynomials again and repeats
+ both Sturm counts.
+ 
+ (d) \(\DT\) and \(\tau\) are positive and strictly increasing on the path, by (a) and \(\DT'>0\).
+@@ -105,11 +105,11 @@
+ \end{proof}
+ 
+ Table~\ref{tab:a4-thresholds} gives the thresholds at calibration B. The script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_certificates.py} brackets \(r_A\) and \(r_J\) by
++\nolinkurl{P1_core/p1_certificates.py} brackets \(r_A\) and \(r_J\) by
+ exact bisection, with the signs at both ends. The script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_numbers.py} brackets every threshold by rational
++\nolinkurl{XP1/xp1_numbers.py} brackets every threshold by rational
+ bisection to a width below \(10^{-95}\) and records the exact endpoints in
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/xp1_registry_recompute.csv}.
++\nolinkurl{XP1/xp1_registry_recompute.csv}.
+ 
+ \begin{table}[ht]
+ \centering
+@@ -144,11 +144,17 @@
+ \]
+ and \(\mu_0(s,t):=\mu(0)\) has the odds \(\frac{\pi}{1-\pi}\cdot\frac{b_0+\lambda-s}{b_0+\lambda-t}\). On
+ \([0,\lambda]\), \(\mu_+\) is continuous and rises strictly from \(\pi\) to \(M(\pi)\), and \(\mu_-\) is continuous
+-and falls strictly from \(\pi\) to \(m(\pi)\). When \(\pi<\tau<M(\pi)\), the rate
++and falls strictly from \(\pi\) to \(m(\pi)\).
++
++On the path \(\tau(r)<3/4\) by Lemma~\ref{lem:a4-path}(a). For
++\(\pi<\tau<1\), define
+ \[
+-s^*=\frac{b(\tau-\pi)}{\pi(1-\tau)}\in(0,\lambda)
++s^*=\frac{b(\tau-\pi)}{\pi(1-\tau)}>0 .
+ \]
+-solves \(\mu_+(s^*)=\tau\). Entry after each order follows from Lemma~\ref{lem:prices}(d).
++The formula for \(\mu_+(s)\) rises strictly in \(s\ge0\), and \(\mu_+(s)=\tau\) is the linear equation
++\(\pi(b+s)=\tau(b+\pi s)\), so \(s^*\) is its unique root. Since \(\mu_+(\lambda)=M(\pi)\), \(s^*<\lambda\) exactly when
++\(\tau<M(\pi)\), and \(s^*=\lambda\) when \(\tau=M(\pi)\). If \(\tau\ge M(\pi)\), no rate in \((0,\lambda)\) reaches the
++threshold, and the forms (R) and (T) below are empty. Entry after each order follows from Lemma~\ref{lem:prices}(d).
+ 
+ \begin{lemma}[The high class; analytical]\label{lem:a4-high}
+ Fix \(r\) and \(\pi\) with \(\pi<\tau(r)\). In a candidate with no wrong-signed order, the pair \((s,e(1))\) satisfies (E1) to (E3) at
+@@ -367,10 +373,10 @@
+ \([r_0,r_N]\), mixes on \((r_N,r_S)\) and sells fully on \([r_S,r_2]\). The strengths \(\reg{str_r155}\), \(\reg{str_r160}\) and
+ \(\reg{str_r165}\) lie in \([r_F,r_N]\), where the equilibria are N and F under rule C1. Under rule CM the threshold pair T
+ adds entry \(\reg{entry_th_r155_B}\), \(\reg{entry_th_r160_B}\) and \(\reg{entry_th_r165_B}\) at these three
+-strengths. The values come from \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_numbers.py} in
++strengths. The values come from \nolinkurl{P1_core/p1_numbers.py} in
+ outward interval arithmetic. The script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_enumerate.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_enumerate.log}) rebuilds the equilibrium set from
++\nolinkurl{P1_core/p1_enumerate.py} (run log
++\nolinkurl{P1_core/p1_enumerate.log}) rebuilds the equilibrium set from
+ the flow law at 241 strengths, for the four pairs of tie rules. It finds no difference from the proposition. This
+ cross-check is a numerical diagnostic; it enters no step of the proof.
+ 
+@@ -464,7 +470,7 @@
+ \(\DT(1-M(\pi))\ge k\) is \((1-\pi)b\DT/k\ge b+\pi\lambda\). Entry on the informative branch is therefore
+ \(\rho+(1-\rho)\min\{(1-\pi)b\DT(r)/k,\ b+\pi\lambda\}\). It rises strictly while the purchase is mixed and then
+ stays constant. At calibration B, \(\pi_A^{\rm lo}\approx\reg{piA_lo_B}\), \(\pi_A^{\rm hi}\approx\reg{piA_hi}\) and
+-\(\pi_{\max}\approx\reg{pimax}\), from \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_numbers.py}.
++\(\pi_{\max}\approx\reg{pimax}\), from \nolinkurl{P1_core/p1_numbers.py}.
+ The certificates of Lemma~\ref{lem:a4-path} make the corollary computer-assisted.
+ \end{proof}
+ 
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A5_research.tex overleaf/competition_slot/appendix/A5_research.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A5_research.tex	2026-10-23 16:15:25.495696591 +0000
++++ overleaf/competition_slot/appendix/A5_research.tex	2026-10-23 16:28:08.605375240 +0000
+@@ -383,20 +383,20 @@
+ \(B_{r_1}(M_{\lb})>c_H\).
+ 
+ \paragraph{Certificates.}
+-The exact program is \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_research.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_research.log}). It uses rational arithmetic for
++The exact program is \nolinkurl{P3_research/P3_research.py} (run log
++\nolinkurl{P3_research/P3_research.log}). It uses rational arithmetic for
+ every rational quantity and rational intervals for every quantity that depends on \(\eu\). It builds the tuple of
+ every equilibrium of Lemmas~\ref{lem:a5-middle} and~\ref{lem:a5-strong} for each pair of tie rules and recomputes
+ (E1) to (E7) at the tuple. It rounds every display outward from exact rational endpoints and writes the endpoints to
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_enclosures.json}. The independent program
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP3/recompute.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP3/recompute.log}) computes the research roots from the
++\nolinkurl{P3_research/P3_enclosures.json}. The independent program
++\nolinkurl{XP3/recompute.py} (run log
++\nolinkurl{XP3/recompute.log}) computes the research roots from the
+ quadratic formula with rational bounds on every square root. It bounds \(\eu\) between \(\sum_{n\le60}1/n!\) and that
+ sum plus \(62/(61\cdot61!)\), and it records exact rational endpoints for every printed value in
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP3/exact_enclosures.json}. These rational endpoints are the
++\nolinkurl{XP3/exact_enclosures.json}. These rational endpoints are the
+ certificate of each display. The scan
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_float_scan.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_float_scan.log}) evaluates a grid of research
++\nolinkurl{P3_research/P3_float_scan.py} (run log
++\nolinkurl{P3_research/P3_float_scan.log}) evaluates a grid of research
+ intensities and order mixtures at each of the six strengths without the classification of
+ Lemma~\ref{lem:a5-middle}. It finds exactly the equilibria of the lemmas under rule C1. This scan is a numerical
+ diagnostic and enters no proof.
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A6_robustness.tex overleaf/competition_slot/appendix/A6_robustness.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A6_robustness.tex	2026-10-23 16:15:25.495943297 +0000
++++ overleaf/competition_slot/appendix/A6_robustness.tex	2026-10-23 16:28:08.605948165 +0000
+@@ -55,11 +55,11 @@
+ \(t_0+\rho\,w(\mu(x))\), and every condition holds by the computations of Steps 1 and 3 of the proof of
+ Proposition~\ref{prop:ccc} with \(e\equiv\rho\). Entry is \(\reg{p4_hidden_r0_entry}\) at both strengths.
+ Table~\ref{tab:outcomes} lists all four rows. The values come from
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P4_information/derive.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P4_information/run.log}), which brackets \(\eu\) by
++\nolinkurl{P4_information/derive.py} (run log
++\nolinkurl{P4_information/run.log}), which brackets \(\eu\) by
+ \(\sum_{n\le60}1/n!\) and that sum plus \(1/(60\cdot60!)\) and propagates exact rational endpoints. The independent
+-derivation \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP4/xp4_check.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP4/run.log}) builds every tuple from the joint law of class,
++derivation \nolinkurl{XP4/xp4_check.py} (run log
++\nolinkurl{XP4/run.log}) builds every tuple from the joint law of class,
+ slot identity and order, and it finds the same values.
+ 
+ \subsubsection*{Preparation cost laws}
+@@ -159,9 +159,9 @@
+ \end{proposition}
+ 
+ \begin{proof}[Proof of Proposition~\ref{prop:classes}]
+-Let \(\Gamma(x)=\int_p^xD(y)\,dy\) and \(\Gamma=\E_H[\theta]-\E_L[\theta]>0\). Under
+-Assumption~\ref{ass:classes}, \(D\ge0\), so \(\Gamma(\cdot)\) is continuous and nondecreasing with limit \(\Gamma\).
+-Let \(v_*=\inf\{x\ge p:\Gamma(x)>0\}\); finite means and \(\Gamma>0\) give \(p\le v_*<\infty\).
++Let \(\Gamma(x)=\int_p^xD(y)\,dy\), and write \(\bar\Gamma=\E_H[\theta]-\E_L[\theta]>0\) for the total mean gap. Under
++Assumption~\ref{ass:classes}, \(D\ge0\), so \(\Gamma\) is continuous and nondecreasing with limit \(\bar\Gamma\).
++Let \(v_*=\inf\{x\ge p:\Gamma(x)>0\}\); finite means and \(\bar\Gamma>0\) give \(p\le v_*<\infty\).
+ 
+ \emph{Step 1: the uniform incumbent.} For \(R\sim U[0,r]\), \eqref{eq:spread} and integration by parts give
+ \[
+@@ -173,12 +173,12 @@
+ \]
+ because \(\int_p^r\Gamma\le(r-p)\Gamma(r)\). Also \(\DT(r)\to0\) as \(r\downarrow v_*\), since \(\Gamma=0\) on
+ \([p,v_*]\). The split identity of Section~\ref{sec:profits} gives
+-\(g_H(r)-g_L(r)=\Gamma-\DT(r)\ge\Gamma-(r-p)\Gamma/r=p\Gamma/r>0\), and at \(r=v_*\), \(g_H-g_L=\Gamma\). Dominated
++\(g_H(r)-g_L(r)=\bar\Gamma-\DT(r)\ge\bar\Gamma-(r-p)\bar\Gamma/r=p\bar\Gamma/r>0\), and at \(r=v_*\), \(g_H-g_L=\bar\Gamma\). Dominated
+ convergence, with the integrable bound \(1-G_j\), gives continuity of \(g_j(r)\) and \(W_H(r)\) in \(r\), and
+ \(g_j(r)\to0\) as \(r\to\infty\). Since \(\theta\ge p\), \(W_H(r)=\E_H[\min\{\theta/r,1\}]\ge p/r>0\).
+ 
+ \emph{Step 2: the construction.} Let \(e_H=\rho+(1-\rho)(b+\lambda)>\rho\). At \(v_*\),
+-\(B_{v_*}(M)-B_{v_*}(\pi)=(M-\pi)\Gamma>0\). By continuity choose \(r_1>v_*\) close enough to \(v_*\) that
++\(B_{v_*}(M)-B_{v_*}(\pi)=(M-\pi)\bar\Gamma>0\). By continuity choose \(r_1>v_*\) close enough to \(v_*\) that
+ \(B_{r_1}(M)>B_{v_*}(\pi)\) and \(e_HW_H(r_1)>\rho W_H(v_*)\). Then choose \(r_0\in(v_*,r_1)\) close enough to
+ \(v_*\) that \(\DT(r_0)<\rho\kappa\DT(r_1)\). Since \(B_r(\pi)\) and \(W_H(r)\) fall in \(r\),
+ \(B_{r_0}(\pi)\le B_{v_*}(\pi)<B_{r_1}(M)\) and \(e_HW_H(r_1)>\rho W_H(v_*)\ge\rho W_H(r_0)\). Choose \(c_H\) in
+@@ -244,15 +244,15 @@
+ \(t_v=v-(v^2-p^2)/(2r)\), \(g_v=(v^2-p^2)/(2r)\) and \(W_v=v/r\) for \(p\le v\le r\), and \(t_v=r/2+p^2/(2r)\),
+ \(g_v=v-t_v\) and \(W_v=1\) for \(v\ge r\). A uniform class averages these piecewise polynomials over its support,
+ with a cut at \(r\); every piece has degree at most three. The script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/run.log}) computes these integrals in exact rational
++\nolinkurl{P2_auction/derive.py} (run log
++\nolinkurl{P2_auction/run.log}) computes these integrals in exact rational
+ arithmetic, and every quantity that depends on \(\eu\) in outward interval arithmetic at 60 digits; a sign counts only
+ when its enclosure excludes zero. For each of the first five rows, the script certifies the strict hypotheses of
+ Proposition~\ref{prop:ccc}; Table~\ref{tab:margins} lists their margins. Proposition~\ref{prop:ccc} then supplies the
+ tuples and their uniqueness. In the wide classes the class order holds although the supports overlap: \(G_L-G_H\ge0\)
+ everywhere, with equality only outside the common interior of the supports. The independent recomputation
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP2/xp2_check.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP2/run.log}) uses closed forms and Simpson's rule on each piece,
++\nolinkurl{XP2/xp2_check.py} (run log
++\nolinkurl{XP2/run.log}) uses closed forms and Simpson's rule on each piece,
+ derives the orders from the bounds on every profile, and agrees with every value.
+ 
+ The last row keeps the costs, the prior and the strengths of the wide classes and puts point masses at the same
+@@ -343,8 +343,9 @@
+ \end{proof}
+ 
+ \paragraph{The four-class economy (computer-assisted).}
+-The economy has equal priors, the benchmark costs, reserve and first two strengths, and point values close to
+-\(\ell\) in the low group and close to \(h\) in the high group (\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py}).
++The economy has the benchmark slot, costs, reserve and first two strengths, and four point-mass classes with prior
++\(\reg{four_prior}\) each. The low group has the values \(\reg{four_v1}\) and \(\reg{four_v2}\), and the high group has
++the values \(\reg{four_v3}\) and \(\reg{four_v4}\) (\nolinkurl{P2_auction/derive.py}).
+ For posterior vectors of the form \(\nu_j=\pi_jw_j/\sum_l\pi_lw_l\) with \(1\le w_j\le1+u\), the mean \(\nu\cdot t\) is
+ linear-fractional in each weight, so its extremes over \(\mathcal M_\pi\) occur at the 16 vertices of the weight box.
+ The script evaluates all 16 and certifies the separation distance \(\gamma=\reg{p2_groups_gamma}\), the trade margin
+@@ -503,7 +504,8 @@
+ theorem without this complementarity; the margin \(c_H-B_{r_1}(\mu_+)\) is the condition that separates the two.
+ 
+ \paragraph{The benchmark B with the accuracies of \(S(B)\).}
+-At B with \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\), three of the four conditions fail, and the equilibria are mixed.
++At B with \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\), three of the four conditions fail, and each equilibrium has a mixed order: both signal types mix at \(r_0\), and the
++type with \(T=-\) mixes at \(r_1\).
+ After wrong-signed orders are excluded, write \(s=\lambda\sigma_+(1)\) and \(t=\lambda\sigma_-(-1)\); the purchase
+ return depends only on \(s\), and the sale return only on \(t\), with \(1-\nu(1)=b/(2b+s)\) and
+ \(\nu(-1)=b/(2b+t)\).
+@@ -534,6 +536,6 @@
+ forced at \(r_0\), and at \(r_1\) the unique rates are \(s=t=4b/3\); this control also needs rule IM, since the gross
+ return at zero, \(\reg{p4_b_no_y_r1_zero_gross}\), exceeds \(k\) and the return at full orders,
+ \(\reg{p4_b_no_y_r1_full_gross}\), falls short of it. The rational constants above are exact; the script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P4_information/derive.py} prints them with every tuple, and
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP4/xp4_check.py} enumerates every rate on each order side and finds
++\nolinkurl{P4_information/derive.py} prints them with every tuple, and
++\nolinkurl{XP4/xp4_check.py} enumerates every rate on each order side and finds
+ no other equilibrium.
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A7_welfare.tex overleaf/competition_slot/appendix/A7_welfare.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A7_welfare.tex	2026-10-23 16:15:25.495738728 +0000
++++ overleaf/competition_slot/appendix/A7_welfare.tex	2026-10-23 16:28:08.606577991 +0000
+@@ -73,11 +73,11 @@
+ shares per share of float, with the same signal experiment. The economy without an informed investor has the
+ posterior \(\pi\) after every order and entry \(\rho\), so its proceeds equal \(\mathcal R^0\). If initial shareholders
+ bear the whole transfer, their total gain over that economy is \((\mathcal R^1-\mathcal R^0)-zG\), positive exactly
+-for \(z<(\mathcal R^1-\mathcal R^0)/G=\reg{p2_access_break_even}\). A deterministic external dividend \(D_0\) raises
+-\(V_T\) and every price by \(D_0\). It leaves \(V_T-P\), every order payoff, the challenger's information and entry
++for \(z<(\mathcal R^1-\mathcal R^0)/G=\reg{p2_access_break_even}\). A deterministic external dividend raises \(V_T\)
++and every price by its amount. It leaves \(V_T-P\), every order payoff, the challenger's information and entry
+ unchanged, and it enters neither proceeds of the sale nor allocation surplus. The values come from
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/run.log}); with research at the cap, Appendix~\ref{app:research}
++\nolinkurl{P2_auction/derive.py} (run log
++\nolinkurl{P2_auction/run.log}); with research at the cap, Appendix~\ref{app:research}
+ gives the same gains.
+ 
+ \paragraph{Access outside the recruitment region.}
+@@ -110,7 +110,8 @@
+ \end{aligned}
+ \]
+ A stronger incumbent weakly lowers the challenger's profit. Its effect on the spread weakly has the sign of
+-\(1-2\omega\), and strictly when \(\E[(R-\ell)_+]\) changes strictly.
++\(1-2\omega\). The effect is strict when \(\E[(R-\ell)_+]\) changes strictly and \(\omega\ne1/2\). At \(\omega=1/2\), the
++spread equals \((h-\ell)/2\) at every incumbent distribution.
+ \end{proposition}
+ 
+ \begin{proof}[Proof of Proposition~\ref{prop:payment}]
+@@ -132,7 +133,7 @@
+ \emph{Signs.} The function \((\theta-R)_+\) is nonincreasing in \(R\), and \((R-\ell)_+\) is nondecreasing. A
+ first-order stochastic strengthening of the incumbent therefore weakly lowers \(g_{\theta,\omega}\) and weakly moves
+ \(\E[(R-\ell)_+]\) up, so the spread moves with the sign of \(1-2\omega\), strictly when \(\E[(R-\ell)_+]\) rises
+-strictly and \(\omega\ne1/2\).
++strictly and \(\omega\ne1/2\). At \(\omega=1/2\), the coefficient \(1-2\omega\) is zero, and \(\Delta_\omega=(h-\ell)/2\).
+ \end{proof}
+ 
+ For \(R\sim U[0,r]\), \(\E[(R-\ell)_+]=(r-\ell)^2/(2r)=\DT(r)\), so \(\Delta_\omega(r)=\omega(h-\ell)+(1-2\omega)\DT(r)\).
+@@ -172,7 +173,7 @@
+ 
+ \begin{proof}[Proof of Proposition~\ref{prop:reserves}]
+ \emph{Orders.} The zero-cost challenger prepares after every price, so entry is at least \(\rho\). Lemma~\ref{lem:trading}
+-uses only (E1), (E4), \(e\in[\rho,1]\) and \(\DT\ge0\), so it holds with the reserve kernel. Every correct order earns
++uses only (E1), (E4), (E6), \(e\in[\rho,1]\) and \(\DT\ge0\), so it holds with the reserve kernel. Every correct order earns
+ at least \(\rho\kappa\Delta_i-k>0\) under every candidate, and every wrong-signed order at most \(-k\). Full orders are
+ forced at both strengths, and the posteriors are \((m,\pi,M)\).
+ 
+@@ -191,7 +192,7 @@
+ \end{proof}
+ 
+ \paragraph{The benchmark reserves (computer-assisted).}
+-The node margins below come from \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py} in outward
++The node margins below come from \nolinkurl{P2_auction/derive.py} in outward
+ interval arithmetic; at each node, \(T=\rho\kappa\DT-k\), \(C=c_H-B(1/2)\) and \(J=B(M)-c_H\).
+ \begin{itemize}[leftmargin=2em]
+ \item \emph{Exclusion.} At the reserve \(\reg{rsv_points_excl}\) with point values, the low class lies below the reserve
+@@ -237,7 +238,7 @@
+ \(\reg{p2_endpoint_r1_entry}\) with proceeds \(\reg{p2_endpoint_r1_proceeds}\). These are boundary events outside the
+ open sets of the proposition.
+ \end{itemize}
+-The independent recomputation \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP2/xp2_check.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP2/run.log}) derives the orders and entry patterns at every node
++The independent recomputation \nolinkurl{XP2/xp2_check.py} (run log
++\nolinkurl{XP2/run.log}) derives the orders and entry patterns at every node
+ from the bounds on every profile and agrees with every value. A selection of the equilibrium at every reserve, and the
+ seller's optimal reserve, are outside these results.
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A8_empirical.tex overleaf/competition_slot/appendix/A8_empirical.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A8_empirical.tex	2026-10-23 16:15:25.495769565 +0000
++++ overleaf/competition_slot/appendix/A8_empirical.tex	2026-10-23 16:33:58.194552483 +0000
+@@ -4,11 +4,11 @@
+ \(1/2\), and the slot lies in the band of Proposition~\ref{prop:region}(a). The price increment of entry
+ \(A_r(\mu)=t_L-t_0+\DT(r)\mu\) is the function \(w(\mu)\) of Appendix~\ref{app:beliefs} at the strength \(r\). It is
+ positive, rises in \(\mu\) with slope \(\DT\), and rises in \(r\), because \(t_L-t_0=\tfrac12-1/(8r)\) and \(\DT\) rise
+-in \(r\) at the benchmark. The indicator \(J_r=\1\{B_r(M)\ge c_H\}\) records whether a purchase recruits, and the
+-volume \(v=\Pr(X\ne0)\) is the frequency of nonzero orders per order opportunity. Write \(d=b+\lambda/2\), \(\vartheta=u/(2+u)=2M-1=M-m\), and \(e_+=\rho+(1-\rho)J_r\). At the
++in \(r\) at the benchmark. The indicator \(\chi_r=\1\{B_r(M)\ge c_H\}\) records whether a purchase recruits, and the
++volume \(v=\Pr(X\ne0)\) is the frequency of nonzero orders per order opportunity. Write \(\bar f=b+\lambda/2\), \(\vartheta=u/(2+u)=2M-1=M-m\), and \(e_+=\rho+(1-\rho)\chi_r\). At the
+ benchmark, \(B_r(1/2)=5-r/4+1/(8r)<c_H\) for \(1<r<h\). The top profit \(B_r(M)\) falls strictly in \(r\) for
+ \(r>\ell\), equals \(9M+3/8\) at \(r=\ell\), and lies below \(c_H\) at \(r=h\); so for \(M>5/8\) the ceiling \(r_C\) is the
+-unique strength at which \(B_r(M)=c_H\), and \(J_r=1\) exactly when \(r\le r_C\). In the band, \(M-5/8=\reg{margin_obs_post_over_58_B}\)
++unique strength at which \(B_r(M)=c_H\), and \(\chi_r=1\) exactly when \(r\le r_C\). In the band, \(M-5/8=\reg{margin_obs_post_over_58_B}\)
+ at the benchmark slot.
+ 
+ \paragraph{Full two-sided trade on \((r_S,h)\).}
+@@ -20,23 +20,23 @@
+ by \eqref{eq:a2-bounds}, since \(1-M=m\) at the prior \(1/2\) and \(\DT\) rises. So full orders are the unique
+ equilibrium orders, under both investor rules. The tuple \(\mathcal F\) has the posteriors \((m,1/2,M)\), entry
+ \((\rho,\rho,e_+)\), the prices \(P(-1)=t_0+\rho A_r(m)<P(0)=t_0+\rho A_r(1/2)<P(1)=t_0+e_+A_r(M)\), \(\bar\mu(P(x))=\mu(x)\),
+-\(\zeta(P(1))=J_r\), and truthful bids. Each condition holds by direct computation. (E1): the likelihoods
++\(\zeta(P(1))=\chi_r\), and truthful bids. Each condition holds by direct computation. (E1): the likelihoods
+ \(f_H=(b,b_0,b+\lambda)\) and \(f_L=(b+\lambda,b_0,b)\) give \((m,1/2,M)\). (E2): entry is nondecreasing in the posterior,
+ so the three prices differ, and each price reveals its order. (E3): \(B_r(m)<B_r(1/2)<c_H\), and the purchase
+-recruits exactly when \(J_r=1\). (E4): \eqref{eq:a2-terminal}. (E5): the strict bounds above. (E6): truthful bids. At \(r_C\) rule C1 gives \(J_{r_C}=1\). The interval
++recruits exactly when \(\chi_r=1\). (E4): \eqref{eq:a2-terminal}. (E5): the strict bounds above. (E6): truthful bids. At \(r_C\) rule C1 gives \(\chi_{r_C}=1\). The interval
+ contains \(r_1\), \(r_C\) and \(r_2\), because \(r_S<r_1<r_C<r_2<h\) by Lemma~\ref{lem:a4-order}; at the benchmark
+ \(r_C-r_S=\reg{margin_obs_rS_rC_B}\). The bound is exact: \(r_S\approx\reg{rS_B}\), and the six-place display lies below
+ \(r_S\). At \(r=\reg{rS_counter_r_B}\), inside the rounded interval, \(\rho\DT m-k=\reg{rS_counter_margin_B}\), so the low
+ class strictly prefers abstention to the full sale there; \(\reg{rS_cert_hi_B}\) is a sufficient rounded endpoint. With
+ a hidden price, entry is \(\rho\) after every order under every profile, because the belief stays at \(1/2\) and
+ \(B_r(1/2)<c_H\); the same bounds with \(e\equiv\rho\) force full orders, and the tuple is \(\mathcal F\) with
+-\(J_r\) replaced by \(0\).
++\(\chi_r\) replaced by \(0\).
+ 
+ Under full orders, class \(H\) places the order \(1\) with probability \(b+\lambda\) and class \(L\) with probability
+-\(b\), so \(\Pr(X=1)=\Pr(X=-1)=d\), \(\Pr(X=0)=1-2d\), \(v=2b+\lambda\) and \(\E[X]=0\). The informed share of nonzero
++\(b\), so \(\Pr(X=1)=\Pr(X=-1)=\bar f\), \(\Pr(X=0)=1-2\bar f\), \(v=2b+\lambda\) and \(\E[X]=0\). The informed share of nonzero
+ orders is \(\lambda/(2b+\lambda)=u/(2+u)=\vartheta\). Only the order \(1\) can recruit, so entry is
+-\(\rho+(1-\rho)J_rd\); from \(r_0\), where the orders are zero and entry is \(\rho\), to \(r_1\) it rises by
+-\((1-\rho)d=\reg{entry_jump_B}\).
++\(\rho+(1-\rho)\chi_r\bar f\); from \(r_0\), where the orders are zero and entry is \(\rho\), to \(r_1\) it rises by
++\((1-\rho)\bar f=\reg{entry_jump_B}\).
+ 
+ The spread \(S=P(1)-P(-1)\) is the difference between the conditional execution prices of a unit purchase and a
+ unit sale. The purchase impact is \(I_+=P(1)-P(0)\), and the sale impact is \(I_-=P(0)-P(-1)\). The model has no
+@@ -45,8 +45,8 @@
+ \begin{proposition}[The spread and its entry component; analytical]\label{prop:spread}
+ Let \(r_S<r<h\).
+ \begin{enumerate}[label=(\roman*),leftmargin=2em]
+-\item \(S=\rho\DT\vartheta+(1-\rho)J_rA_r(M)\): a class component and an entry component.
+-\item \(I_-=\rho\DT\vartheta/2\) and \(I_+=I_-+(1-\rho)J_rA_r(M)\). Hence \(I_+>I_-\) if and only if a purchase
++\item \(S=\rho\DT\vartheta+(1-\rho)\chi_rA_r(M)\): a class component and an entry component.
++\item \(I_-=\rho\DT\vartheta/2\) and \(I_+=I_-+(1-\rho)\chi_rA_r(M)\). Hence \(I_+>I_-\) if and only if a purchase
+ recruits.
+ \item If the challenger does not see the price, full two-sided trade is still the unique outcome, and \(S\) equals
+ the class component \(\rho\DT\vartheta\).
+@@ -60,18 +60,18 @@
+ \begin{proof}[Proof of Proposition~\ref{prop:spread}]
+ Let \(r_S<r<h\), so the outcome is \(\mathcal F\).
+ \begin{enumerate}[label=(\roman*),leftmargin=2em]
+-\item Subtract the prices: \(S=\rho[A_r(M)-A_r(m)]+(1-\rho)J_rA_r(M)\). Since \(A_r\) has slope \(\DT\),
++\item Subtract the prices: \(S=\rho[A_r(M)-A_r(m)]+(1-\rho)\chi_rA_r(M)\). Since \(A_r\) has slope \(\DT\),
+ \(A_r(M)-A_r(m)=\DT(M-m)=\DT\vartheta\).
+ \item Also \(A_r(1/2)-A_r(m)=\DT(1/2-m)=\DT\vartheta/2\) and \(A_r(M)-A_r(1/2)=\DT\vartheta/2\), so
+-\(I_-=\rho\DT\vartheta/2\) and \(I_+=\rho\DT\vartheta/2+(1-\rho)J_rA_r(M)\). Since \(A_r(M)>0\), \(I_+>I_-\) exactly when
+-\(J_r=1\).
++\(I_-=\rho\DT\vartheta/2\) and \(I_+=\rho\DT\vartheta/2+(1-\rho)\chi_rA_r(M)\). Since \(A_r(M)>0\), \(I_+>I_-\) exactly when
++\(\chi_r=1\).
+ \item With a hidden price the outcome is \(\mathcal F\) with entry \(\rho\) at every order, so part (i) holds with
+-\(J_r\) replaced by \(0\).
+-\item On \((r_S,r_C]\), \(J_r=1\); \(\DT\) and \(A_r(M)\) rise strictly in \(r\), and \(\rho\), \(\vartheta\) and
+-\(1-\rho\) do not depend on \(r\). So both components, both impacts and \(S\) rise strictly. On \((r_C,h)\), \(J_r=0\):
++\(\chi_r\) replaced by \(0\).
++\item On \((r_S,r_C]\), \(\chi_r=1\); \(\DT\) and \(A_r(M)\) rise strictly in \(r\), and \(\rho\), \(\vartheta\) and
++\(1-\rho\) do not depend on \(r\). So both components, both impacts and \(S\) rise strictly. On \((r_C,h)\), \(\chi_r=0\):
+ the entry component is identically zero, and the class component \(\rho\DT\vartheta\), the impacts
+ \(I_-=I_+=\rho\DT\vartheta/2\) and \(S=\rho\DT\vartheta\) rise strictly.
+-\item Since \(r_S<r_C\), both sides of \(r_C\) lie in \(\mathcal F\). Rule C1 gives \(J_{r_C}=1\), and \(J_r=0\) for
++\item Since \(r_S<r_C\), both sides of \(r_C\) lie in \(\mathcal F\). Rule C1 gives \(\chi_{r_C}=1\), and \(\chi_r=0\) for
+ \(r>r_C\). Every other term is continuous in \(r\). So \(P(-1)\), \(P(0)\) and \(I_-\) are continuous at \(r_C\), and
+ \(P(1)\), \(I_+\) and \(S\) fall by \((1-\rho)A_{r_C}(M)>0\).\qedhere
+ \end{enumerate}
+@@ -86,8 +86,9 @@
+ Let \(r_S<r<h\), and write \(v=2b+\lambda\).
+ \begin{enumerate}[label=(\alph*),leftmargin=2em]
+ \item \emph{Counts.} The order law depends on \((\lambda,\beta)\) only through \(v\), and entry
+-\(\rho+(1-\rho)J_rv/2\) depends on them only through \(v\) and \(J_r\). For each ratio \(u'>0\), exactly one pair
+-\((\lambda',\beta')\) with this ratio has the volume \(v\).
++\(\rho+(1-\rho)\chi_rv/2\) depends on them only through \(v\) and \(\chi_r\). For a ratio \(u'>0\), a slot
++\((\lambda',\beta')\) with this ratio and the volume \(v\) exists if and only if \(3v\le2+u'(1-v)\). Equivalently, its informed
++share \(\vartheta'=u'/(2+u')\) satisfies \(\vartheta'\ge3-2/v\). This slot is then unique.
+ \item \emph{Incentives.} A slot with informed share \(\vartheta'\) produces these counts through full two-sided trade
+ at \(r\) only if \(\vartheta'\le\bar\vartheta(r)=1-2k/(\rho\DT(r))\).
+ \item \emph{Band.} The slots with strict recruitment at \(r_1\) and strict exclusion at \(r_2\) have informed shares
+@@ -97,18 +98,18 @@
+ \item \emph{Prices.} Given the entry floor \(\rho=\Pr(\text{preparation}\mid X\ne1)\) and the spread \(\DT(r)\), the
+ sale impact and the volume identify the slot: \(\vartheta=2I_-/(\rho\DT(r))\), \(\lambda=v\vartheta\) and
+ \(\beta=v(1-\vartheta)/[2(1-v\vartheta)]\).
+-\item \emph{Purchases only.} When only class \(H\) trades, the counts identify the slot: \(\lambda=2\E[X]\) and
+-\(b=(v-\E[X])/2\).
+ \end{enumerate}
+ \end{proposition}
+ 
+ \begin{proof}[Proof of Proposition~\ref{prop:informedshare}]
+ Let \(r_S<r<h\).
+ \begin{enumerate}[label=(\alph*),leftmargin=2em]
+-\item The order law of \(\mathcal F\) is \((v/2,1-v,v/2)\) with \(v=2b+\lambda\), and entry is \(\rho+(1-\rho)J_rv/2\).
++\item The order law of \(\mathcal F\) is \((v/2,1-v,v/2)\) with \(v=2b+\lambda\), and entry is \(\rho+(1-\rho)\chi_rv/2\).
+ Given \(v\) and \(u'>0\), the equations \(v=\lambda'+2b'\) and \(u'=\lambda'/b'\) give \(b'=v/(u'+2)\),
+-\(\lambda'=vu'/(u'+2)\) and \(\beta'=b'/(1-\lambda')=v/[2+u'(1-v)]\), a unique pair. The condition \(\beta'\le1/3\) is
+-\(3v\le2+u'(1-v)\).
++\(\lambda'=vu'/(u'+2)\) and \(\beta'=b'/(1-\lambda')=v/[2+u'(1-v)]\), a unique pair. It has \(0<\lambda'<v<1\) and
++\(\beta'>0\), so it is a slot of the model exactly when \(\beta'\le1/3\), that is \(3v\le2+u'(1-v)\). With
++\(u'=2\vartheta'/(1-\vartheta')\), the right side is \((2-2v\vartheta')/(1-\vartheta')\), and the condition reads
++\(3v(1-\vartheta')\le2-2v\vartheta'\), that is \(v\vartheta'\ge3v-2\).
+ \item A pair with share \(\vartheta'\) has \(m'=(1-\vartheta')/2\). Under full orders at \(r\), the low-class sale
+ earns \(\rho\DT(r)m'-k\), because a sale never recruits. This is nonnegative only if
+ \(\vartheta'\le1-2k/(\rho\DT(r))=\bar\vartheta(r)\). At the benchmark, \(\bar\vartheta(r_1)=\reg{theta_max_full_eq_r1_B}\) and
+@@ -124,16 +125,43 @@
+ \item In \(\mathcal F\), entry after the orders \(0\) and \(-1\) is \(\rho\), so \(\rho=\Pr(\text{preparation}\mid X\ne1)\).
+ Part (ii) of Proposition~\ref{prop:spread} gives \(I_-=\rho\DT\vartheta/2\), so \(\vartheta=2I_-/(\rho\DT(r))\). Then
+ \(v=\lambda+2b\) and \(\vartheta=\lambda/v\) give \(\lambda=v\vartheta\) and \(b=v(1-\vartheta)/2\), and
+-\(\beta=b/(1-\lambda)=v(1-\vartheta)/[2(1-v\vartheta)]\).
+-\item When class \(H\) buys fully and class \(L\) abstains, \(\Pr(X=1)=b+\lambda/2\) and \(\Pr(X=-1)=b\). So
+-\(\E[X]=\lambda/2\) and \(v=2b+\lambda/2\), which give \(\lambda=2\E[X]\) and \(b=(v-\E[X])/2\).\qedhere
++\(\beta=b/(1-\lambda)=v(1-\vartheta)/[2(1-v\vartheta)]\).\qedhere
+ \end{enumerate}
+ \end{proof}
+ The slot with \(u'=8/5\) has share \(\reg{alt_theta_B}\), lies in the band, and has the benchmark volume; its spread at
+ \(r_1\) is \(\reg{alt_ba_r1_B}\). The smallest share with the benchmark counts and \(\beta'\le1/3\) is
+-\(\reg{theta_min_counts_B}\). The values come from
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P5_observables/run_log.txt}).
++\(3-2/v\approx\reg{theta_min_counts_B}\). For example, the ratio \(u'=1/10\) and the benchmark volume give
++\(\beta'>1/3\), so no slot of the model has this ratio and these counts.
++
++At the share \(\bar\vartheta(r_1)=\reg{theta_max_full_eq_r1_B}\), the low-class sale earns exactly zero under full
++orders. Rule IM admits the full sale, and full two-sided trade is then the unique outcome at \(r_1\). A sale rate below
++\(\lambda'\) raises \(\mu(-1)\) above \(m'\) and makes the sale strictly profitable. A purchase rate below \(\lambda'\)
++lowers \(\mu(1)\) below \(M'\) and makes the purchase strictly profitable. Rule I0 excludes the full sale
++at this share, so this slot has no equilibrium at \(r_1\) under rule I0. Under rule IM, the shares that the benchmark counts
++and the incentives at \(r_1\) allow therefore form the closed interval \([3-2/v,\bar\vartheta(r_1)]\). The values come
++from \nolinkurl{P5_observables/p5_observables.py} (run log \nolinkurl{P5_observables/run_log.txt}).
++
++\begin{corollary}[Counts under purchases only; analytical]\label{cor:purchasesonly}
++Take the benchmark auction at the prior \(1/2\) and a slot in the band. In an equilibrium with \(\sigma_H=\delta_1\)
++and \(\sigma_L=\delta_0\), the counts identify the slot: \(\lambda=2\E[X]\) and \(b=(v-\E[X])/2\), where
++\(v=2b+\lambda/2\). Proposition~\ref{prop:coexistence} gives such an equilibrium exactly on \([r_F,r_N]\) (form F).
++On branch R, class \(H\) buys with probability \(\sigma_H(1)<1\) and class \(L\) abstains. There the counts identify
++the purchase rate \(s_+=\lambda\sigma_H(1)=2\E[X]\) and \(b\), but not \(\lambda\).
++\end{corollary}
++
++\begin{proof}[Proof of Corollary~\ref{cor:purchasesonly}]
++At the prior \(1/2\), the order \(x\) has probability \([f_H(x)+f_L(x)]/2\). With \(\sigma_L=\delta_0\) and
++\(s_+=\lambda\sigma_H(1)\), \(f_H(1)=b+s_+\), \(f_L(1)=b\) and \(f_H(-1)=f_L(-1)=b\). So \(\Pr(X=1)=b+s_+/2\),
++\(\Pr(X=-1)=b\), \(\E[X]=s_+/2\) and \(v=2b+s_+/2\), which give \(s_+=2\E[X]\) and \(b=(v-\E[X])/2\). In form F,
++\(s_+=\lambda\), which gives the first claim. By Proposition~\ref{prop:coexistence}, the high class buys with
++probability one and the low class abstains exactly in form F on \([r_F,r_N]\).
++
++On branch R,
++\(s_+=b\,[\DT(r)/k-2]\) depends on the slot only through \(b\), and \(r_A\) does not depend on the slot. Take a slot
++with the same \(b\) and a presence probability slightly below \(\lambda\). Its liquidity probability \(b/(1-\lambda)\)
++falls, so it stays at most \(1/3\); its ratio stays in the band; and its end \(r_F\) stays above \(r\). So it has an R
++equilibrium at \(r\) with the same counts, and the counts do not identify \(\lambda\) on branch R.
++\end{proof}
+ 
+ Let \(A\) be the event that the challenger prepares and \(W\) the event that it acquires the target, and write
+ \(w_x=\Pr(W\mid X=x,A)\).
+@@ -143,7 +171,7 @@
+ \begin{enumerate}[label=(\roman*),leftmargin=2em]
+ \item \(w_x=\mu(x)+[1-\mu(x)]\,\ell/r\), and \(\Pr(W\mid X=x)=e(x)\,w_x\).
+ \item Under full two-sided trade, \(w_1-w_{-1}=\vartheta(1-\ell/r)\), and this gap rises strictly with \(r\).
+-\item Under full two-sided trade, \(\E[X]=0\) and \(\Cov(X,\1_A)=(1-\rho)J_r(b+\lambda/2)\). For \(r>r_C\),
++\item Under full two-sided trade, \(\E[X]=0\) and \(\Cov(X,\1_A)=(1-\rho)\chi_r(b+\lambda/2)\). For \(r>r_C\),
+ \(\Cov(X,\1_A)=0\) and \(\Cov(X,\1_W)=(b+\lambda/2)\,\rho\,\vartheta\,(1-\ell/r)>0\).
+ \end{enumerate}
+ \end{proposition}
+@@ -158,9 +186,9 @@
+ \(\vartheta\ell/r^2>0\). The function \(\mu\mapsto\mu+(1-\mu)\ell/r\) rises strictly, and the prices of \(\mathcal F\) rise
+ strictly with the posterior, so the win probability of a prepared challenger rises with the price.
+ \item In \(\mathcal F\), \(\E[X]=0\), so for any indicator \(Y\) with conditional means \(y_x=\E[Y\mid X=x]\),
+-\(\Cov(X,Y)=\E[XY]=d(y_1-y_{-1})\). For \(Y=\1_A\), \(y_1-y_{-1}=e_+-\rho=(1-\rho)J_r\), so
+-\(\Cov(X,\1_A)=(1-\rho)J_rd\). For \(Y=\1_W\), \(y_x=e(x)w_x\). For \(r>r_C\), \(e\equiv\rho\), so \(\Cov(X,\1_A)=0\) and
+-\(\Cov(X,\1_W)=d\rho(w_1-w_{-1})=d\rho\vartheta(1-\ell/r)>0\).\qedhere
++\(\Cov(X,Y)=\E[XY]=\bar f(y_1-y_{-1})\). For \(Y=\1_A\), \(y_1-y_{-1}=e_+-\rho=(1-\rho)\chi_r\), so
++\(\Cov(X,\1_A)=(1-\rho)\chi_r\bar f\). For \(Y=\1_W\), \(y_x=e(x)w_x\). For \(r>r_C\), \(e\equiv\rho\), so \(\Cov(X,\1_A)=0\) and
++\(\Cov(X,\1_W)=\bar f\rho(w_1-w_{-1})=\bar f\rho\vartheta(1-\ell/r)>0\).\qedhere
+ \end{enumerate}
+ \end{proof}
+ 
+@@ -168,14 +196,16 @@
+ makers then price again.
+ 
+ \begin{proposition}[Announcement returns; analytical]\label{prop:announcement}
+-After the order \(x\):
++Take any equilibrium at a strength \(r\).
+ \begin{enumerate}[label=(\roman*),leftmargin=2em]
+-\item the price changes by \(\Delta^1_x=[1-e(x)]\,A_r(\mu(x))\) when the event reports preparation, and by
+-\(\Delta^0_x=-e(x)\,A_r(\mu(x))\) when it reports no preparation, an event of positive probability exactly when
+-\(e(x)<1\);
+-\item when \(e(x)<1\), the mean change over both reports, with their model probabilities, is zero;
+-\item the mean change in a sample of preparation reports alone is positive;
+-\item under full two-sided trade, the price after no order lies \((1-\rho)J_r(b+\lambda/2)A_r(M)\) below the expected
++\item After the order \(x\), the price changes by \(\Delta^1_x=[1-e(x)]\,A_r(\mu(x))\) when the event reports
++preparation, and by \(\Delta^0_x=-e(x)\,A_r(\mu(x))\) when it reports no preparation. The second report has positive
++probability exactly when \(e(x)<1\).
++\item After an order \(x\) with \(e(x)<1\), the mean change over both reports, with their model probabilities, is zero.
++\item Pool all orders, and take the sample of preparation reports. Its mean price change
++\(\sum_x\Pr(X=x\mid A)\,\Delta^1_x\) is positive. After an order with \(e(x)=1\), the report of preparation changes
++the price by zero.
++\item Under full two-sided trade, the price after no order lies \((1-\rho)\chi_r(b+\lambda/2)A_r(M)\) below the expected
+ price before the order opportunity, although the posterior after no order is \(1/2\).
+ \end{enumerate}
+ \end{proposition}
+@@ -189,13 +219,17 @@
+ \(\Delta^0_x=-e(x)A_r(\mu(x))\). The report of no preparation has probability \(1-e(x)\), positive exactly when
+ \(e(x)<1\).
+ \item When \(e(x)<1\), \(e(x)\Delta^1_x+[1-e(x)]\Delta^0_x=e(x)[1-e(x)]A_r-[1-e(x)]e(x)A_r=0\).
+-\item A sample of preparation reports has mean change \(\sum_x\Pr(X=x\mid A)\,[1-e(x)]A_r(\mu(x))\). Every term is
+-nonnegative, because \(A_r>0\), and the term of an order with \(e(x)<1\) is positive. In \(\mathcal F\), \(e(-1)=\rho<1\),
+-so the mean is positive.
++\item Pooled over orders, a sample of preparation reports has mean change
++\(\sum_x\Pr(X=x\mid A)\,[1-e(x)]A_r(\mu(x))\), with \(\Pr(X=x\mid A)=\Pr(X=x)e(x)/\Pr(A)\). Every term is nonnegative,
++because \(A_r>0\) and \(e(x)\le1\); an order with \(e(x)=1\) contributes zero, since \(\Delta^1_x=0\). To find a positive
++term, note that (E1) gives \(\sum_x\Pr(X=x)\mu(x)=1/2\), so some order \(x\) has \(\mu(x)\le1/2\). At the benchmark \(B_r(1/2)<c_H\) for \(1<r<h\), so \(\tau(r)>1/2\ge\mu(x)\), and
++Lemma~\ref{lem:prices}(d) gives \(e(x)=\rho\) under both challenger rules. This order has
++\(\Pr(X=x)\ge(1-\lambda)\eta(x)>0\), and its term \(\Pr(X=x)\rho(1-\rho)A_r(\mu(x))/\Pr(A)\) is positive. So the mean is
++positive in every equilibrium; in \(\mathcal F\), the order \(-1\) is such an order.
+ \item In \(\mathcal F\), the expected price before the order opportunity is
+-\(\bar P=\sum_x\Pr(X=x)P(x)=t_0+\rho[dA_r(m)+(1-2d)A_r(1/2)+dA_r(M)]+(1-\rho)J_rdA_r(M)\). Since \(A_r\) is affine and
+-\(m+M=1\), \(dA_r(m)+dA_r(M)=2dA_r(1/2)\), so \(\bar P=t_0+\rho A_r(1/2)+(1-\rho)J_rdA_r(M)\). The price after no order
+-is \(t_0+\rho A_r(1/2)\), so \(P(0)-\bar P=-(1-\rho)J_rdA_r(M)\), while \(\mu(0)=1/2\).\qedhere
++\(\bar P=\sum_x\Pr(X=x)P(x)=t_0+\rho[\bar fA_r(m)+(1-2\bar f)A_r(1/2)+\bar fA_r(M)]+(1-\rho)\chi_r\bar fA_r(M)\). Since \(A_r\) is affine and
++\(m+M=1\), \(\bar fA_r(m)+\bar fA_r(M)=2\bar fA_r(1/2)\), so \(\bar P=t_0+\rho A_r(1/2)+(1-\rho)\chi_r\bar fA_r(M)\). The price after no order
++is \(t_0+\rho A_r(1/2)\), so \(P(0)-\bar P=-(1-\rho)\chi_r\bar fA_r(M)\), while \(\mu(0)=1/2\).\qedhere
+ \end{enumerate}
+ \end{proof}
+ In the benchmark at \(r_1\), the expected price is \(\reg{pbar_r1_B}\) and the price after no order is
+@@ -216,10 +250,10 @@
+ 
+ \paragraph{Certificates.}
+ All values of this subsection come from the script
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py}. It computes every value in
++\nolinkurl{P5_observables/p5_observables.py}. It computes every value in
+ interval arithmetic at 60 digits from the exact input \(\beta=294655/10^6\) and an enclosure of \(\eu\); a sign counts only
+ when the enclosure excludes zero. The independent program
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP5/recompute.py} (run log
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP5/run_log.txt}) rebuilds every value from the auction cash flows
++\nolinkurl{XP5/recompute.py} (run log
++\nolinkurl{XP5/run_log.txt}) rebuilds every value from the auction cash flows
+ and the slot probabilities, with a rational Taylor bound on \(\eu\) through the term \(1/120!\), and it records one
+-comparison row per value in \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP5/registry_recompute.csv}.
++comparison row per value in \nolinkurl{XP5/registry_recompute.csv}.
+diff -ru audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A9_parameters.tex overleaf/competition_slot/appendix/A9_parameters.tex
+--- audit/slot_manuscript_2026_10_23/scripts/W1/round3_src/appendix/A9_parameters.tex	2026-10-23 16:15:25.496026143 +0000
++++ overleaf/competition_slot/appendix/A9_parameters.tex	2026-10-23 16:33:33.945245774 +0000
+@@ -20,7 +20,7 @@
+ Trading cost & \(k\) & \(\reg{prim_k}\) & input\\
+ Prior & \(\pi\) & \(\reg{prim_pi}\) & input\\
+ Incumbent strengths & \(r_0,\ r_1,\ r_2\) & \(\reg{prim_r0},\ \reg{prim_r1},\ \reg{prim_r2}\) & input\\
+-Slot odds & \(u=\eu-1\) & \(\reg{u_B}\) & input\\
++Slot mass ratio & \(u=\eu-1\) & \(\reg{u_B}\) & input\\
+ Liquidity order probability & \(\beta\) & \(\reg{beta_B}\), an exact decimal & input\\
+ Presence probability & \(\lambda=u\beta/(1+u\beta)\) & \(\reg{lambda_B}\) & computer-assisted\\
+ Liquidity masses & \(b,\ b_0\) & \(\reg{b_B},\ \reg{b0_B}\) & computer-assisted\\
+@@ -29,6 +29,8 @@
+ Research cost and cap & \(a,\ \lb\) & \(\reg{res_a},\ \reg{res_cap}\) & input\\
+ Cost law & \(L;\ \varepsilon\) & \(\reg{atom_L};\ \reg{atom_eps},\ \reg{atom_eps_small}\) & input\\
+ Signal accuracies at B & \(a_T,\ d\) & \(\reg{sig_comp_aT},\ \reg{sig_comp_d}\) & input\\
++Four-class values & \(\theta_1,\dots,\theta_4\) & \(\reg{four_v1},\ \reg{four_v2},\ \reg{four_v3},\ \reg{four_v4}\) & input\\
++Four-class prior & \(\pi_j\) & \(\reg{four_prior}\) each & input\\
+ High cost, access outside recruitment & \(c_H\) & \(\reg{access_out_cH}\) & input\\
+ Reserves & \(p\) & \(\reg{rsv_points_excl},\ \reg{rsv_bands_excl},\ \reg{rsv_deter}\) & input\\
+ \bottomrule
+@@ -37,7 +39,7 @@
+ \begin{minipage}{0.92\linewidth}\footnotesize
+ \textit{Notes.} The registry keys are \texttt{prim\_*}, \texttt{u\_B}, \texttt{beta\_B}, \texttt{lambda\_B},
+ \texttt{b\_B}, \texttt{b0\_B}, \texttt{m\_half\_B}, \texttt{M\_half\_B}, \texttt{res\_a}, \texttt{res\_cap},
+-\texttt{atom\_*}, \texttt{sig\_comp\_*}, \texttt{access\_out\_cH} and \texttt{rsv\_*}. The upright \(\eu\) is Euler's
++\texttt{atom\_*}, \texttt{sig\_comp\_*}, \texttt{four\_*}, \texttt{access\_out\_cH} and \texttt{rsv\_*}. The upright \(\eu\) is Euler's
+ number. The research cap equals the benchmark presence probability, so research at the cap reproduces the benchmark
+ slot. The rows below the rule declare the inputs of single results. The economies of Table~\ref{tab:classes} carry
+ their own declarations in that table.
+@@ -60,23 +62,21 @@
+ direction in which a positive number means that the hypothesis holds. A negative entry records a condition that
+ fails by design, and the table says which. Each margin comes from the script in its last column; the codes are
+ \begin{itemize}[leftmargin=2em,itemsep=0pt]
+-\item[{[P1]}] \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P1_core/p1_numbers.py} (run log
++\item[{[P1]}] \nolinkurl{P1_core/p1_numbers.py} (run log
+ \nolinkurl{p1_numbers.log}) and \nolinkurl{p1_certificates.py} (run log \nolinkurl{p1_certificates.log}) in the same
+ folder;
+-\item[{[P2]}] \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P2_auction/derive.py} (run log \nolinkurl{run.log});
+-\item[{[P3]}] \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P3_research/P3_research.py} (run log
++\item[{[P2]}] \nolinkurl{P2_auction/derive.py} (run log \nolinkurl{run.log});
++\item[{[P3]}] \nolinkurl{P3_research/P3_research.py} (run log
+ \nolinkurl{P3_research.log});
+-\item[{[P4]}] \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P4_information/derive.py} (run log \nolinkurl{run.log});
+-\item[{[P5]}] \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py} (run log
++\item[{[P4]}] \nolinkurl{P4_information/derive.py} (run log \nolinkurl{run.log});
++\item[{[P5]}] \nolinkurl{P5_observables/p5_observables.py} (run log
+ \nolinkurl{run_log.txt}).
+ \end{itemize}
+ Every margin that depends on \(\eu\) is computed in outward interval or exact rational interval arithmetic, and its
+-sign is certified only when the whole enclosure lies on one side of zero. The independent recomputations in
+-\nolinkurl{audit/slot_manuscript_2026_10_23/scripts/XP1/}, \nolinkurl{XP2/}, \nolinkurl{XP3/}, \nolinkurl{XP4/} and
+-\nolinkurl{XP5/} of the same folder reproduce every display; \nolinkurl{XP1/xp1_registry_recompute.csv} and
++sign is certified only when the whole enclosure lies on one side of zero. The independent recomputations in the folders
++\nolinkurl{XP1/}, \nolinkurl{XP2/}, \nolinkurl{XP3/}, \nolinkurl{XP4/} and \nolinkurl{XP5/} reproduce every display; \nolinkurl{XP1/xp1_registry_recompute.csv} and
+ \nolinkurl{XP3/exact_enclosures.json} record exact rational endpoints. The structural bound \(\beta\le1/3\) is a domain
+-restriction; the table records its distance. Exact ties, such as \(r=r_C\) or \(u=u_{\rm lo}\), are boundary cases
+-outside the open sets.
++restriction; the table records its distance.
+ 
+ \begin{table}[p]
+ \centering
+@@ -244,9 +244,19 @@
+ \end{table}
+ 
+ \paragraph{Open parameter sets.}
+-Each block of Table~\ref{tab:margins} lists strict inequalities between continuous functions of the primitives, so
+-each defines an open set of primitives that contains the benchmark; with the structural bound \(\beta\le1/3\), the set
+-is relatively open in the model domain. The sections through the benchmark are: the slot band and the prior range of
++The open-set statement concerns the sufficient conditions of each intended result. Take each row of
++Table~\ref{tab:margins} whose hypothesis holds at the benchmark, with the sign that the row requires. It is a strict
++inequality between continuous functions of the primitives. Together these rows define an open set of primitives that
++contains the benchmark. With the structural bound \(\beta\le1/3\), the set is relatively open in the model domain.
++The statement excludes these entries:
++\begin{itemize}[leftmargin=2em,itemsep=0pt]
++\item the third economy of Proposition~\ref{prop:atomless} at the half-width \(\reg{atom_eps}\), which fails by design;
++\item the control economy with the same means in the last panel, whose negative \(C_1\) is its purpose;
++\item the row that shows that \(d\ge a_T\) is impossible at B;
++\item exact ties, such as \(r=r_C\), \(u=u_{\rm lo}\) or the informed share \(\bar\vartheta(r_1)\). These boundary
++equilibria are valid under the stated tie rules, and the strict-margin convention does not remove them.
++\end{itemize}
++The sections through the benchmark are: the slot band and the prior range of
+ Proposition~\ref{prop:region} (Table~\ref{tab:region}); the cap strip and the cost window of
+ Proposition~\ref{prop:researchregion}; the support conditions of Proposition~\ref{prop:atomless}, which allow every
+ half-width below \(\reg{p4_atomless_max_width_floor_r2}\) for all three parts; the reserve intervals of

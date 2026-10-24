@@ -1,0 +1,1077 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage{booktabs,longtable,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Ent}{\mathsf E}
+\newcommand{\Own}{\mathsf O}
+\newcommand{\fr}{\mathfrak r}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\lab}[1]{\textsc{#1}}
+
+\title{The order slot: beliefs, informed trading and the main comparisons\\[2pt]
+\large Proof package P1 (results R2, R3 and R4)}
+\author{}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Scope and status}
+
+This package proves the core of the order-slot manuscript.
+\begin{itemize}
+\item Lemmas 1--3 (R2): the flow law, the posterior bounds, price sufficiency and the informed investor's
+  payoffs under every strategy. Status: \lab{analytical}.
+\item Proposition 2 (R3): competition creates competition, for general classes and priors.
+  Status: \lab{analytical}.
+\item Proposition 3 (R4): the complete equilibrium set along the benchmark path at prior $1/2$.
+  Proposition 5 (R4): the strengths with coexistence at every prior. Status of both: \lab{computer-assisted},
+  because both use the two Sturm certificates of Lemma~\ref{lem:path}.
+\item Proposition 4: the admissible region and the margins table. Status: \lab{analytical}.
+\end{itemize}
+Decimal values at calibration B depend on $e$. They are registry values with the status
+\lab{computer-assisted}, and the results that print them keep their own label.
+Every number in this package comes from the scripts in \texttt{scripts/P1\_core/} and appears in
+\texttt{registry/P1\_core.csv}. Section~\ref{sec:scripts} lists the scripts and their run logs.
+
+%==========================================================================================
+\section{The trading stage and the equilibrium object}\label{sec:model}
+
+\subsection{Primitives outside the trading stage}
+
+The primitives outside the trading stage are those of the Laplace manuscript, Sections 2.1, 2.2 and 3.1.
+\begin{itemize}
+\item \emph{Classes and values.} The challenger's class is $j\in\{H,L\}$, with prior $\pi=\Pr(j=H)\in(0,1)$.
+  Given its class, its value is $\theta\sim G_j$, with a finite mean. The high class dominates,
+  $G_H(v)\le G_L(v)$ for every $v$, and both supports lie above the reserve, $G_H(p^-)=G_L(p^-)=0$.
+\item \emph{Incumbent.} The incumbent's value $R$ has a continuous distribution $F$ on $[0,\bar r]$.
+  A strengthening of $F$ is a continuous distribution $\tilde F\le F$. The main case is $R\sim U[0,r]$.
+\item \emph{Costs.} The challenger's preparation cost is $C\in\{0,c_H\}$, with $\Pr(C=0)=\rho\in(0,1)$ and $c_H>0$.
+\item \emph{Sale.} A second-price auction with reserve $p>0$. Prepared bidders bid their values.
+\item \emph{Independence.} The pair $(j,\theta)$, the value $R$, the cost $C$ and the draws of the order slot
+  are independent.
+\end{itemize}
+
+For a known challenger value $\theta$, $t(\theta)$ is expected target proceeds after the challenger prepares,
+and $g(\theta)$ is the challenger's expected gross profit. Without entry the proceeds are $t_0=p[1-F(p)]$.
+The class objects are
+\[
+t_j=\E_j[t(\theta)],\quad g_j=\E_j[g(\theta)],\quad \Delta=t_H-t_L,\quad B(\mu)=g_L+\mu(g_H-g_L),\quad
+W_H(F)=\E_H\big[F(\theta)\one\{\theta\ge p\}\big].
+\]
+Here $\Delta$ is the target-payoff spread $\Delta_T$ of the Laplace manuscript, and $W_H(F)$ is the
+probability that a prepared class-$H$ challenger wins. When $g_H>g_L$, the preparation threshold is
+$\tau=(c_H-g_L)/(g_H-g_L)$, and $B(\mu)\ge c_H$ exactly when $\mu\ge\tau$.
+
+The proofs use three facts from Proposition 1 of the Laplace manuscript (result R1, proved in another package):
+\begin{enumerate}[label=(P\arabic*)]
+\item $g_H\ge g_L$, $\Delta\ge 0$ and $t_L\ge t_0$ for every $F$;
+\item a strengthening $\tilde F\le F$ weakly lowers $g_H$ and $g_L$, so $B_{\tilde F}(\mu)\le B_F(\mu)$ at every $\mu$;
+\item a strengthening weakly raises $\Delta$.
+\end{enumerate}
+
+\emph{The benchmark.} $G_H$ and $G_L$ are point masses at $h$ and $\ell$, $R\sim U[0,r]$, and $0<p<\ell<r<h$. Then
+\[
+t_0=p\Big(1-\frac pr\Big),\quad t_H=\frac r2+\frac{p^2}{2r},\quad t_L=\ell-\frac{\ell^2-p^2}{2r},\quad
+g_H=h-t_H,\quad g_L=\frac{\ell^2-p^2}{2r},\quad \Delta(r)=\frac{(r-\ell)^2}{2r}.
+\]
+Also $g_H-g_L=h-r/2-\ell^2/(2r)>0$ for $\ell<r<h$, and
+\[
+\tau(r)=\frac{2rc_H-\ell^2+p^2}{2rh-r^2-\ell^2}.
+\]
+The benchmark values are $(h,\ell,p,\rho,c_H,k,\pi)=(10,1,1/2,1/4,6,1/50,1/2)$ and $(r_0,r_1,r_2)=(6/5,3,18/5)$.
+Then $\tau(r)=(48r-3)/[4(20r-r^2-1)]$, with $\tau(r_0)=195/308$, $\tau(r_1)=141/200$ and $\tau(r_2)=4245/5804$.
+These formulas agree with equation (4) of the Laplace manuscript at commit \texttt{01bd5d6} and with the
+shared objects of the team rules. The script \texttt{p1\_certificates.py} also integrates the sale payoffs
+directly over $R$ at eight strengths. Every difference from the closed forms is zero.
+
+\subsection{The order slot}
+
+The trading stage has one public order opportunity.
+\begin{enumerate}
+\item The order opportunity comes before the challenger's decision.
+\item With probability $\lambda\in(0,1)$ the informed investor fills it. The investor sees the class $j$, not
+  the value $\theta$, and chooses $q\in\{-1,0,1\}$. A nonzero order costs $k>0$.
+\item With probability $1-\lambda$ a liquidity trader fills it. It sells, abstains or buys one unit with
+  probabilities $\eta(-1)=\beta$, $\eta(0)=1-2\beta$ and $\eta(1)=\beta$, where $0<\beta\le 1/3$. Its motive is exogenous.
+\item No one observes who filled the slot. The identity draw is independent of the class, the costs and $R$.
+\item Competitive market makers see the order $X\in\{-1,0,1\}$ and set $P=\E[V_T\mid X]$. The challenger sees
+  the price and its own cost, then decides whether to prepare. Prepared bidders learn their values and bid.
+\end{enumerate}
+The derived objects are
+\[
+b=(1-\lambda)\beta,\qquad b_0=(1-\lambda)(1-2\beta),\qquad u=\frac{\lambda}{b},
+\]
+\[
+M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi},\qquad m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)},\qquad
+\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}.
+\]
+The number $b$ is the probability of a liquidity purchase, and also of a liquidity sale. The number $u$ is the
+odds that an order in a given direction comes from the informed investor. At $\pi=1/2$ we write $M=(1+u)/(2+u)$
+and $m=1-M$.
+
+When the investor fills the slot, its order is the order flow, $X=q$. Its profit is $q[V_T-P(q)]-k|q|$.
+The arrival probability $\lambda$ multiplies its ex ante payoff and changes no comparison.
+
+\subsection{The equilibrium object}
+
+\begin{definition}[equilibrium]\label{def:eq}
+An equilibrium is a tuple $\mathcal E=(\sigma_H,\sigma_L,P,\mu,\zeta,\text{bids})$ with these components:
+\begin{enumerate}[label=(\roman*)]
+\item class-contingent order distributions $\sigma_j\in\Delta(\{-1,0,1\})$, $j\in\{H,L\}$;
+\item a price on every order, $P:\{-1,0,1\}\to\mathbb R$;
+\item a posterior on every order, $\mu:\{-1,0,1\}\to[0,1]$, the probability that the class is $H$;
+\item a preparation rule: the zero-cost challenger prepares at every price, and the high-cost challenger
+  prepares with probability $\zeta(\bar P)$ at each price $\bar P$ in the image of $P$;
+\item bids: each prepared bidder bids its value.
+\end{enumerate}
+Entry after order $x$ is $e(x)=\rho+(1-\rho)\zeta(P(x))$. The tuple must satisfy six conditions.
+\begin{enumerate}[label=(E\arabic*)]
+\item \emph{Bayes consistency.} $\mu(x)=\pi a_H(x)/[\pi a_H(x)+(1-\pi)a_L(x)]$, where
+  $a_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)$ is the probability of order $x$ in class $j$.
+\item \emph{Challenger beliefs.} At each price $\bar P$ in the image of $P$, the challenger's belief is
+  $\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)$, from the joint law of the class and the order.
+\item \emph{Entry optimality.} $\zeta(\bar P)=1$ if $B(\bar\mu(\bar P))>c_H$, and $\zeta(\bar P)=0$ if
+  $B(\bar\mu(\bar P))<c_H$. At equality the challenger tie rule applies.
+\item \emph{Competitive prices.} $P(x)=\E[V_T\mid X=x]$ for every order $x$.
+\item \emph{Investor optimality.} Against the fixed $P$ and $e$, the distribution $\sigma_j$ puts probability one
+  on the maximizers of $U_j(q)=q\{\E[V_T\mid j,X=q]-P(q)\}-k|q|$. At indifference the investor tie rule applies.
+\item \emph{Bids.} Truthful bids are weakly dominant in the second-price auction.
+\end{enumerate}
+\end{definition}
+
+\paragraph{Tie rules.} The analysis states two rules for each indifference.
+\begin{itemize}
+\item \emph{Investor.} Rule IM (the baseline): an indifferent investor may use any mixture over its maximizers.
+  This is the standard best-response condition. Rule I0: if abstention is a maximizer, the investor abstains.
+\item \emph{High-cost challenger.} Rule C1 (the baseline, as in the Laplace manuscript): an indifferent
+  challenger prepares. Rule CM: an indifferent challenger may prepare with any probability.
+\end{itemize}
+The zero-cost challenger prepares at every price under every rule. Its gross profit is an expected auction
+rent, so it is never negative, and the model fixes preparation at zero gross profit.
+
+\paragraph{Deviations and comparisons.} A unilateral deviation by the investor holds the candidate's $P$ and
+$e$ fixed and changes only the order that reaches them. Lemma~\ref{lem:flow}(a) shows that every order has
+positive probability in each class. A deviation therefore reaches a price in the image of $P$, and no
+off-path belief enters any proof. A comparison across economies re-solves $P$, $\mu$ and $\zeta$ in each economy.
+An \emph{outcome} is the tuple $(\sigma_H,\sigma_L,\mu,e,P)$; a unique outcome means a unique tuple.
+
+%==========================================================================================
+\section{Beliefs and prices}\label{sec:beliefs}
+
+\begin{lemma}[flow law and beliefs; analytical]\label{lem:flow}
+Let $0<\lambda<1$ and $0<\beta<1/2$, and fix any order distributions $\sigma_H,\sigma_L$.
+\begin{enumerate}[label=(\alph*)]
+\item Full support: $a_j(x)\ge(1-\lambda)\eta(x)>0$ for every order $x$ and class $j$.
+\item Nonzero orders: for $x\in\{-1,1\}$, $b\le a_j(x)\le b+\lambda$, so $m(\pi)\le\mu(x)\le M(\pi)$.
+\item The zero order: $b_0\le a_j(0)\le b_0+\lambda$. If $\beta\le1/3$, then $m(\pi)\le\mu(0)\le M(\pi)$.
+  If $\beta>1/3$, the pair $\sigma_H=\delta_0$, $\sigma_L(0)=0$ gives $\mu(0)>M(\pi)$.
+\item Full orders $\sigma_H=\delta_1$, $\sigma_L=\delta_{-1}$ give $(\mu(-1),\mu(0),\mu(1))=(m(\pi),\pi,M(\pi))$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The liquidity trader fills the slot with probability $1-\lambda>0$ and places order $x$ with probability
+$\eta(x)$. Each $\eta(x)$ is positive because $0<\beta<1/2$. The informed term $\lambda\sigma_j(x)$ is nonnegative.
+
+(b) For $x=\pm1$, $(1-\lambda)\eta(x)=b$ and $0\le\lambda\sigma_j(x)\le\lambda$, so $b\le a_j(x)\le b+\lambda$.
+Hence $a_H(x)/a_L(x)\in[b/(b+\lambda),(b+\lambda)/b]=[(1+u)^{-1},1+u]$. Bayes' rule in odds form is
+\[
+\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{a_H(x)}{a_L(x)}.
+\]
+The odds of $\mu(x)$ therefore lie between $\pi/[(1-\pi)(1+u)]$ and $\pi(1+u)/(1-\pi)$. These are the odds of
+$m(\pi)$ and $M(\pi)$.
+
+(c) For $x=0$, $(1-\lambda)\eta(0)=b_0$, so $b_0\le a_j(0)\le b_0+\lambda$, and the likelihood ratio lies in
+$[(1+\lambda/b_0)^{-1},1+\lambda/b_0]$. The inequality $b_0\ge b$ is $1-2\beta\ge\beta$, that is $\beta\le1/3$.
+Then $\lambda/b_0\le\lambda/b=u$, and the argument of (b) applies. If $\beta>1/3$, then $b_0<b$. The pair
+$\sigma_H=\delta_0$, $\sigma_L(0)=0$ gives $a_H(0)=b_0+\lambda$ and $a_L(0)=b_0$, a ratio $1+\lambda/b_0>1+u$.
+For example, $\lambda=6/17$, $\beta=2/5$ and $\pi=1/2$ give $\mu(0)=41/52>M=26/37$.
+
+(d) Full orders give $a_H=(b,b_0,b+\lambda)$ and $a_L=(b+\lambda,b_0,b)$ on the orders $(-1,0,1)$.
+The ratios are $(1+u)^{-1}$, $1$ and $1+u$.
+\end{proof}
+
+\paragraph{Where $\beta\le 1/3$ enters.} Only part (c) uses $\beta\le1/3$. Propositions 2--5 use parts (a), (b)
+and (d), so they hold for every $\beta<1/2$. Part (c) extends the posterior bound to every order under every
+strategy pair. Corollary~\ref{cor:ceiling} uses it.
+
+\begin{lemma}[prices; analytical]\label{lem:price}
+Suppose $\Delta>0$ and $g_H>g_L$. Fix a tuple that satisfies (E1)--(E4) and (E6), under either challenger tie rule.
+\begin{enumerate}[label=(\alph*)]
+\item Floor: $e(x)\ge\rho$ for every order $x$.
+\item Price formula: $P(x)=t_0+e(x)[t_L-t_0+\Delta\mu(x)]$.
+\item Sufficiency: if $P(x)=P(x')$, then $\mu(x)=\mu(x')$. The challenger's belief at the price $P(x)$ is $\mu(x)$.
+\item Entry: $e(x)=\rho$ if $\mu(x)<\tau$ and $e(x)=1$ if $\mu(x)>\tau$. If $\mu(x)=\tau$, then $e(x)=1$ under C1
+  and $e(x)\in[\rho,1]$ under CM.
+\item Monotonicity: if $\mu(x)>\mu(x')$, then $e(x)\ge e(x')$ and $P(x)-P(x')\ge\rho\Delta[\mu(x)-\mu(x')]>0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The zero-cost challenger prepares at every price, and it has probability $\rho$.
+
+(b) Fix an order $x$. The challenger sees $P(x)$ and its cost. The cost is independent of the class, of $\theta$
+and of $R$. Entry after $x$ therefore has probability $e(x)$, independent of $(j,\theta,R)$. With entry and
+class $j$, expected proceeds are $t_j$; without entry they are $t_0$. So
+$\E[V_T\mid j,X=x]=t_0+e(x)(t_j-t_0)$. Average over the class with weights $\mu(x)$ and $1-\mu(x)$, and use (E4).
+
+(c) Let $P(x)=P(x')=\bar P$. The challenger cannot tell $x$ from $x'$, so $e(x)=e(x')=\bar e$, with $\bar e\ge\rho$
+by (a). Part (b) gives $\bar e\Delta\mu(x)=\bar P-t_0-\bar e(t_L-t_0)=\bar e\Delta\mu(x')$. Since
+$\bar e\Delta>0$, $\mu(x)=\mu(x')$. By (E2), $\bar\mu(\bar P)$ is an average of the posteriors of the orders with
+price $\bar P$. These posteriors are equal, so $\bar\mu(\bar P)=\mu(x)$.
+
+(d) By (c), the challenger's gross profit at $P(x)$ is $B(\mu(x))$. Since $g_H>g_L$, $B(\mu)>c_H$ exactly when
+$\mu>\tau$, and $B(\mu)<c_H$ exactly when $\mu<\tau$. Apply (E3) and the tie rule.
+
+(e) If $\mu(x')<\tau$, then $e(x')=\rho\le e(x)$. If $\mu(x')\ge\tau$, then $\mu(x)>\tau$ and $e(x)=1\ge e(x')$.
+By (b),
+\[
+P(x)-P(x')=e(x)\Delta[\mu(x)-\mu(x')]+[e(x)-e(x')]\,[t_L-t_0+\Delta\mu(x')].
+\]
+The second term is nonnegative by (P1). The first is at least $\rho\Delta[\mu(x)-\mu(x')]$ by (a).
+\end{proof}
+
+%==========================================================================================
+\section{Informed trading}\label{sec:trading}
+
+\begin{lemma}[informed trading; analytical]\label{lem:trade}
+Fix a price function $P$ and entry $e$ that satisfy (E4) for the posterior $\mu$. Conditional on its arrival,
+class $j$ earns these expected payoffs:
+\[
+\begin{aligned}
+U_H(1)&=e(1)\Delta[1-\mu(1)]-k,&\quad U_H(0)&=0,&\quad U_H(-1)&=-e(-1)\Delta[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\Delta\mu(-1)-k,&\quad U_L(0)&=0,&\quad U_L(1)&=-e(1)\Delta\mu(1)-k.
+\end{aligned}
+\]
+Write $K_H=e(1)\Delta[1-\mu(1)]$ and $K_L=e(-1)\Delta\mu(-1)$ for the gross returns of the two correct orders.
+\begin{enumerate}[label=(\alph*)]
+\item A wrong-sign order earns at most $-k<0$, so abstention strictly beats it.
+\item Class $H$ buys with probability one if $K_H>k$ and abstains if $K_H<k$. If $K_H=k$, the purchase and
+  abstention are its two maximizers. Class $L$ sells with probability one if $K_L>k$ and abstains if $K_L<k$.
+  If $K_L=k$, the sale and abstention are its two maximizers.
+\item Every candidate satisfies $\rho\Delta[1-M(\pi)]\le K_H\le\Delta$ and $\rho\Delta m(\pi)\le K_L\le\Delta$.
+  Hence $\rho\kappa(\pi)\Delta\le K_j\le\Delta$.
+\item $K_H$ depends on the candidate only through $(\mu(1),e(1))$, and $K_L$ only through $(\mu(-1),e(-1))$.
+  Entry after the zero order enters no payoff.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The order $q$ reaches the price $P(q)$. As in Lemma~\ref{lem:price}(b), $\E[V_T\mid j,X=q]=t_0+e(q)(t_j-t_0)$.
+Condition (E4) gives $P(q)=t_0+e(q)[t_L-t_0+\Delta\mu(q)]$; this step uses only competitive prices and
+needs no condition on $\Delta$. Subtract:
+\[
+\E[V_T\mid H,X=q]-P(q)=e(q)\Delta[1-\mu(q)],\qquad P(q)-\E[V_T\mid L,X=q]=e(q)\Delta\mu(q).
+\]
+Multiply by $q$ and subtract $k|q|$. This gives the six payoffs. The terms $t_0$ and $e(q)(t_L-t_0)$ cancel.
+
+(a) $e(q)\ge0$, $\Delta\ge0$ and $\mu(q)\in[0,1]$, so each wrong-sign payoff is at most $-k$.
+
+(b) By (a), each class compares its correct order with abstention, and $U_j(\pm1)-U_j(0)=K_j-k$.
+
+(c) The floor $e\ge\rho$ holds by the zero-cost challenger, and $e\le1$. Lemma~\ref{lem:flow}(b) gives
+$1-\mu(1)\ge1-M(\pi)$ and $\mu(-1)\ge m(\pi)$. Also $1-\mu(1)\le1$ and $\mu(-1)\le1$.
+
+(d) Read off the two formulas.
+\end{proof}
+
+The payoffs are conditional on the investor's arrival. The probability $\lambda$ multiplies both sides of every
+comparison, so the comparison of $K_j$ with $k$ is the single decision of each class.
+
+\begin{corollary}[the ceiling under every profile; analytical]\label{cor:ceiling}
+Let $\beta\le1/3$ and $g_H\ge g_L$. If $B(M(\pi))<c_H$, then no candidate profile, in or out of equilibrium,
+has high-cost preparation after any order.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:flow}(b)--(c) give $\mu(x)\le M(\pi)$ at every order under every strategy pair. The challenger's
+belief at a price is an average of such posteriors, by (E2). Since $B$ is nondecreasing,
+$B(\bar\mu)\le B(M(\pi))<c_H$ at every price.
+\end{proof}
+
+%==========================================================================================
+\section{Proposition 2: competition creates competition}\label{sec:prop2}
+
+\setcounter{proposition}{1}
+\begin{proposition}[competition creates competition; analytical]\label{prop:2}
+Let the classes satisfy the restrictions of Section 1.1. Let $F_1$ be a strengthening of $F_0$, and $F_2$ a
+strengthening of $F_1$. Fix $0<\pi<1$, $0<\rho<1$, $k>0$, $0<\lambda<1$ and $0<\beta<1/2$. Write $B_i=B_{F_i}$,
+$\Delta_i=\Delta(F_i)$, $M=M(\pi)$, $m=m(\pi)$ and $\kappa=\kappa(\pi)$. Suppose
+\begin{align*}
+&\text{(H1)}\quad B_0(\pi)<c_H<B_1(M),\\
+&\text{(H2)}\quad \Delta_0<k<\rho\kappa\Delta_1,\\
+&\text{(H3)}\quad B_2(M)<c_H.
+\end{align*}
+Then each economy has a unique equilibrium outcome. The outcome is the same under all four pairs of tie rules.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Weak incumbent $F_0$.} No informed trade: $\sigma_H=\sigma_L=\delta_0$. Every posterior equals $\pi$,
+  entry equals $\rho$ after every order, and every order has the price $t_0+\rho[t_L-t_0+\Delta_0\pi]$.
+  The price carries no information.
+\item \emph{Strong incumbent $F_1$.} Full two-sided trade: $\sigma_H=\delta_1$ and $\sigma_L=\delta_{-1}$. The
+  posteriors after the orders $(-1,0,1)$ are $(m,\pi,M)$. Only a purchase recruits the high-cost challenger,
+  so $e=(\rho,\rho,1)$. The prices are $P(x)=t_0+e(x)[t_L-t_0+\Delta_1\mu(x)]$, with $P(-1)<P(0)<P(1)$. Entry is
+  \[
+  \Ent_1=\rho+(1-\rho)(b+\pi\lambda)>\rho .
+  \]
+  Entry given class $H$ is $e_H=\rho+(1-\rho)(b+\lambda)$, and given class $L$ it is $e_L=\rho+(1-\rho)b$.
+  High-class ownership, the probability that a class-$H$ challenger acquires the target, is
+  $\Own_{H,1}=\pi e_HW_H(F_1)$. It exceeds its weak-incumbent level $\Own_{H,0}=\pi\rho W_H(F_0)$ if and only if
+  \[
+  [\rho+(1-\rho)(b+\lambda)]\,W_H(F_1)>\rho\,W_H(F_0).
+  \]
+\item \emph{Very strong incumbent $F_2$.} Full two-sided trade again, with posteriors $(m,\pi,M)$. Entry equals
+  $\rho$ after every order. The three prices $t_0+\rho[t_L-t_0+\Delta_2\mu(x)]$ differ, so the price stays
+  informative while entry returns to $\rho$.
+\end{enumerate}
+\end{proposition}
+
+In the point-mass benchmark $h$ exceeds the incumbent's support at every strength, so $W_H=1$ and ownership rises.
+The Laplace manuscript states the sufficient condition $(1+\rho)W_H(F_1)\ge2\rho W_H(F_0)>0$. It implies the
+condition of part (ii) when $b+\lambda>1/2$, because then $e_H>(1+\rho)/2$. At calibration B, $b+\lambda=0.531737$.
+
+\begin{proof}
+\emph{Step 0: implied inequalities.} By (P2), $B_1(\pi)\le B_0(\pi)<c_H$, so (H1) gives
+$B_1(\pi)<c_H<B_1(M)$. Since $M>\pi$, $B_1(M)-B_1(\pi)=(M-\pi)[g_H(F_1)-g_L(F_1)]>0$, so $g_H(F_1)>g_L(F_1)$ and
+$\pi<\tau_1<M$, where $\tau_1$ is the threshold at $F_1$. (H2) gives $\Delta_1>k/(\rho\kappa)>0$. By (P3),
+$\Delta_2\ge\Delta_1$, so $\rho\kappa\Delta_2>k$. By (P1), $g_H(F_2)\ge g_L(F_2)$, so
+$B_2(m)\le B_2(\pi)\le B_2(M)<c_H$.
+
+\emph{Step 1: the weak incumbent, every candidate.} Fix any candidate tuple at $F_0$. By Lemma~\ref{lem:trade},
+a correct order earns $K_j-k\le\Delta_0-k<0$, and a wrong-sign order earns at most $-k$. Abstention is the unique
+maximizer of each class, so every equilibrium has $\sigma_H=\sigma_L=\delta_0$, under both investor rules.
+Then $a_H(x)=a_L(x)=(1-\lambda)\eta(x)>0$, and (E1) gives $\mu(x)=\pi$ after every order. All orders have the
+same posterior, so the challenger's belief at every price is $\pi$ by (E2). Since $B_0(\pi)<c_H$, (E3) gives
+$\zeta=0$ at every price, with no tie. Entry is $\rho$ after every order. As in Lemma~\ref{lem:price}(b), (E4)
+gives $P(x)=t_0+\rho[\pi t_H+(1-\pi)t_L-t_0]=t_0+\rho[t_L-t_0+\Delta_0\pi]$ for every $x$.
+
+\emph{Verification of the tuple in part (i).} (E1) and (E2) hold by the computation above. (E3) holds strictly.
+(E4) holds by construction. (E5) holds strictly: the bound of Step 1 applies to this tuple. (E6) holds.
+Step 1 shows that every equilibrium is this tuple.
+
+\emph{Step 2: the strong incumbent, orders in every candidate.} Fix any candidate tuple at $F_1$. By
+Lemma~\ref{lem:trade}(c), $K_H\ge\rho\Delta_1(1-M)\ge\rho\kappa\Delta_1>k$ and $K_L\ge\rho\Delta_1m\ge\rho\kappa\Delta_1>k$.
+By Lemma~\ref{lem:trade}(a)--(b), the purchase is the unique maximizer of class $H$, and the sale is the unique
+maximizer of class $L$. Every equilibrium has $\sigma_H=\delta_1$ and $\sigma_L=\delta_{-1}$, under both
+investor rules. The bounds use Lemma~\ref{lem:flow}(b) only, so they hold for every $\beta<1/2$.
+
+\emph{Step 3: the strong incumbent, the tuple.} Lemma~\ref{lem:flow}(d) gives the posteriors $(m,\pi,M)$.
+Step 0 gives $\Delta_1>0$ and $g_H(F_1)>g_L(F_1)$, so Lemma~\ref{lem:price} applies. Since $B_1(M)>c_H$,
+$B_1(\pi)<c_H$ and $B_1(m)\le B_1(\pi)$, Lemma~\ref{lem:price}(d) gives $e(1)=1$ and $e(0)=e(-1)=\rho$, with no
+tie. Lemma~\ref{lem:price}(b) gives the prices, and Lemma~\ref{lem:price}(e) orders them strictly.
+\emph{Verification.} (E1) holds by Lemma~\ref{lem:flow}(d). (E2) holds because the three prices differ, so each
+price reveals its order. (E3) holds strictly. (E4) holds by Lemma~\ref{lem:price}(b). (E5) holds strictly: the
+bounds of Step 2 apply to this tuple. (E6) holds.
+
+\emph{Step 4: entry and ownership at $F_1$.} Class $H$ places the order $1$ with probability $b+\lambda$: a
+liquidity purchase or an informed purchase. Class $L$ places it with probability $b$. So
+$e_H=\rho+(1-\rho)(b+\lambda)$, $e_L=\rho+(1-\rho)b$ and $\Ent_1=\pi e_H+(1-\pi)e_L=\rho+(1-\rho)(b+\pi\lambda)$.
+Since $b>0$, $\Ent_1>\rho$. Given class $H$ and preparation, the challenger wins when $\theta>R$; ties have
+probability zero because $F$ is continuous. Preparation depends on the order and the cost, and both are
+independent of $(\theta,R)$ given the class. So a class-$H$ challenger acquires the target with probability
+$e_HW_H(F_1)$, and $\Own_{H,1}=\pi e_HW_H(F_1)$. At $F_0$ entry is $\rho$ in each class, so
+$\Own_{H,0}=\pi\rho W_H(F_0)$. Divide the comparison by $\pi>0$.
+
+\emph{Step 5: the very strong incumbent.} Step 0 gives $\rho\kappa\Delta_2>k$. The argument of Step 2 with
+$\Delta_2$ in place of $\Delta_1$ gives full orders in every equilibrium, and Lemma~\ref{lem:flow}(d) gives the
+posteriors $(m,\pi,M)$. Step 0 gives $B_2(\mu)\le B_2(M)<c_H$ at each of the three posteriors, so $\zeta=0$
+at every price, with no tie. Entry is $\rho$ after every order. Since $\Delta_2>0$ and $m<\pi<M$, the three prices
+$t_0+\rho[t_L-t_0+\Delta_2\mu(x)]$ differ. The verification is that of Step 3.
+
+\emph{Step 6: tie rules.} In each economy every investor comparison is strict (Steps 1, 2 and 5). Every
+equilibrium posterior lies strictly on one side of the threshold (Steps 1, 3 and 5). No tie rule is ever used,
+so the four pairs of rules give the same unique outcome.
+\end{proof}
+
+\paragraph{The hypotheses are complete, and each one is used.} The proof uses each hypothesis once.
+\begin{itemize}
+\item $B_0(\pi)<c_H$ gives entry $\rho$ at $F_0$. Through (P2), it also stops recruitment after the zero order at $F_1$.
+\item $c_H<B_1(M)$ gives recruitment after a purchase at $F_1$.
+\item $\Delta_0<k$ defeats every informed order at $F_0$, against every candidate.
+\item $k<\rho\kappa\Delta_1$ forces full orders at $F_1$, and through (P3) at $F_2$, against every candidate.
+\item $B_2(M)<c_H$ stops recruitment at $F_2$.
+\end{itemize}
+Nothing else enters the proof; in particular Lemma~\ref{lem:flow}(c), the only use of $\beta\le1/3$, does not.
+The hypotheses imply $B_1(\pi)<c_H$, $\rho\kappa\Delta_2>k$ and $B_2(m)\le B_2(\pi)\le B_2(M)$.
+
+A list that replaces $B_0(\pi)<c_H$ by the weaker $B_1(\pi)<c_H$ is not sufficient. Take calibration B and the
+benchmark values, but set $c_H=47/10$ and $(r_0,r_1,r_2)=(6/5,3,8)$. Then $k-\Delta_0=1/300$,
+$c_H-B_1(1/2)=49/120$, $B_1(M)-c_H=1.517155$, $\rho\kappa\Delta_1-k=0.024824$ and $c_H-B_2(M)=0.312465$ are positive,
+but $c_H-B_0(1/2)=-5/48$. At $r_0$ the orders are zero by Step 1, the posterior is $1/2$, and
+$B_0(1/2)=1153/240>47/10$. Both cost types prepare, so entry is $1$ at $r_0$. Entry then falls to
+$\Ent_1=0.522757$ at $r_1$.
+
+On the benchmark path each other hypothesis also guards a conclusion. At $r_0=31/20$ the left side of (H2)
+fails, since $\Delta(31/20)=121/1240>k$, and Proposition~\ref{prop:3} gives two equilibria there. At $r_1=2$ the
+right side of (H2) fails, since $\rho\kappa\Delta(2)-k=-0.003191$, and Proposition~\ref{prop:3} gives a mixed sale
+there. If $F_1=F_2$, (H3) or the right side of (H1) fails, and part (iii) or part (ii) fails with it.
+
+\paragraph{The open set.} For uniform incumbents, (H1)--(H3) are strict inequalities between continuous
+functions of $(r_0,r_1,r_2,c_H,k,\rho,\pi,\lambda,\beta)$. They define an open set. Proposition~\ref{prop:region}
+gives its section through the benchmark.
+
+\paragraph{Calibration B.} Table~\ref{tab:prop2} lists the three equilibrium tuples at calibration B and prior
+$1/2$. The values come from the script \texttt{p1\_numbers.py} in outward interval arithmetic.
+
+\begin{table}[h]
+\centering
+\caption{The equilibrium tuples of Proposition~\ref{prop:2} at calibration B, prior $1/2$.}\label{tab:prop2}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $r_0=1.2$ & $r_1=3$ & $r_2=3.6$\\
+\midrule
+Orders $(\sigma_H,\sigma_L)$ & $(\delta_0,\delta_0)$ & $(\delta_1,\delta_{-1})$ & $(\delta_1,\delta_{-1})$\\
+Posteriors after $(-1,0,1)$ & $(0.5,0.5,0.5)$ & $(0.268941,0.5,0.731059)$ & $(0.268941,0.5,0.731059)$\\
+High-cost preparation after $(-1,0,1)$ & $(0,0,0)$ & $(0,0,1)$ & $(0,0,0)$\\
+Prices after $(-1,0,1)$ & $0.392708$ each & $(0.576074,0.614583,1.362372)$ & $(0.610002,0.664236,0.718471)$\\
+Entry & $0.250000$ & $0.522757$ & $0.250000$\\
+High-class ownership & $0.125000$ & $0.324401$ & $0.125000$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Proposition 3: the equilibrium set along the benchmark path}\label{sec:prop3}
+
+Throughout this section the auction is the benchmark: point masses $h$ and $\ell$, $R\sim U[0,r]$, and the
+benchmark values of $(h,\ell,p,\rho,c_H,k)$. The path is $r\in[r_0,r_2]=[6/5,18/5]$. The slot is any pair
+$(\lambda,\beta)$ with $0<\lambda<1$, $0<\beta<1/2$ and $\tau(r_1)<M<\tau(r_2)$, the band of
+Proposition~\ref{prop:region}. Section 5.3 takes the prior $\pi=1/2$; Sections 5.2 and 5.4 allow any prior.
+
+\subsection{The path and its thresholds}
+
+Two functions organize the path. The first is
+\[
+J(r)=\Delta(r)\,[1-\tau(r)]=\frac{(r-\ell)^2\,[2r(h-c_H)-r^2-p^2]}{2r\,(2rh-r^2-\ell^2)},
+\]
+the gross return of a purchase that reaches the posterior $\tau(r)$ and recruits. The second is
+$\fr(d)=\ell+d+\sqrt{d^2+2\ell d}$, the root above $\ell$ of $\Delta(r)=d$. Since
+$\Delta'(r)=\tfrac12-\ell^2/(2r^2)>0$ for $r>\ell$, $\Delta(r)\le d$ holds exactly when $r\le\fr(d)$.
+
+\begin{lemma}[the path; computer-assisted]\label{lem:path}
+\begin{enumerate}[label=(\alph*)]
+\item $\tau$ is strictly increasing on $[r_0,r_2]$, with $\tau(r_0)=195/308>1/2$ and $\tau(r_2)=4245/5804<3/4$.
+\item $J$ is strictly increasing on $[r_0,r_2]$, with $J(r_0)=113/18480<k$ and $\rho J(r_2)=263471/4178880>k$.
+\item $\Delta(r)[1-\tau(r)]^2$ is strictly increasing on $[r_0,2]$.
+\item $\Delta(r)\tau(r)$ is strictly increasing on $[r_0,r_2]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Write $\tau=N_\tau/D_\tau$ with $N_\tau=2rc_H-\ell^2+p^2$ and $D_\tau=2rh-r^2-\ell^2$. The derivative has the
+sign of $N_\tau'D_\tau-N_\tau D_\tau'=2c_Hr^2-2(\ell^2-p^2)r+2h(\ell^2-p^2)-2c_H\ell^2$, which at the benchmark is
+$12r^2-\tfrac32r+3$. Its discriminant is negative, so it is positive for every $r$. Also $D_\tau>0$ on the path.
+
+(b) $J'$ has the sign of
+\[
+Q_J(r)=4r^6-160r^5+743r^4-12r^3-614r^2+40r-1 .
+\]
+The script \texttt{p1\_certificates.py} computes $Q_J$ from the primitives with exact rational arithmetic. A Sturm
+sequence gives no real root of $Q_J$ in $(r_0,r_2]$, and $Q_J(r_0)=4634399/15625>0$. The two values follow
+from the closed form.
+
+(c) The derivative of $\Delta(1-\tau)^2$ has the sign of the degree-10 polynomial
+\[
+16r^{10}-1280r^9+29256r^8-229344r^7+562917r^6-32808r^5-374607r^4+48456r^3-2685r^2+80r-1 .
+\]
+A Sturm sequence gives no real root in $(r_0,2]$, and its value at $r_0$ is positive (script
+\texttt{p1\_certificates.py}).
+
+(d) $\Delta$ and $\tau$ are positive and strictly increasing on the path, by (a) and $\Delta'>0$.
+
+Parts (a) and (d) are proved by hand. Parts (b) and (c) rest on the exact Sturm counts.
+\end{proof}
+
+\begin{definition}[thresholds]\label{def:thresholds}
+At the prior $1/2$, with $M=(1+u)/(2+u)$ and $m=1-M$:
+\begin{itemize}
+\item $r_A$: the root of $J(r)=k$ in $(r_0,r_2)$. A purchase that just reaches $\tau$ and recruits earns $k$.
+\item $r_N=\fr(2k/\rho)$. Against no informed trade, a unit order earns $\rho\Delta/2$; this equals $k$ at $r_N$.
+\item $r_F=\fr\big(k/(1-M)\big)$. A full purchase with recruitment earns $\Delta(1-M)$; this equals $k$ at $r_F$.
+\item $r_J$: the root of $\rho J(r)=k$ in $(r_0,r_2)$. A purchase that just reaches $\tau$ without recruitment
+  earns $\rho J$; this equals $k$ at $r_J$.
+\item $r_S=\fr\big(k/(\rho m)\big)$. A full sale earns $\rho\Delta m$; this equals $k$ at $r_S$.
+\item $r_C$: the root of $\tau(r)=M$, that is of $B_r(M)=c_H$. In closed form,
+  \[
+  r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}{M}.
+  \]
+\end{itemize}
+\end{definition}
+
+Lemma~\ref{lem:path}(a)--(b) give the uniqueness of $r_A$, $r_J$ and $r_C$. The thresholds $r_A$, $r_N$ and $r_J$
+do not depend on the slot. At the benchmark $r_N=(29+6\sqrt6)/25$.
+
+\begin{lemma}[the order of the thresholds; computer-assisted]\label{lem:order}
+For every slot in the band, $r_0<r_A<r_F<r_N<r_J<r_S<r_1<r_C<r_2$.
+\end{lemma}
+
+\begin{proof}
+Each inequality reduces to a fact already stated.
+\begin{itemize}
+\item $r_0<r_A<r_1$: $J(r_0)<k<\rho J(r_1)<J(r_1)$, with $\rho J(r_1)=59/1200$, and $J$ is increasing.
+\item $r_A<r_F$: $\Delta(r_A)<k/(1-M)$ is $(1-M)\Delta(r_A)<k=(1-\tau(r_A))\Delta(r_A)$, that is $M>\tau(r_A)$.
+  This holds because $M>\tau(r_1)>\tau(r_A)$, since $r_A<r_1$.
+\item $r_F<r_N$: $k/(1-M)<2k/\rho$ is $M<1-\rho/2=7/8$. This holds because $M<\tau(r_2)<3/4$.
+\item $r_N<r_J$: $\rho J(r_N)=\rho\Delta(r_N)[1-\tau(r_N)]=2k[1-\tau(r_N)]<k$, because $\tau(r_N)>1/2$.
+\item $r_J<r_S$: $\Delta(r_J)<k/(\rho m)$ is $\rho(1-M)\Delta(r_J)<k=\rho(1-\tau(r_J))\Delta(r_J)$, that is
+  $M>\tau(r_J)$. This holds because $\rho J(r_1)=59/1200>k$ gives $r_J<r_1$, and then $M>\tau(r_1)>\tau(r_J)$.
+\item $r_S<r_1$: $\rho(1-M)\Delta(r_1)>k$ is $(1-M)/6>1/50$, that is $M<22/25$. This holds because $M<3/4$.
+\item $r_1<r_C<r_2$: this is $\tau(r_1)<M<\tau(r_2)$, the band, since $\tau$ is increasing.\qedhere
+\end{itemize}
+\end{proof}
+
+Table~\ref{tab:thresholds} gives the thresholds at calibration B.
+
+\begin{table}[h]
+\centering
+\caption{Thresholds of the benchmark path at calibration B, prior $1/2$ (\lab{computer-assisted}).}\label{tab:thresholds}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Threshold & Definition & Value at B & Depends on the slot\\
+\midrule
+$r_A$ & $J(r)=k$ & $1.393958$ & no\\
+$r_F$ & $\Delta(r)(1-M)=k$ & $1.467127$ & yes\\
+$r_N$ & $\rho\Delta(r)/2=k$ & $1.747878$ & no\\
+$r_J$ & $\rho J(r)=k$ & $1.966097$ & no\\
+$r_S$ & $\rho\Delta(r)m=k$ & $2.124148$ & yes\\
+$r_C$ & $\tau(r)=M$ & $3.592659$ & yes\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The two investor problems}
+
+Fix a strength $r$ on the path and a prior $\pi$ with $\pi<\tau(r)$. By Lemma~\ref{lem:trade}(a), no equilibrium
+puts weight on a wrong-sign order. Write $s=\lambda\sigma_H(1)$ and $t=\lambda\sigma_L(-1)$ for the probabilities
+of an informed purchase and an informed sale. On the orders $(-1,0,1)$,
+\[
+a_H=(b,\;b_0+\lambda-s,\;b+s),\qquad a_L=(b+t,\;b_0+\lambda-t,\;b).
+\]
+Bayes' rule gives
+\[
+\mu_+(s)=\mu(1)=\frac{\pi(b+s)}{b+\pi s},\qquad 1-\mu_+(s)=\frac{(1-\pi)b}{b+\pi s},\qquad
+\mu_-(t)=\mu(-1)=\frac{\pi b}{b+(1-\pi)t},
+\]
+and the posterior $\mu_0(s,t)=\mu(0)$ has the odds $\frac{\pi}{1-\pi}\cdot\frac{b_0+\lambda-s}{b_0+\lambda-t}$.
+On $[0,\lambda]$, $\mu_+$ is continuous and strictly increasing from $\pi$ to $M(\pi)$, and $\mu_-$ is continuous
+and strictly decreasing from $\pi$ to $m(\pi)$. When $\pi<\tau<M(\pi)$, the rate
+\[
+s^*=\frac{b(\tau-\pi)}{\pi(1-\tau)}\in(0,\lambda)
+\]
+solves $\mu_+(s^*)=\tau$. The entry $e(x)$ after each order follows from Lemma~\ref{lem:price}(d).
+
+\begin{lemma}[the high class; analytical]\label{lem:H}
+Fix $r$ and $\pi$ with $\pi<\tau(r)$. The pair $(s,e(1))$ satisfies (E1), (E3) after the order $1$ and (E5) for
+class $H$ exactly when it is one of these five pairs.
+\begin{enumerate}[label=(\Alph*)]
+\item[(N)] $s=0$ and $e(1)=\rho$, with $\rho\Delta(1-\pi)\le k$.
+\item[(Q)] $0<s<\min\{s^*,\lambda\}$, $e(1)=\rho$ and $\rho\Delta[1-\mu_+(s)]=k$. Only under IM.
+\item[(R)] $s^*<s<\lambda$, $e(1)=1$ and $\Delta[1-\mu_+(s)]=k$. Only under IM.
+\item[(T)] $s=s^*\in(0,\lambda)$ and $e(1)=e^*:=k/J(r)$. Under C1 this requires $e^*=1$, that is $J(r)=k$.
+  Under CM it requires $\rho\le e^*\le1$. Only under IM.
+\item[(F)] $s=\lambda$. Here $e(1)=1$ if $M(\pi)>\tau$ and $e(1)=\rho$ if $M(\pi)<\tau$. If $M(\pi)=\tau$,
+  then $e(1)=1$ under C1, and $e(1)\in[\rho,1]$ under CM. The return must satisfy $e(1)\Delta[1-M(\pi)]\ge k$
+  under IM, and $>k$ under I0.
+\end{enumerate}
+Each equation in (Q) and (R) has at most one solution.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:trade}(b), (E5) for class $H$ requires $K_H\le k$ at $s=0$; $K_H\ge k$ at $s=\lambda$ under IM,
+and $K_H>k$ under I0; and $K_H=k$ at $0<s<\lambda$. An interior $s$ is a mixture at indifference, so it requires
+IM; under I0 indifference forces $s=0$. Here $K_H=e(1)\Delta[1-\mu_+(s)]$, and $e(1)$ follows from
+Lemma~\ref{lem:price}(d) at the posterior $\mu_+(s)$.
+\begin{itemize}
+\item At $s=0$, $\mu_+(0)=\pi<\tau$, so $e(1)=\rho$. This is (N).
+\item At $0<s<\lambda$ with $\mu_+(s)<\tau$: $e(1)=\rho$, and $K_H=k$ is the equation of (Q).
+\item At $0<s<\lambda$ with $\mu_+(s)>\tau$: $e(1)=1$, and $K_H=k$ is the equation of (R).
+\item At $0<s<\lambda$ with $\mu_+(s)=\tau$: then $s=s^*$, and $K_H=e(1)\Delta(1-\tau)=e(1)J(r)=k$ gives
+  $e(1)=e^*$. Under C1, $e(1)=1$. Under CM, $e(1)$ may be any value in $[\rho,1]$. This is (T).
+\item At $s=\lambda$, $\mu_+(\lambda)=M(\pi)$. Lemma~\ref{lem:price}(d) gives $e(1)$, and the condition on
+  $K_H$ is that of (F).
+\end{itemize}
+Since $\mu_+$ is strictly increasing, $1-\mu_+$ is strictly decreasing, so each equation has at most one root.
+\end{proof}
+
+\begin{lemma}[the low class; analytical]\label{lem:L}
+Fix $r$ and $\pi$ with $\pi<\tau(r)$. Then $\mu_-(t)\le\pi<\tau$ for every $t$, so $e(-1)=\rho$ in every
+equilibrium. The rate $t$ satisfies (E1), (E3) after the order $-1$ and (E5) for class $L$ if and only if it is
+one of these:
+\begin{enumerate}
+\item[(N)] $t=0$, with $\rho\Delta\pi\le k$;
+\item[(Q)] $0<t<\lambda$ with $\rho\Delta\mu_-(t)=k$; only under IM;
+\item[(F)] $t=\lambda$, with $\rho\Delta m(\pi)\ge k$ under IM, and $>k$ under I0.
+\end{enumerate}
+Under IM exactly one rate qualifies at each $r$:
+\[
+t_L(r)=\begin{cases}0, & \rho\Delta\pi\le k,\\[2pt]
+\dfrac{b\,(\pi\rho\Delta/k-1)}{1-\pi}, & \rho\Delta m(\pi)<k<\rho\Delta\pi,\\[6pt]
+\lambda, & \rho\Delta m(\pi)\ge k.\end{cases}
+\]
+Under I0 no rate qualifies when $\rho\Delta m(\pi)\le k<\rho\Delta\pi$.
+\end{lemma}
+
+\begin{proof}
+Since $\mu_-$ is decreasing, $\mu_-(t)\le\mu_-(0)=\pi<\tau$, so Lemma~\ref{lem:price}(d) gives $e(-1)=\rho$. Then
+$K_L(t)=\rho\Delta\mu_-(t)$, a continuous and strictly decreasing function of $t$, from $\rho\Delta\pi$ at $t=0$ to
+$\rho\Delta m(\pi)$ at $t=\lambda$. By Lemma~\ref{lem:trade}(b), (E5) for class $L$ requires $K_L(0)\le k$ at
+$t=0$; $K_L(\lambda)\ge k$ at $t=\lambda$ under IM, and $>k$ under I0; and $K_L(t)=k$ at $0<t<\lambda$, under IM
+only. If $\rho\Delta\pi\le k$, then $K_L(t)<k$ for every $t>0$, so only $t=0$ qualifies. If $\rho\Delta m(\pi)\ge k$,
+then $K_L(t)>k$ for every $t<\lambda$, so only $t=\lambda$ qualifies. Otherwise $\rho\Delta m(\pi)<k<\rho\Delta\pi$,
+and the intermediate value theorem gives exactly one interior root. The equation
+$\pi b/[b+(1-\pi)t]=k/(\rho\Delta)$ gives the formula. Under I0 with $\rho\Delta m(\pi)\le k<\rho\Delta\pi$: $t=0$
+fails because $K_L(0)>k$; $t=\lambda$ fails because $K_L(\lambda)\le k$; an interior $t$ requires IM.
+\end{proof}
+
+\begin{lemma}[product structure; analytical]\label{lem:product}
+Fix $r$ and $\pi$ with $\pi<\tau(r)$, and rates with $s\ge t$. Then $\mu_0(s,t)\le\pi<\tau$. The tuple with
+rates $(s,t)$ is an equilibrium if and only if these four conditions hold:
+\begin{enumerate}[label=(\roman*)]
+\item $(s,e(1))$ is a pair of Lemma~\ref{lem:H};
+\item $t$ is a rate of Lemma~\ref{lem:L};
+\item $e(0)=e(-1)=\rho$;
+\item the prices are $P(x)=t_0+e(x)[t_L-t_0+\Delta\mu(x)]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $s\ge t$, then $b_0+\lambda-s\le b_0+\lambda-t$, so the odds of $\mu_0$ are at most $\pi/(1-\pi)$. Hence
+$\mu_0\le\pi<\tau$ and Lemma~\ref{lem:price}(d) gives $e(0)=\rho$. Condition (E1) holds order by order. By
+Lemma~\ref{lem:price}(c), the challenger's belief at each price is the posterior of the order, so (E2) and (E3) hold
+order by order. (E4) is the price formula of Lemma~\ref{lem:price}(b). By Lemma~\ref{lem:trade}(d), (E5) for
+class $H$ involves only $(s,\mu(1),e(1))$, and (E5) for class $L$ only $(t,\mu(-1),e(-1))$. Entry after the zero
+order enters no payoff. The conditions therefore split into those of Lemmas~\ref{lem:H} and~\ref{lem:L}.
+\end{proof}
+
+\subsection{The equilibrium set at prior $1/2$}
+
+At $\pi=1/2$, $1-\mu_+(s)=b/(2b+s)$, $\mu_-(t)=b/(2b+t)$ and $s^*=b(2\tau-1)/(1-\tau)$. Five forms of the high
+class's pair appear. In each, the low class uses the rate $t_L(r)$ of Lemma~\ref{lem:L}:
+\[
+t_L(r)=0\ \text{on}\ [r_0,r_N],\qquad t_L(r)=b\,[\rho\Delta(r)/k-2]\ \text{on}\ (r_N,r_S),\qquad t_L(r)=\lambda\ \text{on}\ [r_S,r_2].
+\]
+\begin{itemize}
+\item \textbf{N} (no informed trade): $s=0$, $e(1)=\rho$.
+\item \textbf{R} (a mixed purchase that recruits): $s=s_R(r):=b[\Delta(r)/k-2]$, $e(1)=1$.
+\item \textbf{F} (a full purchase): $s=\lambda$; $e(1)=1$ for $r\le r_C$, and $e(1)=\rho$ for $r>r_C$.
+\item \textbf{Q} (mixed orders at the entry floor): $s=s_Q(r):=b[\rho\Delta(r)/k-2]=t_L(r)$, $e(1)=\rho$.
+\item \textbf{T} (the threshold pair): $s=s^*(r)$, $e(1)=e^*(r)=k/J(r)$.
+\end{itemize}
+Each form defines the equilibrium tuple completely:
+\begin{itemize}
+\item orders: $\sigma_H(1)=s/\lambda$, $\sigma_H(0)=1-s/\lambda$, $\sigma_L(-1)=t_L(r)/\lambda$, $\sigma_L(0)=1-t_L(r)/\lambda$;
+\item posteriors: $\mu_-(t_L)$, $\mu_0(s,t_L)$ and $\mu_+(s)$ after the orders $-1$, $0$ and $1$;
+\item high-cost preparation: $(e(1)-\rho)/(1-\rho)$ at the price of the order $1$, and zero at the other prices;
+\item prices: $P(x)=t_0+e(x)[t_L-t_0+\Delta\mu(x)]$.
+\end{itemize}
+
+\setcounter{proposition}{2}
+\begin{proposition}[the equilibrium set along the benchmark path; computer-assisted]\label{prop:3}
+Take the benchmark auction, the prior $1/2$ and any slot in the band. Under the rules IM and C1, the equilibrium
+set at each strength is
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Strength & Equilibria\\
+\midrule
+$r_0\le r<r_A$ & N\\
+$r=r_A$ & N; T with $e^*=1$ (the left end of R)\\
+$r_A<r<r_F$ & N; R\\
+$r_F\le r\le r_N$ & N; F\\
+$r_N<r<r_J$ & F; Q\\
+$r_J\le r\le r_2$ & F\\
+\bottomrule
+\end{tabular}
+\end{center}
+Under CM, T is also an equilibrium on $(r_A,r_J]$, and at $r=r_C$ entry after a purchase in F can be any
+$e(1)\in[\rho,1]$. Under I0 the set is N on $[r_0,r_F]$; N and F on $(r_F,r_N]$; empty on $(r_N,r_S]$; and F on
+$(r_S,r_2]$. Entry in each form is
+\[
+\Ent_N=\Ent_Q=\rho,\qquad \Ent_R(r)=\rho+(1-\rho)\frac{b\,\Delta(r)}{2k},\qquad
+\Ent_F=\begin{cases}\Ent_1=\rho+(1-\rho)(b+\lambda/2), & r\le r_C,\\ \rho, & r>r_C,\end{cases}
+\]
+\[
+\Ent_T(r)=\rho+\frac b2\cdot\frac{k-\rho J(r)}{\Delta(r)[1-\tau(r)]^2}.
+\]
+Hence:
+\begin{enumerate}[label=(\alph*)]
+\item No informed trade and an informative equilibrium coexist exactly on $[r_A,r_N]$ (on $(r_F,r_N]$ under I0).
+\item On the informative branch that coexists with no trade, entry is $\rho+(1-\rho)\min\{b\Delta(r)/(2k),\,b+\lambda/2\}$.
+  It is continuous, rises strictly on $[r_A,r_F]$, and is constant at $\Ent_1$ on $[r_F,r_N]$. It stays at
+  $\Ent_1$ along F up to $r_C$ and equals $\rho$ above $r_C$. The strict rise needs IM.
+\item Under CM, entry along T falls strictly from $\Ent_R(r_A)$ at $r_A$ to $\rho$ at $r_J$. For
+  $r_A<r\le r_N$, $\rho<\Ent_T(r)<\min\{\Ent_R(r),\Ent_1\}$.
+\item The equilibrium set is nonempty at every strength under IM, with either challenger rule.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1: the frame.} By Lemma~\ref{lem:path}(a), $\tau(r)\ge\tau(r_0)>1/2=\pi$ on the path, so
+Lemmas~\ref{lem:H}--\ref{lem:product} apply at every $r$. Every equilibrium has a high-class pair from
+Lemma~\ref{lem:H} and a low-class rate from Lemma~\ref{lem:L}. Step 4 shows $s\ge t$ for every such combination,
+so Lemma~\ref{lem:product} gives the equilibrium set as their product.
+
+\emph{Step 2: the high-class pairs.} Use Lemma~\ref{lem:path}, Definition~\ref{def:thresholds} and
+Lemma~\ref{lem:order}. Recall $1-M=1/(2+u)$ and $ub=\lambda$.
+\begin{itemize}
+\item (N) holds iff $\rho\Delta/2\le k$, that is $r\le r_N$.
+\item (R): $\Delta b/(2b+s)=k$ gives $s=s_R(r)$. Then $\mu_+(s_R)>\tau$ iff $k/\Delta<1-\tau$ iff $J(r)>k$ iff
+  $r>r_A$. And $s_R<\lambda$ iff $\Delta/k<2+u$ iff $\Delta(1-M)<k$ iff $r<r_F$. So (R) holds iff $r_A<r<r_F$,
+  under IM.
+\item (Q): $\rho\Delta b/(2b+s)=k$ gives $s=s_Q(r)$. Then $s_Q>0$ iff $r>r_N$; $\mu_+(s_Q)<\tau$ iff $\rho J(r)<k$
+  iff $r<r_J$; $s_Q<\lambda$ iff $\rho\Delta(1-M)<k$ iff $r<r_S$. Since $r_J<r_S$, (Q) holds iff $r_N<r<r_J$,
+  under IM.
+\item (T): $s^*\in(0,\lambda)$ iff $1/2<\tau(r)<M$ iff $r<r_C$. Also $\rho\le e^*\le1$ iff $\rho J(r)\le k\le J(r)$
+  iff $r_A\le r\le r_J$, and $e^*=1$ iff $r=r_A$. So (T) holds at $r_A$ under C1, and on $[r_A,r_J]$ under CM,
+  under IM in both cases.
+\item (F): for $r<r_C$, $M>\tau(r)$, so $e(1)=1$, and the condition is $\Delta(1-M)\ge k$, that is $r\ge r_F$
+  ($r>r_F$ under I0). For $r>r_C$, $M<\tau(r)$, so $e(1)=\rho$, and the condition $\rho\Delta(1-M)\ge k$ holds
+  because $r>r_C>r_S$. At $r=r_C$, C1 gives $e(1)=1$; CM allows any $e(1)\in[\rho,1]$, and every such value
+  satisfies the condition because $\rho\Delta(r_C)(1-M)>k$. So (F) holds iff $r\ge r_F$ (IM) or $r>r_F$ (I0).
+\end{itemize}
+
+\emph{Step 3: the low-class rate.} At $\pi=1/2$, Lemma~\ref{lem:L} gives $t=0$ iff $r\le r_N$, $t=\lambda$ iff
+$r\ge r_S$, and $t_L(r)=b(\rho\Delta/k-2)$ on $(r_N,r_S)$, under IM. Under I0 no rate qualifies iff
+$\rho\Delta m\le k<\rho\Delta/2$, that is on $(r_N,r_S]$.
+
+\emph{Step 4: $s\ge t$.} For $r\le r_N$, $t=0\le s$. For $r>r_N$, the pairs are F with $s=\lambda\ge t$; Q with
+$s=s_Q(r)=t_L(r)$; and T with $r_N<r\le r_J$. For T, $s^*\ge t_L(r)$ iff $(2\tau-1)/(1-\tau)\ge\rho\Delta/k-2$ iff
+$1/(1-\tau)\ge\rho\Delta/k$ iff $\rho J(r)\le k$, which holds for $r\le r_J$. By Lemma~\ref{lem:product}, entry
+after the zero order and after a sale is $\rho$ in every equilibrium.
+
+\emph{Step 5: the table.} Combine Steps 2--4 with the order $r_A<r_F<r_N<r_J<r_S<r_C$ of Lemma~\ref{lem:order}.
+On $[r_J,r_2]$ only F remains. On $(r_N,r_J)$, F and Q remain. On $[r_F,r_N]$, N and F remain, and so on. Under I0,
+(Q), (R) and (T) drop out, (F) needs $r>r_F$, and Step 3 removes every equilibrium on $(r_N,r_S]$.
+
+\emph{Step 6: verification of each tuple.} Fix a form and a strength at which Steps 2--3 admit it.
+(E1) holds by the formulas for $a_H$ and $a_L$. Orders with different posteriors have different prices, by
+Lemma~\ref{lem:price}(e). If two orders have equal posteriors, one of them is $0$ or $-1$, so the common posterior
+is at most $1/2<\tau$. Both orders then have entry $\rho$ and the same price. In either case the challenger's
+belief at each price is the common posterior of the orders with that price, so (E2) holds. (E3) holds by
+Lemma~\ref{lem:price}(d) at each posterior, with the stated $e(1)$ and $e(0)=e(-1)=\rho$. (E4) holds by the price
+formula. (E5) holds for class $H$ by the condition that defines the form in Lemma~\ref{lem:H}, and for class $L$ by
+Lemma~\ref{lem:L}. (E6) holds.
+
+\emph{Step 7: entry.} Entry is $\Ent=\sum_x\Pr(X=x)e(x)$. Since $e(0)=e(-1)=\rho$ and
+$\Pr(X=1)=\tfrac12(b+s)+\tfrac12b=b+s/2$, $\Ent=\rho+[e(1)-\rho](b+s/2)$.
+\begin{itemize}
+\item R: $b+s_R/2=b\Delta/(2k)$ and $e(1)=1$. This is strictly increasing in $r$ because $\Delta$ is. At $r_F$,
+  $\Delta(r_F)=k/(1-M)=k(2+u)$, so $b\Delta(r_F)/(2k)=b+ub/2=b+\lambda/2$: the branch joins F continuously.
+\item F: $b+\lambda/2$, with $e(1)=1$ up to $r_C$ and $e(1)=\rho$ above.
+\item Q: $e(1)=\rho$, so $\Ent=\rho$.
+\item T: $e^*-\rho=(k-\rho J)/J$ and $b+s^*/2=b/[2(1-\tau)]$, so $\Ent_T-\rho=\tfrac b2(k-\rho J)/[J(1-\tau)]$,
+  which is the stated formula because $J(1-\tau)=\Delta(1-\tau)^2$.
+\end{itemize}
+At $r_A$, $J=k$ and $\Delta(r_A)/k=1/(1-\tau(r_A))$, so $\Ent_T(r_A)=\rho+\tfrac12(1-\rho)b/(1-\tau(r_A))=\Ent_R(r_A)$.
+At $r_J$, $\rho J=k$, so $\Ent_T(r_J)=\rho$. On $[r_A,r_J]$, $k-\rho J$ is positive except at $r_J$ and strictly
+decreasing (Lemma~\ref{lem:path}(b)); $\Delta(1-\tau)^2$ is positive and strictly increasing, because $r_J<2$
+(Lemma~\ref{lem:path}(c)). So $\Ent_T$ falls strictly. For $r_A<r\le r_N$: $r<r_J$ gives $e^*>\rho$, so
+$\Ent_T>\rho$; $J>k$ gives $e^*<1$, and $s^*<s$ in R or F, so $\Ent_T<\Ent_R$ or $\Ent_T<\Ent_1$.
+
+\emph{Step 8: existence.} Under IM, N exists on $[r_0,r_N]$ and F on $[r_F,r_2]$, and $r_F<r_N$.
+\end{proof}
+
+\paragraph{Calibration B.} At calibration B the table reads as follows (\lab{computer-assisted}):
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Strengths & Equilibria (IM, C1) & Entry\\
+\midrule
+$[1.2,\,1.393958)$ & N & $0.250000$\\
+$1.393958$ & N; T $=$ left end of R & $0.250000$; $0.454185$\\
+$(1.393958,\,1.467127)$ & N; R & $0.250000$; from $0.454185$ up to $0.522757$\\
+$[1.467127,\,1.747878]$ & N; F & $0.250000$; $0.522757$\\
+$(1.747878,\,1.966097)$ & F; Q & $0.522757$; $0.250000$\\
+$[1.966097,\,3.592659]$ & F & $0.522757$\\
+$(3.592659,\,3.6]$ & F & $0.250000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+On branch R, entry is $0.459588$ at $1.40$ and $0.506112$ at $1.45$. The low class abstains on
+$[1.2,1.747878]$, mixes on $(1.747878,2.124148)$ and sells fully on $[2.124148,3.6]$. The strengths $1.55$, $1.60$
+and $1.65$ lie in $[r_F,r_N]$, where the equilibria are N and F under C1. Under CM the threshold pair T adds
+entry $0.341462$, $0.321311$ and $0.305208$ at these three strengths. The script \texttt{p1\_enumerate.py} rebuilds
+the equilibrium set from the flow law at 241 strengths and all four pairs of rules, at calibrations A and B.
+It finds no difference from the table (\lab{numerical diagnostic} at A in exact arithmetic, at B in interval
+arithmetic).
+
+\subsection{Coexistence at every prior}
+
+For a prior $\pi$, write $r_N(\pi)=\fr\big(k/(\rho\max\{\pi,1-\pi\})\big)$, and let $r_C(\pi)$ be the largest
+strength on the path with $\tau(r)\le M(\pi)$. If $\pi>\tau(r_0)$, let $r_\pi$ solve $\tau(r_\pi)=\pi$. Write
+$\tau_A=\tau(r_A)$, and let $r_*$ solve $\rho\Delta(r_*)\tau(r_*)=k$ on the path (unique by
+Lemma~\ref{lem:path}(d)). Define
+\[
+\pi_A^{\rm lo}=\frac{\tau_A}{\tau_A+(1-\tau_A)(1+u)},\qquad \pi_A^{\rm hi}=\tau_A,\qquad \pi_{\max}=\tau(r_*).
+\]
+So $M(\pi_A^{\rm lo})=\tau_A$. The numbers $\pi_A^{\rm hi}$ and $\pi_{\max}$ do not depend on the slot.
+
+\setcounter{proposition}{4}
+\begin{proposition}[coexistence at every prior; computer-assisted]\label{prop:5}
+Take the benchmark auction, any slot with $0<\lambda<1$ and $0<\beta<1/2$, any prior $\pi\in(0,1)$ and the rules IM
+and C1. The set $C(\pi)$ of strengths on the path at which no informed trade and an informative equilibrium
+coexist is
+\[
+C(\pi)=\big\{r\in[r_0,r_2]:\ r\ge r_A,\ \ \pi<\tau(r)\le M(\pi),\ \ \rho\Delta(r)\max\{\pi,1-\pi\}\le k\big\}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item If $\pi<\pi_A^{\rm lo}$, $C(\pi)$ is empty. At $\pi=\pi_A^{\rm lo}$, $C(\pi)=\{r_A\}$.
+\item If $\pi_A^{\rm lo}<\pi<\pi_A^{\rm hi}$, then $C(\pi)=[r_A,\min\{r_N(\pi),r_C(\pi)\}]$, a nondegenerate interval.
+  At $r_A$ the informative equilibrium is the threshold pair: $s=s^*$, $e(1)=1$, and both the investor and the
+  challenger are indifferent. The start $r_A$ is the same for every prior in this window and every slot.
+\item If $\pi_A^{\rm hi}\le\pi<\pi_{\max}$, then $C(\pi)=(r_\pi,\min\{r_N(\pi),r_C(\pi)\}]$, a nonempty interval
+  with $r_\pi\ge r_A$. Coexistence starts at $r_\pi$, the strength at which the prior reaches the threshold.
+\item If $\pi\ge\pi_{\max}$, $C(\pi)$ is empty.
+\end{enumerate}
+At each $r\in C(\pi)$ the equilibrium set is N and one informative equilibrium: R with the rate $s$ that solves
+$\Delta[1-\mu_+(s)]=k$ when $\Delta(1-M(\pi))<k$, and F when $\Delta(1-M(\pi))\ge k$ (T at $r_A$ in case (b)).
+Its entry is $\rho+(1-\rho)\min\{(1-\pi)b\Delta(r)/k,\ b+\pi\lambda\}$. It rises strictly while the purchase is mixed
+and then stays constant. At calibration B, $\pi_A^{\rm lo}=0.396175$, $\pi_A^{\rm hi}=0.640739$ and
+$\pi_{\max}=0.650059$.
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1: strengths with $\pi<\tau(r)$.} Lemmas~\ref{lem:H}--\ref{lem:L} apply. No informed trade is an
+equilibrium if and only if (N) holds in both lemmas, that is $\rho\Delta\max\{\pi,1-\pi\}\le k$; then
+$\mu_0=\pi<\tau$ and $e(0)=\rho$. Suppose this holds. Lemma~\ref{lem:L} then gives $t=0$ in every equilibrium, so
+an informative equilibrium has $s>0$. Pair (Q) is impossible: $\rho\Delta[1-\mu_+(s)]<\rho\Delta(1-\pi)\le k$ for
+$s>0$. Pair (F) with $M(\pi)<\tau$ is impossible for the same reason. The other pairs, (R), (T) and (F) with
+$M(\pi)\ge\tau$, need $\mu_+(s)\ge\tau$ for some $s\le\lambda$, so $\tau\le M(\pi)$. They also need
+$k\le e(1)\Delta[1-\mu_+(s)]\le\Delta(1-\tau)=J(r)$, so $r\ge r_A$ by Lemma~\ref{lem:path}(b).
+
+Conversely, let $\tau(r)\le M(\pi)$ and $r\ge r_A$, so $J(r)\ge k$. If $\Delta(1-M(\pi))\ge k$, pair (F) holds with
+$e(1)=1$. Otherwise $\tau<M(\pi)$, and $s\mapsto\Delta[1-\mu_+(s)]$ is continuous and strictly decreasing on
+$[s^*,\lambda]$, from $J(r)\ge k$ to $\Delta(1-M(\pi))<k$. It equals $k$ at exactly one $s\in[s^*,\lambda)$. At
+$s=s^*$ this is (T) with $J(r)=k$ and $e(1)=1$; at $s>s^*$ it is (R). With $t=0\le s$, Lemma~\ref{lem:product}
+completes the tuple. So a strength with $\pi<\tau(r)$ lies in $C(\pi)$ if and only if it satisfies the three
+conditions in the display.
+
+\emph{Step 2: strengths with $\pi\ge\tau(r)$.} Under C1, no informed trade gives the posterior $\pi\ge\tau$ after
+every order, so $e\equiv1$, and it is an equilibrium if and only if $\Delta\max\{\pi,1-\pi\}\le k$. Suppose this
+holds, and take any candidate with $s>0$. Then $\mu_+(s)>\pi\ge\tau$, so $e(1)=1$ and
+$K_H=\Delta[1-\mu_+(s)]<\Delta(1-\pi)\le k$: class $H$ strictly prefers abstention, a contradiction. Take any
+candidate with $t>0$. Then $\mu_-(t)<\pi$ and $e(-1)\le1$, so $K_L\le\Delta\mu_-(t)<\Delta\pi\le k$: again a
+contradiction. So no strength with $\pi\ge\tau(r)$ lies in $C(\pi)$.
+
+\emph{Step 3: the four cases.} By Lemma~\ref{lem:path}(a), $\pi<\tau(r)$ holds for $r>r_\pi$ (for every $r$ if
+$\pi\le\tau(r_0)$); $\tau(r)\le M(\pi)$ holds for $r\le r_C(\pi)$; and the last condition holds for $r\le r_N(\pi)$.
+Also $\rho\Delta(r_A)\max\{\pi,1-\pi\}<\rho\Delta(r_A)=\rho k/(1-\tau_A)<k$, because $\tau_A<3/4=1-\rho$; so
+$r_A<r_N(\pi)$ for every prior.
+\begin{itemize}
+\item[(a)] $M$ is increasing in $\pi$, so $\pi<\pi_A^{\rm lo}$ gives $M(\pi)<\tau_A\le\tau(r)$ for every $r\ge r_A$.
+  No strength qualifies. At $\pi=\pi_A^{\rm lo}$ only $r_A$ qualifies.
+\item[(b)] For $r\ge r_A$, $\tau(r)\ge\tau_A>\pi$. Also $\tau_A<M(\pi)$ gives $r_A<r_C(\pi)$, and $r_A<r_N(\pi)$.
+  At $r_A$, $\Delta(r_A)(1-M(\pi))<\Delta(r_A)(1-\tau_A)=k$, so Step 1 gives the threshold pair with $J=k$.
+  There $\mu_+=\tau$, so the challenger is indifferent, and $K_H=k$, so the investor is indifferent.
+\item[(c)] Now $r_\pi\ge r_A$, and $\pi<\tau(r)$ holds exactly for $r>r_\pi$. The interval is nonempty: $r_\pi<r_C(\pi)$
+  because $\tau(r_\pi)=\pi<M(\pi)$; and $r_\pi<r_N(\pi)$ iff $\rho\Delta(r_\pi)\pi<k$ (as $\pi>1/2$) iff
+  $\rho\Delta(r_\pi)\tau(r_\pi)<k$ iff $r_\pi<r_*$ (Lemma~\ref{lem:path}(d)) iff $\pi<\pi_{\max}$.
+\item[(d)] Here $\pi>1/2$. Any $r$ with $\pi<\tau(r)$ has $r>r_\pi\ge r_*$, so
+  $\rho\Delta(r)\pi>\rho\Delta(r_*)\tau(r_*)=k$, so N is not an equilibrium there. Step 2 covers the
+  other strengths.
+\end{itemize}
+The entry formula follows as in Step 7 of Proposition~\ref{prop:3}: $\Pr(X=1)=b+\pi s$, and in R the equation
+$\Delta(1-\pi)b/(b+\pi s)=k$ gives $b+\pi s=(1-\pi)b\Delta/k$; in F, $\Pr(X=1)=b+\pi\lambda$.
+\end{proof}
+
+\paragraph{Other tie rules.} Under CM the set $C(\pi)$ is unchanged, except that the point $r_\pi$ of case (c) can
+join it. A challenger tie at the prior needs $\tau(r)=\pi$. The pair T adds equilibria inside $C(\pi)$, since it
+needs $J(r)\ge k$. Under I0, R and T drop out and F needs $\Delta(1-M(\pi))>k$. Coexistence then holds on the
+strengths of $C(\pi)$ above $r_F(\pi)=\fr\big(k/(1-M(\pi))\big)$.
+
+\subsection{Which conclusions depend on the tie rules}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Result & IM, C1 & IM, CM & I0, C1 & I0, CM\\
+\midrule
+Proposition 2 (i)--(iii) & holds & holds & holds & holds\\
+No informed trade & $[r_0,r_N]$ & $[r_0,r_N]$ & $[r_0,r_N]$ & $[r_0,r_N]$\\
+Mixed purchase R & $(r_A,r_F)$ & $(r_A,r_F)$ & none & none\\
+Threshold pair T & $r_A$ only & $[r_A,r_J]$ & none & none\\
+Full purchase F & $[r_F,r_2]$ & $[r_F,r_2]$ & $(r_F,r_N]\cup(r_S,r_2]$ & $(r_F,r_N]\cup(r_S,r_2]$\\
+Equilibrium set on $(r_N,r_S]$ & F; Q & F; Q; T & empty & empty\\
+Entry after a purchase at $r_C$ & $1$ & any in $[\rho,1]$ & $1$ & any in $[\rho,1]$\\
+Coexistence at prior $1/2$ & $[r_A,r_N]$ & $[r_A,r_N]$ & $(r_F,r_N]$ & $(r_F,r_N]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Under I0, F on $(r_N,r_S]$ is not an equilibrium: the low class has no admissible rate there. The investor rule
+IM is therefore the rule under which the equilibrium set is nonempty along the whole path. The rise of entry along
+R also needs IM. The challenger rule matters only through T and the point $r_C$.
+
+\section{The admissible region and the margins table}\label{sec:region}
+
+\setcounter{proposition}{3}
+\begin{proposition}[the admissible region; analytical]\label{prop:region}
+Take the benchmark primitives and strengths, and a slot with $0<\lambda<1$ and $0<\beta\le1/3$.
+\begin{enumerate}[label=(\alph*)]
+\item At the prior $1/2$, (H1)--(H3) hold if and only if
+  \[
+  \frac{82}{59}<u<\frac{2686}{1559},\qquad\text{that is}\qquad \tau(r_1)=\frac{141}{200}<M<\frac{4245}{5804}=\tau(r_2).
+  \]
+  In terms of the slot, $82\beta/(59+82\beta)<\lambda<2686\beta/(1559+2686\beta)$.
+\item On each side of the band a conclusion of Proposition~\ref{prop:2} fails. If $u<82/59$, entry at $r_1$ is
+  $\rho$. If $u=82/59$, entry at $r_1$ is $\Ent_1$ under C1 and can be $\rho$ under CM. If $2686/1559\le u<19/3$,
+  entry after a purchase at $r_2$ is $1$ under C1. For $u\ge19/3$, the right side of (H2) fails at $r_1$.
+\item At calibration B, with the other benchmark inputs fixed, (H1)--(H3) hold if and only if
+  \[
+  \frac{141}{141+59e}<\pi<\frac{4245}{4245+1559e},\qquad\text{that is}\qquad \pi\in(0.467850,\ 0.500424).
+  \]
+  Hypotheses (H1)--(H2), which give parts (i)--(ii), hold if and only if $\pi\in(0.467850,\ 195/308)$, with
+  $195/308=0.633117$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) At $\pi=1/2$, $\kappa=m=1-M=1/(2+u)$. The left side of (H1) is $c_H-B_{r_0}(1/2)=287/240>0$, and the left
+side of (H2) is $k-\Delta(r_0)=1/300>0$; neither depends on the slot. The right side of (H1) is
+$M>\tau(r_1)=141/200$, that is $200(1+u)>141(2+u)$, that is $u>82/59$. Hypothesis (H3) is $M<4245/5804$, that is
+$5804(1+u)<4245(2+u)$, that is $u<2686/1559$. The right side of (H2) is $(1-M)\Delta(r_1)/4>1/50$, that is
+$M<22/25$, that is $u<19/3$; the bound $u<2686/1559$ implies it. Finally $\lambda=u\beta/(1+u\beta)$ is increasing
+in $u$ at fixed $\beta$.
+
+(b) For $u<19/3$ the bound of Step 2 of Proposition~\ref{prop:2} holds at $r_1$ and at $r_2$, since
+$\rho(1-M)\Delta(r_2)>k$ holds for $M<773/845$. So orders are full at both strengths and the posteriors are
+$(m,1/2,M)$. If $M<\tau(r_1)$, no order recruits at $r_1$. If $M=\tau(r_1)$, a purchase leaves the challenger
+indifferent, and the tie rule decides. If $M\ge\tau(r_2)$, a purchase recruits at $r_2$ under C1.
+
+(c) $M(\pi)>\tau$ is $\pi/(1-\pi)>\tau/[(1-\tau)(1+u)]$. With $1+u=e$, the right side of (H1) gives
+$\pi>141/(141+59e)$, and (H3) gives $\pi<4245/(4245+1559e)$. The left side of (H1) is $\pi<\tau(r_0)=195/308$. The
+right side of (H2) is $\kappa(\pi)>3/25$: $m(\pi)>3/25$ is $\pi>3e/(22+3e)=0.270432$, and $1-M(\pi)>3/25$ is
+$\pi<22/(22+3e)=0.729568$. The left side of (H2) does not depend on $\pi$. Intersect the intervals.
+\end{proof}
+
+The same band carries Proposition~\ref{prop:3}: the proof of Lemma~\ref{lem:order} uses only
+$\tau(r_1)<M<\tau(r_2)$, and Proposition~\ref{prop:3} uses only Lemmas~\ref{lem:flow}(a),(b),(d)
+and~\ref{lem:order}.
+
+\paragraph{The open parameter set.} The admissible slots form the set
+$\{(\lambda,\beta):0<\beta<1/2,\ 82/59<\lambda/[(1-\lambda)\beta]<2686/1559\}$, which is open; the model adds
+$\beta\le1/3$. At $\beta=1/3$ the band is $82/259<\lambda<2686/7363$, that is $(0.316602,0.364797)$. At
+$\beta=0.294655$ it is $(0.290539,0.336721)$, and calibration B has $\lambda=0.336122$. For parts (i)--(ii) alone
+the slot's prior range is wider than the Laplace range $(0.467850,0.538096)$, because the slot's trading bound
+$\rho\kappa\Delta$ has no factor $1-1/b$.
+
+\paragraph{Margins at calibration B.} Table~\ref{tab:margins} lists every hypothesis with its margin at
+calibration B and prior $1/2$. Every margin is positive. The smallest ones measure one distance: calibration B
+sets $M$ to the Laplace manuscript's top posterior $e/(1+e)$, which lies $0.000334$ below $\tau(r_2)$.
+
+\begin{table}[h]
+\centering
+\caption{Hypotheses and their margins at calibration B, prior $1/2$. Keys refer to
+\texttt{registry/P1\_core.csv}.}\label{tab:margins}
+\small
+\begin{tabular}{@{}lllr@{}}
+\toprule
+Result & Hypothesis & Margin & Value at B\\
+\midrule
+Prop.~2 & $B_0(\pi)<c_H$ & $c_H-B_{r_0}(1/2)$ \hfill\texttt{margin\_weakcost\_B} & $1.195833$\\
+ & $c_H<B_1(M)$ & $B_{r_1}(M)-c_H$ \hfill\texttt{margin\_recruit\_B} & $0.217155$\\
+ & & $M-\tau(r_1)$ \hfill\texttt{margin\_recruit\_post\_B} & $0.026059$\\
+ & $\Delta_0<k$ & $k-\Delta(r_0)$ \hfill\texttt{margin\_kweak\_B} & $0.003333$\\
+ & $k<\rho\kappa\Delta_1$ & $\rho\kappa\Delta(r_1)-k$ \hfill\texttt{margin\_kstrong\_B} & $0.024824$\\
+ & $B_2(M)<c_H$ & $c_H-B_{r_2}(M)$ \hfill\texttt{margin\_return\_B} & $0.002689$\\
+ & & $\tau(r_2)-M$ \hfill\texttt{margin\_return\_post\_B} & $0.000334$\\
+\midrule
+Implied & $B_1(\pi)<c_H$ & $c_H-B_{r_1}(1/2)$ \hfill\texttt{margin\_implied\_prior\_r1} & $1.708333$\\
+ & $k<\rho\kappa\Delta_2$ & $\rho\kappa\Delta(r_2)-k$ \hfill\texttt{margin\_kstrong2\_B} & $0.043127$\\
+ & $B_2(\pi)<c_H$ & $c_H-B_{r_2}(1/2)$ \hfill\texttt{margin\_implied\_prior\_r2} & $1.865278$\\
+\midrule
+Prop.~4 & $u>82/59$ & $u-82/59$ \hfill\texttt{margin\_u\_lo\_B} & $0.328451$\\
+ & $u<2686/1559$ & $2686/1559-u$ \hfill\texttt{margin\_u\_hi\_B} & $0.004617$\\
+ & $\lambda$ above its band & $\lambda-0.290539$ \hfill\texttt{margin\_lambda\_lo\_B} & $0.045583$\\
+ & $\lambda$ below its band & $0.336721-\lambda$ \hfill\texttt{margin\_lambda\_hi\_B} & $0.000599$\\
+ & $\pi$ above $0.467850$ & $1/2-0.467850$ \hfill\texttt{margin\_prior\_lo\_B} & $0.032150$\\
+ & $\pi$ below $0.500424$ & $0.500424-1/2$ \hfill\texttt{margin\_prior\_hi\_B} & $0.000424$\\
+Model & $\beta\le1/3$ & $1/3-\beta$ \hfill\texttt{margin\_beta\_B} & $0.038678$\\
+\midrule
+Prop.~3 & $\tau(r_0)>1/2$ & $\tau(r_0)-1/2$ \hfill\texttt{margin\_tau\_r0\_half} & $0.133117$\\
+ & $r_0<r_A$ & $r_A-r_0$ \hfill\texttt{gap\_rA\_r0\_B} & $0.193958$\\
+ & $r_A<r_F$ & $r_F-r_A$ \hfill\texttt{gap\_rF\_rA\_B} & $0.073169$\\
+ & $r_F<r_N$ & $r_N-r_F$ \hfill\texttt{gap\_rN\_rF\_B} & $0.280750$\\
+ & $r_N<r_J$ & $r_J-r_N$ \hfill\texttt{gap\_rJ\_rN\_B} & $0.218220$\\
+ & $r_J<r_S$ & $r_S-r_J$ \hfill\texttt{gap\_rS\_rJ\_B} & $0.158051$\\
+ & $r_S<r_1$ & $r_1-r_S$ \hfill\texttt{gap\_r1\_rS\_B} & $0.875852$\\
+ & $r_1<r_C$ & $r_C-r_1$ \hfill\texttt{gap\_rC\_r1\_B} & $0.592659$\\
+ & $r_C<r_2$ & $r_2-r_C$ \hfill\texttt{gap\_r2\_rC\_B} & $0.007341$\\
+Prop.~5 & $\pi>\pi_A^{\rm lo}$ & $1/2-\pi_A^{\rm lo}$ \hfill\texttt{margin\_piA\_lo\_B} & $0.103825$\\
+ & $\pi<\pi_A^{\rm hi}$ & $\pi_A^{\rm hi}-1/2$ \hfill\texttt{margin\_piA\_hi} & $0.140739$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%==========================================================================================
+\section{Scripts, run logs and registry keys}\label{sec:scripts}
+
+All scripts live in \texttt{audit/slot\_manuscript\_2026\_10\_23/scripts/P1\_core/}. They print their results and
+write a run log beside themselves. Each one finishes in a few seconds on one process. Run them from the
+repository root with \texttt{.venv/bin/python <script>}.
+\begin{itemize}
+\item \texttt{p1\_common.py} holds the shared objects. These are the benchmark primitives, the auction objects,
+  exact polynomial arithmetic with Sturm sequences, outward intervals (\texttt{mpmath.iv}, 50 digits) and the
+  registry writer.
+\item \texttt{p1\_certificates.py} writes \texttt{p1\_certificates.log}. It checks the auction formulas by direct
+  integration and gives the sign certificates of Lemma~\ref{lem:path}. It brackets $r_A$, $r_J$ and $r_*$ by
+  exact bisection, with the signs at both ends, and it checks the order of the thresholds.
+\item \texttt{p1\_numbers.py} writes \texttt{p1\_numbers.log} and \texttt{registry/P1\_core.csv}. It computes every
+  value at calibration B in this package, in exact fractions or in outward intervals. A display counts as
+  certified only if both ends of its enclosure round to it. The script flags every other case, and it flags none.
+\item \texttt{p1\_enumerate.py} writes \texttt{p1\_enumerate.log} (\lab{numerical diagnostic}). It rebuilds the
+  equilibrium set from the flow law at 241 strengths, for four pairs of tie rules and two calibrations. It also
+  scans coexistence at twelve priors. It reports no difference from Propositions~\ref{prop:3} and~\ref{prop:5}.
+  Eight interval comparisons stay undetermined. Each is an exact tie at a grid point outside every coexistence
+  set, for example $\tau(11/8)=0.64=\pi$.
+\end{itemize}
+The registry uses the starter keys of the brief. It adds keys in the same pattern, for example \texttt{rJ},
+\texttt{rS\_B}, \texttt{rstar}, \texttt{piA\_lo\_B}, \texttt{piA\_hi}, \texttt{pimax}, \texttt{entry\_rA\_B},
+\texttt{entry\_mb\_r140\_B} and \texttt{entry\_th\_r155\_B}. Table~\ref{tab:margins} gives the keys of the margins.
+
+%==========================================================================================
+\section{Differences from the brief and the earlier memos}\label{sec:differences}
+
+\begin{enumerate}
+\item \emph{The value of $r_F$ at calibration B.} The brief lists $r_F=1.460985$ among the values at B. That number
+  is $\fr(4/55)$, the value at calibration A, where $M=29/40$. At calibration B,
+  $r_F=\fr(k(1+e))=1.467127$.
+\item \emph{Coexistence at other priors.} The model page of the earlier study states that outside the window
+  $(0.396,0.641)$ coexistence can still occur but starts later. Proposition~\ref{prop:5} gives the exact set: it
+  starts later only for $\pi\in[0.640739,0.650059)$. For $\pi<0.396175$, and for $\pi\ge0.650059$, no
+  strength on the path has coexistence.
+\item \emph{The investor rule I0.} The earlier memos give the coexistence interval $(r_F,r_N]$ under I0. Under I0
+  the equilibrium set is also empty on $(r_N,r_S]$, that is $(1.747878,2.124148]$ at B. The low class has no
+  admissible rate there (Lemma~\ref{lem:L}).
+\item \emph{Where $\beta\le1/3$ enters.} It enters only the bound at the zero order (Lemma~\ref{lem:flow}(c)) and
+  Corollary~\ref{cor:ceiling}. Propositions 2--5 hold for every $\beta<1/2$.
+\item \emph{Entry at $r_1$.} With the declared $\beta=0.294655$, entry at $r_1$ is $0.5227569$; the unrounded
+  $\beta$ of the earlier study gives $0.5227573$. Both display as $0.522757$.
+\item \emph{The threshold pair at B.} The earlier values $0.350846$, $0.328628$ and $0.310872$ of entry on T at
+  $1.55$, $1.60$ and $1.65$ belong to calibration A. At calibration B they are $0.341462$, $0.321311$ and $0.305208$.
+\end{enumerate}
+The package confirms these earlier results:
+\begin{itemize}
+\item the corrected hypotheses (H1)--(H3) and the ownership condition;
+\item $r_A=1.393958$, $r_N=1.747878$ and $r_C=3.592659$;
+\item the prior range $(0.467850,0.500424)$;
+\item entry $0.522757$ and ownership $0.324401$ at $r_1$;
+\item the return margin $0.000334$ in posterior units.
+\end{itemize}
+
+\end{document}

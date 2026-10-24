@@ -1,0 +1,47 @@
+a = exp(-1/2)                                                [0.606530659712633, 0.606530659712633]
+m1                                                           [0.377540668798145, 0.377540668798145]
+M1                                                           [0.622459331201855, 0.622459331201855]
+
+-- Weak incumbent r_0 = 6/5 --
+k - Delta_T(r_0)  (unique no trade)                          [0.00333333333333, 0.00333333333333]  certified > 0
+c_H - B_{r0}(1/2)  (no high-cost entry at the prior)         [0.195833333333, 0.195833333333]  certified > 0
+
+-- Strong incumbent r_1 = 3: continuation conditions --
+c_H - B_{r1}(1/2)  (Case A at every posterior <= 1/2)        [0.708333333333, 0.708333333333]  certified > 0
+B_{r1}(M1) - c_H  (good news recruits high cost without jumps) [0.312161093349, 0.312161093349]  certified > 0
+c_H - M1 (h - r1)  (deterrence feasible)                     [0.642784681587, 0.642784681587]  certified > 0
+c_H - M1 (h - (ell + r1)/2)  (threshold below ell: condition N) [0.0203253503852, 0.0203253503852]  certified > 0
+D(M1;[p,r1]) - c_H  (threshold above p: interior)            [0.154166515855, 0.154166515855]  certified > 0
+
+-- Threshold, bid, and outcomes at r_1 --
+R_hat* = J* (root of the deterrence quadratic)               [0.935900739080128, 0.935900739080128]
+D(M1;[R_hat*, r1]) (equals c_H)                              [5.0, 5.0]
+R_hat* - p                                                   [0.43590073908, 0.43590073908]  certified > 0
+ell - R_hat*                                                 [0.0640992609199, 0.0640992609199]  certified > 0
+entry, jump model = rho + (1-rho) R_hat*/(2 r1)              [0.366987592385016, 0.366987592385016]
+entry, base model = rho + (1-rho)/2                          [0.625, 0.625]
+O_H, jump model = (rho + (1-rho) M1 R_hat*/r1)/2             [0.197820018514892, 0.197820018514892]
+O_H, base model = (rho + (1-rho) M1)/2                       [0.358422249200695, 0.358422249200695]
+preemption probability = (1 - R_hat*/r1)/2                   [0.344016543486645, 0.344016543486645]
+entry_jump - rho  (Prop. 2(ii) analog survives)              [0.116987592385, 0.116987592385]  certified > 0
+O_H jump - rho/2                                             [0.0728200185149, 0.0728200185149]  certified > 0
+
+-- Trading at r_1 --
+m1 rho Delta_T(r1) - k  (residual floor beats cost: unique full buying) [0.0429234447997, 0.0429234447997]  certified > 0
+Pi_jump(1) + k = 2 rho m1 M1 Delta_T                         [0.0783345707338648, 0.0783345707338648]
+Pi_base(1) + k = (1+rho) m1 M1 Delta_T                       [0.195836426834662, 0.195836426834662]
+Pi(0) + k = rho Delta_T / 2                                  [0.0833333333333333, 0.0833333333333333]
+
+-- Prices at r_1 under full buying --
+P_G (jump model, closed form)                                [0.946180002000731, 0.946180002000731]
+P_B                                                          [0.594173444799691, 0.594173444799691]
+P_G - P_B  (price reveals the posterior)                     [0.352006557201, 0.352006557201]  certified > 0
+
+-- Transfer at r_1 (good news, then ex ante with Pr(good) = 1/2) --
+incumbent gain = target loss, at good news                   [0.343792885467172, 0.343792885467172]
+incumbent gain = target loss, ex ante                        [0.171896442733586, 0.171896442733586]
+incumbent gain at good news                                  [0.343792885467, 0.343792885467]  certified > 0
+
+-- Three-point model: deterrence at the revealing flow (mu = 1) --
+(h - r1) - c_H with c_H=[6.0, 6.0]  (positive: no jump deters) [1.0, 1.0]  certified > 0
+(h - r1) - c_H with c_H=[5.0, 5.0]  (positive: no jump deters) [2.0, 2.0]  certified > 0

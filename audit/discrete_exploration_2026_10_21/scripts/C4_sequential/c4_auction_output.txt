@@ -1,0 +1,111 @@
+C4 auction objects: closed forms against direct integration (h=10, l=1, p=0.5)
+
+r = 1.2
+  t0=0.291666667 tH=0.704166667 tL=0.687500000 gH=9.295833333 gL=0.312500000 DT=0.016666667 D_r=gH-gL=8.983333333
+  split identity DT + (gH-gL) - (h-l) = 1.78e-15
+  none     proceeds num=0.291666667 closed=0.291666667 | surplus inc:0.204167 | alloc=0.495833 | max|err|=5.6e-17 | proceeds+surplus-alloc=0.0e+00
+  only H   proceeds num=0.704166667 closed=0.704166667 | surplus inc:0.000000 c1:9.295833 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=0.0e+00
+  only L   proceeds num=0.687500000 closed=0.687500000 | surplus inc:0.016667 c1:0.312500 | alloc=1.016667 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=1.016666667 closed=1.016666667 | surplus inc:0.000000 c1:8.983333 c2:0.000000 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=0.0e+00
+  both LH  proceeds num=1.016666667 closed=1.016666667 | surplus inc:0.000000 c1:0.000000 c2:8.983333 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=0.0e+00
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:0.016667 c1:0.000000 c2:0.000000 | alloc=1.016667 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  allocation closed forms: none=0.495833 max-class-l=1.016667 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 0.016667; gains of c2 (H,L) = (9.295833, 0.312500)
+    challenger 1 class H: T_HH-T_HL = 8.983333 (= D_r 8.983333); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 0.016667 (= DT 0.016667); gains of c2 (H,L) = (8.983333, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 9.295833 (gH 9.295833); HL: T_HL - tH = 0.312500 (gL 0.312500); LH: T_LH - tL = 0.329167 (DT+gL 0.329167); LL: l - tL = 0.312500 (gL 0.312500)
+
+r = 2.0
+  t0=0.375000000 tH=1.062500000 tL=0.812500000 gH=8.937500000 gL=0.187500000 DT=0.250000000 D_r=gH-gL=8.750000000
+  split identity DT + (gH-gL) - (h-l) = 0.00e+00
+  none     proceeds num=0.375000000 closed=0.375000000 | surplus inc:0.562500 | alloc=0.937500 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  only H   proceeds num=1.062500000 closed=1.062500000 | surplus inc:0.000000 c1:8.937500 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  only L   proceeds num=0.812500000 closed=0.812500000 | surplus inc:0.250000 c1:0.187500 | alloc=1.250000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=1.250000000 closed=1.250000000 | surplus inc:0.000000 c1:8.750000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both LH  proceeds num=1.250000000 closed=1.250000000 | surplus inc:0.000000 c1:0.000000 c2:8.750000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:0.250000 c1:0.000000 c2:0.000000 | alloc=1.250000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  allocation closed forms: none=0.937500 max-class-l=1.250000 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 0.250000; gains of c2 (H,L) = (8.937500, 0.187500)
+    challenger 1 class H: T_HH-T_HL = 8.750000 (= D_r 8.750000); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 0.250000 (= DT 0.250000); gains of c2 (H,L) = (8.750000, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 8.937500 (gH 8.937500); HL: T_HL - tH = 0.187500 (gL 0.187500); LH: T_LH - tL = 0.437500 (DT+gL 0.437500); LL: l - tL = 0.187500 (gL 0.187500)
+
+r = 3.0
+  t0=0.416666667 tH=1.541666667 tL=0.875000000 gH=8.458333333 gL=0.125000000 DT=0.666666667 D_r=gH-gL=8.333333333
+  split identity DT + (gH-gL) - (h-l) = 0.00e+00
+  none     proceeds num=0.416666667 closed=0.416666667 | surplus inc:1.041667 | alloc=1.458333 | max|err|=0.0e+00 | proceeds+surplus-alloc=2.2e-16
+  only H   proceeds num=1.541666667 closed=1.541666667 | surplus inc:0.000000 c1:8.458333 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  only L   proceeds num=0.875000000 closed=0.875000000 | surplus inc:0.666667 c1:0.125000 | alloc=1.666667 | max|err|=0.0e+00 | proceeds+surplus-alloc=2.2e-16
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=1.666666667 closed=1.666666667 | surplus inc:0.000000 c1:8.333333 c2:0.000000 | alloc=10.000000 | max|err|=2.2e-16 | proceeds+surplus-alloc=0.0e+00
+  both LH  proceeds num=1.666666667 closed=1.666666667 | surplus inc:0.000000 c1:0.000000 c2:8.333333 | alloc=10.000000 | max|err|=2.2e-16 | proceeds+surplus-alloc=0.0e+00
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:0.666667 c1:0.000000 c2:0.000000 | alloc=1.666667 | max|err|=0.0e+00 | proceeds+surplus-alloc=2.2e-16
+  allocation closed forms: none=1.458333 max-class-l=1.666667 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 0.666667; gains of c2 (H,L) = (8.458333, 0.125000)
+    challenger 1 class H: T_HH-T_HL = 8.333333 (= D_r 8.333333); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 0.666667 (= DT 0.666667); gains of c2 (H,L) = (8.333333, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 8.458333 (gH 8.458333); HL: T_HL - tH = 0.125000 (gL 0.125000); LH: T_LH - tL = 0.791667 (DT+gL 0.791667); LL: l - tL = 0.125000 (gL 0.125000)
+
+r = 3.6
+  t0=0.430555556 tH=1.834722222 tL=0.895833333 gH=8.165277778 gL=0.104166667 DT=0.938888889 D_r=gH-gL=8.061111111
+  split identity DT + (gH-gL) - (h-l) = 0.00e+00
+  none     proceeds num=0.430555556 closed=0.430555556 | surplus inc:1.334722 | alloc=1.765278 | max|err|=0.0e+00 | proceeds+surplus-alloc=6.7e-16
+  only H   proceeds num=1.834722222 closed=1.834722222 | surplus inc:0.000000 c1:8.165278 | alloc=10.000000 | max|err|=2.2e-16 | proceeds+surplus-alloc=0.0e+00
+  only L   proceeds num=0.895833333 closed=0.895833333 | surplus inc:0.938889 c1:0.104167 | alloc=1.938889 | max|err|=0.0e+00 | proceeds+surplus-alloc=4.4e-16
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=1.938888889 closed=1.938888889 | surplus inc:0.000000 c1:8.061111 c2:0.000000 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=0.0e+00
+  both LH  proceeds num=1.938888889 closed=1.938888889 | surplus inc:0.000000 c1:0.000000 c2:8.061111 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=0.0e+00
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:0.938889 c1:0.000000 c2:0.000000 | alloc=1.938889 | max|err|=0.0e+00 | proceeds+surplus-alloc=4.4e-16
+  allocation closed forms: none=1.765278 max-class-l=1.938889 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 0.938889; gains of c2 (H,L) = (8.165278, 0.104167)
+    challenger 1 class H: T_HH-T_HL = 8.061111 (= D_r 8.061111); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 0.938889 (= DT 0.938889); gains of c2 (H,L) = (8.061111, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 8.165278 (gH 8.165278); HL: T_HL - tH = 0.104167 (gL 0.104167); LH: T_LH - tL = 1.043056 (DT+gL 1.043056); LL: l - tL = 0.104167 (gL 0.104167)
+
+r = 4.2
+  t0=0.440476190 tH=2.129761905 tL=0.910714286 gH=7.870238095 gL=0.089285714 DT=1.219047619 D_r=gH-gL=7.780952381
+  split identity DT + (gH-gL) - (h-l) = 0.00e+00
+  none     proceeds num=0.440476190 closed=0.440476190 | surplus inc:1.629762 | alloc=2.070238 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  only H   proceeds num=2.129761905 closed=2.129761905 | surplus inc:0.000000 c1:7.870238 | alloc=10.000000 | max|err|=8.9e-16 | proceeds+surplus-alloc=0.0e+00
+  only L   proceeds num=0.910714286 closed=0.910714286 | surplus inc:1.219048 c1:0.089286 | alloc=2.219048 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=2.219047619 closed=2.219047619 | surplus inc:0.000000 c1:7.780952 c2:0.000000 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=1.8e-15
+  both LH  proceeds num=2.219047619 closed=2.219047619 | surplus inc:0.000000 c1:0.000000 c2:7.780952 | alloc=10.000000 | max|err|=1.8e-15 | proceeds+surplus-alloc=1.8e-15
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:1.219048 c1:0.000000 c2:0.000000 | alloc=2.219048 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  allocation closed forms: none=2.070238 max-class-l=2.219048 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 1.219048; gains of c2 (H,L) = (7.870238, 0.089286)
+    challenger 1 class H: T_HH-T_HL = 7.780952 (= D_r 7.780952); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 1.219048 (= DT 1.219048); gains of c2 (H,L) = (7.780952, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 7.870238 (gH 7.870238); HL: T_HL - tH = 0.089286 (gL 0.089286); LH: T_LH - tL = 1.308333 (DT+gL 1.308333); LL: l - tL = 0.089286 (gL 0.089286)
+
+r = 6.0
+  t0=0.458333333 tH=3.020833333 tL=0.937500000 gH=6.979166667 gL=0.062500000 DT=2.083333333 D_r=gH-gL=6.916666667
+  split identity DT + (gH-gL) - (h-l) = 0.00e+00
+  none     proceeds num=0.458333333 closed=0.458333333 | surplus inc:2.520833 | alloc=2.979167 | max|err|=0.0e+00 | proceeds+surplus-alloc=4.4e-16
+  only H   proceeds num=3.020833333 closed=3.020833333 | surplus inc:0.000000 c1:6.979167 | alloc=10.000000 | max|err|=8.9e-16 | proceeds+surplus-alloc=1.8e-15
+  only L   proceeds num=0.937500000 closed=0.937500000 | surplus inc:2.083333 c1:0.062500 | alloc=3.083333 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HH  proceeds num=10.000000000 closed=10.000000000 | surplus inc:0.000000 c1:0.000000 c2:0.000000 | alloc=10.000000 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  both HL  proceeds num=3.083333333 closed=3.083333333 | surplus inc:0.000000 c1:6.916667 c2:0.000000 | alloc=10.000000 | max|err|=8.9e-16 | proceeds+surplus-alloc=1.8e-15
+  both LH  proceeds num=3.083333333 closed=3.083333333 | surplus inc:0.000000 c1:0.000000 c2:6.916667 | alloc=10.000000 | max|err|=8.9e-16 | proceeds+surplus-alloc=1.8e-15
+  both LL  proceeds num=1.000000000 closed=1.000000000 | surplus inc:2.083333 c1:0.000000 c2:0.000000 | alloc=3.083333 | max|err|=0.0e+00 | proceeds+surplus-alloc=0.0e+00
+  allocation closed forms: none=2.979167 max-class-l=3.083333 max-class-h=10.000000
+  spread across challenger 2 class, given challenger 1:
+    challenger 1 absent : T(H)-T(L) = tH-tL = 2.083333; gains of c2 (H,L) = (6.979167, 0.062500)
+    challenger 1 class H: T_HH-T_HL = 6.916667 (= D_r 6.916667); gains of c2 (H,L) = (0, 0)
+    challenger 1 class L: T_LH-T_LL = 2.083333 (= DT 2.083333); gains of c2 (H,L) = (6.916667, 0)
+  proceeds increment from challenger 2 entry, given challenger 1 prepared:
+    HH: h - tH = 6.979167 (gH 6.979167); HL: T_HL - tH = 0.062500 (gL 0.062500); LH: T_LH - tL = 2.145833 (DT+gL 2.145833); LL: l - tL = 0.062500 (gL 0.062500)
+
+largest discrepancy over all cells and strengths: 1.78e-15

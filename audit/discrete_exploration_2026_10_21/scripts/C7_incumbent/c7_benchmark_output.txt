@@ -1,0 +1,68 @@
+=== Constants (c_H = 5, b = 2, k = 0.02, rho = 0.25, pi = 1/2) ===
+a = 0.606530659713  m1 = 0.377540668798  M1 = 0.622459331202  2 m1 M1 = 0.470007424403
+r_D (deterrence feasible above) = h - c_H/M1 = 1.96734670144
+r_N (threshold <= ell above)    = 2(h - c_H/M1) - ell = 2.93469340287
+r_C (B_r(M1) = c_H)             = 3.98609657164
+
+=== Check D(mu;[0,r]) = B_r(mu) ===
+ r=1.2 mu=0.377541  D0=3.7040736747  B=3.7040736747
+ r=1.2 mu=0.5  D0=4.80416666667  B=4.80416666667
+ r=1.2 mu=0.622459  D0=5.90425965863  B=5.90425965863
+ r=3.0 mu=0.377541  D0=3.27117223998  B=3.27117223998
+ r=3.0 mu=0.5  D0=4.29166666667  B=4.29166666667
+ r=3.0 mu=0.622459  D0=5.31216109335  B=5.31216109335
+
+=== Continuation at r_1 = 3, good news mu = M1 ===
+Delta_T(r1) = 0.666666666667  rho*Delta_T = 0.166666666667
+ jump=False: case=B Rhat=3.0 J=None entry=1 S=0.666666666667 P=1.28997288747
+ jump=True: case=Cinterior<=ell Rhat=0.93590073908 J=0.93590073908 entry=0.48397518477 S=0.166666666667 P=0.946180002001
+ D(M1;[Rhat,r]) at threshold = 5.0 (should equal c_H = 5)
+ D(M1;[p,r]) = 5.15416651586  D(M1;[ell,r]) = 4.97967464961  M1(h-r) = 4.35721531841  M1(h-(ell+r)/2) = 4.97967464961
+ B(M1;[0,Rhat)) after silence = 6.00062243884
+ bad news mu=m1: case=A entry=0.25 S=0.166666666667 P=0.5941734448
+ P_G - P_B (jump) = 0.352006557201
+
+=== Trading stage at r_1: purchase payoff Pi(beta) (net of k) ===
+ beta=0.0  base=0.0633333333333  jump=0.0633333333333
+ beta=0.25  base=0.0610700063135  jump=0.0610700063135
+ beta=0.5  base=0.0595271832619  jump=0.0595271832619
+ beta=0.75  base=0.183795068566  jump=0.0586293578538
+ beta=1.0  base=0.175836426835  jump=0.0583345707339
+ closed forms: rho*DT/2 - k = 0.0633333333333 ; 2 rho m1 M1 DT - k = 0.0583345707339 ; (1+rho) m1 M1 DT - k = 0.175836426835
+ global floor m1*rho*DT(r1) = 0.0629234447997  > k = 0.02
+
+=== Ex ante outcomes ===
+ r0=1.2 no trade, base        caseG=A              RhatG=1.2 JG=         - entry=0.25 O_H=0.125 preempt=0.0
+                              proceeds=0.392708333 incumbent=0.155208333 challenger=1.20104167 surplus=1.74895833 sum-check=0.0
+ r0=1.2 no trade, jump        caseG=A              RhatG=1.2 JG=         - entry=0.25 O_H=0.125 preempt=0.0
+                              proceeds=0.392708333 incumbent=0.155208333 challenger=1.20104167 surplus=1.74895833 sum-check=0.0
+ r1=3 full buying, base       caseG=B              RhatG=3.0 JG=         - entry=0.625 O_H=0.358422249 preempt=0.0
+                              proceeds=0.942073166 incumbent=0.568343501 challenger=1.18997708 surplus=2.70039374 sum-check=0.0
+ r1=3 full buying, jump       caseG=Cinterior<=ell RhatG=0.93590074 JG=0.93590074 entry=0.366987592 O_H=0.197820019 preempt=0.344016543
+                              proceeds=0.770176723 incumbent=0.740239943 challenger=1.18997708 surplus=2.70039374 sum-check=0.0
+ r2=3.6 full buying, base     caseG=B              RhatG=3.6 JG=         - entry=0.625 O_H=0.358422249 preempt=0.0
+                              proceeds=1.05787283 incumbent=0.750807722 challenger=1.07938574 surplus=2.8880663 sum-check=0.0
+ r2=3.6 full buying, jump     caseG=Ccorner        RhatG=0.5 JG=       0.5 entry=0.302083333 O_H=0.157419757 preempt=0.430555556
+                              proceeds=0.690277778 incumbent=1.11840278 challenger=1.09108337 surplus=2.89976392 sum-check=0.0
+ r=4.2 full buying, base      caseG=A              RhatG=4.2 JG=         - entry=0.25 O_H=0.125 preempt=0.0
+                              proceeds=0.710416667 incumbent=1.37470238 challenger=0.994940476 surplus=3.08005952 sum-check=-5.35e-51
+ r=4.2 full buying, jump      caseG=A              RhatG=4.2 JG=         - entry=0.25 O_H=0.125 preempt=0.0
+                              proceeds=0.710416667 incumbent=1.37470238 challenger=0.994940476 surplus=3.08005952 sum-check=-5.35e-51
+
+=== Differences at r_1 (jump minus base, same full-buying information) ===
+ entry    : -0.258012407615
+ O_H      : -0.160602230686
+ proc     : -0.171896442734
+ inc      : 0.171896442734
+ chal     : 5.34552942018e-51
+ surplus  : 0.0
+
+=== Price-hidden economy at r_1 (bidders see no price; mu = 1/2 for bidders) ===
+ case=A entry=0.25 proceeds=0.614583333333 surplus=2.55208333333 incumbent=0.864583333333 challenger=1.07291666667
+ access minus hidden, base: proceeds 0.3274898328  surplus 0.148310410006
+ access minus hidden, jump: proceeds 0.155593390067  surplus 0.148310410006
+
+=== Incumbent gain at good news, closed form check (R_hat <= ell) ===
+ incumbent gain at good news (closed form) = 0.343792885467
+ incumbent gain at good news (model)       = 0.343792885467
+ target loss at good news (model)          = 0.343792885467

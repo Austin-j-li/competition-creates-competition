@@ -1,0 +1,1181 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{newtxtext,newtxmath}
+\usepackage[hidelinks]{hyperref}
+\input{../scripts/P4_information/numbers.tex}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Ent}{\mathsf E}
+\newcommand{\OH}{\mathsf O_H}
+\newcommand{\RT}{\mathcal R_T}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\D}{\Delta}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\calQ}{\mathcal Q}
+\title{Information, preparation costs, and private signals}
+\author{}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+
+\section{The objects and the equilibrium conditions}
+
+The order slot has the menu $\calQ=\{-1,0,1\}$.
+The informed investor arrives with probability $\lambda$.
+Otherwise, the liquidity probabilities are $(\beta,1-2\beta,\beta)$.
+Write
+\[
+ b=(1-\lambda)\beta,\qquad b_0=(1-\lambda)(1-2\beta),\qquad u=\lambda/b.
+\]
+The quantity $b_0$ denotes the liquidity mass at zero; $C$ denotes the preparation cost.
+
+Write $\Delta=\Delta_T$ and $\Delta_i=\Delta_T(F_i)$, as in the core proof.
+The parameter $a_T$ denotes investor signal accuracy.
+This notation reserves $a$ for the research cost parameter.
+
+\subsection{Calibration B}
+
+The primitive declaration is
+\[
+\begin{gathered}
+(h,\ell,p)=(\reg{p4_input_h},\reg{p4_input_ell},\reg{p4_input_p}),\\
+(\rho,c_H,k,\pi)=(\reg{p4_input_rho},\reg{p4_input_cH},\reg{p4_input_k},\reg{p4_input_pi}),\\
+(r_0,r_1,r_2)=(\reg{p4_input_r0},\reg{p4_input_r1},\reg{p4_input_r2}),\\
+c_L=0,\qquad 1+u=e,\qquad \beta=\reg{beta_B}\ \text{exactly},\qquad
+\lambda=\frac{u\beta}{1+u\beta}.
+\end{gathered}
+\]
+The derived presence probability is $\reg{lambda_B}$ to six decimals.
+Every computation retains its unrounded definition.
+The point-mass classes and the uniform incumbent define this benchmark.
+
+\subsection{Auction objects}
+
+Let the incumbent distribution be $F$ and the challenger class be $J\in\{H,L\}$.
+Its prior is $\pi\in(0,1)$.
+The class distributions have finite means and supports above $p$.
+The distribution $G_H$ first-order dominates $G_L$.
+All information here depends on the acquisition value only through its class.
+
+A prepared challenger with value $\theta$ earns
+\begin{equation}\label{eq:rent}
+ g_F(\theta)=\mathbb E[(\theta-\max\{p,R\})_+]
+ =\int_p^\theta F(v)\,dv.
+\end{equation}
+Indeed, the positive part equals $\int_p^\theta\ind\{R<v\}\,dv$ except on a null set of integration points.
+Integration over the class gives
+\begin{equation}\label{eq:classprofits}
+ g_j(F)=\int_p^\infty[1-G_j(v)]F(v)\,dv,
+ \qquad t_j(F)=\mathbb E[\theta\mid j]-g_j(F).
+\end{equation}
+With no challenger, $t_0(F)=p\Pr(R\ge p)$.
+Define
+\[
+ w_j=t_j-t_0,\quad \D=t_H-t_L,\quad
+ B_F(\mu)=g_L+\mu(g_H-g_L),\quad
+ W_H(F)=\Pr(\theta\ge R\mid H).
+\]
+The bidder tie convention has no effect for the continuous incumbent laws used below.
+
+A stronger incumbent has $F_1(v)\le F_0(v)$.
+Equation~\eqref{eq:classprofits} gives $g_j(F_1)\le g_j(F_0)$ for both classes.
+It also gives
+\[
+ \D(F_1)-\D(F_0)
+ =\int_p^\infty[G_L(v)-G_H(v)][F_0(v)-F_1(v)]\,dv\ge0.
+\]
+Thus gross preparation profit falls at every fixed belief, while the target spread rises weakly.
+
+For $R\sim U[0,r]$ and $p<\ell<r<h$, direct integration gives
+\begin{align}\label{eq:auction}
+ t_0&=p(1-p/r),&
+ t_H&=r/2+p^2/(2r),&
+ t_L&=\ell-(\ell^2-p^2)/(2r),\\
+ g_H&=h-r/2-p^2/(2r),&
+ g_L&=(\ell^2-p^2)/(2r),&
+ \D&=(r-\ell)^2/(2r).\notag
+\end{align}
+For example, $t_H=p^2/r+\int_p^r v\,dv/r$.
+For the low class, $t_L=p^2/r+\int_p^\ell v\,dv/r+\ell(r-\ell)/r$.
+The rent identities then follow from $t_j+g_j=\theta_j$.
+These formulas agree with every shared object in the team rules and equation (4) of the pinned source.
+
+\subsection{The tuple without a private challenger signal}
+
+An equilibrium is the tuple
+\begin{equation}\label{eq:tuple}
+ \mathcal E_F=(\sigma_H,\sigma_L,P,\mu,\zeta,\mathrm{bids}).
+\end{equation}
+The distributions $\sigma_j$ specify orders conditional on informed arrival.
+Write $P_x=P(x)$ and $\mu_x=\mu(x)$; the derived challenger belief is $\bar\mu(P)$.
+The cost-specific preparation rule is $\zeta(P,C)$.
+For atomic costs, the core rule $\zeta(P)$ equals $\zeta(P,c_H)$.
+Prepared bidders use $b_I(R)=R$ and $b_C(\theta)=\theta$.
+
+The equilibrium conditions are:
+\begin{enumerate}
+\item Bayes consistency at every order.
+\item Challenger beliefs: $\bar\mu(P)=\Pr(H\mid P)$ on the price image.
+\item Optimal preparation given the price, the cost, and the available private information.
+\item Competitive prices: $P_x=\mathbb E[V_T\mid X=x]$.
+\item Optimal informed orders against the stated prices and preparation rule.
+\item Truthful bids in the second-price auction with reserve $p$.
+\end{enumerate}
+
+A unilateral order keeps the candidate prices and preparation rule fixed.
+The payoff conditions on informed arrival; it has no additional factor $\lambda$.
+The tuple specifies preparation on the attainable price image.
+Every admissible order reaches that image.
+
+The investor rule IM permits mixtures between payoff maximizers.
+The main statements use IM and challenger rule C1.
+The alternative I0 selects zero when zero ties for the maximum.
+The challenger rule C1 prepares at equality.
+The alternative CM permits any preparation probability at equality.
+The zero-cost challenger prepares at zero gross profit under both rules, as in the core definition.
+Strict order and entry comparisons give the same result under these rules.
+An atomless cost law makes the challenger tie rule irrelevant almost surely.
+
+Put $\eta_{-1}=\eta_1=\beta$ and $\eta_0=1-2\beta$.
+For arbitrary investor mixtures,
+\begin{equation}\label{eq:bayes}
+ f_j(x)=(1-\lambda)\eta_x+\lambda\sigma_j(x),\qquad
+ \mu_x=\frac{\pi f_H(x)}{\pi f_H(x)+(1-\pi)f_L(x)}.
+\end{equation}
+Every order has positive mass in both classes.
+For $0<\beta\le1/3$, its liquidity mass is at least $b$.
+Consequently,
+\begin{equation}\label{eq:bounds}
+ m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}
+ \le\mu_x\le
+ \frac{\pi(1+u)}{\pi(1+u)+1-\pi}=M(\pi).
+\end{equation}
+To derive the bounds, divide the largest possible likelihood $b_x+\lambda$ by the smallest possible likelihood $b_x$.
+The resulting ratio is at most $1+u$.
+Bayes' odds formula gives both endpoints in~\eqref{eq:bounds}.
+
+The price posterior, an average of order posteriors, obeys the same bounds.
+
+Let $H_C$ be the independent cost CDF.
+Set $e(\mu)=H_C(B_F(\mu))$ and assume $e\ge\rho>0$ on the feasible beliefs.
+Competitive prices in any candidate satisfy
+\begin{equation}\label{eq:inverse}
+ P_x=t_0+e(P_x)(w_L+\D\mu_x),\qquad
+ \mu_x=\frac{P_x-t_0-e(P_x)w_L}{e(P_x)\D}.
+\end{equation}
+Here $e(P)$ is the candidate's entry probability, before any sufficiency claim.
+When $\D>0$, this identity makes $\mu_x$ a function of the price.
+The conditional-expectation identity gives $\bar\mu(P_x)=\mu_x$.
+This construction supplies the price and entry parts of~\eqref{eq:tuple}:
+\begin{equation}\label{eq:construction}
+ \zeta(P_x,C)=\ind\{C\le B_F(\mu_x)\},\quad
+ P_x=t_0+e(\mu_x)(w_L+\D\mu_x),\quad \bar\mu(P_x)=\mu_x.
+\end{equation}
+For $\mu_2>\mu_1$, its price increment equals
+\[
+ e(\mu_1)\D(\mu_2-\mu_1)
+ +[e(\mu_2)-e(\mu_1)](w_L+\D\mu_2)>0.
+\]
+This proves that the construction reveals the posterior when $w_L\ge0$ and $g_H>g_L$.
+
+Against this fixed tuple, the four nonzero-order payoffs are
+\begin{align}\label{eq:payoffs}
+ U_H(1)&=e(\mu_1)\D(1-\mu_1)-k,&
+ U_H(-1)&=-e(\mu_{-1})\D(1-\mu_{-1})-k,\\
+ U_L(-1)&=e(\mu_{-1})\D\mu_{-1}-k,&
+ U_L(1)&=-e(\mu_1)\D\mu_1-k.\notag
+\end{align}
+Both zero-order payoffs equal zero.
+Wrong-signed orders lose strictly.
+Correctly signed gross returns are at most $\D$ and at least $\rho\kappa(\pi)\D$, where
+\[
+ \kappa(\pi)=\min\{m(\pi),1-M(\pi)\}.
+\]
+These bounds hold for all pure or mixed candidate profiles and any price pools.
+
+Truthful bids satisfy the final condition directly.
+A challenger wins precisely when its bid exceeds the larger of the reserve and the incumbent bid.
+A true-value bid wins all positive-surplus events and rejects all negative-surplus events.
+The incumbent has the same argument with the two bidders interchanged.
+Thus the bid component is optimal for every tuple constructed below.
+
+\section{R5: The fixed-information control}
+
+\begin{proposition}[Fixed information; analytical]\label{prop:control}
+Fix the joint law of $(J,S)$, the conditional value laws $G_j$, and the independent cost law.
+Let the value depend on $S$ only through $J$.
+If the incumbent strengthens from $F_0$ to $F_1$, entry does not rise under C1.
+Its decrease is exactly
+\begin{equation}\label{eq:crossing}
+ \Ent_0-\Ent_1
+ =\Pr\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\},
+ \qquad \mu(S)=\Pr(H\mid S).
+\end{equation}
+The decrease is strict exactly when this probability is positive.
+\end{proposition}
+
+\begin{proof}
+Cost independence makes $\mu(S)$ the complete class belief at the preparation decision.
+The gross profit is $B_{F_i}(\mu(S))$ in economy $i$.
+Equation~\eqref{eq:classprofits} gives $B_{F_1}(\mu(S))\le B_{F_0}(\mu(S))$ pointwise.
+Therefore
+\[
+ \ind\{C\le B_{F_0}(\mu(S))\}-\ind\{C\le B_{F_1}(\mu(S))\}
+ =\ind\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\}.
+\]
+Its expectation proves both statements.
+\end{proof}
+
+The control fixes the information experiment, not the numerical price level.
+In the slot version, it fixes $\lambda,\beta,\pi,G_H,G_L,H_C$ and both conditional order distributions.
+The challenger then reoptimizes preparation, and market makers recompute the competitive prices.
+Equation~\eqref{eq:inverse} ensures that these prices reveal the same order posterior at each strength.
+The acquisition payoffs and price levels may change.
+
+The proposition also holds with any fixed tie probability at equality, used in both economies.
+Under CM alone, an unchanged gross profit at a cost atom can support different tie probabilities across economies.
+An atomless law, or strict entry gaps at all realized posteriors, removes that issue.
+Every displayed control has strict entry gaps.
+
+\subsection{The frozen full-order tuple}
+
+Impose $(\sigma_H,\sigma_L)=(\delta_1,\delta_{-1})$.
+The complete conditional laws and posteriors are
+\begin{equation}\label{eq:full}
+\begin{array}{c|ccc}
+ x&-1&0&1\\ \hline
+ f_H(x)&b&b_0&b+\lambda\\
+ f_L(x)&b+\lambda&b_0&b\\
+ \mu_x&m(\pi)&\pi&M(\pi).
+\end{array}
+\end{equation}
+For atomic costs, set $e_x=\rho+(1-\rho)\ind\{B_F(\mu_x)\ge c_H\}$.
+Use~\eqref{eq:construction} for the prices, challenger beliefs, and entry rule.
+Use the truthful bids from~\eqref{eq:tuple}.
+Bayes' rule follows directly from each column of~\eqref{eq:full}.
+The price and entry equations verify competitive prices and optimal preparation at all orders.
+
+The four investor payoffs remain~\eqref{eq:payoffs}.
+At the weak benchmark, the buy and sale payoffs are
+\[
+ \Delta_0(1-M)-k=\reg{p4_frozen_r0_buy_tp_payoff},\qquad
+ \rho\Delta_0m-k=\reg{p4_frozen_r0_sell_tm_payoff}.
+\]
+Both are negative, so this weak tuple is an imposed control.
+At the strong benchmark, both correct orders pay strictly more than zero.
+The lower bound $\rho m\Delta_1-k=\reg{margin_p4_strong_trade_B}>0$ forces those orders in every candidate.
+Thus the strong frozen tuple also equals the unique equilibrium.
+
+At the benchmark prior, the atomic entry and ownership formulas are
+\begin{equation}\label{eq:frozenlevels}
+ \Ent=\rho+(1-\rho)(b+\lambda/2),\qquad
+ \OH=\frac{\rho+(1-\rho)(b+\lambda)}2,
+\end{equation}
+provided $B_r(1/2)<c_H<B_r(M)$.
+The target proceeds satisfy
+\begin{equation}\label{eq:revenue}
+ \RT=t_0+\frac{\bar e_Hw_H+\bar e_Lw_L}{2},\qquad
+ \bar e_H=\rho+(1-\rho)(b+\lambda),\quad
+ \bar e_L=\rho+(1-\rho)b.
+\end{equation}
+These follow from the class probabilities of the buy order.
+
+For the declared auction inputs,
+\[
+ \tau(r)=\frac{48r-3}{4(20r-r^2-1)},\qquad
+ \tau'(r)=\frac{48r^2-6r+12}{4(20r-r^2-1)^2}>0.
+\]
+The derivative numerator equals $48(r-1/16)^2+189/16$.
+At $r>1$, $\tau(r)>\tau(1)=5/8>1/2$.
+Let $r_C$ solve $B_{r_C}(M)=c_H$.
+The unique solution is $r_C=\reg{rC_B}$.
+The frozen entry path under C1 is
+\begin{equation}\label{eq:frozenpath}
+ \Ent(r)=
+ \begin{cases}
+ \rho+(1-\rho)(b+\lambda/2)=\reg{p4_frozen_entry_below_ceiling},&1<r\le r_C,\\
+ \rho=\reg{p4_frozen_entry_above_ceiling},&r>r_C.
+ \end{cases}
+\end{equation}
+For $1<r<h$, the strict threshold increase proves both branches.
+For $r\ge h$, first-order dominance keeps $B_r(M)<c_H$, so the lower branch persists.
+Rule C1 includes the top atom at $r_C$.
+Rule CM permits any entry level between these two levels at $r_C$; it changes no other point.
+At both $r_0$ and $r_1$, only the top atom recruits the high-cost type.
+The strict-crossing probability is therefore $\reg{p4_control_crossing_r0_r1}$.
+Between $r_1$ and $r_2$, it is $\reg{p4_control_crossing_r1_r2}$.
+
+\subsection{The price-hidden equilibrium tuples}
+
+The hidden-price control gives the challenger only its prior and its cost.
+Market makers still observe the order and set competitive prices.
+Under $B_{F_i}(\pi)<c_H$, the entry rule is $\zeta(C)=\ind\{C=0\}$ and $e=\rho$.
+At $F_0$, take $\sigma_H=\sigma_L=\delta_0$.
+All public beliefs are $\pi$, and every price equals $t_0+\rho(w_L+\D\pi)$.
+
+At $F_1$, take the full orders and public beliefs in~\eqref{eq:full}.
+The price is $P_x=t_0+\rho(w_L+\D\mu_x)$ at each order.
+The challenger's belief stays $\pi$, because it does not receive the price or the order.
+The entry rule, beliefs, and price formula directly verify the first four equilibrium conditions.
+The payoffs in~\eqref{eq:payoffs} now use $e=\rho$ at all orders.
+
+If $\Delta_0<k<\rho\kappa(\pi)\Delta_1$, the weak correct orders lose and the strong correct orders gain.
+The wrong orders lose at both strengths.
+These bounds hold for every profile and prove uniqueness of the two order tuples.
+The bids satisfy the preceding auction argument.
+Entry is $\rho$ at both strengths, while $\OH=\pi\rho W_H(F_i)$.
+
+\begin{table}[htbp]\centering\small
+\caption{Every information-control row at calibration B. Values are computer-assisted.}
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Control & $q_H$ & $q_L$ & $\Ent$ & $\OH$ & $\RT$\\\midrule
+Frozen, $r_0$ & $1$ & $-1$ & \reg{p4_frozen_r0_entry}&\reg{p4_frozen_r0_own}&\reg{p4_frozen_r0_proceeds}\\
+Frozen, $r_1$ & $1$ & $-1$ & \reg{p4_frozen_r1_entry}&\reg{p4_frozen_r1_own}&\reg{p4_frozen_r1_proceeds}\\
+Price hidden, $r_0$ & $0$ & $0$ & \reg{p4_hidden_r0_entry}&\reg{p4_hidden_r0_own}&\reg{p4_hidden_r0_proceeds}\\
+Price hidden, $r_1$ & $1$ & $-1$ & \reg{p4_hidden_r1_entry}&\reg{p4_hidden_r1_own}&\reg{p4_hidden_r1_proceeds}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\section{R7: Atomless preparation costs}
+
+Atomless preparation costs are the leading application of the next result.
+The support conditions also cover cost laws with atoms.
+
+\begin{proposition}[The cost-support reversal; analytical]\label{prop:atomless}
+Let $F_1$ strengthen $F_0$.
+Use the class and auction assumptions of Section 1.
+Use $0<\pi,\rho,\lambda<1$, $0<\beta\le1/3$, and an independent cost law
+\[
+ H_C=\rho H^0+(1-\rho)H^1,\quad
+ \supp H^0\subset[0,L],\quad \supp H^1\subset[c_-,c_+].
+\]
+Both component laws are arbitrary probability laws on their stated supports.
+Suppose
+\begin{align}\label{eq:costconditions}
+ &0<L<B_{F_1}(m(\pi)),\qquad
+ B_{F_0}(\pi)<c_-<c_+<B_{F_1}(M(\pi)),\\
+ &\Delta_0<k<\rho\kappa(\pi)\Delta_1.\notag
+\end{align}
+Then the unique orders are zero at $F_0$ and full at $F_1$.
+These conclusions hold under IM or I0 and C1 or CM.
+Entry and class entry at $F_1$ are exactly
+\begin{equation}\label{eq:costentry}
+ \Ent_1=\rho+(1-\rho)(b+\pi\lambda),\quad
+ \bar e_H=\rho+(1-\rho)(b+\lambda),\quad
+ \bar e_L=\rho+(1-\rho)b.
+\end{equation}
+At $F_0$, entry is $\rho$.
+High-class ownership rises exactly when
+\begin{equation}\label{eq:owncondition}
+ [\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0).
+\end{equation}
+In particular, it rises if $W_H(F_0)=W_H(F_1)=1$.
+\end{proposition}
+
+\begin{proof}
+\emph{Consequences of the assumptions.}
+Class dominance gives $\Delta_i\ge0$, and auction payoffs give $w_L(F_i)\ge0$.
+Since $k>0$, the strong-order inequality implies $\Delta_1>0$.
+The support gaps give
+\[
+ B_{F_1}(M)>B_{F_0}(\pi)\ge B_{F_1}(\pi),\qquad
+ B_{F_0}(M)\ge B_{F_1}(M)>B_{F_0}(\pi).
+\]
+Since $M>\pi$, both class profit gaps are positive.
+No assumption requires $\Delta_0>0$.
+
+\emph{Construction.}
+At $F_0$, set $(\sigma_H,\sigma_L)=(\delta_0,\delta_0)$, $\mu_x=\pi$, and $e_x=\rho$ for every order.
+Set $P_x=t_0+\rho(w_L+\Delta_0\pi)$ and $\zeta(P_x,C)=\ind\{C\le B_{F_0}(\pi)\}$.
+At $F_1$, use~\eqref{eq:full}, set $e_1=1$ and $e_0=e_{-1}=\rho$, and use~\eqref{eq:construction}.
+Both tuples use the truthful bids.
+
+\emph{Bayes consistency and prices.}
+The zero-order tuple has identical class likelihoods at every order.
+The full-order tuple has the three likelihood pairs in~\eqref{eq:full}.
+Thus its posteriors are $(m,\pi,M)$.
+The stated prices equal the conditional means of $t_0+e_x(t_j-t_0)$.
+At the weak tuple, every order has the same posterior and price.
+At the strong tuple, the price increment after~\eqref{eq:construction} is positive.
+Thus each price supplies its stated posterior, including when $\Delta_0=0$.
+
+\emph{Preparation.}
+At every feasible posterior in either economy,
+\[
+ B_{F_i}(\mu)\ge B_{F_1}(m)>L.
+\]
+Hence every low-component cost prepares.
+At the weak prior, $B_{F_0}(\pi)<c_-$ excludes the entire high component.
+At the strong top posterior, $B_{F_1}(M)>c_+$ includes the entire high component.
+At the other strong posteriors,
+\[
+ B_{F_1}(m)<B_{F_1}(\pi)\le B_{F_0}(\pi)<c_-.
+\]
+This verifies each entry value against its stated tuple.
+
+\emph{Investor incentives.}
+At the weak tuple, the two correct gross returns are $\rho\Delta_0(1-\pi)$ and $\rho\Delta_0\pi$.
+Both are below $k$ by~\eqref{eq:costconditions}.
+At the strong tuple, a high-class buy nets $\Delta_1(1-M)-k>0$.
+A low-class sale nets $\rho\Delta_1m-k>0$.
+The remaining two nonzero actions have the negative payoffs in~\eqref{eq:payoffs}.
+Zero pays zero, so the stated orders maximize payoffs.
+The preceding bid argument verifies truthful bids.
+
+\emph{Uniqueness.}
+For any candidate profile, the price posterior obeys~\eqref{eq:bounds}, so the support restriction gives $e(P)\ge\rho$.
+Competitive prices give the payoffs in~\eqref{eq:payoffs} with $e(P_x)$, before price sufficiency.
+Every correct weak order earns at most $\Delta_0-k<0$.
+If $\Delta_0=0$, every nonzero order pays $-k$.
+Thus the weak orders are zero, and their common prior fixes entry and prices.
+At the strong strength, $\Delta_1>0$ and~\eqref{eq:inverse} gives price sufficiency under every profile.
+Every correct strong order earns at least $\rho\kappa\Delta_1-k>0$.
+Wrong orders lose at both strengths.
+Thus every candidate must use the constructed orders, which determine the prices and entry probabilities.
+Every realized cost gap is strict, so C1 and CM give the same continuation.
+
+\emph{Outcomes.}
+A buy has probabilities $b+\lambda$ in class $H$ and $b$ in class $L$.
+Only this order admits high-cost entry.
+The formulas in~\eqref{eq:costentry} follow by total probability.
+Conditional on class, the value remains independent of preparation and the order.
+Thus ownership equals $\pi\bar e_HW_H(F_1)$ and $\pi\rho W_H(F_0)$ in the two economies.
+Their strict comparison is~\eqref{eq:owncondition}.
+\end{proof}
+
+Neither atomlessness nor a density assumption enters this proof.
+If both component laws are atomless, the entire cost law is atomless.
+The atomic benchmark also satisfies the result with $H^0=\delta_0$ and $H^1=\delta_{c_H}$.
+The common support bound $L$ remains a strictly positive upper envelope for that mass.
+
+\subsection{Calibration B and the third part of Proposition 2}
+
+Use the declared continuous law
+\begin{equation}\label{eq:costlaw}
+ H_C=\frac14 U_{[0,1/5]}+\frac34 U_{[59/10,61/10]}.
+\end{equation}
+Here $U_{[v,w]}$ denotes a uniform CDF.
+Every strict inequality in~\eqref{eq:costconditions} holds.
+Strong entry is $\reg{p4_atomless_r1_entry}$ and ownership is $\reg{p4_atomless_r1_own}$.
+Both values equal their atomic-cost counterparts exactly.
+The strict support gaps put every realized posterior outside both cost bands at the first two strengths.
+
+The third part has an additional support condition.
+For a stronger $F_2$, sufficient strict conditions are
+\begin{equation}\label{eq:returnconditions}
+ L<B_{F_2}(m),\qquad B_{F_2}(M)<c_-,\qquad
+ k<\rho\kappa\Delta_2.
+\end{equation}
+The full-order tuple then has $e_x=\rho$ at every order.
+Equation~\eqref{eq:payoffs} verifies the orders, and the same bound proves their uniqueness under every profile.
+The support inequalities exclude the entire high component and include the entire low component.
+Therefore entry returns to $\rho$.
+
+For~\eqref{eq:costlaw}, the second margin in~\eqref{eq:returnconditions} is
+\[
+ c_--B_{r_2}(M)=\reg{margin_p4_atomless_return_B}<0.
+\]
+The top profit lies strictly inside the high-cost band.
+The full-order equilibrium still exists uniquely, but its entry is
+\begin{equation}\label{eq:costramp}
+ \Ent(r)=\rho+(1-\rho)(b+\pi\lambda)
+ H^1(B_r(M)),
+\end{equation}
+whenever the low component enters everywhere and $B_r(\pi)<c_-$.
+The same expression replaces $b+\pi\lambda$ by $b+\lambda$ for high-class entry.
+At $r_2$, it gives $\Ent=\reg{p4_atomless_r2_entry}$ and $\OH=\reg{p4_atomless_r2_own}$.
+This follows by direct evaluation of the uniform CDF, not by a continuity approximation.
+
+For a symmetric half-width $\varepsilon$, the return condition requires
+\[
+ 0<\varepsilon<c_H-B_{r_2}(M)
+ =\reg{p4_atomless_max_width_floor_r2}.
+\]
+The choice $\varepsilon=\reg{p4_atomless_small_width}$ satisfies all three parts.
+Its return margin is $\reg{margin_p4_atomless_small_width_return}>0$.
+For any atomless $H^1$,~\eqref{eq:costramp} is continuous and nonincreasing in strength.
+The uniform law makes it affine in $B_r(M)$ within its transition band.
+
+\section{R8: Complementary private signals}
+
+\subsection{Information, prices, and the tuple}
+
+The prior is $\pi=1/2$ and values are the point masses $h$ and $\ell$.
+The investor sees $T\in\{+,-\}$ and the challenger sees $Y\in\{+,-\}$.
+Conditional on the class, the signals are independent and have accuracies
+\[
+ \begin{aligned}
+ \Pr(T=+\mid H)&=\Pr(T=-\mid L)=a_T,\\
+ \Pr(Y=+\mid H)&=\Pr(Y=-\mid L)=d,
+ \qquad 1/2<a_T,d<1.
+ \end{aligned}
+\]
+The identity draw, the liquidity order, the cost, and $R$ are independent of these signals conditional on class.
+Preparation reveals the acquisition value.
+
+Replace $\sigma_H,\sigma_L$ in~\eqref{eq:tuple} by $\sigma_+,\sigma_-$.
+Add the beliefs $\nu_x=\Pr(T=+\mid X=x)$ and $\mu_{P,y}=\Pr(H\mid P,Y=y)$.
+Replace $\zeta(P,C)$ by $\zeta(P,Y,C)$.
+The six equilibrium conditions remain the same, with the investor choice conditional on $T$.
+
+Write $A_t(x)=(1-\lambda)\eta_x+\lambda\sigma_t(x)$.
+Conditional independence and equal signal priors give
+\begin{align}\label{eq:signalsbelief}
+ \nu_x&=\frac{A_+(x)}{A_+(x)+A_-(x)},&
+ \mu_x&=(1-a_T)+(2a_T-1)\nu_x,\\
+ \phi_+(\mu)&=\frac{d\mu}{d\mu+(1-d)(1-\mu)},&
+ \phi_-(\mu)&=\frac{(1-d)\mu}{(1-d)\mu+d(1-\mu)}.\notag
+\end{align}
+The identity $J\perp X\mid T$ gives the affine formula.
+The identity $Y\perp X\mid J$ gives $\mu_{P,y}=\phi_y(\bar\mu(P))$.
+Both identities remain true under arbitrary signal-contingent mixtures.
+The likelihood bound gives $m\le\nu_x\le M$, where $m=m(1/2)$ and $M=M(1/2)$.
+Thus
+\[
+ \mu_-=(1-a_T)+(2a_T-1)m\le\mu_x\le
+ (1-a_T)+(2a_T-1)M=\mu_+.
+\]
+
+The zero-cost challenger always prepares because $g_L>0$.
+At a public posterior $\mu$, put
+\begin{align}\label{eq:signalentry}
+ I_y(\mu)&=\ind\{B_r(\phi_y(\mu))\ge c_H\},\\
+ e_H(\mu)&=\rho+(1-\rho)[dI_+(\mu)+(1-d)I_-(\mu)],\notag\\
+ e_L(\mu)&=\rho+(1-\rho)[(1-d)I_+(\mu)+dI_-(\mu)],\notag\\
+ \Delta_P(\mu)&=e_H(\mu)w_H-e_L(\mu)w_L.\notag
+\end{align}
+Since $\phi_+>\phi_-$, optimality gives $I_+\ge I_-$, also under CM.
+Consequently,
+\begin{equation}\label{eq:signalbounds}
+ \rho\D\le\Delta_P
+ =e_L\D+(e_H-e_L)w_H
+ \le\D+(1-\rho)(2d-1)w_H=:D^+.
+\end{equation}
+Both price coefficients are class entry rates at that price.
+They are not the unconditional rates across prices.
+
+In any candidate, competitive prices satisfy
+\begin{equation}\label{eq:signalinverse}
+ P_x=t_0+e_L(P_x)w_L+\mu_x\Delta_P(P_x),\qquad
+ \mu_x=\frac{P_x-t_0-e_L(P_x)w_L}{\Delta_P(P_x)}.
+\end{equation}
+The positive coefficient gives $\bar\mu(P)=\mu_x$ before any order restriction.
+
+Construct the entry rates from~\eqref{eq:signalentry} and the prices from~\eqref{eq:signalinverse}.
+The cost rule is
+\[
+ \zeta(P_x,y,C)=\ind\{C\le B_r(\phi_y(\mu_x))\}.
+\]
+For $\mu_2>\mu_1$, the price change is
+\begin{align*}
+ P(\mu_2)-P(\mu_1)={}&(\mu_2-\mu_1)\Delta_P(\mu_1)\\
+ &+\mu_2[e_H(\mu_2)-e_H(\mu_1)]w_H\\
+ &+(1-\mu_2)[e_L(\mu_2)-e_L(\mu_1)]w_L>0.
+\end{align*}
+Each bracket is nonnegative, and the first term is positive.
+This verifies that the constructed prices supply the stated beliefs.
+
+A unilateral order reveals no further class information to the investor.
+Its class probabilities remain $a_T$ after $T=+$ and $1-a_T$ after $T=-$.
+Subtract the fixed price in~\eqref{eq:signalinverse} from the corresponding terminal value.
+The four nonzero-order payoffs are
+\begin{align}\label{eq:signalpayoffs}
+ U_+(1)&=(2a_T-1)(1-\nu_1)\Delta_P(\mu_1)-k,\\
+ U_+(-1)&=-(2a_T-1)(1-\nu_{-1})\Delta_P(\mu_{-1})-k,\notag\\
+ U_-(-1)&=(2a_T-1)\nu_{-1}\Delta_P(\mu_{-1})-k,\notag\\
+ U_-(1)&=-(2a_T-1)\nu_1\Delta_P(\mu_1)-k.\notag
+\end{align}
+Zero gives zero after either signal.
+Wrong-signed orders lose strictly.
+Every correct gross return lies between $(2a_T-1)m\rho\D$ and $(2a_T-1)D^+$.
+
+\subsection{The general result}
+
+\begin{proposition}[Complementary private signals; analytical]\label{prop:signals}
+Choose $0<p<\ell<r_0<r_1<h$, $0<\rho,\lambda<1$, and $0<\beta\le1/3$.
+Let $1/2<a_T,d<1$ and suppose
+\begin{align}\label{eq:signalconditions}
+ B_{r_0}(d)&<c_H<B_{r_1}(\phi_+(\mu_+)),\\
+ (2a_T-1)D^+_0&<k<(2a_T-1)m\rho\Delta_1.\notag
+\end{align}
+The unique weak orders are zero, with entry $\rho$.
+The unique strong orders are $q(+)=1$ and $q(-)=-1$, with entry strictly above $\rho$.
+These order conclusions hold under IM or I0 and C1 or CM.
+Under C1, the tuples below determine every continuation choice.
+If the strong realized entry gaps are strict, the tuples are also unique under CM.
+The hypotheses permit $d>a_T$.
+\end{proposition}
+
+\begin{proof}
+\emph{Weak tuple.}
+Take $\sigma_+=\sigma_-=\delta_0$.
+At every order set $\nu_x=\mu_x=1/2$, $\mu_{P,+}=d$, and $\mu_{P,-}=1-d$.
+Set $\zeta(P_x,y,C)=\ind\{C=0\}$ and
+\[
+ P_x=t_0+\rho(w_H+w_L)/2.
+\]
+These assignments, with truthful bids, specify the whole tuple.
+The identical conditional order laws verify Bayes' rule.
+The cost inequality excludes high-cost entry after either private signal.
+Low-cost entry is strict because $g_L>0$.
+The price is the conditional target mean.
+
+At this fixed tuple, each correct order earns $(2a_T-1)\rho\Delta_0/2-k$.
+It is negative because $\rho\Delta_0/2\le D^+_0$ and~\eqref{eq:signalconditions} holds.
+The two wrong orders earn its negative gross component minus $k$.
+Thus zero is optimal after both signals.
+
+\emph{Strong tuple.}
+Take $\sigma_+=\delta_1$ and $\sigma_-=\delta_{-1}$.
+Specify the order laws by
+\begin{equation}\label{eq:signalfull}
+\begin{array}{c|ccc}
+ x&-1&0&1\\ \hline
+ A_+(x)&b&b_0&b+\lambda\\
+ A_-(x)&b+\lambda&b_0&b\\
+ \nu_x&m&1/2&M\\
+ \mu_x&\mu_-&1/2&\mu_+.
+\end{array}
+\end{equation}
+Use~\eqref{eq:signalsbelief} for each private posterior.
+Use~\eqref{eq:signalentry} for each class entry rate and the stated cost rule for each private realization.
+Use~\eqref{eq:signalinverse} for all three prices, and use truthful bids.
+This explicit tuple covers every order and both private signals.
+
+Every column of~\eqref{eq:signalfull} satisfies Bayes' rule.
+The price formula averages the class target values with those beliefs.
+The cost rule maximizes gross profit minus the realized cost.
+Against these fixed prices and entry rules,
+\[
+ U_+(1)\ge(2a_T-1)m\rho\Delta_1-k>0,\qquad
+ U_-(-1)\ge(2a_T-1)m\rho\Delta_1-k>0.
+\]
+The wrong-order payoffs in~\eqref{eq:signalpayoffs} are negative and zero pays zero.
+Thus the two full orders are optimal.
+The bid argument in Section 1 verifies the auction choices.
+
+\emph{Uniqueness and additional entry.}
+For every candidate,~\eqref{eq:signalbounds} and the likelihood bounds hold.
+They force zero orders in the weak economy and full orders in the strong economy.
+This proves uniqueness without a restriction to pure profiles.
+At the strong buy price, $B_{r_1}(\phi_+(\mu_+))>c_H$.
+The event $(X,Y)=(1,+)$ has positive probability in each class.
+It adds strictly positive high-cost preparation and proves $\Ent_1>\rho$.
+\end{proof}
+
+The class laws of the strong order are
+\[
+ \begin{aligned}
+ f_H(1)&=b+a_T\lambda,& f_L(1)&=b+(1-a_T)\lambda,\\
+ f_H(-1)&=b+(1-a_T)\lambda,& f_L(-1)&=b+a_T\lambda,\\
+ f_H(0)&=b_0,&f_L(0)&=b_0.
+ \end{aligned}
+\]
+The general outcome formulas use all six entry indicators:
+\begin{equation}\label{eq:signaloutcomes}
+ \bar e_j=\rho+(1-\rho)\sum_xf_j(x)
+ \big[\Pr(Y=+\mid j)I_+(\mu_x)+\Pr(Y=-\mid j)I_-(\mu_x)\big].
+\end{equation}
+Then $\Ent=(\bar e_H+\bar e_L)/2$, $\OH=\bar e_H/2$, and~\eqref{eq:revenue} gives proceeds.
+The ownership identity uses $h>r_1$.
+
+The extra strict inequality
+\begin{equation}\label{eq:onlypair}
+ B_{r_1}(\phi_-(\mu_+))<c_H
+\end{equation}
+leaves exactly one high-cost entry pair: $(X,Y)=(1,+)$.
+Indeed, $B_{r_1}(d)\le B_{r_0}(d)<c_H$ excludes $Y=+$ at zero and negative orders.
+Monotonicity of $\phi_-$ and~\eqref{eq:onlypair} exclude $Y=-$ everywhere.
+Thus
+\begin{equation}\label{eq:onepair}
+ \bar e_H=\rho+(1-\rho)d(b+a_T\lambda),\qquad
+ \bar e_L=\rho+(1-\rho)(1-d)(b+(1-a_T)\lambda).
+\end{equation}
+Every entry choice is strict on this parameter set.
+
+To require both sources of information, add
+\begin{equation}\label{eq:signalcomplement}
+ B_{r_1}(\mu_+)<c_H.
+\end{equation}
+Without $Y$, the weak upper return bound still forces zero orders.
+Then $B_{r_0}(1/2)<B_{r_0}(d)<c_H$ gives entry $\rho$.
+At the strong strength, the lower return bound still forces full orders.
+Condition~\eqref{eq:signalcomplement} excludes high-cost preparation under every profile, so strong entry is also $\rho$.
+With $Y$, the joint-entry inequality instead gives entry above $\rho$.
+The strict inequalities define an open region for this complementarity result.
+
+\subsection{The signal example with B slot parameters}
+
+Denote the source's signal example by S(B).
+It retains $h,\ell,p,\pi,\beta,\lambda$ from B but declares
+\[
+ \begin{gathered}
+ \rho=\reg{p4_input_s_rho},\quad c_H=\reg{p4_input_s_cost},\quad
+ k=\reg{p4_input_s_fee},\\
+ r_0=\reg{p4_input_s_r0},\quad r_1=\reg{p4_input_s_r1},\\
+ (a_T,d)=(\reg{p4_input_signal_a},\reg{p4_input_signal_d}).
+ \end{gathered}
+\]
+Equations~\eqref{eq:signalconditions} and~\eqref{eq:onlypair} hold strictly.
+Entry rises from $\reg{p4_s_signal_r0_entry}$ to $\reg{p4_s_signal_r1_entry}$.
+Ownership rises from $\reg{p4_s_signal_r0_own}$ to $\reg{p4_s_signal_r1_own}$.
+These are the earlier headline displays, recomputed with the exact decimal $\beta$ in the present brief.
+They describe a strength comparison in S(B), not a comparison at the unchanged B primitives.
+
+For clarity, the table also removes the challenger's private signal while it preserves the investor signal.
+That control has $d=1/2$ in the posterior formulas.
+Its maximum public belief gives $B_{r_i}(\mu_+)<c_H$ at both strengths, so entry is always $\rho$.
+At $r_0$, the upper return bound excludes every nonzero order.
+At $r_1$, the lower return bound forces both full orders.
+The tuple formulas above then verify the complete control equilibria.
+
+\begin{table}[htbp]\centering\small
+\caption{Information comparisons in S(B); computer-assisted.}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Information & $\Ent_0$ & $\Ent_1$ & $\mathsf O_{H,0}$ & $\mathsf O_{H,1}$\\\midrule
+Investor sees $J$, no $Y$ & \reg{p4_s_class_r0_entry}&\reg{p4_s_class_r1_entry}&\reg{p4_s_class_r0_own}&\reg{p4_s_class_r1_own}\\
+Investor sees $T$, no $Y$ & \reg{p4_s_no_y_r0_entry}&\reg{p4_s_no_y_r1_entry}&\reg{p4_s_no_y_r0_own}&\reg{p4_s_no_y_r1_own}\\
+Investor sees $T$, challenger sees $Y$ & \reg{p4_s_signal_r0_entry}&\reg{p4_s_signal_r1_entry}&\reg{p4_s_signal_r0_own}&\reg{p4_s_signal_r1_own}\\\bottomrule
+\end{tabular}
+\end{table}
+
+For the class-informed row, the weak spread is below $k$ and the strong lower return exceeds $k$.
+Its strong top belief also leaves gross profit below $c_H$.
+The zero and full tuples of Section 1 therefore prove that row.
+
+The original accuracy grid uses
+\[
+\begin{aligned}
+a_T&\in\{\reg{p4_accuracy_68},\reg{p4_accuracy_69},\reg{p4_accuracy_70},\reg{p4_accuracy_71},\reg{p4_accuracy_72}\},\\
+d&\in\{\reg{p4_accuracy_73},\reg{p4_accuracy_74},\reg{p4_accuracy_75},\reg{p4_accuracy_76},\reg{p4_accuracy_77}\}.
+\end{aligned}
+\]
+Exactly the six pairs in Table~\ref{tab:pairs} satisfy the four sufficient inequalities.
+Each also satisfies~\eqref{eq:onlypair}, and each has $d>a_T$.
+The table states sufficient pairs on this grid; equations~\eqref{eq:signalconditions} define the full open sufficient region.
+
+\begin{table}[htbp]\centering\small
+\caption{The sufficient signal pairs in S(B); computer-assisted.}\label{tab:pairs}
+\begin{tabular}{@{}rrrr@{}}\toprule
+$a_T$ & $d$ & $\Ent_1$ & $\mathsf O_{H,1}$\\\midrule
+\reg{p4_accuracy_69}&\reg{p4_accuracy_75}&\reg{p4_grid_69_75_entry}&\reg{p4_grid_69_75_own}\\
+\reg{p4_accuracy_70}&\reg{p4_accuracy_75}&\reg{p4_grid_70_75_entry}&\reg{p4_grid_70_75_own}\\
+\reg{p4_accuracy_71}&\reg{p4_accuracy_74}&\reg{p4_grid_71_74_entry}&\reg{p4_grid_71_74_own}\\
+\reg{p4_accuracy_71}&\reg{p4_accuracy_75}&\reg{p4_grid_71_75_entry}&\reg{p4_grid_71_75_own}\\
+\reg{p4_accuracy_72}&\reg{p4_accuracy_74}&\reg{p4_grid_72_74_entry}&\reg{p4_grid_72_74_own}\\
+\reg{p4_accuracy_72}&\reg{p4_accuracy_75}&\reg{p4_grid_72_75_entry}&\reg{p4_grid_72_75_own}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The unchanged B primitives}
+
+The earlier signal pair has a different result at unchanged B.
+Its private-only margin is $\reg{margin_p4_signal_b_private}$.
+The weak-order margin is $\reg{margin_p4_signal_b_weak}$, and the strong-order margin is $\reg{margin_p4_signal_b_strong}$.
+Thus the earlier sufficient theorem does not apply to that pair at B.
+The next calculation derives its actual equilibria under IM.
+
+\paragraph{Exact B continuation (analytical).}
+Equations~\eqref{eq:signalbounds} and~\eqref{eq:signalpayoffs} exclude wrong orders under every candidate profile.
+Define the effective order rates
+\[
+ s=\lambda\Pr(q=1\mid T=+),\qquad t=\lambda\Pr(q=-1\mid T=-).
+\]
+The associated order distributions are
+\[
+ \sigma_+=\frac{s}{\lambda}\delta_1+
+ \left(1-\frac{s}{\lambda}\right)\delta_0,\qquad
+ \sigma_-=\frac{t}{\lambda}\delta_{-1}+
+ \left(1-\frac{t}{\lambda}\right)\delta_0.
+\]
+Their signal likelihoods are
+\begin{equation}\label{eq:mixedlaws}
+\begin{array}{c|ccc}
+ x&-1&0&1\\ \hline
+ A_+(x)&b&b_0+\lambda-s&b+s\\
+ A_-(x)&b+t&b_0+\lambda-t&b.
+\end{array}
+\end{equation}
+Equations~\eqref{eq:signalsbelief},~\eqref{eq:signalentry}, and~\eqref{eq:signalinverse} specify every remaining component of the tuple.
+The bids remain truthful.
+
+The buy column depends only on $s$, and the sale column depends only on $t$.
+Specifically,
+\[
+ \nu_1(s)=\frac{b+s}{2b+s},\qquad \nu_{-1}(t)=\frac{b}{2b+t},\qquad
+ \mu_x=(1-a_T)+(2a_T-1)\nu_x.
+\]
+Under C1, each posterior fixes its entry rates and $\Delta_P$.
+Thus the two correct gross returns are separate functions:
+\[
+ \begin{aligned}
+ K_+(s)&=(2a_T-1)\frac{b}{2b+s}\Delta_P(\mu_1(s)),\\
+ K_-(t)&=(2a_T-1)\frac{b}{2b+t}\Delta_P(\mu_{-1}(t)).
+ \end{aligned}
+\]
+At a cost threshold, CM replaces the relevant coefficient by its admissible interval.
+That interval still depends only on the corresponding order rate.
+Zero pays zero after either signal, although its posterior can depend on both rates.
+Therefore the buy and sale problems separate, including their endpoint and threshold comparisons.
+
+\paragraph{Weak strength.}
+At $r_0$, the worst favorable private posterior satisfies $B_{r_0}(\phi_+(\mu_-))>6$.
+The best unfavorable private posterior satisfies $B_{r_0}(\phi_-(\mu_+))<6$.
+These inequalities hold under every profile, so $I_+=1$ and $I_-=0$ at every price.
+Therefore
+\[
+ e_H=13/16,\qquad e_L=7/16,\qquad \Delta_P=311/1920.
+\]
+
+The two correct gross returns are
+\[
+ K_+(s)=\frac{2}{5}\frac{b}{2b+s}\frac{311}{1920},\qquad
+ K_-(t)=\frac{2}{5}\frac{b}{2b+t}\frac{311}{1920}.
+\]
+Each function decreases strictly in its argument.
+At zero it exceeds $k$; at $\lambda$ it lies below $k$.
+The unique zero-profit rates are
+\begin{equation}\label{eq:weakmixed}
+ s=t=\frac{119}{96}b,\qquad
+ \Pr(q=1\mid +)=\Pr(q=-1\mid -)=\frac{119}{96u}.
+\end{equation}
+
+At this tuple, each used order and zero yield zero.
+Each wrong order loses strictly by~\eqref{eq:signalpayoffs}.
+Bayes' rule, prices, entry, and truthful bids follow from the tuple formulas and the strict entry gaps.
+The endpoint signs and strict decrease prove uniqueness among all mixtures.
+Since entry is class-dependent but price-independent, $\Ent_0=5/8$ and $\mathsf O_{H,0}=13/32$.
+
+\paragraph{Strong strength.}
+At $r_1$, $Y=-$ never recruits under any profile.
+A nonnegative signal posterior after a buy has $\mu_1\ge1/2$ once wrong orders are excluded.
+Since $B_{r_1}(d)>6$, every buy price has $I_+=1$.
+There $\Delta_P=137/192$.
+The minimum buy payoff is $\reg{margin_p4_b_strong_buy}>0$, so $s=\lambda$ is necessary.
+
+At a sale price, the favorable signal recruits exactly when
+\[
+ \mu_{-1}\ge\frac{47}{106}
+ \quad\Longleftrightarrow\quad
+ \nu_{-1}\ge\frac{19}{53}
+ \quad\Longleftrightarrow\quad t\le\frac{15}{19}b.
+\]
+On that interval, the gross sale return exceeds the floor return at the endpoint.
+Even the floor return there exceeds $k$, because
+\[
+ \frac{19}{795}-\frac1{50}=\reg{margin_p4_b_strong_threshold_floor_return}>0.
+\]
+This also excludes a CM threshold mixture.
+
+Beyond the threshold, $e_H=e_L=1/4$, so the sale return is
+\[
+ K_-(t)=\frac1{15}\frac{b}{2b+t}.
+\]
+It decreases strictly, exceeds $k$ just above the threshold, and falls below $k$ at $\lambda$.
+Its unique zero-profit rate is
+\begin{equation}\label{eq:strongmixed}
+ s=\lambda,\qquad t=\frac43 b,\qquad
+ \Pr(q=-1\mid -)=\frac4{3u}.
+\end{equation}
+At this rate, $\nu_{-1}=3/10$ and $\mu_{-1}=21/50<47/106$.
+At zero flow, direct substitution in~\eqref{eq:mixedlaws} gives $B_{r_1}(\phi_+(\mu_0))>6$.
+Thus $Y=+$ recruits at $X=0,1$ and does not recruit at $X=-1$.
+All six entry comparisons are strict.
+
+The tuple defined by~\eqref{eq:strongmixed} and~\eqref{eq:mixedlaws} has positive buy profit and zero sale profit.
+The used sale and zero are optimal after $T=-$; wrong orders lose.
+Its entry, beliefs, prices, and bids satisfy the other five equilibrium conditions directly.
+The buy bound and the sale argument prove uniqueness under IM and either challenger tie rule.
+Both mixed equilibria depend on IM; I0 admits no equilibrium at these two parameter points.
+Their unique necessary positive interior rates are unavailable under I0.
+
+Only a sale blocks high-cost entry after $Y=+$ at $r_1$.
+Its class probabilities are $b+(1-a_T)t$ and $b+a_Tt$.
+Hence
+\begin{equation}\label{eq:bactual}
+ \Ent_1=\frac58-\frac{23}{40}b=\reg{p4_b_signal_r1_entry},\qquad
+ \mathsf O_{H,1}=\frac{13}{32}-\frac{63}{160}b=\reg{p4_b_signal_r1_own}.
+\end{equation}
+Both fall relative to the weak economy.
+
+If the challenger has no private signal, its highest public profit remains below $6$ at both strengths.
+Thus $e_H=e_L=\rho$ under every profile.
+At $r_0$, $\rho(2a_T-1)\Delta_0/2<k$ forces zero orders.
+At $r_1$, the unique zero-profit rates are $s=t=4b/3$.
+The same strict-decrease argument verifies that tuple and its uniqueness under IM.
+Its entry and ownership stay at $\rho$ and $\rho/2$.
+The entry gaps are strict, so C1 and CM give the same result.
+At $r_1=3$, this control requires IM; I0 admits no equilibrium.
+At zero orders, the gross return is $\reg{p4_b_no_y_r1_zero_gross}>k$.
+At full orders, it is $\reg{p4_b_no_y_r1_full_gross}<k$.
+Each side therefore needs its unique positive interior rate, which I0 excludes.
+
+\begin{table}[htbp]\centering\small
+\caption{Information comparisons at unchanged B, earlier pair $(0.70,0.75)$; computer-assisted.}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Information & $\Ent_0$ & $\Ent_1$ & $\mathsf O_{H,0}$ & $\mathsf O_{H,1}$\\\midrule
+Investor sees $J$, no $Y$ & \reg{p4_base_r0_entry}&\reg{p4_base_r1_entry}&\reg{p4_base_r0_own}&\reg{p4_base_r1_own}\\
+Investor sees $T$, no $Y$ & \reg{p4_b_no_y_r0_entry}&\reg{p4_b_no_y_r1_entry}&\reg{p4_b_no_y_r0_own}&\reg{p4_b_no_y_r1_own}\\
+Investor sees $T$, challenger sees $Y$ & \reg{p4_b_signal_r0_entry}&\reg{p4_b_signal_r1_entry}&\reg{p4_b_signal_r0_own}&\reg{p4_b_signal_r1_own}\\\bottomrule
+\end{tabular}
+\end{table}
+
+The manuscript uses this complementary pair at unchanged B:
+\[
+ (a_T,d)=(\reg{p4_input_comp_a},\reg{p4_input_comp_d}).
+\]
+Its four theorem margins, the one-pair margin, and the no-$Y$ exclusion margin are strictly positive.
+It has zero weak orders and full strong orders.
+Equations~\eqref{eq:onepair} give entry $\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}$ and
+ownership $\reg{p4_comp_b_r0_own}\to\reg{p4_comp_b_r1_own}$.
+Its smallest theorem margin is $\reg{margin_p4_min_signal_comp_b}$.
+Condition~\eqref{eq:signalcomplement} has margin $\reg{margin_p4_comp_b_no_y_top_r1}$.
+Without $Y$, entry stays at $\rho$ at both strengths.
+
+For this control, use $d=1/2$ and the zero and full tuples above.
+The weak bound $k-(2a_T-1)\Delta_0>0$ excludes every nonzero order under every profile.
+The weak prior gap then excludes high-cost preparation.
+At the strong strength, $(2a_T-1)\rho m\Delta_1-k>0$ forces full orders under every profile.
+The top public profit remains below $c_H$, so every class entry rate equals $\rho$.
+The tuple formulas verify Bayes' rule, prices, preparation, and bids.
+
+The class-observed control also removes $Y$ and sets $a_T=1$.
+It equals the benchmark: zero weak orders, full strong orders, and high-cost entry only at a strong buy price.
+The bounds $\Delta_0<k<\rho m\Delta_1$ force these orders under every profile.
+The weak prior gap, strong prior gap, and strong top gap verify every entry choice.
+Its prices and bids are the tuples of Section 1.
+All three rows have strict order and entry comparisons, so all four tie-rule pairs give the same unique equilibria.
+
+\begin{table}[htbp]\centering\small
+\caption{The selected pair at unchanged B and both controls; computer-assisted.}\label{tab:compb}
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Information & $\Ent_0$ & $\Ent_1$ & $\mathsf O_{H,0}$ & $\mathsf O_{H,1}$ & Min. margin\\\midrule
+Both private signals &\reg{p4_comp_b_r0_entry}&\reg{p4_comp_b_r1_entry}&\reg{p4_comp_b_r0_own}&\reg{p4_comp_b_r1_own}&\reg{margin_p4_min_signal_comp_b}\\
+Investor sees $T$, no $Y$ &\reg{p4_comp_b_no_y_r0_entry}&\reg{p4_comp_b_no_y_r1_entry}&\reg{p4_comp_b_no_y_r0_own}&\reg{p4_comp_b_no_y_r1_own}&\reg{margin_p4_min_comp_b_no_y}\\
+Investor sees $J$, no $Y$ &\reg{p4_comp_b_class_r0_entry}&\reg{p4_comp_b_class_r1_entry}&\reg{p4_comp_b_class_r0_own}&\reg{p4_comp_b_class_r1_own}&\reg{margin_p4_min_comp_b_class}\\\bottomrule
+\end{tabular}
+\end{table}
+
+The earlier alternative $(a_T,d)=(\reg{p4_input_valid_a},\reg{p4_input_valid_d})$ also satisfies the reversal theorem.
+Its entry remains $\reg{p4_valid_b_r0_entry}\to\reg{p4_valid_b_r1_entry}$ and ownership remains
+$\reg{p4_valid_b_r0_own}\to\reg{p4_valid_b_r1_own}$.
+It does not require the challenger signal.
+Without $Y$, its entry is $\reg{p4_valid_b_no_y_r0_entry}\to\reg{p4_valid_b_no_y_r1_entry}$ and ownership is
+$\reg{p4_valid_b_no_y_r0_own}\to\reg{p4_valid_b_no_y_r1_own}$.
+The public exclusion margin is negative: $c_H-B_{r_1}(\mu_+)=\reg{margin_p4_valid_b_no_y_top_exclusion}$.
+The strict control margins in the registry force zero weak orders and full strong orders.
+Thus this pair shows a reversal, while the selected pair establishes complementarity.
+
+The four sufficient conditions cannot hold with $d\ge a_T$ at unchanged B.
+To prove this, put $z=2a_T-1$.
+The strong bound requires
+\[
+ z>z_*:=\frac{k}{m\rho\Delta_1}=\reg{p4_b_signal_z_min}.
+\]
+If $d\ge a_T$, then $2d-1\ge z$.
+The weak gross-return bound consequently exceeds
+\[
+ z_*[\Delta_0+(1-\rho)z_*w_H(r_0)]
+ =k+\reg{margin_p4_b_d_ge_a_impossible}>k.
+\]
+This contradicts the weak inequality in~\eqref{eq:signalconditions}.
+It is a restriction on this sufficient region; the exact mixed comparison above has its own proof.
+
+\section{Parameter sets, strict margins, and the certificate}
+
+\subsection{Open parameter sets}
+
+The equalities that define a signal law, a cost support, or a uniform incumbent are model definitions.
+The table states the strict inequalities that define the economic parameter regions.
+At $\beta<1/3$, every region is open in its finite primitive coordinates.
+The proofs also admit the structural boundary $\beta=1/3$.
+For general class laws, the same statement applies to perturbations that preserve the displayed strict moment inequalities.
+
+\begin{table}[htbp]\centering\small
+\caption{Admissible parameter regions; analytical.}
+\begin{tabular}{@{}p{0.23\linewidth}p{0.70\linewidth}@{}}\toprule
+Result & Strict economic inequalities\\\midrule
+Atomic controls & $\Delta_0<k<\rho\kappa\Delta_1$, $B_0(\pi)<c_H$, and $B_1(\pi)<c_H< B_1(M)$; the frozen weak row also uses $c_H<B_0(M)$.\\
+Cost reversal & $L<B_1(m)$, $B_0(\pi)<c_-<c_+<B_1(M)$, and $\Delta_0<k<\rho\kappa\Delta_1$.\\
+Cost return & $L<B_2(m)$, $B_2(M)<c_-$, and $k<\rho\kappa\Delta_2$.\\
+Signal reversal & The four inequalities in~\eqref{eq:signalconditions}; the one-pair formula also uses~\eqref{eq:onlypair}.\\
+Signal complementarity & The signal-reversal conditions and $B_{r_1}(\mu_+)<c_H$.\\
+Ownership & Equation~\eqref{eq:owncondition}; $h>r_1$ makes it automatic for the point masses.\\\bottomrule
+\end{tabular}
+\end{table}
+
+The common primitive domain is $0<\pi,\rho,\lambda<1$, $0<\beta<1/3$, $k>0$, $c_H>0$, and $0<p<\ell<r_0<r_1<h$.
+The cost example also has $L>0$ and $c_+>c_->0$.
+The signal domain adds $1/2<a_T,d<1$.
+Table~\ref{tab:primitive} records all boundary distances used by these declarations.
+
+\begin{longtable}{@{}p{0.60\linewidth}r@{}}
+\caption{Primitive boundary distances; exact or computer-assisted.}\label{tab:primitive}\\
+\toprule Quantity & Margin\\\midrule\endfirsthead
+\toprule Quantity & Margin\\\midrule\endhead
+$\beta$; $1/3-\beta$ & \reg{margin_p4_domain_beta_lower}; \reg{margin_p4_domain_beta_upper}\\
+$\lambda$; $1-\lambda$ & \reg{margin_p4_domain_lambda_lower}; \reg{margin_p4_domain_lambda_upper}\\
+$\pi$; $1-\pi$ & \reg{margin_p4_domain_pi_lower}; \reg{margin_p4_domain_pi_upper}\\
+$\rho$; $1-\rho$ at B & \reg{margin_p4_domain_rho_lower}; \reg{margin_p4_domain_rho_upper}\\
+$p$; $\ell-p$ & \reg{margin_p4_domain_reserve}; \reg{margin_p4_domain_ell_reserve}\\
+$r_0-\ell$; $r_1-r_0$ at B & \reg{margin_p4_domain_r0_ell}; \reg{margin_p4_domain_r1_r0}\\
+$r_2-r_1$; $h-r_2$ at B & \reg{margin_p4_domain_r2_r1}; \reg{margin_p4_domain_h_r2}\\
+$c_H$; $k$ at B & \reg{margin_p4_domain_cost}; \reg{margin_p4_domain_fee}\\
+$\varepsilon$; $c_+-c_-$ & \reg{margin_p4_domain_epsilon}; \reg{margin_p4_domain_band_width}\\
+$c_-$ & \reg{margin_p4_domain_band_lower}\\
+$\rho$; $1-\rho$ in S(B) & \reg{margin_p4_domain_s_rho_lower}; \reg{margin_p4_domain_s_rho_upper}\\
+$r_0-\ell$; $r_1-r_0$ in S(B) & \reg{margin_p4_domain_s_r0_ell}; \reg{margin_p4_domain_s_r1_r0}\\
+$h-r_1$ in S(B) & \reg{margin_p4_domain_s_h_r1}\\
+$c_H$; $k$ in S(B) & \reg{margin_p4_domain_s_cost}; \reg{margin_p4_domain_s_fee}\\
+$a_T-1/2$; $1-a_T$ at the earlier pair & \reg{margin_p4_domain_signal_a_lower}; \reg{margin_p4_domain_signal_a_upper}\\
+$d-1/2$; $1-d$ at the earlier pair & \reg{margin_p4_domain_signal_d_lower}; \reg{margin_p4_domain_signal_d_upper}\\
+$d-a_T$ at the earlier pair & \reg{margin_p4_domain_signal_d_a}\\
+$a_T-1/2$; $1-a_T$ at the earlier alternative & \reg{margin_p4_domain_valid_a_lower}; \reg{margin_p4_domain_valid_a_upper}\\
+$d-1/2$; $1-d$ at the earlier alternative & \reg{margin_p4_domain_valid_d_lower}; \reg{margin_p4_domain_valid_d_upper}\\
+$a_T-1/2$; $1-a_T$ at the selected B pair & \reg{margin_p4_domain_comp_a_lower}; \reg{margin_p4_domain_comp_a_upper}\\
+$d-1/2$; $1-d$ at the selected B pair & \reg{margin_p4_domain_comp_d_lower}; \reg{margin_p4_domain_comp_d_upper}\\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{@{}p{0.65\linewidth}r@{}}
+\caption{R5 and R7: strict hypothesis margins at B; computer-assisted where they depend on $e$.}\\
+\toprule Quantity & Margin\\\midrule\endfirsthead
+\toprule Quantity & Margin\\\midrule\endhead
+$k-\Delta_0$ & \reg{margin_p4_weak_trade_B}\\
+$\rho m\Delta_1-k$ & \reg{margin_p4_strong_trade_B}\\
+$\rho m\Delta_2-k$ & \reg{margin_p4_very_strong_trade_B}\\
+$c_H-B_0(1/2)$ & \reg{margin_p4_weak_prior_B}\\
+$c_H-B_1(1/2)$ & \reg{margin_p4_strong_prior_B}\\
+$B_0(M)-c_H$ & \reg{margin_p4_weak_top_B}\\
+$B_1(M)-c_H$ & \reg{margin_p4_strong_top_B}\\
+$c_H-B_2(M)$ & \reg{margin_p4_return_B}\\
+$B_1(m)-L$, with $L=1/5$ & \reg{margin_p4_atomless_floor_B}\\
+$c_--B_0(1/2)$ & \reg{margin_p4_atomless_weak_B}\\
+$B_1(M)-c_+$ & \reg{margin_p4_atomless_strong_B}\\
+$B_2(m)-L$ & \reg{margin_p4_atomless_floor_r2_B}\\
+$c_--B_2(M)$: the declared width fails this condition & \reg{margin_p4_atomless_return_B}\\
+$c_+-B_2(M)$ & \reg{margin_p4_atomless_top_upper_r2_B}\\
+$B_2(M)-c_-$ & \reg{margin_p4_atomless_top_lower_r2_B}\\
+$c_H-0.001-B_2(M)$ & \reg{margin_p4_atomless_small_width_return}\\
+$\bar e_H-\rho$, with $W_H(F_0)=W_H(F_1)=1$ & \reg{margin_p4_ownership_rise_B}\\
+$\Delta_0$; $\Delta_1$; $\Delta_2$ & \reg{p4_r0_D}; \reg{p4_r1_D}; \reg{p4_r2_D}\\
+$g_H(F_0)-g_L(F_0)$ & \reg{margin_p4_gross_gap_r0}\\
+$g_H(F_1)-g_L(F_1)$ & \reg{margin_p4_gross_gap_r1}\\
+$g_H(F_2)-g_L(F_2)$ & \reg{margin_p4_gross_gap_r2}\\
+$w_L(F_0)$; $w_L(F_1)$; $w_L(F_2)$ & \reg{p4_r0_wl}; \reg{p4_r1_wl}; \reg{p4_r2_wl}\\
+\bottomrule
+\end{longtable}
+
+\begin{table}[htbp]\centering\small
+\caption{R8 margins in three declarations; computer-assisted.}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Margin & S(B), earlier pair & B, earlier pair & B, selected pair\\\midrule
+$c_H-B_0(d)$ &\reg{margin_p4_signal_s_private}&\reg{margin_p4_signal_b_private}&\reg{margin_p4_signal_comp_b_private}\\
+$B_1(\phi_+(\mu_+))-c_H$ &\reg{margin_p4_signal_s_joint}&\reg{margin_p4_signal_b_joint}&\reg{margin_p4_signal_comp_b_joint}\\
+$k-(2a_T-1)D^+_0$ &\reg{margin_p4_signal_s_weak}&\reg{margin_p4_signal_b_weak}&\reg{margin_p4_signal_comp_b_weak}\\
+$(2a_T-1)m\rho\Delta_1-k$ &\reg{margin_p4_signal_s_strong}&\reg{margin_p4_signal_b_strong}&\reg{margin_p4_signal_comp_b_strong}\\
+$c_H-B_1(\phi_-(\mu_+))$ &\reg{margin_p4_signal_s_other_pair}&\reg{margin_p4_signal_b_other_pair}&\reg{margin_p4_signal_comp_b_other_pair}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{longtable}{@{}p{0.65\linewidth}r@{}}
+\caption{Strict margins for the actual B signal equilibria; computer-assisted.}\\
+\toprule Quantity & Margin\\\midrule\endfirsthead
+\toprule Quantity & Margin\\\midrule\endhead
+$B_0(\phi_+(\mu_-))-c_H$ & \reg{margin_p4_b_weak_all_yplus}\\
+$c_H-B_0(\phi_-(\mu_+))$ & \reg{margin_p4_b_weak_no_yminus}\\
+$(2a_T-1)(311/1920)/2-k$ & \reg{margin_p4_b_weak_zero_return}\\
+$k-(2a_T-1)m(311/1920)$ & \reg{margin_p4_b_weak_full_loss}\\
+$u-119/96$ & \reg{margin_p4_b_weak_rate_room}\\
+$(2a_T-1)m(137/192)-k$ & \reg{margin_p4_b_strong_buy}\\
+$B_1(d)-c_H$ & \reg{margin_p4_b_strong_prior_yplus}\\
+$c_H-B_1(\phi_-(\mu_+))$ & \reg{margin_p4_b_strong_no_yminus}\\
+$19/795-k$ & \reg{margin_p4_b_strong_threshold_floor_return}\\
+$u-4/3$ & \reg{margin_p4_b_strong_rate_room}\\
+$47/106-21/50$ & \reg{margin_p4_b_strong_sale_public_gap}\\
+$B_1(\phi_+(\mu_0))-c_H$ at the mixed tuple & \reg{margin_p4_b_strong_zero_yplus}\\
+$c_H-B_0(\mu_+)$ without $Y$ & \reg{margin_p4_b_no_y_top_exclusion_r0}\\
+$c_H-B_1(\mu_+)$ without $Y$ & \reg{margin_p4_b_no_y_top_exclusion_r1}\\
+$k-\rho(2a_T-1)\Delta_0/2$ without $Y$ & \reg{margin_p4_b_no_y_weak}\\
+$\rho(2a_T-1)\Delta_1/2-k$ without $Y$ & \reg{margin_p4_b_no_y_zero_gain}\\
+$k-\rho(2a_T-1)m\Delta_1$ without $Y$ & \reg{margin_p4_b_no_y_full_loss}\\
+\bottomrule
+\end{longtable}
+
+\begin{table}[htbp]\centering\small
+\caption{Strict control margins for the selected B pair; computer-assisted.}
+\begin{tabular}{@{}lr@{}}\toprule
+Quantity & Margin\\\midrule
+$k-(2a_T-1)\Delta_0$, investor sees $T$, no $Y$ & \reg{margin_p4_comp_b_no_y_weak}\\
+$(2a_T-1)\rho m\Delta_1-k$, investor sees $T$, no $Y$ & \reg{margin_p4_comp_b_no_y_strong}\\
+$c_H-B_0(1/2)$, investor sees $T$, no $Y$ & \reg{margin_p4_comp_b_no_y_prior_r0}\\
+$c_H-B_1(\mu_+)$, investor sees $T$, no $Y$ & \reg{margin_p4_comp_b_no_y_top_r1}\\
+$k-\Delta_0$, investor sees $J$, no $Y$ & \reg{margin_p4_comp_b_class_weak}\\
+$\rho m\Delta_1-k$, investor sees $J$, no $Y$ & \reg{margin_p4_comp_b_class_strong}\\
+$c_H-B_0(1/2)$, investor sees $J$, no $Y$ & \reg{margin_p4_comp_b_class_prior_r0}\\
+$c_H-B_1(1/2)$, investor sees $J$, no $Y$ & \reg{margin_p4_comp_b_class_prior_r1}\\
+$B_1(M)-c_H$, investor sees $J$, no $Y$ & \reg{margin_p4_comp_b_class_top_r1}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\begin{table}[htbp]\centering\small
+\caption{Strict margins for the information controls in S(B); computer-assisted.}
+\begin{tabular}{@{}lr@{}}\toprule
+Quantity & Margin\\\midrule
+$k-(2a_T-1)\Delta_0$, investor sees $T$ & \reg{margin_p4_s_no_y_weak}\\
+$(2a_T-1)\rho m\Delta_1-k$, investor sees $T$ & \reg{margin_p4_s_no_y_strong}\\
+$c_H-B_0(\mu_+)$, investor sees $T$ & \reg{margin_p4_s_no_y_top_r0}\\
+$c_H-B_1(\mu_+)$, investor sees $T$ & \reg{margin_p4_s_no_y_top_r1}\\
+$k-\Delta_0$, investor sees $J$ & \reg{margin_p4_s_class_weak}\\
+$\rho m\Delta_1-k$, investor sees $J$ & \reg{margin_p4_s_class_strong}\\
+$c_H-B_0(1/2)$, investor sees $J$ & \reg{margin_p4_s_class_prior_r0}\\
+$c_H-B_1(M)$, investor sees $J$ & \reg{margin_p4_s_class_top_r1}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{The four sufficient margins at the six signal pairs; computer-assisted.}
+\begin{tabular}{@{}rrrrrr@{}}\toprule
+$a_T$ & $d$ & Private exclusion & Joint entry & Weak order & Strong order\\\midrule
+\reg{p4_accuracy_69}&\reg{p4_accuracy_75}&\reg{margin_p4_grid_69_75_private}&\reg{margin_p4_grid_69_75_joint}&\reg{margin_p4_grid_69_75_weak}&\reg{margin_p4_grid_69_75_strong}\\
+\reg{p4_accuracy_70}&\reg{p4_accuracy_75}&\reg{margin_p4_grid_70_75_private}&\reg{margin_p4_grid_70_75_joint}&\reg{margin_p4_grid_70_75_weak}&\reg{margin_p4_grid_70_75_strong}\\
+\reg{p4_accuracy_71}&\reg{p4_accuracy_74}&\reg{margin_p4_grid_71_74_private}&\reg{margin_p4_grid_71_74_joint}&\reg{margin_p4_grid_71_74_weak}&\reg{margin_p4_grid_71_74_strong}\\
+\reg{p4_accuracy_71}&\reg{p4_accuracy_75}&\reg{margin_p4_grid_71_75_private}&\reg{margin_p4_grid_71_75_joint}&\reg{margin_p4_grid_71_75_weak}&\reg{margin_p4_grid_71_75_strong}\\
+\reg{p4_accuracy_72}&\reg{p4_accuracy_74}&\reg{margin_p4_grid_72_74_private}&\reg{margin_p4_grid_72_74_joint}&\reg{margin_p4_grid_72_74_weak}&\reg{margin_p4_grid_72_74_strong}\\
+\reg{p4_accuracy_72}&\reg{p4_accuracy_75}&\reg{margin_p4_grid_72_75_private}&\reg{margin_p4_grid_72_75_joint}&\reg{margin_p4_grid_72_75_weak}&\reg{margin_p4_grid_72_75_strong}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The arithmetic record}
+
+The certificate uses exact rational intervals.
+For $N=60$, it encloses the exponential constant by
+\[
+ \sum_{n=0}^{N}\frac1{n!}<e<
+ \sum_{n=0}^{N}\frac1{n!}+\frac1{N\,N!}.
+\]
+The remainder bound follows from a geometric series with ratio $1/(N+1)$.
+Each arithmetic operation propagates rational endpoints.
+A strict sign uses the lower or upper endpoint, without a floating-point tolerance.
+Decimal log endpoints round outwards.
+
+The executable derivation is \path{scripts/P4_information/derive.py}.
+Its output is \path{scripts/P4_information/run.log}.
+The file \texttt{endpoints.json} stores the exact rational endpoints for every registry row.
+The file \texttt{receipt.json} records the primitive declaration, method, and output hashes.
+Every displayed quantitative output comes from \path{registry/P4_information.csv}.
+
+The derivation prints every order posterior, every price, both class entry rates, and all six investor payoffs for each tuple.
+It also prints every entry gap for each private signal at every order.
+The accuracy grid records all four sufficient margins and the one-pair margin for every pair.
+The finite computations certify the stated signs and values; the proofs above establish the profile bounds and uniqueness.
+
+The B declaration uses $\beta=\reg{beta_B}$ exactly and $\lambda=u\beta/(1+u\beta)$ without rounding.
+Its strong ownership display is $\reg{p4_base_r1_own}$.
+The earlier exact-entry-match convention used a different $\beta$ and gave a different sixth decimal.
+At $r_2$, the current atomless entry display is $\reg{p4_atomless_r2_entry}$.
+The signal displays remain unchanged at their declared S(B) vector.
+
+\end{document}

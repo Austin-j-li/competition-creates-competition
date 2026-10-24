@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+<title>Discrete trading: what it keeps from the paper, and what to put in it</title>
+<style>
+:root{
+  --fg: var(--foreground, #1c1c1a);
+  --mfg: var(--muted-foreground, #5f5e5a);
+  --bd: var(--border, #dcdad3);
+  --cd: var(--card, #f6f5f1);
+  --bg: var(--background, #ffffff);
+  --c1: var(--chart-1, #2f6bd8);
+  --c2: var(--chart-2, #a95b0c);
+  --c3: var(--chart-3, #1c7b51);
+  --c4: var(--chart-4, #8b44b8);
+  --c5: var(--chart-5, #b93a3a);
+  --ok: var(--success, #23794a);
+  --inf: var(--info, #2f6bd8);
+  --warn: var(--warning, #94600d);
+  --bad: var(--destructive, #b8322a);
+  --rad: var(--radius, 10px);
+  --sans: var(--font-sans, "Inter", "Fira Sans", "Helvetica Neue", Arial, sans-serif);
+  --mono: var(--font-mono, "JetBrains Mono", "Fira Mono", Menlo, monospace);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --fg: var(--foreground, #e9e7e1);
+    --mfg: var(--muted-foreground, #a9a79f);
+    --bd: var(--border, #3d3c38);
+    --cd: var(--card, #22211e);
+    --bg: var(--background, #161614);
+    --c1: var(--chart-1, #76aafb);
+    --c2: var(--chart-2, #efa155);
+    --c3: var(--chart-3, #4fc18c);
+    --c4: var(--chart-4, #c994ec);
+    --c5: var(--chart-5, #f28585);
+    --ok: var(--success, #5cc690);
+    --inf: var(--info, #76aafb);
+    --warn: var(--warning, #e2b252);
+    --bad: var(--destructive, #f38b82);
+  }
+  body{background:var(--bg)}
+}
+*{box-sizing:border-box}
+body{margin:0;padding:0 14px;color:var(--fg);font-family:var(--sans);font-size:15.5px;line-height:1.6}
+.page{max-width:780px;margin:0 auto;padding:18px 0 32px}
+h1{font-size:28px;line-height:1.2;margin:6px 0 10px;letter-spacing:-.01em}
+h2{font-size:21px;line-height:1.3;margin:44px 0 6px;letter-spacing:-.005em}
+h2 .num{display:inline-block;color:var(--mfg);font-weight:500;font-size:16px;min-width:28px}
+h3{font-size:16.5px;margin:26px 0 6px}
+p{margin:8px 0}
+.kicker{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mfg);font-weight:600}
+.lede{font-size:17px;margin:6px 0 4px}
+.muted{color:var(--mfg)}
+.small{font-size:13.5px}
+hr.sep{border:0;border-top:1px solid var(--bd);margin:36px 0 0}
+var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.05em}
+sub,sup{font-size:.72em;line-height:0}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.02em;line-height:1.5;padding:0 8px;border-radius:999px;border:1px solid currentColor;vertical-align:1px;white-space:nowrap}
+td .chip,.mod .chip{white-space:normal}
+.an{color:var(--ok)} .ca{color:var(--c4)} .nd{color:var(--inf)} .cj{color:var(--warn)} .op{color:var(--mfg)}
+.vd{border-radius:4px;border-width:1.5px;background:color-mix(in srgb,currentColor 11%,transparent)}
+.v-ok{color:var(--ok)} .v-cc{color:var(--inf)} .v-oc{color:var(--warn)} .v-rf{color:var(--bad)}
+.sv{font-weight:700;white-space:nowrap}
+.sv::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;background:currentColor;margin-right:.35em;vertical-align:.05em}
+.sv.na::before{background:transparent;border:1.5px solid currentColor;width:.5em;height:.5em}
+.s-ok{color:var(--ok)} .s-ch{color:var(--warn)} .s-die{color:var(--bad)} .na{color:var(--mfg)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 4px;font-size:13.5px;color:var(--mfg)}
+.legend .row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.legend b{color:var(--fg);font-weight:600}
+.key{display:inline-block;width:14px;height:10px;border-radius:2px;vertical-align:0}
+.key.dot{width:10px;height:10px;border-radius:50%}
+.key.sq{width:10px;height:10px;border-radius:1px}
+.key.ln{height:3px;width:18px;border-radius:0;vertical-align:3px}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+@media (max-width:560px){.grid4{grid-template-columns:1fr}}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:16px 16px 14px}
+.card .q{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+.card .a{font-size:16px;font-weight:700;margin:4px 0 6px;line-height:1.3}
+.card p{font-size:14px;margin:4px 0}
+.box{border-left:3px solid var(--c1);padding:4px 0 4px 14px;margin:14px 0}
+.box.key2{border-color:var(--c3)}
+.box.warn{border-color:var(--warn)}
+.box.fix{border-color:var(--bad)}
+.quote{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0 6px}
+table{width:100%;border-collapse:collapse;margin:0;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.sm{font-size:13.5px}
+@media (max-width:560px){
+  table.stack thead{display:none}
+  table.stack,table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
+  table.stack tr{border:1px solid var(--bd);border-radius:8px;padding:6px 12px 8px;margin:0 0 10px;background:var(--cd)}
+  table.stack td{border:0;padding:3px 0}
+  table.stack td:first-child{font-weight:700;border-bottom:1px solid var(--bd);padding-bottom:6px;margin-bottom:4px}
+  table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+figure{margin:18px 0 10px}
+figcaption{font-size:13px;color:var(--mfg);margin-top:6px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--sans);font-size:12px;fill:var(--mfg)}
+.chart.narrow text{font-size:16px}
+.chart .ax{stroke:var(--bd);stroke-width:1}
+.chart .grid{stroke:var(--bd);stroke-width:1;stroke-dasharray:2 3}
+.chart .tf{fill:var(--fg)} .chart .t1{fill:var(--c1)} .chart .t2{fill:var(--c2)} .chart .t3{fill:var(--c3)}
+.chart .b{font-weight:700}
+.chart .s1{stroke:var(--c1)} .chart .s2{stroke:var(--c2)} .chart .s3{stroke:var(--c3)} .chart .sm{stroke:var(--mfg)} .chart .sf{stroke:var(--fg)}
+.chart .f1{fill:var(--c1)} .chart .f2{fill:var(--c2)} .chart .f3{fill:var(--c3)}
+a,a:visited{color:var(--c1);text-underline-offset:2px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--cd);border:1px solid var(--bd);border-radius:5px;padding:0 4px;overflow-wrap:anywhere}
+.toc{columns:2;column-gap:28px;font-size:14px;margin:10px 0 0;padding-left:20px}
+.memo-index code{white-space:nowrap;overflow-wrap:normal;word-break:normal}
+@media (max-width:560px){.toc{columns:1}}
+.mods{list-style:none;padding:0;margin:14px 0}
+.mod{border:1px solid var(--bd);border-radius:var(--rad);padding:12px 14px 10px;margin:0 0 10px;display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 10px}
+.mod .rk{font-size:22px;font-weight:700;color:var(--mfg);line-height:1.2}
+.mod h4{margin:0 0 4px;font-size:15.5px;line-height:1.35}
+.mod p{margin:3px 0;font-size:14px}
+.mod .lb{color:var(--mfg);font-weight:600}
+@media (max-width:560px){.mod{grid-template-columns:1fr}.mod .rk{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="kicker">Exploratory study · 21 October 2026</div>
+<h1>Discrete trading: what it keeps from the paper, and what to put in it</h1>
+<p class="lede">The team replaced the paper's continuous trading stage with discrete unit orders. It then studied ten changes to the setup. This report gives the answer, the evidence and a recommendation. The Laplace model stays the benchmark; this study is exploratory.</p>
+
+<div class="box key2">
+<p><b>The short answer.</b> Discreteness alone does not kill the paper's results; noise with bounded support does. With three-point noise the top flow reveals the class, so feedback and coexistence die. With noise equal to the difference of two geometric counts, every flow is on path and beliefs stay inside (0, 1). Then Proposition 2 and a Proposition 3 analog hold with short closed-form proofs. Two-sided unit orders keep the paper's <var>c</var><sub>H</sub> = 6. They reproduce its bounds <var>m</var>, <var>M</var>, its ceiling <var>r</var><sub>C</sub> and its no-trade boundary <var>r</var><sub>N</sub> exactly. Keep the Laplace model, and add one remark, one online-appendix section and one footnote.</p>
+</div>
+<p class="muted small">The work: 25 memos from four workstreams (A to D) and their independent checks, then one red-team pass over the headline claims. Five claims were refuted: one number in the brief and four claims in the memos. Two further general statements fell, and six claims were overclaimed. No shared number was wrong. This report uses the corrected versions. The memos are in <code>audit/discrete_exploration_2026_10_21/memos/</code>.</p>
+
+<div class="legend">
+  <div class="row"><b>Status</b>
+    <span><span class="chip an">analytical</span> complete proof</span>
+    <span><span class="chip ca">computer-assisted</span> proof with exact or interval steps</span>
+    <span><span class="chip nd">numerical diagnostic</span> floating-point evidence on a stated grid</span>
+    <span><span class="chip cj">conjecture</span> believed, not proved</span>
+    <span><span class="chip op">open</span> not resolved</span>
+  </div>
+  <div class="row"><b>Verdict</b>
+    <span class="chip vd v-ok">confirmed</span>
+    <span class="chip vd v-cc">confirmed with correction</span>
+    <span><span class="chip vd v-oc">overclaimed</span> holds, but its label or scope is too strong</span>
+    <span class="chip vd v-rf">refuted</span>
+  </div>
+</div>
+
+<!-- AT A GLANCE -->
+<div class="grid4">
+  <div class="card">
+    <div class="q">1 · Does discreteness kill the results?</div>
+    <div class="a">No. Bounded noise support does the damage.</div>
+    <p>With three-point noise, the top flow reveals the class and pays the investor nothing. Coexistence and feedback die. Entry returns to ρ only above <var>r</var> = 7.969.</p>
+    <p>Geometric-count noise has full support on the integers. Every flow is on path, and the flow that recruits still pays the investor.</p>
+  </div>
+  <div class="card">
+    <div class="q">2 · Which discrete model works?</div>
+    <div class="a">Two-sided unit orders with geometric-count noise.</div>
+    <p>At the paper's <var>c</var><sub>H</sub> = 6 and strengths (1.2, 3, 3.6), entry moves 0.25 → 0.569293 → 0.25. The bounds <var>m</var>, <var>M</var>, the ceiling 3.592659 and the boundary 1.747878 are the paper's, exactly.</p>
+    <p>The buy-only version also works, but only for <var>c</var><sub>H</sub> in (4.804167, 5.312161].</p>
+  </div>
+  <div class="card">
+    <div class="q">3 · Which modifications help?</div>
+    <div class="a">Two trading rounds and costly research. Unequal noise helps on a narrow window.</div>
+    <p>Two rounds and costly information acquisition create coexistence at the paper's own strengths, with one caveat each. Unequal three-point noise gives an upward entry branch only 0.0144 wide.</p>
+    <p>A reserve set after the price, costless disclosure and a second potential challenger each remove a part of the mechanism.</p>
+  </div>
+  <div class="card">
+    <div class="q">4 · What goes into the paper?</div>
+    <div class="a">One remark, one appendix section, one footnote.</div>
+    <p>State the two-sided discrete companion after Proposition 2 or in Section 5.1. Put its proofs in the online appendix. Add a footnote at Proposition 3.</p>
+    <p>Keep out the reserve, disclosure, stake, incumbent and sequential-entry results, and the three-point model.</p>
+  </div>
+</div>
+
+<ul class="toc">
+  <li><a href="#laws">Two noise laws and what each flow tells</a></li>
+  <li><a href="#survive">What survives discreteness alone</a></li>
+  <li><a href="#p2">The Proposition 2 analog</a></li>
+  <li><a href="#p3">The Proposition 3 analog</a></li>
+  <li><a href="#mods">The modifications, ranked</a></li>
+  <li><a href="#fell">Claims that the checks refuted or downgraded</a></li>
+  <li><a href="#rec">Recommendation for the paper</a></li>
+  <li><a href="#open">What remains open</a></li>
+  <li><a href="#method">How the work was done, and the memos</a></li>
+</ul>
+
+<!-- ============ 1 NOISE LAWS ============ -->
+<hr class="sep">
+<h2 id="laws"><span class="num">1</span>Two discrete noise laws, and what each flow tells the market</h2>
+<p>Both discrete bases keep the paper's auction and Reading N with point masses at ℓ and <var>h</var>. Nature draws the challenger's class, the investor sees the class, and preparation reveals the value. The prior is π = 1/2, the low cost is <var>c</var><sub>L</sub> = 0, and the investor is always present (λ = 1). Only the noise law and the order menu change.</p>
+<div class="tw"><table class="stack">
+  <thead><tr><th>Property</th><th>Three-point noise</th><th>Discrete-Laplace noise</th></tr></thead>
+  <tbody>
+  <tr><td>Law</td><td data-l="Three-point">Noise <var>Z</var> ∈ {−1, 0, 1}, each value with probability 1/3</td><td data-l="Discrete-Laplace"><var>Z</var> = <var>G</var><sub>1</sub> − <var>G</var><sub>2</sub>, two independent geometric counts of unit noise orders. Pr(<var>Z</var> = <var>z</var>) = (1 − <var>a</var>)/(1 + <var>a</var>) · <var>a</var><sup>|<var>z</var>|</sup>, with <var>a</var> = e<sup>−1/<var>b</var></sup> = 0.606531 at <var>b</var> = 2</td></tr>
+  <tr><td>Support</td><td data-l="Three-point">Bounded</td><td data-l="Discrete-Laplace">All integers</td></tr>
+  <tr><td>Extreme flows</td><td data-l="Three-point">Conclusive: posterior 0 or 1</td><td data-l="Discrete-Laplace">Never conclusive; a one-step likelihood ratio is at most e<sup>1/<var>b</var></sup></td></tr>
+  <tr><td>Unused flows</td><td data-l="Three-point">The top flow is unused under no trade, so it needs a belief rule</td><td data-l="Discrete-Laplace">None: every flow has positive probability under every strategy</td></tr>
+  </tbody>
+</table></div>
+<p>The order flow is <var>X</var> = <var>q</var> + <var>Z</var>. Under full orders the market's posterior that the challenger is class H takes few values:</p>
+<ul>
+  <li><b>Three-point, buy-only.</b> Flows −1, 0, 1, 2 give posteriors 0, 1/2, 1/2, 1. The middle flows say nothing. The top flow reveals class H. There the investor's residual is zero, so the flow that recruits pays the investor nothing.</li>
+  <li><b>Discrete-Laplace, buy-only.</b> Bad news (<var>x</var> ≤ 0) gives <var>m</var><sub>1</sub> = 1/(1 + e<sup>1/<var>b</var></sup>) = 0.377541. Good news (<var>x</var> ≥ 1) gives <var>M</var><sub>1</sub> = 0.622459. Every flow maps to one of these two values.</li>
+  <li><b>Discrete-Laplace, two-sided.</b> Class H buys one unit and class L sells one. The posteriors are <var>m</var> = 0.268941 (<var>x</var> ≤ −1), 1/2 (<var>x</var> = 0) and <var>M</var> = 0.731059 (<var>x</var> ≥ 1). These are the paper's bounds 0.269 and 0.731.</li>
+</ul>
+<figure>
+  <svg id="ch-post" class="chart" viewBox="0 0 720 360" role="img" aria-label="Posterior after each order flow under three-point and discrete-Laplace noise, buy-only and two-sided"></svg>
+  <div class="legend">
+    <span><span class="key dot" style="background:var(--c1)"></span> discrete-Laplace noise</span>
+    <span><span class="key sq" style="background:var(--c2)"></span> three-point noise</span>
+    <span><span class="key ln" style="background:var(--mfg)"></span> the paper's continuous Laplace posterior</span>
+  </div>
+  <figcaption>Posterior that the challenger is class H after each order flow, under full orders, λ = 1 and <var>b</var> = 2. Panel (a): buy-only orders. Panel (b): two-sided unit orders; the grey curve is the paper's posterior under full orders (1, −1), and it passes through every discrete point. Values: closed forms of B2 Result 1 and C1 Result 1, printed by <code>scripts/REPORT/chart_values.py</code>.</figcaption>
+</figure>
+<div class="box">
+<p><b>Why the second law works.</b></p>
+<ul>
+  <li>Every integer flow has positive probability under every strategy, so Bayes' rule fixes every belief. No refinement is used.</li>
+  <li>Beliefs stay in [<var>m</var><sub>1</sub>, <var>M</var><sub>1</sub>] (buy-only) or [<var>m</var>, <var>M</var>] (two-sided). So the flow that recruits still leaves the investor a positive residual.</li>
+  <li>Each investor class compares one unit order with no order, so its choice is one comparison of a gain with the cost <var>k</var>. In the buy-only base the purchase payoff <var>K</var> obeys ρΛΔ<sub>T</sub> ≤ <var>K</var> ≤ (1 − π)Δ<sub>T</sub> for every strategy, with Λ = 0.470007 at <var>b</var> = 2. No derivative bound is needed. <span class="chip an">analytical</span></li>
+</ul>
+<p>The law has a simple story for Section 2.3. Noise is the count of unit noise purchases minus the count of unit noise sales, and each count is geometric.</p>
+</div>
+
+<!-- ============ 2 SURVIVAL ============ -->
+<hr class="sep">
+<h2 id="survive"><span class="num">2</span>What survives discreteness alone</h2>
+<p>The table compares the paper's results in the three discrete bases, before any modification. "Survives" means that the statement holds with the discrete objects in place of the continuous ones. The three-point and two-sided columns use <var>c</var><sub>H</sub> = 6; the buy-only discrete-Laplace column uses <var>c</var><sub>H</sub> = 5.</p>
+<div class="tw"><table class="stack sm">
+  <thead><tr><th>Paper result</th><th>Three-point, buy-only</th><th>Discrete-Laplace, buy-only</th><th>Discrete-Laplace, two-sided</th><th>Status</th></tr></thead>
+  <tbody>
+  <tr><td>Prop. 1, two returns</td><td data-l="Three-point"><span class="sv s-ok">survives</span></td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span></td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. 2(i), weak incumbent</td><td data-l="Three-point"><span class="sv s-ok">survives</span>; needs the directional completion; passive beliefs fail for <var>k</var> ∈ (<var>K</var>, 3<var>K</var>/2)</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span> with no belief rule: <var>K</var> ≤ (1 − π)Δ<sub>T</sub>(<var>r</var><sub>0</sub>) &lt; <var>k</var></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> with no belief rule: Δ<sub>T</sub>(<var>r</var><sub>0</sub>) &lt; <var>k</var></td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. 2(ii), strong incumbent</td><td data-l="Three-point"><span class="sv s-ok">survives</span>, weaker: entry 0.375 (paper 0.523)</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span>: entry 0.625; dies at the paper's <var>c</var><sub>H</sub> = 6</td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> at <var>c</var><sub>H</sub> = 6: entry 0.569293</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. 2(iii), return to ρ</td><td data-l="Three-point"><span class="sv s-ch">changes</span>: only above <var>r</var><sub>C</sub>(1) = 7.969, so it fails at 3.6</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span>: <var>r</var><sub>C</sub> = 3.986 (<var>r</var><sub>2</sub> = 4.2)</td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> exactly: <var>r</var><sub>C</sub> = 3.592659</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. 3, coexistence</td><td data-l="Three-point"><span class="sv s-die">dies</span>; only at the knife-edge τ = π under challenger mixtures</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span> on [1.443, 1.748], with a third outcome under challenger mixtures</td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> on [1.516, 1.748]</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. 3, upward entry across strengths</td><td data-l="Three-point"><span class="sv s-die">dies</span></td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ch">changes</span>: only on the branch ŝ below <var>r</var><sub>F</sub></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ch">changes</span>: only on two short branches; full-order entry is flat at 1.55 to 1.65</td><td data-l="Status"><span class="chip an">analytical</span> (local)</td></tr>
+  <tr><td>Section 4.3, the order pattern (1, −<var>v</var>)</td><td data-l="Three-point"><span class="sv na">not applicable</span></td><td data-l="Discrete-Laplace, buy-only"><span class="sv na">not applicable</span></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ch">changes</span>: the direction survives (the buyer is the strong side); full buys with partial sells only on (1.516, 1.534)</td><td data-l="Status"><span class="chip an">analytical</span> <span class="chip nd">numerical diagnostic</span></td></tr>
+  <tr><td>Prop. A.1, posterior bounds [<var>m</var>, <var>M</var>]</td><td data-l="Three-point"><span class="sv s-die">dies</span>: 0 and 1 are attained</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span> with [<var>m</var><sub>1</sub>, <var>M</var><sub>1</sub>] = [0.378, 0.622]</td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> exactly</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. A.2, price sufficiency</td><td data-l="Three-point"><span class="sv s-ok">survives</span>, unconditional at <var>c</var><sub>L</sub> = 0</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span></td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. A.3, fixed experiment</td><td data-l="Three-point"><span class="sv s-ok">survives</span> weakly: a step function, flat at the benchmark</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span> weakly: one jump at <var>r</var><sub>C</sub></td><td data-l="Discrete-Laplace, two-sided"><span class="sv s-ok">survives</span> weakly: flat</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Prop. A.9, access to prices</td><td data-l="Three-point"><span class="sv s-ok">survives</span>: proceeds +9/64, surplus +61/192</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span>: proceeds +0.327490, surplus +0.148310</td><td data-l="Discrete-Laplace, two-sided"><span class="muted">not computed</span></td><td data-l="Status"><span class="chip an">analytical</span> <span class="chip op">open</span></td></tr>
+  <tr><td>Prop. A.10, price pools</td><td data-l="Three-point"><span class="sv na">not applicable</span> at <var>c</var><sub>L</sub> = 0; pools return at <var>c</var><sub>L</sub> = 1</td><td data-l="Discrete-Laplace, buy-only"><span class="sv na">not applicable</span></td><td data-l="Discrete-Laplace, two-sided"><span class="sv na">not applicable</span></td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Section 6.1, welfare</td><td data-l="Three-point"><span class="sv s-ok">survives</span>, with smaller effects</td><td data-l="Discrete-Laplace, buy-only"><span class="sv s-ok">survives</span></td><td data-l="Discrete-Laplace, two-sided"><span class="muted">open</span></td><td data-l="Status"><span class="chip an">analytical</span> <span class="chip op">open</span></td></tr>
+  </tbody>
+</table></div>
+<p class="small muted">Source: SYNTHESIS §2, shortened. Prop. A.4 thresholds appear in Sections 3 and 4 below. Props. A.5 to A.7 and Sections 5.1 to 6.3 are in the full table of the synthesis.</p>
+<div class="box key2">
+<p><b>In words.</b> Bounded noise support is the loss, not discreteness. With three-point noise the top flow reveals the class, so the flow that recruits pays the investor nothing. The results: no feedback, no coexistence, a ceiling at <var>g</var><sub>H</sub>(<var>r</var>) = <var>c</var><sub>H</sub>, and an unused flow that needs a belief rule. Geometric-count noise has full support and a bounded one-step likelihood ratio. Every flow is on path, posteriors stay inside (0, 1), and the flow that recruits keeps a positive residual. No discrete version reproduces the paper's order pattern (1, −<var>v</var><sub>j</sub>) or its upward entry order at 1.55, 1.60 and 1.65.</p>
+</div>
+
+<!-- ============ 3 PROP 2 ============ -->
+<hr class="sep">
+<h2 id="p2"><span class="num">3</span>The Proposition 2 analog</h2>
+<p>In each discrete base, each investor class compares one unit order with no order. Its choice is one comparison of a gain with the trading cost <var>k</var>. So Proposition 2 needs only bounds on that gain, not the paper's derivative bound.</p>
+
+<h3>Two-sided unit orders: the recommended companion</h3>
+<p>Proposition C1.1 needs three conditions. With <var>c</var><sub>L</sub> = 0 the first holds at every strength.</p>
+<ul>
+  <li>(D1) 0 ≤ <var>c</var><sub>L</sub> ≤ <var>B</var><sub><var>r</var>₁</sub>(<var>m</var>);</li>
+  <li>(D2) <var>B</var><sub><var>r</var>₀</sub>(1/2) &lt; <var>c</var><sub>H</sub> ≤ <var>B</var><sub><var>r</var>₁</sub>(<var>M</var>);</li>
+  <li>(D3) Δ<sub>T</sub>(<var>r</var><sub>0</sub>) &lt; <var>k</var> &lt; ρ<var>m</var>Δ<sub>T</sub>(<var>r</var><sub>1</sub>).</li>
+</ul>
+<p>Then three parts hold, under both investor tie rules. <span class="chip an">analytical</span></p>
+<ol>
+  <li>At <var>r</var><sub>0</sub>, no trade is the unique outcome, and entry is ρ.</li>
+  <li>At <var>r</var><sub>1</sub>, full orders (1, −1) are the unique outcome. The price takes three values, and entry and ownership rise.</li>
+  <li>At an <var>r</var><sub>2</sub> with <var>B</var><sub><var>r</var>₂</sub>(<var>M</var>) &lt; <var>c</var><sub>H</sub>, full orders stay unique and entry returns to ρ.</li>
+</ol>
+<p>At the paper's benchmark (<var>c</var><sub>H</sub> = 6, <var>b</var> = 2, <var>k</var> = 0.02), entry is 0.25 → 0.569293 → 0.25 at strengths (1.2, 3, 3.6). High-class ownership rises from 0.125 to 0.358422. Condition (D2) gives the window <var>c</var><sub>H</sub> ∈ (4.804167, 6.217155].</p>
+<div class="box key2">
+<p><b>Why three thresholds match the paper exactly.</b> <span class="chip an">analytical</span></p>
+<ol>
+  <li>The discrete law is the Laplace density at the integers. For integer orders, Bayes' rule uses only density ratios, and these equal the paper's. So the top posterior is the paper's <var>M</var> = 1/(1 + e<sup>−2/<var>b</var></sup>) = 0.731059. The ceiling solves the paper's own <var>B</var><sub><var>r</var></sub>(<var>M</var>) = <var>c</var><sub>H</sub>, so <var>r</var><sub>C</sub> = 3.592658519.</li>
+  <li>Under no trade every flow has posterior 1/2, whatever the noise law. A unit deviation earns ρΔ<sub>T</sub>/2 − <var>k</var>, the paper's (A.12). So <var>r</var><sub>N</sub> = 𝔯(2<var>k</var>/ρ) = 1.747877538. The bound 𝔯(<var>k</var>) = 1.220997512 matches for the same reason. Here 𝔯(<var>d</var>) is the root above ℓ of Δ<sub>T</sub>(<var>r</var>) = <var>d</var>.</li>
+</ol>
+</div>
+<p><b>What does not transfer.</b></p>
+<ul>
+  <li>The uniqueness bound <var>r</var><sub>U</sub>: 2.124148 against the paper's 2.837417. Unit orders need no factor 1 − 1/<var>b</var>.</li>
+  <li>Entry and ownership at <var>r</var><sub>1</sub>: 0.569293 and 0.358422 against 0.522757 and 0.324192. The mass with μ ≥ τ is one atom, Pr(<var>X</var> ≥ 1) = 0.425725.</li>
+  <li>The fixed-experiment control: flat at 0.569293, against 0.562178 → 0.522757.</li>
+  <li>The partial-sale pattern (1, −<var>v</var><sub>j</sub>) at 1.55 to 1.65.</li>
+</ul>
+
+<h3>Buy-only orders</h3>
+<p>The buy-only discrete-Laplace base gives the same three parts, with no belief rule. <span class="chip an">analytical</span></p>
+<ul>
+  <li>No trade is unique at <var>r</var><sub>0</sub> = 1.2, because <var>K</var> ≤ (1 − π)Δ<sub>T</sub>(<var>r</var><sub>0</sub>) = 0.008333 &lt; <var>k</var> for every purchase rate.</li>
+  <li>Full purchases are unique at <var>r</var><sub>1</sub> = 3, because <var>K</var> ≥ ρΛΔ<sub>T</sub>(<var>r</var><sub>1</sub>) = 0.078335 &gt; <var>k</var>.</li>
+  <li>Entry is 0.25 → 0.625 → 0.25 at (1.2, 3, 4.2). High-class ownership is 0.125 → 0.358422 → 0.125.</li>
+</ul>
+<p>The cost is the parameter range. The <var>c</var><sub>H</sub> window is (4.804167, 5.312161], and the ceiling is <var>r</var><sub>C</sub> = 3.986097. The paper's <var>c</var><sub>H</sub> = 6 recruits nobody at any <var>r</var> &gt; 1, because <var>B</var><sub><var>r</var></sub>(<var>M</var><sub>1</sub>) &lt; 6 there. The window (5.121880, 5.312161] keeps the paper's strengths (1.2, 3, 3.6).</p>
+<p>Feedback is present. At <var>r</var><sub>1</sub> a purchase nets +0.175836 when the high-cost type enters after good news, and +0.058335 when entry stays at ρ. The brief's +0.060 for the second number was wrong. <span class="chip vd v-ok">confirmed</span></p>
+
+<h3>Three-point noise</h3>
+<p>With equal three-point noise, one exact cutoff decides trade: a purchase pays if and only if <var>k</var> &lt; <var>K</var> = (2/3)ρ(1 − π)Δ<sub>T</sub>, which is ρΔ<sub>T</sub>/3 at π = 1/2. At <var>k</var> = 0.02 trade starts at <var>r</var> = 1.973212. Entry rises from 0.25 to 0.375, against the paper's 0.523. It returns to ρ only above <var>r</var><sub>C</sub>(1) = 7.968627, where <var>g</var><sub>H</sub>(<var>r</var>) = <var>c</var><sub>H</sub>. So part (iii) fails at <var>r</var><sub>2</sub> = 3.6. Existence needs the directional completion: posterior one at the unused top flow. <span class="chip an">analytical</span></p>
+
+<figure>
+  <svg id="ch-p2" class="chart" viewBox="0 0 720 420" role="img" aria-label="Equilibrium entry against incumbent strength in the three discrete bases"></svg>
+  <figcaption>Equilibrium entry probability against incumbent strength <var>r</var> in the three discrete bases (<var>k</var> = 0.02, <var>b</var> = 2, <var>c</var><sub>L</sub> = 0, λ = 1). Each horizontal segment is an equilibrium branch. In the shaded strip, no trade and full orders are both equilibria. Dots mark each base's benchmark strengths; dashed verticals mark the ceilings. Panel (a) stays at 0.375 up to <var>r</var><sub>C</sub>(1) = 7.968627, off the chart. In panel (b), the short steep curve near <var>r</var> = 1.42 is the branch ŝ, with entry from 0.550812 to 0.625. It needs the rule (IM), under which the investor may mix at indifference, and its left end 1.405430 is a numerical diagnostic. Not drawn: branches with entry ρ only, branches that need challenger mixtures, and the two-sided mixed branches inside (1.220998, 2.124148). Values: closed forms of A1 §5, B2 Results 4 to 6 and C1 Prop. C1.1 and Result 3, printed by <code>scripts/REPORT/chart_values.py</code>.</figcaption>
+</figure>
+
+<!-- ============ 4 PROP 3 ============ -->
+<hr class="sep">
+<h2 id="p3"><span class="num">4</span>The Proposition 3 analog: coexistence</h2>
+<p>The paper's Proposition 3 rests on computer-assisted certificates at <var>r</var> = 1.55, 1.60 and 1.65. There no trade coexists with informative equilibria, and entry rises with strength across them (0.545053, 0.548756, 0.551361). The discrete-Laplace bases give the coexistence part in closed form. No discrete base gives the upward order at those three strengths.</p>
+
+<h3>Buy-only discrete-Laplace, <var>c</var><sub>H</sub> = 5</h3>
+<ul>
+  <li>No trade and full purchases are both equilibria exactly on [<var>r</var><sub>F</sub>, <var>r</var><sub>N</sub>] = [1.443322, 1.747878]. This holds under every pair of tie rules; if the investor chooses zero at indifference, the left end is open. <span class="chip an">analytical</span></li>
+  <li>The feedback condition is (1 + ρ)<var>a</var>/(1 + <var>a</var>)<sup>2</sup> &gt; ρ/2, that is 0.2938 against 0.125. The margin is large.</li>
+  <li>Under challenger mixtures (CM) there is exactly one more outcome, a partial purchase rate <var>s</var>*. Entry is strictly ordered within each strength: no trade &lt; <var>s</var>* &lt; full purchases. <span class="chip an">analytical</span></li>
+  <li>The paper's three strengths lie inside the interval: two outcomes under the paper's tie rule (an indifferent challenger prepares), three under challenger mixtures (CM).</li>
+  <li>Entry rises across strengths only on the branch ŝ, on (1.405430, 1.443322), just below <var>r</var><sub>F</sub>. That branch coexists with no trade, not with full purchases. <span class="chip an">analytical</span> (local); its left end is a <span class="chip nd">numerical diagnostic</span></li>
+  <li>At 1.55, 1.60 and 1.65, entry is flat at 0.625 on the full branch. On the <var>s</var>* branch it falls: 0.366, 0.329, 0.299.</li>
+</ul>
+
+<h3>Two-sided discrete-Laplace, <var>c</var><sub>H</sub> = 6</h3>
+<ul>
+  <li>No trade and full orders both exist exactly when Δ<sub>T</sub>(<var>r</var>) ∈ [<var>k</var>/<var>c</var><sub>T</sub>, 2<var>k</var>/ρ], with <var>c</var><sub>T</sub> = 0.227825 &gt; ρ/2 = 0.125. At <var>k</var> = 0.02 this is <var>r</var> ∈ [1.515898, 1.747878], which contains 1.55, 1.60 and 1.65. <span class="chip an">analytical</span></li>
+  <li>Feedback creates the overlap. Without recruitment the full-order coefficient would be 0.102271 &lt; 0.125, and the two ranges would not meet.</li>
+  <li>Full-order entry is flat at 0.569293, so the upward order is not reproduced. The mixed branches are known only on a grid. Full buys with partial sells exist on (1.515898, 1.533807), and there entry rises. A second such branch, with entry ρ, lies on (1.819330, 1.840115). <span class="chip nd">numerical diagnostic</span></li>
+</ul>
+
+<h3>Unequal three-point noise with mixtures at indifference (C9)</h3>
+<ul>
+  <li>Noise probabilities (2/5, 2/5, 1/5), <var>c</var><sub>H</sub> = 6, <var>k</var> = 0.02. On [63/40, 317/200] = [1.575, 1.585] there are exactly three outcomes: no trade and two informative outcomes. <span class="chip an">analytical</span></li>
+  <li>On one branch entry rises: 0.526900 &lt; 0.535188 &lt; 0.543596 at <var>r</var> = 1.575, 1.58 and 1.585. <span class="chip an">analytical</span></li>
+  <li>The scope is narrow. The branch lives on (1.574345, 1.588760], width 0.0144. The investor mixes at zero profit. The top flow still reveals class H. The result needs the directional completion, and under the paper's tie rule (an indifferent challenger prepares) only two outcomes remain. <span class="chip vd v-oc">overclaimed</span> as "ordered equilibria recovered".</li>
+</ul>
+
+<figure>
+  <svg id="ch-p3" class="chart" viewBox="0 0 720 270" role="img" aria-label="Strength intervals with coexistence and with an upward entry branch"></svg>
+  <div class="legend">
+    <span><span class="key" style="background:var(--c1)"></span> no trade coexists with full or informative orders</span>
+    <span><span class="key" style="background:var(--c3)"></span> branch where entry rises with strength</span>
+    <span><span class="key dot" style="background:var(--c2)"></span> the paper's certified strengths, with the paper's entry</span>
+  </div>
+  <figcaption>Strength intervals at <var>k</var> = 0.02. The dashed vertical is the no-trade boundary <var>r</var><sub>N</sub> = 1.747878 of both discrete-Laplace bases and of the paper. The third row is a different base: three-point noise with probabilities (2/5, 2/5, 1/5). Its blue bar is the interval with exactly three outcomes, and its green bar is the window of the upward branch. The green bar in the second row is a numerical diagnostic. So is the left end 1.405430 of the green bar in the first row. Sources: B2 Result 6, C1 Result 3 and X_C1, C9 Section 3, RED_TEAM §4.1.</figcaption>
+</figure>
+<div class="box">
+<p><b>Suggested footnote at Proposition 3.</b></p>
+<div class="quote">The coexistence of no trade with full orders has a closed-form proof in the discrete companion, which supports the computer-assisted certificates. Feedback raises the full-order payoff coefficient <var>c</var><sub>T</sub> = 0.227825 above the no-trade coefficient ρ/2 = 0.125. So both outcomes exist exactly for Δ<sub>T</sub>(<var>r</var>) ∈ [<var>k</var>/<var>c</var><sub>T</sub>, 2<var>k</var>/ρ]. In the buy-only variant the condition reads (1 + ρ)<var>a</var>/(1 + <var>a</var>)<sup>2</sup> &gt; ρ/2.</div>
+</div>
+
+<!-- ============ 5 MODIFICATIONS ============ -->
+<hr class="sep">
+<h2 id="mods"><span class="num">5</span>The modifications, ranked</h2>
+<p>Each modification changes the discrete-Laplace base, unless the card names the three-point base. The rank uses four criteria:</p>
+<ul>
+  <li>what the modification recovers from the paper, or what new result it creates;</li>
+  <li>its status after the checks;</li>
+  <li>its robustness to tie rules, unused-flow beliefs, <var>c</var><sub>L</sub> and parameters;</li>
+  <li>its simplicity.</li>
+</ul>
+<ol class="mods">
+  <li class="mod"><div class="rk">1</div><div>
+    <h4>Two-sided unit orders with geometric-count noise (C1)</h4>
+    <p><span class="lb">Mechanism.</span> The sale after bad news restores the paper's two-unit likelihood span, so the posterior bounds are the paper's <var>m</var>, <var>M</var>.</p>
+    <p><span class="lb">Key numbers.</span> Entry 0.569293; <var>r</var><sub>C</sub> = 3.592659; <var>r</var><sub>N</sub> = 1.747878.</p>
+    <p><span class="lb">Recovers.</span> Prop. 2(i) to (iii) at the paper's own <var>c</var><sub>H</sub> = 6 and strengths; coexistence on [1.516, 1.748]; the direction "the buyer is the strong side".</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span> for the corners; <span class="chip nd">numerical diagnostic</span> for the branches.</p>
+    <p><span class="lb">Robustness.</span> The corner results hold under both tie rules. No flow is unused. The floor holds at <var>c</var><sub>L</sub> = 1 (<var>B</var><sub>3</sub>(<var>m</var>) = 2.37).</p>
+    <p><span class="lb">Caveat.</span> No (1, −<var>v</var>) at 1.55 to 1.65; full-order entry is flat; the full mixed correspondence is open.</p>
+  </div></li>
+  <li class="mod"><div class="rk">2</div><div>
+    <h4>Two trading rounds before entry, with fresh investors (C2)</h4>
+    <p><span class="lb">Mechanism.</span> A second binary signal widens the belief range to [<var>m</var><sub>2</sub>, <var>M</var><sub>2</sub>] = [0.269, 0.731].</p>
+    <p><span class="lb">Key numbers.</span> Coexistence at (<var>r</var>, <var>k</var>) = (1.7, 0.02) with <var>c</var><sub>H</sub> = 6; entry 0.25 → 0.448747 → 0.25 at (1.2, 3, 3.6).</p>
+    <p><span class="lb">Recovers.</span> Prop. 2 at <var>c</var><sub>H</sub> = 6 and the paper's strengths; coexistence at the original costs; a price path that falls without news.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span>; <span class="chip ca">computer-assisted</span> at the benchmark.</p>
+    <p><span class="lb">Robustness.</span> No belief rule; it holds in both designs of the exercise; at <var>c</var><sub>L</sub> = 1 the equilibrium path is the same.</p>
+    <p><span class="lb">Caveat.</span> Two units of capacity do part of the work: <var>M</var><sub>2</sub> equals the paper's <var>M</var>. The ceiling margin at 3.6 is 0.0027.</p>
+  </div></li>
+  <li class="mod"><div class="rk">3</div><div>
+    <h4>Costly information acquisition by the investor (C6)</h4>
+    <p><span class="lb">Mechanism.</span> Recruited entry raises the private value of information, so research and entry are complements.</p>
+    <p><span class="lb">Key numbers.</span> At <var>r</var> = 3, no research and full research coexist for research costs κ ∈ [0.031667, 0.087918]. At κ = 0.02, entry is 0.25 → 0.625 → 0.25 at (1.2, 3, 4.2).</p>
+    <p><span class="lb">Creates.</span> Coexistence at the strong benchmark; "competition creates research", in local form.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span></p>
+    <p><span class="lb">Robustness.</span> Challenger mixtures add a third equilibrium. The barrier at <var>c</var><sub>H</sub> = 6 needs <var>b</var> &gt; 1.9576. No belief rule.</p>
+    <p><span class="lb">Caveat.</span> The feedback is the base model's feedback in another coordinate. Research can lower welfare.</p>
+  </div></li>
+  <li class="mod"><div class="rk">4</div><div>
+    <h4>Unequal three-point noise with mixtures at indifference (C9, three-point base)</h4>
+    <p><span class="lb">Mechanism.</span> A non-uniform law makes a camouflage flow informative, so the purchase payoff moves with the purchase rate.</p>
+    <p><span class="lb">Key numbers.</span> Exactly three outcomes on [1.575, 1.585]; entry 0.5269 &lt; 0.5352 &lt; 0.5436.</p>
+    <p><span class="lb">Creates.</span> Coexistence and an upward entry branch in the three-point base; existence for every parameter vector.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span></p>
+    <p><span class="lb">Robustness.</span> Needs the directional completion; one informative branch needs challenger mixtures; the window is 0.0144 wide.</p>
+    <p><span class="lb">Caveat.</span> A mixture at zero profit, not an optimal order size. The top flow still reveals class H.</p>
+  </div></li>
+  <li class="mod"><div class="rk">5</div><div>
+    <h4>An option to delay preparation (C3)</h4>
+    <p><span class="lb">Mechanism.</span> A second price screens entry. With discrete-Laplace noise the challenger needs two good prices.</p>
+    <p><span class="lb">Key numbers.</span> Discrete Laplace at discount factor δ = 0.95: entry 0.625 → 0.448747 at <var>r</var> = 3, ceiling 3.986 → 5.606. Three-point: entry 3/8 → 11/24.</p>
+    <p><span class="lb">Creates.</span> Coexistence in a cost window; a delay result that is not monotone; a ceiling further out.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span> after the checks.</p>
+    <p><span class="lb">Robustness.</span> Needs private preparation decisions and δ &gt; 0.899. The closed plateau endpoints were wrong.</p>
+    <p><span class="lb">Caveat.</span> The sign of the entry effect flips across the two bases. The coexistence example uses a trading cost other than the benchmark <var>k</var>.</p>
+  </div></li>
+  <li class="mod"><div class="rk">6</div><div>
+    <h4>An informed investor with a stake (C5, both bases)</h4>
+    <p><span class="lb">Mechanism.</span> A holder gains from entry in both states, so class L may buy to recruit.</p>
+    <p><span class="lb">Key numbers.</span> Prop. 2 holds if and only if the stake ω &lt; 0.1805 (three-point) or 0.1878 (discrete Laplace). In the three-point base, class L buys from ω = 2.027, and no equilibrium exists above 2.599 under the paper's rules.</p>
+    <p><span class="lb">Creates.</span> Exact robustness bounds for Prop. 2; new mixed branches; coexistence in the three-point base.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span>; <span class="chip ca">computer-assisted</span></p>
+    <p><span class="lb">Robustness.</span> The weak-economy bound depends on the directional belief. Challenger mixtures repair the nonexistence.</p>
+    <p><span class="lb">Caveat.</span> Manipulation destroys 96.7% of the information surplus. The claim of a "rent transfer" is wrong.</p>
+  </div></li>
+  <li class="mod"><div class="rk">7</div><div>
+    <h4>The incumbent bids after the price (C7)</h4>
+    <p><span class="lb">Mechanism.</span> After good news, strong incumbent types bid just enough to deter the high-cost challenger.</p>
+    <p><span class="lb">Key numbers.</span> Entry 0.625 → 0.366988; a transfer of 0.171896 to the incumbent.</p>
+    <p><span class="lb">Creates.</span> A weaker form of the mechanism; a pure-transfer result; new mixed branches.</p>
+    <p><span class="lb">Status.</span> <span class="chip an">analytical</span> under rule IC-P and a selection; <span class="chip nd">numerical diagnostic</span> for the branches.</p>
+    <p><span class="lb">Robustness.</span> Two selections. The boundary tie differs from the paper's. At <var>c</var><sub>H</sub> = 5 a second weak-economy equilibrium reverses the rise.</p>
+    <p><span class="lb">Caveat.</span> The belief completion is an extra assumption. The claim of silence by every type was wrong.</p>
+  </div></li>
+  <li class="mod"><div class="rk">8</div><div>
+    <h4>A public toehold for the challenger (C10)</h4>
+    <p><span class="lb">Mechanism.</span> A stake <var>s</var> adds <var>s</var>(<var>w</var><sub>L</sub> + Δ<sub>T</sub>μ) to the entry gain.</p>
+    <p><span class="lb">Key numbers.</span> The <var>c</var><sub>H</sub> window widens from 0.508 to 0.602 at <var>s</var> = 0.2; <var>r</var><sub>C</sub>(0.1) = 4.395.</p>
+    <p><span class="lb">Recovers.</span> A wider Prop. 2 window; a ceiling further out.</p>
+    <p><span class="lb">Status.</span> <span class="chip nd">numerical diagnostic</span> with fixed bids.</p>
+    <p><span class="lb">Robustness.</span> Bids are held truthful. Under optimal bids Δ<sub>T</sub> falls by 17% at <var>s</var> = 0.1.</p>
+    <p><span class="lb">Caveat.</span> A partial-equilibrium result only.</p>
+  </div></li>
+</ol>
+
+<h3>Modifications that failed, and why</h3>
+<div class="tw"><table class="stack sm">
+  <thead><tr><th>Modification</th><th>What happened</th><th>Reason</th><th>Status</th></tr></thead>
+  <tbody>
+  <tr><td>Reserve set after the price (C8)</td><td data-l="What happened">At the benchmark the seller sets <var>p</var> = <var>h</var>. Entry stays ρ, trade is full at both strengths, and Prop. 2 fails.</td><td data-l="Reason">Hold-up: exclusion is worth ρμ<var>h</var>, more than accommodation. It rests on <var>c</var><sub>L</sub> ≤ 0.1 and the rule "prepare at indifference". At <var>c</var><sub>L</sub> = 1 the entry rise returns, but not Prop. 2(i).</td><td data-l="Status"><span class="chip ca">computer-assisted</span></td></tr>
+  <tr><td>Target disclosure (C10)</td><td data-l="What happened">The optimal test gives entry 0.969 at <var>r</var><sub>0</sub> and 0.786 at <var>r</var><sub>1</sub>. The reversal dies.</td><td data-l="Reason">A costless certifier beats the market. The result is a scope limit on the paper's claim.</td><td data-l="Status"><span class="chip an">analytical</span> under a stated condition; <span class="chip nd">numerical diagnostic</span> on the grid</td></tr>
+  <tr><td>Sequential challengers (C4)</td><td data-l="What happened">No cascade. Prop. 2(i) is lost. At <var>c</var><sub>H</sub> = 5, the second challenger's entry falls with strength.</td><td data-l="Reason">A second potential challenger makes state HH worth <var>h</var>, so trade pays at every strength. The auction tie at <var>h</var> sets the second entrant's rent to zero.</td><td data-l="Status"><span class="chip an">analytical</span>; <span class="chip ca">computer-assisted</span></td></tr>
+  <tr><td>Delay in the three-point base (C3)</td><td data-l="What happened">Entry rises to 11/24. No coexistence.</td><td data-l="Reason">Round 2 is the bottleneck; the flow that recruits still pays zero.</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Repetition with equal noise (C2, design S)</td><td data-l="What happened">No graded beliefs and no open coexistence interval.</td><td data-l="Reason">Each round reveals the class or stays at the prior.</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  <tr><td>Private lockup (C7, model L)</td><td data-l="What happened">The target never accepts it.</td><td data-l="Reason">The second-price rule already pays the target the incumbent's value.</td><td data-l="Status"><span class="chip an">analytical</span></td></tr>
+  </tbody>
+</table></div>
+<div class="box">
+<p><b>The change of base is the largest gain.</b> The move from three-point to discrete-Laplace noise does more than any single modification. The earlier study of the same day (<code>audit/alex_meeting_2026_10_21/</code>) recommended a three-point companion. That companion is now dominated: it needs an unused-flow completion, returns only above 7.97, and has no coexistence.</p>
+</div>
+
+<!-- ============ 6 REFUTED ============ -->
+<hr class="sep">
+<h2 id="fell"><span class="num">6</span>Claims that the checks refuted or downgraded</h2>
+<p>The checks corrected the claims below. This report uses only the corrected versions.</p>
+<h3>Refuted</h3>
+<div class="tw"><table class="stack sm">
+  <thead><tr><th>Claim</th><th>Source</th><th>Verdict</th><th>Correct number or reason</th></tr></thead>
+  <tbody>
+  <tr><td>Without entry after good news, a purchase at <var>r</var><sub>1</sub> nets +0.060</td><td data-l="Source">brief §0</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span></td><td data-l="Correction">+0.058335 = 2ρ<var>a</var>Δ<sub>T</sub>(3)/(1 + <var>a</var>)<sup>2</sup> − <var>k</var>. No nearby object gives 0.060.</td></tr>
+  <tr><td>A stake moves the challenger's rent to shareholders</td><td data-l="Source">C5</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span></td><td data-l="Correction">Shareholders gain 0.023973, and the challenger loses 0.307292; the ratio is 11/141. The rest is preparation cost in the wrong state. The surplus loss of 96.67% stands.</td></tr>
+  <tr><td>Silence by every incumbent type survives the Intuitive Criterion and D1</td><td data-l="Source">C7</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span></td><td data-l="Correction">At (<var>r</var>, μ) = (3, 3/5), a bid <var>J</var> = 2 deters under every belief. Type <var>R</var> = 3 gains 1/20 from it.</td></tr>
+  <tr><td>Unobservable preparation before the reserve gives the same game</td><td data-l="Source">C8</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span></td><td data-l="Correction">With preparation sunk, the deviation to <var>p</var> = <var>h</var> at (3.6, <var>M</var><sub>1</sub>) earns 6.224593 &gt; 1.584420.</td></tr>
+  <tr><td>The late ceiling at discount factor 0.8 equals 8</td><td data-l="Source">C3</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span></td><td data-l="Correction">The root is 2.910409; the residual at 8 is −1.489972.</td></tr>
+  <tr><td>Every larger bid through ℓ survives</td><td data-l="Source">C7</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span> in general</td><td data-l="Correction">Counterexample at (<var>r</var>, μ) = (6/5, 11/20). A continuum does survive at the benchmark posterior.</td></tr>
+  <tr><td>Under the optimal test, entry falls at every strength</td><td data-l="Source">C10</td><td data-l="Verdict"><span class="chip vd v-rf">refuted</span> as a global statement</td><td data-l="Correction">Entry jumps up at <var>r</var> = 1.413360. It still falls from 0.968667 at 1.2 to 0.786353 at 3.</td></tr>
+  </tbody>
+</table></div>
+<p class="small muted">The first five are the claims named for the red-team review: one number in the brief and four claims in the memos. The last two are the further general statements.</p>
+
+<h3>Overclaimed</h3>
+<div class="tw"><table class="stack sm">
+  <thead><tr><th>Claim</th><th>Source</th><th>Verdict</th><th>What the evidence supports</th></tr></thead>
+  <tbody>
+  <tr><td>Prop. 2 survives the incumbent's response, in weaker form</td><td data-l="Source">C7</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span></td><td data-l="Evidence">At <var>c</var><sub>H</sub> = 5 a reserve-bid equilibrium at <var>r</var><sub>0</sub> gives entry 0.5625, which reverses the comparison. The result depends on a selection.</td></tr>
+  <tr><td>Ordered informative equilibria are recovered with unequal noise</td><td data-l="Source">C9</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span></td><td data-l="Evidence">One branch, width 0.0144, with a mixture at indifference and no (1, −<var>v</var>).</td></tr>
+  <tr><td>The optimal disclosure test is computer-assisted</td><td data-l="Source">C10</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span> label</td><td data-l="Evidence">A float grid plus bisection. An interval check at <var>r</var> = 3 certifies the benchmark.</td></tr>
+  <tr><td>A public toehold widens the window and moves the ceiling out</td><td data-l="Source">C10</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span></td><td data-l="Evidence">Bids are fixed at truth. The low type's optimal bid cuts Δ<sub>T</sub> by 17% at <var>s</var> = 0.1.</td></tr>
+  <tr><td>The buyer is inframarginal and the seller marginal, in general</td><td data-l="Source">C1</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span></td><td data-l="Evidence">It holds for the corners and for the branches with full buys and partial sells. It fails on the branch with partial buys and no sales at <var>c</var><sub>H</sub> = 5.</td></tr>
+  <tr><td>The reserve result <var>p</var> = <var>h</var> is certified</td><td data-l="Source">C8</td><td data-l="Verdict"><span class="chip vd v-oc">overclaimed</span> label</td><td data-l="Evidence">A 25-point sample is not a certificate. The independent check supplies one, so the result is confirmed.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Confirmed, with a correction that matters for the paper</h3>
+<div class="tw"><table class="stack sm">
+  <thead><tr><th>Claim</th><th>Source</th><th>Verdict</th><th>Correction</th></tr></thead>
+  <tbody>
+  <tr><td>Entry rises with strength on an informative branch that coexists with no trade</td><td data-l="Source">B1, B2, X_C1</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">Only on (1.405430, 1.443322), not at 1.55 to 1.65.</td></tr>
+  <tr><td>Two rounds give coexistence and Prop. 2 at <var>c</var><sub>H</sub> = 6</td><td data-l="Source">C2</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">Two units of capacity do part of the work. The ceiling margin at 3.6 is 0.0027.</td></tr>
+  <tr><td>Delay lowers entry to 0.448747 and moves the ceiling to 5.606</td><td data-l="Source">C3</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">It needs private preparation decisions and δ &gt; 0.899.</td></tr>
+  <tr><td>Prop. A.10 dies at <var>c</var><sub>L</sub> = 0</td><td data-l="Source">A1</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">"Not applicable": its hypothesis fails at <var>c</var><sub>L</sub> = 0. At <var>c</var><sub>L</sub> = 1 bounded noise does create pools.</td></tr>
+  <tr><td>Sequential challengers: no cascade, and Prop. 2(i) is lost</td><td data-l="Source">C4</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">The welfare gains are weak. The broad scans change the tie rule. The no-cascade bound uses the point-mass tie.</td></tr>
+  <tr><td>Target disclosure raises entry to 0.786 and ownership to 0.5</td><td data-l="Source">C10</td><td data-l="Verdict"><span class="chip vd v-cc">confirmed with correction</span></td><td data-l="Correction">Entry under the optimal test is not monotone in <var>r</var>; it jumps at 1.413.</td></tr>
+  </tbody>
+</table></div>
+<p class="small muted">No shared number disagrees across the memos. The welfare level has two conventions: 2.700394 with preparation costs only, and 2.690394 with the trading cost too. The gains agree.</p>
+
+<!-- ============ 7 RECOMMENDATION ============ -->
+<hr class="sep">
+<h2 id="rec"><span class="num">7</span>Recommendation for the paper</h2>
+<p>The Laplace case stays the benchmark. Nothing here changes the paper's main text. Three additions are worth the author's time, and the rest should stay out.</p>
+<h3>Put in the paper</h3>
+<ol>
+  <li><b>One remark after Proposition 2 or in Section 5.1, five to eight lines.</b> State the discrete companion. Orders are units in {−1, 0, 1}. Noise is the difference of two independent geometric counts of unit orders, with scale <var>a</var> = e<sup>−1/<var>b</var></sup>. Give its exact matches and what does not transfer. Put the geometric-count story for the noise beside the noise justification of Section 2.3.</li>
+  <li><b>One online-appendix section, two to three pages.</b> Give Proposition C1.1 with conditions (D1) to (D3) and its proof. Give the coexistence result on [1.515898, 1.747878] with its closed-form endpoints. Give the exact-match statement with its two reasons, both tie rules, and the fact that no flow is unused.
+    <ul>
+      <li>Add the buy-only variant as one paragraph: its window (4.804167, 5.312161], its ceiling 3.986097, and its analytical Proposition 3 analog. Mention the third outcome under challenger mixtures.</li>
+      <li>State that the two-sided mixed branches are numerical diagnostics, and that the upward entry order at 1.55 to 1.65 is not reproduced.</li>
+    </ul></li>
+  <li><b>One footnote at Proposition 3.</b> The coexistence of no trade with full orders has a closed-form proof in the discrete companion (text in Section 4 above).</li>
+</ol>
+<div class="box">
+<p><b>A possible text for the remark.</b> This draft uses only the results above; the author should adapt it.</p>
+<div class="quote">Remark (a discrete companion). Let orders take values in {−1, 0, 1}. Let noise be the difference of two independent geometric counts of unit orders, so that Pr(<var>Z</var> = <var>z</var>) ∝ <var>a</var><sup>|<var>z</var>|</sup> with <var>a</var> = e<sup>−1/<var>b</var></sup>. At the benchmark the posterior bounds are <var>m</var> and <var>M</var>, the ceiling is <var>r</var><sub>C</sub> = 3.592659, and the no-trade boundary is <var>r</var><sub>N</sub> = 1.747878. All four equal the Laplace values. Entry rises from 0.25 to 0.569293 and returns to 0.25. The proof needs no derivative bound, because the investor's choice is one comparison. The uniqueness bound <var>r</var><sub>U</sub>, the entry levels and the order pattern (1, −<var>v</var>) do not transfer.</div>
+</div>
+<h3>Keep out</h3>
+<ul>
+  <li><b>The reserve set after the price.</b> It is a hold-up result that rests on <var>c</var><sub>L</sub> ≤ 0.1 and a tie rule, and it is not the paper's question.</li>
+  <li><b>Target disclosure.</b> It answers a different question. At most, one sentence in the conclusion: the mechanism matters when the target cannot certify fit.</li>
+  <li><b>The stake, the incumbent's response and sequential entry.</b> Each rests on a belief completion or a selection, and each changes the question.</li>
+  <li><b>The three-point model.</b> It is dominated as a companion.</li>
+</ul>
+<h3>Two extensions that merit further work</h3>
+<ul>
+  <li><b>Costly information acquisition (C6).</b> The result is analytical and clean. No research and full research coexist on a cost interval at the strong benchmark. A stronger incumbent raises the private return to research within an entry regime. It connects the paper to the verified record of Dow, Goldstein and Guembel (2017). Open: the welfare sign and the tie rule.</li>
+  <li><b>Two trading rounds (C2).</b> It recovers Prop. 2 and coexistence at the paper's own costs, and it adds a testable price-path implication. Before any use, repeat the exercise with a fixed cumulative purchase limit, to remove the capacity confound.</li>
+</ul>
+<div class="box warn">
+<p><b>A caution on parameters.</b> Any buy-only discrete statement needs <var>c</var><sub>H</sub> ∈ (4.804167, 5.312161]. In the buy-only base the paper's <var>c</var><sub>H</sub> = 6 recruits nobody when <var>b</var> &gt; 1.9576, which includes <var>b</var> = 2. Any two-sided discrete statement keeps <var>c</var><sub>H</sub> = 6.</p>
+</div>
+
+<!-- ============ 8 OPEN ============ -->
+<hr class="sep">
+<h2 id="open"><span class="num">8</span>What remains open, ranked</h2>
+<ol>
+  <li>The full mixed correspondence of the two-sided discrete model, and its exact uniqueness thresholds inside (1.220998, 2.124148). Only a numerical map exists. <span class="chip op">open</span></li>
+  <li>The order of the branch regions in <var>r</var> for the buy-only base. The boundaries <var>r</var><sub>I</sub> and <var>r</var><sub>U</sub> each come from one sign change on a 5,701-point grid. No proof shows that each crosses once. <span class="chip nd">numerical diagnostic</span></li>
+  <li>Atomless preparation costs in the discrete-Laplace model. The outcome <var>s</var>* should become an interior root, and coexistence should survive. <span class="chip cj">conjecture</span></li>
+  <li>Two rounds with a fixed cumulative purchase limit; the game with an infinite horizon and a retained position. <span class="chip op">open</span></li>
+  <li>Sequential challengers: existence at class correlation κ = −1/2, <var>r</var> = 3.6, <var>c</var><sub>H</sub> = 4.4; uniqueness over mixtures at <var>r</var> = 3 and 3.6. Also the value spread inside a class in condition (NC), and a long-lived investor. <span class="chip op">open</span></li>
+  <li>The incumbent's response: a derivation of rule IC-P from a perturbed game; a bid before the price; value classes that are not point masses. <span class="chip op">open</span></li>
+  <li>The reserve after the price with <var>c</var><sub>L</sub> &gt; 0 in general; an open set for Proposition C8.4; seller objectives other than proceeds. <span class="chip op">open</span></li>
+  <li>The Laplace plateau with a large stake: whether challenger mixtures remove the nonexistence found in the earlier study. <span class="chip cj">conjecture</span></li>
+  <li>Disclosure with mixed investor ties in the gaps; the toehold with optimal bids; costly or limited tests. <span class="chip op">open</span></li>
+  <li>A region map for unequal noise beyond the one certified interval. <span class="chip op">open</span></li>
+  <li>Analogs of Props. A.5 to A.7 in the discrete-Laplace model: private signals, atomless costs, a logistic comparison. <span class="chip op">open</span></li>
+  <li>Full texts of the sources with only a verified abstract, before any new citation: Fishman (1988); Bulow, Huang and Klemperer (1999); Daniel and Hirshleifer (2018). <span class="chip op">open</span></li>
+</ol>
+
+<!-- ============ 9 METHOD ============ -->
+<hr class="sep">
+<h2 id="method"><span class="num">9</span>How the work was done and checked, and the memos</h2>
+<ul>
+  <li><b>Phase 1, four workstreams.</b> A: the three-point model, by a full characterization (A1) and a brute-force enumeration of all pure and mixed equilibria (A2). B: the discrete-Laplace model, by a numerical verification of the brief's claims (B1) and the theory (B2). C: ten modifications, C1 to C10. D: the literature, from verified records only.</li>
+  <li><b>Phase 2, independent checks.</b> A1 and A2 checked each other, and so did B1 and B2. Each modification got an independent check by another member (X_C1 to X_C10). The checker reproduced or refuted each headline claim and did not explore further.</li>
+  <li><b>Phase 3, one red-team pass.</b> It attacked the headline claims of all 25 memos in 76 verdict rows. It re-derived the key steps and recomputed the key numbers with five print-only scripts. These use exact fractions where the inputs are rational, and 30 to 40 digits otherwise. The synthesis then fixed the verdicts, the survival table and the rank.</li>
+</ul>
+<p class="small">The paper was read at the pinned commit <code>9b9bf3ce1a94d5017042192e61c9ceb800d310ba</code> of <code>overleaf/paper</code>. No file of the paper was changed. Scripts compute and print only. Every number in this report comes from SYNTHESIS.md, RED_TEAM.md or the named memo. The chart values come from <code>scripts/REPORT/chart_values.py</code>; its output is in <code>chart_values.out.txt</code> beside it.</p>
+<div class="tw"><table class="stack sm memo-index">
+  <thead><tr><th>Memo</th><th>Topic</th><th>Checked by</th></tr></thead>
+  <tbody>
+  <tr><td><code>A_three_point.md</code></td><td data-l="Topic">A1: three-point model, full characterization with presence λ</td><td data-l="Checked by">A2</td></tr>
+  <tr><td><code>A_bruteforce.md</code></td><td data-l="Topic">A2: brute-force enumeration of the three-point model</td><td data-l="Checked by">A1</td></tr>
+  <tr><td><code>B_dlaplace_numeric.md</code></td><td data-l="Topic">B1: discrete-Laplace model, numerical verification</td><td data-l="Checked by">B2</td></tr>
+  <tr><td><code>B_dlaplace_theory.md</code></td><td data-l="Topic">B2: discrete-Laplace theory: Prop. 2 and 3 analogs, welfare, general prior</td><td data-l="Checked by">B1</td></tr>
+  <tr><td><code>C1_two_sided.md</code></td><td data-l="Topic">Two-sided unit orders</td><td data-l="Checked by"><code>X_C1_check.md</code></td></tr>
+  <tr><td><code>C2_two_rounds.md</code></td><td data-l="Topic">Two trading rounds before entry</td><td data-l="Checked by"><code>X_C2_check.md</code></td></tr>
+  <tr><td><code>C3_delay.md</code></td><td data-l="Topic">An option to delay preparation</td><td data-l="Checked by"><code>X_C3_check.md</code></td></tr>
+  <tr><td><code>C4_sequential.md</code></td><td data-l="Topic">Several potential challengers in sequence</td><td data-l="Checked by"><code>X_C4_check.md</code></td></tr>
+  <tr><td><code>C5_stake.md</code></td><td data-l="Topic">An informed investor with a stake</td><td data-l="Checked by"><code>X_C5_check.md</code></td></tr>
+  <tr><td><code>C6_info_acquisition.md</code></td><td data-l="Topic">Costly information acquisition</td><td data-l="Checked by"><code>X_C6_check.md</code></td></tr>
+  <tr><td><code>C7_incumbent.md</code></td><td data-l="Topic">The incumbent responds to the price</td><td data-l="Checked by"><code>X_C7_check.md</code></td></tr>
+  <tr><td><code>C8_reserve.md</code></td><td data-l="Topic">The seller sets the reserve after the price</td><td data-l="Checked by"><code>X_C8_check.md</code></td></tr>
+  <tr><td><code>C9_unequal_mixing.md</code></td><td data-l="Topic">Unequal noise with mixtures at indifference</td><td data-l="Checked by"><code>X_C9_check.md</code></td></tr>
+  <tr><td><code>C10_other.md</code></td><td data-l="Topic">Target disclosure; a toehold; trades by the challenger before entry</td><td data-l="Checked by"><code>X_C10_check.md</code></td></tr>
+  <tr><td><code>D_literature.md</code></td><td data-l="Topic">Literature on discrete feedback, dynamics, sequential entry, real options, manipulation</td><td data-l="Checked by">red team</td></tr>
+  <tr><td><code>RED_TEAM.md</code></td><td data-l="Topic">Verdicts on the headline claims; reconciliation; refuted claims</td><td data-l="Checked by">—</td></tr>
+  <tr><td><code>SYNTHESIS.md</code></td><td data-l="Topic">Verdicts, survival table, rank, recommendation, open items</td><td data-l="Checked by">—</td></tr>
+  </tbody>
+</table></div>
+<p class="small muted">All memos: <code>audit/discrete_exploration_2026_10_21/memos/</code>. Scripts: <code>audit/discrete_exploration_2026_10_21/scripts/&lt;memo stem&gt;/</code>.</p>
+
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg', FS=12;
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  // Text with subscripts: "r_C" or "r_{C}(1)"; shifts use user units, so every browser agrees.
+  function txt(parent,x,y,s,attrs){
+    var t=el('text',Object.assign({x:x,y:y},attrs||{}),parent), down=false, sh=Math.round(FS*0.28);
+    String(s).split(/(_\{[^}]*\}|_[A-Za-z0-9]+)/).forEach(function(q){
+      if(!q)return; var ts=el('tspan',{},t);
+      if(q[0]==='_'&&q.length>1){ts.setAttribute('font-size','0.9em');ts.setAttribute('dy',down?0:sh);ts.textContent=q[1]==='{'?q.slice(2,-1):q.slice(1);down=true;}
+      else{if(down){ts.setAttribute('dy',-sh);down=false;}ts.textContent=q;}
+    });
+    return t;
+  }
+  function setup(id,ww,hw,wn,hn){
+    var svg=document.getElementById(id); if(!svg)return null;
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    var w=(svg.parentNode&&svg.parentNode.clientWidth)||720, narrow=w<520, W=narrow?wn:ww, H=narrow?hn:hw;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.classList.toggle('narrow',narrow); FS=narrow?16:12;
+    return {svg:svg,W:W,H:H,narrow:narrow};
+  }
+  function line(p,x1,y1,x2,y2,cls,extra){return el('line',Object.assign({x1:x1,y1:y1,x2:x2,y2:y2,'class':cls},extra||{}),p);}
+
+  // Chart 1: posterior after each flow (B2 Result 1, C1 Result 1).
+  function post(){
+    var c=setup('ch-post',720,360,460,402); if(!c)return; var svg=c.svg,W=c.W,H=c.H,n=c.narrow;
+    var ml=n?48:52, mr=n?16:24, x0=-4.6, x1=5.6, ph=n?126:108, top1=n?34:30, gap=n?56:48, top2=top1+ph+gap;
+    var xs=function(x){return ml+(x-x0)/(x1-x0)*(W-ml-mr);};
+    var a=Math.exp(-0.5), m1=a/(1+a), M1=1/(1+a), M=1/(1+a*a), m=1-M;
+    var ticks=n?[-4,-2,0,2,4]:[-4,-3,-2,-1,0,1,2,3,4,5];
+    [top1,top2].forEach(function(top,i){
+      var ys=function(v){return top+ph-v*ph;};
+      [0,0.5,1].forEach(function(v){line(svg,ml,ys(v),W-mr,ys(v),v===0?'ax':'grid');txt(svg,ml-7,ys(v)+4,v===0.5?'0.5':String(v),{'text-anchor':'end'});});
+      ticks.forEach(function(x){line(svg,xs(x),top+ph,xs(x),top+ph+4,'ax');txt(svg,xs(x),top+ph+(n?19:16),String(x).replace('-','−'),{'text-anchor':'middle'});});
+      txt(svg,ml,top-10,i===0?(n?'(a) buy-only orders':'(a) buy-only orders: class H buys one unit, class L does not'):(n?'(b) two-sided unit orders':'(b) two-sided unit orders: class H buys, class L sells'),{'class':'tf b'});
+    });
+    // Panel (a)
+    var ya=function(v){return top1+ph-v*ph;};
+    line(svg,ml,ya(M1),W-mr,ya(M1),'s1',{'stroke-dasharray':'5 4','stroke-width':1});
+    line(svg,ml,ya(m1),W-mr,ya(m1),'s1',{'stroke-dasharray':'5 4','stroke-width':1});
+    txt(svg,xs(-4.4),ya(M1)-7,'M_1 = 0.622',{'class':'t1 b'});
+    txt(svg,xs(5.4),ya(m1)+(n?19:16),'m_1 = 0.378',{'class':'t1 b','text-anchor':'end'});
+    for(var x=-4;x<=5;x++){el('circle',{cx:xs(x),cy:ya(x>=1?M1:m1),r:n?5:4.5,'class':'f1'},svg);}
+    [[-1,0],[0,0.5],[1,0.5],[2,1]].forEach(function(d){var s=n?9:8;el('rect',{x:xs(d[0])-s/2,y:ya(d[1])-s/2,width:s,height:s,'class':'f2'},svg);});
+    if(n)txt(svg,xs(2)+5,ya(1)+22,'flow 2 reveals H',{'class':'t2 b','text-anchor':'end'});else txt(svg,xs(2)+9,ya(1)+17,'flow 2 reveals class H',{'class':'t2 b'});
+    txt(svg,xs(-1)-9,ya(0)-7,'flow −1: 0',{'class':'t2 b','text-anchor':'end'});
+    // Panel (b)
+    var yb=function(v){return top2+ph-v*ph;};
+    line(svg,ml,yb(M),W-mr,yb(M),'sm',{'stroke-dasharray':'5 4','stroke-width':1});
+    line(svg,ml,yb(m),W-mr,yb(m),'sm',{'stroke-dasharray':'5 4','stroke-width':1});
+    var pts=[];for(var i=0;i<=200;i++){var xx=x0+(x1-x0)*i/200;pts.push(xs(xx).toFixed(1)+','+yb(1/(1+Math.exp(-(Math.abs(xx+1)-Math.abs(xx-1))/2))).toFixed(1));}
+    el('polyline',{points:pts.join(' '),fill:'none','class':'sm','stroke-width':2},svg);
+    for(var y=-4;y<=5;y++){el('circle',{cx:xs(y),cy:yb(y>=1?M:(y===0?0.5:m)),r:n?5:4.5,'class':'f1'},svg);}
+    txt(svg,xs(-4.4),yb(M)-7,'paper’s M = 0.731',{'class':'tf b'});
+    txt(svg,xs(5.4),yb(m)+(n?19:16),'paper’s m = 0.269',{'class':'tf b','text-anchor':'end'});
+    txt(svg,(ml+W-mr)/2,H-6,'order flow x',{'text-anchor':'middle'});
+  }
+
+  // Chart 2: entry against strength (A1 §5; B2 Results 4-6; C1 Prop. C1.1, Result 3).
+  var SHAT=[[1.40543,0.550812],[1.408587,0.556139],[1.411745,0.561581],[1.414903,0.567147],[1.41806,0.572844],[1.421218,0.578685],[1.424376,0.584682],[1.427534,0.59085],[1.430691,0.597205],[1.433849,0.60377],[1.437007,0.610568],[1.440164,0.617632],[1.443322,0.625]];
+  function p2(){
+    var c=setup('ch-p2',720,430,460,492); if(!c)return; var svg=c.svg,W=c.W,H=c.H,n=c.narrow;
+    var ml=n?50:52, mr=n?18:24, R0=1, R1=4.6, ph=n?100:88, top0=n?30:28, gap=n?52:46;
+    var xs=function(r){return ml+(r-R0)/(R1-R0)*(W-ml-mr);};
+    var P=[
+      {lab:n?'(a) three-point, c_H = 6':'(a) three-point noise, buy-only, c_H = 6',k:'2',segs:[[1,1.973212,0.25],[1.973212,R1,0.375]],jump:[1.973212,0.25,0.375],band:null,ceil:null,bench:[[1.2,0.25],[3,0.375],[3.6,0.375]],plat:null},
+      {lab:n?'(b) discrete-Laplace, buy-only, c_H = 5':'(b) discrete-Laplace noise, buy-only, c_H = 5',k:'1',segs:[[1,1.747878,0.25],[1.443322,3.986097,0.625],[3.986097,R1,0.25]],band:[1.443322,1.747878],ceil:[3.986097,0.625,'r_C = 3.986'],bench:[[1.2,0.25],[3,0.625],[4.2,0.25]],plat:[3.45,0.625,'0.625'],curve:SHAT},
+      {lab:n?'(c) discrete-Laplace, two-sided, c_H = 6':'(c) discrete-Laplace noise, two-sided, c_H = 6',k:'3',segs:[[1,1.747878,0.25],[1.515898,3.592659,0.569293],[3.592659,R1,0.25]],band:[1.515898,1.747878],ceil:[3.592659,0.569293,'r_C = 3.593'],bench:[[1.2,0.25],[3,0.569293],[3.6,0.25]],plat:[3.3,0.569293,'0.569']}
+    ];
+    var xt=n?[1,2,3,4]:[1,1.5,2,2.5,3,3.5,4,4.5];
+    P.forEach(function(q,i){
+      // No horizontal grid here: plateau labels sit between branches, so only axis ticks are drawn.
+      var top=top0+i*(ph+gap), ys=function(v){return top+ph-(v-0.2)/0.55*ph;};
+      if(q.band)el('rect',{x:xs(q.band[0]),y:top,width:xs(q.band[1])-xs(q.band[0]),height:ph,'class':'f'+q.k,'fill-opacity':0.13},svg);
+      line(svg,ml,top,ml,top+ph,'ax');
+      [0.25,0.5].forEach(function(v){line(svg,ml-4,ys(v),ml,ys(v),'ax');txt(svg,ml-7,ys(v)+4,v.toFixed(2),{'text-anchor':'end'});});
+      line(svg,ml,top+ph,W-mr,top+ph,'ax');
+      xt.forEach(function(r){line(svg,xs(r),top+ph,xs(r),top+ph+4,'ax');if(i===2)txt(svg,xs(r),top+ph+(n?20:17),String(r),{'text-anchor':'middle'});});
+      txt(svg,ml,top-10,q.lab,{'class':'tf b'});
+      if(q.jump){line(svg,xs(q.jump[0]),ys(q.jump[1]),xs(q.jump[0]),ys(q.jump[2]),'s'+q.k,{'stroke-dasharray':'3 3','stroke-width':1.5});
+        txt(svg,xs(q.jump[0])+6,ys((q.jump[1]+q.jump[2])/2)+5,n?'1.973':'cutoff 1.973',{'class':'t'+q.k});}
+      if(q.ceil){line(svg,xs(q.ceil[0]),ys(q.ceil[1])-6,xs(q.ceil[0]),top+ph,'sf',{'stroke-dasharray':'4 3','stroke-width':1.2});
+        txt(svg,xs(q.ceil[0])-6,ys((q.ceil[1]+0.25)/2)+5,q.ceil[2],{'class':'tf b','text-anchor':'end'});}
+      q.segs.forEach(function(s){line(svg,xs(s[0]),ys(s[2]),xs(s[1]),ys(s[2]),'s'+q.k,{'stroke-width':3});});
+      if(q.curve)el('polyline',{points:q.curve.map(function(d){return xs(d[0]).toFixed(1)+','+ys(d[1]).toFixed(1);}).join(' '),fill:'none','class':'s'+q.k,'stroke-width':2.2},svg);
+      if(q.curve)txt(svg,xs(1.405)-5,ys(0.585)+5,'ŝ',{'class':'t'+q.k+' b','text-anchor':'end'});
+      q.bench.forEach(function(d){el('circle',{cx:xs(d[0]),cy:ys(d[1]),r:n?5:4.5,'class':'f'+q.k},svg);});
+      if(q.plat)txt(svg,xs(q.plat[0]),ys(q.plat[1])-9,q.plat[2],{'class':'t'+q.k+' b','text-anchor':'middle'});
+      if(i===0)txt(svg,W-mr,ys(0.375)-12,'0.375 up to r_C(1) = 7.969 →',{'class':'t2 b','text-anchor':'end'});
+    });
+    txt(svg,(ml+W-mr)/2,H-6,'incumbent strength r',{'text-anchor':'middle'});
+  }
+
+  // Chart 3: strength intervals (B2 Result 6; C1 Result 3, X_C1; C9 Section 3).
+  function p3(){
+    var c=setup('ch-p3',720,270,460,350); if(!c)return; var svg=c.svg,W=c.W,H=c.H,n=c.narrow;
+    var ml=n?22:236, mr=n?18:24, top=n?44:40, rh=n?60:46, X0=1.38, X1=1.78, last=3;
+    var xs=function(r){return ml+(r-X0)/(X1-X0)*(W-ml-mr);};
+    var rows=[
+      {a:'Discrete-Laplace, buy-only',b:'c_H = 5',nl:'Discrete-Laplace, buy-only, c_H = 5',co:[1.443322,1.747878],ri:[1.40543,1.443322]},
+      {a:'Discrete-Laplace, two-sided',b:'c_H = 6',nl:'Discrete-Laplace, two-sided, c_H = 6',co:[1.515898,1.747878],ri:[1.515898,1.533807]},
+      {a:'Three-point, unequal noise',b:'(2/5, 2/5, 1/5), c_H = 6',nl:'Three-point, noise (2/5, 2/5, 1/5), c_H = 6',co:[1.575,1.585],ri:[1.574345,1.58876]},
+      {a:'Paper, Laplace noise',b:'certified strengths',nl:'Paper, Laplace noise: certified strengths',pts:[[1.55,'0.545'],[1.60,'0.549'],[1.65,'0.551']]}
+    ];
+    var xt=n?[1.4,1.5,1.6,1.7]:[1.4,1.45,1.5,1.55,1.6,1.65,1.7,1.75];
+    // Vertical lines run only inside each row's bar zone, so they never cross a row label.
+    // In the narrow paper row they stop at the dots, so the value labels below stay clear.
+    var zone=function(i){var t=top+i*rh;if(n&&i===last)return [t+22,t+34];return n?[t+22,t+rh-6]:[t+4,t+rh-4];};
+    rows.forEach(function(q,i){
+      var z=zone(i), t=top+i*rh;
+      xt.forEach(function(r){line(svg,xs(r),z[0],xs(r),z[1],'grid');});
+      [1.55,1.6,1.65].forEach(function(r){line(svg,xs(r),z[0],xs(r),z[1],'s2',{'stroke-width':1,'stroke-dasharray':'1 3','opacity':0.8});});
+      line(svg,xs(1.747878),z[0],xs(1.747878),z[1],'sf',{'stroke-dasharray':'5 3','stroke-width':1.3});
+      if(n){txt(svg,ml,t+16,q.nl,{'class':'tf'});}
+      else{txt(svg,ml-12,t+19,q.a,{'class':'tf','text-anchor':'end'});txt(svg,ml-12,t+34,q.b,{'text-anchor':'end'});}
+      var y0=n?t+26:t+9;
+      if(q.co)el('rect',{x:xs(q.co[0]),y:y0,width:Math.max(2,xs(q.co[1])-xs(q.co[0])),height:12,rx:2,'class':'f1','fill-opacity':0.9},svg);
+      if(q.ri)el('rect',{x:xs(q.ri[0]),y:y0+16,width:Math.max(2,xs(q.ri[1])-xs(q.ri[0])),height:8,rx:2,'class':'f3','fill-opacity':0.95},svg);
+      if(q.pts)q.pts.forEach(function(d){el('circle',{cx:xs(d[0]),cy:y0+8,r:n?5.5:5,'class':'f2'},svg);if(n)txt(svg,xs(d[0]),y0+31,d[1],{'class':'t2 b','text-anchor':'middle'});else txt(svg,xs(d[0])+8,y0+13,d[1],{'class':'t2 b'});});
+    });
+    txt(svg,xs(1.747878)-6,top-14,'r_N = 1.747878',{'class':'tf b','text-anchor':'end'});
+    var yb=top+rows.length*rh+(n?8:0);
+    line(svg,ml,yb,W-mr,yb,'ax');
+    xt.forEach(function(r){line(svg,xs(r),yb,xs(r),yb+4,'ax');txt(svg,xs(r),yb+(n?20:17),r.toFixed(2),{'text-anchor':'middle'});});
+    txt(svg,(ml+W-mr)/2,H-6,'incumbent strength r',{'text-anchor':'middle'});
+  }
+
+  function narrowNow(){var s=document.getElementById('ch-post');return ((s&&s.parentNode&&s.parentNode.clientWidth)||720)<520;}
+  function drawAll(){post();p2();p3();}
+  drawAll();
+  var last=narrowNow(), tmr=null;
+  window.addEventListener('resize',function(){clearTimeout(tmr);tmr=setTimeout(function(){var v=narrowNow();if(v!==last){last=v;drawAll();}},150);});
+})();
+</script>
+</body>
+</html>

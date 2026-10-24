@@ -1,0 +1,519 @@
+[run_slot] slot 4 acquired by pid 3702782: .venv/bin/python audit/microstructure_search_2026_10_22/scripts/X_check/v3_check.py
+
+====================================================================================================
+0. Auction objects: direct integration against the paper's closed forms (eq. (4))
+====================================================================================================
+  r=6/5: t0=7/24 tH=169/240 tL=11/16 gH=2231/240 gL=5/16 D=1/60
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=195/308 (~0.63311688), B_r(1/2)=1153/240 (~4.804167)
+  r=31/20: t0=21/62 tH=1061/1240 tL=47/62 gH=11339/1240 gL=15/62 D=121/1240
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=1020/1577 (~0.64679772), B_r(1/2)=11639/2480 (~4.693145)
+  r=8/5: t0=11/32 tH=281/320 tL=49/64 gH=2919/320 gL=15/64 D=9/80
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=205/316 (~0.64873418), B_r(1/2)=1497/320 (~4.678125)
+  r=33/20: t0=23/66 tH=1189/1320 tL=17/22 gH=12011/1320 gL=5/22 D=169/1320
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=7620/11711 (~0.65067031), B_r(1/2)=12311/2640 (~4.663258)
+  r=3: t0=5/12 tH=37/24 tL=7/8 gH=203/24 gL=1/8 D=2/3
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=141/200 (~0.70500000), B_r(1/2)=103/24 (~4.291667)
+  r=18/5: t0=31/72 tH=1321/720 tL=43/48 gH=5879/720 gL=5/48 D=169/180
+         integration minus closed form: {'t0': Fraction(0, 1), 'tH': Fraction(0, 1), 'tL': Fraction(0, 1), 'gH': Fraction(0, 1), 'gL': Fraction(0, 1), 'D': Fraction(0, 1)}
+         t+g identity: tH+gH-h=0, tL+gL-l=0
+         tau=4245/5804 (~0.73139214), B_r(1/2)=2977/720 (~4.134722)
+
+====================================================================================================
+1. Claim 1: every flow on path, every posterior interior, for every informed strategy
+====================================================================================================
+  Posterior at flow x is a_H/(a_H+a_L); a_H rises in sigma_H only, a_L in sigma_L only,
+  so its extremes over all mixed strategies sit at pure profiles. Enumerate them.
+  buy beta=1/3 lam=6/17:
+    flow +0: min class mass=22/51 (liquidity part 22/51), posterior range [0.354839, 0.645161]
+    flow +1: min class mass=11/51 (liquidity part 11/51), posterior range [0.275000, 0.725000]
+  buy beta=1/100 lam=99/100:
+    flow +0: min class mass=99/10000 (liquidity part 99/10000), posterior range [0.009804, 0.990196]
+    flow +1: min class mass=1/10000 (liquidity part 1/10000), posterior range [0.000101, 0.999899]
+  buy beta=99/100 lam=1/100:
+    flow +0: min class mass=99/10000 (liquidity part 99/10000), posterior range [0.332215, 0.667785]
+    flow +1: min class mass=9801/10000 (liquidity part 9801/10000), posterior range [0.497462, 0.502538]
+  two beta=1/3 lam=6/17:
+    flow -1: min class mass=11/51 (liquidity part 11/51), posterior range [0.275000, 0.725000]
+    flow +0: min class mass=11/51 (liquidity part 11/51), posterior range [0.275000, 0.725000]
+    flow +1: min class mass=11/51 (liquidity part 11/51), posterior range [0.275000, 0.725000]
+  two beta=1/100 lam=99/100:
+    flow -1: min class mass=1/10000 (liquidity part 1/10000), posterior range [0.000101, 0.999899]
+    flow +0: min class mass=49/5000 (liquidity part 49/5000), posterior range [0.009707, 0.990293]
+    flow +1: min class mass=1/10000 (liquidity part 1/10000), posterior range [0.000101, 0.999899]
+  two beta=49/100 lam=1/100:
+    flow -1: min class mass=4851/10000 (liquidity part 4851/10000), posterior range [0.494899, 0.505101]
+    flow +0: min class mass=99/5000 (liquidity part 99/5000), posterior range [0.399194, 0.600806]
+    flow +1: min class mass=4851/10000 (liquidity part 4851/10000), posterior range [0.494899, 0.505101]
+  Boundary cases (liquidity mass by flow; a zero means that flow can lose its common support):
+    two beta=1/2: liquidity masses {x: (1-lam) eta} = {-1: '11/34', 0: '0', 1: '11/34'}
+    buy beta=1: liquidity masses {x: (1-lam) eta} = {0: '0', 1: '11/17'}
+    buy beta=0: liquidity masses {x: (1-lam) eta} = {0: '11/17', 1: '0'}
+  Scope: the menu is finite. The paper lets the investor deviate to any order in [-1, 1].
+  A fractional order q in (0, 1) reaches an unused flow. Its payoff for class H, by belief there:
+    r=31/20: full unit purchase 339/49600 (~0.00683); q=99/100 with prior belief -0.00772; q=99/100 with belief 1 -0.01980
+    r=3: full unit purchase 49/300 (~0.16333); q=99/100 with prior belief 0.06270; q=99/100 with belief 1 -0.01980
+    r=18/5: full unit purchase 1283/28800 (~0.04455); q=99/100 with prior belief 0.09639; q=99/100 with belief 1 -0.01980
+
+====================================================================================================
+2. Claim 2: the Proposition 2 strip and every inequality that defines it
+====================================================================================================
+  tau(3) = 141/200  (~0.7050000000)
+  tau(18/5) = 4245/5804  (~0.7313921433)
+  Top posterior at full orders: M = (b+lam)/(2b+lam), b = (1-lam) beta; u = lam/b; M = (1+u)/(2+u).
+  (a) c_H window, lower end at r_1=3: B_3(M) > c_H  <=>  M > tau(3)  <=>  u > (2tau-1)/(1-tau)
+  (b) c_H window, upper end at r_2=3.6: B_3.6(M) < c_H  <=>  M < tau(3.6)
+  u lower = (2tau(3)-1)/(1-tau(3)) = 82/59  (~1.3898305085)
+  u upper = (2tau(3.6)-1)/(1-tau(3.6)) = 2686/1559  (~1.7228992944)
+  beta=1/10: lam in (41/336, 1343/9138) ~ (0.122024, 0.146969); T2 formula gives (41/336, 1343/9138); M at ends = (141/200, 4245/5804)
+  beta=1/3: lam in (82/259, 2686/7363) ~ (0.316602, 0.364797); T2 formula gives (82/259, 2686/7363); M at ends = (141/200, 4245/5804)
+  beta=2/5: lam in (164/459, 5372/13167) ~ (0.357298, 0.407990); T2 formula gives (164/459, 5372/13167); M at ends = (141/200, 4245/5804)
+  beta=9/10: lam in (369/664, 12087/19882) ~ (0.555723, 0.607937); T2 formula gives (369/664, 12087/19882); M at ends = (141/200, 4245/5804)
+  (c) trading-cost window, weak end at 1.2: every unit residual <= D(1.2), so need D(1.2) < k
+  D(1.2) - k = -1/300  (~-0.0033333333)
+  (d) trading-cost window, strong end at 3: correctly signed residual >= rho D (1 - M) for every
+      candidate, so full orders are unique if rho D(3) (1 - M) > k  <=>  M < 1 - k/(rho D(3))
+  1 - k/(rho D(3)) = 22/25  (~0.8800000000)
+  1 - k/(rho D(3.6)) = 773/845  (~0.9147928994)
+      Both exceed tau(3.6), so (d) is slack on the strip. The paper's (1 - 1/b) factor has no analog.
+  (e) other conditions:
+      B_1.2(1/2) - c_H  (no recruitment at r_0, A1 lower side) = -287/240  (~-1.1958333333)
+      B_3(1/2) - c_H    (A.9 hypothesis: no recruitment at the prior) = -41/24  (~-1.7083333333)
+      B_3.6(1/2) - c_H = -1343/720  (~-1.8652777778)
+    h - r_2 = 32/5 > 0, so W_H = 1 and ownership rises iff e_H > rho
+    tau'(r) has numerator 4[48(20r - r^2 - 1) - (48r - 3)(20 - 2r)]; expand:
+    tau' numerator coefficients (low to high) = ['48', '-24', '192']; discriminant -36288 < 0 with positive leading term, so tau rises in r.
+      tau'(3) = 213/5000  (~0.042600)
+      tau'(18/5) = 95700/2105401  (~0.045455)
+    strip width in M: tau(3.6) - tau(3) = 7659/290200  (~0.0263921433)
+
+====================================================================================================
+3. Claim 3: example beta = 1/3, lam = 6/17
+====================================================================================================
+  b = 11/51  (~0.2156862745)
+  M = 29/40  (~0.7250000000)
+  strip at beta=1/3: 82/259=0.316602 < lam=0.352941 < 2686/7363=0.364797
+  [buy, r=6/5 (~1.2000000), challenger C1, investor IM] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-43/2400'}
+       informed payoffs L={0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+  [buy, r=6/5 (~1.2000000), challenger CM, investor IM] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-43/2400'}
+       informed payoffs L={0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+  [buy, r=6/5 (~1.2000000), challenger C1, investor I0] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-43/2400'}
+       informed payoffs L={0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+  [buy, r=3 (~3.0000000), challenger C1, investor IM] tau=0.70500000, s*=0.29976736, lam=0.352941
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '49/300'}
+       informed payoffs L={0: '0', 1: '-151/300'}
+       uninformed filler payoffs={0: '0', 1: '-17/100'}
+  [buy, r=18/5 (~3.6000000), challenger C1, investor IM] tau=0.73139214, s*=0.37160573, lam=0.352941
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '1283/28800'}
+       informed payoffs L={0: '0', 1: '-5477/28800'}
+       uninformed filler payoffs={0: '0', 1: '-233/3200'}
+  [two, r=6/5 (~1.2000000), challenger C1, investor IM] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-53/2400', 0: '0', 1: '-43/2400'}
+       informed payoffs L={-1: '-43/2400', 0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+  [two, r=6/5 (~1.2000000), challenger CM, investor IM] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-53/2400', 0: '0', 1: '-43/2400'}
+       informed payoffs L={-1: '-43/2400', 0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+  [two, r=6/5 (~1.2000000), challenger C1, investor I0] tau=0.63311688, s*=0.15651570, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-53/2400', 0: '0', 1: '-43/2400'}
+       informed payoffs L={-1: '-43/2400', 0: '0', 1: '-53/2400'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+  [two, r=3 (~3.0000000), challenger C1, investor IM] tau=0.70500000, s*=0.29976736, lam=0.352941
+    H: s=lam (full)                         L: t=lam (full)         verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=1  mu(-1)=11/40 ~0.275000, mu(0)=1/2 ~0.500000, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={-1: '-169/1200', 0: '0', 1: '49/300'}
+       informed payoffs L={-1: '31/1200', 0: '0', 1: '-151/300'}
+       uninformed filler payoffs={-1: '-23/400', 0: '0', 1: '-17/100'}
+  [two, r=18/5 (~3.6000000), challenger C1, investor IM] tau=0.73139214, s*=0.37160573, lam=0.352941
+    H: s=lam (full)                         L: t=lam (full)         verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=1  mu(-1)=11/40 ~0.275000, mu(0)=1/2 ~0.500000, mu(1)=29/40 ~0.725000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-5477/28800', 0: '0', 1: '1283/28800'}
+       informed payoffs L={-1: '1283/28800', 0: '0', 1: '-5477/28800'}
+       uninformed filler payoffs={-1: '-233/3200', 0: '0', 1: '-233/3200'}
+  Count of verified equilibria by variant, strength and tie rules:
+    buy r=6/5: C1/IM: 1 [s=0 | t=0 (buy-only menu) E=1/4]  CM/IM: 1 [s=0 | t=0 (buy-only menu) E=1/4]  C1/I0: 1 [s=0 | t=0 (buy-only menu) E=1/4]  CM/I0: 1 [s=0 | t=0 (buy-only menu) E=1/4]
+    buy r=3: C1/IM: 1 [s=lam (full) | t=0 (buy-only menu) E=37/68]  CM/IM: 1 [s=lam (full) | t=0 (buy-only menu) E=37/68]  C1/I0: 1 [s=lam (full) | t=0 (buy-only menu) E=37/68]  CM/I0: 1 [s=lam (full) | t=0 (buy-only menu) E=37/68]
+    buy r=18/5: C1/IM: 1 [s=lam (full) | t=0 (buy-only menu) E=1/4]  CM/IM: 1 [s=lam (full) | t=0 (buy-only menu) E=1/4]  C1/I0: 1 [s=lam (full) | t=0 (buy-only menu) E=1/4]  CM/I0: 1 [s=lam (full) | t=0 (buy-only menu) E=1/4]
+    two r=6/5: C1/IM: 1 [s=0 | t=0 E=1/4]  CM/IM: 1 [s=0 | t=0 E=1/4]  C1/I0: 1 [s=0 | t=0 E=1/4]  CM/I0: 1 [s=0 | t=0 E=1/4]
+    two r=3: C1/IM: 1 [s=lam (full) | t=lam (full) E=37/68]  CM/IM: 1 [s=lam (full) | t=lam (full) E=37/68]  C1/I0: 1 [s=lam (full) | t=lam (full) E=37/68]  CM/I0: 1 [s=lam (full) | t=lam (full) E=37/68]
+    two r=18/5: C1/IM: 1 [s=lam (full) | t=lam (full) E=1/4]  CM/IM: 1 [s=lam (full) | t=lam (full) E=1/4]  C1/I0: 1 [s=lam (full) | t=lam (full) E=1/4]  CM/I0: 1 [s=lam (full) | t=lam (full) E=1/4]
+  Uniqueness bounds over every candidate (mixtures and CM ties included):
+    r=1.2: max unit residual D - k = -1/300  (< 0: every nonzero order loses)
+    r=3: min correctly signed residual rho D (1-M) - k = 31/1200 (~0.025833); wrong-signed orders pay -e D(1-mu) - k < 0
+    r=18/5: min correctly signed residual rho D (1-M) - k = 1283/28800 (~0.044549); wrong-signed orders pay -e D(1-mu) - k < 0
+  Ceiling: B_r(M) = c_H. Clear 8r: 8r(B_r(M) - c_H) is a quadratic in r. Interpolate it from
+  three integration-based values and check a fourth point.
+    8r(B_r(M)-6) = ['1/10', '10', '-29/10'] (low to high); check at r=7/2: -17/40 vs -17/40
+    times -10: ['-1', '-100', '29']  ->  29 r^2 - 100 r - 1 = 0, r_C = (50 + sqrt(2529))/29
+    dB_r(M)/dr = -M/2 - (3 - 4M)/(8 r^2) with 3 - 4M = 1/10 > 0: strictly falling, one root.
+    r_C in [3.45824702905933, 3.45824702905933]; B(M)-c_H at ends: 4.831e-18 and -1.205e-16
+    uniqueness of full orders on [3, 3.6]: rho D(r)(1-M) - k rises with D(r); at r=3 it is 31/1200 > 0
+
+====================================================================================================
+4. Claim 4: coexistence, branch structure, and entry at 1.55, 1.60, 1.65
+====================================================================================================
+  check J(6/5): integration 113/18480, closed form 113/18480
+  check J(3/2): integration 19/642, closed form 19/642
+  check J(5/3): integration 53/1140, closed form 53/1140
+  check J(3): integration 59/300, closed form 59/300
+  numerator of J - k: ['-1', '854/25', '-361/5', '1004/25', '-4'] (low to high); denominator 8r(20r-r^2-1) > 0 on [1, 19]
+  r_N: D = 2k/rho = 4/25; bracket [1.747877538268, 1.747877538268]; closed (29+6sqrt6)/25 ~ 1.747877538268
+  r_F: D = k/(1-M) = 4/55; bracket [1.460984663710, 1.460984663710]
+  r_A: J = k; bracket [1.393957920279, 1.393957920279]; signs True, True
+  Sturm: roots of J-k numerator in (1, r_N upper] = 1; in (1, 18/5] = 1; J(1) - k = -1/50
+  tau(r_N upper) = 0.65446313 < M = 0.72500000: s* < lam on the interval
+  B_r(1/2) at r_N upper = 4.634546 < 6: no-trade entry is rho
+  dJ/dr numerator in y=r-1: ['0', '7776', '18144', '11520', '24', '-1088', '32']
+  ratio to T2's y(972+2268y+1440y^2+3y^3-136y^4+4y^5): ['0', '8', '8', '8', '8', '8', '8']
+  [buy, r=31/20 (~1.5500000), challenger C1, investor IM] tau=0.64679772, s*=0.17928680, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-387/49600'}
+       informed payoffs L={0: '0', 1: '-1597/49600'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '339/49600'}
+       informed payoffs L={0: '0', 1: '-4501/49600'}
+       uninformed filler payoffs={0: '0', 1: '-2081/49600'}
+  [buy, r=31/20 (~1.5500000), challenger CM, investor IM] tau=0.64679772, s*=0.17928680, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-387/49600'}
+       informed payoffs L={0: '0', 1: '-1597/49600'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '339/49600'}
+       informed payoffs L={0: '0', 1: '-4501/49600'}
+       uninformed filler payoffs={0: '0', 1: '-2081/49600'}
+    H: threshold s=s*, challenger mixes     L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=5093/10026  P(q=-1|L,I)=0  mu(0)=17187/39467 ~0.435478, mu(1)=1020/1577 ~0.646798
+       entry E=2442588329/6961987560 (~0.3508464)  e_H=5193567/13650956  O_H=5193567/27301912 (~0.1902272)  e(1)=195548/336985
+       informed payoffs H={0: '0', 1: '0'}
+       informed payoffs L={0: '0', 1: '-1577/27850'}
+       uninformed filler payoffs={0: '0', 1: '-1577/55700'}
+  [buy, r=31/20 (~1.5500000), challenger C1, investor I0] tau=0.64679772, s*=0.17928680, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-387/49600'}
+       informed payoffs L={0: '0', 1: '-1597/49600'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '339/49600'}
+       informed payoffs L={0: '0', 1: '-4501/49600'}
+       uninformed filler payoffs={0: '0', 1: '-2081/49600'}
+  [two, r=31/20 (~1.5500000), challenger CM, investor IM] tau=0.64679772, s*=0.17928680, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-1597/49600', 0: '0', 1: '-387/49600'}
+       informed payoffs L={-1: '-387/49600', 0: '0', 1: '-1597/49600'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=11/40 ~0.275000, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={-1: '-1597/49600', 0: '0', 1: '339/49600'}
+       informed payoffs L={-1: '-387/49600', 0: '0', 1: '-4501/49600'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-2081/49600'}
+    H: threshold s=s*, challenger mixes     L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=5093/10026  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=11060/27213 ~0.406423, mu(1)=1020/1577 ~0.646798
+       entry E=2442588329/6961987560 (~0.3508464)  e_H=5193567/13650956  O_H=5193567/27301912 (~0.1902272)  e(1)=195548/336985
+       informed payoffs H={-1: '-1597/49600', 0: '0', 1: '0'}
+       informed payoffs L={-1: '-387/49600', 0: '0', 1: '-1577/27850'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1577/55700'}
+  [buy, r=8/5 (~1.6000000), challenger C1, investor IM] tau=0.64873418, s*=0.18265324, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-19/3200'}
+       informed payoffs L={0: '0', 1: '-109/3200'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '7/640'}
+       informed payoffs L={0: '0', 1: '-13/128'}
+       uninformed filler payoffs={0: '0', 1: '-29/640'}
+  [buy, r=8/5 (~1.6000000), challenger CM, investor IM] tau=0.64873418, s*=0.18265324, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-19/3200'}
+       informed payoffs L={0: '0', 1: '-109/3200'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '7/640'}
+       informed payoffs L={0: '0', 1: '-13/128'}
+       uninformed filler payoffs={0: '0', 1: '-29/640'}
+    H: threshold s=s*, challenger mixes     L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=517/999  P(q=-1|L,I)=0  mu(0)=1703/3923 ~0.434107, mu(1)=205/316 ~0.648734
+       entry E=2186473/6653340 (~0.3286279)  e_H=234209/665334  O_H=234209/1330668 (~0.1760086)  e(1)=2528/4995
+       informed payoffs H={0: '0', 1: '0'}
+       informed payoffs L={0: '0', 1: '-158/2775'}
+       uninformed filler payoffs={0: '0', 1: '-79/2775'}
+  [buy, r=8/5 (~1.6000000), challenger C1, investor I0] tau=0.64873418, s*=0.18265324, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-19/3200'}
+       informed payoffs L={0: '0', 1: '-109/3200'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '7/640'}
+       informed payoffs L={0: '0', 1: '-13/128'}
+       uninformed filler payoffs={0: '0', 1: '-29/640'}
+  [two, r=8/5 (~1.6000000), challenger CM, investor IM] tau=0.64873418, s*=0.18265324, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-109/3200', 0: '0', 1: '-19/3200'}
+       informed payoffs L={-1: '-19/3200', 0: '0', 1: '-109/3200'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=11/40 ~0.275000, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={-1: '-109/3200', 0: '0', 1: '7/640'}
+       informed payoffs L={-1: '-19/3200', 0: '0', 1: '-13/128'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-29/640'}
+    H: threshold s=s*, challenger mixes     L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=517/999  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=2185/5404 ~0.404330, mu(1)=205/316 ~0.648734
+       entry E=2186473/6653340 (~0.3286279)  e_H=234209/665334  O_H=234209/1330668 (~0.1760086)  e(1)=2528/4995
+       informed payoffs H={-1: '-109/3200', 0: '0', 1: '0'}
+       informed payoffs L={-1: '-19/3200', 0: '0', 1: '-158/2775'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-79/2775'}
+  [buy, r=33/20 (~1.6500000), challenger C1, investor IM] tau=0.65067031, s*=0.18605643, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-211/52800'}
+       informed payoffs L={0: '0', 1: '-1901/52800'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '73/4800'}
+       informed payoffs L={0: '0', 1: '-5957/52800'}
+       uninformed filler payoffs={0: '0', 1: '-859/17600'}
+  [buy, r=33/20 (~1.6500000), challenger CM, investor IM] tau=0.65067031, s*=0.18605643, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-211/52800'}
+       informed payoffs L={0: '0', 1: '-1901/52800'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '73/4800'}
+       informed payoffs L={0: '0', 1: '-5957/52800'}
+       uninformed filler payoffs={0: '0', 1: '-859/17600'}
+    H: threshold s=s*, challenger mixes     L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=38819/73638  P(q=-1|L,I)=0  mu(0)=124821/288461 ~0.432714, mu(1)=7620/11711 ~0.650670
+       entry E=1793732190563/5770000237560 (~0.3108721)  e_H=63319089957/192333341252  O_H=63319089957/384666682504 (~0.1646077)  e(1)=1545852/3456895
+       informed payoffs H={0: '0', 1: '0'}
+       informed payoffs L={0: '0', 1: '-11711/204550'}
+       uninformed filler payoffs={0: '0', 1: '-11711/409100'}
+  [buy, r=33/20 (~1.6500000), challenger C1, investor I0] tau=0.65067031, s*=0.18605643, lam=0.352941
+    H: s=0                                  L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={0: '0', 1: '-211/52800'}
+       informed payoffs L={0: '0', 1: '-1901/52800'}
+       uninformed filler payoffs={0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0 (buy-only menu)  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(0)=11/31 ~0.354839, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={0: '0', 1: '73/4800'}
+       informed payoffs L={0: '0', 1: '-5957/52800'}
+       uninformed filler payoffs={0: '0', 1: '-859/17600'}
+  [two, r=33/20 (~1.6500000), challenger CM, investor IM] tau=0.65067031, s*=0.18605643, lam=0.352941
+    H: s=0                                  L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=0  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=1/2 ~0.500000, mu(1)=1/2 ~0.500000
+       entry E=1/4 (~0.2500000)  e_H=1/4  O_H=1/8 (~0.1250000)  e(1)=1/4
+       informed payoffs H={-1: '-1901/52800', 0: '0', 1: '-211/52800'}
+       informed payoffs L={-1: '-211/52800', 0: '0', 1: '-1901/52800'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-1/50'}
+    H: s=lam (full)                         L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=1  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=11/40 ~0.275000, mu(1)=29/40 ~0.725000
+       entry E=37/68 (~0.5441176)  e_H=23/34  O_H=23/68 (~0.3382353)  e(1)=1
+       informed payoffs H={-1: '-1901/52800', 0: '0', 1: '73/4800'}
+       informed payoffs L={-1: '-211/52800', 0: '0', 1: '-5957/52800'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-859/17600'}
+    H: threshold s=s*, challenger mixes     L: t=0                  verified=True  zero-flow tie=False
+       P(q=1|H,I)=38819/73638  P(q=-1|L,I)=0  mu(-1)=1/2 ~0.500000, mu(0)=79820/198459 ~0.402199, mu(1)=7620/11711 ~0.650670
+       entry E=1793732190563/5770000237560 (~0.3108721)  e_H=63319089957/192333341252  O_H=63319089957/384666682504 (~0.1646077)  e(1)=1545852/3456895
+       informed payoffs H={-1: '-1901/52800', 0: '0', 1: '0'}
+       informed payoffs L={-1: '-211/52800', 0: '0', 1: '-11711/204550'}
+       uninformed filler payoffs={-1: '-1/50', 0: '0', 1: '-11711/409100'}
+  Branch structure across strengths (V3 buy, C1/IM unless stated):
+    r=1.400: s=0 E~0.250000; interior s, entry piece 1 E~0.481092 | CM adds: threshold s=s*, challenger mixes E~0.467732
+    r=1.450: s=0 E~0.250000; interior s, entry piece 1 E~0.532391 | CM adds: threshold s=s*, challenger mixes E~0.416746
+    r=1.500: s=0 E~0.250000; s=lam (full) E~0.544118 | CM adds: threshold s=s*, challenger mixes E~0.379297
+    r=1.550: s=0 E~0.250000; s=lam (full) E~0.544118 | CM adds: threshold s=s*, challenger mixes E~0.350846
+    r=1.600: s=0 E~0.250000; s=lam (full) E~0.544118 | CM adds: threshold s=s*, challenger mixes E~0.328628
+    r=1.650: s=0 E~0.250000; s=lam (full) E~0.544118 | CM adds: threshold s=s*, challenger mixes E~0.310872
+    r=1.700: s=0 E~0.250000; s=lam (full) E~0.544118 | CM adds: threshold s=s*, challenger mixes E~0.296403
+    r=1.750: s=lam (full) E~0.544118; interior s, entry piece 1/4 E~0.250000 | CM adds: threshold s=s*, challenger mixes E~0.284413
+    r=1.800: s=lam (full) E~0.544118; interior s, entry piece 1/4 E~0.250000 | CM adds: threshold s=s*, challenger mixes E~0.274330
+  Threshold-mixture entry (CM), exact:
+    r=31/20: E* = 2442588329/6961987560 (~0.35084641), challenger entry at flow 1 = 0.580287
+    r=8/5: E* = 2186473/6653340 (~0.32862788), challenger entry at flow 1 = 0.506106
+    r=33/20: E* = 1793732190563/5770000237560 (~0.31087212), challenger entry at flow 1 = 0.447179
+    differences: E(1.60)-E(1.55) = -0.02221853, E(1.65)-E(1.60) = -0.01775576
+  Any strictly rising selection across 1.55 < 1.60 < 1.65 from the informative sets {E*(r), 37/68}?
+    rising selections found: 0
+
+====================================================================================================
+5. Claim 5: Proposition A.9 analog at r = 3 (both regimes solved from primitives)
+====================================================================================================
+  buy: hidden-price investor payoffs H={0: '0', 1: '31/1200'}, L={0: '0', 1: '-169/1200'}
+    full orders best responses under hidden price: H True, L True
+    access: proceeds=485/544 (~0.891544), net surplus=4285/1632 (~2.625613), informed trading cost=3/850
+    hidden: proceeds=59/96 (~0.614583), net surplus=245/96 (~2.552083), informed trading cost=3/850
+    access - hidden: proceeds 113/408, net surplus 5/68, trading cost 0
+  two: hidden-price investor payoffs H={-1: '-169/1200', 0: '0', 1: '31/1200'}, L={-1: '31/1200', 0: '0', 1: '-169/1200'}
+    full orders best responses under hidden price: H True, L True
+    access: proceeds=485/544 (~0.891544), net surplus=4285/1632 (~2.625613), informed trading cost=3/425
+    hidden: proceeds=59/96 (~0.614583), net surplus=245/96 (~2.552083), informed trading cost=3/425
+    access - hidden: proceeds 113/408, net surplus 5/68, trading cost 0
+
+====================================================================================================
+6. Claim 6: an uninformed filler with only the trading payoff
+====================================================================================================
+  Payoffs printed with each outcome above ('uninformed filler payoffs'). Summary of maxima over nonzero orders:
+    buy r=1.200 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.200 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.400 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.400 C1 interior s, entry piece 1           : best nonzero uninformed payoff -0.028571 vs zero order 0
+    buy r=1.400 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.400 CM interior s, entry piece 1           : best nonzero uninformed payoff -0.028571 vs zero order 0
+    buy r=1.400 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.027853 vs zero order 0
+    buy r=1.550 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.550 C1 s=lam (full)                        : best nonzero uninformed payoff -0.041956 vs zero order 0
+    buy r=1.550 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.550 CM s=lam (full)                        : best nonzero uninformed payoff -0.041956 vs zero order 0
+    buy r=1.550 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.028312 vs zero order 0
+    buy r=1.600 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.600 C1 s=lam (full)                        : best nonzero uninformed payoff -0.045312 vs zero order 0
+    buy r=1.600 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.600 CM s=lam (full)                        : best nonzero uninformed payoff -0.045312 vs zero order 0
+    buy r=1.600 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.028468 vs zero order 0
+    buy r=1.650 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.650 C1 s=lam (full)                        : best nonzero uninformed payoff -0.048807 vs zero order 0
+    buy r=1.650 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    buy r=1.650 CM s=lam (full)                        : best nonzero uninformed payoff -0.048807 vs zero order 0
+    buy r=1.650 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.028626 vs zero order 0
+    buy r=3.000 C1 s=lam (full)                        : best nonzero uninformed payoff -0.170000 vs zero order 0
+    buy r=3.000 CM s=lam (full)                        : best nonzero uninformed payoff -0.170000 vs zero order 0
+    buy r=3.600 C1 s=lam (full)                        : best nonzero uninformed payoff -0.072813 vs zero order 0
+    buy r=3.600 CM s=lam (full)                        : best nonzero uninformed payoff -0.072813 vs zero order 0
+    two r=1.200 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.200 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.400 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.400 C1 interior s, entry piece 1           : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.400 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.400 CM interior s, entry piece 1           : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.400 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.550 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.550 C1 s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.550 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.550 CM s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.550 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.600 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.600 C1 s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.600 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.600 CM s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.600 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.650 C1 s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.650 C1 s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.650 CM s=0                                 : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.650 CM s=lam (full)                        : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=1.650 CM threshold s=s*, challenger mixes    : best nonzero uninformed payoff -0.020000 vs zero order 0
+    two r=3.000 C1 s=lam (full)                        : best nonzero uninformed payoff -0.057500 vs zero order 0
+    two r=3.000 CM s=lam (full)                        : best nonzero uninformed payoff -0.057500 vs zero order 0
+    two r=3.600 C1 s=lam (full)                        : best nonzero uninformed payoff -0.072813 vs zero order 0
+    two r=3.600 CM s=lam (full)                        : best nonzero uninformed payoff -0.072813 vs zero order 0
+
+====================================================================================================
+7. Claim 7: equal posteriors, unequal payoff thresholds (buy-only geometric base)
+====================================================================================================
+  base noise f(z) = (1-a)/(1+a) a^|z|, a = 11/29; gamma = 1/(1+a) = 29/40
+  informed investor always present; class H buys one unit, class L abstains; prior 1/2.
+    flow -3: posterior 11/40
+    flow -2: posterior 11/40
+    flow -1: posterior 11/40
+    flow +0: posterior 11/40
+    flow +1: posterior 29/40
+    flow +2: posterior 29/40
+    flow +3: posterior 29/40
+    flow +4: posterior 29/40
+  P(Z >= 0) truncated at 120: 0.725000000000000; closed form gamma = 0.725000000000000; remainder bound 0.000
+  hidden price: base K = 319/4800 (~0.066458; truncated sum ~0.066458); slot K (beta=1/2, lam=9/20) = 11/240 (~0.045833); slot posterior at flow 1 = 29/40
+     slot P(x=1|H)=29/40, P(x=1|L)=11/40; base P(X>=1|H)=29/40, P(X>=1|L)=11/40
+  price access: base K = 319/1920 (~0.166146; truncated sum ~0.166146); slot K (beta=1/2, lam=9/20) = 11/60 (~0.183333); slot posterior at flow 1 = 29/40
+     slot P(x=1|H)=29/40, P(x=1|L)=11/40; base P(X>=1|H)=29/40, P(X>=1|L)=11/40
+
+====================================================================================================
+8. Why the strip is narrow
+====================================================================================================
+  tau(3) = 141/200  (~0.705000)
+  tau(3.6) = 4245/5804  (~0.731392)
+  Laplace (b=2) top posterior e/(1+e) = 0.7310585786; its ceiling r_C = 3.59265851879
+  tau(3.6) - e/(1+e) = 0.000333565
+  e/(1+e) - tau(3) = 0.0260586
+  Partial derivatives of B_r(mu) at r=3, mu=29/40:
+    dB/dmu = gH - gL = 25/3;  dB/dr = -mu/2 - (3-4mu)/(8 r^2) = -131/360

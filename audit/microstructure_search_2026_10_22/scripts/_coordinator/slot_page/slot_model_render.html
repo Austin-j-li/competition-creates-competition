@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The order-slot model</title>
+<style>
+:root{
+  --fg: var(--foreground, #1c1c1a);
+  --mfg: var(--muted-foreground, #5f5e5a);
+  --bd: var(--border, #dcdad3);
+  --cd: var(--card, #f6f5f1);
+  --c1: var(--chart-1, #2f6bd8);
+  --c2: var(--chart-2, #d9822b);
+  --c3: var(--chart-3, #2e9e6b);
+  --ok: var(--success, #2e8b57);
+  --inf: var(--info, #2f6bd8);
+  --warn: var(--warning, #b7791f);
+  --rad: var(--radius, 10px);
+  --sans: var(--font-sans, "Inter", "Fira Sans", "Helvetica Neue", Arial, sans-serif);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --fg: var(--foreground, #e9e7e1);
+    --mfg: var(--muted-foreground, #a9a69d);
+    --bd: var(--border, #3a3934);
+    --cd: var(--card, #1f1f1c);
+    --c1: var(--chart-1, #76aafb);
+    --c2: var(--chart-2, #f0a35a);
+    --c3: var(--chart-3, #5cc795);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);font-family:var(--sans);font-size:15.5px;line-height:1.6}
+.page{max-width:760px;margin:0 auto;padding:4px 0 24px}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mfg);font-weight:600}
+h1{font-size:22px;line-height:1.25;margin:4px 0 8px;letter-spacing:-.01em}
+h2{font-size:18px;margin:36px 0 6px;letter-spacing:-.005em}
+h2 .n{color:var(--mfg);font-weight:500;margin-right:8px}
+h3{font-size:15.5px;margin:20px 0 4px}
+p{margin:8px 0}
+.lede{font-size:16.5px}
+.muted{color:var(--mfg)}
+.small{font-size:13.5px}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:5px 0}
+.box{border-left:3px solid var(--c1);padding:6px 0 6px 16px;margin:16px 0}
+.box.key{border-color:var(--c3)}
+.box.warn{border-color:var(--warn)}
+.thm{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:16px 18px;margin:16px 0}
+.thm .t{font-weight:700;margin-bottom:4px}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:0 8px;border-radius:999px;border:1px solid currentColor;vertical-align:1px;white-space:nowrap;line-height:1.6}
+.chip.an{color:var(--ok)} .chip.nd{color:var(--warn)} .chip.op{color:var(--mfg)} .chip.ck{color:var(--inf)} .chip.co{color:var(--c3)}
+table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:520px){table{font-size:13px}th,td{padding:6px 5px}th{font-size:11px}}
+.tw{overflow-x:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:14px 16px}
+.card h3{margin:0 0 6px}
+.card ul{margin:4px 0;padding-left:18px}
+.chart{margin:12px 0 2px}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--mfg);margin:6px 0 2px}
+.sw{display:inline-block;width:18px;height:0;border-top:2.5px solid;vertical-align:4px;margin-right:6px}
+.sw.c1{border-color:var(--c1)} .sw.c2{border-color:var(--c2)} .sw.c3{border-color:var(--c3)} .sw.dash{border-top-style:dashed}
+.swb{display:inline-block;width:14px;height:10px;background:var(--c1);opacity:.16;margin-right:6px;vertical-align:0}
+.cap{font-size:13px;color:var(--mfg);margin:4px 0 0}
+svg .grid{stroke:var(--bd);stroke-width:1}
+svg .ax{stroke:var(--mfg);stroke-width:1}
+svg .tk,svg .lab{fill:var(--mfg)}
+svg .vd{stroke:var(--mfg);stroke-width:1;stroke-dasharray:3 4;opacity:.8}
+svg .band{fill:var(--c1);opacity:.12}
+svg .l1{fill:none;stroke:var(--c1);stroke-width:2.6}
+svg .l1d{fill:none;stroke:var(--c1);stroke-width:1.6;stroke-dasharray:4 3}
+svg .l2{fill:none;stroke:var(--c2);stroke-width:2.6}
+svg .l3{fill:none;stroke:var(--c3);stroke-width:2;stroke-dasharray:6 4}
+svg .dot1{fill:var(--c1)} svg .dot2{fill:var(--c2)}
+svg .hol3{fill:none;stroke:var(--c3);stroke-width:2}
+svg .dia3{fill:var(--c3)}
+svg .c1t{fill:var(--c1);font-weight:700} svg .c2t{fill:var(--c2);font-weight:700} svg .c3t{fill:var(--c3);font-weight:700}
+svg .mut{fill:var(--mfg)}
+.mm{display:inline-block;background:currentColor;mask-repeat:no-repeat;mask-position:center;mask-size:contain}
+.dm{display:block;text-align:center;margin:14px 0}.dm .mm{max-width:100%;height:auto}
+.q0{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q0.svg)}
+.q1{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q1.svg)}
+.q2{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q2.svg)}
+.q3{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q3.svg)}
+.q4{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q4.svg)}
+.q5{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q5.svg)}
+.q6{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q6.svg)}
+.q7{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q7.svg)}
+.q8{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q8.svg)}
+.q9{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q9.svg)}
+.q10{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q10.svg)}
+.q11{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q11.svg)}
+.q12{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q12.svg)}
+.q13{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q13.svg)}
+.q14{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q14.svg)}
+.q15{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q15.svg)}
+.q16{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q16.svg)}
+.q17{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q17.svg)}
+.q18{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q18.svg)}
+.q19{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q19.svg)}
+.q20{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q20.svg)}
+.q21{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q21.svg)}
+.q22{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q22.svg)}
+.q23{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q23.svg)}
+.q24{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q24.svg)}
+.q25{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q25.svg)}
+.q26{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q26.svg)}
+.q27{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q27.svg)}
+.q28{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q28.svg)}
+.q29{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q29.svg)}
+.q30{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q30.svg)}
+.q31{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q31.svg)}
+.q32{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q32.svg)}
+.q33{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q33.svg)}
+.q34{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q34.svg)}
+.q35{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q35.svg)}
+.q36{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q36.svg)}
+.q37{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q37.svg)}
+.q38{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q38.svg)}
+.q39{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q39.svg)}
+.q40{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q40.svg)}
+.q41{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q41.svg)}
+.q42{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q42.svg)}
+.q43{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q43.svg)}
+.q44{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q44.svg)}
+.q45{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q45.svg)}
+.q46{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q46.svg)}
+.q47{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q47.svg)}
+.q48{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q48.svg)}
+.q49{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q49.svg)}
+.q50{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q50.svg)}
+.q51{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q51.svg)}
+.q52{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q52.svg)}
+.q53{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q53.svg)}
+.q54{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q54.svg)}
+.q55{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q55.svg)}
+.q56{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q56.svg)}
+.q57{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q57.svg)}
+.q58{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q58.svg)}
+.q59{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q59.svg)}
+.q60{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q60.svg)}
+.q61{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q61.svg)}
+.q62{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q62.svg)}
+.q63{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q63.svg)}
+.q64{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q64.svg)}
+.q65{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q65.svg)}
+.q66{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q66.svg)}
+.q67{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q67.svg)}
+.q68{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q68.svg)}
+.q69{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q69.svg)}
+.q70{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q70.svg)}
+.q71{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q71.svg)}
+.q72{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q72.svg)}
+.q73{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q73.svg)}
+.q74{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q74.svg)}
+.q75{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q75.svg)}
+.q76{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q76.svg)}
+.q77{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q77.svg)}
+.q78{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q78.svg)}
+.q79{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q79.svg)}
+.q80{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q80.svg)}
+.q81{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q81.svg)}
+.q82{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q82.svg)}
+.q83{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q83.svg)}
+.q84{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q84.svg)}
+.q85{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q85.svg)}
+.q86{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q86.svg)}
+.q87{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q87.svg)}
+.q88{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q88.svg)}
+.q89{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q89.svg)}
+.q90{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q90.svg)}
+.q91{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q91.svg)}
+.q92{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q92.svg)}
+.q93{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q93.svg)}
+.q94{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q94.svg)}
+.q95{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q95.svg)}
+.q96{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q96.svg)}
+.q97{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q97.svg)}
+.q98{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q98.svg)}
+.q99{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q99.svg)}
+.q100{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q100.svg)}
+.q101{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q101.svg)}
+.q102{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q102.svg)}
+.q103{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q103.svg)}
+.q104{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q104.svg)}
+.q105{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q105.svg)}
+.q106{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q106.svg)}
+.q107{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q107.svg)}
+.q108{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q108.svg)}
+.q109{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q109.svg)}
+.q110{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q110.svg)}
+.q111{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q111.svg)}
+.q112{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q112.svg)}
+.q113{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q113.svg)}
+.q114{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q114.svg)}
+.q115{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q115.svg)}
+.q116{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q116.svg)}
+.q117{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q117.svg)}
+.q118{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q118.svg)}
+.q119{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q119.svg)}
+.q120{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q120.svg)}
+.q121{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q121.svg)}
+.q122{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q122.svg)}
+.q123{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q123.svg)}
+.q124{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q124.svg)}
+.q125{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q125.svg)}
+.q126{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q126.svg)}
+.q127{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q127.svg)}
+.q128{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q128.svg)}
+.q129{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q129.svg)}
+.q130{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q130.svg)}
+.q131{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q131.svg)}
+.q132{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q132.svg)}
+.q133{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q133.svg)}
+.q134{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q134.svg)}
+.q135{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q135.svg)}
+.q136{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q136.svg)}
+.q137{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q137.svg)}
+.q138{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q138.svg)}
+.q139{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q139.svg)}
+.q140{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q140.svg)}
+.q141{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q141.svg)}
+.q142{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q142.svg)}
+.q143{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q143.svg)}
+.q144{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q144.svg)}
+.q145{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q145.svg)}
+.q146{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q146.svg)}
+.q147{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q147.svg)}
+.q148{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q148.svg)}
+.q149{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q149.svg)}
+.q150{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q150.svg)}
+.q151{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q151.svg)}
+.q152{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q152.svg)}
+.q153{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q153.svg)}
+.q154{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q154.svg)}
+.q155{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q155.svg)}
+.q156{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q156.svg)}
+.q157{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q157.svg)}
+.q158{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q158.svg)}
+.q159{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q159.svg)}
+.q160{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q160.svg)}
+.q161{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q161.svg)}
+.q162{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q162.svg)}
+.q163{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q163.svg)}
+.q164{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q164.svg)}
+.q165{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q165.svg)}
+.q166{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q166.svg)}
+.q167{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q167.svg)}
+.q168{mask-image:url(/home/uctpiaj/work/Projects/competition-creates-competition/audit/microstructure_search_2026_10_22/scripts/_coordinator/slot_page/eq/q168.svg)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="kicker">Microstructure search · recommended setup</div>
+<h1>The order-slot model: an EGJ-like trading stage</h1>
+<p class="lede">One order of unit size arrives before the challenger decides. It comes from the informed investor or from a liquidity trader with an order of the same size. The market cannot tell which. Only the trading stage changes. The quality classes, their prior, the value distributions, the costs and the auction stay as in the paper. With costly research, as in Dow and Gorton (1997), entry also rises strictly across the paper's three intermediate strengths.</p>
+<p class="small muted">Status: <span class="chip an">analytical</span> complete proof &nbsp; <span class="chip ck">checked</span> reproduced by an independent member &nbsp; <span class="chip nd">numerical diagnostic</span> floating-point evidence &nbsp; <span class="chip op">open</span></p>
+
+<h2><span class="n">1</span>The setup</h2>
+<ol>
+<li>Nature draws the challenger's quality class <span class="mm q0" style="width:5.206em;height:1.120em;vertical-align:-0.317em"></span> with prior <span class="mm q1" style="width:7.155em;height:1.120em;vertical-align:-0.317em"></span>. Given the class, the challenger's value is <span class="mm q2" style="width:3.318em;height:1.119em;vertical-align:-0.373em"></span>. The high class dominates: <span class="mm q3" style="width:7.707em;height:1.120em;vertical-align:-0.317em"></span> for every <span class="mm q4" style="width:0.641em;height:0.507em;vertical-align:-0.014em"></span>, and both supports lie above the reserve <span class="mm q5" style="width:0.563em;height:0.712em;vertical-align:-0.246em"></span>. The incumbent's value <span class="mm q6" style="width:0.850em;height:0.788em;vertical-align:-0.027em"></span> has distribution <span class="mm q7" style="width:0.839em;height:0.762em;vertical-align:0.000em"></span>; in the leading case <span class="mm q8" style="width:5.389em;height:1.120em;vertical-align:-0.317em"></span>.</li>
+<li>One order slot opens. With probability <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>, the informed investor fills it. The investor sees the class <span class="mm q10" style="width:0.461em;height:0.969em;vertical-align:-0.259em"></span>, not the value <span class="mm q11" style="width:0.525em;height:0.801em;vertical-align:-0.013em"></span>. It chooses <span class="mm q12" style="width:6.552em;height:1.120em;vertical-align:-0.317em"></span> at cost <span class="mm q13" style="width:1.721em;height:1.119em;vertical-align:-0.316em"></span>.</li>
+<li>With probability <span class="mm q14" style="width:2.582em;height:0.869em;vertical-align:-0.104em"></span>, a liquidity trader fills it. It sells, waits or buys one unit with probabilities <span class="mm q15" style="width:0.634em;height:1.007em;vertical-align:-0.246em"></span>, <span class="mm q16" style="width:3.123em;height:1.007em;vertical-align:-0.246em"></span>, <span class="mm q15" style="width:0.634em;height:1.007em;vertical-align:-0.246em"></span>.</li>
+<li>Competitive market makers see the order <span class="mm q17" style="width:0.886em;height:1.006em;vertical-align:-0.246em"></span> and set <span class="mm q18" style="width:6.827em;height:1.120em;vertical-align:-0.317em"></span>. Nobody sees who placed the order.</li>
+<li>The challenger sees <span class="mm q19" style="width:0.841em;height:0.765em;vertical-align:0.000em"></span> and its own cost <span class="mm q20" style="width:5.680em;height:1.120em;vertical-align:-0.317em"></span>, with <span class="mm q21" style="width:7.051em;height:1.120em;vertical-align:-0.317em"></span>. It then decides whether to prepare. Preparation reveals <span class="mm q11" style="width:0.525em;height:0.801em;vertical-align:-0.013em"></span>. The paper's second-price auction with reserve <span class="mm q5" style="width:0.563em;height:0.712em;vertical-align:-0.246em"></span> follows.</li>
+</ol>
+<p class="small muted">The paper's benchmark is the point-mass case: <span class="mm q22" style="width:1.677em;height:0.958em;vertical-align:-0.190em"></span> puts all its mass on <span class="mm q23" style="width:0.645em;height:0.790em;vertical-align:-0.014em"></span>, <span class="mm q24" style="width:1.513em;height:0.958em;vertical-align:-0.190em"></span> on <span class="mm q25" style="width:0.467em;height:0.812em;vertical-align:-0.025em"></span>, and <span class="mm q26" style="width:3.021em;height:1.355em;vertical-align:-0.437em"></span>. The numbers on this page use that benchmark unless a line says otherwise.</p>
+<p>Under full orders (class H buys, class L sells), the order has these probabilities in each class. The prior does not enter them:</p>
+<span class="dm"><span class="mm q27" style="width:26.428em;aspect-ratio:26.428/4.334"></span></span>
+<p class="small muted">Here <span class="mm q28" style="width:6.248em;height:1.120em;vertical-align:-0.317em"></span> is the probability of a liquidity buy, and also of a liquidity sale.</p>
+<p class="small muted">The same results hold with a buy-only menu <span class="mm q29" style="width:4.622em;height:1.120em;vertical-align:-0.317em"></span>, in which the liquidity trader buys with probability <span class="mm q15" style="width:0.634em;height:1.007em;vertical-align:-0.246em"></span>.</p>
+
+<h2><span class="n">2</span>What an order tells the market</h2>
+<p>One number summarizes the slot. A buy is <span class="mm q30" style="width:2.570em;height:0.838em;vertical-align:-0.104em"></span> times as likely in class H as in class L, where</p>
+<span class="dm"><span class="mm q31" style="width:27.431em;aspect-ratio:27.431/2.710"></span></span>
+<p>Bayes' rule with prior <span class="mm q32" style="width:0.638em;height:0.495em;vertical-align:-0.014em"></span> gives the posterior that the class is H. Under full orders it is</p>
+<span class="dm"><span class="mm q33" style="width:34.862em;aspect-ratio:34.862/2.710"></span></span>
+<p style="text-align:center;margin:0">and <span class="mm q34" style="width:3.296em;height:0.895em;vertical-align:-0.274em"></span> after no order.</p>
+<p>Under every strategy, a buy or a sale moves the odds by a factor between <span class="mm q35" style="width:4.561em;height:1.120em;vertical-align:-0.317em"></span> and <span class="mm q30" style="width:2.570em;height:0.838em;vertical-align:-0.104em"></span>. If <span class="mm q36" style="width:3.016em;height:1.373em;vertical-align:-0.457em"></span>, so does no order, and then every posterior satisfies <span class="mm q37" style="width:8.843em;height:1.120em;vertical-align:-0.317em"></span>. Each order occurs in both classes, so no order is off the equilibrium path, and no belief rule is necessary. <span class="chip an">analytical</span> <span class="chip ck">checked</span></p>
+<div class="box key">
+<p><b>The link to the paper's bounds.</b> The paper's Laplace bounds are <span class="mm q38" style="width:14.214em;height:1.392em;vertical-align:-0.443em"></span> and <span class="mm q39" style="width:13.404em;height:1.392em;vertical-align:-0.443em"></span>. The slot gives the same two functions of <span class="mm q32" style="width:0.638em;height:0.495em;vertical-align:-0.014em"></span> when <span class="mm q40" style="width:5.810em;height:1.092em;vertical-align:-0.104em"></span>, that is, <span class="mm q41" style="width:4.585em;height:0.838em;vertical-align:-0.104em"></span> at <span class="mm q42" style="width:2.534em;height:0.869em;vertical-align:-0.104em"></span>. In the benchmark, <span class="mm q43" style="width:6.389em;height:1.425em;vertical-align:-0.511em"></span> and <span class="mm q44" style="width:9.103em;height:1.355em;vertical-align:-0.437em"></span>.</p>
+</div>
+<div class="box warn">
+<p><b>Why EGJ's own block fails here.</b> EGJ add noise <span class="mm q45" style="width:6.846em;height:1.120em;vertical-align:-0.317em"></span> to the order, so the flow is <span class="mm q46" style="width:5.142em;height:0.982em;vertical-align:-0.246em"></span>. The flow <span class="mm q47" style="width:3.008em;height:0.857em;vertical-align:-0.104em"></span> then needs an informed buy, so <span class="mm q48" style="width:9.063em;height:1.120em;vertical-align:-0.317em"></span>. At <span class="mm q49" style="width:3.919em;height:0.914em;vertical-align:-0.190em"></span> a sure class H still covers <span class="mm q50" style="width:1.281em;height:0.663em;vertical-align:-0.190em"></span>, so entry cannot return to <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>. This holds for every <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>, every noise weight and every <span class="mm q52" style="width:0.584em;height:0.790em;vertical-align:-0.014em"></span>. <span class="chip an">analytical</span></p>
+<p>The liquidity buy removes the revealing flow: a buy can also come from class L.</p>
+</div>
+
+<h2><span class="n">3</span>Prices, entry and the investor's return</h2>
+<p>The auction objects are the paper's. For a known value <span class="mm q11" style="width:0.525em;height:0.801em;vertical-align:-0.013em"></span>, let <span class="mm q53" style="width:1.801em;height:1.120em;vertical-align:-0.317em"></span> be expected target proceeds after the challenger prepares, and <span class="mm q54" style="width:1.931em;height:1.120em;vertical-align:-0.317em"></span> the challenger's expected gross profit; <span class="mm q55" style="width:0.893em;height:0.887em;vertical-align:-0.210em"></span> is proceeds without entry. The class objects are expectations over the class distribution:</p>
+<span class="dm"><span class="mm q56" style="width:23.690em;aspect-ratio:23.690/1.343"></span></span>
+<span class="dm"><span class="mm q57" style="width:21.759em;aspect-ratio:21.759/1.120"></span></span>
+<p>The challenger's value depends on the price only through its class, so its gross profit is linear in the posterior <span class="mm q58" style="width:0.675em;height:0.737em;vertical-align:-0.274em"></span>. In the point-mass benchmark with <span class="mm q8" style="width:5.389em;height:1.120em;vertical-align:-0.317em"></span>:</p>
+<span class="dm"><span class="mm q59" style="width:27.971em;aspect-ratio:27.971/2.472"></span></span>
+<span class="dm"><span class="mm q60" style="width:24.631em;aspect-ratio:24.631/2.510"></span></span>
+<p>The zero-cost type always prepares. The high-cost type prepares when its expected gain covers <span class="mm q50" style="width:1.281em;height:0.663em;vertical-align:-0.190em"></span>, that is, when the posterior reaches a threshold:</p>
+<span class="dm"><span class="mm q61" style="width:15.277em;aspect-ratio:15.277/1.120"></span></span>
+<span class="dm"><span class="mm q62" style="width:17.642em;aspect-ratio:17.642/2.602"></span></span>
+<p class="small muted">The last expression uses the benchmark <span class="mm q63" style="width:14.394em;height:1.355em;vertical-align:-0.437em"></span>.</p>
+<p>The competitive price at posterior <span class="mm q58" style="width:0.675em;height:0.737em;vertical-align:-0.274em"></span> is</p>
+<span class="dm"><span class="mm q64" style="width:16.851em;aspect-ratio:16.851/1.343"></span></span>
+<p>Given that it fills the slot, the informed investor's net return from a full order is</p>
+<span class="dm"><span class="mm q65" style="width:23.206em;aspect-ratio:23.206/1.343"></span></span>
+<span class="dm"><span class="mm q66" style="width:17.486em;aspect-ratio:17.486/1.120"></span></span>
+<p class="small muted">with <span class="mm q67" style="width:5.358em;height:1.120em;vertical-align:-0.317em"></span> and <span class="mm q68" style="width:4.970em;height:1.120em;vertical-align:-0.317em"></span>. A buy at any posterior <span class="mm q58" style="width:0.675em;height:0.737em;vertical-align:-0.274em"></span> earns <span class="mm q69" style="width:7.128em;height:1.120em;vertical-align:-0.317em"></span> before the cost, and a sale earns <span class="mm q70" style="width:4.327em;height:1.120em;vertical-align:-0.317em"></span>.</p>
+<p>A buy that recruits the high-cost challenger raises <span class="mm q71" style="width:2.570em;height:1.120em;vertical-align:-0.317em"></span> from <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span> to 1. This raises the return of the buy. This is the paper's feedback, now in a discrete form: each decision is one comparison of a return with <span class="mm q52" style="width:0.584em;height:0.790em;vertical-align:-0.014em"></span>.</p>
+
+<h2><span class="n">4</span>Proposition 2 in the slot model</h2>
+<div class="thm">
+<div class="t">Result 1 <span class="chip an">analytical</span> <span class="chip ck">checked</span></div>
+<p>Take incumbent distributions <span class="mm q72" style="width:4.623em;height:0.979em;vertical-align:-0.246em"></span>, each stronger than the one before, and write <span class="mm q73" style="width:4.421em;height:1.058em;vertical-align:-0.332em"></span>, <span class="mm q74" style="width:6.334em;height:1.120em;vertical-align:-0.317em"></span>, <span class="mm q67" style="width:5.358em;height:1.120em;vertical-align:-0.317em"></span>, <span class="mm q68" style="width:4.970em;height:1.120em;vertical-align:-0.317em"></span> and <span class="mm q75" style="width:9.900em;height:1.120em;vertical-align:-0.317em"></span>. Suppose</p>
+<span class="dm"><span class="mm q76" style="width:19.716em;aspect-ratio:19.716/1.120"></span></span>
+<span class="dm"><span class="mm q77" style="width:8.324em;aspect-ratio:8.324/1.044"></span></span>
+<p>Then each economy has a unique outcome, with mixed strategies included, under every pair of tie rules:</p>
+<ol>
+<li><b>Weak incumbent <span class="mm q78" style="width:1.209em;height:0.947em;vertical-align:-0.210em"></span>.</b> A unit order earns at most <span class="mm q79" style="width:3.499em;height:0.987em;vertical-align:-0.210em"></span>, so no informed order occurs, and entry is <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>.</li>
+<li><b>Strong incumbent <span class="mm q80" style="width:1.209em;height:0.930em;vertical-align:-0.190em"></span>.</b> Every correct order earns at least <span class="mm q81" style="width:4.723em;height:1.044em;vertical-align:-0.274em"></span>, so both classes trade fully. A buy gives the posterior <span class="mm q82" style="width:3.649em;height:0.933em;vertical-align:-0.190em"></span> and recruits; the other orders do not:
+<span class="dm"><span class="mm q83" style="width:12.490em;aspect-ratio:12.490/1.120"></span></span>
+<span class="dm"><span class="mm q84" style="width:18.624em;aspect-ratio:18.624/1.343"></span></span></li>
+<li><b>Very strong incumbent <span class="mm q85" style="width:1.209em;height:0.930em;vertical-align:-0.190em"></span>.</b> Orders stay full and prices stay informative. Since <span class="mm q86" style="width:6.162em;height:1.120em;vertical-align:-0.317em"></span>, no order recruits, and entry returns to <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>.</li>
+</ol>
+<p>High-class ownership rises from <span class="mm q78" style="width:1.209em;height:0.947em;vertical-align:-0.210em"></span> to <span class="mm q80" style="width:1.209em;height:0.930em;vertical-align:-0.190em"></span> exactly when</p>
+<span class="dm"><span class="mm q87" style="width:20.262em;aspect-ratio:20.262/1.343"></span></span>
+<p class="small muted">where <span class="mm q88" style="width:3.564em;height:1.120em;vertical-align:-0.317em"></span> is the probability that a prepared class-H challenger wins; it equals 1 in the benchmark. The condition <span class="mm q89" style="width:5.624em;height:1.120em;vertical-align:-0.317em"></span> is also a hypothesis of the paper's own Proposition 2. A second member derived this statement and a third checked it.</p>
+<p><b>At the benchmark</b> (<span class="mm q26" style="width:3.021em;height:1.355em;vertical-align:-0.437em"></span>, point masses, <span class="mm q90" style="width:3.376em;height:1.373em;vertical-align:-0.457em"></span>, <span class="mm q91" style="width:3.048em;height:0.913em;vertical-align:-0.190em"></span>, <span class="mm q92" style="width:3.772em;height:1.373em;vertical-align:-0.457em"></span>, <span class="mm q93" style="width:3.335em;height:0.914em;vertical-align:-0.190em"></span>, <span class="mm q94" style="width:3.362em;height:1.373em;vertical-align:-0.457em"></span>), the cost conditions have slack, and the hypotheses reduce to</p>
+<span class="dm"><span class="mm q95" style="width:20.274em;aspect-ratio:20.274/2.308"></span></span>
+<p style="text-align:center;margin:0">or, equivalently,</p>
+<span class="dm"><span class="mm q96" style="width:9.530em;aspect-ratio:9.530/2.296"></span></span>
+<p>Then <span class="mm q97" style="width:11.654em;height:1.377em;vertical-align:-0.437em"></span>. <span class="chip an">analytical</span> <span class="chip ck">checked</span> The ceiling solves <span class="mm q98" style="width:6.123em;height:1.120em;vertical-align:-0.317em"></span>; in the benchmark,</p>
+<span class="dm"><span class="mm q99" style="width:24.910em;aspect-ratio:24.910/3.367"></span></span>
+<p>and <span class="mm q100" style="width:6.032em;height:1.373em;vertical-align:-0.457em"></span> on the strip.</p>
+<p><b>Other priors.</b> Hold every other benchmark input fixed and vary <span class="mm q32" style="width:0.638em;height:0.495em;vertical-align:-0.014em"></span> under the hypotheses above. All three parts hold for <span class="mm q101" style="width:12.027em;height:1.120em;vertical-align:-0.317em"></span> at calibration A below, and for <span class="mm q102" style="width:12.027em;height:1.120em;vertical-align:-0.317em"></span> at calibration B. The second range is the paper's own range for Laplace noise, because calibration B gives the paper's <span class="mm q103" style="width:2.687em;height:1.120em;vertical-align:-0.317em"></span> at every prior. <span class="chip nd">numerical diagnostic</span></p>
+</div>
+<div class="chart" id="ch-tau"></div>
+<div class="legend"><span><span class="sw c1"></span>threshold τ(r)</span><span><span class="sw c2"></span>calibration A, M = 29/40</span><span><span class="sw c3 dash"></span>paper's M = e/(1+e)</span><span><span class="swb"></span>band (τ(3), τ(3.6))</span></div>
+<p class="cap">Benchmark (<span class="mm q26" style="width:3.021em;height:1.355em;vertical-align:-0.437em"></span>). A buy recruits the high-cost challenger where the line <span class="mm q104" style="width:1.177em;height:0.765em;vertical-align:0.000em"></span> lies above the curve <span class="mm q105" style="width:1.956em;height:1.120em;vertical-align:-0.317em"></span>. Proposition 2 needs <span class="mm q104" style="width:1.177em;height:0.765em;vertical-align:0.000em"></span> inside the band, so that a buy recruits at <span class="mm q106" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span> but not at <span class="mm q107" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span>. The auction sets this band at the two benchmark strengths, not the noise. The paper's Laplace value lies at its top edge. Another prior moves <span class="mm q103" style="width:2.687em;height:1.120em;vertical-align:-0.317em"></span>, not the band.</p>
+
+<h2><span class="n">5</span>Coexistence: the Proposition 3 analog</h2>
+<p>Let <span class="mm q108" style="width:13.182em;height:1.362em;vertical-align:-0.317em"></span>, the root of <span class="mm q109" style="width:5.381em;height:1.120em;vertical-align:-0.317em"></span> above <span class="mm q25" style="width:0.467em;height:0.812em;vertical-align:-0.025em"></span> in the benchmark family. Under no informed trade, every order gives the posterior <span class="mm q32" style="width:0.638em;height:0.495em;vertical-align:-0.014em"></span>. A buy by class H earns <span class="mm q110" style="width:7.554em;height:1.120em;vertical-align:-0.317em"></span>, and a sale by class L earns <span class="mm q111" style="width:4.754em;height:1.044em;vertical-align:-0.274em"></span>. If the prior does not recruit (<span class="mm q112" style="width:4.088em;height:1.120em;vertical-align:-0.317em"></span>), no trade is an equilibrium exactly when</p>
+<span class="dm"><span class="mm q113" style="width:33.775em;aspect-ratio:33.775/2.610"></span></span>
+<p>and <span class="mm q114" style="width:8.786em;height:1.355em;vertical-align:-0.437em"></span> is the paper's own boundary. Where coexistence starts at a point where the investor and the challenger are both indifferent, that point <span class="mm q115" style="width:1.192em;height:0.666em;vertical-align:-0.193em"></span> solves</p>
+<span class="dm"><span class="mm q116" style="width:11.820em;aspect-ratio:11.820/1.343"></span></span>
+<p>In the benchmark <span class="mm q117" style="width:6.917em;height:0.917em;vertical-align:-0.193em"></span>. This common start applies for priors near one half, about <span class="mm q118" style="width:6.659em;height:1.120em;vertical-align:-0.317em"></span> under calibration B; at other priors coexistence can still occur but starts later. On <span class="mm q119" style="width:7.385em;height:1.120em;vertical-align:-0.317em"></span>, with <span class="mm q120" style="width:10.777em;height:1.343em;vertical-align:-0.443em"></span>, class H buys at an interior rate, and entry rises with strength:</p>
+<span class="dm"><span class="mm q121" style="width:34.973em;aspect-ratio:34.973/2.416"></span></span>
+<p>Above <span class="mm q122" style="width:1.191em;height:0.663em;vertical-align:-0.190em"></span>, class H buys fully and entry stays at <span class="mm q123" style="width:1.158em;height:0.942em;vertical-align:-0.190em"></span> up to the ceiling. In the benchmark, no trade and informative trade coexist on <span class="mm q124" style="width:11.518em;height:1.120em;vertical-align:-0.317em"></span>, which contains the paper's points 1.55, 1.60 and 1.65. <span class="chip an">analytical</span> <span class="chip ck">checked</span></p>
+<div class="chart" id="ch-entry"></div>
+<div class="legend"><span><span class="sw c2"></span>no informed trade</span><span><span class="sw c1"></span>informative equilibrium</span><span><span class="swb"></span>both exist</span><span style="color:var(--c3)">○ paper, Prop. 2 &nbsp; ◆ paper, Prop. 3</span></div>
+<p class="cap">Benchmark, calibration A (<span class="mm q125" style="width:11.024em;height:1.373em;vertical-align:-0.457em"></span>). Entry on the informative branch rises from 0.475 to 0.544 on <span class="mm q126" style="width:6.535em;height:1.120em;vertical-align:-0.317em"></span>, then stays flat. At 1.55–1.65 it is flat with a fixed <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>; Section 6 shows how costly research restores a strict rise there. The rising part on <span class="mm q126" style="width:6.535em;height:1.120em;vertical-align:-0.317em"></span> needs investor mixing at indifference. Class L does not sell on the coexistence interval; it sells at an interior rate on <span class="mm q127" style="width:6.659em;height:1.120em;vertical-align:-0.317em"></span> and fully above. Sales do not change entry.</p>
+
+<h2><span class="n">6</span>Costly research brings back rising entry</h2>
+<p>Let research be a choice, as in Dow and Gorton (1997). Before it learns the class, the investor chooses the probability <span class="mm q128" style="width:4.356em;height:1.338em;vertical-align:-0.317em"></span> that its research succeeds, at cost <span class="mm q129" style="width:5.923em;height:1.320em;vertical-align:-0.437em"></span>. Success reveals the class, and the informed investor fills the slot. After a failure, a liquidity trader fills the slot instead. The cap <span class="mm q130" style="width:0.653em;height:1.072em;vertical-align:-0.015em"></span> is a limit of the research technology. Given the prices, the best research choice is</p>
+<span class="dm"><span class="mm q131" style="width:9.033em;aspect-ratio:9.033/2.302"></span></span>
+<p>where <span class="mm q132" style="width:1.103em;height:0.942em;vertical-align:-0.200em"></span> is the expected trading profit after a success. At the intermediate strengths only a buy recruits and class L does not trade, so with <span class="mm q133" style="width:3.016em;height:1.373em;vertical-align:-0.457em"></span></p>
+<span class="dm"><span class="mm q134" style="width:35.484em;aspect-ratio:35.484/2.495"></span></span>
+<p>The research level <span class="mm q135" style="width:2.724em;height:1.120em;vertical-align:-0.317em"></span> solves <span class="mm q136" style="width:5.366em;height:1.120em;vertical-align:-0.317em"></span>. A stronger incumbent raises <span class="mm q137" style="width:1.583em;height:0.970em;vertical-align:-0.190em"></span>, so the value of discovery rises, research rises, and more buys carry information. Entry therefore rises strictly with strength, and the investor never mixes between trading and not trading.</p>
+<div class="thm">
+<div class="t">Result 2 <span class="chip an">analytical</span> <span class="chip ck">checked</span></div>
+<p>Take the benchmark with <span class="mm q133" style="width:3.016em;height:1.373em;vertical-align:-0.457em"></span>, cap <span class="mm q138" style="width:3.431em;height:1.462em;vertical-align:-0.457em"></span> and cost <span class="mm q139" style="width:3.371em;height:1.373em;vertical-align:-0.457em"></span>.</p>
+<ol>
+<li><b>Weak incumbent, 1.2.</b> No research is the unique outcome, and entry is <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>.</li>
+<li><b>Intermediate strengths.</b> Under the paper's tie rule there are exactly two equilibria: no research (entry <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>), and a research branch with a strict purchase after good news:</li>
+</ol>
+<div class="tw"><table>
+<thead><tr><th>Strength</th><th>Research success</th><th>Entry</th><th>Paper (Laplace)</th></tr></thead>
+<tbody>
+<tr><td class="n">1.55</td><td class="n">0.2502</td><td class="n">0.5313</td><td class="n">0.5451</td></tr>
+<tr><td class="n">1.60</td><td class="n">0.2933</td><td class="n">0.5367</td><td class="n">0.5488</td></tr>
+<tr><td class="n">1.65</td><td class="n">0.3326</td><td class="n">0.5416</td><td class="n">0.5514</td></tr>
+</tbody></table></div>
+<ol start="3">
+<li><b>Strong and very strong incumbents, 3 and 3.6.</b> Research sits at the cap, uniquely. Entry is <span class="mm q140" style="width:1.285em;height:1.381em;vertical-align:-0.457em"></span> and then <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>, and prices stay informative. Access to prices raises proceeds by <span class="mm q141" style="width:1.681em;height:1.373em;vertical-align:-0.457em"></span> and net surplus by <span class="mm q142" style="width:1.285em;height:1.373em;vertical-align:-0.457em"></span> at 3.</li>
+</ol>
+<p class="small muted">If the challenger may mix at indifference, a third branch appears at the intermediate strengths, with falling entry.</p>
+</div>
+<div class="chart" id="ch-research"></div>
+<div class="legend"><span><span class="sw c2"></span>no research</span><span><span class="sw c1"></span>research branch</span><span><span class="sw c1 dash"></span>fixed λ = 6/17 (Section 5)</span><span style="color:var(--c3)">◆ paper, Prop. 3</span></div>
+<p class="cap">Benchmark, <span class="mm q138" style="width:3.431em;height:1.462em;vertical-align:-0.457em"></span>, <span class="mm q139" style="width:3.371em;height:1.373em;vertical-align:-0.457em"></span>. The research branch starts where a buy first recruits (<span class="mm q143" style="width:4.550em;height:0.771em;vertical-align:-0.028em"></span>) and reaches the cap at <span class="mm q144" style="width:4.550em;height:0.782em;vertical-align:-0.028em"></span>, where it joins the fixed-<span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span> branch at <span class="mm q140" style="width:1.285em;height:1.381em;vertical-align:-0.457em"></span>.</p>
+<div class="box warn">
+<p><b>What the result needs.</b> The cap must lie in the benchmark band, <span class="mm q145" style="width:9.863em;height:1.103em;vertical-align:-0.050em"></span>. The rising branch needs the cost in about <span class="mm q146" style="width:9.802em;height:0.791em;vertical-align:-0.050em"></span>. The quadratic cost is an added assumption. Without a cap below <span class="mm q147" style="width:2.077em;height:1.373em;vertical-align:-0.457em"></span>, no research cost gives a unique recruiting buy at 3 together with floor entry at 3.6. <span class="chip an">analytical</span> <span class="chip ck">checked</span></p>
+<p>The rise now comes from research effort, not from order size: a complementarity in the spirit of Dow and Gorton, in place of the paper's partial orders.</p>
+</div>
+
+<h2><span class="n">7</span>Access to prices <span class="chip an">analytical</span> <span class="chip ck">checked</span></h2>
+<p>In the benchmark at <span class="mm q91" style="width:3.048em;height:0.913em;vertical-align:-0.190em"></span>, a hidden price fixes entry at <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span>, because <span class="mm q148" style="width:5.874em;height:1.355em;vertical-align:-0.437em"></span>. The informed orders are the same in both regimes. With the price, the order <span class="mm q149" style="width:3.811em;height:1.006em;vertical-align:-0.246em"></span> recruits, so</p>
+<span class="dm"><span class="mm q150" style="width:25.512em;aspect-ratio:25.512/1.373"></span></span>
+<span class="dm"><span class="mm q151" style="width:26.282em;aspect-ratio:26.282/2.472"></span></span>
+<p class="small muted">Values at calibration A, where <span class="mm q152" style="width:8.662em;height:1.373em;vertical-align:-0.457em"></span> and <span class="mm q153" style="width:6.166em;height:1.381em;vertical-align:-0.457em"></span>.</p>
+
+<h2><span class="n">8</span>Two calibrations</h2>
+<div class="tw"><table>
+<thead><tr><th></th><th>Calibration A</th><th>Calibration B</th><th>Paper</th></tr></thead>
+<tbody>
+<tr><td><span class="mm q154" style="width:2.065em;height:1.007em;vertical-align:-0.246em"></span></td><td class="n"><span class="mm q155" style="width:2.952em;height:1.373em;vertical-align:-0.457em"></span></td><td class="n">0.2947, 0.3361</td><td>—</td></tr>
+<tr><td><span class="mm q4" style="width:0.641em;height:0.507em;vertical-align:-0.014em"></span></td><td class="n"><span class="mm q156" style="width:1.285em;height:1.355em;vertical-align:-0.437em"></span></td><td class="n"><span class="mm q157" style="width:2.451em;height:0.838em;vertical-align:-0.104em"></span></td><td>—</td></tr>
+<tr><td>Top posterior <span class="mm q104" style="width:1.177em;height:0.765em;vertical-align:0.000em"></span></td><td class="n"><span class="mm q158" style="width:5.330em;height:1.373em;vertical-align:-0.457em"></span></td><td class="n"><span class="mm q159" style="width:7.599em;height:1.243em;vertical-align:-0.511em"></span></td><td class="n">0.731059</td></tr>
+<tr><td>Entry at <span class="mm q106" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span></td><td class="n"><span class="mm q160" style="width:5.330em;height:1.381em;vertical-align:-0.457em"></span></td><td class="n">0.522757</td><td class="n">0.522757</td></tr>
+<tr><td>High-class ownership at <span class="mm q106" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span></td><td class="n"><span class="mm q161" style="width:5.330em;height:1.373em;vertical-align:-0.457em"></span></td><td class="n">0.3244</td><td class="n">0.3242</td></tr>
+<tr><td>Ceiling <span class="mm q162" style="width:1.200em;height:0.681em;vertical-align:-0.210em"></span></td><td class="n"><span class="mm q163" style="width:8.205em;height:1.624em;vertical-align:-0.457em"></span></td><td class="n">3.592659</td><td class="n">3.592659</td></tr>
+<tr><td>No-trade boundary <span class="mm q164" style="width:1.301em;height:0.663em;vertical-align:-0.190em"></span></td><td class="n">1.747878</td><td class="n">1.747878</td><td class="n">1.747878</td></tr>
+<tr><td>Priors with all of Prop. 2</td><td class="n">(0.4755, 0.5081)</td><td class="n">(0.4679, 0.5004)</td><td class="n">(0.4679, 0.5004)</td></tr>
+<tr><td>Status</td><td><span class="chip an">analytical</span> <span class="chip ck">checked</span></td><td><span class="chip co">computer-assisted</span> <span class="chip ck">checked</span></td><td></td></tr>
+</tbody></table></div>
+<p class="cap">All rows use the point-mass benchmark; the last row varies only the prior. The paper's column uses Laplace noise with <span class="mm q42" style="width:2.534em;height:0.869em;vertical-align:-0.104em"></span>. Calibration A copies EGJ's equal weights onto the liquidity order. Calibration B picks <span class="mm q4" style="width:0.641em;height:0.507em;vertical-align:-0.014em"></span> to give the paper's top posterior, and <span class="mm q15" style="width:0.634em;height:1.007em;vertical-align:-0.246em"></span> to give the paper's entry. Its margin at <span class="mm q107" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span> is the paper's own: 0.0003 in posterior. Two members computed with calibration B at 40 and 70 digits.</p>
+
+<h2><span class="n">9</span>The paper's extensions under the slot</h2>
+<div class="tw"><table>
+<thead><tr><th>Extension</th><th>Verdict</th><th>What changes in the paper</th></tr></thead>
+<tbody>
+<tr><td>Value classes and any prior (two classes)</td><td>holds</td><td>Entry levels differ; every paper example works with its own costs and strengths</td></tr>
+<tr><td>More than two classes</td><td>fails at a knife-edge</td><td>Two orders can share one price; a change of 0.001 separates them, and entry does not change. Rewrite one sentence</td></tr>
+<tr><td>Fixed-information control</td><td>holds, weaker</td><td>Entry at fixed information is flat, not falling: "does not rise"</td></tr>
+<tr><td>Atomless preparation costs</td><td>holds</td><td>Strong entry 0.522757 at calibration B</td></tr>
+<tr><td>Complementary private signals</td><td>holds</td><td>Entry 0.85 → 0.8798; the same six signal pairs qualify</td></tr>
+<tr><td>Access to prices</td><td>holds where a buy recruits</td><td>Break-even trade scale about 6.85 instead of 1.83</td></tr>
+<tr><td>Payment rule</td><td>holds</td><td>None</td></tr>
+<tr><td>Reserve comparisons</td><td>holds, weaker</td><td>Entry is flat at the paper's exclusion reserve; strict deterrence needs reserve 1.55, which excludes the weak incumbent</td></tr>
+</tbody></table></div>
+<p class="cap">Each verdict comes from one member's derivation and an independent check by a second, independent member, with the slot at a fixed <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>. The extensions have not yet been re-derived with costly research.</p>
+
+<h2><span class="n">10</span>What it keeps, and what it costs</h2>
+<div class="grid2">
+<div class="card"><h3>Keeps</h3><ul>
+<li>The paper's class model: prior <span class="mm q32" style="width:0.638em;height:0.495em;vertical-align:-0.014em"></span> and value distributions <span class="mm q165" style="width:3.687em;height:1.007em;vertical-align:-0.246em"></span>.</li>
+<li>All of Proposition 2, with unique outcomes.</li>
+<li>The paper's no-trade boundary <span class="mm q164" style="width:1.301em;height:0.663em;vertical-align:-0.190em"></span>.</li>
+<li>Coexistence on <span class="mm q166" style="width:6.411em;height:1.120em;vertical-align:-0.317em"></span> in the benchmark.</li>
+<li>With costly research, entry that rises strictly at 1.55, 1.60 and 1.65.</li>
+<li>Every extension of the paper in substance (Section 9).</li>
+<li>The access-to-prices result.</li>
+<li>No off-path beliefs, and short proofs.</li>
+<li>A buy-only version with the same results.</li>
+</ul></div>
+<div class="card"><h3>Costs</h3><ul>
+<li><b>Unit orders.</b> With <span class="mm q167" style="width:4.997em;height:1.120em;vertical-align:-0.317em"></span>, a 0.99 buy reaches an unused order. Under a prior belief there it earns 0.0964 against 0.0446 at <span class="mm q107" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span>, and part (iii) fails. A continuous menu needs EGJ's belief convention.</li>
+<li><b>An assumed liquidity motive.</b> A free uninformed trader would not trade. A holder hit by forced liquidity shocks gives the same trader, though not as the unique outcome.</li>
+<li><b>No partial sale at 1.55–1.65.</b> A mixed sale by class L appears only on <span class="mm q127" style="width:6.659em;height:1.120em;vertical-align:-0.317em"></span>. If the investor can choose when to trade, a delayed sale appears, but in one of two equilibria only.</li>
+<li><b>Entry moves in steps.</b> With a fixed <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>, entry is flat at 1.55–1.65, at fixed information, and at the paper's exclusion reserve. Costly research restores the first of these.</li>
+</ul></div>
+</div>
+<div class="box key">
+<p><b>The trade-off behind the step costs.</b> With unit orders at the benchmark, the return to <span class="mm q51" style="width:0.579em;height:0.737em;vertical-align:-0.274em"></span> at <span class="mm q107" style="width:0.994em;height:0.663em;vertical-align:-0.190em"></span> caps the top posterior at <span class="mm q168" style="width:6.780em;height:1.373em;vertical-align:-0.457em"></span>. An EGJ-type branch with entry that rises at 1.55–1.65 needs a top posterior above 0.755. Tuned noise does both only in boxes about 0.001 wide. <span class="chip an">analytical</span> Costly research avoids the trade-off: the cap fixes the top posterior at the strong strengths, while research below the cap moves continuously at the intermediate ones.</p>
+</div>
+
+<h2><span class="n">11</span>Precedent</h2>
+<ul>
+<li><b>Dow and Gorton (1997, <i>Journal of Finance</i>).</b> Costly research that succeeds with some probability; an informed trader or a liquidity trader of the same size arrives. The arrival of information is "perfectly negatively correlated with the arrival of a liquidity trader" (p. 1095). <span class="chip ck">verified</span></li>
+<li><b>Edmans, Goldstein and Jiang (2015, <i>American Economic Review</i>).</b> Unit orders, and three readings of <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>: presence, a liquidity shock, or information with probability <span class="mm q9" style="width:0.653em;height:0.791em;vertical-align:-0.015em"></span>. <span class="chip ck">verified</span></li>
+<li><b>Admati and Pfleiderer (2009, <i>Review of Financial Studies</i>).</b> A liquidity shock forces the same whole-stake sale as bad news. <span class="chip ck">verified</span></li>
+</ul>
+<p class="small muted">Sources: <code>audit/microstructure_search_2026_10_22/memos/T2_liquidity_trader.md</code> (variant V3), <code>X_check.md</code>, <code>E1_auction_side.md</code>, <code>E2_information_side.md</code>, <code>XE1_check.md</code>, <code>XE2_check.md</code>, <code>N3_size_research.md</code>, <code>XN3_check.md</code>, <code>SYNTHESIS.md</code> §4–5, <code>L1_survey.md</code>. Numbers on this page: <code>scripts/_coordinator/slot_numbers.py</code> and <code>slot_prior.py</code>.</p>
+
+</div>
+<script>
+(function(){
+const Dm=r=>(r-1)*(r-1)/(2*r), tau=r=>(48*r-3)/(4*(20*r-r*r-1));
+const k=0.02,rho=0.25,b=11/51,rA=1.39395792,rF=1.46098466,rN=1.74787754,rC=3.45824703,EA=37/68;
+const it=s=>`<tspan font-style="italic" font-family="Georgia,'Times New Roman',serif">${s}</tspan>`;
+function frame(W,H,m,xr,yr){return{xs:x=>m.l+(x-xr[0])/(xr[1]-xr[0])*(W-m.l-m.r),ys:y=>H-m.b-(y-yr[0])/(yr[1]-yr[0])*(H-m.t-m.b)};}
+function axes(W,H,m,xs,ys,xt,yt,fx,fy,xl,yl,fs){let s='';
+ yt.forEach(v=>{s+=`<line class="grid" x1="${m.l}" x2="${W-m.r}" y1="${ys(v)}" y2="${ys(v)}"/><text class="tk" x="${m.l-7}" y="${ys(v)+fs*.35}" text-anchor="end" font-size="${fs}">${fy(v)}</text>`;});
+ xt.forEach(v=>{s+=`<line class="ax" x1="${xs(v)}" x2="${xs(v)}" y1="${H-m.b}" y2="${H-m.b+4}"/><text class="tk" x="${xs(v)}" y="${H-m.b+fs+5}" text-anchor="middle" font-size="${fs}">${fx(v)}</text>`;});
+ s+=`<line class="ax" x1="${m.l}" x2="${W-m.r}" y1="${H-m.b}" y2="${H-m.b}"/><text class="lab" x="${(m.l+W-m.r)/2}" y="${H-6}" text-anchor="middle" font-size="${fs}">${xl}</text><text class="lab" x="${m.l}" y="${m.t-10}" font-size="${fs}">${yl}</text>`;return s;}
+function marks(xs,m,H,fs,end3){let s='';[[1.2,'r','₀'],[3,'r','₁'],[3.6,'r','₂']].forEach(([r,a,c])=>{const e=end3&&r===3;
+ s+=`<line class="vd" x1="${xs(r)}" x2="${xs(r)}" y1="${m.t}" y2="${H-m.b}"/><text class="lab" x="${xs(r)+(e?-5:5)}" y="${m.t+12}" text-anchor="${e?'end':'start'}" font-size="${fs}">${it(a)}${c}</text>`;});return s;}
+function chartTau(n){const W=n?420:680,H=n?330:300,fs=n?15:13,m={l:n?48:52,r:n?14:24,t:30,b:44},{xs,ys}=frame(W,H,m,[1,4.5],[.6,.8]);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Recruitment threshold against incumbent strength">`;
+ s+=`<rect class="band" x="${m.l}" y="${ys(.7313921)}" width="${W-m.l-m.r}" height="${ys(.705)-ys(.7313921)}"/>`;
+ s+=axes(W,H,m,xs,ys,n?[1,2,3,4]:[1,1.5,2,2.5,3,3.5,4,4.5],[.6,.65,.7,.75,.8],v=>v,v=>v.toFixed(2),'incumbent strength '+it('r'),'posterior that the class is H',fs);
+ s+=marks(xs,m,H,fs,true);
+ const p=[];for(let i=0;i<=240;i++){const r=1+3.5*i/240;p.push(xs(r).toFixed(1)+','+ys(tau(r)).toFixed(1));}
+ s+=`<polyline class="l1" points="${p.join(' ')}"/><line class="l3" x1="${m.l}" x2="${W-m.r}" y1="${ys(.7310586)}" y2="${ys(.7310586)}"/><line class="l2" x1="${m.l}" x2="${W-m.r}" y1="${ys(.725)}" y2="${ys(.725)}"/>`;
+ [[3,.705],[3.6,.7313921]].forEach(([r,y])=>s+=`<circle class="dot1" cx="${xs(r)}" cy="${ys(y)}" r="4"/>`);
+ s+=`<text class="lab c1t" x="${xs(n?1.55:1.6)}" y="${ys(n?.672:.668)}" font-size="${fs}">${it('τ')}(${it('r')})</text>`;
+ s+=`<text class="lab c3t" x="${xs(4.45)}" y="${ys(.7310586)-6}" text-anchor="end" font-size="${fs}">paper ${it('M')} = 0.7311</text>`;
+ s+=`<text class="lab c2t" x="${xs(n?1.08:1.15)}" y="${ys(.725)+fs+2}" font-size="${fs}">calibration A: ${it('M')} = 0.725</text>`;
+ return s+'</svg>';}
+function chartEntry(n){const W=n?420:680,H=n?340:300,fs=n?15:13,m={l:n?48:52,r:n?14:24,t:30,b:44},{xs,ys}=frame(W,H,m,[1,4],[.2,.6]);
+ const Ei=r=>rho+(1-rho)*b*Dm(r)/(2*k);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Equilibrium entry against incumbent strength">`;
+ s+=`<rect class="band" x="${xs(rA)}" y="${m.t}" width="${xs(rN)-xs(rA)}" height="${H-m.t-m.b}"/>`;
+ s+=axes(W,H,m,xs,ys,n?[1,2,3,4]:[1,1.5,2,2.5,3,3.5,4],[.2,.3,.4,.5,.6],v=>v,v=>v.toFixed(1),'incumbent strength '+it('r'),'probability of entry',fs);
+ s+=marks(xs,m,H,fs,false);
+ s+=`<line class="l2" x1="${xs(1)}" x2="${xs(rN)}" y1="${ys(.25)}" y2="${ys(.25)}"/><circle class="dot2" cx="${xs(rN)}" cy="${ys(.25)}" r="3.5"/>`;
+ const p=[];for(let i=0;i<=60;i++){const r=rA+(rF-rA)*i/60;p.push(xs(r).toFixed(1)+','+ys(Ei(r)).toFixed(1));}p.push(xs(rC).toFixed(1)+','+ys(EA).toFixed(1));
+ s+=`<polyline class="l1" points="${p.join(' ')}"/><line class="l1d" x1="${xs(rC)}" x2="${xs(rC)}" y1="${ys(EA)}" y2="${ys(.25)}"/><line class="l1" x1="${xs(rC)}" x2="${xs(4)}" y1="${ys(.25)}" y2="${ys(.25)}"/><circle class="dot1" cx="${xs(rA)}" cy="${ys(Ei(rA))}" r="3.5"/>`;
+ [[1.2,.25],[3,.522757],[3.6,.25]].forEach(([r,y])=>s+=`<circle class="hol3" cx="${xs(r)}" cy="${ys(y)}" r="5.5"/>`);
+ [[1.55,.545053],[1.6,.548756],[1.65,.551361]].forEach(([r,y])=>s+=`<rect class="dia3" x="${xs(r)-3.5}" y="${ys(y)-3.5}" width="7" height="7" transform="rotate(45 ${xs(r)} ${ys(y)})"/>`);
+ s+=`<text class="lab c1t" x="${xs(2.55)}" y="${ys(EA)-9}" text-anchor="middle" font-size="${fs}">informative: 37/68 = 0.544</text>`;
+ s+=`<text class="lab c2t" x="${xs(1.03)}" y="${ys(.25)-8}" font-size="${fs}">no informed trade</text>`;
+ s+=`<text class="lab mut" x="${(xs(rA)+xs(rN))/2}" y="${ys(.375)}" text-anchor="middle" font-size="${fs-1}">both</text>`;
+ return s+'</svg>';}
+function chartResearch(n){const W=n?420:680,H=n?330:290,fs=n?15:13,m={l:n?48:52,r:n?14:24,t:30,b:44},{xs,ys}=frame(W,H,m,[1.3,1.9],[.2,.6]);
+ const a=1/40,lc=6/17,rRec=1.51180346,rCap=1.67776618;
+ const lamR=r=>{const d=Dm(r),B=4*a+k+d;return(-B+Math.sqrt(B*B+8*a*(d-2*k)))/(4*a);};
+ const ER=r=>0.5+lamR(r)/8,Ei=r=>rho+(1-rho)*b*Dm(r)/(2*k);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Entry with costly research at intermediate strengths">`;
+ s+=axes(W,H,m,xs,ys,n?[1.3,1.5,1.7,1.9]:[1.3,1.4,1.5,1.6,1.7,1.8,1.9],[.2,.3,.4,.5,.6],v=>v.toFixed(1),v=>v.toFixed(1),'incumbent strength '+it('r'),'probability of entry',fs);
+ [1.55,1.6,1.65].forEach(r=>s+=`<line class="vd" x1="${xs(r)}" x2="${xs(r)}" y1="${m.t}" y2="${H-m.b}"/>`);
+ s+=`<line class="l2" x1="${xs(1.3)}" x2="${xs(rN)}" y1="${ys(.25)}" y2="${ys(.25)}"/><circle class="dot2" cx="${xs(rN)}" cy="${ys(.25)}" r="3.5"/>`;
+ const q=[];for(let i=0;i<=40;i++){const r=rA+(rF-rA)*i/40;q.push(xs(r).toFixed(1)+','+ys(Ei(r)).toFixed(1));}q.push(xs(1.9).toFixed(1)+','+ys(EA).toFixed(1));
+ s+=`<polyline class="l1d" points="${q.join(' ')}"/>`;
+ const p=[];for(let i=0;i<=80;i++){const r=rRec+(rCap-rRec)*i/80;p.push(xs(r).toFixed(1)+','+ys(ER(r)).toFixed(1));}p.push(xs(1.9).toFixed(1)+','+ys(EA).toFixed(1));
+ s+=`<polyline class="l1" points="${p.join(' ')}"/>`;
+ [1.55,1.6,1.65].forEach(r=>s+=`<circle class="dot1" cx="${xs(r)}" cy="${ys(ER(r))}" r="4"/>`);
+ [[1.55,.545053],[1.6,.548756],[1.65,.551361]].forEach(([r,y])=>s+=`<rect class="dia3" x="${xs(r)-3.5}" y="${ys(y)-3.5}" width="7" height="7" transform="rotate(45 ${xs(r)} ${ys(y)})"/>`);
+ s+=`<text class="lab c1t" x="${xs(1.89)}" y="${ys(EA)+fs+12}" text-anchor="end" font-size="${fs}">research at the cap</text>`;
+ s+=`<text class="lab c2t" x="${xs(1.31)}" y="${ys(.25)-8}" font-size="${fs}">no research</text>`;
+ return s+'</svg>';}
+function draw(){[['ch-tau',chartTau],['ch-entry',chartEntry],['ch-research',chartResearch]].forEach(([id,f])=>{const el=document.getElementById(id);if(!el)return;const n=(el.clientWidth||700)<520;if(el.dataset.n!==String(n)){el.innerHTML=f(n);el.dataset.n=String(n);}});}
+draw();addEventListener('resize',draw);
+})();
+
+</script>
+</body>
+</html>

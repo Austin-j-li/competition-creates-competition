@@ -1,0 +1,60 @@
+Benchmark: h=10, ell=1, p=1/2, rho=1/4, c_L=0, c_H=6, k=1/50, pi=1/2, lam=1
+
+1. Trading cutoff under the Intuitive-Criterion completion: K_rho(r) = k, r_T = frak_r(3k/(2 rho (1-pi)))
+  argument 3k/(2 rho (1-pi)) = 6/25
+  r_T: root = 1.973212111192934401054087550996481358238
+     at r = root - 1e-12: -3.096525e-14
+     at r = root + 1e-12: +3.096525e-14
+
+2. No-trade boundary under passive beliefs: (3/2) K_rho(r) = k, r = frak_r(k/(rho (1-pi)))
+  argument k/(rho (1-pi)) = 4/25
+  r_passive: root = 1.747877538267962743567348177929413934072
+     at r = root - 1e-12: -4.204224e-14
+     at r = root + 1e-12: +4.204224e-14
+
+3. No-trade boundary under the adverse belief v = 0: (1/3)[2 rho (1-pi) + rho] DeltaT = k
+  argument 3k/(rho (3-2 pi)) = 3/25
+  r_adverse: root = 1.624380808516739661249145033381324491989
+     at r = root - 1e-12: -5.175108e-14
+     at r = root + 1e-12: +5.175108e-14
+
+4. No-trade boundary robust to every off-path belief: (1/3)[2 rho (1-pi) + max(rho, 1-tau(r))] DeltaT(r) = k
+  root by exact bisection: in [1.556594422881826, 1.556594422881826]
+     robust(lo) = -1.716e-62, robust(hi) = +5.469e-62
+     tau at the root = 0.647053
+
+5. Expensive-entry ceiling at the revealing flow: g_H(r) = c_H
+  r_C(1): root = 7.968626966596885885752423630458890638565
+     at r = root - 1e-12: +4.980315e-13
+     at r = root + 1e-12: -4.980315e-13
+  closed form 4 + (3/2) sqrt(7) = 7.968626966596885885752423630458890638565
+
+6. Prior crossing B_r(pi) = c_H at the benchmark:
+  r_C(1/2) = 0.12132034355964257320 (below ell = 1, so B_r(1/2) < c_H on (ell, h))
+  B_1(1/2) = 4.875000
+
+7. Return of entry before r = h requires c_H > h/2 - p^2/(2h):
+  h/2 - p^2/(2h) = 399/80 = 4.987500
+
+8. Trading cutoff for other priors (rule E, region IV):
+  r_T(pi=1/3): root = 1.806418390534633010785465241352882860697
+     at r = root - 1e-12: -3.853041e-14
+     at r = root + 1e-12: +3.853041e-14
+  r_T(pi=2/3): root = 2.281737489744232981092362442607764696767
+     at r = root - 1e-12: -2.244239e-14
+     at r = root + 1e-12: +2.244239e-14
+
+9. Region-II example c_H = 4 (pi=1/2, lam=1):
+  K_1(r) = k: frak_r(3k/(2(1-pi))): root = 1.411567916624938914518939426087859679705
+     at r = root - 1e-12: -8.302066e-14
+     at r = root + 1e-12: +8.302066e-14
+  r_C(1/2) for c_H=4: B_r(1/2) = 4: root = 4.121320343559642573202533086314547117855
+     at r = root - 1e-12: +2.573593e-13
+     at r = root + 1e-12: -2.573593e-13
+  closed form 2 + (3/2) sqrt(2) = 4.121320343559642573202533086314547117855
+  r_C(1) for c_H=4: 11.979130371550699011 (above h = 10)
+
+10. Presence lam = 1/2: m_lam = 1/3; crossing B_r(1/3) = c_H for c_H = 2
+  r_C(1/3) for c_H=2: root = 8.153311931459037426292131372453746005116
+     at r = root - 1e-12: +1.698006e-13
+     at r = root + 1e-12: -1.698006e-13

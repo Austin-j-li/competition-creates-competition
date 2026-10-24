@@ -1,0 +1,1109 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem,float}
+\usepackage{newtxtext,newtxmath}
+\usepackage[hidelinks]{hyperref}
+\input{../scripts/P5_observables/p5_numbers.tex}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Ent}{\mathsf E}
+\newcommand{\fr}{\mathfrak r}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\cH}{c_H}
+\newcommand{\status}[1]{\textsc{#1}}
+\DeclareMathOperator{\Cov}{Cov}
+\setlist{nosep}
+
+\title{Empirical implications of the order slot\\
+\large Proof package P5 (result R11)}
+\author{}
+\date{23 October 2026 (round 2)}
+
+\begin{document}
+\maketitle
+
+\section*{Summary}
+
+This package derives the empirical implications of the order slot.
+Each statement has a proof and one status label: analytical, computer-assisted, or input.
+Values at calibration B come from interval arithmetic.
+The script is \texttt{scripts/P5\_observables/p5\_observables.py}.
+Its run log is \texttt{scripts/P5\_observables/run\_log.txt}.
+The registry rows are in \texttt{registry/P5\_observables.csv}.
+
+Table~\ref{tab:summary} lists the results.
+Section~\ref{sec:scope} states the scope and lists what stays open.
+Section~\ref{sec:old} compares each result with the earlier study.
+Section~\ref{sec:margins} lists the margins, the tie rules, and the parameter set.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Results of the package.}\label{tab:summary}
+\begin{tabular}{@{}p{0.9cm}p{6.6cm}p{2.3cm}p{4.6cm}@{}}
+\toprule
+No. & Statement & Status & Value at B\\
+\midrule
+Prop.~\ref{p:flow} & Volume, mean order, and informed share identify the outcome: no informed trade, buys only, or buys and sales. & analytical; values computer-assisted & volume \reg{vol_none_B}, \reg{vol_buy_B}, \reg{vol_full_B}; informed share \reg{theta_buy_B}, \reg{theta_B}\\
+Prop.~\ref{p:spread} & The conditional execution spread is a class component plus an entry component. Buy impact exceeds sell impact exactly by the entry component. The spread falls at the ceiling $r_C$. Above $r_C$ the entry component is zero. & analytical; values computer-assisted & $S(r_1)=\reg{ba_r1_B}$; entry share \reg{ba_share_r1_B}; fall at $r_C=\reg{rC_check_B}$: \reg{ba_jump_rC_B}\\
+Prop.~\ref{p:ident} & Order counts leave the informed share open on a range that the investor incentives bound. Sell impact and volume identify it on the two-sided branch. Counts identify it on the buy-only branch. & analytical; values computer-assisted & counts and incentives at $r_1$: $[\reg{theta_min_counts_B},\reg{theta_max_full_eq_r1_B})$; band for $\vartheta$: (\reg{theta_lo}, \reg{theta_hi})\\
+Prop.~\ref{p:entry} & Entry is the floor plus $(1-\rho)$ times the buy frequency, below $r_C$. Entry is flat at the floor above $r_C$. A hidden price gives a flat entry. & analytical; values computer-assisted & plateau \reg{entry_plateau_B}; floor \reg{entry_floor_obs}\\
+Prop.~\ref{p:sec7} & The Section 7 predictions of the Laplace manuscript hold in the slot. Strength raises entry when the price is visible. Strong competition stops the entry response and keeps the information. & analytical; values computer-assisted & entry rise \reg{entry_jump_B}; entry \reg{entry_r2_obs_B} at $r_2$\\
+Prop.~\ref{p:win} & Orders predict the winner when they no longer predict entry. The winner gap is $\vartheta(1-\ell/r)$. & analytical; values computer-assisted & gap \reg{wgap_r1_B} at $r_1$, \reg{wgap_r2_B} at $r_2$\\
+Prop.~\ref{p:event} & Announcement returns are exact. A neutral order lowers the price below $r_C$. The mean return over both announcements is zero. The mean over preparation announcements alone is positive. & analytical; values computer-assisted & neutral price fall \reg{pdrop_neutral_r1_B}; preparation sample \reg{evprep_mean_r1_B} at $r_1$\\
+Prop.~\ref{p:coex} & On the buy-only branch the net order flow is positive and a sale executes above a no-trade price. Under the challenger rule, $\mathcal N$ and $\mathcal U$ are the only outcomes. & analytical; values computer-assisted & mean order \reg{imb_buy_B}; price gap \reg{U_gap_r160_B}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Set-up}\label{sec:setup}
+
+\subsection{Primitives and notation}
+
+The trading stage is the order slot of the brief.
+The informed investor fills the slot with probability $\lambda\in(0,1)$ and chooses $q\in\{-1,0,1\}$.
+A nonzero order costs $k>0$.
+A liquidity trader fills the slot with probability $1-\lambda$.
+It sells, abstains, or buys one unit with probabilities $\beta$, $1-2\beta$, $\beta$, where $0<\beta\le 1/3$.
+Dealers see the order $X$ and set $P=\E[V_T\mid X]$.
+The challenger sees the price and then decides whether to prepare.
+This package fixes the prior $\pi=1/2$.
+
+Write
+\[
+b=(1-\lambda)\beta,\qquad u=\frac{\lambda}{b},\qquad d=b+\frac{\lambda}{2},\qquad
+M=\frac{1+u}{2+u},\qquad m=1-M,\qquad \vartheta=\frac{u}{2+u}=2M-1 .
+\]
+Here $M=M(1/2)$ and $m=m(1/2)$ are the posterior bounds of the brief.
+The number $\vartheta=\lambda/(\lambda+2b)$ is the informed share of nonzero orders when both classes trade fully.
+
+The auction primitives are $h=10$, $\ell=1$, $p=1/2$, $\rho=1/4$, $c_L=0$, $c_H=6$, $k=1/50$.
+The incumbent value is uniform on $[0,r]$ with $\ell<r<h$, so $1<r<10$ at B.
+The strengths are $r_0=6/5$, $r_1=3$, $r_2=18/5$.
+For $p<\ell<r<h$ the shared objects are
+\[
+\begin{aligned}
+t_0&=p\Bigl(1-\frac pr\Bigr), & t_H&=\frac r2+\frac{p^2}{2r}, & t_L&=\ell-\frac{\ell^2-p^2}{2r},\\
+g_H&=h-t_H, & g_L&=\frac{\ell^2-p^2}{2r}, & \Delta_T&=t_H-t_L=\frac{(r-\ell)^2}{2r}.
+\end{aligned}
+\]
+These forms equal equation (4) of the pinned manuscript (commit \texttt{01bd5d6}).
+Section~0 of the run log integrates over $R$ at $r=3$ and $r=18/5$.
+It reproduces $t_0,t_H,t_L,g_H,g_L,\Delta_T$ in exact rational arithmetic.
+
+Define, for a belief $\mu\in[0,1]$,
+\[
+B_r(\mu)=g_L+\mu(g_H-g_L),\qquad
+A_r(\mu)=t_L-t_0+\Delta_T(r)\,\mu,\qquad
+\tau(r)=\frac{\cH-g_L}{g_H-g_L}.
+\]
+The challenger with cost $c_H$ prepares if and only if $B_r(\mu)\ge\cH$, that is $\mu\ge\tau(r)$.
+The entry rule is $e_r(\mu)=\rho+(1-\rho)\one\{B_r(\mu)\ge\cH\}$.
+Let $J_r=\one\{B_r(M)\ge\cH\}$.
+Let $\fr(D)=1+D+\sqrt{D^2+2D}$.
+For $\ell=1$ and $r>1$, the equation $\Delta_T(r)=D$ has the unique solution $r=\fr(D)$.
+Define three strengths:
+\[
+r_N=\fr\Bigl(\frac{2k}{\rho}\Bigr),\qquad
+r_F=\fr\Bigl(\frac{k}{m}\Bigr),\qquad
+r_S=\fr\Bigl(\frac{k}{\rho\, m}\Bigr).
+\]
+The strength $r_S$ is the unique root $r>1$ of $\rho\,\Delta_T(r)\,m=k$.
+At B, $m=1/(1+e)$, so $k/(\rho m)=2(1+e)/25=\reg{delta_rS_B}$ and $r_S=\reg{rS_p5_B}$ (rounded).
+The exact $r_S$ is the endpoint in every statement below.
+The rounded value $\reg{rS_p5_B}$ lies below $r_S$ and is not an endpoint.
+The rounded value $\reg{rS_cert_hi_B}$ lies above $r_S$ and is a sufficient endpoint.
+
+\begin{lemma}[Auction objects]\label{l:auction}
+Let $p=1/2$, $\ell=1$, $h=10$, $c_H=6$ and $1<r<h$.
+\begin{enumerate}[label=(\alph*)]
+\item $t_L-t_0=\tfrac12-\tfrac1{8r}>0$. The function $A_r(\mu)$ is positive for $\mu\ge 0$, strictly increasing in $\mu$, and strictly increasing in $r$. Also $\Delta_T$ is strictly increasing in $r$.
+\item $B_r(\tfrac12)=5-\tfrac r4+\tfrac1{8r}<\cH$.
+\item $B_r(\mu)$ is strictly increasing in $\mu$ and strictly decreasing in $r$.
+\item If $M>5/8$, the equation $B_r(M)=\cH$ has exactly one root $r_C(M)\in(1,h)$.
+It is
+\[
+r_C(M)=\frac{(10M-6)+\sqrt{(10M-6)^2+M(\tfrac34-M)}}{M}.
+\]
+Then $J_r=1$ if and only if $r\le r_C(M)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Direct substitution gives $t_L-t_0=(\ell-p)-(\ell^2-3p^2)/(2r)=\tfrac12-\tfrac1{8r}$.
+This is positive for $r>1/4$ and increases in $r$ with slope $1/(8r^2)$.
+Also $\Delta_T'(r)=\tfrac12-\tfrac1{2r^2}>0$ for $r>1$.
+Since $A_r(\mu)=(t_L-t_0)+\Delta_T\mu$, both terms are nonnegative and increase in $r$.
+The slope in $\mu$ is $\Delta_T>0$.
+
+(b) $B_r(\tfrac12)=\tfrac12(g_H+g_L)=\tfrac12\bigl[h-\tfrac r2+\tfrac{\ell^2-2p^2}{2r}\bigr]=5-\tfrac r4+\tfrac1{8r}$.
+For $r>1$ this is below $5-\tfrac14+\tfrac18<6$.
+
+(c) The slope in $\mu$ is $g_H-g_L=h-\tfrac r2-\tfrac{\ell^2}{2r}>0$ for $r<10$.
+Also $g_H'(r)=-\tfrac12+\tfrac{p^2}{2r^2}<0$ and $g_L'(r)=-\tfrac{\ell^2-p^2}{2r^2}<0$.
+Hence $B_r(\mu)$ falls in $r$ for each $\mu\ge 0$.
+
+(d) One computes $B_r(M)=Mh-\tfrac{Mr}2+\tfrac{(1-M)\ell^2-p^2}{2r}$.
+Its slope in $r$ is $-\tfrac{Mr^2+(1-M)\ell^2-p^2}{2r^2}$.
+For $r>\ell$ the numerator exceeds $\ell^2-p^2>0$, so $B_r(M)$ falls strictly.
+At $r=1$ it equals $9M+\tfrac38$, which exceeds $6$ if and only if $M>5/8$.
+At $r=10$ it equals $4.95M+0.0375<6$.
+So the root exists and is unique.
+Multiply $B_r(M)=\cH$ by $2r$ to get $Mr^2-2(Mh-\cH)r-[(1-M)\ell^2-p^2]=0$.
+The positive root is the stated formula.
+\end{proof}
+
+\subsection{Beliefs, prices and gains}
+
+An informed profile is a pair $(\sigma_H,\sigma_L)$ of distributions on $\{-1,0,1\}$.
+Write $a_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)$, where $\eta=(\beta,1-2\beta,\beta)$ on $(-1,0,1)$.
+Every order has positive liquidity mass, so Bayes' rule defines $\mu_x=\pi a_H(x)/[\pi a_H(x)+(1-\pi)a_L(x)]$ at every order.
+No off-path belief is needed.
+
+\begin{lemma}[Posterior bounds]\label{l:bounds}
+For every informed profile and every $x\in\{-1,0,1\}$, $m\le\mu_x\le M$.
+\end{lemma}
+
+\begin{proof}
+Put $c_x=(1-\lambda)\eta(x)$.
+Then $c_{\pm1}=b$ and $c_0=(1-\lambda)(1-2\beta)\ge b$, because $\beta\le 1/3$.
+Since $\sigma_j(x)\in[0,1]$, we have $c_x\le a_j(x)\le c_x+\lambda$.
+Therefore
+\[
+\frac{a_H(x)}{a_L(x)}\le\frac{c_x+\lambda}{c_x}=1+\frac{\lambda}{c_x}\le 1+\frac\lambda b=1+u .
+\]
+The same argument gives $a_H/a_L\ge 1/(1+u)$.
+The posterior at $\pi=\tfrac12$ equals $a_H/(a_H+a_L)$, and it increases in $a_H/a_L$.
+The two bounds give $M=(1+u)/(2+u)$ and $m=1/(2+u)=1-M$.
+\end{proof}
+
+\begin{lemma}[Prices and gains]\label{l:prices}
+Fix a candidate equilibrium.
+Let $e_x\in[\rho,1]$ be the probability that the challenger prepares after the price $P(x)$ of the order $x$.
+\begin{enumerate}[label=(\alph*)]
+\item $\E[V_T\mid j,x]=t_0+e_x(t_j-t_0)$ for $j\in\{H,L\}$.
+\item $P(x)=t_0+e_xA_r(\mu_x)$.
+\item $\E[V_T\mid H,x]-P(x)=e_x\Delta_T(1-\mu_x)$ and $P(x)-\E[V_T\mid L,x]=e_x\Delta_T\mu_x$.
+\item An informed investor of class $j$ who places $q$ at the fixed price and entry schedule earns
+$U_H(q)=q\,e_q\Delta_T(1-\mu_q)-k|q|$ and $U_L(q)=-q\,e_q\Delta_T\mu_q-k|q|$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The zero-cost challenger always prepares, because $B_r(\mu)\ge g_L>0$.
+Hence $e_x\ge\rho$.
+The cost is independent of the class and of $R$.
+Given the class $j$ and the order $x$, the challenger prepares with probability $e_x$, and then $\E[V_T]=t_j$.
+Without preparation $\E[V_T]=t_0$.
+This gives (a).
+Average (a) over the class with weights $\mu_x$, $1-\mu_x$ to get (b).
+Subtract (b) from (a) to get (c).
+For (d), the investor's order is the observed order, so the price is $P(q)$ and the entry is $e_q$.
+The payoff is $q[\E[V_T\mid j,q]-P(q)]-k|q|$.
+Insert (c).
+\end{proof}
+
+\begin{lemma}[Price sufficiency]\label{l:suff}
+Fix a candidate equilibrium.
+If two orders $x\ne y$ have the same price $P(x)=P(y)$, then $\mu_x=\mu_y$.
+The challenger's posterior at a price equals the dealer posterior $\mu_x$ of every order at that price.
+\end{lemma}
+
+\begin{proof}
+The challenger sees only the price.
+So the challenger uses the same entry probability $e\ge\rho>0$ after $x$ and after $y$.
+Lemma~\ref{l:prices}(b) gives $P(x)-P(y)=e\,\Delta_T\,(\mu_x-\mu_y)$.
+The left side is zero, $e>0$ and $\Delta_T>0$.
+Hence $\mu_x=\mu_y$.
+The challenger's posterior at the price is an average of the posteriors of the orders at that price.
+All these posteriors are equal.
+\end{proof}
+
+Lemma~\ref{l:suff} lets the challenger use $B_r(\mu_x)$ at every price, also when prices pool orders, as in $\mathcal N$.
+It covers arbitrary candidates.
+The existence proofs below also check directly that the prices in $\mathcal U$ and $\mathcal F$ differ.
+
+\subsection{The three trading outcomes}
+
+Table~\ref{tab:tuples} states the three outcomes as explicit tuples.
+The notation $\delta_q$ is the point mass at the order $q$.
+The entry after an order is $e_x=\rho+(1-\rho)J_r\one\{x=1\}$ in the outcomes $\mathcal U$ and $\mathcal F$, and $e_x=\rho$ in $\mathcal N$.
+Write $e_+=\rho+(1-\rho)J_r$.
+
+\begin{table}[htbp]
+\centering\small
+\caption{The outcomes $\mathcal N$ (no informed trade), $\mathcal U$ (buys only), $\mathcal F$ (buys and sales). Orders $x=-1,0,1$.}\label{tab:tuples}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $\mathcal N$ & $\mathcal U$ & $\mathcal F$\\
+\midrule
+$(\sigma_H,\sigma_L)$ & $(\delta_0,\delta_0)$ & $(\delta_1,\delta_0)$ & $(\delta_1,\delta_{-1})$\\
+$s=\lambda\sigma_H(1)$, $t=\lambda\sigma_L(-1)$ & $(0,0)$ & $(\lambda,0)$ & $(\lambda,\lambda)$\\
+$\Pr(X=x)$ & $(b,\,1-2b,\,b)$ & $(b,\,1-2b-\tfrac\lambda2,\,b+\tfrac\lambda2)$ & $(d,\,1-2d,\,d)$\\
+$\mu_x$ & $(\tfrac12,\tfrac12,\tfrac12)$ & $(\tfrac12,\ \mu_0^{\mathcal U},\ M)$ & $(m,\tfrac12,M)$\\
+$e_x$ & $(\rho,\rho,\rho)$ & $(\rho,\rho,e_+)$ & $(\rho,\rho,e_+)$\\
+$P(x)$ & $t_0+\rho A_r(\tfrac12)$ (all $x$) & $t_0+\rho A_r(\tfrac12),\ t_0+\rho A_r(\mu_0^{\mathcal U}),\ t_0+e_+A_r(M)$ & $t_0+\rho A_r(m),\ t_0+\rho A_r(\tfrac12),\ t_0+e_+A_r(M)$\\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\footnotesize In $\mathcal U$ the prices are listed in the order $x=-1,0,1$, and $\mu_0^{\mathcal U}=(1-2b-\lambda)/(2-4b-\lambda)<\tfrac12$.
+\end{table}
+
+In every outcome, bids are truthful.
+A prepared challenger bids its value, and the incumbent bids $R$.
+The challenger prepares at the price $P(x)$ if and only if it has cost $0$ or $B_r(\mu_x)\ge\cH$.
+The prices in $\mathcal F$ and $\mathcal U$ are distinct across orders (Proposition~\ref{p:out}).
+So the price reveals the order, and the entry rule is a function of $\mu_x$.
+
+\begin{proposition}[Equilibrium outcomes; analytical]\label{p:out}
+Let $\pi=1/2$ and $\beta\le1/3$.
+\begin{enumerate}[label=(\alph*)]
+\item If $\Delta_T(r)<k$, the outcome $\mathcal N$ is the unique equilibrium outcome. Entry equals $\rho$.
+\item If $r_S<r<h$, the outcome $\mathcal F$ is the unique equilibrium outcome. Equivalently $\rho\Delta_T(r)\,m>k$.
+\item If $r_F<r<r_N$ and $r\le r_C(M)$, the outcome $\mathcal U$ is an equilibrium outcome. The outcome $\mathcal N$ is also an equilibrium outcome for $r\le r_N$.
+\item Part (b) holds without change if the challenger does not see the price. Then the challenger decides on the prior $\tfrac12$, entry equals $\rho$ after every order, and $J_r$ is replaced by $0$ in Table~\ref{tab:tuples}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\emph{Conditions.}
+An equilibrium needs five conditions.
+(i) Bayes consistency: $\mu_x$ is computed from the order law (Table~\ref{tab:tuples}).
+(ii) Competitive prices: $P(x)=\E[V_T\mid x]$ (Lemma~\ref{l:prices}(b)).
+(iii) Entry optimality: the challenger prepares if and only if its gross profit covers its cost.
+(iv) Investor optimality: each class puts its mass on the orders with the largest $U_j(q)$ of Lemma~\ref{l:prices}(d).
+(v) Truthful bids.
+Conditions (i), (ii), (iii) and (v) hold by construction in each tuple.
+Only (iv) needs a check.
+
+(a) Take any candidate.
+By Lemma~\ref{l:prices}(d), $U_H(1)\le\Delta_T-k<0$, $U_H(-1)<0$, and $U_H(0)=0$.
+Also $U_L(-1)\le\Delta_T-k<0$, $U_L(1)<0$, and $U_L(0)=0$.
+So both classes choose $0$.
+All posteriors equal $\tfrac12$, and $B_r(\tfrac12)<\cH$ by Lemma~\ref{l:auction}(b).
+Entry is $\rho$, and the tuple $\mathcal N$ satisfies (i) to (v).
+
+(b) Take any candidate equilibrium.
+Lemma~\ref{l:bounds} gives $\mu_1\le M$ and $\mu_{-1}\ge m$ for every profile.
+Lemma~\ref{l:prices} gives $e_x\ge\rho$.
+Hence
+\[
+U_H(1)\ge\rho\Delta_T(1-M)-k=\rho\Delta_T m-k>0,\qquad U_H(0)=0>U_H(-1),
+\]
+\[
+U_L(-1)\ge\rho\Delta_T m-k>0,\qquad U_L(0)=0>U_L(1).
+\]
+The first inequality is the hypothesis $r>r_S$, because $\Delta_T(r)$ increases in $r$ and $\Delta_T(r_S)=k/(\rho m)$.
+So $\sigma_H=\delta_1$ and $\sigma_L=\delta_{-1}$ in every equilibrium.
+Bayes' rule then gives the posteriors $(m,\tfrac12,M)$.
+The prices are $P(-1)=t_0+\rho A_r(m)<P(0)=t_0+\rho A_r(\tfrac12)<P(1)=t_0+e_+A_r(M)$, by Lemma~\ref{l:auction}(a) and $e_+\ge\rho$.
+The prices are distinct, so the challenger infers $x$ and prepares as in Table~\ref{tab:tuples}.
+This is an equilibrium, and it is the only one.
+
+(c) Take $\mathcal U$.
+The posteriors are $(\tfrac12,\mu_0^{\mathcal U},M)$ with $\mu_0^{\mathcal U}<\tfrac12$.
+The condition $r\le r_C(M)$ gives $e_1=1$.
+The orders $x=-1$ and $x=0$ do not recruit, because $B_r(\mu)\le B_r(\tfrac12)<\cH$.
+Class $H$ earns $U_H(1)=\Delta_T(1-M)-k>0$ if and only if $r>r_F$.
+It earns $U_H(0)=0$ and $U_H(-1)<0$.
+Class $L$ earns $U_L(-1)=\rho\Delta_T/2-k<0$ if and only if $r<r_N$.
+It earns $U_L(0)=0$ and $U_L(1)<0$.
+The prices satisfy $P(0)<P(-1)<P(1)$, so they are distinct.
+For $\mathcal N$, the deviation payoff of each class is $\rho\Delta_T/2-k$, which is not positive if and only if $r\le r_N$.
+
+(d) With a hidden price, entry is $\rho$ after every order, because $B_r(\tfrac12)<\cH$.
+The bounds $\mu_1\le M$, $\mu_{-1}\ge m$ and $e_x=\rho$ give the same inequalities as in (b).
+\end{proof}
+
+\begin{remark}[The endpoint $r_S$]\label{r:rS}
+The bound in Proposition~\ref{p:out}(b) is the exact number $r_S$.
+At $r=\reg{rS_counter_r_B}$, which lies in the interval $(\reg{rS_p5_B},h)$, the margin is $\rho\Delta_T(r)m-k=\reg{rS_counter_margin_B}$.
+This margin is negative, so the low class strictly prefers to abstain in $\mathcal F$.
+At $r=\reg{rS_cert_hi_B}$ the margin is positive, and it stays positive for larger $r$ because $\Delta_T$ increases.
+The margin tends to zero as $r\downarrow r_S$, so no positive margin holds on the whole interval $(r_S,h)$.
+At $r=r_S$ the low class is indifferent, and the outcome depends on the investor rule (Section~\ref{sec:margins}).
+\end{remark}
+
+\subsection{Observation protocol}\label{sec:protocol}
+
+Two objects in the next sections are not part of the trading game.
+They add observations and change no payoff.
+\begin{itemize}
+\item The \emph{pre-slot price} is $\bar P=\sum_x\Pr(X=x)P(x)$.
+A risk-neutral dealer who sees no order sets this price, by iterated expectations.
+This is the price before the slot under the passive observation protocol.
+\item The \emph{preparation announcement} is a public event after the price $P(x)$.
+It reveals whether the challenger prepared, and nothing else.
+Dealers then reprice to $\E[V_T\mid X=x,\text{announcement}]$.
+\end{itemize}
+Prices are in units of the low value $\ell$.
+The model sets the standalone value of the target to zero.
+A return divides a price change by the price plus the standalone value.
+So the ratios below are upper bounds in size for any positive standalone value.
+Both dollar changes and ratios to $P(x)$ appear in the tables.
+
+Table~\ref{tab:objects} links each model object to its empirical counterpart and states the condition for the link.
+
+\begin{table}[H]
+\centering\small
+\caption{Model objects and their empirical counterparts.}\label{tab:objects}
+\begin{tabular}{@{}p{3.0cm}p{9.9cm}@{}}
+\toprule
+Model object & Empirical counterpart and condition\\
+\midrule
+$P(x)=\E[V_T\mid X=x]$ & The conditional execution price of a unit order. The model has no quote stage and no limit order book. Zero dealer profit gives the price formula. A precommitted bid and ask need an added institutional assumption.\\
+$P(1)-P(-1)$ & The difference between the conditional execution prices of a unit buy and a unit sale.\\
+$X=0$ & A public opportunity with no trade. Keep the opportunity as the denominator.\\
+$v=\Pr(X\ne0)$ & The number of nonzero unit trades per public opportunity. It is not volume per unit of calendar time.\\
+$P(0)$ & The conditional value after an observed opportunity with no trade. It is not the price before the slot.\\
+$I_-=P(0)-P(-1)$ & The sale price difference relative to the price after no trade. The measurement needs this reference price.\\
+$\bar P=\E[P(X)]$ & The price before the slot, under the passive observation protocol.\\
+$A$ & Preparation before the auction. An observed final bid is a different selection event.\\
+$w_x$ & The win probability of the challenger given preparation and the order. Keep it apart from $e_xw_x$.\\
+$\Delta^a_x$ & The announcement price change, when the event reveals only preparation, on events of positive probability.\\
+$\Delta^a_x/P(x)$ & The simple return when the standalone value is zero. A positive standalone value enlarges the denominator.\\
+$\vartheta$ & The share of nonzero orders that come from the informed identity on $\mathcal F$. It differs from the presence probability $\lambda$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The first measurement rule is this.
+Use the first prespecified public opportunity and record a zero when no trade occurs.
+A sample of first executed trades omits $X=0$.
+Such a sample cannot identify $v$, the price effect of a neutral order, or the informed share from the formulas below.
+
+The friction $k$ enters the investor's choice.
+It does not enter the execution spread as a dealer charge.
+The sell-impact formula of Proposition~\ref{p:ident}(e) uses maintained inputs.
+These inputs are the entry floor $\rho$, or its estimate from non-buys, and the value $\Delta_T(r)$ from the public class values and the incumbent strength.
+The formula identifies the informed share inside the maintained auction model.
+It is not a model-free estimator.
+
+\subsection{Calibration B and the arithmetic}
+
+Calibration B sets $1+u=e$ and $\beta=0.294655$, an exact decimal.
+Then $\lambda=u\beta/(1+u\beta)=\reg{lambda_p5_B}$, $b=\reg{b_p5_B}$, $d=\reg{d_slot_B}$, $M=\reg{M_p5_B}$, $m=\reg{m_p5_B}$, and $\vartheta=\reg{theta_B}$.
+These match the starter values of the brief.
+The script lifts $e$ to the enclosure \texttt{iv.e} (60 digits) and $\beta$ to the interval $294655/10^6$.
+Every sign test in the proofs is an interval test.
+A test passes only if the enclosure excludes zero.
+The run log prints the enclosures.
+The script has no assertion and no test.
+It reports an undecided sign as a flag; the log shows none.
+
+\section{Scope of the results}\label{sec:scope}
+
+The package proves its results for the outcomes $\mathcal N$, $\mathcal U$ and $\mathcal F$ at the prior $1/2$.
+These outcomes cover the three benchmark strengths and the buy-only strengths $1.55$, $1.60$ and $1.65$.
+Three items stay open.
+Table~\ref{tab:scope} states, for each item, what the package proves and what is open.
+This table is the only place that lists the open items.
+
+\begin{table}[H]
+\centering\small
+\caption{Scope: what the package proves and what stays open.}\label{tab:scope}
+\begin{tabular}{@{}p{2.5cm}p{7.2cm}p{3.2cm}@{}}
+\toprule
+Item & What the package proves & Open\\
+\midrule
+Equilibrium selection & For $r_F<r<r_N$ and $r\le r_C(M)$, the equilibrium outcomes are exactly $\mathcal N$ and $\mathcal U$ under the challenger rule (Proposition~\ref{p:coex}(v)). Proposition~\ref{p:coex} states the observables of both. An indifferent challenger who may mix adds one partial-buy outcome (Remark~\ref{r:mix}). & Which outcome occurs.\\
+Intermediate branch & For $\Delta_T(r)<k$ the unique outcome is $\mathcal N$. For $r>r_S$ the unique outcome is $\mathcal F$. On $[r_N,r_S]$ the low class may sell at a rate that makes it indifferent. Proposition~\ref{p:entry}(iv) gives the entry rate for every low-class rate, and Lemma~\ref{l:law} gives the order law. & The equilibrium set for $\Delta_T(r)\ge k$ with $r\le r_F$, and the spread, winner and announcement formulas on $[r_N,r_S]$.\\
+Observation protocols & The formulas hold under the protocols of Section~\ref{sec:protocol}: the opportunity denominator, conditional execution prices, the passive pre-slot price, announcements that reveal only preparation, and a zero standalone value. & A data source for each protocol.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Order-flow observables}\label{sec:flow}
+
+Let $s=\lambda\Pr(q=1\mid H,\text{informed})$ and $t=\lambda\Pr(q=-1\mid L,\text{informed})$.
+By Lemma~\ref{l:prices}(d), a high-class sale and a low-class purchase lose money at every schedule.
+So no equilibrium contains them.
+Let $v=\Pr(X\ne0)$ be the volume.
+
+\begin{lemma}[Order law]\label{l:law}
+At $\pi=\tfrac12$, for $s,t\in[0,\lambda]$:
+\[
+\Pr(X=1)=b+\tfrac s2,\quad \Pr(X=-1)=b+\tfrac t2,\quad v=2b+\tfrac{s+t}2,\quad \E[X]=\tfrac{s-t}{2}.
+\]
+The informed share of nonzero orders is $(s+t)/(4b+s+t)$.
+The informed share among buys is $s/(2b+s)=2\mu_1-1$.
+The informed share among sales is $t/(2b+t)=1-2\mu_{-1}$.
+\end{lemma}
+
+\begin{proof}
+Class $H$ places a buy with mass $b+s$ and class $L$ with mass $b$.
+Class $H$ places a sale with mass $b$ and class $L$ with mass $b+t$.
+Average over the classes to get the order law.
+An informed trade has probability $(s+t)/2$ per slot.
+Divide by $v$ for the share.
+For buys, the informed mass is $s/2$ and the buy mass is $b+s/2$; the ratio is $s/(2b+s)$.
+The posterior is $\mu_1=(b+s)/(2b+s)$, so $2\mu_1-1=s/(2b+s)$.
+The sale case is the same.
+\end{proof}
+
+\begin{proposition}[Order-flow signature; analytical, values computer-assisted]\label{p:flow}
+The outcomes of Table~\ref{tab:tuples} have the following order-flow observables.
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+& $\mathcal N$ & $\mathcal U$ & $\mathcal F$\\
+\midrule
+volume $v$ & $2b$ & $2b+\lambda/2$ & $2b+\lambda$\\
+mean order $\E[X]$ & $0$ & $\lambda/2$ & $0$\\
+informed share of nonzero orders & $0$ & $u/(4+u)$ & $u/(2+u)=2M-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Consequently:
+\begin{enumerate}[label=(\roman*)]
+\item $v_{\mathcal N}<v_{\mathcal U}<v_{\mathcal F}$.
+\item $\E[X]>0$ in $\mathcal U$ and $\E[X]=0$ in $\mathcal N$ and in $\mathcal F$.
+\item The informed share in $\mathcal U$ is below the share in $\mathcal F$.
+In $\mathcal U$ it equals the normalized imbalance $\E[X]/v$.
+\item On $r_S<r<10$, the order law, the volume, the mean order, the informed share and the posterior vector $(m,\tfrac12,M)$ do not depend on $r$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Insert $(s,t)=(0,0),(\lambda,0),(\lambda,\lambda)$ into Lemma~\ref{l:law}.
+For $\mathcal U$: $(s+t)/(4b+s+t)=\lambda/(4b+\lambda)=u/(4+u)$, because $u=\lambda/b$.
+This is below $u/(2+u)$ because $4+u>2+u$.
+Also $\E[X]/v=(\lambda/2)/(2b+\lambda/2)=\lambda/(4b+\lambda)$.
+Statement (i) follows from $\lambda>0$ and $b>0$.
+Statement (iv) holds because the tuple $\mathcal F$ of Proposition~\ref{p:out}(b) contains no $r$ in its order law or its beliefs.
+\end{proof}
+
+\paragraph{At B.}
+The volumes are \reg{vol_none_B}, \reg{vol_buy_B}, \reg{vol_full_B}.
+The mean order in $\mathcal U$ is \reg{imb_buy_B}.
+The informed shares are \reg{theta_buy_B} in $\mathcal U$ and \reg{theta_B} in $\mathcal F$.
+The earlier study reported $9/31$ and $9/20$ at $\beta=1/3$.
+
+\paragraph{Observable.}
+Use the first prespecified public opportunity after the sale becomes public, and record a zero when no trade occurs.
+Volume is the number of nonzero orders per opportunity.
+The informed share is a parameter of the order law and not an estimate of an external PIN measure.
+
+\section{Prices and the spread}\label{sec:spread}
+
+Let $S=P(1)-P(-1)$ be the conditional execution spread, $I_+=P(1)-P(0)$ the buy impact, and $I_-=P(0)-P(-1)$ the sell impact.
+The price $P(x)$ is the expected target value given the order $x$.
+It is also the price at which a dealer earns zero profit on that order.
+So $S$ is the difference between the conditional execution prices of a unit buy and a unit sale.
+The model has no separate quote stage.
+
+\begin{proposition}[Spread decomposition; analytical, values computer-assisted]\label{p:spread}
+Let $r_S<r<h$ (outcome $\mathcal F$) and $M>5/8$.
+\begin{enumerate}[label=(\roman*)]
+\item $P(-1)=t_0+\rho A_r(m)$, $P(0)=t_0+\rho A_r(\tfrac12)$, $P(1)=t_0+\rho A_r(M)+(1-\rho)J_rA_r(M)$.
+\item $S=\underbrace{\rho\Delta_T\vartheta}_{\text{class component}}+\underbrace{(1-\rho)J_rA_r(M)}_{\text{entry component}}$.
+\item $I_-=\rho\Delta_T\vartheta/2$ and $I_+=I_-+(1-\rho)J_rA_r(M)$. Hence $I_+>I_-$ if and only if $J_r=1$.
+\item If the challenger does not see the price, the unique outcome is $\mathcal F$ and the spread equals the class component $\rho\Delta_T\vartheta$. The ratio of the two spreads is $1+(1-\rho)J_rA_r(M)/(\rho\Delta_T\vartheta)$.
+\item Let $r_S<r_C(M)$. On $(r_S,r_C]$, the class component, the entry component, $I_-$, $I_+$ and $S$ all increase strictly in $r$.
+On $(r_C,h)$, the entry component is identically zero. The class component, $I_-$, $I_+=I_-$ and $S$ increase strictly there.
+\item Let $r_S<r_C(M)$, so that the ceiling lies inside the interval of $\mathcal F$ (Lemma~\ref{l:auction}(d) gives $r_C<h$). At $r_C$ (challenger tie rule: prepare), $S(r_C)=\rho\Delta_T\vartheta+(1-\rho)A_{r_C}(M)$. The right limit is $S(r_C^+)=\rho\Delta_T\vartheta$. The spread falls by $(1-\rho)A_{r_C}(M)>0$. The price $P(0)$, the price $P(-1)$ and $I_-$ are continuous at $r_C$. The price $P(1)$ and $I_+$ fall by the same amount. The pre-slot price $\bar P$ falls by $(1-\rho)d\,A_{r_C}(M)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) is Table~\ref{tab:tuples} with Lemma~\ref{l:prices}(b).
+(ii) Subtract $P(-1)$ from $P(1)$.
+The term $t_0$ cancels.
+The remaining terms are $\rho[A_r(M)-A_r(m)]+(1-\rho)J_rA_r(M)$.
+Since $A_r$ has slope $\Delta_T$, $A_r(M)-A_r(m)=\Delta_T(M-m)=\Delta_T\vartheta$.
+(iii) Likewise $A_r(\tfrac12)-A_r(m)=\Delta_T(\tfrac12-m)=\Delta_T\vartheta/2$ and $A_r(M)-A_r(\tfrac12)=\Delta_T\vartheta/2$.
+The buy impact adds the entry term.
+(iv) Proposition~\ref{p:out}(d) gives $\mathcal F$ with entry $\rho$.
+Insert $J_r=0$ in (ii).
+(v) Within an interval where $J_r$ is constant, $\Delta_T$ and $A_r(M)$ increase strictly by Lemma~\ref{l:auction}(a).
+The factors $\rho$, $\vartheta$, $1-\rho$ do not depend on $r$.
+On $(r_S,r_C]$, $J_r=1$, so the entry component $(1-\rho)A_r(M)$ increases strictly, and so do $I_-$, $I_+$ and $S$ by (ii) and (iii).
+On $(r_C,h)$, $J_r=0$ by Lemma~\ref{l:auction}(d).
+The entry component is then $0$ at every $r$, and its derivative is zero.
+By (ii) and (iii), $I_-$, $I_+=I_-$ and $S=\rho\Delta_T\vartheta$ increase strictly there, because $\Delta_T$ does.
+(vi) By Lemma~\ref{l:auction}(d), $J_r=1$ at $r=r_C$ and $J_r=0$ for $r>r_C$.
+All other terms are continuous in $r$.
+The price $P(1)$ loses $(1-\rho)A_{r_C}(M)$.
+In $\bar P$, the order $x=1$ has probability $d$ and the other terms do not change.
+\end{proof}
+
+\paragraph{At B.}
+Table~\ref{tab:spread} gives the components.
+The entry component is \reg{ba_share_r1_B} of the spread at $r_1$.
+With a hidden price the spread at $r_1$ would be \reg{ba_class_r1_B}.
+Price access multiplies the spread by \reg{ba_ratio_r1_B}.
+The ceiling is $r_C=\reg{rC_check_B}$, which lies \reg{margin_obs_r2_above_rC_B} below $r_2$ and \reg{margin_obs_rS_rC_B} above $r_S$.
+At $r_C$ the spread falls by \reg{ba_jump_rC_B}, from \reg{ba_rC_left_B} to \reg{ba_rC_right_B}.
+The expected price $\bar P$ falls by \reg{pbar_jump_rC_B} (change of sign included).
+
+\begin{table}[htbp]
+\centering\small
+\caption{Spread components at B (units of $\ell$).}\label{tab:spread}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+ & $r_1=3$ & $r_2=18/5$\\
+\midrule
+class component $\rho\Delta_T\vartheta$ & \reg{ba_class_r1_B} & \reg{ba_r2_B}\\
+entry component $(1-\rho)J_rA_r(M)$ & \reg{ba_entry_r1_B} & $0$\\
+spread $S$ & \reg{ba_r1_B} & \reg{ba_r2_B}\\
+sell impact $I_-$ & \reg{impact_sell_r1_B} & \reg{impact_sell_r2_B}\\
+buy impact $I_+$ & \reg{impact_buy_r1_B} & \reg{impact_sell_r2_B}\\
+$I_+-I_-$ & \reg{impact_asym_r1_B} & $0$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Observable.}
+Take the execution price of a unit buy minus the execution price of a unit sale, in the target's shares.
+Take the buy and sell price impacts relative to the price after a recorded zero.
+The sign of $I_+-I_-$ marks the processes in which a buy moves the entry of the challenger.
+This test needs no knowledge of the auction objects.
+Above $r_C$ the entry component is zero, so $I_+-I_-=0$ there.
+
+\section{Identification of the informed share}\label{sec:ident}
+
+\begin{proposition}[Identification; analytical, values computer-assisted]\label{p:ident}
+Let $r>r_S$ (outcome $\mathcal F$), and write $v=2b+\lambda$.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Counts.} The order law is $(v/2,1-v,v/2)$. It depends on $(\lambda,\beta)$ only through $v$.
+For each $u'>0$ there is exactly one pair $(\lambda',\beta')$ with odds $u'$ and the same $v$:
+\[
+\lambda'=\frac{vu'}{u'+2},\qquad b'=\frac{v}{u'+2},\qquad \beta'=\frac{v}{2+u'(1-v)}.
+\]
+The condition $\beta'\le 1/3$ holds if and only if $u'\ge u_{\min}(v)=\max\{0,(3v-2)/(1-v)\}$.
+The informed share of this pair is $\vartheta'=u'/(u'+2)$.
+This part describes order laws, before investor optimality.
+\item \emph{Entry.} Entry in $\mathcal F$ equals $\rho+(1-\rho)J_rv/2$. It depends on $(\lambda,\beta)$ only through $v$ and $J_r$.
+\item \emph{Incentives.} Let $\bar\vartheta(r)=1-2k/(\rho\,\Delta_T(r))$.
+A full-order pair with share $\vartheta'$ gives its counts through an $\mathcal F$ equilibrium at the strength $r$ only if $\vartheta'\le\bar\vartheta(r)$.
+The pair has $\mathcal F$ as its unique outcome if $\vartheta'<\bar\vartheta(r)$.
+The bound $\bar\vartheta(r)$ increases in $r$.
+Let $\vartheta_{\min}(v)=u_{\min}(v)/(u_{\min}(v)+2)$ and assume $\vartheta_{\min}(v)<\bar\vartheta(r)$.
+Then the shares that give the counts of $v$ through an $\mathcal F$ equilibrium at $r$ form the interval $[\vartheta_{\min}(v),\bar\vartheta(r))$.
+At the endpoint $\bar\vartheta(r)$ the outcome depends on the investor rule.
+\item \emph{Band.} Suppose $B_{r_1}(M')>\cH>B_{r_2}(M')$ for the pair $(\lambda',\beta')$.
+Then $\vartheta'\in(2\tau(r_1)-1,\,2\tau(r_2)-1)$.
+If $v\le200/259$, every $\vartheta'$ in this interval comes from a pair with the same $v$.
+These pairs have the same entry at $r_1$ and the same entry at $r_2$.
+Each pair has $\mathcal F$ as its unique outcome at $r_1$ and at $r_2$, with the margin $\rho\Delta_T(r_i)(1-\vartheta')/2-k>\rho\Delta_T(r_1)(1-\tau(r_2))-k>0$.
+\item \emph{Prices.} The entry floor $\rho$ equals $\Pr(\text{prepare}\mid X\ne1)$. The sell impact identifies the informed share and the slot parameters:
+\[
+\vartheta=\frac{2I_-}{\rho\,\Delta_T(r)},\qquad \lambda=v\vartheta,\qquad
+\beta=\frac{v(1-\vartheta)}{2(1-v\vartheta)},\qquad u=\frac{2\vartheta}{1-\vartheta}.
+\]
+\item \emph{Buy-only branch.} In $\mathcal U$ the counts identify the slot: $\lambda=2\E[X]$, $b=(v-\E[X])/2$, $\vartheta_{\mathcal U}=\E[X]/v$ and $\beta=b/(1-\lambda)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Lemma~\ref{l:law} with $s=t=\lambda$ gives $\Pr(X=\pm1)=d=v/2$.
+Given $v$ and $u'$, the identities $v=\lambda'+2b'$ and $u'=\lambda'/b'$ give $b'=v/(u'+2)$ and $\lambda'=u'b'$.
+Then $\beta'=b'/(1-\lambda')=v/(u'+2-vu')$.
+The inequality $\beta'\le1/3$ is $3v\le 2+u'(1-v)$.
+Solve for $u'$, using $v<1$.
+
+(b) Entry is $\sum_x\Pr(X=x)e_x=\rho+(1-\rho)J_r\Pr(X=1)$.
+
+(c) In $\mathcal F$ the sale has the posterior $m'=(1-\vartheta')/2$.
+A sale does not recruit, because $m'\le\tfrac12$ and $B_r(\mu)\le B_r(\tfrac12)<\cH$ for $\mu\le\tfrac12$.
+So the entry after a sale is $\rho$, and Lemma~\ref{l:prices}(d) gives $U_L(-1)=\rho\Delta_T m'-k$.
+This is nonnegative if and only if $\vartheta'\le\bar\vartheta(r)$.
+If it is negative, the low class strictly prefers to abstain, and $\mathcal F$ is not an equilibrium.
+Now let $\vartheta'<\bar\vartheta(r)$.
+The posterior bounds of the pair (Lemma~\ref{l:bounds} with the odds $u'$) give $\mu_1\le M'$ and $\mu_{-1}\ge m'$ for every profile.
+The entry is at least $\rho$ at every order.
+As in the proof of Proposition~\ref{p:out}(b), $U_H(1)\ge\rho\Delta_T m'-k>0$ and $U_L(-1)\ge\rho\Delta_T m'-k>0$.
+The wrong-sign orders lose, so $\mathcal F$ is the unique outcome of the pair.
+The bound $\bar\vartheta(r)$ increases in $r$, because $\Delta_T$ does.
+The interval for the shares combines this bound with part (a): $\beta'\le1/3$ holds if and only if $u'\ge u_{\min}(v)$.
+
+(d) The pair has the same $v$, so the same order law, and by (b) the same entry given $J_r$.
+The condition $J_{r_1}=1$ is $M'\ge\tau(r_1)$ and $J_{r_2}=0$ is $M'<\tau(r_2)$.
+Since $\vartheta'=2M'-1$, the first claim follows.
+For the second claim, $u_{\min}(v)\le 82/59$ if and only if $v\le 200/259$, and $82/59$ is the lower end of the band for $u'$ (the value $\tau(r_1)=141/200$ gives $u=82/59$).
+For the third claim, $\vartheta'<2\tau(r_2)-1$ gives $m'=(1-\vartheta')/2>1-\tau(r_2)$.
+Hence $\rho\Delta_T(r_1)m'-k>\rho\Delta_T(r_1)(1-\tau(r_2))-k=21563/870600$, and this number is positive.
+The value $\Delta_T(r_2)>\Delta_T(r_1)$ gives the same bound at $r_2$.
+Part (c) then gives the unique outcome $\mathcal F$ at both strengths.
+
+(e) Entry after $x\ne1$ equals $\rho$ in $\mathcal F$.
+Proposition~\ref{p:spread}(iii) gives $I_-=\rho\Delta_T\vartheta/2$.
+Solve for $\vartheta$.
+Then $v=\lambda+2b$ and $\vartheta=\lambda/v$ give $\lambda=v\vartheta$ and $b=v(1-\vartheta)/2$.
+Finally $\beta=b/(1-\lambda)$ and $u=2\vartheta/(1-\vartheta)$ from $\vartheta=u/(2+u)$.
+
+(f) In $\mathcal U$, $\Pr(X=1)-\Pr(X=-1)=\lambda/2$ and $v=2b+\lambda/2$.
+Solve for $\lambda$ and $b$.
+Then $\vartheta_{\mathcal U}=u/(4+u)=\lambda/(4b+\lambda)=\E[X]/v$.
+\end{proof}
+
+\paragraph{At B.}
+The volume is $v=\reg{vol_full_B}$.
+The pair with the smallest admissible odds ($\beta'=1/3$) has informed share \reg{theta_min_counts_B}.
+Order laws alone allow every share in $[\reg{theta_min_counts_B},1)$.
+The investor incentives cut this range.
+An $\mathcal F$ equilibrium needs $\vartheta'<\reg{theta_max_full_eq_r1_B}$ at $r_1$ and $\vartheta'<\reg{theta_max_full_eq_r2_B}$ at $r_2$.
+So the counts allow the shares in $[\reg{theta_min_counts_B},\reg{theta_max_full_eq_r1_B})$ through an $\mathcal F$ equilibrium at both strengths.
+The share $\vartheta'=0.9$ has the odds $u'=18$ and the pair $\beta'=\reg{theta09_beta_B}$, with the same counts as B.
+The low class would earn \reg{theta09_lowsale_r1_B} from a full sale at $r_1$.
+So this pair gives these counts in no $\mathcal F$ equilibrium at $r_1$.
+Inside the band defined by $B_{r_1}(M')>\cH>B_{r_2}(M')$, the share lies in $(\reg{theta_lo},\reg{theta_hi})$.
+The incentive margin on the whole band is \reg{margin_obs_band_incentive_B}.
+The pair $u'=8/5$ has $\lambda'=\reg{alt_lambda_B}$, $\beta'=\reg{alt_beta_B}$, and $\vartheta'=\reg{alt_theta_B}$.
+It has the volume \reg{vol_full_B} and the entry \reg{alt_entry_r1_B} at $r_1$, the same as B.
+Its spread at $r_1$ is \reg{alt_ba_r1_B}, against \reg{ba_r1_B} at B.
+So prices separate the two pairs.
+The identification formulas of (e) recover $(\vartheta,\lambda,\beta)=(\reg{theta_B},\reg{lambda_p5_B},\reg{beta_p5_B})$ from the model sell impact \reg{impact_sell_r1_B}, with differences below $10^{-50}$ in the run log.
+
+\paragraph{Observable.}
+The inputs are the order frequencies, including recorded zeros, and the sell impact relative to the price after no trade.
+The other inputs are the entry rate after non-buys and $\Delta_T(r)$.
+The value $\Delta_T(r)$ comes from the public strength and the class values.
+The entry floor $\rho$ is a maintained input, or an estimate from the non-buys.
+The informed share is a parameter of this model.
+
+\section{Entry across strengths}\label{sec:entry}
+
+Let $A$ be the event that the challenger prepares.
+Let $\Ent=\Pr(A)$.
+
+\begin{proposition}[Entry; analytical, values computer-assisted]\label{p:entry}
+Let $\pi=\tfrac12$ and $M>5/8$.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Entry by order.} In $\mathcal F$ and $\mathcal U$, $\Pr(A\mid X=x)=e_x$ with $e_x=\rho$ for $x\ne1$ and $e_1=\rho+(1-\rho)J_r$. In $\mathcal N$, $e_x=\rho$.
+\item \emph{Entry and buys.} In $\mathcal F$ and $\mathcal U$, $\Ent=\rho+(1-\rho)J_r\Pr(X=1)$, and $\Pr(A\mid X=1)-\Pr(A\mid X\ne1)=(1-\rho)J_r$.
+\item \emph{Plateau.} Both $\mathcal F$ and $\mathcal U$ give $\Pr(X=1)=d$. So $\Ent=\rho+(1-\rho)d$ for $r_S<r\le r_C$ in $\mathcal F$, and for $r_F<r<r_N$ with $r\le r_C$ in $\mathcal U$. In $\mathcal F$, $\Ent=\rho$ for $r_C<r<h$. In $\mathcal N$, $\Ent=\rho$.
+\item \emph{Any low-class behavior.} Let the high class buy with probability one and let $J_r=1$. Then $\Ent=\rho+(1-\rho)d$ for every low-class sale rate $t\in[0,\lambda]$.
+\item \emph{Hidden price.} If the challenger does not see the price, $\Ent=\rho$ at every strength in $(\ell,h)$ and for every order profile.
+\item \emph{Comparative statics.} On a region of $(\lambda,\beta)$ where $J_r=1$, $d=\beta+\lambda(\tfrac12-\beta)$ strictly increases in $\lambda$ and in $\beta$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) and (ii) follow from Table~\ref{tab:tuples}.
+(iii) In $\mathcal F$, $\Pr(X=1)=b+\lambda/2$.
+In $\mathcal U$, $\Pr(X=1)=b+\lambda/2$ as well.
+The ceiling is Lemma~\ref{l:auction}(d).
+(iv) A sale rate $t$ changes $\Pr(X=-1)$ and $\mu_{-1}=b/(2b+t)\le\tfrac12$ and $\mu_0\le\tfrac12$.
+The buy posterior $\mu_1=(b+\lambda)/(2b+\lambda)=M$ does not contain $t$, and $B_r(\mu_{-1}),B_r(\mu_0)\le B_r(\tfrac12)<\cH$.
+So only the order $x=1$ recruits, with probability $b+\lambda/2$.
+(v) The challenger's posterior is the prior $\tfrac12$ after every order, whatever the order profile.
+Lemma~\ref{l:auction}(b) gives $B_r(\tfrac12)<\cH$ for every $r\in(\ell,h)$.
+Only the challenger with cost $0$ prepares, so $e_x=\rho$ for every order.
+(vi) $\partial d/\partial\lambda=\tfrac12-\beta>0$ and $\partial d/\partial\beta=1-\lambda>0$.
+\end{proof}
+
+\paragraph{At B.}
+The entry is $\rho=\reg{entry_floor_obs}$ at $r_0$.
+It is \reg{entry_plateau_B} at $r_1$, a rise of \reg{entry_jump_B}.
+It is $\reg{entry_r2_obs_B}$ at $r_2$.
+The plateau \reg{U_entry_B} also holds on the buy-only branch at 1.55, 1.60 and 1.65.
+With a hidden price, entry is \reg{entry_floor_obs} at $r_0$, $r_1$, $r_2$.
+
+\begin{proposition}[Predictions of Section~7 of the Laplace manuscript in the slot; analytical, values computer-assisted]\label{p:sec7}
+Let the brief's hypotheses hold: $\Delta_T(r_0)<k$, $\rho\Delta_T(r_1)m>k$, $B_{r_1}(M)>\cH>B_{r_2}(M)$.
+Then $\rho\Delta_T(r_2)m>\rho\Delta_T(r_1)m>k$ also holds, because $\Delta_T$ increases in $r$.
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{Strength raises entry when the price is visible.} $\Ent(r_1)-\Ent(r_0)=(1-\rho)d>0$. With a hidden price, $\Ent(r_1)=\Ent(r_0)=\rho$.
+\item \emph{Favorable orders predict winners among prepared challengers.} See Proposition~\ref{p:win}.
+\item \emph{Strong competition stops the entry response but not the information.} $\Ent(r_2)=\rho$ and $\Pr(A\mid X=x)=\rho$ for all $x$. The sell impact stays positive at $r_2$. The order law and the posterior vector equal those at $r_1$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) Proposition~\ref{p:out}(a) gives $\mathcal N$ at $r_0$ with entry $\rho$.
+Proposition~\ref{p:out}(b) gives $\mathcal F$ at $r_1$ and at $r_2$, because $r_2>r_1>r_S$.
+Proposition~\ref{p:entry}(iii) gives $\Ent(r_1)=\rho+(1-\rho)d$ since $J_{r_1}=1$.
+The hidden-price case is Proposition~\ref{p:entry}(v).
+(3) $J_{r_2}=0$, so Proposition~\ref{p:entry}(i) gives entry $\rho$ at every order.
+Proposition~\ref{p:flow}(iv) gives the unchanged order law and posteriors.
+Proposition~\ref{p:spread}(iii) gives $I_-=\rho\Delta_T\vartheta/2>0$.
+\end{proof}
+
+\paragraph{Observable.}
+The empirical counterpart of preparation is the start of substantive diligence or a proposal that needs preparation.
+Incumbent strength is measured from information public before the decision.
+The order is the outcome of the first prespecified public opportunity after the sale becomes public, dated before the decision.
+A recorded zero counts as the order $X=0$.
+
+\section{Winners}\label{sec:win}
+
+Let $W$ be the event that the challenger wins the target.
+Let $w_x=\Pr(W\mid X=x,A)$.
+
+\begin{proposition}[Winners; analytical, values computer-assisted]\label{p:win}
+In the point-mass benchmark ($h>r>\ell>p$):
+\begin{enumerate}[label=(\roman*)]
+\item $w_x=\mu_x+(1-\mu_x)\ell/r$, and $\Pr(W\mid X=x)=e_xw_x$.
+\item In each outcome of Table~\ref{tab:tuples}, the order with the higher price has the higher posterior and the higher $w_x$. Among prepared challengers, the win probability rises strictly with the price in $\mathcal U$ and $\mathcal F$.
+\item In $\mathcal F$, $w_1-w_{-1}=\vartheta(1-\ell/r)$ and $w_1-w_0=w_0-w_{-1}=\vartheta(1-\ell/r)/2$. The gap rises strictly with $r$.
+\item In $\mathcal F$, $\E[X]=0$, so $\Cov(X,\one_A)=(1-\rho)J_rd$.
+For $r\le r_C$, $\Cov(X,\one_W)=d[w_1-\rho w_{-1}]$.
+For $r>r_C$, $\Cov(X,\one_A)=0$ and
+\[
+\Cov(X,\one_W)=d\,\rho\,\vartheta\,(1-\ell/r)>0 .
+\]
+\item The same covariances hold at every $r>r_S$ with a hidden price: $\Cov(X,\one_A)=0$ and $\Cov(X,\one_W)=d\rho\vartheta(1-\ell/r)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) The cost is independent of the class and of $R$.
+So preparation does not change the class posterior: $\Pr(H\mid X=x,A)=\mu_x$.
+A prepared class-$H$ challenger wins, because $h>r$.
+A prepared class-$L$ challenger wins if and only if $R<\ell$, with probability $\ell/r$.
+This gives $w_x$.
+Multiply by $e_x$ for the unconditional probability.
+(ii) In $\mathcal F$ and $\mathcal U$ the prices are strictly ordered like the posteriors (proof of Proposition~\ref{p:out}).
+The function $\mu\mapsto\mu+(1-\mu)\ell/r$ is strictly increasing because $\ell<r$.
+(iii) Subtract: $w_1-w_{-1}=(\mu_1-\mu_{-1})(1-\ell/r)=\vartheta(1-\ell/r)$.
+The derivative in $r$ is $\vartheta\ell/r^2>0$.
+(iv) Because $\E[X]=0$, $\Cov(X,Y)=\E[XY]=d(y_1-y_{-1})$ with $y_x=\E[Y\mid X=x]$.
+For $Y=\one_A$, $y_1-y_{-1}=e_1-\rho=(1-\rho)J_r$.
+For $Y=\one_W$, $y_x=e_xw_x$.
+If $r>r_C$, $e_x=\rho$, so $y_1-y_{-1}=\rho(w_1-w_{-1})$.
+(v) Replace $e_x$ by $\rho$ in (iv).
+\end{proof}
+
+\paragraph{At B.}
+The win probability among prepared challengers after a sale, a neutral order and a buy is (\reg{wprep_sell_r1_B}, \reg{wprep_neutral_r1_B}, \reg{wprep_buy_r1_B}) at $r_1$.
+It is (\reg{wprep_sell_r2_B}, \reg{wprep_neutral_r2_B}, \reg{wprep_buy_r2_B}) at $r_2$.
+The winner gap is \reg{wgap_r1_B} at $r_1$ and \reg{wgap_r2_B} at $r_2$.
+The covariance of the order with entry is \reg{cov_entry_r1_B} at $r_1$ and \reg{cov_entry_r2_B} at $r_2$.
+The covariance of the order with a challenger win is \reg{cov_win_r1_B} at $r_1$ and \reg{cov_win_r2_B} at $r_2$.
+The challenger wins with probability \reg{win_prob_r1_B} at $r_1$ and \reg{win_prob_r2_B} at $r_2$.
+
+\paragraph{Observable.}
+Take processes with a prepared further buyer.
+Regress the identity of the winner on the signed order or on the price.
+The slope is positive.
+Above $r_C$ the same regression on entry has slope zero.
+The gap $w_1-w_{-1}$ concerns prepared challengers.
+The unconditional gap $\Pr(W\mid X=1)-\Pr(W\mid X=-1)=e_1w_1-\rho w_{-1}$ also contains entry.
+Above $r_C$ it equals $\rho(w_1-w_{-1})$.
+
+\section{Event returns}\label{sec:event}
+
+Use the observation protocol of Section~\ref{sec:setup}.
+Write $\Delta^1_x$ for the price change when the announcement says the challenger prepared, and $\Delta^0_x$ for the change when it says the challenger did not prepare.
+
+\begin{proposition}[Announcement returns; analytical, values computer-assisted]\label{p:event}
+In every outcome of Table~\ref{tab:tuples}:
+\begin{enumerate}[label=(\roman*)]
+\item $\Delta^1_x=(1-e_x)A_r(\mu_x)$. If $e_x<1$, then $\Delta^0_x=-e_xA_r(\mu_x)$.
+\item If $e_x<1$, then $e_x\Delta^1_x+(1-e_x)\Delta^0_x=0$. The mean is taken over both announcements, with their model probabilities. The mean of the ratios $\Delta^a_x/P(x)$ is also zero, because $P(x)$ is fixed given $x$.
+\item $\Delta^1_x=0$ if and only if $e_x=1$. Also $\Pr(A^c\mid X=x)=0$ if and only if $e_x=1$. At $e_x=1$ no posterior after $A^c$ exists, so $\Delta^0_x$ has no observed counterpart.
+\item In $\mathcal F$ with $J_r=1$, the preparation changes after a sale, a neutral order and a buy are $((1-\rho)A_r(m),\,(1-\rho)A_r(\tfrac12),\,0)$. In $\mathcal F$ with $J_r=0$ they are $((1-\rho)A_r(m),(1-\rho)A_r(\tfrac12),(1-\rho)A_r(M))$, strictly increasing in the order.
+\item In $\mathcal F$, $P(0)-\bar P=-(1-\rho)J_r\,d\,A_r(M)$. The posterior after a neutral order is $\tfrac12$ for every $r$. So the price falls after a neutral order without bad class news if and only if $r\le r_C$.
+\item Take the sample of preparation announcements alone. Its mean price change is $\sum_x\Pr(X=x\mid A)\Delta^1_x$, and the mean of the ratios is $\sum_x\Pr(X=x\mid A)\Delta^1_x/P(x)$. Both means are positive in $\mathcal N$, $\mathcal U$ and $\mathcal F$.
+\end{enumerate}
+The formulas apply to a public event that reveals only preparation.
+\end{proposition}
+
+\begin{proof}
+(i) After the announcement the dealer knows $x$ and $a\in\{0,1\}$.
+Preparation (a=1) gives $\E[V_T]=t_j$ in class $j$.
+Since the cost is independent of the class, $\Pr(H\mid x,a=1)=\mu_x$.
+So $\E[V_T\mid x,a=1]=t_L+\Delta_T\mu_x=t_0+A_r(\mu_x)$.
+Without preparation $\E[V_T\mid x,a=0]=t_0$.
+Subtract $P(x)=t_0+e_xA_r(\mu_x)$ (Lemma~\ref{l:prices}).
+(ii) Compute $e_x(1-e_x)A-(1-e_x)e_xA=0$.
+Divide by the fixed price $P(x)>0$ to get the statement for ratios.
+(iii) Immediate from (i), because $A_r(\mu_x)>0$.
+The event $A^c$ has probability $1-e_x$ given $X=x$.
+(iv) Insert the entries of Table~\ref{tab:tuples}.
+(v) By Proposition~\ref{p:spread}(i) and the symmetry of $\Pr(X=\pm1)$,
+$\bar P=t_0+\rho A_r(\tfrac12)+(1-\rho)J_rdA_r(M)$.
+Here $dA_r(m)+dA_r(M)=2dA_r(\tfrac12)$, since $A_r$ is linear and $m+M=1$.
+Subtract this from $P(0)$.
+(vi) By (i), $\Delta^1_x\ge0$, with $\Delta^1_x>0$ if and only if $e_x<1$.
+The weights $\Pr(X=x\mid A)=\Pr(X=x)e_x/\Ent$ are positive, because $e_x\ge\rho>0$.
+In $\mathcal N$, $\mathcal U$ and $\mathcal F$, the orders $x\ne1$ have positive probability and $e_x=\rho<1$.
+So both means are positive.
+\end{proof}
+
+\paragraph{At B.}
+Table~\ref{tab:event} lists the exact changes.
+After a buy at $r_1$ the challenger prepares with probability one, so the announcement carries no news.
+The no-preparation change after a buy at $r_1$ has probability zero and the table omits it.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Announcement changes at B: dollars and ratio to $P(x)$.}\label{tab:event}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+strength & order & $P(x)$ & prepared $\Delta^1$ & ratio & no preparation $\Delta^0$ (ratio)\\
+\midrule
+$r_1$ & sale & \reg{price_r1_sale_B} & \reg{evA_r1_sale_B} & \reg{evAr_r1_sale_B} & \reg{evN_r1_sale_B} (\reg{evNr_r1_sale_B})\\
+$r_1$ & neutral & \reg{price_r1_neutral_B} & \reg{evA_r1_neutral_B} & \reg{evAr_r1_neutral_B} & \reg{evN_r1_neutral_B} (\reg{evNr_r1_neutral_B})\\
+$r_1$ & buy & \reg{price_r1_buy_B} & \reg{evA_r1_buy_B} & --- & ---\\
+$r_2$ & sale & \reg{price_r2_sale_B} & \reg{evA_r2_sale_B} & \reg{evAr_r2_sale_B} & \reg{evN_r2_sale_B} (\reg{evNr_r2_sale_B})\\
+$r_2$ & neutral & \reg{price_r2_neutral_B} & \reg{evA_r2_neutral_B} & \reg{evAr_r2_neutral_B} & \reg{evN_r2_neutral_B} (\reg{evNr_r2_neutral_B})\\
+$r_2$ & buy & \reg{price_r2_buy_B} & \reg{evA_r2_buy_B} & \reg{evAr_r2_buy_B} & \reg{evN_r2_buy_B} (\reg{evNr_r2_buy_B})\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pre-slot price at $r_1$ is \reg{pbar_r1_B}.
+The price after a neutral order is \reg{p_neutral_r1_B}, so the neutral order changes the price by \reg{pdrop_neutral_r1_B}.
+At $r_2$ the change is \reg{pdrop_neutral_r2_B}.
+Ratios exceed one at $r_2$ because the model sets the standalone value to zero.
+A positive standalone value divides the same dollar changes by a larger price.
+The mean over both announcements is zero.
+The mean over preparation announcements alone is positive.
+At $r_1$ it is \reg{evprep_mean_r1_B} in dollars and \reg{evprep_meanr_r1_B} as a return.
+At $r_2$ it is \reg{evprep_mean_r2_B} in dollars and \reg{evprep_meanr_r2_B} as a return.
+
+\paragraph{Observable.}
+The announcement is the public start of diligence by the further buyer, or a public statement that it will not bid.
+The event must reveal only preparation.
+The event window starts after the first order.
+The mean return given the order is zero over both announcements, with their model probabilities.
+A sample of preparation announcements alone has a positive mean.
+So a test of zero drift needs the announcements of no preparation.
+The model predicts the sign pattern of the surprises across orders and across the ceiling.
+
+\section{The coexistence branch}\label{sec:coex}
+
+\begin{proposition}[Coexistence; analytical, values computer-assisted]\label{p:coex}
+Let $r_F<r<r_N$ and $r\le r_C(M)$, so that $\mathcal N$ and $\mathcal U$ are both equilibrium outcomes (Proposition~\ref{p:out}(c)).
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Order flow.} $\mathcal N$: $\E[X]=0$ and $v=2b$. $\mathcal U$: $\E[X]=\lambda/2>0$ and $v=2b+\lambda/2$.
+\item \emph{Prices.} In $\mathcal N$, $P(-1)=P(0)=P(1)$. In $\mathcal U$, $P(0)<P(-1)<P(1)$, with
+\[
+P(-1)-P(0)=\rho\Delta_T\,\frac{\lambda}{4(1-v_{\mathcal U})},\qquad v_{\mathcal U}=2b+\tfrac\lambda2 .
+\]
+\item \emph{Entry.} $\Pr(A\mid X=1)=1$ in $\mathcal U$. All other entry rates equal $\rho$ in both outcomes. $\Ent=\rho$ in $\mathcal N$ and $\Ent=\rho+(1-\rho)d$ in $\mathcal U$.
+\item \emph{Association.} In $\mathcal N$ the buy impact $P(1)-P(0)$ is zero and the entry after a buy is $\rho$, so the entry increment $\Pr(A\mid X=1)-\rho$ is zero. In $\mathcal U$ the buy impact is positive and the entry increment is $1-\rho$. Hence, across the two outcomes at one public strength, the buy impact is positive if and only if the entry increment is positive.
+\item \emph{Classification.} Under the challenger rule (an indifferent challenger prepares), $\mathcal N$ and $\mathcal U$ are the only equilibrium outcomes. The investor rule does not matter, because no investor is indifferent.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) is Proposition~\ref{p:flow}.
+(ii) Table~\ref{tab:tuples} gives $\mu_{-1}=\tfrac12$ and $\mu_0^{\mathcal U}=(1-2b-\lambda)/(2-4b-\lambda)$.
+Then $\tfrac12-\mu_0^{\mathcal U}=\lambda/[2(2-4b-\lambda)]$.
+Since $4b+\lambda=2v_{\mathcal U}$, this equals $\lambda/[4(1-v_{\mathcal U})]>0$.
+Both orders have entry $\rho$, so $P(-1)-P(0)=\rho\Delta_T(\tfrac12-\mu_0^{\mathcal U})$.
+The price $P(1)$ exceeds both because $e_1=1$ and $A_r(M)>A_r(\tfrac12)$.
+(iii) Table~\ref{tab:tuples} with $J_r=1$.
+(iv) In $\mathcal U$, $P(1)-P(0)>0$ and entry after a buy is one, so the entry increment is $1-\rho>0$.
+In $\mathcal N$, the buy impact is zero and the entry after a buy is $\rho$.
+So the entry increment above $\rho$ is zero.
+
+(v) Take any equilibrium.
+A high-class sale loses, $U_H(-1)=-e_{-1}\Delta_T(1-\mu_{-1})-k<0$, and a low-class buy loses, $U_L(1)=-e_1\Delta_T\mu_1-k<0$.
+So $\sigma_H(-1)=0$ and $\sigma_L(1)=0$.
+Let $t=\lambda\sigma_L(-1)$ and $s=\lambda\sigma_H(1)$.
+Then $\mu_{-1}=b/(2b+t)\le\tfrac12$, so $B_r(\mu_{-1})\le B_r(\tfrac12)<\cH$ and the entry after a sale is $\rho$.
+The low-class sale payoff is $\rho\Delta_T\mu_{-1}-k\le\rho\Delta_T/2-k<0$, because $r<r_N$.
+So $t=0$.
+Then $\mu_0=(1-2b-s)/(2-4b-s)\le\tfrac12$, so $B_r(\mu_0)<\cH$ and the neutral order does not recruit.
+The buy posterior is $\mu_1=(b+s)/(2b+s)\in[\tfrac12,M]$, and the challenger rule gives $e_1\in\{\rho,1\}$.
+If $e_1=\rho$, then $U_H(1)=\rho\Delta_T(1-\mu_1)-k\le\rho\Delta_T/2-k<0$.
+So $s=0$, and this is $\mathcal N$.
+If $e_1=1$, then $U_H(1)=\Delta_T(1-\mu_1)-k\ge\Delta_T m-k>0$, because $\mu_1\le M$ and $r>r_F$.
+So $s=\lambda$, and this is $\mathcal U$.
+\end{proof}
+
+\begin{remark}[Partial buys when an indifferent challenger may mix]\label{r:mix}
+The classification (v) depends on the challenger rule.
+Let $r_F<r<r_N$ and $r<r_C(M)$.
+Write $\tau=\tau(r)$, so that $B_r(\tau)=\cH$ and $\tau>\tfrac12$.
+Let the challenger with cost $\cH$ prepare with probability $e_1\in[\rho,1]$ at the posterior $\tau$.
+Set
+\[
+s_\tau=b\,\frac{2\tau-1}{1-\tau},\qquad t=0,\qquad \sigma_H(1)=\frac{s_\tau}{\lambda},\qquad e_1=\frac{k}{\Delta_T(1-\tau)} .
+\]
+Then $\mu_1=(b+s_\tau)/(2b+s_\tau)=\tau$, so the challenger is indifferent.
+The probability $\sigma_H(1)$ lies in $(0,1)$, because $\tfrac12<\tau<M$.
+The high class earns $e_1\Delta_T(1-\tau)-k=0$ from a buy, so it is indifferent between a buy and no trade.
+The probability $e_1$ lies in $(\rho,1)$: $\Delta_T(1-\tau)>\Delta_T m>k$ gives $e_1<1$, and $\rho\Delta_T(1-\tau)<\rho\Delta_T/2<k$ gives $e_1>\rho$.
+The low class earns $\rho\Delta_T/2-k<0$ from a sale, so it strictly abstains.
+All non-buy entry rates equal $\rho$, and the price reveals the order.
+The tuple is an equilibrium outcome under the declared investor rule and a challenger rule that allows a mixture at indifference.
+It adds a third outcome to Proposition~\ref{p:coex}(v).
+At $r=1.60$ the high class buys with probability \reg{mix_sigma_r160_B}, and the entry after a buy is \reg{mix_e1_r160_B}.
+The mean order is \reg{mix_mean_order_r160_B}, the entry is \reg{mix_entry_r160_B}, and the low-class sale payoff is \reg{mix_lowsale_r160_B}.
+\end{remark}
+
+\paragraph{At B.}
+At $1.55$, $1.60$, $1.65$ the buy-only branch exists with margins \reg{margin_obs_rF_B} above $r_F=\reg{rF_check_B}$ and \reg{margin_obs_rN_B} below $r_N=\reg{rN_check_B}$.
+The spread $P(1)-P(-1)$ is \reg{ba_U_r155_B}, \reg{ba_U_r160_B}, \reg{ba_U_r165_B}.
+At $1.60$ a sale executes \reg{U_gap_r160_B} above the no-trade price.
+The posterior after a neutral order is \reg{U_mu0_B}.
+The mean order is \reg{imb_buy_B}.
+Entry is \reg{U_entry_B}, the same as at $r_1$.
+The ceiling lies \reg{margin_obs_rN_rC_B} above $r_N$, so $\mathcal U$ recruits on the whole interval.
+
+\paragraph{Observable.}
+The branch separates by the sign of the mean order, by the sign of $P(-1)-P(0)$, and by the entry rate after a buy.
+Under the challenger rule, a cross-section of processes with strength in $(r_F,r_N)$ shows two clusters: zero price impact with entry $\rho$, and positive price impact with entry after a buy equal to one.
+If an indifferent challenger may mix, a third cluster appears (Remark~\ref{r:mix}).
+It has a mean order between $0$ and $\lambda/2$ and an entry after a buy between $\rho$ and $1$.
+
+\section{Comparison with the earlier study}\label{sec:old}
+
+The earlier study (memo N1) derived four extensions at $\beta=1/3$ and $\lambda=6/17$ (calibration A).
+Section~10 of the run log recomputes 21 of its exact values in rational arithmetic.
+All match.
+Table~\ref{tab:old} states what survives at B.
+One structural statement of the earlier study fails.
+It says that each spread component rises strictly with the strength while $J$ stays fixed.
+On the regime $J=0$ the entry component is identically zero (Proposition~\ref{p:spread}(v)).
+Every number that depends on $(\lambda,\beta)$ changes.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Claims of the earlier study at B.}\label{tab:old}
+\begin{tabular}{@{}p{3.8cm}p{3.2cm}p{3.3cm}p{3.3cm}@{}}
+\toprule
+Claim & Earlier value & Value at B & Verdict\\
+\midrule
+Spread $=$ class $+$ entry component & $S(3)=25/32$ & \reg{ba_r1_B} & identity survives; value changes\\
+Entry share of the spread at $r_1$ & $90.4\%$ & \reg{ba_share_r1_B} & value changes\\
+Spread falls at $r_C$ & $r_C=3.458247$ & $r_C=\reg{rC_check_B}$; fall \reg{ba_jump_rC_B} & survives\\
+Each spread component rises strictly with $r$ while $J$ is fixed & stated & class component rises; entry component is $0$ for $J=0$ & fails on $J=0$; corrected\\
+Informed share on $\mathcal F$ & $9/20$ & \reg{theta_B} & value changes\\
+Informed share and volume constant from $r_1$ to $r_2$ & yes & yes & survives\\
+Identification from sell impact and volume & recovers $(9/20,6/17,1/3)$ & recovers $(\vartheta,\lambda,\beta)$ & survives\\
+Counts do not identify the share & pairs $(6/17,1/3)$, $(1/3,23/68)$ & pair $u'=8/5$ and the range $[\reg{theta_min_counts_B},\reg{theta_max_full_eq_r1_B})$ & survives; the pair with $\beta'=23/68$ lies outside the model ($\beta'>1/3$)\\
+Buy-only branch: volume, share, mean order & $31/51$, $9/31$, $3/17$ & \reg{vol_buy_B}, \reg{theta_buy_B}, \reg{imb_buy_B} & values change\\
+Winner gap $\vartheta(1-\ell/r)$ & $3/10$, $13/40$ & \reg{wgap_r1_B}, \reg{wgap_r2_B} & survives; values change\\
+Entry and winner covariances & $5/17$, $13/408$ & \reg{cov_entry_r1_B}, \reg{cov_win_r2_B} & survive\\
+Neutral order lowers the price & $-113/408$ & \reg{pdrop_neutral_r1_B} & survives\\
+Announcement changes & $(77/160,19/32,0)$ at $r_1$ & Table~\ref{tab:event} & survive; values change\\
+Full orders unique on $[3,18/5]$ & yes & unique on $(r_S,h)$, $r_S=\reg{rS_p5_B}$ (rounded) & extended\\
+Informed share $=2M-1$ & ``appropriate restrictions'' & holds on $\mathcal F$ at $\pi=\tfrac12$ & stated exactly\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The informed share of nonzero orders on $\mathcal F$ is $\lambda/(\lambda+2b)=u/(2+u)$ at every prior.
+The posterior gap $M(\pi)-m(\pi)$ equals this number only at $\pi=\tfrac12$.
+The earlier study noted the restriction.
+Here it is Proposition~\ref{p:flow}.
+
+\section{Margins, tie rules, and the parameter set}\label{sec:margins}
+
+\subsection{Margins at B}
+
+Every hypothesis is a strict inequality.
+Table~\ref{tab:margins} lists the margins.
+The smallest margin is the return to the entry floor at $r_2$, which is \reg{margin_obs_ceiling_B} in posterior.
+The primitive margins are positive: $\lambda=\reg{lambda_p5_B}$, $1-\lambda$, $\beta=\reg{beta_p5_B}$, $\rho=1/4$, $1-\rho=3/4$ and $k=1/50$.
+At the three benchmark strengths, the smallest $r-\ell$ is $1/5$ and the smallest $h-r$ is $32/5$.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Hypotheses of the package and their margins at B.}\label{tab:margins}
+\begin{tabular}{@{}p{6.4cm}p{3.2cm}p{3.5cm}@{}}
+\toprule
+Hypothesis & Margin & Used by\\
+\midrule
+$\beta<1/3$ & $1/3-\beta=\reg{margin_obs_beta_B}$ & Lemma~\ref{l:bounds}\\
+$\Delta_T(r_0)<k$ & $k-\Delta_T(r_0)=\reg{margin_obs_weak_r0_B}$ & Prop.~\ref{p:out}(a)\\
+$\rho\Delta_T(r_1)m>k$ & \reg{margin_obs_full_orders_r1_B} & Prop.~\ref{p:out}(b)\\
+$\rho\Delta_T(r_2)m>k$ & \reg{margin_obs_full_orders_r2_B} & Prop.~\ref{p:out}(b)\\
+$M>\tau(r_1)$ (buy recruits at $r_1$) & \reg{margin_obs_buy_recruit_B} (posterior) & $J_{r_1}=1$\\
+$M<\tau(r_2)$ (no recruit at $r_2$) & \reg{margin_obs_ceiling_B} (posterior) & $J_{r_2}=0$\\
+$M>5/8$ (the ceiling exists) & \reg{margin_obs_post_over_58_B} (posterior) & Lemma~\ref{l:auction}(d)\\
+$r_S<r_C$ (the ceiling lies in the $\mathcal F$ interval) & $r_C-r_S=\reg{margin_obs_rS_rC_B}$ & Prop.~\ref{p:spread}(v), (vi)\\
+$r_N<r_C$ (recruitment on the coexistence interval) & $r_C-r_N=\reg{margin_obs_rN_rC_B}$ & Prop.~\ref{p:coex}\\
+$r_S<h$ (the $\mathcal F$ interval is not empty) & $h-r_S=\reg{margin_obs_rS_h_B}$ & Prop.~\ref{p:out}(b)\\
+$r_C<r_2$ & $r_2-r_C=\reg{margin_obs_r2_above_rC_B}$ & Prop.~\ref{p:spread}(vi)\\
+$B_{r_1}(\tfrac12)<\cH$ & $\cH-B=\reg{margin_obs_neutral_r1_B}$ & neutral order\\
+$u>82/59$ (lower band) & \reg{margin_obs_u_lo_B} & band\\
+$2686/1559-u>0$ (upper band) & \reg{margin_obs_u_hi_B} & band\\
+$\rho\Delta_T(r_1)(1-\tau(r_2))>k$ (incentives on the band) & \reg{margin_obs_band_incentive_B} & Prop.~\ref{p:ident}(c), (d)\\
+$\Delta_T(1.55)m>k$ (buy-only) & \reg{margin_obs_buy_r155_B} & Prop.~\ref{p:out}(c)\\
+$B_{1.65}(M)>\cH$ (buy recruits) & \reg{margin_obs_buy_recruit_r165_B} & Prop.~\ref{p:out}(c)\\
+$k-\rho\Delta_T(1.65)/2>0$ (low class waits) & \reg{margin_obs_lowsell_r165_B} & Prop.~\ref{p:out}(c)\\
+$1.55>r_F$ & \reg{margin_obs_rF_B} & Prop.~\ref{p:coex}\\
+$r_N>1.65$ & \reg{margin_obs_rN_B} & Prop.~\ref{p:coex}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Tie rules}
+
+There are two tie rules.
+The \emph{investor rule} lets an indifferent investor choose any mixture.
+The \emph{challenger rule} makes an indifferent challenger prepare.
+Table~\ref{tab:ties} shows which results depend on them.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Dependence on the tie rules.}\label{tab:ties}
+\begin{tabular}{@{}p{5.2cm}p{3.0cm}p{4.9cm}@{}}
+\toprule
+Result & Investor rule & Challenger rule\\
+\midrule
+Props.~\ref{p:flow}, \ref{p:ident}, \ref{p:win}, \ref{p:event} at $r_1$, $r_2$ & none (strict margins) & none ($r_1,r_2\ne r_C$)\\
+Prop.~\ref{p:spread} and Prop.~\ref{p:entry} at $r\ne r_C$ & none & none\\
+Spread, buy impact, $\bar P$ and entry exactly at $r_C$ & none & prepare: $J=1$. With a mixture, each lies between its two one-sided limits.\\
+Prop.~\ref{p:coex}(i)--(iv) at $r_F<r<r_N$: existence and formulas of $\mathcal N$ and $\mathcal U$ & none (strict) & none\\
+Prop.~\ref{p:coex}(v): $\mathcal N$ and $\mathcal U$ are the only outcomes & none (no investor is indifferent) & needs the rule \emph{prepare}. A mixture at indifference adds the partial-buy outcome (Remark~\ref{r:mix}).\\
+Boundaries $r_F$, $r_N$, $r_S$ & the outcome at the boundary needs the rule & none\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The parameter set}
+
+The hypotheses define the set $\Theta$ of Table~\ref{tab:theta} in the two free slot parameters $(\lambda,\beta)$, at the prior $1/2$.
+Each restriction is strict, so $\Theta$ is open in the plane.
+The set contains B.
+
+\begin{table}[H]
+\centering\small
+\caption{The open parameter set $\Theta$.}\label{tab:theta}
+\begin{tabular}{@{}p{4.0cm}p{8.9cm}@{}}
+\toprule
+Free parameter & Strict restriction\\
+\midrule
+$\beta$ & $0<\beta<1/3$\\
+$\lambda$ & $\dfrac{(82/59)\beta}{1+(82/59)\beta}<\lambda<\dfrac{(2686/1559)\beta}{1+(2686/1559)\beta}$\\
+Equivalent posterior & $141/200<M<4245/5804$\\
+Strength in $\mathcal F$ & $r_S(M)<r<h$\\
+Strength in the coexistence interval & $r_F(M)<r<r_N$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The band for $\lambda$ is the band $82/59<u<2686/1559$ for $u$, because $\lambda=u\beta/(1+u\beta)$ increases in $u$.
+It is the band $\tau(r_1)<M<\tau(r_2)$ with $\tau(r_1)=141/200$ and $\tau(r_2)=4245/5804$.
+On $\Theta$ the following statements hold.
+\begin{enumerate}[label=(\alph*)]
+\item $M>141/200>5/8$, so the ceiling $r_C(M)$ exists.
+\item $r_C(M)$ increases in $M$ and $B_{r_1}(M)>\cH>B_{r_2}(M)$, so $3<r_C(M)<3.6$.
+\item $\rho\Delta_T(r_1)m>\rho\Delta_T(r_1)(1-\tau(r_2))>k$, so $r_S(M)<3$.
+\item $r_F(M)<r_N<r_S(M)$, because $m>1/8$ gives the first inequality and $m<1/2$ gives the second.
+\item $r_N<3<r_C(M)$, so the coexistence interval lies below the ceiling.
+\end{enumerate}
+The uniqueness margin $\rho\Delta_T(r)m-k$ tends to zero as $r\downarrow r_S$.
+So no uniform positive margin holds on the whole interval $(r_S,h)$.
+
+The cases $\beta=1/3$, $r=r_C$ and $r=r_N$ are boundary cases and lie outside $\Theta$.
+At $\beta=1/3$ the bound of Lemma~\ref{l:bounds} holds with equality at the neutral order, and every proof uses only $\beta\le1/3$.
+The results therefore hold at $\beta=1/3$.
+At $r=r_C$ the challenger rule decides the entry after a buy.
+At $r=r_N$ and at $r=r_S$ the low class is indifferent, and the investor rule decides the outcome.
+
+\subsection{Reproduction}
+
+Run from the repository root:
+\begin{verbatim}
+.venv/bin/python audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py \
+  > audit/slot_manuscript_2026_10_23/scripts/P5_observables/run_log.txt
+\end{verbatim}
+The run takes less than one second.
+It writes the registry rows, the file \texttt{p5\_numbers.tex} that this document reads, and \texttt{curves\_full\_branch.csv} (figure data on $2.2\le r\le6$).
+
+\end{document}

@@ -1,0 +1,137 @@
+P1_core numbers at calibration B. Intervals are outward enclosures at 50 digits.
+Benchmark primitives (h, ell, p, rho, c_H, k, pi) = 10 1 1/2 1/4 6 1/50 1/2 ; strengths r0, r1, r2 = 6/5 3 18/5
+
+A. Slot primitives
+   u = e - 1 = [1.7182818284590452354, 1.7182818284590452354]
+   beta = 58931/200000 (exact decimal)
+   lambda = u beta/(1 + u beta) = [0.3361217689151211974, 0.3361217689151211974]
+   b = (1 - lambda) beta = beta/(1 + u beta) = [0.19561504018031496358, 0.19561504018031496358] ; check lambda/b - u = [-2.1382117680737565169e-50, 2.4054882390829760815e-50]
+   b0 = (1 - lambda)(1 - 2 beta) = [0.27264815072424887544, 0.27264815072424887544] ; b0 - b = [0.07703311054393391186, 0.07703311054393391186] sign +
+   M(1/2) = (1+u)/(2+u) = e/(1+e) = [0.73105857863000487925, 0.73105857863000487925] ; m(1/2) = 1/(1+e) = [0.26894142136999512075, 0.26894142136999512075]
+
+B. Auction objects (exact) at the three strengths
+   r = 6/5: t0 7/24, tH 169/240, tL 11/16, gH 2231/240, gL 5/16, Delta 1/60, tau 195/308 = 0.633116883, B(1/2) 1153/240
+   r = 3: t0 5/12, tH 37/24, tL 7/8, gH 203/24, gL 1/8, Delta 2/3, tau 141/200 = 0.705000000, B(1/2) 103/24
+   r = 18/5: t0 31/72, tH 1321/720, tL 43/48, gH 5879/720, gL 5/48, Delta 169/180, tau 4245/5804 = 0.731392143, B(1/2) 2977/720
+
+C. Proposition 2 at calibration B, prior 1/2
+   entry at r1: rho + (1 - rho)(b + lambda/2) = [0.52275694347840667171, 0.52275694347840667171]
+   class-conditional entry e_H = [0.64880260682157712073, 0.64880260682157712073] ; e_L = [0.39671128013523622269, 0.39671128013523622269]
+   high-class ownership at r1 = e_H/2 (W_H = 1) = [0.32440130341078856037, 0.32440130341078856037]
+   prices at r0 (every order, posterior 1/2, entry rho): [0.39270833333333333333, 0.39270833333333333333]
+   prices at r1: P(-1) = [0.57607357022833252012, 0.57607357022833252012], P(0) = [0.61458333333333333333, 0.61458333333333333333], P(+1) = [1.3623723857533365862, 1.3623723857533365862]
+   prices at r2: P(-1) = [0.61000152807156829918, 0.61000152807156829918], P(0) = [0.66423611111111111111, 0.66423611111111111111], P(+1) = [0.71847069415065392305, 0.71847069415065392305]
+
+   Hypotheses of Proposition 2 and their margins at B (prior 1/2)
+   c_H - B_0(pi)                            [1.1958333333333333333, 1.1958333333333333333]  sign +
+   B_1(M) - c_H                             [0.21715482191670732709, 0.21715482191670732709]  sign +
+   k - Delta_0                              [0.0033333333333333333333, 0.0033333333333333333333]  sign +
+   rho kappa Delta_1 - k                    [0.024823570228332520125, 0.024823570228332520125]  sign +
+   c_H - B_2(M)                             [0.0026889022659051122587, 0.0026889022659051122587]  sign +
+   tau(r2) - M (posterior units)            [0.00033356471940931785429, 0.00033356471940931785429]  sign +
+   M - tau(r1) (posterior units)            [0.026058578630004879251, 0.026058578630004879251]  sign +
+   c_H - B_1(pi) (implied)                  [1.7083333333333333333, 1.7083333333333333333]  sign +
+   rho kappa Delta_2 - k (implied)          [0.043126528071568299176, 0.043126528071568299176]  sign +
+   c_H - B_2(pi) (implied)                  [1.8652777777777777778, 1.8652777777777777778]  sign +
+   tau(r0) - 1/2 = 41/308 = 0.1331168831168831
+   strong trading bound at r2 holds for M < 1 - k/(rho Delta(r2)) = 773/845 = 0.914792899408284
+
+D. Admissible region at the benchmark (prior 1/2)
+   M band (tau(3), tau(18/5)) = 141/200 4245/5804 ; u band: 82/59 2686/1559 ; check (1+u)/(2+u) at the ends: 141/200 4245/5804
+   k < rho (1 - M) Delta(3) <=> M < 22/25 <=> u < 19/3 = 6.333333333333333 (slack against u_hi)
+   u - u_lo = [0.32845131998446896417, 0.32845131998446896417] ; u_hi - u = [0.0046174659604544439213, 0.0046174659604544439213]
+   lambda range at beta_B: 2416171/8316171 = 0.29053887901054465 ; 79144333/235044333 = 0.3367208729937769
+   lambda_B - lambda_lo = [0.045582889904576560929, 0.045582889904576560929] ; lambda_hi - lambda_B = [0.00059910407865568298393, 0.00059910407865568298393]
+   1/3 - beta_B = 23207/600000 = 0.038678333333333335
+
+E. Prior range at B (other benchmark inputs fixed)
+   M(pi) > tau(3)    <=> pi > 141/(141 + 59 e)     = [0.46785002968614851184, 0.46785002968614851184]
+   M(pi) < tau(18/5) <=> pi < 4245/(4245 + 1559 e) = [0.50042430732006322816, 0.50042430732006322816]
+   B_{6/5}(pi) < c_H <=> pi < tau(6/5) = 195/308   = 0.6331168831168831
+   kappa(pi) > 3/25  <=> pi in (3e/(22 + 3e), 22/(22 + 3e)) = [0.27043234193760439406, 0.27043234193760439406] [0.72956765806239560594, 0.72956765806239560594]
+   Delta(6/5) < k holds for every prior.
+   All three parts: ( [0.46785002968614851184, 0.46785002968614851184] , [0.50042430732006322816, 0.50042430732006322816] )
+   Parts (i) and (ii): ( [0.46785002968614851184, 0.46785002968614851184] , 195/308 )
+
+F. Proposition 3 thresholds
+   r_A in [1.393957920279217, 1.393957920279286], end values -2.88e-15, 2.92e-15
+   r_J in [1.966097064963992, 1.966097064964060], end values -1.95e-16, 1.78e-15
+   r_star in [1.634217965673020, 1.634217965673088], end values -3.43e-15, 1.18e-16
+   r_N = (29 + 6 sqrt 6)/25 = [1.7478775382679627436, 1.7478775382679627436] ; frak_r(2k/rho) = [1.7478775382679627436, 1.7478775382679627436]
+   r_F = frak_r(k/(1 - M)) = frak_r(k(1 + e)) = [1.4671270412930937986, 1.4671270412930937986]
+   r_S = frak_r(k/(rho m)) = frak_r(4k(1 + e)) = [2.1241481328154506735, 2.1241481328154506735]
+   r_C = [Mh - c_H + sqrt((Mh - c_H)^2 + M((1 - M) ell^2 - p^2))]/M = [3.5926585187946618333, 3.5926585187946618333]
+   check B_{r_C}(M) - c_H = [-9.6219529563319043261e-50, 7.4837411882581478092e-50]
+   pi_A_lo = tau_A/(tau_A + (1 - tau_A) e) in [0.39617542361045235412, 0.39617542361045511599]
+   ordering margins (r units):
+     rA_r0: [0.19395792027921743284, 0.19395792027921743284] sign +
+     rF_rA: [0.073169121013808153677, 0.073169121013808153677] sign +
+     rN_rF: [0.28075049697486894495, 0.28075049697486894495] sign +
+     rJ_rN: [0.21821952669602938126, 0.21821952669602938126] sign +
+     rS_rJ: [0.15805106785139033661, 0.15805106785139033661] sign +
+     r1_rS: [0.87585186718454932646, 0.87585186718454932646] sign +
+     rC_r1: [0.59265851879466183334, 0.59265851879466183334] sign +
+     r2_rC: [0.0073414812053381666641, 0.0073414812053381666641] sign +
+
+G. Entry along the branches at B (prior 1/2)
+   entry at r_A on the threshold point: rho + (1 - rho) b/(2(1 - tau_A)) = [0.45418485592961257693, 0.45418485592961408739]
+   mixed recruiting branch at r = 7/5: entry [0.45958754305033746098, 0.45958754305033746098]; below E1: +
+   mixed recruiting branch at r = 29/20: entry [0.50611236402918392322, 0.50611236402918392322]; below E1: +
+   r = 31/20: full branch entry = E1 [0.52275694347840667171, 0.52275694347840667171]; threshold branch (challenger mixes) entry [0.3414618893892454074, 0.3414618893892454074]; e* = k/J = 0.580286956; challenger preparation prob. 0.440383
+   r = 8/5: full branch entry = E1 [0.52275694347840667171, 0.52275694347840667171]; threshold branch (challenger mixes) entry [0.32131096022834642013, 0.32131096022834642013]; e* = k/J = 0.506106106; challenger preparation prob. 0.341475
+   r = 33/20: full branch entry = E1 [0.52275694347840667171, 0.52275694347840667171]; threshold branch (challenger mixes) entry [0.3052075077325850904, 0.3052075077325850904]; e* = k/J = 0.447179333; challenger preparation prob. 0.262906
+   threshold-branch entry at r_J equals rho (k = rho J).
+
+   Interior rates at prior 1/2 (effective rates s = lambda sigma_H(+1), t = lambda sigma_L(-1))
+   r = 7/5: recruiting mixed purchase rate s = b(Delta/k - 2) = [0.16767003444026996878, 0.16767003444026996878]; s/lambda = [0.49883717731656550662, 0.49883717731656550662]
+   r = 29/20: recruiting mixed purchase rate s = b(Delta/k - 2) = [0.2917362237171938681, 0.2917362237171938681]; s/lambda = [0.86794801972752992602, 0.86794801972752992602]
+   r = 9/5: non-recruiting mixed rate s = t = b(rho Delta/k - 2) = [0.043470008928958880796, 0.043470008928958880796]; s/lambda = [0.12932815708207253875, 0.12932815708207253875]
+   r = 19/10: non-recruiting mixed rate s = t = b(rho Delta/k - 2) = [0.12998104643560402185, 0.12998104643560402185]; s/lambda = [0.38670820653817084778, 0.38670820653817084778]
+   r = 2: low-class sale rate t = [0.22006692020285433403, 0.22006692020285433403]; t/lambda = [0.65472379522799222743, 0.65472379522799222743]
+   r = 21/10: low-class sale rate t = [0.31321693933633765002, 0.31321693933633765002]; t/lambda = [0.93185556040386195333, 0.93185556040386195333]
+
+I. Each hypothesis of Proposition 2 is needed (calibration B, prior 1/2)
+   b + lambda = [0.53173680909543616098, 0.53173680909543616098] ; above 1/2: +
+   c_H = 47/10, strengths (6/5, 3, 8): k_minus_Delta0   [0.0033333333333333333333, 0.0033333333333333333333] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): cH_minus_B1_pi   [0.40833333333333333333, 0.40833333333333333333] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): B1_M_minus_cH    [1.5171548219167073271, 1.5171548219167073271] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): kstrong_r1       [0.024823570228332520125, 0.024823570228332520125] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): kstrong_r2       [0.18590827573640251432, 0.18590827573640251432] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): cH_minus_B2_M    [0.31246468938434602945, 0.31246468938434602945] sign +
+   c_H = 47/10, strengths (6/5, 3, 8): cH_minus_B0_pi   [-0.10416666666666666667, -0.10416666666666666667] sign -
+   B_0(1/2) = 1153/240 > 47/10: both cost types prepare at the weak incumbent; entry 1.
+   Delta(31/20) = 121/1240 = 0.09758064516129032 > k: (H2, left) fails at 31/20
+   rho kappa Delta(2) - k = [-0.0031911611643753049532, -0.0031911611643753049532] < 0: (H2, right) fails at r = 2
+
+J. Exact constants printed in the proofs
+   J_r0: 113/18480 = 0.006114719 (J(6/5))
+   rhoJ_r1: 59/1200 = 0.049166667 (rho J(3))
+   rhoJ_r2: 263471/4178880 = 0.063048233 (rho J(18/5))
+   QJ_r0: 4634399/15625 = 296.601536000 (2 x numerator of J' at 6/5 (integer form))
+   B_r0_half: 1153/240 = 4.804166667 (B_{6/5}(1/2))
+   Delta_r155_frac: 121/1240 = 0.097580645 (Delta(31/20))
+   Lemma 1(c) example (lambda 6/17, beta 2/5): mu(0) = 41/52 > M = 26/37
+   entry at r1 with the earlier study's unrounded beta: [0.52275729725973785804, 0.52275729725973785804]
+
+K. Calibration A values quoted for comparison (exact)
+   calibration A: b = 11/51  M = 29/40
+   threshold branch entry at 31/20, calibration A: 2442588329/6961987560 = 0.350846408
+   threshold branch entry at 8/5, calibration A: 2186473/6653340 = 0.328627877
+   threshold branch entry at 33/20, calibration A: 1793732190563/5770000237560 = 0.310872117
+   r_F at calibration A = frak_r(4/55) = [1.4609846637102294986, 1.4609846637102294986]
+
+H. Comparison with the values listed in the brief
+   entry at r1                  computed 0.522756943  brief 0.522757
+   ownership at r1              computed 0.324401303  brief 0.3244
+   r_C                          computed 3.592658519  brief 3.592659
+   return margin in posterior   computed 0.000333565  brief about 0.0003
+   prior lo                     computed 0.467850030  brief 0.467850
+   prior hi                     computed 0.500424307  brief 0.500424
+   r_F                          computed 1.467127041  brief 1.460985
+   r_N                          computed 1.747877538  brief 1.747878
+   r_A computed 1.393957920  brief 1.393958
+   r_F at calibration A: frak_r(k/(1 - 29/40)) = frak_r(4/55) = [1.4609846637102294986, 1.4609846637102294986]
+   entry at r1 with the unrounded beta of the earlier study (0.2946555756848079...):
+       [0.52275729725973785804, 0.52275729725973785804]
+
+Wrote 125 rows to /home/uctpiaj/work/Projects/competition-creates-competition/audit/slot_manuscript_2026_10_23/registry/P1_core.csv

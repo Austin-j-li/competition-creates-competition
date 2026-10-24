@@ -1,0 +1,265 @@
+
+====================================================================================================
+0. Auction objects: closed forms against direct integration (exact fractions)
+====================================================================================================
+r= 1.2: closed==direct True;  Delta_T=1/60 (0.016667);  g_H=9.295833  g_L=0.312500  B(1/2)=1153/240 (4.804167)
+r= 3.0: closed==direct True;  Delta_T=2/3 (0.666667);  g_H=8.458333  g_L=0.125000  B(1/2)=103/24 (4.291667)
+r= 3.6: closed==direct True;  Delta_T=169/180 (0.938889);  g_H=8.165278  g_L=0.104167  B(1/2)=2977/720 (4.134722)
+r= 4.2: closed==direct True;  Delta_T=128/105 (1.219048);  g_H=7.870238  g_L=0.089286  B(1/2)=3343/840 (3.979762)
+
+a = exp(-1/2) = 0.606530659712633423603799534991;  m = a/(1+a) = 0.37754066879814543536;  M = 1/(1+a) = 0.62245933120185456464;  d = 1-a = 0.3934693402873665764
+mass outside |z|<=300: 5.4178e-66
+P(Z= 0): difference of geometric counts 0.2449186624037091292778011   closed form 0.2449186624037091292778011
+P(Z= 1): difference of geometric counts 0.1485506778836574471183993   closed form 0.1485506778836574471183993
+P(Z=-2): difference of geometric counts 0.09010054065753365488987643   closed form 0.09010054065753365488987643
+P(Z= 3): difference of geometric counts 0.05464874036547883777236687   closed form 0.05464874036547883777236687
+
+====================================================================================================
+1. Posteriors with a mixed acquisition probability psi (flow-level Bayes); containment in [m, M]
+====================================================================================================
+s=       0.0: distinct posteriors over x in [-60,61]: 1;  mu(x<=0)=0.5  mu(x>=1)=0.5;  closed forms agree: True
+s=       0.1: distinct posteriors over x in [-60,61]: 2;  mu(x<=0)=0.489965860174  mu(x>=1)=0.515708509554;  closed forms agree: True
+s= 0.4108902: distinct posteriors over x in [-60,61]: 2;  mu(x<=0)=0.456027227696  mu(x>=1)=0.558801445996;  closed forms agree: True
+s=       0.5: distinct posteriors over x in [-60,61]: 2;  mu(x<=0)=0.445450437358  mu(x>=1)=0.569774162928;  closed forms agree: True
+s= 0.8631322: distinct posteriors over x in [-60,61]: 2;  mu(x<=0)=0.397729661019  mu(x>=1)=0.609364656948;  closed forms agree: True
+s=       1.0: distinct posteriors over x in [-60,61]: 2;  mu(x<=0)=0.377540668798  mu(x>=1)=0.622459331202;  closed forms agree: True
+mu(x<=0, s=1) equals m: True;  mu(x>=1, s=1) equals M: True
+on a 1001-point grid of s: m <= mu_- <= 1/2 <= mu_+ <= M holds: True
+
+====================================================================================================
+2. D_r(s): direct sum over flows (N=300) against my two-region closed form, r=3, c_H=5
+====================================================================================================
+tau = 0.585 (exact 117/200);  M > tau: True;  s_E (bisection on flow-level Bayes) = 0.6314554073042306224151508
+closed-form s_E = a(tau-pi)/(pi d (1-tau)) = 0.6314554073042306224151508;  difference 6.68e-51
+tail bound on the omitted gross payoff: Delta_T * 2 a^(N+1)/(1+a) = 3.6119e-66
+s=           0.0: brute 0.08333333333333333333333333  closed 0.08333333333333333333333333  |diff| 1.0e-51  entry (lower,upper)=(0.25,0.25)
+s=           0.2: brute 0.08146193488130819977513146  closed 0.08146193488130819977513146  |diff| 1.17e-51  entry (lower,upper)=(0.25,0.25)
+s=0.631455407304: brute 0.07897804356727416501883857  closed 0.07897804356727416501883857  |diff| 3.34e-52  entry (lower,upper)=(0.25,0.25)
+s=0.631455407304: brute 0.2081383547916589871814104  closed 0.2081383547916589871814104  |diff| 1.67e-51  entry (lower,upper)=(0.25,1.0)
+s=           0.8: brute 0.2020769710262845827517475  closed 0.2020769710262845827517475  |diff| 2.34e-51  entry (lower,upper)=(0.25,1.0)
+s=           1.0: brute 0.1958364268346620742244189  closed 0.1958364268346620742244189  |diff| 6.68e-52  entry (lower,upper)=(0.25,1.0)
+
+====================================================================================================
+3. Cost cutoffs at r=3, c_H=5 (research value = pi*(D - k))
+====================================================================================================
+v_0   = 0.031666666666666666667    exact 19/600 = 0.031666666666666666667
+v_E^- = 0.029489021783637082509
+v_E^+ = 0.094069177395829493591
+v_1   = 0.087918213417331037112    closed form (5/12) a/(1+a)^2 - 1/100 = 0.087918213417331037112
+v_0 < v_1: True;  rho*m*Delta_T(3) = 0.0629234447997;  (rho*m*Delta_T - k)/2 = 0.0214617223998
+value strictly falls in s on [0, s_E): True;  strictly falls on [s_E, 1]: True;  jump up at s_E: 0.0645801556122
+
+====================================================================================================
+4. Equilibrium acquisition sets at r=3, c_H=5 (corners from G(0), G(1); interior roots by scan + bisection)
+====================================================================================================
+kappa     | equilibria: (kind, psi) -> entry E, high-class ownership O_H
+0.02      | (corner1, psi=1.0) E=0.625 O_H=0.358422249201
+0.03      | (corner1, psi=1.0) E=0.625 O_H=0.358422249201  ;  (interior, psi=0.41089023221938) E=0.25 O_H=0.125
+0.05      | (corner0, psi=0.0) E=0.25 O_H=0.125  ;  (corner1, psi=1.0) E=0.625 O_H=0.358422249201
+0.09      | (corner0, psi=0.0) E=0.25 O_H=0.125  ;  (interior, psi=0.86313222127414) E=0.61242944751561 O_H=0.345851696716
+0.094     | (corner0, psi=0.0) E=0.25 O_H=0.125  ;  (interior, psi=0.63507333712204) E=0.59148349369468 O_H=0.324905742895
+0.095     | (corner0, psi=0.0) E=0.25 O_H=0.125
+
+Residuals at the interior roots (brute-force flows): investor indifference pi*(D_brute - k) - kappa
+kappa=0.03: psi=0.41089023221938  residual=1.67e-52  D_brute - k = 0.06 > 0 (strict buy);  low-class purchase payoff (net) = -0.10666667 < 0;  psi >= s_E: False
+kappa=0.09: psi=0.86313222127414  residual=6.68e-52  D_brute - k = 0.18 > 0 (strict buy);  low-class purchase payoff (net) = -0.29789633 < 0;  psi >= s_E: True
+kappa=0.094: psi=0.63507333712204  residual=-6.68e-52  D_brute - k = 0.188 > 0 (strict buy);  low-class purchase payoff (net) = -0.28989633 < 0;  psi >= s_E: True
+
+Cross-check of the interior roots against the quadratic L y^2 + [C(rho-e) - L d] y + C(rho a + e) - L a = 0 (y = pi d s), my own derivation
+kappa=0.03, e_+=1/4: s roots = 0.41089023221938, 1.5891097677806
+kappa=0.09, e_+=1: s roots = 0.86313222127414, 3.5356612178945
+kappa=0.094, e_+=1: s roots = 0.63507333712204, 3.6714588159248
+
+====================================================================================================
+5. Claim 3: kappa=0.02, c_H=5, strengths 1.2, 3, 3.6 and 4.2
+====================================================================================================
+r= 1.2: Delta_T=0.016667  B_r(1/2)=4.804167 (<5: True)  B_r(M)=5.90425965863 (>=5: True)
+        min_s D = 0.00204928064, max_s D = 0.005767911996, rho*m*Delta_T = 0.00157308612, k = 0.02;  min_s pi(D-k) = -0.00897535968 vs kappa = 0.02;  Delta_T < k: True
+        equilibria: corner0 psi=0.0 E=0.25 O_H=0.125
+r= 3.0: Delta_T=0.666667  B_r(1/2)=4.291667 (<5: True)  B_r(M)=5.31216109335 (>=5: True)
+        min_s D = 0.078983178, max_s D = 0.2081175049, rho*m*Delta_T = 0.0629234448, k = 0.02;  min_s pi(D-k) = 0.029491589 vs kappa = 0.02;  Delta_T < k: False
+        equilibria: corner1 psi=1.0 E=0.625 O_H=0.358422249201
+r= 3.6: Delta_T=0.938889  B_r(1/2)=4.134722 (<5: True)  B_r(M)=5.12188049763 (>=5: True)
+        min_s D = 0.1104866375, max_s D = 0.2825380303, rho*m*Delta_T = 0.08861718476, k = 0.02;  min_s pi(D-k) = 0.04524331873 vs kappa = 0.02;  Delta_T < k: False
+        equilibria: corner1 psi=1.0 E=0.625 O_H=0.358422249201
+r= 4.2: Delta_T=1.219048  B_r(1/2)=3.979762 (<5: True)  B_r(M)=4.93261212945 (>=5: False)
+        min_s D = 0.1432403579, max_s D = 0.1523809524, rho*m*Delta_T = 0.1150600133, k = 0.02;  min_s pi(D-k) = 0.06162017896 vs kappa = 0.02;  Delta_T < k: False
+        equilibria: corner1 psi=1.0 E=0.25 O_H=0.125
+
+r=3, psi=1: Pr(flow x >= 1) by direct sum = 0.5 (exact 1/2);  E = 0.625 vs rho+(1-rho)/2 = 0.625;  O_H = 0.35842224920069546174 vs rho/2 + (1-rho)/(2(1+a)) = 0.35842224920069546174
+
+Rational bounds in the memo's proof of claim 3 (exact fractions)
+e^(1/2) < 33/20 < 5/3: True => a > 3/5;  e^(1/2) > 3/2 => a < 2/3.  m > 3/8, 3/5 < M < 5/8
+(1/2)[rho*(3/8)*Delta_T(3) - k] = 17/800 = 0.021250 > 1/50: True
+Delta_T(6/5) = 1/60 < k=1/50: True;  B_{6/5}(1/2) = 1153/240 < 5: True
+B_3(3/5) = 41/8 > 5: True;   B_{21/5}(5/8) = 104/21 < 5: True
+tau(3, c_H=5) = 117/200 = 0.585;  117/200 = 117/200;  tau < 3/5 < M: True
+ceiling r_C solving B_r(M)=5: 3.9860965716384044188
+
+====================================================================================================
+6. Claim 2: coexistence at r=3, c_H=5, kappa=0.05
+====================================================================================================
+v_0 = 0.0316666666667 <= 0.05 <= v_1 = 0.0879182134173: True;  strict: True
+net gain of acquiring against the schedule of psi=0: -0.018333333 (<0, so psi=0 is a best reply);  against the schedule of psi=1: 0.037918213 (>0, so psi=1 is a best reply)
+exact-rational chain: 19/600 < 1/20: True;  (5/12)(15/64) - 1/100 = 561/6400 > 1/20: True;  a/(1+a)^2 at a=3/5: 15/64
+Robustness grid at r=3, c_H=5: does v_0 < kappa < v_1 hold when one input moves?
+   base    : v_0=0.031666667  v_1=0.087918213  kappa=0.05 inside [v_0, v_1]: True
+   k=0.015 : v_0=0.034166667  v_1=0.090418213  kappa=0.05 inside [v_0, v_1]: True
+   k=0.025 : v_0=0.029166667  v_1=0.085418213  kappa=0.05 inside [v_0, v_1]: True
+   r=2.8   : v_0=0.026160714  v_1=0.074979021  kappa=0.05 inside [v_0, v_1]: True
+   r=3.3   : v_0=0.040094697  v_1=0.1077244  kappa=0.05 inside [v_0, v_1]: True
+   c_H=4.9 : v_0=0.031666667  v_1=0.087918213  kappa=0.05 inside [v_0, v_1]: True
+   c_H=5.2 : v_0=0.031666667  v_1=0.087918213  kappa=0.05 inside [v_0, v_1]: True
+
+====================================================================================================
+7. Claim 4: c_H=6 blocks expensive entry (b=2, pi=1/2, buy-only)
+====================================================================================================
+(a) largest posterior over all buy-only strategy pairs (class H buys w.p. sH, class L buys w.p. sL), flows -40..41
+max posterior 0.62245933120185456464 at (sH, sL, x) = (0.0, 1.0, -34);  M = 0.62245933120185456464
+   profile 'only class H buys' at x=1: posterior 0.62245933120185456464;  profile 'only class L buys' at x=0: posterior 0.62245933120185456464  (both equal M)
+(b) gross profit at the highest posterior, B_r(M), against c_H=6
+B_1(mu) = 3/8 + 9 mu   (limit r -> l = 1)
+B_1(M) = 5.9771339808166910818  <  6: True;  gap to 6: 0.02286601918
+max over r in (1, 10) on a 0.01 grid of B_r(M): 5.97339029471  (< 6: True);  g_H' < 0 and g_L' < 0 because p < r and p < l
+(c) exact chain: e^(1/2) <= 1+1/2+(1/8)/(1-1/6) = 33/20 = 33/20 < 5/3: True => a >= 20/33 > 3/5 => M <= 33/53 < 5/8 ; B_1(5/8) = 6 ;  B_1(33/53) = 2535/424 = 5.97877358490566
+c_H=6 stays blocked iff M(b) < 5/8 iff b > 1/ln(5/3) = 1.95761518897; the paper's b=2 clears this by 0.0423848
+   b=    1.9: M=0.62862342  B_1(M)=6.0326108  can reach 6 as r -> 1: True
+   b= 1.9576: M=0.62500093  B_1(M)=6.0000084  can reach 6 as r -> 1: True
+   b=   1.96: M=0.62485431  B_1(M)=5.9986888  can reach 6 as r -> 1: False
+   b=    2.0: M=0.62245933  B_1(M)=5.977134  can reach 6 as r -> 1: False
+   b=    3.0: M=0.58257021  B_1(M)=5.6181319  can reach 6 as r -> 1: False
+
+====================================================================================================
+8. Claim 5: public acquisition, r=3, c_H=5
+====================================================================================================
+Continuation after an observed acquisition: the high class buys with probability beta, so the effective s equals beta.
+min over beta in [0,1] of D(beta) - k = 0.05897964792 > 0: True  => beta = 1 is the only continuation (beta=0 and any interior beta need D = k or D <= k)
+V_public = pi*(D(1) - k), direct flow sum = 0.087918213417331  (equals closed-form v_1: True)
+kappa=0.02  : public -> psi = 1 only;   hidden -> corner1:1.0
+kappa=0.05  : public -> psi = 1 only;   hidden -> corner0:0.0, corner1:1.0
+kappa=0.09  : public -> psi = 0 only;   hidden -> corner0:0.0, interior:0.86313222
+kappa=0.095 : public -> psi = 0 only;   hidden -> corner0:0.0
+At kappa=0.05 under public acquisition, a deviation from psi=0 pays pi(D(1)-k) - kappa = 0.03791821342 > 0, so psi = 0 fails.
+
+====================================================================================================
+9. Claim 6: welfare from first principles (allocation value - preparation costs - research cost - trade cost if a resource)
+====================================================================================================
+Allocation-gain identity W_theta - W_0 = g_theta + p^2/r (exact fractions)
+   r= 1.2: W_h - W_0 = g_H + p^2/r: True;  W_l - W_0 = g_L + p^2/r: True
+   r= 3.0: W_h - W_0 = g_H + p^2/r: True;  W_l - W_0 = g_L + p^2/r: True
+   r= 3.6: W_h - W_0 = g_H + p^2/r: True;  W_l - W_0 = g_L + p^2/r: True
+   r= 4.2: W_h - W_0 = g_H + p^2/r: True;  W_l - W_0 = g_L + p^2/r: True
+
+r=3, kappa=0.02, psi=1                 psi=1.0  E: 0.25 -> 0.625  xi=1: dW(first principles) = 0.1183104100058  closed form = 0.1183104100058
+r=3, kappa=0.02, psi=1                 psi=1.0  E: 0.25 -> 0.625  xi=0: dW(first principles) = 0.1283104100058  closed form = 0.1283104100058
+                                       entry benefit before research and trade costs = 0.1483104100058
+r=3, kappa=0.094, upper-branch root    psi=0.635073337122  E: 0.25 -> 0.591483493695  xi=1: dW(first principles) = -0.03644151021957  closed form = -0.03644151021957
+r=3, kappa=0.094, upper-branch root    psi=0.635073337122  E: 0.25 -> 0.591483493695  xi=0: dW(first principles) = -0.03009077684835  closed form = -0.03009077684835
+                                       entry benefit before research and trade costs = 0.029606116841122
+r=3, kappa=0.03, lower-branch root     psi=0.410890232219  E: 0.25 -> 0.25  xi=1: dW(first principles) = -0.016435609288775  closed form = -0.016435609288775
+r=3, kappa=0.03, lower-branch root     psi=0.410890232219  E: 0.25 -> 0.25  xi=0: dW(first principles) = -0.012326706966581  closed form = -0.012326706966581
+                                       entry benefit before research and trade costs = -1.3906728882198e-50
+r=3, kappa=0.09, upper-branch root     psi=0.863132221274  E: 0.25 -> 0.612429447516  xi=1: dW(first principles) = 0.017476481162836  closed form = 0.017476481162836
+r=3, kappa=0.09, upper-branch root     psi=0.863132221274  E: 0.25 -> 0.612429447516  xi=0: dW(first principles) = 0.026107803375577  closed form = 0.026107803375577
+                                       entry benefit before research and trade costs = 0.10378970329025
+r=4.2, kappa=0.02, psi=1               psi=1.0  E: 0.25 -> 0.25  xi=1: dW(first principles) = -0.03  closed form = -0.03
+r=4.2, kappa=0.02, psi=1               psi=1.0  E: 0.25 -> 0.25  xi=0: dW(first principles) = -0.02  closed form = -0.02
+                                       entry benefit before research and trade costs = -3.4411845642437e-50
+
+====================================================================================================
+10. Claim 7: the no-entry-response purchase profit at r_1 = 3 (full research, s = 1)
+====================================================================================================
+purchase profit with entry held at rho after good news: D - k = 0.0583345707338648
+   closed form 2*rho*Delta_T*a/(1+a)^2 - k = 0.0583345707338648
+purchase profit with expensive entry after good news : D - k = 0.175836426834662
+   closed form Delta_T*(1+rho)*a/(1+a)^2 - k = 0.175836426834662
+ex ante research values (times pi): 0.0291672853669 and 0.0879182134173
+flat-price case (s=0): rho*(1-pi)*Delta_T - k = 19/300 = 0.063333
+other round numbers near 0.060: rho*m*Delta_T - k = 0.042923445;  rho*Delta_T/2 - k = 0.063333
+
+Tail bound used in the memo, recomputed at N=400: Delta_T * 2 a^401/(1+a) = 6.9663629e-88
+Test of one possible source of the brief's 0.060: noise support cut to |z| <= K and renormalised (s=1, entry held at rho)
+   K= 2: purchase profit without entry response = 0.048561958
+   K= 3: purchase profit without entry response = 0.053186297
+   K= 4: purchase profit without entry response = 0.055442549
+   K= 5: purchase profit without entry response = 0.056655661
+   K= 6: purchase profit without entry response = 0.057342064
+   K= 8: purchase profit without entry response = 0.057978246
+   K=12: purchase profit without entry response = 0.058286925
+
+====================================================================================================
+11. Claim 1: equal noise Z in {-1,0,1} (exact fractions)
+====================================================================================================
+r=1.2: B_r(1/2)=4.8042 < 6;  g_H=9.2958 >= 6: True
+    s=    0: posteriors {-1: '1/2', 0: '1/2', 1: '1/2', 2: '1'}  D=1/720 (0.001389)  E=1/4 (0.25000) O_H=1/8 (0.12500)
+    s= 1/10: posteriors {-1: '9/19', 0: '1/2', 1: '1/2', 2: '1'}  D=1/720 (0.001389)  E=21/80 (0.26250) O_H=11/80 (0.13750)
+    s=  1/2: posteriors {-1: '1/3', 0: '1/2', 1: '1/2', 2: '1'}  D=1/720 (0.001389)  E=5/16 (0.31250) O_H=3/16 (0.18750)
+    s=    1: posteriors {-1: '0', 0: '1/2', 1: '1/2', 2: '1'}  D=1/720 (0.001389)  E=3/8 (0.37500) O_H=1/4 (0.25000)
+    Vbar_3(r) = 0 = 0.00000000;  memo: 0 at 1.2, 4/225 at 3, 629/21600 at 3.6
+r=3.0: B_r(1/2)=4.2917 < 6;  g_H=8.4583 >= 6: True
+    s=    0: posteriors {-1: '1/2', 0: '1/2', 1: '1/2', 2: '1'}  D=1/18 (0.055556)  E=1/4 (0.25000) O_H=1/8 (0.12500)
+    s= 1/10: posteriors {-1: '9/19', 0: '1/2', 1: '1/2', 2: '1'}  D=1/18 (0.055556)  E=21/80 (0.26250) O_H=11/80 (0.13750)
+    s=  1/2: posteriors {-1: '1/3', 0: '1/2', 1: '1/2', 2: '1'}  D=1/18 (0.055556)  E=5/16 (0.31250) O_H=3/16 (0.18750)
+    s=    1: posteriors {-1: '0', 0: '1/2', 1: '1/2', 2: '1'}  D=1/18 (0.055556)  E=3/8 (0.37500) O_H=1/4 (0.25000)
+    Vbar_3(r) = 4/225 = 0.01777778;  memo: 0 at 1.2, 4/225 at 3, 629/21600 at 3.6
+r=3.6: B_r(1/2)=4.1347 < 6;  g_H=8.1653 >= 6: True
+    s=    0: posteriors {-1: '1/2', 0: '1/2', 1: '1/2', 2: '1'}  D=169/2160 (0.078241)  E=1/4 (0.25000) O_H=1/8 (0.12500)
+    s= 1/10: posteriors {-1: '9/19', 0: '1/2', 1: '1/2', 2: '1'}  D=169/2160 (0.078241)  E=21/80 (0.26250) O_H=11/80 (0.13750)
+    s=  1/2: posteriors {-1: '1/3', 0: '1/2', 1: '1/2', 2: '1'}  D=169/2160 (0.078241)  E=5/16 (0.31250) O_H=3/16 (0.18750)
+    s=    1: posteriors {-1: '0', 0: '1/2', 1: '1/2', 2: '1'}  D=169/2160 (0.078241)  E=3/8 (0.37500) O_H=1/4 (0.25000)
+    Vbar_3(r) = 629/21600 = 0.02912037;  memo: 0 at 1.2, 4/225 at 3, 629/21600 at 3.6
+
+kappa=1/100: d_kappa = 12/25;  closed-form r_kappa = 2.57105453575887;  bisection on Vbar_3(r)=kappa: 2.57105453575887
+return strength: r = 4 + sqrt(63)/2 = 7.96862696659689;  g_H there = 6.0 (should equal c_H = 6)
+
+Dependence on the belief at the off-path flow 2 when psi=0, r=3, kappa=0.02 (value of research at s=0 versus s>0):
+   mu_2 = 1 (memo's completion)  : V(0) = 4/225 (0.017778),  V(s>0) = 4/225 (0.017778);  no gap
+   mu_2 = 1/2 (passive)          : V(0) = 19/600 (0.031667),  V(s>0) = 4/225 (0.017778);  kappa in (0.017778, 0.031667) has no equilibrium
+   mu_2 = 0                      : V(0) = 41/900 (0.045556),  V(s>0) = 4/225 (0.017778);  kappa in (0.017778, 0.045556) has no equilibrium
+
+====================================================================================================
+12. Side check: would a non-acquirer gain by buying uninformed? (gross payoff; the memo forbids this)
+====================================================================================================
+discrete Laplace r=3: largest gross payoff of an uninformed purchase over s in [0,1] = 0.0 (<= 0, so the net payoff is below -k)
+discrete Laplace r=4.2: largest gross payoff of an uninformed purchase over s in [0,1] = 0.0 (<= 0, so the net payoff is below -k)
+Analytic form of the uninformed gross payoff: Delta_T*y*(1-pi)*[a*e_-/((1+a)(1-y)) - e_+/((1+a)(a+y))], y = pi d s
+   s=0.3: analytic -0.00262657100249459   direct sum -0.00262657100249459
+   s=0.7: analytic -0.0333683638744072   direct sum -0.0333683638744072
+   s=1.0: analytic -0.0431117392991349   direct sum -0.0431117392991349
+equal noise r=3: largest gross payoff of an uninformed purchase over s in {0,1/10,1/2,1} = -1/9 (-0.111111)
+
+====================================================================================================
+13. Memo's regime table at r=3, c_H=5: equilibria on both sides of each cutoff (kappa shown to 9 digits)
+====================================================================================================
+kappa =         0.01 (0.01 (below v_E^-)  ): corner1:1.0
+kappa = 0.02948902078 (v_E^- - 1e-9        ): corner1:1.0
+kappa = 0.02948902178 (v_E^- exactly       ): corner1:1.0, interior:0.631455
+kappa = 0.02948902278 (v_E^- + 1e-9        ): corner1:1.0, interior:0.631455
+kappa = 0.03166666567 (v_0 - 1e-9          ): corner1:1.0, interior:1.8805e-7
+kappa = 0.03166666667 (v_0 exactly         ): corner0:0.0, corner1:1.0
+kappa = 0.03166666767 (v_0 + 1e-9          ): corner0:0.0, corner1:1.0
+kappa = 0.08791821242 (v_1 - 1e-9          ): corner0:0.0, corner1:1.0
+kappa = 0.08791821342 (v_1 exactly         ): corner0:0.0, corner1:1.0, interior:1.0
+kappa = 0.08791821442 (v_1 + 1e-9          ): corner0:0.0, interior:1.0
+kappa = 0.0940691764 (v_E^+ - 1e-9        ): corner0:0.0, interior:0.631455
+kappa = 0.0940691774 (v_E^+ exactly       ): corner0:0.0, interior_at_sE:0.631455
+kappa = 0.0940691784 (v_E^+ + 1e-9        ): corner0:0.0
+kappa =          0.1 (0.10 (above v_E^+)  ): corner0:0.0
+Memo's table: kappa <= v_E^- -> {1};  v_E^- < kappa < v_0 -> {interior<s_E, 1};  v_0 <= kappa <= v_1 -> {0, 1};  v_1 < kappa <= v_E^+ -> {0, root in [s_E,1)};  kappa > v_E^+ -> {0}
+(exact-endpoint rows rely on the numerical tie tolerance 1e-40; 'exactly' for v_E^- and v_E^+ uses values computed from the left limit and the tie rule)
+
+====================================================================================================
+14. Convention check: what if the indifferent challenger could mix at the entry threshold (psi = s_E)?
+====================================================================================================
+At psi = s_E the upper posterior equals tau. With mixing, the entry rate e_+ in [rho, 1] is free, and the investor is indifferent when
+pi*(D - k) = kappa, i.e. e_+ = (L/C - rho/(1-y)) (a + y) with L = k + kappa/pi, C = Delta_T (1-pi) a/(1+a), y = pi d s_E.
+kappa=   0.02: e_+ needed =   0.13979949  admissible: False;  direct-sum residual 4.18e-53
+kappa= 0.0295: e_+ needed =    0.2501275  admissible: True;  direct-sum residual 9.19e-52
+kappa=   0.03: e_+ needed =   0.25593423  admissible: True;  direct-sum residual 1.67e-52
+kappa=   0.05: e_+ needed =   0.48820373  admissible: True;  direct-sum residual -5.01e-52
+kappa=   0.09: e_+ needed =   0.95274271  admissible: True;  direct-sum residual 8.35e-52
+kappa=  0.094: e_+ needed =   0.99919661  admissible: True;  direct-sum residual 6.68e-52
+kappa=  0.095: e_+ needed =    1.0108101  admissible: False;  direct-sum residual -8.35e-52
+So the tie rule 'the indifferent challenger prepares' removes a third equilibrium (psi = s_E, partial expensive entry) for kappa in [v_E^-, v_E^+].
+
+done

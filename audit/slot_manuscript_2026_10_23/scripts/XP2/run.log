@@ -1,0 +1,200 @@
+XP2 independent recomputation of the P2 package (R6, R9)
+mpmath 1.4.1 python 3.12.13 iv.dps 60
+
+== 1. Slot primitives of calibration B ==
+u = 1.71828182846  beta = 58931/200000  lambda = 0.336121768915  b = 0.19561504018  b0 = 0.272648150724
+check lambda/b - u = -7.77877e-62   2b+b0+lambda-1 = 3.88938e-62
+M(1/2) = 0.73105857863  m(1/2) = 0.26894142137  e/(1+e) = 0.73105857863
+r0=6/5: t0=7/24 tH=169/240 tL=11/16 gH=2231/240 gL=5/16 Delta=1/60 tau=195/308
+r1=3: t0=5/12 tH=37/24 tL=7/8 gH=203/24 gL=1/8 Delta=2/3 tau=141/200
+r2=18/5: t0=31/72 tH=1321/720 tL=43/48 gH=5879/720 gL=5/48 Delta=169/180 tau=4245/5804
+  closed forms at r=6/5: all equal -> True
+  closed forms at r=3: all equal -> True
+  closed forms at r=18/5: all equal -> True
+prior window (L(tau1), L(tau2)) = 0.467850029686 0.50042430732
+
+== 2. Value-class examples (forced orders from the all-profile bounds) ==
+base      r0=6/5    zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.125 W_H=1 choice_h=0.0179167 choice_l=0.0179167 flags=[] pure-eq=[(0, 0)]
+base      r1=3      full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.522756943 O_H=0.324401303 W_H=1 choice_h=0.159294 choice_l=0.0248236 flags=[] pure-eq=[(1, -1)]
+base      r2=18/5   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.125 W_H=1 choice_h=0.0431265 choice_l=0.0431265 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('1.195833', 'pos'), 'weak_trade': ('0.003333333', 'pos'), 'strong_top': ('0.2171548', 'pos'), 'strong_prior': ('1.708333', 'pos'), 'high_floor': ('0.02482357', 'pos'), 'low_floor': ('0.02482357', 'pos'), 'ownership': ('0.3988026', 'pos'), 'collapse': ('0.002688902', 'pos'), 'collapse_high': ('0.04312653', 'pos'), 'collapse_low': ('0.04312653', 'pos')}
+moderate  r0=21/20  zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.125 W_H=1 choice_h=0.00185119 choice_l=0.00185119 flags=[] pure-eq=[(0, 0)]
+moderate  r1=3/2    full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.522756943 O_H=0.324401303 W_H=1 choice_h=0.0204118 choice_l=0.00360295 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('0.03345238', 'pos'), 'weak_trade': ('0.0008095238', 'pos'), 'strong_top': ('0.03013703', 'pos'), 'strong_prior': ('0.1816667', 'pos'), 'high_floor': ('0.003602946', 'pos'), 'low_floor': ('0.003602946', 'pos'), 'ownership': ('0.3988026', 'pos')}
+bands     r0=6/5    zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.125 W_H=1 choice_h=0.0178733 choice_l=0.0178733 flags=[] pure-eq=[(0, 0)]
+bands     r1=3      full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.522756943 O_H=0.324401303 W_H=1 choice_h=0.159332 choice_l=0.0248329 flags=[] pure-eq=[(1, -1)]
+bands     r2=18/5   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.125 W_H=1 choice_h=0.0431343 choice_l=0.0431343 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('1.19566', 'pos'), 'weak_trade': ('0.002986111', 'pos'), 'strong_top': ('0.2171922', 'pos'), 'strong_prior': ('1.708264', 'pos'), 'high_floor': ('0.02483291', 'pos'), 'low_floor': ('0.02483291', 'pos'), 'ownership': ('0.3988026', 'pos'), 'collapse': ('0.002657775', 'pos'), 'collapse_high': ('0.04313431', 'pos'), 'collapse_low': ('0.04313431', 'pos')}
+ex_a      r0=11/10  zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.075 W_H=1 choice_h=0.00920455 choice_l=0.00965909 flags=[] pure-eq=[(0, 0)]
+ex_a      r1=3      full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.472338678 O_H=0.194640782 W_H=1 choice_h=0.297932 choice_l=0.0126984 flags=[] pure-eq=[(1, -1)]
+ex_a      r2=18/5   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.075 W_H=1 choice_h=0.0984178 choice_l=0.0219669 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('1.460455', 'pos'), 'weak_trade': ('0.005454545', 'pos'), 'strong_top': ('0.1091794', 'pos'), 'strong_prior': ('1.875', 'pos'), 'high_floor': ('0.06698308', 'pos'), 'low_floor': ('0.01269841', 'pos'), 'ownership': ('0.3988026', 'pos'), 'collapse': ('0.05813714', 'pos'), 'collapse_high': ('0.09841784', 'pos'), 'collapse_low': ('0.02196693', 'pos')}
+ex_b      r0=11/10  zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.00965909 choice_l=0.00920455 flags=[] pure-eq=[(0, 0)]
+ex_b      r1=3      full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.573175209 O_H=0.454161825 W_H=1 choice_h=0.0807936 choice_l=0.0669831 flags=[] pure-eq=[(1, -1)]
+ex_b      r2=18/5   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.0219669 choice_l=0.0984178 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('0.5622727', 'pos'), 'weak_trade': ('0.005454545', 'pos'), 'strong_top': ('0.1234127', 'pos'), 'strong_prior': ('1.241667', 'pos'), 'high_floor': ('0.01269841', 'pos'), 'low_floor': ('0.06698308', 'pos'), 'ownership': ('0.3988026', 'pos'), 'collapse': ('0.1325687', 'pos'), 'collapse_high': ('0.02196693', 'pos'), 'collapse_low': ('0.09841784', 'pos')}
+ex_c      r0=1      zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.019 choice_l=0.0176667 flags=[] pure-eq=[(0, 0)]
+ex_c      r1=9/2    full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 1) E=0.573175209 O_H=0.419819341 W_H=599/648 choice_h=0.154163 choice_l=0.127671 flags=[] pure-eq=[(1, -1)]
+ex_c      r2=11/2   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.157102273 W_H=79/88 choice_h=0.0376204 choice_l=0.175423 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('0.021', 'pos'), 'weak_trade': ('0.006666667', 'pos'), 'strong_top': ('0.05889082', 'pos'), 'strong_prior': ('1.205913', 'pos'), 'high_floor': ('0.02354067', 'pos'), 'low_floor': ('0.1276709', 'pos'), 'ownership': ('0.3497419', 'pos'), 'collapse': ('0.3145507', 'pos'), 'collapse_high': ('0.03762043', 'pos'), 'collapse_low': ('0.1754233', 'pos')}
+   ex_c W_H at the three strengths: [Fraction(1, 1), Fraction(599, 648), Fraction(79, 88)]  ownership r0, r1, r2: ['0.175', '0.419819341', '0.157102273']
+   ex_c min over a 1/20 grid of G_L - G_H on [0,20]: 0
+ex_d      r0=1      zero forced: Delta < k                 profile=(0, 0) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.02 choice_l=0.02 flags=[] pure-eq=[(0, 0)]
+ex_d      r1=9/2    full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.0263426 choice_l=0.137174 flags=[] pure-eq=[(1, -1)]
+ex_d      r2=11/2   full forced: rho*kappa*Delta > k       profile=(1, -1) pattern=(0, 0, 0) E=0.25 O_H=0.175 W_H=1 choice_h=0.0426786 choice_l=0.192578 flags=[] pure-eq=[(1, -1)]
+   margins: {'weak_cost': ('0.025', 'pos'), 'weak_trade': ('0.02', 'pos'), 'strong_top': ('-0.01812166', 'neg'), 'strong_prior': ('1.269444', 'pos'), 'high_floor': ('0.02634259', 'pos'), 'low_floor': ('0.1371738', 'pos'), 'ownership': ('0.3988026', 'pos'), 'collapse': ('0.4477272', 'pos'), 'collapse_high': ('0.04267857', 'pos'), 'collapse_low': ('0.1925783', 'pos')}
+
+== 2b. Benchmark costs and strengths at priors 3/10 and 7/10 ==
+pi=3/10 r0: zero forced: Delta < k profile=(0, 0) pattern=(0, 0, 0) entry=0.25 flags=[]
+pi=3/10 r1: full forced: rho*kappa*Delta > k profile=(1, -1) pattern=(0, 0, 0) entry=0.25 flags=[]
+pi=3/10 r2: full forced: rho*kappa*Delta > k profile=(1, -1) pattern=(0, 0, 0) entry=0.25 flags=[]
+   entry vector at pi=3/10: ['0.25', '0.25', '0.25']
+pi=7/10 r0: zero forced: Delta < k profile=(0, 0) pattern=(1, 1, 1) entry=1.0 flags=[]
+pi=7/10 r1: full forced: rho*kappa*Delta > k profile=(1, -1) pattern=(0, 0, 1) entry=0.573175209 flags=[]
+pi=7/10 r2: full forced: rho*kappa*Delta > k profile=(1, -1) pattern=(0, 0, 1) entry=0.573175209 flags=[]
+   entry vector at pi=7/10: ['1.0', '0.573175209', '0.573175209']
+
+== 3. Admissible region at the benchmark ==
+u band from tau1 < M(1/2) < tau2: 82/59 2686/1559  u inside: pos pos
+trade bound u < 19/3 = 6.333333333333333  weaker than u_hi: True
+weak-cost prior cap tau0 = 195/308 = 0.6331168831168831
+  kappa>1/10 (some k): prior interval (0.2319693167, 0.7680306833)
+  kappa>3/25 (k=1/50): prior interval (0.2704323419, 0.7295676581)
+  three-strength window check on 11 interior priors:
+    pi=0.470564553 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.473279076 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.475993599 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.478708122 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.481422645 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.484137169 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.486851692 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.489566215 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.492280738 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.494995261 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+    pi=0.497709784 signs C0,T0,C1,T1,C2 = ['pos', 'pos', 'pos', 'pos', 'pos']
+
+== 4. Access to prices at r1, transfer and break-even trade scale ==
+proceeds: access 0.872531134701 hidden 0.614583333333 gain 0.257947801368  formula 0.257947801368  diff -3.89e-62
+surplus : access 2.63404356411 hidden 2.55208333333 gain 0.0819602307775  formula 0.0819602307775  diff -1.7e-61
+hidden profile (1, -1) pattern (0, 0, 0) choices 0.02482357 0.02482357
+informed gross profit G = 0.0376654442856 ; liquidity gross P&L = -0.0376654442856 ; sum = -7.29e-63
+G/lambda = 0.112058925571  z* = dR/G = 6.84839396589  dR/(G/lambda) = 2.30189429404
+no-informed proceeds 0.614583333333  equals hidden: 0.0
+  total gain at z=6.8483: 3.5392671e-6
+  total gain at z=6.8484: -2.2727734e-7
+
+== 4b. Access outside the recruitment region: c_H = 12/5 ==
+seen pattern (0, 1, 1) hidden pattern (1, 1, 1) profiles (1, -1) (1, -1)
+cost signs B1(m)-c, B1(pi)-c: -0.033821489 1.8916667
+proceeds change -0.173917359139  formula -0.173917359139 ; surplus change -0.01350469944  formula -0.01350469944
+
+== 5. Constructive sequence ==
+  h=21/20 n=1 margins=['0.00342596', '0.00342596', '-3.34556e-5', '-2.32063e-5'] feasible=False native-recipe=False
+  h=21/20 n=2 margins=['0.00401877', '0.00401877', '-1.13682e-6', '1.45713e-6'] feasible=False native-recipe=True
+  h=21/20 n=3 margins=['0.00475122', '0.00475122', '1.7379e-7', '8.26307e-7'] feasible=True native-recipe=True
+     weak: zero forced: Delta < k pattern=(0, 0, 0) entry=0.25 B(m)=0.399707 flags=[]
+     strong: full forced: rho*kappa*Delta > k pattern=(0, 0, 1) entry=0.522756943 B(m)=0.386113 flags=[]
+     first feasible n=3: r0=1281/1280 r1=161/160 k=4.78727292167e-7 c_H=0.404458327034
+  h=11/10 n=1 margins=['0.00683859', '0.00683859', '-0.000132429', '-9.24075e-5'] feasible=False native-recipe=False
+  h=11/10 n=2 margins=['0.00803777', '0.00803777', '-4.58032e-6', '5.66897e-6'] feasible=False native-recipe=True
+  h=11/10 n=3 margins=['0.00950273', '0.00950273', '6.87579e-7', '3.28154e-6'] feasible=True native-recipe=True
+     weak: zero forced: Delta < k pattern=(0, 0, 0) entry=0.25 B(m)=0.424414 flags=[]
+     strong: full forced: rho*kappa*Delta > k pattern=(0, 0, 1) entry=0.522756943 B(m)=0.397244 flags=[]
+     first feasible n=3: r0=641/640 r1=81/80 k=1.90637768119e-6 c_H=0.433917093296
+  h=5/4 n=1 margins=['0.0169996', '0.0169996', '-0.00080239', '-0.000568934'] feasible=False native-recipe=False
+  h=5/4 n=2 margins=['0.0200956', '0.0200956', '-2.91976e-5', '3.25996e-5'] feasible=False native-recipe=True
+  h=5/4 n=3 margins=['0.0237589', '0.0237589', '4.15888e-6', '2.00763e-5'] feasible=True native-recipe=True
+     weak: zero forced: Delta < k pattern=(0, 0, 0) entry=0.25 B(m)=0.498537 flags=[]
+     strong: full forced: rho*kappa*Delta > k pattern=(0, 0, 1) entry=0.522756943 B(m)=0.430744 flags=[]
+     first feasible n=3: r0=257/256 r1=33/32 k=1.17585845949e-5 c_H=0.522295959655
+  h=3/2 n=1 margins=['0.0336959', '0.0336959', '-0.003052', '-0.00221156'] feasible=False native-recipe=False
+  h=3/2 n=2 margins=['0.0401931', '0.0401931', '-0.000120014', '0.000113442'] feasible=False native-recipe=False
+  h=3/2 n=3 margins=['0.0475244', '0.0475244', '1.57581e-5', '7.75553e-5'] feasible=True native-recipe=True
+     weak: zero forced: Delta < k pattern=(0, 0, 0) entry=0.25 B(m)=0.622078 flags=[]
+     strong: full forced: rho*kappa*Delta > k pattern=(0, 0, 1) entry=0.522756943 B(m)=0.486918 flags=[]
+     first feasible n=3: r0=129/128 r1=17/16 k=4.60391046767e-5 c_H=0.669602245428
+  h=2 n=1 margins=['0.0663185', '0.0663185', '-0.0110993', '-0.00829779'] feasible=False native-recipe=False
+  h=2 n=2 margins=['0.08038', '0.08038', '-0.000498897', '0.000341545'] feasible=False native-recipe=False
+  h=2 n=3 margins=['0.0950722', '0.0950722', '5.66319e-5', '0.000290088'] feasible=True native-recipe=True
+     weak: zero forced: Delta < k pattern=(0, 0, 0) entry=0.25 B(m)=0.869171 flags=[]
+     strong: full forced: rho*kappa*Delta > k pattern=(0, 0, 1) entry=0.522756943 B(m)=0.600407 flags=[]
+     first feasible n=3: r0=65/64 r1=9/8 k=0.000176824201316 c_H=0.964242894678
+
+== 6. Reserves ==
+  points p=1/2     r=6/5  zero forced: Delta < k             pattern=(0, 0, 0) E=0.25 S=0.6875 C2=0.145833333 R=0.392708333 Delta=1/60 B(1/2)-6=-1.195833 B(M)-6=0.8798429 flags=[]
+  points p=1/2     r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.920459491 C2=0.435630786 R=0.872531135 Delta=2/3 B(1/2)-6=-1.708333 B(M)-6=0.2171548 flags=[]
+  points p=101/100 r=6/5  full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.431371097 C2=0.0513635397 R=0.440564344 Delta=6921/8000 B(1/2)-6=-1.512521 B(M)-6=0.5612203 flags=[]
+  points p=101/100 r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.772548439 C2=0.215186198 R=0.99438419 Delta=20001/20000 B(1/2)-6=-1.835008 B(M)-6=0.08970578 flags=[]
+  points p=31/20   r=6/5  full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.324401303 C2=0.0 R=0.50282202 Delta=31/20 B(1/2)-6=-1.775 B(M)-6=0.177445 flags=[]
+  points p=31/20   r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 0) E=0.25 S=0.547916667 C2=0.0604166667 R=0.893072917 Delta=921/800 B(1/2)-6=-1.950208 B(M)-6=-0.07873012 flags=[]
+  bands  p=1/2     r=6/5  zero forced: Delta < k             pattern=(0, 0, 0) E=0.25 S=0.6875 C2=0.145833333 R=0.392664931 Delta=49/2880 B(1/2)-6=-1.19566 B(M)-6=0.8799363 flags=[]
+  bands  p=1/2     r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.920459491 C2=0.435630786 R=0.872503585 Delta=4801/7200 B(1/2)-6=-1.708264 B(M)-6=0.2171922 flags=[]
+  bands  p=11/10   r=6/5  full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.380701195 C2=0.027033442 R=0.420122986 Delta=81/80 B(1/2)-6=-1.552083 B(M)-6=0.5033753 flags=[]
+  bands  p=11/10   r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.752280478 C2=0.205454159 R=1.02268998 Delta=201/200 B(1/2)-6=-1.850833 B(M)-6=0.06656777 flags=[]
+  bands  p=31/20   r=6/5  full forced: rho*kappa*Delta > k   pattern=(0, 0, 1) E=0.522756943 S=0.324401303 C2=0.0 R=0.50282202 Delta=31/20 B(1/2)-6=-1.775 B(M)-6=0.177445 flags=[]
+  bands  p=31/20   r=3    full forced: rho*kappa*Delta > k   pattern=(0, 0, 0) E=0.25 S=0.547916667 C2=0.0604166667 R=0.893072917 Delta=921/800 B(1/2)-6=-1.950208 B(M)-6=-0.07873012 flags=[]
+  flat entry at exclusion reserves (E(r0)-E(r1)): {'points': '0.0', 'bands': '0.0'}
+  formula rho+(1-rho)(b+lambda/2) = 0.522756943478
+  p_H = 1.32526982831  10-6/M = 1.79272335297  p_H - 6/5 = 0.12526983
+  B(M) - 6 at p_H (identity gives 0): 0.0
+  endpoint: p=10 full forced: rho*kappa*Delta > k pattern=(0, 0, 0) E=0.25 S=0.125 C2=0.0 R=1.25 flags=['zero-cost profit not positive at q=-1', 'zero-cost profit not positive at q=0', 'zero-cost profit not positive at q=1']
+  band_endpoint: p=201/20 zero forced: Delta < k pattern=(0, 0, 0) E=0.25 S=0.0 C2=0.0 R=0.0 flags=['zero-cost profit not positive at q=-1', 'zero-cost profit not positive at q=0', 'zero-cost profit not positive at q=1']
+  scan p in (1, 6/5] step 1/200 (points): entry pattern at r0 and r1
+   patterns found: [(1.2, (1, -1), (0, 0, 1)), (3.0, (1, -1), (0, 0, 1))]
+  scan p in (21/20, 6/5] step 1/400 (narrow bands): band objects minus point objects, entry pattern
+   largest |band - point| over t0, tH, tL, gH, gL, Delta: 0 ; patterns: [(1.2, (1, -1), (0, 0, 1)), (3.0, (1, -1), (0, 0, 1))]
+
+== 6b. Random uniform classes, priors and strengths at calibration B (diagnostic) ==
+   draws 14622, instances meeting the strict hypotheses 300, predicted outcome and unique pure equilibrium at all three strengths 300, ownership sign equals condition sign 300
+
+== 7. Payment rule (zero reserve) ==
+direct integration vs closed form (13): mismatches = 0
+Delta_eta(3) - Delta_eta(6/5) at eta = 0, 1/4, 1/2, 3/4: [Fraction(13, 20), Fraction(13, 40), Fraction(0, 1), Fraction(-13, 40)]
+coefficients: 1/60 269/30 2/3 23/3
+
+== 8. More than two classes ==
+R~U[0,8], p=1: t0 = 7/8  t(1), g(1) = 1 0  t(10), g(10) = 65/16 95/16
+   p2_many order -1: posterior ['0.47536689', '0.34975541', '0.1748777'] mean 2.54318082 price 1.292045205 gross profit 2.9918812 (c_H=10)
+   p2_many order 0: posterior ['0.15466449', '0.69067102', '0.15466449'] mean 3.463428939 price 1.522107235 gross profit 4.7760357 (c_H=10)
+   p2_many order 1: posterior ['0.1748777', '0.34975541', '0.47536689'] mean 3.463428939 price 1.522107235 gross profit 4.7760357 (c_H=10)
+   p2_many: mean0-mean+ = 6.22302e-61; choices ['0.2607952', '0.02062688', '0.024767765']; signs ['pos', 'pos', 'pos']
+   p2_many_down order -1: posterior ['0.47536689', '0.34975541', '0.1748777'] mean 2.542109694 price 1.291777423 gross profit 2.9898045 (c_H=10)
+   p2_many_down order 0: posterior ['0.15466449', '0.69067102', '0.15466449'] mean 3.461313759 price 1.52157844 gross profit 4.7719348 (c_H=10)
+   p2_many_down order 1: posterior ['0.1748777', '0.34975541', '0.47536689'] mean 3.462357814 price 1.521839453 gross profit 4.773959 (c_H=10)
+   p2_many_down: mean0-mean+ = -0.00104405; choices ['0.26052742', '0.021124723', '0.025035547']; signs ['pos', 'pos', 'pos']
+   p2_many_up order -1: posterior ['0.47536689', '0.34975541', '0.1748777'] mean 2.544251946 price 1.292312986 gross profit 2.9939579 (c_H=10)
+   p2_many_up order 0: posterior ['0.15466449', '0.69067102', '0.15466449'] mean 3.465544119 price 1.52263603 gross profit 4.7801366 (c_H=10)
+   p2_many_up order 1: posterior ['0.1748777', '0.34975541', '0.47536689'] mean 3.464500065 price 1.522375016 gross profit 4.7781124 (c_H=10)
+   p2_many_up: mean0-mean+ = 0.00104405; choices ['0.26106299', '0.020129036', '0.024499984']; signs ['pos', 'pos', 'pos']
+   class-3 posterior at orders -1, 0, +1: ['0.1748777', '0.15466449', '0.47536689'] ; P2 bound (1/4) b/(b0+lambda/2) = 0.11096609
+   exact identity z0 = z1 at 200 random rational (lambda, beta): failures = 0
+ four-class groups:
+   strong t: ['7/8', '1751333/2000000', '37/24', '37/24']  max/min feasible mean: 1.36246201 1.054537906
+   gamma_H = 0.1792046562  gamma_L = 0.1788714062
+   group tuple: entry by order {-1: '0.25', 0: '0.25', 1: '1.0'}  prices {-1: '0.57613448', 0: '0.61462499', 1: '1.362462'}  smallest class choice margin 0.024717852
+   E1 = rho + (1-rho)(b + lambda/2) = 0.5227569435
+
+== 9. Registry comparison ==
+rows 3386  duplicate keys []
+recomputed: 3386  not recomputed: 0
+value mismatches beyond 1e-40 relative: 0
+display mismatches (registry display is not a correct rounding of the enclosure): 0
+sign disagreements: 0
+keys recomputed here but absent from the registry: []
+rows whose display shows 0.000000 or -0.000000 for a nonzero value: [('p2_seq_21_20_n3_margin2', '0.000000', '0.000000173789'), ('p2_seq_21_20_weak_delta', '0.000000', '1/3279360'), ('p2_seq_21_20_weak_pay_h_2', '-0.000000', '-0.00000044061'), ('p2_seq_21_20_weak_choice_h', '0.000000', '0.000000440610'), ('p2_seq_21_20_weak_pay_l_0', '-0.000000', '-0.00000044061'), ('p2_seq_21_20_weak_choice_l', '0.000000', '0.000000440610')]
+rows displayed with a minus sign and only zeros: ['p2_seq_21_20_weak_pay_h_2', 'p2_seq_21_20_weak_pay_l_0']
+
+== 10. Key collisions with the other registry files ==
+P1_core: 125 rows, 13 shared with P2, 0 differ in value (>1e-12 rel) or display
+P3_research: 138 rows, 0 shared with P2, 0 differ in value (>1e-12 rel) or display
+P4_information: 1038 rows, 9 shared with P2, 0 differ in value (>1e-12 rel) or display
+P5_observables: 135 rows, 0 shared with P2, 0 differ in value (>1e-12 rel) or display
+registry: 4830 rows, 3386 shared with P2, 0 differ in value (>1e-12 rel) or display
+  P1 entry_r0=0.250000  vs  P2 p2_base_r0_entry=0.250000  |diff|=0.0
+  P1 entry_r1_B=0.522757  vs  P2 p2_base_r1_entry=0.522757  |diff|=2.83e-17
+  P1 entry_r2=0.250000  vs  P2 p2_base_r2_entry=0.250000  |diff|=0.0
+  P1 own_r0=0.125000  vs  P2 p2_base_r0_ownership=0.125000  |diff|=0.0
+  P1 own_r1_B=0.324401  vs  P2 p2_base_r1_ownership=0.324401  |diff|=3.96e-17
+  P1 own_r2_B=0.125000  vs  P2 p2_base_r2_ownership=0.125000  |diff|=0.0
+
+elapsed seconds: 22.05

@@ -1,0 +1,96 @@
+P1_core certificates: exact rational arithmetic (fractions.Fraction) only.
+Benchmark: h, ell, p, rho, c_H, k = 10 1 1/2 1/4 6 1/50 ; path [r0, r2] = 6/5 18/5
+
+1. Auction objects: closed form minus direct integration (must print 0 everywhere)
+   r = 6/5: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 7/5: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 31/20: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 8/5: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 33/20: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 2: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 3: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+   r = 18/5: t0 0, tH 0, tL 0, gH 0, gL 0, D 0 | t_H + g_H - h = 0, t_L + g_L - ell = 0
+
+   Denominators: tau denominator 2rh - r^2 - ell^2 and 2r on the path
+   2rh - r^2 - ell^2: polynomial (-1)*r^0 + (20)*r^1 + (-1)*r^2
+   integer form (1 x polynomial), highest degree first: -1r^2 +20r^1 -1r^0
+   integer form at 6/5 = 539/25
+   value at 6/5 = 539/25 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+   2r(h - c_H) - r^2 - p^2 (numerator of 1 - tau): polynomial (-1/4)*r^0 + (8)*r^1 + (-1)*r^2
+   integer form (4 x polynomial), highest degree first: -4r^2 +32r^1 -1r^0
+   integer form at 6/5 = 791/25
+   value at 6/5 = 791/100 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+
+2. tau(r) = (2 r c_H - ell^2 + p^2) / (2 r h - r^2 - ell^2) is strictly increasing
+   numerator of tau': polynomial (3)*r^0 + (-3/2)*r^1 + (12)*r^2
+   integer form (2 x polynomial), highest degree first: +24r^2 -3r^1 +6r^0
+   integer form at 6/5 = 924/25
+   value at 6/5 = 462/25 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+   tau(6/5) = 195/308 = 0.633116883117 ; tau(3) = 141/200 ; tau(18/5) = 4245/5804 = 0.731392143349
+   tau(6/5) - 1/2 = 41/308 > 0, so the prior 1/2 never recruits on the path.
+
+3. J(r) = Delta(r)(1 - tau(r)) is strictly increasing on [6/5, 18/5]
+   J = [ (-1/4)*r^0 + (17/2)*r^1 + (-69/4)*r^2 + (10)*r^3 + (-1)*r^4 ] / [ (-2)*r^1 + (40)*r^2 + (-2)*r^3 ]
+   check J(6/5): polynomial form 113/18480 vs direct 113/18480
+   check J(2): polynomial form 47/560 vs direct 47/560
+   check J(3): polynomial form 59/300 vs direct 59/300
+   check J(18/5): polynomial form 263471/1044720 vs direct 263471/1044720
+   numerator of J': polynomial (-1/2)*r^0 + (20)*r^1 + (-307)*r^2 + (-6)*r^3 + (743/2)*r^4 + (-80)*r^5 + (2)*r^6
+   integer form (2 x polynomial), highest degree first: +4r^6 -160r^5 +743r^4 -12r^3 -614r^2 +40r^1 -1r^0
+   integer form at 6/5 = 4634399/15625
+   value at 6/5 = 4634399/31250 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+   J(6/5) = 113/18480 = 0.006114718615 < k;  J(18/5) = 263471/1044720 = 0.252192932077
+   rho J(6/5) = 113/73920 < k;  rho J(18/5) = 263471/4178880 = 0.063048233019 > k
+   k - J(6/5) = 1283/92400 ; rho J(18/5) - k = 899467/20894400 ; rho J(2) - k = 11/11200 (so r_J < 2); rho J(3) - k = 7/240
+
+4. Delta(r)(1 - tau(r))^2 is strictly increasing on [6/5, 2]
+   numerator of (Delta (1-tau)^2)': polynomial (-1/8)*r^0 + (10)*r^1 + (-2685/8)*r^2 + (6057)*r^3 + (-374607/8)*r^4 + (-4101)*r^5 + (562917/8)*r^6 + (-28668)*r^7 + (3657)*r^8 + (-160)*r^9 + (2)*r^10
+   integer form (8 x polynomial), highest degree first: +16r^10 -1280r^9 +29256r^8 -229344r^7 +562917r^6 -32808r^5 -374607r^4 +48456r^3 -2685r^2 +80r^1 -1r^0
+   integer form at 6/5 = 1952234590691/9765625
+   value at 6/5 = 1952234590691/78125000 (sign +); Sturm count of real roots in (6/5, 2] = 0
+   => POSITIVE on [6/5, 2]
+
+5. Delta(r) tau(r) is strictly increasing on [6/5, 18/5] (both factors positive and increasing)
+   numerator of (Delta tau)': polynomial (-3/2)*r^0 + (60)*r^1 + (-495)*r^2 + (6)*r^3 + (861/2)*r^4
+   integer form (2 x polynomial), highest degree first: +861r^4 +12r^3 -990r^2 +120r^1 -3r^0
+   integer form at 6/5 = 325941/625
+   value at 6/5 = 325941/1250 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+   numerator of tau: polynomial (-3/4)*r^0 + (12)*r^1
+   integer form (4 x polynomial), highest degree first: +48r^1 -3r^0
+   integer form at 6/5 = 273/5
+   value at 6/5 = 273/20 (sign +); Sturm count of real roots in (6/5, 18/5] = 0
+   => POSITIVE on [6/5, 18/5]
+
+6. Root brackets by exact bisection (width <= 1e-40); the two end values have opposite signs.
+   Brackets print outward: the lower end rounds down, the upper end rounds up.
+   r_A: J(r) - k: [1.393957920279251333027115442253273718403718506, 1.393957920279251333027115442253273718403773608]; signs of J - k at the ends: -, +
+   r_J: rho J(r) - k: [1.966097064963998869830784314458041001955758472, 1.966097064963998869830784314458041001955813574]; signs of rho J - k at the ends: -, +
+   r_star: rho Delta(r) tau(r) - k: [1.634217965673085473652886656852774087862432568, 1.634217965673085473652886656852774087862487671]; signs of rho Delta tau - k at the ends: -, +
+   tau(r_A) in [0.640739075708409578001426, 0.640739075708409578001427] (tau increasing)
+   tau(r_J) in [0.662958474267489666536983, 0.662958474267489666536984]
+   pi_max = tau(r_star) in [0.650059160618111936396861, 0.650059160618111936396862]
+   Delta(r_A) in [0.055669845083867808510673, 0.055669845083867808510674] (Delta increasing)
+
+7. Orderings of the thresholds
+   sqrt(6) bracket check: True
+   r_N = (29 + 6 sqrt 6)/25 in [1.747877538267962, 1.747877538267963]; signs of rho Delta(r_N)/2 - k at the ends: -, +
+   r_0 < r_A:  J(r_0) - k = -1283/92400 < 0
+   r_A < r_N:  tau(r_A) < 1 - rho, since 3/4 - tau(r_A) >= 0.109260924292 > 0; then rho Delta(r_A) = rho k/(1 - tau(r_A)) < k. Direct check J(r_N_lo) - k = 0.035285899062 > 0
+   r_N < r_J:  rho J(r_N_hi) - k = -0.006178525235 < 0 (J increasing)
+   r_J < r_1:  rho J(3) - k = 7/240 > 0
+   Band: M in (tau(3), tau(18/5)) = ( 141/200 , 4245/5804 )
+   r_A < r_F  <=>  M > tau(r_A):  tau(r_A_hi) - M_lo = -0.064260924292 < 0, so it holds on the band
+   r_F < r_N  <=>  M < 1 - rho/2 = 7/8:  M_hi - 7/8 = -1667/11608 < 0
+   r_J < r_S  <=>  M > tau(r_J):  tau(r_J_hi) - M_lo = -0.042041525733 < 0
+   r_S < r_1  <=>  M < 1 - k/(rho Delta(3)) = 22/25 : M_hi - 22/25 = -21563/145100 < 0
+   r_1 < r_C < r_2  <=>  tau(3) < M < tau(18/5): the band itself.
+   pi_A_hi = tau(r_A) < pi_max = tau(r_star) <=> r_A < r_star: rho Delta(r_A) tau(r_A) - k <= -0.011082538729 < 0
+   r_star < r_N: rho Delta(r_N_lo) tau(r_N_lo) - k = 0.006178525235 > 0
+   3/4 - tau(18/5) = 27/1451 > 0, so M < 3/4 on the band
+   g_H - g_L = h - r/2 - ell^2/(2r) decreases for r > ell; its value at 18/5 is 1451/180 > 0
+   Delta increases for r > ell; Delta(6/5) = 1/60 > 0

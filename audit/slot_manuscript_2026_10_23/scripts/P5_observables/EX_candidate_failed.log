@@ -1,0 +1,457 @@
+[run_slot] slot 1 acquired by pid 355536: .venv/bin/python audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py --registry-output audit/slot_manuscript_2026_10_23/scripts/P5_observables/EX_candidate.csv
+
+==============================================================================
+P5 OBSERVABLES OF THE ORDER SLOT
+==============================================================================
+python 3.12.13, mpmath 1.4.1, iv.dps=60
+Prior 1/2; h=10, l=1, p=1/2, rho=1/4, c_L=0, c_H=6, k=1/50.
+Calibration B: 1+u = e, beta = 294655/1000000 (exact).
+
+==============================================================================
+0. SHARED AUCTION OBJECTS: CHECK OF THE ALGEBRAIC FORMS AT r = 3
+==============================================================================
+  r=3: t0 5/12 vs int 5/12; tH 37/24 vs 37/24; tL 7/8 vs 7/8; gL 1/8 vs 1/8; gH 203/24 vs 203/24; Delta_T 2/3 vs 2/3
+  r=18/5: t0 31/72 vs int 31/72; tH 1321/720 vs 1321/720; tL 43/48 vs 43/48; gL 5/48 vs 5/48; gH 5879/720 vs 5879/720; Delta_T 169/180 vs 169/180
+
+==============================================================================
+1. SLOT PRIMITIVES AT B
+==============================================================================
+  u = e - 1                                            1.718281828459   [1.718281828459045, 1.718281828459046]
+  beta                                                 0.294655000000   [0.2946549999999999, 0.2946550000000001]
+  lambda = u beta/(1+u beta)                           0.336121768915   [0.3361217689151211, 0.3361217689151212]
+  b = (1-lambda) beta                                  0.195615040180   [0.1956150401803149, 0.1956150401803150]
+  check u - lambda/b (should be 0)                     0.000000000000   [-1.400178437518757E-60, 1.555753819465286E-60]
+  d = b + lambda/2                                     0.363675924638   [0.3636759246378755, 0.3636759246378756]
+  M(1/2) = (1+u)/(2+u)                                 0.731058578630   [0.7310585786300048, 0.7310585786300049]
+  m(1/2) = 1 - M                                       0.268941421370   [0.2689414213699951, 0.2689414213699952]
+  theta = u/(2+u) = lambda/(lambda+2b)                 0.462117157260   [0.4621171572600097, 0.4621171572600098]
+  check theta - (2M-1)                                 0.000000000000   [-3.111507638930571E-61, 3.111507638930571E-61]
+  v_F = 2b + lambda (volume, two-sided full)           0.727351849276   [0.7273518492757511, 0.7273518492757512]
+  v_U = 2b + lambda/2 (volume, buy-only)               0.559290964818   [0.5592909648181905, 0.5592909648181906]
+  v_N = 2b (volume, no informed trade)                 0.391230080361   [0.3912300803606299, 0.3912300803606300]
+  beta <= 1/3: margin 1/3 - beta                       0.038678333333   [0.03867833333333333, 0.03867833333333334]
+
+==============================================================================
+2. THRESHOLDS, BOUNDARIES AND MARGINS AT B
+==============================================================================
+  tau(3)  [141/200 = 0.705]                            0.705000000   [0.7049999999999999, 0.7050000000000001]
+  tau(18/5)  [4245/5804]                               0.731392143   [0.7313921433494141, 0.7313921433494142]
+  tau(3) exact (Fraction arithmetic): 141/200; tau(18/5) exact: 4245/5804
+  M - tau(3)                                           0.026058579   [0.02605857863000487, 0.02605857863000488]
+  tau(18/5) - M                                        0.000333565   [0.0003335647194093178, 0.0003335647194093179]
+  r_C (closed form)                                    3.592658518795   [3.592658518794661, 3.592658518794662]
+  B_r(M)-c_H at r_C - 1e-30: sign 1; at r_C + 1e-30: sign -1  (+1 and -1 certify the root)
+  r_C - 3 (r_1 below the ceiling)                      0.592658519   [0.5926585187946618, 0.5926585187946619]
+  18/5 - r_C (r_2 above the ceiling)                   0.007341481   [0.007341481205338166, 0.007341481205338167]
+  Delta_T(6/5)=[0.01666666666666666666666666666666666666666666666666666666666650072, 0.01666666666666666666666666666666666666666666666666666666666681187], Delta_T(3)=[0.66666666666666666666666666666666666666666666666666666666666656295, 0.66666666666666666666666666666666666666666666666666666666666671853], Delta_T(18/5)=[0.93888888888888888888888888888888888888888888888888888888888874541, 0.93888888888888888888888888888888888888888888888888888888888913435]  (exact)
+  k - Delta_T(r_0)  [= 1/300]                          0.003333333   [0.003333333333333333, 0.003333333333333334]
+  rho Delta_T(r_1)(1-M) - k (full buys / sells at r_1) 0.024823570   [0.02482357022833252, 0.02482357022833253]
+  rho Delta_T(r_2)(1-M) - k                            0.043126528   [0.04312652807156829, 0.04312652807156830]
+  B_{r_1}(1/2) - c_H (neutral order does not recruit)  -1.708333333   [-1.708333333333334, -1.708333333333333]
+  B_{r_2}(1/2) - c_H                                   -1.865277778   [-1.865277777777778, -1.865277777777777]
+  B_{r_1}(M) - c_H                                     0.217154822   [0.2171548219167073, 0.2171548219167074]
+  B_{r_2}(M) - c_H                                     -0.002688902   [-0.002688902265905113, -0.002688902265905112]
+  r_N = frak(2k/rho)                                   1.747877538268   [1.747877538267962, 1.747877538267963]
+  r_F = frak(k/(1-M)) at B                             1.467127041293   [1.467127041293093, 1.467127041293094]
+  r_S = frak(k/(rho(1-M)))                             2.124148132815   [2.124148132815450, 2.124148132815451]
+  r_F at M = 29/40 (calibration A)                     1.460984664   [1.460984663710229, 1.460984663710230]
+  r=31/20: Delta_T=[0.097580645161290322580645161290322580645161290322580645161290184068, 0.097580645161290322580645161290322580645161290322580645161290417431]  Delta_T(1-M)-k = 0.006243, B_r(M)-c_H = 0.750126, k - rho Delta_T/2 = 0.007802
+  r=8/5: Delta_T=[0.11249999999999999999999999999999999999999999999999999999999981331, 0.11250000000000000000000000000000000000000000000000000000000020225]  Delta_T(1-M)-k = 0.010256, B_r(M)-c_H = 0.731658, k - rho Delta_T/2 = 0.005938
+  r=33/20: Delta_T=[0.12803030303030303030303030303030303030303030303030303030303014557, 0.12803030303030303030303030303030303030303030303030303030303037893]  Delta_T(1-M)-k = 0.014433, B_r(M)-c_H = 0.713202, k - rho Delta_T/2 = 0.003996
+  Prop. 2 band for u: 82/59 = 1.389831 < u < 2686/1559 = 1.722899; u = 1.7182818
+  2686/1559 - u                                        0.004617466   [0.004617465960454443, 0.004617465960454444]
+  u - 82/59                                            0.328451320   [0.3284513199844689, 0.3284513199844690]
+  theta band lower 2 tau(3) - 1                        0.410000000   [0.4099999999999999, 0.4100000000000001]
+  theta band upper 2 tau(18/5) - 1                     0.462784287   [0.4627842866988283, 0.4627842866988284]
+
+==============================================================================
+3. OUTCOMES AT THE THREE STRENGTHS AT B
+==============================================================================
+
+  --- r_0=6/5, no informed trade (N)
+  x=-1: Pr=0.195615  mu=0.500000  entry=0.2500  P=0.392708  w=0.916667  J=0
+  x=+0: Pr=0.608770  mu=0.500000  entry=0.2500  P=0.392708  w=0.916667  J=0
+  x=+1: Pr=0.195615  mu=0.500000  entry=0.2500  P=0.392708  w=0.916667  J=0
+  volume                                               0.391230   [0.3912300803606299, 0.3912300803606300]
+  E[X]                                                 0.000000   [-1.361284592032125E-61, 1.361284592032125E-61]
+  informed share of nonzero orders                     0.000000   [0, 0]
+  entry                                                0.250000   [0.2499999999999999, 0.2500000000000001]
+  spread S = P(1)-P(-1)                                0.000000   [-1.944692274331607E-61, 1.944692274331607E-61]
+  buy impact P(1)-P(0)                                 0.000000   [-1.944692274331607E-61, 1.944692274331607E-61]
+  sell impact P(0)-P(-1)                               0.000000   [-1.944692274331607E-61, 1.944692274331607E-61]
+  mean price Pbar                                      0.392708   [0.3927083333333333, 0.3927083333333334]
+  P(0) - Pbar                                          0.000000   [-3.500446093796893E-61, 3.500446093796893E-61]
+  Cov(X, 1_A)                                          0.000000   [-6.806422960160624E-62, 6.806422960160624E-62]
+  Cov(X, 1_W)                                          0.000000   [-1.430159110081370E-61, 1.430159110081370E-61]
+  Pr(challenger wins)                                  0.229167   [0.2291666666666666, 0.2291666666666667]
+  H ownership (cross-check against the brief 0.3244)   0.125000   [0.1249999999999999, 0.1250000000000001]
+
+  --- r_1=3, full orders (F)
+  x=-1: Pr=0.363676  mu=0.268941  entry=0.2500  P=0.576074  w=0.512628  J=0
+  x=+0: Pr=0.272648  mu=0.500000  entry=0.2500  P=0.614583  w=0.666667  J=0
+  x=+1: Pr=0.363676  mu=0.731059  entry=1.0000  P=1.362372  w=0.820706  J=1
+  volume                                               0.727352   [0.7273518492757511, 0.7273518492757512]
+  E[X]                                                 0.000000   [-3.500446093796893E-61, 3.500446093796893E-61]
+  informed share of nonzero orders                     0.462117   [0.4621171572600097, 0.4621171572600098]
+  entry                                                0.522757   [0.5227569434784066, 0.5227569434784067]
+  spread S = P(1)-P(-1)                                0.786299   [0.7862988155250040, 0.7862988155250041]
+  buy impact P(1)-P(0)                                 0.747789   [0.7477890524200032, 0.7477890524200033]
+  sell impact P(0)-P(-1)                               0.038510   [0.03850976310500081, 0.03850976310500082]
+  mean price Pbar                                      0.872531   [0.8725311347014620, 0.8725311347014621]
+  P(0) - Pbar                                          -0.257948   [-0.2579478013681288, -0.2579478013681287]
+  Cov(X, 1_A)                                          0.272757   [0.2727569434784066, 0.2727569434784067]
+  Cov(X, 1_W)                                          0.251863   [0.2518633308429213, 0.2518633308429214]
+  Pr(challenger wins)                                  0.390520   [0.3905198500999945, 0.3905198500999946]
+  H ownership (cross-check against the brief 0.3244)   0.324401   [0.3244013034107885, 0.3244013034107886]
+
+  --- r_2=18/5, full orders (F)
+  x=-1: Pr=0.363676  mu=0.268941  entry=0.2500  P=0.610002  w=0.472013  J=0
+  x=+0: Pr=0.272648  mu=0.500000  entry=0.2500  P=0.664236  w=0.638889  J=0
+  x=+1: Pr=0.363676  mu=0.731059  entry=0.2500  P=0.718471  w=0.805765  J=0
+  volume                                               0.727352   [0.7273518492757511, 0.7273518492757512]
+  E[X]                                                 0.000000   [-3.500446093796893E-61, 3.500446093796893E-61]
+  informed share of nonzero orders                     0.462117   [0.4621171572600097, 0.4621171572600098]
+  entry                                                0.250000   [0.2499999999999999, 0.2500000000000001]
+  spread S = P(1)-P(-1)                                0.108469   [0.1084691660790856, 0.1084691660790857]
+  buy impact P(1)-P(0)                                 0.054235   [0.05423458303954281, 0.05423458303954282]
+  sell impact P(0)-P(-1)                               0.054235   [0.05423458303954281, 0.05423458303954282]
+  mean price Pbar                                      0.664236   [0.6642361111111111, 0.6642361111111112]
+  P(0) - Pbar                                          0.000000   [-1.089027673625700E-60, 1.089027673625700E-60]
+  Cov(X, 1_A)                                          0.000000   [-1.750223046898447E-61, 1.750223046898447E-61]
+  Cov(X, 1_W)                                          0.030344   [0.03034432636039288, 0.03034432636039289]
+  Pr(challenger wins)                                  0.159722   [0.1597222222222222, 0.1597222222222223]
+  H ownership (cross-check against the brief 0.3244)   0.125000   [0.1249999999999999, 0.1250000000000001]
+
+==============================================================================
+4. SPREAD: CLASS COMPONENT AND ENTRY COMPONENT (F REGIME)
+==============================================================================
+
+  --- r_1
+  class component rho Delta_T theta                    0.077020   [0.07701952621000162, 0.07701952621000163]
+  entry component (1-rho) J A(M)                       0.709279   [0.7092792893150024, 0.7092792893150025]
+  sum                                                  0.786299   [0.7862988155250040, 0.7862988155250041]
+  spread S                                             0.786299   [0.7862988155250040, 0.7862988155250041]
+  entry share of the spread                            90.2%   [0.9020480195451185, 0.9020480195451186]
+  hidden-price spread (entry stays at rho)             0.077020   [0.07701952621000162, 0.07701952621000163]
+  spread ratio visible/hidden                          10.209   [10.20908403644395, 10.20908403644396]
+  buy impact minus sell impact                         0.709279   [0.7092792893150024, 0.7092792893150025]
+  A(M) = t_L - t_0 + Delta_T M                         0.945706   [0.9457057190866699, 0.9457057190866700]
+
+  --- r_2
+  class component rho Delta_T theta                    0.108469   [0.1084691660790856, 0.1084691660790857]
+  entry component (1-rho) J A(M)                       0.000000   [0, 0]
+  sum                                                  0.108469   [0.1084691660790856, 0.1084691660790857]
+  spread S                                             0.108469   [0.1084691660790856, 0.1084691660790857]
+  entry share of the spread                            0.0%   [0, 0]
+  hidden-price spread (entry stays at rho)             0.108469   [0.1084691660790856, 0.1084691660790857]
+  spread ratio visible/hidden                          1.000   [0.9999999999999999, 1.000000000000001]
+  buy impact minus sell impact                         0.000000   [-1.089027673625700E-60, 1.089027673625700E-60]
+  A(M) = t_L - t_0 + Delta_T M                         1.151661   [1.151660554380393, 1.151660554380394]
+
+==============================================================================
+4b. THE CEILING r_C: LEFT VALUE (TIE RULE C1) AND RIGHT LIMIT
+==============================================================================
+  Delta_T(r_C)                                         0.935502   [0.9355019632277384, 0.9355019632277385]
+  S(r_C) with rule C1 (buy recruits at indifference)   0.969913   [0.9699130466534259, 0.9699130466534260]
+  S(r_C+) right limit                                  0.108078   [0.1080778769644901, 0.1080778769644902]
+  jump (1-rho) A_{r_C}(M)                              0.861835   [0.8618351696889357, 0.8618351696889358]
+  jump in Pbar: -(1-rho) d A_{r_C}(M)                  -0.313429   [-0.3134287022220641, -0.3134287022220640]
+  buy impact left of r_C                               0.915874   [0.9158741081711808, 0.9158741081711809]
+  buy impact right of r_C                              0.054039   [0.05403893848224508, 0.05403893848224509]
+
+  Derivatives at B (exact): Delta_T'(r)=1/2-1/(2r^2); d(t_L-t_0)/dr=(l^2-3p^2)/(2r^2)=1/(8r^2)
+   r=3: Delta_T'=4/9, d(t_L-t_0)/dr=1/72
+   r=18/5: Delta_T'=299/648, d(t_L-t_0)/dr=25/2592
+   r=3.59: J(buy)=1, S=0.969080, buy impact=0.915112, sell impact=0.053968, entry=0.522757
+   r=3.593: J(buy)=0, S=0.108096, buy impact=0.054048, sell impact=0.054048, entry=0.250000
+   r=3.6: J(buy)=0, S=0.108469, buy impact=0.054235, sell impact=0.054235, entry=0.250000
+
+==============================================================================
+5. IDENTIFICATION OF THE INFORMED SHARE (F REGIME, r = r_1)
+==============================================================================
+  theta recovered: 2 [P(0)-P(-1)]/(rho Delta_T)        0.462117157   [0.4621171572600097, 0.4621171572600098]
+  lambda recovered v theta                             0.336121769   [0.3361217689151211, 0.3361217689151212]
+  beta recovered v(1-theta)/(2(1-v theta))             0.294655000   [0.2946549999999999, 0.2946550000000001]
+  true lambda                                          0.336121769   [0.3361217689151211, 0.3361217689151212]
+  true beta                                            0.294655000   [0.2946549999999999, 0.2946550000000001]
+  u recovered 2 theta/(1-theta)                        1.718281828   [1.718281828459045, 1.718281828459046]
+  v (volume) at r_1                                    0.727351849   [0.7273518492757511, 0.7273518492757512]
+  smallest u with beta <= 1/3 and the same volume      0.667730727   [0.6677307267393897, 0.6677307267393898]
+  informed share at that u                             0.250299148   [0.2502991475288503, 0.2502991475288504]
+  For every u' >= u_min there is one pair (lambda', beta') with the same volume and beta' <= 1/3;
+  informed share u'/(2+u') then ranges over [theta_min, 1) and is not identified by counts.
+  Inside the Proposition-2 band the informed share ranges over (0.41, theta_hi).
+  u'=1.390831: lambda'=0.298341, beta'=0.305712, theta'=0.410174, volume=0.727352, entry=0.522757, spread=0.764656, J(buy)=1
+  u'=1.600000: lambda'=0.323267, beta'=0.298555, theta'=0.444444, volume=0.727352, entry=0.522757, spread=0.778935, J(buy)=1
+  u'=1.721899: lambda'=0.336502, beta'=0.294537, theta'=0.462640, volume=0.727352, entry=0.522757, spread=0.786517, J(buy)=1
+
+==============================================================================
+5b. BUY-ONLY BRANCH: INFORMED SHARE FROM COUNTS
+==============================================================================
+  r=31/20: E[X] = lambda/2                             0.168060884   [0.1680608844575605, 0.1680608844575606]
+  r=31/20: E[X]/volume = informed share                0.300489182   [0.3004891818915622, 0.3004891818915623]
+  r=8/5: E[X] = lambda/2                               0.168060884   [0.1680608844575605, 0.1680608844575606]
+  r=8/5: E[X]/volume = informed share                  0.300489182   [0.3004891818915622, 0.3004891818915623]
+  r=33/20: E[X] = lambda/2                             0.168060884   [0.1680608844575605, 0.1680608844575606]
+  r=33/20: E[X]/volume = informed share                0.300489182   [0.3004891818915622, 0.3004891818915623]
+
+==============================================================================
+6. COEXISTENCE BRANCH: OUTCOMES AT 1.55, 1.60, 1.65 (U) AND NO TRADE (N)
+==============================================================================
+
+  --- r=31/20
+  U: x=-1: Pr=0.195615  mu=0.500000  entry=0.2500  P=0.455746  J=0
+  U: x=+0: Pr=0.440709  mu=0.309329  entry=0.2500  P=0.451095  J=0
+  U: x=+1: Pr=0.363676  mu=0.731059  entry=1.0000  P=0.829402  J=1
+  U: volume                                            0.559291   [0.5592909648181905, 0.5592909648181906]
+  U: E[X]                                              0.168061   [0.1680608844575605, 0.1680608844575606]
+  U: entry                                             0.522757   [0.5227569434784066, 0.5227569434784067]
+  U: spread P(1)-P(-1)                                 0.373656   [0.3736557161405085, 0.3736557161405086]
+  U: P(-1)-P(0) (sell executes above neutral)          0.004651   [0.004651450339842820, 0.004651450339842821]
+  U: P(1)-P(-1)                                        0.373656   [0.3736557161405085, 0.3736557161405086]
+  U: mean price                                        0.589586   [0.5895856196140942, 0.5895856196140943]
+  N: entry                                             0.250000   [0.2499999999999999, 0.2500000000000001]
+  N: price (all orders)                                0.455746   [0.4557459677419354, 0.4557459677419355]
+  N: spread                                            0.000000   [-1.555753819465286E-61, 1.555753819465286E-61]
+
+  --- r=8/5
+  U: x=-1: Pr=0.195615  mu=0.500000  entry=0.2500  P=0.463281  J=0
+  U: x=+0: Pr=0.440709  mu=0.309329  entry=0.2500  P=0.457919  J=0
+  U: x=+1: Pr=0.363676  mu=0.731059  entry=1.0000  P=0.847869  J=1
+  U: volume                                            0.559291   [0.5592909648181905, 0.5592909648181906]
+  U: E[X]                                              0.168061   [0.1680608844575605, 0.1680608844575606]
+  U: entry                                             0.522757   [0.5227569434784066, 0.5227569434784067]
+  U: spread P(1)-P(-1)                                 0.384588   [0.3845878400958755, 0.3845878400958756]
+  U: P(-1)-P(0) (sell executes above neutral)          0.005363   [0.005362622499240276, 0.005362622499240277]
+  U: P(1)-P(-1)                                        0.384588   [0.3845878400958755, 0.3845878400958756]
+  U: mean price                                        0.600783   [0.6007832321636665, 0.6007832321636666]
+  N: entry                                             0.250000   [0.2499999999999999, 0.2500000000000001]
+  N: price (all orders)                                0.463281   [0.4632812499999999, 0.4632812500000001]
+  N: spread                                            0.000000   [-2.722569184064250E-61, 2.722569184064250E-61]
+
+  --- r=33/20
+  U: x=-1: Pr=0.195615  mu=0.500000  entry=0.2500  P=0.470549  J=0
+  U: x=+0: Pr=0.440709  mu=0.309329  entry=0.2500  P=0.464446  J=0
+  U: x=+1: Pr=0.363676  mu=0.731059  entry=1.0000  P=0.866325  J=1
+  U: volume                                            0.559291   [0.5592909648181905, 0.5592909648181906]
+  U: E[X]                                              0.168061   [0.1680608844575605, 0.1680608844575606]
+  U: entry                                             0.522757   [0.5227569434784066, 0.5227569434784067]
+  U: spread P(1)-P(-1)                                 0.395776   [0.3957756816579324, 0.3957756816579325]
+  U: P(-1)-P(0) (sell executes above neutral)          0.006103   [0.006102917187687587, 0.006102917187687588]
+  U: P(1)-P(-1)                                        0.395776   [0.3957756816579324, 0.3957756816579325]
+  U: mean price                                        0.611794   [0.6117937186547962, 0.6117937186547963]
+  N: entry                                             0.250000   [0.2499999999999999, 0.2500000000000001]
+  N: price (all orders)                                0.470549   [0.4705492424242424, 0.4705492424242425]
+  N: spread                                            0.000000   [-1.555753819465286E-61, 1.555753819465286E-61]
+
+==============================================================================
+7. WINNERS (F REGIME)
+==============================================================================
+
+  --- r_1
+  x=-1: Pr(W|x,A)=0.512628  Pr(W|x)=0.128157
+  x=+0: Pr(W|x,A)=0.666667  Pr(W|x)=0.166667
+  x=+1: Pr(W|x,A)=0.820706  Pr(W|x)=0.820706
+  gap Pr(W|buy,A)-Pr(W|sell,A) = theta(1-l/r)          0.308078   [0.3080781048400065, 0.3080781048400066]
+  Cov(X,1_A)                                           0.272757   [0.2727569434784066, 0.2727569434784067]
+  Cov(X,1_W)                                           0.251863   [0.2518633308429213, 0.2518633308429214]
+  Pr(W)                                                0.390520   [0.3905198500999945, 0.3905198500999946]
+  d rho theta (1-l/r)  [formula above r_C]             0.028010   [0.02801014740959343, 0.02801014740959344]
+
+  --- r_2
+  x=-1: Pr(W|x,A)=0.472013  Pr(W|x)=0.118003
+  x=+0: Pr(W|x,A)=0.638889  Pr(W|x)=0.159722
+  x=+1: Pr(W|x,A)=0.805765  Pr(W|x)=0.201441
+  gap Pr(W|buy,A)-Pr(W|sell,A) = theta(1-l/r)          0.333751   [0.3337512802433403, 0.3337512802433404]
+  Cov(X,1_A)                                           0.000000   [-1.750223046898447E-61, 1.750223046898447E-61]
+  Cov(X,1_W)                                           0.030344   [0.03034432636039288, 0.03034432636039289]
+  Pr(W)                                                0.159722   [0.1597222222222222, 0.1597222222222223]
+  d rho theta (1-l/r)  [formula above r_C]             0.030344   [0.03034432636039288, 0.03034432636039289]
+
+==============================================================================
+8. EVENT RETURNS AT THE ANNOUNCEMENT OF PREPARATION OR ITS ABSENCE
+==============================================================================
+
+  --- r_1
+  sale    : P(x)=0.576074  prepare: +0.478221 (0.830138 of P)   no preparation: -0.159407 (-0.276713 of P)  e=0.2500
+            cost-weighted mean change (should be 0): 0.0000000000
+  neutral : P(x)=0.614583  prepare: +0.593750 (0.966102 of P)   no preparation: -0.197917 (-0.322034 of P)  e=0.2500
+            cost-weighted mean change (should be 0): 0.0000000000
+  buy     : P(x)=1.362372  prepare: +0.000000 (0.000000 of P)   no preparation: -0.945706 (-0.694161 of P)  e=1.0000
+            cost-weighted mean change (should be 0): 0.0000000000
+
+  --- r_2
+  sale    : P(x)=0.610002  prepare: +0.538338 (0.882519 of P)   no preparation: -0.179446 (-0.294173 of P)  e=0.2500
+            cost-weighted mean change (should be 0): 0.0000000000
+  neutral : P(x)=0.664236  prepare: +0.701042 (1.055410 of P)   no preparation: -0.233681 (-0.351803 of P)  e=0.2500
+            cost-weighted mean change (should be 0): 0.0000000000
+  buy     : P(x)=0.718471  prepare: +0.863745 (1.202200 of P)   no preparation: -0.287915 (-0.400733 of P)  e=0.2500
+            cost-weighted mean change (should be 0): 0.0000000000
+
+==============================================================================
+9. FIGURE DATA: FULL-ORDER BRANCH, r from 2.2 to 6.0
+==============================================================================
+  wrote curves_full_branch.csv: 381 rows
+
+==============================================================================
+10. CALIBRATION A (BETA = 1/3, LAMBDA = 6/17): EXACT RECOMPUTATION OF THE EARLIER STUDY
+==============================================================================
+  M                            recomputed 29/40          quoted 29/40        same: True
+  theta = 2M-1                 recomputed 9/20           quoted 9/20         same: True
+  volume at r_1, r_2           recomputed 40/51          quoted 40/51        same: True
+  S(3)                         recomputed 25/32          quoted 25/32        same: True
+  class component at 3         recomputed 3/40           quoted 3/40         same: True
+  entry share at 3             recomputed 113/125        quoted 113/125      same: True
+  S(18/5)                      recomputed 169/1600       quoted 169/1600     same: True
+  gap at 3                     recomputed 3/10           quoted 3/10         same: True
+  gap at 18/5                  recomputed 13/40          quoted 13/40        same: True
+  Cov(X,1_A) at 3              recomputed 5/17           quoted 5/17         same: True
+  Cov(X,1_W) at 18/5           recomputed 13/408         quoted 13/408       same: True
+  Pbar at 3                    recomputed 485/544        quoted 485/544      same: True
+  P(0) at 3                    recomputed 59/96          quoted 59/96        same: True
+  P(0)-Pbar at 3               recomputed -113/408       quoted -113/408     same: True
+  entry at 3                   recomputed 37/68          quoted 37/68        same: True
+  announce, sale at 3          recomputed 77/160         quoted 77/160       same: True
+  announce, neutral at 3       recomputed 19/32          quoted 19/32        same: True
+  announce, buy at 3           recomputed 0              quoted 0            same: True
+  announce, sale at 18/5       recomputed 5209/9600      quoted 5209/9600    same: True
+  announce, neutral at 18/5    recomputed 673/960        quoted 673/960      same: True
+  announce, buy at 18/5        recomputed 8251/9600      quoted 8251/9600    same: True
+  buy-only branch at A, r=1.55: volume 31/51, informed share 9/31, E[X] 3/17  (quoted 31/51, 9/31, 3/17)
+  r_C at A  (quoted 3.45824702905933)                  3.458247029059   [3.458247029059332, 3.458247029059333]
+
+==============================================================================
+11. VERIFICATION AGAINST THE FIXED TUPLE: DEALER, INVESTOR AND CHALLENGER CONDITIONS
+==============================================================================
+  Dealer check: P(x) vs E[V_T | X=x] computed class by class.
+  Investor payoff U_j(q) = q [E[V_T|j,q] - P(q)] - k|q| at the fixed price and entry schedule.
+  Challenger check: sign of B_r(mu_x) - c_H and the entry chosen.
+
+  --- regime N, r=6/5
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.1958 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.1958 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.1958 (sign -1); entry 0.2500
+  class H: U(-1)=-0.022083  U(0)=0.000000  U(+1)=-0.017917
+  class L: U(-1)=-0.017917  U(0)=0.000000  U(+1)=-0.022083
+  equilibrium order H=+0, L=+0; payoff gap to the best alternative: H 0.017917, L 0.017917
+
+  --- regime F, r=3
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -3.6338 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.7083 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = 0.2172 (sign 1); entry 1.0000
+  class H: U(-1)=-0.141843  U(0)=0.000000  U(+1)=0.159294
+  class L: U(-1)=0.024824  U(0)=0.000000  U(+1)=-0.507372
+  equilibrium order H=+1, L=-1; payoff gap to the best alternative: H 0.159294, L 0.024824
+
+  --- regime F, r=18/5
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -3.7279 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.8653 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -0.0027 (sign -1); entry 0.2500
+  class H: U(-1)=-0.191596  U(0)=0.000000  U(+1)=0.043127
+  class L: U(-1)=0.043127  U(0)=0.000000  U(+1)=-0.191596
+  equilibrium order H=+1, L=-1; payoff gap to the best alternative: H 0.043127, L 0.043127
+
+  --- regime U, r=31/20
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.3069 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -3.0043 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = 0.7501 (sign 1); entry 1.0000
+  class H: U(-1)=-0.032198  U(0)=0.000000  U(+1)=0.006243
+  class L: U(-1)=-0.007802  U(0)=0.000000  U(+1)=-0.091337
+  equilibrium order H=+1, L=+0; payoff gap to the best alternative: H 0.006243, L 0.007802
+
+  --- regime U, r=8/5
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.3219 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -3.0165 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = 0.7317 (sign 1); entry 1.0000
+  class H: U(-1)=-0.034062  U(0)=0.000000  U(+1)=0.010256
+  class L: U(-1)=-0.005938  U(0)=0.000000  U(+1)=-0.102244
+  equilibrium order H=+1, L=+0; payoff gap to the best alternative: H 0.010256, L 0.005938
+
+  --- regime U, r=33/20
+  x=-1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -1.3367 (sign -1); entry 0.2500
+  x=+0: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = -3.0284 (sign -1); entry 0.2500
+  x=+1: dealer check P-E[V_T|x] = 0.00000000; B(mu)-c_H = 0.7132 (sign 1); entry 1.0000
+  class H: U(-1)=-0.036004  U(0)=0.000000  U(+1)=0.014433
+  class L: U(-1)=-0.003996  U(0)=0.000000  U(+1)=-0.113598
+  equilibrium order H=+1, L=+0; payoff gap to the best alternative: H 0.014433, L 0.003996
+
+==============================================================================
+12. ROUND 2: BOUND r_S, SPREAD COMPONENTS, COUNT RANGE, MIXTURE TUPLE, SAMPLE MEANS, MARGINS
+==============================================================================
+
+  12a. The full-order bound r_S = fr(D_S), D_S = k/(rho m)
+  D_S = k/(rho m)                                      0.297462546277   [0.2974625462767236, 0.2974625462767237]
+  D_S - 2(1+e)/25 (check, 0)                           0.000000000000   [-1.944692274331607E-61, 1.944692274331607E-61]
+  Delta_T(r_S) - D_S (check, 0)                        0.000000000000   [-6.611953732727464E-61, 5.834076822994821E-61]
+  r_S                                                  2.12414813281545067354   [2.124148132815450, 2.124148132815451]
+  r = 2.124148: rho Delta_T(r) m - k = [-3.47537651966E-9, -3.47537651965E-9]; sign -1  (positive: F is unique; negative: the low class prefers to abstain in F)
+  r = 2.1241481: rho Delta_T(r) m - k = [-8.58680580484E-10, -8.58680580483E-10]; sign -1  (positive: F is unique; negative: the low class prefers to abstain in F)
+  r = 2.124149: rho Delta_T(r) m - k = [2.26915860289E-8, 2.26915860290E-8]; sign 1  (positive: F is unique; negative: the low class prefers to abstain in F)
+
+  12b. Spread components across the ceiling r_C (outcome F), r_S < r < h  [numerical diagnostic]
+  r_C = 3.592658519
+    r     J   class comp.   entry comp.   sell impact   buy impact    spread
+   2.20  1      0.037810      0.511828      0.018905      0.530733    0.549638
+   3.00  1      0.077020      0.709279      0.038510      0.747789    0.786299
+   3.50  1      0.103151      0.837762      0.051576      0.889338    0.940914
+   3.60  0      0.108469      0.000000      0.054235      0.054235    0.108469
+   4.00  0      0.129970      0.000000      0.064985      0.064985    0.129970
+   5.00  0      0.184847      0.000000      0.092423      0.092423    0.184847
+   9.90  0      0.462176      0.000000      0.231088      0.231088    0.462176
+  strictly increasing on the grid (step 0.1):   r <= 3.5 | r >= 3.6 | whole grid
+    class component         yes       yes        yes
+    entry component         yes        NO         NO
+    sell impact I-          yes       yes        yes
+    buy impact I+           yes       yes         NO
+    spread S                yes       yes         NO
+  entry component exactly 0 at every grid point r >= 3.6: yes
+
+  12c. Counts: the informed share once full orders must be an equilibrium
+  r_1: rho Delta_T(r) (1-theta')/2 - k >= 0  <=>  theta' <= 19/25 = 0.760000000000
+  r_2: rho Delta_T(r) (1-theta')/2 - k >= 0  <=>  theta' <= 701/845 = 0.829585798817
+  band incentive bound rho Delta_T(r_1)(1 - tau(r_2)) - k = 21563/870600 = 0.024767976
+  theta'=0.9: u'=18, lambda'=0.654616664, beta'=0.105296315 (<= 1/3), same counts as B; low-class sale payoff in F at r_1 = -7/600 = -0.011666667
+  volume at B 0.727351849 <= 200/259 = 0.772200772: yes
+  band pair u'=1.390831: low-class sale payoff in F at r_1 0.029152, at r_2 0.049223
+  band pair u'=1.600000: low-class sale payoff in F at r_1 0.026296, at r_2 0.045201
+  band pair u'=1.721899: low-class sale payoff in F at r_1 0.024780, at r_2 0.043065
+
+  12d. Strict margins added in round 2, and the open parameter set
+  Thresholds at the two ends of the M-band (they are increasing in M, so the ends bound the open set):
+   M = tau(3) = 141/200: r_F 1.442216, r_N 1.747878, r_S 2.055989, r_C 3.000000
+   M = tau(18/5) = 4245/5804: r_F 1.467472, r_N 1.747878, r_S 2.125097, r_C 3.600000
+
+  12e. Partial-buy tuple when an indifferent challenger may mix, r = 1.60
+  tau(1.60)                                            0.648734177   [0.6487341772151898, 0.6487341772151899]
+  sigma_H(1) = s_tau/lambda                            0.492845139151   [0.4928451391506007, 0.4928451391506008]
+  e_1 = k/(Delta_T (1 - tau))                          0.506106106106   [0.5061061061061061, 0.5061061061061062]
+  sigma in (0,1): yes; e_1 in (rho,1): yes
+  x=-1: Pr=0.195615  mu=0.500000000  entry=0.250000  P=0.463281  B(mu)-c_H=[-1.32188, -1.32187]  dealer check 0.0000000000
+  x=+0: Pr=0.525942  mu=0.421257476  entry=0.250000  P=0.461067  B(mu)-c_H=[-2.02170, -2.02169]  dealer check 0.0000000000
+  x=+1: Pr=0.278443  mu=0.648734177  entry=0.506106  P=0.594200  B(mu)-c_H=[-1.68022E-59, 1.74245E-59]  dealer check 0.0000000000
+  mu_1 - tau = [-1.86691E-60, 1.94470E-60] (0: the challenger with cost c_H is indifferent)
+  class H: U(-1)=[-0.034062501, -0.034062499]  U(0)=[0, 0]  U(+1)=[-1.8037021E-60, 1.8547503E-60]
+  class L: U(-1)=[-0.0059375001, -0.0059374999]  U(0)=[0, 0]  U(+1)=[-0.056936937, -0.056936936]
+  prices ordered P(0) < P(-1) < P(1): yes
+  E[X] = s_tau/2                                       0.082827990   [0.08282798998625948, 0.08282798998625949]
+  entry                                                0.321310960   [0.3213109602283464, 0.3213109602283465]
+  low-class sale payoff rho Delta_T/2 - k              -0.005937500   [-0.005937500000000001, -0.005937499999999999]
+  low-class sale payoff, exact rational: -19/3200
+
+  12f. Announcement samples: all announcements against preparation announcements only
+  r1: mean change over all announcements (model probabilities) 0.000000000000; mean change given preparation 0.160591936; mean return given preparation 0.270348939
+  r2: mean change over all announcements (model probabilities) 0.000000000000; mean change given preparation 0.701041667; mean return given preparation 1.045917751
+
+==============================================================================
+FLAGS
+==============================================================================
+  none
+Traceback (most recent call last):
+  File "/home/uctpiaj/work/Projects/competition-creates-competition/audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py", line 944, in <module>
+    main()
+  File "/home/uctpiaj/work/Projects/competition-creates-competition/audit/slot_manuscript_2026_10_23/scripts/P5_observables/p5_observables.py", line 935, in main
+    print(f"\nregistry rows written: {len(ROWS)} -> {outcsv.relative_to(TEAM)}")
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: 'audit/slot_manuscript_2026_10_23/scripts/P5_observables/EX_candidate.csv' is not in the subpath of '/home/uctpiaj/work/Projects/competition-creates-competition/audit/slot_manuscript_2026_10_23'

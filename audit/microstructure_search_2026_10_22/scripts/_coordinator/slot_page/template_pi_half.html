@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The order-slot model</title>
+<style>
+:root{
+  --fg: var(--foreground, #1c1c1a);
+  --mfg: var(--muted-foreground, #5f5e5a);
+  --bd: var(--border, #dcdad3);
+  --cd: var(--card, #f6f5f1);
+  --c1: var(--chart-1, #2f6bd8);
+  --c2: var(--chart-2, #d9822b);
+  --c3: var(--chart-3, #2e9e6b);
+  --ok: var(--success, #2e8b57);
+  --inf: var(--info, #2f6bd8);
+  --warn: var(--warning, #b7791f);
+  --rad: var(--radius, 10px);
+  --sans: var(--font-sans, "Inter", "Fira Sans", "Helvetica Neue", Arial, sans-serif);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --fg: var(--foreground, #e9e7e1);
+    --mfg: var(--muted-foreground, #a9a69d);
+    --bd: var(--border, #3a3934);
+    --cd: var(--card, #1f1f1c);
+    --c1: var(--chart-1, #76aafb);
+    --c2: var(--chart-2, #f0a35a);
+    --c3: var(--chart-3, #5cc795);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);font-family:var(--sans);font-size:15.5px;line-height:1.6}
+.page{max-width:760px;margin:0 auto;padding:4px 0 24px}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mfg);font-weight:600}
+h1{font-size:22px;line-height:1.25;margin:4px 0 8px;letter-spacing:-.01em}
+h2{font-size:18px;margin:36px 0 6px;letter-spacing:-.005em}
+h2 .n{color:var(--mfg);font-weight:500;margin-right:8px}
+h3{font-size:15.5px;margin:20px 0 4px}
+p{margin:8px 0}
+.lede{font-size:16.5px}
+.muted{color:var(--mfg)}
+.small{font-size:13.5px}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:5px 0}
+mjx-container[jax="SVG"]{color:var(--fg)}
+mjx-container[jax="SVG"][display="true"]{display:block;text-align:center;margin:14px 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
+mjx-container[jax="SVG"] > svg{overflow:visible}
+.box{border-left:3px solid var(--c1);padding:6px 0 6px 16px;margin:16px 0}
+.box.key{border-color:var(--c3)}
+.box.warn{border-color:var(--warn)}
+.thm{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:16px 18px;margin:16px 0}
+.thm .t{font-weight:700;margin-bottom:4px}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:0 8px;border-radius:999px;border:1px solid currentColor;vertical-align:1px;white-space:nowrap;line-height:1.6}
+.chip.an{color:var(--ok)} .chip.nd{color:var(--warn)} .chip.op{color:var(--mfg)} .chip.ck{color:var(--inf)}
+table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:520px){table{font-size:13px}th,td{padding:6px 5px}th{font-size:11px}}
+.tw{overflow-x:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:14px 16px}
+.card h3{margin:0 0 6px}
+.card ul{margin:4px 0;padding-left:18px}
+.chart{margin:12px 0 2px}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--mfg);margin:6px 0 2px}
+.sw{display:inline-block;width:18px;height:0;border-top:2.5px solid;vertical-align:4px;margin-right:6px}
+.sw.c1{border-color:var(--c1)} .sw.c2{border-color:var(--c2)} .sw.c3{border-color:var(--c3)} .sw.dash{border-top-style:dashed}
+.swb{display:inline-block;width:14px;height:10px;background:var(--c1);opacity:.16;margin-right:6px;vertical-align:0}
+.cap{font-size:13px;color:var(--mfg);margin:4px 0 0}
+svg .grid{stroke:var(--bd);stroke-width:1}
+svg .ax{stroke:var(--mfg);stroke-width:1}
+svg .tk,svg .lab{fill:var(--mfg)}
+svg .vd{stroke:var(--mfg);stroke-width:1;stroke-dasharray:3 4;opacity:.8}
+svg .band{fill:var(--c1);opacity:.12}
+svg .l1{fill:none;stroke:var(--c1);stroke-width:2.6}
+svg .l1d{fill:none;stroke:var(--c1);stroke-width:1.6;stroke-dasharray:4 3}
+svg .l2{fill:none;stroke:var(--c2);stroke-width:2.6}
+svg .l3{fill:none;stroke:var(--c3);stroke-width:2;stroke-dasharray:6 4}
+svg .dot1{fill:var(--c1)} svg .dot2{fill:var(--c2)}
+svg .hol3{fill:none;stroke:var(--c3);stroke-width:2}
+svg .dia3{fill:var(--c3)}
+svg .c1t{fill:var(--c1);font-weight:700} svg .c2t{fill:var(--c2);font-weight:700} svg .c3t{fill:var(--c3);font-weight:700}
+svg .mut{fill:var(--mfg)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="kicker">Microstructure search · recommended setup</div>
+<h1>The order-slot model: an EGJ-like trading stage</h1>
+<p class="lede">One order of unit size arrives before the challenger decides. It comes from the informed investor or from a liquidity trader with an order of the same size. The market cannot tell which. Only the trading stage changes; the classes, the costs, the auction and the challenger's information stay as in the paper.</p>
+<p class="small muted">Status: <span class="chip an">analytical</span> complete proof &nbsp; <span class="chip ck">checked</span> reproduced by an independent member &nbsp; <span class="chip nd">numerical diagnostic</span> floating-point evidence &nbsp; <span class="chip op">open</span></p>
+
+<h2><span class="n">1</span>The setup</h2>
+<ol>
+<li>Nature draws the challenger's class \(j\in\{H,L\}\), each with probability \(\tfrac12\), and the incumbent's value \(R\sim U[0,r]\).</li>
+<li>One order slot opens. With probability \(\lambda\), the informed investor fills it. The investor sees \(j\) and chooses \(q\in\{-1,0,1\}\) at cost \(k\lvert q\rvert\).</li>
+<li>With probability \(1-\lambda\), a liquidity trader fills it. It sells, waits or buys one unit with probabilities \(\beta\), \(1-2\beta\), \(\beta\).</li>
+<li>Competitive market makers see the order \(Q\) and set \(P=\mathbb{E}[V_T\mid Q]\). Nobody sees who placed the order.</li>
+<li>The challenger sees \(P\) and its own cost \(C\in\{0,c_H\}\). It then decides whether to prepare. The paper's second-price auction with reserve \(p\) follows.</li>
+</ol>
+<p>Under full orders (class H buys, class L sells), the order has these probabilities in each class:</p>
+\[
+\Pr(Q=q\mid j)\;=\;
+\begin{array}{c|ccc}
+ & q=-1 & q=0 & q=+1\\ \hline
+j=H & b & 1-\lambda-2b & \lambda+b\\
+j=L & \lambda+b & 1-\lambda-2b & b
+\end{array}
+\]
+<p class="small muted">Here \(b=(1-\lambda)\,\beta\) is the probability of a liquidity buy, and also of a liquidity sale.</p>
+<p class="small muted">The same results hold with a buy-only menu \(q\in\{0,1\}\), in which the liquidity trader buys with probability \(\beta\).</p>
+
+<h2><span class="n">2</span>What an order tells the market</h2>
+<p>One number summarizes the slot: the odds that a buy in class H comes from the informed investor rather than from the liquidity trader,</p>
+\[
+u\;=\;\frac{\lambda}{(1-\lambda)\,\beta}.
+\]
+<p>Under full orders, the posterior that the class is H after each order is</p>
+\[
+\mu_{+}=\Pr(H\mid Q=+1)=\frac{\lambda+b}{\lambda+2b}=\frac{1+u}{2+u}\;\equiv\;M,
+\]
+\[
+\mu_{0}=\Pr(H\mid Q=0)=\tfrac12,\qquad \mu_{-}=\Pr(H\mid Q=-1)=1-M .
+\]
+<p>Each order occurs in both classes under every strategy. So every posterior lies strictly between 0 and 1, and no order is off the equilibrium path. No belief rule is necessary. <span class="chip an">analytical</span> <span class="chip ck">checked</span></p>
+<div class="box warn">
+<p><b>Why EGJ's own block fails here.</b> EGJ add noise \(Z\in\{-1,0,1\}\) to the order, so the flow is \(X=q+Z\). The flow \(X=2\) then needs an informed buy, so \(\Pr(H\mid X=2)=1\). At \(r_2=3.6\) a sure class H still covers \(c_H\), so entry cannot return to \(\rho\). This holds for every \(\lambda\), every noise weight and every \(k\). <span class="chip an">analytical</span></p>
+<p>The liquidity buy removes the revealing flow: a buy can also come from class L.</p>
+</div>
+
+<h2><span class="n">3</span>Prices, entry and the investor's return</h2>
+<p>The auction objects are the paper's (incumbent value uniform on \([0,r]\), reserve \(p\)):</p>
+\[
+t_0=p\Big(1-\frac{p}{r}\Big),\qquad
+t_H=\frac r2+\frac{p^2}{2r},\qquad
+t_L=\ell-\frac{\ell^2-p^2}{2r},
+\]
+\[
+\Delta_T=t_H-t_L=\frac{(r-\ell)^2}{2r},
+\]
+\[
+g_H=h-t_H,\qquad g_L=\ell-t_L,\qquad B_r(\mu)=g_L+\mu\,(g_H-g_L).
+\]
+<p>The zero-cost type always prepares. The high-cost type prepares when its expected gain covers \(c_H\), that is, when the posterior reaches a threshold:</p>
+\[
+e(\mu)=\rho+(1-\rho)\,\mathbf 1\{\mu\ge\tau(r)\},
+\]
+\[
+\tau(r)=\frac{c_H-g_L}{g_H-g_L}=\frac{48r-3}{4\,(20r-r^2-1)} .
+\]
+<p class="small muted">The last expression uses the benchmark \(h=10,\ \ell=1,\ p=\tfrac12,\ c_H=6\).</p>
+<p>The competitive price at posterior \(\mu\) is</p>
+\[
+P(\mu)=t_0+e(\mu)\,\big(t_L-t_0+\Delta_T\,\mu\big).
+\]
+<p>Given that it fills the slot, the informed investor's net return from a full order is</p>
+\[
+K_H=e(M)\,\Delta_T\,(1-M)-k\qquad\text{(class H buys)},
+\]
+\[
+K_L=\rho\,\Delta_T\,(1-M)-k\qquad\text{(class L sells)}.
+\]
+<p>A buy that recruits the high-cost challenger raises \(e(M)\) from \(\rho\) to 1. This raises the return of the buy. This is the paper's feedback, now in a discrete form: each decision is one comparison of a return with \(k\).</p>
+
+<h2><span class="n">4</span>Proposition 2 in the slot model</h2>
+<div class="thm">
+<div class="t">Result 1 <span class="chip an">analytical</span> <span class="chip ck">checked</span></div>
+<p>Take the paper's benchmark: \(h=10\), \(\ell=1\), \(p=\tfrac12\), \(\rho=\tfrac14\), \(c_L=0\), \(c_H=6\), \(k=\tfrac1{50}\), and strengths \(r_0=\tfrac65,\ r_1=3,\ r_2=\tfrac{18}{5}\). Suppose</p>
+\[
+\tau(3)=\frac{141}{200}\;<\;M\;<\;\frac{4245}{5804}=\tau\!\left(\tfrac{18}{5}\right),
+\]
+<p style="text-align:center;margin:0">or, equivalently,</p>
+\[
+\frac{82}{59}\;<\;u\;<\;\frac{2686}{1559}.
+\]
+<p>Then each strength has a unique outcome, with mixed strategies included, under every pair of tie rules:</p>
+<ol>
+<li><b>Weak incumbent.</b> \(\Delta_T(r_0)=\tfrac1{60}<k\). A unit order earns at most \(\Delta_T\), so no informed order occurs, and entry is \(\rho\).</li>
+<li><b>Strong incumbent.</b> Every correct order earns at least \(\rho\,\Delta_T(r_1)(1-M)>k\), so both classes trade fully. Since \(M>\tau(3)\), a buy recruits:
+\[
+\mathsf{E}(r_1)=\rho+(1-\rho)\Big(\frac{\lambda}{2}+b\Big),
+\]
+\[
+\mathsf{O}_H(r_1)=\frac18+\frac38\,(\lambda+b).
+\]</li>
+<li><b>Very strong incumbent.</b> Orders stay full, and prices stay informative. Since \(M<\tau(\tfrac{18}5)\), no order recruits, and entry returns to \(\rho\).</li>
+</ol>
+<p>The ceiling solves \(B_r(M)=c_H\):</p>
+\[
+r_C(M)=\frac{10M-6+\sqrt{(10M-6)^2+M\,(\tfrac34-M)}}{M}.
+\]
+<p>On the strip, \(3<r_C<\tfrac{18}{5}\).</p>
+</div>
+<div class="chart" id="ch-tau"></div>
+<div class="legend"><span><span class="sw c1"></span>threshold τ(r)</span><span><span class="sw c2"></span>calibration A, M = 29/40</span><span><span class="sw c3 dash"></span>paper's M = e/(1+e)</span><span><span class="swb"></span>band (τ(3), τ(3.6))</span></div>
+<p class="cap">A buy recruits the high-cost challenger where the line \(M\) lies above the curve \(\tau(r)\). Proposition 2 needs \(M\) inside the band, so that a buy recruits at \(r_1\) but not at \(r_2\). The auction sets this band at the two benchmark strengths, not the noise. The paper's Laplace value lies at its top edge.</p>
+
+<h2><span class="n">5</span>Coexistence: the Proposition 3 analog</h2>
+<p>Let \(\mathfrak r(D)=1+D+\sqrt{D^2+2D}\), the root of \(\Delta_T(r)=D\) above \(\ell\). Under no informed trade, every order gives the posterior \(\tfrac12\), and a deviation earns \(\rho\Delta_T/2-k\). So no trade is an equilibrium exactly when</p>
+\[
+r\;\le\;r_N=\mathfrak r\Big(\frac{2k}{\rho}\Big)=1.747878 ,
+\]
+<p>which is the paper's own boundary. An informative equilibrium exists from \(r_A\) on, where the investor and the challenger are both indifferent:</p>
+\[
+\Delta_T(r_A)\,\big(1-\tau(r_A)\big)=k,\qquad r_A=1.393958 .
+\]
+<p>Between \(r_A\) and \(r_F=\mathfrak r\big(k/(1-M)\big)\), class H buys with an effective rate \(s\in(0,\lambda)\), and entry rises with strength:</p>
+\[
+s=b\Big(\frac{\Delta_T(r)}{k}-2\Big),\qquad
+\mathsf{E}(r)=\rho+(1-\rho)\,\frac{b\,\Delta_T(r)}{2k}.
+\]
+<p>Above \(r_F\), class H buys fully and entry stays at \(\mathsf E(r_1)\) up to the ceiling. No trade and informative trade coexist on \([r_A,r_N]=[1.394,\,1.748]\), which contains the paper's points 1.55, 1.60 and 1.65. <span class="chip an">analytical</span> <span class="chip ck">checked</span></p>
+<div class="chart" id="ch-entry"></div>
+<div class="legend"><span><span class="sw c2"></span>no informed trade</span><span><span class="sw c1"></span>informative equilibrium</span><span><span class="swb"></span>both exist</span><span style="color:var(--c3)">○ paper, Prop. 2 &nbsp; ◆ paper, Prop. 3</span></div>
+<p class="cap">Calibration A (\(\beta=\tfrac13,\ \lambda=\tfrac6{17}\)). Entry on the informative branch rises from 0.475 to 0.544 on \([1.394,\,1.461)\), then stays flat. At 1.55–1.65 it is flat, so the strict upward order of the paper's Proposition 3 is not reproduced. The rising part needs investor mixing at indifference. Class L does not sell on the coexistence interval; it sells at an interior rate on \((1.748,\,2.107)\) and fully above. Sales do not change entry.</p>
+
+<h2><span class="n">6</span>Access to prices <span class="chip an">analytical</span> <span class="chip ck">checked</span></h2>
+<p>At \(r_1=3\), a hidden price fixes entry at \(\rho\), because \(B_3(\tfrac12)<c_H\). The informed orders are the same in both regimes. With the price, the order \(Q=+1\) recruits, so</p>
+\[
+\Delta\mathcal R_T=(1-\rho)\Pr(Q=+1)\,\big[t_L-t_0+\Delta_T M\big]=\tfrac{113}{408},
+\]
+\[
+\Delta\mathcal W=(1-\rho)\Pr(Q=+1)\,\Big[B_r(M)-c_H+\frac{p^2}{r}\Big]=\tfrac{5}{68}.
+\]
+<p class="small muted">Values at calibration A, where \(\Pr(Q=+1)=\tfrac{20}{51}\) and \(B_3(M)=\tfrac{37}{6}\).</p>
+
+<h2><span class="n">7</span>Two calibrations</h2>
+<div class="tw"><table>
+<thead><tr><th></th><th>Calibration A</th><th>Calibration B</th><th>Paper</th></tr></thead>
+<tbody>
+<tr><td>\(\beta,\ \lambda\)</td><td class="n">\(\tfrac13,\ \tfrac6{17}\)</td><td class="n">0.2947, 0.3361</td><td>—</td></tr>
+<tr><td>\(u\)</td><td class="n">\(\tfrac{18}{11}\)</td><td class="n">\(e-1\)</td><td>—</td></tr>
+<tr><td>Top posterior \(M\)</td><td class="n">\(\tfrac{29}{40}=0.725\)</td><td class="n">\(\tfrac{e}{1+e}=0.731059\)</td><td class="n">0.731059</td></tr>
+<tr><td>Entry at \(r_1\)</td><td class="n">\(\tfrac{37}{68}=0.544\)</td><td class="n">0.522757</td><td class="n">0.522757</td></tr>
+<tr><td>High-class ownership at \(r_1\)</td><td class="n">\(\tfrac{23}{68}=0.338\)</td><td class="n">0.3244</td><td class="n">0.3242</td></tr>
+<tr><td>Ceiling \(r_C\)</td><td class="n">\(\tfrac{50+\sqrt{2529}}{29}=3.458\)</td><td class="n">3.592659</td><td class="n">3.592659</td></tr>
+<tr><td>No-trade boundary \(r_N\)</td><td class="n">1.747878</td><td class="n">1.747878</td><td class="n">1.747878</td></tr>
+<tr><td>Status</td><td><span class="chip an">analytical</span> <span class="chip ck">checked</span></td><td><span class="chip nd">numerical diagnostic</span></td><td></td></tr>
+</tbody></table></div>
+<p class="cap">The paper's column uses Laplace noise with \(b=2\). Calibration A copies EGJ's equal weights onto the liquidity order. Calibration B picks \(u\) to give the paper's top posterior, and \(\beta\) to give the paper's entry. Its margin at \(r_2\) is the paper's own: 0.0003 in posterior. Nobody else has checked calibration B.</p>
+
+<h2><span class="n">8</span>What it keeps, and what it costs</h2>
+<div class="grid2">
+<div class="card"><h3>Keeps</h3><ul>
+<li>All of Proposition 2, with unique outcomes.</li>
+<li>The paper's no-trade boundary \(r_N\).</li>
+<li>Coexistence on \([1.394,\,1.748]\).</li>
+<li>The access-to-prices result.</li>
+<li>No off-path beliefs, and short proofs.</li>
+<li>A buy-only version with the same results.</li>
+</ul></div>
+<div class="card"><h3>Costs</h3><ul>
+<li><b>Unit orders.</b> With \(q\in[-1,1]\), a 0.99 buy reaches an unused order. Under a prior belief there it earns 0.0964 against 0.0446 at \(r_2\), and part (iii) fails. A continuous menu needs EGJ's belief convention.</li>
+<li><b>An exogenous liquidity motive.</b> A free uninformed trader would not trade.</li>
+<li><b>No partial sale at 1.55–1.65.</b> A mixed sale by class L appears only on \((1.748,\,2.107)\).</li>
+<li><b>Flat entry at 1.55–1.65.</b> The strict rise lies on \([1.394,\,1.461)\) and needs investor mixing.</li>
+</ul></div>
+</div>
+<div class="box key">
+<p><b>The trade-off behind the last two costs.</b> With unit orders at the benchmark, the return to \(\rho\) at \(r_2\) caps the top posterior at \(\tau(\tfrac{18}5)=0.731\). An EGJ-type branch with entry that rises at 1.55–1.65 needs a top posterior above 0.755. The setups that do both work only in boxes about 0.001 wide. <span class="chip an">analytical</span> One option is to present the rise and the partial sale as features of continuous order sizes.</p>
+</div>
+
+<h2><span class="n">9</span>Precedent</h2>
+<ul>
+<li><b>Dow and Gorton (1997, <i>Journal of Finance</i>).</b> An informed trader or a liquidity trader of the same size arrives. The arrival of information is "perfectly negatively correlated with the arrival of a liquidity trader" (p. 1095). <span class="chip ck">verified</span></li>
+<li><b>Edmans, Goldstein and Jiang (2015, <i>American Economic Review</i>).</b> Unit orders, and three readings of \(\lambda\): presence, a liquidity shock, or information with probability \(\lambda\). <span class="chip ck">verified</span></li>
+<li><b>Admati and Pfleiderer (2009, <i>Review of Financial Studies</i>).</b> A liquidity shock forces the same whole-stake sale as bad news. <span class="chip ck">verified</span></li>
+</ul>
+<p class="small muted">Sources: <code>audit/microstructure_search_2026_10_22/memos/T2_liquidity_trader.md</code> (variant V3), <code>X_check.md</code>, <code>SYNTHESIS.md</code> §4–5, <code>L1_survey.md</code>. Numbers on this page: <code>scripts/_coordinator/slot_numbers.py</code>.</p>
+
+</div>
+<script>
+/*CHARTS*/
+</script>
+</body>
+</html>

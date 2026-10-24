@@ -1,0 +1,523 @@
+XE1 independent check. Python 3.12.13 mpmath 1.4.1 iv.dps 40
+Calibration A: lambda=6/17 beta=1/3 b=11/51 u=18/11
+Calibration B: tau(3)=141/200; E_* = 0.5227572972597 [w 3.0e-41]; u = 1.718281828459 [w 5.0e-41]
+  lambda_B = 0.3361222048842 [w 6.0e-41]; beta_B = 0.2946555756848 [w 8.0e-41]; b_B = 0.1956152939042 [w 8.0e-41]
+  prior 1/10: slot B M - Laplace M = 1.434929627469e-42 [w 2.0e-40]; m - m_Laplace = 0.0 [w 2.0e-41]
+  prior 3/10: slot B M - Laplace M = 0.0 [w 4.0e-40]; m - m_Laplace = -1.434929627469e-42 [w 7.0e-41]
+  prior 1/2: slot B M - Laplace M = 1.147943701975e-41 [w 6.0e-40]; m - m_Laplace = 0.0 [w 9.0e-41]
+  prior 7/10: slot B M - Laplace M = 5.739718509874e-42 [w 8.0e-40]; m - m_Laplace = 2.869859254937e-42 [w 2.0e-40]
+
+====================================================================================================
+0. Auction objects by quadrature versus the paper's closed forms (point masses 10 and 1, p = 1/2)
+====================================================================================================
+  h=10 r=6/5: t0=7/24 tH=169/240 tL=11/16 gH=2231/240 gL=5/16 D=1/60 | quadrature minus closed form: {Fraction(0, 1)}
+  h=10 r=3: t0=5/12 tH=37/24 tL=7/8 gH=203/24 gL=1/8 D=2/3 | quadrature minus closed form: {Fraction(0, 1)}
+  h=10 r=18/5: t0=31/72 tH=1321/720 tL=43/48 gH=5879/720 gL=5/48 D=169/180 | quadrature minus closed form: {Fraction(0, 1)}
+  h=10 r=8: t0=15/32 tH=257/64 tL=61/64 gH=383/64 gL=3/64 D=49/16 | quadrature minus closed form: {Fraction(0, 1)}
+  h=2 r=21/20: t0=11/42 tH=541/840 tL=9/14 gH=1139/840 gL=5/14 D=1/840 | quadrature minus closed form: {Fraction(0, 1)}
+  h=2 r=3/2: t0=1/3 tH=5/6 tL=3/4 gH=7/6 gL=1/4 D=1/12 | quadrature minus closed form: {Fraction(0, 1)}
+  identity check v=1, r=3: t+g = 1
+  identity check v=10, r=3: t+g = 10
+  identity check v=2, r=3: t+g = 2
+
+====================================================================================================
+1. General-prior Proposition 2: coordinator's listed conditions, the counterexample, corrected (3)
+====================================================================================================
+
+  Calibration A: counterexample c_H = 47/10, strengths (6/5, 3, 8)
+    m = 11/40 (0.275), M = 29/40 (0.725), kappa = 11/40 (0.275)
+    cH-B0(pi)                -5/48 (-0.1041666666667)                         sign -
+    B1(M)-cH                 22/15 (1.466666666667)                           sign +
+    k-D0                     1/300 (0.003333333333333)                        sign +
+    rho*kap*D1-k             31/1200 (0.02583333333333)                       sign +
+    cH-B2(M)                 223/640 (0.3484375)                              sign +
+    rho*kap*D2-k             2439/12800 (0.190546875)                         sign +
+    cH-B1(pi) [coord]        49/120 (0.4083333333333)                         sign +
+    cH-B2(pi) [coord]        539/320 (1.684375)                               sign +
+    F0 (6/5): pure equilibrium orders (0, 0), strict=True, entry E = 1 (1.0), e(Q) = ['1 (1.0)', '1 (1.0)', '1 (1.0)'] unresolved=[]
+    F1 (3): pure equilibrium orders (1, -1), strict=True, entry E = 37/68 (0.5441176470588), e(Q) = ['1/4 (0.25)', '1/4 (0.25)', '1 (1.0)'] unresolved=[]
+    F2 (8): pure equilibrium orders (1, -1), strict=True, entry E = 1/4 (0.25), e(Q) = ['1/4 (0.25)', '1/4 (0.25)', '1/4 (0.25)'] unresolved=[]
+
+  Calibration B: counterexample c_H = 47/10, strengths (6/5, 3, 8)
+    m = 0.26894142137 [w 8.0e-41], M = 0.73105857863 [w 5.0e-40], kappa = 0.26894142137 [w 3.0e-40]
+    cH-B0(pi)                -0.1041666666667 [w 2.0e-40]                     sign -
+    B1(M)-cH                 1.517154821917 [w 4.0e-39]                       sign +
+    k-D0                     0.003333333333333 [w 7.0e-43]                    sign +
+    rho*kap*D1-k             0.02482357022833 [w 5.0e-41]                     sign +
+    cH-B2(M)                 0.3124646893843 [w 3.0e-39]                      sign +
+    rho*kap*D2-k             0.1859082757364 [w 2.0e-40]                      sign +
+    cH-B1(pi) [coord]        0.4083333333333 [w 2.0e-40]                      sign +
+    cH-B2(pi) [coord]        1.684375 [w 9.0e-41]                             sign +
+    F0 (6/5): pure equilibrium orders (0, 0), strict=True, entry E = 1.0 [w 4.0e-40], e(Q) = ['1.0 [w 0.0]', '1.0 [w 0.0]', '1.0 [w 0.0]'] unresolved=[]
+    F1 (3): pure equilibrium orders (1, -1), strict=True, entry E = 0.5227572972597 [w 2.0e-40], e(Q) = ['0.25 [w 0.0]', '0.25 [w 0.0]', '1.0 [w 0.0]'] unresolved=[]
+    F2 (8): pure equilibrium orders (1, -1), strict=True, entry E = 0.25 [w 1.0e-40], e(Q) = ['0.25 [w 0.0]', '0.25 [w 0.0]', '0.25 [w 0.0]'] unresolved=[]
+
+  Benchmark (c_H = 6, strengths 6/5, 3, 18/5) under the corrected (3):
+   Calibration A
+    cH-B0(pi)                287/240 (1.195833333333)                         sign +
+    B1(M)-cH                 1/6 (0.1666666666667)                            sign +
+    k-D0                     1/300 (0.003333333333333)                        sign +
+    rho*kap*D1-k             31/1200 (0.02583333333333)                       sign +
+    cH-B2(M)                 371/7200 (0.05152777777778)                      sign +
+    rho*kap*D2-k             1283/28800 (0.04454861111111)                    sign +
+    cH-B1(pi) [coord]        41/24 (1.708333333333)                           sign +
+    cH-B2(pi) [coord]        1343/720 (1.865277777778)                        sign +
+    r=1.2: orders (0, 0) strict=True E=1/4 (0.25) O_H=1/8 (0.125)
+    r=3: orders (1, -1) strict=True E=37/68 (0.5441176470588) O_H=23/68 (0.3382352941176)
+    r=3.6: orders (1, -1) strict=True E=1/4 (0.25) O_H=1/8 (0.125)
+   Calibration B
+    cH-B0(pi)                1.195833333333 [w 9.0e-41]                       sign +
+    B1(M)-cH                 0.2171548219167 [w 4.0e-39]                      sign +
+    k-D0                     0.003333333333333 [w 7.0e-43]                    sign +
+    rho*kap*D1-k             0.02482357022833 [w 5.0e-41]                     sign +
+    cH-B2(M)                 0.002688902265905 [w 4.0e-39]                    sign +
+    rho*kap*D2-k             0.04312652807157 [w 7.0e-41]                     sign +
+    cH-B1(pi) [coord]        1.708333333333 [w 9.0e-41]                       sign +
+    cH-B2(pi) [coord]        1.865277777778 [w 3.0e-40]                       sign +
+    r=1.2: orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41]
+    r=3: orders (1, -1) strict=True E=0.5227572972597 [w 2.0e-40] O_H=0.3244015620457 [w 1.0e-40]
+    r=3.6: orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41]
+
+  Prior windows at the benchmark (all other inputs fixed): solve M(pi) = tau_1 and M(pi) = tau_2
+   A: window (1551/3262 (0.4754751686082), 46695/91906 (0.5080734663678))
+     margins at pi = 1551/3262 (0.4754751686082):
+       cH-B0(pi)                26397/18640 (1.41614806867)                      sign +
+       B1(M)-cH                 0 (0.0)                                          sign 0/unresolved
+       k-D0                     1/300 (0.003333333333333)                        sign +
+       rho*kap*D1-k             15099/666800 (0.02264397120576)                  sign +
+       cH-B2(M)                 851/4000 (0.21275)                               sign +
+       rho*kap*D2-k             641039/16003200 (0.04005692611478)               sign +
+       cH-B1(pi) [coord]        24957/13048 (1.912706928265)                     sign +
+       cH-B2(pi) [coord]        269177/130480 (2.062975168608)                   sign +
+     margins at pi = 46695/91906 (0.5080734663678):
+       cH-B0(pi)                825909/735248 (1.123306693796)                   sign +
+       B1(M)-cH                 2553/11608 (0.2199345279118)                     sign +
+       k-D0                     1/300 (0.003333333333333)                        sign +
+       rho*kap*D1-k             21563/870600 (0.02476797610843)                  sign +
+       cH-B2(M)                 0 (0.0)                                          sign 0/unresolved
+       rho*kap*D2-k             899467/20894400 (0.04304823301937)               sign +
+       cH-B1(pi) [coord]        603291/367624 (1.641054446935)                   sign +
+       cH-B2(pi) [coord]        1323591/735248 (1.800196668335)                  sign +
+   B: window (0.4678500296861 [w 1.0e-40], 0.5004243073201 [w 1.0e-40])
+     margins at pi = 0.4678500296861 [w 1.0e-40]:
+       cH-B0(pi)                1.484647233319 [w 1.0e-39]                       sign +
+       B1(M)-cH                 4.5917748079e-41 [w 8.0e-39]                     sign 0/unresolved
+       k-D0                     0.003333333333333 [w 7.0e-43]                    sign +
+       rho*kap*D1-k             0.02073112827018 [w 4.0e-41]                     sign +
+       cH-B2(M)                 0.21275 [w 8.0e-39]                              sign +
+       rho*kap*D2-k             0.03736300564717 [w 5.0e-41]                     sign +
+       cH-B1(pi) [coord]        1.976249752615 [w 1.0e-39]                       sign +
+       cH-B2(pi) [coord]        2.124442260697 [w 1.0e-39]                       sign +
+     margins at pi = 0.5004243073201 [w 1.0e-40]:
+       cH-B0(pi)                1.192021639241 [w 1.0e-39]                       sign +
+       B1(M)-cH                 0.2199345279118 [w 8.0e-39]                      sign +
+       k-D0                     0.003333333333333 [w 7.0e-43]                    sign +
+       rho*kap*D1-k             0.02476797610843 [w 2.0e-40]                     sign +
+       cH-B2(M)                 9.183549615799e-41 [w 8.0e-39]                   sign 0/unresolved
+       rho*kap*D2-k             0.04304823301937 [w 2.0e-40]                     sign +
+       cH-B1(pi) [coord]        1.704797438999 [w 1.0e-39]                       sign +
+       cH-B2(pi) [coord]        1.861857389325 [w 1.0e-39]                       sign +
+
+  All-strategy posterior bound at the zero flow (sup over pure strategies) versus M; prior 1/2
+   A: lambda=6/17 beta=1/3: M = 29/40 (0.725); max zero-flow posterior = 29/40 (0.725)
+   beta=2/5: lambda=6/17 beta=2/5: M = 26/37 (0.7027027027027); max zero-flow posterior = 41/52 (0.7884615384615)
+   beta=1/4: lambda=6/17 beta=1/4: M = 35/46 (0.7608695652174); max zero-flow posterior = 23/34 (0.6764705882353)
+   B: beta = 0.2946555756848 [w 8.0e-41] (below 1/3 when the sign is negative: - )
+
+  Ownership: paper's sufficient condition versus the slot condition (6) when b + lambda < 1/2
+   Own example: point masses 10 and 1, p=1/2, rho=1/4, pi=1/10, lambda=2/25, beta=1/125,
+   strengths (21/20, 40/3, 40), c_H = 17/10, k = 1/200.
+   b + lambda = 273/3125 (0.08736)
+    cH-B0(pi)                3721/8400 (0.4429761904762)                      sign +
+    B1(M)-cH                 5627/12800 (0.439609375)                         sign +
+    k-D0                     2/525 (0.003809523809524)                        sign +
+    rho*kap*D1-k             5761/793600 (0.007259324596774)                  sign +
+    cH-B2(M)                 12631/12800 (0.986796875)                        sign +
+    rho*kap*D2-k             2063/158720 (0.01299773185484)                   sign +
+    cH-B1(pi) [coord]        2081/1600 (1.300625)                             sign +
+    cH-B2(pi) [coord]        2507/1600 (1.566875)                             sign +
+    r=21/20: orders (0, 0) strict=True E=1/4 (0.25) W_H=1 (1.0) O_H=1/40 (0.025)
+    r=40/3: orders (1, -1) strict=True E=3269/12500 (0.26152) W_H=3/4 (0.75) O_H=1479/62500 (0.023664)
+    r=40: orders (1, -1) strict=True E=1/4 (0.25) W_H=1/4 (0.25) O_H=1/160 (0.00625)
+   paper sufficient margin (1+rho)W_H(F1) - 2 rho W_H(F0) = 7/16 (0.4375)
+   slot condition (6) margin e_H W_H(F1) - rho W_H(F0)      = -167/12500 (-0.01336)
+
+====================================================================================================
+2. X2: two-class examples with the paper's costs and strengths
+====================================================================================================
+
+  Moderate values (h=2): pi=1/2, c_H=89/100, k=1/500, strengths ('21/20', '3/2')
+    r=21/20: t0=11/42 (0.2619047619048) tH=541/840 (0.6440476190476) tL=9/14 (0.6428571428571) gH=1139/840 (1.355952380952) gL=5/14 (0.3571428571429) D=1/840 (0.001190476190476) W_H=1 (1.0)
+    r=3/2: t0=1/3 (0.3333333333333) tH=5/6 (0.8333333333333) tL=3/4 (0.75) gH=7/6 (1.166666666667) gL=1/4 (0.25) D=1/12 (0.08333333333333) W_H=1 (1.0)
+   Calibration A: m=11/40 (0.275) M=29/40 (0.725) kappa=11/40 (0.275)
+    cH-B0(pi)                281/8400 (0.03345238095238)                      sign +
+    B1(M)-cH                 59/2400 (0.02458333333333)                       sign +
+    k-D0                     17/21000 (0.0008095238095238)                    sign +
+    rho*kap*D1-k             179/48000 (0.003729166666667)                    sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=21/20: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=1/8 (0.125) unresolved=[]
+    r=3/2: pure eq orders (1, -1) strict=True E=37/68 (0.5441176470588) O_H=23/68 (0.3382352941176) unresolved=[]
+   Calibration B: m=0.26894142137 [w 8.0e-41] M=0.73105857863 [w 5.0e-40] kappa=0.26894142137 [w 3.0e-40]
+    cH-B0(pi)                0.03345238095238 [w 5.0e-41]                     sign +
+    B1(M)-cH                 0.03013703041084 [w 5.0e-40]                     sign +
+    k-D0                     0.0008095238095238 [w 7.0e-44]                   sign +
+    rho*kap*D1-k             0.003602946278542 [w 6.0e-42]                    sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=21/20: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41] unresolved=[]
+    r=3/2: pure eq orders (1, -1) strict=True E=0.5227572972597 [w 2.0e-40] O_H=0.3244015620457 [w 1.0e-40] unresolved=[]
+
+  Point-mass benchmark: pi=1/2, c_H=6, k=1/50, strengths ('6/5', '3', '18/5')
+    r=6/5: t0=7/24 (0.2916666666667) tH=169/240 (0.7041666666667) tL=11/16 (0.6875) gH=2231/240 (9.295833333333) gL=5/16 (0.3125) D=1/60 (0.01666666666667) W_H=1 (1.0)
+    r=3: t0=5/12 (0.4166666666667) tH=37/24 (1.541666666667) tL=7/8 (0.875) gH=203/24 (8.458333333333) gL=1/8 (0.125) D=2/3 (0.6666666666667) W_H=1 (1.0)
+    r=18/5: t0=31/72 (0.4305555555556) tH=1321/720 (1.834722222222) tL=43/48 (0.8958333333333) gH=5879/720 (8.165277777778) gL=5/48 (0.1041666666667) D=169/180 (0.9388888888889) W_H=1 (1.0)
+   Calibration A: m=11/40 (0.275) M=29/40 (0.725) kappa=11/40 (0.275)
+    cH-B0(pi)                287/240 (1.195833333333)                         sign +
+    B1(M)-cH                 1/6 (0.1666666666667)                            sign +
+    k-D0                     1/300 (0.003333333333333)                        sign +
+    rho*kap*D1-k             31/1200 (0.02583333333333)                       sign +
+    cH-B2(M)                 371/7200 (0.05152777777778)                      sign +
+    rho*kap*D2-k             1283/28800 (0.04454861111111)                    sign +
+    cH-B1(pi) [coord]        41/24 (1.708333333333)                           sign +
+    cH-B2(pi) [coord]        1343/720 (1.865277777778)                        sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=6/5: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=1/8 (0.125) unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=37/68 (0.5441176470588) O_H=23/68 (0.3382352941176) unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=1/8 (0.125) unresolved=[]
+   Calibration B: m=0.26894142137 [w 8.0e-41] M=0.73105857863 [w 5.0e-40] kappa=0.26894142137 [w 3.0e-40]
+    cH-B0(pi)                1.195833333333 [w 9.0e-41]                       sign +
+    B1(M)-cH                 0.2171548219167 [w 4.0e-39]                      sign +
+    k-D0                     0.003333333333333 [w 7.0e-43]                    sign +
+    rho*kap*D1-k             0.02482357022833 [w 5.0e-41]                     sign +
+    cH-B2(M)                 0.002688902265905 [w 4.0e-39]                    sign +
+    rho*kap*D2-k             0.04312652807157 [w 7.0e-41]                     sign +
+    cH-B1(pi) [coord]        1.708333333333 [w 9.0e-41]                       sign +
+    cH-B2(pi) [coord]        1.865277777778 [w 3.0e-40]                       sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=6/5: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41] unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=0.5227572972597 [w 2.0e-40] O_H=0.3244015620457 [w 1.0e-40] unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41] unresolved=[]
+
+  Narrow bands (half-width 1/20): pi=1/2, c_H=6, k=1/50, strengths ('6/5', '3', '18/5')
+    r=6/5: t0=7/24 (0.2916666666667) tH=169/240 (0.7041666666667) tL=1979/2880 (0.6871527777778) gH=2231/240 (9.295833333333) gL=901/2880 (0.3128472222222) D=49/2880 (0.01701388888889) W_H=1 (1.0)
+    r=3: t0=5/12 (0.4166666666667) tH=37/24 (1.541666666667) tL=6299/7200 (0.8748611111111) gH=203/24 (8.458333333333) gL=901/7200 (0.1251388888889) D=4801/7200 (0.6668055555556) W_H=1 (1.0)
+    r=18/5: t0=31/72 (0.4305555555556) tH=1321/720 (1.834722222222) tL=7739/8640 (0.8957175925926) gH=5879/720 (8.165277777778) gL=901/8640 (0.1042824074074) D=8113/8640 (0.9390046296296) W_H=1 (1.0)
+   Calibration A: m=11/40 (0.275) M=29/40 (0.725) kappa=11/40 (0.275)
+    cH-B0(pi)                6887/5760 (1.195659722222)                       sign +
+    B1(M)-cH                 48011/288000 (0.1667048611111)                   sign +
+    k-D0                     43/14400 (0.002986111111111)                     sign +
+    rho*kap*D1-k             29771/1152000 (0.02584288194444)                 sign +
+    cH-B2(M)                 17797/345600 (0.05149594907407)                  sign +
+    rho*kap*D2-k             12319/276480 (0.04455656828704)                  sign +
+    cH-B1(pi) [coord]        24599/14400 (1.708263888889)                     sign +
+    cH-B2(pi) [coord]        32231/17280 (1.865219907407)                     sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=6/5: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=1/8 (0.125) unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=37/68 (0.5441176470588) O_H=23/68 (0.3382352941176) unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=1/8 (0.125) unresolved=[]
+   Calibration B: m=0.26894142137 [w 8.0e-41] M=0.73105857863 [w 5.0e-40] kappa=0.26894142137 [w 3.0e-40]
+    cH-B0(pi)                1.195659722222 [w 3.0e-40]                       sign +
+    B1(M)-cH                 0.2171921748919 [w 5.0e-39]                      sign +
+    k-D0                     0.002986111111111 [w 7.0e-43]                    sign +
+    rho*kap*D1-k             0.02483290847213 [w 5.0e-41]                     sign +
+    cH-B2(M)                 0.00265777478658 [w 5.0e-39]                     sign +
+    rho*kap*D2-k             0.0431343099414 [w 7.0e-41]                      sign +
+    cH-B1(pi) [coord]        1.708263888889 [w 3.0e-40]                       sign +
+    cH-B2(pi) [coord]        1.865219907407 [w 3.0e-40]                       sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=6/5: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41] unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=0.5227572972597 [w 2.0e-40] O_H=0.3244015620457 [w 1.0e-40] unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.125 [w 5.0e-41] unresolved=[]
+    band spread at r=6/5: quadrature 49/2880 vs ((r-1)^2+eps^2/3)/(2r) = 49/2880
+    band spread at r=3: quadrature 4801/7200 vs ((r-1)^2+eps^2/3)/(2r) = 4801/7200
+    band spread at r=18/5: quadrature 8113/8640 vs ((r-1)^2+eps^2/3)/(2r) = 8113/8640
+
+  Exhibit case A: pi=3/10, c_H=9/2, k=1/100, strengths ('11/10', '3', '18/5')
+    r=11/10: t0=3/11 (0.2727272727273) tH=73/110 (0.6636363636364) tL=29/44 (0.6590909090909) gH=1027/110 (9.336363636364) gL=15/44 (0.3409090909091) D=1/220 (0.004545454545455) W_H=1 (1.0)
+    r=3: t0=5/12 (0.4166666666667) tH=37/24 (1.541666666667) tL=7/8 (0.875) gH=203/24 (8.458333333333) gL=1/8 (0.125) D=2/3 (0.6666666666667) W_H=1 (1.0)
+    r=18/5: t0=31/72 (0.4305555555556) tH=1321/720 (1.834722222222) tL=43/48 (0.8958333333333) gH=5879/720 (8.165277777778) gL=5/48 (0.1041666666667) D=169/180 (0.9388888888889) W_H=1 (1.0)
+   Calibration A: m=33/236 (0.1398305084746) M=87/164 (0.530487804878) kappa=33/236 (0.1398305084746)
+    cH-B0(pi)                3213/2200 (1.460454545455)                       sign +
+    B1(M)-cH                 15/328 (0.04573170731707)                        sign +
+    k-D0                     3/550 (0.005454545454545)                        sign +
+    rho*kap*D1-k             157/11800 (0.01330508474576)                     sign +
+    cH-B2(M)                 49/410 (0.119512195122)                          sign +
+    rho*kap*D2-k             6463/283200 (0.02282132768362)                   sign +
+    cH-B1(pi) [coord]        15/8 (1.875)                                     sign +
+    cH-B2(pi) [coord]        791/400 (1.9775)                                 sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=11/10: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=3/40 (0.075) unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=167/340 (0.4911764705882) O_H=69/340 (0.2029411764706) unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=3/40 (0.075) unresolved=[]
+   Calibration B: m=0.1361904714222 [w 6.0e-41] M=0.5381015262244 [w 4.0e-40] kappa=0.1361904714222 [w 6.0e-41]
+    cH-B0(pi)                1.460454545455 [w 2.0e-40]                       sign +
+    B1(M)-cH                 0.1091793852037 [w 3.0e-39]                      sign +
+    k-D0                     0.005454545454545 [w 3.0e-43]                    sign +
+    rho*kap*D1-k             0.0126984119037 [w 1.0e-41]                      sign +
+    cH-B2(M)                 0.05813714137958 [w 3.0e-39]                     sign +
+    rho*kap*D2-k             0.02196693009771 [w 1.0e-41]                     sign +
+    cH-B1(pi) [coord]        1.875 [w 2.0e-40]                                sign +
+    cH-B2(pi) [coord]        1.9775 [w 3.0e-40]                               sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=11/10: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.075 [w 3.0e-41] unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=0.4723389665271 [w 2.0e-40] O_H=0.1946409372274 [w 7.0e-41] unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.075 [w 3.0e-41] unresolved=[]
+
+  Exhibit case B: pi=7/10, c_H=36/5, k=1/100, strengths ('11/10', '3', '18/5')
+    r=11/10: t0=3/11 (0.2727272727273) tH=73/110 (0.6636363636364) tL=29/44 (0.6590909090909) gH=1027/110 (9.336363636364) gL=15/44 (0.3409090909091) D=1/220 (0.004545454545455) W_H=1 (1.0)
+    r=3: t0=5/12 (0.4166666666667) tH=37/24 (1.541666666667) tL=7/8 (0.875) gH=203/24 (8.458333333333) gL=1/8 (0.125) D=2/3 (0.6666666666667) W_H=1 (1.0)
+    r=18/5: t0=31/72 (0.4305555555556) tH=1321/720 (1.834722222222) tL=43/48 (0.8958333333333) gH=5879/720 (8.165277777778) gL=5/48 (0.1041666666667) D=169/180 (0.9388888888889) W_H=1 (1.0)
+   Calibration A: m=77/164 (0.469512195122) M=203/236 (0.8601694915254) kappa=33/236 (0.1398305084746)
+    cH-B0(pi)                1237/2200 (0.5622727272727)                      sign +
+    B1(M)-cH                 659/7080 (0.0930790960452)                       sign +
+    k-D0                     3/550 (0.005454545454545)                        sign +
+    rho*kap*D1-k             157/11800 (0.01330508474576)                     sign +
+    cH-B2(M)                 3439/21240 (0.1619114877589)                     sign +
+    rho*kap*D2-k             6463/283200 (0.02282132768362)                   sign +
+    cH-B1(pi) [coord]        149/120 (1.241666666667)                         sign +
+    cH-B2(pi) [coord]        5231/3600 (1.453055555556)                       sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=11/10: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=203/340 (0.5970588235294) O_H=161/340 (0.4735294117647) unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+   Calibration B: m=0.4618984737756 [w 1.0e-40] M=0.8638095285778 [w 7.0e-40] kappa=0.1361904714222 [w 7.0e-40]
+    cH-B0(pi)                0.5622727272727 [w 6.0e-40]                      sign +
+    B1(M)-cH                 0.1234127381484 [w 6.0e-39]                      sign +
+    k-D0                     0.005454545454545 [w 3.0e-43]                    sign +
+    rho*kap*D1-k             0.0126984119037 [w 1.0e-40]                      sign +
+    cH-B2(M)                 0.1325687446311 [w 6.0e-39]                      sign +
+    rho*kap*D2-k             0.02196693009771 [w 2.0e-40]                     sign +
+    cH-B1(pi) [coord]        1.241666666667 [w 5.0e-40]                       sign +
+    cH-B2(pi) [coord]        1.453055555556 [w 6.0e-40]                       sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=11/10: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+    r=3: pure eq orders (1, -1) strict=True E=0.5731756279924 [w 2.0e-40] O_H=0.4541621868639 [w 2.0e-40] unresolved=[]
+    r=18/5: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+
+  Exhibit case C: pi=7/10, c_H=67/10, k=1/50, strengths ('1', '9/2', '11/2')
+    r=1: t0=1/4 (0.25) tH=5/8 (0.625) tL=367/600 (0.6116666666667) gH=75/8 (9.375) gL=233/600 (0.3883333333333) D=1/75 (0.01333333333333) W_H=1 (1.0)
+    r=9/2: t0=4/9 (0.4444444444444) tH=8513/3888 (2.189557613169) tL=2459/2700 (0.9107407407407) gH=30367/3888 (7.810442386831) gL=241/2700 (0.08925925925926) D=124301/97200 (1.278816872428) W_H=599/648 (0.9243827160494)
+    r=11/2: t0=5/11 (0.4545454545455) tH=461/176 (2.619318181818) tL=3059/3300 (0.9269696969697) gH=1299/176 (7.380681818182) gL=241/3300 (0.0730303030303) D=22339/13200 (1.692348484848) W_H=79/88 (0.8977272727273)
+   Calibration A: m=77/164 (0.469512195122) M=203/236 (0.8601694915254) kappa=33/236 (0.1398305084746)
+    cH-B0(pi)                21/1000 (0.021)                                  sign +
+    B1(M)-cH                 706193/22939200 (0.03078542407756)               sign +
+    k-D0                     1/150 (0.006666666666667)                        sign +
+    rho*kap*D1-k             755599/30585600 (0.02470440337937)               sign +
+    cH-B2(M)                 354251/1038400 (0.3411508089368)                 sign +
+    rho*kap*D2-k             14787/377600 (0.03916048728814)                  sign +
+    cH-B1(pi) [coord]        1172147/972000 (1.20591255144)                   sign +
+    cH-B2(pi) [coord]        66511/44000 (1.511613636364)                     sign +
+    ownership (6) margin 8269/22032 (0.3753177196805); paper sufficient margin s_W 1699/2592 (0.6554783950617)
+    r=1: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+    r=9/2: pure eq orders (1, -1) strict=True E=203/340 (0.5970588235294) O_H=96439/220320 (0.4377224037763) unresolved=[]
+    r=11/2: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=553/3520 (0.1571022727273) unresolved=[]
+   Calibration B: m=0.4618984737756 [w 1.0e-40] M=0.8638095285778 [w 7.0e-40] kappa=0.1361904714222 [w 7.0e-40]
+    cH-B0(pi)                0.021 [w 6.0e-40]                                sign +
+    B1(M)-cH                 0.0588908167502 [w 6.0e-39]                      sign +
+    k-D0                     0.006666666666667 [w 5.0e-43]                    sign +
+    rho*kap*D1-k             0.02354066817965 [w 2.0e-40]                     sign +
+    cH-B2(M)                 0.3145506866557 [w 6.0e-39]                      sign +
+    rho*kap*D2-k             0.03762043449054 [w 3.0e-40]                     sign +
+    cH-B1(pi) [coord]        1.20591255144 [w 5.0e-40]                        sign +
+    cH-B2(pi) [coord]        1.511613636364 [w 5.0e-40]                       sign +
+    ownership (6) margin 0.3497423940289 [w 1.0e-40]; paper sufficient margin s_W 0.6554783950617 [w 2.0e-41]
+    r=1: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+    r=9/2: pure eq orders (1, -1) strict=True E=0.5731756279924 [w 2.0e-40] O_H=0.4198196758202 [w 2.0e-40] unresolved=[]
+    r=11/2: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.1571022727273 [w 7.0e-41] unresolved=[]
+
+  Exhibit case D: pi=7/10, c_H=67/10, k=1/50, strengths ('1', '9/2', '11/2')
+    r=1: t0=1/4 (0.25) tH=5/8 (0.625) tL=5/8 (0.625) gH=75/8 (9.375) gL=3/8 (0.375) D=0 (0.0) W_H=1 (1.0)
+    r=9/2: t0=4/9 (0.4444444444444) tH=41/18 (2.277777777778) tL=11/12 (0.9166666666667) gH=139/18 (7.722222222222) gL=1/12 (0.08333333333333) D=49/36 (1.361111111111) W_H=1 (1.0)
+    r=11/2: t0=5/11 (0.4545454545455) tH=61/22 (2.772727272727) tL=41/44 (0.9318181818182) gH=159/22 (7.227272727273) gL=3/44 (0.06818181818182) D=81/44 (1.840909090909) W_H=1 (1.0)
+   Calibration A: m=77/164 (0.469512195122) M=203/236 (0.8601694915254) kappa=33/236 (0.1398305084746)
+    cH-B0(pi)                1/40 (0.025)                                     sign +
+    B1(M)-cH                 -1951/42480 (-0.0459274952919)                   sign -
+    k-D0                     1/50 (0.02)                                      sign +
+    rho*kap*D1-k             7811/283200 (0.02758121468927)                   sign +
+    cH-B2(M)                 24599/51920 (0.4737865947612)                    sign +
+    rho*kap*D2-k             4187/94400 (0.04435381355932)                    sign +
+    cH-B1(pi) [coord]        457/360 (1.269444444444)                         sign +
+    cH-B2(pi) [coord]        713/440 (1.620454545455)                         sign +
+    ownership (6) margin 29/68 (0.4264705882353); paper sufficient margin s_W 3/4 (0.75)
+    r=1: pure eq orders (0, 0) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+    r=9/2: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+    r=11/2: pure eq orders (1, -1) strict=True E=1/4 (0.25) O_H=7/40 (0.175) unresolved=[]
+   Calibration B: m=0.4618984737756 [w 1.0e-40] M=0.8638095285778 [w 7.0e-40] kappa=0.1361904714222 [w 7.0e-40]
+    cH-B0(pi)                0.025 [w 3.0e-40]                                sign +
+    B1(M)-cH                 -0.01812165669727 [w 6.0e-39]                    sign -
+    k-D0                     0.02 [w 4.0e-43]                                 sign +
+    rho*kap*D1-k             0.02634259097005 [w 2.0e-40]                     sign +
+    cH-B2(M)                 0.4477272385907 [w 5.0e-39]                      sign +
+    rho*kap*D2-k             0.04267856923408 [w 3.0e-40]                     sign +
+    cH-B1(pi) [coord]        1.269444444444 [w 6.0e-40]                       sign +
+    cH-B2(pi) [coord]        1.620454545455 [w 5.0e-40]                       sign +
+    ownership (6) margin 0.3988031240913 [w 1.0e-40]; paper sufficient margin s_W 0.75 [w 0.0]
+    r=1: pure eq orders (0, 0) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+    r=9/2: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+    r=11/2: pure eq orders (1, -1) strict=True E=0.25 [w 1.0e-40] O_H=0.175 [w 7.0e-41] unresolved=[]
+
+  Constructive sequence of Online Appendix C.4 (prior 1/2): first feasible n in 1..20
+  recipe 'paper': k = [D(r0) + (1/2) rho m D(r1)]/2 ; recipe 'slot': k = [D(r0) + rho m D(r1)]/2;
+  c_H = [B_r0(1/2) + B_r1(M)]/2. Feasible: D(r0) < k < rho*kappa*D(r1) and B_r0(1/2) < c_H < B_r1(M).
+   h/l=1.05: A/paper: n=3 k=419/862003200 (4.860770818484e-7) c_H=17425693/43100160 (0.4043069213664); A/slot: n=2 k=2257/443750400 (5.086192598362e-6) c_H=22337113/55468800 (0.4026968854563); B/paper: n=3 k=4.787272921672e-7 [w 1.0e-46] c_H=0.4044583270338 [w 3.0e-41]; B/slot: n=2 k=5.027757233489e-6 [w 1.0e-45] c_H=0.4028481161806 [w 3.0e-41]
+     n=3: B-valued costs inside calibration A's windows: signs [1, 1, 1, 1]
+     n=1: B paper-recipe trade window width -6.691120185422e-5 [w 7.0e-45]
+     n=2: B paper-recipe trade window width -2.27364463567e-6 [w 9.0e-46]
+   h/l=1.1: A/paper: n=3 k=1.935595363629e-6 c_H=115270109/265835520 (0.433614398106); A/slot: n=2 k=3411/168985600 (2.018515187093e-5) c_H=9091359/21123200 (0.4303968622178); B/paper: n=3 k=1.906377681193e-6 [w 4.0e-46] c_H=0.4339170932961 [w 4.0e-41]; B/slot: n=2 k=1.995426091704e-5 [w 4.0e-45] c_H=0.4306988675855 [w 5.0e-41]
+     n=3: B-valued costs inside calibration A's windows: signs [1, 1, 1, 1]
+     n=1: B paper-recipe trade window width -0.0002648570039338 [w 2.0e-44]
+     n=2: B paper-recipe trade window width -9.160645915257e-6 [w 4.0e-45]
+   h/l=1.25: A/paper: n=3 k=377/31580160 (1.193787491894e-5) c_H=45293377/86845440 (0.5215400716491); A/slot: n=2 k=279/2263040 (0.0001232854920814) c_H=145263/282880 (0.5135145644796); B/paper: n=3 k=1.17585845949e-5 [w 3.0e-45] c_H=0.5222959596553 [w 9.0e-41]; B/slot: n=2 k=0.0001218933554477 [w 2.0e-44] c_H=0.5142663182619 [w 9.0e-41]
+     n=3: B-valued costs inside calibration A's windows: signs [1, 1, 1, 1]
+     n=1: B paper-recipe trade window width -0.001604779199178 [w 1.0e-43]
+     n=2: B paper-recipe trade window width -5.839510609075e-5 [w 2.0e-44]
+   h/l=1.5: A/paper: n=3 k=2099/44912640 (4.673517299362e-5) c_H=7501457/11228160 (0.6680931693171); A/slot: n=2 k=241/506880 (0.0004754577020202) c_H=41317/63360 (0.6520991161616); B/paper: n=3 k=4.603910467675e-5 [w 1.0e-44] c_H=0.6696022454281 [w 1.0e-40]; B/slot: n=3 k=7.693770547753e-5 [w 2.0e-44] c_H=0.6696022454281 [w 1.0e-40]
+     n=3: B-valued costs inside calibration A's windows: signs [1, 1, 1, 1]
+     n=1: B paper-recipe trade window width -0.006104002502663 [w 4.0e-43]
+     n=2: B paper-recipe trade window width -0.0002400287535456 [w 8.0e-44]
+   h/l=2.0: A/paper: n=3 k=43/239616 (0.000179453792735) c_H=287909/299520 (0.961234642094); A/slot: n=3 k=179/599040 (0.0002988114316239) c_H=287909/299520 (0.961234642094); B/paper: n=3 k=0.0001768242013158 [w 4.0e-44] c_H=0.9642428946777 [w 3.0e-40]; B/slot: n=3 k=0.0002935522487854 [w 8.0e-44] c_H=0.9642428946777 [w 3.0e-40]
+     n=3: B-valued costs inside calibration A's windows: signs [1, 1, 1, 1]
+     n=1: B paper-recipe trade window width -0.02219852686073 [w 1.0e-42]
+     n=2: B paper-recipe trade window width -0.0009977933523364 [w 3.0e-43]
+
+====================================================================================================
+3. X2 with three classes: E1's pooled-price equilibrium, perturbation, collinearity, likelihood ratios
+====================================================================================================
+  R~U[0,8], p=1: t0=7/8; value 1: t=1, g=0; value 10: t=65/16, g=95/16
+
+  Calibration A: mixture weight w = 91/102 (0.8921568627451); 2b+b0+lam = 1 (1.0)
+    flow -1: posterior ['29/62 (0.4677419354839)', '11/31 (0.3548387096774)', '11/62 (0.1774193548387)']
+             tbar=63565/25296 (2.512847881088) Bbar=74195/25296 (2.933072422517) price=129967/101184 (1.284461970272) e=1/4 (0.25)
+    flow +0: posterior ['11/80 (0.1375)', '29/40 (0.725)', '11/80 (0.1375)']
+             tbar=347/102 (3.401960784314) Bbar=475/102 (4.656862745098) price=2459/1632 (1.506740196078) e=1/4 (0.25)
+    flow +1: posterior ['11/62 (0.1774193548387)', '11/31 (0.3548387096774)', '29/62 (0.4677419354839)']
+             tbar=347/102 (3.401960784314) Bbar=475/102 (4.656862745098) price=2459/1632 (1.506740196078) e=1/4 (0.25)
+    price cells: [[-1], [0, 1]]; tbar(0)-tbar(+1) = 0 (0.0); Bbar(0)-Bbar(+1) = 0 (0.0)
+    class 1: sell 25621/101184 (0.253211970272), wait 0 (0.0), buy -37/51 (-0.7254901960784); prescribed -1; strict best response signs [1, 1]
+    class 2: sell -86987/202368 (-0.4298456277672), wait 0 (0.0), buy -277/6528 (-0.04243259803922); prescribed +0; strict best response signs [1, 1]
+    class 3: sell -6481/12648 (-0.512413029728), wait 0 (0.0), buy 131/3264 (0.04013480392157); prescribed +1; strict best response signs [1, 1]
+    max class profit 95/16 (5.9375) < c_H = 10; zero-cost entry has B > 0 at every flow: ['+', '+', '+']
+
+  Calibration B: mixture weight w = 0.9407083097495 [w 7.0e-40]; 2b+b0+lam = 1.0 [w 4.0e-40]
+    flow -1: posterior ['0.4753668864187 [w 3.0e-40]', '0.3497554090542 [w 3.0e-40]', '0.1748777045271 [w 1.0e-40]']
+             tbar=2.543180042876 [w 3.0e-39] Bbar=2.991879674963 [w 4.0e-39] price=1.292045010719 [w 7.0e-40] e=0.25 [w 0.0]
+    flow +0: posterior ['0.1546642083186 [w 1.0e-40]', '0.6906715833628 [w 6.0e-40]', '0.1546642083186 [w 1.0e-40]']
+             tbar=3.463428162418 [w 5.0e-39] Bbar=4.776034192444 [w 7.0e-39] price=1.522107040605 [w 1.0e-39] e=0.25 [w 0.0]
+    flow +1: posterior ['0.1748777045271 [w 1.0e-40]', '0.3497554090542 [w 3.0e-40]', '0.4753668864187 [w 3.0e-40]']
+             tbar=3.463428162418 [w 3.0e-39] Bbar=4.776034192444 [w 5.0e-39] price=1.522107040605 [w 9.0e-40] e=0.25 [w 0.0]
+    price cells: [[-1], [0, 1]]; tbar(0)-tbar(+1) = -4.5917748079e-41 [w 8.0e-39]; Bbar(0)-Bbar(+1) = -4.5917748079e-41 [w 1.0e-38]
+    class 1: sell 0.2607950107189 [w 7.0e-40], wait 0.0 [w 0.0], buy -0.7408570406046 [w 8.0e-40]; prescribed -1; strict best response signs [1, 1]
+    class 2: sell -0.4594347889331 [w 1.0e-39], wait 0.0 [w 0.0], buy -0.02062724095265 [w 1.0e-39]; prescribed +0; strict best response signs [1, 1]
+    class 3: sell -0.5048299892811 [w 7.0e-40], wait 0.0 [w 0.0], buy 0.0247679593954 [w 8.0e-40]; prescribed +1; strict best response signs [1, 1]
+    max class profit 5.9375 [w 0.0] < c_H = 10; zero-cost entry has B > 0 at every flow: ['+', '+', '+']
+
+  Perturbation under A: mixture weight 91/102 +- 1/1000
+   w = 45551/51000: prices ['129994489/101184000 (1.284733643659)', '196792471/130560000 (1.507295274203)', '152485489/101184000 (1.507011869466)']; cells [[-1], [0], [1]]; orders (-1,0,1) strict: True
+   w = 45449/51000: prices ['129939511/101184000 (1.284190296885)', '196647529/130560000 (1.506185117953)', '152430511/101184000 (1.506468522691)']; cells [[-1], [0], [1]]; orders (-1,0,1) strict: True
+
+  Slot likelihood ratio f(+1|q)/f(0|q) by informed order q (MLR in q fails if not nondecreasing):
+   A: q=-1: 1 (1.0), q=+0: 11/29 (0.3793103448276), q=+1: 29/11 (2.636363636364)
+   B: q=-1: 0.7174667066502 [w 7.0e-40], q=+0: 0.3213290450977 [w 2.0e-40], q=+1: 1.950276711212 [w 2.0e-39]
+
+====================================================================================================
+4. X5: access to prices at the strong benchmark (r = 3), by direct summation
+====================================================================================================
+  S0=35/24 SH=10 SL=5/3 pF(p)=1/12
+
+  Calibration A, c_H = 6: B(m)-cH -43/12 (-3.583333333333), B(pi)-cH -41/24 (-1.708333333333), B(M)-cH 1/6 (0.1666666666667); B(m)+pF(p)-cH -7/2 (-3.5)
+    access: orders (1, -1) strict=True E=37/68 (0.5441176470588) proceeds=485/544 (0.8915441176471) net surplus=4285/1632 (2.625612745098)
+    hidden: orders (1, -1) strict=True E=1/4 (0.25) proceeds=59/96 (0.6145833333333) net surplus=245/96 (2.552083333333)
+    access minus hidden: proceeds 113/408 (0.2769607843137), net surplus 5/68 (0.07352941176471)
+    full-order bound rho*kappa*D - k = 31/1200 (0.02583333333333)
+    informed gross trading profit (unconditional) = 11/272 (0.04044117647059); break-even trade scale = proceeds gain / profit = 226/33 (6.848484848485) (paper, Laplace: 0.140731 and 1.831923)
+
+  Calibration A, c_H = 49/20: B(m)-cH -1/30 (-0.03333333333333), B(pi)-cH 221/120 (1.841666666667), B(M)-cH 223/60 (3.716666666667); B(m)+pF(p)-cH 1/20 (0.05)
+    access: orders (1, -1) strict=True E=12/17 (0.7058823529412) proceeds=52/51 (1.019607843137) net surplus=16243/4080 (3.98112745098)
+    hidden: orders (1, -1) strict=True E=1 (1.0) proceeds=29/24 (1.208333333333) net surplus=959/240 (3.995833333333)
+    access minus hidden: proceeds -77/408 (-0.1887254901961), net surplus -1/68 (-0.01470588235294)
+    full-order bound rho*kappa*D - k = 31/1200 (0.02583333333333)
+
+  Calibration B, c_H = 6: B(m)-cH -3.633821488583 [w 7.0e-40], B(pi)-cH -1.708333333333 [w 9.0e-41], B(M)-cH 0.2171548219167 [w 4.0e-39]; B(m)+pF(p)-cH -3.55048815525 [w 8.0e-40]
+    access: orders (1, -1) strict=True E=0.5227572972597 [w 2.0e-40] proceeds=0.8725314692745 [w 2.0e-40] net surplus=2.634043670418 [w 2.0e-39]
+    hidden: orders (1, -1) strict=True E=0.25 [w 1.0e-40] proceeds=0.6145833333333 [w 1.0e-40] net surplus=2.552083333333 [w 6.0e-40]
+    access minus hidden: proceeds 0.2579481359412 [w 3.0e-40], net surplus 0.08196033708457 [w 2.0e-39]
+    full-order bound rho*kappa*D - k = 0.02482357022833 [w 5.0e-41]
+    informed gross trading profit (unconditional) = 0.03766549313983 [w 1.0e-40]; break-even trade scale = proceeds gain / profit = 6.848393965892 [w 3.0e-38] (paper, Laplace: 0.140731 and 1.831923)
+
+  Calibration B, c_H = 12/5: B(m)-cH -0.03382148858337 [w 8.0e-40], B(pi)-cH 1.891666666667 [w 1.0e-40], B(M)-cH 3.817154821917 [w 4.0e-39]; B(m)+pF(p)-cH 0.04951184474996 [w 8.0e-40]
+    access: orders (1, -1) strict=True E=0.7272427027403 [w 3.0e-40] proceeds=1.034415748613 [w 3.0e-40] net surplus=4.019828616377 [w 2.0e-39]
+    hidden: orders (1, -1) strict=True E=1.0 [w 4.0e-40] proceeds=1.208333333333 [w 4.0e-40] net surplus=4.033333333333 [w 3.0e-39]
+    access minus hidden: proceeds -0.1739175847201 [w 7.0e-40], net surplus -0.01350471695634 [w 5.0e-39]
+    full-order bound rho*kappa*D - k = 0.02482357022833 [w 5.0e-41]
+
+====================================================================================================
+5. X6: verifiable-value bargaining at zero reserve (acquisition stage only)
+====================================================================================================
+  r=6/5: Delta_eta = 1/60 + (269/30) eta ; paper (13): eta(h-l)+(1-2eta)E(R-l)+ = 1/60 + (269/30) eta; g_H,eta = (47/5)(1-eta); g_L,eta = (5/12)(1-eta)
+  r=3: Delta_eta = 2/3 + (23/3) eta ; paper (13): eta(h-l)+(1-2eta)E(R-l)+ = 2/3 + (23/3) eta; g_H,eta = (17/2)(1-eta); g_L,eta = (1/6)(1-eta)
+  Delta_eta(3) - Delta_eta(6/5) = 13/20 + (-13/10) eta  (zero at eta = 1/2)
+
+====================================================================================================
+6. X7: reserve comparisons (prior 1/2, c_H = 6, k = 1/50)
+====================================================================================================
+  point A r=6/5  p=1/2     bound(zero)=True  bound(full)=False orders (0, 0) E=1/4 (0.25) S=11/16 (0.6875) C2=7/48 (0.1458333333333) proceeds=377/960 (0.3927083333333) D=1/60 (0.01666666666667) zeta=[0, 0, 0]
+  point A r=6/5  p=101/100 bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=241/544 (0.4430147058824) C2=437/8160 (0.05355392156863) proceeds=738533/1632000 (0.4525324754902) D=6921/8000 (0.865125) zeta=[0, 0, 1]
+  point A r=6/5  p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=23/68 (0.3382352941176) C2=0 (0.0) proceeds=713/1360 (0.5242647058824) D=31/20 (1.55) zeta=[0, 0, 1]
+  point A r=3    p=1/2     bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=377/408 (0.9240196078431) C2=185/408 (0.453431372549) proceeds=485/544 (0.8915441176471) D=2/3 (0.6666666666667) zeta=[0, 0, 1]
+  point A r=3    p=101/100 bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=1057/1360 (0.7772058823529) C2=4577/20400 (0.224362745098) proceeds=4113533/4080000 (1.008218872549) D=20001/20000 (1.00005) zeta=[0, 0, 1]
+  point A r=3    p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=1/4 (0.25) S=263/480 (0.5479166666667) C2=29/480 (0.06041666666667) proceeds=17147/19200 (0.8930729166667) D=921/800 (1.15125) zeta=[0, 0, 0]
+  point B r=6/5  p=1/2     bound(zero)=True  bound(full)=False orders (0, 0) E=0.25 [w 1.0e-40] S=0.6875 [w 2.0e-40] C2=0.1458333333333 [w 6.0e-41] proceeds=0.3927083333333 [w 6.0e-41] D=1/60 (0.01666666666667) zeta=[0, 0, 0]
+  point B r=6/5  p=101/100 bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.4313713147218 [w 1.0e-40] C2=0.05136358065723 [w 2.0e-41] proceeds=0.4405645680314 [w 1.0e-40] D=6921/8000 (0.865125) zeta=[0, 0, 1]
+  point B r=6/5  p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.3244015620457 [w 1.0e-40] C2=0.0 [w 0.0] proceeds=0.5028224211708 [w 2.0e-40] D=31/20 (1.55) zeta=[0, 0, 1]
+  point B r=3    p=1/2     bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.9204595495433 [w 4.0e-40] C2=0.4356310810498 [w 2.0e-40] proceeds=0.8725314692745 [w 2.0e-40] D=2/3 (0.6666666666667) zeta=[0, 0, 1]
+  point B r=3    p=101/100 bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.7725485258887 [w 2.0e-40] C2=0.2151863694903 [w 8.0e-41] proceeds=0.9943844487904 [w 2.0e-40] D=20001/20000 (1.00005) zeta=[0, 0, 1]
+  point B r=3    p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=0.25 [w 1.0e-40] S=0.5479166666667 [w 1.0e-40] C2=0.06041666666667 [w 3.0e-41] proceeds=0.8930729166667 [w 1.0e-40] D=921/800 (1.15125) zeta=[0, 0, 0]
+  band  A r=6/5  p=1/2     bound(zero)=True  bound(full)=False orders (0, 0) E=1/4 (0.25) S=11/16 (0.6875) C2=7/48 (0.1458333333333) proceeds=9047/23040 (0.3926649305556) D=49/2880 (0.01701388888889) zeta=[0, 0, 0]
+  band  A r=6/5  p=11/10   bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=107/272 (0.3933823529412) C2=23/816 (0.0281862745098) proceeds=1417/3264 (0.4341299019608) D=81/80 (1.0125) zeta=[0, 0, 1]
+  band  A r=6/5  p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=23/68 (0.3382352941176) C2=0 (0.0) proceeds=713/1360 (0.5242647058824) D=31/20 (1.55) zeta=[0, 0, 1]
+  band  A r=3    p=1/2     bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=377/408 (0.9240196078431) C2=185/408 (0.453431372549) proceeds=218243/244800 (0.8915155228758) D=4801/7200 (0.6668055555556) zeta=[0, 0, 1]
+  band  A r=3    p=11/10   bound(zero)=False bound(full)=True  orders (1, -1) E=37/68 (0.5441176470588) S=103/136 (0.7573529411765) C2=437/2040 (0.2142156862745) proceeds=42293/40800 (1.036593137255) D=201/200 (1.005) zeta=[0, 0, 1]
+  band  A r=3    p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=1/4 (0.25) S=263/480 (0.5479166666667) C2=29/480 (0.06041666666667) proceeds=17147/19200 (0.8930729166667) D=921/800 (1.15125) zeta=[0, 0, 0]
+  band  B r=6/5  p=1/2     bound(zero)=True  bound(full)=False orders (0, 0) E=0.25 [w 1.0e-40] S=0.6875 [w 2.0e-40] C2=0.1458333333333 [w 6.0e-41] proceeds=0.3926649305556 [w 6.0e-41] D=49/2880 (0.01701388888889) zeta=[0, 0, 0]
+  band  B r=6/5  p=11/10   bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.3807014318752 [w 1.0e-40] C2=0.02703346350381 [w 1.0e-41] proceeds=0.4201232482379 [w 1.0e-40] D=81/80 (1.0125) zeta=[0, 0, 1]
+  band  B r=6/5  p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.3244015620457 [w 1.0e-40] C2=0.0 [w 0.0] proceeds=0.5028224211708 [w 2.0e-40] D=31/20 (1.55) zeta=[0, 0, 1]
+  band  B r=3    p=1/2     bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.9204595495433 [w 4.0e-40] C2=0.4356310810498 [w 2.0e-40] proceeds=0.8725039198668 [w 2.0e-40] D=4801/7200 (0.6668055555556) zeta=[0, 0, 1]
+  band  B r=3    p=11/10   bound(zero)=False bound(full)=True  orders (1, -1) E=0.5227572972597 [w 2.0e-40] S=0.7522805727501 [w 2.0e-40] C2=0.2054543226289 [w 7.0e-41] proceeds=1.022690236523 [w 2.0e-40] D=201/200 (1.005) zeta=[0, 0, 1]
+  band  B r=3    p=31/20   bound(zero)=False bound(full)=True  orders (1, -1) E=0.25 [w 1.0e-40] S=0.5479166666667 [w 1.0e-40] C2=0.06041666666667 [w 3.0e-41] proceeds=0.8930729166667 [w 1.0e-40] D=921/800 (1.15125) zeta=[0, 0, 0]
+
+  Margins for the narrowest recruiting node: bands, p = 11/10, r = 3 (B_1(M) - c_H)
+   A: 391/24000 (0.01629166666667)
+   B: 0.06656777166466 [w 4.0e-39]
+
+  Exact strong-economy recruiting event p_H = sqrt(2r(h - c_H/M) - r^2) at r = 3:
+   A: p_H^2 = 39/29 (1.344827586207); p_H = 1.159667015228 [w 2.0e-41]
+   B: p_H^2 = 1.756340117828 [w 4.0e-38]; p_H = 1.32526982831 [w 1.0e-38]
+
+  Endpoint reserve p = h = 10, point masses, r = 3:
+   A: gH=0 D=10 bound(full)=True orders (1, -1) E=1/4 (0.25) S=1/8 (0.125) C2=0 (0.0) proceeds=5/4 (1.25)
+   B: gH=0 D=10 bound(full)=True orders (1, -1) E=0.25 [w 1.0e-40] S=0.125 [w 5.0e-41] C2=0.0 [w 0.0] proceeds=1.25 [w 5.0e-40]
+
+  Strong-economy proceeds without high-cost entry, point masses, r = 3 (low class excluded):
+   p=1: proceeds with entry 1/4 = 5/6 (0.8333333333333)
+   p=29/25: proceeds with entry 1/4 = 12571/15000 (0.8380666666667)
+   p=6/5: proceeds with entry 1/4 = 339/400 (0.8475)
+   p=31/20: proceeds with entry 1/4 = 17147/19200 (0.8930729166667)
+   p=21/13: proceeds with entry 1/4 = 93/104 (0.8942307692308)
+
+  Reserve scan, point masses, p = 1 + j/200 (j = 1..200): strict deterrence (weak recruits at +1,
+  strong recruits nowhere), full orders forced at both strengths, proceeds above the p = 1/2 level
+  in both economies, and weak incumbent admissibility (p < 6/5).
+   A: strict deterrence on grid [1.160, 1.720] (113 grid points); plus higher proceeds in both [1.520, 1.710] (39 grid points); plus weak incumbent admissible empty
+      strict deterrence with weak incumbent admissible: [1.160, 1.195] (8 grid points)
+      p=29/25: strong proceeds 12571/15000 (0.8380666666667) vs p=1/2 level 485/544 (0.8915441176471)
+      p=239/200: strong proceeds 1625027/1920000 (0.8463682291667) vs p=1/2 level 485/544 (0.8915441176471)
+   B: strict deterrence on grid [1.330, 1.790] (93 grid points); plus higher proceeds in both [1.335, 1.790] (92 grid points); plus weak incumbent admissible empty
+      strict deterrence with weak incumbent admissible: empty
+
+====================================================================================================
+7. Diagnostic: can any slot calibration give the paper's X7 pattern at a reserve in (1, 6/5)?
+====================================================================================================
+  Point masses 10 and 1, prior 1/2, rho=1/4, c_H=6, k=1/50. Exact rationals on a grid.
+  Grid: M in {0.706, ..., 0.731} (benchmark Prop. 2 band), b in {0.005, 0.010, ...} with beta <= 1/2,
+  p in {1.005, ..., 1.195}. Pattern: full orders forced at r = 6/5 and 3; strong entry strictly below weak
+  entry; proceeds at p above proceeds at p = 1/2 in both economies (weak incumbent admissible: p < 6/5).
+  tested (M, b, p) triples: 56472; component counts {'deter': 38883, 'weakR': 20510, 'strongR': 40609, 'deter+weakR': 13737, 'deter+strongR': 23020, 'weakR+strongR': 6773}; triples with the full pattern: 0

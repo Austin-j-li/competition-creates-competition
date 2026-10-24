@@ -1,0 +1,1327 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{newtxtext,newtxmath}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\RR}{\mathcal R_T}
+\newcommand{\WW}{\mathcal W}
+\newcommand{\dd}{\,d}
+\input{../scripts/P2_auction/numbers.tex}
+\title{Value Classes, Welfare, and Sale Terms in the Order Slot}
+\author{}\date{23 October 2026}
+\begin{document}
+\maketitle
+
+This package proves R6 and R9. Section~\ref{sec:binary} also states the general two-class comparison that these results use.
+All numerical certificates use the exact slot primitives in the brief.
+The source manuscript is the version at commit \texttt{01bd5d6}.
+The auction formulas below agree with its Sections 2--3 and Appendix A.1.
+
+\section{Equilibrium and auction objects}\label{sec:objects}
+
+\subsection{The complete equilibrium object}
+The class is $J\in\{H,L\}$, with $\Pr(J=H)=\pi$.
+The investor sees the class, while preparation reveals the challenger's value $\theta$.
+The pair $(J,\theta)$, the incumbent value $R$, the preparation cost, and the slot draws are mutually independent.
+The cost equals zero with probability $\rho$, and equals $c_H$ otherwise.
+
+Write $\eta(q)$ for the liquidity order law, with $\eta(-1)=\eta(1)=\beta$ and $\eta(0)=1-2\beta$.
+Use $\eta_q=\eta(q)$ as an abbreviation.
+An equilibrium is the tuple
+\begin{equation}\label{eq:tuple}
+\mathcal E=(\sigma_H,\sigma_L,P,\mu,\zeta,\text{bids}).
+\end{equation}
+Here $\sigma_j\in\Delta(\{-1,0,1\})$ is the order law conditional on an informed slot and class $j$.
+Write $P_q=P(q)$ and $\mu_q=\mu(q)$.
+The map $\bar\mu(P)$ gives the challenger's posterior at each realized price.
+The probability $\zeta(P)$ gives high-cost preparation; zero-cost preparation equals one at every price.
+Thus $A(P,0)=1$, $A(P,c_H)=\zeta(P)$, and $e(q)=\rho+(1-\rho)\zeta(P_q)$.
+
+The bids are $b_R=R$ and $b_\theta=\theta$ after preparation, subject to the reserve.
+This is the equilibrium definition in \texttt{P1\_core.tex}; the price beliefs and $A$ are its derived objects.
+Write $\Delta=\Delta_T$ for the target-payoff spread, as in that package.
+
+The equilibrium conditions are:
+\begin{enumerate}
+\item Bayes' rule gives the raw posterior at every order.
+\item Bayes' rule gives the challenger's posterior at every realized price.
+\item High-cost preparation maximizes expected acquisition profit net of its cost at the observed price.
+\item Each price equals expected terminal target proceeds conditional on the order.
+\item Each prescribed order maximizes the informed investor's conditional payoff over the entire unit menu.
+\item Each prepared bidder bids its value, and a bid at the reserve is admissible.
+\end{enumerate}
+
+The investor rule IM permits any mixture among optimal orders.
+The alternative rule I0 requires zero when zero ties with a nonzero optimal order.
+The high-cost challenger rule C1 requires preparation when gross profit equals cost.
+The alternative high-cost rule CM permits mixtures at that equality.
+
+The zero-cost realization prepares at every price under both rules, as in the core definition.
+All strict examples below satisfy both investor rules and both challenger rules.
+At $p_H$, the high-cost entry probability depends on C1 or CM.
+
+For any candidate order laws, set
+\begin{equation}\label{eq:bayes}
+ a_j(q)=(1-\lambda)\eta_q+\lambda\sigma_j(q),\quad
+ d_q=\pi a_H(q)+(1-\pi)a_L(q),\quad
+ \mu_q=\frac{\pi a_H(q)}{d_q}.
+\end{equation}
+Every order has positive liquidity mass.
+Thus every permitted deviation reaches a price already on the equilibrium path.
+Beliefs at other prices have no effect on these deviations.
+
+\subsection{Auction payoffs for general value classes}
+The class laws have finite means, and both supports lie above $p>0$.
+Assume $G_H$ first-order stochastically dominates $G_L$.
+The incumbent CDF $F$ is continuous on $[0,\bar r]$.
+For a prepared value $v\ge p$, truthful bids give
+\begin{equation}\label{eq:kernels}
+ T(R,v)=\max\{p,\min(R,v)\},\qquad g(R,v)=(v-\max\{p,R\})_+.
+\end{equation}
+
+Without preparation, target proceeds equal $p\ind\{R\ge p\}$.
+The challenger wins if $R<v$.
+Truthful bids are optimal because each bidder wins exactly when its value exceeds the required payment.
+A higher bid can cause a purchase above value; a lower bid can remove a profitable purchase.
+
+\begin{lemma}[Auction objects; analytical]\label{lem:auction}
+The class objects are
+\begin{align}\label{eq:class}
+ t_0&=p[1-F(p)],&
+ t_j&=p+\int_p^\infty[1-G_j(v)][1-F(v)]\dd v,\\
+ g_j&=\int_p^\infty[1-G_j(v)]F(v)\dd v,&
+ W_j&=\E_j[F(\theta)].\nonumber
+\end{align}
+Let $D(v)=G_L(v)-G_H(v)$ and $\Gamma=\E_H[\theta]-\E_L[\theta]$.
+Then
+\begin{equation}\label{eq:split}
+ \Delta=t_H-t_L=\int_p^\infty D(v)[1-F(v)]\dd v,\quad
+ g_H-g_L=\int_p^\infty D(v)F(v)\dd v=\Gamma-\Delta.
+\end{equation}
+A stochastic increase in incumbent strength weakly lowers each $g_j$ and weakly raises $\Delta$.
+\end{lemma}
+
+\begin{proof}
+For $v\ge p$, write
+\[
+ T(R,v)=p+\int_p^v\ind\{R>x\}\dd x,\qquad
+ g(R,v)=\int_p^v\ind\{R<x\}\dd x.
+\]
+Take expectations over $R$ and then over $v$.
+Tonelli's theorem applies to each nonnegative integral.
+This gives \eqref{eq:class}.
+Subtract the two class expressions to obtain \eqref{eq:split}.
+
+For each $v$, the two expected payoffs sum to $v$.
+This also gives $\Delta+g_H-g_L=\Gamma$.
+A stronger incumbent has a smaller CDF, which gives the stated signs directly in the integrals.
+\end{proof}
+
+\subsection{Beliefs, prices, and deviations}
+Put $b=(1-\lambda)\beta$ and $u=\lambda/b$.
+For $0<\beta\le1/3$, the common liquidity mass at zero is at least $b$.
+Consequently, under every candidate profile,
+\begin{equation}\label{eq:bounds}
+ m=\frac{\pi}{\pi+(1-\pi)(1+u)}\le\mu_q\le
+ M=\frac{\pi(1+u)}{1+\pi u},\qquad q\in\{-1,0,1\}.
+\end{equation}
+Indeed $a_H(q)/a_L(q)$ lies between $(1+u)^{-1}$ and $1+u$ at each order.
+These bounds allow arbitrary mixtures in each class.
+
+Define
+\[
+ B_F(\mu)=g_L+\mu(g_H-g_L),\qquad
+ e_F(\mu)=\rho+(1-\rho)\ind\{B_F(\mu)\ge c_H\}.
+\]
+The core definition fixes zero-cost preparation at every price under both challenger rules.
+Hence entry at every price is at least $\rho$ in every candidate equilibrium.
+Competitive prices satisfy
+\begin{equation}\label{eq:price}
+ P_q=t_0+e(q)[t_L-t_0+\Delta\mu_q].
+\end{equation}
+Entry $e(q)$ depends on $q$ only through $P_q$, since it equals $\bar e(P_q)=\rho+(1-\rho)\zeta(P_q)$.
+If $\Delta>0$, the price recovers the raw posterior through
+\begin{equation}\label{eq:invert}
+ \mu_q=\frac{P_q-t_0-e(q)(t_L-t_0)}{e(q)\Delta}.
+\end{equation}
+Thus equal prices imply equal raw posteriors.
+Bayes' rule at the price then gives $\bar\mu(P_q)=\mu_q$.
+Under C1, preparation optimality gives $e(q)=e_F(\mu_q)$.
+Under CM, a high-cost tie permits any $e(q)\in[\rho,1]$.
+
+A deviation keeps the candidate prices and preparation rule fixed.
+Its payoff, conditional on the informed slot, is
+\begin{equation}\label{eq:deviation}
+ U_j(q)=q\{t_0+e(q)(t_j-t_0)-P_q\}-k|q|.
+\end{equation}
+The four nonzero payoffs therefore equal
+\begin{align}\label{eq:payoffs}
+ U_H(1)&=e(1)\Delta(1-\mu_1)-k,&
+ U_H(-1)&=-e(-1)\Delta(1-\mu_{-1})-k,\\
+ U_L(-1)&=e(-1)\Delta\mu_{-1}-k,&
+ U_L(1)&=-e(1)\Delta\mu_1-k.\nonumber
+\end{align}
+The zero order pays zero.
+The factor $\lambda$ enters unconditional profit, but does not enter the conditional choice problem.
+
+\section{Value classes and priors}\label{sec:binary}
+
+\subsection{The two-class comparison}
+
+\begin{proposition}[General classes and priors; analytical]\label{prop:binary}
+Let $F_1\le F_0$ and $F_2\le F_1$ be continuous incumbent CDFs.
+Let $0<\pi,\rho,\lambda<1$ and $0<\beta\le1/3$.
+Write $\Delta_i=\Delta(F_i)$ and $\kappa=\min\{m,1-M\}$.
+Suppose these strict inequalities hold:
+\begin{equation}\label{eq:region}
+ B_0(\pi)<c_H<B_1(M),\qquad
+ \Delta_0<k<\rho\kappa\Delta_1,\qquad
+ B_2(M)<c_H.
+\end{equation}
+Under either challenger rule, the equilibrium orders and all realized prices are unique at each strength.
+At $F_0$ the orders are $(0,0)$ and entry is $\rho$.
+At $F_1$ the orders are $(1,-1)$, and only the positive order recruits the high-cost realization.
+At $F_2$ the orders remain $(1,-1)$, and entry is $\rho$.
+
+The complete objects are as follows.
+For $F_0$, let
+\begin{equation}\label{eq:weak-tuple}
+ \sigma_H=\sigma_L=\delta_0,\quad \mu_q=\pi,\quad
+ P_q=t_{0,0}+\rho[t_{L,0}-t_{0,0}+\Delta_0\pi],\quad
+ \bar\mu(P_q)=\pi,\quad A(P_q,C)=\ind\{C=0\}.
+\end{equation}
+For $F_i$, $i\in\{1,2\}$, let
+\begin{equation}\label{eq:full-tuple}
+ \sigma_H=\delta_1,\quad\sigma_L=\delta_{-1},\quad
+ (\mu_{-1},\mu_0,\mu_1)=(m,\pi,M),\quad
+ P_q=t_{0,i}+e_i(\mu_q)[t_{L,i}-t_{0,i}+\Delta_i\mu_q],
+\end{equation}
+with $\bar\mu(P_q)=\mu_q$ and $A(P_q,C)=\ind\{C\le B_i(\mu_q)\}$.
+Append the truthful bids from \eqref{eq:tuple} to both objects.
+
+At $F_1$,
+\begin{align}\label{eq:entry-own}
+ \mathsf E_1&=\rho+(1-\rho)(b+\pi\lambda),&
+ e_{H,1}&=\rho+(1-\rho)(b+\lambda),\\
+ \mathsf O_{H,0}&=\pi\rho W_H(F_0),&
+ \mathsf O_{H,1}&=\pi e_{H,1}W_H(F_1).\nonumber
+\end{align}
+High-class ownership rises precisely when
+\begin{equation}\label{eq:own-condition}
+ [\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+First consider any equilibrium at $F_0$.
+If $\Delta_0>0$, equations \eqref{eq:bounds}--\eqref{eq:payoffs} bound every correctly signed gross return by $\Delta_0<k$.
+The two wrong-sign returns are negative.
+Thus each class must choose zero.
+If $\Delta_0=0$, both classes have identical target proceeds and every nonzero order pays $-k$.
+Zero orders again follow.
+
+Bayes' rule then gives $\mu_q=\pi$ at every order.
+The inequality $B_0(\pi)<c_H$ fixes entry at $\rho$ and gives \eqref{eq:weak-tuple}.
+Its constant price is competitive.
+The cost comparison and the payoff calculation verify all conditions against this fixed object.
+
+Next consider any equilibrium at $F_1$ or $F_2$.
+Lemma~\ref{lem:auction} gives $\Delta_2\ge\Delta_1>0$.
+Under every candidate profile, a high-class purchase earns at least $\rho(1-M)\Delta_i-k>0$.
+A low-class sale earns at least $\rho m\Delta_i-k>0$.
+The wrong-sign orders lose, and zero pays zero.
+Thus every equilibrium has $\sigma_H=\delta_1$ and $\sigma_L=\delta_{-1}$.
+
+This argument excludes mixed alternatives as well as pure alternatives.
+
+For these forced orders, the conditional probabilities are
+\[
+ (a_H(-1),a_H(0),a_H(1))=(b,b_0,b+\lambda),\qquad
+ (a_L(-1),a_L(0),a_L(1))=(b+\lambda,b_0,b),
+\]
+where $b_0=(1-\lambda)(1-2\beta)$.
+Substitution into \eqref{eq:bayes} gives $(m,\pi,M)$.
+Since $B_1(\pi)\le B_0(\pi)<c_H<B_1(M)$, only the positive order recruits at $F_1$.
+The positive cost gap also implies $g_{H,1}>g_{L,1}$.
+At $F_2$, $g_{H,2}\ge g_{L,2}$ and $B_2(M)<c_H$ exclude the high-cost realization at every order.
+
+The proposed prices in \eqref{eq:full-tuple} are therefore competitive.
+Equation~\eqref{eq:invert} verifies the price beliefs, and the cost comparisons verify preparation.
+Equations \eqref{eq:payoffs} verify every deviation with these prices fixed.
+Truthful bids verify the auction condition.
+The forced orders, price inversion, and strict cost comparisons also establish uniqueness.
+
+The positive order has unconditional probability $b+\pi\lambda$.
+Its class-$H$ probability is $b+\lambda$, and its class-$L$ probability is $b$.
+These probabilities give \eqref{eq:entry-own}.
+Conditional on class and preparation, the value law and incumbent law remain unchanged.
+Multiplication by the class win probability therefore gives ownership and \eqref{eq:own-condition}.
+\end{proof}
+
+The strict conditions define an open set of costs, priors, strengths, and interior slot parameters.
+For general CDFs, continuity of the displayed payoff objects is the required topology.
+The bound $\beta\le1/3$ is a structural domain restriction.
+At its boundary, the set is relatively open in that domain.
+
+The strict cost comparisons give the same outcome under CM.
+In every finite uniform example below, $B_i(m)>0$ also makes zero-cost preparation strict under every profile.
+The two investor rules give the same result because every selected order is strict.
+
+The sufficient ownership condition $(1+\rho)W_H(F_1)\ge2\rho W_H(F_0)>0$ applies when $b+\lambda>1/2$.
+Indeed $e_{H,1}>(1+\rho)/2$ then implies \eqref{eq:own-condition}.
+For general slots, \eqref{eq:own-condition} is the exact condition.
+
+\subsection{A nonempty region for every ranked pair}
+
+\begin{proposition}[Every prior and every positive class gap; analytical]\label{prop:nonempty}
+Fix the class laws, $p>0$, $\Gamma>0$, and $0<\pi,\rho,\lambda<1$ with $0<\beta\le1/3$.
+For uniform incumbents, a nonempty open set of $(r_0,r_1,r_2,c_H,k)$ satisfies \eqref{eq:region} and \eqref{eq:own-condition}.
+\end{proposition}
+
+\begin{proof}
+Set $\Gamma(x)=\int_p^xD(v)\dd v$ and $v_* =\inf\{x\ge p:\Gamma(x)>0\}$.
+Finite class means and $\Gamma>0$ give $p\le v_*<\infty$.
+For $R\sim U[0,r]$, Tonelli's theorem gives
+\begin{equation}\label{eq:nonempty}
+ \Delta(r)=\frac1r\int_p^r\Gamma(x)\dd x,\qquad
+ \Delta'(r)=\frac{r\Gamma(r)-\int_p^r\Gamma(x)\dd x}{r^2}
+ \ge\frac{p\Gamma(r)}{r^2}>0\quad(r>v_*).
+\end{equation}
+The derivative formula holds because $\Gamma(x)$ is continuous.
+Also $\Delta(r)\to0$ as $r\downarrow v_*$ and
+\[
+ g_H(r)-g_L(r)=\Gamma-\Delta(r)\ge p\Gamma/r>0.
+\]
+At $r=v_*$,
+\[
+ B_{v_*}(M)-B_{v_*}(\pi)=(M-\pi)\Gamma>0.
+\]
+Dominated convergence gives continuity of $g_j(r)$ and $W_H(r)$.
+It also gives $g_j(r)\to0$ as $r\to\infty$.
+Since $\theta\ge p$, $W_H(v_*)\ge p/v_*>0$.
+
+Let $e_H=\rho+(1-\rho)(b+\lambda)>\rho$.
+Choose $r_1>v_*$ near enough that
+\[
+ B_{r_1}(M)>B_{v_*}(\pi),\qquad e_HW_H(r_1)>\rho W_H(v_*).
+\]
+Choose $r_0\in(v_*,r_1)$ near enough that $\Delta(r_0)<\rho\kappa\Delta(r_1)$.
+Because $B_r(\pi)$ and $W_H(r)$ decrease with $r$, these choices give
+\[
+ B_{r_0}(\pi)<B_{r_1}(M),\qquad e_HW_H(r_1)>\rho W_H(r_0).
+\]
+
+Select $c_H$ and $k$ strictly inside the two intervals in \eqref{eq:region}.
+Select $r_2>r_1$ large enough that $B_{r_2}(M)<c_H$.
+The limit $g_j(r)\to0$ permits this last choice.
+Every strict inequality persists under small perturbations by continuity.
+Proposition~\ref{prop:binary} supplies and verifies the complete equilibrium tuples throughout this set.
+\end{proof}
+
+\subsection{The admissible regions at the benchmark}
+Calibration B fixes $1+u=e$, $\beta=\reg{beta_B}$, and $\lambda=u\beta/(1+u\beta)$.
+The derived presence probability is $\reg{lambda_B}$.
+The exact decimal $\beta$ is the primitive; all calculations retain the unrounded expression for $\lambda$.
+
+At the benchmark point values,
+\[
+ \Delta_0=1/60,\quad\Delta_1=2/3,\quad
+ \tau_1=141/200,\quad\tau_2=4245/5804.
+\]
+The prior window and the slot region follow from explicit inequalities.
+Let $L(t)=t/[1+u(1-t)]$, the inverse of $\pi\mapsto M(\pi)$.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.35\linewidth}>{\raggedright\arraybackslash}p{0.57\linewidth}}
+\toprule
+Region & Exact condition and display at B\\\midrule
+Slot parameters, fixed benchmark prior and costs &
+$82/59<u<2686/1559$, $0<\beta<1/3$, $\lambda=u\beta/(1+u\beta)$\\
+Equivalent presence interval &
+$\displaystyle\frac{82\beta}{59+82\beta}<\lambda<\frac{2686\beta}{1559+2686\beta}$\\
+Priors with some admissible trade cost &
+$\displaystyle\frac e{9+e}<\pi<\frac9{9+e}$: $(\reg{p2_prior_trade_lo},\reg{p2_prior_trade_hi})$\\
+Priors with the fixed trade cost &
+$\displaystyle\frac{3e}{22+3e}<\pi<\frac{22}{22+3e}$: $(\reg{p2_prior_fixed_k_lo},\reg{p2_prior_fixed_k_hi})$\\
+Priors for parts (i)--(ii), both costs fixed &
+$L(\tau_1)<\pi<1365/2156$: $(\reg{prior_lo_B},\reg{p2_prior_cost_hi})$\\
+Priors for all three strengths, all primitives fixed &
+$L(\tau_1)<\pi<L(\tau_2)$: $(\reg{prior_lo_B},\reg{prior_hi_B})$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+To derive the slot band, solve $\tau_1<M(1/2)<\tau_2$ for $u$.
+The trade bound gives $u<19/3$, which is weaker than the upper band endpoint.
+The weak cost and weak trade conditions hold independently of the slot parameters.
+
+For a nonempty trade window, $\kappa>1/10$ gives the third row.
+For the fixed cost, $\kappa>3/25$ gives the fourth row.
+
+The weak cost condition is $\pi<1365/2156$.
+The upper-posterior condition is $\pi>L(\tau_1)$, and collapse adds $\pi<L(\tau_2)$.
+The other trade inequalities hold throughout the last two intervals.
+Monotonicity of $m$ and $1-M$ reduces this last verification to their endpoints.
+The script records the endpoint margins for the final interval.
+The exact formulas establish the wider two-strength interval as well.
+
+In particular, the trade-cost window is nonempty at priors $3/10$ and $7/10$ with the benchmark strengths.
+The fixed high cost fails the recruitment condition at $3/10$ and the weak exclusion condition at $7/10$.
+The separate A and B examples below retain their declared costs and strengths.
+
+At the fixed benchmark costs and strengths, the two prior examples have the entry vectors
+\[
+ \pi=3/10:\quad(\reg{p2_fixed_prior_three_tenths_r0_entry},\reg{p2_fixed_prior_three_tenths_r1_entry},\reg{p2_fixed_prior_three_tenths_r2_entry}),
+\]
+\[
+ \pi=7/10:\quad(\reg{p2_fixed_prior_seven_tenths_r0_entry},\reg{p2_fixed_prior_seven_tenths_r1_entry},\reg{p2_fixed_prior_seven_tenths_r2_entry}).
+\]
+These classifications are computer-assisted.
+The return bound for every profile forces full orders at both higher strengths, while $\Delta_0<k$ forces weak zero orders.
+For the weak tuple, use posterior $\pi$, entry $e_0=\rho+(1-\rho)\ind\{B_0(\pi)\ge6\}$, and price
+$t_{0,0}+e_0[t_{L,0}-t_{0,0}+\Delta_0\pi]$.
+For each higher tuple, use full orders, posteriors $(m,\pi,M)$, and the competitive price formula \eqref{eq:price}.
+The interval cost comparisons give exactly the stated entry patterns and verify preparation at each realized price.
+The payoff formula against the fixed tuple verifies every order choice; Bayes' rule and truthful bids complete each tuple.
+
+\subsection{Every value-class example in the pinned manuscript}
+\label{sec:examples}
+These examples retain their own costs and strengths.
+They use the common slot primitives of calibration B.
+The class-exhibit letters identify examples, separate from the calibration label.
+The low cost is zero and $\rho=1/4$ throughout.
+The reserve is $p=1/2$ in this subsection.
+
+\begin{center}\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lllll}
+\toprule
+Example & Class values or supports & $\pi$ & $(c_H,k)$ & $(r_0,r_1,r_2)$\\\midrule
+Benchmark & $1;10$ & $1/2$ & $(6,1/50)$ & $(6/5,3,18/5)$\\
+Moderate & $1;2$ & $1/2$ & $(89/100,1/500)$ & $(21/20,3/2)$\\
+Narrow & $U[19/20,21/20];U[199/20,201/20]$ & $1/2$ & $(6,1/50)$ & $(6/5,3,18/5)$\\
+A & $1;10$ & $3/10$ & $(9/2,1/100)$ & $(11/10,3,18/5)$\\
+B & $1;10$ & $7/10$ & $(36/5,1/100)$ & $(11/10,3,18/5)$\\
+C & $U[3/5,7/5];U[1,19]$ & $7/10$ & $(67/10,1/50)$ & $(1,9/2,11/2)$\\
+D & $1;10$ & $7/10$ & $(67/10,1/50)$ & $(1,9/2,11/2)$\\\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Value-class examples; computer-assisted]\label{prop:examples}
+The benchmark, moderate, narrow, A, B, and C examples satisfy their stated conditions in Proposition~\ref{prop:binary}.
+The moderate example states only the first two strengths.
+Every stated equilibrium has the tuple \eqref{eq:weak-tuple} or \eqref{eq:full-tuple}.
+Example D has unique zero orders at its weak strength and unique full orders at both higher strengths.
+Its entry stays at $\rho$ at all three strengths.
+\end{proposition}
+
+\begin{proof}
+For a point value, integrate \eqref{eq:kernels} over the intervals split by $p$ and $v$.
+For $p\le v\le r$, the result is
+\[
+ t_v=v-\frac{v^2-p^2}{2r},\qquad g_v=\frac{v^2-p^2}{2r},\qquad W_v=v/r.
+\]
+For $v\ge r$, the result is $t_v=r/2+p^2/(2r)$, $g_v=v-t_v$, and $W_v=1$.
+A uniform class averages these polynomials over its support, with a split at $r$.
+The script performs these integrations with exact rational arithmetic.
+
+For the narrow classes, direct integration gives
+\begin{align}\label{eq:bands}
+ t_L&=\ell-\frac{\ell^2+\varepsilon^2/3-p^2}{2r},&
+ g_L&=\frac{\ell^2+\varepsilon^2/3-p^2}{2r},\\
+ t_H&=r/2+p^2/(2r),&
+ g_H&=h-t_H,\qquad
+ \Delta=\frac{(r-\ell)^2+\varepsilon^2/3}{2r},\nonumber
+\end{align}
+where $\varepsilon=1/20$.
+In C, the low and high class supports both cross relevant incumbent boundaries.
+The same integral formulas, with the required splits, give
+\[
+ W_H(r_0)=1,\qquad W_H(r_1)=599/648,\qquad W_H(r_2)=79/88.
+\]
+The low CDF exceeds the high CDF on their common interior support.
+Outside that support, the CDF order follows from their endpoints.
+Thus C satisfies the class order even though its supports overlap.
+
+The interval margins in Section~\ref{sec:margins} verify every strict cost and trade condition for the successful examples.
+They also verify \eqref{eq:own-condition}.
+Proposition~\ref{prop:binary} then proves uniqueness through bounds on every profile.
+The script additionally prints every price, posterior, cost comparison, and deviation payoff against the fixed tuple.
+The arithmetic uses outward intervals at sixty decimal digits for expressions that depend on $e$.
+No rounded decimal determines an entry decision.
+
+For D, the upper cost margin at $r_1$ is $\reg{margin_p2_ex_d_strong_top_B}<0$.
+The trade bounds for every profile still force full orders.
+The inequalities $B_1(M)<c_H$ and $B_2(M)<c_H$ then exclude every high-cost realization.
+The weak trade bound forces zero orders at $r_0$, and its prior profit is below cost.
+These calculations verify D directly, and its constant entry floor.
+\end{proof}
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Example & $\mathsf E_0$ & $\mathsf E_1$ & $\mathsf O_{H,1}$\\\midrule
+Benchmark & \reg{p2_base_r0_entry} & \reg{p2_base_r1_entry} & \reg{p2_base_r1_ownership}\\
+Moderate & \reg{p2_moderate_r0_entry} & \reg{p2_moderate_r1_entry} & \reg{p2_moderate_r1_ownership}\\
+Narrow & \reg{p2_bands_r0_entry} & \reg{p2_bands_r1_entry} & \reg{p2_bands_r1_ownership}\\
+A & \reg{p2_ex_a_r0_entry} & \reg{p2_ex_a_r1_entry} & \reg{p2_ex_a_r1_ownership}\\
+B & \reg{p2_ex_b_r0_entry} & \reg{p2_ex_b_r1_entry} & \reg{p2_ex_b_r1_ownership}\\
+C & \reg{p2_ex_c_r0_entry} & \reg{p2_ex_c_r1_entry} & \reg{p2_ex_c_r1_ownership}\\
+D & \reg{p2_ex_d_r0_entry} & \reg{p2_ex_d_r1_entry} & \reg{p2_ex_d_r1_ownership}\\\bottomrule
+\end{tabular}
+\end{center}
+At the third strength, each listed example has entry $\rho$.
+The moderate declaration has no third strength.
+In C, ownership rises from $\reg{p2_ex_c_r0_ownership}$ despite the lower conditional win probability.
+
+The C--D comparison follows from a convex payoff.
+For each $R$, the function $v\mapsto(v-\max\{p,R\})_+$ is convex.
+A mean-preserving spread therefore weakly raises acquisition profit at every belief.
+C has a positive upper cost margin, while D has a negative margin at the same costs, strengths, and means.
+This proves the stated role of dispersion.
+
+The source's constructive sequence gives further examples.
+For each $h$ below, let $\delta_n=(h-1)2^{-n}$, $r_1=1+\delta_n$, and $r_0=1+\delta_n^2/(h-1)$.
+Retain its declared cost recipe:
+\[
+ k_n=\frac{\Delta(r_0)+\frac12\rho m\Delta(r_1)}2,\qquad
+ c_{H,n}=\frac{B_{r_0}(1/2)+B_{r_1}(M)}2.
+\]
+The extra factor in this cost recipe is a declaration for these examples.
+The slot theorem itself uses the larger upper bound $\rho m\Delta(r_1)$.
+For each row, the first feasible member is certified by all four strict cost and trade margins.
+The log retains the failed earlier members.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+$h/\ell$ & $n$ & $r_0$ & $r_1$ & $k_n$\\\midrule
+$21/20$ & \reg{p2_seq_21_20_n} & \reg{p2_seq_21_20_r0} & \reg{p2_seq_21_20_r1} & \reg{p2_seq_21_20_k}\\
+$11/10$ & \reg{p2_seq_11_10_n} & \reg{p2_seq_11_10_r0} & \reg{p2_seq_11_10_r1} & \reg{p2_seq_11_10_k}\\
+$5/4$ & \reg{p2_seq_5_4_n} & \reg{p2_seq_5_4_r0} & \reg{p2_seq_5_4_r1} & \reg{p2_seq_5_4_k}\\
+$3/2$ & \reg{p2_seq_3_2_n} & \reg{p2_seq_3_2_r0} & \reg{p2_seq_3_2_r1} & \reg{p2_seq_3_2_k}\\
+$2$ & \reg{p2_seq_2_1_n} & \reg{p2_seq_2_1_r0} & \reg{p2_seq_2_1_r1} & \reg{p2_seq_2_1_k}\\\bottomrule
+\end{tabular}
+\end{center}
+The registry also records each $c_{H,n}$ and each complete equilibrium object.
+These examples illustrate the scale of the required trade cost as the class gap falls.
+Proposition~\ref{prop:nonempty} proves existence for every positive gap.
+
+\section{More than two classes}\label{sec:many}
+
+\subsection{A separation condition}
+Let $j\in\{1,\ldots,J\}$ have prior $\pi_j>0$.
+Each class has finite means and values above $p$.
+The equilibrium tuple includes every $\sigma_j$, every raw posterior vector, and the posterior vector at each price.
+The other components are those of \eqref{eq:tuple}.
+Define
+\begin{equation}\label{eq:polytope}
+ \mathcal M_\pi=\left\{\nu\in\Delta_J:
+ \frac{\nu_j}{\pi_j}\le(1+u)\frac{\nu_l}{\pi_l}\ \text{for every }j,l\right\}.
+\end{equation}
+Every raw posterior belongs to this convex set.
+Every price posterior also belongs to it because it is a mixture of raw posteriors.
+The price identity recovers only the posterior mean of class proceeds:
+\begin{equation}\label{eq:many-invert}
+ \bar t_q=\sum_j\mu_j(q)t_j=t_0+\frac{P_q-t_0}{e(q)}.
+\end{equation}
+
+\begin{proposition}[Two separated groups; analytical]\label{prop:groups}
+Partition the classes into nonempty groups $L$ and $H$, with high-group prior mass $\bar\pi$.
+The incumbent law strengthens from $F_0$ to $F_1$.
+Suppose
+\begin{align}\label{eq:groups}
+ \max_jt_{j,0}-\min_jt_{j,0}&<k,\qquad \sum_j\pi_jg_{j,0}<c_H,\\
+ \min_{j\in H}t_{j,1}-\max_{\nu\in\mathcal M_\pi}\nu\cdot t_1&>k/\rho,\nonumber\\
+ \min_{\nu\in\mathcal M_\pi}\nu\cdot t_1-\max_{j\in L}t_{j,1}&>k/\rho.\nonumber
+\end{align}
+Let $\bar t_H,\bar t_L,\bar g_H,\bar g_L$ be prior-weighted means within each group at $F_1$.
+Assume $\bar g_H>\bar g_L$ and
+\[
+ \bar g_L+M(\bar\pi)(\bar g_H-\bar g_L)>c_H.
+\]
+Under either challenger rule, weak orders are uniquely zero and entry is $\rho$.
+Strong orders are uniquely $+1$ in group $H$ and $-1$ in group $L$.
+Only the positive order recruits, so
+\[
+ \mathsf E_1=\rho+(1-\rho)(b+\bar\pi\lambda)>\rho.
+\]
+
+The strong price reveals the whole posterior vector in this equilibrium.
+\end{proposition}
+
+\begin{proof}
+For any weak candidate, competitive prices subtract the raw mean proceeds from each class's proceeds.
+Every residual has absolute value at most $\max_jt_{j,0}-\min_jt_{j,0}<k$.
+Thus zero is the unique order in each class.
+The complete weak tuple has all orders zero, posterior $\pi$, entry $\rho$, and price $t_{0,0}+\rho(\pi\cdot t_0-t_{0,0})$.
+The cost inequality verifies entry, and direct substitution verifies competitive prices and every deviation.
+The auction bids remain truthful.
+
+For any strong candidate, \eqref{eq:many-invert} gives a class-$j$ payoff
+\[
+ U_j(q)=q e(q)[t_{j,1}-\mu(q)\cdot t_1]-k|q|.
+\]
+The separation inequalities make a high-group purchase strictly profitable and a high-group sale strictly unprofitable.
+They make a low-group sale strictly profitable and a low-group purchase strictly unprofitable.
+Zero pays zero.
+These bounds hold under every candidate profile, so they force the stated group orders.
+
+Under those orders, Bayes' rule gives the group posterior $(m(\bar\pi),\bar\pi,M(\bar\pi))$.
+Within each group, class proportions remain at their prior proportions.
+
+The posterior vector at group posterior $z$ is therefore
+\[
+ \mu_j(z)=
+ \begin{cases}
+ z\pi_j/\bar\pi,&j\in H,\\
+ (1-z)\pi_j/(1-\bar\pi),&j\in L.
+ \end{cases}
+\]
+
+The strict profit gap makes group gross profit increase with $z$.
+Its prior value is below $c_H$ because incumbent strength lowers each class's profit.
+Its value at $M(\bar\pi)$ exceeds $c_H$ by hypothesis.
+Thus only the positive order recruits.
+Set $P_q=t_{0,1}+e(z_q)[\bar t_L-t_{0,1}+(\bar t_H-\bar t_L)z_q]$.
+The separation condition implies $\bar t_H>\bar t_L$.
+The entry floor then makes the price strictly increase with $z$.
+
+This verifies the price posterior, the preparation rule, and competitive prices for the fixed tuple.
+The displayed payoff formula verifies every permitted deviation.
+The bounds for every profile establish uniqueness.
+\end{proof}
+
+High-group ownership rises exactly when
+\[
+ [\rho+(1-\rho)(b+\lambda)]\sum_{j\in H}\pi_jW_j(F_1)
+ >\rho\sum_{j\in H}\pi_jW_j(F_0).
+\]
+The group proof needs neither arbitrary posterior recovery nor a special relation between $g_j$ and $t_j$.
+
+A strict four-class example uses equal priors and point values $(1,1001/1000,9999/1000,10)$.
+It retains the benchmark costs, reserve, and first two strengths.
+The certificate finds a separation distance $\gamma=\reg{p2_groups_gamma}$.
+Its strict trade margin is $\rho\gamma-k=\reg{p2_groups_trade}$.
+The weak range, weak cost, strong profit gap, and upper profit margins are also positive.
+
+For this finite certificate, write $\nu_j=\pi_jw_j/\sum_l\pi_lw_l$ with $1\le w_j\le1+u$.
+A linear fractional mean attains each extremum at endpoints of each weight interval.
+Its derivative in one weight has constant sign, or is zero throughout that interval.
+The script therefore evaluates all sixteen endpoint combinations.
+This certifies the separation condition over the entire polytope.
+
+\subsection{A price collision at three classes}
+
+\begin{proposition}[A knife-edge failure of full posterior recovery; computer-assisted]\label{prop:collision}
+Use the slot primitives of B, $R\sim U[0,8]$, $p=1$, $\rho=1/4$, $c_H=10$, and $k=1/8$.
+Let the three priors be $(1/4,1/2,1/4)$ and set
+\[
+ G_1=\delta_1,\quad G_2=(1-w)\delta_1+w\delta_{10},\quad G_3=\delta_{10},\qquad
+ w=\frac{1+2b_0+\lambda}{2}=\reg{p2_many_weight}.
+\]
+The informed orders $(-1,0,1)$ form an equilibrium with strict investor choices.
+Orders zero and one give distinct posterior vectors and the same price.
+The price therefore does not reveal the whole posterior.
+\end{proposition}
+
+\begin{proof}
+The condition $\beta>1/4$ gives $0<w<1$ because
+\[
+ 1-w=\frac{(1-\lambda)(4\beta-1)}2>0.
+\]
+Hence the class laws satisfy strict stochastic order.
+The auction objects are
+\[
+ t_0=7/8,\quad (t_1,t_2,t_3)=(1,1+49w/16,65/16),\quad
+ (g_1,g_2,g_3)=(0,95w/16,95/16).
+\]
+Specify the complete tuple by $\sigma_j=\delta_{j-2}$,
+\[
+ \mu_j(q)=\frac{\pi_j[b_q+\lambda\ind\{q=j-2\}]}{b_q+\lambda\pi_{q+2}},\quad
+ \bar e(P)=\rho,\quad P_q=t_0+\rho\left(\sum_j\mu_j(q)t_j-t_0\right),
+\]
+where $b_{-1}=b_1=b$ and $b_0$ retains its earlier definition.
+At the common price, set $\bar\mu(P_0)=[d_0\mu(0)+d_1\mu(1)]/(d_0+d_1)$.
+At the other price, set $\bar\mu(P_{-1})=\mu(-1)$.
+Set $A(P,0)=1$, $A(P,10)=0$, and append truthful bids.
+
+Every class profit is below $c_H$, since $95/16<10$.
+Every price posterior gives class 3 positive probability.
+Its strictly positive acquisition profit makes zero-cost preparation strict.
+Thus $\bar e(P)=\rho$ is optimal at every price, at a common price as well.
+The specified prices are competitive.
+
+Normalize the proceeds vector to $(0,w,1)$.
+Its prior mean is $w/2+1/4$.
+The conditional means at zero and one are
+\[
+ z_0=\frac{b_0(w/2+1/4)+\lambda w/2}{b_0+\lambda/2},\qquad
+ z_1=\frac{b(w/2+1/4)+\lambda/4}{b+\lambda/4}.
+\]
+Cross multiplication gives $z_0=z_1$ precisely when
+\[
+ w=\frac{2b+3b_0+2\lambda}{2(2b+b_0+\lambda)}.
+\]
+The identity $2b+b_0+\lambda=1$ reduces this expression to the declared $w$.
+Yet the posterior vectors differ because the informed mass at zero belongs to class 2 and the mass at one belongs to class 3.
+The normalized mean at order one exceeds that at order minus one by $\lambda/(4b+\lambda)>0$.
+
+Thus the other price differs strictly from the common price.
+The pooled price belief follows Bayes' rule by the specified probability weights.
+
+For every class and order, the payoff against the fixed tuple is
+\[
+ U_j(q)=q\rho[t_j-\bar t_q]-k|q|.
+\]
+The table below gives every payoff.
+The selected action exceeds each alternative by a strictly positive interval margin.
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Class & Sell & Zero & Buy\\\midrule
+1 & \reg{p2_many_class0_pay0} & \reg{p2_many_class0_pay1} & \reg{p2_many_class0_pay2}\\
+2 & \reg{p2_many_class1_pay0} & \reg{p2_many_class1_pay1} & \reg{p2_many_class1_pay2}\\
+3 & \reg{p2_many_class2_pay0} & \reg{p2_many_class2_pay1} & \reg{p2_many_class2_pay2}\\\bottomrule
+\end{tabular}
+\end{center}
+This verifies every equilibrium condition for the stated tuple.
+The two equality claims follow from the exact formula; the strict payoff claims use outward intervals.
+\end{proof}
+
+The collision is a knife-edge within this pure profile.
+The equation for $w$ is affine with a nonzero coefficient.
+A change of $1/1000$ in either direction separates the prices and retains every strict action margin.
+For each perturbation, set $\bar\mu(P_q)=\mu(q)$ at each distinct price.
+The same price formula and preparation rule verify both perturbed tuples.
+The script records all their deviation payoffs.
+This statement concerns this profile and these perturbations.
+
+A generic full-posterior theorem over arbitrary mixed profiles remains open.
+In this example, the common price does not change entry because all prices induce the same strict preparation decisions.
+
+\section{Access to prices and welfare}\label{sec:access}
+
+\begin{proposition}[Access in the recruitment region; analytical]\label{prop:access}
+At $F_1$ under Proposition~\ref{prop:binary}, compare price access with a price-hidden challenger.
+All primitives stay fixed, and competitive prices are set in each economy.
+Both economies have unique full informed orders.
+Price access raises expected target proceeds and allocation surplus net of preparation costs:
+\begin{align}\label{eq:access}
+ \RR^1-\RR^0
+ &=(1-\rho)\{\pi(b+\lambda)(t_H-t_0)+(1-\pi)b(t_L-t_0)\}>0,\\
+ \WW^1-\WW^0
+ &=(1-\rho)(b+\pi\lambda)[B_1(M)-c_H+pF_1(p)]>0.\nonumber
+\end{align}
+\end{proposition}
+
+\begin{proof}
+The access tuple is \eqref{eq:full-tuple} at $F_1$.
+For the price-hidden tuple, keep $\sigma_H=\delta_1$, $\sigma_L=\delta_{-1}$, and the raw beliefs $(m,\pi,M)$.
+The challenger has posterior $\pi$ because it observes no price or order.
+Set $A(C)=\ind\{C=0\}$ and
+\[
+ P_q^0=t_0+\rho[t_L-t_0+\Delta\mu_q].
+\]
+Append truthful bids.
+Bayes' rule verifies the raw beliefs.
+
+The inequality $B_1(\pi)\le B_0(\pi)<c_H$ verifies the hidden preparation rule.
+The displayed price is competitive under that rule.
+
+Both correctly signed returns exceed $k$ by the bounds for every profile in Proposition~\ref{prop:binary}.
+The wrong-sign returns are negative.
+Thus the hidden tuple is an equilibrium, and those same bounds establish uniqueness.
+
+Couple the two economies on the class, value, cost, slot identity, and liquidity order.
+Their orders coincide at every realization, so their realized trade costs coincide.
+Access adds high-cost preparation exactly at the positive order.
+The conditional probabilities of that order are $b+\lambda$ and $b$ in classes $H$ and $L$.
+
+The expected proceeds gain follows by multiplication by $t_j-t_0$.
+Each term is nonnegative, and $t_H-t_0\ge\Delta>0$.
+Its positive class mass makes the first inequality strict.
+
+Let $\mathcal V_0(R)=R\ind\{R\ge p\}$ denote allocation value without preparation.
+For any admissible $\theta$, direct case division gives
+\begin{equation}\label{eq:welfare-identity}
+ \max\{\mathcal V_0(R),\theta\}-\mathcal V_0(R)
+ =(\theta-\max\{p,R\})_++p\ind\{R<p\}.
+\end{equation}
+For $R<p$, each side equals $\theta$.
+For $R\ge p$, each side equals $(\theta-R)_+$.
+
+Average over the class posterior $M$ at the positive order and subtract $c_H$.
+The net gain per added preparation decision is $B_1(M)-c_H+pF_1(p)>0$.
+Its probability is $(1-\rho)(b+\pi\lambda)>0$.
+This proves the second line of \eqref{eq:access}.
+\end{proof}
+
+For a uniform incumbent, the allocation level without preparation is $(r^2-p^2)/(2r)$.
+Thus levels can also be computed as
+\begin{align}\label{eq:welfare-level}
+ \RR&=t_0+\pi e_H(t_H-t_0)+(1-\pi)e_L(t_L-t_0),\\
+ \WW&=\frac{r^2-p^2}{2r}
+ +\pi e_H(g_H+p^2/r)+(1-\pi)e_L(g_L+p^2/r)-c_H(\mathsf E-\rho).
+ \nonumber
+\end{align}
+The second line excludes transfers and subtracts all expected preparation costs.
+If execution fees are resource costs, subtract $\lambda k$ in each full-order economy.
+The difference in \eqref{eq:access} stays the same.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Quantity at $r_1$ & Access & Hidden & Gain\\\midrule
+Target proceeds & \reg{p2_base_r1_proceeds} & \reg{p2_base_hidden_proceeds} & \reg{p2_access_proceeds_gain}\\
+Net surplus & \reg{p2_base_r1_surplus} & \reg{p2_base_hidden_surplus} & \reg{p2_access_surplus_gain}\\\bottomrule
+\end{tabular}
+\end{center}
+These levels are computer-assisted; the strict comparison is analytical under \eqref{eq:region}.
+
+\subsection{The transfer and the break-even trade scale}
+The informed investor's unconditional expected gross profit in the access economy is
+\begin{equation}\label{eq:transfer}
+ G=\lambda\Delta\{\pi(1-M)+(1-\pi)\rho m\}.
+\end{equation}
+The high-class purchase uses entry one, and the low-class sale uses entry $\rho$.
+Equation~\eqref{eq:payoffs}, before the fee, therefore gives \eqref{eq:transfer}.
+The transfer is $G=\reg{p2_access_gross_transfer}$ at B.
+Conditional on an informed slot, gross profit is $G/\lambda=\reg{p2_access_gross_conditional}$.
+
+Competitive prices imply $\E[X(V_T-P_X)]=0$.
+The informed and liquidity branches partition this expectation.
+Thus liquidity traders lose $G$ in expected gross financial profit.
+This is the transfer from liquidity traders to the informed investor.
+Execution costs are separate from that transfer.
+
+A trade scale $z$ multiplies the financial position and its fee per share of float, with the same normalized signal experiment.
+If initial shareholders bear the entire transfer, their total gain equals $(\RR^1-\RR^0)-zG$.
+This gain is positive precisely for
+\begin{equation}\label{eq:break-even}
+ z<z^*=\frac{\RR^1-\RR^0}{G}=\reg{p2_access_break_even}.
+\end{equation}
+This bound compares proceeds plus the worst transfer burden to the economy without informed orders.
+That economy also has the prior posterior and entry $\rho$, so its acquisition proceeds equal the hidden-price level.
+Holders who retain their shares receive the full proceeds gain.
+
+A deterministic external dividend $D_0$ raises both the financial payoff and its price by $D_0$.
+The residual $V_T-P$ and every order payoff therefore stay unchanged.
+The challenger's information and acquisition profit also stay unchanged.
+For $D_0=\RR^1-\RR^0$, mean financial prices match while entry keeps its original value.
+The external dividend does not enter acquisition proceeds or allocation surplus.
+
+\subsection{Access outside the recruitment region}
+Suppose instead $B_1(m)<c_H<B_1(\pi)$ and $k<\rho\kappa\Delta_1$.
+The bounds for every profile still force full orders.
+The hidden tuple has entry one at every order.
+The access tuple has entry $(\rho,1,1)$ and the competitive prices from \eqref{eq:price}.
+The raw beliefs are $(m,\pi,M)$ in both tuples.
+
+The challenger rules follow from the two strict cost comparisons.
+Equations~\eqref{eq:payoffs} verify every deviation against each fixed tuple.
+Bayes' rule and truthful bids complete both objects.
+
+Access then changes proceeds by
+\[
+ -(1-\rho)\{\pi b(t_H-t_0)+(1-\pi)(b+\lambda)(t_L-t_0)\}<0.
+\]
+It changes surplus by
+\[
+ -(1-\rho)[b+(1-\pi)\lambda]\{B_1(m)-c_H+pF_1(p)\}.
+\]
+Retain the strong benchmark and replace only $c_H$ by $12/5$.
+The proceeds change is $\reg{p2_outside_proceeds_gain}$ and the surplus change is $\reg{p2_outside_surplus_gain}$.
+The interval cost and trade margins verify both tuples.
+Thus the positive access comparison uses the stated recruitment region.
+
+\section{The payment rule}\label{sec:payment}
+
+\begin{proposition}[Verifiable values and an enforceable fallback; analytical]\label{prop:payment}
+Set the reserve to zero.
+After preparation, values are verifiable and a sale to the next buyer at its value is enforceable.
+Let the seller's share be $0\le\eta<1$.
+With the winner's value $V$ and fallback $z\le V$, the transfer is $(1-\eta)z+\eta V$.
+For point values $0<\ell<\bar r<h$ and incumbent support $[0,\bar r]$,
+\begin{align}\label{eq:payment}
+ T_\eta(R,\theta)&=(1-\eta)\min(R,\theta)+\eta\max(R,\theta),\\
+ g_{\theta,\eta}&=(1-\eta)\E[(\theta-R)_+],\nonumber\\
+ \Delta_\eta&=\eta(h-\ell)+(1-2\eta)\E[(R-\ell)_+].\nonumber
+\end{align}
+A stronger incumbent weakly lowers challenger profit.
+Its effect on the spread has the sign of $1-2\eta$.
+\end{proposition}
+
+\begin{proof}
+The acquisition continuation specifies allocation to a buyer with maximal value and fallback allocation to the next buyer.
+Without a challenger, it specifies fallback zero and transfer $\eta R$.
+
+For $V>z$ and $0<\eta<1$, maximize
+\[
+ (P-z)^\eta(V-P)^{1-\eta}\quad\text{over }z\le P\le V.
+\]
+The logarithm has derivative $\eta/(P-z)-(1-\eta)/(V-P)$.
+Its second derivative is strictly negative.
+Its unique optimum solves $\eta(V-P)=(1-\eta)(P-z)$, so $P=(1-\eta)z+\eta V$.
+
+At $V=z$, feasibility fixes the transfer.
+At $\eta=0$, the declared continuous limit gives $P=z$.
+The next buyer accepts the enforceable fallback at zero surplus.
+These choices verify the allocation and transfer continuation after every value realization.
+
+A challenger wins when $\theta>R$ and retains $(1-\eta)(\theta-R)$.
+Its expected profit is the second line of \eqref{eq:payment}.
+
+For $R\le\ell$, the difference between the high and low target payments is $\eta(h-\ell)$.
+For $R>\ell$, that difference is $\eta(h-\ell)+(1-2\eta)(R-\ell)$.
+Average these two cases to obtain the third line.
+
+The function $(\theta-R)_+$ decreases with $R$.
+The function $(R-\ell)_+$ increases with $R$.
+Stochastic dominance gives the signs in the proposition.
+The change is strict when the relevant expected positive part changes strictly and its coefficient is nonzero.
+\end{proof}
+
+At the benchmark strengths, exact integration gives
+\[
+\begin{array}{c|cc}
+ &r_0=6/5&r_1=3\\\hline
+ \Delta_\eta&1/60+(269/30)\eta&2/3+(23/3)\eta\\
+ g_{H,\eta}&(47/5)(1-\eta)&(17/2)(1-\eta)\\
+ g_{L,\eta}&(5/12)(1-\eta)&(1/6)(1-\eta)
+\end{array}
+\]
+In particular,
+\[
+ \Delta_\eta(r_1)-\Delta_\eta(r_0)=\frac{13}{20}(1-2\eta).
+\]
+The sign boundary is exactly $\eta=1/2$.
+This result specifies the acquisition continuation for every earlier history.
+The full order and preparation equilibrium under this alternative institution remains open.
+
+\section{Reserves}\label{sec:reserves}
+
+\subsection{Payoffs and event measures at every reserve}
+For $v<p$, preparation leaves proceeds at $t_0$ and gives the challenger zero acquisition profit.
+For $R\sim U[0,r]$, the complete kernel is
+\begin{equation}\label{eq:reserve-kernel}
+ (t_v,g_v,W_v)=
+ \begin{cases}
+ (t_0,0,0),&v<p,\\
+ (p,v-p,1),&r\le p\le v,\\
+ (v-(v^2-p^2)/(2r),(v^2-p^2)/(2r),v/r),&p\le v\le r,\\
+ (r/2+p^2/(2r),v-r/2-p^2/(2r),1),&p\le r\le v.
+ \end{cases}
+\end{equation}
+Here $t_0=p(1-p/r)_+$.
+These expressions follow by direct integration over $R<p$, $p\le R<v$, and $R\ge v$.
+They agree at $v=r$ and at $p=r$.
+A bid at the reserve remains admissible, even when acquisition rent is zero.
+For a class law, average the kernel with a split at every relevant support boundary.
+
+Let $A_j=\Pr_j(\theta\ge p)$ and let $e_j$ denote class-conditional preparation.
+Independence of $R$ gives
+\begin{align}\label{eq:events}
+ \mathsf E&=\pi e_H+(1-\pi)e_L,&
+ \mathsf A&=\pi e_HA_H+(1-\pi)e_LA_L,\\
+ \mathsf C_2&=[1-F(p)]\mathsf A,&
+ \mathsf S&=1-F(p)+\mathsf A-\mathsf C_2.\nonumber
+\end{align}
+The four events are preparation, an admissible challenger, two admissible bidders, and a sale.
+The seller's expected proceeds remain
+\[
+ \RR=t_0+\pi e_H(t_H-t_0)+(1-\pi)e_L(t_L-t_0).
+\]
+
+At a general reserve, $t_L\ge t_0$ and $g_j\ge0$.
+Under both challenger rules, entry stays at or above $\rho$.
+Whenever $\Delta>0$, equation~\eqref{eq:invert} still recovers the binary raw posterior.
+The deviation payoffs \eqref{eq:payoffs} therefore remain valid after class exclusion.
+For uniform incumbents with $\ell<p<r<h$, these objects reduce to
+\begin{equation}\label{eq:excluded}
+ t_L=t_0=p-p^2/r,\quad g_L=0,\quad
+ t_H=r/2+p^2/(2r),\quad g_H=h-t_H,\quad
+ \Delta=r/2-p+3p^2/(2r).
+\end{equation}
+For $r<p<h$, they become $t_0=t_L=g_L=0$, $t_H=p$, $g_H=h-p$, and $\Delta=p$.
+
+\subsection{General reserve comparisons}
+
+\begin{proposition}[Strict reserve continuations; analytical]\label{prop:general-reserve}
+Fix a reserve and allow class values below that reserve.
+Retain the class order, the common costs, the slot parameters, and $F_1\le F_0$.
+Use the complete reserve kernel to define each class object.
+Suppose
+\[
+ k<\rho\kappa\min\{\Delta_0,\Delta_1\}.
+\]
+These strict conditions give two comparisons.
+\begin{enumerate}
+\item If $B_0(\pi)<c_H<B_1(M)$, entry is identical at the two strengths:
+$\mathsf E_0=\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda)$.
+\item If $B_0(\pi)<c_H<B_0(M)$ and $B_1(M)<c_H$, entry falls strictly:
+$\mathsf E_0=\rho+(1-\rho)(b+\pi\lambda)>\rho=\mathsf E_1$.
+\end{enumerate}
+Each economy has a unique outcome under either challenger rule and either investor rule.
+\end{proposition}
+
+\begin{proof}
+The kernel gives $t_L\ge t_0$, $g_H\ge g_L\ge0$, and a positive spread by the trade inequality.
+The fixed zero-cost rule gives an entry floor $\rho$ under every profile.
+Competitive prices and that floor give the inversion and payoff formulas in Section~\ref{sec:objects}.
+Every correct unit order therefore earns at least $\rho\kappa\Delta_i-k>0$ under every candidate.
+Every wrong-sign order loses, and zero pays zero.
+Thus all equilibria have full orders in both economies.
+
+Specify each candidate tuple by $\sigma_H=\delta_1$, $\sigma_L=\delta_{-1}$, and $(\mu_{-1},\mu_0,\mu_1)=(m,\pi,M)$.
+In the first case, set $(e_i(-1),e_i(0),e_i(1))=(\rho,\rho,1)$ for both $i$.
+In the second case, set that pattern at $i=0$ and set $e_1(q)=\rho$ at every order.
+Set $\zeta_i(P_q)=[e_i(q)-\rho]/(1-\rho)$ and
+\[
+ P_{i,q}=t_{0,i}+e_i(q)[t_{L,i}-t_{0,i}+\Delta_i\mu_q],\qquad
+ \bar\mu_i(P_{i,q})=\mu_q.
+\]
+Append truthful bids.
+
+Bayes' rule gives the stated raw beliefs from the common liquidity masses and full orders.
+Gross acquisition profit decreases with incumbent strength at every belief, even after reserve exclusion.
+Indeed the realized profit $(\theta-\max\{p,R\})_+$ decreases with $R$ for every $\theta$.
+Thus the first case gives $B_i(\pi)<c_H<B_i(M)$ at both strengths.
+The second case gives that comparison at the weak strength and excludes high-cost entry everywhere at the strong strength.
+These inequalities verify high-cost preparation against each fixed candidate.
+
+The candidate prices are competitive by their definition.
+The positive spread and the entry floor recover the stated price beliefs.
+The strict payoff inequalities above verify every deviation against these fixed schedules.
+Truthful bids verify the auction condition.
+The bounds under every profile establish uniqueness.
+Finally, the positive order has probability $b+\pi\lambda$, which gives both entry formulas.
+\end{proof}
+
+The node margins below certify each strict condition at the declared exclusion and deterrence reserves.
+They define open regions within each continuous reserve regime.
+
+\subsection{The exclusion reserve gives flat entry}
+
+\begin{proposition}[Exclusion reserves at B; computer-assisted]\label{prop:exclude}
+Retain the benchmark costs and the first two incumbent strengths.
+For point values, compare reserves $1/2$ and $101/100$.
+For the narrow uniform classes, compare reserves $1/2$ and $11/10$.
+At each higher reserve, full informed orders are unique at both strengths.
+Only the positive order recruits at both strengths.
+Entry therefore equals $\rho+(1-\rho)(b+\lambda/2)$ at each strength.
+The higher reserve raises proceeds at both strengths.
+\end{proposition}
+
+\begin{proof}
+For each node, use the tuple \eqref{eq:full-tuple} with the kernel \eqref{eq:reserve-kernel}.
+The raw posteriors are $(m,1/2,M)$ and the entry probabilities are $(\rho,\rho,1)$.
+The low class is entirely below the higher reserve, so $t_L=t_0$ and $g_L=0$.
+The high class lies above both incumbent supports.
+Thus \eqref{eq:excluded} gives every auction object at the higher reserves.
+
+The interval inequalities give $B(1/2)<c_H<B(M)$ at every such node.
+They verify the proposed preparation rules against the fixed tuple.
+They also give $\rho\kappa\Delta>k$ at every such node.
+Equations~\eqref{eq:bounds} and \eqref{eq:payoffs} therefore force full orders under every candidate profile.
+
+The prices are competitive, the price beliefs follow from inversion, and the bids are truthful.
+This verifies all conditions and establishes uniqueness.
+
+Full orders and the common slot law fix the positive-order probability at $b+\lambda/2$.
+The common recruitment pattern therefore gives identical entry at the two strengths.
+The proceeds and event values below follow from \eqref{eq:events} and the exact auction integrals.
+Their interval differences verify each strict proceeds comparison.
+\end{proof}
+
+\begin{center}\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrr}
+\toprule
+Values & $(r,p)$ & $\mathsf E$ & $\mathsf S$ & $\mathsf C_2$ & $\RR$\\\midrule
+Points & $(6/5,1/2)$ & \reg{p2_reserve_points_base_r0_entry} & \reg{p2_reserve_points_base_r0_sale} & \reg{p2_reserve_points_base_r0_two} & \reg{p2_reserve_points_base_r0_proceeds}\\
+Points & $(6/5,101/100)$ & \reg{p2_reserve_points_exclude_r0_entry} & \reg{p2_reserve_points_exclude_r0_sale} & \reg{p2_reserve_points_exclude_r0_two} & \reg{p2_reserve_points_exclude_r0_proceeds}\\
+Points & $(3,1/2)$ & \reg{p2_reserve_points_base_r1_entry} & \reg{p2_reserve_points_base_r1_sale} & \reg{p2_reserve_points_base_r1_two} & \reg{p2_reserve_points_base_r1_proceeds}\\
+Points & $(3,101/100)$ & \reg{p2_reserve_points_exclude_r1_entry} & \reg{p2_reserve_points_exclude_r1_sale} & \reg{p2_reserve_points_exclude_r1_two} & \reg{p2_reserve_points_exclude_r1_proceeds}\\
+Bands & $(6/5,1/2)$ & \reg{p2_reserve_bands_base_r0_entry} & \reg{p2_reserve_bands_base_r0_sale} & \reg{p2_reserve_bands_base_r0_two} & \reg{p2_reserve_bands_base_r0_proceeds}\\
+Bands & $(6/5,11/10)$ & \reg{p2_reserve_bands_exclude_r0_entry} & \reg{p2_reserve_bands_exclude_r0_sale} & \reg{p2_reserve_bands_exclude_r0_two} & \reg{p2_reserve_bands_exclude_r0_proceeds}\\
+Bands & $(3,1/2)$ & \reg{p2_reserve_bands_base_r1_entry} & \reg{p2_reserve_bands_base_r1_sale} & \reg{p2_reserve_bands_base_r1_two} & \reg{p2_reserve_bands_base_r1_proceeds}\\
+Bands & $(3,11/10)$ & \reg{p2_reserve_bands_exclude_r1_entry} & \reg{p2_reserve_bands_exclude_r1_sale} & \reg{p2_reserve_bands_exclude_r1_two} & \reg{p2_reserve_bands_exclude_r1_proceeds}\\\bottomrule
+\end{tabular}
+\end{center}
+
+The stronger incumbent can still narrow the spread after low-class exclusion.
+For the bands at $p=11/10$, the spread falls from $81/80$ to $201/200$.
+The entry probability stays flat because the positive order recruits at both strengths.
+
+\subsection{A reserve that restores strict deterrence}
+
+\begin{proposition}[Strict deterrence and what it excludes; computer-assisted]\label{prop:deter}
+Use $p=31/20$ with either benchmark point values or narrow uniform classes.
+Full informed orders are unique at both $r_0=6/5$ and $r_1=3$.
+Entry is $\rho+(1-\rho)(b+\lambda/2)$ at $r_0$, and equals $\rho$ at $r_1$.
+Proceeds exceed their respective levels at reserve $1/2$.
+The reserve excludes both the entire low class and the weak incumbent.
+\end{proposition}
+
+\begin{proof}
+At $r_0$, the reserve exceeds the incumbent support and the low-class upper endpoint.
+The high-class lower endpoint exceeds the reserve.
+Thus $t_0=t_L=g_L=0$, $t_H=p$, and $g_H=10-p$.
+At $r_1$, use \eqref{eq:excluded}.
+
+The common class means make these objects identical for point values and narrow bands.
+The conditions
+\begin{equation}\label{eq:deter-region}
+ M\left(10-\frac{r_1}2-\frac{p^2}{2r_1}\right)<6<M(10-p),\qquad
+ \rho\kappa\min\{p,r_1/2-p+3p^2/(2r_1)\}>k
+\end{equation}
+hold with strict interval margins.
+The weak prior profit is below cost because $(10-p)/2<6$.
+The weak tuple therefore has entry $(\rho,\rho,1)$.
+The strong tuple has entry $(\rho,\rho,\rho)$.
+
+Both have the full orders, raw posteriors, price beliefs, competitive prices, and bids in \eqref{eq:full-tuple}.
+The cost comparisons verify preparation.
+The global trade inequalities force these orders under every candidate profile.
+The payoff formula against the fixed tuple verifies every deviation and establishes the stated uniqueness.
+
+At $r_0$, proceeds are $p[\rho+(1-\rho)(b+\lambda)]/2$.
+At $r_1$, proceeds are
+\[
+ \mathcal R_s(p)=\frac78\left(p-\frac{p^2}{3}\right)
+ +\frac18\left(\frac32+\frac{p^2}{6}\right).
+\]
+The interval differences from the baseline proceeds are positive for each value specification and strength.
+The reserve exceeds $6/5$ and $21/20$, so the stated exclusions are strict.
+\end{proof}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Strength & $\mathsf E$ & $\mathsf S$ & $\mathsf C_2$ & $\RR$\\\midrule
+$r_0$, either law & \reg{p2_reserve_points_deter_r0_entry} & \reg{p2_reserve_points_deter_r0_sale} & \reg{p2_reserve_points_deter_r0_two} & \reg{p2_reserve_points_deter_r0_proceeds}\\
+$r_1$, either law & \reg{p2_reserve_points_deter_r1_entry} & \reg{p2_reserve_points_deter_r1_sale} & \reg{p2_reserve_points_deter_r1_two} & \reg{p2_reserve_points_deter_r1_proceeds}\\\bottomrule
+\end{tabular}
+\end{center}
+
+The strong upper-profit equality occurs at
+\begin{equation}\label{eq:ph}
+ p_H=\sqrt{2r_1(10-6/M)-r_1^2}=\reg{p2_reserve_ph}.
+\end{equation}
+The weak recruitment limit after incumbent exclusion is $p<10-6/M=\reg{p2_reserve_weak_top}$.
+The open interval $p_H<p<10-6/M$, together with the trade bounds, gives strict deterrence.
+The choice $31/20$ lies strictly inside it.
+Its lower endpoint exceeds the weak incumbent's support: $p_H-r_0=\reg{margin_p2_ph_weak_B}>0$.
+
+This exclusion is necessary for strict deterrence within the fully excluded low-class region at B.
+For point values and $1<p\le6/5$, \eqref{eq:excluded} gives
+\[
+ \Delta_0-17/20=(p-1)(5p+1)/4\ge0,\qquad
+ \Delta_1-1=(p-1)^2/2\ge0.
+\]
+The uniform weak and strong return margins are $\reg{margin_p2_reserve_uniform_weak_B}$ and $\reg{margin_p2_reserve_uniform_strong_B}$.
+The full-order return bounds therefore hold throughout that interval.
+
+At $p=6/5$, the strong upper profit is $M(413/50)>6$.
+At every lower reserve in that interval it is larger.
+The weak upper profit is also above cost, and both prior profits are below cost.
+Thus both strengths recruit only at the positive order, and entry is flat.
+For the narrow bands, the same argument applies once $p>21/20$ excludes the entire low class.
+Consequently strict deterrence after full low-class exclusion requires $p>r_0$.
+
+\subsection{Reserve equalities and local continuation}\label{sec:endpoint}
+At the equality $p=p_H$, the strong positive order gives $B(M)=c_H$.
+The full-order return bounds remain strict near this reserve.
+Under C1, its entry pattern is $(\rho,\rho,1)$.
+Under CM, its last component can be any value in $[\rho,1]$.
+
+Bayes' rule gives the unchanged full-order posteriors.
+For each permitted last component, equation~\eqref{eq:price} supplies competitive prices and equation~\eqref{eq:payoffs} verifies the orders.
+Immediately above the equality, the unique pattern is $(\rho,\rho,\rho)$.
+The equality is a separate boundary event, outside the strict open region.
+
+At the point-value endpoint $p=h=10$, all acquisition profits are zero.
+Set $A(P,0)=1$, $A(P,6)=0$, and $\bar e(P)=\rho$ under either high-cost challenger rule.
+The auction kernel gives $t_H=10$, $t_L=t_0=0$, and $\Delta=10$.
+
+The complete tuple has full orders, posteriors $(m,1/2,M)$, and prices $P_q=10\rho\mu_q$.
+The bound $10\rho\kappa>k$ forces full orders under every candidate.
+
+The prices are competitive, the price beliefs follow from inversion, and the reserve bid is admissible.
+Thus
+\[
+ \mathsf E=\reg{p2_endpoint_r1_entry},\qquad
+ \mathsf S=\reg{p2_endpoint_r1_sale},\qquad
+ \mathsf C_2=\reg{p2_endpoint_r1_two},\qquad
+ \RR=\reg{p2_endpoint_r1_proceeds}.
+\]
+
+The fixed zero-cost preparation rule supplies the entry floor at this endpoint.
+The high-cost exclusion is strict, so C1 and CM give the same outcome.
+
+For the narrow bands, the upper endpoint is $p=201/20$.
+That reserve exceeds incumbent support, and the high band has no probability mass at its upper endpoint.
+The complete tuple has zero informed orders, zero prices, prior beliefs, zero-cost preparation, and truthful bids.
+Every nonzero order loses its fee because all target proceeds are zero.
+Consequently entry is $\reg{p2_band_endpoint_r1_entry}$ and both sale and proceeds equal $\reg{p2_band_endpoint_r1_proceeds}$.
+
+A seller continuation selects a complete tuple after each reserve.
+Its objective is $\RR(p;\mathcal E^*(p))$ under that specified selection.
+The finite comparisons above establish strict local outcome comparisons and verified boundary continuations.
+Existence of a selection at every reserve and a global seller optimum remain open.
+
+For a differentiable branch below every challenger value, the product rule gives
+\begin{equation}\label{eq:reserve-derivative}
+ \RR'(p)=(1-\mathsf E)(1-2p/r)+\mathsf E\,p/r
+ +\sum_j\pi_j e_j'(p)(t_j-t_0).
+\end{equation}
+With an atomless cost CDF $H_C$ and class-conditional order probabilities $a_j(q;p)$,
+\[
+ e_j'(p)=\sum_q\left\{\partial_pa_j(q;p)H_C(B_q)
+ +a_j(q;p)h_C(B_q)\left[-p/r+(g_H-g_L)\partial_p\mu_q\right]\right\}.
+\]
+This is a finite sum, so differentiability of the displayed functions suffices.
+A pure finite-menu profile stays constant on a regular local branch.
+Its order-probability and posterior derivatives then vanish.
+At a cost atom or a branch change, the level objective gives the relevant comparison.
+
+\section{Parameter declarations, arithmetic, and strict margins}\label{sec:margins}
+
+The arithmetic program is \texttt{scripts/P2\_auction/derive.py} within the team folder.
+Its complete printed record is \texttt{scripts/P2\_auction/run.log}.
+The registry is \texttt{registry/P2\_auction.csv}.
+The file \texttt{scripts/P2\_auction/margins.csv} records each sign and its full interval.
+The manifest records the source commit, software versions, arithmetic precision, and output hashes.
+
+Auction integration uses exact rational arithmetic on each polynomial piece.
+The inner integral uses the exact midpoint rule on a linear piece.
+The outer integral uses the open formula
+\[
+ \int_a^b f(x)\dd x=\frac{b-a}{3}
+ \left[2f\left(a+\frac{b-a}{4}\right)-f\left(a+\frac{b-a}{2}\right)
+ +2f\left(a+\frac{3(b-a)}4\right)\right]
+\]
+for polynomials of degree at most three.
+For normalized monomials, the formula gives
+\[
+ \frac13\left[2(1/4)^d-(1/2)^d+2(3/4)^d\right]
+ =\left(1,\frac12,\frac13,\frac14\right)_d,\qquad d=0,1,2,3.
+\]
+These values equal the exact integrals on $[0,1]$.
+An affine change of variable proves the displayed formula.
+Every required class integral has degree at most three after the support splits.
+
+The program uses outward interval arithmetic at sixty decimal digits for $e$ and every expression that depends on it.
+A strict sign requires its entire interval to lie on one side of zero.
+Decimal midpoints serve display only.
+The exact collision identity and the reserve equalities follow from the displayed algebra.
+
+The table below gives the benchmark margins for every strict primitive and support restriction in the two-class proof.
+\begin{center}\small
+\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Restriction & Margin & Restriction & Margin\\\midrule
+$\lambda>0$ & \reg{margin_p2_lambda_lower_B} & $1-\lambda>0$ & \reg{margin_p2_lambda_upper_B}\\
+$\beta>0$ & \reg{margin_p2_beta_lower_B} & $1/3-\beta>0$ & \reg{margin_p2_beta_upper_B}\\
+$\pi>0$ & \reg{margin_p2_primitive_pi_B} & $1-\pi>0$ & \reg{margin_p2_primitive_one_minus_pi_B}\\
+$\rho>0$ & \reg{margin_p2_primitive_rho_B} & $1-\rho>0$ & \reg{margin_p2_primitive_one_minus_rho_B}\\
+$p>0$ & \reg{margin_p2_primitive_p_B} & $\ell-p>0$ & \reg{margin_p2_primitive_low_above_p_B}\\
+$r_0-\ell>0$ & \reg{margin_p2_primitive_r0_above_low_B} & $r_1-r_0>0$ & \reg{margin_p2_primitive_r1_above_r0_B}\\
+$r_2-r_1>0$ & \reg{margin_p2_primitive_r2_above_r1_B} & $h-r_2>0$ & \reg{margin_p2_primitive_high_above_r2_B}\\
+$k>0$ & \reg{margin_p2_primitive_k_B} & $c_H>0$ & \reg{margin_p2_primitive_cost_B}\\
+$\Gamma>0$ & \reg{margin_p2_primitive_class_gap_B} & & \\
+$b+\lambda>1/2$ & \reg{margin_p2_bplus_B} & & \\\bottomrule
+\end{tabular}
+\end{center}
+
+The next table uses
+\[
+ C_0=c_H-B_0(\pi),\quad C_1=B_1(M)-c_H,\quad T_0=k-\Delta_0,\quad
+ T_H=\rho(1-M)\Delta_1-k,\quad T_L=\rho m\Delta_1-k,
+\]
+\[
+ C_2=c_H-B_2(M),\qquad O=[\rho+(1-\rho)(b+\lambda)]W_H(F_1)-\rho W_H(F_0).
+\]
+All rows except D certify the stated strict hypotheses.
+The empty moderate collapse cell reflects its two-strength declaration.
+D's negative upper cost margin gives its stated constant-entry control.
+Its $O$ cell uses the displayed recruitment coefficient; its actual ownership stays at the floor.
+
+\begin{center}\small\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Example & $C_0$ & $C_1$ & $T_0$ & $T_H$ & $T_L$ & $C_2$ & $O$\\\midrule
+Base & \reg{margin_p2_base_weak_cost_B} & \reg{margin_p2_base_strong_top_B} & \reg{margin_p2_base_weak_trade_B} & \reg{margin_p2_base_high_floor_B} & \reg{margin_p2_base_low_floor_B} & \reg{margin_p2_base_collapse_B} & \reg{margin_p2_base_ownership_B}\\
+Moderate & \reg{margin_p2_moderate_weak_cost_B} & \reg{margin_p2_moderate_strong_top_B} & \reg{margin_p2_moderate_weak_trade_B} & \reg{margin_p2_moderate_high_floor_B} & \reg{margin_p2_moderate_low_floor_B} & --- & \reg{margin_p2_moderate_ownership_B}\\
+Narrow & \reg{margin_p2_bands_weak_cost_B} & \reg{margin_p2_bands_strong_top_B} & \reg{margin_p2_bands_weak_trade_B} & \reg{margin_p2_bands_high_floor_B} & \reg{margin_p2_bands_low_floor_B} & \reg{margin_p2_bands_collapse_B} & \reg{margin_p2_bands_ownership_B}\\
+A & \reg{margin_p2_ex_a_weak_cost_B} & \reg{margin_p2_ex_a_strong_top_B} & \reg{margin_p2_ex_a_weak_trade_B} & \reg{margin_p2_ex_a_high_floor_B} & \reg{margin_p2_ex_a_low_floor_B} & \reg{margin_p2_ex_a_collapse_B} & \reg{margin_p2_ex_a_ownership_B}\\
+B & \reg{margin_p2_ex_b_weak_cost_B} & \reg{margin_p2_ex_b_strong_top_B} & \reg{margin_p2_ex_b_weak_trade_B} & \reg{margin_p2_ex_b_high_floor_B} & \reg{margin_p2_ex_b_low_floor_B} & \reg{margin_p2_ex_b_collapse_B} & \reg{margin_p2_ex_b_ownership_B}\\
+C & \reg{margin_p2_ex_c_weak_cost_B} & \reg{margin_p2_ex_c_strong_top_B} & \reg{margin_p2_ex_c_weak_trade_B} & \reg{margin_p2_ex_c_high_floor_B} & \reg{margin_p2_ex_c_low_floor_B} & \reg{margin_p2_ex_c_collapse_B} & \reg{margin_p2_ex_c_ownership_B}\\
+D & \reg{margin_p2_ex_d_weak_cost_B} & \reg{margin_p2_ex_d_strong_top_B} & \reg{margin_p2_ex_d_weak_trade_B} & \reg{margin_p2_ex_d_high_floor_B} & \reg{margin_p2_ex_d_low_floor_B} & \reg{margin_p2_ex_d_collapse_B} & \reg{margin_p2_ex_d_ownership_B}\\\bottomrule
+\end{tabular}
+\end{center}
+
+At B, the collapse return margins are $\reg{margin_p2_base_collapse_high_B}$ for H and $\reg{margin_p2_base_collapse_low_B}$ for L.
+The core upper-profit margin is $\reg{margin_p2_base_strong_top_B}$.
+The collapse cost margin is $\reg{margin_p2_base_collapse_B}$.
+These three strict margins establish the advertised nonmonotone entry pattern.
+
+The reserve and many-class hypotheses have these additional strict margins.
+The signed entry comparisons at every reserve node appear in the run log.
+The payoff margins for each candidate also appear there.
+
+\begin{center}\small
+\begin{tabular}{lr}
+\toprule
+Restriction & Margin at the declared slot primitives\\\midrule
+$\beta>1/4$ for the collision example & \reg{margin_p2_many_beta_B}\\
+$w>0$ & \reg{margin_p2_many_w_lower_B}\\
+$1-w>0$ & \reg{margin_p2_many_w_upper_B}\\
+Class 1 selected payoff gap & \reg{p2_many_choice0}\\
+Class 2 selected payoff gap & \reg{p2_many_choice1}\\
+Class 3 selected payoff gap & \reg{p2_many_choice2}\\
+$c_H-\max_jg_j>0$, collision & \reg{p2_many_high_cost}\\
+Zero-cost gross-profit lower bound, collision & \reg{p2_many_low_cost}\\
+Four-class weak range below $k$ & \reg{p2_groups_weak_range}\\
+Four-class weak prior below cost & \reg{p2_groups_weak_cost}\\
+Four-class $\rho\gamma-k>0$ & \reg{p2_groups_trade}\\
+Four-class group profit gap & \reg{p2_groups_profit_gap}\\
+Four-class upper profit above cost & \reg{p2_groups_top}\\
+$p_H-r_0>0$ & \reg{margin_p2_ph_weak_B}\\
+$31/20-p_H>0$ & \reg{margin_p2_deter_lower_B}\\
+$10-6/M-31/20>0$ & \reg{margin_p2_deter_upper_B}\\
+$M(413/50)-6>0$ & \reg{margin_p2_reserve_admissible_top_B}\\
+Full-order margin at $p_H$ & \reg{margin_p2_ph_trade_B}\\
+Prior exclusion margin at $p_H$ & \reg{margin_p2_ph_prior_B}\\
+Weak proceeds gain, points, $p=31/20$ & \reg{margin_p2_reserve_points_rev0_B}\\
+Strong proceeds gain, points, $p=31/20$ & \reg{margin_p2_reserve_points_rev1_B}\\
+Weak proceeds gain, bands, $p=31/20$ & \reg{margin_p2_reserve_bands_rev0_B}\\
+Strong proceeds gain, bands, $p=31/20$ & \reg{margin_p2_reserve_bands_rev1_B}\\\bottomrule
+\end{tabular}
+\end{center}
+
+The reserve node margins below give $T=\rho\kappa\Delta-k$, $C=6-B(1/2)$, and $J=B(M)-6$.
+A negative $J$ excludes the high-cost realization at every order.
+Each $C$ is positive, so a positive $J$ recruits only at the positive order.
+\begin{center}\small
+\begin{tabular}{llrrr}
+\toprule
+Values & $(p,r)$ & $T$ & $C$ & $J$\\\midrule
+Points & $(101/100,6/5)$ & \reg{p2_reserve_points_exclude_r0_global} & \reg{p2_reserve_points_exclude_r0_prior_cost_margin} & \reg{p2_reserve_points_exclude_r0_cost_sign_plus}\\
+Points & $(101/100,3)$ & \reg{p2_reserve_points_exclude_r1_global} & \reg{p2_reserve_points_exclude_r1_prior_cost_margin} & \reg{p2_reserve_points_exclude_r1_cost_sign_plus}\\
+Bands & $(11/10,6/5)$ & \reg{p2_reserve_bands_exclude_r0_global} & \reg{p2_reserve_bands_exclude_r0_prior_cost_margin} & \reg{p2_reserve_bands_exclude_r0_cost_sign_plus}\\
+Bands & $(11/10,3)$ & \reg{p2_reserve_bands_exclude_r1_global} & \reg{p2_reserve_bands_exclude_r1_prior_cost_margin} & \reg{p2_reserve_bands_exclude_r1_cost_sign_plus}\\
+Either & $(31/20,6/5)$ & \reg{p2_reserve_points_deter_r0_global} & \reg{p2_reserve_points_deter_r0_prior_cost_margin} & \reg{p2_reserve_points_deter_r0_cost_sign_plus}\\
+Either & $(31/20,3)$ & \reg{p2_reserve_points_deter_r1_global} & \reg{p2_reserve_points_deter_r1_prior_cost_margin} & \reg{p2_reserve_points_deter_r1_cost_sign_plus}\\\bottomrule
+\end{tabular}
+\end{center}
+
+The price collision and the two reserve equalities are exact boundary statements.
+Their equality conditions define separate lower-dimensional sets.
+Every strict equilibrium classification above persists on the open set defined by its stated inequalities.
+
+\end{document}

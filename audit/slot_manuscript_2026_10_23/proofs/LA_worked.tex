@@ -1,0 +1,385 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable}
+\usepackage{newtxtext,newtxmath}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newcommand{\E}{\mathbb E}
+\renewcommand{\Pr}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\Dt}{\Delta_T}
+\title{Entry Returns to Its Floor at the Strongest Incumbent:\\
+Proposition 2(iii) of the Laplace Manuscript in Five Parts}
+\author{}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+
+\noindent
+This note proves part (iii) of Proposition~2 of the Laplace manuscript
+(\texttt{overleaf/paper}, commit \texttt{01bd5d6}) to the five-part standard of the team brief.
+It uses the manuscript's own assumptions and notation. The manuscript proves part (iii) in
+three sentences (Appendix A.2, ``Part (iii)''). They point to Steps~4 and~5 of its proof of
+parts (i) and (ii). That argument is sound and assumes nothing it proves. It falls short of the
+standard in two places. It does not display the equilibrium as one explicit tuple. It prints no
+margin for its one new hypothesis at the benchmark. Both are supplied here. Numbers come from
+\texttt{scripts/LA/margins.py} (run log \texttt{margins\_run.log}); every quantity that
+involves $e$ is an outward interval enclosure at 50 decimal digits.
+
+\section*{Setting}
+
+The objects are those of the manuscript's Sections 2 to 3. The challenger's class is
+$j\in\{H,L\}$ with prior $\pi=\Pr(j=H)\in(0,1)$; its value $\theta\sim G_j$ has a finite mean.
+The incumbent's value $R\sim F$ is continuous on $[0,\bar r]$. The investor observes $j$ and
+submits a (possibly mixed) order on $[-1,1]$ at linear cost $k|q|$. Noise $Z$ has the Laplace
+density $f(z)=e^{-|z|/b}/(2b)$ with $b>1$; flow is $X=q+Z$. Market makers set
+$P(X)=\E[V_T\mid X]$. The challenger sees $P$ and its cost $C\in\{0,c_H\}$, $\Pr(C=0)=\rho$,
+then decides whether to prepare; an indifferent challenger prepares. Prepared bidders bid
+truthfully in a second-price auction with reserve $p$. The auction objects are
+$t_0=p[1-F(p)]$, $t_j$, $g_j$, $\Dt=t_H-t_L$, $w_L=t_L-t_0$, and $B_F(\mu)=g_L+\mu(g_H-g_L)$
+(manuscript equations (6) and (9)). The posterior bounds are
+\[
+m(\pi)=\frac{\pi}{\pi+(1-\pi)e^{2/b}},\qquad
+M(\pi)=\frac{\pi}{\pi+(1-\pi)e^{-2/b}},\qquad
+\kappa(\pi)=\min\{m(\pi),\,1-M(\pi)\}.
+\]
+
+\paragraph{Hypotheses.}
+Fix the incumbent distribution $F_2$ (the manuscript's strongest incumbent) and suppose:
+\begin{enumerate}
+\item[(H1)] \emph{Classes.} $G_H(u)\le G_L(u)$ for every $u$, and $G_H(p^-)=G_L(p^-)=0$
+  (the restrictions of the manuscript's Section 2.2).
+\item[(H2)] \emph{Incumbent.} $F_2$ is continuous on $[0,\bar r_2]$ and extended by one above.
+\item[(H3)] \emph{Spread.} $\Dt(F_2)>0$.
+\item[(H4)] \emph{Trading cost.} $0<k<(1-1/b)\,\rho\,\kappa(\pi)\,\Dt(F_2)$.
+\item[(H5)] \emph{Exclusion.} $B_{F_2}(M(\pi))<c_H$.
+\item[(H6)] $b>1$, $0<\rho<1$, $0<\pi<1$, $c_H>0$.
+\end{enumerate}
+In the manuscript, (H3) and (H4) are not separate
+assumptions. There $F_2$ is a first-order stochastic strengthening of $F_1$, so Proposition~1(b)
+gives $\Dt(F_2)\ge\Dt(F_1)$, and (A2) at $F_1$ gives both. (H5) is the one new hypothesis of part (iii). Under (H1), equation (6) gives
+$g_H\ge g_L\ge0$ and $\Dt\ge0$; (H3) sharpens the last to a strict inequality.
+
+\section{The equilibrium object}
+
+The candidate is the tuple $\mathcal E^*=(\sigma_H^*,\sigma_L^*;\,\mu^*;\,P^*;\,\beta^*;\,e^*;\,\text{bids})$:
+\begin{enumerate}
+\item \emph{Orders.} $\sigma_H^*=\delta_{+1}$ and $\sigma_L^*=\delta_{-1}$: the investor buys one
+  unit in class $H$ and sells one unit in class $L$.
+\item \emph{Market posterior.} For every $x\in\R$,
+  \[
+  \mu^*(x)=\frac{\pi f(x-1)}{\pi f(x-1)+(1-\pi)f(x+1)}
+  =\Big[1+\frac{1-\pi}{\pi}\exp\Big\{-\frac{|x+1|-|x-1|}{b}\Big\}\Big]^{-1},
+  \]
+  equal to $m(\pi)$ on $x\le-1$, strictly increasing on $(-1,1)$ with log odds
+  $\operatorname{logit}\pi+2x/b$, and equal to $M(\pi)$ on $x\ge1$.
+\item \emph{Price function.} For every $x\in\R$,
+  \[
+  P^*(x)=t_0+\rho\,[\,w_L+\Dt\,\mu^*(x)\,].
+  \]
+  Its image is the closed interval $[P_-,P_+]$ with $P_\pm=t_0+\rho[w_L+\Dt M_\pm]$,
+  $M_-=m(\pi)$, $M_+=M(\pi)$. The endpoints are atoms: $P^*=P_-$ on $\{X\le-1\}$ and
+  $P^*=P_+$ on $\{X\ge1\}$. Their probabilities are $\Pr(X\le-1\mid H)=\tfrac12e^{-2/b}$,
+  $\Pr(X\le-1\mid L)=\tfrac12$, $\Pr(X\ge1\mid H)=\tfrac12$, $\Pr(X\ge1\mid L)=\tfrac12e^{-2/b}$.
+\item \emph{Challenger's belief.} At a realized price $P\in[P_-,P_+]$,
+  \[
+  \beta^*(P)=\frac{P-t_0-\rho w_L}{\rho\Dt}\in[m(\pi),M(\pi)].
+  \]
+  No other price is reached on path or after any unilateral investor deviation (Section~3.3), so
+  no further belief is specified.
+\item \emph{Entry rule.} At every price and cost, $e^*(P,0)=1$ and $e^*(P,c_H)=0$. The
+  cost-averaged entry rate is $e^*(P)=\rho$ at every price.
+\item \emph{Bids.} Each prepared bidder bids its value; a prepared challenger with
+  $\theta<p$ does not bid.
+\end{enumerate}
+
+\section{The conditions}
+
+$\mathcal E^*$ is an equilibrium if the following hold.
+\begin{enumerate}
+\item[(C1)] \emph{Bayes consistency.} $\mu^*(x)=\Pr(j=H\mid X=x)$ under $(\sigma_H^*,\sigma_L^*)$,
+  and $\beta^*(P^*(X))=\Pr(j=H\mid P^*(X))$ almost surely.
+\item[(C2)] \emph{Competitive prices.} $P^*(x)=\E[V_T\mid X=x]$ for every $x$, where $V_T$ is
+  computed under $\beta^*$, $e^*$ and truthful bids.
+\item[(C3)] \emph{Entry optimality.} At every reached price and each cost, the challenger's
+  preparation decision maximizes expected gross profit net of cost, with the tie rule.
+\item[(C4)] \emph{Investor optimality.} For each class $j$, the order $q_j^*$ maximizes
+  $q\,\E[V_T-P^*(X)\mid j,\,X=q+Z]-k|q|$ over $q\in[-1,1]$, and no mixture does better,
+  with $P^*$ and $e^*$ held fixed.
+\item[(C5)] \emph{Truthful bids.} Bidding one's value is weakly dominant.
+\end{enumerate}
+
+\section{Verification against the fixed object}
+
+\subsection{Bayes consistency (C1)}
+Under $\sigma^*$ the conditional flow densities are $f(x-1)$ in class $H$ and $f(x+1)$ in
+class $L$. Bayes' rule gives the first form of $\mu^*$. Since
+$\log[f(x-1)/f(x+1)]=(|x+1|-|x-1|)/b$, which equals $-2/b$ for $x\le-1$, $2x/b$ for
+$-1<x<1$, and $2/b$ for $x\ge1$, the three-piece description follows. For the price
+posterior: $P^*$ is the composition of $\mu^*$ with the strictly increasing affine map
+$\mu\mapsto t_0+\rho[w_L+\Dt\mu]$ (slope $\rho\Dt>0$ by (H3), (H6)). Hence
+$P^*(x)=P^*(x')$ if and only if $\mu^*(x)=\mu^*(x')$, and $\mu^*(X)$ is a function of
+$P^*(X)$, namely $\mu^*(X)=\beta^*(P^*(X))$. The tower property gives
+$\Pr(H\mid P^*(X))=\E[\mu^*(X)\mid P^*(X)]=\beta^*(P^*(X))$. At the two atoms the preimage
+is a half-line on which $\mu^*$ is constant, so conditioning on the whole preimage gives the
+same value.
+
+\subsection{Competitive prices (C2)}
+Conditional on class $j$ and flow $x$, the price $P^*(x)$ is fixed, the cost $C$ is independent
+of $(j,\theta,R,Z)$, and the entry rule is $e^*$. The challenger prepares exactly when $C=0$,
+with probability $\rho$. Given preparation and class $j$, expected target proceeds are $t_j$: the
+challenger's value is independent of flow given its class, and bids are truthful. Without
+preparation they are $t_0$. Hence
+\[
+\E[V_T\mid j,\,X=x]=t_0+\rho\,(t_j-t_0),
+\]
+and averaging over the class with $\mu^*(x)$,
+\[
+\E[V_T\mid X=x]=t_0+\rho\big[\mu^*(x)(t_H-t_0)+(1-\mu^*(x))(t_L-t_0)\big]
+=t_0+\rho\,[\,w_L+\Dt\mu^*(x)\,]=P^*(x).
+\]
+
+\subsection{Entry optimality (C3)}
+At price $P\in[P_-,P_+]$ the challenger's belief is $\beta^*(P)\in[m(\pi),M(\pi)]$. Its
+expected gross profit is $B_{F_2}(\beta^*(P))$, because its value depends on the price only
+through its class. Two facts about $B_{F_2}$:
+\begin{itemize}
+\item $B_{F_2}(\mu)\ge g_L(F_2)\ge0$ for every $\mu\in[0,1]$, by (H1) and (6); the gross
+  profit is an expectation of nonnegative auction rents.
+\item $B_{F_2}$ is nondecreasing ($g_H\ge g_L$), so $B_{F_2}(\mu)\le B_{F_2}(M(\pi))<c_H$ for
+  every $\mu\le M(\pi)$, by (H5).
+\end{itemize}
+The zero-cost challenger compares a nonnegative gross profit with a zero cost: it prepares,
+strictly if $g_L(F_2)>0$ and by the tie rule otherwise. The high-cost challenger compares a
+gross profit below $c_H$ with the cost $c_H$: it stays out, strictly. This is $e^*$.
+
+\subsection{Investor optimality (C4)}
+Fix $P^*$ and $e^*$. Consider class $H$ and an order $q\in[-1,1]$, so $X=q+Z$. Conditional on
+$(H,X=x)$ the terminal value has mean $t_0+\rho(t_H-t_0)$ by Section~3.2. The entry rate is
+$\rho$ at every price, so the investor's order changes nothing in the challenger's decision.
+The residual advantage at flow $x$ is therefore
+\[
+A_H(x)=t_0+\rho(t_H-t_0)-P^*(x)=\rho\,\Dt\,[1-\mu^*(x)],\qquad
+A_L(x)=P^*(x)-t_0-\rho(t_L-t_0)=\rho\,\Dt\,\mu^*(x),
+\]
+the second for class $L$. Both are bounded and measurable, and
+\[
+\rho\,\kappa(\pi)\,\Dt\;\le\;A_H(x),\,A_L(x)\;\le\;\Dt\qquad\text{for every }x,
+\]
+since $\mu^*\in[m(\pi),M(\pi)]$ gives $1-\mu^*\ge1-M(\pi)\ge\kappa(\pi)$ and
+$\mu^*\ge m(\pi)\ge\kappa(\pi)$.
+
+A correctly signed order of magnitude $s\in[0,1]$ ($q=s$ in class $H$, $q=-s$ in class $L$)
+earns
+\[
+U_j(s)=s\,\bar A_j(s)-ks,\qquad
+\bar A_H(s)=\int_\R f(x-s)A_H(x)\,dx,\qquad
+\bar A_L(s)=\int_\R f(x+s)A_L(x)\,dx .
+\]
+
+\begin{lemma}[translation derivative]\label{lem:w11}
+Let $A:\R\to[0,\bar A]$ be measurable, $\epsilon\in\{-1,+1\}$, and
+$\bar A_\epsilon(s)=\int f(x-\epsilon s)A(x)\,dx$ for $s\in[0,1]$. Then $\bar A_\epsilon$ is
+absolutely continuous on $[0,1]$, and for almost every $s$
+\[
+\bar A_\epsilon'(s)=-\epsilon\int f'(x-\epsilon s)A(x)\,dx,\qquad
+|\bar A_\epsilon'(s)|\le\frac1b\,\bar A_\epsilon(s).
+\]
+\end{lemma}
+\begin{proof}
+The Laplace density is absolutely continuous on $\R$ with derivative
+$f'(z)=-\operatorname{sgn}(z)f(z)/b$ for $z\ne0$, so $|f'|\le f/b$ almost everywhere and
+$\int|f'|=1/b$. For $0\le s_1<s_2\le1$ and every $x$,
+\[
+f(x-\epsilon s_2)-f(x-\epsilon s_1)=-\epsilon\int_{s_1}^{s_2}f'(x-\epsilon u)\,du .
+\]
+Multiply by $A(x)$ and integrate over $x$. The double integral of the absolute value is at
+most $\bar A\,(s_2-s_1)\int|f'|=\bar A(s_2-s_1)/b<\infty$. Fubini's theorem therefore allows
+the order of integration to be exchanged:
+\[
+\bar A_\epsilon(s_2)-\bar A_\epsilon(s_1)=\int_{s_1}^{s_2}\Big[-\epsilon\int f'(x-\epsilon u)A(x)\,dx\Big]du .
+\]
+The bracket is an integrable function of $u$, so $\bar A_\epsilon$ is absolutely continuous
+and its derivative equals the bracket almost everywhere. Finally, $A\ge0$ and $|f'|\le f/b$
+give $|\int f'(x-\epsilon s)A(x)\,dx|\le b^{-1}\int f(x-\epsilon s)A(x)\,dx=\bar A_\epsilon(s)/b$.
+\end{proof}
+
+Apply the lemma with $A=A_H$, $\epsilon=+1$ and with $A=A_L$, $\epsilon=-1$. Then $U_j$ is
+absolutely continuous on $[0,1]$ and, for almost every $s$,
+\[
+U_j'(s)=\bar A_j(s)+s\bar A_j'(s)-k\;\ge\;\Big(1-\frac sb\Big)\bar A_j(s)-k
+\;\ge\;\Big(1-\frac1b\Big)\rho\,\kappa(\pi)\,\Dt-k\;=:\;\zeta_{\mathrm{tr}}>0,
+\]
+The second inequality uses $1-s/b\ge1-1/b>0$, by (H6), and
+$\bar A_j(s)\ge\rho\kappa(\pi)\Dt$, because the pointwise lower bound integrates against a
+probability density. The last inequality is (H4). Integrating,
+\[
+U_j(1)-U_j(s)=\int_s^1U_j'(u)\,du\;\ge\;\zeta_{\mathrm{tr}}\,(1-s)>0\qquad\text{for every }s\in[0,1).
+\]
+So the unit correctly signed order strictly dominates every smaller correctly signed
+magnitude, including zero. A wrongly signed order of magnitude $s>0$ earns
+$-s\int f(x+s)A_H(x)\,dx-ks<0=U_H(0)$ in class $H$, and symmetrically in class $L$, because
+the residuals are nonnegative. Hence $q_H^*=1$ is the unique maximizer in class $H$ and
+$q_L^*=-1$ in class $L$. A mixture that puts positive mass on any other order averages
+strictly smaller payoffs and is strictly worse. This verifies (C4).
+
+\subsection{Truthful bids (C5)}
+In a second-price auction with reserve, a bid equal to one's value is weakly dominant against
+every competing bid. A higher bid can only add unprofitable wins. A lower bid can only discard
+profitable wins. The winner's payment does not depend on its own bid. The price and the entry
+decision change beliefs about the competing bid, not this pointwise comparison.
+
+\subsection{Outcome at $F_2$}
+Total entry is $\E[e^*(P^*(X))]=\rho$. Class-$H$ ownership is $\pi\rho W_H(F_2)$ with
+$W_H(F)=\E_H[F(\theta)\ind\{\theta\ge p\}]$. The price is informative: $\mu^*$ is nonconstant.
+
+\section{Uniqueness through bounds on every profile}
+
+Let $\mathcal E=(\sigma_H,\sigma_L;\,\mu;\,P;\,\beta;\,e;\,\text{bids})$ be any equilibrium
+of the game at $F_2$, with arbitrary mixed orders. Each step below is a bound that holds for
+this arbitrary profile; none uses the candidate $\mathcal E^*$.
+
+\paragraph{Step 1: posterior bounds for every profile.}
+Write $a_j(x)=\int f(x-q)\,\sigma_j(dq)$. For any $q,q'\in[-1,1]$ the triangle inequality gives
+$\big||x-q|-|x-q'|\big|\le|q-q'|\le2$, so $e^{-2/b}\le f(x-q)/f(x-q')\le e^{2/b}$. Integrating
+against $\sigma_H(dq)\sigma_L(dq')$ gives $e^{-2/b}a_L(x)\le a_H(x)\le e^{2/b}a_L(x)$ for every
+$x$. By Bayes' rule the log odds of $\mu(x)=\pi a_H/(\pi a_H+(1-\pi)a_L)$ lie within $2/b$ of
+$\operatorname{logit}\pi$, so $m(\pi)\le\mu(x)\le M(\pi)$ for every $x$. The price is a
+function of $X$, so $\beta(P(X))=\E[\mu(X)\mid P(X)]$ lies in the same interval almost surely.
+Both conditional flow densities are positive on $\R$. The flow law under every pure or mixed
+order, and under every unilateral deviation, is therefore equivalent to Lebesgue measure.
+
+\paragraph{Step 2: entry is $\rho$ for every profile.}
+At every reached price the challenger's belief $\beta(P)$ lies in $[m(\pi),M(\pi)]$ by Step~1,
+and its gross profit is $B_{F_2}(\beta(P))$. Section~3.3 applies verbatim: the zero-cost
+challenger prepares (strictly or by the tie rule), and the high-cost challenger stays out
+because $B_{F_2}(\beta(P))\le B_{F_2}(M(\pi))<c_H$. Hence the cost-averaged entry rate is
+$e(P)=\rho$ at every reached price, in every equilibrium. This step does not need the price to
+reveal the posterior.
+
+\paragraph{Step 3: price and residuals for every profile.}
+With $e\equiv\rho$ and $C$ independent of everything else, Section~3.2 gives
+$\E[V_T\mid j,X=x]=t_0+\rho(t_j-t_0)$. Competitive pricing then gives
+$P(x)=t_0+\rho[w_L+\Dt\mu(x)]$ for almost every $x$, where $\mu$ is this profile's own
+posterior. The residuals under a unilateral deviation, which holds $P$ and $e$ fixed, are
+$A_H(x)=\rho\Dt[1-\mu(x)]$ and $A_L(x)=\rho\Dt\mu(x)$. Step~1 gives
+$\rho\kappa(\pi)\Dt\le A_H,A_L\le\Dt$ for every $x$. The pricing identity holds for almost
+every flow. Its exceptional set is Lebesgue-null. Every order gives flow a density, so the set has
+probability zero under every deviation and leaves the deviation payoff unchanged.
+
+\paragraph{Step 4: full orders for every profile.}
+Lemma~\ref{lem:w11} and the bounds of Step~3 give
+$U_j'(s)\ge\zeta_{\mathrm{tr}}>0$ almost everywhere on $[0,1]$ for both classes, as in
+Section~3.4. The bound holds against the fixed $P$ and $e$ of this profile. Therefore the unit correctly signed order is the unique
+best response in each class, and $\sigma_H=\delta_{+1}$, $\sigma_L=\delta_{-1}$. Mixing on any
+other order is strictly worse.
+
+\paragraph{Step 5: the rest of the tuple.}
+With the orders pinned, $\mu=\mu^*$ everywhere by Bayes' rule and $P=P^*$ for almost every
+flow by Step~3. Also $\beta(P^*(X))=\mu^*(X)$ almost surely by (C1), $e\equiv\rho$ by
+Step~2, and bids are truthful. Every equilibrium therefore has the trading outcome $(1,-1)$,
+the on-path entry $\rho$, and the price $P^*$ up to a flow-null set. This is the manuscript's
+uniqueness scope: trading and on-path entry under truthful bidding, with arbitrary mixed orders
+and every unilateral deviation. Prices at flows in a null set, and beliefs at prices outside
+$[P_-,P_+]$, are not pinned. Neither is reached on path or by any deviation: every order gives
+flow a positive density on $\R$, and $P^*$ maps $\R$ onto $[P_-,P_+]$.
+
+\paragraph{The return to the floor.}
+Parts (i) and (ii) of the manuscript's Proposition~2 give, at $F_1$ under (A1) and (A2), the
+unique trading outcome $(1,-1)$ with entry
+$\mathsf E_1=\rho+(1-\rho)[\pi\alpha_H+(1-\pi)\alpha_L]>\rho$. Entry exceeds $\rho$ there
+for two reasons. The threshold belief $\tau_1=(c_H-g_L(F_1))/(g_H(F_1)-g_L(F_1))$ lies strictly
+below $M(\pi)$. The flow tail $\{X\ge1\}$, on which $\mu^*=M(\pi)$, has positive probability
+in both classes. At $F_2$ the
+trading outcome is again $(1,-1)$ and entry is exactly $\rho$. Entry rises from $\rho$ at
+$F_0$ to $\mathsf E_1$ at $F_1$ and returns to $\rho$ at $F_2$. The price stays informative at
+$F_2$. This is the stated rise and fall across three economies; it says nothing about the
+strengths between them.
+
+\begin{proposition}[Proposition 2(iii), restated; analytical]
+Under (H1)--(H6), $\mathcal E^*$ is an equilibrium. Every equilibrium has trading outcome
+$(q_H,q_L)=(1,-1)$, on-path entry $\rho$, and the price $P^*$ up to a flow-null set.
+\end{proposition}
+
+\section{Strict margins and the open set}
+
+Every hypothesis is a strict inequality. Take the benchmark of manuscript Appendix A.8
+($h=10$, $\ell=1$, $p=1/2$, $\rho=1/4$, $c_H=6$, $b=2$, $k=1/50$, $\pi=1/2$) with
+$r_2=18/5$. The point-mass auction objects are then exact rationals:
+$g_H(r_2)=5879/720$, $g_L(r_2)=5/48$, $\Dt(r_2)=169/180$, $\tau(r_2)=4245/5804$, and
+$M=e/(1+e)$, $m=1/(1+e)$, $\kappa=m$. The margins are:
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Hypothesis & Margin & Value at B & Type \\
+\midrule
+(H5) exclusion & $c_H-B_{r_2}(M)$ & $[0.00268890226590,\ 0.00268890226591]$ & interval \\
+(H5) in posterior units & $\tau(r_2)-M$ & $[0.000333564719409,\ 0.000333564719410]$ & interval \\
+(H4) trading bound & $(1-1/b)\rho\kappa\Dt(r_2)-k$ & $[0.0115632640357,\ 0.0115632640358]$ & interval \\
+(H3) spread & $\Dt(r_2)$ & $169/180=0.93888\ldots$ & exact \\
+(H3) via Prop.\ 1(b) & $\Dt(r_2)-\Dt(r_1)$ & $49/180=0.27222\ldots$ & exact \\
+(H6) score bound & $b-1$ & $1$ & exact \\
+(H6) floor & $\rho$, $1-\rho$ & $1/4$, $3/4$ & exact \\
+Support & $\ell-p$, $r_2-\ell$, $h-r_2$ & $1/2$, $13/5$, $32/5$ & exact \\
+Zero-cost strictness & $g_L(r_2)$ & $5/48$ & exact \\
+Strengthening & $r_2-r_1$ & $3/5$ & exact \\
+Position above the ceiling & $r_2-r_C$ & $[0.00734148120533,\ 0.00734148120534]$ & interval \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Here $r_C=[Mh-c_H+\sqrt{(Mh-c_H)^2+M((1-M)\ell^2-p^2)}]/M$ is the manuscript's ceiling
+(A.11), enclosed as $[3.592658518794,\ 3.592658518795]$. The function $r\mapsto B_r(M)$ has
+derivative $-M/2-[(1-M)\ell^2-p^2]/(2r^2)$. At B it equals $-0.36626\ldots$. It is negative on
+all of $r>\ell>p$: if $(1-M)\ell^2\ge p^2$ both terms are negative, and otherwise
+$Mr^2>M\ell^2>p^2-(1-M)\ell^2$ because $\ell>p$. Hence (H5) holds at the benchmark exactly
+when $r_2>r_C$.
+
+\paragraph{The open set.}
+At the benchmark, fix all coordinates but one. The hypotheses of this note, together with (A1)
+and (A2) at $(r_0,r_1)$, then hold on the following open sets:
+\begin{itemize}
+\item $r_2\in(r_C,h)=(3.59266\ldots,\,10)$; the benchmark $3.6$ lies $0.00734$ above the lower end.
+\item $c_H\in(B_{3.6}(M),\,B_3(M))=(5.99731\ldots,\,6.21715\ldots)$; the benchmark $6$ lies
+  $0.00269$ above the lower end. (The lower bound of (A1), $B_{1.2}(1/2)=4.804$, does not bind.)
+\item $\pi\in(0.467850\ldots,\,0.500424\ldots)$; the lower end is where $c_H=B_3(M(\pi))$,
+  the upper end is where $B_{3.6}(M(\pi))=c_H$. The benchmark $1/2$ lies $0.000424$ below the
+  upper end.
+\item $k\in(\Dt(1.2),\,(1-1/b)\rho m\Dt(3))=(0.016667,\,0.022412)$; (H4) at $r_2$ then holds
+  with the larger margin above.
+\end{itemize}
+All inequalities are strict and all quantities are continuous in $(r_0,r_1,r_2,c_H,k,\pi,\rho,b)$,
+so the joint region is open and contains the benchmark. The three thinnest margins are
+(H5) in $r_2$, (H5) in $c_H$, and the prior window's upper end. Each is of order $10^{-3}$ or
+smaller relative to the benchmark value. The result is robust to perturbation, but only inside
+this narrow band at $r_2=3.6$. The manuscript prints $r_C$ and the prior endpoint $0.500424$
+but frames neither as a margin; it never prints $c_H-B_{3.6}(M)$.
+
+\paragraph{Status.}
+The proposition is analytical. The margins table is computer-assisted. The rational rows use
+exact rational arithmetic. The rows that involve $e$ use outward interval arithmetic at 50
+digits. The script is \texttt{scripts/LA/margins.py}, with run log
+\texttt{scripts/LA/margins\_run.log} and output \texttt{scripts/LA/margins.csv}.
+
+\paragraph{Tie rules.}
+The challenger's rule (an indifferent challenger prepares) is not used at the benchmark.
+There $g_L(r_2)=5/48>0$ makes the zero-cost decision strict, and (H5) makes the high-cost
+decision strict. The rule would be used only if $g_L(F_2)=0$. The investor's best responses are
+strict, so no investor tie rule is needed.
+
+\paragraph{Verdict on the manuscript's proof.}
+The manuscript's argument for part (iii) is the one given here in compressed form. The
+posterior bound and the floor hold for every profile. (H5) removes high-cost entry at every
+reachable belief. Proposition~1(b) carries the trading bound from $F_1$ to $F_2$. The derivative
+bound forces full orders. It is non-circular. It lacks three things against the five-part
+standard. These are the explicit tuple (Section~1); the observation that uniqueness in part
+(iii) needs no price inversion (Step~2); and the margins table (Section~5). The manuscript's
+printed statement of uniqueness scope matches Step~5.
+
+\end{document}

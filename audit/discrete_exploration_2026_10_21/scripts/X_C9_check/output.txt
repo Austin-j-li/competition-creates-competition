@@ -1,0 +1,233 @@
+==============================================================================
+X_C9 independent check. Noise (z_-, z_0, z_+) = (Fraction(2, 5), Fraction(2, 5), Fraction(1, 5))
+Parameters: {'h': '10', 'ell': '1', 'p': '1/2', 'rho': '1/4', 'cH': '6', 'cL': '0', 'k': '1/50', 'lam': '1', 'pi': '1/2'}
+
+[A] Auction objects: rules-based integration versus the paper's closed forms
+  r = 63/40: closed forms equal = True; Delta = 529/5040, tau = 29040/44831 (~0.647766), g_L = 5/21 > c_L = 0: True, a_L = 53/126 > 0: True, B(1/2) = 4.685615, g_H = 9.133135
+  r = 79/50: closed forms equal = True; Delta = 841/7900, tau = 45525/70259 (~0.647960), g_L = 75/316 > c_L = 0: True, a_L = 133/316 > 0: True, B(1/2) = 4.684114, g_H = 9.130886
+  r = 317/200: closed forms equal = True; Delta = 13689/126800, tau = 11600/17897 (~0.648153), g_L = 75/317 > c_L = 0: True, a_L = 267/634 > 0: True, B(1/2) = 4.682614, g_H = 9.128636
+
+[B] Full enumeration at the three certificate strengths (both mixtures, directional completion)
+
+  r = 63/40 (~1.5750): 3 equilibrium outcomes: ['no trade', 'threshold mixture', 'interior mixture']
+    kind: no trade
+      beta = 0  (~0.000000)
+      posteriors (x=-1,0,1,2): 1/2, 1/2, 1/2, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1/4, 1
+      U_H(1) = -479/50400   U_L(1) = -173/3360
+      E = 1/4  (~0.250000)   O_H = 1/8  (~0.125000)
+      flow-1 preparation margin B(mu_1) - c_H = -13249/10080
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 1
+    kind: threshold mixture
+      beta = 13249/15791  (~0.839022)
+      posteriors (x=-1,0,1,2): 2542/18333, 1/2, 29040/44831, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 66663697/66827512, 1
+      high-cost preparation probability at flow 1: 16652273/16706878  (~0.996732)
+      U_H(1) = 0   U_L(1) = -116784331/1591732800
+      E = 1108369107487/2110546483984  (~0.525157)   O_H = 858471464029/2638183104980  (~0.325403)
+      flow-1 preparation margin B(mu_1) - c_H = 0
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    kind: interior mixture
+      beta = 1258/1487  (~0.845999)
+      posteriors (x=-1,0,1,2): 229/1716, 1/2, 2745/4232, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1, 1
+      U_H(1) = 0   U_L(1) = -529/7200
+      E = 1567/2974  (~0.526900)   O_H = 4861/14870  (~0.326900)
+      flow-1 preparation margin B(mu_1) - c_H = 10921/1421952
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    no-trade purchase payoff under the completion = -479/50400
+
+  r = 79/50 (~1.5800): 3 equilibrium outcomes: ['no trade', 'threshold mixture', 'interior mixture']
+    kind: no trade
+      beta = 0  (~0.000000)
+      posteriors (x=-1,0,1,2): 1/2, 1/2, 1/2, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1/4, 1
+      U_H(1) = -739/79000   U_L(1) = -4103/79000
+      E = 1/4  (~0.250000)   O_H = 1/8  (~0.125000)
+      flow-1 preparation margin B(mu_1) - c_H = -20791/15800
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 1
+    kind: threshold mixture
+      beta = 20791/24734  (~0.840584)
+      posteriors (x=-1,0,1,2): 3943/28677, 1/2, 45525/70259, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 162930621/166410352, 1
+      high-cost preparation probability at flow 1: 121328033/124807764  (~0.972119)
+      U_H(1) = 0   U_L(1) = -57547677/781594400
+      E = 21409248607791/41159936463680  (~0.520148)   O_H = 13263328981609/41159936463680  (~0.322239)
+      flow-1 preparation margin B(mu_1) - c_H = 0
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    kind: interior mixture
+      beta = 2090/2319  (~0.901251)
+      posteriors (x=-1,0,1,2): 229/2548, 1/2, 4409/6728, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1, 1
+      U_H(1) = 0   U_L(1) = -5887/79000
+      E = 4137/7730  (~0.535188)   O_H = 2591/7730  (~0.335188)
+      flow-1 preparation margin B(mu_1) - c_H = 3479731/53151200
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    no-trade purchase payoff under the completion = -739/79000
+
+  r = 317/200 (~1.5850): 3 equilibrium outcomes: ['no trade', 'threshold mixture', 'interior mixture']
+    kind: no trade
+      beta = 0  (~0.000000)
+      posteriors (x=-1,0,1,2): 1/2, 1/2, 1/2, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1/4, 1
+      U_H(1) = -11671/1268000   U_L(1) = -66427/1268000
+      E = 1/4  (~0.250000)   O_H = 1/8  (~0.125000)
+      flow-1 preparation margin B(mu_1) - c_H = -334089/253600
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 1
+    kind: threshold mixture
+      beta = 5303/6297  (~0.842147)
+      posteriors (x=-1,0,1,2): 994/7291, 1/2, 11600/17897, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 662743807/689597064, 1
+      high-cost preparation probability at flow 1: 490344541/517197798  (~0.948079)
+      U_H(1) = 0   U_L(1) = -235988321/3193838400
+      E = 22374377953091/43423927120080  (~0.515255)   O_H = 3464671872101/10855981780020  (~0.319149)
+      flow-1 preparation margin B(mu_1) - c_H = 0
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    kind: interior mixture
+      beta = 35450/37031  (~0.957306)
+      posteriors (x=-1,0,1,2): 1581/38612, 1/2, 72481/109512, 1
+      entry      (x=-1,0,1,2): 1/4, 1/4, 1, 1
+      U_H(1) = 0   U_L(1) = -95823/1268000
+      E = 201299/370310  (~0.543596)   O_H = 127237/370310  (~0.343596)
+      flow-1 preparation margin B(mu_1) - c_H = 187972799/1542902400
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    no-trade purchase payoff under the completion = -11671/1268000
+
+  Comparison with the values printed in memo C9:
+  r = 63/40:
+    beta_A  mine 1258/1487  memo 1258/1487  equal True
+    E_A     mine 1567/2974  memo 1567/2974  equal True  (~0.526900)
+    U_L(1)  mine -529/7200  memo -529/7200  equal True
+    margin  mine 10921/1421952  memo 10921/1421952  equal True
+    O_H = E_A - 1/5: True  (O_H = 4861/14870)
+    U_H(1)  on branch A = 0
+    no-trade payoff mine -479/50400  memo -479/50400  equal True
+    beta_T  mine 13249/15791  memo 13249/15791  equal True
+    sigma_T mine 16652273/16706878  memo 16652273/16706878  equal True
+    E_T     mine 1108369107487/2110546483984 (~0.525157)  memo ~0.525157  equal to 6 dp True
+    U_H(1)  on branch T = 0; U_L(1) = -116784331/1591732800; flow-1 margin = 0
+    no-trade entry 1/4, ownership 1/8
+  r = 79/50:
+    beta_A  mine 2090/2319  memo 2090/2319  equal True
+    E_A     mine 4137/7730  memo 4137/7730  equal True  (~0.535188)
+    U_L(1)  mine -5887/79000  memo -5887/79000  equal True
+    margin  mine 3479731/53151200  memo 3479731/53151200  equal True
+    O_H = E_A - 1/5: True  (O_H = 2591/7730)
+    U_H(1)  on branch A = 0
+    no-trade payoff mine -739/79000  memo -739/79000  equal True
+    beta_T  mine 20791/24734  memo 20791/24734  equal True
+    sigma_T mine 121328033/124807764  memo 121328033/124807764  equal True
+    E_T     mine 21409248607791/41159936463680 (~0.520148)  memo ~0.520148  equal to 6 dp True
+    U_H(1)  on branch T = 0; U_L(1) = -57547677/781594400; flow-1 margin = 0
+    no-trade entry 1/4, ownership 1/8
+  r = 317/200:
+    beta_A  mine 35450/37031  memo 35450/37031  equal True
+    E_A     mine 201299/370310  memo 201299/370310  equal True  (~0.543596)
+    U_L(1)  mine -95823/1268000  memo -95823/1268000  equal True
+    margin  mine 187972799/1542902400  memo 187972799/1542902400  equal True
+    O_H = E_A - 1/5: True  (O_H = 127237/370310)
+    U_H(1)  on branch A = 0
+    no-trade payoff mine -11671/1268000  memo -11671/1268000  equal True
+    beta_T  mine 5303/6297  memo 5303/6297  equal True
+    sigma_T mine 490344541/517197798  memo 490344541/517197798  equal True
+    E_T     mine 22374377953091/43423927120080 (~0.515255)  memo ~0.515255  equal to 6 dp True
+    U_H(1)  on branch T = 0; U_L(1) = -235988321/3193838400; flow-1 margin = 0
+    no-trade entry 1/4, ownership 1/8
+  E_A differences: 47632/5747255 (memo 47632/5747255, equal True), 240688/28624963 (memo 240688/28624963, equal True)
+  E_T differences: -27199229284874157028301/5429372449026541169856320 (~-0.005010), -21864190692006141538271/4468315203164909104796736 (~-0.004893)
+
+  Presence lam = 49/50 at r = 317/200:
+    no trade: alpha = 0, beta = 0, E = 1/4
+    threshold mixture: alpha = 5303/6297, beta = 265150/308553, E = 22374377953091/43423927120080
+    interior mixture: alpha = 35450/37031, beta = 1772500/1814519, E = 201299/370310
+    memo: beta_A = 1772500/1814519, alpha_A = 35450/37031
+
+[C] The interval I = [63/40, 317/200]
+  C.1 Identity B_r(mu_1(alpha_A)) - 6 = P(r) / (80 r (r-1)^2), at eight points:
+    r = 3/2: quadratic coefficient 0, alpha_A = 0.105263, identity holds True
+    r = 31/20: quadratic coefficient 0, alpha_A = 0.581333, identity holds True
+    r = 63/40: quadratic coefficient 0, alpha_A = 0.845999, identity holds True
+    r = 79/50: quadratic coefficient 0, alpha_A = 0.901251, identity holds True
+    r = 317/200: quadratic coefficient 0, alpha_A = 0.957306, identity holds True
+    r = 8/5: quadratic coefficient 0, alpha_A = 1.130435, identity holds True
+    r = 7/4: quadratic coefficient 0, alpha_A = 3.373134, identity holds True
+    r = 9/5: quadratic coefficient 0, alpha_A = 4.400000, identity holds True
+  C.2 P(63/40) = 32763/102400 (memo 32763/102400); P(3/2) = -513/16
+      lower bound of P' on [3/2, 8/5] = 2511/50 (memo 2511/50)
+      Delta at the ends of I: 529/5040, 13689/126800 (memo 529/5040, 13689/126800)
+  C.3 Enumeration on 101 rational points r = 63/40 + j/10000, j = 0..100
+    [mix, directional] outcome counts {3: 101}; outcome sets [('no trade', 'threshold mixture', 'interior mixture')]
+      defects {'price or entry defect': 0, 'U_L(1) >= 0': 0, 'U_H(1) != 0': 0}
+      E_A strictly increasing on the grid: True; range 0.526900 to 0.543596
+      E_T strictly decreasing on the grid: True; range 0.525157 to 0.515255
+    [mix, passive (1/2)] outcome counts {3: 101}; outcome sets [('no trade', 'threshold mixture', 'interior mixture')]
+      defects {'price or entry defect': 0, 'U_L(1) >= 0': 0, 'U_H(1) != 0': 0}
+      E_A strictly increasing on the grid: True; range 0.526900 to 0.543596
+      E_T strictly decreasing on the grid: True; range 0.525157 to 0.515255
+    [enter at indifference, directional] outcome counts {2: 101}; outcome sets [('no trade', 'interior mixture')]
+      defects {'price or entry defect': 0, 'U_L(1) >= 0': 0, 'U_H(1) != 0': 0}
+      E_A strictly increasing on the grid: True; range 0.526900 to 0.543596
+  C.4 No trade against every common off-path belief nu at flow 2
+    r = 63/40: sup over nu of the no-trade purchase payoff = -1589057/753160800 (~-0.002110); if market maker and challenger could hold different off-path beliefs: 0.011488
+    r = 317/200: sup over nu of the no-trade purchase payoff = -36476621/22693396000 (~-0.001607); if market maker and challenger could hold different off-path beliefs: 0.012387
+    tau rises with r and Delta rises with r on I, so the sup is below
+    Delta(317/200) [1/10 + (1/5)(1 - tau(63/40))] - k = -0.00159901
+
+[D] Where branch A exists (benchmark noise)
+  lower end (P(r) = 0, branches A and T merge): r in [1.574344841, 1.574344841]
+  upper end (alpha_A = 1, Delta = 6/55): r = (122 + sqrt(2784)) / 110 ~ 1.588760217
+  no-trade ceiling (Delta = 1/5): r = (12 + sqrt(44)) / 10 ~ 1.863324958
+  full-purchase margin at r = 317/200: k - 11 Delta / 60 = 527/2536000
+  tau = 2/3 (flow 1 stops recruiting under full purchases) at r = 1 + sqrt(288)/16 ~ 2.060660
+    r = 1.5700: no trade (beta~0.0000, E~0.2500)
+    r = 1.5740: no trade (beta~0.0000, E~0.2500)
+    r = 1.5745: no trade (beta~0.0000, E~0.2500), threshold mixture (beta~0.8389, E~0.5257), interior mixture (beta~0.8405, E~0.5261)
+    r = 1.5860: no trade (beta~0.0000, E~0.2500), threshold mixture (beta~0.8425, E~0.5143), interior mixture (beta~0.9686, E~0.5453)
+    r = 1.5880: no trade (beta~0.0000, E~0.2500), threshold mixture (beta~0.8431, E~0.5124), interior mixture (beta~0.9913, E~0.5487)
+    r = 1.5890: no trade (beta~0.0000, E~0.2500), full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.8434, E~0.5114)
+    r = 1.6000: no trade (beta~0.0000, E~0.2500), full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.8468, E~0.5012)
+    r = 1.7000: no trade (beta~0.0000, E~0.2500), full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.8786, E~0.4278)
+    r = 1.8600: no trade (beta~0.0000, E~0.2500), full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.9310, E~0.3552)
+    r = 1.8700: full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.9343, E~0.3518), interior mixture (beta~0.0482, E~0.2536)
+    r = 1.9000: full purchase (beta~1.0000, E~0.5500), threshold mixture (beta~0.9444, E~0.3422), interior mixture (beta~0.2817, E~0.2711)
+    r = 2.0000: full purchase (beta~1.0000, E~0.5500)
+    r = 2.0500: full purchase (beta~1.0000, E~0.5500)
+    r = 2.0700: full purchase (beta~1.0000, E~0.3250)
+
+[E] Gap example of Proposition C9.5
+  Delta = 2/3, tau = 2/5, B(1/2) = 103/24 vs c_H = 83/24
+  tie rule 'enter': 0 outcomes []
+  tie rule 'stay': 0 outcomes []
+  tie rule 'mix': 1 outcomes ['threshold mixture']
+    kind: threshold mixture
+      beta = 1/2  (~0.500000)
+      posteriors (x=-1,0,1,2): 1/3, 1/2, 2/5, 1
+      entry      (x=-1,0,1,2): 1/4, 1, 5/12, 1
+      high-cost preparation probability at flow 1: 2/9  (~0.222222)
+      U_H(1) = 0   U_L(1) = -53/90
+      E = 143/240  (~0.595833)   O_H = 83/240  (~0.345833)
+      flow-1 preparation margin B(mu_1) - c_H = 0
+      price checks: max |pooled - flow posterior| = 0, one entry rate per price = True, challenger optimal = True, max |P - t0 - e(aL + D mu)| = 0, off-path price clash = False, price groups = 4
+    gross payoff at alpha = 0: lowest 2/15, highest 2/15
+    gross payoff at alpha = 1/2: lowest 13/150, highest 11/75
+    gross payoff at alpha = 1: lowest 11/120, highest 11/120
+    gross payoff just above alpha = 1/2 (alpha = 1/2 + 1/10^9): 0.086666667
+    The no-trade test uses the completion nu = 1, which gives the smallest flow-2 residual (zero); no trade therefore fails under every off-path belief.
+
+[F] Role of the completion: equal noise, r = 3, k = 7/100, benchmark c_H
+  rho Delta / 3 = 1/18, rho Delta / 2 = 1/12, tau = 141/200
+  directional (nu = 1): 1 outcomes ['no trade']
+  passive (nu = 1/2): 0 outcomes []
+  adverse (nu = 0): 0 outcomes []
+
+[G] General-prior payoff formula of the memo versus first principles
+  pi = 1/3, alpha = 2/7: first principles 16779/147400, memo formula 16779/147400, equal True
+  pi = 4/5, alpha = 5/6: first principles 729/26000, memo formula 729/26000, equal True
+  ceiling g_H(r) = 6 at r = 4 + sqrt(63)/2 ~ 7.968627; g_H(7.968) - 6 = 0.000312, g_H(7.969) - 6 = -0.000186
+
+[H] Random exact sweep (numerical diagnostic): does an equilibrium always exist?
+  both mixtures: cases 1500, cases with no equilibrium 0, cases whose outcome set includes a challenger mixture 28
+  challenger enters at indifference, B(pi) < c_H: cases 869, no equilibrium 0
+  challenger enters at indifference, B(pi) >= c_H: cases 631, no equilibrium 6
+  skipped (posterior constant at tau): {}
+  first gap: r = 4133/1000, noise = ['2/5', '19/105', '44/105'], pi = 3/5, lam = 7/10, c_H ~ 4.348558, k ~ 0.239870; with both mixtures: ['threshold mixture']

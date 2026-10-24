@@ -1,0 +1,1363 @@
+XP4 independent check. Interval arithmetic, 60 digits, outward rounding.
+Python 3.12.13
+  e (library enclosure)                            = 2.718281828459045   [2.71828182845905, 2.71828182845905] sign +
+  u = e - 1                                        =      1.718281828   [1.71828182845905, 1.71828182845905] sign +
+  beta                                             =      0.294655000   [0.294655, 0.294655] sign +
+  lambda = u beta/(1+u beta)                       =      0.336121769   [0.336121768915121, 0.336121768915121] sign +
+  b = (1-lambda) beta                              =      0.195615040   [0.195615040180315, 0.195615040180315] sign +
+  b0 = (1-lambda)(1-2beta)                         =      0.272648151   [0.272648150724249, 0.272648150724249] sign +
+  M(1/2) = (b+lambda)/(2b+lambda)                  =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  m(1/2)                                           =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  M(1/2) - e/(1+e)                                 =   0.000000000000   [-7.77876909732643e-61, 8.55664600705907e-61] sign 0?
+  u - lambda/b                                     =   0.000000000000   [-1.40017843751876e-60, 1.55575381946529e-60] sign 0?
+  b0 - b (needs beta <= 1/3)                       =      0.077033111   [0.0770331105439339, 0.0770331105439339] sign +
+
+== Auction objects: direct integration against the team-rule formulas
+  r=11/10: t0=3/11, tH=73/110, tL=29/44, gH=1027/110, gL=15/44, D=1/220, tau(6)=1245/1979; differences from formulas: {Fraction(0, 1)}
+  r=6/5: t0=7/24, tH=169/240, tL=11/16, gH=2231/240, gL=5/16, D=1/60, tau(6)=195/308; differences from formulas: {Fraction(0, 1)}
+  r=23/10: t0=9/23, tH=277/230, tL=77/92, gH=2023/230, gL=15/92, D=169/460, tau(6)=2685/3971; differences from formulas: {Fraction(0, 1)}
+  r=3: t0=5/12, tH=37/24, tL=7/8, gH=203/24, gL=1/8, D=2/3, tau(6)=141/200; differences from formulas: {Fraction(0, 1)}
+  r=18/5: t0=31/72, tH=1321/720, tL=43/48, gH=5879/720, gL=5/48, D=169/180, tau(6)=4245/5804; differences from formulas: {Fraction(0, 1)}
+
+== Core hypothesis margins at B
+  weak_trade                                       =      0.003333333   [0.00333333333333333, 0.00333333333333333] sign +
+  strong_trade                                     =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  very_strong_trade                                =      0.043126528   [0.0431265280715683, 0.0431265280715683] sign +
+  weak_prior                                       =      1.195833333   [1.19583333333333, 1.19583333333333] sign +
+  strong_top                                       =      0.217154822   [0.217154821916707, 0.217154821916707] sign +
+  return                                           =      0.002688902   [0.00268890226590511, 0.00268890226590511] sign +
+  weak_top                                         =      0.879842898   [0.87984289802621, 0.87984289802621] sign +
+  strong_prior                                     =      1.708333333   [1.70833333333333, 1.70833333333333] sign +
+  atomless_floor                                   =      2.166178511   [2.16617851141663, 2.16617851141663] sign +
+  atomless_weak                                    =      1.095833333   [1.09583333333333, 1.09583333333333] sign +
+  atomless_strong                                  =      0.117154822   [0.117154821916707, 0.117154821916707] sign +
+  atomless_return                                  =     -0.097311098   [-0.0973110977340949, -0.0973110977340949] sign -
+  atomless_floor_r2                                =      2.072133347   [2.07213334671035, 2.07213334671035] sign +
+  atomless_top_upper_r2                            =      0.102688902   [0.102688902265905, 0.102688902265905] sign +
+  atomless_top_lower_r2                            =      0.097311098   [0.0973110977340949, 0.0973110977340949] sign +
+  ownership rise margin (1-rho)(b+lambda)          =      0.398802607   [0.398802606821577, 0.398802606821577] sign +
+  kappa = min(m, 1-M)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+
+== Baseline (investor sees J, no challenger signal): complete side enumeration
+SIDE base r0 buy: pieces
+    [0.000000, 0.422319] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.002083333 -> 0.001528680; k=0.020000
+    [0.422319, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.016666667 gross return 0.006114719 -> 0.004482357; k=0.020000
+    threshold for Y=+- at rate/lambda=0.422319380: gross excluding 0.001528680, including 0.006114719
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE base r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.002083333 -> 0.001120589; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE base r1 buy: pieces
+    [0.000000, 0.808849] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.083333333 -> 0.049166667; k=0.020000
+    [0.808849, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.666666667 gross return 0.196666667 -> 0.179294281; k=0.020000
+    threshold for Y=+- at rate/lambda=0.808848982: gross excluding 0.049166667, including 0.196666667
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 1) [IM and I0]
+SIDE base r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.083333333 -> 0.044823570; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE base r2 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.234722222 gross return 0.117361111 -> 0.063126528; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE base r2 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.234722222 gross return 0.117361111 -> 0.063126528; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+
+== R5: baseline equilibria and the information controls (tuples)
+TUPLE p4_base_r0: r=6/5, rho=1/4, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  payoff T=+ q=-1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=-1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+TUPLE p4_base_r1: r=3, rho=1/4, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.576073570   [0.576073570228333, 0.576073570228333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.633821489   [-3.63382148858337, -3.63382148858337] sign -
+  x=-1 Y=- challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.633821489   [-3.63382148858337, -3.63382148858337] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.362372386   [1.36237238575334, 1.36237238575334] sign +
+  x=+1 class entry eH                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 class entry eL                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 Y=+ challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.217154822   [0.217154821916707, 0.217154821916707] sign +
+  x=+1 Y=- challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=- gross minus c_H                         =      0.217154822   [0.217154821916707, 0.217154821916707] sign +
+  payoff T=+ q=-1                                  =     -0.141843096   [-0.141843096438334, -0.141843096438334] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.159294281   [0.15929428091333, 0.15929428091333] sign +
+  payoff T=- q=-1                                  =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.507372386   [-0.507372385753337, -0.507372385753337] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.522756943   [0.522756943478407, 0.522756943478407] sign +
+  H ownership                                      =      0.324401303   [0.324401303410789, 0.324401303410789] sign +
+  proceeds                                         =      0.872531135   [0.872531134701462, 0.872531134701462] sign +
+TUPLE p4_base_r2: r=18/5, rho=1/4, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.610001528   [0.610001528071568, 0.610001528071568] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.727866653   [-3.72786665328965, -3.72786665328965] sign -
+  x=-1 Y=- challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.727866653   [-3.72786665328965, -3.72786665328965] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.664236111   [0.664236111111111, 0.664236111111111] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.865277778   [-1.86527777777778, -1.86527777777778] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.865277778   [-1.86527777777778, -1.86527777777778] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      0.718470694   [0.718470694150654, 0.718470694150654] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=+ gross minus c_H                         =     -0.002688902   [-0.00268890226590511, -0.00268890226590511] sign -
+  x=+1 Y=- challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=- gross minus c_H                         =     -0.002688902   [-0.00268890226590511, -0.00268890226590511] sign -
+  payoff T=+ q=-1                                  =     -0.191595694   [-0.191595694150654, -0.191595694150654] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.043126528   [0.0431265280715683, 0.0431265280715683] sign +
+  payoff T=- q=-1                                  =      0.043126528   [0.0431265280715683, 0.0431265280715683] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.191595694   [-0.191595694150654, -0.191595694150654] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.664236111   [0.664236111111111, 0.664236111111111] sign +
+TUPLE p4_frozen_r0: r=6/5, rho=1/4, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.391745589   [0.391745589255708, 0.391745589255708] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.271509565   [-3.27150956469288, -3.27150956469288] sign -
+  x=-1 Y=- challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.271509565   [-3.27150956469288, -3.27150956469288] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      0.699684310   [0.699684309643833, 0.699684309643833] sign +
+  x=+1 class entry eH                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 class entry eL                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 Y=+ challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.879842898   [0.87984289802621, 0.87984289802621] sign +
+  x=+1 Y=- challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=- gross minus c_H                         =      0.879842898   [0.87984289802621, 0.87984289802621] sign +
+  payoff T=+ q=-1                                  =     -0.023046077   [-0.0230460774109584, -0.0230460774109584] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.015517643   [-0.0155176429771667, -0.0155176429771667] sign -
+  payoff T=- q=-1                                  =     -0.018879411   [-0.0188794107442917, -0.0188794107442917] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.032184310   [-0.0321843096438334, -0.0321843096438334] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.522756943   [0.522756943478407, 0.522756943478407] sign +
+  H ownership                                      =      0.324401303   [0.324401303410789, 0.324401303410789] sign +
+  proceeds                                         =      0.503997979   [0.503997978517049, 0.503997978517049] sign +
+TUPLE p4_frozen_r1: r=3, rho=1/4, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.576073570   [0.576073570228333, 0.576073570228333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.633821489   [-3.63382148858337, -3.63382148858337] sign -
+  x=-1 Y=- challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.633821489   [-3.63382148858337, -3.63382148858337] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.362372386   [1.36237238575334, 1.36237238575334] sign +
+  x=+1 class entry eH                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 class entry eL                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 Y=+ challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.217154822   [0.217154821916707, 0.217154821916707] sign +
+  x=+1 Y=- challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=- gross minus c_H                         =      0.217154822   [0.217154821916707, 0.217154821916707] sign +
+  payoff T=+ q=-1                                  =     -0.141843096   [-0.141843096438334, -0.141843096438334] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.159294281   [0.15929428091333, 0.15929428091333] sign +
+  payoff T=- q=-1                                  =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.507372386   [-0.507372385753337, -0.507372385753337] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.522756943   [0.522756943478407, 0.522756943478407] sign +
+  H ownership                                      =      0.324401303   [0.324401303410789, 0.324401303410789] sign +
+  proceeds                                         =      0.872531135   [0.872531134701462, 0.872531134701462] sign +
+
+== R5: price-hidden economies: complete side enumeration, then tuples
+SIDE hidden r0 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.002083333 -> 0.001120589; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE hidden r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.002083333 -> 0.001120589; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_hidden_r0: r=6/5, rho=1/4, a=1.0, d=0.5, hidden=True, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  payoff T=+ q=-1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=-1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+SIDE hidden r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.083333333 -> 0.044823570; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE hidden r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.083333333 -> 0.044823570; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_hidden_r1: r=3, rho=1/4, a=1.0, d=0.5, hidden=True, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.576073570   [0.576073570228333, 0.576073570228333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      0.653093096   [0.653093096438334, 0.653093096438334] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  payoff T=+ q=-1                                  =     -0.141843096   [-0.141843096438334, -0.141843096438334] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  payoff T=- q=-1                                  =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.141843096   [-0.141843096438334, -0.141843096438334] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+
+== R5: strict cost-crossing probability under frozen full orders
+  crossing r0 -> r1                                =      0.000000000   [0.0, 0.0] sign 0?
+  crossing r1 -> r2                                =      0.272756943   [0.272756943478407, 0.272756943478407] sign +
+  Frozen entry on a strength grid (full orders imposed; challenger reoptimizes):
+    r=    11/10 tau=0.629106  B_r(M)-6=  0.917113  entry=0.522757  own=0.324401
+    r=      6/5 tau=0.633117  B_r(M)-6=  0.879843  entry=0.522757  own=0.324401
+    r=        2 tau=0.664286  B_r(M)-6=  0.584263  entry=0.522757  own=0.324401
+    r=        3 tau=0.705000  B_r(M)-6=  0.217155  entry=0.522757  own=0.324401
+    r=      7/2 tau=0.726872  B_r(M)-6=  0.033939  entry=0.522757  own=0.324401
+    r=  359/100 tau=0.730938  B_r(M)-6=  0.000974  entry=0.522757  own=0.324401
+    r=3593/1000 tau=0.731074  B_r(M)-6= -0.000125  entry=0.250000  own=0.125000
+    r=     18/5 tau=0.731392  B_r(M)-6= -0.002689  entry=0.250000  own=0.125000
+  ceiling r_C in [3.592658518795, 3.592658518795]
+
+== R7: atomless cost law 1/4 U[0,1/5] + 3/4 U[59/10,61/10]
+  r0: Delta - k (upper bound on correct gross minus fee) =     -0.003333333   [-0.00333333333333333, -0.00333333333333333] sign -
+  r0: rho*kappa*Delta - k (lower bound on correct gross minus fee) =     -0.018879411   [-0.0188794107442917, -0.0188794107442917] sign -
+  r0: B(m) - L (low component prepares everywhere) =      2.528490435   [2.52849043530712, 2.52849043530712] sign +
+TUPLE p4_atomless_r0: r=6/5, rho=1/4, a=1.0, d=0.5, hidden=False, mix=(Fraction(1, 5), Fraction(59, 10), Fraction(61, 10))
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  payoff T=+ q=-1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=-1                                  =     -0.017916667   [-0.0179166666666667, -0.0179166666666667] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.022083333   [-0.0220833333333333, -0.0220833333333333] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  r1: Delta - k (upper bound on correct gross minus fee) =      0.646666667   [0.646666666666667, 0.646666666666667] sign +
+  r1: rho*kappa*Delta - k (lower bound on correct gross minus fee) =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  r1: B(m) - L (low component prepares everywhere) =      2.166178511   [2.16617851141663, 2.16617851141663] sign +
+TUPLE p4_atomless_r1: r=3, rho=1/4, a=1.0, d=0.5, hidden=False, mix=(Fraction(1, 5), Fraction(59, 10), Fraction(61, 10))
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.576073570   [0.576073570228333, 0.576073570228333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.362372386   [1.36237238575334, 1.36237238575334] sign +
+  x=+1 class entry eH                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 class entry eL                              =      1.000000000   [1.0, 1.0] sign +
+  payoff T=+ q=-1                                  =     -0.141843096   [-0.141843096438334, -0.141843096438334] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.159294281   [0.15929428091333, 0.15929428091333] sign +
+  payoff T=- q=-1                                  =      0.024823570   [0.0248235702283325, 0.0248235702283325] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.507372386   [-0.507372385753337, -0.507372385753337] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.522756943   [0.522756943478407, 0.522756943478407] sign +
+  H ownership                                      =      0.324401303   [0.324401303410789, 0.324401303410789] sign +
+  proceeds                                         =      0.872531135   [0.872531134701462, 0.872531134701462] sign +
+  r2: Delta - k (upper bound on correct gross minus fee) =      0.918888889   [0.918888888888889, 0.918888888888889] sign +
+  r2: rho*kappa*Delta - k (lower bound on correct gross minus fee) =      0.043126528   [0.0431265280715683, 0.0431265280715683] sign +
+  r2: B(m) - L (low component prepares everywhere) =      2.072133347   [2.07213334671035, 2.07213334671035] sign +
+TUPLE p4_atomless_r2: r=18/5, rho=1/4, a=1.0, d=0.5, hidden=False, mix=(Fraction(1, 5), Fraction(59, 10), Fraction(61, 10))
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.610001528   [0.610001528071568, 0.610001528071568] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.664236111   [0.664236111111111, 0.664236111111111] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.138730767   [1.13873076701495, 1.13873076701495] sign +
+  x=+1 class entry eH                              =      0.614916617   [0.614916616502856, 0.614916616502856] sign +
+  x=+1 class entry eL                              =      0.614916617   [0.614916616502856, 0.614916616502856] sign +
+  payoff T=+ q=-1                                  =     -0.191595694   [-0.191595694150654, -0.191595694150654] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.135270204   [0.135270204213365, 0.135270204213365] sign +
+  payoff T=- q=-1                                  =      0.043126528   [0.0431265280715683, 0.0431265280715683] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.442068175   [-0.442068174614316, -0.442068174614316] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.382711388   [0.382711387922401, 0.382711387922401] sign +
+  H ownership                                      =      0.222019799   [0.222019798622566, 0.222019798622566] sign +
+  proceeds                                         =      0.817074582   [0.817074581698415, 0.817074581698415] sign +
+  max half-width for the return at r2: 6 - B_r2(M) =      0.002688902   [0.00268890226590511, 0.00268890226590511] sign +
+  Half-width 0.001 (low support [0,1/5] and [0,1/500]):
+    L=1/5, r0: entry=0.250000000 own=0.125000000; B(m)-L=2.528490
+    L=1/5, r1: entry=0.522756943 own=0.324401303; B(m)-L=2.166179
+    L=1/5, r2: entry=0.250000000 own=0.125000000; B(m)-L=2.072133
+    L=1/500, r0: entry=0.250000000 own=0.125000000; B(m)-L=2.726490
+    L=1/500, r1: entry=0.522756943 own=0.324401303; B(m)-L=2.364179
+    L=1/500, r2: entry=0.250000000 own=0.125000000; B(m)-L=2.270133
+  Atomic H^1 = point mass at 6 inside the band [59/10, 61/10] (the theorem's proof never uses atomlessness):
+    r0: entry=0.250000000 own=0.125000000
+    r1: entry=0.522756943 own=0.324401303
+  Atomless ramp at r2: a numerical scan of the buy return over s in [0, lambda] (diagnostic):
+  min over grid of the H buy payoff at r2          =      0.046185053   [0.0461850529225348, 0.0461850529225348] sign +
+
+== R8: signal margins (independent formulas from the joint law)
+  p4_signal_s (a=7/10, d=3/4):
+  private                                          =      0.052500000   [0.0525, 0.0525] sign +
+  joint                                            =      0.045265153   [0.0452651534172674, 0.0452651534172674] sign +
+  weak                                             =      0.001454545   [0.00145454545454545, 0.00145454545454545] sign +
+  strong                                           =      0.018594291   [0.0185942914606955, 0.0185942914606955] sign +
+  other_pair                                       =      4.159475417   [4.15947541706351, 4.15947541706351] sign +
+  no_y_top_r1                                      =      1.862796856   [1.86279685587848, 1.86279685587848] sign +
+  p4_signal_b (a=7/10, d=3/4):
+  private                                          =     -1.050000000   [-1.05, -1.05] sign -
+  joint                                            =      0.903775226   [0.903775225744865, 0.903775225744865] sign +
+  weak                                             =     -0.048541667   [-0.0485416666666667, -0.0485416666666667] sign -
+  strong                                           =     -0.002070572   [-0.00207057190866699, -0.00207057190866699] sign -
+  other_pair                                       =      3.155195358   [3.15519535769582, 3.15519535769582] sign +
+  no_y_top_r1                                      =      0.938138071   [0.938138071233317, 0.938138071233317] sign +
+  p4_signal_valid_b (a=19/20, d=101/200):
+  private                                          =      1.150916667   [1.15091666666667, 1.15091666666667] sign +
+  joint                                            =      0.058922560   [0.0589225596336896, 0.0589225596336896] sign +
+  weak                                             =      0.002215625   [0.002215625, 0.002215625] sign +
+  strong                                           =      0.020341213   [0.0203412132054993, 0.0203412132054993] sign +
+  other_pair                                       =      0.009997188   [0.00999718783027725, 0.00999718783027725] sign +
+  no_y_top_r1                                      =     -0.024606006   [-0.0246060063917033, -0.0246060063917033] sign -
+
+== R8: S(B) and its information controls (complete side enumeration, then tuples)
+SIDE S(B) signal r0 buy: pieces
+    [0.000000, 0.047506] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.000772727 -> 0.000742426; k=0.015000
+    [0.047506, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.033352273 gross return 0.006408881 -> 0.003587923; k=0.015000
+    threshold for Y=+ at rate/lambda=0.047505784: gross excluding 0.000742426, including 0.006408881
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE S(B) signal r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.000772727 -> 0.000415637; k=0.015000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_signal_r0: r=11/10, rho=17/20, a=0.7, d=0.75, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.750000000   [0.75, 0.75] sign +
+  x=-1 Y=+ gross minus c_H                         =     -0.052500000   [-0.0525, -0.0525] sign -
+  x=-1 Y=- challenger belief                       =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=- gross minus c_H                         =     -4.550227273   [-4.55022727272727, -4.55022727272727] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.750000000   [0.75, 0.75] sign +
+  x=+0 Y=+ gross minus c_H                         =     -0.052500000   [-0.0525, -0.0525] sign -
+  x=+0 Y=- challenger belief                       =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=- gross minus c_H                         =     -4.550227273   [-4.55022727272727, -4.55022727272727] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 Y=+ challenger belief                       =      0.750000000   [0.75, 0.75] sign +
+  x=+1 Y=+ gross minus c_H                         =     -0.052500000   [-0.0525, -0.0525] sign -
+  x=+1 Y=- challenger belief                       =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=- gross minus c_H                         =     -4.550227273   [-4.55022727272727, -4.55022727272727] sign -
+  payoff T=+ q=-1                                  =     -0.015772727   [-0.0157727272727273, -0.0157727272727273] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.014227273   [-0.0142272727272727, -0.0142272727272727] sign -
+  payoff T=- q=-1                                  =     -0.014227273   [-0.0142272727272727, -0.0142272727272727] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.015772727   [-0.0157727272727273, -0.0157727272727273] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.850000000   [0.85, 0.85] sign +
+  H ownership                                      =      0.425000000   [0.425, 0.425] sign +
+  proceeds                                         =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+SIDE S(B) signal r1 buy: pieces
+    [0.000000, 0.845345] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.062456522 -> 0.036180039; k=0.015000
+    [0.845345, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.387038043 gross return 0.044840959 -> 0.041636225; k=0.015000
+    threshold for Y=+ at rate/lambda=0.845344618: gross excluding 0.036180039, including 0.044840959
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 0) [IM and I0]
+SIDE S(B) signal r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.062456522 -> 0.033594291; k=0.015000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_signal_r1: r=23/10, rho=17/20, a=0.7, d=0.75, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.407576569   [0.407576568547998, 0.407576568547998] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.897387770   [0.897387769721565, 0.897387769721565] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.673623443   [0.673623442923499, 0.673623442923499] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.161828931   [-1.16182893076258, -1.16182893076258] sign -
+  x=-1 Y=- challenger belief                       =      0.186546973   [0.186546972910616, 0.186546972910616] sign +
+  x=-1 Y=- gross minus c_H                         =     -5.366569501   [-5.36656950124335, -5.36656950124335] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.926250000   [0.92625, 0.92625] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.750000000   [0.75, 0.75] sign +
+  x=+0 Y=+ gross minus c_H                         =     -0.502500000   [-0.5025, -0.5025] sign -
+  x=+0 Y=- challenger belief                       =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=- gross minus c_H                         =     -4.818804348   [-4.81880434782609, -4.81880434782609] sign -
+  x=+1 mu                                          =      0.592423431   [0.592423431452002, 0.592423431452002] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.016111058   [1.01611105799377, 1.01611105799377] sign +
+  x=+1 class entry eH                              =      0.962500000   [0.9625, 0.9625] sign +
+  x=+1 class entry eL                              =      0.887500000   [0.8875, 0.8875] sign +
+  x=+1 Y=+ challenger belief                       =      0.813453027   [0.813453027089384, 0.813453027089384] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.045265153   [0.0452651534172674, 0.0452651534172674] sign +
+  x=+1 Y=- challenger belief                       =      0.326376557   [0.326376557076501, 0.326376557076501] sign +
+  x=+1 Y=- gross minus c_H                         =     -4.159475417   [-4.15947541706351, -4.15947541706351] sign -
+  payoff T=+ q=-1                                  =     -0.106318752   [-0.106318752017565, -0.106318752017565] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.026636225   [0.0266362246149222, 0.0266362246149222] sign +
+  payoff T=- q=-1                                  =      0.018594291   [0.0185942914606955, 0.0185942914606955] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.128178993   [-0.128178992776382, -0.128178992776382] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.879796608   [0.879796607614704, 0.879796607614704] sign +
+  H ownership                                      =      0.449238141   [0.449238140661176, 0.449238140661176] sign +
+  proceeds                                         =      0.948433805   [0.948433805071202, 0.948433805071202] sign +
+SIDE S(B) no_y r0 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.000772727 -> 0.000415637; k=0.015000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE S(B) no_y r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.000772727 -> 0.000415637; k=0.015000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_no_y_r0: r=11/10, rho=17/20, a=0.7, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  payoff T=+ q=-1                                  =     -0.015772727   [-0.0157727272727273, -0.0157727272727273] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.014227273   [-0.0142272727272727, -0.0142272727272727] sign -
+  payoff T=- q=-1                                  =     -0.014227273   [-0.0142272727272727, -0.0142272727272727] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.015772727   [-0.0157727272727273, -0.0157727272727273] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.850000000   [0.85, 0.85] sign +
+  H ownership                                      =      0.425000000   [0.425, 0.425] sign +
+  proceeds                                         =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+SIDE S(B) no_y r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.062456522 -> 0.033594291; k=0.015000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE S(B) no_y r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.062456522 -> 0.033594291; k=0.015000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_no_y_r1: r=23/10, rho=17/20, a=0.7, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.407576569   [0.407576568547998, 0.407576568547998] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.897387770   [0.897387769721565, 0.897387769721565] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.407576569   [0.407576568547998, 0.407576568547998] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.458507492   [-3.45850749194761, -3.45850749194761] sign -
+  x=-1 Y=- challenger belief                       =      0.407576569   [0.407576568547998, 0.407576568547998] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.458507492   [-3.45850749194761, -3.45850749194761] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.926250000   [0.92625, 0.92625] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -2.660652174   [-2.66065217391304, -2.66065217391304] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -2.660652174   [-2.66065217391304, -2.66065217391304] sign -
+  x=+1 mu                                          =      0.592423431   [0.592423431452002, 0.592423431452002] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      0.955112230   [0.955112230278435, 0.955112230278435] sign +
+  x=+1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 Y=+ challenger belief                       =      0.592423431   [0.592423431452002, 0.592423431452002] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.862796856   [-1.86279685587848, -1.86279685587848] sign -
+  x=+1 Y=- challenger belief                       =      0.592423431   [0.592423431452002, 0.592423431452002] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.862796856   [-1.86279685587848, -1.86279685587848] sign -
+  payoff T=+ q=-1                                  =     -0.106318752   [-0.106318752017565, -0.106318752017565] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.018594291   [0.0185942914606955, 0.0185942914606955] sign +
+  payoff T=- q=-1                                  =      0.018594291   [0.0185942914606955, 0.0185942914606955] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.106318752   [-0.106318752017565, -0.106318752017565] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.850000000   [0.85, 0.85] sign +
+  H ownership                                      =      0.425000000   [0.425, 0.425] sign +
+  proceeds                                         =      0.926250000   [0.92625, 0.92625] sign +
+SIDE S(B) class r0 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.001931818 -> 0.001039092; k=0.015000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE S(B) class r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.003863636 gross return 0.001931818 -> 0.001039092; k=0.015000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_class_r0: r=11/10, rho=17/20, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+  x=+1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -2.301363636   [-2.30136363636364, -2.30136363636364] sign -
+  payoff T=+ q=-1                                  =     -0.016931818   [-0.0169318181818182, -0.0169318181818182] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.013068182   [-0.0130681818181818, -0.0130681818181818] sign -
+  payoff T=- q=-1                                  =     -0.013068182   [-0.0130681818181818, -0.0130681818181818] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.016931818   [-0.0169318181818182, -0.0169318181818182] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.850000000   [0.85, 0.85] sign +
+  H ownership                                      =      0.425000000   [0.425, 0.425] sign +
+  proceeds                                         =      0.603068182   [0.603068181818182, 0.603068181818182] sign +
+SIDE S(B) class r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.156141304 -> 0.083985729; k=0.015000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE S(B) class r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.312282609 gross return 0.156141304 -> 0.083985729; k=0.015000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_s_class_r1: r=23/10, rho=17/20, a=1.0, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.854094424   [0.854094424303913, 0.854094424303913] sign +
+  x=-1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=-1 Y=+ challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=+ gross minus c_H                         =     -4.655290469   [-4.65529046899946, -4.65529046899946] sign -
+  x=-1 Y=- challenger belief                       =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 Y=- gross minus c_H                         =     -4.655290469   [-4.65529046899946, -4.65529046899946] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.926250000   [0.92625, 0.92625] sign +
+  x=+0 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -2.660652174   [-2.66065217391304, -2.66065217391304] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -2.660652174   [-2.66065217391304, -2.66065217391304] sign -
+  x=+1 mu                                          =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      0.998405576   [0.998405575696087, 0.998405575696087] sign +
+  x=+1 class entry eH                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 class entry eL                              =      0.850000000   [0.85, 0.85] sign +
+  x=+1 Y=+ challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=+ gross minus c_H                         =     -0.666013879   [-0.666013878826632, -0.666013878826632] sign -
+  x=+1 Y=- challenger belief                       =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 Y=- gross minus c_H                         =     -0.666013879   [-0.666013878826632, -0.666013878826632] sign -
+  payoff T=+ q=-1                                  =     -0.243296880   [-0.243296880043913, -0.243296880043913] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.068985729   [0.0689857286517387, 0.0689857286517387] sign +
+  payoff T=- q=-1                                  =      0.068985729   [0.0689857286517387, 0.0689857286517387] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.243296880   [-0.243296880043913, -0.243296880043913] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.850000000   [0.85, 0.85] sign +
+  H ownership                                      =      0.425000000   [0.425, 0.425] sign +
+  proceeds                                         =      0.926250000   [0.92625, 0.92625] sign +
+
+== R8: unchanged B, new pair (19/20, 101/200), with its no-Y and class controls
+SIDE B valid_b r0 buy: pieces
+    [0.000000, 0.465011] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001875000 -> 0.001339755; k=0.020000
+    [0.465011, 0.513482] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.013447917 gross return 0.004324058 -> 0.004199110; k=0.020000
+    [0.513482, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.016666667 gross return 0.005204164 -> 0.004034121; k=0.020000
+    threshold for Y=+ at rate/lambda=0.465011002: gross excluding 0.001339755, including 0.004324058
+    threshold for Y=- at rate/lambda=0.513482233: gross excluding 0.004199110, including 0.005204164
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE B valid_b r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001875000 -> 0.001008530; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_valid_b_r0: r=6/5, rho=1/4, a=0.95, d=0.505, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.505000000   [0.505, 0.505] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.150916667   [-1.15091666666667, -1.15091666666667] sign -
+  x=-1 Y=- challenger belief                       =      0.495000000   [0.495, 0.495] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.240750000   [-1.24075, -1.24075] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.505000000   [0.505, 0.505] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.150916667   [-1.15091666666667, -1.15091666666667] sign -
+  x=+0 Y=- challenger belief                       =      0.495000000   [0.495, 0.495] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.240750000   [-1.24075, -1.24075] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.505000000   [0.505, 0.505] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.150916667   [-1.15091666666667, -1.15091666666667] sign -
+  x=+1 Y=- challenger belief                       =      0.495000000   [0.495, 0.495] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.240750000   [-1.24075, -1.24075] sign -
+  payoff T=+ q=-1                                  =     -0.021875000   [-0.021875, -0.021875] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.018125000   [-0.018125, -0.018125] sign -
+  payoff T=- q=-1                                  =     -0.018125000   [-0.018125, -0.018125] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.021875000   [-0.021875, -0.021875] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+SIDE B valid_b r1 buy: pieces
+    [0.000000, 0.938086] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.075000000 -> 0.041529437; k=0.020000
+    [0.938086, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.422604167 gross return 0.105303080 -> 0.102290189; k=0.020000
+    threshold for Y=+ at rate/lambda=0.938085804: gross excluding 0.041529437, including 0.105303080
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 0) [IM and I0]
+SIDE B valid_b r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.075000000 -> 0.040341213; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE p4_valid_b_r1: r=3, rho=1/4, a=0.95, d=0.505, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.292047279   [0.292047279232996, 0.292047279232996] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.579924547   [0.579924546538833, 0.579924546538833] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.296199663   [0.296199662539633, 0.296199662539633] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.406669479   [-3.40666947883639, -3.40666947883639] sign -
+  x=-1 Y=- challenger belief                       =      0.287929293   [0.287929292843957, 0.287929292843957] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.475589226   [-3.47558922630036, -3.47558922630036] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.505000000   [0.505, 0.505] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.666666667   [-1.66666666666667, -1.66666666666667] sign -
+  x=+0 Y=- challenger belief                       =      0.495000000   [0.495, 0.495] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.750000000   [-1.75, -1.75] sign -
+  x=+1 mu                                          =      0.707952721   [0.707952720767004, 0.707952720767004] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.000590020   [1.00059001959914, 1.00059001959914] sign +
+  x=+1 class entry eH                              =      0.628750000   [0.62875, 0.62875] sign +
+  x=+1 class entry eL                              =      0.621250000   [0.62125, 0.62125] sign +
+  x=+1 Y=+ challenger belief                       =      0.712070707   [0.712070707156043, 0.712070707156043] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.058922560   [0.0589225596336896, 0.0589225596336896] sign +
+  x=+1 Y=- challenger belief                       =      0.703800337   [0.703800337460367, 0.703800337460367] sign +
+  x=+1 Y=- gross minus c_H                         =     -0.009997188   [-0.00999718783027725, -0.00999718783027725] sign -
+  payoff T=+ q=-1                                  =     -0.129658787   [-0.129658786794501, -0.129658786794501] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.082290189   [0.0822901887341941, 0.0822901887341941] sign +
+  payoff T=- q=-1                                  =      0.020341213   [0.0203412132054993, 0.0203412132054993] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.298053561   [-0.298053561265806, -0.298053561265806] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.386945677   [0.386945677224248, 0.386945677224248] sign +
+  H ownership                                      =      0.222515005   [0.222515005223033, 0.222515005223033] sign +
+  proceeds                                         =      0.742360106   [0.742360105543136, 0.742360105543136] sign +
+SIDE B valid_no_y r0 buy: pieces
+    [0.000000, 0.488956] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001875000 -> 0.001320346; k=0.020000
+    [0.488956, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.016666667 gross return 0.005281385 -> 0.004034121; k=0.020000
+    threshold for Y=+- at rate/lambda=0.488955840: gross excluding 0.001320346, including 0.005281385
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE B valid_no_y r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001875000 -> 0.001008530; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+TUPLE XP4 new-pair no-Y control r0: r=6/5, rho=1/4, a=0.95, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  payoff T=+ q=-1                                  =     -0.021875000   [-0.021875, -0.021875] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.018125000   [-0.018125, -0.018125] sign -
+  payoff T=- q=-1                                  =     -0.018125000   [-0.018125, -0.018125] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.021875000   [-0.021875, -0.021875] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+SIDE B valid_no_y r1 buy: pieces
+    [0.000000, 0.973920] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.075000000 -> 0.040833333; k=0.020000
+    [0.973920, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.666666667 gross return 0.163333333 -> 0.161364853; k=0.020000
+    threshold for Y=+- at rate/lambda=0.973920203: gross excluding 0.040833333, including 0.163333333
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 1) [IM and I0]
+SIDE B valid_no_y r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.075000000 -> 0.040341213; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+TUPLE XP4 new-pair no-Y control r1: r=3, rho=1/4, a=0.95, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      1.000000000   [1.0, 1.0] sign +
+  x=-1 mu                                          =      0.292047279   [0.292047279232996, 0.292047279232996] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.268941421   [0.268941421369995, 0.268941421369995] sign +
+  x=-1 price                                       =      0.579924547   [0.579924546538833, 0.579924546538833] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.292047279   [0.292047279232996, 0.292047279232996] sign +
+  x=-1 Y=+ gross minus c_H                         =     -3.441272673   [-3.44127267305837, -3.44127267305837] sign -
+  x=-1 Y=- challenger belief                       =      0.292047279   [0.292047279232996, 0.292047279232996] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.441272673   [-3.44127267305837, -3.44127267305837] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 mu                                          =      0.707952721   [0.707952720767004, 0.707952720767004] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.346968481   [1.34696848051134, 1.34696848051134] sign +
+  x=+1 class entry eH                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 class entry eL                              =      1.000000000   [1.0, 1.0] sign +
+  x=+1 Y=+ challenger belief                       =      0.707952721   [0.707952720767004, 0.707952720767004] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.024606006   [0.0246060063917033, 0.0246060063917033] sign +
+  x=+1 Y=- challenger belief                       =      0.707952721   [0.707952720767004, 0.707952720767004] sign +
+  x=+1 Y=- gross minus c_H                         =      0.024606006   [0.0246060063917033, 0.0246060063917033] sign +
+  payoff T=+ q=-1                                  =     -0.129658787   [-0.129658786794501, -0.129658786794501] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.141364853   [0.141364852821997, 0.141364852821997] sign +
+  payoff T=- q=-1                                  =      0.020341213   [0.0203412132054993, 0.0203412132054993] sign +
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.458635147   [-0.458635147178003, -0.458635147178003] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.522756943   [0.522756943478407, 0.522756943478407] sign +
+  H ownership                                      =      0.318099020   [0.31809902024363, 0.31809902024363] sign +
+  proceeds                                         =      0.868329613   [0.868329612590023, 0.868329612590023] sign +
+
+== R8: unchanged B, earlier pair (7/10, 3/4): complete side enumeration under IM, C1 and CM
+SIDE B signal r0 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.161979167 gross return 0.032395833 -> 0.017425163; k=0.020000
+    EQUILIBRIUM interior: rate=0.242481143557 (rate/b=1.239583333, rate/lambda=0.721408626) cfg=(1, 0) [IM only]
+SIDE B signal r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.161979167 gross return 0.032395833 -> 0.017425163; k=0.020000
+    EQUILIBRIUM interior: rate=0.242481143557 (rate/b=1.239583333, rate/lambda=0.721408626) cfg=(1, 0) [IM only]
+    I0 check: buy side pure corners [], sale side pure corners []
+TUPLE p4_b_signal_r0: r=6/5, rho=1/4, a=0.7, d=0.75, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.721408626   [0.721408626223436, 0.721408626223436] sign +
+  sale rate Pr(q=-1|T=-)                           =      0.721408626   [0.721408626223436, 0.721408626223436] sign +
+  x=-1 mu                                          =      0.423472669   [0.423472668810289, 0.423472668810289] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.308681672   [0.308681672025723, 0.308681672025723] sign +
+  x=-1 price                                       =      0.533437500   [0.5334375, 0.5334375] sign +
+  x=-1 class entry eH                              =      0.812500000   [0.8125, 0.8125] sign +
+  x=-1 class entry eL                              =      0.437500000   [0.4375, 0.4375] sign +
+  x=-1 Y=+ challenger belief                       =      0.687848189   [0.687848189415042, 0.687848189415042] sign +
+  x=-1 Y=+ gross minus c_H                         =      0.491669568   [0.491669568245125, 0.491669568245125] sign +
+  x=-1 Y=- challenger belief                       =      0.196684588   [0.19668458781362, 0.19668458781362] sign +
+  x=-1 Y=- gross minus c_H                         =     -3.920616786   [-3.92061678614098, -3.92061678614098] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.545833333   [0.545833333333333, 0.545833333333333] sign +
+  x=+0 class entry eH                              =      0.812500000   [0.8125, 0.8125] sign +
+  x=+0 class entry eL                              =      0.437500000   [0.4375, 0.4375] sign +
+  x=+0 Y=+ challenger belief                       =      0.750000000   [0.75, 0.75] sign +
+  x=+0 Y=+ gross minus c_H                         =      1.050000000   [1.05, 1.05] sign +
+  x=+0 Y=- challenger belief                       =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=- gross minus c_H                         =     -3.441666667   [-3.44166666666667, -3.44166666666667] sign -
+  x=+1 mu                                          =      0.576527331   [0.576527331189711, 0.576527331189711] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.691318328   [0.691318327974277, 0.691318327974277] sign +
+  x=+1 price                                       =      0.558229167   [0.558229166666667, 0.558229166666667] sign +
+  x=+1 class entry eH                              =      0.812500000   [0.8125, 0.8125] sign +
+  x=+1 class entry eL                              =      0.437500000   [0.4375, 0.4375] sign +
+  x=+1 Y=+ challenger belief                       =      0.803315412   [0.80331541218638, 0.80331541218638] sign +
+  x=+1 Y=+ gross minus c_H                         =      1.528950119   [1.52895011947431, 1.52895011947431] sign +
+  x=+1 Y=- challenger belief                       =      0.312151811   [0.312151810584958, 0.312151810584958] sign +
+  x=+1 Y=- gross minus c_H                         =     -2.883336235   [-2.88333623491179, -2.88333623491179] sign -
+  payoff T=+ q=-1                                  =     -0.064791667   [-0.0647916666666667, -0.0647916666666667] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.000000000   [-8.88238196300961e-60, 8.93343013521082e-60] sign 0?
+  payoff T=- q=-1                                  =     -0.000000000   [-4.9929974143464e-60, 4.88847020460108e-60] sign 0?
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.064791667   [-0.0647916666666667, -0.0647916666666667] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.625000000   [0.625, 0.625] sign +
+  H ownership                                      =      0.406250000   [0.40625, 0.40625] sign +
+  proceeds                                         =      0.545833333   [0.545833333333333, 0.545833333333333] sign +
+SIDE B signal r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.713541667 gross return 0.142708333 -> 0.076760364; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 0) [IM and I0]
+SIDE B signal r1 sale: pieces
+    [0.000000, 0.459455] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.713541667 gross return 0.142708333 -> 0.102319182; k=0.020000
+    [0.459455, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.023899371 -> 0.017929428; k=0.020000
+    threshold for Y=+ at rate/lambda=0.459455295: gross excluding 0.023899371, including 0.102319182
+    EQUILIBRIUM interior: rate=0.260820053574 (rate/b=1.333333333, rate/lambda=0.775968942) cfg=(0, 0) [IM only]
+    I0 check: buy side pure corners ['full'], sale side pure corners []
+TUPLE p4_b_signal_r1: r=3, rho=1/4, a=0.7, d=0.75, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      1.000000000   [1.0, 1.0] sign +
+  sale rate Pr(q=-1|T=-)                           =      0.775968942   [0.775968942492435, 0.775968942492435] sign +
+  x=-1 mu                                          =      0.420000000   [0.42, 0.42] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.300000000   [0.3, 0.3] sign +
+  x=-1 price                                       =      0.601250000   [0.60125, 0.60125] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.684782609   [0.684782608695652, 0.684782608695652] sign +
+  x=-1 Y=+ gross minus c_H                         =     -0.168478261   [-0.168478260869565, -0.168478260869565] sign -
+  x=-1 Y=- challenger belief                       =      0.194444444   [0.194444444444444, 0.194444444444444] sign +
+  x=-1 Y=- gross minus c_H                         =     -4.254629630   [-4.25462962962963, -4.25462962962963] sign -
+  x=+0 mu                                          =      0.475732531   [0.475732531105762, 0.475732531105762] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.439331328   [0.439331327764406, 0.439331327764406] sign +
+  x=+0 price                                       =      0.956642483   [0.956642483132758, 0.956642483132758] sign +
+  x=+0 class entry eH                              =      0.812500000   [0.8125, 0.8125] sign +
+  x=+0 class entry eL                              =      0.437500000   [0.4375, 0.4375] sign +
+  x=+0 Y=+ challenger belief                       =      0.731346731   [0.731346730696729, 0.731346730696729] sign +
+  x=+0 Y=+ gross minus c_H                         =      0.219556089   [0.219556089139407, 0.219556089139407] sign +
+  x=+0 Y=- challenger belief                       =      0.232230616   [0.232230616295637, 0.232230616295637] sign +
+  x=+0 Y=- gross minus c_H                         =     -3.939744864   [-3.93974486420302, -3.93974486420302] sign -
+  x=+1 mu                                          =      0.592423431   [0.592423431452002, 0.592423431452002] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.731058579   [0.731058578630005, 0.731058578630005] sign +
+  x=+1 price                                       =      1.039906303   [1.03990630265065, 1.03990630265065] sign +
+  x=+1 class entry eH                              =      0.812500000   [0.8125, 0.8125] sign +
+  x=+1 class entry eL                              =      0.437500000   [0.4375, 0.4375] sign +
+  x=+1 Y=+ challenger belief                       =      0.813453027   [0.813453027089384, 0.813453027089384] sign +
+  x=+1 Y=+ gross minus c_H                         =      0.903775226   [0.903775225744865, 0.903775225744865] sign +
+  x=+1 Y=- challenger belief                       =      0.326376557   [0.326376557076501, 0.326376557076501] sign +
+  x=+1 Y=- gross minus c_H                         =     -3.155195358   [-3.15519535769582, -3.15519535769582] sign -
+  payoff T=+ q=-1                                  =     -0.066666667   [-0.0666666666666667, -0.0666666666666667] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =      0.056760364   [0.0567603640160194, 0.0567603640160194] sign +
+  payoff T=- q=-1                                  =     -0.000000000   [-4.68184665045334e-60, 4.65510713168128e-60] sign 0?
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.228656303   [-0.228656302650647, -0.228656302650647] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.512521352   [0.512521351896319, 0.512521351896319] sign +
+  H ownership                                      =      0.329226578   [0.329226577929001, 0.329226577929001] sign +
+  proceeds                                         =      0.871056672   [0.871056671571813, 0.871056671571813] sign +
+SIDE B no_y r0 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.000833333 -> 0.000448236; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE B no_y r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.000833333 -> 0.000448236; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+    I0 check: buy side pure corners ['zero'], sale side pure corners ['zero']
+TUPLE p4_b_no_y_r0: r=6/5, rho=1/4, a=0.7, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.000000000   [0.0, 0.0] sign 0?
+  sale rate Pr(q=-1|T=-)                           =      0.000000000   [0.0, 0.0] sign 0?
+  x=-1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=-1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=-1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=-1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+1 price                                       =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  x=+1 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.195833333   [-1.19583333333333, -1.19583333333333] sign -
+  payoff T=+ q=-1                                  =     -0.020833333   [-0.0208333333333333, -0.0208333333333333] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.019166667   [-0.0191666666666667, -0.0191666666666667] sign -
+  payoff T=- q=-1                                  =     -0.019166667   [-0.0191666666666667, -0.0191666666666667] sign -
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.020833333   [-0.0208333333333333, -0.0208333333333333] sign -
+  price increment -1->+0: dmu sign 0?, dP sign 0?
+  price increment +0->+1: dmu sign 0?, dP sign 0?
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.392708333   [0.392708333333333, 0.392708333333333] sign +
+SIDE B no_y r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.033333333 -> 0.017929428; k=0.020000
+    EQUILIBRIUM interior: rate=0.260820053574 (rate/b=1.333333333, rate/lambda=0.775968942) cfg=(0, 0) [IM only]
+SIDE B no_y r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.033333333 -> 0.017929428; k=0.020000
+    EQUILIBRIUM interior: rate=0.260820053574 (rate/b=1.333333333, rate/lambda=0.775968942) cfg=(0, 0) [IM only]
+    I0 check: buy side pure corners [], sale side pure corners []
+TUPLE p4_b_no_y_r1: r=3, rho=1/4, a=0.7, d=0.5, hidden=False, mix=None
+  buy rate Pr(q=1|T=+)                             =      0.775968942   [0.775968942492435, 0.775968942492435] sign +
+  sale rate Pr(q=-1|T=-)                           =      0.775968942   [0.775968942492435, 0.775968942492435] sign +
+  x=-1 mu                                          =      0.420000000   [0.42, 0.42] sign +
+  x=-1 nu = Pr(T=+|x)                              =      0.300000000   [0.3, 0.3] sign +
+  x=-1 price                                       =      0.601250000   [0.60125, 0.60125] sign +
+  x=-1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=-1 Y=+ challenger belief                       =      0.420000000   [0.42, 0.42] sign +
+  x=-1 Y=+ gross minus c_H                         =     -2.375000000   [-2.375, -2.375] sign -
+  x=-1 Y=- challenger belief                       =      0.420000000   [0.42, 0.42] sign +
+  x=-1 Y=- gross minus c_H                         =     -2.375000000   [-2.375, -2.375] sign -
+  x=+0 mu                                          =      0.500000000   [0.5, 0.5] sign +
+  x=+0 nu = Pr(T=+|x)                              =      0.500000000   [0.5, 0.5] sign +
+  x=+0 price                                       =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  x=+0 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+0 Y=+ challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=+ gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+0 Y=- challenger belief                       =      0.500000000   [0.5, 0.5] sign +
+  x=+0 Y=- gross minus c_H                         =     -1.708333333   [-1.70833333333333, -1.70833333333333] sign -
+  x=+1 mu                                          =      0.580000000   [0.58, 0.58] sign +
+  x=+1 nu = Pr(T=+|x)                              =      0.700000000   [0.7, 0.7] sign +
+  x=+1 price                                       =      0.627916667   [0.627916666666667, 0.627916666666667] sign +
+  x=+1 class entry eH                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 class entry eL                              =      0.250000000   [0.25, 0.25] sign +
+  x=+1 Y=+ challenger belief                       =      0.580000000   [0.58, 0.58] sign +
+  x=+1 Y=+ gross minus c_H                         =     -1.041666667   [-1.04166666666667, -1.04166666666667] sign -
+  x=+1 Y=- challenger belief                       =      0.580000000   [0.58, 0.58] sign +
+  x=+1 Y=- gross minus c_H                         =     -1.041666667   [-1.04166666666667, -1.04166666666667] sign -
+  payoff T=+ q=-1                                  =     -0.066666667   [-0.0666666666666667, -0.0666666666666667] sign -
+  payoff T=+ q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=+ q=+1                                  =     -0.000000000   [-8.57123119911656e-60, 8.5444916803445e-60] sign 0?
+  payoff T=- q=-1                                  =     -0.000000000   [-4.60405895948008e-60, 4.57731944070802e-60] sign 0?
+  payoff T=- q=+0                                  =      0.000000000   [0.0, 0.0] sign 0?
+  payoff T=- q=+1                                  =     -0.066666667   [-0.0666666666666667, -0.0666666666666667] sign -
+  price increment -1->+0: dmu sign +, dP sign +
+  price increment +0->+1: dmu sign +, dP sign +
+  entry                                            =      0.250000000   [0.25, 0.25] sign +
+  H ownership                                      =      0.125000000   [0.125, 0.125] sign +
+  proceeds                                         =      0.614583333   [0.614583333333333, 0.614583333333333] sign +
+  closed form check: 5/8 - 23b/40 minus engine entry =   0.000000000000   [-4.04495993060974e-60, 4.04495993060974e-60] sign 0?
+  closed form check: 13/32 - 63b/160 minus engine own =   0.000000000000   [-2.45031226565782e-60, 2.45031226565782e-60] sign 0?
+
+== Rationals used in the package's B continuation, rederived
+  Delta_P(r0) - 311/1920                           =   0.000000000000   [-5.83407682299482e-62, 7.77876909732643e-62] sign 0?
+  Delta_P(r1) - 137/192                            =   0.000000000000   [-7.77876909732643e-62, 7.77876909732643e-62] sign 0?
+  Delta_P(r0) exact = 311/1920, Delta_P(r1) exact = 137/192
+  weak interior rate / b = (2/5)(311/1920)/k - 2 = 119/96  (package: 119/96 = 119/96)
+  favorable-signal threshold at r1: mu* = 47/106 (package 47/106), nu* = 19/53 (package 19/53), t*/b = (1-2nu*)/nu* = 15/19 (package 15/19)
+  floor sale return at the threshold = 19/795 (package 19/795); minus k = 0.003899371
+  strong interior sale rate / b = 4/3 (package 4/3); nu_-1 = 1/(2+t/b) = 3/10, mu_-1 = 21/50 (package 21/50)
+
+== Margin rows for the B continuation and the controls
+  b_weak_all_yplus                                 =      0.363883929   [0.363883928929429, 0.363883928929429] sign +
+  b_weak_no_yminus                                 =      2.755550596   [2.7555505955961, 2.7555505955961] sign +
+  b_weak_zero_return                               =      0.012395833   [0.0123958333333333, 0.0123958333333333] sign +
+  b_weak_full_loss                                 =      0.002574837   [0.00257483707373573, 0.00257483707373573] sign +
+  b_weak_rate_room                                 =      0.478698495   [0.478698495125712, 0.478698495125712] sign +
+  b_strong_buy                                     =      0.056760364   [0.0567603640160194, 0.0567603640160194] sign +
+  b_strong_prior_yplus                             =      0.375000000   [0.375, 0.375] sign +
+  b_strong_no_yminus                               =      3.155195358   [3.15519535769582, 3.15519535769582] sign +
+  b_strong_threshold_floor_return                  =      0.003899371   [0.00389937106918239, 0.00389937106918239] sign +
+  b_strong_rate_room                               =      0.384948495   [0.384948495125712, 0.384948495125712] sign +
+  b_strong_sale_public_gap                         =      0.023396226   [0.0233962264150943, 0.0233962264150943] sign +
+  b_strong_zero_yplus                              =      0.219556089   [0.219556089139407, 0.219556089139407] sign +
+  b_no_y_top_exclusion_r0                          =      0.365562841   [0.365562840789516, 0.365562840789516] sign +
+  b_no_y_top_exclusion_r1                          =      0.938138071   [0.938138071233317, 0.938138071233317] sign +
+  s_no_y_weak                                      =      0.013181818   [0.0131818181818182, 0.0131818181818182] sign +
+  s_no_y_strong                                    =      0.018594291   [0.0185942914606955, 0.0185942914606955] sign +
+  s_no_y_top_r0                                    =      1.469972860   [1.46997285980222, 1.46997285980222] sign +
+  s_no_y_top_r1                                    =      1.862796856   [1.86279685587848, 1.86279685587848] sign +
+  s_class_weak                                     =      0.010454545   [0.0104545454545455, 0.0104545454545455] sign +
+  s_class_strong                                   =      0.068985729   [0.0689857286517387, 0.0689857286517387] sign +
+  s_class_prior_r0                                 =      2.301363636   [2.30136363636364, 2.30136363636364] sign +
+  s_class_top_r1                                   =      0.666013879   [0.666013878826632, 0.666013878826632] sign +
+  b_no_y_weak                                      =      0.019166667   [0.0191666666666667, 0.0191666666666667] sign +
+  b_no_y_zero_gain                                 =      0.013333333   [0.0133333333333333, 0.0133333333333333] sign +
+  b_no_y_full_loss                                 =      0.002070572   [0.00207057190866699, 0.00207057190866699] sign +
+  z_min = k/(m rho Delta_1)                        =      0.446193819   [0.446193819415085, 0.446193819415085] sign +
+  d >= a contradiction margin                      =      0.049029700   [0.0490296996692242, 0.0490296996692242] sign +
+  private exclusion needs d < tau(r0)              =      0.633116883   [0.633116883116883, 0.633116883116883] sign +
+  strong bound needs a > (1 + z_min)/2             =      0.723096910   [0.723096909707543, 0.723096909707543] sign +
+
+== R8: accuracy grid in S(B): margins, sufficiency, and the complete equilibrium set at each pair
+  (17/25, 73/100) sufficient=False other_pair=+ minmargin=-0.149269935 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (17/25, 37/50) sufficient=False other_pair=+ minmargin=-0.077065620 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (17/25, 3/4) sufficient=False other_pair=+ minmargin=-0.005304891 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (17/25, 19/25) sufficient=False other_pair=+ minmargin=-0.037454545 | r0: zero/zero entry 0.925000 own 0.482000; r1: full/full entry 0.879635 own 0.449178
+  (17/25, 77/100) sufficient=False other_pair=+ minmargin=-0.127409091 | r0: zero/zero entry 0.925000 own 0.482750; r1: full/full entry 0.879726 own 0.449496
+  (69/100, 73/100) sufficient=False other_pair=+ minmargin=-0.122237854 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (69/100, 37/50) sufficient=False other_pair=+ minmargin=-0.050844653 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (69/100, 3/4) sufficient=True other_pair=+ minmargin=0.002131818 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.879671 own 0.449049
+  (69/100, 19/25) sufficient=False other_pair=+ minmargin=-0.037454545 | r0: zero/zero entry 0.925000 own 0.482000; r1: full/full entry 0.879766 own 0.449370
+  (69/100, 77/100) sufficient=False other_pair=+ minmargin=-0.127409091 | r0: zero/zero entry 0.925000 own 0.482750; r1: full/full entry 0.879862 own 0.449690
+  (7/10, 73/100) sufficient=False other_pair=+ minmargin=-0.095417614 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (7/10, 37/50) sufficient=False other_pair=+ minmargin=-0.024837375 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (7/10, 3/4) sufficient=True other_pair=+ minmargin=0.001454545 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.879797 own 0.449238
+  (7/10, 19/25) sufficient=False other_pair=+ minmargin=-0.037454545 | r0: zero/zero entry 0.925000 own 0.482000; r1: full/full entry 0.879897 own 0.449561
+  (7/10, 77/100) sufficient=False other_pair=+ minmargin=-0.127409091 | r0: zero/zero entry 0.925000 own 0.482750; r1: full/full entry 0.879998 own 0.449884
+  (71/100, 73/100) sufficient=False other_pair=+ minmargin=-0.068806733 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (71/100, 37/50) sufficient=True other_pair=+ minmargin=0.000958814 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.879817 own 0.449102
+  (71/100, 3/4) sufficient=True other_pair=+ minmargin=0.000777273 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.879923 own 0.449427
+  (71/100, 19/25) sufficient=False other_pair=+ minmargin=-0.037454545 | r0: zero/zero entry 0.925000 own 0.482000; r1: full/full entry 0.880029 own 0.449753
+  (71/100, 77/100) sufficient=False other_pair=+ minmargin=-0.127409091 | r0: zero/zero entry 0.925000 own 0.482750; r1: full/full entry 0.880134 own 0.450079
+  (18/25, 73/100) sufficient=False other_pair=+ minmargin=-0.042402770 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.850000 own 0.425000
+  (18/25, 37/50) sufficient=True other_pair=+ minmargin=0.000616000 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.879938 own 0.449288
+  (18/25, 3/4) sufficient=True other_pair=+ minmargin=0.000100000 | r0: zero/zero entry 0.850000 own 0.425000; r1: full/full entry 0.880049 own 0.449616
+  (18/25, 19/25) sufficient=False other_pair=+ minmargin=-0.037454545 | r0: zero/zero entry 0.925000 own 0.482000; r1: full/full entry 0.880160 own 0.449944
+  (18/25, 77/100) sufficient=False other_pair=+ minmargin=-0.127409091 | r0: zero/zero entry 0.925000 own 0.482750; r1: full/full entry 0.880271 own 0.450273
+  sufficient pairs: [(69, 75), (70, 75), (71, 74), (71, 75), (72, 74), (72, 75)]
+
+== R8 at unchanged B: pairs that satisfy the theorem, the one-pair condition, and need the challenger signal
+   (no-Y top public profit below c_H at r1, so the no-Y control has no reversal)
+  85 grid pairs qualify; a ranges over [0.926, 0.942]
+    (0.926, 0.51): private 1.106000, joint 0.002048, weak 0.000528, strong 0.018190, other_pair 0.138791, no_y_top_r1 0.067817
+    (0.932, 0.507): private 1.132950, joint 0.004050, weak 0.001858, strong 0.018728, other_pair 0.094021, no_y_top_r1 0.044712
+    (0.934, 0.507): private 1.132950, joint 0.011665, weak 0.001774, strong 0.018907, other_pair 0.086234, no_y_top_r1 0.037010
+    (0.936, 0.506): private 1.141933, joint 0.012372, weak 0.002229, strong 0.019086, other_pair 0.071392, no_y_top_r1 0.029308
+    (0.938, 0.504): private 1.159900, joint 0.006175, weak 0.003232, strong 0.019265, other_pair 0.049567, no_y_top_r1 0.021606
+    (0.938, 0.509): private 1.114983, joint 0.040650, weak 0.000522, strong 0.019265, other_pair 0.084775, no_y_top_r1 0.021606
+    (0.94, 0.5065): private 1.137442, joint 0.031067, weak 0.001794, strong 0.019445, other_pair 0.059353, no_y_top_r1 0.013904
+    (0.942, 0.5025): private 1.173375, joint 0.011119, weak 0.003899, strong 0.019624, other_pair 0.023594, no_y_top_r1 0.006202
+    (0.942, 0.5075): private 1.128458, joint 0.045551, weak 0.001164, strong 0.019624, other_pair 0.058593, no_y_top_r1 0.006202
+  Example pair (47/50, 101/200) = (0.94, 0.505): all margins
+  private                                          =      1.150916667   [1.15091666666667, 1.15091666666667] sign +
+  joint                                            =      0.020731442   [0.0207314415666115, 0.0207314415666115] sign +
+  weak                                             =      0.002610833   [0.00261083333333333, 0.00261083333333333] sign +
+  strong                                           =      0.019444742   [0.0194447418009326, 0.0194447418009326] sign +
+  other_pair                                       =      0.048821802   [0.0488218023700293, 0.0488218023700293] sign +
+  no_y_top_r1                                      =      0.013903757   [0.0139037567132976, 0.0139037567132976] sign +
+SIDE B (0.94, 0.505) signal r0 buy: pieces
+    [0.000000, 0.479937] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001833333 -> 0.001298088; k=0.020000
+    [0.479937, 0.530471] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.013447917 gross return 0.004189579 -> 0.004064631; k=0.020000
+    [0.530471, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.016666667 gross return 0.005037498 -> 0.003944474; k=0.020000
+    threshold for Y=+ at rate/lambda=0.479937154: gross excluding 0.001298088, including 0.004189579
+    threshold for Y=- at rate/lambda=0.530470900: gross excluding 0.004064631, including 0.005037498
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE B (0.94, 0.505) signal r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001833333 -> 0.000986119; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+  (0.94,0.505) signal r0 entry                     =      0.250000000   [0.25, 0.25] sign +
+  (0.94,0.505) signal r0 own                       =      0.125000000   [0.125, 0.125] sign +
+SIDE B (0.94, 0.505) signal r1 buy: pieces
+    [0.000000, 0.977307] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.073333333 -> 0.039862771; k=0.020000
+    [0.977307, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 0) Delta_P=0.422604167 gross return 0.101077038 -> 0.100017073; k=0.020000
+    threshold for Y=+ at rate/lambda=0.977307271: gross excluding 0.039862771, including 0.101077038
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(1, 0) [IM and I0]
+SIDE B (0.94, 0.505) signal r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.073333333 -> 0.039444742; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+  (0.94,0.505) signal r1 entry                     =      0.386933073   [0.386933072657913, 0.386933072657913] sign +
+  (0.94,0.505) signal r1 own                       =      0.221878475   [0.22187847462315, 0.22187847462315] sign +
+SIDE B (0.94, 0.5) no_y r0 buy: pieces
+    [0.000000, 0.504889] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001833333 -> 0.001278680; k=0.020000
+    [0.504889, 1.000000] (rate/lambda) cfg(I+,I-)=(1, 1) Delta_P=0.016666667 gross return 0.005114719 -> 0.003944474; k=0.020000
+    threshold for Y=+- at rate/lambda=0.504888806: gross excluding 0.001278680, including 0.005114719
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+SIDE B (0.94, 0.5) no_y r0 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.004166667 gross return 0.001833333 -> 0.000986119; k=0.020000
+    EQUILIBRIUM zero: rate=0.000000000000 (rate/b=0.000000000, rate/lambda=0.000000000) cfg=(0, 0) [IM and I0]
+  (0.94,0.5) no_y r0 entry                         =      0.250000000   [0.25, 0.25] sign +
+  (0.94,0.5) no_y r0 own                           =      0.125000000   [0.125, 0.125] sign +
+SIDE B (0.94, 0.5) no_y r1 buy: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.073333333 -> 0.039444742; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+SIDE B (0.94, 0.5) no_y r1 sale: pieces
+    [0.000000, 1.000000] (rate/lambda) cfg(I+,I-)=(0, 0) Delta_P=0.166666667 gross return 0.073333333 -> 0.039444742; k=0.020000
+    EQUILIBRIUM full: rate=0.336121768915 (rate/b=1.718281828, rate/lambda=1.000000000) cfg=(0, 0) [IM and I0]
+  (0.94,0.5) no_y r1 entry                         =      0.250000000   [0.25, 0.25] sign +
+  (0.94,0.5) no_y r1 own                           =      0.125000000   [0.125, 0.125] sign +
+
+== S(B) declared pair under the earlier exact-entry-match B convention
+  earlier convention: beta = 0.294655575684808, lambda = 0.336122204884249, b = 0.195615293904192
+    r0: entry 0.850000000 own 0.425000000
+    r1: entry 0.879796646 own 0.449238172
+    benchmark r1 under the earlier convention: entry 0.522757297260 own 0.324401562046
+    atomless r2 under the earlier convention: entry 0.382711560057 own 0.222019924463
+
+== Registry comparison: every row of registry/P4_information.csv
+  e enclosure check at 250 digits: Taylor sum below e: True; Taylor sum plus 1/(60*60!) above e: True; e minus the Taylor sum = 2.0024e-84
+  rows: 1038; recomputed: 1038; not recomputed: 0 []
+  rows whose value differs from mine beyond half a unit of the display's last digit: 0
+  rows whose display differs from my rounding (either interval end): 1
+    DISPLAY ('p4_b_signal_r0_sell_price', '0.533438', '0.533437', '0.533438')
+  rows within 10^-(places+3) of a rounding boundary: 1
+    NEAR-BOUNDARY ('p4_b_signal_r0_sell_price', '0.533438', '0.5334375', '4.51e-62')
+  largest absolute difference between a registry value and my enclosure (rows with >= 6 places): 4.8387e-40
+  keys I computed that the registry lacks: []
+  status labels of shared keys (P4 vs P1):
+    u_B            P4 input              1.718282   P1 input              1.718282  
+    beta_B         P4 input              0.294655   P1 input              0.294655  
+    lambda_B       P4 computer-assisted  0.336122   P1 computer-assisted  0.336122  
+    b_B            P4 computer-assisted  0.195615   P1 computer-assisted  0.195615  
+    b0_B           P4 computer-assisted  0.272648   P1 computer-assisted  0.272648  
+    M_half_B       P4 computer-assisted  0.731059   P1 computer-assisted  0.731059  
+    m_half_B       P4 computer-assisted  0.268941   P1 computer-assisted  0.268941  
+    tau_r0         P4 analytical         0.633117   P1 analytical         0.633117  
+    tau_r1         P4 analytical         0.705000   P1 analytical         0.705000  
+    tau_r2         P4 analytical         0.731392   P1 analytical         0.731392  
+    entry_r0       P4 computer-assisted  0.250000   P1 analytical         0.250000     <-- differs
+    own_r0         P4 computer-assisted  0.125000   P1 analytical         0.125000     <-- differs
+    entry_r1_B     P4 computer-assisted  0.522757   P1 computer-assisted  0.522757  
+    own_r1_B       P4 computer-assisted  0.324401   P1 computer-assisted  0.324401  
+    entry_r2       P4 computer-assisted  0.250000   P1 analytical         0.250000     <-- differs
+    own_r2_B       P4 computer-assisted  0.125000   P1 analytical         0.125000     <-- differs

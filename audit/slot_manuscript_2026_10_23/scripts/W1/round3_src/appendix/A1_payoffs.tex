@@ -1,0 +1,168 @@
+This appendix proves every result in the paper. Each statement carries its status once: analytical,
+computer-assisted, numerical diagnostic, or open. Statements use the class model of Section~\ref{sec:model}. A
+statement that needs the point-mass benchmark says so. Each equilibrium proof states the equilibrium tuple of
+Definition~\ref{def:equilibrium}, lists its conditions, and checks each condition against the fixed tuple.
+
+\subsection{Acquisition payoffs}\label{app:payoffs}
+
+\paragraph{Truthful bids.}
+Fix a bidder with value \(v\), and let \(Y\ge0\) be the highest competing admissible bid, with \(Y=0\) when
+there is none. Any admissible bid that wins pays \(\max\{p,Y\}\), so a bid yields either \(v-\max\{p,Y\}\) or
+zero. Suppose \(v\ge p\), and consider the bid \(v\). If \(v>\max\{p,Y\}\), it wins and earns
+\(v-\max\{p,Y\}>0\). If \(v<\max\{p,Y\}\), then \(Y>v\), and the bid loses and earns zero. If
+\(v=\max\{p,Y\}\), a win pays \(v\), so the bid earns zero.
+
+The bid \(v\) therefore earns \((v-\max\{p,Y\})_+\), the larger of the two possible payoffs, at every \(Y\).
+Suppose \(v<p\). Every bid that wins pays at least \(p>v\), so no bid earns more than zero, the payoff of no
+bid. Truthful bids, and no bid below the reserve, are therefore weakly dominant at every competing bid. This
+verifies condition (E5) of Definition~\ref{def:equilibrium} for every tuple. No payoff below rests on a belief.
+
+\paragraph{Proof of Proposition~\ref{prop:returns}.}
+Without entry the target receives \(p\1\{R\ge p\}\). A prepared challenger with \(\theta\ge p\) wins at
+\(\theta>R\) and pays \(\max\{p,R\}\). A loss makes the incumbent pay \(\theta\). The target receives
+\(\max\{p,\min(R,\theta)\}\), and the challenger keeps \((\theta-\max\{p,R\})_+\). At \(\theta<p\) the
+challenger does not bid. The target again receives \(p\1\{R\ge p\}\), and the challenger keeps nothing.
+
+\emph{The benchmark.} Let \(R\) be uniform on \([0,r]\) with \(0<p<\ell<r<h\), as in \eqref{eq:order}. Then
+\(t_0=\Pr(R\ge p)\,p=p(1-p/r)\). Since \(R\le r<h\), the high-value challenger always wins and pays
+\(\max\{p,R\}\). The low-value challenger wins and pays \(\max\{p,R\}\) when \(R<\ell\); it loses when
+\(R\ge\ell\). Integration over \(R\) gives
+\begin{equation}\label{eq:a-payoffs}
+\begin{aligned}
+t_H&=\frac1r\Bigl[\int_0^p p\,dy+\int_p^r y\,dy\Bigr]
+=\frac1r\Bigl[p^2+\frac{r^2-p^2}2\Bigr]=\frac r2+\frac{p^2}{2r},\\
+t_L&=\frac1r\Bigl[\int_0^p p\,dy+\int_p^\ell y\,dy+\int_\ell^r\ell\,dy\Bigr]
+=\frac1r\Bigl[p^2+\frac{\ell^2-p^2}2+\ell(r-\ell)\Bigr]=\ell-\frac{\ell^2-p^2}{2r},\\
+g_H&=\frac1r\int_0^r\bigl(h-\max\{p,y\}\bigr)\,dy=h-t_H=h-\frac r2-\frac{p^2}{2r},\\
+g_L&=\frac1r\Bigl[\int_0^p(\ell-p)\,dy+\int_p^\ell(\ell-y)\,dy\Bigr]
+=\frac1r\Bigl[p(\ell-p)+\frac{(\ell-p)^2}2\Bigr]=\frac{\ell^2-p^2}{2r}.
+\end{aligned}
+\end{equation}
+
+The spread is
+\[
+\DT(r)=t_H-t_L=\frac r2+\frac{p^2}{2r}-\ell+\frac{\ell^2-p^2}{2r}=\frac{r^2-2\ell r+\ell^2}{2r}
+=\frac{(r-\ell)^2}{2r}.
+\]
+The sums \(t_H+g_H=h\) and \(t_L+g_L=\ell\) check the split. These are the expressions in \eqref{eq:payoffs}.
+
+Differentiation in \(r\) gives
+\[
+\begin{gathered}
+\DT'(r)=\frac{2(r-\ell)\cdot2r-2(r-\ell)^2}{4r^2}=\frac{(r-\ell)(r+\ell)}{2r^2}=\frac12-\frac{\ell^2}{2r^2},\\
+g_H'(r)=-\frac12+\frac{p^2}{2r^2},\qquad g_L'(r)=-\frac{\ell^2-p^2}{2r^2}.
+\end{gathered}
+\]
+The signs in \eqref{eq:derivatives} follow from \(r>\ell\), \(r>p\), and \(\ell>p\). For every
+\(\mu\in[0,1]\), \(\partial B_r(\mu)/\partial r=(1-\mu)g_L'(r)+\mu g_H'(r)<0\).
+
+\emph{General classes and a continuous \(F\).} Write the payments as integrals of indicators. For
+\(\theta\ge p\),
+\begin{equation}\label{eq:a-indicators}
+\max\{p,\min(R,\theta)\}=p+\int_p^\theta\1\{R>y\}\,dy,
+\qquad
+(\theta-\max\{p,R\})_+=\int_p^\theta\1\{R<y\}\,dy.
+\end{equation}
+The two indicators sum to one except at the single point \(y=R\), which gives \(t(\theta)+g(\theta)=\theta\).
+
+Every integrand in \eqref{eq:a-indicators} is nonnegative and jointly measurable in \((R,y)\). Tonelli's theorem
+therefore moves the expectation over \(R\) inside each integral. Since \(F\) is continuous,
+\(\Pr(R>y)=1-F(y)\). This gives \(t(\theta)=p+\int_p^\theta[1-F(y)]\,dy\) and \(g(\theta)=\int_p^\theta
+F(y)\,dy\) for \(\theta\ge p\). For \(\theta<p\), \(t(\theta)=t_0=p[1-F(p)]\) and \(g(\theta)=0\).
+
+At \(\theta=p\), \(t\) jumps by \(pF(p)\). When the incumbent fails the reserve, an admissible challenger buys at
+\(p\), and an inadmissible one leaves the target unsold. Hence, for every \(\theta\),
+\[
+t(\theta)=t_0+pF(p)\1\{\theta\ge p\}+\int_p^\infty\1\{y\le\theta\}[1-F(y)]\,dy,\qquad
+g(\theta)=\int_p^\infty\1\{y\le\theta\}F(y)\,dy.
+\]
+
+Take the class expectation and apply Tonelli's theorem again, with \(\E_j\1\{\theta\ge p\}=1-G_j(p^-)\) and
+\(\Pr_j(\theta\ge y)=1-G_j(y^-)\). The functions \(G_j(y^-)\) and \(G_j(y)\) differ at countably many \(y\), a
+Lebesgue-null set, so \(G_j(y)\) can replace \(G_j(y^-)\) inside the integral. This gives
+\[
+t_j=t_0+pF(p)[1-G_j(p^-)]+\int_p^\infty[1-G_j(y)][1-F(y)]\,dy
+\]
+and \(g_j\) in \eqref{eq:spread}. The difference of the two classes gives \(\DT\) in \eqref{eq:spread}. Each
+integral is finite, since \(0\le\int_p^\infty[1-G_j(y)]\,dy\le\E_j\theta<\infty\) and \(0\le F\le1\).
+
+Since \(\E_j[\max\{\theta,p\}]=p+\int_p^\infty[1-G_j(y)]\,dy\), the sum of the two lines of \eqref{eq:spread}
+gives the split in its general form,
+\[
+\DT(F)+g_H(F)-g_L(F)=pF(p)D(p^-)+\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}].
+\]
+The reserve term vanishes under equal admissibility, \(G_H(p^-)=G_L(p^-)\). It also vanishes when the incumbent
+always meets the reserve, \(F(p)=0\).
+
+\emph{Part (a).} In \eqref{eq:spread}, the weight \(1-G_j\) on \(F\) is nonnegative. The pointwise decrease
+from \(F\) to \(\tilde F\) therefore lowers \(g_j\) by \(\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy\ge0\).
+The decrease is strict exactly when this integral is positive. Gross profit at a fixed belief \(\mu\) is
+\((1-\mu)g_L+\mu g_H\), an average with fixed weights, so it falls as well.
+
+\emph{Part (b).} The difference of \eqref{eq:spread} at the two distributions is
+\[
+\DT(\tilde F)-\DT(F)=\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy-p[F(p)-\tilde F(p)]\,D(p^-).
+\]
+Under Assumption~\ref{ass:classes}, \(D(p^-)=0\), so the second term is zero. Also \(D(y)\ge0\) and
+\(F(y)-\tilde F(y)\ge0\) for every \(y\), so the integrand is nonnegative. The spread therefore rises, strictly
+exactly when the integral is positive.
+
+Equal admissibility also makes the second term zero. Together with \(D(y)\ge0\) for \(y>p\), it gives the same
+conclusion. \(\square\)
+
+\begin{named}{Proposition~1(c) (the weakest restriction; analytical)}
+Let \(G_H\) and \(G_L\) have finite means. The spread weakly increases under every first-order stochastic
+strengthening of every continuous \(F\) if and only if \(D(y)\ge0\) for every \(y>p\) and \(D(p^-)\le0\).
+When neither class has an atom at \(p\), this condition is exactly first-order dominance above the reserve
+together with equal admissibility, \(G_H(p^-)=G_L(p^-)\).
+\end{named}
+
+\paragraph{Proof of Proposition~1(c).}
+Fix the incumbent's value \(R\). Suppose \(R\ge p\). The target receives \(\min\{R,\max\{\theta,p\}\}\) for every
+challenger value. An admissible challenger and the incumbent both bid at least \(p\), and an inadmissible
+challenger leaves the incumbent to pay \(p\). Suppose \(R<p\). The target receives \(p\1\{\theta\ge p\}\).
+
+For \(R\ge p\), \(\E_j[\min\{R,\max\{\theta,p\}\}]=p+\int_p^R[1-G_j(y)]\,dy\). The expected difference in
+proceeds between the classes at incumbent value \(R\) is therefore
+\[
+\xi(R)=
+\begin{cases}
+pD(p^-), & R<p,\\[3pt]
+\int_p^RD(y)\,dy, & R\ge p,
+\end{cases}
+\]
+and \(\DT(F)=\E_F[\xi(R)]\).
+
+The function \(\xi\) is bounded, since \(\int_p^\infty|D(y)|\,dy\le\E_H\theta+\E_L\theta<\infty\). It is
+constant below \(p\), continuous on \([p,\infty)\), and has derivative \(D\) almost everywhere above \(p\). It
+moves from \(pD(p^-)\) to \(\xi(p)=0\) at \(p\). Thus \(\xi\) is nondecreasing if and only if \(D\ge0\) almost
+everywhere above \(p\) and \(D(p^-)\le0\).
+
+If \(\xi\) is nondecreasing, every first-order stochastic strengthening raises \(\E_F[\xi(R)]\). If it is not,
+continuity on each side of \(p\) gives values \(0<R_1<R_2\), both different from \(p\), with
+\(\xi(R_1)>\xi(R_2)\). Let \(F\) be uniform on \([R_1-\delta,R_1+\delta]\), and let \(\tilde F\) be the same law
+shifted to \(R_2\). Then \(\tilde F\le F\), and as \(\delta\to0\),
+\(\DT(\tilde F)-\DT(F)\to\xi(R_2)-\xi(R_1)<0\).
+
+Suppose the support must start at zero. Mix the same small uniform component on \([0,\bar r]\) into both laws.
+Both mixtures are continuous, and the mixture scales the difference by a positive factor and keeps its sign.
+
+Distribution functions are right-continuous. Thus \(D\ge0\) almost everywhere above \(p\) is the same as
+\(D(y)\ge0\) for every \(y>p\), and it implies \(D(p)\ge0\). When neither class has an atom at \(p\),
+\(D(p^-)=D(p)\ge0\). The condition then holds exactly when \(D(p^-)=0\), which with the ranking above the
+reserve is equal admissibility. \(\square\)
+
+\paragraph{Scope of Assumption~\ref{ass:classes}.}
+The proofs in this subsection use Assumption~\ref{ass:classes} only through \(D(y)\ge0\) for \(y>p\) and
+\(D(p^-)=0\). These two facts give \(g_H\ge g_L\) and \(\DT\ge0\) in \eqref{eq:spread}, the comparison in part
+(b), and the split identity of Section~\ref{sec:profits}. The same results therefore hold under the ranking
+above the reserve together with equal admissibility.
+% W1 note: extend this paragraph to Sections 3.2-7 once their proofs (A.2-A.7) are in and use only these facts.
+
+For the point masses with \(p<\ell\), \(D(y)=\1\{\ell\le y<h\}\) and \(D(p^-)=0\). Also \(\xi(R)=(R-\ell)_+\)
+for \(R<h\). Equation \eqref{eq:spread} then gives \(\DT=\int_\ell^h[1-F(y)]\,dy\), which equals
+\(\int_\ell^{\bar r}[1-F(y)]\,dy\) at \(\bar r<h\). It also gives \(g_j=\int_p^\theta F(y)\,dy\) at \(\theta=h\)
+and \(\theta=\ell\).
+
+For the uniform law on \([0,r]\), these integrals reproduce \eqref{eq:a-payoffs}. The kernel \(\xi\) belongs to
+the cash second-price rule with reserve. Section~\ref{sec:payment} changes the rule and the kernel with it.

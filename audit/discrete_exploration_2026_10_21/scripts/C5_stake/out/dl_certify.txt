@@ -1,0 +1,60 @@
+
+== r0 = 6/5: enclosures ==
+  tau = 1125/2156 = 0.521799629;  rho*Delta_T/2 = 1/480 vs k = 1/50
+  omega_H                            [0.199336785374, 0.199336785374]  width 5.0e-51
+  omega_star                         [0.187802094246, 0.187802094246]  width 6.0e-51
+  Omega2                             [0.359635439178, 0.359635439178]  width 6.7e-51
+  Omega1                             [0.372045287392, 0.372045287392]  width 6.7e-51
+  beta_max                           [0.787644049992, 0.787644049992]  width 3.9e-50
+  beta_star                          [0.140543592394, 0.140543592394]  width 1.1e-50
+
+== r1 = 3: enclosures ==
+  tau = 117/200 = 0.585000000;  rho*Delta_T/2 = 1/12 vs k = 1/50
+  omega_H                            [-0.850889540450, -0.850889540450]  width 2.3e-50
+  omega_star                         [-0.910419764161, -0.910419764161]  width 3.9e-50
+  Omega2                             [3.422471113126, 3.422471113126]  width 9.1e-50
+  Omega1                             [3.587802237166, 3.587802237166]  width 9.1e-50
+  beta_max                           [0.261446164049, 0.261446164049]  width 2.4e-50
+  beta_star                          [0.631455407304, 0.631455407304]  width 2.4e-50
+
+== r0 = 6/5, omega = 9/25 (between Omega2(r0) = 0.3596 and Omega1(r0) = 0.3720) ==
+  CERTIFIED     NT: H gain at (0,0) (exact: rho*D/2 - k)                       in [-1.791667e-02, -1.791667e-02]  want <0
+  CERTIFIED     NT: L gain at (0,0)                                            in [-2.208333e-02, -2.208333e-02]  want <0
+  CERTIFIED     S: H gain at (1,0) with entry after good news                  in [+1.217373e-02, +1.217373e-02]  want >0
+  CERTIFIED     S: L gain at (1,0)                                             in [-8.758156e-04, -8.758156e-04]  want <0
+  CERTIFIED     M: L gain at (1,0)                                             in [-8.758156e-04, -8.758156e-04]  want <0
+  CERTIFIED     M: L gain at (1,beta_max), phi=1                               in [+2.650730e-05, +2.650730e-05]  want >0
+  CERTIFIED     M: H gain at (1,beta_max), phi=1                               in [+1.307605e-02, +1.307605e-02]  want >0
+  CERTIFIED     M': L gain at (1,beta_max), phi=0                              in [-2.208919e-02, -2.208919e-02]  want <0
+  CERTIFIED     M': H minus L gain at (1,beta_max), phi=0 (affine in phi; so > 0 at the root) in [+4.166667e-03, +4.166667e-03]  want >0
+  CERTIFIED     M': H minus L gain at (1,beta_max), phi=1                      in [+1.304954e-02, +1.304954e-02]  want >0
+  CERTIFIED     Hthr: H gain at (beta_star,0), phi=0                           in [-1.795084e-02, -1.795084e-02]  want <0
+  CERTIFIED     Hthr: H gain at (beta_star,0), phi=1                           in [+1.304773e-02, +1.304773e-02]  want >0
+  CERTIFIED     Hthr: L gain at (beta_star,0), phi=0                           in [-2.211751e-02, -2.211751e-02]  want <0
+  CERTIFIED     Hthr: L gain at (beta_star,0), phi=1                           in [-1.812307e-06, -1.812307e-06]  want <0
+  CERTIFIED     Hth: k - K_I > 0 (phi is positive)                             in [+1.795084e-02, +1.795084e-02]  want >0
+  CERTIFIED     Hth: upper bound on L's gain for every omega >= omega_star     in [-4.891953e-03, -4.891953e-03]  want <0
+
+== r0 = 6/5, omega = 9/50 (below omega_star = 0.18780): no trade should be unique ==
+  CERTIFIED     regime I max over beta (at beta=0): H gain                     in [-1.791667e-02, -1.791667e-02]  want <0
+  CERTIFIED     regime II max over beta (at beta_star): H gain                 in [-5.911780e-04, -5.911780e-04]  want <0
+  CERTIFIED     L line max over beta (at beta_max): L gain                     in [-1.306133e-02, -1.306133e-02]  want <0
+  CERTIFIED     L line beyond beta_max (entry rho): L gain                     in [-2.208919e-02, -2.208919e-02]  want <0
+
+== r1 = 3, omega = 7/2 (between Omega2(r1) = 3.4225 and Omega1(r1) = 3.5878) ==
+  CERTIFIED     S: H gain at (1,0)                                             in [+8.991119e-01, +8.991119e-01]  want >0
+  CERTIFIED     S: L gain at (1,0)                                             in [-7.392140e-03, -7.392140e-03]  want <0
+  CERTIFIED     M: L gain at (1,beta_max), phi=1                               in [+6.527218e-03, +6.527218e-03]  want >0
+  CERTIFIED     M': L gain at (1,beta_max), phi=0                              in [-1.060712e-01, -1.060712e-01]  want <0
+
+== r1 = 3, omega = 18/5 (above Omega1 = 3.5878): S fails; only M' remains ==
+  CERTIFIED     S: L gain at (1,0) (L mimics)                                  in [+1.026939e-03, +1.026939e-03]  want >0
+  CERTIFIED     (1,beta_max) with phi=1: L gain (wants more) so no strict-rule equilibrium in [+1.494630e-02, +1.494630e-02]  want >0
+  CERTIFIED     M': L gain at (1,beta_max), phi=0                              in [-1.060712e-01, -1.060712e-01]  want <0
+
+== r1 = 3, omega = 3 (< Omega2): unique S ==
+  CERTIFIED     S: L gain                                                      in [-4.948753e-02, -4.948753e-02]  want <0
+  CERTIFIED     L line max over beta (at beta_max): L gain                     in [-3.556818e-02, -3.556818e-02]  want <0
+  CERTIFIED     H line, regime I at beta=0: H gain (decreasing in beta, minimum at beta_star) in [+6.333333e-02, +6.333333e-02]  want >0
+  CERTIFIED     H line, regime I at beta_star-: H gain                         in [+5.897804e-02, +5.897804e-02]  want >0
+  CERTIFIED     H line, regime II at beta=1: H gain (regime II minimum)        in [+7.957868e-01, +7.957868e-01]  want >0

@@ -1,0 +1,1052 @@
+Value Classes, Welfare, and Sale Terms in the Order Slot
+
+
+                                         23 October 2026
+
+
+    This package proves R6 and R9. Section 2 also states the general two-class comparison that
+these results use. All numerical certificates use the exact slot primitives in the brief. The source
+manuscript is the version at commit 01bd5d6. The auction formulas below agree with its Sections
+2–3 and Appendix A.1.
+
+
+1     Equilibrium and auction objects
+1.1    The complete equilibrium object
+The class is 𝐽 ∈ {𝐻, 𝐿}, with Pr(𝐽 = 𝐻) = 𝜋. The investor sees the class, while preparation reveals
+the challenger’s value 𝜃. The pair (𝐽, 𝜃), the incumbent value 𝑅, the preparation cost, and the slot
+draws are mutually independent. The cost equals zero with probability 𝜌, and equals 𝑐 𝐻 otherwise.
+    Write 𝜂(𝑞) for the liquidity order law, with 𝜂(−1) = 𝜂(1) = 𝛽 and 𝜂(0) = 1−2𝛽. Use 𝜂 𝑞 = 𝜂(𝑞)
+as an abbreviation. An equilibrium is the tuple
+
+                                     E = (𝜎𝐻 , 𝜎𝐿 , 𝑃, 𝜇, 𝜁, bids).                                (1)
+
+Here 𝜎 𝑗 ∈ Δ({−1, 0, 1}) is the order law conditional on an informed slot and class 𝑗. Write
+𝑃𝑞 = 𝑃(𝑞) and 𝜇 𝑞 = 𝜇(𝑞). The map 𝜇(𝑃)  ¯     gives the challenger’s posterior at each realized price.
+The probability 𝜁 (𝑃) gives high-cost preparation; zero-cost preparation equals one at every price.
+Thus 𝐴(𝑃, 0) = 1, 𝐴(𝑃, 𝑐 𝐻 ) = 𝜁 (𝑃), and 𝑒(𝑞) = 𝜌 + (1 − 𝜌)𝜁 (𝑃𝑞 ).
+    The bids are 𝑏 𝑅 = 𝑅 and 𝑏 𝜃 = 𝜃 after preparation, subject to the reserve. This is the equilibrium
+definition in P1 core.tex; the price beliefs and 𝐴 are its derived objects. Write Δ = Δ𝑇 for the
+target-payoff spread, as in that package.
+    The equilibrium conditions are:
+
+    1. Bayes’ rule gives the raw posterior at every order.
+
+    2. Bayes’ rule gives the challenger’s posterior at every realized price.
+
+    3. High-cost preparation maximizes expected acquisition profit net of its cost at the observed
+       price.
+
+    4. Each price equals expected terminal target proceeds conditional on the order.
+
+
+
+                                                   1
+   5. Each prescribed order maximizes the informed investor’s conditional payoff over the entire
+      unit menu.
+
+   6. Each prepared bidder bids its value, and a bid at the reserve is admissible.
+
+    The investor rule IM permits any mixture among optimal orders. The alternative rule I0
+requires zero when zero ties with a nonzero optimal order. The high-cost challenger rule C1
+requires preparation when gross profit equals cost. The alternative high-cost rule CM permits
+mixtures at that equality.
+    The zero-cost realization prepares at every price under both rules, as in the core definition. All
+strict examples below satisfy both investor rules and both challenger rules. At 𝑝 𝐻 , the high-cost
+entry probability depends on C1 or CM.
+    For any candidate order laws, set
+
+                                                                                      𝜋𝑎 𝐻 (𝑞)
+         𝑎 𝑗 (𝑞) = (1 − 𝜆)𝜂 𝑞 + 𝜆𝜎 𝑗 (𝑞),   𝑑 𝑞 = 𝜋𝑎 𝐻 (𝑞) + (1 − 𝜋)𝑎 𝐿 (𝑞),   𝜇𝑞 =            .   (2)
+                                                                                        𝑑𝑞
+
+Every order has positive liquidity mass. Thus every permitted deviation reaches a price already on
+the equilibrium path. Beliefs at other prices have no effect on these deviations.
+
+1.2    Auction payoffs for general value classes
+The class laws have finite means, and both supports lie above 𝑝 > 0. Assume 𝐺 𝐻 first-order
+stochastically dominates 𝐺 𝐿 . The incumbent CDF 𝐹 is continuous on [0, 𝑟].
+                                                                        ¯ For a prepared value
+𝑣 ≥ 𝑝, truthful bids give
+
+                   𝑇 (𝑅, 𝑣) = max{𝑝, min(𝑅, 𝑣)},       𝑔(𝑅, 𝑣) = (𝑣 − max{𝑝, 𝑅})+ .                (3)
+
+   Without preparation, target proceeds equal 𝑝1{𝑅 ≥ 𝑝}. The challenger wins if 𝑅 < 𝑣. Truthful
+bids are optimal because each bidder wins exactly when its value exceeds the required payment. A
+higher bid can cause a purchase above value; a lower bid can remove a profitable purchase.
+
+Lemma 1 (Auction objects; analytical). The class objects are
+                                                         ∫ ∞
+      𝑡0 = 𝑝[1 − 𝐹 ( 𝑝)],                      𝑡𝑗 = 𝑝 +       [1 − 𝐺 𝑗 (𝑣)] [1 − 𝐹 (𝑣)] 𝑑𝑣,        (4)
+                                                           𝑝
+           ∫ ∞
+     𝑔𝑗 =      [1 − 𝐺 𝑗 (𝑣)]𝐹 (𝑣) 𝑑𝑣,         𝑊 𝑗 = E 𝑗 [𝐹 (𝜃)].
+               𝑝
+
+Let 𝐷 (𝑣) = 𝐺 𝐿 (𝑣) − 𝐺 𝐻 (𝑣) and Γ = E𝐻 [𝜃] − E 𝐿 [𝜃]. Then
+                       ∫ ∞                                    ∫ ∞
+        Δ = 𝑡𝐻 − 𝑡 𝐿 =       𝐷 (𝑣) [1 − 𝐹 (𝑣)] 𝑑𝑣, 𝑔𝐻 − 𝑔 𝐿 =     𝐷 (𝑣)𝐹 (𝑣) 𝑑𝑣 = Γ − Δ.           (5)
+                          𝑝                                        𝑝
+
+A stochastic increase in incumbent strength weakly lowers each 𝑔 𝑗 and weakly raises Δ.
+
+
+
+
+                                                   2
+Proof. For 𝑣 ≥ 𝑝, write
+                                 ∫ 𝑣                                         ∫ 𝑣
+                𝑇 (𝑅, 𝑣) = 𝑝 +          1{𝑅 > 𝑥} 𝑑𝑥,         𝑔(𝑅, 𝑣) =             1{𝑅 < 𝑥} 𝑑𝑥.
+                                  𝑝                                           𝑝
+
+Take expectations over 𝑅 and then over 𝑣. Tonelli’s theorem applies to each nonnegative integral.
+This gives (4). Subtract the two class expressions to obtain (5).
+   For each 𝑣, the two expected payoffs sum to 𝑣. This also gives Δ + 𝑔𝐻 − 𝑔 𝐿 = Γ. A stronger
+incumbent has a smaller CDF, which gives the stated signs directly in the integrals.           □
+
+1.3    Beliefs, prices, and deviations
+Put 𝑏 = (1 − 𝜆) 𝛽 and 𝑢 = 𝜆/𝑏. For 0 < 𝛽 ≤ 1/3, the common liquidity mass at zero is at least 𝑏.
+Consequently, under every candidate profile,
+                            𝜋                     𝜋(1 + 𝑢)
+               𝑚=                      ≤ 𝜇𝑞 ≤ 𝑀 =          ,                       𝑞 ∈ {−1, 0, 1}.    (6)
+                    𝜋 + (1 − 𝜋)(1 + 𝑢)             1 + 𝜋𝑢
+
+Indeed 𝑎 𝐻 (𝑞)/𝑎 𝐿 (𝑞) lies between (1 + 𝑢) −1 and 1 + 𝑢 at each order. These bounds allow arbitrary
+mixtures in each class.
+   Define
+
+              𝐵 𝐹 (𝜇) = 𝑔 𝐿 + 𝜇(𝑔𝐻 − 𝑔 𝐿 ),          𝑒 𝐹 (𝜇) = 𝜌 + (1 − 𝜌)1{𝐵 𝐹 (𝜇) ≥ 𝑐 𝐻 }.
+
+The core definition fixes zero-cost preparation at every price under both challenger rules. Hence
+entry at every price is at least 𝜌 in every candidate equilibrium. Competitive prices satisfy
+
+                                      𝑃𝑞 = 𝑡0 + 𝑒(𝑞) [𝑡 𝐿 − 𝑡 0 + Δ𝜇 𝑞 ].                             (7)
+
+                                                          ¯ 𝑞 ) = 𝜌 + (1 − 𝜌)𝜁 (𝑃𝑞 ). If Δ > 0, the
+Entry 𝑒(𝑞) depends on 𝑞 only through 𝑃𝑞 , since it equals 𝑒(𝑃
+price recovers the raw posterior through
+                                             𝑃𝑞 − 𝑡 0 − 𝑒(𝑞)(𝑡 𝐿 − 𝑡 0 )
+                                      𝜇𝑞 =                               .                            (8)
+                                                      𝑒(𝑞)Δ
+Thus equal prices imply equal raw posteriors. Bayes’ rule at the price then gives 𝜇(𝑃   ¯ 𝑞 ) = 𝜇𝑞 .
+Under C1, preparation optimality gives 𝑒(𝑞) = 𝑒 𝐹 (𝜇 𝑞 ). Under CM, a high-cost tie permits any
+𝑒(𝑞) ∈ [𝜌, 1].
+    A deviation keeps the candidate prices and preparation rule fixed. Its payoff, conditional on the
+informed slot, is
+                           𝑈 𝑗 (𝑞) = 𝑞{𝑡0 + 𝑒(𝑞)(𝑡 𝑗 − 𝑡 0 ) − 𝑃𝑞 } − 𝑘 |𝑞|.                      (9)
+The four nonzero payoffs therefore equal
+
+            𝑈𝐻 (1) = 𝑒(1)Δ(1 − 𝜇1 ) − 𝑘,                   𝑈𝐻 (−1) = −𝑒(−1)Δ(1 − 𝜇−1 ) − 𝑘,          (10)
+           𝑈 𝐿 (−1) = 𝑒(−1)Δ𝜇−1 − 𝑘,                        𝑈 𝐿 (1) = −𝑒(1)Δ𝜇1 − 𝑘.
+
+The zero order pays zero. The factor 𝜆 enters unconditional profit, but does not enter the conditional
+choice problem.
+
+                                                       3
+2     Value classes and priors
+2.1    The two-class comparison
+Proposition 1 (General classes and priors; analytical). Let 𝐹1 ≤ 𝐹0 and 𝐹2 ≤ 𝐹1 be continuous
+incumbent CDFs. Let 0 < 𝜋, 𝜌, 𝜆 < 1 and 0 < 𝛽 ≤ 1/3. Write Δ𝑖 = Δ(𝐹𝑖 ) and 𝜅 = min{𝑚, 1 − 𝑀 }.
+Suppose these strict inequalities hold:
+
+                    𝐵0 (𝜋) < 𝑐 𝐻 < 𝐵1 (𝑀),          Δ0 < 𝑘 < 𝜌𝜅Δ1 ,            𝐵2 (𝑀) < 𝑐 𝐻 .                   (11)
+
+Under either challenger rule, the equilibrium orders and all realized prices are unique at each
+strength. At 𝐹0 the orders are (0, 0) and entry is 𝜌. At 𝐹1 the orders are (1, −1), and only the
+positive order recruits the high-cost realization. At 𝐹2 the orders remain (1, −1), and entry is 𝜌.
+    The complete objects are as follows. For 𝐹0 , let
+
+𝜎𝐻 = 𝜎𝐿 = 𝛿0 ,      𝜇 𝑞 = 𝜋,     𝑃𝑞 = 𝑡0,0 + 𝜌[𝑡 𝐿,0 −𝑡0,0 +Δ0 𝜋],     ¯ 𝑞 ) = 𝜋,
+                                                                       𝜇(𝑃               𝐴(𝑃𝑞 , 𝐶) = 1{𝐶 = 0}.
+                                                                                                          (12)
+For 𝐹𝑖 , 𝑖 ∈ {1, 2}, let
+
+ 𝜎𝐻 = 𝛿1 ,     𝜎𝐿 = 𝛿−1 ,      (𝜇−1 , 𝜇0 , 𝜇1 ) = (𝑚, 𝜋, 𝑀),     𝑃𝑞 = 𝑡0,𝑖 + 𝑒𝑖 (𝜇 𝑞 ) [𝑡 𝐿,𝑖 − 𝑡 0,𝑖 + Δ𝑖 𝜇 𝑞 ], (13)
+
+      ¯ 𝑞 ) = 𝜇 𝑞 and 𝐴(𝑃𝑞 , 𝐶) = 1{𝐶 ≤ 𝐵𝑖 (𝜇 𝑞 )}. Append the truthful bids from (1) to both
+with 𝜇(𝑃
+objects.
+    At 𝐹1 ,
+
+                  E1 = 𝜌 + (1 − 𝜌)(𝑏 + 𝜋𝜆),                       𝑒 𝐻,1 = 𝜌 + (1 − 𝜌)(𝑏 + 𝜆),                   (14)
+               O𝐻,0 = 𝜋𝜌𝑊𝐻 (𝐹0 ),                                 O𝐻,1 = 𝜋𝑒 𝐻,1𝑊𝐻 (𝐹1 ).
+
+High-class ownership rises precisely when
+
+                                [𝜌 + (1 − 𝜌)(𝑏 + 𝜆)]𝑊𝐻 (𝐹1 ) > 𝜌𝑊𝐻 (𝐹0 ).                                       (15)
+
+Proof. First consider any equilibrium at 𝐹0 . If Δ0 > 0, equations (6)–(10) bound every correctly
+signed gross return by Δ0 < 𝑘. The two wrong-sign returns are negative. Thus each class must
+choose zero. If Δ0 = 0, both classes have identical target proceeds and every nonzero order pays
+−𝑘. Zero orders again follow.
+    Bayes’ rule then gives 𝜇 𝑞 = 𝜋 at every order. The inequality 𝐵0 (𝜋) < 𝑐 𝐻 fixes entry at 𝜌 and
+gives (12). Its constant price is competitive. The cost comparison and the payoff calculation verify
+all conditions against this fixed object.
+    Next consider any equilibrium at 𝐹1 or 𝐹2 . Lemma 1 gives Δ2 ≥ Δ1 > 0. Under every candidate
+profile, a high-class purchase earns at least 𝜌(1 − 𝑀)Δ𝑖 − 𝑘 > 0. A low-class sale earns at least
+𝜌𝑚Δ𝑖 − 𝑘 > 0. The wrong-sign orders lose, and zero pays zero. Thus every equilibrium has
+𝜎𝐻 = 𝛿1 and 𝜎𝐿 = 𝛿−1 .
+    This argument excludes mixed alternatives as well as pure alternatives.
+    For these forced orders, the conditional probabilities are
+
+      (𝑎 𝐻 (−1), 𝑎 𝐻 (0), 𝑎 𝐻 (1)) = (𝑏, 𝑏 0 , 𝑏 + 𝜆),       (𝑎 𝐿 (−1), 𝑎 𝐿 (0), 𝑎 𝐿 (1)) = (𝑏 + 𝜆, 𝑏 0 , 𝑏),
+
+                                                         4
+where 𝑏 0 = (1 − 𝜆)(1 − 2𝛽). Substitution into (2) gives (𝑚, 𝜋, 𝑀). Since 𝐵1 (𝜋) ≤ 𝐵0 (𝜋) < 𝑐 𝐻 <
+𝐵1 (𝑀), only the positive order recruits at 𝐹1 . The positive cost gap also implies 𝑔𝐻,1 > 𝑔 𝐿,1 . At
+𝐹2 , 𝑔𝐻,2 ≥ 𝑔 𝐿,2 and 𝐵2 (𝑀) < 𝑐 𝐻 exclude the high-cost realization at every order.
+     The proposed prices in (13) are therefore competitive. Equation (8) verifies the price beliefs,
+and the cost comparisons verify preparation. Equations (10) verify every deviation with these
+prices fixed. Truthful bids verify the auction condition. The forced orders, price inversion, and
+strict cost comparisons also establish uniqueness.
+     The positive order has unconditional probability 𝑏 + 𝜋𝜆. Its class-𝐻 probability is 𝑏 + 𝜆, and
+its class-𝐿 probability is 𝑏. These probabilities give (14). Conditional on class and preparation,
+the value law and incumbent law remain unchanged. Multiplication by the class win probability
+therefore gives ownership and (15).                                                                □
+    The strict conditions define an open set of costs, priors, strengths, and interior slot parameters.
+For general CDFs, continuity of the displayed payoff objects is the required topology. The bound
+𝛽 ≤ 1/3 is a structural domain restriction. At its boundary, the set is relatively open in that domain.
+    The strict cost comparisons give the same outcome under CM. In every finite uniform example
+below, 𝐵𝑖 (𝑚) > 0 also makes zero-cost preparation strict under every profile. The two investor
+rules give the same result because every selected order is strict.
+    The sufficient ownership condition (1 + 𝜌)𝑊𝐻 (𝐹1 ) ≥ 2𝜌𝑊𝐻 (𝐹0 ) > 0 applies when 𝑏 + 𝜆 > 1/2.
+Indeed 𝑒 𝐻,1 > (1 + 𝜌)/2 then implies (15). For general slots, (15) is the exact condition.
+
+2.2     A nonempty region for every ranked pair
+Proposition 2 (Every prior and every positive class gap; analytical). Fix the class laws, 𝑝 > 0,
+Γ > 0, and 0 < 𝜋, 𝜌, 𝜆 < 1 with 0 < 𝛽 ≤ 1/3. For uniform incumbents, a nonempty open set of
+(𝑟 0 , 𝑟 1 , 𝑟 2 , 𝑐 𝐻 , 𝑘) satisfies (11) and (15).
+                              ∫𝑥
+Proof. Set Γ(𝑥) = 𝑝 𝐷 (𝑣) 𝑑𝑣 and 𝑣 ∗ = inf{𝑥 ≥ 𝑝 : Γ(𝑥) > 0}. Finite class means and Γ > 0 give
+𝑝 ≤ 𝑣 ∗ < ∞. For 𝑅 ∼ 𝑈 [0, 𝑟], Tonelli’s theorem gives
+                                                              ∫𝑟
+                          ∫
+                        1 𝑟                            𝑟Γ(𝑟) − 𝑝 Γ(𝑥) 𝑑𝑥   𝑝Γ(𝑟)
+          Δ(𝑟) =               Γ(𝑥) 𝑑𝑥,       Δ′ (𝑟) =          2
+                                                                         ≥       > 0 (𝑟 > 𝑣 ∗ ). (16)
+                        𝑟 𝑝                                   𝑟             𝑟2
+
+The derivative formula holds because Γ(𝑥) is continuous. Also Δ(𝑟) → 0 as 𝑟 ↓ 𝑣 ∗ and
+
+                              𝑔𝐻 (𝑟) − 𝑔 𝐿 (𝑟) = Γ − Δ(𝑟) ≥ 𝑝Γ/𝑟 > 0.
+
+At 𝑟 = 𝑣 ∗ ,
+                                𝐵𝑣 ∗ (𝑀) − 𝐵𝑣 ∗ (𝜋) = (𝑀 − 𝜋)Γ > 0.
+Dominated convergence gives continuity of 𝑔 𝑗 (𝑟) and 𝑊𝐻 (𝑟). It also gives 𝑔 𝑗 (𝑟) → 0 as 𝑟 → ∞.
+Since 𝜃 ≥ 𝑝, 𝑊𝐻 (𝑣 ∗ ) ≥ 𝑝/𝑣 ∗ > 0.
+   Let 𝑒 𝐻 = 𝜌 + (1 − 𝜌)(𝑏 + 𝜆) > 𝜌. Choose 𝑟 1 > 𝑣 ∗ near enough that
+
+                          𝐵𝑟1 (𝑀) > 𝐵𝑣 ∗ (𝜋),      𝑒 𝐻 𝑊𝐻 (𝑟 1 ) > 𝜌𝑊𝐻 (𝑣 ∗ ).
+
+
+
+                                                  5
+Choose 𝑟 0 ∈ (𝑣 ∗ , 𝑟 1 ) near enough that Δ(𝑟 0 ) < 𝜌𝜅Δ(𝑟 1 ). Because 𝐵𝑟 (𝜋) and 𝑊𝐻 (𝑟) decrease with
+𝑟, these choices give
+                              𝐵𝑟0 (𝜋) < 𝐵𝑟1 (𝑀),      𝑒 𝐻 𝑊𝐻 (𝑟 1 ) > 𝜌𝑊𝐻 (𝑟 0 ).
+    Select 𝑐 𝐻 and 𝑘 strictly inside the two intervals in (11). Select 𝑟 2 > 𝑟 1 large enough that
+𝐵𝑟2 (𝑀) < 𝑐 𝐻 . The limit 𝑔 𝑗 (𝑟) → 0 permits this last choice. Every strict inequality persists under
+small perturbations by continuity. Proposition 1 supplies and verifies the complete equilibrium
+tuples throughout this set.                                                                         □
+
+2.3    The admissible regions at the benchmark
+Calibration B fixes 1+𝑢 = 𝑒, 𝛽 = 0.294655, and 𝜆 = 𝑢𝛽/(1+𝑢𝛽). The derived presence probability
+is 0.336122. The exact decimal 𝛽 is the primitive; all calculations retain the unrounded expression
+for 𝜆.
+    At the benchmark point values,
+
+                    Δ0 = 1/60,       Δ1 = 2/3,   𝜏1 = 141/200,      𝜏2 = 4245/5804.
+
+The prior window and the slot region follow from explicit inequalities. Let 𝐿(𝑡) = 𝑡/[1 + 𝑢(1 − 𝑡)],
+the inverse of 𝜋 ↦→ 𝑀 (𝜋).
+
+  Region                                   Exact condition and display at B
+  Slot parameters, fixed benchmark         82/59 < 𝑢 < 2686/1559, 0 < 𝛽 < 1/3, 𝜆 = 𝑢𝛽/(1 + 𝑢𝛽)
+  prior and costs
+                                              82𝛽           2686𝛽
+  Equivalent presence interval                      <𝜆<
+                                           59 + 82𝛽     1559 + 2686𝛽
+                                             𝑒        9
+  Priors with some admissible trade              <𝜋<     : (0.231969, 0.768031)
+                                           9+𝑒       9+𝑒
+  cost
+                                              3𝑒             22
+  Priors with the fixed trade cost                   <𝜋<           : (0.270432, 0.729568)
+                                           22 + 3𝑒         22 + 3𝑒
+  Priors for parts (i)–(ii), both costs    𝐿 (𝜏1 ) < 𝜋 < 1365/2156: (0.467850, 0.633117)
+  fixed
+  Priors for all three strengths, all      𝐿 (𝜏1 ) < 𝜋 < 𝐿 (𝜏2 ): (0.467850, 0.500424)
+  primitives fixed
+
+    To derive the slot band, solve 𝜏1 < 𝑀 (1/2) < 𝜏2 for 𝑢. The trade bound gives 𝑢 < 19/3,
+which is weaker than the upper band endpoint. The weak cost and weak trade conditions hold
+independently of the slot parameters.
+    For a nonempty trade window, 𝜅 > 1/10 gives the third row. For the fixed cost, 𝜅 > 3/25 gives
+the fourth row.
+    The weak cost condition is 𝜋 < 1365/2156. The upper-posterior condition is 𝜋 > 𝐿(𝜏1 ),
+and collapse adds 𝜋 < 𝐿(𝜏2 ). The other trade inequalities hold throughout the last two intervals.
+Monotonicity of 𝑚 and 1 − 𝑀 reduces this last verification to their endpoints. The script records
+the endpoint margins for the final interval. The exact formulas establish the wider two-strength
+interval as well.
+
+
+
+                                                    6
+    In particular, the trade-cost window is nonempty at priors 3/10 and 7/10 with the benchmark
+strengths. The fixed high cost fails the recruitment condition at 3/10 and the weak exclusion
+condition at 7/10. The separate A and B examples below retain their declared costs and strengths.
+    At the fixed benchmark costs and strengths, the two prior examples have the entry vectors
+
+                           𝜋 = 3/10 :     (0.250000, 0.250000, 0.250000),
+
+                           𝜋 = 7/10 :     (1.000000, 0.573175, 0.573175).
+These classifications are computer-assisted. The return bound for every profile forces full orders
+at both higher strengths, while Δ0 < 𝑘 forces weak zero orders. For the weak tuple, use posterior
+𝜋, entry 𝑒 0 = 𝜌 + (1 − 𝜌)1{𝐵0 (𝜋) ≥ 6}, and price 𝑡 0,0 + 𝑒 0 [𝑡 𝐿,0 − 𝑡0,0 + Δ0 𝜋]. For each higher
+tuple, use full orders, posteriors (𝑚, 𝜋, 𝑀), and the competitive price formula (7). The interval cost
+comparisons give exactly the stated entry patterns and verify preparation at each realized price.
+The payoff formula against the fixed tuple verifies every order choice; Bayes’ rule and truthful bids
+complete each tuple.
+
+2.4    Every value-class example in the pinned manuscript
+These examples retain their own costs and strengths. They use the common slot primitives of
+calibration B. The class-exhibit letters identify examples, separate from the calibration label. The
+low cost is zero and 𝜌 = 1/4 throughout. The reserve is 𝑝 = 1/2 in this subsection.
+
+      Example      Class values or supports               𝜋      (𝑐 𝐻 , 𝑘)         (𝑟 0 , 𝑟 1 , 𝑟 2 )
+      Benchmark 1; 10                                     1/2    (6, 1/50)         (6/5, 3, 18/5)
+      Moderate 1; 2                                       1/2    (89/100, 1/500)   (21/20, 3/2)
+      Narrow    𝑈 [19/20, 21/20]; 𝑈 [199/20, 201/20]      1/2    (6, 1/50)         (6/5, 3, 18/5)
+      A         1; 10                                     3/10   (9/2, 1/100)      (11/10, 3, 18/5)
+      B         1; 10                                     7/10   (36/5, 1/100)     (11/10, 3, 18/5)
+      C         𝑈 [3/5, 7/5]; 𝑈 [1, 19]                   7/10   (67/10, 1/50)     (1, 9/2, 11/2)
+      D         1; 10                                     7/10   (67/10, 1/50)     (1, 9/2, 11/2)
+
+Proposition 3 (Value-class examples; computer-assisted). The benchmark, moderate, narrow, A,
+B, and C examples satisfy their stated conditions in Proposition 1. The moderate example states
+only the first two strengths. Every stated equilibrium has the tuple (12) or (13). Example D has
+unique zero orders at its weak strength and unique full orders at both higher strengths. Its entry
+stays at 𝜌 at all three strengths.
+
+Proof. For a point value, integrate (3) over the intervals split by 𝑝 and 𝑣. For 𝑝 ≤ 𝑣 ≤ 𝑟, the result
+is
+                                   𝑣2 − 𝑝2              𝑣2 − 𝑝2
+                         𝑡𝑣 = 𝑣 −           ,      𝑔𝑣 =            ,    𝑊𝑣 = 𝑣/𝑟.
+                                      2𝑟                      2𝑟
+For 𝑣 ≥ 𝑟, the result is 𝑡 𝑣 = 𝑟/2 + 𝑝 2 /(2𝑟), 𝑔𝑣 = 𝑣 − 𝑡 𝑣 , and 𝑊𝑣 = 1. A uniform class averages these
+polynomials over its support, with a split at 𝑟. The script performs these integrations with exact
+rational arithmetic.
+
+
+                                                   7
+   For the narrow classes, direct integration gives
+                      ℓ 2 + 𝜀 2 /3 − 𝑝 2                       ℓ 2 + 𝜀 2 /3 − 𝑝 2
+           𝑡𝐿 = ℓ −                      ,              𝑔𝐿 =                      ,               (17)
+                              2𝑟                                       2𝑟
+                                                                     (𝑟 − ℓ) 2 + 𝜀 2 /3
+           𝑡 𝐻 = 𝑟/2 + 𝑝 2 /(2𝑟),                      𝑔𝐻 = ℎ − 𝑡 𝐻 ,         Δ=        ,
+                                                                            2𝑟
+where 𝜀 = 1/20. In C, the low and high class supports both cross relevant incumbent boundaries.
+The same integral formulas, with the required splits, give
+                   𝑊𝐻 (𝑟 0 ) = 1,            𝑊𝐻 (𝑟 1 ) = 599/648,        𝑊𝐻 (𝑟 2 ) = 79/88.
+The low CDF exceeds the high CDF on their common interior support. Outside that support, the
+CDF order follows from their endpoints. Thus C satisfies the class order even though its supports
+overlap.
+    The interval margins in Section 7 verify every strict cost and trade condition for the successful
+examples. They also verify (15). Proposition 1 then proves uniqueness through bounds on every
+profile. The script additionally prints every price, posterior, cost comparison, and deviation payoff
+against the fixed tuple. The arithmetic uses outward intervals at sixty decimal digits for expressions
+that depend on 𝑒. No rounded decimal determines an entry decision.
+    For D, the upper cost margin at 𝑟 1 is −0.018122 < 0. The trade bounds for every profile still
+force full orders. The inequalities 𝐵1 (𝑀) < 𝑐 𝐻 and 𝐵2 (𝑀) < 𝑐 𝐻 then exclude every high-cost
+realization. The weak trade bound forces zero orders at 𝑟 0 , and its prior profit is below cost. These
+calculations verify D directly, and its constant entry floor.                                         □
+
+                              Example                 E0            E1         O 𝐻,1
+                              Benchmark         0.250000    0.522757      0.324401
+                              Moderate          0.250000    0.522757      0.324401
+                              Narrow            0.250000    0.522757      0.324401
+                              A                 0.250000    0.472339      0.194641
+                              B                 0.250000    0.573175      0.454162
+                              C                 0.250000    0.573175      0.419819
+                              D                 0.250000    0.250000      0.175000
+
+At the third strength, each listed example has entry 𝜌. The moderate declaration has no third
+strength. In C, ownership rises from 0.175000 despite the lower conditional win probability.
+    The C–D comparison follows from a convex payoff. For each 𝑅, the function 𝑣 ↦→ (𝑣 −
+max{𝑝, 𝑅})+ is convex. A mean-preserving spread therefore weakly raises acquisition profit at
+every belief. C has a positive upper cost margin, while D has a negative margin at the same costs,
+strengths, and means. This proves the stated role of dispersion.
+    The source’s constructive sequence gives further examples. For each ℎ below, let 𝛿𝑛 = (ℎ −
+1)2−𝑛 , 𝑟 1 = 1 + 𝛿𝑛 , and 𝑟 0 = 1 + 𝛿𝑛2 /(ℎ − 1). Retain its declared cost recipe:
+                           Δ(𝑟 0 ) + 21 𝜌𝑚Δ(𝑟 1 )             𝐵𝑟 (1/2) + 𝐵𝑟1 (𝑀)
+                      𝑘𝑛 =                        ,   𝑐 𝐻,𝑛 = 0                  .
+                                      2                               2
+The extra factor in this cost recipe is a declaration for these examples. The slot theorem itself uses
+the larger upper bound 𝜌𝑚Δ(𝑟 1 ). For each row, the first feasible member is certified by all four
+strict cost and trade margins. The log retains the failed earlier members.
+
+                                                        8
+                         ℎ/ℓ              𝑛                   𝑟0          𝑟1                     𝑘𝑛
+                         21/20            3    1.000781            1.006250         4.78727292167e-7
+                         11/10            3    1.001562            1.012500         1.90637768119e-6
+                         5/4              3    1.003906            1.031250         1.17585845949e-5
+                         3/2              3    1.007812            1.062500         4.60391046767e-5
+                         2                3    1.015625            1.125000       0.000176824201316
+
+The registry also records each 𝑐 𝐻,𝑛 and each complete equilibrium object. These examples illustrate
+the scale of the required trade cost as the class gap falls. Proposition 2 proves existence for every
+positive gap.
+
+
+3     More than two classes
+3.1    A separation condition
+Let 𝑗 ∈ {1, . . . , 𝐽} have prior 𝜋 𝑗 > 0. Each class has finite means and values above 𝑝. The
+equilibrium tuple includes every 𝜎 𝑗 , every raw posterior vector, and the posterior vector at each
+price. The other components are those of (1). Define
+                                  {︃                                    }︃
+                                           𝜈𝑗           𝜈𝑙
+                          M 𝜋 = 𝜈 ∈ Δ𝐽 :      ≤ (1 + 𝑢) for every 𝑗, 𝑙 .                       (18)
+                                           𝜋𝑗           𝜋𝑙
+Every raw posterior belongs to this convex set. Every price posterior also belongs to it because it is
+a mixture of raw posteriors. The price identity recovers only the posterior mean of class proceeds:
+                                                      ∑︁                          𝑃𝑞 − 𝑡 0
+                                              𝑡¯𝑞 =           𝜇 𝑗 (𝑞)𝑡 𝑗 = 𝑡0 +            .           (19)
+                                                      𝑗
+                                                                                   𝑒(𝑞)
+
+Proposition 4 (Two separated groups; analytical). Partition the classes into nonempty groups 𝐿
+and 𝐻, with high-group prior mass 𝜋. ¯ The incumbent law strengthens from 𝐹0 to 𝐹1 . Suppose
+                                                       ∑︁
+                           max 𝑡 𝑗,0 − min 𝑡 𝑗,0 < 𝑘,      𝜋 𝑗 𝑔 𝑗,0 < 𝑐 𝐻 ,                 (20)
+                                      𝑗                   𝑗
+                                                                                   𝑗
+                            min 𝑡 𝑗,1 − max 𝜈 · 𝑡1 > 𝑘/𝜌,
+                               𝑗 ∈𝐻              𝜈∈M 𝜋
+                            min 𝜈 · 𝑡1 − max 𝑡 𝑗,1 > 𝑘/𝜌.
+                            𝜈∈M 𝜋                     𝑗 ∈𝐿
+
+Let 𝑡¯𝐻 , 𝑡¯𝐿 , 𝑔¯ 𝐻 , 𝑔¯ 𝐿 be prior-weighted means within each group at 𝐹1 . Assume 𝑔¯ 𝐻 > 𝑔¯ 𝐿 and
+
+                                                𝑔¯ 𝐿 + 𝑀 ( 𝜋)(
+                                                           ¯ 𝑔¯ 𝐻 − 𝑔¯ 𝐿 ) > 𝑐 𝐻 .
+
+Under either challenger rule, weak orders are uniquely zero and entry is 𝜌. Strong orders are
+uniquely +1 in group 𝐻 and −1 in group 𝐿. Only the positive order recruits, so
+
+                                              E1 = 𝜌 + (1 − 𝜌)(𝑏 + 𝜋𝜆)
+                                                                   ¯ > 𝜌.
+
+    The strong price reveals the whole posterior vector in this equilibrium.
+
+                                                                     9
+Proof. For any weak candidate, competitive prices subtract the raw mean proceeds from each
+class’s proceeds. Every residual has absolute value at most max 𝑗 𝑡 𝑗,0 − min 𝑗 𝑡 𝑗,0 < 𝑘. Thus zero is
+the unique order in each class. The complete weak tuple has all orders zero, posterior 𝜋, entry 𝜌,
+and price 𝑡0,0 + 𝜌(𝜋 · 𝑡0 − 𝑡0,0 ). The cost inequality verifies entry, and direct substitution verifies
+competitive prices and every deviation. The auction bids remain truthful.
+    For any strong candidate, (19) gives a class- 𝑗 payoff
+
+                                 𝑈 𝑗 (𝑞) = 𝑞𝑒(𝑞) [𝑡 𝑗,1 − 𝜇(𝑞) · 𝑡1 ] − 𝑘 |𝑞|.
+
+The separation inequalities make a high-group purchase strictly profitable and a high-group sale
+strictly unprofitable. They make a low-group sale strictly profitable and a low-group purchase
+strictly unprofitable. Zero pays zero. These bounds hold under every candidate profile, so they
+force the stated group orders.
+    Under those orders, Bayes’ rule gives the group posterior (𝑚( 𝜋),   ¯ 𝑀 ( 𝜋)).
+                                                                     ¯ 𝜋,     ¯ Within each group,
+class proportions remain at their prior proportions.
+    The posterior vector at group posterior 𝑧 is therefore
+                                         {︄
+                                            𝑧𝜋 𝑗 /𝜋,
+                                                  ¯              𝑗 ∈ 𝐻,
+                               𝜇 𝑗 (𝑧) =
+                                            (1 − 𝑧)𝜋 𝑗 /(1 − 𝜋),
+                                                             ¯   𝑗 ∈ 𝐿.
+
+    The strict profit gap makes group gross profit increase with 𝑧. Its prior value is below 𝑐 𝐻
+because incumbent strength lowers each class’s profit. Its value at 𝑀 ( 𝜋)    ¯ exceeds 𝑐 𝐻 by hypothesis.
+Thus only the positive order recruits. Set 𝑃𝑞 = 𝑡0,1 + 𝑒(𝑧 𝑞 ) [𝑡¯𝐿 − 𝑡 0,1 + ( 𝑡¯𝐻 − 𝑡¯𝐿 )𝑧 𝑞 ]. The separation
+condition implies 𝑡¯𝐻 > 𝑡¯𝐿 . The entry floor then makes the price strictly increase with 𝑧.
+    This verifies the price posterior, the preparation rule, and competitive prices for the fixed tuple.
+The displayed payoff formula verifies every permitted deviation. The bounds for every profile
+establish uniqueness.                                                                                          □
+    High-group ownership rises exactly when
+                                         ∑︁                   ∑︁
+                   [𝜌 + (1 − 𝜌)(𝑏 + 𝜆)]     𝜋 𝑗 𝑊 𝑗 (𝐹1 ) > 𝜌    𝜋 𝑗 𝑊 𝑗 (𝐹0 ).
+                                                 𝑗 ∈𝐻                  𝑗 ∈𝐻
+
+The group proof needs neither arbitrary posterior recovery nor a special relation between 𝑔 𝑗 and 𝑡 𝑗 .
+    A strict four-class example uses equal priors and point values (1, 1001/1000, 9999/1000, 10).
+It retains the benchmark costs, reserve, and first two strengths. The certificate finds a separation
+distance 𝛾 = 0.178871. Its strict trade margin is 𝜌𝛾 − 𝑘 = 0.024718. The weak range, weak cost,
+strong profit gap, and upper profit margins are also positive.
+                                                      ∑︁
+    For this finite certificate, write 𝜈 𝑗 = 𝜋 𝑗 𝑤 𝑗 / 𝑙 𝜋𝑙 𝑤 𝑙 with 1 ≤ 𝑤 𝑗 ≤ 1 + 𝑢. A linear fractional
+mean attains each extremum at endpoints of each weight interval. Its derivative in one weight has
+constant sign, or is zero throughout that interval. The script therefore evaluates all sixteen endpoint
+combinations. This certifies the separation condition over the entire polytope.
+
+3.2    A price collision at three classes
+Proposition 5 (A knife-edge failure of full posterior recovery; computer-assisted). Use the slot
+primitives of B, 𝑅 ∼ 𝑈 [0, 8], 𝑝 = 1, 𝜌 = 1/4, 𝑐 𝐻 = 10, and 𝑘 = 1/8. Let the three priors be
+
+                                                        10
+(1/4, 1/2, 1/4) and set
+                                                                            1 + 2𝑏 0 + 𝜆
+       𝐺 1 = 𝛿1 ,   𝐺 2 = (1 − 𝑤)𝛿1 + 𝑤𝛿10 ,       𝐺 3 = 𝛿10 ,        𝑤=                 = 0.940709.
+                                                                                 2
+The informed orders (−1, 0, 1) form an equilibrium with strict investor choices. Orders zero and
+one give distinct posterior vectors and the same price. The price therefore does not reveal the whole
+posterior.
+Proof. The condition 𝛽 > 1/4 gives 0 < 𝑤 < 1 because
+                                                (1 − 𝜆)(4𝛽 − 1)
+                                      1−𝑤 =                     > 0.
+                                                       2
+Hence the class laws satisfy strict stochastic order. The auction objects are
+
+      𝑡0 = 7/8,     (𝑡 1 , 𝑡2 , 𝑡3 ) = (1, 1 + 49𝑤/16, 65/16),     (𝑔1 , 𝑔2 , 𝑔3 ) = (0, 95𝑤/16, 95/16).
+
+Specify the complete tuple by 𝜎 𝑗 = 𝛿 𝑗−2 ,
+                                                                                  (︄                       )︄
+                  𝜋 𝑗 [𝑏 𝑞 + 𝜆1{𝑞 = 𝑗 − 2}]                                            ∑︁
+        𝜇 𝑗 (𝑞) =                           ,      ¯
+                                                   𝑒(𝑃) = 𝜌,       𝑃𝑞 = 𝑡 0 + 𝜌             𝜇 𝑗 (𝑞)𝑡 𝑗 − 𝑡 0 ,
+                           𝑏 𝑞 + 𝜆𝜋 𝑞+2                                                𝑗
+
+where 𝑏 −1 = 𝑏 1 = 𝑏 and 𝑏 0 retains its earlier definition. At the common price, set 𝜇(𝑃       ¯ 0) =
+[𝑑0 𝜇(0) + 𝑑1 𝜇(1)]/(𝑑0 + 𝑑1 ). At the other price, set 𝜇(𝑃     ¯ −1 ) = 𝜇(−1). Set 𝐴(𝑃, 0) = 1,
+𝐴(𝑃, 10) = 0, and append truthful bids.
+    Every class profit is below 𝑐 𝐻 , since 95/16 < 10. Every price posterior gives class 3 positive
+probability. Its strictly positive acquisition profit makes zero-cost preparation strict. Thus 𝑒(𝑃)
+                                                                                               ¯    =𝜌
+is optimal at every price, at a common price as well. The specified prices are competitive.
+    Normalize the proceeds vector to (0, 𝑤, 1). Its prior mean is 𝑤/2 + 1/4. The conditional means
+at zero and one are
+                           𝑏 0 (𝑤/2 + 1/4) + 𝜆𝑤/2                  𝑏(𝑤/2 + 1/4) + 𝜆/4
+                    𝑧0 =                          ,         𝑧1 =                      .
+                                   𝑏 0 + 𝜆/2                            𝑏 + 𝜆/4
+Cross multiplication gives 𝑧0 = 𝑧1 precisely when
+                                                 2𝑏 + 3𝑏 0 + 2𝜆
+                                           𝑤=                    .
+                                                 2(2𝑏 + 𝑏 0 + 𝜆)
+The identity 2𝑏 + 𝑏 0 + 𝜆 = 1 reduces this expression to the declared 𝑤. Yet the posterior vectors
+differ because the informed mass at zero belongs to class 2 and the mass at one belongs to class 3.
+The normalized mean at order one exceeds that at order minus one by 𝜆/(4𝑏 + 𝜆) > 0.
+    Thus the other price differs strictly from the common price. The pooled price belief follows
+Bayes’ rule by the specified probability weights.
+    For every class and order, the payoff against the fixed tuple is
+
+                                       𝑈 𝑗 (𝑞) = 𝑞𝜌[𝑡 𝑗 − 𝑡¯𝑞 ] − 𝑘 |𝑞|.
+
+The table below gives every payoff. The selected action exceeds each alternative by a strictly
+positive interval margin.
+
+                                                      11
+                              Class         Sell        Zero        Buy
+                              1        0.260795    0.000000    -0.740857
+                              2       -0.459435    0.000000    -0.020627
+                              3       -0.504830    0.000000     0.024768
+
+This verifies every equilibrium condition for the stated tuple. The two equality claims follow from
+the exact formula; the strict payoff claims use outward intervals.                                □
+    The collision is a knife-edge within this pure profile. The equation for 𝑤 is affine with a nonzero
+coefficient. A change of 1/1000 in either direction separates the prices and retains every strict
+action margin. For each perturbation, set 𝜇(𝑃  ¯ 𝑞 ) = 𝜇(𝑞) at each distinct price. The same price
+formula and preparation rule verify both perturbed tuples. The script records all their deviation
+payoffs. This statement concerns this profile and these perturbations.
+    A generic full-posterior theorem over arbitrary mixed profiles remains open. In this example,
+the common price does not change entry because all prices induce the same strict preparation
+decisions.
+
+
+4    Access to prices and welfare
+Proposition 6 (Access in the recruitment region; analytical). At 𝐹1 under Proposition 1, compare
+price access with a price-hidden challenger. All primitives stay fixed, and competitive prices are set
+in each economy. Both economies have unique full informed orders. Price access raises expected
+target proceeds and allocation surplus net of preparation costs:
+
+                  R𝑇1 − R𝑇0 = (1 − 𝜌){𝜋(𝑏 + 𝜆)(𝑡 𝐻 − 𝑡 0 ) + (1 − 𝜋)𝑏(𝑡 𝐿 − 𝑡 0 )} > 0,           (21)
+                W 1 − W 0 = (1 − 𝜌)(𝑏 + 𝜋𝜆) [𝐵1 (𝑀) − 𝑐 𝐻 + 𝑝𝐹1 ( 𝑝)] > 0.
+
+Proof. The access tuple is (13) at 𝐹1 . For the price-hidden tuple, keep 𝜎𝐻 = 𝛿1 , 𝜎𝐿 = 𝛿−1 , and the
+raw beliefs (𝑚, 𝜋, 𝑀). The challenger has posterior 𝜋 because it observes no price or order. Set
+𝐴(𝐶) = 1{𝐶 = 0} and
+                                    𝑃𝑞0 = 𝑡0 + 𝜌[𝑡 𝐿 − 𝑡 0 + Δ𝜇 𝑞 ].
+Append truthful bids. Bayes’ rule verifies the raw beliefs.
+    The inequality 𝐵1 (𝜋) ≤ 𝐵0 (𝜋) < 𝑐 𝐻 verifies the hidden preparation rule. The displayed price
+is competitive under that rule.
+    Both correctly signed returns exceed 𝑘 by the bounds for every profile in Proposition 1. The
+wrong-sign returns are negative. Thus the hidden tuple is an equilibrium, and those same bounds
+establish uniqueness.
+    Couple the two economies on the class, value, cost, slot identity, and liquidity order. Their
+orders coincide at every realization, so their realized trade costs coincide. Access adds high-cost
+preparation exactly at the positive order. The conditional probabilities of that order are 𝑏 + 𝜆 and
+𝑏 in classes 𝐻 and 𝐿.
+    The expected proceeds gain follows by multiplication by 𝑡 𝑗 − 𝑡 0 . Each term is nonnegative, and
+𝑡 𝐻 − 𝑡 0 ≥ Δ > 0. Its positive class mass makes the first inequality strict.
+
+
+
+                                                   12
+    Let V0 (𝑅) = 𝑅1{𝑅 ≥ 𝑝} denote allocation value without preparation. For any admissible 𝜃,
+direct case division gives
+
+                   max{V0 (𝑅), 𝜃} − V0 (𝑅) = (𝜃 − max{𝑝, 𝑅})+ + 𝑝1{𝑅 < 𝑝}.                         (22)
+
+For 𝑅 < 𝑝, each side equals 𝜃. For 𝑅 ≥ 𝑝, each side equals (𝜃 − 𝑅)+ .
+   Average over the class posterior 𝑀 at the positive order and subtract 𝑐 𝐻 . The net gain per added
+preparation decision is 𝐵1 (𝑀) − 𝑐 𝐻 + 𝑝𝐹1 ( 𝑝) > 0. Its probability is (1 − 𝜌)(𝑏 + 𝜋𝜆) > 0. This
+proves the second line of (21).                                                                     □
+   For a uniform incumbent, the allocation level without preparation is (𝑟 2 − 𝑝 2 )/(2𝑟). Thus levels
+can also be computed as
+
+             R𝑇 = 𝑡0 + 𝜋𝑒 𝐻 (𝑡 𝐻 − 𝑡 0 ) + (1 − 𝜋)𝑒 𝐿 (𝑡 𝐿 − 𝑡 0 ),                                (23)
+                    𝑟 2 − 𝑝2
+             W=              + 𝜋𝑒 𝐻 (𝑔𝐻 + 𝑝 2 /𝑟) + (1 − 𝜋)𝑒 𝐿 (𝑔 𝐿 + 𝑝 2 /𝑟) − 𝑐 𝐻 ( E − 𝜌).
+                        2𝑟
+The second line excludes transfers and subtracts all expected preparation costs. If execution fees
+are resource costs, subtract 𝜆𝑘 in each full-order economy. The difference in (21) stays the same.
+
+                         Quantity at 𝑟 1         Access        Hidden       Gain
+                         Target proceeds 0.872531 0.614583 0.257948
+                         Net surplus     2.634044 2.552083 0.081960
+
+These levels are computer-assisted; the strict comparison is analytical under (11).
+
+4.1    The transfer and the break-even trade scale
+The informed investor’s unconditional expected gross profit in the access economy is
+
+                                   𝐺 = 𝜆Δ{𝜋(1 − 𝑀) + (1 − 𝜋) 𝜌𝑚}.                                  (24)
+
+The high-class purchase uses entry one, and the low-class sale uses entry 𝜌. Equation (10), before
+the fee, therefore gives (24). The transfer is 𝐺 = 0.037665 at B. Conditional on an informed slot,
+gross profit is 𝐺/𝜆 = 0.112059.
+    Competitive prices imply E[𝑋 (𝑉𝑇 − 𝑃 𝑋 )] = 0. The informed and liquidity branches partition
+this expectation. Thus liquidity traders lose 𝐺 in expected gross financial profit. This is the transfer
+from liquidity traders to the informed investor. Execution costs are separate from that transfer.
+    A trade scale 𝑧 multiplies the financial position and its fee per share of float, with the same
+normalized signal experiment. If initial shareholders bear the entire transfer, their total gain equals
+(R𝑇1 − R𝑇0 ) − 𝑧𝐺. This gain is positive precisely for
+
+                                                R𝑇1 − R𝑇0
+                                     𝑧 < 𝑧∗ =             = 6.848394.                              (25)
+                                                    𝐺
+This bound compares proceeds plus the worst transfer burden to the economy without informed
+orders. That economy also has the prior posterior and entry 𝜌, so its acquisition proceeds equal the
+hidden-price level. Holders who retain their shares receive the full proceeds gain.
+
+                                                      13
+    A deterministic external dividend 𝐷 0 raises both the financial payoff and its price by 𝐷 0 . The
+residual 𝑉𝑇 − 𝑃 and every order payoff therefore stay unchanged. The challenger’s information and
+acquisition profit also stay unchanged. For 𝐷 0 = R𝑇1 − R𝑇0 , mean financial prices match while entry
+keeps its original value. The external dividend does not enter acquisition proceeds or allocation
+surplus.
+
+4.2    Access outside the recruitment region
+Suppose instead 𝐵1 (𝑚) < 𝑐 𝐻 < 𝐵1 (𝜋) and 𝑘 < 𝜌𝜅Δ1 . The bounds for every profile still force full
+orders. The hidden tuple has entry one at every order. The access tuple has entry (𝜌, 1, 1) and the
+competitive prices from (7). The raw beliefs are (𝑚, 𝜋, 𝑀) in both tuples.
+   The challenger rules follow from the two strict cost comparisons. Equations (10) verify every
+deviation against each fixed tuple. Bayes’ rule and truthful bids complete both objects.
+   Access then changes proceeds by
+
+                        −(1 − 𝜌){𝜋𝑏(𝑡 𝐻 − 𝑡 0 ) + (1 − 𝜋)(𝑏 + 𝜆)(𝑡 𝐿 − 𝑡 0 )} < 0.
+
+It changes surplus by
+
+                          −(1 − 𝜌) [𝑏 + (1 − 𝜋)𝜆]{𝐵1 (𝑚) − 𝑐 𝐻 + 𝑝𝐹1 ( 𝑝)}.
+
+Retain the strong benchmark and replace only 𝑐 𝐻 by 12/5. The proceeds change is −0.173917 and
+the surplus change is −0.013505. The interval cost and trade margins verify both tuples. Thus the
+positive access comparison uses the stated recruitment region.
+
+
+5     The payment rule
+Proposition 7 (Verifiable values and an enforceable fallback; analytical). Set the reserve to zero.
+After preparation, values are verifiable and a sale to the next buyer at its value is enforceable. Let
+the seller’s share be 0 ≤ 𝜂 < 1. With the winner’s value 𝑉 and fallback 𝑧 ≤ 𝑉, the transfer is
+(1 − 𝜂)𝑧 + 𝜂𝑉. For point values 0 < ℓ < 𝑟¯ < ℎ and incumbent support [0, 𝑟],  ¯
+
+                             𝑇𝜂 (𝑅, 𝜃) = (1 − 𝜂) min(𝑅, 𝜃) + 𝜂 max(𝑅, 𝜃),                        (26)
+                                  𝑔𝜃,𝜂 = (1 − 𝜂)E[(𝜃 − 𝑅)+ ],
+                                   Δ𝜂 = 𝜂(ℎ − ℓ) + (1 − 2𝜂)E[(𝑅 − ℓ)+ ].
+
+A stronger incumbent weakly lowers challenger profit. Its effect on the spread has the sign of 1 − 2𝜂.
+Proof. The acquisition continuation specifies allocation to a buyer with maximal value and fallback
+allocation to the next buyer. Without a challenger, it specifies fallback zero and transfer 𝜂𝑅.
+    For 𝑉 > 𝑧 and 0 < 𝜂 < 1, maximize
+
+                                (𝑃 − 𝑧) 𝜂 (𝑉 − 𝑃) 1−𝜂   over 𝑧 ≤ 𝑃 ≤ 𝑉 .
+
+The logarithm has derivative 𝜂/(𝑃 − 𝑧) − (1 − 𝜂)/(𝑉 − 𝑃). Its second derivative is strictly negative.
+Its unique optimum solves 𝜂(𝑉 − 𝑃) = (1 − 𝜂)(𝑃 − 𝑧), so 𝑃 = (1 − 𝜂)𝑧 + 𝜂𝑉.
+
+                                                   14
+    At 𝑉 = 𝑧, feasibility fixes the transfer. At 𝜂 = 0, the declared continuous limit gives 𝑃 = 𝑧. The
+next buyer accepts the enforceable fallback at zero surplus. These choices verify the allocation and
+transfer continuation after every value realization.
+    A challenger wins when 𝜃 > 𝑅 and retains (1 − 𝜂)(𝜃 − 𝑅). Its expected profit is the second line
+of (26).
+    For 𝑅 ≤ ℓ, the difference between the high and low target payments is 𝜂(ℎ − ℓ). For 𝑅 > ℓ, that
+difference is 𝜂(ℎ − ℓ) + (1 − 2𝜂)(𝑅 − ℓ). Average these two cases to obtain the third line.
+    The function (𝜃 − 𝑅)+ decreases with 𝑅. The function (𝑅 − ℓ)+ increases with 𝑅. Stochastic
+dominance gives the signs in the proposition. The change is strict when the relevant expected
+positive part changes strictly and its coefficient is nonzero.                                       □
+    At the benchmark strengths, exact integration gives
+
+                                              𝑟 0 = 6/5        𝑟1 = 3
+                                 Δ𝜂       1/60 + (269/30)𝜂 2/3 + (23/3)𝜂
+                                𝑔𝐻,𝜂        (47/5)(1 − 𝜂)  (17/2)(1 − 𝜂)
+                                𝑔 𝐿,𝜂       (5/12)(1 − 𝜂)   (1/6)(1 − 𝜂)
+
+In particular,
+                                                       13
+                                        Δ𝜂 (𝑟 1 ) − Δ𝜂 (𝑟 0 ) =
+                                                          (1 − 2𝜂).
+                                                       20
+The sign boundary is exactly 𝜂 = 1/2. This result specifies the acquisition continuation for every
+earlier history. The full order and preparation equilibrium under this alternative institution remains
+open.
+
+
+6     Reserves
+6.1    Payoffs and event measures at every reserve
+For 𝑣 < 𝑝, preparation leaves proceeds at 𝑡0 and gives the challenger zero acquisition profit. For
+𝑅 ∼ 𝑈 [0, 𝑟], the complete kernel is
+
+                                 (𝑡0 , 0, 0),
+                               ⎧
+                               ⎪
+                               ⎪
+                               ⎪                                                 𝑣 < 𝑝,
+                               ⎪
+                               ⎨ ( 𝑝, 𝑣 − 𝑝, 1),
+                               ⎪
+                               ⎪                                                 𝑟 ≤ 𝑝 ≤ 𝑣,
+                 (𝑡 𝑣 , 𝑔𝑣 , 𝑊𝑣 ) =          2     2           2     2
+                                                                                                   (27)
+                                    ⎪
+                                    ⎪
+                                    ⎪ (𝑣 − (𝑣 − 𝑝 )/(2𝑟), (𝑣 − 𝑝 )/(2𝑟), 𝑣/𝑟), 𝑝 ≤ 𝑣 ≤ 𝑟,
+                                    ⎪ (𝑟/2 + 𝑝 2 /(2𝑟), 𝑣 − 𝑟/2 − 𝑝 2 /(2𝑟), 1),
+                                    ⎪
+                                    ⎪                                            𝑝 ≤ 𝑟 ≤ 𝑣.
+                                    ⎩
+Here 𝑡 0 = 𝑝(1 − 𝑝/𝑟)+ . These expressions follow by direct integration over 𝑅 < 𝑝, 𝑝 ≤ 𝑅 < 𝑣,
+and 𝑅 ≥ 𝑣. They agree at 𝑣 = 𝑟 and at 𝑝 = 𝑟. A bid at the reserve remains admissible, even when
+acquisition rent is zero. For a class law, average the kernel with a split at every relevant support
+boundary.
+   Let 𝐴 𝑗 = Pr 𝑗 (𝜃 ≥ 𝑝) and let 𝑒 𝑗 denote class-conditional preparation. Independence of 𝑅 gives
+
+                    E = 𝜋𝑒 𝐻 + (1 − 𝜋)𝑒 𝐿 ,                       A = 𝜋𝑒 𝐻 𝐴𝐻 + (1 − 𝜋)𝑒 𝐿 𝐴 𝐿 ,   (28)
+                   C2 = [1 − 𝐹 ( 𝑝)] A,                           S = 1 − 𝐹 ( 𝑝) + A − C2 .
+
+
+                                                         15
+The four events are preparation, an admissible challenger, two admissible bidders, and a sale. The
+seller’s expected proceeds remain
+
+                               R𝑇 = 𝑡0 + 𝜋𝑒 𝐻 (𝑡 𝐻 − 𝑡 0 ) + (1 − 𝜋)𝑒 𝐿 (𝑡 𝐿 − 𝑡 0 ).
+
+    At a general reserve, 𝑡 𝐿 ≥ 𝑡0 and 𝑔 𝑗 ≥ 0. Under both challenger rules, entry stays at or above
+𝜌. Whenever Δ > 0, equation (8) still recovers the binary raw posterior. The deviation payoffs (10)
+therefore remain valid after class exclusion. For uniform incumbents with ℓ < 𝑝 < 𝑟 < ℎ, these
+objects reduce to
+
+𝑡 𝐿 = 𝑡0 = 𝑝 − 𝑝 2 /𝑟,     𝑔 𝐿 = 0,     𝑡 𝐻 = 𝑟/2 + 𝑝 2 /(2𝑟),            Δ = 𝑟/2 − 𝑝 + 3𝑝 2 /(2𝑟).
+                                                                      𝑔𝐻 = ℎ − 𝑡 𝐻 ,
+                                                                                               (29)
+For 𝑟 < 𝑝 < ℎ, they become 𝑡 0 = 𝑡 𝐿 = 𝑔 𝐿 = 0, 𝑡 𝐻 = 𝑝, 𝑔𝐻 = ℎ − 𝑝, and Δ = 𝑝.
+
+6.2    General reserve comparisons
+Proposition 8 (Strict reserve continuations; analytical). Fix a reserve and allow class values below
+that reserve. Retain the class order, the common costs, the slot parameters, and 𝐹1 ≤ 𝐹0 . Use the
+complete reserve kernel to define each class object. Suppose
+
+                                               𝑘 < 𝜌𝜅 min{Δ0 , Δ1 }.
+
+These strict conditions give two comparisons.
+
+   1. If 𝐵0 (𝜋) < 𝑐 𝐻 < 𝐵1 (𝑀), entry is identical at the two strengths: E0 = E1 = 𝜌+(1−𝜌)(𝑏+𝜋𝜆).
+
+   2. If 𝐵0 (𝜋) < 𝑐 𝐻 < 𝐵0 (𝑀) and 𝐵1 (𝑀) < 𝑐 𝐻 , entry falls strictly: E0 = 𝜌 + (1 − 𝜌)(𝑏 + 𝜋𝜆) >
+      𝜌 = E1 .
+
+Each economy has a unique outcome under either challenger rule and either investor rule.
+
+Proof. The kernel gives 𝑡 𝐿 ≥ 𝑡 0 , 𝑔𝐻 ≥ 𝑔 𝐿 ≥ 0, and a positive spread by the trade inequality. The
+fixed zero-cost rule gives an entry floor 𝜌 under every profile. Competitive prices and that floor
+give the inversion and payoff formulas in Section 1. Every correct unit order therefore earns at least
+𝜌𝜅Δ𝑖 − 𝑘 > 0 under every candidate. Every wrong-sign order loses, and zero pays zero. Thus all
+equilibria have full orders in both economies.
+    Specify each candidate tuple by 𝜎𝐻 = 𝛿1 , 𝜎𝐿 = 𝛿−1 , and (𝜇−1 , 𝜇0 , 𝜇1 ) = (𝑚, 𝜋, 𝑀). In the first
+case, set (𝑒𝑖 (−1), 𝑒𝑖 (0), 𝑒𝑖 (1)) = (𝜌, 𝜌, 1) for both 𝑖. In the second case, set that pattern at 𝑖 = 0
+and set 𝑒 1 (𝑞) = 𝜌 at every order. Set 𝜁𝑖 (𝑃𝑞 ) = [𝑒𝑖 (𝑞) − 𝜌]/(1 − 𝜌) and
+
+                         𝑃𝑖,𝑞 = 𝑡0,𝑖 + 𝑒𝑖 (𝑞) [𝑡 𝐿,𝑖 − 𝑡 0,𝑖 + Δ𝑖 𝜇 𝑞 ],    𝜇¯𝑖 (𝑃𝑖,𝑞 ) = 𝜇 𝑞 .
+
+Append truthful bids.
+    Bayes’ rule gives the stated raw beliefs from the common liquidity masses and full orders. Gross
+acquisition profit decreases with incumbent strength at every belief, even after reserve exclusion.
+Indeed the realized profit (𝜃 − max{𝑝, 𝑅})+ decreases with 𝑅 for every 𝜃. Thus the first case gives
+𝐵𝑖 (𝜋) < 𝑐 𝐻 < 𝐵𝑖 (𝑀) at both strengths. The second case gives that comparison at the weak strength
+
+
+                                                           16
+and excludes high-cost entry everywhere at the strong strength. These inequalities verify high-cost
+preparation against each fixed candidate.
+    The candidate prices are competitive by their definition. The positive spread and the entry floor
+recover the stated price beliefs. The strict payoff inequalities above verify every deviation against
+these fixed schedules. Truthful bids verify the auction condition. The bounds under every profile
+establish uniqueness. Finally, the positive order has probability 𝑏 + 𝜋𝜆, which gives both entry
+formulas.                                                                                          □
+    The node margins below certify each strict condition at the declared exclusion and deterrence
+reserves. They define open regions within each continuous reserve regime.
+
+6.3   The exclusion reserve gives flat entry
+Proposition 9 (Exclusion reserves at B; computer-assisted). Retain the benchmark costs and the
+first two incumbent strengths. For point values, compare reserves 1/2 and 101/100. For the narrow
+uniform classes, compare reserves 1/2 and 11/10. At each higher reserve, full informed orders are
+unique at both strengths. Only the positive order recruits at both strengths. Entry therefore equals
+𝜌 + (1 − 𝜌) (𝑏 + 𝜆/2) at each strength. The higher reserve raises proceeds at both strengths.
+Proof. For each node, use the tuple (13) with the kernel (27). The raw posteriors are (𝑚, 1/2, 𝑀)
+and the entry probabilities are (𝜌, 𝜌, 1). The low class is entirely below the higher reserve, so
+𝑡 𝐿 = 𝑡 0 and 𝑔 𝐿 = 0. The high class lies above both incumbent supports. Thus (29) gives every
+auction object at the higher reserves.
+    The interval inequalities give 𝐵(1/2) < 𝑐 𝐻 < 𝐵(𝑀) at every such node. They verify the
+proposed preparation rules against the fixed tuple. They also give 𝜌𝜅Δ > 𝑘 at every such node.
+Equations (6) and (10) therefore force full orders under every candidate profile.
+    The prices are competitive, the price beliefs follow from inversion, and the bids are truthful.
+This verifies all conditions and establishes uniqueness.
+    Full orders and the common slot law fix the positive-order probability at 𝑏 + 𝜆/2. The common
+recruitment pattern therefore gives identical entry at the two strengths. The proceeds and event
+values below follow from (28) and the exact auction integrals. Their interval differences verify
+each strict proceeds comparison.                                                                 □
+
+                  Values (𝑟, 𝑝)                   E          S         C2         R𝑇
+                  Points   (6/5, 1/2)       0.250000   0.687500   0.145833   0.392708
+                  Points   (6/5, 101/100)   0.522757   0.431371   0.051364   0.440564
+                  Points   (3, 1/2)         0.522757   0.920459   0.435631   0.872531
+                  Points   (3, 101/100)     0.522757   0.772548   0.215186   0.994384
+                  Bands    (6/5, 1/2)       0.250000   0.687500   0.145833   0.392665
+                  Bands    (6/5, 11/10)     0.522757   0.380701   0.027033   0.420123
+                  Bands    (3, 1/2)         0.522757   0.920459   0.435631   0.872504
+                  Bands    (3, 11/10)       0.522757   0.752280   0.205454   1.022690
+
+   The stronger incumbent can still narrow the spread after low-class exclusion. For the bands at
+𝑝 = 11/10, the spread falls from 81/80 to 201/200. The entry probability stays flat because the
+positive order recruits at both strengths.
+
+                                                  17
+6.4    A reserve that restores strict deterrence
+Proposition 10 (Strict deterrence and what it excludes; computer-assisted). Use 𝑝 = 31/20 with
+either benchmark point values or narrow uniform classes. Full informed orders are unique at both
+𝑟 0 = 6/5 and 𝑟 1 = 3. Entry is 𝜌 + (1 − 𝜌)(𝑏 + 𝜆/2) at 𝑟 0 , and equals 𝜌 at 𝑟 1 . Proceeds exceed
+their respective levels at reserve 1/2. The reserve excludes both the entire low class and the weak
+incumbent.
+Proof. At 𝑟 0 , the reserve exceeds the incumbent support and the low-class upper endpoint. The
+high-class lower endpoint exceeds the reserve. Thus 𝑡0 = 𝑡 𝐿 = 𝑔 𝐿 = 0, 𝑡 𝐻 = 𝑝, and 𝑔𝐻 = 10 − 𝑝.
+At 𝑟 1 , use (29).
+    The common class means make these objects identical for point values and narrow bands. The
+conditions
+                       𝑝2
+           (︃             )︃
+                   𝑟1
+        𝑀 10 − −             < 6 < 𝑀 (10 − 𝑝),    𝜌𝜅 min{𝑝, 𝑟 1 /2 − 𝑝 + 3𝑝 2 /(2𝑟 1 )} > 𝑘  (30)
+                   2 2𝑟 1
+hold with strict interval margins. The weak prior profit is below cost because (10 − 𝑝)/2 < 6. The
+weak tuple therefore has entry (𝜌, 𝜌, 1). The strong tuple has entry (𝜌, 𝜌, 𝜌).
+    Both have the full orders, raw posteriors, price beliefs, competitive prices, and bids in (13). The
+cost comparisons verify preparation. The global trade inequalities force these orders under every
+candidate profile. The payoff formula against the fixed tuple verifies every deviation and establishes
+the stated uniqueness.
+    At 𝑟 0 , proceeds are 𝑝[𝜌 + (1 − 𝜌)(𝑏 + 𝜆)]/2. At 𝑟 1 , proceeds are
+
+                                                    𝑝2      1 3 𝑝2
+                                              (︃       )︃    (︃     )︃
+                                            7
+                                 R 𝑠 ( 𝑝) =      𝑝−       +     +      .
+                                            8       3       8 2   6
+The interval differences from the baseline proceeds are positive for each value specification and
+strength. The reserve exceeds 6/5 and 21/20, so the stated exclusions are strict.               □
+
+                     Strength                 E          S         C2          R𝑇
+                     𝑟 0 , either law   0.522757   0.324401   0.000000   0.502822
+                     𝑟 1 , either law   0.250000   0.547917   0.060417   0.893073
+
+   The strong upper-profit equality occurs at
+                                  √︃
+                            𝑝 𝐻 = 2𝑟 1 (10 − 6/𝑀) − 𝑟 12 = 1.325270.                              (31)
+
+The weak recruitment limit after incumbent exclusion is 𝑝 < 10 − 6/𝑀 = 1.792723. The open
+interval 𝑝 𝐻 < 𝑝 < 10 − 6/𝑀, together with the trade bounds, gives strict deterrence. The
+choice 31/20 lies strictly inside it. Its lower endpoint exceeds the weak incumbent’s support:
+𝑝 𝐻 − 𝑟 0 = 0.125270 > 0.
+    This exclusion is necessary for strict deterrence within the fully excluded low-class region at B.
+For point values and 1 < 𝑝 ≤ 6/5, (29) gives
+
+               Δ0 − 17/20 = ( 𝑝 − 1)(5𝑝 + 1)/4 ≥ 0,           Δ1 − 1 = ( 𝑝 − 1) 2 /2 ≥ 0.
+
+                                                    18
+The uniform weak and strong return margins are 0.037150 and 0.047235. The full-order return
+bounds therefore hold throughout that interval.
+     At 𝑝 = 6/5, the strong upper profit is 𝑀 (413/50) > 6. At every lower reserve in that interval
+it is larger. The weak upper profit is also above cost, and both prior profits are below cost. Thus
+both strengths recruit only at the positive order, and entry is flat. For the narrow bands, the same
+argument applies once 𝑝 > 21/20 excludes the entire low class. Consequently strict deterrence
+after full low-class exclusion requires 𝑝 > 𝑟 0 .
+
+6.5    Reserve equalities and local continuation
+At the equality 𝑝 = 𝑝 𝐻 , the strong positive order gives 𝐵(𝑀) = 𝑐 𝐻 . The full-order return bounds
+remain strict near this reserve. Under C1, its entry pattern is (𝜌, 𝜌, 1). Under CM, its last component
+can be any value in [𝜌, 1].
+    Bayes’ rule gives the unchanged full-order posteriors. For each permitted last component,
+equation (7) supplies competitive prices and equation (10) verifies the orders. Immediately above
+the equality, the unique pattern is (𝜌, 𝜌, 𝜌). The equality is a separate boundary event, outside the
+strict open region.
+    At the point-value endpoint 𝑝 = ℎ = 10, all acquisition profits are zero. Set 𝐴(𝑃, 0) = 1,
+𝐴(𝑃, 6) = 0, and 𝑒(𝑃) ¯     = 𝜌 under either high-cost challenger rule. The auction kernel gives
+𝑡 𝐻 = 10, 𝑡 𝐿 = 𝑡0 = 0, and Δ = 10.
+    The complete tuple has full orders, posteriors (𝑚, 1/2, 𝑀), and prices 𝑃𝑞 = 10𝜌𝜇 𝑞 . The bound
+10𝜌𝜅 > 𝑘 forces full orders under every candidate.
+    The prices are competitive, the price beliefs follow from inversion, and the reserve bid is
+admissible. Thus
+           E = 0.250000,         S = 0.125000,           C2 = 0.000000,       R𝑇 = 1.250000.
+    The fixed zero-cost preparation rule supplies the entry floor at this endpoint. The high-cost
+exclusion is strict, so C1 and CM give the same outcome.
+    For the narrow bands, the upper endpoint is 𝑝 = 201/20. That reserve exceeds incumbent
+support, and the high band has no probability mass at its upper endpoint. The complete tuple has
+zero informed orders, zero prices, prior beliefs, zero-cost preparation, and truthful bids. Every
+nonzero order loses its fee because all target proceeds are zero. Consequently entry is 0.250000
+and both sale and proceeds equal 0.000000.
+    A seller continuation selects a complete tuple after each reserve. Its objective is R𝑇 ( 𝑝; E ∗ ( 𝑝))
+under that specified selection. The finite comparisons above establish strict local outcome compar-
+isons and verified boundary continuations. Existence of a selection at every reserve and a global
+seller optimum remain open.
+    For a differentiable branch below every challenger value, the product rule gives
+                                                            ∑︁
+                     R𝑇′ ( 𝑝) = (1 − E)(1 − 2𝑝/𝑟) + E 𝑝/𝑟 +     𝜋 𝑗 𝑒′𝑗 ( 𝑝)(𝑡 𝑗 − 𝑡 0 ).           (32)
+                                                                 𝑗
+
+With an atomless cost CDF 𝐻𝐶 and class-conditional order probabilities 𝑎 𝑗 (𝑞; 𝑝),
+                   ∑︁ {︁
+        𝑒′𝑗 ( 𝑝) =
+                                                                   [︁                       ]︁ }︁
+                         𝜕𝑝 𝑎 𝑗 (𝑞; 𝑝)𝐻𝐶 (𝐵𝑞 ) + 𝑎 𝑗 (𝑞; 𝑝)ℎ𝐶 (𝐵𝑞 ) −𝑝/𝑟 + (𝑔𝐻 − 𝑔 𝐿 )𝜕𝑝 𝜇 𝑞 .
+                    𝑞
+
+
+                                                    19
+This is a finite sum, so differentiability of the displayed functions suffices. A pure finite-menu
+profile stays constant on a regular local branch. Its order-probability and posterior derivatives then
+vanish. At a cost atom or a branch change, the level objective gives the relevant comparison.
+
+
+7    Parameter declarations, arithmetic, and strict margins
+The arithmetic program is scripts/P2 auction/derive.py within the team folder. Its complete
+printed record is scripts/P2 auction/run.log. The registry is registry/P2 auction.csv.
+The file scripts/P2 auction/margins.csv records each sign and its full interval. The manifest
+records the source commit, software versions, arithmetic precision, and output hashes.
+    Auction integration uses exact rational arithmetic on each polynomial piece. The inner integral
+uses the exact midpoint rule on a linear piece. The outer integral uses the open formula
+          ∫ 𝑏                   [︃ (︃            )︃     (︃        )︃      (︃           )︃ ]︃
+                          𝑏−𝑎             𝑏−𝑎               𝑏−𝑎               3(𝑏 − 𝑎)
+               𝑓 (𝑥) 𝑑𝑥 =         2𝑓 𝑎 +            − 𝑓 𝑎+           +2𝑓 𝑎 +
+           𝑎               3                 4                2                   4
+for polynomials of degree at most three. For normalized monomials, the formula gives
+                                                  (︃       )︃
+              1 [︁       𝑑        𝑑          𝑑
+                                               ]︁    1 1 1
+                   2(1/4) − (1/2) + 2(3/4) = 1, , ,           ,     𝑑 = 0, 1, 2, 3.
+              3                                      2 3 4 𝑑
+These values equal the exact integrals on [0, 1]. An affine change of variable proves the displayed
+formula. Every required class integral has degree at most three after the support splits.
+    The program uses outward interval arithmetic at sixty decimal digits for 𝑒 and every expression
+that depends on it. A strict sign requires its entire interval to lie on one side of zero. Decimal
+midpoints serve display only. The exact collision identity and the reserve equalities follow from
+the displayed algebra.
+    The table below gives the benchmark margins for every strict primitive and support restriction
+in the two-class proof.
+
+                          Restriction      Margin        Restriction    Margin
+                          𝜆>0           0.336122         1−𝜆 > 0       0.663878
+                          𝛽>0           0.294655         1/3 − 𝛽 > 0   0.038678
+                          𝜋>0           0.500000         1−𝜋 >0        0.500000
+                          𝜌>0           0.250000         1−𝜌 >0        0.750000
+                          𝑝>0           0.500000         ℓ−𝑝>0         0.500000
+                          𝑟0 − ℓ > 0    0.200000         𝑟1 − 𝑟0 > 0   1.800000
+                          𝑟2 − 𝑟1 > 0   0.600000         ℎ − 𝑟2 > 0    6.400000
+                          𝑘>0           0.020000         𝑐𝐻 > 0        6.000000
+                          Γ>0           9.000000
+                          𝑏 + 𝜆 > 1/2   0.031737
+
+    The next table uses
+
+𝐶0 = 𝑐 𝐻 − 𝐵0 (𝜋),   𝐶1 = 𝐵1 (𝑀) − 𝑐 𝐻 ,    𝑇0 = 𝑘 − Δ0 ,      𝑇𝐻 = 𝜌(1 − 𝑀)Δ1 − 𝑘,   𝑇𝐿 = 𝜌𝑚Δ1 − 𝑘,
+
+             𝐶2 = 𝑐 𝐻 − 𝐵2 (𝑀),         𝑂 = [𝜌 + (1 − 𝜌)(𝑏 + 𝜆)]𝑊𝐻 (𝐹1 ) − 𝜌𝑊𝐻 (𝐹0 ).
+
+                                                    20
+All rows except D certify the stated strict hypotheses. The empty moderate collapse cell reflects
+its two-strength declaration. D’s negative upper cost margin gives its stated constant-entry control.
+Its 𝑂 cell uses the displayed recruitment coefficient; its actual ownership stays at the floor.
+          Example          𝐶0          𝐶1         𝑇0        𝑇𝐻         𝑇𝐿         𝐶2          𝑂
+          Base     1.195833 0.217155 0.003333 0.024824 0.024824 0.002689 0.398803
+          Moderate 0.033452 0.030137 0.000810 0.003603 0.003603        — 0.398803
+          Narrow 1.195660 0.217192 0.002986 0.024833 0.024833 0.002658 0.398803
+          A        1.460455 0.109179 0.005455 0.066983 0.012698 0.058137 0.398803
+          B        0.562273 0.123413 0.005455 0.012698 0.066983 0.132569 0.398803
+          C        0.021000 0.058891 0.006667 0.023541 0.127671 0.314551 0.349742
+          D        0.025000 -0.018122 0.020000 0.026343 0.137174 0.447727 0.398803
+    At B, the collapse return margins are 0.043127 for H and 0.043127 for L. The core upper-profit
+margin is 0.217155. The collapse cost margin is 0.002689. These three strict margins establish the
+advertised nonmonotone entry pattern.
+    The reserve and many-class hypotheses have these additional strict margins. The signed entry
+comparisons at every reserve node appear in the run log. The payoff margins for each candidate
+also appear there.
+          Restriction                                     Margin at the declared slot primitives
+          𝛽 > 1/4 for the collision example                                            0.044655
+          𝑤>0                                                                          0.940709
+          1−𝑤 >0                                                                       0.059291
+          Class 1 selected payoff gap                                                  0.260795
+          Class 2 selected payoff gap                                                  0.020627
+          Class 3 selected payoff gap                                                  0.024768
+          𝑐 𝐻 − max 𝑗 𝑔 𝑗 > 0, collision                                               4.062500
+          Zero-cost gross-profit lower bound, collision                                0.658861
+          Four-class weak range below 𝑘                                                0.003333
+          Four-class weak prior below cost                                             1.195875
+          Four-class 𝜌𝛾 − 𝑘 > 0                                                        0.024718
+          Four-class group profit gap                                                  8.332667
+          Four-class upper profit above cost                                           0.216834
+          𝑝 𝐻 − 𝑟0 > 0                                                                 0.125270
+          31/20 − 𝑝 𝐻 > 0                                                              0.224730
+          10 − 6/𝑀 − 31/20 > 0                                                         0.242723
+          𝑀 (413/50) − 6 > 0                                                           0.038544
+          Full-order margin at 𝑝 𝐻                                                     0.050792
+          Prior exclusion margin at 𝑝 𝐻                                                1.896362
+          Weak proceeds gain, points, 𝑝 = 31/20                                        0.110114
+          Strong proceeds gain, points, 𝑝 = 31/20                                      0.020542
+          Weak proceeds gain, bands, 𝑝 = 31/20                                         0.110157
+          Strong proceeds gain, bands, 𝑝 = 31/20                                       0.020569
+    The reserve node margins below give 𝑇 = 𝜌𝜅Δ − 𝑘, 𝐶 = 6 − 𝐵(1/2), and 𝐽 = 𝐵(𝑀) − 6. A
+negative 𝐽 excludes the high-cost realization at every order. Each 𝐶 is positive, so a positive 𝐽
+recruits only at the positive order.
+
+                                                   21
+                    Values   ( 𝑝, 𝑟)                 𝑇          𝐶           𝐽
+                    Points   (101/100, 6/5)   0.038167   1.512521    0.561220
+                    Points   (101/100, 3)     0.047239   1.835008    0.089706
+                    Bands    (11/10, 6/5)     0.048076   1.552083    0.503375
+                    Bands    (11/10, 3)       0.047572   1.850833    0.066568
+                    Either   (31/20, 6/5)     0.084215   1.775000    0.177445
+                    Either   (31/20, 3)       0.057405   1.950208   -0.078730
+
+   The price collision and the two reserve equalities are exact boundary statements. Their equality
+conditions define separate lower-dimensional sets. Every strict equilibrium classification above
+persists on the open set defined by its stated inequalities.
+
+
+
+
+                                                22
+
