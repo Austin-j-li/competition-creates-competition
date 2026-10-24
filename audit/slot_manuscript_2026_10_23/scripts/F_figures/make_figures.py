@@ -1,7 +1,7 @@
 """Figures of the order-slot manuscript (workstream F).
 
 Writes beliefs.pdf, coexistence.pdf, research.pdf and the three slide versions
-into overleaf/competition_slot/figures/, a run log (run_log.txt) and PNG previews (png/).
+into slot/manuscript/figures/, a run log (run_log.txt) and PNG previews (png/).
 
 Every curve comes from a closed form of the proof packages at calibration B:
   P1_core: tau, Delta, J, the thresholds r_A, r_F, r_N, r_J, r_S, r_C and the entry of each branch
@@ -32,7 +32,7 @@ from matplotlib.gridspec import GridSpec
 HERE = pathlib.Path(__file__).resolve().parent
 TEAM = HERE.parents[1]
 ROOT = TEAM.parents[1]
-OUT = ROOT / "overleaf" / "competition_slot" / "figures"
+OUT = ROOT / "slot" / "manuscript" / "figures"
 PNG = HERE / "png"
 REGISTRY = TEAM / "registry" / "registry.csv"
 LOGFILE = HERE / "run_log.txt"
@@ -750,7 +750,7 @@ def main():
     log("SHA-256 of each PDF")
     for path in made:
         sha = hashlib.sha256(path.read_bytes()).hexdigest()
-        log(f"  {sha}  overleaf/competition_slot/figures/{path.name}  ({path.stat().st_size} bytes)")
+        log(f"  {sha}  slot/manuscript/figures/{path.name}  ({path.stat().st_size} bytes)")
     log("")
     log("Fonts (pdffonts)")
     for path in made:

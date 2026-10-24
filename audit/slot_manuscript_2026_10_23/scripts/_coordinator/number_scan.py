@@ -5,7 +5,7 @@ import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[4]
-DOC = ROOT / "overleaf/competition_slot"
+DOC = ROOT / "slot/manuscript"
 REG = ROOT / "audit/slot_manuscript_2026_10_23/registry/registry.csv"
 
 keys = {r["key"]: r for r in csv.DictReader(REG.open())}

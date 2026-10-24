@@ -1,7 +1,7 @@
 """Merge the workstream registry files and write numbers.tex for the three documents.
 
 Reads registry/<STEM>.csv (every file except HEADER.csv and registry.csv), writes
-registry/registry.csv, and writes overleaf/competition_slot/numbers.tex with one
+registry/registry.csv, and writes slot/manuscript/numbers.tex with one
 \reg{<key>} entry per row. Prints duplicate keys whose display values differ.
 """
 import csv
@@ -11,7 +11,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[4]
 TEAM = ROOT / "audit/slot_manuscript_2026_10_23"
 REG = TEAM / "registry"
-OUT_TEX = ROOT / "overleaf/competition_slot/numbers.tex"
+OUT_TEX = ROOT / "slot/manuscript/numbers.tex"
 COLS = ["key", "value", "display", "status", "source_script", "run_log", "note"]
 
 rows = {}
