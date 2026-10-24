@@ -1,0 +1,515 @@
+% benchmark: the numbers for Part I. Every benchmark value of chapters 1 to 7 sits here.
+\section{The benchmark in numbers}\label{sec:benchmark}
+
+Part~I gives each result in words and in general symbols. This chapter puts numbers on those results at the
+benchmark. The graphs of the strength path in \Cref{sec:08_coexistence,sec:09_research} use these numbers.
+The subsections follow the order of Part~I. Each one points back to the chapter that it checks.
+
+\subsection{The benchmark primitives}\label{sec:benchmark-primitives}
+
+The benchmark has \(h=\reg{prim_h}\), \(\ell=\reg{prim_ell}\), \(\pi=\reg{prim_pi}\), \(p=\reg{prim_p}\),
+\(\rho=\reg{prim_rho}\), \(c_H=\reg{prim_cH}\) and \(k=\reg{prim_k}\). Money is in units of \(\ell\), so
+\(\ell=1\). The class values are point masses at \(h\) and \(\ell\). The incumbent is uniform on \([0,r]\).
+The three economies of Proposition~2 have \(r_0=\reg{prim_r0}\), \(r_1=\reg{prim_r1}\) and
+\(r_2=\reg{prim_r2}\). The slot has \(1+u=\eu\) and \(\beta=\reg{beta_B}\) (\Cref{sec:benchmark-slot}).
+\Cref{sec:B_parameters} lists every parameter vector of the guide.
+
+\subsection{The auction payoffs}\label{sec:benchmark-auction}
+
+This subsection puts the benchmark values into the auction algebra of \Cref{sec:03_auction}.
+
+\paragraph{The threshold and its derivative.} With \(h=10\), \(\ell=1\), \(p=1/2\) and \(c_H=6\), the general
+threshold \eqref{eq:03-tau} and its derivative \eqref{eq:03-taup} become
+\begin{equation}\label{eq:benchmark-tau}
+\tau(r)=\frac{48r-3}{4(20r-r^2-1)},\qquad
+\tau'(r)=\frac{3(8r^2-r+2)}{2(20r-r^2-1)^2}>0\qquad(1<r<10).
+\end{equation}
+At \(r=1\), \(\tau=5/8>1/2\). So the threshold lies above the prior along the whole benchmark path.
+
+\paragraph{Derivatives at the strong economy.} At \(r_1=3\), \(\DT'=4/9\), \(g_H'=-35/72\), \(g_L'=-1/24\),
+and \(\partial B_r(1/2)/\partial r=-19/72\).
+
+\subsection{Benchmark numbers (Table 1 of the paper)}\label{sec:03_auction-table}
+
+With \(h=10\), \(\ell=1\), \(p=1/2\) and \(c_H=6\), the formulas give Table~\ref{tab:03_auction-table1}.
+Each entry is an exact fraction; the decimal is the paper's.
+
+\begin{table}[!htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Term & Formula & \(r_0=\reg{prim_r0}\) & \(r_1=\reg{prim_r1}\) & \(r_2=\reg{prim_r2}\)\\
+\midrule
+\(t_0\) & \(1/2-1/(4r)\) & \(7/24=\reg{p2_base_r0_t0}\) & \(5/12=\reg{p2_base_r1_t0}\) & \(31/72=\reg{p2_base_r2_t0}\)\\
+\(t_H\) & \(r/2+1/(8r)\) & \(169/240=\reg{p2_base_r0_th}\) & \(37/24=\reg{p2_base_r1_th}\) & \(1321/720=\reg{p2_base_r2_th}\)\\
+\(t_L\) & \(1-3/(8r)\) & \(11/16=\reg{p2_base_r0_tl}\) & \(7/8=\reg{p2_base_r1_tl}\) & \(43/48=\reg{p2_base_r2_tl}\)\\
+\(\DT\) & \((r-1)^2/(2r)\) & \(1/60=\reg{Delta_r0}\) & \(2/3=\reg{Delta_r1}\) & \(169/180=\reg{Delta_r2}\)\\
+\(g_H\) & \(10-t_H\) & \(2231/240=\reg{p2_base_r0_gh}\) & \(203/24=\reg{p2_base_r1_gh}\) & \(5879/720=\reg{p2_base_r2_gh}\)\\
+\(g_L\) & \(3/(8r)\) & \(5/16=\reg{p2_base_r0_gl}\) & \(1/8=\reg{p2_base_r1_gl}\) & \(5/48=\reg{p2_base_r2_gl}\)\\
+\(B_r(1/2)\) & \(5-r/4+1/(8r)\) & \(1153/240=\reg{Bprior_r0}\) & \(103/24=\reg{Bprior_r1_B}\) & \(2977/720=\reg{Bprior_r2}\)\\
+\(\tau(r)\) & \eqref{eq:benchmark-tau} & \(195/308=\reg{tau_r0}\) & \(141/200=\reg{tau_r1}\) & \(4245/5804=\reg{tau_r2}\)\\
+\bottomrule
+\end{tabular}
+\caption{Acquisition payoffs in the benchmark \paper{Table~1}. They do not depend on the slot.}
+\label{tab:03_auction-table1}
+\end{table}
+
+The row for \(B_r(1/2)\) uses \((g_H+g_L)/2=\tfrac12\bigl(10-\tfrac r2-\tfrac1{8r}+\tfrac3{8r}\bigr)
+=5-\tfrac r4+\tfrac1{8r}\).
+
+Note the size of the change from \(r_0\) to \(r_1\). The spread rises \(40\) times
+(\((2/3)/(1/60)=40\)). Gross profit at the prior falls by \(41/80\), about \(10.7\) percent.
+% verify/03_auction.py
+The threshold rises from \reg{tau_r0} to \reg{tau_r1}, as \eqref{eq:03-taup} requires.
+
+At \(r_1=3\), entry adds \(w_L=t_L-t_0=11/24\) in class \(L\) and \(w_H=t_H-t_0=9/8\) in class \(H\).
+The surplus split holds: \(\DT+g_H-g_L=2/3+203/24-1/8=16/24+203/24-3/24=216/24=9=h-\ell\).
+
+\paragraph{Proposition 1 off the benchmark.} The script \texttt{verify/03\_auction.py} checks \paper{(8)} for a
+non-uniform \(F(y)=(y/\bar r)^2\) and classes with an atom: the formula and a direct double expectation
+agree to twelve digits.
+
+\paragraph{The exclusion-reserve example.} Set \(p=\reg{rsv_points_excl}\) in the example of
+\Cref{sec:03_auction-prop1c}. The spread falls for \(r<\sqrt3\,p\approx1.749\). % verify/03_auction.py
+So from \(r=6/5\) to \(r=3/2\) the spread \emph{falls}, from \(6921/8000=0.865125\) to
+\(7601/10000=0.7601\). % verify/03_auction.py
+It rises again later and reaches \(20001/20000\) at \(r=3\). % verify/03_auction.py
+
+\subsection{The slot and the beliefs}\label{sec:benchmark-slot}
+
+This section gives the numbers for the slot algebra of \Cref{sec:04_slot_beliefs}.
+
+\paragraph{An order law with wrong-signed orders.}
+Take $\lambda=1/3$, $\beta=1/4$, and $\pi=2/5$.
+Let the profiles on $(-1,0,1)$ be
+\[
+\sigma_H=(1/5,3/10,1/2),\qquad \sigma_L=(3/5,3/10,1/10).
+\]
+Both profiles include a wrong-signed order.
+Direct substitution gives
+\[
+f_H=(7/30,13/30,1/3),\qquad f_L=(11/30,13/30,1/5).
+\]
+The posteriors are $(14/47,2/5,10/19)$.
+The same formulas apply before we ask whether these orders are optimal.
+
+\paragraph{The zero-order bound fails when \texorpdfstring{$\beta>1/3$}{beta > 1/3}.}
+Let class $H$ always abstain and class $L$ always sell.
+Take the exact example $\lambda=6/17$, $\beta=2/5$, and $\pi=1/2$.
+The masses and ratios are
+\[
+b=\frac{22}{85},\quad b_0=\frac{11}{85},\quad
+\lambda=\frac{30}{85},\quad
+1+u=\frac{26}{11},\quad \frac{f_H(0)}{f_L(0)}=\frac{41}{11}.
+\]
+Consequently,
+\[
+M=\frac{26}{37},\qquad \mu(0)=\frac{41}{52},\qquad
+\mu(0)-M=\frac{165}{1924}>0.
+\]
+
+\paragraph{The benchmark slot.}
+In the benchmark, $\beta=\reg{beta_B}$ and $1+u=\eu$.
+With this choice, the top posterior equals the Laplace value at scale $2$ (\Cref{sec:10_robustness-sizes}).
+The presence probability is derived, rather than separately rounded:
+\[
+\lambda=\frac{u\beta}{1+u\beta}=\reg{lambda_B}.
+\]
+Thus $b=\reg{b_B}$ and $b+\lambda=\reg{b_plus_lambda_B}$.
+At $\pi=\reg{prim_pi}$,
+\[
+m=\frac1{1+\eu}=\reg{m_half_B},\qquad
+M=\frac{\eu}{1+\eu}=\reg{M_half_B}.
+\]
+The script keeps the full value of $\lambda$ throughout the calculation.
+
+\paragraph{Prices at the strong benchmark.}
+At $r_1=\reg{prim_r1}$, $t_0=5/12$, $t_L-t_0=11/24$, and $\DT=2/3$.
+The threshold is $\tau=141/200=\reg{tau_r1}$.
+Under full orders, the benchmark gives
+\[
+\begin{array}{c|ccc}
+x&-1&0&1\\ \hline
+\mu(x)&\reg{m_half_B}&1/2&\reg{M_half_B}\\
+e(x)&1/4&1/4&1\\
+P(x)&\reg{price_r1_m1_B}&\reg{price_r1_0_B}&\reg{price_r1_p1_B}
+\end{array}
+\]
+Only the purchase posterior exceeds $\tau$.
+The script substitutes these prices into the inverse formula and recovers all three posteriors.
+
+Run \texttt{python3 slot/study\_guide/verify/04\_slot\_beliefs.py} from the repository root.
+It prints the order laws, the zero-order counterexample, the posterior bounds, and the price inversion.
+
+\subsection{The investor's orders at the benchmark}\label{sec:benchmark-investor}
+
+These values check the trading bounds of \Cref{sec:05_investor}.
+
+\paragraph{A mixed candidate inside the bounds.}
+For a concrete candidate that is not an equilibrium, use the mixed profile of \Cref{sec:benchmark-slot} at $r=3$, where $\DT=2/3$.
+Every posterior is below $\tau=141/200$, so set $e\equiv\rho=1/4$.
+The three posteriors differ, so the three prices differ and the price beliefs equal the order posteriors.
+Thus (E1)--(E4) and (E6) hold, although the mixed orders are not optimal.
+Here $u=2$, $m(2/5)=2/11$, and $1-M(2/5)=1/3$, so $\kappa=2/11$.
+The exact gross returns are
+\[
+\rho\kappa\DT=\frac14\cdot\frac2{11}\cdot\frac23=\frac1{33},\qquad
+K_H=\frac14\cdot\frac23\left(1-\frac{10}{19}\right)=\frac3{38},\qquad
+K_L=\frac14\cdot\frac23\cdot\frac{14}{47}=\frac7{141}.
+\]
+Each lies between $1/33$ and $2/3$, as the bound requires without investor optimality.
+
+\paragraph{The floor factor at other priors.}
+At $1+u=\eu$, $\kappa(1/2)=\reg{m_half_B}$.
+At $\pi=1/4$ and $3/4$, it equals approximately $0.109232$. % verify/05_investor.py
+
+\paragraph{The trading-cost window at the benchmark.}
+At the weak benchmark, $\DT(r_0)=1/60$ and $k=1/50$.
+Hence the largest possible net return is at most
+\[
+\frac1{60}-\frac1{50}=-\frac1{300}<0.
+\]
+At the strong benchmark,
+\[
+\rho\kappa\DT(r_1)-k
+=\frac1{6(1+\eu)}-\frac1{50}
+=\reg{margin_kstrong_B}>0.
+\]
+In the full-order candidate, $e(1)=1$ and $e(-1)=1/4$.
+Thus $K_H=2/[3(1+\eu)]$ and $K_L=1/[6(1+\eu)]$.
+Their net returns are $\reg{p2_base_r1_choice_h}$ and $\reg{p2_base_r1_choice_l}$.
+
+Run \texttt{python3 slot/study\_guide/verify/05\_investor.py} from the repository root.
+It prints the six payoffs in each benchmark economy, the return bounds, and the prior symmetry.
+It also prints the mixed candidate's exact returns.
+
+\subsection{The main result at the benchmark}\label{sec:benchmark-main}
+
+This subsection evaluates the steps of \Cref{sec:06_main_result} at the benchmark.
+
+\subsubsection{Entry and ownership}\label{sec:benchmark-entry}
+At $r_1=\reg{prim_r1}$, \Cref{tab:03_auction-table1} gives $g_L=1/8$ and $g_H=203/24$, so
+$\tau_1=(6-1/8)/(25/3)=141/200$.
+Since $\pi<\tau_1<M$, only the purchase recruits.
+With $\beta=\reg{beta_B}$ and $u=\eu-1$, the script gives
+\begin{align*}
+\lambda&=\reg{lambda_B},& b&=\reg{b_B},& b+\lambda&=\reg{b_plus_lambda_B},\\
+e_H&=\reg{eH_r1_B},& e_L&=\reg{eL_r1_B},& \Ent_1&=\reg{entry_r1_B}.
+\end{align*}
+Finally $\Own_{H,1}=\pi e_H=\reg{own_r1_B}$.
+The weak values are $\Ent_0=\reg{entry_r0}$ and $\Own_{H,0}=\reg{own_r0}$.
+
+\subsubsection{The very strong economy and the entry ceiling}\label{sec:benchmark-ceiling}
+At $r_2=\reg{prim_r2}$, gross profit at the top posterior is
+\[
+B_{r_2}(M)=\frac5{48}+\frac{1451}{180}M
+=\reg{p2_base_r2_low_profit_plus}<6.
+\]
+The cost margin is $\reg{margin_return_B}$.
+Entry is $\rho$, yet the three prices still differ (\Cref{tab:07-outcomes}).
+
+For the uniform benchmark, expand gross profit at the top posterior:
+\begin{align*}
+B_r(M)
+&=(1-M)\frac{\ell^2-p^2}{2r}
+  +M\left(h-\frac r2-\frac{p^2}{2r}\right)\\
+&=Mh-\frac{Mr}{2}+\frac{(1-M)\ell^2-p^2}{2r}.
+\end{align*}
+Each class profit falls strictly with $r$, so this weighted average also falls strictly.
+The entry ceiling $r_C$ solves $B_{r_C}(M)=c_H$.
+Multiplication by $2r_C$ gives
+\[
+Mr_C^2-2(Mh-c_H)r_C-[(1-M)\ell^2-p^2]=0.
+\]
+In the benchmark, $(1-M)\ell^2-p^2=1/(1+\eu)-1/4>0$, so the product of the two roots, $-[(1-M)\ell^2-p^2]/M$, is negative.
+The positive root is
+\[
+r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}{M}
+=\reg{rC_B}.
+\]
+
+\subsubsection{The admissible band at the prior one half}\label{sec:benchmark-band}
+Fix the benchmark auction, costs, and strengths, and let $\pi=1/2$.
+The threshold $\tau(r)=(48r-3)/[4(20r-r^2-1)]$ of \Cref{sec:03_auction-derivatives} gives
+\[
+\tau(r_0)=\frac{195}{308},\qquad
+\tau(r_1)=\frac{141}{200},\qquad
+\tau(r_2)=\frac{4245}{5804},
+\]
+and \Cref{tab:03_auction-table1} gives $\Delta_0=1/60$, $\Delta_1=2/3$, and $\Delta_2=169/180$.
+The weak-economy margins do not depend on the slot:
+\[
+c_H-B_0(1/2)=6-\frac{1153}{240}=\frac{287}{240}>0,\qquad
+k-\Delta_0=\frac1{50}-\frac1{60}=\frac1{300}>0.
+\]
+The right side of (H1) becomes
+\begin{align*}
+M>\frac{141}{200}
+&\iff 200(1+u)>141(2+u)\\
+&\iff 59u>82
+\iff u>\frac{82}{59}.
+\end{align*}
+The ceiling (H3) becomes
+\begin{align*}
+M<\frac{4245}{5804}
+&\iff5804(1+u)<4245(2+u)\\
+&\iff1559u<2686
+\iff u<\frac{2686}{1559}.
+\end{align*}
+The right side of (H2) becomes
+\begin{align*}
+\frac1{50}<\frac1{6(2+u)}
+&\iff6(2+u)<50
+\iff u<\frac{19}{3}.
+\end{align*}
+Equivalently, it requires $M<22/25$.
+Since $2686/1559<19/3$, the trading bound is redundant within the narrower band.
+We therefore obtain the exact equivalence
+\[
+\text{(H1)--(H3)}
+\iff \frac{82}{59}<u<\frac{2686}{1559}
+\iff \frac{141}{200}<M<\frac{4245}{5804}.
+\]
+The equivalent presence interval is
+\[
+\frac{82\beta}{59+82\beta}<\lambda<\frac{2686\beta}{1559+2686\beta}.
+\]
+At $\beta=\reg{beta_B}$, its endpoints are $\reg{lambda_lo_B}$ and $\reg{lambda_hi_B}$.
+The benchmark $\lambda=\reg{lambda_B}$ lies strictly between them.
+
+\subsubsection{The prior window and the boundary cases}\label{sec:benchmark-priors}
+Now fix $1+u=\eu$ and vary the prior.
+The right side of (H1) and (H3) give
+\[
+\frac{141}{141+59\eu}<\pi<\frac{4245}{4245+1559\eu}.
+\]
+The endpoints are approximately $\reg{prior_lo_B}$ and $\reg{prior_hi_B}$.
+The left side of (H1) requires $\pi<\tau(r_0)=195/308$.
+The right side of (H2) requires
+\[
+\kappa(\pi)>\frac{k}{\rho\Delta_1}=\frac{1/50}{(1/4)(2/3)}=\frac3{25}.
+\]
+Both terms in the minimum must exceed $3/25$:
+\begin{align*}
+m(\pi)>\frac3{25}
+&\iff 25\pi>3[\pi+(1-\pi)\eu]\\
+&\iff\pi>\frac{3\eu}{22+3\eu},\\
+1-M(\pi)>\frac3{25}
+&\iff25(1-\pi)>3[1-\pi+\pi\eu]\\
+&\iff\pi<\frac{22}{22+3\eu}.
+\end{align*}
+This interval has endpoints $\reg{prior_kappa_lo_B}$ and $\reg{prior_kappa_hi_B}$.
+It contains both the full prior window and the window for parts (i) and (ii).
+The full intersection therefore equals the first prior interval above.
+Without (H3), parts (i) and (ii) require exactly
+\[
+\frac{141}{141+59\eu}<\pi<\frac{195}{308}.
+\]
+
+The boundary cases at the prior one half read as follows.
+For $u<82/59$, (H2) still forces full orders at $r_1$, but $M<\tau(r_1)$.
+For $2686/1559\le u<19/3$, full orders persist at both stronger strengths, and a purchase at $r_2$ recruits under C1.
+For $u\ge19/3$, the right side of (H2) fails.
+
+At the lower boundary $u=82/59$, the posteriors satisfy $M=141/200$ and $m=59/200$.
+Orders at $r_0$ remain uniquely zero because $\Delta_0-k=-1/300$.
+Orders at $r_1$ and $r_2$ remain uniquely full because
+\[
+\rho\kappa\Delta_1-k
+=\frac14\frac{59}{200}\frac23-\frac1{50}=\frac7{240}>0.
+\]
+At $\beta=\reg{beta_B}$, the boundary value of $\Ent_1$ under C1 is approximately $0.515737$. % verify/06_main_result.py
+It differs from the benchmark value because the boundary slot has a different $u$ and $\lambda$.
+
+\subsubsection{Why H1 needs the weak prior, and the benchmark margins}\label{sec:benchmark-scope}
+Keep the benchmark slot and other primitives, but set $c_H=\reg{nec_cH}$ and $r_2=\reg{nec_r2}$.
+The proposed weaker list has positive margins:
+\begin{align*}
+c_H-B_1(1/2)&=\frac{49}{120}>0,& B_1(M)-c_H&=\reg{nec_margin_recruit_B}>0,\\
+k-\Delta_0&=\frac1{300}>0,& \rho\kappa\Delta_1-k&=\reg{nec_margin_kstrong_B}>0,\\
+c_H-B_2(M)&=\reg{nec_margin_return_B}>0.
+\end{align*}
+But the omitted weak-prior comparison has the opposite sign:
+\[
+c_H-B_0(1/2)=\frac{47}{10}-\frac{1153}{240}=-\frac5{48}<0.
+\]
+Entry at $r_0$ is one, and entry at $r_1$ is $\reg{entry_r1_B}$.
+Entry falls, so the intended comparison fails.
+
+At the benchmark itself, the five positive margins of (H1)--(H3) are
+\[
+\begin{array}{c|c}
+c_H-B_0(\pi)&\reg{margin_weakcost_B}\\
+B_1(M)-c_H&\reg{margin_recruit_B}\\
+k-\Delta_0&\reg{margin_kweak_B}\\
+\rho\kappa\Delta_1-k&\reg{margin_kstrong_B}\\
+c_H-B_2(M)&\reg{margin_return_B}
+\end{array}
+\]
+These margins prove that the set is nonempty and contains a neighborhood of the benchmark.
+The small margin at the ceiling measures sensitivity, rather than an equality.
+
+Run \texttt{python3 slot/study\_guide/verify/06\_main\_result.py} from the repository root.
+It prints the three tuples, auction quantities, entry, ownership, exact band, prior window, ceiling, and H1 counterexample.
+
+\subsection{The controls at the benchmark}\label{sec:benchmark-controls}
+
+This section puts the benchmark numbers into the theorem and the two controls of \Cref{sec:07_controls}.
+
+\subsubsection{The two examples in numbers}
+
+\texttt{verify/07\_controls.py} recomputes both examples with exact fractions.
+
+\paragraph{Example A (breaks P2).} Take \(p=1/2\), point-mass
+classes \(12\) and \(11\) with equal priors, \(\rho=1/4\) and \(c_H=6\). Let
+\(F_0=\tfrac12U[0,1]+\tfrac12U[8,9]\) and \(F_1=\tfrac12U[0,1]+\tfrac12U[9,10]\). The upper component moves up, so
+\(F_1\le F_0\). In both economies \(\mu(S)=1/2\) and \(\E[\theta\mid S]=23/2\). The expected payment is
+\(\tfrac12\cdot\tfrac12+\int_{1/2}^1x\,dx=\tfrac58\) on \(U[0,1]\), \(\tfrac{17}2\) on \(U[8,9]\) and \(\tfrac{19}2\) on
+\(U[9,10]\).
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+ & Economy 0: signal reports the component & Economy 1: signal independent of \(R\)\\
+\midrule
+Gross profit after the signal & \(\tfrac{23}2-\tfrac58=\tfrac{87}8\) or \(\tfrac{23}2-\tfrac{17}2=3\) &
+\(\tfrac{23}2-\tfrac12\bigl(\tfrac58+\tfrac{19}2\bigr)=\tfrac{103}{16}\) after either signal\\
+High-cost preparation & after the low component only & after every signal\\
+Entry & \(\tfrac14+\tfrac34\cdot\tfrac12=\tfrac58\) & \(1\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Unconditional gross profit falls from \(111/16\) to \(103/16\). In economy~0 the profit after the strong component,
+\(3\), fails \(c_H\). In economy~1 the average profit \(103/16\) clears \(c_H=6\).
+
+\paragraph{Example B (breaks P1).} Take
+\(G_L=\tfrac12\delta_1+\tfrac12\delta_3\), \(G_H=\tfrac12\delta_2+\tfrac12\delta_4\), \(p=1/2\), \(\rho=1/4\) and
+\(c_H=21/10\). Economy~0 has \(R\sim U[0,1/2]\). Economy~1 has \(R\sim U[0,3/5]\). The expected payment is
+\(\tfrac12\) on \(U[0,\tfrac12]\), and
+\(\tfrac12\cdot\tfrac56+\int_{1/2}^{3/5}\tfrac{x}{3/5}\,dx=\tfrac5{12}+\tfrac{11}{120}=\tfrac{61}{120}\) on \(U[0,\tfrac35]\).
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+ & Economy 0: \(\theta\) independent of \(S\) & Economy 1: \(S\) selects the value\\
+\midrule
+\(\E[\theta\mid S]\) & \(\tfrac12\cdot2+\tfrac12\cdot3=\tfrac52\) & \(\tfrac32\) (lower) or \(\tfrac72\) (upper)\\
+Gross profit after the signal & \(\tfrac52-\tfrac12=2<\tfrac{21}{10}\) &
+\(\tfrac32-\tfrac{61}{120}=\tfrac{119}{120}\) or \(\tfrac72-\tfrac{61}{120}=\tfrac{359}{120}\)\\
+Entry & \(\tfrac14\) & \(\tfrac14+\tfrac34\cdot\tfrac12=\tfrac58\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The class gross profits move from \((g_L,g_H)=(3/2,5/2)\) to \((179/120,299/120)\). After the upper signal, gross
+profit \(359/120\) exceeds \(c_H=21/10\).
+
+\subsubsection{Control 1 in numbers}
+
+At the benchmark slot, \(m=\reg{m_half_B}\) and \(M=\reg{M_half_B}\). The threshold starts at \(\tau(1)=5/8>1/2\), and
+the entry ceiling is \(r_C\approx\reg{rC_B}\).
+
+A purchase has probability \(b+\lambda/2=\reg{d_slot_B}\). So frozen entry is
+\(\tfrac14+\tfrac34\times\reg{d_slot_B}=\reg{p4_frozen_entry_below_ceiling}\) for \(1<r\le r_C\), and
+\(\rho=\reg{p4_frozen_entry_above_ceiling}\) for \(r>r_C\).
+
+The crossing probabilities:
+\begin{itemize}[leftmargin=2em]
+\item \(r_0\to r_1\): \(B_{r_1}(M)=\reg{p2_base_r1_low_profit_plus}\ge c_H\) and \(B_{r_0}(1/2)=\reg{Bprior_r0}<c_H\).
+The probability is \(\reg{p4_control_crossing_r0_r1}\).
+\item \(r_1\to r_2\): \(B_{r_2}(M)=\reg{p2_base_r2_low_profit_plus}<c_H\). The probability is
+\(\reg{p4_control_crossing_r1_r2}\), exactly the fall in entry.
+\end{itemize}
+
+At \(r_0\), \(B_{r_0}(M)-c_H=\reg{margin_p4_weak_top_B}>0\). The informed orders earn
+\begin{align*}
+\text{purchase: }&\DT(r_0)(1-M)-k=\tfrac1{60}\times\reg{m_half_B}-\tfrac1{50}=\reg{p4_frozen_r0_buy_tp_payoff},\\
+\text{sale: }&\rho\,\DT(r_0)\,m-k=\tfrac14\times\tfrac1{60}\times\reg{m_half_B}-\tfrac1{50}=\reg{p4_frozen_r0_sell_tm_payoff}.
+\end{align*}
+Thus frozen entry stays at \reg{p4_frozen_r0_entry} through \(r_C\), then falls by \reg{p4_control_crossing_r1_r2}.
+
+\subsubsection{Control 2 in numbers}
+
+At \(r_0\), \(\DT(r_0)=1/60<k=1/50\). At \(r_1\),
+\(\rho m\DT(r_1)=\tfrac14\times\reg{m_half_B}\times\tfrac23=0.044824>k\).
+% verify/07_controls.py
+The sale margin is \(\reg{margin_p4_strong_trade_B}\), as in the equilibrium at \(r_1\).
+At \(r_1\) the prices are \(\reg{p4_hidden_r1_sell_price}\), \(\reg{p4_hidden_r1_zero_price}\) and
+\(\reg{p4_hidden_r1_buy_price}\). Entry is
+\(\reg{p4_hidden_r0_entry}\), ownership \(\rho/2=\reg{p4_hidden_r1_own}\), and proceeds \(t_0+\rho\,w(1/2)\): at \(r_1\),
+\(\tfrac5{12}+\tfrac14\bigl(\tfrac78-\tfrac5{12}+\tfrac13\bigr)=\tfrac{59}{96}=\reg{p4_hidden_r1_proceeds}\).
+
+\subsubsection{The outcomes table decoded}\label{sec:07_controls-table}
+
+Table~\ref{tab:07-outcomes} collects the comparisons of Table~3 in the paper.
+\Cref{sec:03_auction-table} gives the auction inputs.
+\Cref{sec:06_main_result-entry} derives equilibrium entry and ownership.
+The controls use the same aggregation formulas.
+
+\begin{table}[ht]
+\centering\small
+\caption{Equilibrium outcomes and information controls \paper{Table~3}.}\label{tab:07-outcomes}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Regime & Strength & Entry & High-class ownership & Target proceeds\\
+\midrule
+Equilibrium & \(r_0\) & \reg{entry_r0} & \reg{own_r0} & \reg{p4_base_r0_proceeds}\\
+& \(r_1\) & \reg{entry_r1_B} & \reg{own_r1_B} & \reg{p4_base_r1_proceeds}\\
+& \(r_2\) & \reg{entry_r2} & \reg{own_r2_B} & \reg{p4_base_r2_proceeds}\\
+Frozen full orders & \(r_0\) & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r0_own} & \reg{p4_frozen_r0_proceeds}\\
+& \(r_1\) & \reg{p4_frozen_r1_entry} & \reg{p4_frozen_r1_own} & \reg{p4_frozen_r1_proceeds}\\
+Hidden price & \(r_0\) & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r0_own} & \reg{p4_hidden_r0_proceeds}\\
+& \(r_1\) & \reg{p4_hidden_r1_entry} & \reg{p4_hidden_r1_own} & \reg{p4_hidden_r1_proceeds}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Expected proceeds.} \(R_T=t_0+\tfrac12e_Hw_H+\tfrac12e_Lw_L\). At \(r_1\):
+\(\tfrac5{12}+\tfrac12\times\reg{eH_r1_B}\times\tfrac98+\tfrac12\times\reg{eL_r1_B}\times\tfrac{11}{24}=\reg{p4_base_r1_proceeds}\).
+At \(r_0\) and \(r_2\), \(e_H=e_L=\rho\), so \(R_T=t_0+\rho w(1/2)\).
+The values are \(377/960\) and \(1913/2880\). As a check,
+competitive prices make \(R_T=\E[P(X)]\). With \(e\equiv\rho\), \(w\) is linear and the posteriors average to \(1/2\), so
+\(R_T\) equals the zero-order price.
+
+\paragraph{The control rows.} The frozen tuple at \(r_0\) has the same \(e_H\) and \(e_L\) as at \(r_1\), because the same
+purchase recruits; so entry and ownership repeat the \(r_1\) values. Proceeds use the \(r_0\) inputs:
+\(\tfrac7{24}+\tfrac12\times\reg{eH_r1_B}\times\tfrac{33}{80}+\tfrac12\times\reg{eL_r1_B}\times\tfrac{19}{48}=\reg{p4_frozen_r0_proceeds}\).
+At \(r_1\) the frozen tuple is the equilibrium. At \(r_2\), frozen full orders give the equilibrium row, since \(r_2>r_C\).
+The hidden-price control at \(r_0\) also gives the equilibrium row, since its price carries no information.
+
+\subsection{The main result in numbers}\label{sec:benchmark-headline}
+
+Table~\ref{tab:benchmark-headline} puts the numbers on Table~\ref{tab:01_brief-numbers}. It compares the three
+economies of Proposition~2 at the benchmark.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Weak (\(r_0=\reg{prim_r0}\)) & Strong (\(r_1=\reg{prim_r1}\)) & Very strong (\(r_2=\reg{prim_r2}\))\\
+\midrule
+Gross profit at the prior, \(B_r(1/2)\) & \reg{Bprior_r0} & \reg{Bprior_r1_B} (lower) & \reg{Bprior_r2}\\
+Target-payoff spread, \(\DT\) & \reg{Delta_r0} & \reg{Delta_r1} (\(40\times\)) & \reg{Delta_r2}\\
+Preparation threshold, \(\tau(r)\) & \reg{tau_r0} & \reg{tau_r1} & \reg{tau_r2}\\
+Top posterior, \(M(1/2)\) & \reg{M_half_B} & \reg{M_half_B} & \reg{M_half_B}\\
+Investor orders, classes \(H\) and \(L\) & \((0,0)\) & \((1,-1)\) & \((1,-1)\)\\
+Price informative? & no & yes & yes\\
+High-cost preparation & none & after a purchase & none\\
+Entry \(\Ent\) & \reg{entry_r0} & \textbf{\reg{entry_r1_B}} & \reg{entry_r2}\\
+High-class ownership \(\Own_H\) & \reg{own_r0} & \textbf{\reg{own_r1_B}} & \reg{own_r2_B}\\
+\bottomrule
+\end{tabular}
+\caption{The main result at the benchmark \paper{Tables~1 and~3}.}
+\label{tab:benchmark-headline}
+\end{table}
+
+From \(r_0\) to \(r_1\), gross profit falls by about \(10.7\) percent, while the spread rises \(40\) times. % verify/03_auction.py Entry more than doubles, by a factor of
+\(2.09\). % verify/01_brief.py
+At \(r_2\) the price stays informative, but \(\tau(r_2)=\reg{tau_r2}\) lies just above
+\(M(1/2)=\reg{M_half_B}\). So even a purchase cannot recruit a high-cost challenger, and entry falls back
+to \(\rho\). Entry is \emph{non-monotone} in incumbent strength.
+
+\paragraph{Why entry doubles while profit falls.}
+Profit falls at \emph{every} belief, but the belief that matters changes. At \(r_0\) the price says nothing,
+so the challenger decides at the prior \(1/2\), and \(B_{r_0}(1/2)=\reg{Bprior_r0}<c_H=6\). At \(r_1\) a
+purchase moves the belief to \(\reg{M_half_B}\), and \(B_{r_1}(M)\) exceeds \(6\) by
+\(\reg{margin_recruit_B}\). A purchase occurs with probability \(b+\lambda/2\) at the prior \(1/2\), so entry is
+\(\rho+(1-\rho)(b+\lambda/2)=\reg{entry_r1_B}\).

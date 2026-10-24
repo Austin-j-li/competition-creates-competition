@@ -63,47 +63,46 @@ class \(H\), a sale in class \(L\)). The paper finds an open set of primitives w
 \label{fig:01_brief-chain}
 \end{figure}
 
-\subsection{The main result in numbers}\label{sec:01_brief-numbers}
+\subsection{The main result in words}\label{sec:01_brief-numbers}
 
-The benchmark has \(h=\reg{prim_h}\), \(\ell=\reg{prim_ell}\), \(\pi=\reg{prim_pi}\), \(p=\reg{prim_p}\),
-\(\rho=\reg{prim_rho}\), \(c_H=\reg{prim_cH}\) and \(k=\reg{prim_k}\). The incumbent is uniform on
-\([0,r]\). The slot has \(1+u=\eu\) and \(\beta=\reg{beta_B}\), so the presence probability is
-\(\lambda=\reg{lambda_B}\) and the top posterior is \(M(1/2)=\reg{M_half_B}\). Table~\ref{tab:01_brief-numbers}
-compares the three economies of Proposition~2.
+Proposition~2 compares three economies that differ only in the strength of the incumbent: weak (\(r_0\)),
+strong (\(r_1\)) and very strong (\(r_2\)). The incumbent is uniform on \([0,r]\), so a larger \(r\) means a
+stronger incumbent. Table~\ref{tab:01_brief-numbers} gives the direction of each quantity.
 
 \begin{table}[htbp]
 \centering\small
 \begin{tabular}{@{}lccc@{}}
 \toprule
- & Weak (\(r_0=\reg{prim_r0}\)) & Strong (\(r_1=\reg{prim_r1}\)) & Very strong (\(r_2=\reg{prim_r2}\))\\
+ & Weak (\(r_0\)) & Strong (\(r_1\)) & Very strong (\(r_2\))\\
 \midrule
-Gross profit at the prior, \(B_r(1/2)\) & \reg{Bprior_r0} & \reg{Bprior_r1_B} (lower) & \reg{Bprior_r2}\\
-Target-payoff spread, \(\DT\) & \reg{Delta_r0} & \reg{Delta_r1} (\(40\times\)) & \reg{Delta_r2}\\
-Preparation threshold, \(\tau(r)\) & \reg{tau_r0} & \reg{tau_r1} & \reg{tau_r2}\\
-Top posterior, \(M(1/2)\) & \reg{M_half_B} & \reg{M_half_B} & \reg{M_half_B}\\
+Gross profit at the prior, \(B_r(1/2)\) & highest & lower & lowest\\
+Target-payoff spread, \(\DT\) & below the cost \(k\) & large & larger\\
+Preparation threshold, \(\tau(r)\) & low & higher & just above \(M(1/2)\)\\
+Top posterior, \(M(1/2)\) & same & same & same\\
 Investor orders, classes \(H\) and \(L\) & \((0,0)\) & \((1,-1)\) & \((1,-1)\)\\
 Price informative? & no & yes & yes\\
 High-cost preparation & none & after a purchase & none\\
-Entry \(\Ent\) & \reg{entry_r0} & \textbf{\reg{entry_r1_B}} & \reg{entry_r2}\\
-High-class ownership \(\Own_H\) & \reg{own_r0} & \textbf{\reg{own_r1_B}} & \reg{own_r2_B}\\
+Entry \(\Ent\) & \(\rho\) & \textbf{above \(\rho\)} & \(\rho\)\\
+High-class ownership \(\Own_H\) & \(\pi\rho\) & \textbf{above \(\pi\rho\)} & \(\pi\rho\)\\
 \bottomrule
 \end{tabular}
-\caption{The main result at the benchmark \paper{Tables~1 and~3}.}
+\caption{The main result in directions \paper{Tables~1 and~3}. \Cref{sec:benchmark-headline} gives the
+benchmark values.}
 \label{tab:01_brief-numbers}
 \end{table}
 
-From \(r_0\) to \(r_1\), gross profit falls by about \(10.7\) percent, while the spread rises \(40\) times. % verify/03_auction.py Entry more than doubles, by a factor of
-\(2.09\). % verify/01_brief.py
-At \(r_2\) the price stays informative, but \(\tau(r_2)=\reg{tau_r2}\) lies just above
-\(M(1/2)=\reg{M_half_B}\). So even a purchase cannot recruit a high-cost challenger, and entry falls back
-to \(\rho\). Entry is \emph{non-monotone} in incumbent strength.
+From \(r_0\) to \(r_1\), gross profit falls a little, while the spread rises many times over. The spread
+crosses the trading cost, so the investor starts to trade. Entry rises well above the floor \(\rho\).
+At \(r_2\) the price stays informative, but \(\tau(r_2)\) lies just above \(M(1/2)\). So even a purchase cannot
+recruit a high-cost challenger, and entry falls back to \(\rho\). Entry is \emph{non-monotone} in incumbent
+strength.
 
-\begin{intuition}[why entry doubles while profit falls]
+\begin{intuition}[why entry rises while profit falls]
 Profit falls at \emph{every} belief, but the belief that matters changes. At \(r_0\) the price says nothing,
-so the challenger decides at the prior \(1/2\), and \(B_{r_0}(1/2)=\reg{Bprior_r0}<c_H=6\). At \(r_1\) a
-purchase moves the belief to \(\reg{M_half_B}\), and \(B_{r_1}(M)\) exceeds \(6\) by
-\(\reg{margin_recruit_B}\). A purchase occurs with probability \(b+\lambda/2\) at the prior \(1/2\), so entry is
-\(\rho+(1-\rho)(b+\lambda/2)=\reg{entry_r1_B}\).
+so the challenger decides at the prior \(1/2\), and \(B_{r_0}(1/2)<c_H\). At \(r_1\) a purchase moves the
+belief up to \(M(1/2)\), and \(B_{r_1}(M)\ge c_H\). The rise in the belief is larger than the fall in profit.
+A purchase occurs with probability \(b+\lambda/2\) at the prior \(1/2\), so entry is
+\(\rho+(1-\rho)(b+\lambda/2)\).
 \end{intuition}
 
 \subsection{Seven claims that you must be able to defend}\label{sec:01_brief-claims}
@@ -133,19 +132,17 @@ The trading-cost window (H2) therefore forces no trade at \(F_0\) and full order
 \item \textbf{Information is the cause} \paper{Prop.~A.3}.
 At fixed information, a stronger incumbent never raises entry.
 The theorem needs \(\mathcal L_i(\theta,R\mid j,S)=G_j\otimes F_i\) and a cost independent of all these variables.
-Frozen full orders give entry \reg{p4_frozen_r0_entry} at both \(r_0\) and \(r_1\).
-A hidden price gives entry \reg{p4_hidden_r0_entry} at both strengths
+With full orders frozen, entry is the same at \(r_0\) and \(r_1\).
+With a hidden price, entry stays at the floor \(\rho\) at both strengths
 (\Cref{sec:07_controls}).
 \item \textbf{Coexistence} \paper{Prop.~3}.
 Under rules IM and C1, no informed trade and an informative equilibrium coexist exactly on \([r_A,r_N]\).
-At the benchmark, \(r_A\approx\reg{rA}\) and \(r_N\approx\reg{rN}\).
 Entry on the informative branch rises to \(r_F\), then stays constant until the entry ceiling.
 The proof uses algebra and two exact Sturm counts
 (\Cref{sec:08_coexistence}).
 \item \textbf{Research} \paper{Prop.~4}.
 The investor chooses presence at cost \((a/2)\lambda^2\).
 On the interior research branch, research, entry and high-class ownership rise with incumbent strength.
-At \(r=\reg{str_r160}\), research is \reg{res_lambda_r160} and entry is \reg{res_entry_r160}.
 Under C1, this branch coexists with no research
 (\Cref{sec:09_research}).
 \end{enumerate}
@@ -168,18 +165,29 @@ The change in information therefore explains the reversal.''
 
 \subsection{How to read this guide}\label{sec:01_brief-read}
 
+The guide has three parts.
+\begin{enumerate}
+\item \textbf{Part~I, the argument} (\Cref{sec:01_brief,sec:02_model,sec:03_auction,sec:04_slot_beliefs,sec:05_investor,sec:06_main_result,sec:07_controls}).
+These chapters give the intuition and the general derivations. They use no benchmark numbers. Each chapter
+says only which way a quantity moves and which condition binds.
 \Cref{sec:02_model} sets out the model. \Cref{sec:03_auction} derives every auction payoff.
 \Cref{sec:04_slot_beliefs} derives what one order can reveal. \Cref{sec:05_investor} solves
 the investor's problem. \Cref{sec:06_main_result} proves the main result step by step.
-\Cref{sec:07_controls,sec:08_coexistence,sec:09_research,sec:10_robustness,sec:11_welfare,sec:12_empirical} cover the controls, coexistence, research,
-robustness, welfare and sale terms, and empirical implications. \Cref{sec:13_panel} prepares you for the panel:
-derivations to do from memory, likely questions with answers, and the points a referee will press.
-\Cref{sec:A_verification} explains how the numbers were checked, \Cref{sec:B_parameters} lists the parameter vectors,
-and \Cref{sec:C_equation_map} maps the paper to this guide.
+\Cref{sec:07_controls} shows that the change in information causes the rise in entry.
+\item \textbf{Part~II, the numbers and the graphs} (\Cref{sec:benchmark,sec:08_coexistence,sec:09_research,sec:10_robustness,sec:11_welfare,sec:12_empirical}).
+\Cref{sec:benchmark} puts numbers on Part~I at the benchmark. The graphs of the strength path in
+\Cref{sec:08_coexistence,sec:09_research} need these numbers. The remaining chapters cover robustness,
+welfare and sale terms, and empirical implications.
+\item \textbf{Part~III, the panel} (\Cref{sec:13_panel}): derivations to do from memory, likely questions
+with answers, and the points a referee will press.
+\end{enumerate}
+\Cref{sec:A_verification} explains how the numbers were checked, \Cref{sec:B_parameters} lists the parameter
+vectors, and \Cref{sec:C_equation_map} maps the paper to this guide.
 
-Work in this order: the auction algebra first, because every later step uses \(\DT\) and \(B(\mu)\); then
-the posterior bounds; then the trading bounds. With these three tools, the proof of Proposition~2 is a
-short sequence of inequalities.
+On a first reading, read Part~I without the numbers. Work in this order: the auction algebra first, because
+every later step uses \(\DT\) and \(B(\mu)\); then the posterior bounds; then the trading bounds. With these
+three tools, the proof of Proposition~2 is a short sequence of inequalities. Then read \Cref{sec:benchmark}
+before the graphs.
 
 \begin{intuition}[What changed from the Laplace version]
 One order slot replaces additive Laplace flow.

@@ -103,7 +103,7 @@ challenger must pay to win. This lowers its profit.
 \node[font=\footnotesize, gray] at (2.25,0.34) {no entry};
 \node[font=\footnotesize] at (2.6,1.75) {\((R-\ell)_+\)};
 \end{tikzpicture}
-\caption{Target proceeds as a function of \(R\) (\(p=1/2\), \(\ell=1\), \(r=3\)). The two challenger lines
+\caption{Target proceeds as a function of \(R\) (a sketch, with \(p<\ell<r\)). The two challenger lines
 coincide for \(R\le\ell\). The shaded gap is \((R-\ell)_+\); its expectation is \(\DT\). The dotted line
 is the no-entry payment \(p\,\1\{R\ge p\}\); both challenger lines lie on or above it.}
 \label{fig:03_auction-proceeds}
@@ -175,7 +175,7 @@ payment plus its profit equals \(\ell\). If \(R>\ell\), the target gets \(\ell\)
 \(0\). The sum is \(\ell\) in both cases. The incumbent's profit \(R-\ell\) is outside this sum.
 \item \(w_L=t_L-t_0>0\), because \(\max\{p,\min(R,\ell)\}\ge p\ge p\,\1\{R\ge p\}\), and the second
 inequality is strict on \(R<p\), an event of probability \(p/r>0\). So entry by either class raises
-proceeds. At \(r_1=3\), \(w_L=11/24\) and \(w_H=9/8\).
+proceeds.
 \end{itemize}
 \end{panelnote}
 
@@ -204,7 +204,6 @@ Also \(B_r\) rises in \(\mu\), because
 g_H-g_L=h-\frac r2-\frac{p^2}{2r}-\frac{\ell^2-p^2}{2r}=h-\frac r2-\frac{\ell^2}{2r}
 >r-\frac r2-\frac{\ell^2}{2r}=\frac{r^2-\ell^2}{2r}>0\qquad(\text{use }h>r>\ell).
 \]
-At \(r_1=3\): \(\DT'=4/9\), \(g_H'=-35/72\), \(g_L'=-1/24\), and \(\partial B_r(1/2)/\partial r=-19/72\).
 
 \paragraph{The preparation threshold.} With \(g_H>g_L\), solve \(B_r(\mu)=c_H\):
 \begin{align*}
@@ -215,8 +214,7 @@ g_H-g_L=\frac{2rh-r^2-\ell^2}{2r}.
 \end{align*}
 Cancel the common denominator \(2r\):
 \begin{equation}\label{eq:03-tau}
-\tau(r)=\frac{2rc_H-\ell^2+p^2}{2rh-r^2-\ell^2}
-=\frac{48r-3}{4(20r-r^2-1)}\quad\text{at the benchmark}.
+\tau(r)=\frac{2rc_H-\ell^2+p^2}{2rh-r^2-\ell^2}.
 \end{equation}
 For the derivative, write \(N_\tau=2rc_H-\ell^2+p^2\) and \(D_\tau=2rh-r^2-\ell^2>0\).
 The quotient rule gives
@@ -225,18 +223,15 @@ N_\tau'D_\tau-N_\tau D_\tau'
 &=2c_H(2rh-r^2-\ell^2)-(2rc_H-\ell^2+p^2)(2h-2r)\\
 &=2c_Hr^2-2(\ell^2-p^2)r+2h(\ell^2-p^2)-2c_H\ell^2.
 \end{align*}
-Regroup the numerator as
-\[
-2c_H(r^2-\ell^2)+2(h-r)(\ell^2-p^2)>0.
-\]
-Both terms are positive because \(c_H>0\) and \(0<p<\ell<r<h\).
-Thus \(\tau\) rises throughout this domain, even if the threshold lies outside \([0,1]\).
-At the benchmark,
+Regroup the numerator. Then
 \begin{equation}\label{eq:03-taup}
-\tau'(r)=\frac{3(8r^2-r+2)}{2(20r-r^2-1)^2}>0\qquad(1<r<10).
+\tau'(r)=\frac{2c_H(r^2-\ell^2)+2(h-r)(\ell^2-p^2)}{(2rh-r^2-\ell^2)^2}>0.
 \end{equation}
-At \(r=1\), \(\tau=5/8>1/2\).
-Therefore an uninformative price never recruits a high-cost challenger along the benchmark path.
+Both terms of the numerator are positive because \(c_H>0\) and \(0<p<\ell<r<h\).
+Thus \(\tau\) rises throughout this domain, even if the threshold lies outside \([0,1]\).
+In the benchmark, the threshold already lies above the prior \(1/2\) at the weakest incumbent of the path.
+Because \(\tau\) rises, an uninformative price never recruits a high-cost challenger along the benchmark path.
+\Cref{sec:benchmark-auction} gives the benchmark form of \(\tau\) and its derivative.
 
 \begin{resultbox}[The two effects]
 A stronger uniform incumbent raises \(\DT\) and lowers gross profit at every fixed belief.
@@ -244,39 +239,11 @@ It also raises \(\tau\) in this benchmark domain.
 The top posterior must clear this higher threshold before a purchase recruits.
 \end{resultbox}
 
-\subsection{Benchmark numbers (Table 1 of the paper)}\label{sec:03_auction-table}
-
-With \(h=10\), \(\ell=1\), \(p=1/2\) and \(c_H=6\), the formulas give Table~\ref{tab:03_auction-table1}.
-Each entry is an exact fraction; the decimal is the paper's.
-
-\begin{table}[!htbp]
-\centering\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}llccc@{}}
-\toprule
-Term & Formula & \(r_0=\reg{prim_r0}\) & \(r_1=\reg{prim_r1}\) & \(r_2=\reg{prim_r2}\)\\
-\midrule
-\(t_0\) & \(1/2-1/(4r)\) & \(7/24=\reg{p2_base_r0_t0}\) & \(5/12=\reg{p2_base_r1_t0}\) & \(31/72=\reg{p2_base_r2_t0}\)\\
-\(t_H\) & \(r/2+1/(8r)\) & \(169/240=\reg{p2_base_r0_th}\) & \(37/24=\reg{p2_base_r1_th}\) & \(1321/720=\reg{p2_base_r2_th}\)\\
-\(t_L\) & \(1-3/(8r)\) & \(11/16=\reg{p2_base_r0_tl}\) & \(7/8=\reg{p2_base_r1_tl}\) & \(43/48=\reg{p2_base_r2_tl}\)\\
-\(\DT\) & \((r-1)^2/(2r)\) & \(1/60=\reg{Delta_r0}\) & \(2/3=\reg{Delta_r1}\) & \(169/180=\reg{Delta_r2}\)\\
-\(g_H\) & \(10-t_H\) & \(2231/240=\reg{p2_base_r0_gh}\) & \(203/24=\reg{p2_base_r1_gh}\) & \(5879/720=\reg{p2_base_r2_gh}\)\\
-\(g_L\) & \(3/(8r)\) & \(5/16=\reg{p2_base_r0_gl}\) & \(1/8=\reg{p2_base_r1_gl}\) & \(5/48=\reg{p2_base_r2_gl}\)\\
-\(B_r(1/2)\) & \(5-r/4+1/(8r)\) & \(1153/240=\reg{Bprior_r0}\) & \(103/24=\reg{Bprior_r1_B}\) & \(2977/720=\reg{Bprior_r2}\)\\
-\(\tau(r)\) & see the text & \(195/308=\reg{tau_r0}\) & \(141/200=\reg{tau_r1}\) & \(4245/5804=\reg{tau_r2}\)\\
-\bottomrule
-\end{tabular}
-\caption{Acquisition payoffs in the benchmark \paper{Table~1}. They do not depend on the slot.}
-\label{tab:03_auction-table1}
-\end{table}
-
-The row for \(B_r(1/2)\) uses \((g_H+g_L)/2=\tfrac12\bigl(10-\tfrac r2-\tfrac1{8r}+\tfrac3{8r}\bigr)
-=5-\tfrac r4+\tfrac1{8r}\).
-
-Note the size of the change from \(r_0\) to \(r_1\). The spread rises \(40\) times
-(\((2/3)/(1/60)=40\)). Gross profit at the prior falls by \(41/80\), about \(10.7\) percent.
-% verify/03_auction.py
-The threshold rises from \reg{tau_r0} to \reg{tau_r1}, as \eqref{eq:03-taup} requires.
+\paragraph{The size of the two effects.} Compare the weak and the strong economies of Proposition~2.
+The spread rises many times over, but gross profit at the prior falls only a little.
+The threshold rises, as \eqref{eq:03-taup} requires.
+So the information channel gains much more than the direct channel loses.
+\Cref{sec:benchmark-auction} gives the benchmark values (Table~1 of the paper).
 
 \pagebreak
 \subsection{Proposition 1: the result for any incumbent distribution}\label{sec:03_auction-prop1}
@@ -368,7 +335,7 @@ To see this, write \([1-\tilde F]-[1-F]=F-\tilde F\) inside the integral, and
 so the second term is zero. Also \(D(y)\ge0\) and \(F(y)-\tilde F(y)\ge0\) for every \(y\), so the
 integrand is nonnegative. The spread rises, strictly when the integral is positive. \hfill\(\square\)
 
-\paragraph{Check with the benchmark.} For point masses with \(p<\ell\), \(G_L(y)=\1\{y\ge\ell\}\) and
+\paragraph{Check with the point masses.} For point masses with \(p<\ell\), \(G_L(y)=\1\{y\ge\ell\}\) and
 \(G_H(y)=\1\{y\ge h\}\), so \(D(y)=\1\{\ell\le y<h\}\) and \(D(p^-)=0\). With \(F(y)=y/r\) on \([0,r]\)
 and \(r<h\):
 \begin{align*}
@@ -377,9 +344,8 @@ and \(r<h\):
 g_L&=\int_p^\ell\frac yr\,dy=\frac{\ell^2-p^2}{2r},\qquad
 g_H=\int_p^r\frac yr\,dy+\int_r^h1\,dy=\frac{r^2-p^2}{2r}+h-r=h-\frac r2-\frac{p^2}{2r}.
 \end{align*}
-All three match \paper{(6)}. The script \texttt{verify/03\_auction.py} also checks \paper{(8)} for a
-non-uniform \(F(y)=(y/\bar r)^2\) and classes with an atom: the formula and a direct double expectation
-agree to twelve digits.
+All three match \paper{(6)}. \Cref{sec:benchmark-auction} also checks \paper{(8)} for a non-uniform
+incumbent and classes with an atom.
 
 \begin{intuition}[slices of the value gap]
 Read the integrand of \(\DT\) as slices \(D(y)\,dy\) of the class value gap at each level \(y>p\). The
@@ -451,22 +417,20 @@ same as ``\(D(y)\ge0\) for every \(y>p\)'', and it gives \(D(p)=\lim_{y\downarro
 an atom at \(p\), \(D(p^-)=D(p)\ge0\). With \(D(p^-)\le0\), this forces \(D(p^-)=0\), which is equal
 admissibility. \hfill\(\square\)
 
-\paragraph{A worked example where the spread falls.} Take the benchmark classes with the exclusion reserve
-\(p=\reg{rsv_points_excl}>\ell\). The low class never meets the reserve, so \(G_L(p^-)=1\),
-\(G_H(p^-)=0\) and \(D(p^-)=1\). Then \(\xi(R)=p\) for \(R<p\): only class \(H\) buys, at \(p\). And
-\(\xi(R)=R-p\) for \(p\le R<h\): class \(H\) wins and pays \(R\), while a class-\(L\) challenger cannot
-bid, so the incumbent buys alone at \(p\). For the uniform incumbent on \([0,r]\) with \(p<r<h\),
+\paragraph{A worked example where the spread falls.} Keep the point-mass classes, but set an
+\emph{exclusion reserve} \(p\) with \(\ell<p<h\). The low class never meets the reserve, so \(G_L(p^-)=1\),
+\(G_H(p^-)=0\) and \(D(p^-)=1\). The condition \(D(p^-)\le0\) fails. Then \(\xi(R)=p\) for \(R<p\): only
+class \(H\) buys, at \(p\). And \(\xi(R)=R-p\) for \(p\le R<h\): class \(H\) wins and pays \(R\), while a
+class-\(L\) challenger cannot bid, so the incumbent buys alone at \(p\). For the uniform incumbent on
+\([0,r]\) with \(p<r<h\),
 \[
 \DT(r)=\frac1r\Bigl[\int_0^p p\,dy+\int_p^r(y-p)\,dy\Bigr]=\frac{p^2+(r-p)^2/2}{r}.
 \]
-Its derivative is \(\bigl[(r-p)r-p^2-(r-p)^2/2\bigr]/r^2=(r^2-3p^2)/(2r^2)\), negative for
-\(r<\sqrt3\,p\approx1.749\). % verify/03_auction.py
-So from \(r=6/5\) to \(r=3/2\) the spread \emph{falls}, from \(6921/8000=0.865125\) to
-\(7601/10000=0.7601\). % verify/03_auction.py
-It rises again later and reaches \(20001/20000\) at \(r=3\). % verify/03_auction.py
+Its derivative is \(\bigl[(r-p)r-p^2-(r-p)^2/2\bigr]/r^2=(r^2-3p^2)/(2r^2)\). This is negative for
+\(p<r<\sqrt3\,p\) and positive above. So the spread first \emph{falls} with incumbent strength, then rises.
 The cause is the reserve term: a stronger incumbent fails the reserve less often, so the slice \(p\) that
-only class \(H\) delivers below the reserve shrinks. Section~7.3 of the paper (\Cref{sec:11_welfare}
-here) studies this reserve in full.
+only class \(H\) delivers below the reserve shrinks. \Cref{sec:benchmark-auction} evaluates this example.
+Section~7.3 of the paper (\Cref{sec:11_welfare} here) studies this reserve in full.
 
 \subsection{The surplus split}\label{sec:03_auction-split}
 
@@ -487,8 +451,8 @@ The reserve term vanishes under equal admissibility, and also when the incumbent
 \[
 \DT(F)+g_H(F)-g_L(F)=\E_H\theta-\E_L\theta\qquad\text{for every }F.
 \]
-In the benchmark the right side is \(h-\ell=9\) at every \(r\). Check at \(r_1=3\):
-\(2/3+203/24-1/8=16/24+203/24-3/24=216/24=9\).
+In the benchmark the right side is \(h-\ell\) at every \(r\). A stronger incumbent changes how the
+gap is split, but not its size. \Cref{sec:benchmark-auction} checks the sum at the strong economy.
 
 \begin{panelnote}[how to say it]
 ``A stronger incumbent does not change the value gap between the classes. It moves the gap from the
