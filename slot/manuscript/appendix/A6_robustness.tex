@@ -6,8 +6,9 @@ summarizes. Each proof uses the conventions of Appendix~\ref{app:beliefs}.
 \subsubsection*{The fixed-information control}
 
 \begin{proposition}[Fixed information; analytical]\label{prop:control}
-Fix the information experiment. It consists of the joint law of the class and a signal \(S\) that the challenger
-observes, the class value distributions, and the independent cost law. Let the value depend on \(S\) only through the class. If
+Fix the joint law of the class \(j\) and a signal \(S\) that the challenger observes.
+Fix the class value laws \(G_j\) and the cost law. In each economy \(i\), require
+\(\mathcal L_i(\theta,R\mid j,S)=G_j\otimes F_i\). The cost is independent of the class, both values and \(S\). If
 the incumbent strengthens from \(F_0\) to \(F_1\), entry does not rise under rule C1. Its decrease is exactly
 \[
 \Ent_0-\Ent_1=\Pr\bigl\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\bigr\},\qquad \mu(S)=\Pr(j=H\mid S),
@@ -17,8 +18,9 @@ and the decrease is strict exactly when this probability is positive.
 
 \begin{proof}[Proof of Proposition~\ref{prop:control}]
 The cost is independent of the class, the values and the signal \(S\), so \(\mu(S)=\Pr(j=H\mid S)\) is the
-challenger's complete class belief at its decision. The value depends on \(S\) only through the class, so gross
-profit in economy \(i\) is \(B_{F_i}(\mu(S))\). Under rule C1, the challenger prepares exactly when
+challenger's complete class belief at its decision. The condition
+\(\mathcal L_i(\theta,R\mid j,S)=G_j\otimes F_i\) gives gross profit \(B_{F_i}(\mu(S))\) in economy \(i\).
+Under rule C1, the challenger prepares exactly when
 \(C\le B_{F_i}(\mu(S))\). Proposition~\ref{prop:returns}(a) gives \(B_{F_1}(\mu)\le B_{F_0}(\mu)\) at every belief.
 Hence, pointwise,
 \[
@@ -39,7 +41,8 @@ The experiment fixes \(\lambda\), \(\beta\), \(\pi\), the cost law and the full 
 \(e_r(\mu)=\rho+(1-\rho)\1\{B_r(\mu)\ge c_H\}\) and \(P(x)=t_0+e_r(\mu(x))\,w(\mu(x))\). This entry is nondecreasing
 in the posterior, so by the paragraph on constructed tuples in Appendix~\ref{app:beliefs} the three prices differ,
 and each price reveals its posterior. The challenger's signal is therefore the order, with a law that does not
-depend on \(r\). At the benchmark, \(\tau(r)=(48r-3)/[4(20r-r^2-1)]\) rises and \(\tau(1)=5/8>1/2=\pi\), so only the
+depend on \(r\). Given the class and order, the value law is \(G_j\otimes F_r\), as Proposition~\ref{prop:control} requires.
+At the benchmark, \(\tau(r)=(48r-3)/[4(20r-r^2-1)]\) rises and \(\tau(1)=5/8>1/2=\pi\), so only the
 top posterior \(M\) can recruit, and it recruits exactly when \(r\le r_C\). Entry is therefore
 \(\rho+(1-\rho)(b+\lambda/2)=\reg{p4_frozen_entry_below_ceiling}\) on \((1,r_C]\) and
 \(\rho=\reg{p4_frozen_entry_above_ceiling}\) above \(r_C=\reg{rC_B}\). The probability of
@@ -233,8 +236,8 @@ Same means, points & \reg{p2_ex_d_r0_entry} & \reg{p2_ex_d_r1_entry} & \multicol
 \begin{minipage}{0.95\linewidth}\footnotesize
 \textit{Notes.} The slot of \(B\), the reserve \(\reg{prim_p}\) and \(\rho=\reg{prim_rho}\) in every row. A single
 number is a point-mass class; \(U[\cdot,\cdot]\) is a uniform class. The moderate-gap economy has two strengths. At
-the third strength every row with three strengths has entry \(\rho\). The first five rows satisfy every hypothesis
-of Proposition~\ref{prop:ccc}; the last row fails the recruitment condition at \(r_1\). Values are
+the third strength every row with three strengths has entry \(\rho\). The moderate-gap row satisfies (H1)--(H2) of
+Proposition~\ref{prop:ccc}; the other four reversal rows also satisfy (H3). The last row fails the recruitment condition at \(r_1\). Values are
 computer-assisted.
 \end{minipage}
 \end{table}
@@ -247,8 +250,8 @@ with a cut at \(r\); every piece has degree at most three. The script
 \nolinkurl{P2_auction/derive.py} (run log
 \nolinkurl{P2_auction/run.log}) computes these integrals in exact rational
 arithmetic, and every quantity that depends on \(\eu\) in outward interval arithmetic at 60 digits; a sign counts only
-when its enclosure excludes zero. For each of the first five rows, the script certifies the strict hypotheses of
-Proposition~\ref{prop:ccc}; Table~\ref{tab:margins} lists their margins. Proposition~\ref{prop:ccc} then supplies the
+when its enclosure excludes zero. The script certifies (H1)--(H2) for the moderate-gap row and (H1)--(H3) for the
+other four reversal rows. Table~\ref{tab:margins} lists their margins. Proposition~\ref{prop:ccc} then supplies the
 tuples and their uniqueness. In the wide classes the class order holds although the supports overlap: \(G_L-G_H\ge0\)
 everywhere, with equality only outside the common interior of the supports. The independent recomputation
 \nolinkurl{XP2/xp2_check.py} (run log
@@ -264,8 +267,9 @@ The comparison of the two rows is a convexity statement. For each \(R\), \(v\map
 mean-preserving spread within a class weakly raises \(g_j\), and hence gross profit at every belief.
 
 At the benchmark costs and strengths, the prior \(\reg{p2_input_ex_a_pi}\) gives entry
-\(\reg{p2_fixed_prior_three_tenths_r1_entry}\) at all three strengths: the top posterior at \(r_1\) misses the high
-cost by \(\reg{p2_fixed_prior_three_tenths_r1_cost_sign_plus}\). The prior \(\reg{p2_input_ex_b_pi}\) gives entry
+\(\reg{p2_fixed_prior_three_tenths_r1_entry}\) at all three strengths: the signed profit gap at \(r_1\) is
+\(B_{r_1}(M(\reg{p2_input_ex_a_pi}))-c_H=\reg{p2_fixed_prior_three_tenths_r1_cost_sign_plus}\).
+The prior \(\reg{p2_input_ex_b_pi}\) gives entry
 \(\reg{p2_fixed_prior_seven_tenths_r0_entry}\) at \(r_0\), because the prior profit there exceeds the high cost by
 \(\reg{p2_fixed_prior_seven_tenths_r0_cost_sign_plus}\), and entry \(\reg{p2_fixed_prior_seven_tenths_r1_entry}\) at
 \(r_1\). In both cases the bound \(\DT(r_0)<k\) forces zero orders at \(r_0\), and the bound on every profile forces
@@ -459,8 +463,20 @@ since the first term is positive by \eqref{eq:a6-DP} and both brackets are nonne
 differ, each price has one order in its preimage, and \(\bar\mu(P(x))=\mu(x)\). At the purchase price, \(B_{r_1}(\phi_+(\mu_+))>c_H\), so a challenger with
 \(Y=+\) prepares. The event \((X,Y)=(1,+)\) has positive probability in each class, so entry strictly exceeds
 \(\rho\). Against the tuple, \(U_+(1)\) and \(U_-(-1)\) are at least \((2a_T-1)m\rho\DT(r_1)-k>0\). These order
-conclusions use only bounds on every profile, so they hold under every pair of tie rules. Nothing in the hypotheses
-links \(d\) and \(a_T\), so \(d>a_T\) is allowed.
+conclusions use only bounds on every profile, so they hold under every pair of tie rules.
+
+Keep the values, costs, strengths and accuracies of \(S(B)\). Set \((\lambda,\beta)=(1/3,3/10)\).
+Then \((a_T,d)=(7/10,3/4)\), \(M=8/11\) and \(m=3/11\). The five margins are
+\[
+\begin{aligned}
+c_H-B_{r_0}(d)&=\frac{21}{400}>0,\\
+B_{r_1}(\phi_+(\mu_+))-c_H&=\frac{1363}{36800}>0,\\
+k-(2a_T-1)D^+(r_0)&=\frac{2}{1375}>0,\\
+(2a_T-1)\rho m\DT(r_1)-k&=\frac{603}{31625}>0,\\
+c_H-B_{r_1}(\phi_-(\mu_+))&=\frac{76753}{18400}>0.
+\end{aligned}
+\]
+Thus the hypotheses allow \(d>a_T\).
 \end{proof}
 
 \paragraph{One pair that recruits.}
@@ -523,8 +539,9 @@ so \(Y=+\) recruits after a purchase, \(\Delta_P=137/192\) there, and the purcha
 \(\tfrac25m\tfrac{137}{192}-k=\reg{margin_p4_b_strong_buy}>0\): \(s=\lambda\). After a sale, \(Y=+\) recruits exactly when
 \(\mu(-1)\ge47/106\), that is \(t\le15b/19\). On that range the sale earns at least the floor return
 \(19/795\), which exceeds \(k\) by \(\reg{margin_p4_b_strong_threshold_floor_return}\); so no equilibrium has
-\(t\le15b/19\), and no tie mixture exists at the threshold. Above it, \(e_H=e_L=\rho\) at the sale price, the sale
-earns \(\tfrac1{15}\,b/(2b+t)\), strictly decreasing, and the unique zero-profit rate is \(t=4b/3<\lambda\) (margin
+\(t\le15b/19\), and no tie mixture exists at the threshold. Above it, \(e_H=e_L=\rho\) at the sale price.
+The net sale payoff \(U_-(-1)=b/[15(2b+t)]-1/50\) strictly decreases with \(t\).
+Its unique zero-profit rate is \(t=4b/3<\lambda\) (margin
 \(\reg{margin_p4_b_strong_rate_room}\)), with \(\mu(-1)=21/50\), below \(47/106\) by \(\reg{margin_p4_b_strong_sale_public_gap}\).
 After the zero order \(Y=+\) recruits (margin \(\reg{margin_p4_b_strong_zero_yplus}\)). Only a sale blocks recruitment
 after \(Y=+\); a sale has probability \(b+(1-a_T)t\) in class \(H\) and \(b+a_Tt\) in class \(L\). Hence entry is
