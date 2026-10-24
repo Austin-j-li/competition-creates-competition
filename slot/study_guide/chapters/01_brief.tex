@@ -1,0 +1,187 @@
+\section{The paper in brief}\label{sec:01_brief}
+
+\subsection{The question and the answer}\label{sec:01_brief-question}
+
+\textbf{Question.} A takeover target has one bidder that is ready to bid (the \emph{incumbent}). A second
+buyer (the \emph{challenger}) must pay a cost to prepare a bid. Does a stronger incumbent keep the
+challenger out?
+
+\textbf{Standard answer.} Weakly, yes. A stronger rival lowers what the challenger can expect to earn. Thus entry weakly falls (Fishman 1988; Hirshleifer and Png 1989). This is the
+\emph{deterrence effect}.
+
+\textbf{This paper's answer.} Not always. The challenger watches the target's stock price before it
+decides. A stronger incumbent can make that price more informative about the challenger's quality class.
+If this information effect is large, a stronger incumbent \emph{attracts} the challenger. The title says
+this: competition creates competition.
+
+\subsection{The mechanism as a chain}\label{sec:01_brief-mechanism}
+
+Under the class ranking, the auction splits the class value gap between two claims:
+\begin{itemize}
+\item the \textbf{acquisition claim}: what the challenger keeps if it prepares, bids and wins;
+\item the \textbf{traded claim}: what the auction pays to the target's shareholders. The stock trades on
+this claim.
+\end{itemize}
+A stronger incumbent moves these two claims in opposite directions. It weakly lowers the challenger's gross
+profit at every belief. It weakly raises the \emph{target-payoff spread} \(\DT=t_H-t_L\), the gap in expected
+target proceeds between a high-class and a low-class challenger. An outside investor knows the class and
+trades on the spread. The investor shares \emph{one order slot} with liquidity traders, so no order
+reveals the class, and the investor keeps a \emph{residual advantage} after every order.
+Figure~\ref{fig:01_brief-chain} shows the chain.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=intuit, fill=intuit!7, rounded corners=2pt, align=center, text width=3.75cm,
+    minimum height=1.45cm, font=\small},
+  redbox/.style={draw=caution, fill=caution!7, rounded corners=2pt, align=center, text width=3.75cm,
+    minimum height=1.45cm, font=\small},
+  arr/.style={-{Stealth[length=2.2mm]}, thick, intuit},
+  node distance=0.75cm and 0.55cm]
+\node[box] (a) {Stronger incumbent\\(\(F\) falls; \(r\) rises)};
+\node[box, right=of a] (b) {Larger spread \(\DT=t_H-t_L\) in target proceeds between the classes};
+\node[box, right=of b] (c) {Residual advantage: a correctly signed order earns at least
+  \(\rho\,\kappa(\pi)\DT>k\)};
+\node[box, below=of c] (d) {Informative orders: class \(H\) buys, class \(L\) sells};
+\node[box, left=of d] (e) {A purchase lifts the belief to the top posterior \(M(\pi)\), above
+  \(\tau\)};
+\node[box, left=of e] (f) {High-cost challenger prepares after a purchase: entry rises above \(\rho\)};
+\node[redbox, below=of f] (g) {Direct effect: gross profit \(B_F(\mu)\) falls at every \(\mu\)
+  (deterrence)};
+\draw[arr] (a) -- (b);
+\draw[arr] (b) -- (c);
+\draw[arr] (c) -- (d);
+\draw[arr] (d) -- (e);
+\draw[arr] (e) -- (f);
+\draw[-{Stealth[length=2.2mm]}, thick, caution] (a.west) -- ++(-0.35,0) |- (g.west);
+\draw[-{Stealth[length=2.2mm]}, thick, caution, dashed] (g.east) -| (e.south)
+  node[pos=0.78, right, font=\footnotesize, text=caution, align=left] {raises \(\tau\):\\works against entry};
+\end{tikzpicture}
+\caption{The two forces. Blue: the information channel. Red: the direct deterrence channel. The bound
+\(\rho\,\kappa(\pi)\DT\) applies to the gross return of a correctly signed nonzero order (a purchase in
+class \(H\), a sale in class \(L\)). The paper finds an open set of primitives where blue wins.}
+\label{fig:01_brief-chain}
+\end{figure}
+
+\subsection{The main result in numbers}\label{sec:01_brief-numbers}
+
+The benchmark has \(h=\reg{prim_h}\), \(\ell=\reg{prim_ell}\), \(\pi=\reg{prim_pi}\), \(p=\reg{prim_p}\),
+\(\rho=\reg{prim_rho}\), \(c_H=\reg{prim_cH}\) and \(k=\reg{prim_k}\). The incumbent is uniform on
+\([0,r]\). The slot has \(1+u=\eu\) and \(\beta=\reg{beta_B}\), so the presence probability is
+\(\lambda=\reg{lambda_B}\) and the top posterior is \(M(1/2)=\reg{M_half_B}\). Table~\ref{tab:01_brief-numbers}
+compares the three economies of Proposition~2.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Weak (\(r_0=\reg{prim_r0}\)) & Strong (\(r_1=\reg{prim_r1}\)) & Very strong (\(r_2=\reg{prim_r2}\))\\
+\midrule
+Gross profit at the prior, \(B_r(1/2)\) & \reg{Bprior_r0} & \reg{Bprior_r1_B} (lower) & \reg{Bprior_r2}\\
+Target-payoff spread, \(\DT\) & \reg{Delta_r0} & \reg{Delta_r1} (\(40\times\)) & \reg{Delta_r2}\\
+Preparation threshold, \(\tau(r)\) & \reg{tau_r0} & \reg{tau_r1} & \reg{tau_r2}\\
+Top posterior, \(M(1/2)\) & \reg{M_half_B} & \reg{M_half_B} & \reg{M_half_B}\\
+Investor orders, classes \(H\) and \(L\) & \((0,0)\) & \((1,-1)\) & \((1,-1)\)\\
+Price informative? & no & yes & yes\\
+High-cost preparation & none & after a purchase & none\\
+Entry \(\Ent\) & \reg{entry_r0} & \textbf{\reg{entry_r1_B}} & \reg{entry_r2}\\
+High-class ownership \(\Own_H\) & \reg{own_r0} & \textbf{\reg{own_r1_B}} & \reg{own_r2_B}\\
+\bottomrule
+\end{tabular}
+\caption{The main result at the benchmark \paper{Tables~1 and~3}.}
+\label{tab:01_brief-numbers}
+\end{table}
+
+From \(r_0\) to \(r_1\), gross profit falls by about \(10.7\) percent, while the spread rises \(40\) times. % verify/03_auction.py Entry more than doubles, by a factor of
+\(2.09\). % verify/01_brief.py
+At \(r_2\) the price stays informative, but \(\tau(r_2)=\reg{tau_r2}\) lies just above
+\(M(1/2)=\reg{M_half_B}\). So even a purchase cannot recruit a high-cost challenger, and entry falls back
+to \(\rho\). Entry is \emph{non-monotone} in incumbent strength.
+
+\begin{intuition}[why entry doubles while profit falls]
+Profit falls at \emph{every} belief, but the belief that matters changes. At \(r_0\) the price says nothing,
+so the challenger decides at the prior \(1/2\), and \(B_{r_0}(1/2)=\reg{Bprior_r0}<c_H=6\). At \(r_1\) a
+purchase moves the belief to \(\reg{M_half_B}\), and \(B_{r_1}(M)\) exceeds \(6\) by
+\(\reg{margin_recruit_B}\). A purchase occurs with probability \(b+\lambda/2\) at the prior \(1/2\), so entry is
+\(\rho+(1-\rho)(b+\lambda/2)=\reg{entry_r1_B}\).
+\end{intuition}
+
+\subsection{Seven claims that you must be able to defend}\label{sec:01_brief-claims}
+
+Use this list to locate each proof.
+\begin{enumerate}
+\item \textbf{Two returns to information} \paper{Prop.~1}.
+A stronger incumbent weakly lowers each class's gross profit.
+Under the class ranking, it weakly raises the target-payoff spread.
+The proof uses payment integrals and Tonelli's theorem.
+\Cref{sec:03_auction-prop1,sec:03_auction-prop1c} state the exact scope.
+\item \textbf{Posterior bounds} \paper{Lemma~A.1; Cor.~A.1}.
+Every posterior lies in \([m(\pi),M(\pi)]\), under every investor profile, including mixed profiles and wrong-signed orders.
+The zero order needs \(\beta\le1/3\).
+With \(g_H\ge g_L\), \(B(M(\pi))<c_H\) excludes high-cost preparation under every profile
+(\Cref{sec:04_slot_beliefs}).
+\item \textbf{Price sufficiency} \paper{Lemma~A.2}.
+If \(\DT>0\), equal prices imply equal posteriors because entry is at least \(\rho>0\).
+If also \(g_H>g_L\), prices rise strictly with the posterior
+(\Cref{sec:04_slot_beliefs-sufficiency}).
+\item \textbf{Global trading bounds} \paper{Lemma~A.3}.
+Under every candidate, \(\rho\kappa(\pi)\DT\le K_H,K_L\le\DT\).
+These are gross returns of correctly signed nonzero orders.
+Zero earns zero; a wrong-signed order earns at most \(-k\) net.
+The trading-cost window (H2) therefore forces no trade at \(F_0\) and full orders at \(F_1\)
+(\Cref{sec:05_investor,sec:06_main_result}).
+\item \textbf{Information is the cause} \paper{Prop.~A.3}.
+At fixed information, a stronger incumbent never raises entry.
+The theorem needs \(\mathcal L_i(\theta,R\mid j,S)=G_j\otimes F_i\) and a cost independent of all these variables.
+Frozen full orders give entry \reg{p4_frozen_r0_entry} at both \(r_0\) and \(r_1\).
+A hidden price gives entry \reg{p4_hidden_r0_entry} at both strengths
+(\Cref{sec:07_controls}).
+\item \textbf{Coexistence} \paper{Prop.~3}.
+Under rules IM and C1, no informed trade and an informative equilibrium coexist exactly on \([r_A,r_N]\).
+At the benchmark, \(r_A\approx\reg{rA}\) and \(r_N\approx\reg{rN}\).
+Entry on the informative branch rises to \(r_F\), then stays constant until the entry ceiling.
+The proof uses algebra and two exact Sturm counts
+(\Cref{sec:08_coexistence}).
+\item \textbf{Research} \paper{Prop.~4}.
+The investor chooses presence at cost \((a/2)\lambda^2\).
+On the interior research branch, research, entry and high-class ownership rise with incumbent strength.
+At \(r=\reg{str_r160}\), research is \reg{res_lambda_r160} and entry is \reg{res_entry_r160}.
+Under C1, this branch coexists with no research
+(\Cref{sec:09_research}).
+\end{enumerate}
+
+\subsection{A 60-second version for the panel}\label{sec:01_brief-sixty}
+
+\begin{panelnote}
+``A stronger rival lowers the challenger's expected auction profit.
+I add a stock market before the challenger commits.
+Under the class ranking, stronger competition also widens the gap in target proceeds between the two classes.
+An informed investor trades on that gap.
+Liquidity orders keep each order from fully revealing the class.
+When the residual advantage covers the trading cost, informed trade starts.
+A purchase can then recruit a high-cost challenger that stays out at its prior.
+On an open set of primitives, entry rises with incumbent strength.
+The weak economy has one uninformative outcome; the strong economy has one informative outcome with more entry.
+At fixed information, entry cannot rise.
+The change in information therefore explains the reversal.''
+\end{panelnote}
+
+\subsection{How to read this guide}\label{sec:01_brief-read}
+
+\Cref{sec:02_model} sets out the model. \Cref{sec:03_auction} derives every auction payoff.
+\Cref{sec:04_slot_beliefs} derives what one order can reveal. \Cref{sec:05_investor} solves
+the investor's problem. \Cref{sec:06_main_result} proves the main result step by step.
+\Cref{sec:07_controls,sec:08_coexistence,sec:09_research,sec:10_robustness,sec:11_welfare,sec:12_empirical} cover the controls, coexistence, research,
+robustness, welfare and sale terms, and empirical implications.
+
+Work in this order: the auction algebra first, because every later step uses \(\DT\) and \(B(\mu)\); then
+the posterior bounds; then the trading bounds. With these three tools, the proof of Proposition~2 is a
+short sequence of inequalities.
+
+\begin{intuition}[What changed from the Laplace version]
+One order slot replaces additive Laplace flow.
+Orders are \(\{-1,0,1\}\), and the low preparation cost is zero.
+The auction now allows value classes; the point masses remain the benchmark.
+The guide adds the full equilibrium path and costly research.
+\Cref{sec:10_robustness-sizes} derives the exact comparison of posterior bounds.
+\end{intuition}

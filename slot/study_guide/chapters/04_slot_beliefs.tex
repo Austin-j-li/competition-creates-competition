@@ -1,0 +1,312 @@
+\section{What the order slot reveals}
+\label{sec:04_slot_beliefs}
+
+The order slot gives the market one of three observations: a sale, zero, or a purchase.
+This chapter derives the beliefs after these orders.
+It then shows why the challenger can recover those beliefs from the price.
+The proofs cover mixed profiles and wrong-signed orders. \paper{Sec.~3.2; Appendix~A.2}
+
+\subsection{The order law under every profile}
+\label{sec:04_slot_beliefs-law}
+
+Write $\sigma_j(x)$ for the probability that the investor chooses $x$ in class $j$.
+The three probabilities in each $\sigma_j$ sum to one.
+At this stage, allow a sale in class $H$ and a purchase in class $L$.
+The liquidity law is
+\[
+\eta(-1)=\beta,\qquad \eta(0)=1-2\beta,\qquad \eta(1)=\beta.
+\]
+An investor fills the slot with probability $\lambda$.
+A liquidity trader fills it with probability $1-\lambda$.
+These are alternative arrivals, so the conditional order probability is a sum:
+\begin{align*}
+f_j(x)&:=\Pr(X=x\mid j)\\
+      &=(1-\lambda)\eta(x)+\lambda\sigma_j(x).
+\end{align*}
+Define the two liquidity masses
+\[
+b=(1-\lambda)\beta,\qquad b_0=(1-\lambda)(1-2\beta),\qquad u=\frac{\lambda}{b}.
+\]
+Thus $f_j(\pm1)=b+\lambda\sigma_j(\pm1)$ and $f_j(0)=b_0+\lambda\sigma_j(0)$.
+The number $u$ compares informed presence with the liquidity mass in one direction.
+It is not the posterior odds that an observed order is informed.
+
+Because $0<\lambda<1$ and $0<\beta<1/2$, every liquidity mass is positive.
+Hence $f_j(x)\ge (1-\lambda)\eta(x)>0$ for every order and class: every order occurs under every profile.
+Bayes' rule therefore specifies every order posterior without an off-path belief.
+
+For example, take $\lambda=1/3$, $\beta=1/4$, and $\pi=2/5$.
+Let the profiles on $(-1,0,1)$ be
+\[
+\sigma_H=(1/5,3/10,1/2),\qquad \sigma_L=(3/5,3/10,1/10).
+\]
+Both profiles include a wrong-signed order.
+Direct substitution gives
+\[
+f_H=(7/30,13/30,1/3),\qquad f_L=(11/30,13/30,1/5).
+\]
+The posteriors are $(14/47,2/5,10/19)$.
+The same formulas apply before we ask whether these orders are optimal.
+
+\subsection{Likelihood ratios and the posterior bounds}
+\label{sec:04_slot_beliefs-bounds}
+
+A bound on the likelihood ratio gives a bound on the posterior.
+
+\begin{intuition}[Why one order cannot reveal the class]
+A liquidity trader can place any order in either class.
+The informed investor adds at most $\lambda$ to the probability of that order.
+This limits the likelihood ratio, even under an extreme or mixed profile.
+\end{intuition}
+
+For a nonzero order, $0\le\sigma_j(x)\le1$ gives
+\[
+b\le f_j(x)\le b+\lambda.
+\]
+The largest ratio uses the largest numerator and the smallest denominator.
+The smallest ratio reverses them:
+\[
+\frac{b}{b+\lambda}\le\frac{f_H(x)}{f_L(x)}\le\frac{b+\lambda}{b}.
+\]
+Since $\lambda/b=u$, these bounds are $1/(1+u)$ and $1+u$.
+Bayes' rule gives $\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]$ and $1-\mu(x)=(1-\pi)f_L(x)/[\pi f_H(x)+(1-\pi)f_L(x)]$.
+Divide the first by the second; the denominators cancel:
+\[
+\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)}.\tag*{\paper{(A.3)}}
+\]
+This is the odds form of Bayes' rule.
+The posterior rises strictly with these odds.
+For a likelihood ratio $L$, its value is $\pi L/[\pi L+1-\pi]$.
+Substitution of the two extreme ratios gives
+\begin{align*}
+m(\pi)&=\frac{\pi/(1+u)}{\pi/(1+u)+1-\pi}
+       =\frac{\pi}{\pi+(1-\pi)(1+u)},\\
+M(\pi)&=\frac{\pi(1+u)}{\pi(1+u)+1-\pi}
+       =\frac{\pi(1+u)}{1+\pi u}.
+\end{align*}
+Thus $m(\pi)\le\mu(\pm1)\le M(\pi)$ under every profile. \paper{(4); Lemma~A.1(b)}
+Both bounds lie strictly between zero and one.
+Also $m(\pi)<\pi<M(\pi)$ because $u>0$.
+
+\subsection{The zero order and the restriction \texorpdfstring{$\beta\le1/3$}{beta <= 1/3}}
+\label{sec:04_slot_beliefs-zero}
+
+At zero the relevant liquidity mass is $b_0$, rather than $b$.
+The same argument gives
+\[
+b_0\le f_j(0)\le b_0+\lambda,\qquad
+\frac{1}{1+\lambda/b_0}\le\frac{f_H(0)}{f_L(0)}\le1+\frac{\lambda}{b_0}.
+\]
+To use the previous bounds, we need
+\begin{align*}
+b_0\ge b
+&\iff (1-\lambda)(1-2\beta)\ge(1-\lambda)\beta\\
+&\iff 1-2\beta\ge\beta
+\iff \beta\le\frac13.
+\end{align*}
+Then $\lambda/b_0\le\lambda/b=u$.
+The zero-order likelihood ratio also lies between $1/(1+u)$ and $1+u$.
+Hence $m(\pi)\le\mu(0)\le M(\pi)$. \paper{Lemma~A.1(c)}
+
+\begin{caution}[A zero order can be the most informative order]
+Do not treat zero as uninformative under an arbitrary profile.
+It is uninformative under full orders because neither class chooses zero.
+A one-sided profile can make zero good news.
+\end{caution}
+
+To see the failure when $\beta>1/3$, let class $H$ always abstain and class $L$ always sell.
+Then $f_H(0)=b_0+\lambda$ and $f_L(0)=b_0$.
+Since $b_0<b$,
+\[
+\frac{f_H(0)}{f_L(0)}=1+\frac{\lambda}{b_0}>1+\frac{\lambda}{b}=1+u.
+\]
+Take the exact example $\lambda=6/17$, $\beta=2/5$, and $\pi=1/2$.
+The masses and ratios are
+\[
+b=\frac{22}{85},\quad b_0=\frac{11}{85},\quad
+\lambda=\frac{30}{85},\quad
+1+u=\frac{26}{11},\quad \frac{f_H(0)}{f_L(0)}=\frac{41}{11}.
+\]
+Consequently,
+\[
+M=\frac{26}{37},\qquad \mu(0)=\frac{41}{52},\qquad
+\mu(0)-M=\frac{165}{1924}>0.
+\]
+This is a failure of the bound under a profile, regardless of investor optimality.
+The nonzero-order bounds still hold for every $\beta<1/2$.
+
+\subsection{Full orders and the benchmark beliefs}
+\label{sec:04_slot_beliefs-full}
+
+Under full orders, class $H$ buys and class $L$ sells with probability one.
+The conditional laws and their ratios are
+\[
+\begin{array}{c|ccc}
+x&-1&0&1\\ \hline
+f_H(x)&b&b_0&b+\lambda\\
+f_L(x)&b+\lambda&b_0&b\\
+f_H(x)/f_L(x)&1/(1+u)&1&1+u\\
+\mu(x)&m(\pi)&\pi&M(\pi)
+\end{array}
+\]
+This establishes the three posteriors directly. \paper{Lemma~A.1(d)}
+Full orders reach both bounds.
+The zero order leaves the prior unchanged.
+
+In the benchmark, $\beta=\reg{beta_B}$ and $1+u=\eu$.
+The presence probability is derived, rather than separately rounded:
+\begin{align*}
+u&=\frac{\lambda}{(1-\lambda)\beta}
+\iff u\beta(1-\lambda)=\lambda\\
+&\iff \lambda=\frac{u\beta}{1+u\beta}=\reg{lambda_B}.
+\end{align*}
+Thus $b=\reg{b_B}$ and $b+\lambda=\reg{b_plus_lambda_B}$.
+At $\pi=\reg{prim_pi}$,
+\[
+m=\frac1{1+\eu}=\reg{m_half_B},\qquad
+M=\frac{\eu}{1+\eu}=\reg{M_half_B}.
+\]
+The script keeps the full value of $\lambda$ throughout the calculation.
+
+\subsection{A price belief is an average, and the ceiling follows}
+\label{sec:04_slot_beliefs-ceiling}
+
+The challenger sees $P(X)$, rather than $X$.
+For a price $\bar P$, let $A=\{x:P(x)=\bar P\}$.
+Write $z_x=\pi f_H(x)+(1-\pi)f_L(x)$ for the unconditional probability of $x$.
+Then
+\begin{align*}
+\bar\mu(\bar P)
+&=\frac{\sum_{x\in A}\pi f_H(x)}{\sum_{x\in A}z_x}\\
+&=\sum_{x\in A}\frac{z_x}{\sum_{y\in A}z_y}\,\mu(x).
+\end{align*}
+Every weight is positive, and the weights sum to one.
+Therefore a price belief lies between the smallest and largest posteriors in its pool.
+In particular, $\bar\mu(\bar P)\in[m(\pi),M(\pi)]$ when $\beta\le1/3$.
+This argument needs no assumption that the price reveals the order.
+
+\begin{resultbox}[The ceiling under every profile]
+Let $\beta\le1/3$, $g_H\ge g_L$ and $B(M(\pi))<c_H$.
+Then no price recruits a high-cost challenger under any profile, in or out of equilibrium, that has Bayes beliefs and optimal preparation.
+\paper{Corollary~A.1}
+\end{resultbox}
+
+The proof has one inequality chain:
+\[
+B(\bar\mu(\bar P))=g_L+\bar\mu(\bar P)(g_H-g_L)
+\le g_L+M(\pi)(g_H-g_L)<c_H.
+\]
+The first inequality uses $\bar\mu(\bar P)\le M(\pi)$ and $g_H-g_L\ge0$.
+Thus high-cost preparation has a strictly negative net return at every price, also at a price that pools orders.
+The comparison is strict, so the result holds under both challenger tie rules.
+The universal ceiling uses the zero-order bound, so it needs $\beta\le1/3$.
+Proposition~2 instead forces full orders first.
+Its proof therefore needs only $\beta<1/2$.
+
+\subsection{The entry floor and the competitive price}
+\label{sec:04_slot_beliefs-price}
+
+A zero-cost challenger prepares after every price.
+Its gross profit is a nonnegative auction rent, so this choice is optimal.
+The model fixes that choice even when its rent is zero.
+If $\zeta(P)$ denotes high-cost preparation, entry after order $x$ is
+\[
+e(x)=\rho+(1-\rho)\zeta(P(x))\ge\rho>0.
+\]
+This is the entry floor. \paper{Lemma~A.2(a)}
+
+Let $w_j=t_j-t_0$ and $w(\mu)=w_L+\DT\mu$.
+The auction gives $w_H\ge w_L\ge0$.
+Conditional on the class and the order, the cost draw alone determines preparation.
+The cost is independent of both acquisition values and the class.
+Also the order gives no further value information once the class is known.
+Hence
+\[
+\E[V_T\mid j,X=x]=(1-e(x))t_0+e(x)t_j=t_0+e(x)w_j.
+\]
+Average this identity over the two classes:
+\begin{align*}
+P(x)=\E[V_T\mid X=x]
+&=\mu(x)[t_0+e(x)w_H]+[1-\mu(x)][t_0+e(x)w_L]\\
+&=t_0+e(x)\{w_L+\mu(x)(w_H-w_L)\}\\
+&=t_0+e(x)[t_L-t_0+\DT\mu(x)].
+\end{align*}
+This is the competitive price. \paper{(5); (A.4); Lemma~A.2(b)}
+It includes the expected proceeds from the entry that the price itself causes.
+
+\subsection{Price sufficiency, the threshold, and strict price order}
+\label{sec:04_slot_beliefs-sufficiency}
+
+Assume $\DT>0$ and $g_H>g_L$.
+
+\begin{intuition}[Why the circularity is harmless]
+The price depends on entry, and entry depends on the price.
+You do not need to solve this circle to invert the price.
+Two orders with one price have one entry probability, and that entry is at least $\rho$.
+The price formula then leaves only the posterior to differ, and it cannot.
+\end{intuition}
+
+First prove price sufficiency without an assumption about entry as a function of the order posterior.
+If $P(x)=P(x')=\bar P$, the challenger faces the same price and cost law.
+Thus $e(x)=e(x')=:\bar e$.
+The price formula gives
+\[
+0=P(x)-P(x')=\bar e\DT[\mu(x)-\mu(x')].
+\]
+Since $\bar e\DT\ge\rho\DT>0$, the two posteriors are equal.
+The price belief averages equal posteriors, so
+\[
+\bar\mu(P(x))=\mu(x).
+\]
+Equivalently, the challenger can recover the posterior from
+\[
+\mu(x)=\frac{P(x)-t_0-e(P(x))(t_L-t_0)}{e(P(x))\DT}.
+\]
+Here $e(P)$ denotes the entry probability associated with price $P$. \paper{Lemma~A.2(c)}
+The denominator is positive because of the entry floor.
+
+Since $g_H>g_L$, $B(\mu)\ge c_H$ holds exactly when $\mu\ge\tau=(c_H-g_L)/(g_H-g_L)$, the threshold of \Cref{sec:03_auction-derivatives}.
+By sufficiency, the challenger's belief at $P(x)$ is $\mu(x)$.
+Under rule C1, an indifferent high-cost challenger prepares.
+Thus entry is $\rho$ below $\tau$ and one at or above $\tau$.
+Under rule CM, entry at $\tau$ can be any value in $[\rho,1]$.
+The threshold can lie outside $[0,1]$; the same inequalities still apply.
+
+Take $\mu_2>\mu_1$, and write $e_i$ for the associated entry.
+Optimal preparation gives $e_2\ge e_1$ under either rule.
+Add and subtract $e_2w(\mu_1)$:
+\begin{align*}
+P_2-P_1
+&=e_2w(\mu_2)-e_1w(\mu_1)\\
+&=e_2[w(\mu_2)-w(\mu_1)]+(e_2-e_1)w(\mu_1)\\
+&=e_2\DT(\mu_2-\mu_1)+(e_2-e_1)[w_L+\DT\mu_1]\\
+&\ge\rho\DT(\mu_2-\mu_1)>0.
+\end{align*}
+The second term is nonnegative because $e_2\ge e_1$ and $w_L+\DT\mu_1\ge0$.
+Thus prices rise strictly with the posterior. \paper{(A.5); Lemma~A.2(e)}
+Equal prices can pool equal posteriors, as in the weak economy.
+They cannot pool distinct posteriors under these assumptions.
+
+At $r_1=\reg{prim_r1}$, $t_0=5/12$, $t_L-t_0=11/24$, and $\DT=2/3$.
+The threshold is $\tau=141/200=\reg{tau_r1}$.
+Under full orders, the benchmark gives
+\[
+\begin{array}{c|ccc}
+x&-1&0&1\\ \hline
+\mu(x)&\reg{m_half_B}&1/2&\reg{M_half_B}\\
+e(x)&1/4&1/4&1\\
+P(x)&\reg{price_r1_m1_B}&\reg{price_r1_0_B}&\reg{price_r1_p1_B}
+\end{array}
+\]
+Only the purchase posterior exceeds $\tau$.
+The script substitutes these prices into the inverse formula and recovers all three posteriors.
+
+\begin{panelnote}[What changed from the Laplace version]
+The Laplace version bounded the likelihood ratio through the noise density; the slot bounds it through the liquidity mass in each order.
+With $1+u=\eu$, the top posterior equals the Laplace value at scale $2$.
+\Cref{sec:10_robustness-sizes} derives this match and explains why it concerns the bound only.
+The zero order is new: it needs $\beta\le1/3$.
+\end{panelnote}
+
+Run \texttt{python3 slot/study\_guide/verify/04\_slot\_beliefs.py} from the repository root.
+It prints the order laws, the zero-order counterexample, the posterior bounds, and the price inversion.

@@ -1,0 +1,216 @@
+\section{The investor's problem}
+\label{sec:05_investor}
+
+The investor chooses among a sale, zero, and a purchase.
+Each class compares one correctly signed order with zero once we exclude the wrong sign.
+The key bounds apply under every candidate profile, before investor optimality is imposed. \paper{Sec.~3.3; Lemma~A.3}
+
+\subsection{Hold the price and entry rules fixed}
+\label{sec:05_investor-fixed}
+
+A candidate satisfies (E1)--(E4) and (E6); it need not satisfy investor optimality (E5).
+An investor deviation changes only its own order.
+It faces the candidate's price function $P(\cdot)$ and preparation rule $\zeta(\cdot)$, as the caution in \Cref{sec:02_model-equilibrium} explains.
+Since its order fills the whole slot, a deviation to $q$ reaches $P(q)$ and $e(q)$.
+Do not recompute Bayes beliefs from the deviating order profile: those beliefs belong to a different candidate.
+
+Conditional on investor arrival, the expected payoff in class $j$ is
+\[
+U_j(q)=q\{t_0+e(q)(t_j-t_0)-P(q)\}-k|q|,
+\qquad q\in\{-1,0,1\}.
+\]
+The factor $\lambda>0$ of the ex ante payoff changes no comparison between orders.
+
+\subsection{Derive the residual advantage and the six payoffs}
+\label{sec:05_investor-residual}
+
+Use $w_j=t_j-t_0$, $w_H-w_L=\DT$, the conditional value $\E[V_T\mid j,X=q]=t_0+e(q)w_j$ and the price
+$P(q)=t_0+e(q)[w_L+\DT\mu(q)]$ of \Cref{sec:04_slot_beliefs-price}.
+In class $H$, subtract the price from the conditional value:
+\begin{align*}
+\E[V_T\mid H,X=q]-P(q)
+&=t_0+e(q)w_H-t_0-e(q)[w_L+\DT\mu(q)]\\
+&=e(q)[w_H-w_L-\DT\mu(q)]\\
+&=e(q)\DT[1-\mu(q)].
+\end{align*}
+In class $L$, a sale earns the opposite difference:
+\begin{align*}
+P(q)-\E[V_T\mid L,X=q]
+&=t_0+e(q)[w_L+\DT\mu(q)]-t_0-e(q)w_L\\
+&=e(q)\DT\mu(q).
+\end{align*}
+The proceeds without entry, $t_0$, cancel in both expressions.
+The common entry gain $e(q)w_L$ also cancels.
+
+Multiply the residual by the order sign and subtract the cost.
+The six payoffs are
+\begin{align*}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,& U_H(0)&=0,\\
+U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\[2pt]
+U_L(-1)&=e(-1)\DT\mu(-1)-k,& U_L(0)&=0,\\
+U_L(1)&=-e(1)\DT\mu(1)-k.
+\end{align*}
+Define the gross returns of the two correctly signed nonzero orders:
+\[
+K_H=e(1)\DT[1-\mu(1)],\qquad
+K_L=e(-1)\DT\mu(-1).
+\]
+Then a correct order has net return $K_j-k$.
+
+\begin{intuition}[What rational prices remove and what they leave]
+Market makers anticipate preparation and include its expected effect in the price.
+The investor therefore earns no extra return from that common expected effect alone.
+It still knows the class while market makers retain some uncertainty.
+Its residual advantage is entry times the target-payoff spread times that residual uncertainty.
+A liquidity order prevents either nonzero order from revealing the class with certainty.
+\end{intuition}
+
+This argument also applies to general class distributions.
+The investor knows the class, rather than the realized acquisition value.
+The relevant spread is $t_H-t_L$, the difference between expected target proceeds in the two classes.
+
+\subsection{Wrong-signed orders are dominated}
+\label{sec:05_investor-sign}
+
+Under the class ranking, $\DT\ge0$.
+Also $e(x)\ge0$ and $0\le\mu(x)\le1$.
+Thus
+\[
+U_H(-1)\le-k<0=U_H(0),\qquad
+U_L(1)\le-k<0=U_L(0).
+\]
+Zero strictly beats a sale in class $H$ and a purchase in class $L$.
+No equilibrium puts positive probability on either wrong-signed order.
+This conclusion comes from payoffs; it is not a restriction on the candidate profiles.
+
+Class $H$ therefore compares $K_H$ with $k$.
+It buys if $K_H>k$ and abstains if $K_H<k$.
+Class $L$ sells if $K_L>k$ and abstains if $K_L<k$.
+At equality, the correct order and zero are both best responses.
+Rule IM permits any mixture of these best responses; rule I0 selects zero.
+
+\subsection{The gross-return bounds under every candidate}
+\label{sec:05_investor-bounds}
+
+For a correct purchase, the posterior bound gives $\mu(1)\le M(\pi)$.
+Subtract from one, multiply by $\DT\ge0$, and then use the entry floor:
+\begin{align*}
+1-\mu(1)&\ge1-M(\pi),\\
+\DT[1-\mu(1)]&\ge\DT[1-M(\pi)],\\
+K_H=e(1)\DT[1-\mu(1)]&\ge\rho\DT[1-\mu(1)]
+\ge\rho\DT[1-M(\pi)].
+\end{align*}
+For a correct sale, $\mu(-1)\ge m(\pi)$ gives
+\[
+K_L=e(-1)\DT\mu(-1)\ge\rho\DT\mu(-1)\ge\rho\DT m(\pi).
+\]
+For the upper bounds, $e\le1$, $\mu\le1$, and $1-\mu\le1$ give $K_H,K_L\le\DT$.
+Set $\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}$.
+We obtain
+\begin{resultbox}[The bound that fixes orders before a candidate is known]
+Under every candidate profile,
+\[
+\rho\kappa(\pi)\DT\le K_H\le\DT,\qquad
+\rho\kappa(\pi)\DT\le K_L\le\DT.
+\]
+These are bounds on the gross returns of correctly signed nonzero orders. \paper{(A.6)}
+They hold for every $\beta<1/2$.
+\end{resultbox}
+
+\begin{caution}[Scope of the lower bound]
+Do not apply the positive lower bound to zero or to a wrong-signed order.
+Zero earns zero, and a wrong-signed order has a negative net return.
+Do not replace $\kappa$ by $m$ at an arbitrary prior.
+The two coincide at $\pi=1/2$.
+\end{caution}
+
+For a concrete candidate that is not an equilibrium, use the mixed profile of \Cref{sec:04_slot_beliefs-law} at $r=3$, where $\DT=2/3$.
+Every posterior is below $\tau=141/200$, so set $e\equiv\rho=1/4$.
+The three posteriors differ, so the three prices differ and the price beliefs equal the order posteriors.
+Thus (E1)--(E4) and (E6) hold, although the mixed orders are not optimal.
+Here $u=2$, $m(2/5)=2/11$, and $1-M(2/5)=1/3$, so $\kappa=2/11$.
+The exact gross returns are
+\[
+\rho\kappa\DT=\frac14\cdot\frac2{11}\cdot\frac23=\frac1{33},\qquad
+K_H=\frac14\cdot\frac23\left(1-\frac{10}{19}\right)=\frac3{38},\qquad
+K_L=\frac14\cdot\frac23\cdot\frac{14}{47}=\frac7{141}.
+\]
+Each lies between $1/33$ and $2/3$, as the bound requires without investor optimality.
+
+\subsection{Why the prior one half gives the largest floor}
+\label{sec:05_investor-prior}
+
+Calculate the residual at the top posterior:
+\begin{align*}
+1-M(\pi)
+&=\frac{1-\pi}{1+\pi u}\\
+&=\frac{1-\pi}{(1-\pi)+\pi(1+u)}=m(1-\pi).
+\end{align*}
+The function $m$ rises strictly with its argument.
+Indeed,
+\[
+m(\pi)=\frac{\pi}{1+u-\pi u},\qquad
+m'(\pi)=\frac{1+u}{(1+u-\pi u)^2}>0.
+\]
+It follows that
+\[
+\kappa(\pi)=m(\min\{\pi,1-\pi\}),\qquad
+\kappa(1-\pi)=\kappa(\pi).
+\]
+The minimum of $\pi$ and $1-\pi$ is largest at $1/2$.
+Therefore $\kappa$ has its unique maximum there:
+\[
+\kappa(1/2)=\frac1{2+u}.
+\]
+When $\pi>1/2$, the bound for class $H$ binds because the market already favors $H$.
+When $\pi<1/2$, the bound for class $L$ binds for the same reason.
+At $1+u=\eu$, $\kappa(1/2)=\reg{m_half_B}$.
+At $\pi=1/4$ and $3/4$, it equals approximately $0.109232$. % verify/05_investor.py
+
+\subsection{Why the weak economy forces zero and the strong economy forces full orders}
+\label{sec:05_investor-force}
+
+If $\DT<k$, every correct nonzero order satisfies
+\[
+U_j(q)=K_j-k\le\DT-k<0=U_j(0).
+\]
+Wrong-signed orders are also strictly worse than zero.
+Thus zero is the unique best response of both classes under every candidate, and (E5) excludes every mixture.
+
+If $k<\rho\kappa\DT$, every correct order instead satisfies
+\[
+U_j(q)=K_j-k\ge\rho\kappa\DT-k>0=U_j(0).
+\]
+The wrong sign is strictly worse than zero.
+Thus each class has one unique best response: a purchase in $H$, a sale in $L$.
+Every equilibrium uses full orders; the argument excludes all other pure and mixed profiles at once.
+
+At the weak benchmark, $\DT(r_0)=1/60$ and $k=1/50$.
+Hence the largest possible net return is at most
+\[
+\frac1{60}-\frac1{50}=-\frac1{300}<0.
+\]
+At the strong benchmark,
+\[
+\rho\kappa\DT(r_1)-k
+=\frac1{6(1+\eu)}-\frac1{50}
+=\reg{margin_kstrong_B}>0.
+\]
+In the full-order candidate, $e(1)=1$ and $e(-1)=1/4$.
+Thus $K_H=2/[3(1+\eu)]$ and $K_L=1/[6(1+\eu)]$.
+Their net returns are $\reg{p2_base_r1_choice_h}$ and $\reg{p2_base_r1_choice_l}$.
+
+\begin{caution}[Uniqueness and verification are two tests]
+The bound $\rho\kappa\DT$ holds against every candidate, so it proves uniqueness.
+The returns $K_H$ and $K_L$ at the full-order tuple verify that one candidate only.
+Keep the two tests apart on the panel, as in the old guide.
+\end{caution}
+
+\begin{panelnote}[What changed from the Laplace version]
+The slot has only unit orders and zero, so the proof compares three payoffs and needs no derivative in the order size.
+The Laplace factor $1-1/s$ (the old guide's $1-1/b$) therefore drops out of the trading-cost window.
+\end{panelnote}
+
+Run \texttt{python3 slot/study\_guide/verify/05\_investor.py} from the repository root.
+It prints the six payoffs in each benchmark economy, the return bounds, and the prior symmetry.
+It also prints the mixed candidate's exact returns.

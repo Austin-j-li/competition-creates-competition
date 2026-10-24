@@ -1,0 +1,359 @@
+\section{Robustness}\label{sec:10_robustness}
+
+The mechanism rests on three facts: the entry floor, the trading bounds of \Cref{sec:05_investor-bounds}, and
+recruitment after a purchase. Each extension below changes one primitive and asks which facts survive.
+\paper{Sec.~6; Appendix~A.6} The bounds \(\rho\kappa\DT\le K_H,K_L\le\DT\) still concern only the gross returns of
+correctly signed nonzero orders.
+
+\subsection{Preparation cost laws: keep the floor first}\label{sec:10_robustness-costs}
+\paper{Sec.~6.1; Prop.~A.4}
+
+\begin{intuition}[The atoms do not carry the result]
+The zero-cost type prepares after every price, so entry never falls below \(\rho\). The high-cost type prepares only
+after good news. Any cost law with a low and a high component can do both jobs, if strict gaps separate the costs
+from the gross profits.
+\end{intuition}
+
+Let the cost be independent of the class, the values and the slot, with law \(H_C=\rho H^0+(1-\rho)H^1\),
+\(\operatorname{supp}H^0\subset[0,L]\) and \(\operatorname{supp}H^1\subset[c_-,c_+]\). Either component may have atoms.
+
+\begin{resultbox}[Preparation cost laws \paper{Prop.~A.4}]
+Let \(F_1\) strengthen \(F_0\), and suppose
+\[
+0<L<B_1(m),\qquad B_0(\pi)<c_-<c_+<B_1(M),\qquad \Delta_0<k<\rho\kappa\Delta_1.
+\]
+At \(F_0\), orders are uniquely zero, and entry is \(\rho\). At \(F_1\), orders are uniquely full, only a purchase
+recruits the high component, and entry is \(\rho+(1-\rho)(b+\pi\lambda)\). Ownership rises under the exact condition
+of Proposition~2.
+\end{resultbox}
+
+The proof of Proposition~2 goes through with three changes.
+\begin{enumerate}[leftmargin=2em]
+\item \emph{The floor.} In any candidate at \(F_0\) or \(F_1\), every price belief lies in \([m,M]\), also at a pooled price
+(\Cref{sec:04_slot_beliefs-ceiling}; a pool with the zero order uses \(\beta\le1/3\)). Since \(g_H\ge g_L\) and
+\(B_0\ge B_1\), \(B_i(\bar\mu)\ge B_i(m)\ge B_1(m)>L\). The whole low component prepares after every price, so
+\(e\ge\rho\).
+\item \emph{The orders.} The trading bounds need only this floor. At \(F_0\) a correct order earns at most
+\(\Delta_0-k<0\); at \(F_1\) at least \(\rho\kappa\Delta_1-k>0\). So orders are zero at \(F_0\), where
+\(B_0(\pi)<c_-\) keeps the high component out, and full at \(F_1\).
+\item \emph{Recruitment.} \(B_1(M)>c_+>c_->B_0(\pi)\ge B_1(\pi)\) and \(M>\pi\) give \(g_{H,1}>g_{L,1}\). So
+\(B_1(m)<B_1(\pi)<c_-\) keeps the high component out after a sale or zero, and \(B_1(M)>c_+\) admits all of it after a
+purchase.
+\end{enumerate}
+Every cost comparison is strict, so no tie rule matters. Entry is at least \(\rho\) and nondecreasing in the
+posterior, so the price algebra of \Cref{sec:04_slot_beliefs-sufficiency} applies unchanged, and entry and ownership
+follow as in \Cref{sec:06_main_result-entry}.
+
+\paragraph{The third economy needs another gap.}
+At \(F_2\), the conditions \(L<B_2(m)\), \(B_2(M)<c_-\) and \(k<\rho\kappa\Delta_2\) keep full orders and return entry
+to \(\rho\). Without \(B_2(M)<c_-\), part of the high component still prepares after a purchase. With full orders and
+\(B_r(\pi)<c_-\), entry is \(\Ent(r)=\rho+(1-\rho)(b+\pi\lambda)\,H^1\bigl(B_r(M)\bigr)\). Only here does atomlessness
+matter: if \(H^1\) has no atom, entry is continuous and nonincreasing in \(r\), and the drop at the entry ceiling
+becomes a ramp.
+
+\paragraph{Benchmark check.}
+Take \(L=\reg{atom_L}\) and \(H^1\) uniform on \([6-\varepsilon,6+\varepsilon]\). At \(\varepsilon=\reg{atom_eps}\),
+the support margins are \(B_1(m)-L=\reg{margin_p4_atomless_floor_B}\), \(c_--B_0(\pi)=\reg{margin_p4_atomless_weak_B}\)
+and \(B_1(M)-c_+=\reg{margin_p4_atomless_strong_B}\), and entry at \(r_1\) is the two-point value
+\(\reg{p4_atomless_r1_entry}\). At \(r_2\), \(B_2(M)=\reg{p2_base_r2_low_profit_plus}\) lies inside the band, and
+\(H^1(B_2(M))=(B_2(M)-6+\varepsilon)/(2\varepsilon)\) gives \(\Ent_2=\reg{p4_atomless_r2_entry}\) and
+\(\Own_{H,2}=\reg{p4_atomless_r2_own}\). Entry returns to \(\rho\) at \(r_2\) for every half-width below
+\(6-B_2(M)=\reg{p4_atomless_max_width_floor_r2}\), such as \(\reg{atom_eps_small}\).
+
+\begin{caution}[Keep the three parts separate]
+The half-width \(\reg{atom_eps}\) keeps the rise from \(r_0\) to \(r_1\), but not entry \(\rho\) at \(r_2\).
+Atomlessness smooths the drop at the ceiling; it does not remove it.
+\end{caution}
+
+\subsection{General value classes and any prior}\label{sec:10_robustness-classes}
+\paper{Sec.~6.2; Prop.~A.5; Table~A.4}
+
+\begin{intuition}[Put both strengths just above the point where the classes split]
+Near the lowest value at which the classes differ, the target-payoff spread is close to zero, so informed trade
+against the weaker incumbent cannot cover \(k\). The gross-profit gap there is close to the whole class gap, so a
+high cost that only good news justifies fits inside it.
+\end{intuition}
+
+Let the classes satisfy the class ranking with \(\E_H[\theta]>\E_L[\theta]\). With \(D=G_L-G_H\ge0\), define
+\(\Gamma(x)=\int_p^xD(y)\,dy\), \(\bar\Gamma=\E_H[\theta]-\E_L[\theta]>0\) and \(v_*=\inf\{x\ge p:\Gamma(x)>0\}\).
+\(\Gamma\) rises from \(0\) to \(\bar\Gamma\), and \(v_*\) is the first value above the reserve where the classes differ.
+For point masses, \(v_*=\ell\).
+
+\emph{Step 1: the spread vanishes at \(v_*\).} For \(R\sim U[0,r]\), the spread formula \paper{(8)} has \(D(p^-)=0\) and
+\(1-F(y)=1-y/r\). Integrate by parts with \(\Gamma'=D\) and \(\Gamma(p)=0\); the boundary term is zero at both ends:
+\[
+\DT(r)=\int_p^r\Bigl(1-\frac yr\Bigr)D(y)\,dy
+=\Bigl[\Bigl(1-\frac yr\Bigr)\Gamma(y)\Bigr]_p^r+\frac1r\int_p^r\Gamma(y)\,dy
+=\frac1r\int_p^r\Gamma(y)\,dy .
+\]
+Since \(\Gamma\) rises, \(\int_p^r\Gamma\le(r-p)\Gamma(r)\), so
+\(\DT'(r)=[r\Gamma(r)-\int_p^r\Gamma]/r^2\ge p\Gamma(r)/r^2>0\) for \(r>v_*\). Since \(\Gamma=0\) on \([p,v_*]\),
+\(\DT(r)\to0\) as \(r\downarrow v_*\).
+
+\emph{Step 2: the profit gap stays large.} The surplus split of \Cref{sec:03_auction-split} gives
+\(\DT+g_H-g_L=\bar\Gamma\) at every strength. With \(\DT(r)\le(r-p)\bar\Gamma/r\) from Step 1,
+\(g_H(r)-g_L(r)=\bar\Gamma-\DT(r)\ge p\bar\Gamma/r>0\). At \(r=v_*\) the gap is the whole \(\bar\Gamma\), so
+\(B_{v_*}(M)-B_{v_*}(\pi)=(M-\pi)\bar\Gamma>0\). Also \(W_H(r)\ge p/r>0\), since every value is at least \(p\), and
+\(g_j\) and \(W_H\) are continuous in \(r\).
+
+\begin{resultbox}[Construct the strengths and the costs in this order \paper{Prop.~A.5}]
+Let \(e_H=\rho+(1-\rho)(b+\lambda)>\rho\).
+\begin{enumerate}[leftmargin=2em]
+\item Choose \(r_1>v_*\) close to \(v_*\), with \(B_{r_1}(M)>B_{v_*}(\pi)\) and \(e_HW_H(r_1)>\rho W_H(v_*)\). Both
+hold at \(r_1=v_*\), so continuity permits the choice.
+\item Choose \(r_0\in(v_*,r_1)\) close to \(v_*\), with \(\DT(r_0)<\rho\kappa\DT(r_1)\). Gross profit and \(W_H\) fall
+with strength, so \(B_{r_0}(\pi)<B_{r_1}(M)\) and \(e_HW_H(r_1)>\rho W_H(r_0)\).
+\item Choose \(c_H\in\bigl(B_{r_0}(\pi),B_{r_1}(M)\bigr)\) and \(k\in\bigl(\DT(r_0),\rho\kappa\DT(r_1)\bigr)\).
+\item Since \(g_j(r)\to0\) as \(r\to\infty\), choose \(r_2>r_1\) with \(B_{r_2}(M)<c_H\).
+\end{enumerate}
+Every condition is a strict inequality between continuous functions. So, for every prior, reserve, \(\rho\) and slot,
+a nonempty open set of \((r_0,r_1,r_2,c_H,k)\) satisfies (H1)--(H3) and the ownership condition. For point masses this
+holds for every \(h>\ell\).
+\end{resultbox}
+
+\paragraph{Six economies.}
+Each row keeps the benchmark slot, \(p=\reg{prim_p}\) and \(\rho=\reg{prim_rho}\), with its own costs and strengths. A
+single value is a point mass; a bracket is a uniform class. In every row, entry at \(r_0\) is \(\rho\), and so is
+entry at \(r_2\) when the row has a third strength.
+\begin{center}\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccccccc@{}}\toprule
+Economy & Low class & High class & \(\pi\) & \((c_H,k)\) & \((r_0,r_1,r_2)\) & \(\Ent_1\) & \(\Own_{H,1}\)\\\midrule
+Moderate gap & \(1\) & \(2\) & \(1/2\) & \((89/100,1/500)\) & \((21/20,3/2,\text{--})\)
+ & \reg{p2_moderate_r1_entry} & \reg{p2_moderate_r1_ownership}\\
+Narrow bands & \([19/20,21/20]\) & \([199/20,201/20]\) & \(1/2\) & \((6,1/50)\) & \((6/5,3,18/5)\)
+ & \reg{p2_bands_r1_entry} & \reg{p2_bands_r1_ownership}\\
+Low prior & \(1\) & \(10\) & \(3/10\) & \((9/2,1/100)\) & \((11/10,3,18/5)\)
+ & \reg{p2_ex_a_r1_entry} & \reg{p2_ex_a_r1_ownership}\\
+High prior & \(1\) & \(10\) & \(7/10\) & \((36/5,1/100)\) & \((11/10,3,18/5)\)
+ & \reg{p2_ex_b_r1_entry} & \reg{p2_ex_b_r1_ownership}\\
+Wide classes & \([3/5,7/5]\) & \([1,19]\) & \(7/10\) & \((67/10,1/50)\) & \((1,9/2,11/2)\)
+ & \reg{p2_ex_c_r1_entry} & \reg{p2_ex_c_r1_ownership}\\
+Same means & \(1\) & \(10\) & \(7/10\) & \((67/10,1/50)\) & \((1,9/2,11/2)\)
+ & \reg{p2_ex_d_r1_entry} & \reg{p2_ex_d_r1_ownership}\\\bottomrule
+\end{tabular}
+\end{center}
+The first five rows show the rise; the moderate-gap row has no third strength, so it checks (H1) and (H2) only. The
+last row puts point masses at the means of the wide classes: \(B_1(M)-c_H=\reg{margin_p2_ex_d_strong_top_B}<0\), so a
+purchase does not recruit. The prior rows need their own costs: at the benchmark costs and strengths, the prior
+\(3/10\) gives entry \(\reg{p2_fixed_prior_three_tenths_r1_entry}\) at every strength, and the prior \(7/10\) gives
+entry \(\reg{p2_fixed_prior_seven_tenths_r0_entry}\) at \(r_0\), because the prior itself recruits.
+
+\emph{How to compute a row.} For a point value \(v\), the payoff terms of \Cref{sec:03_auction-terms} apply with \(v\)
+in place of \(\ell\) when \(p\le v\le r\) (\(W_v=v/r\)), and with \(v\) in place of \(h\) when \(v\ge r\) (\(W_v=1\)). A
+uniform class averages them over its band, with a cut at \(v=r\). Inside \([p,r]\), \(g_v\) is linear in \(v^2\), so a
+band of half-width \(\varepsilon\) around \(\ell\) replaces \(\ell^2\) by \(\E[v^2]=\ell^2+\varepsilon^2/3\). Above \(r\),
+\(t_v\) does not depend on \(v\). For the wide high class \(U[1,19]\) at \(r_1=9/2\),
+\(W_H=\frac1{18}\bigl[\int_1^{9/2}\frac{v}{9/2}\,dv+(19-\frac92)\bigr]=\frac1{18}\bigl[\frac{77}{36}+\frac{29}2\bigr]
+=\frac{599}{648}<1\), while \(W_H(r_0)=1\). Ownership still rises, because the rise of \(e_H\) from \(\rho\) outweighs
+the fall of \(W_H\). The paper evaluates these integrals in exact rational arithmetic, with outward intervals for every
+quantity that depends on \(\eu\).
+
+\begin{intuition}[Why dispersion helps gross profit]
+For each \(R\), \(v\mapsto(v-\max\{p,R\})_+\) is convex. A mean-preserving spread within a class therefore weakly
+raises its gross profit, and \(B_r(\mu)\) at every belief. So the wide classes recruit, and point masses at the same
+means do not. The argument ranks gross profit, not entry in every equilibrium.
+\end{intuition}
+
+\subsection{Many classes: separation and a price collision}\label{sec:10_robustness-many}
+\paper{Prop.~A.6; Appendix~A.6}
+
+With \(J\) classes the price is one number, but the posterior is a vector; the price reveals only the posterior mean
+of class proceeds, \(\nu\cdot t\). Each class reaches each order through a liquidity order, so with \(\beta\le1/3\)
+every ratio \(f_j(q)/f_l(q)\) lies in \([1/(1+u),1+u]\) (\Cref{sec:04_slot_beliefs-zero}). Bayes' rule,
+\(\mu_j(q)/\pi_j=f_j(q)/\sum_l\pi_lf_l(q)\), then puts every order posterior in the convex set
+\[
+\mathcal M_\pi=\Bigl\{\nu\ge0:\ \sum_j\nu_j=1,\ \ \frac{\nu_j}{\pi_j}\le(1+u)\frac{\nu_l}{\pi_l}\ \text{for all }j,l\Bigr\},
+\]
+and a pooled price belief too. As in \Cref{sec:05_investor-residual}, against a fixed price and entry schedule,
+\(U_j(q)=q\,e(q)\,[t_j-\mu(q)\cdot t]-k|q|\) with \(e(q)\in[\rho,1]\); this needs no price sufficiency.
+
+\begin{resultbox}[Many classes under separation \paper{Prop.~A.6}]
+Split the classes into a low group \(\mathcal L\) and a high group \(\mathcal H\), with high-group prior mass \(\bar\pi\)
+and prior-weighted group means \(\bar g_{\mathcal L},\bar g_{\mathcal H}\) of \(g_{j,1}\). Suppose
+\(\max_jt_{j,0}-\min_jt_{j,0}<k\), \(\sum_j\pi_jg_{j,0}<c_H\),
+\[
+\min_{j\in\mathcal H}t_{j,1}-\max_{\nu\in\mathcal M_\pi}\nu\cdot t_1>\frac k\rho,\qquad
+\min_{\nu\in\mathcal M_\pi}\nu\cdot t_1-\max_{j\in\mathcal L}t_{j,1}>\frac k\rho,
+\]
+\(\bar g_{\mathcal H}>\bar g_{\mathcal L}\) and \(\bar g_{\mathcal L}+M(\bar\pi)(\bar g_{\mathcal H}-\bar g_{\mathcal L})>c_H\).
+At \(F_0\), every class abstains, and entry is \(\rho\). At \(F_1\), the high group buys, the low group sells, only a
+purchase recruits, and entry is \(\rho+(1-\rho)(b+\bar\pi\lambda)\).
+\end{resultbox}
+
+\emph{Proof.} At \(F_0\), every residual is at most \(\max_lt_{l,0}-\min_lt_{l,0}<k\) in absolute value, so all classes
+abstain, posteriors stay at the prior, and \(\sum_j\pi_jg_{j,0}<c_H\) gives entry \(\rho\). At \(F_1\), under every
+candidate, a high-group purchase earns at least \(\rho[\min_{\mathcal H}t_{l,1}-\max_\nu\nu\cdot t_1]-k>0\), and its
+sale at most \(-k\); the low group is symmetric. With these orders, the class proportions within each group stay at
+the prior proportions: with \(z\) the posterior mass of \(\mathcal H\), \(\mu_j=z\pi_j/\bar\pi\) on \(\mathcal H\) and
+\(\mu_j=(1-z)\pi_j/(1-\bar\pi)\) on \(\mathcal L\), and \(z=(m(\bar\pi),\bar\pi,M(\bar\pi))\) by the two-class formulas.
+Gross profit is \(\bar g_{\mathcal L}+z(\bar g_{\mathcal H}-\bar g_{\mathcal L})\). At \(z=\bar\pi\) it equals
+\(\sum_j\pi_jg_{j,1}\le\sum_j\pi_jg_{j,0}<c_H\) (Proposition~1(a)); at \(M(\bar\pi)\) it exceeds \(c_H\). Separation
+gives \(\bar t_{\mathcal H}>\bar t_{\mathcal L}\), so the three prices differ, and each reveals \(z\), hence the vector.
+
+\emph{Four classes.} Take the benchmark slot, costs, reserve, \(r_0\) and \(r_1\), equal priors \(\reg{four_prior}\),
+and point values \(\reg{four_v1}\), \(\reg{four_v2}\) (low group) and \(\reg{four_v3}\), \(\reg{four_v4}\) (high group).
+Every vector in \(\mathcal M_\pi\) is \(\nu_j=\pi_jw_j/\sum_l\pi_lw_l\) with \(1\le w_j\le1+u\). The mean \(\nu\cdot t\)
+is linear-fractional, hence monotone, in each weight, so its extremes lie at the 16 corners of the weight box. They
+give the separation distance \(\gamma=\reg{p2_groups_gamma}\) and the strong trading margin
+\(\rho\gamma-k=\reg{p2_groups_trade}\).
+
+\paragraph{Why separation matters: a price collision.}
+Take priors \((1/4,1/2,1/4)\), \(R\sim U[0,8]\), \(p=1\), \(\rho=1/4\), \(c_H=10\), \(k=1/8\), the benchmark slot, and
+\(G_1=\delta_1\), \(G_2=(1-w)\delta_1+w\delta_{10}\), \(G_3=\delta_{10}\) with \(w=(1+2b_0+\lambda)/2=\reg{p2_many_weight}\).
+Since \(\beta>1/4\), \(1-w=(1-\lambda)(4\beta-1)/2>0\). Class 1 sells, class 2 abstains and class 3 buys. Every class
+gross profit is at most \(95/16<c_H\), so entry is \(\rho\) at every price. The auction terms give
+\(t=(1,\,1+49w/16,\,65/16)\); normalize to \((0,w,1)\). After zero the posterior weights are proportional to
+\((b_0/4,(b_0+\lambda)/2,b_0/4)\), and after a purchase to \((b/4,b/2,(b+\lambda)/4)\), so the normalized means are
+\[
+z_0=\frac{b_0(w/2+1/4)+\lambda w/2}{b_0+\lambda/2},\qquad
+z_1=\frac{b(w/2+1/4)+\lambda/4}{b+\lambda/4}.
+\]
+Cross-multiply, cancel the common term \(bb_0(w/2+1/4)\), divide by \(\lambda\), and use \(2b+b_0+\lambda=1\):
+\[
+z_0=z_1\iff w\,\frac{2b+b_0+\lambda}8=\frac{3b_0}{16}+\frac b8+\frac\lambda8
+\iff w=\frac{2b+3b_0+2\lambda}{2(2b+b_0+\lambda)}=\frac{1+2b_0+\lambda}2 .
+\]
+Both orders have the price \(\reg{p2_many_q2_price}\), but the posterior vectors differ:
+\((\reg{p2_many_q1_mu0},\reg{p2_many_q1_mu1},\reg{p2_many_q1_mu2})\) after zero and
+\((\reg{p2_many_q2_mu0},\reg{p2_many_q2_mu1},\reg{p2_many_q2_mu2})\) after a purchase. The chosen orders beat the best
+alternatives by \(\reg{p2_many_choice0}\), \(\reg{p2_many_choice1}\) and \(\reg{p2_many_choice2}\), so this is an
+equilibrium with strict choices. The collision leaves entry at \(\rho\); it refutes only the claim that the price
+always reveals the whole vector. It is a knife-edge: the paper checks that a change of \(1/1000\) in \(w\), in either direction, separates the two prices and keeps every choice strict.
+
+\subsection{Complementary private signals}\label{sec:10_robustness-signals}
+\paper{Sec.~6.3; Prop.~A.7}
+
+\begin{intuition}[Accuracy does not measure redundancy]
+The investor can know the target's customers; the challenger can know its own integration plans. Two signals about
+different facts each add news, even when the challenger's signal is the more accurate one.
+\end{intuition}
+
+\emph{Set-up.} Prior \(1/2\), values \(h\) and \(\ell\). The investor sees \(T\in\{+,-\}\) with accuracy \(a_T\); the
+challenger sees \(Y\in\{+,-\}\) with accuracy \(d\); \(1/2<a_T,d<1\). The signals are independent given the class and
+independent of the slot, the cost and \(R\). The investor orders on \(T\). Write \(\nu(x)=\Pr(T=+\mid X=x)\).
+
+\emph{Step 1: the public belief.} The order depends on the class only through \(T\), so
+\(\mu(x)=a_T\nu(x)+(1-a_T)[1-\nu(x)]=(1-a_T)+(2a_T-1)\nu(x)\). The slot bounds of \Cref{sec:04_slot_beliefs-bounds},
+applied to \(T\), give \(m\le\nu\le M\). So \(\mu_-\le\mu(x)\le\mu_+\), where \(\mu_-\) and \(\mu_+\) are the values of \(\mu\) at \(\nu=m\) and
+\(\nu=M\).
+
+\emph{Step 2: the challenger adds its signal.} Bayes' rule with prior \(\mu\) gives
+\(\phi_+(\mu)=d\mu/[d\mu+(1-d)(1-\mu)]\) and \(\phi_-(\mu)=(1-d)\mu/[(1-d)\mu+d(1-\mu)]<\phi_+(\mu)\). Let \(I_y\) be
+high-cost preparation after \(Y=y\); since \(B\) rises, \(I_+\ge I_-\). A class-\(H\) challenger draws \(Y=+\) with
+probability \(d\), so
+\[
+e_H=\rho+(1-\rho)[dI_++(1-d)I_-],\qquad e_L=\rho+(1-\rho)[(1-d)I_++dI_-],\qquad
+0\le e_H-e_L\le(1-\rho)(2d-1).
+\]
+
+\emph{Step 3: the price still reveals \(\mu\).} Competitive prices give
+\(P=t_0+\mu e_Hw_H+(1-\mu)e_Lw_L=t_0+e_Lw_L+\mu\Delta_P\), with \(\Delta_P=e_Hw_H-e_Lw_L=e_L\DT+(e_H-e_L)w_H\). Since
+\(\rho\le e_L\le1\),
+\[
+\rho\DT\le\Delta_P\le\DT+(1-\rho)(2d-1)w_H=:D^+(r).
+\]
+Entry depends on the price, the signal and the cost, so two orders with one price share \(e_H\) and \(e_L\), and
+\(\Delta_P\ge\rho\DT>0\) forces equal public posteriors.
+
+\emph{Step 4: residuals.} After \(T=+\), the investor's class belief is \(a_T\), so the purchase residual is
+\((a_T-\mu)\Delta_P=(2a_T-1)[1-\nu(1)]\Delta_P\). After \(T=-\), the sale residual is
+\([\mu-(1-a_T)]\Delta_P=(2a_T-1)\nu(-1)\Delta_P\). With \(m\le\nu\le M\) and \(1-M=m\), every correct gross return lies in
+\([(2a_T-1)\rho m\DT,\ (2a_T-1)D^+(r)]\) under every profile. A wrong-signed order earns at most \(-k\).
+
+\begin{resultbox}[Complementary signals \paper{Prop.~A.7}]
+Suppose
+\[
+B_{r_0}(d)<c_H<B_{r_1}\bigl(\phi_+(\mu_+)\bigr),\qquad (2a_T-1)D^+(r_0)<k<(2a_T-1)\rho m\DT(r_1).
+\]
+At \(r_0\), orders are zero after both signals, and entry is \(\rho\). At \(r_1\), the investor buys after \(T=+\) and
+sells after \(T=-\), and entry exceeds \(\rho\). If also \(B_{r_1}(\phi_-(\mu_+))<c_H\), only \((X,Y)=(1,+)\) recruits,
+and
+\[
+\bar e_H=\rho+(1-\rho)d(b+a_T\lambda),\qquad \bar e_L=\rho+(1-\rho)(1-d)[b+(1-a_T)\lambda],\qquad
+\Ent_1=\tfrac12(\bar e_H+\bar e_L).
+\]
+The conditions allow \(d>a_T\).
+\end{resultbox}
+
+The trading bounds fix the orders. At \(r_0\), zero orders give \(\mu\equiv1/2\), so the challenger's belief is \(d\) or
+\(1-d\), and \(B_{r_0}(d)<c_H\) keeps the high cost out. At \(r_1\), the purchase posterior is \(\mu_+\), and
+\(\phi_+(\mu_+)\) recruits. In the one-pair case, a sale or zero has public posterior at most \(1/2\), and
+\(B_{r_1}(d)\le B_{r_0}(d)<c_H\); a purchase has probability \(b+a_T\lambda\) in class \(H\) and \(b+(1-a_T)\lambda\) in
+class \(L\).
+
+\paragraph{The vector \(S(B)\) and an exact witness.}
+Keep the benchmark slot, values, reserve and prior, and set \((\rho,c_H,k,r_0,r_1)=(17/20,357/50,3/200,11/10,23/10)\)
+and \((a_T,d)=(7/10,3/4)\). Entry rises from \(\reg{p4_s_signal_r0_entry}\) to \(\reg{p4_s_signal_r1_entry}\). Without
+\(Y\), the top public posterior cannot justify the high cost at either strength, and entry stays at \(\rho\): both
+sources are needed. For a witness in exact fractions, set \((\lambda,\beta)=(1/3,3/10)\), so \(b=1/5\), \(u=5/3\),
+\(m=3/11\) and \(M=8/11\). The five margins (private exclusion, joint recruitment, weak orders, strong orders, the
+other pair) are
+\[
+\frac{21}{400},\qquad\frac{1363}{36800},\qquad\frac{2}{1375},\qquad\frac{603}{31625},\qquad\frac{76753}{18400}.
+\]
+All are positive, with \(d>a_T\).
+
+\paragraph{The benchmark with the accuracies of \(S(B)\).}
+Restore the benchmark \(\rho\), costs and strengths, and keep \((a_T,d)=(7/10,3/4)\). Three of the four conditions
+fail, and each equilibrium has a mixed order. Write \(s=\lambda\sigma_+(1)\) and \(t=\lambda\sigma_-(-1)\); then
+\(1-\nu(1)=b/(2b+s)\) and \(\nu(-1)=b/(2b+t)\).
+\begin{itemize}[leftmargin=2em]
+\item \emph{At \(r_0\).} Under every profile, \(B_{r_0}(\phi_+(\mu_-))>c_H>B_{r_0}(\phi_-(\mu_+))\): \(Y=+\) recruits at
+every price and \(Y=-\) never does. So \((e_H,e_L)=(13/16,7/16)\) and
+\(\Delta_P=\tfrac7{16}\cdot\tfrac1{60}+\tfrac6{16}\cdot\tfrac{33}{80}=311/1920\). The purchase gross return
+\(\tfrac25\cdot\tfrac{b}{2b+s}\cdot\tfrac{311}{1920}\) falls strictly in \(s\), exceeds \(k\) at \(s=0\), and falls
+short of \(k\) at \(s=\lambda\). Its unique zero-profit rate solves
+\[
+\frac{311b}{4800(2b+s)}=\frac1{50}\iff 2b+s=\frac{311b}{96}\iff s=\frac{119b}{96}.
+\]
+The sale gives the same \(t\). Each signal type trades with probability \(119/(96u)=\reg{p4_b_signal_r0_buy_rate}\),
+and entry is \(\reg{p4_b_signal_r0_entry}\).
+\item \emph{At \(r_1\).} \(Y=-\) never recruits. A purchase has public posterior at least \(1/2\), and
+\(B_{r_1}(d)>c_H\), so \(Y=+\) recruits after it, with \(\Delta_P=\tfrac7{16}\cdot\tfrac23+\tfrac6{16}\cdot\tfrac98=137/192\).
+The purchase earns at least \(\tfrac25m\tfrac{137}{192}-k>0\), so \(s=\lambda\). After a sale, \(Y=+\) recruits
+exactly when \(\phi_+(\mu(-1))\ge\tau(r_1)=141/200\), that is \(\mu(-1)\ge47/106\), \(\nu(-1)\ge19/53\), \(t\le15b/19\).
+On that range the sale earns at least \(\tfrac25\cdot\tfrac{19}{53}\cdot\rho\DT(r_1)=19/795>k\), so the investor
+would sell with probability one; since \(\lambda>15b/19\), no equilibrium has \(t\le15b/19\). Above that range, entry
+after a sale is \(\rho\), and the net sale payoff \(\tfrac25\cdot\tfrac{b}{2b+t}\cdot\tfrac14\cdot\tfrac23-\tfrac1{50}
+=\tfrac{b}{15(2b+t)}-\tfrac1{50}\) falls strictly in \(t\). Its unique zero is \(t=4b/3\in(15b/19,\lambda)\): the sale
+probability is \(4/(3u)=\reg{p4_b_signal_r1_sell_rate}\). After zero, \(Y=+\) also recruits, so only a sale blocks
+recruitment after \(Y=+\). A sale has probability \(b+(1-a_T)t\) in class \(H\) and \(b+a_Tt\) in class \(L\), so
+\[
+\Ent_1=\rho+\frac{1-\rho}2\bigl\{d[1-b-(1-a_T)t]+(1-d)(1-b-a_Tt)\bigr\}=\frac58-\frac{23b}{40}=\reg{p4_b_signal_r1_entry}.
+\]
+\end{itemize}
+Entry falls in this comparison. Rule IM lets the investor mix at zero profit, and the strict monotonicity of each
+return makes these tuples unique. Under rule I0, which forces abstention at zero profit, neither strength has an
+equilibrium. Without \(Y\), entry is \(\rho\) at both strengths, with zero orders at \(r_0\) and rates \(s=t=4b/3\) at
+\(r_1\), again under rule IM.
+
+\paragraph{The benchmark itself.}
+At the benchmark the conditions hold with \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\). Entry rises to
+\(\reg{p4_comp_b_r1_entry}\), and it stays at \(\rho\) without \(Y\). The conditions cannot hold there with \(d\ge a_T\).
+Write \(z=2a_T-1\). The strong bound needs \(z>z_*=k/(m\rho\DT(r_1))\). If \(d\ge a_T\), then \(2d-1\ge z\), and the
+weak gross bound is \(zD^+(r_0)\ge z_*[\DT(r_0)+(1-\rho)z_*w_H(r_0)]>k\), which violates the weak bound. This limits
+these sufficient conditions at the benchmark only: \(S(B)\) has \(d>a_T\).
+
+\subsection{Order sizes and the Laplace comparison}\label{sec:10_robustness-sizes}
+\paper{Sec.~2.3, fn.~6}
+
+A liquidity trader places each of the orders \(\{-1,0,1\}\) with positive probability, so every order is on path, and
+Bayes' rule defines every price. A menu of continuous sizes needs a convention for the sizes that no class uses,
+unless liquidity flow covers every size. The Laplace version took the second route. With additive Laplace noise of
+scale \(s\) (density proportional to \(\eu^{-|z|/s}\)) and full orders \(\pm1\), the likelihood ratio of the flow \(x\)
+is
+\[
+\frac{f(x-1)}{f(x+1)}=\exp\Bigl(\frac{|x+1|-|x-1|}{s}\Bigr)\le\eu^{2/s},
+\]
+since \(|x+1|-|x-1|\le2\). So the two set-ups have the same posterior bounds when \(1+u=\eu^{2/s}\), that is
+\(s=2/\log(1+u)\). The benchmark \(1+u=\eu\) corresponds to \(s=2\). The match concerns \(m\) and \(M\), not
+the experiment or the equilibrium. In the slot, class \(H\) reaches the top posterior with probability \(b+\lambda\)
+(a purchase); in the Laplace model, it reaches the top plateau \(x\ge1\) with probability \(1/2\). These masses enter
+entry even when the bounds agree.
+
+\begin{panelnote}[What changed from the Laplace version]
+The slot removes the derivative argument over order sizes: you compare three payoffs directly. The old
+logistic-noise extension has no counterpart. Cost atoms, the moderate value gap and complementary signals still
+support the reversal, and many classes add a new point: one price need not reveal a whole posterior vector.
+\end{panelnote}

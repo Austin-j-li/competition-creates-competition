@@ -1,0 +1,274 @@
+\section{Controls: information is the cause}\label{sec:07_controls}
+
+A panel will ask: ``How do you know that the rise in entry comes from information, and not from something
+else?'' The paper answers with one theorem and two controls.
+\begin{itemize}[leftmargin=2em]
+\item The theorem \paper{Prop.~A.3}: if what the challenger learns is held fixed, a stronger incumbent cannot raise
+entry.
+\item Control 1 \paper{Table~3, Panel~B}: hold the full orders fixed at both strengths. Entry does not rise.
+\item Control 2 \paper{Table~3, Panel~C}: hide the price from the challenger. Entry does not rise.
+\end{itemize}
+In equilibrium, entry rises from \reg{entry_r0} to \reg{entry_r1_B}. So the rise needs the change in information
+that trade produces.
+
+\subsection{Deterrence at a fixed information experiment}\label{sec:07_controls-fixed}
+
+An \emph{information experiment} is the joint law of the class \(j\) and a signal \(S\) that the challenger observes.
+With fixed full orders, the price reveals \(S=X\). The theorem allows a general signal. Economy~1 has the stronger
+incumbent: \(F_1\le F_0\), a first-order stochastic strengthening.
+
+\begin{resultbox}[Fixed information \paper{Prop.~A.3}]
+Fix the joint law of the class \(j\) and the signal \(S\). Fix the class value laws \(G_H,G_L\) and the cost law. In
+each economy \(i\in\{0,1\}\), require
+\begin{equation}\label{eq:07-product}
+\mathcal L_i(\theta,R\mid j,S)=G_j\otimes F_i ,
+\end{equation}
+and let the cost \(C\) be independent of the class, both values and \(S\). If the incumbent strengthens from \(F_0\)
+to \(F_1\), entry does not rise under rule C1 (an indifferent high-cost challenger prepares). Its decrease is exactly
+\[
+\Ent_0-\Ent_1=\Pr\bigl\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\bigr\},\qquad \mu(S)=\Pr(j=H\mid S),
+\]
+and it is strict exactly when this probability is positive.
+\end{resultbox}
+
+Read the product condition \eqref{eq:07-product} as three parts. Each part matters.
+\begin{enumerate}[label=(P\arabic*),leftmargin=3em]
+\item Given \((j,S)\), the challenger's value \(\theta\) has the class law \(G_j\): the signal tells nothing about
+\(\theta\) beyond the class.
+\item Given \((j,S)\), the incumbent's value \(R\) has the law \(F_i\): the signal and the class tell nothing about
+the incumbent.
+\item Given \((j,S)\), the two values are independent.
+\end{enumerate}
+The independent cost makes \(\mu(S)\) the whole class belief at the moment of decision.
+
+\begin{caution}[Fix the full conditional law]
+A fixed class posterior alone does not fix the information about either acquisition value.
+Use the product law \eqref{eq:07-product}.
+The two examples below show why both conditional marginal laws matter.
+\end{caution}
+
+\subsubsection*{The proof, step by step}
+
+\emph{Step 1: the belief.} The challenger decides on \((S,C)\). The cost is independent of \((j,\theta,R,S)\), so
+\(\Pr(j=H\mid S,C)=\Pr(j=H\mid S)=\mu(S)\). The joint law of \((j,S)\) is the same in both economies, so
+\(\mu(\cdot)\) is the same function in both.
+
+\emph{Step 2: gross profit after the signal.} A prepared challenger keeps \((\theta-\max\{p,R\})_+\); this is zero when
+\(\theta<p\) (\Cref{sec:03_auction}). By (P1)--(P3), \((\theta,R)\) has the law \(G_j\otimes F_i\) given
+\((j,S)\). So
+\[
+\E_i\bigl[(\theta-\max\{p,R\})_+\mid j,S\bigr]=\int\!\!\int(y-\max\{p,x\})_+\,dF_i(x)\,dG_j(y)=g_j(F_i),
+\]
+which does not depend on \(S\). Average over the class with the weights of Step~1:
+\[
+\E_i\bigl[(\theta-\max\{p,R\})_+\mid S\bigr]=\mu(S)\,g_H(F_i)+[1-\mu(S)]\,g_L(F_i)=B_{F_i}(\mu(S)).
+\]
+
+\emph{Step 3: the preparation rule.} Under rule C1 the challenger prepares exactly when \(C\le B_{F_i}(\mu(S))\).
+
+\emph{Step 4: the pointwise indicator difference.} Proposition~1(a) gives \(B_{F_1}(\mu)\le B_{F_0}(\mu)\) at every
+belief. Fix one realization, and write \(b_1=B_{F_1}(\mu(S))\le b_0=B_{F_0}(\mu(S))\). If \(C\le b_1\), both
+indicators are one. If \(b_1<C\le b_0\), only the first is one. If \(C>b_0\), both are zero. So
+\begin{equation*}
+\1\{C\le B_{F_0}(\mu(S))\}-\1\{C\le B_{F_1}(\mu(S))\}=\1\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\}\ge0 .
+\tag*{\paper{Prop.~A.3, proof}}
+\end{equation*}
+
+\emph{Step 5: the exact decrease.} The law of \((S,C)\) is the same in both economies: the law of \(S\) is fixed, and
+\(C\) is independent of \(S\) with a fixed law. Take expectations of Step~4 under this one law. The left side becomes
+\(\Ent_0-\Ent_1\); the right side becomes the probability in the proposition.
+
+\emph{Step 6: a common tie probability.} Let an indifferent high-cost challenger prepare with a probability \(q\) that
+is the same in both economies. Each indicator becomes \(\1\{C<B\}+q\,\1\{C=B\}\). With \(b_1\le b_0\), the difference
+is \(0\) for \(C<b_1\) and for \(C>b_0\); \(1-q\) at \(C=b_1<b_0\); \(1\) for \(b_1<C<b_0\); \(q\) at \(C=b_0>b_1\); and
+\(0\) when \(b_0=b_1\). Each value is nonnegative, so entry does not rise here either.
+
+\begin{intuition}[Why fixed information gives deterrence]
+Hold fixed what the challenger can learn. Then its belief after each signal is the same in both economies. A stronger
+rival lowers gross profit at that belief. It can only remove a reason to prepare; it never adds one. So any rise in
+entry must come through a change in what the challenger learns.
+\end{intuition}
+
+\subsubsection*{Why each part of the condition matters: two examples}
+
+Each example removes one restriction, (P1) or (P2). In both, the joint law of the class and the
+signal is fixed, the class value laws are fixed, the cost is independent and the incumbent strengthens. Entry still
+rises, because the signal carries information about a value. \texttt{verify/07\_controls.py} recomputes both with
+exact fractions.
+
+\paragraph{Example A: the signal tells the challenger about the incumbent (breaks P2).} Take \(p=1/2\), point-mass
+classes \(12\) and \(11\) with equal priors, \(\rho=1/4\) and \(c_H=6\). Let
+\(F_0=\tfrac12U[0,1]+\tfrac12U[8,9]\) and \(F_1=\tfrac12U[0,1]+\tfrac12U[9,10]\). The upper component moves up, so
+\(F_1\le F_0\). In economy~0 a fair binary signal reports the component of \(R\); in economy~1 it is independent of
+\(R\). In both, the signal is independent of the class, so \(\mu(S)=1/2\) and \(\E[\theta\mid S]=23/2\). Every class
+value exceeds every incumbent value, so the challenger always wins and pays \(\max\{p,R\}\). The expected payment is
+\(\tfrac12\cdot\tfrac12+\int_{1/2}^1x\,dx=\tfrac58\) on \(U[0,1]\), \(\tfrac{17}2\) on \(U[8,9]\) and \(\tfrac{19}2\) on
+\(U[9,10]\).
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+ & Economy 0: signal reports the component & Economy 1: signal independent of \(R\)\\
+\midrule
+Gross profit after the signal & \(\tfrac{23}2-\tfrac58=\tfrac{87}8\) or \(\tfrac{23}2-\tfrac{17}2=3\) &
+\(\tfrac{23}2-\tfrac12\bigl(\tfrac58+\tfrac{19}2\bigr)=\tfrac{103}{16}\) after either signal\\
+High-cost preparation & after the low component only & after every signal\\
+Entry & \(\tfrac14+\tfrac34\cdot\tfrac12=\tfrac58\) & \(1\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Unconditional gross profit falls from \(111/16\) to \(103/16\), as Proposition~1 requires. But in economy~0 the signal
+reveals the strong component, and the profit after that signal, \(3\), fails \(c_H\). In economy~1 the signal no longer
+reveals it, and the average
+profit \(103/16\) clears \(c_H=6\).
+
+\paragraph{Example B: the signal tells the challenger about its value within a class (breaks P1).} Take
+\(G_L=\tfrac12\delta_1+\tfrac12\delta_3\), \(G_H=\tfrac12\delta_2+\tfrac12\delta_4\), \(p=1/2\), \(\rho=1/4\) and
+\(c_H=21/10\). Let \(j\) and \(S\) be independent fair binary variables, so \(\mu(S)=1/2\). Economy~0 has
+\(R\sim U[0,1/2]\), and \(\theta\) is independent of \(S\) within each class. Economy~1 has \(R\sim U[0,3/5]\), and
+\(S\) selects the lower or the upper value of the class. \(R\) is independent of every other draw, so (P2) and (P3)
+hold. Every value exceeds every incumbent value. The expected payment is \(\tfrac12\) on \(U[0,\tfrac12]\), and
+\(\tfrac12\cdot\tfrac56+\int_{1/2}^{3/5}\tfrac{x}{3/5}\,dx=\tfrac5{12}+\tfrac{11}{120}=\tfrac{61}{120}\) on \(U[0,\tfrac35]\).
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+ & Economy 0: \(\theta\) independent of \(S\) & Economy 1: \(S\) selects the value\\
+\midrule
+\(\E[\theta\mid S]\) & \(\tfrac12\cdot2+\tfrac12\cdot3=\tfrac52\) & \(\tfrac32\) (lower) or \(\tfrac72\) (upper)\\
+Gross profit after the signal & \(\tfrac52-\tfrac12=2<\tfrac{21}{10}\) &
+\(\tfrac32-\tfrac{61}{120}=\tfrac{119}{120}\) or \(\tfrac72-\tfrac{61}{120}=\tfrac{359}{120}\)\\
+Entry & \(\tfrac14\) & \(\tfrac14+\tfrac34\cdot\tfrac12=\tfrac58\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The class gross profits fall: \((g_L,g_H)\) moves from \((3/2,5/2)\) to \((179/120,299/120)\). But the upper signal tells
+the challenger that its own value is high, and gross profit \(359/120\) exceeds \(c_H=21/10\). The class belief
+never moves; the value information does the work.
+
+\paragraph{The third part and the cost.} Part (P3) lets Step~2 integrate \(R\) against \(F_i\) at each \(\theta\). If
+the values were correlated given the signal, the rent after the signal would not be \(g_j(F_i)\). A cost that is
+informative about the class or the values would act as a second signal; the condition would then have to hold for
+\((S,C)\) in place of \(S\).
+
+\subsection{Control 1: full orders held fixed}\label{sec:07_controls-frozen}
+
+Proposition~A.3 compares economies with the same experiment. On the equilibrium path the experiment changes with
+\(r\) (no trade at \(r_0\), full orders at \(r_1\)), so the theorem says nothing about that comparison. The two
+controls build the comparison that the theorem covers.
+
+The control fixes \(\lambda\), \(\beta\), \(\pi=1/2\), the cost law and the full orders \((\delta_1,\delta_{-1})\) at
+every strength, and lets the challenger and the market makers respond \paper{App.~A.6}.
+
+\emph{Step 1: posteriors.} Under full orders, \(f_H=(b,b_0,b+\lambda)\) and \(f_L=(b+\lambda,b_0,b)\) on \((-1,0,1)\),
+with \(b=(1-\lambda)\beta\) and \(b_0=(1-\lambda)(1-2\beta)\). Bayes' rule gives \((m,\tfrac12,M)\)
+(\Cref{sec:04_slot_beliefs}); at the benchmark slot \(m=\reg{m_half_B}\) and \(M=\reg{M_half_B}\).
+
+\emph{Step 2: the price reveals the order.} Entry is \(e_r(\mu)=\rho+(1-\rho)\1\{B_r(\mu)\ge c_H\}\) and the price is
+\(P(x)=t_0+e_r(\mu(x))\,w(\mu(x))\), with \(w(\mu)=t_L-t_0+\DT\mu\). Entry is nondecreasing in the posterior, so the
+three prices differ (\Cref{sec:04_slot_beliefs}). So the signal is \(S=X\), and its law given the class, \(f_j\),
+does not depend on \(r\).
+
+\emph{Step 3: the product condition holds.} The order depends only on the class and the slot draws, and the slot
+draws are independent of \((\theta,R)\). Given \(j\), \(\theta\sim G_j\) and \(R\sim F_r\) are independent. So
+\(\mathcal L(\theta,R\mid j,X)=G_j\otimes F_r\), and Proposition~A.3 applies to every pair of strengths.
+
+\emph{Step 4: which posterior recruits.}
+\Cref{sec:03_auction-derivatives} derives \(\tau\) and proves that it rises, with \(\tau(1)=5/8>1/2\).
+Thus neither a sale nor zero recruits on the benchmark path.
+A purchase recruits exactly when \(\tau(r)\le M\), or \(r\le r_C\approx\reg{rC_B}\).
+The equality uses rule C1; \Cref{sec:08_coexistence-ties} gives the alternative at \(r_C\).
+
+\emph{Step 5: entry.} A purchase has probability \(\tfrac12(b+\lambda)+\tfrac12b=b+\lambda/2=\reg{d_slot_B}\). So frozen
+entry is \(\rho+(1-\rho)(b+\lambda/2)=\tfrac14+\tfrac34\times\reg{d_slot_B}=\reg{p4_frozen_entry_below_ceiling}\) for
+\(1<r\le r_C\), and \(\rho=\reg{p4_frozen_entry_above_ceiling}\) for \(r>r_C\).
+
+\emph{Step 6: the crossing probabilities.} Check \(\{B_{r_b}(\mu(X))<C\le B_{r_a}(\mu(X))\}\) order by order.
+\begin{itemize}[leftmargin=2em]
+\item \(r_0\to r_1\). A zero cost prepares in both economies. After a purchase, a high cost prepares in both, because
+\(B_{r_1}(M)=\reg{p2_base_r1_low_profit_plus}\ge c_H\). After a sale or the zero order it prepares in neither, because
+\(B_{r_0}(1/2)=\reg{Bprior_r0}<c_H\). The event is empty: probability \(\reg{p4_control_crossing_r0_r1}\).
+\item \(r_1\to r_2\). The event is \(\{X=1,\ C=c_H\}\), because \(B_{r_2}(M)=\reg{p2_base_r2_low_profit_plus}<c_H\le
+B_{r_1}(M)\). Its probability is \((1-\rho)(b+\lambda/2)=\reg{p4_control_crossing_r1_r2}\), exactly the fall in entry.
+\end{itemize}
+
+\emph{Step 7: at \(r_0\) the frozen profile is a control, not an equilibrium.} There \(e(1)=1\), because
+\(B_{r_0}(M)-c_H=\reg{margin_p4_weak_top_B}>0\). The informed orders earn
+\begin{align*}
+\text{purchase: }&\DT(r_0)(1-M)-k=\tfrac1{60}\times\reg{m_half_B}-\tfrac1{50}=\reg{p4_frozen_r0_buy_tp_payoff},\\
+\text{sale: }&\rho\,\DT(r_0)\,m-k=\tfrac14\times\tfrac1{60}\times\reg{m_half_B}-\tfrac1{50}=\reg{p4_frozen_r0_sell_tm_payoff}.
+\end{align*}
+Both are negative, so the investor would abstain. At \(r_1\) the frozen tuple is the unique equilibrium, because the
+trading bound forces full orders there (\Cref{sec:06_main_result}).
+
+\begin{panelnote}[Flat entry under fixed information]
+The frozen experiment gives only three posteriors.
+Only the top posterior can recruit on this path.
+A higher threshold leaves entry unchanged until it exceeds that posterior.
+Thus frozen entry stays at \reg{p4_frozen_r0_entry} through \(r_C\), then falls by \reg{p4_control_crossing_r1_r2}.
+The old Laplace experiment had a continuum of intermediate posteriors.
+Its frozen entry could fall as the threshold moved within that continuum.
+\end{panelnote}
+
+\subsection{Control 2: the hidden price}\label{sec:07_controls-hidden}
+
+Now the challenger cannot see the price; the investor and the market makers act as before.
+\begin{enumerate}[leftmargin=2em]
+\item \emph{Entry.} The challenger's belief stays at \(1/2\). The high-cost window (H1) gives \(B_{r_0}(1/2)<c_H\), and
+Proposition~1(a) gives \(B_{r_1}(1/2)\le B_{r_0}(1/2)\). So entry is \(\rho\) after every order at both strengths.
+\item \emph{Orders at \(r_0\).} The gross return of a correctly signed nonzero order is at most \(\DT(r_0)=1/60<k=1/50\),
+and a wrong-signed order earns at most \(-k\). Both classes abstain.
+\item \emph{Orders at \(r_1\).} The trading bound holds for any entry in \([\rho,1]\), so with \(e\equiv\rho\). The gross
+returns of the two correctly signed nonzero orders satisfy \(K_H=\rho\DT(r_1)[1-\mu(1)]\ge\rho\DT(r_1)m\) and
+\(K_L=\rho\DT(r_1)\mu(-1)\ge\rho\DT(r_1)m\), and \(\rho m\DT(r_1)=\tfrac14\times\reg{m_half_B}\times\tfrac23=0.044824>k\).
+% verify/07_controls.py
+Both classes trade fully. The sale margin \(\reg{margin_p4_strong_trade_B}\) equals that of the equilibrium at \(r_1\),
+because a sale meets entry \(\rho\) in both games.
+\item \emph{Outcome.} At \(r_1\) the prices \(\reg{p4_hidden_r1_sell_price}\), \(\reg{p4_hidden_r1_zero_price}\),
+\(\reg{p4_hidden_r1_buy_price}\) differ: the price is informative, but the challenger does not see it. Entry is
+\(\reg{p4_hidden_r0_entry}\), ownership \(\rho/2=\reg{p4_hidden_r1_own}\), and proceeds \(t_0+\rho\,w(1/2)\): at \(r_1\),
+\(\tfrac5{12}+\tfrac14\bigl(\tfrac78-\tfrac5{12}+\tfrac13\bigr)=\tfrac{59}{96}=\reg{p4_hidden_r1_proceeds}\).
+\end{enumerate}
+Each tuple is the unique equilibrium of the game in which the challenger decides on its prior.
+
+\subsection{The outcomes table decoded}\label{sec:07_controls-table}
+
+Table~\ref{tab:07-outcomes} collects the comparisons of Table~3 in the paper.
+\Cref{sec:03_auction-table} gives the auction inputs.
+\Cref{sec:06_main_result-entry} derives equilibrium entry and ownership.
+The controls use the same aggregation formulas.
+
+\begin{table}[ht]
+\centering\small
+\caption{Equilibrium outcomes and information controls \paper{Table~3}.}\label{tab:07-outcomes}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Regime & Strength & Entry & High-class ownership & Target proceeds\\
+\midrule
+Equilibrium & \(r_0\) & \reg{entry_r0} & \reg{own_r0} & \reg{p4_base_r0_proceeds}\\
+& \(r_1\) & \reg{entry_r1_B} & \reg{own_r1_B} & \reg{p4_base_r1_proceeds}\\
+& \(r_2\) & \reg{entry_r2} & \reg{own_r2_B} & \reg{p4_base_r2_proceeds}\\
+Frozen full orders & \(r_0\) & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r0_own} & \reg{p4_frozen_r0_proceeds}\\
+& \(r_1\) & \reg{p4_frozen_r1_entry} & \reg{p4_frozen_r1_own} & \reg{p4_frozen_r1_proceeds}\\
+Hidden price & \(r_0\) & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r0_own} & \reg{p4_hidden_r0_proceeds}\\
+& \(r_1\) & \reg{p4_hidden_r1_entry} & \reg{p4_hidden_r1_own} & \reg{p4_hidden_r1_proceeds}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Expected proceeds.} \(R_T=t_0+\tfrac12e_Hw_H+\tfrac12e_Lw_L\). At \(r_1\):
+\(\tfrac5{12}+\tfrac12\times\reg{eH_r1_B}\times\tfrac98+\tfrac12\times\reg{eL_r1_B}\times\tfrac{11}{24}=\reg{p4_base_r1_proceeds}\).
+At \(r_0\) and \(r_2\), \(e_H=e_L=\rho\), so \(R_T=t_0+\rho w(1/2)\).
+The values are \(377/960\) and \(1913/2880\). As a check,
+competitive prices make \(R_T=\E[P(X)]\). With \(e\equiv\rho\), \(w\) is linear and the posteriors average to \(1/2\), so
+\(R_T\) equals the zero-order price.
+
+\paragraph{The control rows.} The frozen tuple at \(r_0\) has the same \(e_H\) and \(e_L\) as at \(r_1\), because the same
+purchase recruits; so entry and ownership repeat the \(r_1\) values. Proceeds use the \(r_0\) inputs:
+\(\tfrac7{24}+\tfrac12\times\reg{eH_r1_B}\times\tfrac{33}{80}+\tfrac12\times\reg{eL_r1_B}\times\tfrac{19}{48}=\reg{p4_frozen_r0_proceeds}\).
+At \(r_1\) the frozen tuple is the equilibrium. At \(r_2\), frozen full orders give the equilibrium row, since \(r_2>r_C\).
+The hidden-price control at \(r_0\) also gives the equilibrium row, since its price carries no information.
+
+\begin{resultbox}[The identification logic]
+At fixed information, entry cannot rise with incumbent strength.
+The equilibrium rise therefore needs the change in information that trade produces.
+The two controls isolate this change: frozen full orders keep entry flat; a hidden price keeps entry at its floor.
+\end{resultbox}

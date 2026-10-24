@@ -1,0 +1,235 @@
+\section{Welfare and sale terms}\label{sec:11_welfare}
+
+This chapter holds the incumbent fixed and asks who gains when the challenger sees the price. It then changes the
+sale terms: the payment rule and the reserve. Write \(\mathcal R\) for expected target proceeds and \(\mathcal W\) for
+expected acquisition surplus net of preparation costs. Acquisition surplus excludes transfers between bidders,
+shareholders and traders. \paper{Sec.~7; Appendix~A.7}
+
+\subsection{Access to prices: two equilibria with the same orders}\label{sec:11_welfare-access}
+\paper{Sec.~7.1; Prop.~A.8}
+
+\begin{intuition}[Same orders, better preparation decisions]
+At the strong incumbent the investor trades fully even when the challenger cannot see the price. So access leaves
+the orders and the trading costs unchanged. It changes one decision: a high-cost challenger now prepares after a
+purchase, where its expected gross profit exceeds its cost.
+\end{intuition}
+
+Hold the incumbent at \(F_1\) under the hypotheses of Proposition~2, and solve two economies. With access, the
+equilibrium is the strong tuple \(\mathcal E_1\) of \Cref{sec:06_main_result-strong}: full orders, posteriors
+\((m,\pi,M)\) and entry \((\rho,\rho,1)\). With a hidden price, the challenger's belief stays at \(\pi\), and
+\(B_1(\pi)\le B_0(\pi)<c_H\), so entry is \(\rho\) after every order. The trading bound holds for every entry in
+\([\rho,1]\) (\Cref{sec:05_investor-bounds}), so full orders are again unique; \Cref{sec:07_controls-hidden} solves
+this economy. The orders, and hence the trading costs, coincide at every realization.
+
+\begin{resultbox}[Access to prices \paper{Prop.~A.8}]
+Under the hypotheses of Proposition~2, at \(F_1\), with superscript \(1\) for access, \(0\) for the hidden price and
+\(w_j=t_j-t_0\):
+\begin{align*}
+\mathcal R^1-\mathcal R^0&=(1-\rho)\bigl\{\pi(b+\lambda)w_H+(1-\pi)\,b\,w_L\bigr\}>0,\\
+\mathcal W^1-\mathcal W^0&=(1-\rho)(b+\pi\lambda)\bigl[B_1(M)-c_H+pF_1(p)\bigr]>0.
+\end{align*}
+\end{resultbox}
+
+\paragraph{The proceeds gain.} Couple the two economies on the class, the value, the cost, the slot identity and the
+liquidity order. Only high-cost preparation after a purchase differs. A purchase has probability \(b+\lambda\) in class
+\(H\) and \(b\) in class \(L\) (\Cref{sec:06_main_result-entry}). The cost is high with probability \(1-\rho\). Each added
+preparation raises expected proceeds from \(t_0\) to \(t_j\), that is by \(w_j\). Multiply the three factors and weight
+the classes by \(\pi\) and \(1-\pi\). Both terms are nonnegative, and \(w_H=w_L+\Delta_1\ge\Delta_1>0\), so the gain is positive.
+
+\paragraph{The surplus gain.} Without a challenger the allocation value is \(\mathcal V_0(R)=R\,\1\{R\ge p\}\). Truthful
+bids give the target to the highest admissible value, so an admissible challenger with value \(\theta\) adds
+\[
+\max\{\mathcal V_0(R),\theta\}-\mathcal V_0(R)=(\theta-\max\{p,R\})_++p\,\1\{R<p\}.
+\]
+If \(R<p\), both sides equal \(\theta\), since \((\theta-p)+p=\theta\). If \(R\ge p\), both sides equal \((\theta-R)_+\).
+Take the expectation over \(R\) and over the class at the purchase posterior \(M\). The first term gives \(B_1(M)\) and
+the second gives \(pF_1(p)\), the value of the sales that the reserve would otherwise block. Subtract \(c_H\), and
+multiply by the probability of an added preparation, \((1-\rho)\Pr(X=1)=(1-\rho)(b+\pi\lambda)\). The bracket is
+positive because \(B_1(M)>c_H\) by (H1). The gain is an expectation at the purchase posterior, not a gain at each
+realized value.
+
+\paragraph{Benchmark check.} At \(r_1\), \(w_H=9/8\), \(w_L=11/24\) (\Cref{sec:03_auction-terms}) and
+\(pF_1(p)=\tfrac12\cdot\tfrac{1/2}{3}=\tfrac1{12}\). With \(\pi=1/2\) and \(\rho=1/4\),
+\[
+\mathcal R^1-\mathcal R^0=\frac38\Bigl[\frac98(b+\lambda)+\frac{11}{24}b\Bigr]=\reg{p2_access_proceeds_gain},\qquad
+\mathcal W^1-\mathcal W^0=\frac34\Bigl(b+\frac\lambda2\Bigr)\Bigl[B_1(M)-6+\frac1{12}\Bigr]=\reg{p2_access_surplus_gain}.
+\]
+In levels, proceeds rise from \(\reg{p2_base_hidden_proceeds}\) to \(\reg{p2_base_r1_proceeds}\), and net surplus from
+\(\reg{p2_base_hidden_surplus}\) to \(\reg{p2_base_r1_surplus}\). The surplus level is
+\(\E[\mathcal V_0(R)]=(r^2-p^2)/(2r)\), plus \(g_j+p^2/r\) for each prepared class-\(j\) challenger, minus \(c_H\) for each
+high-cost preparation; the low cost is zero. If
+the execution cost is a resource cost, both economies lose \(\lambda k\), and the gains do not change. With research
+at the cap (\Cref{sec:09_research-strong}), research and trading costs also coincide, and the gains are the same,
+\(\reg{res_dR_r1}\) and \(\reg{res_dW_r1}\).
+
+\subsection{Transfers, trade scale and the limits of the gain}\label{sec:11_welfare-transfers}
+\paper{Sec.~7.1; Appendix~A.7}
+
+A shareholder who holds through the sale receives \(V_T\), not the interim price, so target shareholders receive the
+proceeds gain. The investor's profit is a transfer. In the access economy class \(H\) buys and meets entry one, so
+\(K_H=\Delta_1(1-M)\); class \(L\) sells and meets entry \(\rho\), so \(K_L=\rho\Delta_1m\)
+(\Cref{sec:05_investor-residual}). Weight by the class probabilities and by the presence probability:
+\[
+G=\lambda\Delta_1\{\pi(1-M)+(1-\pi)\rho m\}=\reg{p2_access_gross_transfer},\qquad
+G/\lambda=\reg{p2_access_gross_conditional}.
+\]
+Competitive prices give \(\E[V_T-P(X)\mid X]=0\), so \(\E[X(V_T-P(X))]=0\). Split this expectation by who filled the
+slot: the informed part is \(G\), so liquidity traders lose \(G\) in expected gross terms. Market makers earn zero, and
+the execution cost is separate.
+
+\paragraph{The scale of trade.} Let one order unit be \(z\) shares per share of float, with the same signal
+experiment. Without the investor every posterior is \(\pi\) and entry is \(\rho\), so proceeds are \(\mathcal R^0\).
+Even if initial shareholders bear the whole liquidity loss, they gain over that economy exactly when
+\[
+(\mathcal R^1-\mathcal R^0)-zG>0\iff z<\frac{\mathcal R^1-\mathcal R^0}{G}=\reg{p2_access_break_even}.
+\]
+This holds the signal experiment fixed; it does not solve a game in which the investor chooses its size.
+
+\paragraph{Information, not the price level.} Add a deterministic external dividend of \(\reg{p2_access_proceeds_gain}\)
+to the traded claim of the hidden-price economy. \(V_T\) and every price rise by that amount, so mean prices agree
+across the economies, while every order payoff, the challenger's information and entry stay the same.
+
+\paragraph{Access outside the recruitment region.} Suppose instead \(B_1(m)<c_H<B_1(\pi)\), with
+\(k<\rho\kappa\Delta_1\). Without the price every challenger prepares, so entry is one after every order. With the
+price, entry is \((\rho,1,1)\), and orders are full in both economies. Access now \emph{removes} high-cost preparation
+after a sale, which has probability \(b\) in class \(H\) and \(b+\lambda\) in class \(L\). The same steps give
+\begin{align*}
+\mathcal R^1-\mathcal R^0&=-(1-\rho)\{\pi b\,w_H+(1-\pi)(b+\lambda)w_L\}<0,\\
+\mathcal W^1-\mathcal W^0&=-(1-\rho)[b+(1-\pi)\lambda]\,[B_1(m)-c_H+pF_1(p)].
+\end{align*}
+At the strong benchmark with \(c_H=\reg{access_out_cH}\), \(B_1(m)-c_H=\reg{p2_outside_seen_cost_sign_minus}\), but the
+bracket is positive because \(pF_1(p)=1/12\). Access changes proceeds by \(\reg{p2_outside_proceeds_gain}\) and surplus
+by \(\reg{p2_outside_surplus_gain}\).
+
+\begin{caution}[State the welfare domain]
+The positive result holds where the high cost does not pay at the prior. Do not say that price access raises
+proceeds or surplus for every cost.
+\end{caution}
+
+\subsection{The payment rule: why the sign can change}\label{sec:11_welfare-payment}
+\paper{Sec.~7.2; Prop.~A.9}
+
+Proposition~1 belongs to the cash second-price rule (\Cref{sec:03_auction-prop1}). Now change the payment rule. The
+institution has zero reserve and verifiable values. After diligence the buyer with the highest value acquires the
+target, and a sale to the next buyer at its value is an enforceable fallback. The seller and the winner split the
+surplus above the fallback by Nash bargaining, with seller weight \(\omega\in[0,1)\). Keep the point-mass classes, and
+let the incumbent's support be \([0,\bar r]\) with \(\ell<\bar r<h\).
+
+\begin{resultbox}[The payment rule \paper{Prop.~A.9}]
+\begin{gather*}
+T_\omega(R,\theta)=(1-\omega)\min\{R,\theta\}+\omega\max\{R,\theta\},\qquad
+g_{\theta,\omega}=(1-\omega)\,\E[(\theta-R)_+],\\
+\Delta_\omega=\omega(h-\ell)+(1-2\omega)\,\E[(R-\ell)_+].
+\end{gather*}
+A stronger incumbent weakly lowers \(g_{\theta,\omega}\), and it moves the spread with the weak sign of \(1-2\omega\);
+the move is strict when \(\E[(R-\ell)_+]\) changes strictly and \(\omega\ne1/2\). At \(\omega=1/2\),
+\(\Delta_\omega=(h-\ell)/2\) for every incumbent distribution.
+\end{resultbox}
+
+\paragraph{The payment.} Let the winner's value be \(V\) and the fallback \(z\le V\). For \(0<\omega<1\) and \(V>z\),
+the payment \(P\in[z,V]\) maximizes \((P-z)^\omega(V-P)^{1-\omega}\). Its logarithm has the derivative
+\(\omega/(P-z)-(1-\omega)/(V-P)\), which falls strictly in \(P\). Set it to zero:
+\[
+\omega(V-P)=(1-\omega)(P-z)\iff P=(1-\omega)z+\omega V.
+\]
+At \(\omega=0\) or \(V=z\) the payment is \(z\), as the formula gives. With a challenger, \(V=\max\{R,\theta\}\) and
+\(z=\min\{R,\theta\}\), which is \(T_\omega\). Without one, the fallback is zero and the seller receives \(\omega R\).
+
+\paragraph{Profit and spread.} A challenger wins when \(\theta>R\) and keeps \(\theta-T_\omega=(1-\omega)(\theta-R)\);
+this gives \(g_{\theta,\omega}\). For the spread, compare the classes at each \(R<h\). If \(R\le\ell\), both classes win and
+pay \((1-\omega)R+\omega\theta\), so the difference is \(\omega(h-\ell)\). If \(\ell<R<h\), the high class wins, and against
+the low class the incumbent wins and pays \((1-\omega)\ell+\omega R\):
+\[
+T_\omega(R,h)-T_\omega(R,\ell)=[(1-\omega)R+\omega h]-[(1-\omega)\ell+\omega R]=\omega(h-\ell)+(1-2\omega)(R-\ell).
+\]
+Both cases equal \(\omega(h-\ell)+(1-2\omega)(R-\ell)_+\), and the
+expectation over \(R\) gives \(\Delta_\omega\). The condition \(\bar r<h\) matters: for \(R\ge h\) both classes lose, and
+the difference would be \((1-\omega)(h-\ell)\). Finally, \((\theta-R)_+\) falls and \((R-\ell)_+\) rises in \(R\), so a
+first-order strengthening weakly lowers \(g_{\theta,\omega}\) and moves \(\Delta_\omega\) with the sign of \(1-2\omega\).
+
+\begin{intuition}[Sensitivities]
+Take \(R>\ell\). The high-class payment \((1-\omega)R+\omega h\) moves with \(R\) at rate \(1-\omega\). Against the low
+class the incumbent wins and pays \((1-\omega)\ell+\omega R\), which moves at rate \(\omega\). Competition widens the
+gap only if \(1-\omega>\omega\). The zero-reserve second-price auction is \(\omega=0\): all weight on the runner-up's
+value.
+\end{intuition}
+
+For a uniform incumbent, \(\E[(R-\ell)_+]=(r-\ell)^2/(2r)=\DT(r)\) (\Cref{sec:03_auction-terms}), so
+\(\Delta_\omega(r_1)-\Delta_\omega(r_0)=(1-2\omega)(\tfrac23-\tfrac1{60})=\reg{pay_gap_coef}\,(1-2\omega)\). State the scope
+before the panel does: the result covers the payment stage only, not the trading and preparation equilibrium under
+Nash bargaining.
+
+\subsection{Reserves: preparation, sale and admissible bids}\label{sec:11_welfare-reserves}
+\paper{Sec.~7.3; Prop.~A.10; Table~5}
+
+Now let the reserve take any value, so a class value can lie below it. For a point value \(v\) and
+\(R\sim U[0,r]\), with \(t_0=p(1-p/r)_+\),
+\[
+(t_v,g_v,W_v)=\begin{cases}
+(t_0,0,0),&v<p,\\
+(p,\,v-p,\,1),&r\le p\le v,\\
+\bigl(v-\tfrac{v^2-p^2}{2r},\,\tfrac{v^2-p^2}{2r},\,\tfrac vr\bigr),&p\le v\le r,\\[3pt]
+\bigl(\tfrac r2+\tfrac{p^2}{2r},\,v-\tfrac r2-\tfrac{p^2}{2r},\,1\bigr),&p\le r\le v.
+\end{cases}
+\]
+Below the reserve the challenger cannot bid, so the outcome is that of no entry. If \(r\le p\le v\), the incumbent
+never meets the reserve, and the challenger buys alone at \(p\). The last two rows are the integrals of
+\Cref{sec:03_auction-terms} with \(\ell\) or \(h\) replaced by \(v\). The pieces agree at \(v=r\) and at \(p=r\), and a
+class law averages the kernel.
+
+\paragraph{Exclusion can widen the spread.} For point values with \(\ell<p<r<h\), the low class adds nothing:
+\(t_L=t_0=p-p^2/r\) and \(g_L=0\), while \(t_H=r/2+p^2/(2r)\). So \(\DT=r/2-p+3p^2/(2r)\), the spread of the worked
+example in \Cref{sec:03_auction-prop1c}. For \(r<p<h\), \(t_0=t_L=g_L=0\), \(t_H=p\), \(g_H=h-p\) and \(\DT=p\). A larger
+spread can make full orders pay even against the weak incumbent.
+
+\paragraph{Preparation, sale and competition differ.} Let \(I\) indicate preparation and \(a=\Pr(I=1,\theta\ge p)\).
+Entry is \(\Pr(I=1)\). Two admissible bidders meet with probability \((1-p/r)_+a\), because \(R\) is independent of
+\((I,\theta)\), and a sale occurs with probability \((1-p/r)_++a-(1-p/r)_+a\). The zero-cost challenger prepares by the
+model's convention, so preparation can occur without an admissible bid.
+
+\begin{resultbox}[Reserves \paper{Prop.~A.10}]
+Fix a reserve. Keep the class order, the costs, the slot and a strengthening \(F_1\le F_0\), and compute each class
+object with the reserve. Suppose \(k<\rho\kappa\min\{\Delta_0,\Delta_1\}\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item If \(B_0(\pi)<c_H<B_1(M)\), entry is flat: \(\Ent_0=\Ent_1=\rho+(1-\rho)(b+\pi\lambda)\).
+\item If \(B_0(\pi)<c_H<B_0(M)\) and \(B_1(M)<c_H\), entry falls strictly:
+\(\Ent_0=\rho+(1-\rho)(b+\pi\lambda)>\rho=\Ent_1\).
+\end{enumerate}
+Each economy has a unique outcome under every pair of tie rules.
+\end{resultbox}
+
+\emph{Derivation.} The trading bound of \Cref{sec:05_investor-bounds} needs only \(\DT\ge0\) and entry in \([\rho,1]\),
+so it holds with the reserve kernel. Full orders are forced at both strengths, and the posteriors are \((m,\pi,M)\).
+Gross profit falls with strength at every belief, because \((\theta-\max\{p,R\})_+\) is nonincreasing in \(R\). In
+part (a), \(B_1(\pi)\le B_0(\pi)<c_H<B_1(M)\le B_0(M)\), so only a purchase recruits, at both strengths. In part (b),
+the weak strength has the same pattern, and at the strong strength \(B_1(\mu)\le B_1(M)<c_H\) at every posterior. A
+purchase has probability \(b+\pi\lambda\) (\Cref{sec:06_main_result-entry}). Every comparison is strict, so no tie rule
+matters.
+
+\begin{center}\small
+\begin{tabular}{@{}llcccc@{}}\toprule
+Reserve & Strength & Preparation & Sale & Two admissible & Proceeds\\\midrule
+\(\reg{prim_p}\) & \(r_0\) & \reg{p2_reserve_points_base_r0_entry} & \reg{p2_reserve_points_base_r0_sale} & \reg{p2_reserve_points_base_r0_two} & \reg{p2_reserve_points_base_r0_proceeds}\\
+& \(r_1\) & \reg{p2_reserve_points_base_r1_entry} & \reg{p2_reserve_points_base_r1_sale} & \reg{p2_reserve_points_base_r1_two} & \reg{p2_reserve_points_base_r1_proceeds}\\
+\(\reg{rsv_points_excl}\) & \(r_0\) & \reg{p2_reserve_points_exclude_r0_entry} & \reg{p2_reserve_points_exclude_r0_sale} & \reg{p2_reserve_points_exclude_r0_two} & \reg{p2_reserve_points_exclude_r0_proceeds}\\
+& \(r_1\) & \reg{p2_reserve_points_exclude_r1_entry} & \reg{p2_reserve_points_exclude_r1_sale} & \reg{p2_reserve_points_exclude_r1_two} & \reg{p2_reserve_points_exclude_r1_proceeds}\\
+\(\reg{rsv_deter}\) & \(r_0\) & \reg{p2_reserve_points_deter_r0_entry} & \reg{p2_reserve_points_deter_r0_sale} & \reg{p2_reserve_points_deter_r0_two} & \reg{p2_reserve_points_deter_r0_proceeds}\\
+& \(r_1\) & \reg{p2_reserve_points_deter_r1_entry} & \reg{p2_reserve_points_deter_r1_sale} & \reg{p2_reserve_points_deter_r1_two} & \reg{p2_reserve_points_deter_r1_proceeds}\\\bottomrule
+\end{tabular}
+\end{center}
+The rows at \(p=\reg{prim_p}\) repeat Proposition~2, with no trade at \(r_0\). The reserve \(\reg{rsv_points_excl}\)
+excludes the low class, and part (a) gives flat entry. Entry is exactly flat
+because the probability of a purchase, \(b+\pi\lambda\), does not depend on strength. The reserve
+\(\reg{rsv_deter}\) gives strict deterrence by part (b); it exceeds \(r_0\), so it also excludes the weak incumbent.
+
+\paragraph{Where strict deterrence holds.} With the low class excluded, \(g_L=0\), so gross profit at the top posterior
+is \(Mg_H\). At \(r_1\) it equals the cost when
+\[
+M\Bigl(h-\frac{r_1}{2}-\frac{p^2}{2r_1}\Bigr)=c_H\iff p=p_H:=\sqrt{2r_1(h-c_H/M)-r_1^2},
+\]
+and \(B_1(M)<c_H\) above \(p_H\). At \(r_0<p\), \(g_H=h-p\), so \(B_0(M)>c_H\) exactly when \(p<h-c_H/M\). Strict deterrence
+therefore holds for \(p_H\approx\reg{p2_reserve_ph}<p<h-c_H/M\approx\reg{p2_reserve_weak_top}\). The other hypotheses of
+part (b) hold there: \(B_0(1/2)=(h-p)/2<c_H\), and both spreads rise with \(p\), so the margin of the trading bound,
+\(\rho\kappa\min\{\Delta_0,\Delta_1\}-k\), is at least its value \(0.050792\) at \(p_H\). % verify/11_welfare.py
+Both endpoints exceed \(r_0\). For \(\ell<p\le r_0\), the top posterior still recruits at both strengths, and entry is
+flat. At either endpoint the challenger's tie rule matters. None of this identifies the seller's optimal reserve.

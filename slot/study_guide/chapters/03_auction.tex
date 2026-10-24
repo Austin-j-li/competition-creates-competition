@@ -1,0 +1,504 @@
+\section{The auction stage: who pays what}\label{sec:03_auction}
+
+This section derives equations \paper{(6)}--\paper{(8)}, Proposition~1, Proposition~1(c) and the surplus
+split. Everything here holds \emph{before} trading and entry. It is pure auction algebra, and it does not
+depend on the order slot.
+
+\subsection{Rules of a second-price auction with reserve}\label{sec:03_auction-rules}
+
+\begin{itemize}
+\item A bid is \emph{admissible} if it is at least \(p\). A bid equal to \(p\) is admissible.
+\item The highest admissible bidder wins. There is no sale without an admissible bid.
+\item The winner pays \(\max\{p,\text{highest competing admissible bid}\}\).
+\item Truthful bids are weakly dominant. So each prepared bidder whose value meets the reserve bids its
+value: the incumbent bids \(R\) if \(R\ge p\), and a prepared challenger bids \(\theta\) if \(\theta\ge p\).
+A bidder whose value is below \(p\) does not bid.
+\end{itemize}
+
+\paragraph{Why truthful bids are weakly dominant} \paper{App.~A.1}. Fix a bidder with value \(v\). Let
+\(Y\ge0\) be the highest competing admissible bid, with \(Y=0\) if there is none. Any admissible bid that
+wins pays \(\max\{p,Y\}\). So a bid yields either \(v-\max\{p,Y\}\) (a win) or zero (a loss).
+\begin{enumerate}
+\item Let \(v\ge p\), and consider the bid \(v\).
+\begin{itemize}
+\item If \(v>\max\{p,Y\}\), the bid wins and earns \(v-\max\{p,Y\}>0\).
+\item If \(v<\max\{p,Y\}\), then \(Y>v\), so the bid loses and earns zero.
+\item If \(v=\max\{p,Y\}\), a win pays \(v\), so the bid earns zero.
+\end{itemize}
+In each case the bid \(v\) earns \((v-\max\{p,Y\})_+\), the larger of the two possible payoffs.
+\item Let \(v<p\). Every bid that wins pays at least \(p>v\). So no bid earns more than zero, which is the
+payoff of no bid.
+\end{enumerate}
+The argument holds at every \(Y\). So it needs no belief about the rival. None of the payoffs below
+depends on a conjecture about bid shading. This verifies condition (E6) for every tuple.
+
+\subsection{Case-by-case outcomes}\label{sec:03_auction-cases}
+
+Fix the incumbent's value \(R\). Table~\ref{tab:03_auction-cases} lists the winner and the payment in
+each case of the benchmark. Value ties have probability zero, because \(F\) is continuous.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Challenger & Region of \(R\) & Winner & Target receives\\
+\midrule
+None & \(R<p\) & no sale & \(0\)\\
+None & \(R\ge p\) & incumbent & \(p\)\\
+\midrule
+High (\(\theta=h\)) & \(R<p\) & challenger & \(p\)\\
+High & \(p\le R\le r\) & challenger & \(R\)\\
+\midrule
+Low (\(\theta=\ell\)) & \(R<p\) & challenger & \(p\)\\
+Low & \(p\le R<\ell\) & challenger & \(R\)\\
+Low & \(\ell<R\le r\) & incumbent & \(\ell\)\\
+\bottomrule
+\end{tabular}
+\caption{Realized sale outcomes in the benchmark. A high-value challenger always wins because
+\(h>r\ge R\).}
+\label{tab:03_auction-cases}
+\end{table}
+
+Compact forms of what the target receives:
+\[
+\text{no entry: } p\,\1\{R\ge p\},\qquad
+\text{high challenger: } \max\{p,R\},\qquad
+\text{low challenger: } \max\{p,\min(R,\ell)\}.
+\]
+For a general value \(\theta\) \paper{Sec.~3.1}:
+\begin{itemize}
+\item if \(\theta\ge p\), the target receives \(\max\{p,\min(R,\theta)\}\), and the challenger keeps
+\((\theta-\max\{p,R\})_+\);
+\item if \(\theta<p\), the challenger cannot bid. The target receives \(p\,\1\{R\ge p\}\), as without entry,
+and the challenger keeps nothing.
+\end{itemize}
+
+\begin{intuition}[the one line that drives the paper]
+If \(R\le\ell\), both challenger values give the target the same payment,
+\(\max\{p,R\}\). If \(R>\ell\), a high-value challenger pays \(R\), but a low-value challenger loses, and
+the incumbent pays \(\ell\). So the gap in target proceeds is
+\[
+(\text{proceeds with }h)-(\text{proceeds with }\ell)=(R-\ell)_+ .
+\]
+A stronger incumbent puts more mass on large \(R\). This raises the gap. The same shift raises what a
+challenger must pay to win. This lowers its profit.
+\end{intuition}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=3.1cm, y=1.25cm, font=\small]
+\fill[intuit!12] (1,1) -- (3,3) -- (3,1) -- cycle;
+\draw[-{Stealth[length=2mm]}] (0,0) -- (3.25,0) node[right] {\(R\)};
+\draw[-{Stealth[length=2mm]}] (0,0) -- (0,3.35) node[above] {target receives};
+\node[below] at (1.75,-0.32) {incumbent value \(R\)};
+\draw[gray, densely dotted, very thick] (0,0) -- (0.5,0);
+\draw[gray, densely dotted, very thick] (0.5,0.5) -- (3,0.5);
+\draw[intuit, very thick] (0,0.5) -- (0.5,0.5) -- (3,3);
+\draw[panel, very thick, dashed] (0,0.5) -- (0.5,0.5) -- (1,1) -- (3,1);
+\foreach \x/\l in {0.5/p, 1/\ell, 3/r} \draw (\x,0.05) -- (\x,-0.05) node[below] {\(\l\)};
+\node[below] at (0,-0.05) {\(0\)};
+\foreach \y/\l in {0.5/p, 1/\ell} \draw (0.04,\y) -- (-0.04,\y) node[left] {\(\l\)};
+\node[font=\footnotesize, intuit, anchor=west] at (0.75,2.2) {high-value challenger};
+\node[font=\footnotesize, panel] at (2.25,1.17) {low-value challenger};
+\node[font=\footnotesize, gray] at (2.25,0.34) {no entry};
+\node[font=\footnotesize] at (2.6,1.75) {\((R-\ell)_+\)};
+\end{tikzpicture}
+\caption{Target proceeds as a function of \(R\) (\(p=1/2\), \(\ell=1\), \(r=3\)). The two challenger lines
+coincide for \(R\le\ell\). The shaded gap is \((R-\ell)_+\); its expectation is \(\DT\). The dotted line
+is the no-entry payment \(p\,\1\{R\ge p\}\); both challenger lines lie on or above it.}
+\label{fig:03_auction-proceeds}
+\end{figure}
+
+\subsection{Derivation of the six payoff terms}\label{sec:03_auction-terms}
+
+\(R\) is uniform on \([0,r]\), so its density is \(1/r\). We use three facts:
+\[
+\int_a^b c\,dy=c(b-a),\qquad \int_a^b y\,dy=\frac{b^2-a^2}{2},\qquad
+\int_a^b(c-y)\,dy=\frac{(c-a)^2}{2}-\frac{(c-b)^2}{2}.
+\]
+
+\paragraph{(a) No entry, \(t_0\).}
+\[
+t_0=\E\bigl[p\,\1\{R\ge p\}\bigr]=p\Pr(R\ge p)=p\cdot\frac{r-p}{r}=p\Bigl(1-\frac pr\Bigr).
+\]
+
+\paragraph{(b) High challenger, \(t_H\).} The challenger always wins and pays \(\max\{p,R\}\). Split at
+\(R=p\):
+\[
+t_H=\frac1r\Bigl[\int_0^p p\,dy+\int_p^r y\,dy\Bigr]=\frac1r\Bigl[p^2+\frac{r^2-p^2}{2}\Bigr]
+=\frac1r\cdot\frac{r^2+p^2}{2}=\frac r2+\frac{p^2}{2r}.
+\]
+
+\paragraph{(c) High challenger's profit, \(g_H\).} It wins at every \(R\) and keeps \(h-\max\{p,R\}\). So
+\[
+g_H=\frac1r\int_0^r\bigl(h-\max\{p,y\}\bigr)\,dy=h-t_H=h-\frac r2-\frac{p^2}{2r}.
+\]
+
+\paragraph{(d) Low challenger, \(t_L\).} Split at \(R=p\) and \(R=\ell\):
+\begin{align*}
+t_L&=\frac1r\Bigl[\int_0^p p\,dy+\int_p^\ell y\,dy+\int_\ell^r\ell\,dy\Bigr]
+=\frac1r\Bigl[p^2+\frac{\ell^2-p^2}{2}+\ell(r-\ell)\Bigr]\\
+&=\frac1r\Bigl[\ell r-\frac{\ell^2}{2}+\frac{p^2}{2}\Bigr]=\ell-\frac{\ell^2-p^2}{2r}.
+\end{align*}
+The second line collects terms: \(p^2-p^2/2=p^2/2\), and \(\ell^2/2-\ell^2=-\ell^2/2\).
+
+\paragraph{(e) Low challenger's profit, \(g_L\).} It wins only if \(R<\ell\), and keeps
+\(\ell-\max\{p,R\}\):
+\begin{align*}
+g_L&=\frac1r\Bigl[\int_0^p(\ell-p)\,dy+\int_p^\ell(\ell-y)\,dy\Bigr]
+=\frac1r\Bigl[(\ell-p)p+\frac{(\ell-p)^2}{2}\Bigr]\\
+&=\frac{(\ell-p)(2p+\ell-p)}{2r}=\frac{(\ell-p)(\ell+p)}{2r}=\frac{\ell^2-p^2}{2r}.
+\end{align*}
+The second integral uses the third fact with \(c=\ell\), \(a=p\), \(b=\ell\).
+
+\paragraph{(f) The spread, \(\DT\).} Subtract (d) from (b):
+\[
+\DT=t_H-t_L=\frac r2+\frac{p^2}{2r}-\ell+\frac{\ell^2-p^2}{2r}=\frac r2-\ell+\frac{\ell^2}{2r}
+=\frac{r^2-2\ell r+\ell^2}{2r}=\frac{(r-\ell)^2}{2r}.
+\]
+The reserve \(p\) cancels. This is no accident: below \(\ell\) both values pay the same, so \(p\) moves
+both terms equally. A direct check: \(\DT=\E[(R-\ell)_+]=\frac1r\int_\ell^r(y-\ell)\,dy=(r-\ell)^2/(2r)\).
+
+\begin{resultbox}[equation (6) of the paper]
+\[
+t_0=p\Bigl(1-\frac pr\Bigr),\qquad t_H=\frac r2+\frac{p^2}{2r},\qquad t_L=\ell-\frac{\ell^2-p^2}{2r},
+\]
+\[
+g_H=h-\frac r2-\frac{p^2}{2r},\qquad g_L=\frac{\ell^2-p^2}{2r},\qquad \DT(r)=\frac{(r-\ell)^2}{2r}.
+\]
+\end{resultbox}
+
+\begin{panelnote}[three quick sanity checks]
+\begin{itemize}
+\item \(t_H+g_H=h\) and \(t_L+g_L=\ell\). Proof for \(\ell\): if \(R<\ell\), the challenger wins, and the
+payment plus its profit equals \(\ell\). If \(R>\ell\), the target gets \(\ell\) and the challenger gets
+\(0\). The sum is \(\ell\) in both cases. The incumbent's profit \(R-\ell\) is outside this sum.
+\item \(w_L=t_L-t_0>0\), because \(\max\{p,\min(R,\ell)\}\ge p\ge p\,\1\{R\ge p\}\), and the second
+inequality is strict on \(R<p\), an event of probability \(p/r>0\). So entry by either class raises
+proceeds. At \(r_1=3\), \(w_L=11/24\) and \(w_H=9/8\).
+\end{itemize}
+\end{panelnote}
+
+\subsection{Derivatives: equation (7)}\label{sec:03_auction-derivatives}
+
+\paragraph{Spread.} Use the quotient rule on \(\DT=(r-\ell)^2/(2r)\):
+\[
+\DT'(r)=\frac{2(r-\ell)\cdot2r-(r-\ell)^2\cdot2}{4r^2}=\frac{(r-\ell)\,[2r-(r-\ell)]}{2r^2}
+=\frac{(r-\ell)(r+\ell)}{2r^2}=\frac12-\frac{\ell^2}{2r^2}>0,
+\]
+since \(r>\ell\).
+
+\paragraph{Profits.}
+\[
+g_H'(r)=-\frac12+\frac{p^2}{2r^2}<0\quad(\text{since }r>p),\qquad
+g_L'(r)=-\frac{\ell^2-p^2}{2r^2}<0\quad(\text{since }\ell>p). \tag*{\paper{(7)}}
+\]
+
+\paragraph{Gross profit at a fixed belief.} \(B_r(\mu)=(1-\mu)g_L+\mu g_H\) is a weighted average with
+fixed weights. So
+\[
+\frac{\partial B_r(\mu)}{\partial r}=(1-\mu)g_L'(r)+\mu g_H'(r)<0\qquad\text{for every }\mu\in[0,1].
+\]
+Also \(B_r\) rises in \(\mu\), because
+\[
+g_H-g_L=h-\frac r2-\frac{p^2}{2r}-\frac{\ell^2-p^2}{2r}=h-\frac r2-\frac{\ell^2}{2r}
+>r-\frac r2-\frac{\ell^2}{2r}=\frac{r^2-\ell^2}{2r}>0\qquad(\text{use }h>r>\ell).
+\]
+At \(r_1=3\): \(\DT'=4/9\), \(g_H'=-35/72\), \(g_L'=-1/24\), and \(\partial B_r(1/2)/\partial r=-19/72\).
+
+\paragraph{The preparation threshold.} With \(g_H>g_L\), solve \(B_r(\mu)=c_H\):
+\begin{align*}
+g_L+\mu(g_H-g_L)=c_H
+&\iff \mu=\frac{c_H-g_L}{g_H-g_L}=:\tau(r),\\
+c_H-g_L&=\frac{2rc_H-\ell^2+p^2}{2r},\qquad
+g_H-g_L=\frac{2rh-r^2-\ell^2}{2r}.
+\end{align*}
+Cancel the common denominator \(2r\):
+\begin{equation}\label{eq:03-tau}
+\tau(r)=\frac{2rc_H-\ell^2+p^2}{2rh-r^2-\ell^2}
+=\frac{48r-3}{4(20r-r^2-1)}\quad\text{at the benchmark}.
+\end{equation}
+For the derivative, write \(N_\tau=2rc_H-\ell^2+p^2\) and \(D_\tau=2rh-r^2-\ell^2>0\).
+The quotient rule gives
+\begin{align*}
+N_\tau'D_\tau-N_\tau D_\tau'
+&=2c_H(2rh-r^2-\ell^2)-(2rc_H-\ell^2+p^2)(2h-2r)\\
+&=2c_Hr^2-2(\ell^2-p^2)r+2h(\ell^2-p^2)-2c_H\ell^2.
+\end{align*}
+Regroup the numerator as
+\[
+2c_H(r^2-\ell^2)+2(h-r)(\ell^2-p^2)>0.
+\]
+Both terms are positive because \(c_H>0\) and \(0<p<\ell<r<h\).
+Thus \(\tau\) rises throughout this domain, even if the threshold lies outside \([0,1]\).
+At the benchmark,
+\begin{equation}\label{eq:03-taup}
+\tau'(r)=\frac{3(8r^2-r+2)}{2(20r-r^2-1)^2}>0\qquad(1<r<10).
+\end{equation}
+At \(r=1\), \(\tau=5/8>1/2\).
+Therefore an uninformative price never recruits a high-cost challenger along the benchmark path.
+
+\begin{resultbox}[The two effects]
+A stronger uniform incumbent raises \(\DT\) and lowers gross profit at every fixed belief.
+It also raises \(\tau\) in this benchmark domain.
+The top posterior must clear this higher threshold before a purchase recruits.
+\end{resultbox}
+
+\subsection{Benchmark numbers (Table 1 of the paper)}\label{sec:03_auction-table}
+
+With \(h=10\), \(\ell=1\), \(p=1/2\) and \(c_H=6\), the formulas give Table~\ref{tab:03_auction-table1}.
+Each entry is an exact fraction; the decimal is the paper's.
+
+\begin{table}[!htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Term & Formula & \(r_0=\reg{prim_r0}\) & \(r_1=\reg{prim_r1}\) & \(r_2=\reg{prim_r2}\)\\
+\midrule
+\(t_0\) & \(1/2-1/(4r)\) & \(7/24=\reg{p2_base_r0_t0}\) & \(5/12=\reg{p2_base_r1_t0}\) & \(31/72=\reg{p2_base_r2_t0}\)\\
+\(t_H\) & \(r/2+1/(8r)\) & \(169/240=\reg{p2_base_r0_th}\) & \(37/24=\reg{p2_base_r1_th}\) & \(1321/720=\reg{p2_base_r2_th}\)\\
+\(t_L\) & \(1-3/(8r)\) & \(11/16=\reg{p2_base_r0_tl}\) & \(7/8=\reg{p2_base_r1_tl}\) & \(43/48=\reg{p2_base_r2_tl}\)\\
+\(\DT\) & \((r-1)^2/(2r)\) & \(1/60=\reg{Delta_r0}\) & \(2/3=\reg{Delta_r1}\) & \(169/180=\reg{Delta_r2}\)\\
+\(g_H\) & \(10-t_H\) & \(2231/240=\reg{p2_base_r0_gh}\) & \(203/24=\reg{p2_base_r1_gh}\) & \(5879/720=\reg{p2_base_r2_gh}\)\\
+\(g_L\) & \(3/(8r)\) & \(5/16=\reg{p2_base_r0_gl}\) & \(1/8=\reg{p2_base_r1_gl}\) & \(5/48=\reg{p2_base_r2_gl}\)\\
+\(B_r(1/2)\) & \(5-r/4+1/(8r)\) & \(1153/240=\reg{Bprior_r0}\) & \(103/24=\reg{Bprior_r1_B}\) & \(2977/720=\reg{Bprior_r2}\)\\
+\(\tau(r)\) & see the text & \(195/308=\reg{tau_r0}\) & \(141/200=\reg{tau_r1}\) & \(4245/5804=\reg{tau_r2}\)\\
+\bottomrule
+\end{tabular}
+\caption{Acquisition payoffs in the benchmark \paper{Table~1}. They do not depend on the slot.}
+\label{tab:03_auction-table1}
+\end{table}
+
+The row for \(B_r(1/2)\) uses \((g_H+g_L)/2=\tfrac12\bigl(10-\tfrac r2-\tfrac1{8r}+\tfrac3{8r}\bigr)
+=5-\tfrac r4+\tfrac1{8r}\).
+
+Note the size of the change from \(r_0\) to \(r_1\). The spread rises \(40\) times
+(\((2/3)/(1/60)=40\)). Gross profit at the prior falls by \(41/80\), about \(10.7\) percent.
+% verify/03_auction.py
+The threshold rises from \reg{tau_r0} to \reg{tau_r1}, as \eqref{eq:03-taup} requires.
+
+\pagebreak
+\subsection{Proposition 1: the result for any incumbent distribution}\label{sec:03_auction-prop1}
+
+\begin{resultbox}[Proposition 1 (competition and the two returns to information)]
+Let \(R\) have a continuous distribution \(F\) on \([0,\bar r]\), with \(F(y)=1\) for \(y>\bar r\). For any
+classes \(G_H\), \(G_L\) with finite means,
+\[
+\DT(F)=pF(p)D(p^-)+\int_p^\infty[1-F(y)]\,D(y)\,dy,\qquad
+g_j(F)=\int_p^\infty[1-G_j(y)]\,F(y)\,dy. \tag*{\paper{(8)}}
+\]
+Let \(\tilde F\le F\) be a continuous first-order stochastic strengthening of \(F\).
+\begin{enumerate}[label=(\alph*)]
+\item For every pair of classes, the strengthening weakly lowers \(g_H\) and \(g_L\), and hence gross
+profit at every fixed belief.
+\item Under the class ranking \paper{(1)}, the strengthening weakly raises \(\DT\).
+\end{enumerate}
+The decrease in \(g_j\) is strict when \(\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy>0\). The increase in
+(b) is strict when \(\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy>0\).
+\end{resultbox}
+
+\paragraph{Step 1: write each payment as an integral of an indicator} \paper{(A.2)}. For \(\theta\ge p\),
+\[
+\max\{p,\min(R,\theta)\}=p+\int_p^\theta\1\{R>y\}\,dy,\qquad
+(\theta-\max\{p,R\})_+=\int_p^\theta\1\{R<y\}\,dy.
+\]
+Check both identities case by case.
+\begin{itemize}
+\item \(R\le p\). Every \(y\in(p,\theta)\) exceeds \(R\). The first integral is \(0\), so the right side is
+\(p\); the left side is \(\max\{p,\min(R,\theta)\}=p\). The second integral is \(\theta-p\); the left side
+is \(\theta-\max\{p,R\}=\theta-p\).
+\item \(p<R<\theta\). The first indicator is \(1\) on \((p,R)\), so the right side is \(p+(R-p)=R\); the
+left side is \(\min(R,\theta)=R\). The second indicator is \(1\) on \((R,\theta)\), so the integral is
+\(\theta-R\); the left side is \(\theta-R\).
+\item \(R\ge\theta\). The first indicator is \(1\) on all of \((p,\theta)\), so the right side is
+\(\theta\); the left side is \(\min(R,\theta)=\theta\). The second integral is \(0\); the left side is
+\((\theta-R)_+=0\).
+\end{itemize}
+The two indicators add to one except at \(y=R\). Thus target proceeds plus challenger profit equal
+\(p+(\theta-p)=\theta\) at every \(R\): \(t(\theta)+g(\theta)=\theta\) for \(\theta\ge p\).
+
+\paragraph{Step 2: take the expectation over \(R\).} Each integrand is nonnegative and jointly measurable in
+\((R,y)\). So Tonelli's theorem lets us move the expectation inside the integral. Since \(F\) is
+continuous, \(\Pr(R=y)=0\), so \(\Pr(R>y)=1-F(y)\) and \(\Pr(R<y)=F(y)\). For \(\theta\ge p\):
+\[
+t(\theta)=p+\int_p^\theta[1-F(y)]\,dy,\qquad g(\theta)=\int_p^\theta F(y)\,dy.
+\]
+For \(\theta<p\): \(t(\theta)=t_0=p[1-F(p)]\) and \(g(\theta)=0\).
+
+\paragraph{Step 3: one formula for every \(\theta\).} At \(\theta=p\), \(t\) jumps by \(pF(p)\).
+With probability \(F(p)\), the incumbent fails the reserve.
+An admissible challenger then buys at \(p\); an inadmissible one leaves the target unsold. Since \(t_0+pF(p)=p[1-F(p)]+pF(p)=p\),
+\[
+t(\theta)=t_0+pF(p)\,\1\{\theta\ge p\}+\int_p^\infty\1\{y\le\theta\}[1-F(y)]\,dy,\qquad
+g(\theta)=\int_p^\infty\1\{y\le\theta\}F(y)\,dy.
+\]
+
+\paragraph{Step 4: take the expectation over the class.} Apply Tonelli's theorem again, with
+\(\E_j\1\{\theta\ge p\}=1-G_j(p^-)\) and \(\Pr_j(\theta\ge y)=1-G_j(y^-)\). The functions \(G_j(y^-)\) and
+\(G_j(y)\) differ only at the atoms of \(G_j\), which are countably many, a set of Lebesgue measure zero.
+So \(G_j(y)\) can replace \(G_j(y^-)\) inside the integral:
+\[
+t_j=t_0+pF(p)\,[1-G_j(p^-)]+\int_p^\infty[1-G_j(y)][1-F(y)]\,dy,\qquad
+g_j=\int_p^\infty[1-G_j(y)]\,F(y)\,dy.
+\]
+Each integral is finite, since \(0\le\int_p^\infty[1-G_j(y)]\,dy\le\E_j\theta<\infty\) and \(0\le F\le1\).
+
+\paragraph{Step 5: the spread.} Subtract the class-\(L\) formula from the class-\(H\) formula. The term
+\(t_0\) cancels. Since \([1-G_H]-[1-G_L]=G_L-G_H=D\),
+\begin{align*}
+\DT=t_H-t_L&=pF(p)\bigl[G_L(p^-)-G_H(p^-)\bigr]+\int_p^\infty D(y)[1-F(y)]\,dy\\
+&=pF(p)D(p^-)+\int_p^\infty[1-F(y)]\,D(y)\,dy .
+\end{align*}
+
+\paragraph{Step 6: part (a).} In \(g_j\), the weight \(1-G_j\) on \(F\) is nonnegative. A pointwise fall from
+\(F\) to \(\tilde F\) lowers \(g_j\) by
+\[
+g_j(F)-g_j(\tilde F)=\int_p^\infty[1-G_j(y)]\,[F(y)-\tilde F(y)]\,dy\ge0,
+\]
+strictly when this integral is positive. Gross profit at a fixed belief \(\mu\) is \((1-\mu)g_L+\mu g_H\),
+an average with fixed weights, so it falls as well.
+
+\paragraph{Step 7: part (b).} The difference of the spread formula at the two distributions is
+\[
+\DT(\tilde F)-\DT(F)=\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy-p\,[F(p)-\tilde F(p)]\,D(p^-).
+\]
+To see this, write \([1-\tilde F]-[1-F]=F-\tilde F\) inside the integral, and
+\(p\tilde F(p)D(p^-)-pF(p)D(p^-)=-p[F(p)-\tilde F(p)]D(p^-)\). Under the class ranking, \(D(p^-)=0-0=0\),
+so the second term is zero. Also \(D(y)\ge0\) and \(F(y)-\tilde F(y)\ge0\) for every \(y\), so the
+integrand is nonnegative. The spread rises, strictly when the integral is positive. \hfill\(\square\)
+
+\paragraph{Check with the benchmark.} For point masses with \(p<\ell\), \(G_L(y)=\1\{y\ge\ell\}\) and
+\(G_H(y)=\1\{y\ge h\}\), so \(D(y)=\1\{\ell\le y<h\}\) and \(D(p^-)=0\). With \(F(y)=y/r\) on \([0,r]\)
+and \(r<h\):
+\begin{align*}
+\DT&=\int_\ell^h[1-F(y)]\,dy=\int_\ell^r\Bigl(1-\frac yr\Bigr)dy=(r-\ell)-\frac{r^2-\ell^2}{2r}
+=\frac{(r-\ell)(2r-r-\ell)}{2r}=\frac{(r-\ell)^2}{2r},\\
+g_L&=\int_p^\ell\frac yr\,dy=\frac{\ell^2-p^2}{2r},\qquad
+g_H=\int_p^r\frac yr\,dy+\int_r^h1\,dy=\frac{r^2-p^2}{2r}+h-r=h-\frac r2-\frac{p^2}{2r}.
+\end{align*}
+All three match \paper{(6)}. The script \texttt{verify/03\_auction.py} also checks \paper{(8)} for a
+non-uniform \(F(y)=(y/\bar r)^2\) and classes with an atom: the formula and a direct double expectation
+agree to twelve digits.
+
+\begin{intuition}[slices of the value gap]
+Read the integrand of \(\DT\) as slices \(D(y)\,dy\) of the class value gap at each level \(y>p\). The
+slice at level \(y\) reaches the target when \(R>y\): the incumbent outbids the challenger at that level
+and pays its bid, or the challenger pays at least \(y\). The slice stays with the challenger when \(R<y\).
+A stronger incumbent raises \(\Pr(R>y)\) at every \(y\). So it moves slices from the challenger's profit
+to target proceeds: the spread rises while gross profit falls.
+\end{intuition}
+
+\begin{caution}[scope of Proposition 1]
+The kernel belongs to the cash second-price rule with reserve: an incumbent that wins pays the loser's bid.
+Section~7.2 of the paper (\Cref{sec:11_welfare} here) changes the payment rule to Nash bargaining
+with seller weight \(\omega\). The effect of competition on the spread then has the sign of \(1-2\omega\).
+The zero-reserve second-price auction is the case \(\omega=0\).
+\end{caution}
+
+\subsection{Proposition 1(c): the weakest restriction}\label{sec:03_auction-prop1c}
+
+\begin{resultbox}[Proposition 1(c)]
+Let \(G_H\) and \(G_L\) have finite means. The spread weakly rises under every first-order stochastic
+strengthening of every continuous \(F\) if and only if \(D(y)\ge0\) for every \(y>p\) and \(D(p^-)\le0\).
+When neither class has an atom at \(p\), this condition is exactly first-order dominance above the reserve
+together with \emph{equal admissibility}, \(G_H(p^-)=G_L(p^-)\).
+\end{resultbox}
+
+\paragraph{Step 1: the kernel.} Fix \(R\) and compute the expected class difference in proceeds.
+\begin{itemize}
+\item \(R<p\). The incumbent cannot bid. An admissible challenger buys at \(p\); an inadmissible one leaves
+the target unsold. The target receives \(p\,\1\{\theta\ge p\}\), with mean \(p[1-G_j(p^-)]\) in class
+\(j\). The class difference is \(p[G_L(p^-)-G_H(p^-)]=pD(p^-)\).
+\item \(R\ge p\). The target receives \(\min\{R,\max\{\theta,p\}\}\). If \(\theta\ge p\), both bidders
+bid at least \(p\), and the target gets \(\min(R,\theta)\). If \(\theta<p\), the incumbent buys alone at
+\(p=\min\{R,p\}\). With \(Z=\max\{\theta,p\}\ge p\), the indicator form gives
+\(\min\{R,Z\}=p+\int_p^R\1\{Z>y\}\,dy\). For \(y>p\), \(Z>y\) exactly when \(\theta>y\). So
+\(\E_j[\min\{R,Z\}]=p+\int_p^R[1-G_j(y)]\,dy\), and the class difference is \(\int_p^RD(y)\,dy\).
+\end{itemize}
+So
+\[
+\xi(R)=\begin{cases} pD(p^-), & R<p,\\[2pt] \int_p^R D(y)\,dy, & R\ge p,\end{cases}
+\qquad\text{and}\qquad \DT(F)=\E_F[\xi(R)].
+\]
+
+\paragraph{Step 2: when is \(\xi\) nondecreasing?} The kernel is bounded, since
+\(\int_p^\infty|D(y)|\,dy\le\E_H\theta+\E_L\theta<\infty\). It is constant below \(p\). On \([p,\infty)\) it
+is continuous, and its derivative is \(D\) almost everywhere. At \(p\) it moves from \(pD(p^-)\) to
+\(\xi(p)=0\). So \(\xi\) is nondecreasing if and only if
+\begin{itemize}
+\item \(D\ge0\) almost everywhere above \(p\) (no fall on \([p,\infty)\)), and
+\item \(pD(p^-)\le0\), that is \(D(p^-)\le0\) (no fall at the step).
+\end{itemize}
+
+\paragraph{Step 3: ``if''.} If \(\xi\) is nondecreasing, every first-order strengthening raises
+\(\E_F[\xi(R)]\). One line: with the quantile coupling, \(\tilde R=\tilde F^{-1}(U)\ge F^{-1}(U)=R\) for a
+uniform \(U\), so \(\xi(\tilde R)\ge\xi(R)\) at every \(U\).
+
+\paragraph{Step 4: ``only if''.} Suppose \(\xi\) is not nondecreasing. Then there are values
+\(0<R_1<R_2\) with \(\xi(R_1)>\xi(R_2)\). Continuity on each side of \(p\) lets us pick both different from
+\(p\). Let \(F\) be uniform on \([R_1-\delta,R_1+\delta]\), and let \(\tilde F\) be the same law shifted
+to \(R_2\). For \(0<\delta<\min\{R_1,(R_2-R_1)/2,|R_1-p|,|R_2-p|\}\), \(\tilde F\le F\) at every point: \(\tilde F>0\) only above
+\(R_2-\delta\), where \(F=1\). As \(\delta\to0\), \(\DT(\tilde F)-\DT(F)\to\xi(R_2)-\xi(R_1)<0\). So some
+strengthening lowers the spread. If the support must start at zero, mix the same small uniform component
+on \([0,\bar r]\) into both laws. The mixtures stay continuous and ordered, and the difference keeps its
+sign, scaled by a positive factor.
+
+\paragraph{Step 5: the case without an atom at \(p\).} Distribution functions are right-continuous, so
+\(D\) is right-continuous. If \(D(y_0)<0\) at some \(y_0>p\), then \(D<0\) on an interval
+\([y_0,y_0+\varepsilon)\), a set of positive measure. So ``\(D\ge0\) almost everywhere above \(p\)'' is the
+same as ``\(D(y)\ge0\) for every \(y>p\)'', and it gives \(D(p)=\lim_{y\downarrow p}D(y)\ge0\). Without
+an atom at \(p\), \(D(p^-)=D(p)\ge0\). With \(D(p^-)\le0\), this forces \(D(p^-)=0\), which is equal
+admissibility. \hfill\(\square\)
+
+\paragraph{A worked example where the spread falls.} Take the benchmark classes with the exclusion reserve
+\(p=\reg{rsv_points_excl}>\ell\). The low class never meets the reserve, so \(G_L(p^-)=1\),
+\(G_H(p^-)=0\) and \(D(p^-)=1\). Then \(\xi(R)=p\) for \(R<p\): only class \(H\) buys, at \(p\). And
+\(\xi(R)=R-p\) for \(p\le R<h\): class \(H\) wins and pays \(R\), while a class-\(L\) challenger cannot
+bid, so the incumbent buys alone at \(p\). For the uniform incumbent on \([0,r]\) with \(p<r<h\),
+\[
+\DT(r)=\frac1r\Bigl[\int_0^p p\,dy+\int_p^r(y-p)\,dy\Bigr]=\frac{p^2+(r-p)^2/2}{r}.
+\]
+Its derivative is \(\bigl[(r-p)r-p^2-(r-p)^2/2\bigr]/r^2=(r^2-3p^2)/(2r^2)\), negative for
+\(r<\sqrt3\,p\approx1.749\). % verify/03_auction.py
+So from \(r=6/5\) to \(r=3/2\) the spread \emph{falls}, from \(6921/8000=0.865125\) to
+\(7601/10000=0.7601\). % verify/03_auction.py
+It rises again later and reaches \(20001/20000\) at \(r=3\). % verify/03_auction.py
+The cause is the reserve term: a stronger incumbent fails the reserve less often, so the slice \(p\) that
+only class \(H\) delivers below the reserve shrinks. Section~7.3 of the paper (\Cref{sec:11_welfare}
+here) studies this reserve in full.
+
+\subsection{The surplus split}\label{sec:03_auction-split}
+
+Add the two lines of \paper{(8)}. First, \(g_H-g_L=\int_p^\infty\{[1-G_H]-[1-G_L]\}F\,dy
+=\int_p^\infty D(y)F(y)\,dy\). So
+\begin{align*}
+\DT+g_H-g_L&=pF(p)D(p^-)+\int_p^\infty D(y)[1-F(y)]\,dy+\int_p^\infty D(y)F(y)\,dy\\
+&=pF(p)D(p^-)+\int_p^\infty D(y)\,dy.
+\end{align*}
+Next, \(\max\{\theta,p\}=p+(\theta-p)_+\) and \(\E_j(\theta-p)_+=\int_p^\infty\Pr_j(\theta>y)\,dy
+=\int_p^\infty[1-G_j(y)]\,dy\). So \(\int_p^\infty D(y)\,dy=\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}]\),
+and
+\[
+\DT(F)+g_H(F)-g_L(F)=pF(p)D(p^-)+\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}].
+\]
+The reserve term vanishes under equal admissibility, and also when the incumbent always meets the reserve
+(\(F(p)=0\)). Under the class ranking every value is at least \(p\), so \(\max\{\theta,p\}=\theta\) and
+\[
+\DT(F)+g_H(F)-g_L(F)=\E_H\theta-\E_L\theta\qquad\text{for every }F.
+\]
+In the benchmark the right side is \(h-\ell=9\) at every \(r\). Check at \(r_1=3\):
+\(2/3+203/24-1/8=16/24+203/24-3/24=216/24=9\).
+
+\begin{panelnote}[how to say it]
+``A stronger incumbent does not change the value gap between the classes. It moves the gap from the
+challenger's profit to target proceeds. The stock trades on the target's share of the gap, and the
+challenger decides on its own share.''
+\end{panelnote}
+
+\subsection{Link to the old guide}\label{sec:03_auction-laplace}
+
+The auction stage does not depend on the financial market.
+Thus the six benchmark payoffs remain those of the old guide.
+The new material is the formula for general classes, the reserve term, and Proposition~1(c).
+\Cref{sec:10_robustness-sizes} covers the change in the financial market.
