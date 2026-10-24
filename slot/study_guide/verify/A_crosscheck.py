@@ -21,7 +21,7 @@ import mpmath as mp
 
 
 HERE = Path(__file__).resolve().parent
-SNAPSHOT = Path("/tmp/ccc_slot_scan/guide/manuscript_c78e2c3/slot/manuscript/numbers.tex")
+SNAPSHOT = Path(__file__).resolve().parents[2] / "manuscript" / "numbers.tex"
 mp.mp.dps = 220
 H, L, P, RHO, COST, K, PI = map(Q, ("10", "1", "1/2", "1/4", "6", "1/50", "1/2"))
 BETA, A = Q("0.294655"), Q("1/40")

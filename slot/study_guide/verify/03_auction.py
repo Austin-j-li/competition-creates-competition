@@ -23,7 +23,7 @@ import mpmath as mp
 
 mp.mp.dps = 30
 
-SNAPSHOT = Path("/tmp/ccc_slot_scan/guide/manuscript_c78e2c3/slot/manuscript/numbers.tex")
+SNAPSHOT = Path(__file__).resolve().parents[2] / "manuscript" / "numbers.tex"
 
 
 def registry():
