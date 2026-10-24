@@ -77,7 +77,8 @@ Records, scripts and the registry stay under `audit/`.
 
 ## Relation to the Laplace version
 
-The Laplace version is the paper on `main`. Its auction, entry and ownership set-up is
-the base of this version. `comparison.tex` describes the two set-ups, puts the main results
+The Laplace version is on the branch `laplace`, under `laplace/`, after its revision of
+21 October 2026. `main` holds the Laplace version before that revision. The auction, entry
+and ownership set-up of the Laplace version is the base of this version. `comparison.tex` describes the two set-ups, puts the main results
 side by side and gives the trade-offs between them. The proof packages read the
-Laplace manuscript at the Overleaf commit `01bd5d6`.
+Laplace manuscript at the Overleaf commit `01bd5d6`, which is `laplace/manuscript/` on that branch.
