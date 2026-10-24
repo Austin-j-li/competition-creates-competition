@@ -4,7 +4,7 @@
 \Urlmuskip=0mu plus 2mu
 \setlength{\emergencystretch}{1.5em}
 
-This subsection proves the results of Sections~\ref{sec:inference} and~\ref{sec:informed}. Each result holds
+This subsection states and proves the results behind Sections~\ref{sec:inference} and~\ref{sec:informed}. Each result holds
 for every order profile, in or out of equilibrium. Every later proof uses them in that form.
 
 \paragraph{Conventions for Appendices A.2 to A.9.}
@@ -24,6 +24,28 @@ and Section~\ref{sec:profits} give \(w_H\ge w_L\ge0\).
 \item A computer-assisted step names its script and its run log. Every script path in Appendix~\ref{app:proofs} is
 relative to the folder \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/} of the project repository.
 \end{itemize}
+
+% STRUCTURE: the symbols delta_q and b_0 and the odds form eq:odds <- Section 3.2
+\paragraph{Orders and posteriors.}
+Write \(\delta_q\) for the point mass at the order \(q\), and \(b_0=(1-\lambda)(1-2\beta)\) for the probability
+of a liquidity abstention. Under any order distributions \(\sigma_H,\sigma_L\), Bayes' rule in odds form reads
+\begin{equation}\label{eq:odds}
+\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)}.
+\end{equation}
+
+% STRUCTURE: Lemma 1 <- Section 3.2
+\begin{lemma}[Order probabilities and beliefs; analytical]\label{lem:beliefs}
+Fix any order distributions \(\sigma_H\) and \(\sigma_L\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{Full support.} \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order \(x\) and class \(j\).
+\item \emph{Nonzero orders.} For \(x\in\{-1,1\}\), \(b\le f_j(x)\le b+\lambda\). Hence
+\(m(\pi)\le\mu(x)\le M(\pi)\).
+\item \emph{The zero order.} \(b_0\le f_j(0)\le b_0+\lambda\), and \(b_0\ge b\). Hence
+\(m(\pi)\le\mu(0)\le M(\pi)\).
+\item \emph{Full orders.} If \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), the posteriors after the orders
+\((-1,0,1)\) are \(\bigl(m(\pi),\pi,M(\pi)\bigr)\).
+\end{enumerate}
+\end{lemma}
 
 \begin{proof}[Proof of Lemma~\ref{lem:beliefs}]
 Fix any profile \((\sigma_H,\sigma_L)\). By \eqref{eq:odds}, the posterior \(\mu(x)\) increases strictly in the
@@ -67,6 +89,12 @@ and (c) therefore holds for \(\bar\mu(\bar P)\).
 Only part (c) uses \(\beta\le1/3\). Parts (a), (b) and (d) hold for every \(\beta<1/2\).
 \end{proof}
 
+% STRUCTURE: Corollary 1 <- Section 3.2
+\begin{corollary}[High-cost preparation under every profile; analytical]\label{cor:exclusion}
+Let \(g_H\ge g_L\). If \(B(M(\pi))<c_H\), then no profile that satisfies (E1)--(E3), in or out of equilibrium,
+has high-cost preparation after any order.
+\end{corollary}
+
 \begin{proof}[Proof of Corollary~\ref{cor:exclusion}]
 Let \(\beta\le1/3\), \(g_H\ge g_L\) and \(B(M(\pi))<c_H\). Fix any profile and any tuple that satisfies (E1) to
 (E3). By Lemma~\ref{lem:beliefs}(b)--(c), \(\mu(x)\le M(\pi)\) at every order, and by the step on beliefs at a price,
@@ -75,6 +103,22 @@ Let \(\beta\le1/3\), \(g_H\ge g_L\) and \(B(M(\pi))<c_H\). Fix any profile and a
 tie. The conclusion holds under both challenger rules. The bound at the zero order is the only use of
 \(\beta\le1/3\) in this proof.
 \end{proof}
+
+% STRUCTURE: Lemma 2 and its rule-CM clause <- Section 3.2
+\begin{lemma}[Entry and prices; analytical]\label{lem:prices}
+Let \(\DT>0\) and \(g_H>g_L\). Fix a tuple that satisfies (E1)--(E4) and (E6).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{Floor.} \(e(x)\ge\rho\) for every order \(x\).
+\item \emph{Price.} \(P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr]\) for every order \(x\).
+\item \emph{Sufficiency.} If \(P(x)=P(x')\), then \(\mu(x)=\mu(x')\). The challenger's belief at the price \(P(x)\)
+is \(\mu(x)\).
+\item \emph{Entry.} \(e(x)=\rho\) if \(\mu(x)<\tau\), and \(e(x)=1\) if \(\mu(x)\ge\tau\).
+\item \emph{Monotonicity.} If \(\mu(x)>\mu(x')\), then \(e(x)\ge e(x')\) and
+\(P(x)-P(x')\ge\rho\DT\,[\mu(x)-\mu(x')]>0\).
+\end{enumerate}
+\end{lemma}
+Under rule CM, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both
+challenger rules.
 
 \begin{proof}[Proof of Lemma~\ref{lem:prices}]
 Fix a candidate, and let \(\DT>0\) and \(g_H>g_L\). The proof has a preliminary step and five parts.
@@ -122,6 +166,29 @@ The identity \eqref{eq:a2-increment} uses only the price formula. It therefore a
 The verifications below use it in this form, before any condition is checked: a stated tuple has distinct prices at
 distinct posteriors, and equal prices at equal posteriors. The belief \(\bar\mu(P(x))=\mu(x)\) then follows from
 (E2) by direct computation.
+
+% STRUCTURE: Lemma 3 <- Section 3.3
+\begin{lemma}[Informed trading; analytical]\label{lem:trading}
+Let \(\DT\ge0\). Fix a tuple that satisfies (E1), (E4) and (E6), with entry \(e(x)\in[\rho,1]\) after every order.
+Conditional on its arrival, the investor in each class earns
+\[
+\begin{aligned}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,&\quad U_H(0)&=0,&\quad U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\DT\,\mu(-1)-k,&\quad U_L(0)&=0,&\quad U_L(1)&=-e(1)\DT\,\mu(1)-k.
+\end{aligned}
+\]
+Write \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\,\mu(-1)\) for the gross returns of the two correct orders.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item A wrong-signed order earns at most \(-k\), so abstention strictly beats it.
+\item Class \(H\) buys if \(K_H>k\) and abstains if \(K_H<k\). At \(K_H=k\), the purchase and abstention are its
+two best orders. Class \(L\) sells if \(K_L>k\) and abstains if \(K_L<k\). At \(K_L=k\), the sale and abstention
+are its two best orders.
+\item Under every candidate profile, \(\rho\DT[1-M(\pi)]\le K_H\le\DT\) and \(\rho\DT\,m(\pi)\le K_L\le\DT\).
+Hence \(\rho\,\kappa(\pi)\DT\le K_j\le\DT\), where \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\).
+\item \(K_H\) depends on the candidate only through \(\mu(1)\) and \(e(1)\), and \(K_L\) only through
+\(\mu(-1)\) and \(e(-1)\).
+\end{enumerate}
+\end{lemma}
 
 \begin{proof}[Proof of Lemma~\ref{lem:trading}]
 Fix a tuple that satisfies (E1), (E4) and (E6), with \(e(x)\in[\rho,1]\) after every order, and let \(\DT\ge0\). A

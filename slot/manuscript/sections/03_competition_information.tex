@@ -36,7 +36,7 @@ g_L'(r)=-\frac{\ell^2-p^2}{2r^2}<0.
 
 Thus a stronger incumbent lowers acquisition profit at every fixed belief. At the same time, it makes target
 proceeds more sensitive to challenger quality. Proposition~\ref{prop:returns} extends this opposition to every
-continuous incumbent distribution and every pair of classes that satisfies Assumption~\ref{ass:classes}.
+continuous incumbent distribution and every pair of classes that satisfies the class ranking~\eqref{eq:classes}.
 
 \begin{proposition}[Competition and the two returns to information; analytical]\label{prop:returns}
 Let the incumbent's value have a continuous distribution \(F\) on \([0,\bar r]\), extended by unity above
@@ -51,7 +51,7 @@ Let \(\tilde F\le F\) be a continuous first-order stochastic strengthening of \(
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
 \item For every pair of classes, the strengthening weakly decreases \(g_H\) and \(g_L\), and hence gross
 acquisition profit at every fixed belief.
-\item Under Assumption~\ref{ass:classes}, the strengthening weakly increases the target-payoff spread.
+\item Under the class ranking~\eqref{eq:classes}, the strengthening weakly increases the target-payoff spread.
 \end{enumerate}
 The decrease in \(g_j\) is strict when \(\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy>0\). The increase in
 (b) is strict when \(\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy>0\).
@@ -68,11 +68,11 @@ adds one term. Below the reserve, only an admissible challenger buys, at \(p\), 
 \(pD(p^-)\). A stronger incumbent fails the reserve less often, so that term shrinks. It can outweigh the moved
 slices when the low class is more often inadmissible.
 
-Under Assumption~\ref{ass:classes}, every value meets the reserve, and the term is zero.
+Under the class ranking~\eqref{eq:classes}, every value meets the reserve, and the term is zero.
 Appendix~\ref{app:payoffs} gives the proof. It also gives, in Proposition~1(c), the weakest restriction under
 which the spread rises for every strengthening.
 
-The sum of the two lines of \eqref{eq:spread} under Assumption~\ref{ass:classes} is
+The sum of the two lines of \eqref{eq:spread} under the class ranking~\eqref{eq:classes} is
 \[
 \DT(F)+g_H(F)-g_L(F)=\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}].
 \]
@@ -87,110 +87,52 @@ Whether entry rises depends on how this change in payoffs affects the informatio
 \subsection{What the challenger learns from the price}\label{sec:inference}
 
 The challenger sees one price. This section states what that price can reveal under every investor strategy, and
-what it reveals in equilibrium. Write \(\delta_q\) for the point mass at the order \(q\), and
-\(b_0=(1-\lambda)(1-2\beta)\) for the probability of a liquidity abstention. Under any order distributions
-\(\sigma_H,\sigma_L\), Bayes' rule in odds form reads
-\begin{equation}\label{eq:odds}
-\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)}.
-\end{equation}
+what it reveals in equilibrium.
 
-\begin{lemma}[Order probabilities and beliefs; analytical]\label{lem:beliefs}
-Fix any order distributions \(\sigma_H\) and \(\sigma_L\).
-\begin{enumerate}[label=(\alph*),leftmargin=2em]
-\item \emph{Full support.} \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order \(x\) and class \(j\).
-\item \emph{Nonzero orders.} For \(x\in\{-1,1\}\), \(b\le f_j(x)\le b+\lambda\). Hence
-\(m(\pi)\le\mu(x)\le M(\pi)\).
-\item \emph{The zero order.} \(b_0\le f_j(0)\le b_0+\lambda\), and \(b_0\ge b\). Hence
-\(m(\pi)\le\mu(0)\le M(\pi)\).
-\item \emph{Full orders.} If \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), the posteriors after the orders
-\((-1,0,1)\) are \(\bigl(m(\pi),\pi,M(\pi)\bigr)\).
-\end{enumerate}
-\end{lemma}
+% STRUCTURE: Lemma 1, Corollary 1, the odds form eq:odds and the symbols delta_q and b_0 -> Appendix A.2 (Lemma A.1, Corollary A.1)
+A liquidity order in the same direction is always possible, and this bounds what any order can reveal. Each class
+reaches a given nonzero order through a liquidity trader with probability \(b\), and the informed investor adds at
+most \(\lambda\), so the likelihood ratio of the order lies between \(1/(1+u)\) and \(1+u\). By Bayes' rule, the
+posterior after every order lies in the interval \([m(\pi),M(\pi)]\) of \eqref{eq:bounds}, under every investor
+strategy, mixed or pure; when the high class buys and the low class sells, the posteriors after a sale, no order and
+a purchase are \(m(\pi)\), \(\pi\) and \(M(\pi)\). The challenger's belief at a price is an average of the
+posteriors of the orders with that price, so it obeys the same bounds. A preparation decision that needs a belief
+above \(M(\pi)\) therefore follows no price: when \(g_H\ge g_L\), gross profit does not fall with the belief, so once gross
+profit at the top posterior falls below \(c_H\), no order recruits a high-cost challenger, in or out of
+equilibrium. This is the ceiling of the model.
 
-Each class reaches an order in a given direction through a liquidity order with probability \(b\), and the
-informed investor adds at most \(\lambda\). The likelihood ratio \(f_H(x)/f_L(x)\) therefore lies in
-\([1/(1+u),1+u]\), and by \eqref{eq:odds} the odds of \(\mu(x)\) lie between the odds of \(m(\pi)\) and those of
-\(M(\pi)\). At the zero order the liquidity mass is \(b_0\), and \(b_0\ge b\) is the inequality \(\beta\le1/3\).
-With \(\beta>1/3\), a profile in which class \(H\) abstains and class \(L\) never abstains gives \(\mu(0)>M(\pi)\).
-Appendix~\ref{app:beliefs} gives the proofs of this section.
-
-Part~(c) is the only use of the bound \(\beta\le1/3\), and Corollary~\ref{cor:exclusion} uses it.
-Propositions~\ref{prop:ccc} and~\ref{prop:coexistence} and Corollary~\ref{prop:priors} use parts (a), (b) and (d)
-only, so they hold for every \(\beta<1/2\).
-
-The challenger's belief at a price is an average of the posteriors of the orders with that price, so it obeys the
-same bounds. A preparation decision that needs a belief above \(M(\pi)\) therefore follows no price.
-
-\begin{corollary}[High-cost preparation under every profile; analytical]\label{cor:exclusion}
-Let \(g_H\ge g_L\). If \(B(M(\pi))<c_H\), then no profile that satisfies (E1)--(E3), in or out of equilibrium,
-has high-cost preparation after any order.
-\end{corollary}
-
-Corollary~\ref{cor:exclusion} is the ceiling of the model. Against a strong enough incumbent, gross profit falls
-below the high cost even at the top posterior, and no order can recruit an expensive challenger.
-
-When \(g_H>g_L\), write
-\[
-\tau=\frac{c_H-g_L}{g_H-g_L}
-\]
-for the preparation threshold. Gross profit covers the high cost exactly when the belief reaches the threshold:
-\(B(\mu)\ge c_H\) if and only if \(\mu\ge\tau\). For the uniform incumbent I write \(\tau(r)\).
-
-\begin{lemma}[Entry and prices; analytical]\label{lem:prices}
-Let \(\DT>0\) and \(g_H>g_L\). Fix a tuple that satisfies (E1)--(E4) and (E6).
-\begin{enumerate}[label=(\alph*),leftmargin=2em]
-\item \emph{Floor.} \(e(x)\ge\rho\) for every order \(x\).
-\item \emph{Price.} \(P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr]\) for every order \(x\).
-\item \emph{Sufficiency.} If \(P(x)=P(x')\), then \(\mu(x)=\mu(x')\). The challenger's belief at the price \(P(x)\)
-is \(\mu(x)\).
-\item \emph{Entry.} \(e(x)=\rho\) if \(\mu(x)<\tau\), and \(e(x)=1\) if \(\mu(x)\ge\tau\).
-\item \emph{Monotonicity.} If \(\mu(x)>\mu(x')\), then \(e(x)\ge e(x')\) and
-\(P(x)-P(x')\ge\rho\DT\,[\mu(x)-\mu(x')]>0\).
-\end{enumerate}
-\end{lemma}
-
-Part~(c) is the step from orders to prices. Suppose that two orders have one price. The challenger cannot tell them
-apart, so entry after them is the same, and it is at least \(\rho\). The price formula then gives the same posterior
-after both orders. The challenger can therefore read the market makers' posterior from the price, and its gross
-profit at the price \(P(x)\) is \(B(\mu(x))\). Under rule CM, part~(d) at \(\mu(x)=\tau\) allows any
-\(e(x)\in[\rho,1]\); the other parts hold under both challenger rules.
+% STRUCTURE: Lemma 2 and the rule-CM clause of its part (d) -> Appendix A.2 (Lemma A.2)
+When \(g_H>g_L\), gross profit covers the high cost exactly when the belief reaches the preparation threshold
+\(\tau=(c_H-g_L)/(g_H-g_L)\): \(B(\mu)\ge c_H\) if and only if \(\mu\ge\tau\). For the uniform incumbent I write
+\(\tau(r)\). A zero-cost challenger prepares after every price, so entry after every order is at least \(\rho\),
+and competitive pricing gives \eqref{eq:price}. When the classes differ in target proceeds, the price then rises
+strictly with the posterior. Two orders with one price cannot be told apart, so entry after them is the same and
+at least \(\rho\), and the price formula gives them the same posterior. The challenger therefore reads the market
+makers' posterior from the price, and its gross profit at the price \(P(x)\) is \(B(\mu(x))\). High-cost
+preparation follows exactly the orders whose posterior reaches \(\tau\). Appendix~\ref{app:beliefs} gives the formal
+statements and their proofs.
 
 The zero-cost challenger does three jobs in the proofs. Entry stays at least \(\rho\), so the price reveals the
 posterior. The investor's return after every order stays at least a fixed share of the spread
-(Lemma~\ref{lem:trading} below). Zero-cost preparation does not respond to the price, so information can only add
+(the trading bound of Section~\ref{sec:informed}). Zero-cost preparation does not respond to the price, so information can only add
 entry.
 
 \subsection{Informed trading}\label{sec:informed}
 
-Rational pricing removes the anticipated increase in proceeds from the investor's advantage. The next lemma states
-what remains, under every candidate tuple.
-
-\begin{lemma}[Informed trading; analytical]\label{lem:trading}
-Let \(\DT\ge0\). Fix a tuple that satisfies (E1), (E4) and (E6), with entry \(e(x)\in[\rho,1]\) after every order.
-Conditional on its arrival, the investor in each class earns
+% STRUCTURE: Lemma 3 (informed trading) -> Appendix A.2 (Lemma A.3); its bounds stay in the display below
+Rational pricing removes the anticipated increase in proceeds from the investor's advantage. What remains is the
+gross return of a purchase in class \(H\) and of a sale in class \(L\),
 \[
-\begin{aligned}
-U_H(1)&=e(1)\DT[1-\mu(1)]-k,&\quad U_H(0)&=0,&\quad U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
-U_L(-1)&=e(-1)\DT\,\mu(-1)-k,&\quad U_L(0)&=0,&\quad U_L(1)&=-e(1)\DT\,\mu(1)-k.
-\end{aligned}
+K_H=e(1)\,\DT\,[1-\mu(1)],\qquad K_L=e(-1)\,\DT\,\mu(-1),\qquad \rho\,\kappa(\pi)\,\DT\le K_H,\,K_L\le\DT,
 \]
-Write \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\,\mu(-1)\) for the gross returns of the two correct orders.
-\begin{enumerate}[label=(\alph*),leftmargin=2em]
-\item A wrong-signed order earns at most \(-k\), so abstention strictly beats it.
-\item Class \(H\) buys if \(K_H>k\) and abstains if \(K_H<k\). At \(K_H=k\), the purchase and abstention are its
-two best orders. Class \(L\) sells if \(K_L>k\) and abstains if \(K_L<k\). At \(K_L=k\), the sale and abstention
-are its two best orders.
-\item Under every candidate profile, \(\rho\DT[1-M(\pi)]\le K_H\le\DT\) and \(\rho\DT\,m(\pi)\le K_L\le\DT\).
-Hence \(\rho\,\kappa(\pi)\DT\le K_j\le\DT\), where \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\).
-\item \(K_H\) depends on the candidate only through \(\mu(1)\) and \(e(1)\), and \(K_L\) only through
-\(\mu(-1)\) and \(e(-1)\).
-\end{enumerate}
-\end{lemma}
+with \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\). A wrong-signed order earns at most \(-k\), so it never pays. Class
+\(H\) buys when \(K_H\) exceeds \(k\) and abstains when it falls short, and class \(L\) compares \(K_L\) with \(k\)
+in the same way.
 
 The investor's gross return is the entry probability times the spread times the market's residual uncertainty
 about the class. The market makers price the entry response, but a liquidity order in the same direction is always
-possible, so some uncertainty survives every order. The lower bound in part~(c) uses the entry floor \(\rho\) and
-the posterior bounds of Lemma~\ref{lem:beliefs}. The upper bound is the spread. Both bounds hold under every
+possible, so some uncertainty survives every order. The lower bound uses the entry floor \(\rho\) and
+the posterior bounds. The upper bound is the spread. Both bounds hold under every
 candidate profile, mixed or pure, and their comparison with \(k\) decides when information survives in
 equilibrium.
 
@@ -201,6 +143,6 @@ favors binds, because the price already leans toward it.
 The no-entry proceeds \(t_0\) cancel from each return, because they move the price and the terminal payoff
 together. The terms that matter are the entry gains \(t_H-t_0\) and \(t_L-t_0\), which are nonnegative.
 
-Part~(d) splits the investor's problem. Entry after the zero order enters no payoff. Each class therefore compares
+Each return depends only on the posterior and entry after its own order, which splits the investor's problem. Entry after the zero order enters no payoff. Each class therefore compares
 one gross return with the trading cost: class \(H\) the return of a purchase, class \(L\) the return of a sale.
-Section~\ref{sec:coexistence} uses this split to list every equilibrium along the benchmark path.
+Appendix~\ref{app:coexistence} uses this split to list every equilibrium along the benchmark path.

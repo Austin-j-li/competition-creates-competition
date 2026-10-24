@@ -1,6 +1,7 @@
 \subsection{Coexistence}\label{app:coexistence}
 
-This subsection proves Proposition~\ref{prop:coexistence} and Corollary~\ref{prop:priors}. Throughout, the auction is the
+This subsection states in full and proves Proposition~\ref{prop:coexistence}, and it states and proves
+Corollary~\ref{prop:priors}. Throughout, the auction is the
 benchmark: point masses \(h\) and \(\ell\), \(R\sim U[0,r]\), and the benchmark values of
 \((h,\ell,p,\rho,c_H,k)\). The path is \(r\in[r_0,r_2]\). The slot is any pair \((\lambda,\beta)\) with
 \(0<\lambda<1\), \(0<\beta<1/2\) and \(\tau(r_1)<M(1/2)<\tau(r_2)\), the band of Proposition~\ref{prop:region}. On
@@ -284,6 +285,35 @@ orders \(0\) and \(-1\);
 If two orders share a price, they share the posterior and the entry (Lemma~\ref{lem:a4-product}), so \(\zeta\) is
 well defined as a function of the price.
 
+% STRUCTURE: full statement of Proposition 3 <- Section 4.3 (threshold order, set table, entry of each form)
+\begin{named}{Proposition~\ref{prop:coexistence} (full statement; computer-assisted)}
+Take the benchmark auction, the prior \(1/2\) and any slot in the band of Proposition~\ref{prop:region}(a). Then
+\(r_0<r_A<r_F<r_N<r_J<r_S<r_1<r_C<r_2\), and the equilibrium set at each strength is
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Strength & Equilibria\\
+\midrule
+\(r_0\le r<r_A\) & N\\
+\(r=r_A\) & N; T with entry one after a purchase (the left end of R)\\
+\(r_A<r<r_F\) & N; R\\
+\(r_F\le r\le r_N\) & N; F\\
+\(r_N<r<r_J\) & F; Q\\
+\(r_J\le r\le r_2\) & F\\
+\bottomrule
+\end{tabular}
+\end{center}
+Entry is \(\rho\) in N and Q, \(\Ent_R(r)=\rho+(1-\rho)\,b\DT(r)/(2k)\) in R, and
+\(\Ent_F=\rho+(1-\rho)(b+\lambda/2)\) in F up to \(r_C\), with \(\Ent_F=\rho\) above \(r_C\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item No informed trade and an informative equilibrium coexist exactly on \([r_A,r_N]\).
+\item On the informative branch that coexists with no trade, entry is
+\(\rho+(1-\rho)\min\{b\DT(r)/(2k),\,b+\lambda/2\}\). It is continuous, rises strictly on \([r_A,r_F]\), and is
+constant on \([r_F,r_N]\). It keeps this value along F up to \(r_C\) and equals \(\rho\) above \(r_C\).
+\item The equilibrium set is nonempty at every strength.
+\end{enumerate}
+\end{named}
+
 \begin{proof}[Proof of Proposition~\ref{prop:coexistence}]
 Fix any slot in the band and the prior \(1/2\). The proof has eight steps.
 
@@ -399,6 +429,34 @@ Strengths & Equilibria & Entry\\
 \end{tabular}
 \end{table}
 
+\subsubsection*{Coexistence at other priors}
+
+% STRUCTURE: Corollary 2 and its definitions <- Section 4.3
+Coexistence also holds at other priors. For a prior \(\pi\), write \(r_N(\pi)=\fr\bigl(k/(\rho\max\{\pi,1-\pi\})\bigr)\).
+When some strength on the path has \(\tau(r)\le M(\pi)\), let \(r_C(\pi)\) be the largest one. When
+\(\tau(r_0)\le\pi\le\tau(r_2)\), let \(r_\pi\) solve \(\tau(r_\pi)=\pi\). Three priors divide the cases: \(\pi_A^{\mathrm{lo}}\) solves
+\(M(\pi)=\tau(r_A)\); \(\pi_A^{\mathrm{hi}}=\tau(r_A)\); and \(\pi_{\max}=\tau(r_*)\), where \(r_*\) solves
+\(\rho\DT(r)\tau(r)=k\).
+
+\begin{corollary}[Coexistence at every prior; computer-assisted]\label{prop:priors}
+Take the benchmark auction, any slot, and any prior \(\pi\in(0,1)\). The set \(C(\pi)\) of strengths on the path
+at which no informed trade and an informative equilibrium coexist is
+\[
+C(\pi)=\bigl\{r\in[r_0,r_2]:\ r\ge r_A,\ \ \pi<\tau(r)\le M(\pi),\ \ \rho\DT(r)\max\{\pi,1-\pi\}\le k\bigr\}.
+\]
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item If \(\pi<\pi_A^{\mathrm{lo}}\), \(C(\pi)\) is empty. At \(\pi=\pi_A^{\mathrm{lo}}\), \(C(\pi)=\{r_A\}\).
+\item If \(\pi_A^{\mathrm{lo}}<\pi<\pi_A^{\mathrm{hi}}\), then \(C(\pi)=[r_A,\min\{r_N(\pi),r_C(\pi)\}]\), a
+nondegenerate interval. Coexistence starts at \(r_A\) for every prior in this window and every slot.
+\item If \(\pi_A^{\mathrm{hi}}\le\pi<\pi_{\max}\), then \(C(\pi)=(r_\pi,\min\{r_N(\pi),r_C(\pi)\}]\), a nonempty
+interval with \(r_\pi\ge r_A\). Coexistence starts where the prior reaches the threshold.
+\item If \(\pi\ge\pi_{\max}\), \(C(\pi)\) is empty.
+\end{enumerate}
+At each \(r\in C(\pi)\), the informative equilibrium is R or F (the threshold pair at \(r_A\) in case (b)). Its
+entry is \(\rho+(1-\rho)\min\{(1-\pi)\,b\DT(r)/k,\ b+\pi\lambda\}\), which rises strictly while the purchase is
+mixed and is then constant.
+\end{corollary}
+
 \begin{proof}[Proof of Corollary~\ref{prop:priors}]
 Fix any slot with \(0<\lambda<1\) and \(0<\beta<1/2\), any prior \(\pi\in(0,1)\), and the rules IM and C1. For a
 prior \(\pi\), write \(r_N(\pi)=\fr\bigl(k/(\rho\max\{\pi,1-\pi\})\bigr)\). When some strength on the path has
@@ -475,7 +533,28 @@ The certificates of Lemma~\ref{lem:a4-path} make the corollary computer-assisted
 \end{proof}
 
 \paragraph{Other tie rules.}
-Under rule CM, a challenger tie at the prior adds exactly one strength. At \(r=r_\pi\), the prior equals
+% STRUCTURE: the alternatives I0 and CM and the sentence on where they change a conclusion <- Section 2.4
+The results use rules IM and C1 of Section~\ref{sec:equilibrium}. Two alternatives show which conclusions depend
+on these choices:
+\begin{itemize}[leftmargin=2em]
+\item under rule I0, an investor indifferent between abstention and a nonzero order abstains;
+\item under rule CM, an indifferent high-cost challenger may prepare with any probability.
+\end{itemize}
+This paragraph states each place on the benchmark path where I0 or CM changes a conclusion;
+Remark~\ref{rem:researchties} in Appendix~\ref{app:research} does the same with research.
+
+% STRUCTURE: Remark 1 <- Section 4.3 (prior 1/2); label rem:ties retired
+At the prior \(1/2\): under the challenger rule CM, the threshold pair T is also an equilibrium on \((r_A,r_J]\). Its entry falls strictly
+from \(\Ent_R(r_A)\) at \(r_A\) to \(\rho\) at \(r_J\); at the benchmark it is \(\reg{entry_th_r155_B}\),
+\(\reg{entry_th_r160_B}\) and \(\reg{entry_th_r165_B}\) at \(\reg{str_r155}\), \(\reg{str_r160}\) and
+\(\reg{str_r165}\). At \(r_C\), entry after a purchase can then take any value in \([\rho,1]\). 
+
+Under the investor rule I0, the equilibrium set is N on \([r_0,r_F]\); N and F on \((r_F,r_N]\); empty on \((r_N,r_S]\); and F on
+\((r_S,r_2]\). On \((r_N,r_S]\) the low class has no admissible sale rate under I0. Abstention fails, because a
+sale earns more than \(k\). A full sale fails, because it earns at most \(k\). Under the investor rule IM, the
+equilibrium set is nonempty along the whole path. The strict rise of entry along R also needs IM.
+
+At a general prior, under rule CM, a challenger tie at the prior adds exactly one strength. At \(r=r_\pi\), the prior equals
 \(\tau(r_\pi)\), and rule CM lets no informed trade keep entry \(\rho\). That tuple is an equilibrium exactly when
 \(\rho\DT(r_\pi)\max\{\pi,1-\pi\}\le k\). An informative purchase at \(r_\pi\) has \(\mu_+(s)>\pi=\tau\), so it
 recruits. It needs \(\DT(r_\pi)[1-\mu_+(s)]=k\) for some \(s\in(0,\lambda)\), or \(\DT(r_\pi)[1-M(\pi)]\ge k\) at

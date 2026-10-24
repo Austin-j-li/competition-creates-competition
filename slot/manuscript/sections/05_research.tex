@@ -18,28 +18,21 @@ knows the class takes it. After a failure, the investor knows no more than the m
 least its cost \(k\). The opportunity then passes to a liquidity trader. More research therefore also removes
 liquidity orders, and it reduces the camouflage of the investor's own orders.
 
-Market makers and the challenger do not observe the research choice; they use a conjectured intensity
-\(\hat\lambda\). The prior is \(1/2\) throughout this section. An equilibrium with research is a tuple \((\hat\lambda,\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)\), together with the
-bids. Conditions (E1)--(E6) of Definition~\ref{def:equilibrium} hold at the intensity \(\hat\lambda\). Condition
-(E5) holds also at \(\hat\lambda=0\): a deviation in research makes a success possible, and the order after it must
-be optimal. A seventh condition completes the definition.
-\begin{enumerate}[label=(E\arabic*),start=7,leftmargin=3em]
-\item \emph{Research optimality.} Hold \(P\) and \(\zeta\) at their values in the tuple. Then \(\hat\lambda\) is
-the research choice of a best response among all joint deviations in research and orders.
-\end{enumerate}
-A joint deviation changes the true order probabilities, but not the prices or the entry rule. Let
-\(V=\tfrac12\max_qU_H(q)+\tfrac12\max_qU_L(q)\) be the expected trading payoff after a success, at the candidate's
-prices. Appendix~\ref{app:research} shows that the best research choice is unique and equals
-\(\min\{\lb,V/a\}\). Condition (E7) therefore reads \(\hat\lambda=\min\{\lb,V/a\}\), and research never has a tie.
+% STRUCTURE: the research tuple, conditions (E1)-(E6) at the conjectured intensity, condition (E7) and the research value V -> Appendix A.5 opening
+Market makers and the challenger do not observe the research choice and price at a conjectured intensity. The prior
+is \(1/2\) throughout this section. In an equilibrium with research, market makers and the challenger use the
+equilibrium intensity, and that intensity is the investor's best research choice when prices and the entry rule stay
+at their equilibrium values; the order after a success must also be optimal, including after a deviation from zero
+research. The best research choice is unique: it equals the expected trading payoff after a success divided by
+\(a\), capped at \(\lb\), so research never has a tie (Appendix~\ref{app:research}).
 
+% STRUCTURE: the symbol u_lambda and the closed form of lambda_E -> Appendix A.5, paragraph "Derived functions"
 Two functions of the intensity describe the branch on which research responds to competition. At intensity
-\(\lambda\), write \(u_\lambda=\lambda/[(1-\lambda)\beta]\), \(M_\lambda=(1+u_\lambda)/(2+u_\lambda)\) and
-\(m_\lambda=1-M_\lambda\); these are the posterior bounds of Section~\ref{sec:inference} at the prior \(1/2\). When
-\(1/2<\tau(r)<1\), the \emph{recruitment intensity} \(\lambda_E(r)\) solves \(M_\lambda=\tau(r)\):
-\[
-\lambda_E(r)=\frac{\beta\,[2\tau(r)-1]}{\beta+(1-2\beta)[1-\tau(r)]}.
-\]
-A full purchase recruits exactly when research is at least \(\lambda_E(r)\).
+\(\lambda\), write \(M_\lambda\) and \(m_\lambda=1-M_\lambda\) for the posterior bounds of Section~\ref{sec:inference}
+at the prior \(1/2\) when the presence probability is \(\lambda\); research raises the top posterior \(M_\lambda\)
+that a purchase can reach. When \(1/2<\tau(r)<1\), the \emph{recruitment intensity} \(\lambda_E(r)\) is the research
+level at which a full purchase just reaches the threshold, \(M_\lambda=\tau(r)\). A full purchase recruits exactly
+when research is at least \(\lambda_E(r)\).
 
  Suppose that class \(H\) buys after a
 success, class \(L\) abstains, and only a purchase recruits. A purchase then earns \(\DT(r)m_\lambda-k\), and
@@ -53,8 +46,15 @@ The left side rises with \(\lambda\), and the right side falls, because more res
 The benchmark research parameters are \(a=\reg{res_a}\) and the cap \(\lb=\reg{res_cap}\), the presence
 probability of Section~\ref{sec:benchmark}. Research at the cap therefore reproduces the benchmark slot.
 
-\begin{proposition}[Research at the benchmark strengths; computer-assisted]\label{prop:research}
-Take the benchmark \(B\) with the research cost \(a=\reg{res_a}\) and the cap \(\lb=\reg{res_cap}\).
+% STRUCTURE: Proposition 4 and Corollary 3 -> one Proposition 4; part (a) is Corollary 3, part (b) is the former Proposition 4; label prop:researchbranch retired
+\begin{proposition}[Competition creates research; part (a) analytical, part (b) computer-assisted]\label{prop:research}
+Take the benchmark auction at the prior \(1/2\), with \(0<\beta\le1/3\) and \(a>0\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item On the strengths with \(\DT(r)>2k\), research \(\lambda_R(r)\) is continuously differentiable and rises
+strictly in \(r\). Wherever the research branch is an equilibrium, entry
+\(\rho+(1-\rho)\bigl[\beta+(1/2-\beta)\lambda_R(r)\bigr]\) and high-class ownership
+\(\tfrac12[\rho+(1-\rho)(\beta+(1-\beta)\lambda_R(r))]\) rise strictly with \(r\).
+\item At the benchmark \(B\), with the research cost \(a=\reg{res_a}\) and the cap \(\lb=\reg{res_cap}\):
 \begin{enumerate}[label=(\roman*),leftmargin=2em]
 \item At \(r_0\), the unique equilibrium has no research and no trade. Entry is \(\rho\).
 \item At each \(r\in\{\reg{str_r155},\reg{str_r160},\reg{str_r165}\}\), there are exactly two equilibria. In the
@@ -65,11 +65,12 @@ only a purchase recruits, and entry is \(\rho+(1-\rho)[\beta+(1/2-\beta)\lambda_
 equilibrium of Proposition~\ref{prop:ccc} with \(\lambda=\lb\). Entry is \(\reg{res_entry_r1}\) at \(r_1\) and
 \(\rho\) at \(r_2\).
 \end{enumerate}
-The investor's tie rule plays no role at these six strengths.
+\end{enumerate}
 \end{proposition}
 
-The equilibrium lists rest on analytical arguments; the strict signs at the benchmark use exact rational and
-interval arithmetic. At \(r_0\) every order after a success loses, so the research value is zero. At \(r_1\) and
+The equilibrium lists of part (b) follow from analytical arguments, and exact rational and interval arithmetic
+settles the strict signs at the benchmark. Every trade choice at the six strengths is strict, so the investor's tie
+rule plays no role there. At \(r_0\) every order after a success loses, so the research value is zero. At \(r_1\) and
 \(r_2\), a bound on every candidate profile makes a full order profitable net of the marginal research cost at
 the cap. At the intermediate strengths, no research confirms itself. Against an uninformative price,
 the best nonzero order after a success earns \(\rho\DT/2-k<0\), because these strengths lie below \(r_N\). On the
@@ -91,15 +92,14 @@ Posterior after a purchase \(M_{\lambda_R}\) & \reg{res_muplus_r155} & \reg{res_
 Entry on the research branch & \reg{res_entry_r155} & \reg{res_entry_r160} & \reg{res_entry_r165}\\
 High-class ownership on the branch & \reg{res_own_r155} & \reg{res_own_r160} & \reg{res_own_r165}\\
 Entry without research & \reg{entry_r0} & \reg{entry_r0} & \reg{entry_r0}\\
-\midrule
-Entry in the threshold equilibrium (rule CM) & \reg{res_th_entry_r155} & \reg{res_th_entry_r160} & \reg{res_th_entry_r165}\\
+% STRUCTURE: the row "Entry in the threshold equilibrium (rule CM)" and its note -> Appendix A.5, Remark A.1
 \bottomrule
 \end{tabular}
 \par\medskip
 \begin{minipage}{0.92\linewidth}\footnotesize
 \textit{Notes.} Benchmark \(B\) with \(a=\reg{res_a}\) and \(\lb=\reg{res_cap}\). The spread, the threshold and
 \(\lambda_E\) are exact rationals; research and the values that depend on it are interval enclosures rounded to six
-places. The last row exists only under the challenger rule CM.
+places.
 \end{minipage}
 \end{table}
 
@@ -107,25 +107,17 @@ Table~\ref{tab:research} shows the main result of this section. Across the three
 \(\reg{res_lambda_r155}\) through \(\reg{res_lambda_r160}\) to \(\reg{res_lambda_r165}\), and entry rises from
 \(\reg{res_entry_r155}\) through \(\reg{res_entry_r160}\) to \(\reg{res_entry_r165}\). A stronger incumbent widens the
 spread, so a purchase earns more, and the investor buys more information. The posterior after a purchase then rises
-above the threshold by more, and a purchase becomes more likely. The next result shows that this comovement is
-general along the branch.
+above the threshold by more, and a purchase becomes more likely. Part (a) of Proposition~\ref{prop:research} shows
+that this comovement is general along the branch.
 
-\begin{corollary}[Research and entry rise together; analytical]\label{prop:researchbranch}
-Take the benchmark auction at the prior \(1/2\), with \(0<\beta\le1/3\) and \(a>0\). On the strengths with
-\(\DT(r)>2k\), research \(\lambda_R(r)\) is continuously differentiable and rises strictly in \(r\). Wherever the
-research branch is an equilibrium, entry
-\[
-\Ent_R(r)=\rho+(1-\rho)\bigl[\beta+(1/2-\beta)\lambda_R(r)\bigr]
-\]
-and high-class ownership \(\tfrac12[\rho+(1-\rho)(\beta+(1-\beta)\lambda_R(r))]\) rise strictly with \(r\).
-\end{corollary}
+% STRUCTURE: Corollary 3 (research and entry rise together) -> Proposition 4(a) above
 
 The slope of entry is \((1-\rho)(1/2-\beta)\lambda_R'(r)\), which is positive for every \(\beta\le1/3\). A purchase
 has probability \(\beta+(1/2-\beta)\lambda\): research adds informed purchases in class \(H\) and removes liquidity
 orders in both classes, and the first effect dominates.
 
 At the benchmark, the research branch is an equilibrium exactly on \([r_R,\bar r_R)\), with \(r_R\approx\reg{res_rR}\)
-and \(\bar r_R\approx\reg{res_rcap}\) (computer-assisted). The start \(r_R\) is the strength at which the purchase
+and \(\bar r_R\approx\reg{res_rcap}\). The start \(r_R\) is the strength at which the purchase
 posterior just reaches the threshold and the purchase also pays the marginal research cost:
 \(\DT(1-\tau)=k+2a\lambda_E(r)\). The end \(\bar r_R\) is the strength at which research reaches the cap \(\lb\). Along
 the branch, research rises from \(\lambda_E(r_R)=\reg{res_lambda_rR}\) to the cap, and entry rises from
@@ -133,8 +125,8 @@ the branch, research rises from \(\lambda_E(r_R)=\reg{res_lambda_rR}\) to the ca
 \(\bar r_R<r_N=\reg{res_rN}\). On \([\bar r_R,r_N)\), research at the cap coexists with zero research, and entry equals
 \(\reg{res_entry_cap}\).
 
-Against strong incumbents, research sits at the cap. Write
-\(r_U=\fr\bigl((k+a\lb)(1+\eu)/\rho\bigr)\approx\reg{res_rUR}\). At every strength above \(r_U\), a bound on every
+% STRUCTURE: the closed form of r_U -> Appendix A.5 (proof of Proposition 4(b)(iii), already there)
+Against strong incumbents, research sits at the cap. Above a strength \(r_U\approx\reg{res_rUR}\), a bound on every
 candidate profile forces full orders and research at the cap (Appendix~\ref{app:research}). On \((r_N,r_U)\), the
 equilibrium set with research is open.
 
@@ -148,7 +140,7 @@ equilibrium set with research is open.
 research \(\lambda\), and panel (b) shows entry; the inset enlarges entry along the research branch. Zero research is an
 equilibrium from \(r_0\) to \(r_N\). The research branch runs from \(r_R\) to \(\bar r_R\). Research stays at the cap
 from \(\bar r_R\) to \(r_N\) and above \(r_U\); at the cap, entry is \(\reg{res_entry_cap}\) up to \(r_C\) and
-\(\rho\) above. Black dots mark the six strengths of Proposition~\ref{prop:research}. The gray band marks strengths
+\(\rho\) above. Black dots mark the six strengths of Proposition~\ref{prop:research}(b). The gray band marks strengths
 at which the equilibrium set is not characterized, and the horizontal axis is broken there.
 \end{minipage}
 \end{figure}
@@ -164,7 +156,7 @@ marginal cost rises and the research value falls, so they meet once, at \(\lambd
 with \(r\), so entry inherits a strict slope.
 
 The research parameters have an admissible region, which Proposition~\ref{prop:researchregion} in
-Appendix~\ref{app:research} gives exactly at \(\beta=\reg{beta_B}\). The equilibrium patterns of Proposition~\ref{prop:research}
+Appendix~\ref{app:research} gives exactly at \(\beta=\reg{beta_B}\). The equilibrium patterns of Proposition~\ref{prop:research}(b)
 hold with strict margins exactly when two conditions hold. The cap lies in the strip
 \((\lambda_E(r_1),\lambda_E(r_2))\approx(\reg{res_cap_lo},\reg{res_cap_hi})\), and the cost lies in a window that
 depends on the cap. At the benchmark cap, this window is \((\reg{res_a_lo},\reg{res_a_up})\). With \(1+u=\eu\), the cap
@@ -175,11 +167,4 @@ The upper end of the cap strip is the tightest hypothesis: the benchmark cap lie
 it in research intensity. This margin corresponds to the posterior margin \(\reg{margin_return_post_B}\) of
 Section~\ref{sec:benchmark}; the two numbers measure one boundary in different coordinates.
 
-\begin{remark}[Tie rules with research]\label{rem:researchties}
-Research never has a tie, and Proposition~\ref{prop:research} needs no investor tie rule. Under the challenger rule CM,
-each intermediate strength has one more equilibrium. In it, research is \(\lambda_E(r)\), and the purchase posterior
-equals the threshold. The indifferent challenger prepares with the probability that makes this research optimal. Its
-entry falls across the three strengths (Table~\ref{tab:research}). Above \(r_U\), the whole tuple is unique under C1,
-and under CM at every strength except the ceiling \(r_C=\reg{res_rC}\). At \(r_C\) under CM, entry can take any value
-in \([\rho,\reg{res_entry_cap}]\).
-\end{remark}
+% STRUCTURE: Remark 2 (tie rules with research) -> Appendix A.5, Remark A.1; the clause "research never has a tie" stays above

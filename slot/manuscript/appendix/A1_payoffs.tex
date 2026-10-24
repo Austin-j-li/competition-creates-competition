@@ -3,6 +3,56 @@ computer-assisted, numerical diagnostic, or open. Statements use the class model
 statement that needs the point-mass benchmark says so. Each equilibrium proof states the equilibrium tuple of
 Definition~\ref{def:equilibrium}, lists its conditions, and checks each condition against the fixed tuple.
 
+% STRUCTURE: Definition 1 and the conditions (E1)-(E6) <- Section 2.4; eta <- Section 2.3
+\paragraph{The equilibrium tuple.}
+Write \(\eta(-1)=\eta(1)=\beta\) and \(\eta(0)=1-2\beta\) for the liquidity order distribution of
+Section~\ref{sec:slot}.
+
+\begin{definition}[Equilibrium]\label{def:equilibrium}
+An \emph{equilibrium} is a tuple
+\[
+\mathcal{E}=\bigl(\sigma_H,\sigma_L,\ \mu,\ P,\ \bar\mu,\ \zeta\bigr),
+\]
+together with the bids of the prepared bidders. Its components are as follows.
+\begin{itemize}[leftmargin=2em]
+\item \(\sigma_j=\bigl(\sigma_j(-1),\sigma_j(0),\sigma_j(1)\bigr)\) is a probability distribution on
+\(\{-1,0,1\}\), the order of the informed investor in class \(j\in\{H,L\}\). Mixed and wrong-signed orders are
+allowed.
+\item \(\mu:\{-1,0,1\}\to[0,1]\) is the market makers' posterior \(\mu(x)=\Pr(j=H\mid X=x)\).
+\item \(P:\{-1,0,1\}\to\mathbb{R}\) is the price after each order.
+\item \(\bar\mu\) assigns to each price \(\bar P\) in the image of \(P\) the challenger's belief
+\(\Pr(j=H\mid P(X)=\bar P)\).
+\item \(\zeta(\bar P)\in[0,1]\) is the probability that a challenger with the high cost prepares after the price
+\(\bar P\). A challenger with the zero cost prepares after every price.
+\end{itemize}
+For each order \(x\), write \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\) for its probability in class
+\(j\), and \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\) for entry after it. The tuple satisfies six conditions.
+\begin{enumerate}[label=(E\arabic*),leftmargin=3em]
+\item \emph{Bayes consistency.} For every order \(x\),
+\(\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]\).
+\item \emph{Challenger beliefs.} For every price \(\bar P\) in the image of \(P\), \(\bar\mu(\bar P)\) is the
+posterior of class \(H\) given the event \(\{x:P(x)=\bar P\}\), computed from \(f_H\) and \(f_L\).
+\item \emph{Entry optimality.} For every price \(\bar P\) in the image, \(\zeta(\bar P)=1\) if
+\(B(\bar\mu(\bar P))>c_H\) and \(\zeta(\bar P)=0\) if \(B(\bar\mu(\bar P))<c_H\). At
+\(B(\bar\mu(\bar P))=c_H\), the challenger's tie rule applies.
+\item \emph{Competitive prices.} For every order \(x\), \(P(x)=\E[V_T\mid X=x]\).
+\item \emph{Investor optimality.} For each class \(j\), \(\sigma_j(q)>0\) only if \(q\) maximizes
+\[
+U_j(q)=q\,\bigl[t_0+e(q)(t_j-t_0)-P(q)\bigr]-k|q|
+\]
+over \(q\in\{-1,0,1\}\), with \(P(\cdot)\) and \(e(\cdot)\) held at their values in \(\mathcal{E}\).
+\item \emph{Truthful bids.} Each prepared bidder whose value meets the reserve bids its value.
+\end{enumerate}
+\end{definition}
+
+The gross profit of a zero-cost challenger is an expected auction rent, which is never negative. Preparation is
+therefore optimal for it after every price, and the definition fixes this choice. The probability \(f_j(x)\) is
+at least \((1-\lambda)\eta(x)>0\) under every strategy. Every order therefore occurs with positive probability in
+both classes. Bayes' rule defines \(\mu\) after every order, and no off-path belief enters the definition.
+
+The two indifferences in (E3) and (E5) follow rules IM and C1 of Section~\ref{sec:equilibrium};
+Appendix~\ref{app:coexistence} states the alternatives I0 and CM.
+
 \subsection{Acquisition payoffs}\label{app:payoffs}
 
 \paragraph{Truthful bids.}
@@ -103,7 +153,7 @@ The decrease is strict exactly when this integral is positive. Gross profit at a
 \[
 \DT(\tilde F)-\DT(F)=\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy-p[F(p)-\tilde F(p)]\,D(p^-).
 \]
-Under Assumption~\ref{ass:classes}, \(D(p^-)=0\), so the second term is zero. Also \(D(y)\ge0\) and
+Under the class ranking~\eqref{eq:classes}, \(D(p^-)=0\), so the second term is zero. Also \(D(y)\ge0\) and
 \(F(y)-\tilde F(y)\ge0\) for every \(y\), so the integrand is nonnegative. The spread therefore rises, strictly
 exactly when the integral is positive.
 
@@ -152,8 +202,8 @@ Distribution functions are right-continuous. Thus \(D\ge0\) almost everywhere ab
 \(D(p^-)=D(p)\ge0\). The condition then holds exactly when \(D(p^-)=0\), which with the ranking above the
 reserve is equal admissibility. \(\square\)
 
-\paragraph{Scope of Assumption~\ref{ass:classes}.}
-The proofs in this subsection use Assumption~\ref{ass:classes} only through \(D(y)\ge0\) for \(y>p\) and
+\paragraph{Scope of the class ranking.}
+The proofs in this subsection use the class ranking~\eqref{eq:classes} only through \(D(y)\ge0\) for \(y>p\) and
 \(D(p^-)=0\). These two facts give \(g_H\ge g_L\) and \(\DT\ge0\) in \eqref{eq:spread}, the comparison in part
 (b), and the split identity of Section~\ref{sec:profits}. The same results therefore hold under the ranking
 above the reserve together with equal admissibility.
