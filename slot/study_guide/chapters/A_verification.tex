@@ -1,1 +1,140 @@
-% A_verification: to be written.
+\clearpage
+\section{Independent verification of the numbers}\label{sec:A_verification}
+
+The check uses the fixed manuscript snapshot \texttt{c78e2c3} and its \texttt{numbers.tex} registry.
+The auction and cost primitives enter as exact fractions.
+The slot uses the declared \(\beta=\reg{beta_B}\), with \(1+u=\eu\).
+The chapter programs print the calculations beside their registry values.
+The separate program \texttt{verify/A\_crosscheck.py} derives the headline values from these primitives.
+It imports no chapter program.
+
+The independent auction calculation integrates payments and rents over the incumbent's uniform law.
+It then constructs the order probabilities, posteriors, entry decisions and competitive prices.
+Their class averages give entry, ownership, target proceeds and surplus.
+Exact fractions also define the research equation and the equations for \(r_A\) and \(r_J\).
+Bisection uses exact signs for these roots; the other expressions use 220 decimal digits.
+This recomputation does not repeat the paper's proofs of uniqueness or its exact Sturm counts.
+
+For Euler's number, let \(S=\sum_{n=0}^{110}1/n!\).
+The first omitted term and a geometric bound on the tail give
+\[
+ S<\eu<S+\frac{112}{111\cdot111!}.
+\]
+Both endpoints are exact fractions.
+The program uses their midpoint at high precision and prints the enclosure width.
+This enclosure is exact; the general calculations use high precision rather than interval certificates.
+For a decimal display, agreement means that the independent value rounds to the registry value.
+For a fraction, agreement means equality.
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l c@{}}
+\toprule
+Quantity & Paper registry & Independent value & Agree\\
+\midrule
+\multicolumn{4}{@{}l}{Triples below use \((r_0,r_1,r_2)\), unless the row states another order.}\\
+\(t_0\) & \reg{p4_r0_t0}, \reg{p4_r1_t0}, \reg{p4_r2_t0}
+& 0.291667, 0.416667, 0.430556 & yes\\ % verify/A_crosscheck.py
+\(t_H\) & \reg{p4_r0_th}, \reg{p4_r1_th}, \reg{p4_r2_th}
+& 0.704167, 1.541667, 1.834722 & yes\\ % verify/A_crosscheck.py
+\(t_L\) & \reg{p4_r0_tl}, \reg{p4_r1_tl}, \reg{p4_r2_tl}
+& 0.687500, 0.875000, 0.895833 & yes\\ % verify/A_crosscheck.py
+\(g_H\) & \reg{p4_r0_gh}, \reg{p4_r1_gh}, \reg{p4_r2_gh}
+& 9.295833, 8.458333, 8.165278 & yes\\ % verify/A_crosscheck.py
+\(g_L\) & \reg{p4_r0_gl}, \reg{p4_r1_gl}, \reg{p4_r2_gl}
+& 0.312500, 0.125000, 0.104167 & yes\\ % verify/A_crosscheck.py
+\(\DT\) & \reg{Delta_r0}, \reg{Delta_r1}, \reg{Delta_r2}
+& \(1/60,\ 2/3,\ 169/180\) & yes\\
+\(B_r(1/2)\) & \reg{Bprior_r0}, \reg{Bprior_r1_B}, \reg{Bprior_r2}
+& \(1153/240,\ 103/24,\ 2977/720\) & yes\\
+\(\lambda,b\) & \reg{lambda_B}, \reg{b_B}
+& 0.336122, 0.195615 & yes\\ % verify/A_crosscheck.py
+\(M,m=\kappa\) & \reg{M_half_B}, \reg{m_half_B}
+& 0.731059, 0.268941 & yes\\ % verify/A_crosscheck.py
+(H1), lower and upper slack & \reg{margin_weakcost_B}, \reg{margin_recruit_B}
+& 1.195833, 0.217155 & yes\\ % verify/A_crosscheck.py
+(H2), lower and upper slack & \reg{margin_kweak_B}, \reg{margin_kstrong_B}
+& 0.003333, 0.024824 & yes\\ % verify/A_crosscheck.py
+(H3), cost slack & \reg{margin_return_B}
+& 0.002689 & yes\\ % verify/A_crosscheck.py
+\(\Ent\) & \reg{entry_r0}, \reg{entry_r1_B}, \reg{entry_r2}
+& 0.250000, 0.522757, 0.250000 & yes\\ % verify/A_crosscheck.py
+\(\Own_H\) & \reg{own_r0}, \reg{own_r1_B}, \reg{own_r2_B}
+& 0.125000, 0.324401, 0.125000 & yes\\ % verify/A_crosscheck.py
+Target proceeds & \reg{p4_base_r0_proceeds}, \reg{p4_base_r1_proceeds}, \reg{p4_base_r2_proceeds}
+& 0.392708, 0.872531, 0.664236 & yes\\ % verify/A_crosscheck.py
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}l l l c@{}}
+\toprule
+Quantity & Paper registry & Independent value & Agree\\
+\midrule
+\(u\), lower and upper bounds & \reg{u_lo_frac}, \reg{u_hi_frac}
+& \(82/59,\ 2686/1559\) & yes\\
+Prior, lower and upper bounds & \reg{prior_lo_B}, \reg{prior_hi_B}
+& 0.467850, 0.500424 & yes\\ % verify/A_crosscheck.py
+\(r_A,r_F,r_N\) & \reg{rA}, \reg{rF_B}, \reg{rN}
+& 1.393958, 1.467127, 1.747878 & yes\\ % verify/A_crosscheck.py
+\(r_J,r_S,r_C\) & \reg{rJ}, \reg{rS_B}, \reg{rC_B}
+& 1.966097, 2.124148, 3.592659 & yes\\ % verify/A_crosscheck.py
+\(\Ent_R(r_A),\Ent_R(r_F)\) & \reg{entry_rA_B}, \reg{entry_r1_B}
+& 0.454185, 0.522757 & yes\\ % verify/A_crosscheck.py
+\multicolumn{4}{@{}l}{The next three rows use \((\reg{str_r155},\reg{str_r160},\reg{str_r165})\).}\\
+Research \(\lambda_R\) & \reg{res_lambda_r155}, \reg{res_lambda_r160}, \reg{res_lambda_r165}
+& 0.237901, 0.279037, 0.316683 & yes\\ % verify/A_crosscheck.py
+Research entry & \reg{res_entry_r155}, \reg{res_entry_r160}, \reg{res_entry_r165}
+& 0.507630, 0.513965, 0.519763 & yes\\ % verify/A_crosscheck.py
+Research ownership & \reg{res_own_r155}, \reg{res_own_r160}, \reg{res_own_r165}
+& 0.298422, 0.309302, 0.319260 & yes\\ % verify/A_crosscheck.py
+Frozen \(r_0\): \(\Ent,\Own_H,R_T\) & \reg{p4_frozen_r0_entry}, \reg{p4_frozen_r0_own}, \reg{p4_frozen_r0_proceeds}
+& 0.522757, 0.324401, 0.503998 & yes\\ % verify/A_crosscheck.py
+Hidden \(r_1\): \(\Ent,\Own_H,R_T\) & \reg{p4_hidden_r1_entry}, \reg{p4_hidden_r1_own}, \reg{p4_hidden_r1_proceeds}
+& 0.250000, 0.125000, 0.614583 & yes\\ % verify/A_crosscheck.py
+Access: \(\Delta\mathcal R,\Delta\mathcal W\) & \reg{p2_access_proceeds_gain}, \reg{p2_access_surplus_gain}
+& 0.257948, 0.081960 & yes\\ % verify/A_crosscheck.py
+Entry share of the spread & \reg{ba_share_r1_B}
+& 90.2\% & yes\\ % verify/A_crosscheck.py
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Programs and rerun commands.}
+These chapter programs sit in \texttt{verify/}:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\texttt{01\_brief.py} & \texttt{03\_auction.py}\\
+\texttt{04\_slot\_beliefs.py} & \texttt{05\_investor.py}\\
+\texttt{06\_main\_result.py} & \texttt{07\_controls.py}\\
+\texttt{08\_coexistence.py} & \texttt{09\_research.py}\\
+\texttt{10\_robustness.py} & \texttt{11\_welfare.py}\\
+\texttt{12\_empirical.py} & \texttt{A\_crosscheck.py}\\
+\end{tabular}
+\end{center}
+From \texttt{slot/study\_guide}, run:
+\begin{verbatim}
+python3 verify/run_all.py
+python3 verify/A_crosscheck.py
+\end{verbatim}
+The runner saves each chapter's output in \texttt{verify/output/} and prints its exit code and run time.
+The cross-check saves its own output there too.
+It prints each independent value, its registry value and their difference.
+It also scans every chapter for typed decimals and reads the adjacent \texttt{\% verify/} source comment.
+The scan distinguishes literal matches, format differences, rounded matches and missing evidence.
+It lists layout decimals and paper references separately.
+
+\begin{resultbox}[What the check found]
+All 178 headline comparisons agree at the registry's displayed precision.
+All eleven chapter programs exit with code zero.
+Every typed economic decimal has a source comment, and each agrees with its program after the stated display
+rounding.
+A matching output token proves its presence, not the validity of the associated argument.
+\end{resultbox}

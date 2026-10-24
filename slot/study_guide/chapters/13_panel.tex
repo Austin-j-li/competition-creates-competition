@@ -1,1 +1,343 @@
-% 13_panel: to be written.
+\section{Panel preparation}\label{sec:13_panel}
+
+This chapter collects what you need in the room: seven derivations to do from memory, the likely questions with
+answers, the points that a referee will press, the terms to use exactly, and a plan for a 15-minute talk. Each
+answer points to the chapter that derives it in full.
+
+\subsection{Seven derivations to do on a whiteboard}\label{sec:13_panel-whiteboard}
+
+Practise these until you can do each one in about two minutes, without notes.
+
+\paragraph{W1. The spread.} If \(R\le\ell\), both classes pay \(\max\{p,R\}\). If \(R>\ell\), class \(H\) wins and
+pays \(R\), and against class \(L\) the incumbent wins and pays \(\ell\). So the gap is \((R-\ell)_+\). With
+\(R\sim U[0,r]\),
+\[
+\DT=\frac1r\int_\ell^r(y-\ell)\,dy=\frac{(r-\ell)^2}{2r},\qquad \DT'(r)=\frac{r^2-\ell^2}{2r^2}>0 .
+\]
+For general classes, the class ranking gives \(\DT(F)=\int_p^\infty[1-F(y)]D(y)\,dy\): a stronger incumbent moves
+slices \(D(y)\,dy\) of the value gap to the target (\Cref{sec:03_auction-terms,sec:03_auction-prop1}).
+
+\paragraph{W2. Posterior bounds and \texorpdfstring{\(\beta\le1/3\)}{beta <= 1/3}.} For \(x=\pm1\), every profile gives
+\(b\le f_j(x)\le b+\lambda\). So \(1/(1+u)\le f_H(x)/f_L(x)\le1+u\). The odds form of Bayes' rule,
+\[
+\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)},
+\]
+puts \(\mu(\pm1)\) in \([m(\pi),M(\pi)]\). At zero the liquidity mass is \(b_0=(1-\lambda)(1-2\beta)\), and
+\(b_0\ge b\iff1-2\beta\ge\beta\iff\beta\le1/3\). A price belief averages the posteriors of the orders with that
+price, so it obeys the same bounds (\Cref{sec:04_slot_beliefs-bounds,sec:04_slot_beliefs-zero,sec:04_slot_beliefs-ceiling}).
+
+\paragraph{W3. The residual advantage and \texorpdfstring{\(\kappa\)}{kappa}.} With \(\E[V_T\mid j,X=q]=t_0+e(q)w_j\) and
+\(P(q)=t_0+e(q)[w_L+\DT\mu(q)]\), subtract:
+\[
+\E[V_T\mid H,q]-P(q)=e(q)\DT[1-\mu(q)],\qquad P(q)-\E[V_T\mid L,q]=e(q)\DT\mu(q).
+\]
+Since \(1-M(\pi)=m(1-\pi)\) and \(m\) rises, \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}=m(\min\{\pi,1-\pi\})\). Its maximum is
+\(\kappa(1/2)=1/(2+u)\) (\Cref{sec:05_investor-residual,sec:05_investor-prior}).
+
+\paragraph{W4. The global trading bounds.} Use the floor \(e\ge\rho\) and the bounds of W2:
+\[
+K_H=e(1)\DT[1-\mu(1)]\ge\rho\DT[1-M]\ge\rho\kappa\DT,\qquad K_L=e(-1)\DT\mu(-1)\ge\rho\DT m\ge\rho\kappa\DT,
+\]
+and \(K_H,K_L\le\DT\). A wrong-signed order earns at most \(-k\). So \(\DT<k\) forces zero orders, and
+\(k<\rho\kappa\DT\) forces full orders, under every candidate (\Cref{sec:05_investor-bounds,sec:05_investor-force}).
+
+\paragraph{W5. The threshold \texorpdfstring{\(\tau\)}{tau}.} \(B(\mu)=g_L+\mu(g_H-g_L)\ge c_H\) exactly when
+\(\mu\ge\tau=(c_H-g_L)/(g_H-g_L)\). In the benchmark (\Cref{sec:03_auction-derivatives}),
+\(c_H-g_L=(2rc_H-\ell^2+p^2)/(2r)\) and \(g_H-g_L=(2rh-r^2-\ell^2)/(2r)\), so
+\[
+\tau(r)=\frac{48r-3}{4(20r-r^2-1)},\qquad \tau(r_1)=\frac{141}{200}.
+\]
+
+\paragraph{W6. Entry under full orders.} Only a purchase recruits. A purchase has probability
+\(\lambda+(1-\lambda)\beta=b+\lambda\) in class \(H\) and \(b\) in class \(L\). So
+\[
+e_H=\rho+(1-\rho)(b+\lambda),\qquad e_L=\rho+(1-\rho)b,\qquad \Ent=\rho+(1-\rho)(b+\pi\lambda),
+\]
+which is \reg{entry_r1_B} at the benchmark (\Cref{sec:06_main_result-entry}).
+
+\paragraph{W7. The exact band of \texorpdfstring{\(u\)}{u}.} At \(\pi=1/2\), \(M=(1+u)/(2+u)\) and \(\kappa=1/(2+u)\).
+\begin{itemize}[nosep]
+\item (H1), right side: \(M>141/200\iff200(1+u)>141(2+u)\iff59u>82\).
+\item (H3): \(M<4245/5804\iff5804(1+u)<4245(2+u)\iff1559u<2686\).
+\item (H2), right side: \(1/50<1/[6(2+u)]\iff u<19/3\), which the band already implies.
+\end{itemize}
+So (H1)--(H3) hold exactly when \(82/59<u<2686/1559\) (\Cref{sec:06_main_result-band}).
+
+\begin{panelnote}[if you have time for one]
+Do W4. It is the step that fixes the orders before any candidate is known, so it carries the uniqueness of
+Proposition~2.
+\end{panelnote}
+
+\subsection{Likely questions, with suggested answers}\label{sec:13_panel-questions}
+
+\subsubsection*{A. Modelling choices}
+
+\paragraph{Q1. Why one order slot?}
+``It is the simplest market in which no order reveals the class. The investor fills the slot with probability
+\(\lambda\); otherwise a liquidity trader fills it, in either direction, as in Dow and Gorton (1997). So every order
+has positive probability under every profile, and no off-path belief enters. And no order has a likelihood ratio
+above \(1+u\), so every posterior lies in \([m,M]\) under every strategy, mixed or wrong-signed. The uniqueness
+proofs rest on these two facts.'' (\Cref{sec:04_slot_beliefs-law,sec:04_slot_beliefs-bounds}.)
+
+\paragraph{Q2. What replaces Laplace noise, and what is lost?}
+``The liquidity trader replaces additive noise. The bound on the likelihood ratio now comes from the liquidity mass
+in each direction, not from a noise density. With \(1+u=\eu^{2/s}\) the two set-ups have the same \(m\) and \(M\);
+the benchmark \(1+u=\eu\) is the Laplace scale \(2\).'' The slot gains exact algebra: three payoffs, no derivative in
+the order size, and the whole equilibrium set along the path. It loses four things. The investor does not choose a
+size. Full orders give only three posteriors, so frozen entry is flat up to \(r_C\) and then drops; the Laplace continuum
+of posteriors let frozen entry fall as the threshold rose (\Cref{sec:07_controls-frozen}). Class \(H\) reaches the top posterior with
+probability \(b+\lambda\), not \(1/2\), so equal bounds do not give equal entry. The logistic-noise extension has no
+counterpart. (\Cref{sec:10_robustness-sizes}.)
+
+\paragraph{Q3. Why \texorpdfstring{\(\beta\le1/3\)}{beta <= 1/3}?}
+``It is the condition \(b_0\ge b\): a liquidity abstention is at least as likely as a liquidity order in each
+direction. Then the zero order obeys the same bounds as a trade, and a price that pools the zero order keeps its
+belief in \([m,M]\). Without it, a one-sided profile makes zero the most informative order: with \(\lambda=6/17\),
+\(\beta=2/5\), and a profile in which class \(H\) abstains and class \(L\) sells, \(\mu(0)-M=165/1924>0\). The restriction serves the
+statements that cover every profile, such as the universal ceiling. Propositions~2 and~3 force full orders first, so
+they hold for every \(\beta<1/2\).'' The benchmark lies \reg{margin_beta_B} inside it.
+(\Cref{sec:04_slot_beliefs-zero,sec:04_slot_beliefs-ceiling}.)
+
+\paragraph{Q4. Why a trading cost, and why a zero preparation cost with probability \texorpdfstring{\(\rho\)}{rho}?}
+``Without \(k\), any positive residual advantage makes a trade pay, so no informed trade is never an equilibrium. The
+cost is execution, carry or the cost to borrow for a short sale, not price impact. The zero-cost challenger gives the
+entry floor, which does three jobs: with \(\DT>0\) it lets the price reveal the posterior, it gives every correctly
+signed order at least \(\rho\kappa\DT\), and it means that information can only add entry. The atoms are not needed:
+Proposition~A.4 allows any cost law with a low component below \(B_1(m)\) and a high component strictly inside the
+high-cost window.'' (\Cref{sec:05_investor-force,sec:04_slot_beliefs-price,sec:10_robustness-costs}.)
+
+\paragraph{Q5. Why would a buyer learn about its own value from a stock price?}
+``Value depends on facts about the target: its customers, its technology, its demand. A specialist investor can know
+these before diligence; the buyer knows its own integration plans. These are different facts about one match. In
+the example \(S(B)\) of Proposition~A.7, the buyer's signal is the more accurate one, \(d=\reg{sig_d}\) against
+\(a_T=\reg{sig_aT}\); entry rises from \reg{p4_s_signal_r0_entry} to \reg{p4_s_signal_r1_entry}, and the rise needs
+both signals.'' (\Cref{sec:10_robustness-signals}.)
+
+\paragraph{Q6. Why a cash second-price auction, and why do the bidders not trade?}
+``Truthful bids are weakly dominant, so no payoff depends on a conjecture about bid shading. The payment rule
+matters: under Nash bargaining with seller weight \(\omega\), competition moves the spread with the sign of
+\(1-2\omega\), and the second-price auction is \(\omega=0\). The bidders do not trade, and the sale binds all shares;
+this keeps toeholds and free riding out and isolates the information channel.''
+(\Cref{sec:03_auction-rules,sec:11_welfare-payment}.)
+
+\subsubsection*{B. The mechanism}
+
+\paragraph{Q7. In one sentence, why does a stronger incumbent raise the spread?}
+``A high-class challenger must outbid the incumbent and pays \(R\), but against a low-class challenger the incumbent
+wins and pays only \(\ell\); so the gap is \((R-\ell)_+\), and it grows when \(R\) tends to be larger.''
+(\Cref{sec:03_auction-cases}.)
+
+\paragraph{Q8. A stronger incumbent also lowers the challenger's profit. Where is that in the result?}
+``It is the deterrence effect. It raises the preparation threshold as the incumbent strengthens, and it ends
+recruitment above \(r_C\). With the information fixed, it is the only effect. The reversal comes from the change of the price from
+uninformative to informative between \(r_0\) and \(r_1\).'' (\Cref{sec:03_auction-derivatives,sec:07_controls}.)
+
+\paragraph{Q9. Market makers anticipate entry. Why is anything left for the investor?}
+``Rational prices remove the no-entry proceeds \(t_0\) and the common entry gain \(e(q)w_L\). They cannot remove the
+class component, because a liquidity order in the same direction is always possible. The residual is
+\(e(q)\DT[1-\mu(q)]\), and \(1-\mu(1)\ge1-M>0\).'' (\Cref{sec:05_investor-residual}.)
+
+\paragraph{Q10. Why does the price reveal the posterior, when entry depends on the price?}
+``Two orders with one price face the same challenger, so they have the same entry \(\bar e\ge\rho\). The price formula
+gives \(0=\bar e\DT[\mu(x)-\mu(x')]\), and \(\bar e\DT>0\) forces equal posteriors. You never solve the circle.
+Recovery needs \(\DT>0\); prices that rise strictly with the posterior also need \(g_H>g_L\).''
+(\Cref{sec:04_slot_beliefs-sufficiency}.)
+
+\paragraph{Q11. Why is entry non-monotone in incumbent strength?}
+``At \(r_0\) the spread is too small to pay for a trade, so the price carries no information and entry is \(\rho\). At
+\(r_1\) trade is informative, and the top posterior \reg{M_half_B} clears \(\tau(r_1)=\reg{tau_r1}\). At \(r_2\) the
+price stays informative, but \(\tau(r_2)=\reg{tau_r2}\) lies above the top posterior, so entry returns to \(\rho\).''
+(\Cref{sec:06_main_result-ceiling}.)
+
+\paragraph{Q12. Why does research comove with entry?}
+``A wider spread raises the return to a purchase that recruits, \(\DT m_\lambda-k\). Interior research solves
+\(2a\lambda=\DT m_\lambda-k\), and the implicit-function theorem gives \(\lambda_R'>0\). A purchase has probability
+\(\beta+(1/2-\beta)\lambda\): research adds informed purchases in class \(H\) and removes liquidity orders in both
+classes, and the first effect is larger because \(\beta<1/2\).'' From \reg{str_r155} to \reg{str_r165}, research
+rises from \reg{res_lambda_r155} to \reg{res_lambda_r165} and entry from \reg{res_entry_r155} to
+\reg{res_entry_r165}. (\Cref{sec:09_research-prop4}.)
+
+\paragraph{Q13. Is the effect large, or a knife-edge?}
+``The set of primitives is open and nonempty, and Proposition~A.5 constructs it for every ranked pair of classes
+with different means, at every prior. At the benchmark, entry rises by \reg{entry_jump_B}, a factor of about 2.09, % verify/13_panel.py
+and high-class ownership rises from \reg{own_r0} to \reg{own_r1_B}.'' The smallest margin belongs to the ceiling at
+\(r_2\); \Cref{sec:13_panel-push} explains why it says nothing about the rise.
+
+\subsubsection*{C. Proof technique}
+
+\paragraph{Q14. What exactly is unique, and what is not?}
+``In each economy of Proposition~2, the orders, posteriors, prices, beliefs and on-path entry are unique under
+truthful bids. The argument allows mixed and wrong-signed orders, and every comparison is strict, so no tie rule
+matters. Uniqueness fails in three places: no trade and an informative equilibrium coexist on \([r_A,r_N]\); zero
+research and the research branch coexist at the intermediate strengths; and at boundary cases, such as \(u=82/59\)
+or \(r=r_C\), rule CM allows a range of entry.''
+(\Cref{sec:06_main_result-scope,sec:08_coexistence-set,sec:09_research-prop4}.)
+
+\paragraph{Q15. What does coexistence mean for comparative statics?}
+``Proposition~2 compares three economies with unique outcomes; it is not a derivative and not a path. On
+\([r_A,r_N]\) two equilibria exist at one strength, and the model does not select one, so a statement along the path
+must name its branch. On the no-trade branch entry is \(\rho\); on the informative branch it rises strictly on
+\([r_A,r_F]\) and then stays at \reg{entry_r1_B} up to \(r_C\). The headline needs no selection: \(r_0\) lies below
+\(r_A\), and \(r_1\) lies above \(r_J\), where only full orders remain. In data, coexistence predicts two clusters of
+processes at one public strength.'' (\Cref{sec:08_coexistence-set,sec:12_empirical-clusters}.)
+
+\paragraph{Q16. How is Proposition~3 proved, and why is there no derivative of a deviation?}
+``By algebra, except two monotonicity facts: \(J\) rises on the path, and \(\DT(1-\tau)^2\) rises on \([r_0,2]\). Each
+is the sign of an integer polynomial on a rational interval, and an exact Sturm count settles it. Bisection with exact
+signs at rational points brackets \(r_A\), \(r_J\) and \(r_*\), and every quantity that depends on \(\eu\) uses
+rational bounds on \(\eu\). A deviation by the investor compares three numbers at the candidate's prices and entry:
+zero, \(K_j-k\), and at most \(-k\). Nothing is differentiated in the order size.''
+(\Cref{sec:08_coexistence-proof,sec:05_investor-sign}.)
+
+\paragraph{Q17. What does the fixed-information theorem require, and what do the examples and controls show?}
+``Fix the joint law of the class and the challenger's signal \(S\), the class value laws and the cost law. In each
+economy the law of the two values given \((j,S)\) must be \(G_j\otimes F_i\), and the cost must be independent of the
+class, both values and \(S\). Then a stronger incumbent cannot raise entry. Each part of the product law matters. In
+Example~A the signal reports the incumbent's component in one economy only, and entry rises from \(5/8\) to \(1\)
+although the class posterior stays at \(1/2\). In Example~B the signal tells the challenger its value within the
+class, and entry rises from \(1/4\) to \(5/8\). The controls apply the theorem: frozen full orders keep entry at
+\reg{p4_frozen_r0_entry} at \(r_0\) and \(r_1\), and a hidden price keeps it at \reg{p4_hidden_r0_entry}. The frozen
+profile at \(r_0\) is a control, not an equilibrium: both orders lose there.''
+(\Cref{sec:07_controls-fixed,sec:07_controls-frozen,sec:07_controls-hidden}.)
+
+\subsubsection*{D. Welfare and sale terms}
+
+\paragraph{Q18. Who gains from price access?}
+``At \(r_1\) the orders are full with and without access, so trading costs are the same. Access adds high-cost
+preparation after a purchase. Expected proceeds rise by \reg{p2_access_proceeds_gain} and net surplus by
+\reg{p2_access_surplus_gain}. A shareholder who holds through the sale receives \(V_T\), so shareholders receive the
+proceeds gain; the investor's gross profit, \reg{p2_access_gross_transfer}, is a transfer from liquidity traders.''
+Name the domain: where the high cost pays at the prior, as at \(c_H=\reg{access_out_cH}\), access removes
+preparation after a sale, and proceeds change by \reg{p2_outside_proceeds_gain}.
+(\Cref{sec:11_welfare-access,sec:11_welfare-transfers}.)
+
+\paragraph{Q19. Should the seller set a reserve to make the price informative?}
+``A reserve that excludes the low class widens the spread, so trade is informative against both incumbents. At
+\(p=\reg{rsv_points_excl}\) the top posterior recruits at both strengths, and entry is flat at
+\reg{p2_reserve_points_exclude_r0_entry}. At \(p=\reg{rsv_deter}\) strict deterrence returns. The seller's optimal
+terms with the whole trading continuation are the next theoretical step.'' (\Cref{sec:11_welfare-reserves}.)
+
+\subsubsection*{E. Empirics}
+
+\paragraph{Q20. How would you test this, when incumbent strength is endogenous?}
+``Take publicly visible sale processes with one prepared bidder. The outcome is the start of substantive diligence by a
+further buyer. Measure strength only from information that is public before that decision, and date the price before
+it, because target returns before a bid partly reflect anticipation (Schwert 1996). Where the price cannot reach the
+buyer in time, a stronger incumbent can only deter. The order is the first prespecified public order opportunity,
+such as the opening call auction, and an opportunity with no order stays in the sample as a zero. A second test
+needs no auction values: the purchase impact exceeds the sale impact exactly when a purchase recruits. At \(r_1\)
+the entry component is \reg{ba_share_r1_B} of the spread.''
+(\Cref{sec:12_empirical-spread,sec:12_empirical-measurement}.)
+
+\subsection{Where a panel will push}\label{sec:13_panel-push}
+
+A referee will press six points. Use one formula for each: ``This is a deliberate choice. Here is what it buys. Here
+is where the paper relaxes it, or why the result does not depend on it.''
+
+\paragraph{P1. ``The investor knows the class exactly, and the buyer knows nothing.''}
+\emph{It buys} one public belief, so the mechanism is a short chain of inequalities. \emph{Relaxed:}
+Proposition~A.7 gives both sides private signals about different facts; in \(S(B)\) the buyer's signal is the more
+accurate one, and the rise needs both signals. At the benchmark, with \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\), entry rises
+from \reg{p4_comp_b_r0_entry} to \reg{p4_comp_b_r1_entry}. Say what fails: at the benchmark costs and strengths the
+sufficient conditions cannot hold with \(d\ge a_T\), so \(S(B)\) has its own costs and strengths. Section~5 of the
+paper makes the investor's information the result of costly research
+(\Cref{sec:10_robustness-signals,sec:09_research}).
+
+\paragraph{P2. ``The windows of (H1)--(H3) are narrow at the benchmark.''}
+The band is \(82/59<u<2686/1559\); the benchmark \(u=\reg{u_B}\) lies \reg{margin_u_hi_B} below its top, and the
+smallest margin is \(c_H-B_{r_2}(M)=\reg{margin_return_B}\). Answer in four steps.
+\begin{enumerate}[nosep]
+\item The small margins belong to (H3) and measure where \(r_2\) sits: \(r_2-r_C=\reg{gap_r2_rC_B}\). The ceiling
+holds on all of \((r_C,h)\), and its margin is 0.149164 at \(r=4\). % verify/13_panel.py
+\item The rise uses only (H1) and (H2): \(82/59<u<19/3\), that is \(141/200<M<22/25\), or presence between
+\reg{lambda_lo_B} and 0.651100 at \(\beta=\reg{beta_B}\). % verify/13_panel.py
+\item The trading-cost window runs from \reg{Delta_r0} to \(1/[6(1+\eu)]=0.044824\), % verify/13_panel.py
+so its upper end is about 2.69 times its lower end. % verify/13_panel.py
+\item Proposition~A.5 constructs an open set for every ranked pair of classes with different means, at every
+prior.
+\end{enumerate}
+So the rise is robust; the return to \(\rho\) is close to its boundary because \(r_2\) sits just above \(r_C\)
+(\Cref{sec:06_main_result-band,sec:06_main_result-scope}).
+
+\paragraph{P3. ``What happens between the economies, and which equilibrium is selected?''}
+\emph{It buys} a headline in which each economy has one outcome, so no selection drives it. \emph{Relaxed:}
+Proposition~3 lists the whole equilibrium set at every strength on the path, for every slot in the band;
+Table~A.3 shows what changes under the other tie rules; and Corollary~A.2 covers every prior. The model does not select on \([r_A,r_N]\); the empirical
+chapter turns this into two clusters. Say plainly what remains open: with research, the set on \((r_N,r_U)\)
+(\Cref{sec:08_coexistence-set,sec:08_coexistence-ties,sec:09_research-branch}).
+
+\paragraph{P4. ``The payment-rule result covers only the payment stage.''}
+\emph{It buys} the one object that the mechanism takes from the sale rule: how competition moves the spread.
+\emph{Scope:} Proposition~A.9 is a payment-stage result; the trading and preparation equilibrium under bargaining is
+not solved. What it shows: for \(\omega<1/2\) the spread still rises with strength, at \(\omega=1/2\) it is
+\((h-\ell)/2\) for every incumbent, and above \(1/2\) competition narrows it (\Cref{sec:11_welfare-payment}).
+
+\paragraph{P5. ``The seller would choose its terms.''}
+\emph{It buys} a clean separation of the information channel from the design problem. \emph{Relaxed:}
+Proposition~A.10 changes the reserve: exclusion makes the price informative at both strengths and can flatten entry,
+and strict deterrence holds for reserves between about \reg{p2_reserve_ph} and \reg{p2_reserve_weak_top}.
+\emph{Open:} the seller-optimal reserve, and whether the seller commits before trade or revises after the price; the
+conclusion of the paper names this the next step (\Cref{sec:11_welfare-reserves}).
+
+\paragraph{P6. ``What is not modelled?''}
+Toeholds, free riding and manipulation: the bidders do not trade, and the sale binds all shares, so the incumbent
+cannot move the price and the investor earns a pure trading residual. Order sizes and repeated trade: one unit
+opportunity keeps every order on path and gives exact bounds (\Cref{sec:10_robustness-sizes}). The investor's
+position size: the scale of a unit holds the experiment fixed (\Cref{sec:11_welfare-transfers}). The zero-cost
+challenger prepares by convention, even at zero rent. Payment is in cash. The empirical results are predictions with
+a measurement design, not estimates (\Cref{sec:12_empirical}).
+
+\subsection{Terms to use exactly}\label{sec:13_panel-terms}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}X@{}}
+\toprule
+Term & Precise meaning\\
+\midrule
+Entry \(\Ent\) & The probability that the challenger prepares. Not the sale probability, and not the probability that
+two admissible bidders meet; these differ once a reserve can exclude.\\
+Preparation & The payment of the cost (diligence, financing, approvals) that reveals the value and permits a bid.\\
+Stronger incumbent & A first-order stochastic strengthening of the public law of the prepared bidder's value; a larger
+\(r\) in the benchmark. Not more bidders.\\
+Target proceeds & What the auction pays per target share, \(V_T\), with means \(t_0,t_H,t_L\). Not the interim price.\\
+Gross profit & \(B(\mu)=g_L+\mu(g_H-g_L)\): the expected auction rent before the preparation cost.\\
+Target-payoff spread & \(\DT=t_H-t_L\). Not the merger value, not the investor's profit, and not the price spread \(S\)
+of \Cref{sec:12_empirical-spread}.\\
+Top, bottom posterior & \(M(\pi)\), \(m(\pi)\): bounds on the posterior after every order under every profile; full
+orders reach them.\\
+Residual advantage & What prices leave to the investor: \(e(q)\DT[1-\mu(q)]\) in class \(H\), \(e(q)\DT\mu(q)\) in
+class \(L\).\\
+The order slot & One public order opportunity, filled by the investor with probability \(\lambda\) and by a liquidity
+trader otherwise. Not additive flow.\\
+The class ranking & Condition \paper{(1)}: \(G_H\) dominates \(G_L\), and both supports lie at or above the reserve.\\
+The two windows & The high-cost window (H1), \(B_0(\pi)<c_H<B_1(M)\); the trading-cost window (H2),
+\(\Delta_0<k<\rho\kappa\Delta_1\).\\
+The ceiling & \(B(M(\pi))<c_H\), with \(g_H\ge g_L\) and \(\beta\le1/3\): no price recruits a high-cost challenger
+under any profile. (H3) is the ceiling at \(F_2\).\\
+The entry ceiling & \(r_C\approx\reg{rC_B}\), where \(\tau(r)=M(1/2)\); the ceiling holds above it.\\
+The informative branch & The informative equilibrium that coexists with no trade: T at \(r_A\), R on \((r_A,r_F)\), then
+F; entry \(\rho+(1-\rho)\min\{b\DT/(2k),b+\lambda/2\}\).\\
+Coexistence & No informed trade and an informative equilibrium at one strength; exactly \([r_A,r_N]\) under IM and C1.
+Not a mixture inside one equilibrium.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{A 15-minute talk}\label{sec:13_panel-talk}
+
+\begin{enumerate}[nosep]
+\item \textbf{(1 min) Question.} Does a stronger rival keep a costly entrant out? The standard answer is yes.
+\item \textbf{(2 min) Setting.} The decision interval; a prepared incumbent; a challenger that watches the price; one
+order slot (Figure~\ref{fig:02_model-timing}).
+\item \textbf{(3 min) Two claims on one surplus.} \(\DT=(r-\ell)^2/(2r)\) rises while \(B_r(\mu)\) falls; the split
+\(\DT+g_H-g_L=h-\ell\) (Figure~\ref{fig:03_auction-proceeds}).
+\item \textbf{(3 min) What one order reveals.} The bounds \([m,M]\); price sufficiency; the residual advantage and the
+bounds \(\rho\kappa\DT\le K_j\le\DT\).
+\item \textbf{(3 min) Main result.} (H1)--(H3) in words; Table~\ref{tab:01_brief-numbers}; entry rises, then returns
+to \(\rho\).
+\item \textbf{(1 min) Controls.} At fixed information entry cannot rise; frozen orders keep it flat; a hidden price
+keeps it at \(\rho\).
+\item \textbf{(2 min) Path, research and scope.} Coexistence and the informative branch (Figure~\ref{fig:08-map});
+research rises with entry; access raises proceeds and surplus; the payment rule sets the sign; the purchase impact
+carries the entry component.
+\end{enumerate}

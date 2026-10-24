@@ -1,1 +1,177 @@
-% B_parameters: to be written.
+\section{Parameter vectors}\label{sec:B_parameters}
+
+This appendix lists every parameter vector that the paper and this guide use. A value printed from the paper's
+registry appears as in the paper; an exact fraction is an input. The last column points to the place in the guide
+that uses the vector. The paper declares calibration B in its Table~A.5 and records every margin at B in its
+Table~A.6 \paper{App.~A.9}.
+
+\subsection{Calibration B, the benchmark}\label{sec:B_parameters-benchmark}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lllX@{}}
+\toprule
+Object & Symbol & Value & Note\\
+\midrule
+Class values & \(h,\ \ell\) & \(\reg{prim_h},\ \reg{prim_ell}\) & point masses; money in units of \(\ell\)\\
+Prior & \(\pi\) & \(\reg{prim_pi}\) & \\
+Reserve & \(p\) & \(\reg{prim_p}\) & below both class values\\
+Zero-cost probability & \(\rho\) & \(\reg{prim_rho}\) & \\
+Preparation costs & \(c_L,\ c_H\) & \(0,\ \reg{prim_cH}\) & \\
+Trading cost & \(k\) & \(\reg{prim_k}\) & for a nonzero order\\
+Incumbent & \(F\) & \(U[0,r]\) & \\
+Strengths & \(r_0,\ r_1,\ r_2\) & \(\reg{prim_r0},\ \reg{prim_r1},\ \reg{prim_r2}\) & weak, strong, very strong\\
+Slot mass ratio & \(u\) & \(\eu-1=\reg{u_B}\) & \(1+u=\eu\)\\
+Liquidity probability & \(\beta\) & \(\reg{beta_B}\) & an exact decimal\\
+Presence probability & \(\lambda=u\beta/(1+u\beta)\) & \(\reg{lambda_B}\) & derived, kept unrounded\\
+Liquidity masses & \(b,\ b_0\) & \(\reg{b_B},\ \reg{b0_B}\) & \((1-\lambda)\beta\), \((1-\lambda)(1-2\beta)\)\\
+Posterior bounds at \(\pi\) & \(m,\ M\) & \(\reg{m_half_B},\ \reg{M_half_B}\) & \(1/(1+\eu)\), \(\eu/(1+\eu)\); \(\kappa=m\)\\
+Tie rules & & IM, C1 & the defaults\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The guide derives the slot values in \Cref{sec:04_slot_beliefs-full} and the auction values in
+\Cref{sec:03_auction-table}.
+
+\paragraph{The sections through B} \paper{Prop.~A.1; Table~2}. With the auction, the costs and the strengths of B:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Section & Region & Guide\\
+\midrule
+Mass ratio \(u\), prior \(1/2\) & \((82/59,\ 2686/1559)=(\reg{u_lo},\ \reg{u_hi})\) & \Cref{sec:06_main_result-band}\\
+Top posterior \(M(1/2)\) & \((141/200,\ 4245/5804)\) & \Cref{sec:06_main_result-band}\\
+Presence \(\lambda\) at \(\beta=\reg{beta_B}\) & \((\reg{lambda_lo_B},\ \reg{lambda_hi_B})\) & \Cref{sec:06_main_result-band}\\
+Presence \(\lambda\) at \(\beta=1/3\) & \((\reg{lambda_lo_third},\ \reg{lambda_hi_third})\) & \\
+Prior \(\pi\), \(1+u=\eu\), (H1)--(H3) & \((\reg{prior_lo_B},\ \reg{prior_hi_B})\) & \Cref{sec:06_main_result-priors}\\
+Prior \(\pi\), \(1+u=\eu\), (H1)--(H2) & \((\reg{prior_lo_B},\ 195/308)\) & \Cref{sec:06_main_result-priors}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Research}\label{sec:B_parameters-research}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lllX@{}}
+\toprule
+Object & Symbol & Value & Note\\
+\midrule
+Research cost & \(a\) & \(\reg{res_a}\) & cost \((a/2)\lambda^2\)\\
+Research cap & \(\lb\) & \(\reg{res_cap}\) & equals \(\lambda\) of B, so research at the cap gives the slot of B\\
+Intermediate strengths & \(r\) & \(\reg{str_r155},\ \reg{str_r160},\ \reg{str_r165}\) & Proposition~4(b)(ii)\\
+Cap strip at \(\beta=\reg{beta_B}\) & \(\lb\) & \((\reg{res_cap_lo},\ \reg{res_cap_hi})\) & \(=(\lambda_E(r_1),\lambda_E(r_2))\)\\
+Cost window at the cap & \(a\) & \((\reg{res_a_lo},\ \reg{res_a_up})\) & \\
+Liquidity range & \(\beta\) & \((\reg{res_beta_lo},\ 1/3]\) & with \(\lb=u\beta/(1+u\beta)\), \(a=\reg{res_a}\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Every other primitive is that of B. The guide uses this vector in \Cref{sec:09_research}; the region is derived in
+\Cref{sec:09_research-region}.
+
+\subsection{Robustness}\label{sec:B_parameters-robustness}
+
+\paragraph{Cost laws} \paper{Prop.~A.4}. Calibration B with the cost law \(\rho H^0+(1-\rho)H^1\): \(H^0\) is any law on
+\([0,L]\), \(L=\reg{atom_L}\), and \(H^1\) is uniform on \([6-\varepsilon,6+\varepsilon]\) with
+\(\varepsilon=\reg{atom_eps}\) or \(\varepsilon=\reg{atom_eps_small}\) (\Cref{sec:10_robustness-costs}).
+
+\paragraph{Value classes and priors} \paper{Table~A.4}. Each economy keeps the slot of B, \(p=\reg{prim_p}\) and
+\(\rho=\reg{prim_rho}\). A single number is a point-mass class; \(U[\cdot,\cdot]\) is a uniform class
+(\Cref{sec:10_robustness-classes}).
+\begin{center}\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lllcccccc@{}}
+\toprule
+Economy & Low class & High class & \(\pi\) & \(c_H\) & \(k\) & \(r_0\) & \(r_1\) & \(r_2\)\\
+\midrule
+Moderate gap & \(\reg{p2_input_moderate_low_lo}\) & \(\reg{p2_input_moderate_high_lo}\) & \(\reg{p2_input_moderate_pi}\)
+ & \(\reg{p2_input_moderate_cost}\) & \(\reg{p2_input_moderate_k}\) & \(\reg{p2_input_moderate_r0}\) & \(\reg{p2_input_moderate_r1}\) & --\\
+Narrow bands & \(U[\reg{p2_input_bands_low_lo},\reg{p2_input_bands_low_hi}]\) & \(U[\reg{p2_input_bands_high_lo},\reg{p2_input_bands_high_hi}]\)
+ & \(\reg{p2_input_bands_pi}\) & \(\reg{p2_input_bands_cost}\) & \(\reg{p2_input_bands_k}\) & \(\reg{p2_input_bands_r0}\) & \(\reg{p2_input_bands_r1}\) & \(\reg{p2_input_bands_r2}\)\\
+Low prior & \(\reg{p2_input_ex_a_low_lo}\) & \(\reg{p2_input_ex_a_high_lo}\) & \(\reg{p2_input_ex_a_pi}\)
+ & \(\reg{p2_input_ex_a_cost}\) & \(\reg{p2_input_ex_a_k}\) & \(\reg{p2_input_ex_a_r0}\) & \(\reg{p2_input_ex_a_r1}\) & \(\reg{p2_input_ex_a_r2}\)\\
+High prior & \(\reg{p2_input_ex_b_low_lo}\) & \(\reg{p2_input_ex_b_high_lo}\) & \(\reg{p2_input_ex_b_pi}\)
+ & \(\reg{p2_input_ex_b_cost}\) & \(\reg{p2_input_ex_b_k}\) & \(\reg{p2_input_ex_b_r0}\) & \(\reg{p2_input_ex_b_r1}\) & \(\reg{p2_input_ex_b_r2}\)\\
+Wide classes & \(U[\reg{p2_input_ex_c_low_lo},\reg{p2_input_ex_c_low_hi}]\) & \(U[\reg{p2_input_ex_c_high_lo},\reg{p2_input_ex_c_high_hi}]\)
+ & \(\reg{p2_input_ex_c_pi}\) & \(\reg{p2_input_ex_c_cost}\) & \(\reg{p2_input_ex_c_k}\) & \(\reg{p2_input_ex_c_r0}\) & \(\reg{p2_input_ex_c_r1}\) & \(\reg{p2_input_ex_c_r2}\)\\
+Same means & \(\reg{p2_input_ex_d_low_lo}\) & \(\reg{p2_input_ex_d_high_lo}\) & \(\reg{p2_input_ex_d_pi}\)
+ & \(\reg{p2_input_ex_d_cost}\) & \(\reg{p2_input_ex_d_k}\) & \(\reg{p2_input_ex_d_r0}\) & \(\reg{p2_input_ex_d_r1}\) & \(\reg{p2_input_ex_d_r2}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The same-means row is a control: point masses at the means of the wide classes, where a purchase does not recruit.
+
+\paragraph{Many classes} \paper{Prop.~A.6}.
+\begin{itemize}[nosep]
+\item \emph{Four classes.} The slot, costs, reserve, \(r_0\) and \(r_1\) of B; equal priors \(\reg{four_prior}\); point
+values \(\reg{four_v1}\) and \(\reg{four_v2}\) (low group), \(\reg{four_v3}\) and \(\reg{four_v4}\) (high group).
+\item \emph{The price collision.} The slot of B; priors \((1/4,1/2,1/4)\); \(G_1=\delta_1\),
+\(G_2=(1-w)\delta_1+w\delta_{10}\), \(G_3=\delta_{10}\) with \(w=(1+2b_0+\lambda)/2=\reg{p2_many_weight}\);
+\(R\sim U[0,8]\), \(p=1\), \(\rho=1/4\), \(c_H=10\), \(k=1/8\).
+\end{itemize}
+(\Cref{sec:10_robustness-many}.)
+
+\paragraph{Complementary signals} \paper{Prop.~A.7; App.~A.9}.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Vector & Values\\
+\midrule
+\(S(B)\) & The slot, \(h\), \(\ell\), \(p\) and \(\pi\) of B; \(\rho=\reg{sig_rho}\), \(c_H=\reg{sig_cH}\), \(k=\reg{sig_k}\),
+\(r_0=\reg{sig_r0}\), \(r_1=\reg{sig_r1}\); accuracies \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\).\\
+Exact witness & \(S(B)\) with the slot \((\lambda,\beta)=(1/3,3/10)\), so \(b=1/5\), \(u=5/3\), \(m=3/11\), \(M=8/11\).\\
+B with the accuracies of \(S(B)\) & Calibration B with \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\).\\
+B with its own accuracies & Calibration B with \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\).\\
+\bottomrule
+\end{tabularx}
+\end{center}
+(\Cref{sec:10_robustness-signals}.)
+
+\subsection{Welfare, sale terms and the alternative slot}\label{sec:B_parameters-sale}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\toprule
+Vector & Values & Guide\\
+\midrule
+Access outside recruitment & Calibration B with \(c_H=\reg{access_out_cH}\) & \Cref{sec:11_welfare-transfers}\\
+Payment rule & Point classes \(h\), \(\ell\); zero reserve; incumbent on \([0,\bar r]\), \(\ell<\bar r<h\); seller weight
+\(\omega\in[0,1)\) & \Cref{sec:11_welfare-payment}\\
+Exclusion reserve, points & Calibration B with \(p=\reg{rsv_points_excl}\) & \Cref{sec:11_welfare-reserves}\\
+Exclusion reserve, bands & The narrow-band classes with \(p=\reg{rsv_bands_excl}\) & \paper{Sec.~7.3} only\\
+Deterrence reserve & Calibration B with \(p=\reg{rsv_deter}\); it also exceeds \(r_0\) & \Cref{sec:11_welfare-reserves}\\
+Alternative slot & Informed share \(\vartheta'=\reg{alt_theta_B}\) (\(u'=8/5\)), \(\beta'=\reg{alt_beta_B}\),
+\(\lambda'=\reg{alt_lambda_B}\): the volume and the entry \(\reg{alt_entry_r1_B}\) of B, but a spread of
+\(\reg{alt_ba_r1_B}\) at \(r_1\) & \Cref{sec:12_empirical-identification}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Examples that this guide adds}\label{sec:B_parameters-guide}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.4cm}X>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\toprule
+Example & Vector & Guide\\
+\midrule
+Proposition~1, other laws & \(F(y)=(y/\bar r)^2\) on \([0,\bar r]\), \(\bar r\in\{2,3\}\); \(G_H=U[2,10]\);
+\(G_L=\tfrac12\delta_1+\tfrac12U[1,4]\); \(p=1/2\) (in \texttt{verify/03\_auction.py}) & \Cref{sec:03_auction-prop1}\\
+Proposition~1(c): the spread falls & Calibration B with \(p=\reg{rsv_points_excl}\); \(r\in\{6/5,\ 3/2,\ 3\}\) &
+\Cref{sec:03_auction-prop1c}\\
+Mixed profile & \(\lambda=1/3\), \(\beta=1/4\), \(\pi=2/5\); \(\sigma_H=(1/5,3/10,1/2)\), \(\sigma_L=(3/5,3/10,1/10)\) on
+\((-1,0,1)\); at \(r=3\) with the auction of B and \(e\equiv\rho=1/4\) &
+\Cref{sec:04_slot_beliefs-law,sec:05_investor-bounds}\\
+Failure of \(\beta\le1/3\) & \(\lambda=6/17\), \(\beta=2/5\), \(\pi=1/2\); class \(H\) abstains, class \(L\) sells &
+\Cref{sec:04_slot_beliefs-zero}\\
+The weak-prior part of (H1) & Calibration B with \(c_H=\reg{nec_cH}\) and \(r_2=\reg{nec_r2}\) &
+\Cref{sec:06_main_result-scope}\\
+Boundary slot & Calibration B with \(u=82/59\) and \(\beta=\reg{beta_B}\) & \Cref{sec:06_main_result-priors}\\
+Fixed information, Example~A & \(p=1/2\); point classes \(12\) and \(11\), \(\pi=1/2\); \(\rho=1/4\), \(c_H=6\);
+\(F_0=\tfrac12U[0,1]+\tfrac12U[8,9]\), \(F_1=\tfrac12U[0,1]+\tfrac12U[9,10]\); a fair binary signal & \Cref{sec:07_controls-fixed}\\
+Fixed information, Example~B & \(p=1/2\); \(G_L=\tfrac12\delta_1+\tfrac12\delta_3\), \(G_H=\tfrac12\delta_2+\tfrac12\delta_4\),
+\(\pi=1/2\); \(\rho=1/4\), \(c_H=21/10\); \(R\sim U[0,1/2]\) in economy~0, \(U[0,3/5]\) in economy~1 &
+\Cref{sec:07_controls-fixed}\\
+Path strengths & Calibration B at \(r\in\{\reg{str_r140},\ \reg{str_r145}\}\), the sample strengths \(71/50\), \(37/20\),
+\(5/2\), and \(r=2\) for rule I0 & \Cref{sec:08_coexistence-entry,sec:08_coexistence-set,sec:08_coexistence-ties}\\
+Other priors & The slot of B with \(\pi\in\{3/10,\ 9/20,\ 3/5,\ 129/200,\ 33/50\}\) & \Cref{sec:08_coexistence-priors}\\
+\bottomrule
+\end{tabularx}
+\end{center}
