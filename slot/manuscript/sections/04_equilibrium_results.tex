@@ -10,8 +10,8 @@ distributions.
 
 \begin{proposition}[Competition creates competition]\label{prop:ccc}
 Let the classes satisfy the class ranking~\eqref{eq:classes}, let \(F_1\) be a continuous first-order stochastic
-strengthening of the continuous incumbent distribution \(F_0\), and let \(F_2\) strengthen \(F_1\) in the same sense. Fix
-\(0<\pi<1\), \(0<\rho<1\), \(k>0\) and a slot \((\lambda,\beta)\), and suppose that the high cost lies between gross
+strengthening of the continuous incumbent distribution \(F_0\), and let \(F_2\) strengthen \(F_1\) in the same sense.
+Let \(0<\pi<1\), \(0<\rho<1\), \(k>0\) and a slot \((\lambda,\beta)\) be given, and suppose that the high cost lies between gross
 profit at the prior against \(F_0\) and gross profit at the top posterior against \(F_1\), that the trading cost lies
 between the target-payoff spread at \(F_0\) and the fraction \(\rho\kappa(\pi)\) of the spread at \(F_1\), and that
 gross profit at the top posterior against \(F_2\) falls short of the high cost:
@@ -80,12 +80,11 @@ The benchmark has point-mass classes \(h=\reg{prim_h}\) and \(\ell=\reg{prim_ell
 \(r_0=\reg{prim_r0}\), \(r_1=\reg{prim_r1}\) and \(r_2=\reg{prim_r2}\), and money is measured in units of the low
 value.
 
-In the benchmark slot the largest likelihood ratio of an order is \(1+u=\eu\), with \(\eu\) printed upright
-to separate it from entry \(e(x)\), and the liquidity probability is the exact decimal
-\(\beta=\reg{beta_B}\). The presence probability is therefore \(\lambda=u\beta/(1+u\beta)=\reg{lambda_B}\), with
+In the benchmark slot the largest likelihood ratio of an order is \(1+u=\eu\), and the liquidity probability
+is \(\beta=\reg{beta_B}\). The presence probability is therefore \(\lambda=u\beta/(1+u\beta)=\reg{lambda_B}\), with
 \(b=\reg{b_B}\), and the posterior bounds at the prior are \(M(1/2)=\eu/(1+\eu)=\reg{M_half_B}\) and
-\(m(1/2)=\reg{m_half_B}\). Every computation keeps \(\lambda\) unrounded, and every statement that depends on
-\(\eu\) uses interval arithmetic; Appendix~\ref{app:parameters} lists these declarations.
+\(m(1/2)=\reg{m_half_B}\); Appendix~\ref{app:parameters} lists these declarations and the arithmetic behind
+each value.
 
 \begin{table}[tbp]
 \centering\small\singlespacing
@@ -155,14 +154,14 @@ Decimal endpoints are rounded to six places; Proposition~\ref{prop:region} gives
 
 Both ends of the band are preparation thresholds: the lower end \(\tau(r_1)\) is the belief that a purchase needs
 to recruit a high-cost challenger against the strong incumbent, and the upper end \(\tau(r_2)\) is the belief at
-which a purchase would still recruit one against the very strong incumbent. The band between the two thresholds
-has the width it has because the threshold rises slowly with strength: a high-class challenger outbids every
+which a purchase would still recruit one against the very strong incumbent. The threshold rises slowly with
+strength, and this sets the width of the band: a high-class challenger outbids every
 incumbent on the path, and its expected payment \(r/2+p^2/(2r)\) rises by less than one half per unit of strength,
 a change that is small next to the gap \(g_H-g_L\) in Table~\ref{tab:payoffs}.
 
 Gross profit at every belief falls strictly with strength above \(\ell\), so the ceiling (H3) holds at every
 strength in \((r_C,h)\), where the entry ceiling \(r_C=\reg{rC_B}\) is the strength at which \(\tau(r)=M(1/2)\);
-parts~(i) and~(ii) of Proposition~\ref{prop:ccc} do not use (H3). Table~\ref{tab:margins} in
+parts~(i) and~(ii) of Proposition~\ref{prop:ccc} hold without the ceiling. Table~\ref{tab:margins} in
 Appendix~\ref{app:parameters} records every hypothesis and its positive margin at the benchmark.
 
 \begin{figure}[tbp]
@@ -183,13 +182,13 @@ holds every top posterior \(M(1/2)\) that puts \(r_C\) between \(r_1\) and \(r_2
 Figure~\ref{fig:beliefs} shows the preparation threshold along the path: the prior lies below it at every
 strength, so an uninformative price never recruits a high-cost challenger, and the threshold rises with strength
 until it meets the top posterior at the entry ceiling \(r_C\), just below \(r_2\). Panel~(b) shows the band of
-Proposition~\ref{prop:region}(a) for the top posterior.
+Table~\ref{tab:region} for the top posterior (Proposition~\ref{prop:region}).
 
 Holding the information in the price fixed while the incumbent strengthens removes the reversal. The experiment
 fixes the law of the class and of a signal that the challenger observes, the class value laws and the cost law.
-Given the class, the signal tells the challenger nothing more about either value: its own value depends on the
-signal only through the class, the incumbent's value is independent of the class and the signal, and the two
-values are independent; the cost is independent of the class, both values and the signal. A stronger incumbent then can only lower entry, for every such experiment and every independent cost law
+Given the class, the signal tells the challenger nothing more about either value. Its own value depends on
+the signal only through the class; the incumbent's value is independent of the class and the signal, and the
+two values are independent given the class and the signal. The cost is independent of the class, both values and the signal. A stronger incumbent then can only lower entry, for every such experiment and every independent cost law
 (Proposition~\ref{prop:control} in Appendix~\ref{app:robustness} gives the formal condition): it lowers gross
 profit at every belief, so it can only remove a preparation incentive, and entry falls by exactly the probability
 that the cost lies between gross profit at the two strengths.
@@ -241,8 +240,9 @@ challenger decides on its prior. At \(r_2\) the full-order profile is the equili
 Panel~B of Table~\ref{tab:outcomes} holds full orders fixed at both strengths. Only the top posterior can recruit
 a high-cost challenger, because the preparation threshold \(\tau(r)\) exceeds the prior at every strength, so
 entry is \(\reg{p4_frozen_r0_entry}\) at every strength up to the entry ceiling \(r_C=\reg{rC_B}\) and \(\rho\)
-above it. The probability in Proposition~\ref{prop:control} is \(\reg{p4_control_crossing_r0_r1}\) from \(r_0\) to
-\(r_1\) and \(\reg{p4_control_crossing_r1_r2}\) from \(r_1\) to \(r_2\): with information fixed, entry stays
+above it. Entry falls by the probability that the cost lies between gross profit at the two strengths, which
+is \(\reg{p4_control_crossing_r0_r1}\) from \(r_0\) to \(r_1\) and \(\reg{p4_control_crossing_r1_r2}\) from
+\(r_1\) to \(r_2\) (Proposition~\ref{prop:control}): with information fixed, entry stays
 constant from \(r_0\) to \(r_1\) and falls above the entry ceiling.
 
 Panel~C hides the price from the challenger, which then decides on its prior and prepares only at zero cost, so
@@ -253,27 +253,28 @@ fixed information.
 
 \subsection{Coexistence}\label{sec:coexistence}
 
-Proposition~\ref{prop:ccc} compares the weak and strong economies at \(r_0\) and \(r_1\), and between those
-strengths an informative equilibrium coexists with an uninformative one. I now describe entry along the whole
-benchmark path \(r\in[r_0,r_2]\) at the prior \(1/2\), for every slot in the band of
-Proposition~\ref{prop:region}(a); Appendix~\ref{app:coexistence} lists the complete equilibrium set.
+At the benchmark, Proposition~\ref{prop:ccc} compares the weak and strong economies at \(r_0\) and \(r_1\),
+and between those strengths an informative equilibrium coexists with an uninformative one. I now describe
+entry along the whole benchmark path \(r\in[r_0,r_2]\) at the prior \(1/2\), for every slot in the band of
+Section~\ref{sec:benchmark} (Proposition~\ref{prop:region}); Appendix~\ref{app:coexistence} lists the
+complete equilibrium set.
 
 Coexistence starts at \(r_A\), where a purchase that just reaches the preparation threshold and recruits a
 high-cost challenger earns exactly the trading cost. Full purchases start at \(r_F\), where a full purchase that
-recruits earns the trading cost, and no informed trade ends at \(r_N\), where a unit order against an uninformative
-price earns it, so no informed trade stops being an equilibrium above \(r_N\). The remaining strength in the statement is
-the entry ceiling \(r_C\) of Section~\ref{sec:benchmark}, above which even a purchase at the top posterior cannot
-recruit a high-cost challenger. Of the strengths that Figure~\ref{fig:coexistence} marks, \(r_A\), \(r_N\) and
-\(r_J\) do not depend on the slot. The figure also marks \(r_J\) and the sale threshold \(r_S\), which bound
-the mixed patterns that the figure draws with the informative branch; Appendix~\ref{app:coexistence} defines
-every marked strength and every pattern in the figure.
+recruits earns the trading cost, and the equilibrium without informed trade ends at \(r_N\), where a unit order
+against an uninformative price earns the trading cost. The entry ceiling \(r_C\) of
+Section~\ref{sec:benchmark} also enters the proposition: above it even a purchase at the top posterior cannot
+recruit a high-cost challenger. Figure~\ref{fig:coexistence} also marks \(r_J\) and the sale threshold
+\(r_S\), which bound the mixed patterns that the figure draws with the informative branch; \(r_A\), \(r_N\)
+and \(r_J\) do not depend on the slot, and Appendix~\ref{app:coexistence} defines every marked strength and
+every pattern in the figure.
 
 \begin{proposition}[Coexistence on the benchmark path]\label{prop:coexistence}
-Take the benchmark auction, the prior \(1/2\) and any slot in the band of Proposition~\ref{prop:region}(a). An
-equilibrium exists at every strength on the path from \(r_0\) to \(r_2\), and Appendix~\ref{app:coexistence} lists
-the whole equilibrium set.
+Let the auction be the benchmark auction at the prior \(1/2\), and let the slot lie in the band of
+Proposition~\ref{prop:region}. An equilibrium exists at every strength on the path from \(r_0\) to \(r_2\),
+and Appendix~\ref{app:coexistence} lists the whole equilibrium set.
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
-\item No informed trade and an informative equilibrium coexist exactly on \([r_A,r_N]\).
+\item The equilibrium without informed trade and an informative equilibrium coexist exactly on \([r_A,r_N]\).
 \item On the informative branch that coexists with no trade, entry is
 \(\rho+(1-\rho)\min\{b\DT(r)/(2k),\,b+\lambda/2\}\). It is continuous, rises strictly on \([r_A,r_F]\) and then
 stays constant on \([r_F,r_N]\), keeps this value along full purchases up to \(r_C\), and equals \(\rho\) above
@@ -296,8 +297,8 @@ ceiling \(r_C\). The low class abstains up to \(r_N\), mixes on \((r_N,r_S)\), a
 \begin{minipage}{\linewidth}\footnotesize\singlespacing
 \textit{Notes.} The benchmark at the prior \(1/2\), when an indifferent investor may mix over its best orders and
 an indifferent high-cost challenger prepares. Entry against incumbent strength \(r\) in each equilibrium pattern
-of Proposition~\ref{prop:coexistence}; Appendix~\ref{app:coexistence} lists the whole set. The figure labels no
-informed trade by N, a mixed purchase that recruits by R, a full purchase by F, mixed orders without recruitment
+of Proposition~\ref{prop:coexistence}; Appendix~\ref{app:coexistence} lists the whole set. The figure labels
+the equilibrium without informed trade by N, a mixed purchase that recruits by R, a full purchase by F, mixed orders without recruitment
 by Q and the threshold branch by T. The thin dashed line is the threshold branch, an equilibrium only when an
 indifferent high-cost challenger may prepare with any probability. Panel (a) covers the path from \(r_0\) to
 \(r_2\), and panel (b) enlarges the strengths around the coexistence interval, which the blue band marks from
@@ -309,7 +310,7 @@ sells fully from \(r_S\). Filled markers belong to a branch, and open markers do
 
 Figure~\ref{fig:coexistence} shows entry along the path, and coexistence comes from the entry response itself.
 Against an uninformative price with entry \(\rho\), a unit order earns \(\rho\DT/2\), which stays below \(k\) up to
-\(r_N\), so no informed trade survives as an equilibrium until \(r_N\); an informative equilibrium changes the
+\(r_N\), so the equilibrium without informed trade survives until \(r_N\); an informative equilibrium changes the
 entry response to a purchase and with it the return to trade, so it can hold at the same strengths.
 
 Entry rises strictly along the informative branch while the high class mixes, because the purchase rate adjusts.
@@ -319,12 +320,13 @@ class mixes and the posterior after a purchase stays above the threshold, so the
 \(b\,[\DT(r)/k-2]\) therefore rises with \(r\), and entry rises with it, until the purchase rate reaches
 \(\lambda\) at \(r_F\); from there entry stays constant.
 
-Above \(r_N\) no informed trade fails as an equilibrium. On \((r_N,r_J)\) the investor can also mix in both
+Above \(r_N\) the equilibrium without informed trade fails. On \((r_N,r_J)\) the investor can also mix in both
 directions without recruitment, and from \(r_J\) on a full purchase is the only high-class order.
 
 Coexistence also holds away from the even prior. At the benchmark slot the informative branch starts at the same
 strength \(r_A\) for every prior between \(\approx\reg{piA_lo_B}\) and \(\approx\reg{piA_hi}\), and it starts
-later, where the prior reaches the preparation threshold, for priors up to \(\approx\reg{pimax}\). Below the first
-of these priors even the top posterior cannot reach the threshold once a purchase can pay for itself, and from the
-last prior on the uninformative equilibrium fails before the prior falls below the threshold;
-Corollary~\ref{prop:priors} in Appendix~\ref{app:coexistence} gives the coexistence set at every prior.
+later, where the prior reaches the preparation threshold, for priors up to \(\approx\reg{pimax}\). Below
+\(\approx\reg{piA_lo_B}\) even the top posterior cannot reach the threshold once a purchase can pay for
+itself, and from \(\approx\reg{pimax}\) on, the uninformative equilibrium fails before the prior falls below
+the threshold; Appendix~\ref{app:coexistence} gives the coexistence set at every prior
+(Corollary~\ref{prop:priors}).
