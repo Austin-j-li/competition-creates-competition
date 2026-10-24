@@ -1,0 +1,402 @@
+\subsection{Research}\label{app:research}
+
+This subsection proves Proposition~\ref{prop:research}, Corollary~\ref{prop:researchbranch} and
+Remark~\ref{rem:researchties}. It also states and proves Proposition~\ref{prop:researchregion}, the admissible cap
+and cost. The auction is the benchmark, the prior is \(1/2\), and \(0<\beta\le1/3\). Fix a
+candidate with conjectured intensity \(\hat\lambda\in[0,\lb]\) and order distributions \(\sigma_H,\sigma_L\) after a
+success. Write \(\hat b=(1-\hat\lambda)\beta\) and \(\hat b_0=(1-\hat\lambda)(1-2\beta)\), and
+\(f_j(q)=(1-\hat\lambda)\eta(q)+\hat\lambda\sigma_j(q)\). The conditions (E1) to (E6) hold at the intensity
+\(\hat\lambda\), and (E7) is research optimality. A candidate satisfies (E1) to (E4) and (E6). Lemma~\ref{lem:trading}
+applies at \(\hat\lambda\) and gives the payoffs of an order after a success,
+\begin{equation}\label{eq:a5-payoffs}
+U_H(q)=q\,e(q)\DT[1-\mu(q)]-k|q|,\qquad U_L(q)=-q\,e(q)\DT\mu(q)-k|q| .
+\end{equation}
+Let \(V=\tfrac12\max_qU_H(q)+\tfrac12\max_qU_L(q)\ge0\) be the research value. Since \(r>\ell\), \(\DT>0\) and
+\(g_H>g_L\) at every strength of this subsection.
+
+\paragraph{Derived functions.}
+For \(\lambda\in[0,1)\), \(m_\lambda=(1-\lambda)\beta/[2\beta+\lambda(1-2\beta)]\) falls strictly from \(1/2\) to
+\(0\), because \(1-2\beta>0\), and \(M_\lambda=1-m_\lambda\). At the cap of calibration B, \(u_{\lb}=u\), so
+\(M_{\lb}=\eu/(1+\eu)\) and \(m_{\lb}=1/(1+\eu)\). For \(1/2<\tau(r)<1\), the recruitment intensity
+\(\lambda_E(r)\) of Section~\ref{sec:research} solves \(M_\lambda=\tau(r)\), and
+\(d\lambda_E/d\tau=\beta/\{\beta+(1-2\beta)(1-\tau)\}^2>0\). Clear the denominator in \eqref{eq:research}:
+\begin{equation}\label{eq:a5-F}
+\begin{aligned}
+F_r(\lambda)&=2a(1-2\beta)\lambda^2+\bigl[4a\beta+k(1-2\beta)+\beta\DT(r)\bigr]\lambda+\beta\bigl[2k-\DT(r)\bigr]\\
+&=2\bigl[2\beta+\lambda(1-2\beta)\bigr]\bigl[a\lambda-\tfrac12\bigl(\DT(r)m_\lambda-k\bigr)\bigr].
+\end{aligned}
+\end{equation}
+Every coefficient except the constant is positive, so \(F_r\) rises strictly on \(\lambda\ge0\). If \(\DT(r)>2k\),
+then \(F_r(0)<0<F_r(1)\), and \(\lambda_R(r)\) is the unique root of \(F_r\) in \((0,1)\). Define the recruitment
+margin and the threshold entry
+\[
+\varphi_a(r)=\DT(r)[1-\tau(r)]-k-2a\lambda_E(r),\qquad e^*(r)=\frac{2a\lambda_E(r)+k}{\DT(r)[1-\tau(r)]}.
+\]
+Since \(m_{\lambda_E}=1-\tau\), \eqref{eq:a5-F} gives \(F_r(\lambda_E(r))=-[2\beta+\lambda_E(1-2\beta)]\,\varphi_a(r)\).
+Hence \(\lambda_R(r)\ge\lambda_E(r)\) exactly when \(\varphi_a(r)\ge0\), and \(e^*(r)<1\) exactly when
+\(\varphi_a(r)>0\). At calibration B, \(B_r(1/2)=5-r/4+1/(8r)<c_H\) for \(1<r<10\), so \(\tau(r)>1/2\) at every
+strength below.
+
+\begin{lemma}[Joint deviations; analytical]\label{lem:a5-joint}
+For every candidate and every \(z\in[0,\lb]\), the best payoff of a joint deviation \((z,\sigma'_H,\sigma'_L)\) is
+\(zV-(a/2)z^2\). The unique best research choice is \(z^*=\min\{\lb,V/a\}\). Hence (E7) holds if and only if
+\(\hat\lambda=\min\{\lb,V/a\}\), and research never has a tie.
+\end{lemma}
+
+\begin{proof}
+A joint deviation changes the true order law to \((1-z)\eta+z\sigma'_j\). It does not change the prices or the
+preparation rule, because market makers and the challenger use the candidate's \(\hat\lambda\) and \(\sigma_j\).
+The investor trades only after a success, so its expected payoff is
+\[
+\Pi(z,\sigma')=z\Bigl[\tfrac12\sum_q\sigma'_H(q)U_H(q)+\tfrac12\sum_q\sigma'_L(q)U_L(q)\Bigr]-\frac a2z^2 ,
+\]
+with \(U_j\) from \eqref{eq:a5-payoffs} at the candidate's prices and entry. The bracket is at most \(V\), with
+equality exactly when each \(\sigma'_j\) puts weight only on maximizers of \(U_j\). So
+\(\sup_{\sigma'}\Pi(z,\sigma')=zV-(a/2)z^2\). This function of \(z\) is strictly concave with derivative \(V-az\). If
+\(V\ge a\lb\), the derivative is positive on \([0,\lb)\), and the maximizer is \(\lb\). If \(V<a\lb\), the
+maximizer is \(V/a\in[0,\lb)\). Strict concavity makes the maximizer unique, and it also excludes a nondegenerate
+mixture over research intensities.
+\end{proof}
+
+\begin{lemma}[Bounds under every profile; analytical]\label{lem:a5-bounds}
+Let \(0\le\hat\lambda\le\lb<1\). For every profile and every candidate:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item every posterior satisfies \(m_{\hat\lambda}\le\mu(q)\le M_{\hat\lambda}\), and \(M_{\hat\lambda}\le M_{\lb}\);
+\item the price reveals the posterior: if \(P(q)=P(q')\), then \(\mu(q)=\mu(q')\), and \(\bar\mu(P(q))=\mu(q)\);
+\item \(U_H(-1)\le-k\) and \(U_L(1)\le-k\), so every equilibrium has \(\sigma_H(-1)=\sigma_L(1)=0\);
+\item if \(\sigma_H(-1)=\sigma_L(1)=0\), then \(\mu(-1)\le1/2\le\mu(1)\) and \(\mu(0)\le1/2\) when also
+\(\sigma_H(1)=1\); and \(\mu(1)=M_{\hat\lambda}\) when \(\sigma_H(1)=1\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) This is Lemma~\ref{lem:beliefs}(b)--(c) at the presence \(\hat\lambda\) and the prior \(1/2\); the zero order
+uses \(\beta\le1/3\). The map \(\lambda\mapsto u_\lambda\) rises, so \(M_{\hat\lambda}\le M_{\lb}\). (b) This is
+Lemma~\ref{lem:prices}(c). (c) This is Lemma~\ref{lem:trading}(a). (d) Here \(f_H(1)=\hat b+\hat\lambda\sigma_H(1)\ge
+\hat b=f_L(1)\) and \(f_H(-1)=\hat b\le\hat b+\hat\lambda\sigma_L(-1)=f_L(-1)\). With \(\sigma_H(1)=1\),
+\(f_H(0)=\hat b_0\le\hat b_0+\hat\lambda\sigma_L(0)=f_L(0)\), and
+\(\mu(1)=(\hat b+\hat\lambda)/(2\hat b+\hat\lambda)=M_{\hat\lambda}\).
+\end{proof}
+
+\begin{lemma}[Positive research needs a strict full purchase; analytical]\label{lem:a5-buy}
+Let \(\tau(r)>1/2\), and take an equilibrium with \(\hat\lambda>0\). Then \(U_H(1)>0\) and \(\sigma_H(1)=1\). Also
+\(\mu(1)=M_{\hat\lambda}\), \(\mu(0)\le1/2\), \(\mu(-1)\le1/2\), and \(\zeta(P(0))=\zeta(P(-1))=0\).
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:a5-joint}, \(\hat\lambda=\min\{\lb,V/a\}>0\), so \(V>0\). By Lemma~\ref{lem:a5-bounds}(c) and
+\(U_j(0)=0\), either \(U_H(1)>0\) or \(U_L(-1)>0\). Suppose \(U_L(-1)>0\). Then the sale is the unique maximizer of
+class \(L\), and (E5) gives \(\sigma_L(-1)=1\). With \(\sigma_H(-1)=0\), \(f_H(-1)=\hat b\) and
+\(f_L(-1)=\hat b+\hat\lambda\), so \(\mu(-1)=m_{\hat\lambda}\le1/2<\tau(r)\). Hence \(e(-1)=\rho\) and
+\(U_L(-1)=\rho\DT m_{\hat\lambda}-k>0\). The purchase then earns
+\(U_H(1)=e(1)\DT[1-\mu(1)]-k\ge\rho\DT(1-M_{\hat\lambda})-k=\rho\DT m_{\hat\lambda}-k>0\), by
+Lemma~\ref{lem:a5-bounds}(a). So \(U_H(1)>0\) in both cases. The purchase is the unique maximizer of class \(H\), and
+\(\sigma_H(1)=1\) under both investor rules. Lemma~\ref{lem:a5-bounds}(d) gives the three posteriors. Since
+\(\tau(r)>1/2\), Lemma~\ref{lem:prices}(d) gives \(\zeta(P(0))=\zeta(P(-1))=0\) under both challenger rules.
+\end{proof}
+
+\begin{lemma}[The equilibrium set at intermediate strengths; analytical]\label{lem:a5-middle}
+Let \(1/2<\tau(r)<1\), \(\rho\DT(r)<2k\) and \(\lambda_E(r)\ne\lb\). The equilibria are exactly these
+tuples. Each has \(\sigma_L=\delta_0\), \(\zeta(P(0))=\zeta(P(-1))=0\), prices \(P(q)=t_0+e(q)\,w(\mu(q))\),
+\(\bar\mu(P(q))=\mu(q)\), and truthful bids.
+\begin{enumerate}[leftmargin=2.5em]
+\item[(Z)] \(\hat\lambda=0\), \(\sigma_H=\delta_0\), \(\mu\equiv1/2\), \(\zeta\equiv0\). It always exists.
+\item[(R)] \(\hat\lambda=\lambda_R(r)\), \(\sigma_H=\delta_1\),
+\((\mu(-1),\mu(0),\mu(1))=\bigl(1/2,\ \hat b_0/(2\hat b_0+\hat\lambda),\ M_{\hat\lambda}\bigr)\), \(\zeta(P(1))=1\). It
+exists if and only if \(\varphi_a(r)\ge0\) and \(F_r(\lb)>0\).
+\item[(\(\bar{\rm R}\))] \(\hat\lambda=\lb\), with the orders, posteriors and entry of (R). It exists if and only if
+\(F_r(\lb)\le0\) and \(\lambda_E(r)\le\lb\).
+\item[(T)] Rule CM only: \(\hat\lambda=\lambda_E(r)\), \(\sigma_H=\delta_1\), \(\mu(1)=\tau(r)\),
+\(\zeta(P(1))=(e^*-\rho)/(1-\rho)\). It exists if and only if \(\lambda_E(r)<\lb\) and \(\varphi_a(r)>0\).
+\end{enumerate}
+Every trade choice in these equilibria is strict, so the investor's tie rule plays no role. Entry is \(\rho\) in (Z),
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\hat\lambda]\) in (R) and (\(\bar{\rm R}\)), and
+\(\rho+(e^*-\rho)[\beta+(1/2-\beta)\lambda_E]\) in (T).
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: (Z).} (E1): \(\hat\lambda=0\) gives \(f_H=f_L=\eta\), so \(\mu\equiv1/2\). (E2): every price belief is
+\(1/2\). (E3): \(\tau(r)>1/2\) gives \(B_r(1/2)<c_H\), so \(\zeta\equiv0\) with no tie. (E4): the price
+\(t_0+\rho\,w(1/2)\) at every order. (E5): after a hypothetical success, \(U_H(1)=U_L(-1)=\rho\DT/2-k<0\), and the
+wrong-signed orders earn at most \(-k\), so abstention is the strict best order of each class. (E6): truthful bids.
+(E7): \(V=0\), so \(\min\{\lb,V/a\}=0=\hat\lambda\).
+
+\emph{Step 2: (R).} Let \(\hat\lambda=\lambda_R(r)\), \(\sigma_H=\delta_1\), \(\sigma_L=\delta_0\). Then
+\(f_H=(\hat b,\hat b_0,\hat b+\hat\lambda)\) and \(f_L=(\hat b,\hat b_0+\hat\lambda,\hat b)\) on \((-1,0,1)\), which give
+the stated posteriors with \(\mu(0)<1/2=\mu(-1)<\mu(1)\). Suppose \(\varphi_a(r)\ge0\) and \(F_r(\lb)>0\). Then
+\(\DT(1-\tau)\ge k+2a\lambda_E>k\), and \(1-\tau<1/2\) gives \(\DT>2k\), so \(\lambda_R(r)\) exists. (E1) holds by the
+likelihoods. (E2): the stated entry is \(\rho\) at the posteriors \(\mu(0)\) and \(\mu(-1)\), and \(1\) at \(\mu(1)\),
+so it is nondecreasing in the posterior; by the paragraph on constructed tuples in Appendix~\ref{app:beliefs}, the
+three prices differ, and \(\bar\mu(P(q))=\mu(q)\). (E3): \(F_r(\lambda_E)=-[2\beta+\lambda_E(1-2\beta)]\varphi_a\le0
+=F_r(\lambda_R)\), so \(\lambda_R\ge\lambda_E\) and \(\mu(1)=M_{\lambda_R}\ge\tau(r)\); rule C1 gives
+\(\zeta(P(1))=1\), and rule CM forces it if \(\mu(1)>\tau\) and allows it if \(\mu(1)=\tau\); the posteriors
+\(\mu(0),\mu(-1)\le1/2<\tau\) give \(\zeta=0\) there. (E4): \eqref{eq:a2-terminal}. (E5): \(U_H(1)=\DT m_{\hat\lambda}-k\),
+and \(F_r(\lambda_R)=0\) gives \(\DT m_{\lambda_R}-k=2a\lambda_R>0\); \(U_L(-1)=\rho\DT\mu(-1)-k=\rho\DT/2-k<0\); the
+wrong-signed orders earn at most \(-k\). So both choices are strict. (E6): truthful bids. (E7):
+\(V=\tfrac12(2a\lambda_R)+\tfrac12\cdot0=a\lambda_R\), and \(F_r(\lb)>0\) gives \(\lambda_R<\lb\), so
+\(\min\{\lb,V/a\}=\lambda_R=\hat\lambda\). Conversely, (R) needs \(\mu(1)\ge\tau\), that is \(\lambda_R\ge\lambda_E\),
+that is \(\varphi_a\ge0\), and it needs \(\lambda_R<\lb\), that is \(F_r(\lb)>0\).
+
+\emph{Step 3: (\(\bar{\rm R}\)).} The orders and posteriors are those of Step 2 with \(\hat\lambda=\lb\). If
+\(\lambda_E\le\lb\), then \(\mu(1)=M_{\lb}\ge\tau\); rule C1 gives \(\zeta(P(1))=1\), and rule CM forces it if
+\(\mu(1)>\tau\) and allows it if \(\mu(1)=\tau\). Then
+\(V=\tfrac12(\DT m_{\lb}-k)\), and \(F_r(\lb)\le0\) is \(V\ge a\lb\), so \(\min\{\lb,V/a\}=\lb\). The purchase earns
+\(\DT m_{\lb}-k\ge2a\lb>0\), and the sale earns \(\rho\DT/2-k<0\), so the choices are strict. The other conditions
+hold by direct computation: (E1) by the likelihoods of Step 2 at \(\hat\lambda=\lb\); (E2) because the stated entry is
+nondecreasing in the posterior, so the three prices differ; (E4) by \eqref{eq:a2-terminal}; (E6) by truthful bids.
+Both conditions are also necessary.
+
+\emph{Step 4: (T), rule CM.} Let \(\hat\lambda=\lambda_E<\lb\), \(\sigma_H=\delta_1\), \(\sigma_L=\delta_0\) and
+\(\zeta(P(1))=(e^*-\rho)/(1-\rho)\). Then \(\mu(1)=M_{\lambda_E}=\tau(r)\), so \(B_r(\mu(1))=c_H\), and rule CM
+allows any \(\zeta(P(1))\). By the definition of \(e^*\), \(U_H(1)=e^*\DT(1-\tau)-k=2a\lambda_E>0\), so the purchase
+is strict. The sale earns \(\rho\DT\mu(-1)-k=\rho\DT/2-k<0\), so the low class abstains strictly. Then \(V=a\lambda_E\), and \(\min\{\lb,V/a\}=\lambda_E\).
+The preparation probability lies in \((0,1)\) if and only if \(\rho<e^*<1\). Here \(e^*<1\) is \(\varphi_a(r)>0\), and
+\(e^*>\rho\) always holds, because \(\rho\DT(1-\tau)<\rho\DT/2<k<2a\lambda_E+k\). At \(e^*=1\) the tuple is (R)
+with \(\lambda_R=\lambda_E\).
+
+\emph{Step 5: no other equilibrium.} Take any equilibrium. If \(\hat\lambda=0\), then \(f_H=f_L=\eta\),
+\(\mu\equiv1/2\) and \(e\equiv\rho\), so \(U_H(1)=U_L(-1)=\rho\DT/2-k<0\), and (E5) gives
+\(\sigma_H=\sigma_L=\delta_0\): this is (Z). If \(\hat\lambda>0\), Lemma~\ref{lem:a5-buy} gives \(\sigma_H=\delta_1\),
+\(\mu(1)=M_{\hat\lambda}\), \(\mu(-1)\le1/2\) and \(e(-1)=\rho\). Then \(U_L(-1)\le\rho\DT/2-k<0\), so
+\(\sigma_L=\delta_0\), and \(V=\tfrac12\bigl(e(1)\DT m_{\hat\lambda}-k\bigr)^+\). Three cases remain.
+\begin{itemize}[leftmargin=2em]
+\item \(\hat\lambda<\lambda_E\): \(\mu(1)<\tau\), so \(e(1)=\rho\), and \(\rho\DT m_{\hat\lambda}<\rho\DT/2<k\), so
+\(V=0\). Lemma~\ref{lem:a5-joint} then gives \(\hat\lambda=0\), a contradiction.
+\item \(\hat\lambda>\lambda_E\): \(\mu(1)>\tau\), so \(e(1)=1\) under both rules. If \(\hat\lambda<\lb\), then
+\(a\hat\lambda=V>0\), which is \(F_r(\hat\lambda)=0\), so \(\hat\lambda=\lambda_R\): this is (R). If
+\(\hat\lambda=\lb\), then \(V\ge a\lb\), which is \(F_r(\lb)\le0\): this is (\(\bar{\rm R}\)).
+\item \(\hat\lambda=\lambda_E\): under rule C1, \(e(1)=1\), and the previous case applies with \(\lambda_R=\lambda_E\).
+Under rule CM, \(e(1)=e\in[\rho,1]\). Since \(\lambda_E\ne\lb\), research is interior, and
+\(a\lambda_E=\tfrac12\bigl(e\DT(1-\tau)-k\bigr)^+\), so \(e=e^*\): this is (T), or (R) when \(e^*=1\).
+\end{itemize}
+In every equilibrium of the list, the purchase earns \(2a\hat\lambda>0\) or more and the sale earns \(\rho\DT/2-k<0\),
+so every trade choice is strict. A purchase has probability
+\(\tfrac12(\hat b+\hat\lambda)+\tfrac12\hat b=\beta+(1/2-\beta)\hat\lambda\), and only the purchase can raise entry
+above \(\rho\). This gives the three entry formulas.
+\end{proof}
+
+\begin{lemma}[Strong incumbents; analytical]\label{lem:a5-strong}
+Let \(\tau(r)>1/2\), \(M_{\lb}\ne\tau(r)\) and
+\begin{equation*}\tag{U}\label{eq:a5-U}
+\rho\DT(r)\,m_{\lb}-k>a\lb .
+\end{equation*}
+Under every pair of tie rules the equilibrium is unique: \(\hat\lambda=\lb\), \(\sigma_H=\delta_1\),
+\(\sigma_L=\delta_{-1}\), \((\mu(-1),\mu(0),\mu(1))=(m_{\lb},1/2,M_{\lb})\), \(\zeta(P(0))=\zeta(P(-1))=0\), and
+\(\zeta(P(1))=\1\{M_{\lb}>\tau(r)\}\), with \(P(q)=t_0+e(q)\,w(\mu(q))\), \(\bar\mu(P(q))=\mu(q)\) and truthful bids.
+Entry is \(\rho+(1-\rho)(\bar b+\lb/2)\), with \(\bar b=(1-\lb)\beta\), if \(M_{\lb}>\tau(r)\), and \(\rho\) if
+\(M_{\lb}<\tau(r)\). This is the equilibrium of Proposition~\ref{prop:ccc} with presence \(\lb\).
+\end{lemma}
+
+\begin{proof}
+\emph{Uniqueness.} Take any candidate. By Lemma~\ref{lem:a5-bounds}(a), every posterior lies in
+\([m_{\lb},M_{\lb}]\) whatever the orders, and \(e\ge\rho\) after every price. Hence
+\(U_H(1)\ge\rho\DT(1-M_{\lb})-k\) and \(U_L(-1)\ge\rho\DT m_{\lb}-k\). Both lower bounds equal
+\(\rho\DT m_{\lb}-k>a\lb\ge0\) by \eqref{eq:a5-U}. So the purchase and the sale are the strict best orders after a
+success, under both investor rules. Then \(V=\tfrac12[U_H(1)+U_L(-1)]>a\lb\), and Lemma~\ref{lem:a5-joint} gives
+\(\hat\lambda=\lb\). With full orders, \(f_H=(\bar b,\bar b_0,\bar b+\lb)\) and \(f_L=(\bar b+\lb,\bar b_0,\bar b)\), so the
+posteriors are \((m_{\lb},1/2,M_{\lb})\). Since \(\tau(r)>1/2\), \(\zeta(P(0))=\zeta(P(-1))=0\). Since
+\(M_{\lb}\ne\tau(r)\), \(\zeta(P(1))\) is \(1\) or \(0\) with no tie, under both challenger rules. Every component of
+the tuple is fixed.
+
+\emph{Verification.} (E1): the likelihoods above. (E2): the stated entry is nondecreasing in the posterior, so the
+three prices differ, and each price reveals its order. (E3): \(B_r(M_{\lb})\) lies strictly on one side of \(c_H\),
+and \(B_r(1/2),B_r(m_{\lb})<c_H\). (E4): \eqref{eq:a2-terminal}. (E5): the strict bounds above, read at the tuple.
+(E6): truthful bids. (E7): \(V>a\lb\). The purchase has probability \(\tfrac12(\bar b+\lb)+\tfrac12\bar b=\bar b+\lb/2\),
+and it recruits exactly when \(M_{\lb}>\tau(r)\).
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:research}]
+Throughout, \(a=\reg{res_a}\) and \(\lb=\reg{res_cap}\).
+
+\emph{Part (i).} Take any candidate at \(r_0\). The gross return of a nonzero order after a success is at most
+\(e(q)\DT\max\{\mu(q),1-\mu(q)\}\le\DT\), and \(\DT(r_0)=\reg{res_Delta_r0}<k\), with margin
+\(\reg{margin_res_weak_B}\). So \(U_j(q)<0\) for \(q\ne0\) against every price function and entry rule. Then
+\(V=0\), Lemma~\ref{lem:a5-joint} gives \(\hat\lambda=0\), and (E5) gives \(\sigma_H=\sigma_L=\delta_0\). Every
+posterior is \(1/2\), and \(B_{r_0}(1/2)<c_H\), with margin \(\reg{margin_res_half_B}\), so \(\zeta\equiv0\) and entry
+is \(\rho\). Step 1 of the proof of Lemma~\ref{lem:a5-middle} verifies this tuple. The general statement behind this
+part needs both \(\DT(r)<k\) and \(B_r(1/2)<c_H\): with \(c_H\) small enough that \(B_r(1/2)>c_H\), zero research is
+still unique, but both cost types prepare and entry is one.
+
+\emph{Part (ii).} At each \(r\in\{\reg{str_r155},\reg{str_r160},\reg{str_r165}\}\), the hypotheses of
+Lemma~\ref{lem:a5-middle} hold: \(1/2<\tau(r)<1\); \(k-\rho\DT(r)/2\) equals \(\reg{res_ULgap_r155}\),
+\(\reg{res_ULgap_r160}\) and \(\reg{res_ULgap_r165}\); and \(\lambda_E(r)<\lb\). Also \(\lambda_R(r)-\lambda_E(r)\)
+equals \(\reg{res_lamgap_r155}\), \(\reg{res_lamgap_r160}\) and \(\reg{res_lamgap_r165}\), so \(\varphi_a(r)>0\); and
+\(\lb-\lambda_R(r)\) equals \(\reg{res_capgap_r155}\), \(\reg{res_capgap_r160}\) and \(\reg{res_capgap_r165}\), so
+\(F_r(\lb)>0\). Lemma~\ref{lem:a5-middle} therefore gives the equilibrium set \(\{{\rm Z},{\rm R}\}\) under rule C1,
+and \(\{{\rm Z},{\rm R},{\rm T}\}\) under rule CM, under either investor rule. Table~\ref{tab:research} gives the
+values. The research values come from bisection of \(F_r\) with exact signs; \(\DT\), \(\tau\), \(\lambda_E\) and
+\(e^*\) are exact rationals.
+
+\emph{Part (iii).} At calibration B, \(M_{\lb}=\eu/(1+\eu)\), and \(\tau(r_1)<M_{\lb}<\tau(r_2)\), with margins
+\(\reg{margin_res_tau_r1_B}\) and \(\reg{margin_res_tau_r2_B}\) in posterior. Condition~\eqref{eq:a5-U} is
+\(\DT(r)>(k+a\lb)(1+\eu)/\rho\), which holds for every \(r>r_U=\fr\bigl((k+a\lb)(1+\eu)/\rho\bigr)=\reg{res_rUR}\);
+its margin is \(\reg{margin_res_bound_r1_B}\) at \(r_1\) and \(\reg{margin_res_bound_r2_B}\) at \(r_2\).
+Lemma~\ref{lem:a5-strong} gives the unique equilibrium at both strengths, with entry \(\reg{res_entry_r1}\) at
+\(r_1\) and \(\reg{res_entry_r2}\) at \(r_2\).
+
+Every trade choice at the six strengths is strict, by Step 5 of the proof of Lemma~\ref{lem:a5-middle} and by the
+bounds of Lemma~\ref{lem:a5-strong}. The investor's tie rule therefore plays no role.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{prop:researchbranch}]
+The polynomial \(F_r(\lambda)\) is smooth in \((\lambda,r)\), since its coefficients are affine in \(\DT(r)\). For
+\(\lambda\ge0\),
+\[
+\partial_\lambda F_r=4a(1-2\beta)\lambda+4a\beta+k(1-2\beta)+\beta\DT>0,\qquad
+\partial_rF_r=-\beta(1-\lambda)\DT'(r)<0,
+\]
+because \(\lambda<1\) and \(\DT'(r)=\tfrac12(1-\ell^2/r^2)>0\). On \(\{r:\DT(r)>2k\}\), the implicit function theorem
+gives
+\[
+\lambda_R'(r)=\frac{\beta\,[1-\lambda_R(r)]\,\DT'(r)}{\partial_\lambda F_r(\lambda_R(r))}>0 .
+\]
+On the branch (R), Lemma~\ref{lem:a5-middle} gives \(\Ent_R=\rho+(1-\rho)[\beta+(1/2-\beta)\lambda_R]\). Since
+\(\beta<1/2\), \(\Ent_R\) rises strictly with \(\lambda_R\) and hence with \(r\):
+\(\Ent_R'=(1-\rho)(1/2-\beta)\lambda_R'>0\). Class \(H\) buys with probability
+\(\hat b+\lambda_R=\beta+(1-\beta)\lambda_R\), and \(W_H=1\) because \(h>r\). So ownership is
+\(\tfrac12[\rho+(1-\rho)(\beta+(1-\beta)\lambda_R)]\), which also rises strictly. These signs hold for every
+\(0<\beta\le1/3\), wherever the branch is an equilibrium.
+\end{proof}
+
+\paragraph{The branch at calibration B (computer-assisted).}
+At \(a=\reg{res_a}\), (R) exists exactly on \([r_R,\bar r_R)=[\reg{res_rR},\reg{res_rcap})\). The proof has four
+steps.
+\begin{enumerate}[leftmargin=2em]
+\item For \(r\le r_0\), \(\DT(r)\le\DT(r_0)<k\), so part (i) applies, and (R) does not exist.
+\item The margin \(\varphi_{a}\) rises on \([r_0,7/4]\). By the formula for \(d\lambda_E/d\tau\),
+\(\varphi_a'=\DT'(1-\tau)-\DT\tau'-2a\beta\tau'/\{\beta+(1-2\beta)(1-\tau)\}^2\), with
+\(\tau'(r)=3(8r^2-r+2)/[2(20r-r^2-1)^2]>0\). On this interval \(\DT'\), \(\DT\) and \(\tau\) rise, so
+\(\DT'\ge\reg{res_bound_dDelta}\), \(1-\tau\ge1-\tau(7/4)=\reg{res_bound_tau74}\), \(\DT\le\DT(7/4)=\reg{res_bound_Delta74}\)
+and \(\tau'\le\reg{res_bound_taup}\). These give \((\DT(1-\tau))'\ge\reg{res_dphi_lead}\) and, at
+\(a=\reg{res_a}\), \(\varphi_a'\ge\reg{res_phip_lb}>0\). The bound stays positive for every
+\(a<a_{\rm mono}=\reg{res_amono}\). Exact rational evaluation gives \(\varphi_a(r_0)<0<\varphi_a(7/4)\). So
+\(\varphi_a\) has the unique root \(r_R\) on \([r_0,7/4]\), and bisection with exact signs encloses it.
+\item For \(r_R\le r<\bar r_R\): \(r<r_N\), so \(\rho\DT<2k\), and \(1/2<\tau<1\); also \(\varphi_a(r)\ge0\). Since
+\(m_{\lb}=1/(1+\eu)\), \(F_r(\lb)=0\) is \(\DT(r)=(2a\lb+k)(1+\eu)\), and \(\bar r_R=\fr\bigl((2a\lb+k)(1+\eu)\bigr)\).
+Since \(\lambda_R\) rises and \(\lambda_R(\bar r_R)=\lb\), \(F_r(\lb)>0\) for \(r<\bar r_R\), and (R) exists by
+Lemma~\ref{lem:a5-middle}. On \((r_0,r_R)\), \(\varphi_a<0\), and (R) does not exist.
+\item For \(r\ge\bar r_R\), take any equilibrium with \(e(1)=1\) and \(\hat\lambda<\lb\). Lemma~\ref{lem:a5-buy}
+gives \(\sigma_H=\delta_1\) and \(\mu(1)=M_{\hat\lambda}\). The low class earns at least zero, so
+\(a\hat\lambda=V\ge\tfrac12(\DT m_{\hat\lambda}-k)\), that is \(F_r(\hat\lambda)\ge0\). Hence
+\(\hat\lambda\ge\lambda_R(r)\ge\lambda_R(\bar r_R)=\lb\), a contradiction. This step also covers \(r>r_N\), where the
+low class may sell.
+\end{enumerate}
+Zero research is an equilibrium exactly when \(\rho\DT\le2k\), that is \(r\le r_N\), and
+\(\bar r_R<r_N=\reg{res_rN}\), with margin \(\reg{margin_res_rN_B}\). Along the branch, research rises from
+\(\lambda_E(r_R)=\reg{res_lambda_rR}\) to the cap, and entry rises from \(\reg{res_entry_rR}\) to
+\(\reg{res_entry_cap}\). On \([\bar r_R,r_N)\), \(F_r(\lb)\le0\) and \(\lambda_E(r)\le\lambda_E(7/4)=\reg{res_lamE_r175}<\lb\),
+so (\(\bar{\rm R}\)) exists by Lemma~\ref{lem:a5-middle}, with entry \(\reg{res_entry_cap}\). Under rule CM, (T) exists on
+\((r_R,r_N)\), since \(\varphi_a>0\) and \(\lambda_E<\lb\) there.
+
+\begin{proposition}[The admissible cap and cost; computer-assisted]\label{prop:researchregion}
+Fix \(\beta=\reg{beta_B}\) and the other primitives of \(B\), and vary the cap \(\lb\) and the cost \(a\). The claims of
+Proposition~\ref{prop:research}, with \(\lambda_E(r)<\lambda_R(r)<\lb\) at each intermediate strength, hold with
+strict margins if and only if
+\[
+\lambda_E(r_1)<\lb<\lambda_E(r_2)\qquad\text{and}\qquad a_{\mathrm{lo}}(\lb)<a<a_{\mathrm{up}},
+\]
+where
+\[
+a_{\mathrm{lo}}(\lb)=\frac{\DT(\reg{str_r165})\,m_{\lb}-k}{2\lb},\qquad
+a_{\mathrm{up}}=\frac{\DT(\reg{str_r155})\,[1-\tau(\reg{str_r155})]-k}{2\lambda_E(\reg{str_r155})}.
+\]
+The cap strip is \((\reg{res_cap_lo},\reg{res_cap_hi})\) to six places. At the cap \(\lb=\reg{res_cap}\), the cost
+window is \((\reg{res_a_lo},\reg{res_a_up})\); at \(a=\reg{res_a}\), the cap range is
+\((\reg{res_cap_lo_a},\reg{res_cap_hi})\). With \(1+u=\eu\), the cap \(\lb=u\beta/(1+u\beta)\) and \(a=\reg{res_a}\),
+the claims hold for every \(\beta\in(\reg{res_beta_lo},1/3]\).
+\end{proposition}
+
+The lower cost bound keeps research below the cap at \(\reg{str_r165}\). The upper cost bound keeps recruitment after a
+purchase at \(\reg{str_r155}\). The cap strip gives strict recruitment at \(r_1\) and strict exclusion at \(r_2\).
+
+\begin{proof}[Proof of Proposition~\ref{prop:researchregion}]
+Fix \(\beta=\reg{beta_B}\) and the other primitives of calibration B. The claims are Proposition~\ref{prop:research}
+with \(\lambda_E(r)<\lambda_R(r)<\lb\) at each intermediate strength.
+
+\emph{Sufficiency.} Let the two conditions hold. Part (i) holds for every \((\lb,a)\), since \(\DT(r_0)<k\). For part
+(ii), the hypotheses \(1/2<\tau<1\) and \(\rho\DT<2k\) of Lemma~\ref{lem:a5-middle} do not involve \((\lb,a)\) and hold
+at the three strengths. The condition \(a<a_{\rm up}\) is \(\varphi_a(\reg{str_r155})>0\). Since
+\(a_{\rm up}<a_{\rm mono}\), \(\varphi_a\) rises on \([r_0,7/4]\), so \(\varphi_a>0\) at \(\reg{str_r160}\) and
+\(\reg{str_r165}\) too. The condition \(a>a_{\rm lo}(\lb)\) is \(F_{\reg{str_r165}}(\lb)>0\), that is
+\(\lambda_R(\reg{str_r165})<\lb\). Since \(\lambda_R\) rises in \(r\), \(\lambda_R<\lb\) at the two lower strengths
+too. Then \(\lambda_E<\lambda_R<\lb\), and Lemma~\ref{lem:a5-middle} gives the sets. For part (iii), \(M_\lambda\) rises
+in \(\lambda\) and \(M_{\lambda_E(r)}=\tau(r)\), so the strip gives \(\tau(r_1)<M_{\lb}<\tau(r_2)\). Condition
+\eqref{eq:a5-U} at \(r_1\) is \(a<a_{U}(r_1;\lb):=[\rho\DT(r_1)m_{\lb}-k]/\lb\), and at \(r_2\) it is
+\(a<a_{U}(r_2;\lb):=[\rho\DT(r_2)m_{\lb}-k]/\lb\). Both bounds fall in \(\lb\), so on the strip they exceed their
+values at \(\lb=\lambda_E(r_2)\), which are \(\reg{res_region_aU3_6}\) and \(\reg{res_region_a36_6}\). Both exceed
+\(a_{\rm up}=\reg{res_a_up}\), so Lemma~\ref{lem:a5-strong} applies at both strengths.
+
+\emph{Necessity.} Each failure of a condition breaks one claim.
+\begin{itemize}[leftmargin=2em]
+\item \(\lb\le\lambda_E(r_1)\): every posterior at \(r_1\) is at most \(M_{\lb}\le\tau(r_1)\), so entry above \(\rho\)
+needs a challenger tie, and part (iii) fails with strict margins.
+\item \(\lb\ge\lambda_E(r_2)\): research at the cap gives \(\mu(1)=M_{\lb}\ge\tau(r_2)\), so rule C1 raises entry above
+\(\rho\) at \(r_2\), and part (iii) fails.
+\item \(a\ge a_{\rm up}\): \(\varphi_a(\reg{str_r155})\le0\), so (R) is absent at \(\reg{str_r155}\), or has
+\(\mu(1)=\tau\) with a challenger tie.
+\item \(a\le a_{\rm lo}(\lb)\): \(F_{\reg{str_r165}}(\lb)\le0\), so research at \(\reg{str_r165}\) sits at the cap.
+\end{itemize}
+The cost window is nonempty on the whole strip: \(a_{\rm lo}\) falls in \(\lb\), because its numerator falls and stays
+positive there, and \(a_{\rm lo}(\lambda_E(r_1))=\reg{res_region_alo_0}<a_{\rm up}\). The cap strip is
+\((\reg{res_cap_lo},\reg{res_cap_hi})\); the margins of \(\lb=\reg{res_cap}\) are \(\reg{margin_res_caplo_B}\) and
+\(\reg{margin_res_caphi_B}\), and the margins of \(a=\reg{res_a}\) in its window are \(\reg{margin_res_alo_B}\) and
+\(\reg{margin_res_aup_B}\). The upper cap margin corresponds to the posterior margin \(\tau(r_2)-M_{\lb}=
+\reg{margin_res_tau_r2_B}\); the two numbers measure one boundary in two coordinates.
+
+\emph{General \(\beta\).} Set \(\lb=\lambda_B(\beta)=u\beta/(1+u\beta)\) with \(1+u=\eu\), and keep \(a=\reg{res_a}\).
+Then \(u_{\lb}=u\) for every \(\beta\), so \(M_{\lb}=\eu/(1+\eu)\) and \(m_{\lb}=1/(1+\eu)\) do not depend on \(\beta\),
+and the endpoint conditions \(\tau(r_1)<M_{\lb}<\tau(r_2)\) hold for every \(\beta\). Condition \eqref{eq:a5-U} at
+\(r_1\) holds for every \(\beta\le1/3\), because \(\lambda_B(\beta)\) rises in \(\beta\) and
+\(\rho\DT(r_1)/(1+\eu)-k-a\lambda_B(1/3)>0\). At the intermediate strengths,
+\(a_{\rm lo}=[\DT(\reg{str_r165})/(1+\eu)-k]/[2\lambda_B(\beta)]\) falls in \(\beta\), so \(a_{\rm lo}<a\) exactly when
+\(\beta>\beta_{\rm lo}=\reg{res_beta_lo}\). The upper bound \(a_{\rm up}(\beta)\) falls in \(\beta\), because
+\(\partial\lambda_E/\partial\beta=(2\tau-1)(1-\tau)/\{\beta+(1-2\beta)(1-\tau)\}^2>0\), and it exceeds \(a\) for every
+\(\beta<\reg{res_beta_hi}\). The monotonicity bound \(a_{\rm mono}(\beta)\) falls in \(\beta\) on \((0,1/3]\) and equals
+\(\reg{res_amono_third}>a\) at \(\beta=1/3\). The steps above then apply at each \(\beta\in(\reg{res_beta_lo},1/3]\).
+Strict growth of entry across the three strengths alone holds on a wider set, because research can reach the cap at
+\(\reg{str_r165}\) while entry still rises.
+\end{proof}
+
+\begin{proof}[Proof of Remark~\ref{rem:researchties}]
+Every trade choice is strict at the six strengths (proof of Proposition~\ref{prop:research}), and research has no
+tie (Lemma~\ref{lem:a5-joint}). The threshold equilibrium is (T) of Lemma~\ref{lem:a5-middle}; its entry is
+\(\reg{res_th_entry_r155}\), \(\reg{res_th_entry_r160}\) and \(\reg{res_th_entry_r165}\) at the three strengths, with
+\(e^*\) equal to \(\reg{res_th_estar_r155}\), \(\reg{res_th_estar_r160}\) and \(\reg{res_th_estar_r165}\). For
+\(r>r_U\), the bounds of Lemma~\ref{lem:a5-strong} force full orders and research at the cap in every candidate.
+Under rule C1, or under rule CM with \(M_{\lb}\ne\tau(r)\), the whole tuple is then unique. At \(r=r_C\),
+\(M_{\lb}=\tau(r_C)\), the high-cost challenger is indifferent after a purchase, and rule CM admits every
+\(\zeta(P(1))\in[0,1]\), with \(\zeta(P(0))=\zeta(P(-1))=0\). Each value has its own competitive purchase price, and
+entry \(\rho+(1-\rho)\zeta(P(1))(\bar b+\lb/2)\) fills \([\rho,\reg{res_entry_cap}]\). Research stays at the cap.
+\end{proof}
+
+\paragraph{Access to prices with research.}
+At \(r_1\), compare the economy above with one in which the challenger does not see the price. In that economy the
+challenger's belief stays at \(1/2\), and \(B_{r_1}(1/2)<c_H\) gives entry \(\rho\) after every order. The bounds of
+Lemma~\ref{lem:a5-strong} hold with \(e\equiv\rho\), so \eqref{eq:a5-U} again forces full orders and research at the
+cap, uniquely. The order law, the research cost \((a/2)\lb^2\) and the trade cost \(k\lb\) are therefore the same in
+both economies. Entry differs only after a purchase, where it is \(1\) with access and \(\rho\) without. The purchase
+has probability \(\tfrac12(\bar b+\lb)\) in class \(H\) and \(\tfrac12\bar b\) in class \(L\), so access raises
+expected proceeds by \((1-\rho)(\bar b+\lb/2)[t_L-t_0+\DT M_{\lb}]=\reg{res_dR_r1}\). For \(\theta\ge p\),
+\(\max\{\theta,R\}-R\1\{R\ge p\}=(\theta-\max\{p,R\})_++p\1\{R<p\}\), so a prepared challenger of class \(j\) adds
+\(g_j+p\Pr(R<p)=g_j+p^2/r_1\) to allocation value. Net of the added preparation cost, access raises surplus by
+\((1-\rho)(\bar b+\lb/2)[B_{r_1}(M_{\lb})-c_H+p^2/r_1]=\reg{res_dW_r1}\). Both are positive, because
+\(B_{r_1}(M_{\lb})>c_H\).
+
+\paragraph{Certificates.}
+The exact program is \nolinkurl{P3_research/P3_research.py} (run log
+\nolinkurl{P3_research/P3_research.log}). It uses rational arithmetic for
+every rational quantity and rational intervals for every quantity that depends on \(\eu\). It builds the tuple of
+every equilibrium of Lemmas~\ref{lem:a5-middle} and~\ref{lem:a5-strong} for each pair of tie rules and recomputes
+(E1) to (E7) at the tuple. It rounds every display outward from exact rational endpoints and writes the endpoints to
+\nolinkurl{P3_research/P3_enclosures.json}. The independent program
+\nolinkurl{XP3/recompute.py} (run log
+\nolinkurl{XP3/recompute.log}) computes the research roots from the
+quadratic formula with rational bounds on every square root. It bounds \(\eu\) between \(\sum_{n\le60}1/n!\) and that
+sum plus \(62/(61\cdot61!)\), and it records exact rational endpoints for every printed value in
+\nolinkurl{XP3/exact_enclosures.json}. These rational endpoints are the
+certificate of each display. The scan
+\nolinkurl{P3_research/P3_float_scan.py} (run log
+\nolinkurl{P3_research/P3_float_scan.log}) evaluates a grid of research
+intensities and order mixtures at each of the six strengths without the classification of
+Lemma~\ref{lem:a5-middle}. It finds exactly the equilibria of the lemmas under rule C1. This scan is a numerical
+diagnostic and enters no proof.

@@ -1,0 +1,151 @@
+% Competition Creates Competition: the order-slot manuscript.
+% pdfLaTeX. Build: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage[authoryear,round]{natbib}
+\usepackage{xcolor}
+\definecolor{paperlink}{RGB}{31,59,115}
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders},
+  pdfauthor={Austin Li},
+  colorlinks=true,
+  linkcolor=paperlink,
+  citecolor=paperlink,
+  urlcolor=paperlink}
+
+% Registry numbers: \reg{<key>}. Generated file; do not edit.
+\input{numbers}
+
+% Results.
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+% A result whose label the text fixes by hand, such as Proposition 1(c).
+\theoremstyle{plain}
+\newtheorem*{namedresult}{\resultname}
+\newcommand{\resultname}{}
+\newenvironment{named}[1]{\renewcommand{\resultname}{#1}\begin{namedresult}}{\end{namedresult}}
+
+% Notation.
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\DT}{\Delta_T}
+\newcommand{\eu}{\mathrm{e}}          % Euler's number (entry is e(x))
+\newcommand{\Ent}{\mathsf{E}}          % entry, the preparation probability
+\newcommand{\Own}{\mathsf{O}}          % ownership
+\newcommand{\fr}{\mathfrak{r}}         % root of Delta_T(r) = d above ell
+\newcommand{\lb}{\bar\lambda}          % research cap
+\DeclareMathOperator{\Cov}{Cov}
+
+% A figure from figures/, or a framed placeholder while the file does not exist.
+\newcommand{\slotfigure}[2]{%
+  \IfFileExists{#1}{\includegraphics[width=\linewidth]{#1}}%
+  {\fbox{\parbox[c][#2][c]{0.9\linewidth}{\centering\small Figure file \texttt{\detokenize{#1}} is in preparation.}}}}
+% An appendix file, or a placeholder line while the file does not exist.
+% A check build of the main text alone can define \slotskipappendix as 1 before \input{main}.
+\providecommand{\slotskipappendix}{0}
+\newcommand{\slotappendix}[1]{%
+  \ifnum\slotskipappendix=1\relax\else
+  \InputIfFileExists{appendix/#1}{}{\par\noindent\fbox{\small Appendix file \texttt{\detokenize{#1}} is in preparation.}\par}%
+  \fi}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\allowdisplaybreaks
+
+\title{Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders}
+\author{Austin Li}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A stronger incumbent bidder can attract a challenger when it makes the target's stock price more informative. I
+study a takeover auction in which a prospective buyer sees the price before it pays to prepare a bid. A stronger
+incumbent lowers the buyer's acquisition profit at every belief about its quality. It also makes target proceeds more
+sensitive to that quality, so an investor who knows the buyer's quality class gains more from trade. The investor
+shares one order opportunity with liquidity traders, so no order is conclusive.
+
+On an open set of parameters, a stronger incumbent turns an uninformative price into an informative one, with unique
+trading and preparation outcomes. Challenger entry rises, and so does the probability that a challenger from the
+high-value class acquires the target. With the information in the price held fixed, entry does not rise. Between
+the two economies, informative and uninformative equilibria coexist, and entry rises weakly with incumbent strength
+along the informative branch. When the investor pays for research, research and entry rise together over a range of
+strengths. In the strong-incumbent economy, access to prices raises expected target proceeds and acquisition surplus
+net of preparation costs.
+\end{abstract}
+
+\clearpage
+\onehalfspacing
+
+\input{sections/01_introduction}
+\input{sections/02_model}
+\input{sections/03_competition_information}
+\input{sections/04_equilibrium_results}
+\input{sections/05_research}
+\input{sections/06_robustness}
+\input{sections/07_welfare}
+\input{sections/08_empirical}
+\input{sections/09_conclusion}
+
+\clearpage
+\singlespacing
+\bibliographystyle{aer}
+\bibliography{references}
+
+\clearpage
+\onehalfspacing
+\appendix
+\renewcommand{\theequation}{A.\arabic{equation}}
+\renewcommand{\theHequation}{A.\arabic{equation}}
+\setcounter{equation}{0}
+\renewcommand{\theproposition}{A.\arabic{proposition}}
+\renewcommand{\theHproposition}{A.\arabic{proposition}}
+\setcounter{proposition}{0}
+\renewcommand{\thelemma}{A.\arabic{lemma}}
+\renewcommand{\theHlemma}{A.\arabic{lemma}}
+\setcounter{lemma}{0}
+\renewcommand{\thecorollary}{A.\arabic{corollary}}
+\renewcommand{\theHcorollary}{A.\arabic{corollary}}
+\setcounter{corollary}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\theHtable}{A.\arabic{table}}
+\setcounter{table}{0}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\theHfigure}{A.\arabic{figure}}
+\setcounter{figure}{0}
+\section{Proofs}\label{app:proofs}
+
+\slotappendix{A1_payoffs}
+\slotappendix{A2_beliefs_trading}
+\slotappendix{A3_proposition2}
+\slotappendix{A4_coexistence}
+\slotappendix{A5_research}
+\slotappendix{A6_robustness}
+\slotappendix{A7_welfare}
+\slotappendix{A8_empirical}
+\slotappendix{A9_parameters}
+
+\end{document}

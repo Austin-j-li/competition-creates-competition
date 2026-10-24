@@ -1,0 +1,167 @@
+\subsection{Beliefs and trading}\label{app:beliefs}
+
+% Long script paths: allow stretch inside paths and a little emergency stretch in the appendix.
+\Urlmuskip=0mu plus 2mu
+\setlength{\emergencystretch}{1.5em}
+
+This subsection proves the results of Sections~\ref{sec:inference} and~\ref{sec:informed}. Each result holds
+for every order profile, in or out of equilibrium. Every later proof uses them in that form.
+
+\paragraph{Conventions for Appendices A.2 to A.9.}
+The conditions (E1) to (E6) are those of Definition~\ref{def:equilibrium}.
+\begin{itemize}[leftmargin=2em]
+\item A \emph{profile} is a pair \((\sigma_H,\sigma_L)\) of order distributions, pure or mixed, with wrong-signed
+orders allowed. A \emph{candidate} is a tuple \(\mathcal E\) that satisfies (E1) to (E4) and (E6) for some
+profile. An equilibrium is a candidate that also satisfies (E5).
+\item A deviation by the investor holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed.
+It changes only the order that reaches them.
+\item A uniqueness proof derives its bounds for every candidate. It does not use the proposed tuple.
+\item A verification checks each condition by direct computation against the stated tuple. It does not cite a
+lemma whose premises include the condition under check.
+\item Write \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
+\(w(\mu)=(1-\mu)w_L+\mu w_H=t_L-t_0+\DT\mu\) for its average at the belief \(\mu\). Proposition~\ref{prop:returns}
+and Section~\ref{sec:profits} give \(w_H\ge w_L\ge0\).
+\item A computer-assisted step names its script and its run log. Every script path in Appendix~\ref{app:proofs} is
+relative to the folder \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/} of the project repository.
+\end{itemize}
+
+\begin{proof}[Proof of Lemma~\ref{lem:beliefs}]
+Fix any profile \((\sigma_H,\sigma_L)\). By \eqref{eq:odds}, the posterior \(\mu(x)\) increases strictly in the
+likelihood ratio \(f_H(x)/f_L(x)\). The odds of \(M(\pi)\) are \(\pi(1+u)/(1-\pi)\), and the odds of \(m(\pi)\) are
+\(\pi/[(1-\pi)(1+u)]\).
+
+\emph{Part (a).} The liquidity trader fills the slot with probability \(1-\lambda>0\). It places the order \(x\)
+with probability \(\eta(x)\), and \(\eta(x)>0\) for every \(x\) because \(0<\beta<1/2\). The informed term
+\(\lambda\sigma_j(x)\) is nonnegative. Hence \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order and class. Every
+order has positive probability in both classes, so (E1) defines \(\mu(x)\) at every order, and no off-path belief
+enters any condition. Also \(0<\mu(x)<1\), since \(0<\pi<1\).
+
+\emph{Part (b).} For \(x=\pm1\), \((1-\lambda)\eta(x)=b\) and \(0\le\lambda\sigma_j(x)\le\lambda\). Hence
+\(b\le f_j(x)\le b+\lambda\), and
+\[
+\frac1{1+u}=\frac{b}{b+\lambda}\le\frac{f_H(x)}{f_L(x)}\le\frac{b+\lambda}{b}=1+u .
+\]
+By \eqref{eq:odds}, \(m(\pi)\le\mu(x)\le M(\pi)\). This step uses only \(0<\beta<1/2\).
+
+\emph{Part (c).} For \(x=0\), \((1-\lambda)\eta(0)=b_0\), so \(b_0\le f_j(0)\le b_0+\lambda\), and the likelihood
+ratio lies in \([(1+\lambda/b_0)^{-1},\,1+\lambda/b_0]\). The inequality \(b_0\ge b\) is \(1-2\beta\ge\beta\), that
+is \(\beta\le1/3\). Then \(\lambda/b_0\le\lambda/b=u\), and the argument of part (b) gives
+\(m(\pi)\le\mu(0)\le M(\pi)\). If \(\beta>1/3\), then \(b_0<b\). The profile \(\sigma_H=\delta_0\) with
+\(\sigma_L(0)=0\) gives \(f_H(0)=b_0+\lambda\) and \(f_L(0)=b_0\). The ratio is \(1+\lambda/b_0>1+u\), so
+\(\mu(0)>M(\pi)\), and the bound fails.
+
+\emph{Part (d).} The profile \(\sigma_H=\delta_1\), \(\sigma_L=\delta_{-1}\) gives \(f_H=(b,\,b_0,\,b+\lambda)\) and
+\(f_L=(b+\lambda,\,b_0,\,b)\) on the orders \((-1,0,1)\). The likelihood ratios are \((1+u)^{-1}\), \(1\) and
+\(1+u\), so \((\mu(-1),\mu(0),\mu(1))=(m(\pi),\pi,M(\pi))\).
+
+\emph{Beliefs at a price.} Fix a price \(\bar P\) in the image of \(P\), and let \(X(\bar P)=\{x:P(x)=\bar P\}\).
+By (E2), the challenger's belief \(\bar\mu(\bar P)\) has the odds
+\[
+\frac{\bar\mu(\bar P)}{1-\bar\mu(\bar P)}=\frac{\pi}{1-\pi}\cdot
+\frac{\sum_{x\in X(\bar P)}f_H(x)}{\sum_{x\in X(\bar P)}f_L(x)} .
+\]
+A ratio of two sums of positive terms lies between the smallest and the largest ratio of its terms. Hence
+\(\bar\mu(\bar P)\) lies between the smallest and the largest \(\mu(x)\) over \(X(\bar P)\). Every bound of parts (b)
+and (c) therefore holds for \(\bar\mu(\bar P)\).
+
+Only part (c) uses \(\beta\le1/3\). Parts (a), (b) and (d) hold for every \(\beta<1/2\).
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:exclusion}]
+Let \(\beta\le1/3\), \(g_H\ge g_L\) and \(B(M(\pi))<c_H\). Fix any profile and any tuple that satisfies (E1) to
+(E3). By Lemma~\ref{lem:beliefs}(b)--(c), \(\mu(x)\le M(\pi)\) at every order, and by the step on beliefs at a price,
+\(\bar\mu(\bar P)\le M(\pi)\) at every price. Since \(g_H\ge g_L\), \(B(\mu)=g_L+\mu(g_H-g_L)\) is nondecreasing in
+\(\mu\). Hence \(B(\bar\mu(\bar P))\le B(M(\pi))<c_H\) at every price, and (E3) gives \(\zeta(\bar P)=0\) with no
+tie. The conclusion holds under both challenger rules. The bound at the zero order is the only use of
+\(\beta\le1/3\) in this proof.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:prices}]
+Fix a candidate, and let \(\DT>0\) and \(g_H>g_L\). The proof has a preliminary step and five parts.
+
+\emph{Step 0: the terminal payoff given the class and the order.} The challenger's choice depends only on the
+price \(P(x)\) and its cost \(C\). The cost is independent of the class, the values, the incumbent's value and the
+slot draws. Given the class \(j\) and the order \(x\), the challenger therefore prepares with probability
+\(e(x)=\rho+(1-\rho)\zeta(P(x))\), and this event is independent of \((\theta,R)\). The order depends on the class
+and the slot draws only, so it carries no information about \((\theta,R)\) given \(j\). Bids are truthful by (E6).
+With entry, expected proceeds in class \(j\) are \(t_j\); without entry, they are \(t_0\). Hence
+\begin{equation}\label{eq:a2-terminal}
+\E[V_T\mid j,X=x]=t_0+e(x)\,w_j .
+\end{equation}
+
+\emph{Part (a): the floor.} The zero-cost challenger prepares after every price (Definition~\ref{def:equilibrium}),
+and it has probability \(\rho\). Hence \(e(x)\ge\rho\) at every order.
+
+\emph{Part (b): the price.} Average \eqref{eq:a2-terminal} over the class with the weights \(\mu(x)\) and
+\(1-\mu(x)\) of (E1). Condition (E4) gives \(P(x)=t_0+e(x)\,w(\mu(x))\), which is \eqref{eq:price}. This step uses
+only (E1), (E4), the truthful bids (E6) of Step 0, and the independence of the cost.
+
+\emph{Part (c): sufficiency.} Let \(P(x)=P(x')\). Entry depends on the order only through the price, so
+\(e(x)=e(x')=:\bar e\), and \(\bar e\ge\rho>0\) by part (a). Part (b) gives \(\bar e\,\DT\,[\mu(x)-\mu(x')]=0\), so
+\(\mu(x)=\mu(x')\). By the step on beliefs at a price in the proof of Lemma~\ref{lem:beliefs}, \(\bar\mu(P(x))\)
+lies between the smallest and the largest posterior of the orders with the price \(P(x)\). These posteriors are
+equal, so \(\bar\mu(P(x))=\mu(x)\). The price therefore reveals the posterior.
+
+\emph{Part (d): entry.} Since \(g_H>g_L\), \(B(\mu)>c_H\) exactly when \(\mu>\tau\). By part (c), the
+challenger's gross profit at \(P(x)\) is \(B(\mu(x))\). Condition (E3) gives \(e(x)=\rho\) if \(\mu(x)<\tau\) and
+\(e(x)=1\) if \(\mu(x)>\tau\). At \(\mu(x)=\tau\), \(e(x)=1\) under rule C1, and \(e(x)\) can take any value in
+\([\rho,1]\) under rule CM.
+
+\emph{Part (e): monotonicity.} Let \(\mu(x)>\mu(x')\). If \(\mu(x')<\tau\), then \(e(x')=\rho\le e(x)\). If
+\(\mu(x')\ge\tau\), then \(\mu(x)>\tau\) and \(e(x)=1\ge e(x')\). Part (b) gives
+\begin{equation}\label{eq:a2-increment}
+P(x)-P(x')=e(x)\,\DT\,[\mu(x)-\mu(x')]+[e(x)-e(x')]\,w(\mu(x')) .
+\end{equation}
+The second term is nonnegative, because \(w(\mu)\ge w_L\ge0\). The first term is at least
+\(\rho\DT[\mu(x)-\mu(x')]>0\). Prices therefore rise strictly with the posterior.
+\end{proof}
+
+\paragraph{Constructed tuples.}
+The identity \eqref{eq:a2-increment} uses only the price formula. It therefore applies to any prices of the form
+\(P(x)=t_0+e(x)\,w(\mu(x))\) with \(\DT>0\) and with entry in \([\rho,1]\) that is nondecreasing in the posterior.
+The verifications below use it in this form, before any condition is checked: a stated tuple has distinct prices at
+distinct posteriors, and equal prices at equal posteriors. The belief \(\bar\mu(P(x))=\mu(x)\) then follows from
+(E2) by direct computation.
+
+\begin{proof}[Proof of Lemma~\ref{lem:trading}]
+Fix a tuple that satisfies (E1), (E4) and (E6), with \(e(x)\in[\rho,1]\) after every order, and let \(\DT\ge0\). A
+deviation to the order \(q\) reaches the tuple's price \(P(q)\) and entry \(e(q)\). By \eqref{eq:a2-terminal} and
+part (b) of the proof of Lemma~\ref{lem:prices},
+\[
+\begin{aligned}
+\E[V_T\mid H,X=q]-P(q)&=e(q)\,[w_H-w(\mu(q))]=e(q)\,\DT\,[1-\mu(q)],\\
+P(q)-\E[V_T\mid L,X=q]&=e(q)\,[w(\mu(q))-w_L]=e(q)\,\DT\,\mu(q).
+\end{aligned}
+\]
+The proceeds \(t_0\) and the term \(e(q)w_L\) cancel. Multiply by \(q\) and subtract \(k|q|\). This gives the six
+payoffs of the lemma, with \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\mu(-1)\).
+
+\emph{Part (a).} Since \(e\ge0\), \(\DT\ge0\) and \(0\le\mu\le1\), the payoffs \(U_H(-1)=-e(-1)\DT[1-\mu(-1)]-k\)
+and \(U_L(1)=-e(1)\DT\mu(1)-k\) are at most \(-k<0=U_j(0)\). No class puts weight on a wrong-signed order under
+(E5).
+
+\emph{Part (b).} By part (a), class \(H\) compares the purchase with abstention, and
+\(U_H(1)-U_H(0)=K_H-k\). Class \(H\) buys with probability one if \(K_H>k\) and abstains if \(K_H<k\). If \(K_H=k\),
+the purchase and abstention are its two maximizers: rule IM allows any mixture of them, and rule I0 selects
+abstention. Class \(L\) compares the sale with abstention, and \(U_L(-1)-U_L(0)=K_L-k\). Class \(L\) sells with
+probability one if \(K_L>k\) and abstains if \(K_L<k\). If \(K_L=k\), the sale and abstention are its two maximizers:
+rule IM allows any mixture of them, and rule I0 selects abstention.
+
+\emph{Part (c).} By Lemma~\ref{lem:beliefs}(b), \(\mu(1)\le M(\pi)\) and \(\mu(-1)\ge m(\pi)\) under every profile,
+for every \(\beta<1/2\). Also \(\rho\le e\le1\) and \(0\le\mu\le1\). Hence
+\begin{equation}\label{eq:a2-bounds}
+\rho\,\kappa(\pi)\,\DT\le\rho\,[1-M(\pi)]\,\DT\le K_H\le\DT,\qquad
+\rho\,\kappa(\pi)\,\DT\le\rho\,m(\pi)\,\DT\le K_L\le\DT .
+\end{equation}
+The upper bounds use only \(e\le1\) and \(0\le\mu\le1\).
+
+\emph{Part (d).} The return \(K_H\) depends on the tuple only through \((\mu(1),e(1))\), and \(K_L\) only through
+\((\mu(-1),e(-1))\). Entry after the zero order enters no payoff. The ex ante payoff of the investor is
+\(\lambda\,U_j(q)\), and the factor \(\lambda>0\) changes no comparison.
+\end{proof}
+
+\paragraph{Where \(\beta\le1/3\) enters.}
+The bound \(\beta\le1/3\) enters only at the zero order, and through it only Corollary~\ref{cor:exclusion} and the
+bound \(\bar\mu\le M(\pi)\) at a price that pools the zero order. The bounds \eqref{eq:a2-bounds} use the nonzero
+orders only. The proofs of Propositions~\ref{prop:ccc} and~\ref{prop:coexistence} and of Corollary~\ref{prop:priors} use parts
+(a), (b) and (d) of Lemma~\ref{lem:beliefs} only, so these results hold for every \(\beta<1/2\).
