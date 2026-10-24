@@ -4,7 +4,6 @@
 
 The status vocabulary is out of the manuscript. No hypothesis, conclusion, number, inequality, or quantifier changes.
 
-- Worktree: [/Users/austinli/.t3/worktrees/competition-creates-competition/t3-bd868356](/Users/austinli/.t3/worktrees/competition-creates-competition/t3-bd868356)
 - Branch: `t3/remove-result-status-vocabulary`, based on `c78e2c3`
 - Commit: `80804f05afa65aa473d2544b26169f4530b9ab83` ("Remove the result-status vocabulary from the manuscript", with the `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` trailer)
 - Not pushed.
@@ -97,7 +96,7 @@ All runs use the manuscript through its own build interface. No tests were writt
 
 1. Build: `cd slot/manuscript && latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=/tmp/ccc_slot_scan/build_status main.tex` exits 0. The log ends with "Output written on /private/tmp/ccc_slot_scan/build_status/main.pdf (102 pages, 734446 bytes)."
 2. Log scan: `grep -E "undefined|multiply" /tmp/ccc_slot_scan/build_status/main.log` prints nothing. The grep exits 1, as a no-match grep does. No reference is undefined, and no label is multiply defined.
-3. Number scan, from the worktree root: `python3 audit/slot_manuscript_2026_10_23/scripts/_coordinator/number_scan.py` prints "files scanned: 21; distinct keys used: 676; missing keys: 0" and "literal decimals outside \reg: 0". It exits 0.
+3. Number scan, from the repository root: `python3 audit/slot_manuscript_2026_10_23/scripts/_coordinator/number_scan.py` prints "files scanned: 21; distinct keys used: 676; missing keys: 0" and "literal decimals outside \reg: 0". It exits 0.
 4. Final vocabulary grep: 20 hits, each listed above. Each hit is mathematics or ordinary English.
 5. Rendered-output read: `pdftotext` on the built PDF, then a grep for "analytical", "computer-assisted", "numerical diagnostic", "diagnostic", and "status", finds no hit. A grep for "is open" and "are open" also finds no hit.
 6. `git diff --check` reports no whitespace error.
