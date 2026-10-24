@@ -1,0 +1,63 @@
+% FRAGMENT I03 (integrator): Online Appendix C.6c, exact reserve events.
+% SUPERSEDES: the body of drafts/M2_18_oa_C6c_events.tex (same range: online_appendix.tex
+%   lines 3038-3083 of the base commit).
+% REASON: M2_18 was drafted before the numerical run. The validated contract and the event
+%   ledger differ from it in three facts: (1) the class economy has its own floor endpoint
+%   p_L = h + epsilon_V; (2) three offsets above each floor endpoint are evaluated (event ids
+%   offset:floor_equality_p_L+...); (3) the event grid keeps the reserve 6.280 from the earlier
+%   sweep (event id published_sampled_weak_reserve_6.280). The current sweep's highest revenue
+%   is at the endpoint p_L = h itself, so M2_18's placeholder reserve_event_sampled_weak_max
+%   would have duplicated that event.
+% SOURCE: ccc-revision-numerics paper/online_appendix.md, C.6c (commit 9faf2d7); M2_18 wording is
+%   kept for the p_H criteria (gross profit m c_H / M at the lowest belief) and the outputs.
+% NUM PLACEHOLDERS: none (6.280 is a declared input of the contract). LABELS KEPT: oa-c-reserve-events.
+\subsection{C.6c. Exact reserve events and admissible-bid
+outcomes}\label{oa-c-reserve-events}
+
+This exercise runs the C.6 node solver, with the continuation identity
+and event handling above, on the event grid alone. It leaves the full
+sweep untouched and exists so that the event candidates and the outcome
+measures can be checked without the hour-long scan.
+
+\textbf{Inputs.} Both economies at both strengths, on the event grid of
+C.6: \(0\), \(\ell\), \(r\), \(h\), the band edges in the class economy,
+the declared reserve alternatives, the floor endpoint \(p_L\) at every
+strength and \(p_H\) where \(\ell<p_H<r\), each with the three one-sided
+offsets on both sides, and the reserve \texttt{6.280}, which an earlier
+sweep reported as the sampled weak maximum.
+
+\textbf{Method and acceptance.} In the binary economy, \(p_L=h\). Both
+strengths have one accepted full-order continuation there. Gross profit
+at the lowest belief equals the zero cost, and the tie rule gives
+\(\mathsf E=\rho\), sale probability \(\rho/2\), \(\mathsf C_2=0\), and
+\(\mathcal R_T=\rho h/2\), from both the row and a fifty-digit
+evaluation. In the class economy, gross profit first equals zero at
+\(p_L=h+\varepsilon_V\). That endpoint has no mass, so the accepted
+continuation has no trade, preparation \(\rho\), and zero sale and
+revenue. The three offsets below each endpoint have strictly positive
+gross profit at the lowest belief. The three offsets above each endpoint
+have zero gross profit and zero cost: preparation remains \(\rho\), but
+sale and revenue are zero. The offset grid extends beyond the value
+support only for this endpoint check. At \(p_H\) in the strong economy,
+the row must show the equality-event classification of the ceiling with
+gross profit \(mc_H/M>0\) at the lowest belief and a strictly positive
+full-order bound, \(\tau=M\), \(x^*=1\), \(\alpha_H=1/2\),
+\(\alpha_L=e^{-2/b}/2\), and entry and revenue agreeing with the
+fifty-digit evaluation; where \(p_H\) falls outside its defining regime
+the node is an ordinary reserve node and must not be classified as an
+event. At the reserve \texttt{6.280}, \(\mathsf E=\rho\), sale
+\(\rho/2\), \(\mathsf C_2=0\), and \(\mathcal R_T=\rho\,(6.280)/2\):
+preparation there does not mean two admissible bidders, because the
+incumbent is excluded. On every row the union identity for \(\mathsf S\)
+and the ordering \(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\) hold,
+and the payoff oracle error is within tolerance. Deduplication follows
+the C.6 rule, and every count in the manifest comes from the ledger.
+
+\textbf{Outputs.} \texttt{numerics/reserve\_events.csv}, with the
+continuation schema of C.6 and an added \texttt{event\_classification}
+text column, and \texttt{numerics/reserve\_event\_ranges.csv} with the
+range schema of C.6. Feed: the exact-event paragraphs of the paper
+appendix and the online summary of C.6. Event candidates improve sampled
+maxima; they prove neither global optimality nor envelope completeness,
+and a node without an accepted candidate is a node where the declared
+searches found none.

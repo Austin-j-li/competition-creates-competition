@@ -1,0 +1,113 @@
+% INSERT BEFORE: online_appendix.tex "\section{D. Institutional pilot and empirical design}\label{oa-d}"
+% Source: the C.10 contract in the numerical worktree, paper/online_appendix.md (commit 9e7ab4d).
+% The contract's \input of the table is replaced by a pointer: the exhibit is Table 4 of the paper.
+% \NUM{name} is filled from the quantity registry; \INP{case.key} from numerics/manifests/c10_classes.json.
+\subsection{C.10. Quality classes, general priors, and benchmark
+windows}\label{oa-c-classes}
+
+\textbf{Inputs.} This exercise uses the general form of Proposition 2
+of the paper. Its high-cost conditions are (A1), and its trade
+conditions are (A2). The exact declarations appear in the notes to
+Table 4 of the paper and in the run manifest. Cases A and B each change
+three benchmark inputs: the high cost, the trade cost, and the weak
+strength. The other two strengths stay fixed. Case C uses uniform
+classes above the reserve, with the same means as the point masses.
+Case D replaces those classes by point masses and retains every other
+input.
+
+The posterior bounds are
+
+\[
+m(\pi)=\frac{\pi}{\pi+(1-\pi)e^{2/b}},\qquad
+M(\pi)=\frac{\pi}{\pi+(1-\pi)e^{-2/b}},\qquad
+\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}.
+\]
+
+Class payoffs are the exact integrals of the auction polynomials. The
+high-class win probability is
+\(W_H(r)=\mathbb E_H[\min\{\theta/r,1\}]\), since both supports exceed
+the reserve. At an interior threshold,
+
+\[
+\tau=\frac{c_H-g_L}{g_H-g_L},\qquad
+x^*=\frac b2\left[\log\frac{\tau}{1-\tau}-\log\frac{\pi}{1-\pi}\right].
+\]
+
+Conditional entry follows the Laplace tails at \(x^*-1\) and
+\(x^*+1\). Total entry is \(\pi e_H+(1-\pi)e_L\), and high-class
+ownership is \(\pi e_HW_H\). No-trade rows have no flow threshold. A
+threshold above \(M(\pi)\) is unattainable; equality retains the
+positive mass on the upper plateau.
+
+\textbf{Conditions and status.} Each case records every parameter
+restriction, both class supports, their order, and equal admissibility.
+The record also gives all four margins in (A1)--(A2), the collapse
+margin, and the trade bound at the collapse strength. The sufficient
+ownership margin is \((1+\rho)W_H(r_1)-2\rho W_H(r_0)\). The exact
+ownership margin is \(e_H(r_1)W_H(r_1)-\rho W_H(r_0)\). Gross profit at
+the lowest posterior is a diagnostic; zero cost gives preparation
+without an extra strict condition. Cases A--C satisfy the complete
+proposition, including part (iii) and the sufficient ownership
+condition.
+
+Case D fails the upper high-cost condition at the strong strength. The
+record retains this negative margin. Its trade bounds still imply unique
+no trade at the weak strength and unique full orders at both higher
+strengths. High-cost preparation is infeasible at both higher strengths,
+so total entry stays at its floor. Analytical status comes from these
+global bounds; an order mesh supplies only a numerical diagnostic.
+Table 4 of the paper reports the outcomes and the margins of all four
+cases.
+
+\textbf{Benchmark intervals.} Three different prior intervals answer
+three different questions. The trade-cost window is nonempty for priors
+in approximately
+\((\NUM{base_prior_window_lower},\NUM{base_prior_window_upper})\). With
+both benchmark costs fixed, all hypotheses for parts (i)--(ii) hold on
+\((\NUM{base_prior_prop2_lower},\NUM{base_prior_prop2_upper})\). With the
+collapse strength fixed as well, parts (i)--(iii) require
+\((\NUM{base_prior_prop2_all_lower},\NUM{base_prior_prop2_all_upper})\).
+These intervals are open; the calculations use the unrounded endpoints.
+The broader first interval does not establish the proposition at the
+fixed benchmark costs.
+
+At the equal prior, the trade-cost window is \((1/60,\,1/[12(1+e)])\),
+approximately
+\((\NUM{base_trade_cost_lower},\NUM{base_trade_cost_upper})\). The fixed
+cost is \(k=\INP{benchmark.k}\). The spread ratio is
+\NUM{base_spread_ratio}, against the sufficient bound
+\NUM{base_spread_ratio_bound}. Across the four noise laws with atomic
+costs, strong entry ranges from \NUM{four_noise_entry_min} to
+\NUM{four_noise_entry_max}. The hyperbolic secant and Student values
+retain their status as diagnostics at fixed full orders. This range
+establishes no additional equilibrium claim.
+
+\textbf{Validation and outputs.} Exact decimal strings enter fifty-digit
+arithmetic directly. Independent integration over realized bids
+validates target receipts, challenger profits, and class win
+probabilities. Independent density roots and full-line integrals
+validate the threshold, conditional entry, mean posterior, and mean
+price. Held-schedule deviations use both signs and both declared order
+grids, with the required tighter quadrature pass. The analytical Laplace
+tails have zero truncation error. All C.0 tolerances stay unchanged; a
+breach leaves the result open and stops the producer.
+
+The outputs and the run manifest are:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numerics/class\_exhibit.csv}
+\NormalTok{numerics/class\_conditions.csv}
+\NormalTok{numerics/class\_bounds.csv}
+\NormalTok{numerics/class\_deviations.csv}
+\NormalTok{numerics/class\_diagnostics.json}
+\NormalTok{numerics/manifests/c10\_classes.json}
+\end{Highlighting}
+\end{Shaded}
+
+The manifest records complete inputs, methods, tolerances, software
+versions, source hashes, output hashes, and acceptance. The registry and
+table consume only these validated CSV files. The full gate repeats the
+calculation and compares every saved row. Feed: Table 4 and Sections
+4.2 and 5.2 of the paper.
+

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supervisor meeting, 21 October 2026: what the four suggestions lead to</title>
+<style>
+:root{
+  --fg: var(--foreground, #1c1c1a);
+  --mfg: var(--muted-foreground, #5f5e5a);
+  --bd: var(--border, #dcdad3);
+  --cd: var(--card, #f6f5f1);
+  --c1: var(--chart-1, #2f6bd8);
+  --c2: var(--chart-2, #d9822b);
+  --c3: var(--chart-3, #2e9e6b);
+  --c4: var(--chart-4, #a052c9);
+  --c5: var(--chart-5, #c94a4a);
+  --ok: var(--success, #2e8b57);
+  --inf: var(--info, #2f6bd8);
+  --warn: var(--warning, #b7791f);
+  --bad: var(--destructive, #c0392b);
+  --rad: var(--radius, 10px);
+  --sans: var(--font-sans, "Inter", "Fira Sans", "Helvetica Neue", Arial, sans-serif);
+  --mono: var(--font-mono, "JetBrains Mono", "Fira Mono", Menlo, monospace);
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);font-family:var(--sans);font-size:15.5px;line-height:1.6}
+.page{max-width:780px;margin:0 auto}
+h1{font-size:28px;line-height:1.2;margin:6px 0 10px;letter-spacing:-.01em}
+h2{font-size:21px;margin:44px 0 6px;letter-spacing:-.005em}
+h2 .num{display:inline-block;color:var(--mfg);font-weight:500;font-size:16px;min-width:28px}
+h3{font-size:16.5px;margin:26px 0 6px}
+p{margin:8px 0}
+.kicker{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mfg);font-weight:600}
+.lede{font-size:17px;color:var(--fg);margin:6px 0 4px}
+.muted{color:var(--mfg)}
+.small{font-size:13.5px}
+hr.sep{border:0;border-top:1px solid var(--bd);margin:36px 0 0}
+.v{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.05em}
+sub{font-size:.72em}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:1px 8px;border-radius:999px;border:1px solid currentColor;vertical-align:1px;white-space:nowrap}
+.chip.pr{color:var(--ok)} .chip.co{color:var(--inf)} .chip.cj{color:var(--warn)} .chip.op{color:var(--mfg)} .chip.fx{color:var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:14px 0 4px;font-size:13.5px;color:var(--mfg)}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+@media (max-width:560px){.grid4{grid-template-columns:1fr}}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--rad);padding:16px 16px 14px}
+.card .q{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+.card .a{font-size:16px;font-weight:700;margin:4px 0 6px;line-height:1.3}
+.card p{font-size:14px;margin:4px 0}
+.box{border-left:3px solid var(--c1);padding:4px 0 4px 14px;margin:14px 0}
+.box.key{border-color:var(--c3)}
+.box.warn{border-color:var(--warn)}
+.box.fix{border-color:var(--bad)}
+.formula{font-family:Georgia,"Times New Roman",serif;font-size:19px;text-align:center;margin:14px 0;letter-spacing:.01em}
+table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mfg);font-weight:700}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+figure{margin:18px 0 10px}
+figcaption{font-size:13px;color:var(--mfg);margin-top:6px}
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--sans);font-size:12px}
+.chart.narrow text{font-size:15px}
+.chart text:not([fill]){fill:var(--mfg)}
+.chart .ax{stroke:var(--bd);stroke-width:1}
+.chart .grid{stroke:var(--bd);stroke-width:1;stroke-dasharray:2 3;opacity:.8}
+a,a:visited{color:var(--c1);text-underline-offset:2px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--cd);border:1px solid var(--bd);border-radius:5px;padding:0 4px}
+.toc{columns:2;column-gap:28px;font-size:14px;margin:10px 0 0;padding-left:18px}
+@media (max-width:560px){.toc{columns:1}}
+.tag{font-size:12px;color:var(--mfg);font-weight:600}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="kicker">Supervisor meeting · 21 October 2026</div>
+<h1>Four suggestions from the meeting with Alex: what we found</h1>
+<p class="lede">Alex made four suggestions about the model. We studied each one. For each point, this report gives the answer, the strongest result, what to change in the paper, and what is still open.</p>
+<div class="box key">
+<p><b>The short answer.</b> The four points lead to additions, not to a new model. Every generalization contains the current model as a special case, and none changes the mechanism. So keep the main text as it is and add the generalizations in appendices. Then Proposition 3, Section 5.1 and Table 2 need no recomputation. One sentence in the current paper is wrong and needs a fix (<a href="#fix">Section 5</a>).</p>
+</div>
+<p class="muted small">The work: 15 research memos, separate derivations of each new result, numerical checks of every closed form, a brute-force check of 495,450 discrete cases, a reading of the literature from full texts, and a final adversarial review of 26 key claims. The review refuted no claim and corrected 6. The brute-force check corrected three claims about the discrete models; this report uses the corrected versions. The memos are in <code>audit/alex_meeting_2026_10_21/memos/</code>.</p>
+
+<div class="legend">
+  <span><span class="chip pr">PROVED</span> analytical result</span>
+  <span><span class="chip co">COMPUTED</span> numerical diagnostic</span>
+  <span><span class="chip cj">CONJECTURE</span> believed, not proved</span>
+  <span><span class="chip op">OPEN</span> not resolved</span>
+  <span><span class="chip fx">FIX</span> error in the current paper</span>
+</div>
+
+<!-- AT A GLANCE -->
+<div class="grid4">
+  <div class="card">
+    <div class="q">1 · Challenger value distributions</div>
+    <div class="a">Yes. The idea is a standard model, and it gives a neat result.</div>
+    <p>The suggestion is the "selective entry" model of the auction literature. The main result holds for any pair of ranked value distributions, if both classes are equally likely to fall below the reserve.</p>
+    <p><b>Neat result:</b> the value gap between a good and a bad challenger is a fixed amount. A stronger incumbent only moves it from the challenger to the target.</p>
+  </div>
+  <div class="card">
+    <div class="q">2 · Microstructure</div>
+    <div class="a">Laplace is the extreme member of a class. A discrete model also works.</div>
+    <p>The proofs need two properties: no order flow is conclusive, and the slope of the log density is below one. The main result holds for every noise law with both. Laplace is the least noisy such law, and it gives the closed forms.</p>
+    <p>A buy-only discrete model in the style of Edmans, Goldstein and Jiang (2015) gives a clean version of the result, with some costs.</p>
+  </div>
+  <div class="card">
+    <div class="q">3 · Who the investors are, and t<sub>0</sub></div>
+    <div class="a">Name an outside specialist. Shareholders gain from entry, not from the price.</div>
+    <p><span class="v">t</span><sub>0</sub> cancels from every trading incentive. Target shareholders gain only because the price brings in a bidder: +0.258 per share in proceeds, less 0.141 paid to the informed investor.</p>
+    <p>An informed shareholder (a stake) has a motive to manipulate. Small stakes keep the result.</p>
+  </div>
+  <div class="card">
+    <div class="q">4 · Normalize c<sub>L</sub> = 1?</div>
+    <div class="a">Possible, but it simplifies nothing. Use ℓ = 1.</div>
+    <p><span class="v">c</span><sub>L</sub> appears in no closed form. The benchmark result is the same for every <span class="v">c</span><sub>L</sub> below 2.27.</p>
+    <p>The benchmark already sets <span class="v">c</span><sub>L</sub> = ℓ = 1. The useful unit is ℓ = 1.</p>
+  </div>
+</div>
+
+<ul class="toc">
+  <li><a href="#p1">Challenger value distributions</a></li>
+  <li><a href="#p2">Noise and the discrete model</a></li>
+  <li><a href="#p3">Investors and t<sub>0</sub></a></li>
+  <li><a href="#p4">Normalization</a></li>
+  <li><a href="#fix">Corrections needed now</a></li>
+  <li><a href="#base">The recommended revision</a></li>
+  <li><a href="#ask">Questions for Alex</a></li>
+  <li><a href="#next">Next tasks</a></li>
+  <li><a href="#review">What the final review checked</a></li>
+</ul>
+
+<!-- ============ POINT 1 ============ -->
+<hr class="sep">
+<h2 id="p1"><span class="num">1</span>Challenger value distributions</h2>
+<p class="muted">Alex: a two-point value with probability one half each is unconventional. Instead, let the challenger draw its value from one of a few distributions, and learn which one only when it receives information.</p>
+
+<h3>Two readings of "choosing from a few distributions"</h3>
+<table>
+  <tr><th>Reading</th><th>What happens</th><th>Verdict</th></tr>
+  <tr><td><b>N</b> · nature draws</td><td>Nature draws a class <span class="v">j</span> ∈ {H, L} with prior π. Given the class, the value comes from the distribution <span class="v">G<sub>j</sub></span>. The investor sees the class. Preparation reveals the value.</td><td>Fits the words "only when they receive information" and the paper's story. The main line.</td></tr>
+  <tr><td><b>C</b> · the challenger chooses</td><td>The challenger picks a plan (a risk profile) from a menu, and learns the realized value at diligence.</td><td>If the challenger knows its own plan, the price teaches it nothing, and the mechanism stops. Only a hybrid survives.</td></tr>
+</table>
+<p>We recommend Reading N. Alex should confirm which one he meant (see <a href="#ask">Questions for Alex</a>).</p>
+
+<h3>Where Reading N sits in the literature</h3>
+<p>Auction-entry models have three standard cases. The bidder can know its value before it pays to enter (Samuelson 1985). It can know only the common distribution (Levin and Smith 1994). Or it can hold a signal that selects the distribution of its value: the <b>selective-entry</b> or <b>affiliated-signal</b> model (Marmer, Shneyerov and Xu 2013; Roberts and Sweeting 2013; Gentry and Li 2014). Alex's idea is the third case.</p>
+<p>The paper fits this framework with one new feature: the pre-entry signal is the <b>stock price</b>. It is public, an outside investor produces it, and it is an equilibrium object. The current two-point model is the special case where each class has a single value. That is why it looks unusual to an auction reader. A binary state with prior one half is normal in feedback models (Edmans, Goldstein and Jiang 2015; Goldstein and Guembel 2008; Dow, Goldstein and Guembel 2017). It is not normal in auction-entry models.</p>
+<p>Alex's remark about the second-price auction is correct <span class="chip pr">PROVED</span>. Each bidder bids its value whatever anyone knows, so asymmetric information changes only the entry decisions. A first-price auction would make bids, and so all payoffs, depend on public beliefs.</p>
+
+<h3>The neat result: the value gap is a fixed pie</h3>
+<p>In the second-price auction, the target's proceeds plus the challenger's profit equal the challenger's value: <span class="v">t</span><sub>θ</sub> + <span class="v">g</span><sub>θ</sub> = θ, at every incumbent strength. The reason: the total surplus is E[max{<span class="v">R</span>, θ}] = θ + E[(<span class="v">R</span> − θ)<sub>+</sub>], and the incumbent keeps exactly the second term. So the target and the challenger share exactly θ. Therefore</p>
+<div class="formula">Δ<sub>T</sub>(<span class="v">r</span>) + [<span class="v">g</span><sub>H</sub>(<span class="v">r</span>) − <span class="v">g</span><sub>L</sub>(<span class="v">r</span>)] = <span class="v">h</span> − ℓ &nbsp;&nbsp;for every <span class="v">r</span>.</div>
+<p>The gap between a good and a bad challenger is fixed. A stronger incumbent does not change its size. It moves the gap from the challenger's profit (what preparation earns) to the target's payoff (what informed investors trade on). This is the paper's "two claims on the same surplus" in one line. <span class="chip pr">PROVED</span></p>
+
+<figure>
+  <svg id="ch-split" class="chart" viewBox="0 0 720 300" role="img" aria-label="Split of the value gap between target and challenger across incumbent strength"></svg>
+  <figcaption>Benchmark values <span class="v">h</span> = 10, ℓ = 1, <span class="v">p</span> = 0.5. The lower area is the target-payoff spread Δ<sub>T</sub>. The upper area is the challenger's profit gap. They always add to 9. The marks show the paper's strengths <span class="v">r</span><sub>0</sub> = 1.2, <span class="v">r</span><sub>1</sub> = 3, <span class="v">r</span><sub>2</sub> = 3.6.</figcaption>
+</figure>
+
+<p>With value distributions, the right-hand side becomes E<sub>H</sub>[max{θ, <span class="v">p</span>}] − E<sub>L</sub>[max{θ, <span class="v">p</span>}]. It still does not depend on the incumbent if both classes are equally likely to fall below the reserve, or if the incumbent's value is never below the reserve. <span class="chip pr">PROVED</span></p>
+
+<h3>The main result extends</h3>
+<ul>
+  <li><b>Any ranked pair works.</b> Suppose <span class="v">G</span><sub>H</sub> first-order dominates <span class="v">G</span><sub>L</sub> above the reserve, both classes put the same mass below the reserve, and they differ somewhere above it. Then "competition creates competition" holds on a nonempty open set of primitives, at every prior, noise scale and low-cost probability. <span class="chip pr">PROVED</span></li>
+  <li><b>Any prior works, at a cost.</b> With prior π, the belief bounds become <span class="v">m</span>(π) and <span class="v">M</span>(π), and the threshold flow shifts by the prior log-odds. A prior away from one half narrows the trading-cost window in (A3). <span class="chip pr">PROVED</span></li>
+  <li><b>The price still reveals the market's belief</b> (Proposition A.2 is unchanged). <span class="chip pr">PROVED</span></li>
+  <li><b>Numbers.</b> Narrow classes around ℓ and <span class="v">h</span> reproduce the benchmark: entry rises from 0.25 to 0.5228. A scan finds valid parameter pairs in 15 of 30 family and prior combinations. Three classes give 0.25 → 0.5228 → 0.25. <span class="chip co">COMPUTED</span></li>
+</ul>
+
+<h3>Two new effects</h3>
+<div class="box warn">
+<p><b>The reserve can reverse the sign.</b> At a known value θ, the target's proceeds jump up at θ = <span class="v">p</span>: a challenger that can just meet the reserve wins the sale when the incumbent cannot. A stronger incumbent shrinks that jump. If the low class is more likely to fall below the reserve, a stronger incumbent can <i>lower</i> the spread, and the main result can fail. <span class="chip pr">PROVED</span></p>
+<p>The paper's own high-reserve example (Section 6.3, reserve 1.1) is such a case: the spread falls from 1.0125 at <span class="v">r</span> = 1.2 to 1.005 at <span class="v">r</span> = 3. Both economies trade there, so the fall in preparation in Table 4 (0.540 → 0.512) is the ordinary deterrence of Proposition A.3. The paper's text is correct, but it does not give this reason. <span class="chip co">COMPUTED</span></p>
+</div>
+<div class="box warn">
+<p><b>A good challenger can now lose.</b> When the two distributions overlap, a high-class challenger sometimes loses to the incumbent. More entry then does not always mean more high-value ownership. Example with all conditions met (ρ = 0.95): entry rises from 0.950 to 0.970, but high-class ownership falls from 0.4229 to 0.4165. The ownership claim needs one extra condition. <span class="chip co">COMPUTED</span></p>
+</div>
+
+<h3>More than two classes, and an investor who sees the exact value</h3>
+<ul>
+  <li>With three or more classes, the price reveals what the challenger needs if the class payoff pairs (target proceeds, challenger profit) lie on one line. In equilibrium, the investor's own trading incentives restore this under the paper's assumptions. The main result extends when classes form two separated groups. <span class="chip pr">PROVED</span></li>
+  <li>If the investor sees the exact value (a continuum), a range of investors prefers not to trade. Existence and uniqueness are not resolved. <span class="chip op">OPEN</span></li>
+</ul>
+
+<h3>Reading C: the challenger chooses its plan</h3>
+<ul>
+  <li>A useful auction lemma: challenger profit is convex in its value and target proceeds are concave. At a fixed mean, a riskier plan helps the challenger and hurts the target by the same amount. <span class="chip pr">PROVED</span></li>
+  <li>A stronger incumbent has no signed effect on the taste for risk: it rises in one example and falls in another. <span class="chip co">COMPUTED</span></li>
+  <li>The hybrid (nature draws the class, the price informs, then the challenger picks risk) keeps the mechanism under one extra condition. Its equilibrium is not solved. <span class="chip op">OPEN</span></li>
+</ul>
+
+<h3>What to change in the paper</h3>
+<ol>
+  <li>Add the split identity to Section 3.1 (one sentence and one display). No cost.</li>
+  <li>Add an appendix result "Distribution classes" with a general prior. Use the value classes of Section 6.3 as the example. Keep the binary model in the main text, and say that it is the point-mass case.</li>
+  <li>Use the selective-entry vocabulary in Section 2.2: "quality class", "pre-entry signal", "preparation cost (entry cost in the auction literature)". Say "class", not "type", because "type" already names the investor's information.</li>
+  <li>Add one sentence to Section 6.3 (lines 1040–1050): at reserve 1.1 the low class is excluded, the spread falls in <span class="v">r</span>, and the fall in preparation is fixed-experiment deterrence.</li>
+  <li>State the ownership condition separately from entry.</li>
+</ol>
+<p class="small muted">Open: how large a gap in reserve admissibility the result tolerates (on one family, a gap of 0.10 works and 0.20 does not); incumbent distributions other than the uniform; the widest symmetric classes; an investor who sees the exact value on a continuum; and the Reading C hybrid.</p>
+
+<!-- ============ POINT 2 ============ -->
+<hr class="sep">
+<h2 id="p2"><span class="num">2</span>Noise and the discrete model</h2>
+<p class="muted">Alex: Laplace noise is unconventional. Give a very clear technical and economic justification. Also try a purely discrete model, as in Edmans et al., with trading in one direction only.</p>
+
+<h3>What the proofs need from the noise</h3>
+<table>
+  <tr><th>Property of the noise</th><th>What it gives the paper</th><th>Needs Laplace?</th></tr>
+  <tr><td>Bounded likelihood ratio between any two orders</td><td>Beliefs stay in [<span class="v">m</span>, <span class="v">M</span>] under every strategy, so the investor always keeps an edge</td><td>No</td></tr>
+  <tr><td>Bounded slope of the log density, |(log <span class="v">f</span>)′| ≤ 1/<span class="v">b</span> &lt; 1</td><td>A lower bound on marginal trading profit over the whole order interval, hence uniqueness</td><td>No</td></tr>
+  <tr><td>Full support</td><td>No off-path order flows, so no belief refinement</td><td>No</td></tr>
+  <tr><td>Log density exactly piecewise linear</td><td>Closed forms (12), the belief plateau at <span class="v">M</span>, the tie at <span class="v">r</span><sub>C</sub></td><td>Yes</td></tr>
+</table>
+<p>The first three rows hold for every density whose log has a slope bounded by a constant below one. This class includes the logistic and hyperbolic secant laws, Student t laws, and Gaussian noise plus an independent Laplace part. <b>Proposition 2 holds for every member, with the same proof.</b> Only one change: condition (A2) must use the largest belief that the law actually reaches. <span class="chip pr">PROVED</span></p>
+
+<h3>The "clean linear posterior"</h3>
+<p>Under full orders, the Laplace log-odds are exactly the Gaussian log-odds (variance <span class="v">b</span>) between the two orders, and flat outside. So Laplace keeps Kyle's linear update where it matters and caps it where Gaussian noise would make a flow conclusive.</p>
+<figure>
+  <svg id="ch-post" class="chart" viewBox="0 0 720 300" role="img" aria-label="Market belief after each order flow under three noise laws"></svg>
+  <figcaption>The market's belief that the challenger is the high type, after each order flow, under full orders and <span class="v">b</span> = 2. Laplace equals the Gaussian on the shaded region and stops at <span class="v">M</span> = 0.731. The Gaussian goes to 1, so extreme flows become conclusive. The logistic law reaches <span class="v">M</span> only in the limit.</figcaption>
+</figure>
+<p>Under Gaussian noise, a huge flow is almost proof of information. The investor's edge then vanishes at extreme flows, and the global argument fails. Numerically, full orders are not an equilibrium: the low type sells only 0.93. No equilibrium with informative trading can have a price that is linear in flow, for any full-support noise. <span class="chip pr">PROVED</span></p>
+
+<h3>Why Laplace in particular: it is the extreme member</h3>
+<ul>
+  <li>For a given slope bound 1/<span class="v">b</span>, Laplace has the thinnest tails of the class. At the same orders, it gives the most informative price in Blackwell's sense. <span class="chip pr">PROVED</span></li>
+  <li>The logistic law of Section 5.1 is the Laplace law plus independent noise. Euler's product gives π<span class="v">x</span>/sinh(π<span class="v">x</span>) = ∏<sub>n</sub> 1/(1 + <span class="v">x</span>²/n²), and the n = 1 factor is the Laplace characteristic function. <span class="chip pr">PROVED</span></li>
+</ul>
+<div class="box fix">
+<p><b>This corrects the paper.</b> Appendix A.4 (<code>main.tex</code> lines 1877–1880) says that neither Laplace nor logistic noise Blackwell-dominates the other. At the common scale that the paper uses, Laplace dominates. Only at a common variance does neither law dominate. Online Appendix C.5 (lines 2631–2632) needs the same change. <span class="chip fx">FIX</span></p>
+</div>
+
+<h3>Economic justification</h3>
+<p>Three simple stories give Laplace noise exactly <span class="chip pr">PROVED</span>:</p>
+<ol>
+  <li><b>Buy and sell volumes.</b> Liquidity sales and liquidity purchases are independent exponential amounts with the same mean. Their difference is Laplace.</li>
+  <li><b>Random volume.</b> Noise demand is Gaussian, but its variance is random and exponential (for example, a random number of liquidity traders).</li>
+  <li><b>Random horizon.</b> Noise demand follows a random walk that stops at an exponential time, such as the next public event in the sale process. This story fits a sale process best.</li>
+</ol>
+<p>The evidence supports fat tails relative to the Gaussian, with an exponential body at medium horizons. It does not show that noise demand itself is Laplace, because noise demand is not observable. We found no Kyle-type or feedback paper that assumes Laplace noise. The same property is standard in the learning literature as "bounded private beliefs" (Smith and Sørensen 2000). It also defines the Laplace mechanism in differential privacy.</p>
+<div class="box key"><p><b>Suggested text.</b> "The model needs two properties of the noise: no order flow is conclusive, and a small change in an order moves the flow density only in proportion to its level. Gaussian noise is the common law that fails both. Laplace is the extreme member of the class of laws that have them, and it gives closed forms. Proposition 2 holds for the whole class."</p></div>
+
+<h3>A risk to address: the size of entry depends on the law</h3>
+<figure>
+  <svg id="ch-entry" class="chart" viewBox="0 0 720 300" role="img" aria-label="Entry at the strong benchmark under different noise laws"></svg>
+  <figcaption>Entry at the strong benchmark (<span class="v">r</span><sub>1</sub> = 3) under full orders, for noise laws with the same slope bound. These are fixed-profile numbers, as in the paper's Figure 3, not equilibrium checks. The dashed line is the base rate ρ = 0.25.</figcaption>
+</figure>
+<p>Laplace gives the largest entry of all the laws we computed. This is a numerical fact, not a consequence of Blackwell dominance: a more informative price does not always give more entry, because entry depends on whether the belief crosses a threshold. A referee may say the law was chosen to make the result large. Answer it in advance: report a second member next to the logistic number in Section 5.1, and say that the direction of the result does not depend on the law. <span class="chip co">COMPUTED</span></p>
+
+<h3>The discrete model</h3>
+<p>The template is Edmans, Goldstein and Jiang (2015, <i>AER</i>). A noise trader buys, sells, or does not trade one unit, each with probability 1/3. The informed investor trades one unit or stays out, and is present only with probability λ. Market makers see total flow and price at expected value. We built a buy-only version (short sales shut off) and a sell-only version. The challenger still sees only the price.</p>
+<table>
+  <tr><th>Result</th><th>Status</th></tr>
+  <tr><td>One cutoff, <span class="v">k</span> = ρΔ<sub>T</sub>/3, separates unique no trade from unique trade. No coexistence of equilibria.</td><td><span class="chip pr">PROVED</span></td></tr>
+  <tr><td>Parts (i) and (ii) of Proposition 2 carry over. Deterrence at a fixed information experiment (Proposition A.3) carries over.</td><td><span class="chip pr">PROVED</span></td></tr>
+  <tr><td>Buy-only and sell-only give the same outcomes when the investor is always present.</td><td><span class="chip pr">PROVED</span></td></tr>
+  <tr><td>Benchmark entry path 0.25 → 1/3 → 1/3 at <span class="v">r</span> = 1.2, 3, 3.6. Expensive entry ends only above <span class="v">r</span> = 7.97.</td><td><span class="chip pr">PROVED</span></td></tr>
+  <tr><td>With the two-sided menu, "buy on good news, do not sell on bad news" is the only <i>pure</i> partial-trade outcome for λ in [82/141, 6/7] ≈ [0.58, 0.857]. But it needs a trading cost above the benchmark's (for example <span class="v">k</span> = 0.04), and a mixed equilibrium can coexist with it. So do not claim that buy-only trading arises by itself at the benchmark.</td><td><span class="chip co">COMPUTED</span></td></tr>
+  <tr><td>With investor presence λ, entry is ρ + (1 − ρ)λ/6. The benchmark <span class="v">c</span><sub>L</sub> = 1 works with the buy-only menu if λ ≤ 0.88.</td><td><span class="chip pr">PROVED</span></td></tr>
+  <tr><td>The off-path belief rule moves the no-trade cutoff by a factor of 3/2. With a buy-only menu, only one flow is off path, and a short dominance argument fixes its belief.</td><td><span class="chip pr">PROVED</span></td></tr>
+</table>
+<div class="box warn">
+<p><b>A new problem from the brute-force check: self-fulfilling prices.</b> The challenger sees only the price. Two flows can then share one price, and a lower entry decision at that price can confirm itself. With the two-sided menu at <span class="v">r</span> = 3 and λ = 0.8, two price schedules support the same full trades, with entry 0.467 and 0.417. Both satisfy the paper's tie rules. This happens for λ between about 0.79 and 0.88. A low-cost floor <span class="v">c</span><sub>L</sub> ≤ <span class="v">g</span><sub>L</sub> removes it. This is why Edmans, Goldstein and Jiang let the decision maker see order flow, not the price. <span class="chip co">COMPUTED</span></p>
+<p class="small">The check covered 495,450 cases across the three menus, five presence levels, two low costs, 45 trading costs and a fine grid of strengths. With equal noise, every case has an equilibrium. With unequal noise (0.1, 0.2, 0.7), 13,884 of 126,900 cases have no equilibrium under the paper's tie rule. The buy-only menu showed no extra price pool at the benchmark points.</p>
+</div>
+<p><b>What the discrete model costs.</b></p>
+<ul>
+  <li><b>Beliefs can reach 0 and 1.</b> The extreme flows reveal the state. So the cheap challenger stays out after clearly bad news unless <span class="v">c</span><sub>L</sub> ≤ <span class="v">g</span><sub>L</sub>. The benchmark <span class="v">c</span><sub>L</sub> = 1 fails this, and benchmark entry moves 0.25 → 1/3 (not 0.375).</li>
+  <li><b>Part (iii) needs a much stronger incumbent.</b> A belief of exactly 1 keeps expensive entry alive until <span class="v">g</span><sub>H</sub> &lt; <span class="v">c</span><sub>H</sub>, that is, <span class="v">r</span> &gt; 7.97, not 3.6.</li>
+  <li><b>No feedback from entry to trading.</b> With equal noise, the flows that bring in the challenger never pay the trader. This removes the coexistence result of Proposition 3 and the tail comparison of Section 5.1. Unequal noise brings feedback back, together with multiple equilibria, and under the paper's tie rule some cases have no equilibrium.</li>
+  <li><b>An always-present investor is degenerate.</b> Every flow then reveals the state or says nothing. Use λ &lt; 1, as Edmans, Goldstein and Jiang do.</li>
+</ul>
+<div class="box key"><p><b>Recommendation.</b> Keep Laplace (stated as a class) as the main model. Add the buy-only discrete model, with equal noise and λ &lt; 1, as a short companion. State the low-cost floor that rules out self-fulfilling prices. The companion shows that the main result does not need Laplace noise. It also shows what continuous noise adds: informative middle flows, hence feedback and coexistence.</p></div>
+
+<!-- ============ POINT 3 ============ -->
+<hr class="sep">
+<h2 id="p3"><span class="num">3</span>Who the investors are, and the role of t<sub>0</sub></h2>
+<p class="muted">Alex: <span class="v">t</span><sub>0</sub> is the target's proceeds when no one enters. Who are the investors? If they are target shareholders, should they not gain from the price change anyway? If they are outsiders, who can they be? Does the model need a new device?</p>
+
+<h3>Who is who</h3>
+<table>
+  <tr><th>Group</th><th>In the model</th><th>In practice</th></tr>
+  <tr><td>Informed investor</td><td>Knows the challenger's quality, holds no net position, trades a small amount</td><td>An outside sector specialist, for example a long-short fund that studies the target's customers and technology. Its information comes from its own research, so the trade is legal.</td></tr>
+  <tr><td>Noise traders</td><td>Net demand <span class="v">Z</span></td><td>Current shareholders who sell for cash, and outside investors who buy for liquidity</td></tr>
+  <tr><td>Market makers</td><td>Price at expected value, break even</td><td>Dealers and liquidity providers</td></tr>
+  <tr><td>Holders at the sale</td><td>Receive <span class="v">V</span><sub>T</sub></td><td>Every share held at the sale, market-maker inventory too</td></tr>
+  <tr><td>Bidders</td><td>Do not trade the target's shares</td><td>The incumbent and the challenger</td></tr>
+</table>
+<p>The kind of information matters. Most documented informed trading before deals is about <i>whether</i> a bid will come (Meulbroek 1992; Augustin, Brenner and Subrahmanyam 2019). That trading is illegal, and it is the wrong information for this model: the challenger already knows what its own lenders and advisers know. The model needs information about the challenger's <i>fit</i> with the target, which outside research can produce.</p>
+
+<h3>Where t<sub>0</sub> goes</h3>
+<p>Both <span class="v">t</span><sub>0</sub> and the public entry effect cancel from the investor's trading edge (eq. 11). <span class="v">t</span><sub>0</sub> behaves like the deterministic dividend of Section 6.1: it moves the value and the price by the same amount. What matters is the entry gain <span class="v">t</span><sub>θ</sub> − <span class="v">t</span><sub>0</sub>, which is positive for both challenger types. So every holder of the shares wants entry, even with a low-value challenger. <span class="chip pr">PROVED</span></p>
+
+<h3>Do target shareholders gain?</h3>
+<p>Yes, but from entry, not from the price change. A shareholder who keeps the shares receives the sale proceeds, whatever the interim price. The price change itself is a transfer between traders. <span class="chip pr">PROVED</span></p>
+<figure>
+  <svg id="ch-ledger" class="chart" viewBox="0 0 720 210" role="img" aria-label="Shareholder ledger at the strong benchmark"></svg>
+  <figcaption>Per share at the strong benchmark (<span class="v">r</span><sub>1</sub> = 3). The comparison is an economy with an informed investor and price access against an economy with no informed investor. The informed investor's profit is shown at the scale of one trading unit per share of float.</figcaption>
+</figure>
+<ul>
+  <li><b>The gain needs three conditions:</b> the region of Proposition 2, where the prior alone does not justify expensive entry; price access; and a float that is not too small relative to the trade size (the investor's profit scales with trade size; at the benchmark, the class gains while the float is at least 1/1.832 ≈ 0.55 trading units). <span class="chip co">COMPUTED</span></li>
+  <li><b>The total hides a split.</b> Holders who keep their shares gain and pay nothing. Shareholders who must trade pay the informed investor's profit. At an even split of the float, the trading group loses 0.012 while the class gains 0.117. <span class="chip co">COMPUTED</span></li>
+  <li><b>The sign can flip.</b> When the prior already justifies expensive entry, an informative price deters some entry and lowers proceeds (by 0.19 to 0.25 at <span class="v">r</span><sub>1</sub>), although acquisition surplus rises. <span class="chip co">COMPUTED</span></li>
+</ul>
+
+<h3>If the informed investor is a shareholder: a stake</h3>
+<p>Give the investor ω shares before it trades. Its payoff becomes ω<span class="v">V</span><sub>T</sub> + <span class="v">q</span>(<span class="v">V</span><sub>T</sub> − <span class="v">P</span>) − <span class="v">k</span>|<span class="v">q</span>|. Because entry raises proceeds in both states, a stake rewards a purchase even after bad news: the investor may buy to pull in the challenger. This is a manipulation motive.</p>
+<ul>
+  <li>Weak economy: when the price is uninformative, one order cannot move entry, so no trade is an equilibrium for every stake. Its uniqueness is proved only for a stake below 0.043. Part (iii) at <span class="v">r</span><sub>2</sub> is unaffected. <span class="chip pr">PROVED</span></li>
+  <li>Strong economy: unique full orders are guaranteed for a stake below 0.0114 trading units at the benchmark. The slack in (A3) is thin (0.0024). <span class="chip pr">PROVED</span></li>
+  <li>Numerically, full orders survive up to a stake of about 2.16 units. A branch with partial sales continues to about 2.50. <span class="chip co">COMPUTED</span></li>
+  <li>Large stakes: both types buy the same amount cannot be an equilibrium. The full equilibrium is not resolved. <span class="chip op">OPEN</span></li>
+</ul>
+<p>This differs from Edmans, Goldstein and Jiang (2015, Section II.E). There the stake cancels, because the firm's action corrects course in both states. Here it does not cancel, because a sale on bad news deters entry, and entry raises the value in both states.</p>
+
+<div class="box key"><p><b>Recommended device.</b> Keep the outside specialist with no net position, and name it. Read the noise as liquidity sales by shareholders minus liquidity purchases by outsiders. With exponential amounts, this <i>is</i> the Laplace noise of eq. (2). No proof changes. Add the stake as an extension with the thresholds above. Two draft paragraphs (for Sections 2.3 and 6.1) are in the memo <code>Q3_story.md</code>.</p></div>
+
+<!-- ============ POINT 4 ============ -->
+<hr class="sep">
+<h2 id="p4"><span class="num">4</span>Normalize c<sub>L</sub> = 1?</h2>
+<p>A change of the money unit changes nothing real <span class="chip pr">PROVED</span>. Multiply every value, cost, reserve and trading cost by the same number: orders, beliefs, entry and ownership stay the same. So one money unit can be fixed. The flow unit is separate: the order bound |<span class="v">q</span>| ≤ 1 fixes it, and <span class="v">b</span> is measured in it.</p>
+<table>
+  <tr><th>Normalization</th><th>Without loss?</th><th>What it simplifies</th></tr>
+  <tr><td><span class="v">c</span><sub>L</sub> = 1</td><td>Yes, if <span class="v">c</span><sub>L</sub> &gt; 0</td><td>Nothing. <span class="v">c</span><sub>L</sub> appears in no closed form; only in the floor (A1). The benchmark already has <span class="v">c</span><sub>L</sub> = ℓ = 1.</td></tr>
+  <tr><td>ℓ = 1</td><td>Yes</td><td>Shortens eq. (4) and the threshold formulas. All paper vectors already use it. <b>Recommended.</b></td></tr>
+  <tr><td><span class="v">c</span><sub>L</sub> = 0</td><td>Inside its window, yes for the main result</td><td>Removes (A1). But it removes the A.10 pooling example, one reserve event and the net-surplus level.</td></tr>
+  <tr><td><span class="v">p</span> → 0</td><td>No</td><td>Removes <span class="v">t</span><sub>0</sub>, but changes entry (0.5228 → 0.5257), because the reserve acts like a cost that depends on <span class="v">r</span>.</td></tr>
+</table>
+<ul>
+  <li>The benchmark result is the same for every <span class="v">c</span><sub>L</sub> below 2.27 (below 2.366 for parts (i)–(ii); 2.272 also covers part (iii)): entry 0.522757, ownership 0.324192. Only the net-surplus level moves. If the benchmark changes to <span class="v">c</span><sub>L</sub> = 0, the surplus level in Table 2 rises by 0.25 and every difference stays the same. <span class="chip co">COMPUTED</span></li>
+  <li>Entry depends on the primitives only through ρ, <span class="v">b</span> and the threshold belief τ. <span class="chip pr">PROVED</span></li>
+  <li>In a discrete model, <span class="v">c</span><sub>L</sub> = 1 is a problem: a flow that reveals the low value keeps the cheap challenger out unless <span class="v">c</span><sub>L</sub> ≤ <span class="v">g</span><sub>L</sub>.</li>
+</ul>
+<div class="box key"><p><b>Recommendation.</b> Do not normalize <span class="v">c</span><sub>L</sub> to 1, and do not set <span class="v">p</span> → 0. Say in Section 2.2: "Money is measured in units of the low acquisition value, ℓ = 1." Add one remark under Proposition 2: "The outcome does not depend on <span class="v">c</span><sub>L</sub> in [0, <span class="v">B</span><sub>r₁</sub>(<span class="v">m</span>)); calculations use <span class="v">c</span><sub>L</sub> = 0." Add the identity <span class="v">t</span><sub>θ</sub> + <span class="v">g</span><sub>θ</sub> = θ, which shortens Proposition 1 and eq. (5). Whether the low-cost type is "a small cost" or "a ready buyer" (<span class="v">c</span><sub>L</sub> = 0) is a content choice for the author.</p></div>
+
+<!-- ============ FIXES ============ -->
+<hr class="sep">
+<h2 id="fix"><span class="num">5</span>Corrections needed now</h2>
+<p>These apply whatever revision the author chooses.</p>
+<ol>
+  <li><b>The Blackwell sentence is wrong.</b> <span class="chip fx">FIX</span> <code>main.tex</code> lines 1877–1880 (Appendix A.4, after Proposition A.5). Replace "They do not have a common variance, and neither experiment Blackwell dominates the other in general; the comparison concerns where posterior mass sits relative to the common bounds <span class="v">m</span>, <span class="v">M</span>." with:
+    <div class="box" style="margin:8px 0"><p class="small">"They do not have a common variance. At a common scale <span class="v">b</span> the logistic law equals the Laplace law plus independent noise, so the Laplace price experiment Blackwell-dominates the logistic one at every order profile, including the full-order equilibria compared here. At a common variance neither dominates. Dominance does not order entry: Pr(μ<sub>X</sub> ≥ τ) is not convex in the posterior, so the entry comparison concerns where posterior mass sits relative to the bounds <span class="v">m</span>, <span class="v">M</span>."</p></div>
+  </li>
+  <li><b>The same instruction in the Online Appendix.</b> <span class="chip fx">FIX</span> <code>online_appendix.tex</code> lines 2631–2632 (C.5 inputs). Replace "do not claim equal variance or a Blackwell ordering between the laws" with "do not claim equal variance; at a common scale the Laplace experiment Blackwell-dominates the logistic one, but do not claim an ordering of entry".</li>
+  <li><b>Optional improvement</b>, <code>main.tex</code> line 860 (Section 5.1): "The comparison concerns the location of posterior mass at a common scale; the Laplace experiment is the more informative one, but informativeness does not order entry."</li>
+  <li><b>Clarification, not an error</b>, <code>main.tex</code> lines 1040–1050 (Section 6.3): add the sentence that explains the deterrence at reserve 1.1 (see Point 1).</li>
+  <li><b>Notation, before any memo text enters the paper.</b> The memos use λ for four objects: presence probability, trade scale, money scale and a prior bound. Give each object its own symbol.</li>
+</ol>
+<p class="small muted">The paper's bibliography needs no change. The four wrong journal names found during the work were in our internal brief, not in the paper.</p>
+
+<!-- ============ BASELINE ============ -->
+<hr class="sep">
+<h2 id="base"><span class="num">6</span>The recommended revision</h2>
+<p><b>Keep the current main model</b>: binary values with prior 1/2, Laplace noise, two-sided continuous orders, and an outside investor with no stake. Add the generalizations around it. Each one contains the current model as a special case, and none changes the mechanism. Then the Proposition 3 certificates, the Section 5.1 numbers, Table 2 and eq. (12) need no recomputation.</p>
+<table>
+  <tr><th>Change</th><th>Where</th><th>Proof cost</th><th>What it touches</th></tr>
+  <tr><td>Selective-entry vocabulary; split identity</td><td>Sections 2.2, 3.1</td><td>None</td><td>Nothing</td></tr>
+  <tr><td>Distribution classes with a general prior</td><td>New appendix section</td><td>Medium; the claims are written</td><td>One sentence in Section 6.3</td></tr>
+  <tr><td>Bounded-score noise class; Laplace as its extreme member</td><td>Section 2.3 paragraph; Proposition A.5 generalized; lemma in the Online Appendix</td><td>Medium; one paragraph and one page</td><td>The Blackwell sentences; Proposition 3 is not touched</td></tr>
+  <tr><td>Buy-only discrete companion with presence λ</td><td>New subsection after Proposition 2, or the Online Appendix</td><td>Medium</td><td>Nothing; say it does not carry Proposition 3</td></tr>
+  <tr><td>Named outside investor; liquidity-trader noise; the welfare transfer</td><td>Sections 2.3, 3.3, 6.1; a note under Table 2</td><td>None</td><td>How Table 2, Panel C reads</td></tr>
+  <tr><td>Stake remark with the two sufficient bounds</td><td>Online Appendix remark</td><td>Small</td><td>Nothing</td></tr>
+  <tr><td>ℓ = 1 as the unit; <span class="v">c</span><sub>L</sub> slack</td><td>Section 2.2; remark under Proposition 2</td><td>None</td><td>Table 2 surplus level only, if <span class="v">c</span><sub>L</sub> = 0 is adopted</td></tr>
+</table>
+<div class="box warn"><p>If any of these moves into the <i>main</i> model (a general prior, distribution classes, a different noise law, a stake, or a discrete trading stage), then the Proposition 3 certificates, all Section 5.1 numbers, Table 2, Section 6.3 and the benchmark vector must be redone. The discrete model alone needs <span class="v">r</span><sub>2</sub> &gt; 7.97 and a different <span class="v">c</span><sub>L</sub>. That is a large task with no new mechanism in return.</p></div>
+
+<!-- ============ ASK ============ -->
+<hr class="sep">
+<h2 id="ask"><span class="num">7</span>Questions for Alex</h2>
+<ol>
+  <li><b>Which reading?</b> Does "choosing from a few different distributions" mean that nature draws the distribution and the challenger learns it only through information (Reading N)? Or does the challenger pick a plan itself before trading (Reading C)? Pure Reading C removes the price channel; Reading N keeps everything.</li>
+  <li><b>Where should it go?</b> Is he content with the binary model in the main text and the distribution result in an appendix, or does he want the general model to lead?</li>
+  <li><b>The discrete companion.</b> Are a presence probability λ &lt; 1 (the Edmans, Goldstein and Jiang device) and the Intuitive Criterion at the one off-path flow acceptable? Is an assumed short-sale ban (buy-only) acceptable, given that buy-only trade does not arise by itself at the benchmark cost?</li>
+  <li><b>The investor.</b> Is "an outside specialist with no net stake" the intended baseline, with the blockholder as an extension? A blockholder baseline changes Proposition 2 and needs the large-stake equilibrium, which is open.</li>
+  <li><b>Normalization.</b> ℓ = 1 with <span class="v">c</span><sub>L</sub> treated as slack (computed at <span class="v">c</span><sub>L</sub> = 0), rather than <span class="v">c</span><sub>L</sub> = 1. Agreed?</li>
+</ol>
+
+<!-- ============ NEXT ============ -->
+<hr class="sep">
+<h2 id="next"><span class="num">8</span>Next tasks, in order</h2>
+<table>
+  <tr><th class="n">#</th><th>Task</th><th>Effort</th><th>Status now</th></tr>
+  <tr><td class="n">1</td><td>Correct the two Blackwell sentences; optional Section 5.1 improvement</td><td>Small</td><td>Ready</td></tr>
+  <tr><td class="n">2</td><td>Noise paragraph in Section 2.3; Proposition A.5 for the class; the extremal lemma; one more law in Section 5.1</td><td>Medium</td><td>Written in memos</td></tr>
+  <tr><td class="n">3</td><td>Appendix "distribution classes": general prior, ownership condition, reserve caveat; the Section 6.3 sentence</td><td>Medium</td><td>Written in memos</td></tr>
+  <tr><td class="n">4</td><td>Investor roles paragraph; the <span class="v">t</span><sub>0</sub> sentence; the transfer and its caveats in Section 6.1 and under Table 2</td><td>Small</td><td>Drafts in memos</td></tr>
+  <tr><td class="n">5</td><td>Buy-only discrete companion: state both tie rules and the off-path belief; cite the two-sided price-pool example as the reason for buy-only</td><td>Medium</td><td>Proved and computed</td></tr>
+  <tr><td class="n">6</td><td>ℓ = 1 statement; <span class="v">c</span><sub>L</sub> slack remark; the ratio form of (A3)</td><td>Small</td><td>Ready</td></tr>
+  <tr><td class="n">7</td><td>Stake remark with the sufficient bounds; the contrast with Edmans, Goldstein and Jiang</td><td>Small</td><td>Ready</td></tr>
+  <tr><td class="n">8</td><td>Large-stake equilibrium (mixed orders, entry that is not monotone)</td><td>Large</td><td>Open</td></tr>
+  <tr><td class="n">9</td><td>Proposition 3 certificates for other noise laws</td><td>Large</td><td>Open</td></tr>
+  <tr><td class="n">10</td><td>Investor who sees the exact value on a continuum</td><td>Large</td><td>Open</td></tr>
+  <tr><td class="n">11</td><td>Reading C hybrid: an equilibrium result</td><td>Large</td><td>Open</td></tr>
+  <tr><td class="n">12</td><td>A sharp threshold for the tolerable reserve-admissibility gap</td><td>Medium</td><td>Computed on one family</td></tr>
+  <tr><td class="n">13</td><td>Theory of the two-sided price-pool multiplicity</td><td>Medium</td><td>Computed</td></tr>
+</table>
+
+<!-- ============ REVIEW ============ -->
+<hr class="sep">
+<h2 id="review"><span class="num">9</span>What the final review checked</h2>
+<p>A final review re-derived the 26 most important claims. None was refuted. The table shows the main ones.</p>
+<table class="small">
+  <tr><th>Claim</th><th>Verdict</th></tr>
+  <tr><td>Split identity Δ<sub>T</sub> + (<span class="v">g</span><sub>H</sub> − <span class="v">g</span><sub>L</sub>) = <span class="v">h</span> − ℓ at every <span class="v">r</span></td><td>Confirmed (sum is 9.000000000000 for <span class="v">r</span> from 0.3 to 25)</td></tr>
+  <tr><td>The same identity with distribution classes</td><td>Confirmed, with a correction: it also holds when the incumbent is never below the reserve</td></tr>
+  <tr><td>The reserve term, and "dominance above the reserve, equal mass below"</td><td>Confirmed</td></tr>
+  <tr><td>General prior: bounds, trading window, threshold flow</td><td>Confirmed</td></tr>
+  <tr><td>Ownership can fall while entry rises</td><td>Confirmed (0.4229 → 0.4165)</td></tr>
+  <tr><td>Proposition 2 for every noise law with a bounded score below one</td><td>Confirmed</td></tr>
+  <tr><td>Laplace is the extreme member; logistic = Laplace + independent noise</td><td>Confirmed (the convolution matches the paper's logistic density to 12 digits)</td></tr>
+  <tr><td>The paper's Blackwell sentence is wrong at a common scale</td><td>Confirmed; the entry numbers 0.522757 and 0.301509 stand</td></tr>
+  <tr><td>Discrete cutoff ρΔ<sub>T</sub>/3; entry 0.25 → 1/3 → 1/3; return only above <span class="v">r</span> = 7.97</td><td>Confirmed</td></tr>
+  <tr><td>The low-cost floor <span class="v">c</span><sub>L</sub> ≤ <span class="v">g</span><sub>L</sub> in the discrete model</td><td>Confirmed, with a correction: sufficient, not necessary</td></tr>
+  <tr><td>Buy-only trade arises by itself for λ in (0.58, 0.857]</td><td>Confirmed, with a correction: pure profiles only, at costs above the benchmark</td></tr>
+  <tr><td>Stake bound 0.0114; full orders numerically to a stake of 2.16</td><td>Confirmed</td></tr>
+  <tr><td>Shareholder ledger: +0.258 entry gain, 0.141 transfer, break-even trade scale 1.832</td><td>Confirmed</td></tr>
+  <tr><td>An informative price lowers proceeds when the prior already justifies expensive entry</td><td>Confirmed</td></tr>
+  <tr><td><span class="v">c</span><sub>L</sub> enters no closed form; results unchanged inside its window</td><td>Confirmed, with a correction to the window: [0, 2.366) for parts (i)–(ii), [0, 2.272) with part (iii)</td></tr>
+  <tr><td>Pure Reading C removes the price channel</td><td>Confirmed</td></tr>
+</table>
+<p class="small muted">Two items were checked for logic but not re-derived in full: the many-class price-sufficiency argument, and the global search behind the 2.16 stake cutoff.</p>
+
+<!-- ============ METHOD ============ -->
+<hr class="sep">
+<h2 id="method"><span class="num">10</span>How this was done, and the memos</h2>
+<p class="small">Each new analytical result was derived at least twice, by separate members who did not coordinate. Every closed form was checked against direct numerical integration. An independent brute-force solver checked the discrete models. A separate reader opened the key papers in full and wrote quoted extracts, which corrected the citations. A final review checked the high-stakes claims again. Scripts only compute and print; no file of the paper was changed.</p>
+<table class="small">
+  <tr><th>Memo</th><th>Topic</th></tr>
+  <tr><td><code>Q1_N_main.md</code></td><td>Distribution classes: main derivation, split identity</td></tr>
+  <tr><td><code>Q1_N_extensions.md</code></td><td>More than two classes; exact-value investor</td></tr>
+  <tr><td><code>Q1_N_numerics.md</code></td><td>Numerical scan of distribution classes</td></tr>
+  <tr><td><code>Q1_C_choice.md</code></td><td>Reading C: the challenger chooses a plan</td></tr>
+  <tr><td><code>Q1_literature.md</code></td><td>Auction-entry literature</td></tr>
+  <tr><td><code>Q2_laplace_technical.md</code></td><td>Technical case for Laplace; bounded-score class</td></tr>
+  <tr><td><code>Q2_laplace_economic.md</code></td><td>Economic case for Laplace; evidence</td></tr>
+  <tr><td><code>Q2_discrete_buy_only.md</code>, <code>Q2_discrete_sell_only.md</code></td><td>Discrete models</td></tr>
+  <tr><td><code>Q2_discrete_literature.md</code></td><td>Discrete feedback literature</td></tr>
+  <tr><td><code>V_discrete_check.md</code></td><td>Brute-force check of the discrete models</td></tr>
+  <tr><td><code>Q3_story.md</code>, <code>Q3_welfare.md</code>, <code>Q3_stake.md</code></td><td>Investors, shareholder ledger, stake</td></tr>
+  <tr><td><code>Q4_normalization.md</code></td><td>Normalization</td></tr>
+  <tr><td><code>LIT_extracts.md</code></td><td>Verified extracts from full texts</td></tr>
+  <tr><td><code>SYNTHESIS.md</code></td><td>Adversarial review and synthesis</td></tr>
+</table>
+<p class="small muted" style="margin-bottom:24px">All memos and scripts: <code>audit/alex_meeting_2026_10_21/</code>. No file of the paper was changed.</p>
+
+</div>
+
+<script>
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const css = getComputedStyle(document.documentElement);
+  const col = n => (css.getPropertyValue(n)||'').trim();
+  const C1=col('--c1')||'#2f6bd8', C2=col('--c2')||'#d9822b', C3=col('--c3')||'#2e9e6b', MF=col('--mfg')||'#5f5e5a', FG=col('--fg')||'#1c1c1a';
+  function el(tag, attrs, parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  function txt(parent,x,y,s,attrs){const t=el('text',Object.assign({x:x,y:y},attrs||{}),parent);
+    String(s).split(/(_[A-Za-z0-9]+)/).forEach(q=>{if(!q)return;const ts=el('tspan',{},t);if(q[0]==='_'&&q.length>1){ts.setAttribute('baseline-shift','sub');ts.setAttribute('font-size','0.75em');ts.textContent=q.slice(1);}else{ts.textContent=q;}});
+    return t;}
+  function setup(id,Wwide,Wnarrow,H){
+    const svg=document.getElementById(id); if(!svg)return null;
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    const w=(svg.parentNode&&svg.parentNode.clientWidth)||720, narrow=w<520, W=narrow?Wnarrow:Wwide;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.classList.toggle('narrow',narrow);
+    return {svg:svg,W:W,H:H,narrow:narrow};
+  }
+  function axes(svg,W,H,m,xs,ys,xt,yt,xl,yl,fmtx,fmty){
+    const g=el('g',{},svg);
+    yt.forEach(v=>{const y=ys(v);el('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,class:'grid'},g);txt(g,m.l-6,y+4,fmty(v),{'text-anchor':'end'});});
+    xt.forEach(v=>{const x=xs(v);el('line',{x1:x,x2:x,y1:H-m.b,y2:H-m.b+4,class:'ax'},g);txt(g,x,H-m.b+17,fmtx(v),{'text-anchor':'middle'});});
+    el('line',{x1:m.l,x2:W-m.r,y1:H-m.b,y2:H-m.b,class:'ax'},g);
+    if(xl)txt(g,(m.l+W-m.r)/2,H-3,xl,{'text-anchor':'middle'});
+    if(yl)txt(g,m.l,m.t-10,yl,{'text-anchor':'start'});
+  }
+
+  function split(){
+    const c=setup('ch-split',720,460,300); if(!c)return; const {svg,W,H,narrow}=c;
+    const m={l:narrow?34:44,r:narrow?12:24,t:32,b:42};
+    const l=1, r0=1.0, r1=10;
+    const xs=r=>m.l+(r-r0)/(r1-r0)*(W-m.l-m.r), ys=v=>H-m.b-v/9.6*(H-m.t-m.b);
+    axes(svg,W,H,m,xs,ys,narrow?[1,2,4,6,8,10]:[1,2,3,4,5,6,7,8,9,10],[0,3,6,9],'incumbent strength r','value per share',v=>v,v=>v);
+    const D=r=>(r-l)*(r-l)/(2*r);
+    const pts=[];for(let i=0;i<=200;i++){const r=r0+(r1-r0)*i/200;pts.push([xs(r),ys(D(r))]);}
+    const base=ys(0), full=ys(9);
+    el('path',{d:'M'+xs(r0)+','+full+' L'+xs(r1)+','+full+' '+pts.slice().reverse().map(p=>'L'+p[0]+','+p[1]).join(' ')+' Z',fill:C1,'fill-opacity':0.2,stroke:'none'},svg);
+    el('path',{d:'M'+xs(r0)+','+base+' '+pts.map(p=>'L'+p[0]+','+p[1]).join(' ')+' L'+xs(r1)+','+base+' Z',fill:C2,'fill-opacity':0.42,stroke:'none'},svg);
+    el('polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',stroke:C2,'stroke-width':2},svg);
+    el('line',{x1:xs(r0),x2:xs(r1),y1:full,y2:full,stroke:C1,'stroke-width':2},svg);
+    [[1.2,'r₀','end'],[3,'r₁','end'],[3.6,'r₂','start']].forEach(([r,s,a])=>{el('line',{x1:xs(r),x2:xs(r),y1:full,y2:H-m.b,stroke:MF,'stroke-width':1,'stroke-dasharray':'3 3'},svg);txt(svg,xs(r)+(a==='start'?4:-4),full-6,s,{'text-anchor':a,'font-weight':'600'});});
+    txt(svg,xs(10),full-6,'h − ℓ = 9',{'text-anchor':'end',fill:FG,'font-weight':'700'});
+    txt(svg,xs(6.2),ys(6.2),'challenger’s profit gap g_H − g_L',{'text-anchor':'middle',fill:C1,'font-weight':'700'});
+    txt(svg,xs(narrow?7.4:7.9),ys(0.75),'target-payoff spread Δ_T',{'text-anchor':'middle',fill:FG,'font-weight':'700'});
+  }
+
+  function post(){
+    const c=setup('ch-post',720,460,300); if(!c)return; const {svg,W,H,narrow}=c;
+    const m={l:narrow?40:44,r:narrow?12:24,t:32,b:42}, b=2;
+    const x0=-5,x1=5, xs=x=>m.l+(x-x0)/(x1-x0)*(W-m.l-m.r), ys=v=>H-m.b-v*(H-m.t-m.b);
+    el('rect',{x:xs(-1),y:m.t,width:xs(1)-xs(-1),height:H-m.t-m.b,fill:MF,'fill-opacity':0.09},svg);
+    axes(svg,W,H,m,xs,ys,narrow?[-4,-2,0,2,4]:[-5,-4,-3,-2,-1,0,1,2,3,4,5],[0,0.25,0.5,0.75,1],'order flow x','belief that the challenger is high',v=>v,v=>v.toFixed(2));
+    const M=1/(1+Math.exp(-2/b)), mm=1-M;
+    [M,mm].forEach(v=>{el('line',{x1:m.l,x2:W-m.r,y1:ys(v),y2:ys(v),stroke:MF,'stroke-dasharray':'5 4','stroke-width':1},svg);});
+    txt(svg,xs(-4.9),ys(M)-6,'M = 0.731',{'text-anchor':'start'});
+    txt(svg,xs(4.9),ys(mm)-6,'m = 0.269',{'text-anchor':'end'});
+    const lap=x=>1/(1+Math.exp(-(Math.abs(x+1)-Math.abs(x-1))/b));
+    const gau=x=>1/(1+Math.exp(-2*x/b));
+    const lf=z=>{const e=Math.exp(-Math.abs(z)/b);return e/(b*(1+e)*(1+e));};
+    const lgt=x=>lf(x-1)/(lf(x-1)+lf(x+1));
+    function curve(f,c,w){const pts=[];for(let i=0;i<=300;i++){const x=x0+(x1-x0)*i/300;pts.push(xs(x)+','+ys(f(x)));}el('polyline',{points:pts.join(' '),fill:'none',stroke:c,'stroke-width':w},svg);}
+    curve(gau,MF,2);curve(lgt,C2,2.2);curve(lap,C1,3);
+    txt(svg,xs(1.5),ys(0.89),'Gaussian',{'text-anchor':'end',fill:MF,'font-weight':'700'});
+    txt(svg,xs(2.2),ys(0.775),'Laplace',{'text-anchor':'start',fill:C1,'font-weight':'700'});
+    txt(svg,xs(3.0),ys(0.545),'logistic',{'text-anchor':'start',fill:C2,'font-weight':'700'});
+    txt(svg,xs(0),ys(0.035),narrow?'Laplace = Gaussian':'Laplace = Gaussian here',{'text-anchor':'middle'});
+  }
+
+  function entry(){
+    const c=setup('ch-entry',720,460,300); if(!c)return; const {svg,W,H,narrow}=c;
+    const data=[['Laplace',0.5228],['Laplace + Gaussian',0.4204],['Hyperbolic secant',0.3766],['Student t₃',0.3750],['Cauchy',0.3582],['Student t₅',0.3431],['Logistic',0.3015],['Variance gamma',0.2521]];
+    const m={l:narrow?160:140,r:narrow?52:60,t:30,b:36};
+    const xs=v=>m.l+v/0.6*(W-m.l-m.r), bh=(H-m.t-m.b)/data.length;
+    [0,0.1,0.2,0.3,0.4,0.5,0.6].forEach(v=>{if(narrow&&(v*10)%2)return;el('line',{x1:xs(v),x2:xs(v),y1:m.t,y2:H-m.b,class:'grid'},svg);txt(svg,xs(v),H-m.b+17,v.toFixed(1),{'text-anchor':'middle'});});
+    data.forEach((d,i)=>{const y=m.t+i*bh+4;el('rect',{x:xs(0),y:y,width:xs(d[1])-xs(0),height:bh-8,rx:3,fill:C1,'fill-opacity':i===0?0.95:0.45},svg);txt(svg,m.l-8,y+bh/2,d[0],{'text-anchor':'end'});txt(svg,xs(d[1])+6,y+bh/2,d[1].toFixed(3),{fill:FG});});
+    el('line',{x1:xs(0.25),x2:xs(0.25),y1:m.t-4,y2:H-m.b,stroke:C2,'stroke-width':2,'stroke-dasharray':'5 4'},svg);
+    txt(svg,xs(0.25),m.t-9,'base rate ρ = 0.25',{'text-anchor':'middle',fill:C2,'font-weight':'700'});
+    txt(svg,(m.l+W-m.r)/2,H-3,'entry probability at r₁ = 3',{'text-anchor':'middle'});
+  }
+
+  function ledger(){
+    const c=setup('ch-ledger',720,460,narrow0()?250:210); if(!c)return; const {svg,W,H,narrow}=c;
+    const data=[['Extra sale proceeds from entry',0.2578,C3],['Paid to the informed investor',-0.1407,C2],['Net gain to the original shareholders',0.1171,C1]];
+    const m=narrow?{l:26,r:14,t:8,b:36}:{l:250,r:70,t:12,b:36};
+    const lo=-0.2,hi=narrow?0.35:0.3, xs=v=>m.l+(v-lo)/(hi-lo)*(W-m.l-m.r), bh=(H-m.t-m.b)/data.length;
+    [-0.2,-0.1,0,0.1,0.2,0.3].forEach(v=>{const cls=Math.abs(v)<1e-9?'ax':'grid';
+      if(narrow){data.forEach((d,i)=>{const top=m.t+i*bh;el('line',{x1:xs(v),x2:xs(v),y1:top+20,y2:top+bh-4,class:cls},svg);});}
+      else el('line',{x1:xs(v),x2:xs(v),y1:m.t,y2:H-m.b,class:cls},svg);
+      txt(svg,xs(v),H-m.b+17,(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1),{'text-anchor':'middle'});});
+    data.forEach((d,i)=>{
+      const top=m.t+i*bh; const bt=narrow?top+22:top+8, bhh=narrow?bh-28:bh-16;
+      const x0=xs(Math.min(0,d[1])),x1=xs(Math.max(0,d[1]));
+      el('rect',{x:x0,y:bt,width:x1-x0,height:bhh,rx:3,fill:d[2],'fill-opacity':0.85},svg);
+      if(narrow)txt(svg,m.l,top+16,d[0],{'text-anchor':'start',fill:FG});
+      else txt(svg,m.l-8,bt+bhh/2+4,d[0],{'text-anchor':'end',fill:FG});
+      txt(svg,d[1]>0?x1+6:x0-6,bt+bhh/2+5,(d[1]>0?'+':'−')+Math.abs(d[1]).toFixed(3),{'text-anchor':d[1]>0?'start':'end',fill:FG,'font-weight':'700'});
+    });
+    txt(svg,(m.l+W-m.r)/2,H-3,'value per share',{'text-anchor':'middle'});
+  }
+  function narrow0(){const s=document.getElementById('ch-ledger');return ((s&&s.parentNode&&s.parentNode.clientWidth)||720)<520;}
+
+  function drawAll(){split();post();entry();ledger();}
+  drawAll();
+  let last=narrow0(), tmr=null;
+  window.addEventListener('resize',()=>{clearTimeout(tmr);tmr=setTimeout(()=>{const n=narrow0();if(n!==last){last=n;drawAll();}},150);});
+})();
+</script>
+</body>
+</html>

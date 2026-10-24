@@ -1,0 +1,68 @@
+PART 1. Reproduce the benchmark (eq. 4, 9, 12; A.9 accounting)
+  closed form r1: {'t0': '0.416667', 'tH': '1.541667', 'tL': '0.875000', 'gH': '8.458333', 'gL': '0.125000', 'dT': '0.666667'}
+  numeric  r1  : {'t0': '0.416667', 'tH': '1.541667', 'tL': '0.875000', 'gH': '8.458333', 'gL': '0.125000', 'dT': '0.666667'}
+  B_r0(1/2)=4.804167  B_r1(1/2)=4.291667 (paper: 4.804167, 4.291667)
+  Delta_T(r0)=0.016667 Delta_T(r1)=0.666667 (paper: 0.016667, 0.666667)
+  eq.(12) at r1: {'tau': '0.705000', 'xstar': '0.871222', 'aH': '0.531180', 'aL': '0.196173', 'E': '0.522757', 'OH': '0.324192', 'RT': '0.872392'}
+  direct at r1 : {'E': '0.522757', 'OH': '0.324192', 'RT': '0.872392', 'W': '2.382301', 'tauH': '0.705000'}
+  paper: E=0.522757  O_H=0.324192  R_T=0.872392  W=2.382301
+  r2: tau=0.731392 (>M? M=0.731059)  -> no expensive entry, E = rho = 0.25
+  window: {'BL': '2.366179', 'A2lo': '4.804167', 'A2hi': '6.217155', 'A3lo': '0.016667', 'A3hi': '0.022412', 'BL2': '2.272133', 'A2hi2': '5.997311'}
+  investor marginal profit U'(s) on s in [0,1] at r1: min 0.106958 max 0.140009 (positive => full orders)
+
+PART 2. Rescale money by lambda (h, l, p, r, cL, cH, k all times lambda)
+  lambda= 0.14286  E=0.522757 O_H=0.324192 tau=0.705000 | R_T/lam=0.872392 W/lam=2.382301 | closed-form E=0.522757 | U'/lam min=0.106958
+  lambda= 3.70000  E=0.522757 O_H=0.324192 tau=0.705000 | R_T/lam=0.872392 W/lam=2.382301 | closed-form E=0.522757 | U'/lam min=0.106958
+  lambda=100.00000  E=0.522757 O_H=0.324192 tau=0.705000 | R_T/lam=0.872392 W/lam=2.382301 | closed-form E=0.522757 | U'/lam min=0.106958
+  base          E=0.522757 O_H=0.324192 R_T=0.872392 W=2.382301
+  price level at mu=0.6 (e=1 branch not used; entry rho): P_base=0.631250  P_scaled/lam=0.631250
+  moderate vector, lambda=1/0.3 (c_L becomes 1):
+       original: h=2.0000 l=1.0000 p=0.5000 cL=0.3000 cH=0.8900 k=0.00200 r1=1.5000 -> E=0.526805 O_H=0.327032
+       rescaled: h=6.6667 l=3.3333 p=1.6667 cL=1.0000 cH=2.9667 k=0.00667 r1=5.0000 -> E=0.526805 O_H=0.327032
+
+  Flow unit: replace |q| <= 1 by |q| <= u and b by u*b (k unchanged)
+    u= 0.37  E=0.522757 O_H=0.324192  (m=0.268941)
+    u= 5.00  E=0.522757 O_H=0.324192  (m=0.268941)
+
+PART 3. Move c_L inside its window (benchmark; window is [0, min(B_r1(m), B_r2(m))) )
+  B_r1(m)=2.366179  B_r2(m)=2.272133
+  cL=0.000  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.632301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=0.125  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.601051  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=0.500  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.507301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=1.000  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.382301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=2.000  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.132301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=2.200  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.082301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  cL=2.260  r1: E=0.522757 O_H=0.324192 R_T=0.872392 W=2.067301  min U'=0.106958 | r0 hidden-price entry rule: low-cost enters at 1/2? True
+  W shift check: W(cL=1) - W(cL=0) = -0.250000 ; -rho*1 = -0.250000
+  Sufficient for A1 regardless of b, rho, h: cL <= g_L(r1) = 0.125000
+  Diagnostic only (frozen full orders, NOT an equilibrium claim): cL just above B_r1(m)
+    cL=2.3562  frozen-profile E=0.522757
+    cL=2.4162  frozen-profile E=0.435974
+    cL=2.8662  frozen-profile E=0.425361
+
+  Moderate vector window:
+    {'BL': '0.496530', 'A2lo': '0.856548', 'A2hi': '0.920137', 'A3lo': '0.001190', 'A3hi': '0.002801'}
+    cL=0.0000  E=0.526805 O_H=0.327032
+    cL=0.3000  E=0.526805 O_H=0.327032
+    cL=0.4469  E=0.526805 O_H=0.327032
+    paper: entry 0.526805 at r1
+
+PART 4. Identities (benchmark r1; also random draws)
+  h=4.209 l=1.771 p=1.306 r=2.405: tH+gH-h=0.00e+00  tL+gL-l=0.00e+00  (gH-gL)-(h-l-dT)=4.44e-16  B(mu)-[B0(mu)-p^2/(2r)] at mu=.4: 0.00e+00
+  h=7.459 l=1.174 p=0.747 r=5.849: tH+gH-h=8.88e-16  tL+gL-l=0.00e+00  (gH-gL)-(h-l-dT)=0.00e+00  B(mu)-[B0(mu)-p^2/(2r)] at mu=.4: 0.00e+00
+  h=3.845 l=0.543 p=0.435 r=1.904: tH+gH-h=0.00e+00  tL+gL-l=0.00e+00  (gH-gL)-(h-l-dT)=-4.44e-16  B(mu)-[B0(mu)-p^2/(2r)] at mu=.4: -4.44e-16
+  Delta_T(r) = l*(cosh(ln(r/l)) - 1):  l=1.0 r=3.0: 0.666667 vs 0.666667
+  Delta_T(r) = l*(cosh(ln(r/l)) - 1):  l=1.771 r=2.405: 0.083567 vs 0.083567
+  tau_low (A2 in belief units) = (B_r0(1/2) - g_L(r1)) / (g_H(r1) - g_L(r1)) = 0.561500
+
+PART 5. Other normalizations
+  p -> 0 is not a unit choice. Benchmark with p=0 instead of 0.5 (same other numbers):
+    E=0.525733 (p=0.5: 0.522757)  tau=0.700000 (p=0.5: 0.705000)
+    p=0 with cH raised by p^2/(2 r1) = 0.041667 : E=0.522757  (equals the p=0.5 value)
+    the shift is p^2/(2r): at r0 = 0.104167, at r1 = 0.041667, at r2 = 0.034722 (it differs across r)
+  Reduced form: E and O_H depend on (rho, b, tau_1) only. Two economies with the same tau_1, rho, b:
+    benchmark: tau=0.705000 E=0.522757 O_H=0.324192 | other economy (h=7, p=0.3, r1=2.5, cH=4.094750): tau=0.705000 E=0.522757 O_H=0.324192
+  A3 in ratio form: k_hat = k/Delta_T(r1) must lie in (Delta_T(r0)/Delta_T(r1), (1-1/b) rho m):
+    k_hat=0.030000  lower=0.025000  upper=0.033618
+  Cost positions in the windows: v = cL/B_r1(m), u = (cH - B_r0(1/2))/(B_r1(M) - B_r0(1/2))
+    benchmark: v=0.422622  u=0.846315

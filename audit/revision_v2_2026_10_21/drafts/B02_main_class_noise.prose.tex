@@ -1,0 +1,286 @@
+% REPLACES: main.tex lines 1815-1880 ("\subsubsection{Logistic noise}" to "posterior mass sits relative to the common bounds \(m,M\).")
+% RETAINS LABELS: logistic-noise, result-proposition-a-5, eq:paper-a-21,
+% eq:paper-a-22, eq:paper-a-23. No label is removed.
+% NEW SYMBOLS: mathcal C_L, L, mu_f(x;pi), bar mu_f(pi), mathcal E_f, mathsf E_f.
+% The symbols denote the density class, score bound, full-order posterior,
+% posterior supremum, favorable flow set, and entry. Existing alpha_j refers to this set.
+% Uses Gamma and u_0 from the nonemptiness argument; both are defined again below.
+% DEPENDS ON: the quality-class Proposition 2, prior pi, zero preparation cost,
+% kappa(pi), and the general nonemptiness argument in the main-model revision.
+% OWNERSHIP: use the exact condition below; the Laplace-specific sufficient
+% condition based on alpha_H > 1/2 does not extend to every class member.
+% NUMBERS: none. CITES: ref-Blackwell1953 already exists.
+% SCOPE: the common-variance comparison below is a numerical diagnostic.
+
+\subsubsection{Bounded-score noise}\label{logistic-noise}
+
+Let \(\mathcal C_L\) denote the positive, absolutely continuous densities
+\(f\) with \(|f'|\le Lf\) almost everywhere, where \(0<L<1\).
+Equivalently, \(\log f\) is Lipschitz with constant \(L\).
+Set \(b=1/L\).
+The bounds \(m(\pi),M(\pi)\) and
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\) use this value of \(b\).
+For full orders, define
+
+\[
+\mu_f(x;\pi)=
+\frac{\pi f(x-1)}{\pi f(x-1)+(1-\pi)f(x+1)},\qquad
+\bar\mu_f(\pi)=\operatorname*{ess\,sup}_{x\in\mathbb R}\mu_f(x;\pi).
+\]
+
+The essential supremum uses Lebesgue measure.
+The unconditional flow law and both conditional flow laws are equivalent to that measure.
+The posterior is continuous, so this essential supremum equals \(\sup_{x\in\mathbb R}\mu_f(x;\pi)\).
+The supremum satisfies \(\pi<\bar\mu_f(\pi)\le M(\pi)\).
+It need not be attained at a finite flow.
+It can lie strictly below \(M(\pi)\).
+
+\Needspace{8\baselineskip}
+
+\protect\phantomsection\label{result-proposition-a-5}{\textbf{Proposition
+A.5 (bounded-score noise; analytical).}} \emph{Replace Laplace noise by
+any \(f\in\mathcal C_L\).
+Keep the quality-class assumptions of
+\hyperref[result-proposition-2]{Proposition 2}, with preparation costs
+\(C\in\{0,c_H\}\).
+Replace the upper posterior in \eqref{eq:paper-a2} by \(\bar\mu_f(\pi)\), so that}
+
+\[
+B_{r_0}(\pi)<c_H<B_{r_1}(\bar\mu_f(\pi)).
+\]
+
+\emph{Retain \eqref{eq:paper-a3} with \(b=1/L\), namely}
+
+\[
+\Delta_T(r_0)<k<(1-L)\rho\kappa(\pi)\Delta_T(r_1).
+\]
+
+\emph{Then the weak economy has unique zero orders and entry \(\rho\).
+The strong economy has unique full orders \((1,-1)\) and an informative price.
+Let}
+
+\[
+\begin{aligned}
+\tau&=\frac{c_H-g_L(r_1)}{g_H(r_1)-g_L(r_1)},
+&\mathcal E_f&=\{x:\mu_f(x;\pi)\ge\tau\},\\
+\alpha_H&=\int_{\mathcal E_f}f(x-1)\,dx,
+&\alpha_L&=\int_{\mathcal E_f}f(x+1)\,dx.
+\end{aligned}
+\]
+
+\emph{Total entry satisfies}
+
+\[
+\mathsf E_f=\rho+(1-\rho)[\pi\alpha_H+(1-\pi)\alpha_L]>\rho.
+\]
+
+\emph{High-class ownership rises exactly when
+\([\rho+(1-\rho)\alpha_H]W_H(r_1)>\rho W_H(r_0)\).
+The condition holds automatically in the point-mass case with \(W_H=1\).
+Part (iii) of \hyperref[result-proposition-2]{Proposition 2} also holds at
+\(r_2>r_1\) if \(B_{r_2}(M(\pi))<c_H\): orders remain \((1,-1)\), and entry equals \(\rho\).
+For fixed \(f,L,\pi,\rho,p,G_H,G_L\) with
+\(\mathbb E_H[\max\{\theta,p\}]>\mathbb E_L[\max\{\theta,p\}]\),
+these comparisons and the ownership increase hold on a nonempty open set
+of uniform strengths and costs \((r_0,r_1,r_2,c_H,k)\).
+The other preparation cost stays zero.}
+
+\emph{Proof.}
+The score bound gives
+\(|\log f(y)-\log f(z)|\le L|y-z|\).
+Hence \(f(y)\ge f(z)e^{-L|y-z|}\).
+Integration over \(y\) gives \(f(z)\le L/2\).
+Also \(\int|f'|\le L\), so \(f\in W^{1,1}\).
+The density is positive, bounded, and continuous.
+The null-set arguments in Online Appendix A.1 apply under every mixed order and every unilateral deviation.
+\par
+For any feasible \(q,q'\), the density ratio lies in \([e^{-2L},e^{2L}]\).
+Integration over the order distributions and Bayes' rule give
+\(m(\pi)\le\mu_X\le M(\pi)\).
+Conditional expectation gives the same bounds for the price posterior.
+
+The zero preparation cost gives \(e\ge\rho\) at every belief.
+The price inversion and the residual calculation in Online Appendix A.3 apply without change.
+They use only \(t_0,t_j,g_j,\Delta_T\), independence, and the positive entry floor.
+In particular,
+
+\[
+\rho\kappa(\pi)\Delta_T\le A_H,A_L\le\Delta_T.
+\]
+
+The translation identity, Fubini argument, and product rule in Online Appendix A.3 allow this general \(f\).
+They give \(|F_j'|\le LF_j\) and
+
+\[
+U_j'(s)\ge(1-sL)F_j(s)-k
+\ge(1-L)\rho\kappa(\pi)\Delta_T(r_1)-k>0.
+\]
+
+These steps differentiate the density.
+They do not differentiate entry.
+At \(r_0\), every correctly signed nonzero order earns at most
+\(s[\Delta_T(r_0)-k]<0\).
+A wrongly signed order loses as well.
+Thus zero is the unique best response, including among mixed orders.
+The posterior equals \(\pi\), and the lower cost restriction excludes expensive preparation.
+The constant competitive price constructs the weak outcome.
+\par
+At \(r_1\), the positive derivative makes unit magnitude strictly optimal for each class.
+It excludes every mixture with another order.
+Define entry and price by \eqref{eq:paper-9}, with posterior \(\mu_f(x;\pi)\).
+The price increases strictly in the posterior.
+Its measurable inverse gives price sufficiency.
+No monotonicity of the posterior in flow is required.
+The construction gives competitive prices and optimal preparation.
+The global bound verifies every order deviation.
+
+Gross preparation profit falls with incumbent strength at every fixed belief.
+The cost window therefore gives \(\pi<\tau<\bar\mu_f(\pi)\).
+By the definition of the essential supremum, \(\{\mu_f>\tau\}\) has positive Lebesgue measure.
+Both conditional densities are positive, so \(\alpha_H,\alpha_L>0\).
+On \(\mathcal E_f\), Bayes' rule gives
+
+\[
+f(x-1)\ge
+\frac{(1-\pi)\tau}{\pi(1-\tau)}f(x+1),\qquad
+\alpha_H\ge\frac{(1-\pi)\tau}{\pi(1-\tau)}\alpha_L>\alpha_L.
+\]
+
+The entry formula and the stated ownership condition follow.
+The likelihood ratio is not constant.
+Both conditional densities integrate to one, so a constant ratio would equal one.
+Then \(f\) would be two-periodic.
+No positive integrable density is two-periodic.
+The strong price experiment is informative.
+It strictly Blackwell-dominates the weak constant experiment.
+Both conditional densities integrate to one, so their nonconstant ratio exceeds one on a set of positive measure.
+Hence \(\bar\mu_f(\pi)>\pi\).
+\par
+For part (iii) of \hyperref[result-proposition-2]{Proposition 2},
+\(\Delta_T(r_2)\ge\Delta_T(r_1)\) preserves the strict order bound.
+It forces full orders, and \(\mu_X\le M(\pi)\) excludes expensive preparation.
+
+For nonemptiness, fix \(f,L,\pi,\rho,p,G_H,G_L\) under the stated assumptions.
+As in \hyperref[nonemptiness-for-every-value-gap]{the nonemptiness argument}, put
+
+\[
+\Gamma=\int_p^\infty[G_L(u)-G_H(u)]\,du>0,\qquad
+u_0=\inf\left\{x\ge p:\int_p^x[G_L(u)-G_H(u)]\,du>0\right\}.
+\]
+
+For uniform incumbents, that argument gives \(\Delta_T(u_0)=0\) and \(g_H(u_0)-g_L(u_0)=\Gamma\).
+The spread is continuous and strictly increasing above \(u_0\).
+For finite \(r\ge u_0\), \(g_H(r)-g_L(r)\ge p\Gamma/r>0\).
+The functions \(g_j(r)\) and \(W_H(r)\) are continuous and nonincreasing, with \(W_H(u_0)>0\).
+
+\begin{enumerate}
+\item
+Choose \(\tau\in(\pi,\bar\mu_f(\pi))\) at a continuity point of the posterior law in each class.
+Each law has at most countably many atoms, so such a point exists.
+This fixes \(\mathcal E_f,\alpha_H,\alpha_L\) before any strength or cost is chosen.
+In particular, \(\alpha_H,\alpha_L>0\).
+
+\item
+Choose \(r_1>u_0\) sufficiently near \(u_0\) that
+\[
+B_{r_1}(\tau)>B_{u_0}(\pi),\qquad
+[\rho+(1-\rho)\alpha_H]W_H(r_1)>\rho W_H(u_0).
+\]
+The first inequality follows from
+\(B_{u_0}(\tau)-B_{u_0}(\pi)=(\tau-\pi)\Gamma>0\).
+The second follows from \(\alpha_H>0\) and \(W_H(u_0)>0\).
+Continuity permits the same \(r_1\) in both inequalities.
+
+\item
+Set \(c_H=B_{r_1}(\tau)=g_L(r_1)+\tau[g_H(r_1)-g_L(r_1)]\).
+Thus the preparation threshold equals the \(\tau\) chosen in the first step.
+The positive profit gap gives \(c_H<B_{r_1}(\bar\mu_f(\pi))\).
+
+\item
+Choose \(r_0\in(u_0,r_1)\) sufficiently near \(u_0\) that
+\[
+\Delta_T(r_0)<(1-L)\rho\kappa(\pi)\Delta_T(r_1).
+\]
+This is possible because \(\Delta_T(r_0)\to0\) as \(r_0\downarrow u_0\).
+Monotonicity gives \(B_{r_0}(\pi)\le B_{u_0}(\pi)<c_H\).
+It also gives \(W_H(r_0)\le W_H(u_0)\), so the strict ownership inequality remains valid.
+
+\item
+Choose \(k\) strictly between \(\Delta_T(r_0)\) and
+\((1-L)\rho\kappa(\pi)\Delta_T(r_1)\).
+Both the preparation-cost window and the order-cost window now hold for this single choice of primitives.
+
+\item
+Choose \(r_2>r_1\) sufficiently large that \(B_{r_2}(M(\pi))<c_H\).
+Finite class means give \(g_j(r)\to0\), so such a strength exists.
+The larger spread preserves the strict order bound at \(r_2\).
+\end{enumerate}
+
+All inequalities have strict slack at the constructed point.
+The threshold is continuous in \((r_1,c_H)\), since the class profit gap is positive.
+At the chosen threshold, both conditional entry probabilities are continuous in that threshold.
+The strict ownership inequality therefore persists on a neighborhood of \((r_0,r_1,r_2,c_H,k)\).
+Continuity preserves the other strict inequalities there as well.
+This proves openness in those five coordinates, with \(f,L,\pi,\rho,p,G_H,G_L\) and zero preparation cost fixed.
+\(\square\)
+
+\emph{Logistic example.}
+The density
+
+\[
+f_{\mathrm{log}}(z)=\frac{1}{4b}\operatorname{sech}^{2}\left(\frac z{2b}\right)
+=\frac{e^{-z/b}}{b(1+e^{-z/b})^2},\qquad b>1,
+\tag{A.21}\label{eq:paper-a-21}
+\]
+
+has log derivative \(-\tanh(z/2b)/b\), so it belongs to \(\mathcal C_{1/b}\).
+Under full orders its posterior satisfies
+
+\[
+\operatorname{logit}\mu_X
+=\operatorname{logit}\pi
++2\log\cosh\left(\frac{x+1}{2b}\right)
+-2\log\cosh\left(\frac{x-1}{2b}\right).
+\tag{A.22}\label{eq:paper-a-22}
+\]
+
+The derivative is
+\([\tanh((x+1)/2b)-\tanh((x-1)/2b)]/b>0\).
+The posterior spans \((m(\pi),M(\pi))\) and attains neither endpoint.
+Thus \(\bar\mu_f(\pi)=M(\pi)\).
+The original upper restriction applies.
+\par
+Set \(A=e^{1/b}\) and
+\(w=\sqrt{\tau(1-\pi)/[(1-\tau)\pi]}\).
+With \(y=e^{x/b}\), the square root of the likelihood ratio is
+\((Ay+1)/(y+A)\).
+The equation \(w=(Ay+1)/(y+A)\) gives
+
+\[
+\begin{aligned}
+x^*_{\mathrm{log}}&=b\log\frac{Aw-1}{A-w},\\
+\alpha_H^{\mathrm{log}}&=\frac1{1+e^{(x^*_{\mathrm{log}}-1)/b}},\qquad
+\alpha_L^{\mathrm{log}}=\frac1{1+e^{(x^*_{\mathrm{log}}+1)/b}}.
+\end{aligned}
+\tag{A.23}\label{eq:paper-a-23}
+\]
+
+These formulas hold for \(m(\pi)<\tau<M(\pi)\).
+At \(\pi=1/2\), they reduce to the benchmark formulas.
+The class also contains hyperbolic-secant noise, suitably scaled Student noise, and Gaussian noise plus an independent Laplace component.
+Take these examples symmetric about zero, as are the Laplace and logistic laws above.
+Each then satisfies the median-zero condition in Online Appendix A.6.
+
+Laplace and logistic noise are compared at a common scale parameter \(b\), not at a common variance.
+At a common scale, the logistic law equals the Laplace law plus independent noise.
+The Laplace flow experiment therefore Blackwell-dominates the logistic experiment at every order profile, pure or mixed
+(\citeproc{ref-Blackwell1953}{Blackwell 1953}).
+Under the price construction above, each price is a measurable function of flow and reveals its flow posterior.
+Each price experiment is therefore Blackwell-equivalent to its flow experiment.
+The same dominance holds for prices, including the full-order equilibria compared here.
+Online Appendix A.6 proves the decomposition.
+\par
+At a common variance, neither experiment dominates in the numerical comparison.
+That comparison is a numerical diagnostic.
+Dominance does not order entry: \(\Pr(\mu_X\ge\tau)\) is not convex in the posterior.
+The entry comparison turns on where posterior mass sits relative to the common bounds \(m(\pi),M(\pi)\).

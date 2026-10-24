@@ -1,0 +1,338 @@
+% FRAGMENT A13 (drafter A: class model and main results)
+% REPLACES: main.tex lines 1399–1660 ("\subsection{A.2 Global trading and the main comparison}" to "… Online Appendix A.5 has the domain checks. \(\square\)")
+%   This covers Appendix A.2: the global order bound, the proof of Proposition 2,
+%   Proposition A.3, and Proposition A.4.
+% LABELS KEPT: pa-proofs, the-global-order-bound, eq:paper-a-4 to eq:paper-a-14,
+%   proof-of-proposition-2, deterrence-at-a-fixed-experiment, result-proposition-a-3,
+%   threshold-distinctions, result-proposition-a-4.
+% LABELS REMOVED: none here (the references to eq:paper-a1 at old lines 1476, 1494, 1538
+%   disappear with this fragment).  LABELS ADDED: none.
+% TAGS: (A.4)–(A.14) keep their numbers and objects. (A.6) now carries \kappa(\pi);
+%   (A.7) gives J_H and J_L at a general prior (equal at \pi=1/2, as used by Appendix A.7);
+%   (A.8) carries the prior factor and reduces to the old display at \pi=1/2;
+%   (A.10)–(A.14) are unchanged and are stated for the point-mass benchmark.
+% NEW SYMBOLS: J_H, J_L, K (in (A.7)); F_0, F_1, F_2 as in Proposition 2.
+% NEW CITATIONS: none.  NUM PLACEHOLDERS: none.
+% SOURCES: Q1_N_main.md Claims 4(a), 6–10 (proof steps), 8 (J_H, J_L, no-trade condition at a
+%   general prior); SYNTHESIS.md A.1 rows 4–5.
+
+\subsection{A.2 Global trading and the main comparison}\label{pa-proofs}
+
+\subsubsection{The global order bound}\label{the-global-order-bound}
+
+Fix a candidate pricing and preparation schedule. For a correctly signed
+order of magnitude \(s\in[0,1]\) define
+
+\[
+\begin{aligned}
+F_H(s)&=\int f(x-s)A_H(x)\,dx,\qquad
+F_L(s)=\int f(x+s)A_L(x)\,dx,\\
+U_j(s)&=sF_j(s)-ks.
+\end{aligned}
+\tag{A.4}\label{eq:paper-a-4}
+\]
+
+The residual \(A_j\) is bounded and measurable but need not be
+continuous, since it jumps where entry jumps. The deviation enters only
+through the translated density. For \(s_1<s_2\),
+
+\[
+F_j(s_2)-F_j(s_1)
+=\int_{s_1}^{s_2}\int \partial_u f(x\mp u)\,A_j(x)\,dx\,du,
+\tag{A.5}\label{eq:paper-a-5}
+\]
+
+by the fundamental theorem of calculus for the absolutely continuous
+Laplace density and Fubini's theorem, which applies because the absolute
+double integral is at most \(\|A_j\|_\infty\,|s_2-s_1|\,\|f'\|_1\).
+Thus \(F_j\) is absolutely continuous, and \(|f'|\le f/b\) gives
+\(|F_j'|\le F_j/b\) almost everywhere. A jump in entry therefore never
+has to be differentiated during a unilateral deviation. The derivative
+falls on the density, not on the schedule. With the residual lower bound
+in \eqref{eq:paper-11},
+
+\[
+U_j'(s)=F_j(s)+sF_j'(s)-k
+\ge\left(1-\frac sb\right)F_j(s)-k
+\ge\left(1-\frac1b\right)\rho\kappa(\pi)\Delta_T-k>0
+\tag{A.6}\label{eq:paper-a-6}
+\]
+
+under the strong-incumbent inequality in \eqref{eq:paper-a3}, for every
+\(s\in[0,1]\) and both classes. Integrating the positive lower bound
+shows that the full correctly signed order strictly dominates every
+smaller magnitude; this is global optimality, not a first-order
+condition. The class-specific floors are \(\rho[1-M(\pi)]\Delta_T\) for
+\(A_H\) and \(\rho m(\pi)\Delta_T\) for \(A_L\); \(\kappa(\pi)\) is the
+smaller of the two. Online Appendix A.3 retains the \(W^{1,1}\) and
+null-set details.
+
+A sharper existence test applies to a fixed full-order candidate.
+Substituting Bayes' rule with prior \(\pi\) into both residuals gives
+
+\[
+\begin{aligned}
+J_H&=F_H(1)=(1-\pi)K,\qquad J_L=F_L(1)=\pi K,\\
+K&=\Delta_T\int e(x)\frac{f(x-1)f(x+1)}{\pi f(x-1)+(1-\pi)f(x+1)}\,dx,
+\end{aligned}
+\tag{A.7}\label{eq:paper-a-7}
+\]
+
+so at \(\pi=1/2\) the two coincide, \(J=F_H(1)=F_L(1)=K/2\). The
+pointwise ratio \(f(x-s)/f(x-1)\ge e^{-(1-s)/b}\) gives
+\(F_j(s)\ge e^{-(1-s)/b}J_j\). Since \((1-s/b)e^{-(1-s)/b}\) is
+decreasing on \([0,1]\), the inequality \(k<(1-1/b)\min\{J_H,J_L\}\)
+makes every correctly signed marginal profit positive against that
+candidate. This verifies existence of the full-order profile; it says
+nothing about other candidate schedules.
+
+\subsubsection{\texorpdfstring{Proof of
+\hyperref[result-proposition-2]{Proposition
+2}}{Proof of Proposition 2}}\label{proof-of-proposition-2}
+
+The proof first restricts trading in every candidate equilibrium, then
+constructs prices and preparation under the forced profile. Excluding
+competing order profiles is necessity; the construction supplies
+existence.
+
+\emph{Step 1: beliefs, the floor, and the payoff ranking.} Positivity of
+\(f\) makes every conditional flow density positive, and
+\hyperref[result-proposition-a-1]{Proposition A.1} gives
+\(m(\pi)\le\mu_X\le M(\pi)\) under every trading strategy; the price
+posterior obeys the same bound. The low-cost challenger prepares at
+every price in every economy, so cost-averaged entry is at least
+\(\rho\) everywhere. Under the restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2},
+\eqref{eq:paper-6} gives \(g_H\ge g_L\) and \(\Delta_T\ge0\) in each
+economy. Condition \eqref{eq:paper-a3} with \(k>0\) gives
+\(\Delta_T(F_1)>0\).
+\hyperref[result-proposition-1]{Proposition 1}(a) gives
+\(B_{F_1}(\pi)\le B_{F_0}(\pi)\), so \eqref{eq:paper-a2} gives
+\(B_{F_1}(\pi)<c_H<B_{F_1}(M(\pi))\); since \(M(\pi)>\pi\), this forces
+\(g_H(F_1)>g_L(F_1)\). The strengthening from \(F_0\) to \(F_1\) is
+used here.
+
+\emph{Step 2: residuals.} In either economy entry depends on the price
+and the independent cost, and the challenger's value depends on flow
+only through its class. Competitive pricing therefore gives
+\(\mathbb E[V_T\mid j,x]=t_0+e(P(x))(t_j-t_0)\) and the residuals
+\(A_H=e(P(x))\Delta_T(1-\mu_X)\) and \(A_L=e(P(x))\Delta_T\mu_X\), with
+\(\rho\le e(P(x))\le1\), as in the residual step of
+\hyperref[result-proposition-a-2]{Proposition A.2}. In the strong
+economy, where \(\Delta_T(F_1)>0\), Proposition A.2 also gives
+\(\Pr(H\mid P)=\mu_X\) almost surely and entry \eqref{eq:paper-9}. This
+uses the independence of \(R\) and \(C\) from trading, not an assumption
+that the buyer sees order flow.
+
+\emph{Step 3: the weak economy.} A correctly signed order of size
+\(s>0\) earns \(s[F_j(s)-k]\le s[\Delta_T(F_0)-k]<0\) by the upper
+bound \(A_j\le\Delta_T\) and the first inequality in
+\eqref{eq:paper-a3}. A wrong-signed order has nonpositive gross payoff
+and still pays its cost. Zero is therefore the only best response
+against every candidate schedule, and a mixture placing positive
+probability on nonzero orders averages strictly negative payoffs with
+zero. Under zero orders \(X=Z\) and the posterior is \(\pi\);
+\eqref{eq:paper-a2} gives \(B_{F_0}(\pi)<c_H\), so only the low-cost
+challenger prepares and entry is \(\rho\). The constant price
+\(t_0+\rho[\pi t_H+(1-\pi)t_L-t_0]\) is competitive. This constructs the
+unique outcome of part (i).
+
+\emph{Step 4: the strong economy.} Against every candidate schedule,
+\eqref{eq:paper-a-6} holds on the whole order interval. Every
+equilibrium therefore has \((q_H,q_L)=(1,-1)\), and mixing cannot
+introduce another optimal action.
+
+\emph{Step 5: existence.} Full orders give
+
+\[
+\mu_X(x)=\left[1+\frac{1-\pi}{\pi}
+\exp\left\{-\frac{|x+1|-|x-1|}{b}\right\}\right]^{-1},
+\tag{A.8}\label{eq:paper-a-8}
+\]
+
+equal to \(m(\pi)\) on \(x\le-1\), strictly increasing on \((-1,1)\),
+and equal to \(M(\pi)\) on \(x\ge1\). Define entry and price by
+\eqref{eq:paper-9}. The strict monotonicity \eqref{eq:paper-a-3} gives a
+measurable inverse on the price's image, including across its upward
+jump and at the two plateau atoms. The buyer recovers the posterior from
+the price, prepares optimally, and bids truthfully;
+\eqref{eq:paper-a-6} verifies investor optimality; the price is
+competitive by construction.
+
+\emph{Step 6: comparisons.} By Step 1, \(\tau\in(\pi,M(\pi))\). On
+\((-1,1)\) the log odds of \eqref{eq:paper-a-8} are
+\(\log[\pi/(1-\pi)]+2x/b\), so high-cost preparation occurs exactly when
+\(X\ge x^*\), with \(x^*\) in \eqref{eq:paper-12} and
+\(x^*\in(0,1)\). Given class \(H\), \(X=1+Z\); given class \(L\),
+\(X=-1+Z\). The Laplace survival function evaluated at \(x^*-1\) and
+\(x^*+1\) gives \(\alpha_H\) and \(\alpha_L\) in \eqref{eq:paper-12},
+both positive, so entry exceeds \(\rho\). Given its class and
+preparation, the challenger's value is independent of the price, and it
+wins with probability \(W_j(F)=\mathbb E_j[F(\theta)\mathbf1\{\theta\ge
+p\}]\). High-class ownership is therefore \(\pi\rho W_H(F_0)\) at
+\(F_0\) and \(\pi e_HW_H(F_1)\) at \(F_1\), which gives the stated
+equivalence. Because \(x^*\in(0,1)\), \(\alpha_H>1/2\) and
+\(e_H>(1+\rho)/2\), so \((1+\rho)W_H(F_1)\ge2\rho W_H(F_0)>0\) implies
+\(e_HW_H(F_1)>\rho W_H(F_0)\). In the point-mass benchmark \(h\)
+exceeds both incumbents' supports, so \(W_H=1\) in both economies and
+\(\mathsf O_H=e_H/2>\rho/2\). Applying a constant kernel to the
+strong-economy price reproduces the weak economy's constant experiment,
+while no state-independent kernel applied to a constant experiment can
+produce the nonconstant state-dependent price law of the strong economy;
+the strong experiment therefore strictly Blackwell dominates the weak
+one. All inequalities are strict and continuous in the primitives, so
+for uniform incumbents the region is open in \((r_0,r_1,c_H,k)\);
+\hyperref[pa-calculations]{Appendix A.4} shows that it is nonempty for
+every pair of classes with
+\(\mathbb E_H[\max\{\theta,p\}]>\mathbb E_L[\max\{\theta,p\}]\).
+
+\emph{Part (iii).} Under the restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2},
+\hyperref[result-proposition-1]{Proposition 1}(b) gives
+\(\Delta_T(F_2)\ge\Delta_T(F_1)\), so the trading bound at \(F_2\)
+follows from \eqref{eq:paper-a3}. The low-cost floor and the derivative
+bound give unique full orders exactly as in Steps 4 and 5, while
+\(B_{F_2}(M(\pi))<c_H\) excludes every expensive entrant because
+\(M(\pi)\) is the largest attainable belief under any strategy and
+\(g_H(F_2)\ge g_L(F_2)\). Entry returns to \(\rho\). The condition on
+\(F_2\) is separate from \eqref{eq:paper-a2} and \eqref{eq:paper-a3}
+and establishes a rise and a subsequent fall across three economies, not
+a monotone path. \(\square\)
+
+\Needspace{10\baselineskip}
+
+\subsubsection{Deterrence at a fixed
+experiment}\label{deterrence-at-a-fixed-experiment}
+
+\protect\phantomsection\label{result-proposition-a-3}{\textbf{Proposition
+A.3 (deterrence at a fixed information experiment; analytical).}}
+\emph{Let a signal \(S\) and the class have a fixed joint distribution,
+let the challenger's value depend on \(S\) only through its class, and
+let the preparation cost \(C\) be independent of the signal, the class,
+and the value, with a fixed law, as in the model. Hold this experiment
+and cost law fixed as the incumbent strengthens from \(F_0\) to a
+first-order stochastic strengthening \(F_1\), so the buyer's posterior
+\(\Pr(H\mid S)\) does not depend on the incumbent. Then entry is weakly
+decreasing in incumbent strength. It decreases strictly when the decline
+in gross profit crosses preparation costs on a positive-probability set
+of signal and cost realizations.}
+
+Write \(\mu(S)=\Pr(H\mid S)\); cost independence makes this the buyer's
+complete posterior about the class, and its expected gross profit given
+\(S\) is \(B(\mu(S))\) because its value depends on \(S\) only through
+the class. By \hyperref[result-proposition-1]{Proposition 1}(a),
+\(B_{F_1}(\mu)\le B_{F_0}(\mu)\) at every \(\mu\), for every pair of
+classes, so
+
+\[
+\mathbf1\{C\le B_{F_0}(\mu(S))\}-\mathbf1\{C\le B_{F_1}(\mu(S))\}
+=\mathbf1\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\}\ge0.
+\tag{A.9}\label{eq:paper-a-9}
+\]
+
+Taking expectations proves the weak decrease and the exact strictness
+condition, without an atomless cost distribution. The result applies
+within a region of fixed full orders, where the conditional flow laws do
+not depend on the incumbent; it does not apply across order profiles
+that change with the incumbent, because changing orders change the
+experiment. A version with cost correlated with the signal would
+condition on \(\Pr(H\mid S,C)\) and is not needed here. \(\square\)
+
+\Needspace{10\baselineskip}
+
+\subsubsection{Threshold distinctions}\label{threshold-distinctions}
+
+\protect\phantomsection\label{result-proposition-a-4}{\textbf{Proposition
+A.4 (pooling, full orders, and expensive-entry feasibility;
+analytical).}} \emph{In the point-mass benchmark, restrict attention to
+the maintained domain
+\(\mathcal D=\{r\in(\ell,h):B_r(1/2)<c_H\}\). Define}
+
+\[
+\begin{aligned}
+\mathfrak r(d)&=\ell+d+\sqrt{d^2+2\ell d},\\
+r_N&=\mathfrak r(2k/\rho),\qquad
+r_U=\mathfrak r\left(\frac{k}{(1-1/b)\rho m}\right).
+\end{aligned}
+\tag{A.10}\label{eq:paper-a-10}
+\]
+
+\emph{No trade is an equilibrium exactly when
+\(\rho\Delta_T(r)/2\le k\), that is, when \(r\le r_N\). The stronger
+restriction \(r<\mathfrak r(k)\) guarantees that it is the unique
+outcome. The restriction \(r>r_U\) guarantees unique full orders.
+Expensive entry is impossible in every equilibrium when \(B_r(M)<c_H\).
+If the equality \(B_r(M)=c_H\) has a solution in \(\mathcal D\), its
+unique crossing is}
+
+\[
+r_C=\frac{Mh-c_H+\sqrt{(Mh-c_H)^2+M[(1-M)\ell^2-p^2]}}{M}.
+\tag{A.11}\label{eq:paper-a-11}
+\]
+
+\emph{At \(r_C\) the tie rule of \hyperref[sec-model]{Section 2} is
+retained.}
+
+Under no trade the posterior is \(1/2\) and entry is \(\rho\), so a
+unilateral correctly signed order of size \(s\) sees the constant
+residual \(\rho\Delta_T/2\) and earns
+
+\[
+s\left(\frac{\rho\Delta_T(r)}{2}-k\right).
+\tag{A.12}\label{eq:paper-a-12}
+\]
+
+Zero is optimal exactly when the coefficient is nonpositive. Solving
+\(\Delta_T(r)=d\) gives \((r-\ell)^2=2rd\), whose root above \(\ell\) is
+\(\mathfrak r(d)\); since \(\Delta_T\) is increasing, the
+pooling-existence boundary is \(r_N\). Equality at \(r_N\) leaves the
+investor indifferent among correctly signed sizes against that constant
+schedule; it does not make every other profile an equilibrium with
+recomputed prices. The sufficient uniqueness boundary \(\mathfrak r(k)\)
+comes from \(\Delta_T<k\), which defeats any nonzero order against every
+candidate schedule by Step 3 above. The full-order boundary \(r_U\)
+comes from \eqref{eq:paper-a-6} at \(\pi=1/2\). The ceiling profit is
+
+\[
+B_r(M)=Mh-\frac{Mr}{2}+\frac{(1-M)\ell^2-p^2}{2r},
+\tag{A.13}\label{eq:paper-a-13}
+\]
+
+strictly decreasing on \(r>\ell>p\), so it crosses \(c_H\) at most once;
+\eqref{eq:paper-a-11} is the larger root of
+\(Mr^2-2(Mh-c_H)r-[(1-M)\ell^2-p^2]=0\) and is the crossing when it lies
+in \(\mathcal D\). Because \(M\) is the largest posterior under any
+strategy, \(B_r(M)<c_H\) excludes expensive entry regardless of orders.
+The four objects answer different questions: an existence boundary, two
+sufficient uniqueness bounds, and a participation ceiling; none
+identifies the first appearance of an informative equilibrium.
+
+The formulas \eqref{eq:paper-a-10}, \eqref{eq:paper-a-11}, and
+\eqref{eq:paper-a-13} belong to the point-mass case. The arguments do
+not. With classes and a prior \(\pi\), against the constant schedule at
+the prior a unilateral order of size \(s\) earns
+\(s[e(\pi)\Delta_T(1-\pi)-k]\) in class \(H\) and
+\(s[e(\pi)\Delta_T\pi-k]\) in class \(L\), where \(e(\pi)\) is entry at
+the prior. No trade is therefore an equilibrium exactly when
+\(e(\pi)\Delta_T\max\{\pi,1-\pi\}\le k\), which is
+\(\rho\Delta_T\max\{\pi,1-\pi\}\le k\) when \(B(\pi)<c_H\). The other
+thresholds solve the same equations with \(\Delta_T\) and \(B\) from
+\eqref{eq:paper-6}, \(M(\pi)\) in place of \(M\), and \(\kappa(\pi)\) in
+place of \(m\).
+
+Under full Laplace orders \(\mu_X=M\) on the positive-probability tail
+\(x\ge1\), so indifference at \(r_C\) is not a null event and the tie
+rule admits expensive entry on that tail. As \(r\uparrow r_C\), the
+threshold \(x^*\to1\) and
+
+\[
+\alpha_H\to\frac12,\qquad\alpha_L\to\frac12e^{-2/b},\qquad
+\mathsf E(r)\to\rho+\frac{1-\rho}{4}\left(1+e^{-2/b}\right),
+\tag{A.14}\label{eq:paper-a-14}
+\]
+
+whereas strictly above \(r_C\) expensive entry is impossible. Under
+logistic noise the posterior reaches \(M\) only in the limit, so
+expensive entry converges to zero continuously
+(\hyperref[pa-calculations]{Appendix A.4}). Online Appendix A.5 has the
+domain checks. \(\square\)

@@ -1,0 +1,58 @@
+% REPLACES: online_appendix.tex lines 3038-3083 ("\subsection{C.6c. Exact reserve events ..." to "... searches found none.")
+% Numbers in this fragment: \NUM{reserve_event_sampled_weak_max}. The value 6.280 in
+% the current text came from the earlier sweep and sat next to the old endpoint
+% p_L = h - 1/m. Under the zero cost that endpoint is h, and revenue \rho p/2 rises
+% in p on (r,h) wherever the high cost stays out, so the sampled weak maximum must
+% come from the new sweep. The formulas at any one such reserve do not change.
+\subsection{C.6c. Exact reserve events and admissible-bid
+outcomes}\label{oa-c-reserve-events}
+
+This exercise runs the C.6 node solver, with the continuation identity
+and event handling above, on the event grid alone. It leaves the full
+sweep untouched and exists so that the event candidates and the outcome
+measures can be checked without the hour-long scan.
+
+\textbf{Inputs.} Both economies at both strengths, on the event grid of
+C.6: \(0\), \(\ell\), \(r\), \(h\), the band edges in the class economy,
+the declared reserve alternatives, the endpoint \(p_L=h\) at every strength and \(p_H\)
+where \(\ell<p_H<r\), each with the three one-sided offsets on each
+side that stays in the domain, and the reserve
+\NUM{reserve_event_sampled_weak_max} used as the sampled weak maximum
+in the current sweep.
+
+\textbf{Method and acceptance.} At \(p_L=h\) in the weak economy, the row
+must show the equality-event classification of the zero-cost comparison at
+the domain endpoint, a single
+accepted full-order continuation whose status names the equality \(B(\mu)=0\) and the
+tie rule rather than a strict inequality, \(\mathsf E=\rho\), sale
+probability \(\rho/2\), \(\mathsf C_2=0\), and
+\(\mathcal R_T=\rho h/2\) from both the row and a fifty-digit
+evaluation; the three offsets below the event must classify the comparison as
+strictly positive. No offset above \(h\) belongs to the domain, and no row
+classifies that side. At \(p_H\)
+in the strong economy, the row must show the equality-event
+classification of the ceiling with gross profit \(mc_H/M>0\) at the lowest
+belief and a
+strictly positive full-order bound, \(\tau=M\), \(x^*=1\),
+\(\alpha_H=1/2\), \(\alpha_L=e^{-2/b}/2\), and entry and revenue
+agreeing with the fifty-digit evaluation; where \(p_H\) falls outside
+its defining regime the node is an ordinary reserve node and must not be
+classified as an event. At the sampled reserve
+\NUM{reserve_event_sampled_weak_max}, when that reserve lies in \((r,h)\) with
+the high cost excluded,
+\(\mathsf E=\rho\), sale \(\rho/2\), \(\mathsf C_2=0\), and
+seller revenue \(\rho\) times that reserve, divided by two: preparation there does not mean two
+admissible bidders, because the incumbent is excluded. On every row the
+union identity for \(\mathsf S\) and the ordering
+\(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\) hold, and the payoff
+oracle error is within tolerance. Deduplication follows the C.6 rule,
+and every count in the manifest comes from the ledger.
+
+\textbf{Outputs.} \texttt{numerics/reserve\_events.csv}, with the
+continuation schema of C.6 and an added \texttt{event\_classification}
+text column, and \texttt{numerics/reserve\_event\_ranges.csv} with the
+range schema of C.6. Feed: the exact-event paragraphs of the paper
+appendix and the online summary of C.6. Event candidates improve sampled
+maxima; they prove neither global optimality nor envelope completeness,
+and a node without an accepted candidate is a node where the declared
+searches found none.
