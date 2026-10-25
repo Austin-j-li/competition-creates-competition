@@ -4,9 +4,10 @@ Writes beliefs.pdf, coexistence.pdf, research.pdf and the three slide versions
 into slot/manuscript/figures/, a run log (run_log.txt) and PNG previews (png/).
 
 Every curve comes from a closed form of the proof packages at the primitives of the example:
-  P1_core: tau, Delta, J, the thresholds r_A, r_F, r_N, r_J, r_S, r_C and the entry of each branch
-           (Proposition 3, Step 7);
-  P3_research: the research polynomial F_r, the recruitment intensity, r_R, r_R-bar, r_U.
+  P1_core: tau, Delta, J, the marked strengths r_A, r_F, r_N, r_J, r_S, r_C and the entry of each coexistence form
+           (Proposition 3, Step 7), and the coexistence region of Proposition 3(a) at prior 1/2;
+  P3_research: the research polynomial Lambda_r, the recruitment intensity, r_R, r_lambda-bar, r_U;
+  O1 (floor-entry research): the floor root lambda_Q and the floor margin, whose zero is r_Q.
 Boundaries use mpmath at 40 digits; the plotted curves use floating point.
 The log prints each boundary beside the registry display value. Nothing is asserted.
 
@@ -114,12 +115,28 @@ def phi(P, r):
 
 
 def lamR(P, r):
-    """Positive root of the research polynomial F_r (P3, equation (F)); r with Delta > 2k."""
+    """Positive root of the research polynomial Lambda_r (P3); r with Delta > 2k."""
     D = Delta(P, r)
     A = 2 * P.a * (1 - 2 * P.beta)
     Bc = 4 * P.a * P.beta + P.k * (1 - 2 * P.beta) + P.beta * D
     C = P.beta * (2 * P.k - D)
     return (-Bc + np.sqrt(Bc * Bc - 4 * A * C)) / (2 * A)
+
+
+def lamQ(P, D):
+    """Floor-entry research lambda_Q(Delta): the root in [0, 1) of a lambda = rho Delta m_lambda - k, rho Delta >= 2k.
+    After clearing 2 beta + (1 - 2 beta) lambda: a(1 - 2beta) lambda^2 + [rho Delta beta + k(1 - 2beta) + 2a beta] lambda
+    + beta(2k - rho Delta) = 0; the root is -2C/(B + sqrt(B^2 - 4AC))."""
+    sq = np.sqrt if P is PF else P.sqrt
+    A = P.a * (1 - 2 * P.beta)
+    Bc = P.rho * D * P.beta + P.k * (1 - 2 * P.beta) + 2 * P.a * P.beta
+    C = P.beta * (2 * P.k - P.rho * D)
+    return -2 * C / (Bc + sq(Bc * Bc - 4 * A * C))
+
+
+def phi_rho(P, r):
+    """Floor margin rho Delta (1 - tau) - k - a lambda_E; its zero on the path is r_Q."""
+    return P.rho * Delta(P, r) * (1 - tau(P, r)) - P.k - P.a * lamE(P, r)
 
 
 def ent_branch_R(P, r):
@@ -132,7 +149,7 @@ def ent_plateau(P):
 
 
 def ent_threshold(P, r):
-    """Entry on the threshold branch T under rule CM (P1, Step 7)."""
+    """Entry on the threshold pair T, when an indifferent high-cost challenger may prepare with any probability (P1, Step 7)."""
     D, t = Delta(P, r), tau(P, r)
     return P.rho + (P.b / 2) * (P.k - P.rho * J(P, r)) / (D * (1 - t) ** 2)
 
@@ -163,6 +180,7 @@ def boundaries():
     B["rR"] = bisect(lambda r: phi(P, r), mpf("1.4"), mpf("1.7"))
     B["rRbar"] = frak(P, (2 * P.a * P.lam + P.k) / P.m)
     B["rU"] = frak(P, (P.k + P.a * P.lam) / (P.rho * P.m))
+    B["rQ"] = bisect(lambda r: phi_rho(P, r), B["rN"], B["rU"])
     return B
 
 
@@ -392,7 +410,7 @@ def fig_beliefs(talk):
     axa.set_xticks([1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6])
     axa.set_yticks([0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
     axa.set_xlabel(r"incumbent strength, $r$")
-    axa.set_ylabel(r"threshold belief, $\tau(r)$")
+    axa.set_ylabel(r"preparation threshold, $\tau(r)$")
     xl = 1.27
     lab(axa, xl, Mv + 0.022, r"top posterior $M(1/2)=%s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="bottom")
     lab(axa, xl, mv + 0.022, r"bottom posterior $m(1/2)=%s$" % regd("m_half_B", d6(PM.m)), S, color=NAVY, va="bottom")
@@ -402,7 +420,7 @@ def fig_beliefs(talk):
                  xytext=(2.0 if not talk else 2.1, 0.62 if not talk else 0.605),
                  arrowprops=dict(arrowstyle="-", lw=S.lwt, color=BRICK, shrinkA=0, shrinkB=0))
     dot(axa, rC, Mv, S, color="k", open_=True)
-    axa.annotate(r"ceiling $r_C$", xy=(rC, Mv), xytext=(3.27, 0.60), fontsize=S.fn,
+    axa.annotate(r"entry ceiling $r_C$", xy=(rC, Mv), xytext=(3.27, 0.60), fontsize=S.fn,
                  ha="center", va="top", color="k",
                  arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.3", shrinkA=1, shrinkB=3.5))
     panel_label(axa, "(a)", S, dx=-0.17 if not talk else -0.145, dy=1.075)
@@ -437,7 +455,8 @@ def fig_beliefs(talk):
 
 # ============================================================ figure 2: coexistence
 def draw_branches(ax, S, markers=True):
-    """All branches of the benchmark path at prior 1/2, rules IM and C1, and T under CM."""
+    """All coexistence forms along the example's path at prior 1/2, when an indifferent investor may mix and an
+    indifferent high-cost challenger prepares; the threshold pair T when that challenger may prepare with any probability."""
     rA, rF, rN, rJ, rS, rC = (BF[k_] for k_ in ("rA", "rF", "rN", "rJ", "rS", "rC"))
     lo, hi = ax.get_xlim()
 
@@ -445,10 +464,10 @@ def draw_branches(ax, S, markers=True):
         if markers and lo <= x <= hi:
             dot(ax, x, y, S, color=color, open_=open_, z=z, size=size)
 
-    # T: threshold branch under rule CM (thin dashed)
+    # T: threshold pair (thin dashed)
     rt = np.linspace(rA, rJ, 300)
     ax.plot(rt, ent_threshold(PF, rt), color="k", ls=DASH_T, lw=S.lwt * 1.15, zorder=3)
-    # N: no informed trade, closed at r_N
+    # N: quiet market, closed at r_N
     ax.plot([R0, rN], [RHO, RHO], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4)
     mk(rN, RHO, NAVY)
     # Q: mixed orders at the entry floor, open at both ends
@@ -467,6 +486,70 @@ def draw_branches(ax, S, markers=True):
     mk(rC, RHO, BRICK, open_=True, z=7)
 
 
+def axes_in(fig, left, bottom, w, h):
+    """Axes placed in inches."""
+    W, H = fig.get_size_inches()
+    return fig.add_axes([left / W, bottom / H, w / W, h / H])
+
+
+def draw_region(ax, S, talk):
+    """The coexistence region of Proposition 3(a) in the (Delta_T, tau) plane at prior 1/2 and the example's slot:
+    1/2 < tau <= M(1/2) and k/(1 - tau) <= Delta_T <= 2k/rho, with the example's path (Delta_T(r), tau(r))."""
+    P = PF
+    Mv = float(PM.M)
+    DN = 2 * P.k / P.rho                       # Delta^N at prior 1/2
+    DF = P.k / (1 - Mv)                        # Delta^F at prior 1/2
+    xlo, xhi, ylo, yhi = 0.0, 0.20, 0.45, 0.765
+    ax.set_xlim(xlo, xhi)
+    ax.set_ylim(ylo, yhi)
+    tt = np.linspace(0.5, Mv, 200)
+    left = P.k / (1 - tt)
+    xs = np.concatenate([left, [DN, DN]])
+    ys = np.concatenate([tt, [Mv, 0.5]])
+    ax.fill(xs, ys, color=BAND_BLUE, lw=0, zorder=0)
+    ax.plot(left, tt, color=NAVY, lw=S.lwt * 1.4, zorder=2)                       # Delta = k/(1 - tau), closed
+    ax.plot([DN, DN], [0.5, Mv], color=NAVY, lw=S.lwt * 1.4, zorder=2)             # Delta = 2k/rho, closed
+    ax.plot([left[-1], DN], [Mv, Mv], color=NAVY, lw=S.lwt * 1.4, zorder=2)        # tau = M(1/2), closed
+    ax.axhline(0.5, color=GREY, ls=(0, (1.5, 2.0)), lw=S.lwt * 1.4, zorder=1)     # tau = pi, open
+    ax.plot([DF, DF], [0.5, Mv], color=NAVY, ls=(0, (4.0, 2.0)), lw=S.lwt, zorder=2)  # Delta = k/(1 - M)
+    ax.plot([xlo, left[-1]], [Mv, Mv], color=NAVY, ls=(0, (1.5, 2.0)), lw=S.lwt * 1.4, zorder=1)  # tau = M(1/2)
+    # the example's path from r_0 until it leaves the window
+    r_out = float(frak(PF, xhi))
+    rr = np.linspace(R0, r_out, 400)
+    ax.plot(Delta(PF, rr), tau(PF, rr), color=BRICK, lw=S.lw * 0.8, solid_capstyle="butt", zorder=4, clip_on=False)
+    ax.annotate("", xy=(xhi + 0.006, float(tau(PF, frak(PF, xhi + 0.006)))),
+                xytext=(xhi - 0.004, float(tau(PF, frak(PF, xhi - 0.004)))),
+                arrowprops=dict(arrowstyle="-|>", lw=S.lw * 0.8, color=BRICK, mutation_scale=7 if not talk else 10,
+                                shrinkA=0, shrinkB=0), annotation_clip=False, zorder=5)
+    dot(ax, float(Delta(PF, R0)), float(tau(PF, R0)), S)
+    for key in ("rA", "rF", "rN"):
+        r_ = BF[key]
+        dot(ax, float(Delta(PF, r_)), float(tau(PF, r_)), S, color=BRICK, z=7)
+    ax.set_xlabel(r"target-payoff spread, $\Delta_T$")
+    ax.set_ylabel(r"preparation threshold, $\tau$" if not talk else r"threshold, $\tau$")
+    if talk:
+        ax.set_xticks([0.0, 0.1, 0.2])
+    else:
+        ax.set_xticks([0.0, 0.05, 0.10, 0.15, 0.20])
+    ax.set_yticks([0.5, 0.6, 0.7])
+    yoff = 0.016 if not talk else 0.02
+    def plabel(key, tex, dx, dy, ha):
+        r_ = BF[key]
+        lab(ax, float(Delta(PF, r_)) + dx, float(tau(PF, r_)) + dy, tex, S, color=BRICK, ha=ha, va="center")
+    lab(ax, float(Delta(PF, R0)) - 0.002, float(tau(PF, R0)) - yoff * 1.3, r"$r_0$", S, color="k", ha="left", va="center")
+    plabel("rA", r"$r_A$", -0.004, yoff * 1.3, "right")
+    plabel("rF", r"$r_F$", 0.003, yoff * 1.3, "left")
+    plabel("rN", r"$r_N$", 0.004, -yoff * 1.3, "left")
+    lab(ax, 0.006, Mv + 0.012, r"$M(1/2)$", S, color=NAVY, ha="left", va="bottom")
+    lab(ax, 0.006, 0.5 - 0.012, r"prior $\pi=1/2$" if not talk else r"$\pi=1/2$", S, color="0.35", ha="left", va="top")
+    if not talk:
+        lab(ax, 0.117, 0.705, r"coexistence" "\n" r"region", S, color=NAVY, ha="center", va="center", linespacing=1.0)
+        lab(ax, 0.063, 0.545, r"R", S, color=NAVY, ha="center", va="center", size=S.fn + 1)
+        lab(ax, 0.117, 0.545, r"F", S, color=NAVY, ha="center", va="center", size=S.fn + 1)
+    else:
+        lab(ax, 0.118, 0.70, r"coexistence", S, color=NAVY, ha="center", va="center", size=S.fn - 1.5)
+
+
 def fig_coexistence(talk):
     S = Style(talk)
     S.apply()
@@ -475,26 +558,29 @@ def fig_coexistence(talk):
     ylo, yhi = 0.15, 0.62
     ylob = 0.12
     if talk:
-        fig = plt.figure(figsize=(7.6, 3.3))
-        axa = fig.add_axes([0.105, 0.335, 0.285, 0.475])
-        axb = fig.add_axes([0.53, 0.335, 0.455, 0.475])
+        fig = plt.figure(figsize=(10.2, 3.3))
+        axa = axes_in(fig, 0.75, 1.10, 2.25, 1.55)
+        axr = axes_in(fig, 3.85, 1.10, 1.95, 1.55)
+        axb = axes_in(fig, 6.55, 1.10, 3.55, 1.55)
     else:
-        fig = plt.figure(figsize=(6.5, 5.9))
-        axa = fig.add_axes([0.095, 0.675, 0.885, 0.255])
-        axb = fig.add_axes([0.095, 0.085, 0.885, 0.40])
+        fig = plt.figure(figsize=(6.5, 5.85))
+        axa = axes_in(fig, 0.62, 3.66, 3.20, 1.78)
+        axr = axes_in(fig, 4.50, 3.66, 1.80, 1.78)
+        axb = axes_in(fig, 0.62, 0.50, 5.80, 2.15)
     for ax, yl in ((axa, ylo), (axb, ylob)):
         ax.set_ylim(yl, yhi)
         ax.set_yticks([0.2, 0.3, 0.4, 0.5, 0.6])
         ax.set_xlabel(r"incumbent strength, $r$")
         ax.axvspan(rA, rN, color=BAND_BLUE, lw=0, zorder=0)
-    axa.set_ylabel(r"total entry, $E$")
-    axb.set_ylabel(r"total entry, $E$") if not talk else None
+    axa.set_ylabel(r"entry, $\mathsf{E}$")
+    axb.set_ylabel(r"entry, $\mathsf{E}$") if not talk else None
     axa.set_xlim(R0, R2)
     axb.set_xlim(ZLO, ZHI)
     axa.set_xticks([1.2, 2.0, 2.8, 3.6] if talk else [1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6])
     axb.set_xticks([1.4, 1.6, 1.8, 2.0, 2.2] if not talk else [1.4, 1.8, 2.2])
     draw_branches(axa, S, markers=False)
     draw_branches(axb, S, markers=True)
+    draw_region(axr, S, talk)
     dot(axa, rC, ENT1, S, color=BRICK)
     dot(axa, rC, RHO, S, color=BRICK, open_=True, z=7)
     for x in (rA, rN, rC):
@@ -503,27 +589,29 @@ def fig_coexistence(talk):
     # --- (a): the whole path
     axa.annotate("", xy=(ZLO, 0.585), xytext=(ZHI, 0.585),
                  arrowprops=dict(arrowstyle="<->", lw=S.lwt * 1.2, color="0.35", shrinkA=0, shrinkB=0))
-    lab(axa, ZHI + 0.06, 0.585, r"zoom in (b)" if not talk else r"(b)", S, color="0.35", ha="left", va="center")
+    lab(axa, ZHI + 0.06, 0.585, r"zoom in (c)" if not talk else r"(c)", S, color="0.35", ha="left", va="center")
     lab(axa, 1.27, RHO + 0.025, r"N", S, color=NAVY, va="bottom", size=S.fn + 1)
     lab(axa, 2.85, ENT1 + 0.025, r"F", S, color=BRICK, va="bottom", size=S.fn + 1, ha="center")
-    lab(axa, 3.545, RHO + 0.026, r"F above $r_C$", S, color=BRICK, ha="right", va="bottom")
-    panel_label(axa, "(a)", S, dx=-0.098 if not talk else -0.30, dy=1.05)
-    # --- (b): the zoom with every boundary
+    lab(axa, 3.545, RHO + 0.026, r"F above $r_C$" if not talk else r"F", S, color=BRICK, ha="right", va="bottom")
+    pdx = -0.19 if not talk else -0.30
+    panel_label(axa, "(a)", S, dx=pdx, dy=1.06)
+    panel_label(axr, "(b)", S, dx=-0.33 if not talk else -0.35, dy=1.06)
+    # --- (c): the zoom with every marked strength
     for key, tex, level in (("rA", r"$r_A$", 1), ("rF", r"$r_F$", 0), ("rN", r"$r_N$", 1), ("rJ", r"$r_J$", 0),
                             ("rS", r"$r_S$", 1)):
         mark_x(axb, BF[key], tex, S, level=level, lvl=0.085 if not talk else 0.095)
-    panel_label(axb, "(b)", S, dx=-0.098 if not talk else -0.19, dy=1.17 if not talk else 1.05)
+    panel_label(axb, "(c)", S, dx=-0.098 if not talk else -0.19, dy=1.17 if not talk else 1.06)
     # direct labels (zoom)
     if not talk:
-        lab(axb, ZLO + 0.012, RHO - 0.024, r"N: no informed trade", S, color=NAVY, va="top")
-        axb.annotate(r"Q: mixed orders at the floor", xy=(1.857, RHO), xytext=(1.857, RHO - 0.05),
+        lab(axb, ZLO + 0.012, RHO - 0.024, r"N: quiet market", S, color=NAVY, va="top")
+        axb.annotate(r"Q: mixed orders at the entry floor", xy=(1.857, RHO), xytext=(1.857, RHO - 0.05),
                      fontsize=S.fn, color="0.35", ha="center", va="top",
                      arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.5", shrinkA=0, shrinkB=3))
         axb.annotate(r"R: mixed" "\n" r"purchase" "\n" r"that recruits", xy=(1.428, float(ent_branch_R(PF, 1.428))),
-                     xytext=(1.38, 0.47), fontsize=S.fn, color=BRICK, ha="right", va="center",
+                     xytext=(1.372, 0.492), fontsize=S.fn, color=BRICK, ha="right", va="center",
                      arrowprops=dict(arrowstyle="-", lw=S.lwt, color=BRICK, shrinkA=1, shrinkB=2.5))
-        axb.annotate(r"T: threshold branch" "\n" r"(rule CM)", xy=(1.62, float(ent_threshold(PF, 1.62))),
-                     xytext=(1.74, 0.385), fontsize=S.fn, color="k", ha="left", va="center",
+        axb.annotate(r"T: threshold pair", xy=(1.62, float(ent_threshold(PF, 1.62))),
+                     xytext=(1.775, 0.385), fontsize=S.fn, color="k", ha="left", va="center",
                      arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.2", shrinkA=1, shrinkB=2.5))
         lab(axb, (rF + rN) / 2, ENT1 + 0.016, r"F: full purchase", S, color=BRICK, ha="center", va="bottom")
         lab(axb, (rJ + rS) / 2, ENT1 + 0.016, r"mixed sales", S, color=BRICK, ha="center", va="bottom")
@@ -541,21 +629,22 @@ def fig_coexistence(talk):
         hs = [Line2D([], [], color=NAVY, lw=S.lw), Line2D([], [], color=BRICK, ls=DASH_R, lw=S.lw),
               Line2D([], [], color=BRICK, lw=S.lw), Line2D([], [], color=GREY, ls=DASH_Q, lw=S.lw),
               Line2D([], [], color="k", ls=DASH_T, lw=S.lwt * 1.15)]
-        ls_ = [r"N no trade", r"R mixed purchase", r"F full purchase", r"Q mixed orders", r"T threshold (CM)"]
+        ls_ = [r"N quiet market", r"R mixed purchase that recruits", r"F full purchase",
+               r"Q mixed orders at the entry floor", r"T threshold pair"]
         fig.legend(hs, ls_, loc="lower center", ncol=5, frameon=False, fontsize=S.fn - 1.0, handlelength=1.7,
                    columnspacing=1.1, handletextpad=0.5, bbox_to_anchor=(0.5, -0.015))
-        axa.set_xlabel(r"incumbent strength, $r$")
-        axb.set_xlabel(r"incumbent strength, $r$")
     return fig
 
 
 # ============================================================ figure 3: research
 def research_curves():
-    rR, rRb = BF["rR"], BF["rRbar"]
+    """Recruiting research below the cap on [r_R, r_lambda-bar] and floor-entry research on [r_N, r_Q]."""
+    rR, rRb, rN, rQ = BF["rR"], BF["rRbar"], BF["rN"], BF["rQ"]
     rb = np.linspace(rR, rRb, 300)
     lam_b = lamR(PF, rb)
-    ent_b = RHO + (1 - RHO) * (PF.beta + (0.5 - PF.beta) * lam_b)
-    return rb, lam_b, ent_b
+    rq = np.linspace(rN, rQ, 300)
+    lam_q = lamQ(PF, Delta(PF, rq))
+    return rb, lam_b, entry_at(lam_b), rq, lam_q
 
 
 def entry_at(lam):
@@ -565,117 +654,109 @@ def entry_at(lam):
 def fig_research(talk):
     S = Style(talk)
     S.apply()
-    rR, rRb, rN, rU, rC = (BF[k_] for k_ in ("rR", "rRbar", "rN", "rU", "rC"))
-    rb, lam_b, ent_b = research_curves()
+    rR, rRb, rN, rQ, rC = (BF[k_] for k_ in ("rR", "rRbar", "rN", "rQ", "rC"))
+    rb, lam_b, ent_b, rq, lam_q = research_curves()
     if talk:
         fig = plt.figure(figsize=(7.4, 3.1))
-        gs = GridSpec(1, 2, left=0.085, right=0.985, bottom=0.205, top=0.83, wspace=0.30, figure=fig)
-        axs = [(fig.add_subplot(gs[0]), None), (fig.add_subplot(gs[1]), None)]
-        xr = (1.2, 2.0)
+        gs = GridSpec(1, 2, left=0.085, right=0.985, bottom=0.205, top=0.80, wspace=0.30, figure=fig)
+        al, bl = fig.add_subplot(gs[0]), fig.add_subplot(gs[1])
+        xt = [1.2, 2.0, 2.8, 3.6]
     else:
         fig = plt.figure(figsize=(6.5, 5.5))
-        gs = GridSpec(2, 2, width_ratios=[3.1, 1.25], left=0.105, right=0.975, bottom=0.095, top=0.925,
-                      wspace=0.075, hspace=0.26, figure=fig)
-        a1 = fig.add_subplot(gs[0, 0])
-        a2 = fig.add_subplot(gs[0, 1], sharey=a1)
-        b1 = fig.add_subplot(gs[1, 0])
-        b2 = fig.add_subplot(gs[1, 1], sharey=b1)
-        axs = [(a1, a2), (b1, b2)]
-        xr = (1.2, 2.0)
-    xr2 = (2.4, 3.6)
-
-    def common(axl, axr, ylim, yticks, ylabel, panel):
-        axl.set_xlim(*xr)
-        axl.set_ylim(*ylim)
-        axl.set_yticks(yticks)
-        axl.set_ylabel(ylabel)
-        axl.set_xticks([1.2, 1.4, 1.6, 1.8, 2.0])
-        axl.axvspan(rN, xr[1], color=BAND_GREY, lw=0, zorder=0)
-        if axr is not None:
-            axr.set_xlim(*xr2)
-            axr.set_xticks([2.4, 2.8, 3.2, 3.6])
-            axr.spines["left"].set_visible(False)
-            axr.tick_params(axis="y", left=False, labelleft=False)
-            axr.axvspan(xr2[0], rU, color=BAND_GREY, lw=0, zorder=0)
-            axl.spines["right"].set_visible(False)
-            for ax_, sx in ((axl, 1.0), (axr, 0.0)):
-                ax_.plot([sx - 0.012, sx + 0.012], [-0.028, 0.028], transform=ax_.transAxes, color="k", lw=0.8,
-                         clip_on=False)
-        panel_label(axl, panel, S, dx=-0.105 if not talk else -0.20, dy=1.10 if not talk else 1.06)
+        gs = GridSpec(2, 1, left=0.105, right=0.975, bottom=0.095, top=0.91, hspace=0.30, figure=fig)
+        al = fig.add_subplot(gs[0])
+        bl = fig.add_subplot(gs[1], sharex=al)
+        xt = [1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6]
+    for ax_ in (al, bl):
+        ax_.set_xlim(R0, R2)
+        ax_.set_xticks(xt)
+    lv = 0.085 if not talk else 0.1
+    pdx = -0.075 if not talk else -0.20
+    pdy = 1.10 if not talk else 1.12
 
     # ---------------- panel (a): research intensity
-    al, ar = axs[0]
-    common(al, ar, (-0.025, 0.40), [0.0, 0.1, 0.2, 0.3, 0.4], r"research intensity, $\lambda$", "(a)")
-    al.axhline(CAP, xmin=0, xmax=(rRb - xr[0]) / (xr[1] - xr[0]), color="0.55", ls=(0, (1.2, 2.2)), lw=S.lwt, zorder=1)
+    al.set_ylim(-0.025, 0.40)
+    al.set_yticks([0.0, 0.1, 0.2, 0.3, 0.4])
+    al.set_ylabel(r"research intensity, $\lambda$")
+    al.plot([R0, rRb], [CAP, CAP], color="0.55", ls=(0, (1.2, 2.2)), lw=S.lwt, zorder=1)
+    # zero research, closed at r_N
     al.plot([R0, rN], [0, 0], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4, clip_on=False)
     dot(al, rN, 0.0, S, color=NAVY)
+    # recruiting research: below the cap on [r_R, r_lambda-bar), at the cap on [r_lambda-bar, r_C]
     al.plot(rb, lam_b, color=BRICK, ls=DASH_R, lw=S.lw, zorder=4)
     dot(al, rR, float(lam_b[0]), S, color=BRICK)
-    al.plot([rRb, rN], [CAP, CAP], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
+    al.plot([rRb, rC], [CAP, CAP], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
     dot(al, rRb, CAP, S, color=BRICK, size=S.ms * 0.8)
-    dot(al, rN, CAP, S, color=BRICK, open_=True, z=7)
-    if ar is not None:
-        ar.plot([rU, R2], [CAP, CAP], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
-        dot(ar, rU, CAP, S, color=BRICK, open_=True, z=7)
-        dot(ar, R1, CAP, S)
-        dot(ar, R2, CAP, S)
+    # floor-entry research: (r_N, r_Q) below the cap, (r_C, r_2] at the cap
+    al.plot(rq, lam_q, color=GREY, ls=DASH_Q, lw=S.lw, zorder=4)
+    dot(al, rQ, float(lam_q[-1]), S, color=GREY, open_=True, z=7)
+    al.plot([rC, R2], [CAP, CAP], color=GREY, ls=DASH_Q, lw=S.lw, zorder=5)
+    dot(al, rC, CAP, S, color=BRICK, z=8)
     for x in NODES:
         dot(al, x, float(lamR(PF, x)), S)
         dot(al, x, 0.0, S)
     dot(al, R0, 0.0, S)
-    lv = 0.085 if not talk else 0.1
-    for ax_, x, tex, level in ((al, rR, r"$r_R$", 1), (al, rRb, r"$\bar r_R$", 0), (al, rN, r"$r_N$", 1)):
-        mark_x(ax_, x, tex, S, level=level, lvl=lv)
-    if ar is not None:
-        mark_x(ar, rU, r"$r_U$", S, level=0, lvl=lv)
-        mark_x(ar, rC, r"$r_C$", S, level=1, lvl=lv)
-    lab(al, 1.21, 0.02, r"zero research", S, color=NAVY, va="bottom")
+    dot(al, R1, CAP, S)
+    dot(al, R2, CAP, S, size=S.ms * 0.8, z=9)
+    marks = ((rR, r"$r_R$", 0), (rRb, r"$r_{\bar\lambda}$", 1 if talk else 0), (rN, r"$r_N$", 0 if talk else 1),
+             (rQ, r"$r_Q$", 0), (rC, r"$r_C$", 0))
+    for x, tex, level in marks:
+        mark_x(al, x, tex, S, level=level, lvl=lv)
+    for x, _, _ in marks:
+        bl.axvline(x, color="0.3", ls=":", lw=S.lwd, zorder=1)
     if talk:
-        al.annotate(r"research" "\n" r"branch", xy=(1.548, float(lamR(PF, 1.548)) - 0.006), xytext=(1.215, 0.27), fontsize=S.fn,
-                    color=BRICK, ha="left", va="center",
-                    arrowprops=dict(arrowstyle="-", lw=S.lwt, color=BRICK, shrinkA=14, shrinkB=4))
-        lab(al, 1.21, CAP + 0.026, r"cap $\bar\lambda=%s$" % regd("res_cap", d6(CAP)), S, color="0.3", va="bottom")
+        lab(al, 1.24, 0.03, r"zero", S, color=NAVY, va="bottom")
+        lab(al, 2.30, CAP + 0.026, r"recruiting", S, color=BRICK, ha="center", va="bottom")
+        lab(al, 2.22, 0.20, r"floor-entry", S, color="0.3", ha="left", va="center")
     else:
-        al.annotate(r"research branch", xy=(1.555, float(lamR(PF, 1.555)) - 0.004), xytext=(1.30, 0.20), fontsize=S.fn,
-                    color=BRICK, ha="left", va="center",
+        lab(al, 1.21, 0.018, r"zero research", S, color=NAVY, va="bottom")
+        lab(al, (rN + rQ) / 2, CAP - 0.016, r"cap $\bar\lambda=%s$" % regd("res_cap", d6(CAP)), S, color="0.3",
+            ha="center", va="top")
+        al.annotate(r"recruiting" "\n" r"research", xy=(1.515, float(lamR(PF, 1.515))), xytext=(1.225, 0.235),
+                    fontsize=S.fn, color=BRICK, ha="left", va="center",
                     arrowprops=dict(arrowstyle="-", lw=S.lwt, color=BRICK, shrinkA=1, shrinkB=4))
-        lab(al, 1.21, CAP + 0.018, r"cap $\bar\lambda=%s$" % regd("res_cap", d6(CAP)), S, color="0.3", va="bottom")
-        lab(ar, 3.55, CAP + 0.018, r"research at the cap", S, color=BRICK, ha="right", va="bottom")
-    lab(al, (rN + xr[1]) / 2, 0.20, r"beyond $r_N$" if talk else r"equilibrium" "\n" r"set not" "\n" r"characterized", S,
-        color="0.35", ha="center", va="center")
+        lab(al, 2.80, CAP + 0.018, r"recruiting research at the cap", S, color=BRICK, ha="center", va="bottom")
+        x_ = 2.06
+        al.annotate(r"floor-entry research", xy=(x_, float(lamQ(PF, Delta(PF, x_))) - 0.006), xytext=(2.30, 0.12),
+                    fontsize=S.fn, color="0.3", ha="left", va="center",
+                    arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.4", shrinkA=1, shrinkB=4))
+    panel_label(al, "(a)", S, dx=pdx, dy=pdy)
 
     # ---------------- panel (b): entry
-    bl, br = axs[1]
-    common(bl, br, (0.20, 0.58), [0.2, 0.3, 0.4, 0.5], r"total entry, $E$", "(b)")
+    bl.set_ylim(0.20, 0.58)
+    bl.set_yticks([0.2, 0.3, 0.4, 0.5])
+    bl.set_ylabel(r"entry, $\mathsf{E}$")
+    # zero research, closed at r_N
     bl.plot([R0, rN], [RHO, RHO], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4)
-    dot(bl, rN, RHO, S, color=NAVY)
+    # floor-entry research at the entry floor
+    bl.plot([rN, rQ], [RHO, RHO], color=GREY, ls=DASH_Q, lw=S.lw, zorder=5)
+    dot(bl, rN, RHO, S, color=NAVY, z=8)
+    dot(bl, rQ, RHO, S, color=GREY, open_=True, z=7)
+    bl.plot([rC, R2], [RHO, RHO], color=GREY, ls=DASH_Q, lw=S.lw, zorder=5)
+    dot(bl, rC, RHO, S, color=GREY, open_=True, z=7)
+    # recruiting research
     bl.plot(rb, ent_b, color=BRICK, ls=DASH_R, lw=S.lw, zorder=4)
     dot(bl, rR, float(ent_b[0]), S, color=BRICK)
-    bl.plot([rRb, rN], [ENT1, ENT1], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
+    bl.plot([rRb, rC], [ENT1, ENT1], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
     dot(bl, rRb, ENT1, S, color=BRICK, size=S.ms * 0.8)
-    dot(bl, rN, ENT1, S, color=BRICK, open_=True, z=7)
-    if br is not None:
-        br.plot([rU, rC], [ENT1, ENT1], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
-        dot(br, rU, ENT1, S, color=BRICK, open_=True, z=7)
-        dot(br, rC, ENT1, S, color=BRICK, open_=True, z=7)
-        br.plot([rC, R2], [RHO, RHO], color=BRICK, lw=S.lw, solid_capstyle="butt", zorder=4)
-        dot(br, rC, RHO, S, color=BRICK, open_=True, z=7)
-        dot(br, R1, ENT1, S)
-        dot(br, R2, RHO, S, size=S.ms * 0.8, z=9)
+    dot(bl, rC, ENT1, S, color=BRICK)
     for x in NODES:
         dot(bl, x, float(entry_at(lamR(PF, x))), S)
         dot(bl, x, RHO, S)
     dot(bl, R0, RHO, S)
-    lab(bl, 1.21, RHO - 0.014, r"zero research", S, color=NAVY, va="top")
-    lab(bl, (rN + xr[1]) / 2, 0.40, r"beyond $r_N$" if talk else r"equilibrium" "\n" r"set not" "\n" r"characterized", S,
-        color="0.35", ha="center", va="center")
+    dot(bl, R1, ENT1, S)
+    dot(bl, R2, RHO, S, size=S.ms * 0.8, z=9)
     if talk:
-        lab(bl, rR - 0.012, float(ent_b[0]) - 0.022, regd("res_entry_rR", d6(ent_b[0])), S, color=BRICK, ha="center", va="top")
-        lab(bl, rRb - 0.005, ENT1 + 0.022, regd("res_entry_cap", d6(ENT1)), S, color=BRICK, ha="center", va="bottom")
+        lab(bl, 1.24, RHO - 0.016, r"zero", S, color=NAVY, va="top")
+        lab(bl, 2.60, ENT1 + 0.02, r"recruiting", S, color=BRICK, ha="center", va="bottom")
+        lab(bl, 2.22, RHO + 0.03, r"floor-entry", S, color="0.3", ha="left", va="bottom")
+        for ax_ in (al, bl):
+            ax_.set_xlabel(r"incumbent strength, $r$")
     else:
-        lab(br, 3.55, ENT1 + 0.02, r"research at the cap", S, color=BRICK, ha="right", va="bottom")
-        lab(br, 3.55, RHO + 0.022, r"entry at the floor", S, color=BRICK, ha="right", va="bottom")
-        ins = bl.inset_axes([0.075, 0.37, 0.40, 0.40])
+        lab(bl, 1.21, RHO - 0.014, r"zero research", S, color=NAVY, va="top")
+        lab(bl, (rN + rQ) / 2, RHO - 0.014, r"floor-entry research", S, color="0.3", ha="center", va="top")
+        lab(bl, 2.80, ENT1 + 0.016, r"recruiting research", S, color=BRICK, ha="center", va="bottom")
+        ins = bl.inset_axes([0.43, 0.33, 0.33, 0.40])
         ins.plot(rb, ent_b, color=BRICK, ls=DASH_R, lw=S.lw * 0.85)
         ins.plot([rRb, 1.74], [ENT1, ENT1], color=BRICK, lw=S.lw * 0.85)
         for x in NODES:
@@ -688,12 +769,11 @@ def fig_research(talk):
         ins.set_yticks([0.50, 0.51, 0.52])
         ins.tick_params(labelsize=S.ft - 1.0, length=2.2, pad=1.5)
         ins.patch.set_alpha(0.0)
-        ins.text(1.495, 0.5248, r"entry along the branch", fontsize=S.fn - 0.5, color=BRICK, va="center", ha="left")
-    if talk:
-        for ax_ in (al, bl):
-            ax_.set_xlabel(r"incumbent strength, $r$")
-    else:
+        ins.text(1.495, 0.5248, r"entry along the recruiting branch", fontsize=S.fn - 0.5, color=BRICK, va="center",
+                 ha="left")
+        plt.setp(al.get_xticklabels(), visible=False)
         fig.text(0.5, 0.012, r"incumbent strength, $r$", ha="center", va="bottom", fontsize=S.fl)
+    panel_label(bl, "(b)", S, dx=pdx, dy=1.04 if not talk else pdy)
     return fig
 
 
@@ -715,15 +795,15 @@ def main(argv=None):
     log("make_figures.py: figures of the order-slot manuscript")
     log(f"fonts: Fira Sans registered: {FIRA_OK}; matplotlib {matplotlib.__version__}; mpmath dps {mp.dps}")
     log("")
-    log("Primitives: h=10 ell=1 p=1/2 rho=1/4 c_H=6 k=1/50 pi=1/2; 1+u=e, beta=0.294655; research a=1/40, cap=lambda_B")
-    log(f"u={float(PM.u):.10f}  lambda_B={float(PM.lam):.10f}  b_B={float(PM.b):.10f}  "
+    log("Primitives: h=10 ell=1 p=1/2 rho=1/4 c_H=6 k=1/50 pi=1/2; 1+u=e, beta=0.294655; research a=1/40, cap=lambda-bar(beta)")
+    log(f"u={float(PM.u):.10f}  lambda-bar={float(PM.lam):.10f}  b={float(PM.b):.10f}  "
         f"M(1/2)={float(PM.M):.10f}  m(1/2)={float(PM.m):.10f}")
     log("")
     log("Boundaries used (40-digit values, 12 shown) beside the registry display value")
     log(f"{'name':<8}{'value':<22}{'computed':<12}{'registry key':<14}{'registry':<12}match")
     rows = [("r_A", "rA", "rA"), ("r_F", "rF", "rF_B"), ("r_N", "rN", "rN"), ("r_J", "rJ", "rJ"),
-            ("r_S", "rS", "rS_B"), ("r_C", "rC", "rC_B"), ("r_R", "rR", "res_rR"), ("r_R-bar", "rRbar", "res_rcap"),
-            ("r_U (r_U^R)", "rU", "res_rUR")]
+            ("r_S", "rS", "rS_B"), ("r_C", "rC", "rC_B"), ("r_C", "rC", "res_rC"), ("r_R", "rR", "res_rR"),
+            ("r_lb", "rRbar", "res_rcap"), ("r_U", "rU", "res_rUR"), ("r_Q", "rQ", "res_rQ")]
     for name, key, rk in rows:
         v = BD[key]
         comp, reg = d6(v), REG.get(rk, "(no row)")
@@ -732,10 +812,10 @@ def main(argv=None):
     log("Other values used, computed beside the registry")
     P = PM
     checks = [
-        ("M(1/2)", P.M, "M_half_B"), ("m(1/2)", P.m, "m_half_B"), ("lambda_B (cap)", P.lam, "res_cap"),
+        ("M(1/2)", P.M, "M_half_B"), ("m(1/2)", P.m, "m_half_B"), ("lambda-bar (cap)", P.lam, "res_cap"),
         ("tau(r_0)", tau(P, mpf(6) / 5), "tau_r0"), ("tau(r_1)", tau(P, mpf(3)), "tau_r1"),
         ("tau(r_2)", tau(P, mpf(18) / 5), "tau_r2"),
-        ("entry plateau, F", ent_plateau(P), "entry_r1_B"), ("entry at r_A, branch R", ent_branch_R(P, BD["rA"]), "entry_rA_B"),
+        ("entry plateau, F", ent_plateau(P), "entry_r1_B"), ("entry at r_A, form R", ent_branch_R(P, BD["rA"]), "entry_rA_B"),
         ("entry on R at 1.40", ent_branch_R(P, mpf("1.40")), "entry_mb_r140_B"),
         ("entry on R at 1.45", ent_branch_R(P, mpf("1.45")), "entry_mb_r145_B"),
         ("entry on T at 1.55", ent_threshold(P, mpf("1.55")), "entry_th_r155_B"),
@@ -746,32 +826,55 @@ def main(argv=None):
     ]
     for r_, tag in ((mpf("1.55"), "155"), (mpf("1.60"), "160"), (mpf("1.65"), "165")):
         lam_ = mpf(float(lamR(PF, float(r_))))
-        # research intensity with the 40-digit root of F_r by bisection
+        # research intensity with the 40-digit root of Lambda_r by bisection
         D = Delta(P, r_)
         f = lambda z: 2 * P.a * (1 - 2 * P.beta) * z * z + (4 * P.a * P.beta + P.k * (1 - 2 * P.beta) + P.beta * D) * z + P.beta * (2 * P.k - D)
         lam_hp = bisect(f, mpf(0), mpf(1))
         ent_hp = P.rho + (1 - P.rho) * (P.beta + (mpf(1) / 2 - P.beta) * lam_hp)
         checks.append((f"research lambda_R at {float(r_):.2f}", lam_hp, f"res_lambda_r{tag}"))
-        checks.append((f"entry on branch R at {float(r_):.2f}", ent_hp, f"res_entry_r{tag}"))
+        checks.append((f"entry, recruiting research at {float(r_):.2f}", ent_hp, f"res_entry_r{tag}"))
     lam_rR = bisect(lambda z: 2 * P.a * (1 - 2 * P.beta) * z * z + (4 * P.a * P.beta + P.k * (1 - 2 * P.beta) + P.beta * Delta(P, BD["rR"])) * z + P.beta * (2 * P.k - Delta(P, BD["rR"])), mpf(0), mpf(1))
     checks.append(("research at r_R", lam_rR, "res_lambda_rR"))
     checks.append(("research at r_R, recruitment intensity lambda_E(r_R)", lamE(P, BD["rR"]), "res_lambda_rR"))
     checks.append(("entry at r_R", P.rho + (1 - P.rho) * (P.beta + (mpf(1) / 2 - P.beta) * lam_rR), "res_entry_rR"))
     checks.append(("entry at the cap", ent_plateau(P), "res_entry_cap"))
+    rQ = BD["rQ"]
+    checks.append(("floor-entry research at r_Q, lambda_E(r_Q)", lamE(P, rQ), "res_lambda_floor_rQ"))
+    checks.append(("floor-entry research at r_Q, lambda_Q(Delta(r_Q))", lamQ(P, Delta(P, rQ)), "res_lambda_floor_rQ"))
+    checks.append(("floor-entry research at r_U, lambda_Q(Delta(r_U))", lamQ(P, Delta(P, BD["rU"])), "res_cap"))
+    checks.append(("region: Delta(r_A) = k/(1 - tau(r_A))", Delta(P, BD["rA"]), "Delta_rA"))
+    checks.append(("region: tau(r_A)", tau(P, BD["rA"]), "tau_rA"))
+    checks.append(("region: Delta(r_0)", Delta(P, mpf(6) / 5), "Delta_r0"))
+    checks.append(("region: tau(r_N) - 1/2", tau(P, BD["rN"]) - mpf(1) / 2, "margin_tau_rN_half_B"))
     log(f"{'quantity':<52}{'computed':<12}{'registry key':<20}{'registry':<12}match")
     for name, v, rk in checks:
         comp, reg = d6(v), REG.get(rk, "(no row)")
         log(f"{name:<52}{comp:<12}{rk:<20}{reg:<12}{'yes' if same(comp, reg) else 'DIFFERENT'}")
     log("")
-    log("Order of the boundaries (coexistence figure): r_A < r_F < r_N < r_J < r_S < r_C: " +
+    log("Values drawn without a registry row (40 digits, 12 shown)")
+    log(f"  floor margin at r_N                          {mp.nstr(phi_rho(P, BD['rN']), 12)}  (negative)")
+    log(f"  floor margin at r_U                          {mp.nstr(phi_rho(P, BD['rU']), 12)}  (positive)")
+    log(f"  lambda_Q(Delta(r_N)) (rho Delta = 2k)       {mp.nstr(lamQ(P, Delta(P, BD['rN'])), 12)}")
+    log(f"  region: Delta^F = k/(1 - M(1/2))             {mp.nstr(P.k / (1 - P.M), 12)}")
+    log(f"  region: Delta^N = 2k/rho                     {mp.nstr(2 * P.k / P.rho, 12)}")
+    log(f"  region: k/(1 - tau) at tau = 1/2             {mp.nstr(2 * P.k, 12)}")
+    log(f"  region: tau(r_F), tau(r_N)                   {mp.nstr(tau(P, BD['rF']), 12)}, {mp.nstr(tau(P, BD['rN']), 12)}")
+    log(f"  region: path leaves the window Delta = 1/5 at r = {mp.nstr(frak(P, mpf(1) / 5), 12)}")
+    log("")
+    log("Order of the marked strengths (coexistence figure): r_A < r_F < r_N < r_J < r_S < r_C: " +
         " < ".join(f"{BF[k_]:.6f}" for k_ in ("rA", "rF", "rN", "rJ", "rS", "rC")))
-    log("Research branch: r_R < r_R-bar < r_N < r_U: " + " < ".join(f"{BF[k_]:.6f}" for k_ in ("rR", "rRbar", "rN", "rU")))
+    log("Research figure: r_R < r_lambda-bar < r_N < r_Q < r_U < r_C: " +
+        " < ".join(f"{BF[k_]:.6f}" for k_ in ("rR", "rRbar", "rN", "rQ", "rU", "rC")))
     log("Line breaks: no curve crosses an open interval. Coexistence: R ends at r_F where F starts at the same value;")
     log("  F ends at r_C (closed), the floor segment starts at r_C (open). Q is open at r_N and r_J.")
-    log("  Research: Z closed at r_N; the cap line ends open at r_N and restarts open at r_U; (r_N, r_U) is shaded, no line.")
-    log("  Research: the plateau ends open at r_C and the floor segment starts open at r_C (P3 excludes M = tau(r)).")
-    log("  Markers: filled = the value is attained at that strength; open = approached, not attained or not claimed.")
-    log("  Nodes (black): r_0, 1.55, 1.60, 1.65, r_1 = 3, r_2 = 18/5 (the six strengths of P3).")
+    log("  Region: 1/2 < tau <= M(1/2), k/(1 - tau) <= Delta <= 2k/rho; the edge tau = 1/2 is open (dotted), the")
+    log("  other three are closed (solid). The path enters on the left edge at r_A and leaves on the right edge at r_N.")
+    log("  Research: zero research closed at r_N. Recruiting research below the cap on [r_R, r_lambda-bar), at the cap on")
+    log("  [r_lambda-bar, r_C], closed at r_C. Floor-entry research on (r_N, r_Q), open at both ends, entry rho; at the cap")
+    log("  on (r_C, r_2], open at r_C. Nothing is drawn at rho on [r_Q, r_C], where recruiting research is unique.")
+    log("  At (r_N, rho) the filled marker belongs to zero research; at (r_C, cap) it belongs to recruiting research.")
+    log("  Markers: filled = the value is attained at that strength; open = approached, not attained.")
+    log("  Nodes (black): r_0, 1.55, 1.60, 1.65, r_1 = 3, r_2 = 18/5.")
     log("Fonts: manuscript figures use STIXGeneral text and STIX math (TrueType, Type 42).")
     log("  Slide figures use Fira Sans (Regular) with Computer Modern math; the CFF outlines of Fira Sans are converted")
     log("  to TrueType outlines with fontTools (cu2qu, error bound 1 font unit) so that the PDF embeds a TrueType font.")
