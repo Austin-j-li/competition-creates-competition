@@ -412,8 +412,8 @@ def fig_beliefs(talk):
     axa.set_xlabel(r"incumbent strength, $r$")
     axa.set_ylabel(r"preparation threshold, $\tau(r)$")
     xl = 1.27
-    lab(axa, xl, Mv + 0.022, r"top posterior $M(1/2)=%s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="bottom")
-    lab(axa, xl, mv + 0.022, r"bottom posterior $m(1/2)=%s$" % regd("m_half_B", d6(PM.m)), S, color=NAVY, va="bottom")
+    lab(axa, xl, Mv + 0.022, r"top posterior $M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="bottom")
+    lab(axa, xl, mv + 0.022, r"bottom posterior $m(1/2)\approx %s$" % regd("m_half_B", d6(PM.m)), S, color=NAVY, va="bottom")
     lab(axa, xl, 0.5 + 0.022, r"prior $1/2$", S, color="0.35", va="bottom")
     lab(axa, 1.9 if not talk else 2.0, 0.60 if not talk else 0.585, r"threshold $\tau(r)$", S, color=BRICK, va="center")
     axa.annotate("", xy=(2.0 if not talk else 2.1, float(tau(PF, 2.0 if not talk else 2.1)) - 0.012),
@@ -444,11 +444,11 @@ def fig_beliefs(talk):
     axb.set_yticks([0.700, 0.710, 0.720, 0.730])
     axb.set_xlabel(r"incumbent strength, $r$")
     axb.set_ylabel(r"belief, $\tau(r)$ and $M(1/2)$")
-    lab(axb, 3.02, t2 + 0.0010, r"$\tau(r_2)=%s$" % regd("tau_r2", d6(t2)), S, color=NAVY, va="bottom")
-    lab(axb, 3.02, Mv - 0.0009, r"$M(1/2)=%s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="top")
+    lab(axb, 3.02, t2 + 0.0010, r"$\tau(r_2)\approx %s$" % regd("tau_r2", d6(t2)), S, color=NAVY, va="bottom")
+    lab(axb, 3.02, Mv - 0.0009, r"$M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="top")
     lab(axb, 3.585, t1 + 0.0010, r"$\tau(r_1)=%s$" % regd("tau_r1", d6(t1)), S, color=NAVY, ha="right", va="bottom")
     lab(axb, 3.585, 0.7105 if talk else 0.7095, r"band for $M(1/2)$", S, color=NAVY, ha="right", va="center")
-    lab(axb, rC - 0.012, 0.7022, r"$r_C=%s$" % regd("rC_B", d6(rC)), S, color="0.2", ha="right", va="center")
+    lab(axb, rC - 0.012, 0.7022, r"$r_C\approx %s$" % regd("rC_B", d6(rC)), S, color="0.2", ha="right", va="center")
     panel_label(axb, "(b)", S, dx=-0.34 if not talk else -0.36, dy=1.075)
     return fig
 
@@ -710,7 +710,7 @@ def fig_research(talk):
         lab(al, 2.22, 0.20, r"floor-entry", S, color="0.3", ha="left", va="center")
     else:
         lab(al, 1.21, 0.018, r"zero research", S, color=NAVY, va="bottom")
-        lab(al, (rN + rQ) / 2, CAP - 0.016, r"cap $\bar\lambda=%s$" % regd("res_cap", d6(CAP)), S, color="0.3",
+        lab(al, (rN + rQ) / 2, CAP - 0.016, r"cap $\bar\lambda\approx %s$" % regd("res_cap", d6(CAP)), S, color="0.3",
             ha="center", va="top")
         al.annotate(r"recruiting" "\n" r"research", xy=(1.515, float(lamR(PF, 1.515))), xytext=(1.225, 0.235),
                     fontsize=S.fn, color=BRICK, ha="left", va="center",
