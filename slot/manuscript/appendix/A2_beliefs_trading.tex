@@ -1,11 +1,11 @@
 \subsection{Beliefs and trading}\label{app:beliefs}
 
-% Long script paths: allow stretch inside paths and a little emergency stretch in the appendix.
 \Urlmuskip=0mu plus 2mu
 \setlength{\emergencystretch}{1.5em}
 
-This subsection states and proves the results behind Sections~\ref{sec:inference} and~\ref{sec:informed}. Each result holds
-for every order profile, in or out of equilibrium. Every later proof uses them in that form.
+\paragraph{Beliefs, prices and trading.}\label{par:a2-scope}
+The belief lemma holds for every order profile, in or out of equilibrium; the price and trading lemmas hold
+for every tuple that meets their stated conditions.
 
 \paragraph{Conventions for Appendices A.2 to A.9.}
 The conditions (E1) to (E6) are those of Definition~\ref{def:equilibrium}.
@@ -15,16 +15,13 @@ orders allowed. A \emph{candidate} is a tuple \(\mathcal E\) that satisfies (E1)
 profile. An equilibrium is a candidate that also satisfies (E5).
 \item A deviation by the investor holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed.
 It changes only the order that reaches them.
-\item Proofs use the deviation comparison to test a candidate equilibrium, and they solve the equilibrium again in
+\item A unilateral deviation holds prices and preparation fixed; a comparison across incumbents solves the equilibrium in
 each economy to compare outcomes across economies.
 \item A uniqueness proof derives its bounds for every candidate. It does not use the proposed tuple.
-\item A verification checks each condition by direct computation against the stated tuple. It does not cite a
-lemma whose premises include the condition under check.
+\item A constructed tuple satisfies the equilibrium conditions by direct substitution into their defining equations.
 \item Write \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
 \(w(\mu)=(1-\mu)w_L+\mu w_H=t_L-t_0+\DT\mu\) for its average at the belief \(\mu\). Proposition~\ref{prop:returns}
 and Section~\ref{sec:profits} give \(w_H\ge w_L\ge0\).
-\item A step that uses a script names the script and its run log. Every script path in Appendix~\ref{app:proofs} is
-relative to the folder \nolinkurl{audit/slot_manuscript_2026_10_23/scripts/} of the project repository.
 \end{itemize}
 
 % STRUCTURE: the symbols delta_q and b_0 and the odds form eq:odds <- Section 3.2
@@ -42,7 +39,7 @@ Fix any order distributions \(\sigma_H\) and \(\sigma_L\).
 \item \emph{Full support.} \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order \(x\) and class \(j\).
 \item \emph{Nonzero orders.} For \(x\in\{-1,1\}\), \(b\le f_j(x)\le b+\lambda\). Hence
 \(m(\pi)\le\mu(x)\le M(\pi)\).
-\item \emph{The zero order.} \(b_0\le f_j(0)\le b_0+\lambda\), and \(b_0\ge b\). Hence
+\item \emph{The zero order.} If \(\beta\le1/3\), then \(b_0\le f_j(0)\le b_0+\lambda\) and \(b_0\ge b\). Hence
 \(m(\pi)\le\mu(0)\le M(\pi)\).
 \item \emph{Full orders.} If \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), the posteriors after the orders
 \((-1,0,1)\) are \(\bigl(m(\pi),\pi,M(\pi)\bigr)\).
@@ -93,7 +90,7 @@ Only part (c) uses \(\beta\le1/3\). Parts (a), (b) and (d) hold for every \(\bet
 
 % STRUCTURE: Corollary 1 <- Section 3.2
 \begin{corollary}[High-cost preparation under every profile]\label{cor:exclusion}
-Let \(g_H\ge g_L\). If \(B(M(\pi))<c_H\), then no profile that satisfies (E1)--(E3), in or out of equilibrium,
+Let \(0<\beta\le1/3\) and \(g_H\ge g_L\). If \(B(M(\pi))<c_H\), then no profile that satisfies (E1)--(E3), in or out of equilibrium,
 has high-cost preparation after any order.
 \end{corollary}
 
@@ -119,7 +116,7 @@ is \(\mu(x)\).
 \(P(x)-P(x')\ge\rho\DT\,[\mu(x)-\mu(x')]>0\).
 \end{enumerate}
 \end{lemma}
-Under rule CM, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both
+When an indifferent high-cost challenger may prepare with any probability, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both
 challenger rules.
 
 \begin{proof}[Proof of Lemma~\ref{lem:prices}]
@@ -150,8 +147,8 @@ equal, so \(\bar\mu(P(x))=\mu(x)\). The price therefore reveals the posterior.
 
 \emph{Part (d): entry.} Since \(g_H>g_L\), \(B(\mu)>c_H\) exactly when \(\mu>\tau\). By part (c), the
 challenger's gross profit at \(P(x)\) is \(B(\mu(x))\). Condition (E3) gives \(e(x)=\rho\) if \(\mu(x)<\tau\) and
-\(e(x)=1\) if \(\mu(x)>\tau\). At \(\mu(x)=\tau\), \(e(x)=1\) under rule C1, and \(e(x)\) can take any value in
-\([\rho,1]\) under rule CM.
+\(e(x)=1\) if \(\mu(x)>\tau\). At \(\mu(x)=\tau\), \(e(x)=1\) when an indifferent high-cost challenger prepares, and \(e(x)\) can take any value in
+\([\rho,1]\) when an indifferent high-cost challenger may prepare with any probability.
 
 \emph{Part (e): monotonicity.} Let \(\mu(x)>\mu(x')\). If \(\mu(x')<\tau\), then \(e(x')=\rho\le e(x)\). If
 \(\mu(x')\ge\tau\), then \(\mu(x)>\tau\) and \(e(x)=1\ge e(x')\). Part (b) gives
@@ -162,12 +159,33 @@ The second term is nonnegative, because \(w(\mu)\ge w_L\ge0\). The first term is
 \(\rho\DT[\mu(x)-\mu(x')]>0\). Prices therefore rise strictly with the posterior.
 \end{proof}
 
-\paragraph{Constructed tuples.}
-The identity \eqref{eq:a2-increment} uses only the price formula. It therefore applies to any prices of the form
-\(P(x)=t_0+e(x)\,w(\mu(x))\) with \(\DT>0\) and with entry in \([\rho,1]\) that is nondecreasing in the posterior.
-The verifications below use it in this form, before any condition is checked: a stated tuple has distinct prices at
-distinct posteriors, and equal prices at equal posteriors. The belief \(\bar\mu(P(x))=\mu(x)\) then follows from
-(E2) by direct computation.
+\paragraph{Constructed tuples.}\label{par:constructed-tuples}
+Let \(\DT>0\). Take a profile, its Bayes posteriors \(\mu(x)\), and entry \(e(x)\in[\rho,1]\) such that
+\(e(x)\ge e(x')\) whenever \(\mu(x)>\mu(x')\). Set \(P(x)=t_0+e(x)[w_L+\DT\mu(x)]\), where \(w_L=t_L-t_0\ge0\).
+Then prices rise strictly with the posterior, and
+\[
+P(x)=P(x')\quad\Longleftrightarrow\quad
+\mu(x)=\mu(x')\ \text{and}\ e(x)=e(x').
+\]
+The preparation rule \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a function of the price, and the belief at \(P(x)\)
+is \(\mu(x)\). If also \(g_H>g_L\), threshold-consistent entry is a function of the posterior when an indifferent
+high-cost challenger prepares. When an indifferent high-cost challenger may prepare with any probability,
+orders at \(\tau\) with different entry have different prices, each revealing \(\tau\).
+
+\begin{proof}
+Let \(\mu(x)>\mu(x')\). Then \(e(x)\ge e(x')\), and \eqref{eq:a2-increment} gives
+\(P(x)-P(x')\ge e(x)\DT[\mu(x)-\mu(x')]\ge\rho\DT[\mu(x)-\mu(x')]>0\), because \(w(\mu)\ge w_L\ge0\). Let
+\(\mu(x)=\mu(x')\). Then \(P(x)-P(x')=[e(x)-e(x')]\,w(\mu(x))\), and \(w(\mu(x))=w_L+\DT\mu(x)>0\), because
+\(\mu(x)>0\) by Lemma~\ref{lem:beliefs}(a). Equal prices therefore force equal posteriors and equal entry, and the
+price formula gives the converse. So \(\zeta\) is a function of the price, and \(e(x)\in[\rho,1]\) puts its values in
+\([0,1]\). At a price \(\bar P\), all orders with the price \(\bar P\) share one posterior, so by \eqref{eq:odds}
+they share one likelihood ratio \(f_H(x)/f_L(x)\). The ratio of sums in the step on beliefs at a price, in the
+proof of Lemma~\ref{lem:beliefs}, equals that likelihood ratio, and (E2) gives the common posterior. Under the
+first challenger rule, Lemma~\ref{lem:prices}(d) fixes entry at every posterior, \(\tau\) included. Under the second,
+the identity at equal posteriors gives distinct prices to distinct entries at \(\tau\), and every order with one of
+these prices has the posterior \(\tau\).
+
+\end{proof}
 
 % STRUCTURE: Lemma 3 <- Section 3.3
 \begin{lemma}[Informed trading]\label{lem:trading}
@@ -211,10 +229,9 @@ and \(U_L(1)=-e(1)\DT\mu(1)-k\) are at most \(-k<0=U_j(0)\). No class puts weigh
 
 \emph{Part (b).} By part (a), class \(H\) compares the purchase with abstention, and
 \(U_H(1)-U_H(0)=K_H-k\). Class \(H\) buys with probability one if \(K_H>k\) and abstains if \(K_H<k\). If \(K_H=k\),
-the purchase and abstention are its two maximizers: rule IM allows any mixture of them, and rule I0 selects
-abstention. Class \(L\) compares the sale with abstention, and \(U_L(-1)-U_L(0)=K_L-k\). Class \(L\) sells with
+the purchase and abstention are its two maximizers: an indifferent investor may mix over them or abstains. Class \(L\) compares the sale with abstention, and \(U_L(-1)-U_L(0)=K_L-k\). Class \(L\) sells with
 probability one if \(K_L>k\) and abstains if \(K_L<k\). If \(K_L=k\), the sale and abstention are its two maximizers:
-rule IM allows any mixture of them, and rule I0 selects abstention.
+an indifferent investor may mix over them or abstains.
 
 \emph{Part (c).} By Lemma~\ref{lem:beliefs}(b), \(\mu(1)\le M(\pi)\) and \(\mu(-1)\ge m(\pi)\) under every profile,
 for every \(\beta<1/2\). Also \(\rho\le e\le1\) and \(0\le\mu\le1\). Hence
@@ -229,8 +246,157 @@ The upper bounds use only \(e\le1\) and \(0\le\mu\le1\).
 \(\lambda\,U_j(q)\), and the factor \(\lambda>0\) changes no comparison.
 \end{proof}
 
-\paragraph{Where \(\beta\le1/3\) enters.}
-The bound \(\beta\le1/3\) enters only at the zero order, and through it only Corollary~\ref{cor:exclusion} and the
-bound \(\bar\mu\le M(\pi)\) at a price that pools the zero order. The bounds \eqref{eq:a2-bounds} use the nonzero
-orders only. The proofs of Propositions~\ref{prop:ccc} and~\ref{prop:coexistence} and of Corollary~\ref{prop:priors} use parts
-(a), (b) and (d) of Lemma~\ref{lem:beliefs} only, so these results hold for every \(\beta<1/2\).
+\begin{lemma}[The auction through the spread and the threshold]\label{lem:reduction}
+Fix the model's independence and information structure, a prior \(\pi\in(0,1)\), the two-point preparation cost
+with \(\rho\in(0,1)\) and \(c_H>0\), a trading cost \(k>0\), and one pair of tie rules: an indifferent investor
+may mix over its best orders or abstains, and an indifferent high-cost challenger prepares or may prepare with
+any probability. At fixed presence, fix \(0<\lambda<1\); with research, presence is \(\hat\lambda\).
+Fix \(0<\beta<1/2\). Consider two cash second-price auctions with finite-mean classes satisfying the class
+ranking, continuous incumbent laws, \(\DT>0\) and \(\gamma=g_H-g_L>0\), and the same spread and preparation threshold
+\(\tau=(c_H-g_L)/\gamma\). Their equilibrium sets projected onto
+\((\sigma_H,\sigma_L,\mu,e)\) coincide.
+
+The common conditions are Bayes' rule, the threshold entry rule under the chosen tie rule, and optimal orders at
+\[
+\begin{aligned}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,& U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\DT\mu(-1)-k,& U_L(1)&=-e(1)\DT\mu(1)-k,
+\end{aligned}
+\qquad U_j(0)=0.
+\]
+Each auction gives prices and price beliefs by
+\[
+P(x)=t_0+e(x)[w_L+\DT\mu(x)],\qquad
+\zeta(P(x))=\frac{e(x)-\rho}{1-\rho},\qquad \bar\mu(P(x))=\mu(x).
+\]
+With research, fix also the quadratic cost coefficient \(a>0\) and cap \(0<\lb<1\), and require optimal orders
+after a hypothetical success even at zero research. The equilibrium sets projected onto
+\((\hat\lambda,\sigma_H,\sigma_L,\mu,e)\) coincide. The common conditions also include
+\[
+\hat\lambda=\min\{\lb,\Psi/a\},\qquad
+\Psi=\pi\max_q U_H(q)+(1-\pi)\max_q U_L(q),
+\]
+with Bayes' rule evaluated at \(\hat\lambda\). These conclusions hold under all four tie rules.
+\end{lemma}
+
+\begin{proof}
+For either auction, Lemma~\ref{lem:prices} makes the price posterior equal to the order posterior.
+Since \(B(\mu)-c_H=\gamma(\mu-\tau)\), preparation optimality is the same threshold rule in both auctions,
+including the selected action at equality. Subtracting the competitive price from the class payoff gives the
+four nonzero-order payoffs in the statement by Lemma~\ref{lem:trading}. The price levels \(t_0\) and \(w_L\)
+cancel. Thus every equilibrium gives a solution of the same reduced conditions.
+
+Conversely, take a solution of those conditions. Threshold-consistent entry is nondecreasing across distinct
+posteriors. The constructed-tuples paragraph supplies the displayed prices, a preparation rule that is a function
+of price, and the price beliefs. In particular, orders with a common price have a common posterior and common
+entry; orders at the preparation threshold with different entry have different prices. Bayes' rule at a pooled
+price follows by summing order probabilities with the same likelihood ratio. Preparation is optimal because
+\(\gamma>0\), competitive pricing follows from the conditional terminal payoff, and optimal orders are exactly
+the reduced payoff comparisons. Truthful bidding completes the tuple. This construction works in either auction.
+
+With research, at the candidate prices and preparation rule a deviation to intensity \(\tilde\lambda\) and optimal
+success-contingent orders earns
+\[
+\tilde\lambda\bigl[\pi\max_qU_H(q)+(1-\pi)\max_qU_L(q)\bigr]-\frac a2\tilde\lambda^2.
+\]
+Its strict concavity on \([0,\lb]\) gives \(\hat\lambda=\min\{\lb,\Psi/a\}\).
+At zero intensity the stipulated hypothetical-success optimality gives the same maximizers. Since the payoffs,
+coefficient and cap coincide, the research condition and the price construction coincide as well.
+\end{proof}
+
+\begin{lemma}[The two numbers along a path]\label{lem:twonumbers}
+Fix ranked finite-mean classes, the reserve and the two-point preparation cost. A path is a family \(F_r\) of
+continuous incumbent laws indexed by strength on an interval, with \(F_{r'}\le F_r\) when \(r'>r\). Write
+\(\DT(r)=\DT(F_r)\), \(\gamma(r)=g_H(F_r)-g_L(F_r)\), and, where \(\gamma(r)>0\),
+\(\tau(r)=[c_H-g_L(F_r)]/\gamma(r)\). The class mean gap is fixed:
+\[
+\bar\Gamma=\E_H\theta-\E_L\theta=\DT(r)+\gamma(r).
+\]
+Each \(g_j\) and \(\gamma\) is nonincreasing, and \(\DT\) is nondecreasing. For \(r'>r\),
+\[
+\begin{aligned}
+\DT(r')-\DT(r)&=\int_p^\infty[F_r(y)-F_{r'}(y)]D(y)\,dy,\\
+g_j(F_r)-g_j(F_{r'})&=\int_p^\infty[F_r(y)-F_{r'}(y)][1-G_j(y)]\,dy.
+\end{aligned}
+\]
+Each change is strict exactly when its integral is positive. Where \(\gamma>0\), \(\DT>0\) and \(\tau\ge0\), both
+\(\tau\) and \(\DT\tau\) are nondecreasing. Their exact increments are
+\[
+\tau(r')-\tau(r)=
+\frac{g_L(F_r)-g_L(F_{r'})+\tau(r)[\DT(r')-\DT(r)]}{\gamma(r')},
+\]
+\[
+\DT(r')\tau(r')-\DT(r)\tau(r)
+=\DT(r)[\tau(r')-\tau(r)]+\tau(r')[\DT(r')-\DT(r)].
+\]
+Thus the threshold rises strictly exactly when the numerator in its increment is positive; the product rises
+strictly exactly when the right side of its increment is positive.
+
+On a differentiable path the return \(J=\DT(1-\tau)\) obeys
+\[
+J'=\frac{\bar\Gamma(g_H-c_H)\DT'+\DT\gamma g_H'}{\gamma^2}.
+\]
+Its direction depends on the balance between spread growth and the decline in high-class profit. For point
+classes \(h=\reg{twonum_h}\), \(\ell=\reg{twonum_ell}\), reserve \(p=\reg{twonum_p}\), high cost
+\(c_H=\reg{twonum_cH}\), and \(F_r=U[r-\reg{twonum_halfwidth},r+\reg{twonum_halfwidth}]\) on
+\([\reg{twonum_rlo},\reg{twonum_rhi}]\),
+\[
+\DT=r-\ell,\qquad g_L=0,\qquad g_H=h-r,\qquad \tau=\frac{c_H}{h-r}.
+\]
+Its return falls between the endpoints:
+\[
+\begin{aligned}
+J(\reg{twonum_rlo})&=\reg{twonum_Jlo},\\
+J(\reg{twonum_rhi})&=\reg{twonum_Jhi}<J(\reg{twonum_rlo}).
+\end{aligned}
+\]
+In the uniform-incumbent example below, \(J\) rises on \([r_0,r_2]\) by the uniform case of
+Proposition~\ref{prop:coexistence}(c).
+\end{lemma}
+
+\begin{proof}
+The split identity \(t_j(F)+g_j(F)=\E_j\theta\) gives
+\(\DT+\gamma=\bar\Gamma\). The auction integrals are
+\[
+g_j(F)=\int_p^\infty F(y)[1-G_j(y)]\,dy,\qquad
+\gamma(F)=\int_p^\infty F(y)D(y)\,dy.
+\]
+Subtracting the integrals at two ordered laws gives the stated profit differences. Subtracting the profit-gap
+integrals and using the split identity gives the spread difference. Their integrands are nonnegative, so the
+monotonicity and exact strictness conditions follow.
+
+Because \(\gamma(r')=\gamma(r)-[\DT(r')-\DT(r)]\), direct subtraction of the threshold ratios gives its displayed
+increment. Its numerator is nonnegative when \(\tau(r)\ge0\), and its denominator is positive. Expanding
+\(\DT(r')\tau(r')-\DT(r)\tau(r)\) gives the product increment. Both terms are nonnegative, which proves the
+product comparison and its exact strictness condition.
+
+On a differentiable path, write \(1-\tau=(g_H-c_H)/\gamma\) and \(\gamma'=-\DT'\). Differentiation gives
+\[
+J'=\frac{(g_H-c_H)\DT'+\DT g_H'}{\gamma}
+       +\frac{\DT(g_H-c_H)\DT'}{\gamma^2}.
+\]
+Collecting the \(\DT'\) terms and using \(\gamma+\DT=\bar\Gamma\) gives the stated expression.
+For the translated uniform laws every incumbent value lies strictly between \(\ell\) and \(h\).
+Thus \(t_L=\ell\), \(t_H=\E R=r\), \(g_L=0\) and \(g_H=h-r\), which gives all four formulas and the endpoint
+values of \(J\) by substitution. The uniform-incumbent comparison follows from
+Proposition~\ref{prop:coexistence}(c).
+\end{proof}
+
+\paragraph{The liquidity share.}\label{par:beta-scope}
+The bound \(\beta\le1/3\) is the inequality \(b_0\ge b\). It extends the posterior bounds of the nonzero orders
+to the zero order, and through it enters only Corollary~\ref{cor:exclusion} and the zero-order part of the
+research bounds. The research parameter region and the slot-feasibility parts of identification range over the
+slots with \(\beta\le1/3\). Every other result holds for every \(0<\beta<1/2\); a corollary that fixes the slot
+holds at that slot.
+
+\paragraph{A price reached by a nonzero order.}
+For every profile and every price function, a price reached by at least one nonzero order has a price posterior
+in \([m(\pi),M(\pi)]\), for every \(0<\beta<1/2\), including when the price pools the zero order.
+
+\begin{proof}
+Let \(X(\bar P)=\{x:P(x)=\bar P\}\), and suppose it contains a nonzero order. Its liquidity mass
+\((1-\lambda)\sum_{x\in X(\bar P)}\eta(x)\) is at least \(b\). Its informed mass in each class lies between zero
+and \(\lambda\). Thus the ratio of its class probabilities lies between \((1+u)^{-1}\) and \(1+u\). Bayes' rule
+gives the stated interval.
+
+\end{proof}
