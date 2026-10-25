@@ -28,7 +28,7 @@ Posterior bounds & \(m(\pi),\ M(\pi)\) & \(\reg{m_half_B},\ \reg{M_half_B}\) & d
 \midrule
 Research cost and cap & \(a,\ \lb\) & \(\reg{res_a},\ \reg{res_cap}\) & input\\
 Cost law & \(L;\ \varepsilon\) & \(\reg{atom_L};\ \reg{atom_eps},\ \reg{atom_eps_small}\) & input\\
-Signal accuracies at B & \(a_T,\ d\) & \(\reg{sig_comp_aT},\ \reg{sig_comp_d}\) & input\\
+Signal accuracies at B & \(\alpha_I,\ \alpha_C\) & \(\reg{sig_comp_aT},\ \reg{sig_comp_d}\) & input\\
 Four-class values & \(\theta_1,\dots,\theta_4\) & \(\reg{four_v1},\ \reg{four_v2},\ \reg{four_v3},\ \reg{four_v4}\) & input\\
 Four-class prior & \(\pi_j\) & \(\reg{four_prior}\) each & input\\
 High cost, access outside recruitment & \(c_H\) & \(\reg{access_out_cH}\) & input\\
@@ -52,7 +52,7 @@ The signal example of Section~\ref{sec:signals} uses its own vector. It keeps th
 \[
 \rho=\reg{sig_rho},\qquad c_H=\reg{sig_cH},\qquad k=\reg{sig_k},\qquad r_0=\reg{sig_r0},\qquad r_1=\reg{sig_r1},
 \]
-and the accuracies \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\),
+and the accuracies \((\alpha_I,\alpha_C)=(\reg{sig_aT},\reg{sig_d})\),
 each an input. Its primitive margins are positive: \(\rho\), \(1-\rho\), \(r_0-\ell\), \(r_1-r_0\), \(h-r_1\),
 \(c_H\) and \(k\) are all positive. The values of \(S(B)\) describe a comparison of strengths within \(S(B)\); they do
 not describe calibration B.
@@ -151,8 +151,8 @@ Strong & \(\lambda_E(r_1)<\lb\) & \(\lb-\lambda_E(r_1)\) & \(\reg{margin_res_cap
  & \(M_{\lb}<\tau(r_2)\) & \(\tau(r_2)-M_{\lb}\) & \(\reg{margin_res_tau_r2_B}\) & [P3]\\
  & (U) at \(r_1\), \(r_2\) & \(\rho\DT m_{\lb}-k-a\lb\) & \(\reg{margin_res_bound_r1_B}\), \(\reg{margin_res_bound_r2_B}\) & [P3]\\
 Branch & \(r_R<\reg{str_r155}\) & \(\reg{str_r155}-r_R\) & \(\reg{margin_res_rR_B}\) & [P3]\\
- & \(\reg{str_r165}<\bar r_R\) & \(\bar r_R-\reg{str_r165}\) & \(\reg{margin_res_rcap_B}\) & [P3]\\
- & \(\bar r_R<r_N\) & \(r_N-\bar r_R\) & \(\reg{margin_res_rN_B}\) & [P3]\\
+ & \(\reg{str_r165}<r_{\lb}\) & \(r_{\lb}-\reg{str_r165}\) & \(\reg{margin_res_rcap_B}\) & [P3]\\
+ & \(r_{\lb}<r_N\) & \(r_N-r_{\lb}\) & \(\reg{margin_res_rN_B}\) & [P3]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -190,13 +190,13 @@ Collision & \(\beta>1/4\) & \(\beta-1/4\) & \(\reg{margin_p2_many_beta_B}\) & [P
  & strict class choices & choice gaps & \(\reg{p2_many_choice0}\); \(\reg{p2_many_choice1}\); \(\reg{p2_many_choice2}\) & [P2]\\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:signals}: the vector \(S(B)\) and calibration B}}\\
-Private exclusion & \(B_{r_0}(d)<c_H\) & \(c_H-B_{r_0}(d)\) & \(S(B)\): \(\reg{margin_p4_signal_s_private}\); B: \(\reg{margin_p4_signal_comp_b_private}\) & [P4]\\
+Private exclusion & \(B_{r_0}(\alpha_C)<c_H\) & \(c_H-B_{r_0}(\alpha_C)\) & \(S(B)\): \(\reg{margin_p4_signal_s_private}\); B: \(\reg{margin_p4_signal_comp_b_private}\) & [P4]\\
 Joint entry & \(c_H<B_{r_1}(\phi_+(\mu_+))\) & \(B_{r_1}(\phi_+(\mu_+))-c_H\) & \(S(B)\): \(\reg{margin_p4_signal_s_joint}\); B: \(\reg{margin_p4_signal_comp_b_joint}\) & [P4]\\
-Weak order & \((2a_T-1)D^+(r_0)<k\) & \(k-(2a_T-1)D^+(r_0)\) & \(S(B)\): \(\reg{margin_p4_signal_s_weak}\); B: \(\reg{margin_p4_signal_comp_b_weak}\) & [P4]\\
-Strong order & \(k<(2a_T-1)\rho m\DT(r_1)\) & \((2a_T-1)\rho m\DT(r_1)-k\) & \(S(B)\): \(\reg{margin_p4_signal_s_strong}\); B: \(\reg{margin_p4_signal_comp_b_strong}\) & [P4]\\
+Weak order & \((2\alpha_I-1)D^+(r_0)<k\) & \(k-(2\alpha_I-1)D^+(r_0)\) & \(S(B)\): \(\reg{margin_p4_signal_s_weak}\); B: \(\reg{margin_p4_signal_comp_b_weak}\) & [P4]\\
+Strong order & \(k<(2\alpha_I-1)\rho m\DT(r_1)\) & \((2\alpha_I-1)\rho m\DT(r_1)-k\) & \(S(B)\): \(\reg{margin_p4_signal_s_strong}\); B: \(\reg{margin_p4_signal_comp_b_strong}\) & [P4]\\
 One pair & \(B_{r_1}(\phi_-(\mu_+))<c_H\) & \(c_H-B_{r_1}(\phi_-(\mu_+))\) & \(S(B)\): \(\reg{margin_p4_signal_s_other_pair}\); B: \(\reg{margin_p4_signal_comp_b_other_pair}\) & [P4]\\
 Control at B & no-signal top excluded & \(c_H-B_{r_1}(\mu_+)\) & \(\reg{margin_p4_comp_b_no_y_top_r1}\) & [P4]\\
- & \(d\ge a_T\) impossible & weak bound minus \(k\) & \(\reg{margin_p4_b_d_ge_a_impossible}\) & [P4]\\
+ & \(\alpha_C\ge\alpha_I\) impossible & weak bound minus \(k\) & \(\reg{margin_p4_b_d_ge_a_impossible}\) & [P4]\\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:reserves} and the benchmark reserves: \(T=\rho\kappa\DT-k\), \(C=c_H-B(1/2)\), \(J=B(M)-c_H\)}}\\
 Exclusion, points & \(T,C,J\) at \(r_0\) & & \(\reg{p2_reserve_points_exclude_r0_global}\), \(\reg{p2_reserve_points_exclude_r0_prior_cost_margin}\), \(\reg{p2_reserve_points_exclude_r0_cost_sign_plus}\) & [P2]\\
@@ -257,7 +257,7 @@ The statement excludes these entries:
 \begin{itemize}[leftmargin=2em,itemsep=0pt]
 \item the third economy of Proposition~\ref{prop:atomless} at the half-width \(\reg{atom_eps}\), which fails by design;
 \item the control economy with the same means in the last panel, whose negative \(C_1\) is its purpose;
-\item the row that shows that \(d\ge a_T\) is impossible at B;
+\item the row that shows that \(\alpha_C\ge\alpha_I\) is impossible at B;
 \item exact ties, such as \(r=r_C\), \(u=u_{\rm lo}\) or the informed share \(\bar\vartheta(r_1)\). These boundary
 equilibria are valid under the stated tie rules, and the strict-margin convention does not remove them.
 \end{itemize}

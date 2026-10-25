@@ -251,7 +251,7 @@ with a cut at \(r\); every piece has degree at most three. The script
 arithmetic, and every quantity that depends on \(\eu\) in outward interval arithmetic at 60 digits; a sign counts only
 when its enclosure excludes zero. The script certifies (H1)--(H2) for the moderate-gap row and (H1)--(H3) for the
 other four reversal rows. Table~\ref{tab:margins} lists their margins. Proposition~\ref{prop:ccc} then supplies the
-tuples and their uniqueness. In the wide classes the class order holds although the supports overlap: \(G_L-G_H\ge0\)
+tuples and their uniqueness. In the wide classes the class ranking holds although the supports overlap: \(G_L-G_H\ge0\)
 everywhere, with equality only outside the common interior of the supports. The independent recomputation
 \nolinkurl{XP2/xp2_check.py} (run log
 \nolinkurl{XP2/run.log}) uses closed forms and Simpson's rule on each piece,
@@ -263,7 +263,7 @@ of the proof of Proposition~\ref{prop:ccc} still force zero orders at \(r_0\) an
 since their trade margins are positive (Table~\ref{tab:margins}). Then \(B_i(\mu)\le B_i(M)<c_H\) at every posterior
 of the higher strengths, and the prior profit at \(r_0\) is below \(c_H\), so entry is \(\rho\) at all three strengths.
 The comparison of the two rows is a convexity statement. For each \(R\), \(v\mapsto(v-\max\{p,R\})_+\) is convex, so a
-mean-preserving spread within a class weakly raises \(g_j\), and hence gross profit at every belief.
+mean-preserving increase in risk within a class weakly raises \(g_j\), and hence gross profit at every belief.
 
 At the benchmark costs and strengths, the prior \(\reg{p2_input_ex_a_pi}\) gives entry
 \(\reg{p2_fixed_prior_three_tenths_r1_entry}\) at all three strengths: the signed profit gap at \(r_1\) is
@@ -380,17 +380,17 @@ by \(\reg{p2_many_choice0}\), \(\reg{p2_many_choice1}\) and \(\reg{p2_many_choic
 
 \subsubsection*{Complementary private signals}
 
-A buyer may know its integration plans, while investors who follow the target know its customers or its product
+A challenger may know its integration plans, while investors who follow the target know its customers or its product
 market. Two conditionally independent binary signals represent the two sources. The investor observes
-\(T\in\{+,-\}\) with accuracy \(a_T\), and the challenger observes \(Y\in\{+,-\}\) with accuracy \(d\):
+\(T\in\{+,-\}\) with accuracy \(\alpha_I\), and the challenger observes \(Y\in\{+,-\}\) with accuracy \(\alpha_C\):
 \[
-\Pr(T=+\mid H)=\Pr(T=-\mid L)=a_T,\qquad \Pr(Y=+\mid H)=\Pr(Y=-\mid L)=d,
+\Pr(T=+\mid H)=\Pr(T=-\mid L)=\alpha_I,\qquad \Pr(Y=+\mid H)=\Pr(Y=-\mid L)=\alpha_C,
 \]
-with \(1/2<a_T,d<1\).
+with \(1/2<\alpha_I,\alpha_C<1\).
 The investor orders on its signal, and the challenger sees the price and its signal before it decides. Write
-\(m=m(1/2)\), \(M=M(1/2)\), \(\mu_-=(1-a_T)+(2a_T-1)m\) and \(\mu_+=(1-a_T)+(2a_T-1)M\). A challenger with signal
-\(+\) holds the belief \(\phi_+(\mu)=d\mu/[d\mu+(1-d)(1-\mu)]\). Write
-\(D^+(r)=\DT(r)+(1-\rho)(2d-1)[t_H(r)-t_0(r)]\) for the largest price response to the public posterior.
+\(m=m(1/2)\), \(M=M(1/2)\), \(\mu_-=(1-\alpha_I)+(2\alpha_I-1)m\) and \(\mu_+=(1-\alpha_I)+(2\alpha_I-1)M\). A challenger with signal
+\(+\) holds the belief \(\phi_+(\mu)=\alpha_C\mu/[\alpha_C\mu+(1-\alpha_C)(1-\mu)]\). Write
+\(D^+(r)=\DT(r)+(1-\rho)(2\alpha_C-1)[t_H(r)-t_0(r)]\) for the largest price response to the public posterior.
 
 Throughout, the values are the point masses \(h\) and \(\ell\), the prior is \(1/2\), and \(T\) and \(Y\) are
 independent given the class and independent of the slot, the cost and \(R\). The investor's order distributions are
@@ -399,58 +399,58 @@ probability of the order \(x\) given \(T=t\), and \(\nu(x)=f_+(x)/[f_+(x)+f_-(x)
 two signals have prior \(1/2\).
 
 \paragraph{Beliefs, entry and prices.}
-The order depends on the class only through \(T\), so \(\mu(x)=a_T\nu(x)+(1-a_T)(1-\nu(x))=(1-a_T)+(2a_T-1)\nu(x)\).
+The order depends on the class only through \(T\), so \(\mu(x)=\alpha_I\nu(x)+(1-\alpha_I)(1-\nu(x))=(1-\alpha_I)+(2\alpha_I-1)\nu(x)\).
 Lemma~\ref{lem:beliefs}(b)--(c), applied to \(T\) in place of the class, gives \(m\le\nu(x)\le M\), so
 \(\mu_-\le\mu(x)\le\mu_+\); the same holds for every price belief. The signal \(Y\) is independent of the order given
 the class, so a challenger with \(Y=y\) at the price \(\bar P\) holds the belief \(\phi_y(\bar\mu(\bar P))\), with
-\(\phi_-(\mu)=(1-d)\mu/[(1-d)\mu+d(1-\mu)]<\phi_+(\mu)\). Let \(I_y(\mu)\in[0,1]\) be the high-cost preparation
+\(\phi_-(\mu)=(1-\alpha_C)\mu/[(1-\alpha_C)\mu+\alpha_C(1-\mu)]<\phi_+(\mu)\). Let \(I_y(\mu)\in[0,1]\) be the high-cost preparation
 probability after \(Y=y\) at the public belief \(\mu\). Since \(B\) rises in the belief, \(I_-(\mu)>0\) implies
 \(B(\phi_+(\mu))>B(\phi_-(\mu))\ge c_H\), so \(I_+\ge I_-\) under both challenger rules. Class entry at \(\mu\) is
 \[
-e_H(\mu)=\rho+(1-\rho)[dI_++(1-d)I_-],\qquad e_L(\mu)=\rho+(1-\rho)[(1-d)I_++dI_-],
+e_H(\mu)=\rho+(1-\rho)[\alpha_C I_++(1-\alpha_C)I_-],\qquad e_L(\mu)=\rho+(1-\rho)[(1-\alpha_C)I_++\alpha_C I_-],
 \]
 so \(e_H\ge e_L\ge\rho\). Competitive prices give \(P(x)=t_0+e_L w_L+\mu(x)\,\Delta_P\), with
 \(\Delta_P=e_Hw_H-e_Lw_L=e_L\DT+(e_H-e_L)w_H\). Hence
 \begin{equation}\label{eq:a6-DP}
-\rho\DT\le\Delta_P\le\DT+(1-\rho)(2d-1)w_H=D^+ .
+\rho\DT\le\Delta_P\le\DT+(1-\rho)(2\alpha_C-1)w_H=D^+ .
 \end{equation}
 If \(P(x)=P(x')\), class entry at the two orders is the same, because entry depends on the price, the signal and the
 cost; then \(\Delta_P\ge\rho\DT>0\) gives \(\mu(x)=\mu(x')\), and \(\bar\mu(P(x))=\mu(x)\). The price reveals the public
 posterior under every profile.
 
 \paragraph{Order payoffs.}
-After \(T=t\), the class probabilities are \(a_T\) and \(1-a_T\) or the reverse, and entry given the class and the
+After \(T=t\), the class probabilities are \(\alpha_I\) and \(1-\alpha_I\) or the reverse, and entry given the class and the
 order does not depend on \(T\). Subtract the price:
 \[
-U_+(1)=(2a_T-1)[1-\nu(1)]\,\Delta_P(\mu(1))-k,\qquad U_-(-1)=(2a_T-1)\,\nu(-1)\,\Delta_P(\mu(-1))-k,
+U_+(1)=(2\alpha_I-1)[1-\nu(1)]\,\Delta_P(\mu(1))-k,\qquad U_-(-1)=(2\alpha_I-1)\,\nu(-1)\,\Delta_P(\mu(-1))-k,
 \]
-and the wrong-signed orders earn \(-(2a_T-1)[1-\nu(-1)]\Delta_P-k\) and \(-(2a_T-1)\nu(1)\Delta_P-k\), both at most \(-k\).
+and the wrong-signed orders earn \(-(2\alpha_I-1)[1-\nu(-1)]\Delta_P-k\) and \(-(2\alpha_I-1)\nu(1)\Delta_P-k\), both at most \(-k\).
 Zero pays zero. With wrong-signed orders excluded, \(\nu(1)\) depends only on the purchase rate after \(T=+\), and
 \(\nu(-1)\) only on the sale rate after \(T=-\); the zero order can depend on both, but it pays zero. By
-\eqref{eq:a6-DP} and the bounds on \(\nu\), every correct gross return lies in \([(2a_T-1)m\rho\DT,\,(2a_T-1)D^+]\)
+\eqref{eq:a6-DP} and the bounds on \(\nu\), every correct gross return lies in \([(2\alpha_I-1)m\rho\DT,\,(2\alpha_I-1)D^+]\)
 under every profile.
 
 \begin{proposition}[Complementary private signals]\label{prop:signals}
-Let \(0<p<\ell<r_0<r_1<h\), \(0<\rho<1\), and \(1/2<a_T,d<1\), with any slot \((\lambda,\beta)\). Suppose
+Let \(0<p<\ell<r_0<r_1<h\), \(0<\rho<1\), and \(1/2<\alpha_I,\alpha_C<1\), with any slot \((\lambda,\beta)\). Suppose
 \[
-B_{r_0}(d)<c_H<B_{r_1}\bigl(\phi_+(\mu_+)\bigr),\qquad
-(2a_T-1)\,D^+(r_0)<k<(2a_T-1)\,\rho\,m\,\DT(r_1).
+B_{r_0}(\alpha_C)<c_H<B_{r_1}\bigl(\phi_+(\mu_+)\bigr),\qquad
+(2\alpha_I-1)\,D^+(r_0)<k<(2\alpha_I-1)\,\rho\,m\,\DT(r_1).
 \]
 At \(r_0\), the unique orders are zero after both signals, and entry is \(\rho\). At \(r_1\), the unique orders are a
 purchase after \(T=+\) and a sale after \(T=-\), and entry strictly exceeds \(\rho\). These order conclusions hold
-under every pair of tie rules. The hypotheses allow \(d>a_T\).
+under every pair of tie rules. The hypotheses allow \(\alpha_C>\alpha_I\).
 \end{proposition}
 
 \begin{proof}[Proof of Proposition~\ref{prop:signals}]
 \emph{The weak strength.} Under every candidate at \(r_0\), every correct gross return is at most
-\((2a_T-1)D^+(r_0)<k\), so zero is the unique order after both signals, under both investor rules. Then
-\(\nu\equiv\mu\equiv1/2\), the private beliefs are \(d\) and \(1-d\), and \(B_{r_0}(d)<c_H\) excludes the high cost
+\((2\alpha_I-1)D^+(r_0)<k\), so zero is the unique order after both signals, under both investor rules. Then
+\(\nu\equiv\mu\equiv1/2\), the private beliefs are \(\alpha_C\) and \(1-\alpha_C\), and \(B_{r_0}(\alpha_C)<c_H\) excludes the high cost
 after either signal, so entry is \(\rho\). The tuple has zero orders, these beliefs, the price
 \(t_0+\rho(w_H+w_L)/2\) at every order, \(\zeta(\bar P,y,c_H)=0\), and truthful bids. Against it, each correct order
-earns \((2a_T-1)\rho\DT(r_0)/2-k\le(2a_T-1)D^+(r_0)-k<0\).
+earns \((2\alpha_I-1)\rho\DT(r_0)/2-k\le(2\alpha_I-1)D^+(r_0)-k<0\).
 
 \emph{The strong strength.} Under every candidate at \(r_1\), every correct gross return is at least
-\((2a_T-1)m\rho\DT(r_1)>k\), so the purchase after \(T=+\) and the sale after \(T=-\) are the unique best orders. Then
+\((2\alpha_I-1)m\rho\DT(r_1)>k\), so the purchase after \(T=+\) and the sale after \(T=-\) are the unique best orders. Then
 \(f_+=(b,b_0,b+\lambda)\) and \(f_-=(b+\lambda,b_0,b)\), so \(\nu=(m,1/2,M)\) and \(\mu=(\mu_-,1/2,\mu_+)\). Class entry
 follows from \(I_y(\mu(x))\) at each order, and the prices from the formula above. The probabilities \(I_y(\mu)\) are
 nondecreasing in \(\mu\), because \(\phi_y\) and \(B\) rise, so \(e_H\) and \(e_L\) are nondecreasing in \(\mu\). For
@@ -461,53 +461,53 @@ P(\mu_2)-P(\mu_1)=(\mu_2-\mu_1)\Delta_P(\mu_1)+\mu_2[e_H(\mu_2)-e_H(\mu_1)]w_H+(
 since the first term is positive by \eqref{eq:a6-DP} and both brackets are nonnegative. The three prices therefore
 differ, each price has one order in its preimage, and \(\bar\mu(P(x))=\mu(x)\). At the purchase price, \(B_{r_1}(\phi_+(\mu_+))>c_H\), so a challenger with
 \(Y=+\) prepares. The event \((X,Y)=(1,+)\) has positive probability in each class, so entry strictly exceeds
-\(\rho\). Against the tuple, \(U_+(1)\) and \(U_-(-1)\) are at least \((2a_T-1)m\rho\DT(r_1)-k>0\). These order
+\(\rho\). Against the tuple, \(U_+(1)\) and \(U_-(-1)\) are at least \((2\alpha_I-1)m\rho\DT(r_1)-k>0\). These order
 conclusions use only bounds on every profile, so they hold under every pair of tie rules.
 
 Keep the values, costs, strengths and accuracies of \(S(B)\). Set \((\lambda,\beta)=(1/3,3/10)\).
-Then \((a_T,d)=(7/10,3/4)\), \(M=8/11\) and \(m=3/11\). The five margins are
+Then \((\alpha_I,\alpha_C)=(7/10,3/4)\), \(M=8/11\) and \(m=3/11\). The five margins are
 \[
 \begin{aligned}
-c_H-B_{r_0}(d)&=\frac{21}{400}>0,\\
+c_H-B_{r_0}(\alpha_C)&=\frac{21}{400}>0,\\
 B_{r_1}(\phi_+(\mu_+))-c_H&=\frac{1363}{36800}>0,\\
-k-(2a_T-1)D^+(r_0)&=\frac{2}{1375}>0,\\
-(2a_T-1)\rho m\DT(r_1)-k&=\frac{603}{31625}>0,\\
+k-(2\alpha_I-1)D^+(r_0)&=\frac{2}{1375}>0,\\
+(2\alpha_I-1)\rho m\DT(r_1)-k&=\frac{603}{31625}>0,\\
 c_H-B_{r_1}(\phi_-(\mu_+))&=\frac{76753}{18400}>0.
 \end{aligned}
 \]
-Thus the hypotheses allow \(d>a_T\).
+Thus the hypotheses allow \(\alpha_C>\alpha_I\).
 \end{proof}
 
 \paragraph{One pair that recruits.}
 If also \(B_{r_1}(\phi_-(\mu_+))<c_H\), the challenger with \(Y=-\) never prepares at a high cost at \(r_1\). With
-\(Y=+\), the zero and sale orders have public posteriors at most \(1/2\), and \(B_{r_1}(\phi_+(1/2))=B_{r_1}(d)\le
-B_{r_0}(d)<c_H\). Only \((X,Y)=(1,+)\) recruits, every entry comparison is strict, and
+\(Y=+\), the zero and sale orders have public posteriors at most \(1/2\), and \(B_{r_1}(\phi_+(1/2))=B_{r_1}(\alpha_C)\le
+B_{r_0}(\alpha_C)<c_H\). Only \((X,Y)=(1,+)\) recruits, every entry comparison is strict, and
 \[
-e_H=\rho+(1-\rho)\,d\,(b+a_T\lambda),\qquad e_L=\rho+(1-\rho)(1-d)\bigl(b+(1-a_T)\lambda\bigr),
+e_H=\rho+(1-\rho)\,\alpha_C\,(b+\alpha_I\lambda),\qquad e_L=\rho+(1-\rho)(1-\alpha_C)\bigl(b+(1-\alpha_I)\lambda\bigr),
 \]
-because a purchase has probability \(b+a_T\lambda\) in class \(H\) and \(b+(1-a_T)\lambda\) in class \(L\). Entry is
+because a purchase has probability \(b+\alpha_I\lambda\) in class \(H\) and \(b+(1-\alpha_I)\lambda\) in class \(L\). Entry is
 \((e_H+e_L)/2\), and ownership is \(e_H/2\), since \(h>r_1\).
 
 \paragraph{The vector \(S(B)\).}
-At \(S(B)\) with \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\), the four conditions of the proposition and the one-pair
+At \(S(B)\) with \((\alpha_I,\alpha_C)=(\reg{sig_aT},\reg{sig_d})\), the four conditions of the proposition and the one-pair
 condition have the margins \(\reg{margin_p4_signal_s_private}\), \(\reg{margin_p4_signal_s_joint}\),
 \(\reg{margin_p4_signal_s_weak}\), \(\reg{margin_p4_signal_s_strong}\) and \(\reg{margin_p4_signal_s_other_pair}\). The
 formulas above give entry \(\reg{p4_s_signal_r0_entry}\) and \(\reg{p4_s_signal_r1_entry}\), and ownership
-\(\reg{p4_s_signal_r0_own}\) and \(\reg{p4_s_signal_r1_own}\). Without the challenger's signal (\(d=1/2\)), the top
+\(\reg{p4_s_signal_r0_own}\) and \(\reg{p4_s_signal_r1_own}\). Without the challenger's signal (\(\alpha_C=1/2\)), the top
 public profit stays below \(c_H\) at both strengths, with margins \(\reg{margin_p4_s_no_y_top_r0}\) and
 \(\reg{margin_p4_s_no_y_top_r1}\), so entry is \(\rho\); the bounds \(\reg{margin_p4_s_no_y_weak}\) and
 \(\reg{margin_p4_s_no_y_strong}\) force zero and full orders, and entry is \(\reg{p4_s_no_y_r0_entry}\) at both
 strengths. When the investor observes the class and the challenger has no signal, the margins
 \(\reg{margin_p4_s_class_weak}\), \(\reg{margin_p4_s_class_strong}\), \(\reg{margin_p4_s_class_prior_r0}\) and
 \(\reg{margin_p4_s_class_top_r1}\) give zero orders, full orders and entry \(\reg{p4_s_class_r0_entry}\) at both
-strengths. On the grid of accuracies, six pairs satisfy the conditions, all with \(d>a_T\); the smallest margin among
+strengths. On the grid of accuracies, six pairs satisfy the conditions, all with \(\alpha_C>\alpha_I\); the smallest margin among
 them is \(\reg{margin_p4_grid_72_75_weak}\).
 
 \paragraph{The benchmark B.}
-At B the conditions cannot hold with \(d\ge a_T\). Write \(z=2a_T-1\). The strong bound needs
-\(z>z_*=k/(m\rho\DT(r_1))=\reg{p4_b_signal_z_min}\). If \(d\ge a_T\), then \(2d-1\ge z\), and the weak gross bound is
+At B the conditions cannot hold with \(\alpha_C\ge \alpha_I\). Write \(z=2\alpha_I-1\). The strong bound needs
+\(z>z_*=k/(m\rho\DT(r_1))=\reg{p4_b_signal_z_min}\). If \(\alpha_C\ge \alpha_I\), then \(2\alpha_C-1\ge z\), and the weak gross bound is
 \(zD^+(r_0)\ge z_*[\DT(r_0)+(1-\rho)z_*w_H(r_0)]\), which exceeds \(k\) by \(\reg{margin_p4_b_d_ge_a_impossible}\).
-With an accurate investor signal and a weak challenger signal, \((a_T,d)=(\reg{sig_comp_aT},\reg{sig_comp_d})\), the
+With an accurate investor signal and a weak challenger signal, \((\alpha_I,\alpha_C)=(\reg{sig_comp_aT},\reg{sig_comp_d})\), the
 five margins are \(\reg{margin_p4_signal_comp_b_private}\), \(\reg{margin_p4_signal_comp_b_joint}\),
 \(\reg{margin_p4_signal_comp_b_weak}\), \(\reg{margin_p4_signal_comp_b_strong}\) and
 \(\reg{margin_p4_signal_comp_b_other_pair}\). Entry rises from \(\reg{p4_comp_b_r0_entry}\) to
@@ -519,40 +519,40 @@ same outcomes. At a higher investor accuracy, the public posterior alone can rec
 theorem without this complementarity; the margin \(c_H-B_{r_1}(\mu_+)\) is the condition that separates the two.
 
 \paragraph{The benchmark B with the accuracies of \(S(B)\).}
-At B with \((a_T,d)=(\reg{sig_aT},\reg{sig_d})\), three of the four conditions fail, and each equilibrium has a mixed order: both signal types mix at \(r_0\), and the
+At B with \((\alpha_I,\alpha_C)=(\reg{sig_aT},\reg{sig_d})\), three of the four conditions fail, and each equilibrium has a mixed order: both signal types mix at \(r_0\), and the
 type with \(T=-\) mixes at \(r_1\).
-After wrong-signed orders are excluded, write \(s=\lambda\sigma_+(1)\) and \(t=\lambda\sigma_-(-1)\); the purchase
-return depends only on \(s\), and the sale return only on \(t\), with \(1-\nu(1)=b/(2b+s)\) and
-\(\nu(-1)=b/(2b+t)\).
+After wrong-signed orders are excluded, write \(s_+=\lambda\sigma_+(1)\) and \(s_-=\lambda\sigma_-(-1)\); the purchase
+return depends only on \(s_+\), and the sale return only on \(s_-\), with \(1-\nu(1)=b/(2b+s_+)\) and
+\(\nu(-1)=b/(2b+s_-)\).
 \begin{itemize}[leftmargin=2em]
 \item \emph{At \(r_0\).} Under every profile \(B_{r_0}(\phi_+(\mu_-))>c_H\) and \(B_{r_0}(\phi_-(\mu_+))<c_H\), with margins
 \(\reg{margin_p4_b_weak_all_yplus}\) and \(\reg{margin_p4_b_weak_no_yminus}\). So \(I_+=1\) and \(I_-=0\) at every price,
 \(e_H=13/16\), \(e_L=7/16\), and \(\Delta_P=311/1920\) at every price. Each correct gross return is
-\(\tfrac25\cdot\tfrac{b}{2b+s}\cdot\tfrac{311}{1920}\), strictly decreasing in its rate, above \(k\) at rate zero (margin
+\(\tfrac25\cdot\tfrac{b}{2b+s_\pm}\cdot\tfrac{311}{1920}\), strictly decreasing in its rate, above \(k\) at rate zero (margin
 \(\reg{margin_p4_b_weak_zero_return}\)) and below \(k\) at rate \(\lambda\) (margin \(\reg{margin_p4_b_weak_full_loss}\)).
-The unique zero-profit rates are \(s=t=119b/96<\lambda\) (margin \(u-119/96=\reg{margin_p4_b_weak_rate_room}\)). Entry is
+The unique zero-profit rates are \(s_+=s_-=119b/96<\lambda\) (margin \(u-119/96=\reg{margin_p4_b_weak_rate_room}\)). Entry is
 \(\reg{p4_b_signal_r0_entry}\) and ownership \(\reg{p4_b_signal_r0_own}\).
 \item \emph{At \(r_1\).} A challenger with \(Y=-\) never recruits (margin \(\reg{margin_p4_b_strong_no_yminus}\)). A
-purchase has public posterior at least \(1/2\), and \(B_{r_1}(d)>c_H\) (margin \(\reg{margin_p4_b_strong_prior_yplus}\)),
+purchase has public posterior at least \(1/2\), and \(B_{r_1}(\alpha_C)>c_H\) (margin \(\reg{margin_p4_b_strong_prior_yplus}\)),
 so \(Y=+\) recruits after a purchase, \(\Delta_P=137/192\) there, and the purchase earns at least
-\(\tfrac25m\tfrac{137}{192}-k=\reg{margin_p4_b_strong_buy}>0\): \(s=\lambda\). After a sale, \(Y=+\) recruits exactly when
-\(\mu(-1)\ge47/106\), that is \(t\le15b/19\). On that range the sale earns at least the floor return
+\(\tfrac25m\tfrac{137}{192}-k=\reg{margin_p4_b_strong_buy}>0\): \(s_+=\lambda\). After a sale, \(Y=+\) recruits exactly when
+\(\mu(-1)\ge47/106\), that is \(s_-\le15b/19\). On that range the sale earns at least the floor return
 \(19/795\), which exceeds \(k\) by \(\reg{margin_p4_b_strong_threshold_floor_return}\); so no equilibrium has
-\(t\le15b/19\), and no tie mixture exists at the threshold. Above it, \(e_H=e_L=\rho\) at the sale price.
-The net sale payoff \(U_-(-1)=b/[15(2b+t)]-1/50\) strictly decreases with \(t\).
-Its unique zero-profit rate is \(t=4b/3<\lambda\) (margin
+\(s_-\le15b/19\), and no tie mixture exists at the threshold. Above it, \(e_H=e_L=\rho\) at the sale price.
+The net sale payoff \(U_-(-1)=b/[15(2b+s_-)]-1/50\) strictly decreases with \(s_-\).
+Its unique zero-profit rate is \(s_-=4b/3<\lambda\) (margin
 \(\reg{margin_p4_b_strong_rate_room}\)), with \(\mu(-1)=21/50\), below \(47/106\) by \(\reg{margin_p4_b_strong_sale_public_gap}\).
 After the zero order \(Y=+\) recruits (margin \(\reg{margin_p4_b_strong_zero_yplus}\)). Only a sale blocks recruitment
-after \(Y=+\); a sale has probability \(b+(1-a_T)t\) in class \(H\) and \(b+a_Tt\) in class \(L\). Hence entry is
+after \(Y=+\); a sale has probability \(b+(1-\alpha_I)s_-\) in class \(H\) and \(b+\alpha_I s_-\) in class \(L\). Hence entry is
 \(5/8-23b/40=\reg{p4_b_signal_r1_entry}\) and ownership \(13/32-63b/160=\reg{p4_b_signal_r1_own}\).
 \end{itemize}
 At \(r_0\), the investor mixes between trade and abstention after either signal, and it trades with probability
 \(\reg{p4_b_signal_r0_buy_rate}\). At \(r_1\), it buys with probability one after a favorable signal, and after an
 unfavorable signal it sells with probability \(\reg{p4_b_signal_r1_sell_rate}\).
 Each mixed tuple is unique under rule IM with either challenger rule, by the strict monotonicity of each return and
-the endpoint signs. Under rule I0 neither strength has an equilibrium, because the unique admissible rates are
+the endpoint signs. Under rule I0 neither strength has an equilibrium, because the unique qualifying rates are
 interior. Without the challenger's signal, entry is \(\rho\) under every profile at both strengths, zero orders are
-forced at \(r_0\), and at \(r_1\) the unique rates are \(s=t=4b/3\); this control also needs rule IM, since the gross
+forced at \(r_0\), and at \(r_1\) the unique rates are \(s_+=s_-=4b/3\); this control also needs rule IM, since the gross
 return at zero, \(\reg{p4_b_no_y_r1_zero_gross}\), exceeds \(k\) and the return at full orders,
 \(\reg{p4_b_no_y_r1_full_gross}\), falls short of it. The rational constants above are exact; the script
 \nolinkurl{P4_information/derive.py} prints them with every tuple, and
