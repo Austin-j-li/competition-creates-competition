@@ -1,0 +1,67 @@
+% O9. The uniform incumbent satisfies the balance condition: part (c)(iii) of the full statement of Proposition 3.
+% Placement: Appendix A.4, in the proof of the full statement of Proposition 3, as the proof of part (c)(iii), after
+% the proofs of parts (c)(i) and (c)(ii). The named block repeats part (c)(iii) for reading; in the appendix the
+% statement appears once, inside the full statement (statements/B.tex).
+% Source: referee/W1.md, equations (4) to (8) (the uniform family, J'>=A*DT^2/gamma^2) and equation (10) (the balance
+% condition); PLAN.md Part 5, O9; decision 4.
+% Definitions used: the gross profits g_j and the spread DT of Appendix A.1 (eq:a-indicators and the identity
+% t(theta)+g(theta)=theta for theta>=p); gamma=g_H-g_L; J=DT(1-tau)=DT(g_H-c_H)/gamma.
+
+\begin{named}{Proposition~\ref{prop:coexistence}(c)(iii), the uniform incumbent}
+Let \(F_r=U[0,r]\) for \(r\) in a compact interval \(I\) with \(p<\min I\). Let every low-class value lie in
+\([p,\min I]\), let every high-class value be at least \(\max I\), and let \(\E_H\theta\ge\max I+c_H\). Then
+\(g_H(r)>g_L(r)\) at every \(r\in I\), the product \(\DT(r)\,[g_H(r)-c_H]\) is nondecreasing on \(I\), and \(J\) is
+strictly increasing on \(I\).
+\end{named}
+
+\begin{proof}[Proof of Proposition~\ref{prop:coexistence}(c)(iii)]
+Write \(v_j=\E_j\theta\) for the class means, \(m_2=\E_L\theta^2\), \(d=v_H-v_L\), \(X(r)=g_H(r)-c_H\), and
+\[
+A(r)=\frac{r^2-p^2}{2r^2},
+\]
+which is positive on \(I\) because \(r\ge\min I>p\). The proof has four steps.
+
+\emph{Step 1: the auction terms.} Fix \(r\in I\) and let \(R\) be uniform on \([0,r]\). A high-class value
+\(\theta\ge\max I\ge r\) wins against every incumbent value and pays \(\max\{p,R\}\), whose mean is
+\(r/2+p^2/(2r)\). A low-class value \(\theta\in[p,\min I]\subseteq[p,r]\) earns
+\(\E(\theta-\max\{p,R\})_+=(\theta^2-p^2)/(2r)\), and the target receives \(\theta\) minus this rent. Averaging over
+each class gives
+\[
+g_H=v_H-\frac r2-\frac{p^2}{2r},\qquad g_L=\frac{m_2-p^2}{2r},\qquad
+\DT=\frac r2+\frac{p^2}{2r}-v_L+\frac{m_2-p^2}{2r}=\frac{\E_L(r-\theta)^2}{2r},
+\]
+so \(\gamma=g_H-g_L=v_H-r/2-m_2/(2r)\) and \(\DT+\gamma=d\) on \(I\). These functions are smooth in \(r>0\), and
+\[
+\DT'=\frac{r^2-m_2}{2r^2}\ge0,\qquad g_H'=-A,\qquad \gamma'=-\DT',
+\]
+where \(\DT'\ge0\) because \(m_2\le(\min I)^2\le r^2\). Also \(\DT(r)>0\) for every \(r>\min I\), because every
+low-class value is at most \(\min I\).
+
+\emph{Step 2: three inequalities.} First, \(v_H-c_H\ge\max I\ge r\), so
+\[
+X=v_H-c_H-\frac r2-\frac{p^2}{2r}\ge\frac r2-\frac{p^2}{2r}=rA>0 .
+\]
+Second, every low-class value lies in \([0,r]\), so
+\[
+r\DT'-\DT=v_L-\frac{m_2}{r}=\E_L\Bigl[\theta\Bigl(1-\frac\theta r\Bigr)\Bigr]\ge0 .
+\]
+Third, \(v_H\ge\max I+c_H\ge r+c_H\) and \(m_2\le r^2\), so \(\gamma\ge(r+c_H)-r/2-r^2/(2r)=c_H>0\). Hence
+\(g_H>g_L\) and \(d=\DT+\gamma>0\).
+
+\emph{Step 3: the product.} By Steps 1 and 2,
+\[
+(\DT X)'=\DT'X+\DT\,g_H'=\DT'X-A\DT\ge A\,(r\DT'-\DT)\ge0 ,
+\]
+so \(\DT(r)\,[g_H(r)-c_H]\) is nondecreasing on \(I\).
+
+\emph{Step 4: the return \(J\).} Since \(J=\DT X/\gamma\) and \(\gamma'=-\DT'\),
+\[
+J'=\frac{(\DT X)'\gamma+\DT X\,\DT'}{\gamma^2}=\frac{d\,X\DT'-A\DT\gamma}{\gamma^2}
+\ge\frac{A\,(d\,r\DT'-\DT\gamma)}{\gamma^2}\ge\frac{A\,\DT\,(d-\gamma)}{\gamma^2}=\frac{A\,\DT^2}{\gamma^2}.
+\]
+The first inequality uses \(X\ge rA\) and \(\DT'\ge0\); the second uses \(r\DT'\ge\DT\) and \(d>0\). The bound is
+positive at every \(r>\min I\), by Step 1, so \(J\) is strictly increasing on \(I\).
+\end{proof}
+
+For point-mass classes at \(h\) and \(\ell\), the hypotheses of part (c)(iii) read \(\ell\in[p,\min I]\),
+\(p<\min I\) and \(\max I+c_H\le h\).

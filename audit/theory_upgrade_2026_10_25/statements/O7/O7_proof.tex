@@ -1,0 +1,52 @@
+% O7. Orders that share a posterior.
+% First paragraph: Appendix A.2, in place of appendix/A2_beliefs_trading.tex:165-170 (the paragraph on constructed
+% tuples), after the proof of Lemma A.2 and before Lemma A.3.
+% source: scan/reduction_A3_A5.md, part 2 ("At a shared posterior, prices agree exactly when entry probabilities
+% agree") and part 4, item 1 (the equal-entry qualification under the second challenger rule); referee report W3,
+% "Shared Candidate 1", section 4 (pooled sale and zero order); PLAN.md Part 5, O7.
+% Second paragraph: Appendix A.5, in the verification of recruiting research, at the condition (E2).
+
+\paragraph{Constructed tuples.}
+Let \(\DT>0\). Take a profile, the posteriors \(\mu(x)\) that (E1) gives it, and entry \(e(x)\in[\rho,1]\) after
+each order that is nondecreasing in the posterior: \(e(x)\ge e(x')\) whenever \(\mu(x)>\mu(x')\). Set
+\(P(x)=t_0+e(x)\,w(\mu(x))\). Then \(P(x)>P(x')\) whenever \(\mu(x)>\mu(x')\), and two orders have the same price if
+and only if they have the same posterior and the same entry. Hence \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a
+preparation rule on the image of \(P\), with values in \([0,1]\), and the belief that (E2) assigns to the price
+\(P(x)\) is \(\mu(x)\). Let also \(g_H>g_L\). When an indifferent high-cost challenger prepares, entry that meets
+Lemma~\ref{lem:prices}(d) is a function of the posterior, so orders with the same posterior have the same price.
+When an indifferent high-cost challenger may prepare with any probability, two orders with the posterior \(\tau\)
+may have different entry; they then have different prices, and each of these prices reveals \(\tau\).
+
+Let \(\mu(x)>\mu(x')\). Then \(e(x)\ge e(x')\), and \eqref{eq:a2-increment} gives
+\(P(x)-P(x')\ge e(x)\DT[\mu(x)-\mu(x')]\ge\rho\DT[\mu(x)-\mu(x')]>0\), because \(w(\mu)\ge w_L\ge0\). Let
+\(\mu(x)=\mu(x')\). Then \(P(x)-P(x')=[e(x)-e(x')]\,w(\mu(x))\), and \(w(\mu(x))=w_L+\DT\mu(x)>0\), because
+\(\mu(x)>0\) by Lemma~\ref{lem:beliefs}(a). Equal prices therefore force equal posteriors and equal entry, and the
+price formula gives the converse. So \(\zeta\) is a function of the price, and \(e(x)\in[\rho,1]\) puts its values in
+\([0,1]\). At a price \(\bar P\), all orders with the price \(\bar P\) share one posterior, so by \eqref{eq:odds}
+they share one likelihood ratio \(f_H(x)/f_L(x)\). The ratio of sums in the step on beliefs at a price, in the
+proof of Lemma~\ref{lem:beliefs}, equals that likelihood ratio, and (E2) gives the common posterior. Under the
+first challenger rule, Lemma~\ref{lem:prices}(d) fixes entry at every posterior, \(\tau\) included. Under the second,
+the identity at equal posteriors gives distinct prices to distinct entries at \(\tau\), and every order with one of
+these prices has the posterior \(\tau\).
+
+Each verification below applies this paragraph to its stated entry before it checks any condition. Where two orders
+of a stated tuple share a posterior, the tuple gives them the same entry, so they share a price, and the belief at
+that price is their common posterior.
+
+\paragraph{The sale and the zero order in recruiting research.}
+At the prior \(1/2\), let \(\tau>1/2\), and take recruiting research with research \(\hat\lambda>0\), in which class
+\(H\) buys after a success and class \(L\) sells with probability \(z=\sigma_L(-1)\) and abstains otherwise. With
+\(\hat b=(1-\hat\lambda)\beta\) and \(\hat b_0=(1-\hat\lambda)(1-2\beta)\), the posteriors after a sale and after no
+order are
+\[
+\mu(-1)=\frac{\hat b}{2\hat b+\hat\lambda z}\le\frac12,\qquad
+\mu(0)=\frac{\hat b_0}{2\hat b_0+\hat\lambda(1-z)}\le\frac12 ,
+\]
+both below \(\tau\), so entry after both orders is \(\rho\) under all four tie rules, and entry after a purchase is
+one. Entry is nondecreasing in the posterior, and the paragraph on constructed tuples applies. The two posteriors
+are equal exactly when \(\hat b(1-z)=\hat b_0z\), that is, when \(z=\hat b/(\hat b+\hat b_0)=\beta/(1-\beta)\), for
+every \(\hat\lambda\). The sale and no order then share a price, and the belief at that price is their common
+posterior; for every other \(z\) the three prices differ. In the example, recruiting research at the cap has
+\(z=\hat s_-(r)/\lb\), which rises strictly while class \(L\) mixes, so the two orders share a posterior at exactly
+one strength, \(r\approx\reg{r_pool_B}\). There the common posterior is \(\reg{pool_mu_B}\), and the common price is
+\(\reg{pool_price_B}\).
