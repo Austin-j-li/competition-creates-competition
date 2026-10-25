@@ -478,6 +478,7 @@ j74 = J(Fr(7, 4))
 print(f"  J(7/4) = {frac(j74)} ; rho J(7/4) = {rnd(RHO * j74, 9)} < k : {RHO * j74 < K}")
 add_exact("res_J74_frac", j74, frac(j74), "analytical", "J(7/4) = Delta(7/4) (1 - tau(7/4)) = (9/56)(19/55)")
 add_exact("res_bound_strength", Fr(7, 4), "7/4", "input", "right endpoint of the rational derivative bound on the recruitment margin")
+add_exact("margin_rho2Delta_r1_B_frac", RHO * RHO * Delta(R1) - K, frac(RHO * RHO * Delta(R1) - K), "analytical", "rho^2 Delta_T(r_1) - k = 1/24 - 1/50 (Lemma on the order of the marked strengths)")
 add_exact("res_beta_upper", Fr(1, 3), "1/3", "input", "upper end of the stated sufficient interval for the liquidity share")
 add_exact("str_r200", Fr(2), "2", "input", "strength 2 (the threshold pair under an abstaining investor)")
 
@@ -654,7 +655,7 @@ add_exact("a236_kappa_floor_frac", kap, frac(kap), "analytical", "k/(rho Delta(r
 print("-- price collision at three classes (declared primitives)")
 pool = (("cH", Fr(10), "10", "preparation cost"), ("h", Fr(10), "10", "high class value"),
         ("k", Fr(1, 8), "1/8", "trading cost"), ("p", Fr(1), "1", "reserve, also the value of class 1"),
-        ("perturb", Fr(1, 1000), "0.001", "size of the perturbation of the class-2 weight that separates the two prices"),
+        ("perturb", Fr(1, 1000), frac(Fr(1, 1000)), "size of the perturbation of the class-2 weight that separates the two prices"),
         ("pi1", Fr(1, 4), "1/4", "prior of class 1"), ("pi2", Fr(1, 2), "1/2", "prior of class 2"),
         ("pi3", Fr(1, 4), "1/4", "prior of class 3"), ("r", Fr(8), "8", "upper end of the uniform incumbent law"),
         ("rho", Fr(1, 4), "1/4", "probability of the zero preparation cost"))
@@ -732,10 +733,10 @@ print(f"  e_H = {frac(eH)} ; e_L = {frac(eL)} ; Delta_P(r_0) = {frac(DP0)} ; Del
 print(f"  zero-profit rates: s/b = {frac(rate0)} at r_0 ; {frac(rate1)} at r_1 ; sale posterior nu = {frac(nu_sale)}, mu(-1) = {frac(mu_sale)}")
 print(f"  tau(r_1) = {frac(tau1)} ; public cutoff {frac(pub_cut)} ; sale rate cutoff s/b <= {frac(sale_cut)} ; return at the cutoff {frac(sale_floor)} ; minus k {frac(sale_floor - K)}")
 print(f"  mu^C_+(cutoff) = {frac(muC(pub_cut, True))} equals tau(r_1): {muC(pub_cut, True) == tau1}")
-add_exact("a236_sig_eH", eH, rnd(eH, 6), "analytical", "class-H entry rho + (1 - rho) alpha_C when zeta_+ = 1 and zeta_- = 0, at rho = 1/4, alpha_C = 3/4")
-add_exact("a236_sig_eL", eL, rnd(eL, 6), "analytical", "class-L entry rho + (1 - rho)(1 - alpha_C) when zeta_+ = 1 and zeta_- = 0")
-add_exact("a236_sig_DP0", DP0, rnd(DP0, 6), "analytical", "Delta_P = e_L Delta(r_0) + (e_H - e_L)(t_H - t_0) at r_0 with e_H = 13/16, e_L = 7/16")
-add_exact("a236_sig_DP1", DP1, rnd(DP1, 6), "analytical", "Delta_P at r_1 with e_H = 13/16, e_L = 7/16")
+add_exact("a236_sig_eH", eH, frac(eH), "analytical", "class-H entry rho + (1 - rho) alpha_C when zeta_+ = 1 and zeta_- = 0, at rho = 1/4, alpha_C = 3/4")
+add_exact("a236_sig_eL", eL, frac(eL), "analytical", "class-L entry rho + (1 - rho)(1 - alpha_C) when zeta_+ = 1 and zeta_- = 0")
+add_exact("a236_sig_DP0", DP0, frac(DP0), "analytical", "Delta_P = e_L Delta(r_0) + (e_H - e_L)(t_H - t_0) at r_0 with e_H = 13/16, e_L = 7/16")
+add_exact("a236_sig_DP1", DP1, frac(DP1), "analytical", "Delta_P at r_1 with e_H = 13/16, e_L = 7/16")
 add_exact("a236_sig_rate0", rate0, frac(rate0), "analytical", "zero-profit rate s_+/b = s_-/b at r_0: (2 alpha_I - 1) Delta_P(r_0)/k - 2; each correct gross return falls strictly in its rate")
 add_exact("a236_sig_rate1", rate1, frac(rate1), "analytical", "zero-profit sale rate s_-/b at r_1: (2 alpha_I - 1) rho Delta(r_1)/k - 2")
 add_exact("a236_sig_sale_mu", mu_sale, frac(mu_sale), "analytical", "public belief after a sale at the zero-profit rate: (1 - alpha_I) + (2 alpha_I - 1) k/[(2 alpha_I - 1) rho Delta(r_1)]")

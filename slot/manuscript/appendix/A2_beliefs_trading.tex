@@ -13,12 +13,11 @@ The conditions (E1) to (E6) are those of Definition~\ref{def:equilibrium}.
 \item A \emph{profile} is a pair \((\sigma_H,\sigma_L)\) of order distributions, pure or mixed, with wrong-signed
 orders allowed. A \emph{candidate} is a tuple \(\mathcal E\) that satisfies (E1) to (E4) and (E6) for some
 profile. An equilibrium is a candidate that also satisfies (E5).
-\item A deviation by the investor holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed.
-It changes only the order that reaches them.
-\item A unilateral deviation holds prices and preparation fixed; a comparison across incumbents solves the equilibrium in
-each economy to compare outcomes across economies.
+\item A deviation by the investor holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed
+and changes only the order that reaches them; a comparison across incumbents solves the equilibrium in each
+economy to compare outcomes across economies.
 \item A uniqueness proof derives its bounds for every candidate. It does not use the proposed tuple.
-\item A constructed tuple satisfies the equilibrium conditions by direct substitution into their defining equations.
+\item A constructed tuple satisfies each equilibrium condition by direct substitution, and its proof cites no lemma whose premises include the condition at issue.
 \item Write \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
 \(w(\mu)=(1-\mu)w_L+\mu w_H=t_L-t_0+\DT\mu\) for its average at the belief \(\mu\). Proposition~\ref{prop:returns}
 and Section~\ref{sec:profits} give \(w_H\ge w_L\ge0\).
@@ -39,7 +38,7 @@ Fix any order distributions \(\sigma_H\) and \(\sigma_L\).
 \item \emph{Full support.} \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order \(x\) and class \(j\).
 \item \emph{Nonzero orders.} For \(x\in\{-1,1\}\), \(b\le f_j(x)\le b+\lambda\). Hence
 \(m(\pi)\le\mu(x)\le M(\pi)\).
-\item \emph{The zero order.} If \(\beta\le1/3\), then \(b_0\le f_j(0)\le b_0+\lambda\) and \(b_0\ge b\). Hence
+\item \emph{The zero order.} \(b_0\le f_j(0)\le b_0+\lambda\). If \(\beta\le1/3\), then \(b_0\ge b\), hence
 \(m(\pi)\le\mu(0)\le M(\pi)\).
 \item \emph{Full orders.} If \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), the posteriors after the orders
 \((-1,0,1)\) are \(\bigl(m(\pi),\pi,M(\pi)\bigr)\).
@@ -103,7 +102,7 @@ tie. The conclusion holds under both challenger rules. The bound at the zero ord
 \(\beta\le1/3\) in this proof.
 \end{proof}
 
-% STRUCTURE: Lemma 2 and its rule-CM clause <- Section 3.2
+% STRUCTURE: Lemma 2 and its arbitrary-preparation clause <- Section 3.2
 \begin{lemma}[Entry and prices]\label{lem:prices}
 Let \(\DT>0\) and \(g_H>g_L\). Fix a tuple that satisfies (E1)--(E4) and (E6).
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
@@ -181,10 +180,10 @@ price formula gives the converse. So \(\zeta\) is a function of the price, and \
 \([0,1]\). At a price \(\bar P\), all orders with the price \(\bar P\) share one posterior, so by \eqref{eq:odds}
 they share one likelihood ratio \(f_H(x)/f_L(x)\). The ratio of sums in the step on beliefs at a price, in the
 proof of Lemma~\ref{lem:beliefs}, equals that likelihood ratio, and (E2) gives the common posterior. Under the
-first challenger rule, Lemma~\ref{lem:prices}(d) fixes entry at every posterior, \(\tau\) included. Under the second,
+first challenger rule, threshold-consistent entry is \(\rho\) below \(\tau\) and one at and above \(\tau\), a function
+of the posterior. Under the second,
 the identity at equal posteriors gives distinct prices to distinct entries at \(\tau\), and every order with one of
 these prices has the posterior \(\tau\).
-
 \end{proof}
 
 % STRUCTURE: Lemma 3 <- Section 3.3
@@ -378,8 +377,9 @@ J'=\frac{(g_H-c_H)\DT'+\DT g_H'}{\gamma}
 Collecting the \(\DT'\) terms and using \(\gamma+\DT=\bar\Gamma\) gives the stated expression.
 For the translated uniform laws every incumbent value lies strictly between \(\ell\) and \(h\).
 Thus \(t_L=\ell\), \(t_H=\E R=r\), \(g_L=0\) and \(g_H=h-r\), which gives all four formulas and the endpoint
-values of \(J\) by substitution. The uniform-incumbent comparison follows from
-Proposition~\ref{prop:coexistence}(c).
+values of \(J\) by substitution. In the uniform-incumbent case, Proposition~\ref{prop:coexistence}(c) gives that
+\(\DT(g_H-c_H)\) is nondecreasing. Since \(J=\DT(g_H-c_H)/\gamma\), \(\gamma=\bar\Gamma-\DT\) falls strictly where
+\(\DT\) rises, and affordability gives \(g_H>c_H\), \(J\) rises on \([r_0,r_2]\).
 \end{proof}
 
 \paragraph{The liquidity share.}\label{par:beta-scope}
@@ -398,5 +398,4 @@ Let \(X(\bar P)=\{x:P(x)=\bar P\}\), and suppose it contains a nonzero order. It
 \((1-\lambda)\sum_{x\in X(\bar P)}\eta(x)\) is at least \(b\). Its informed mass in each class lies between zero
 and \(\lambda\). Thus the ratio of its class probabilities lies between \((1+u)^{-1}\) and \(1+u\). Bayes' rule
 gives the stated interval.
-
 \end{proof}
