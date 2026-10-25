@@ -58,18 +58,6 @@
 \newcommand{\lb}{\bar\lambda}          % research cap
 \DeclareMathOperator{\Cov}{Cov}
 
-% A figure from figures/, or a framed placeholder while the file does not exist.
-\newcommand{\slotfigure}[2]{%
-  \IfFileExists{#1}{\includegraphics[width=\linewidth]{#1}}%
-  {\fbox{\parbox[c][#2][c]{0.9\linewidth}{\centering\small Figure file \texttt{\detokenize{#1}} is in preparation.}}}}
-% An appendix file, or a placeholder line while the file does not exist.
-% A check build of the main text alone can define \slotskipappendix as 1 before \input{main}.
-\providecommand{\slotskipappendix}{0}
-\newcommand{\slotappendix}[1]{%
-  \ifnum\slotskipappendix=1\relax\else
-  \InputIfFileExists{appendix/#1}{}{\par\noindent\fbox{\small Appendix file \texttt{\detokenize{#1}} is in preparation.}\par}%
-  \fi}
-
 \setlength{\parindent}{1.5em}
 \setlength{\parskip}{0pt}
 \allowdisplaybreaks
@@ -144,14 +132,14 @@ acquisition surplus net of preparation costs.
 \setcounter{figure}{0}
 \section{Proofs}\label{app:proofs}
 
-\slotappendix{A1_payoffs}
-\slotappendix{A2_beliefs_trading}
-\slotappendix{A3_proposition2}
-\slotappendix{A4_coexistence}
-\slotappendix{A5_research}
-\slotappendix{A6_robustness}
-\slotappendix{A7_welfare}
-\slotappendix{A8_empirical}
-\slotappendix{A9_parameters}
+\input{appendix/A1_payoffs}
+\input{appendix/A2_beliefs_trading}
+\input{appendix/A3_proposition2}
+\input{appendix/A4_coexistence}
+\input{appendix/A5_research}
+\input{appendix/A6_robustness}
+\input{appendix/A7_welfare}
+\input{appendix/A8_empirical}
+\input{appendix/A9_parameters}
 
 \end{document}

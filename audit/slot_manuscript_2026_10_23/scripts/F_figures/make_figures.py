@@ -1,9 +1,9 @@
-"""Figures of the order-slot manuscript (workstream F).
+"""Figures of the order-slot manuscript.
 
 Writes beliefs.pdf, coexistence.pdf, research.pdf and the three slide versions
 into slot/manuscript/figures/, a run log (run_log.txt) and PNG previews (png/).
 
-Every curve comes from a closed form of the proof packages at calibration B:
+Every curve comes from a closed form of the proof packages at the primitives of the example:
   P1_core: tau, Delta, J, the thresholds r_A, r_F, r_N, r_J, r_S, r_C and the entry of each branch
            (Proposition 3, Step 7);
   P3_research: the research polynomial F_r, the recruitment intensity, r_R, r_R-bar, r_U.
@@ -12,10 +12,18 @@ The log prints each boundary beside the registry display value. Nothing is asser
 
 Run from the repository root:
   .venv/bin/python audit/slot_manuscript_2026_10_23/scripts/F_figures/make_figures.py
+Optional argument --out DIR: the six PDFs, the PNG previews and the run log go to DIR (created if needed), and the
+converted font cache goes to DIR/.mpl. Without it the PDFs go to slot/manuscript/figures/, and the PNG previews
+(png/), the run log (run_log.txt) and the font cache (.mpl/) go beside this script.
+The Fira Sans file comes from `kpsewhich FiraSans-Regular.otf`, then from the folder named by the environment variable
+FIRA_SANS_DIR; the path used is printed when the program starts. The converted font is cached under a name that
+carries a hash of the source file, so that a different Fira file is never served from an older cache.
 """
+import argparse
 import csv
 import hashlib
 import math
+import os
 import pathlib
 import subprocess
 
@@ -36,7 +44,8 @@ OUT = ROOT / "slot" / "manuscript" / "figures"
 PNG = HERE / "png"
 REGISTRY = TEAM / "registry" / "registry.csv"
 LOGFILE = HERE / "run_log.txt"
-FIRA = pathlib.Path("/home/uctpiaj/work/texlive/2026/texmf-dist/fonts/opentype/public/fira")
+MPL_CACHE = HERE / ".mpl"
+OUT_LABEL = "slot/manuscript/figures"
 
 mp.dps = 40
 LOG = []
@@ -50,7 +59,7 @@ def log(*args):
 
 # ============================================================ number layer
 class Prm:
-    """Benchmark primitives of calibration B in one number type (mpmath or float)."""
+    """Primitives of the example in one number type (mpmath or float)."""
 
     def __init__(self, num, euler, sqrt):
         self.sqrt = sqrt
@@ -254,19 +263,37 @@ def fira_truetype(src, dst):
     font.save(str(dst))
 
 
+def find_fira():
+    """Locate FiraSans-Regular.otf: kpsewhich first, then the folder named by FIRA_SANS_DIR. Returns (path or None, how)."""
+    try:
+        res = subprocess.run(["kpsewhich", "FiraSans-Regular.otf"], capture_output=True, text=True, check=False)
+        found = res.stdout.strip().splitlines()[0] if res.stdout.strip() else ""
+    except FileNotFoundError:
+        found = ""
+    if found and pathlib.Path(found).exists():
+        return pathlib.Path(found), "kpsewhich"
+    env = os.environ.get("FIRA_SANS_DIR", "").strip()
+    if env and (pathlib.Path(env).expanduser() / "FiraSans-Regular.otf").exists():
+        return pathlib.Path(env).expanduser() / "FiraSans-Regular.otf", "FIRA_SANS_DIR"
+    return None, "not found"
+
+
 def register_fira():
-    src = FIRA / "FiraSans-Regular.otf"
-    dst = HERE / ".mpl" / "FiraSans-Regular-tt.ttf"
-    if not src.exists():
+    src, how = find_fira()
+    if src is None:
+        print("Fira Sans: FiraSans-Regular.otf not found by kpsewhich or in FIRA_SANS_DIR; slide figures use DejaVu Sans")
         return False
+    print(f"Fira Sans: {src} ({how})")
+    digest = hashlib.sha256(src.read_bytes()).hexdigest()[:12]
+    dst = MPL_CACHE / f"FiraSans-Regular-tt-{digest}.ttf"
     if not dst.exists():
-        dst.parent.mkdir(exist_ok=True)
+        dst.parent.mkdir(parents=True, exist_ok=True)
         fira_truetype(src, dst)
     fm.fontManager.addfont(str(dst))
     return True
 
 
-FIRA_OK = register_fira()
+FIRA_OK = False
 
 
 class Style:
@@ -327,7 +354,7 @@ def dot(ax, x, y, S, color="k", open_=False, size=None, z=6):
 
 def save(fig, name):
     path = OUT / name
-    fig.savefig(path, metadata={"CreationDate": None, "ModDate": None, "Creator": "make_figures.py"})
+    fig.savefig(path, metadata={"CreationDate": None, "ModDate": None, "Creator": "Competition Creates Competition"})
     plt.close(fig)
     return path
 
@@ -671,10 +698,21 @@ def fig_research(talk):
 
 
 # ============================================================ build
-def main():
+def main(argv=None):
+    global OUT, PNG, LOGFILE, MPL_CACHE, OUT_LABEL, FIRA_OK
+    ap = argparse.ArgumentParser(description="Figures of the order-slot manuscript.")
+    ap.add_argument("--out", metavar="DIR", default=None,
+                    help="write the six PDFs, the PNG previews and the run log to DIR instead of the manuscript folder")
+    args = ap.parse_args(argv)
+    if args.out is not None:
+        OUT = PNG = pathlib.Path(args.out).expanduser().resolve()
+        LOGFILE = OUT / "run_log.txt"
+        MPL_CACHE = OUT / ".mpl"
+        OUT_LABEL = str(OUT)
+    FIRA_OK = register_fira()
     OUT.mkdir(parents=True, exist_ok=True)
     PNG.mkdir(parents=True, exist_ok=True)
-    log("make_figures.py: figures of the order-slot manuscript, calibration B")
+    log("make_figures.py: figures of the order-slot manuscript")
     log(f"fonts: Fira Sans registered: {FIRA_OK}; matplotlib {matplotlib.__version__}; mpmath dps {mp.dps}")
     log("")
     log("Primitives: h=10 ell=1 p=1/2 rho=1/4 c_H=6 k=1/50 pi=1/2; 1+u=e, beta=0.294655; research a=1/40, cap=lambda_B")
@@ -750,7 +788,7 @@ def main():
     log("SHA-256 of each PDF")
     for path in made:
         sha = hashlib.sha256(path.read_bytes()).hexdigest()
-        log(f"  {sha}  slot/manuscript/figures/{path.name}  ({path.stat().st_size} bytes)")
+        log(f"  {sha}  {OUT_LABEL}/{path.name}  ({path.stat().st_size} bytes)")
     log("")
     log("Fonts (pdffonts)")
     for path in made:
