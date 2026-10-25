@@ -417,6 +417,8 @@ rhoJcap = at_bracket(lambda r: RHO * J(r) - K, br_cap0)
 print(f"  rho J(r_cap) - k in {digits(rhoJcap, 14)}  (negative: phi*_a(r_cap) = phi_a(r_cap))")
 r74 = Fr(7, 4)
 print(f"  J(7/4) = {frac(J(r74))} ; rho J(7/4) = {frac(RHO * J(r74))} = {rnd(RHO * J(r74), 9)} < k = {K}: {RHO * J(r74) < K}")
+tail_margin = J(r74) - K - 2 * A0 * lamE(tau(R2))
+print(f"  res_J74_frac = {frac(J(r74))}; J(7/4) - k - 2 a lambda_E(r_2) = {frac(tail_margin)} = {rnd(tail_margin, 12)}")
 # the existing one-piece bound over [6/5, 7/4]
 T0 = T_bound(R0, r74)
 lead = dDelta(R0) * (1 - tau(r74)) - Delta(r74) * T0
@@ -570,7 +572,9 @@ beside("res_dW_r1", dW)
 
 # ================================================================================================
 hdr("8. Values beside the table displays, and the proposed rows")
-beside("res_phi_r0", phi0, note="proposed row; exact rational above")
+beside("res_phi_r0_frac", frac(phi0), note="exact rational display")
+beside("res_bound_strength", "7/4", note="right endpoint of the derivative bound")
+beside("res_beta_upper", "1/3", note="upper liquidity share in the six-strength statement")
 beside("res_phi_rcap", phi_cap, note="proposed row")
 beside("str_r200", Fr(2), n=0, note="proposed row; display 2")
 beside("res_I0CM_lambda_r200", le, note="proposed row; exact rational above")
@@ -598,7 +602,7 @@ for key_l, key_n, key_o, r in (("res_lambda_r155", "res_entry_r155", "res_own_r1
     beside(key_o, (RHO + (1 - RHO) * (BETA + (1 - BETA) * lr)) / 2)
 print()
 print(f"  exact values of the proposed rows:")
-print(f"    res_phi_r0           = {frac(phi0)}")
+print(f"    res_phi_r0_frac      = {frac(phi0)}")
 print(f"    res_phi_rcap         in {digits(phi_cap, 20)}")
 print(f"    str_r200             = 2")
 print(f"    res_I0CM_lambda_r200 = {frac(le)}")

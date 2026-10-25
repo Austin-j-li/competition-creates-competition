@@ -1,0 +1,344 @@
+\input{../tex/preamble}
+\begin{document}
+% External references for this standalone document; omit when placing its contents in the appendix.
+\makeatletter
+\newcommand{\extlabel}[2]{\@namedef{r@#1}{{#2}{}{}{Doc-Start}{}}}
+\newcommand{\fixedlabel}[2]{\phantomsection\begingroup\def\@currentlabel{#2}\label{#1}\endgroup}
+\makeatother
+\extlabel{lem:beliefs}{A.1}
+\extlabel{lem:prices}{A.2}
+\extlabel{lem:trading}{A.3}
+\extlabel{prop:coexistence}{3}
+\extlabel{cor:exclusion}{A.1}
+\renewcommand{\thelemma}{A.\arabic{lemma}}
+\renewcommand{\theHlemma}{A.\arabic{lemma}}
+\setcounter{lemma}{3}
+
+\begin{center}\large Foundations and ownership\end{center}
+
+\subsection*{General results}
+
+% source: scan/generality_A1_A2_A6_A8.md, section 4, item 1.
+% Manuscript location: appendix/A2_beliefs_trading.tex:7-8.
+\paragraph{Beliefs, prices and trading.}\label{par:a2-scope}
+The belief lemma holds for every order profile, in or out of equilibrium; the price and trading lemmas hold
+for every tuple that meets their stated conditions.
+
+% source: scan/reduction_A3_A5.md, sections 2 and 4.1; referee report W3, Shared Candidate 1, section 4.
+% Manuscript location: appendix/A2_beliefs_trading.tex:165-170.
+\paragraph{Constructed tuples.}\label{par:constructed-tuples}
+Let \(\DT>0\). Take a profile, its Bayes posteriors \(\mu(x)\), and entry \(e(x)\in[\rho,1]\) such that
+\(e(x)\ge e(x')\) whenever \(\mu(x)>\mu(x')\). Set \(P(x)=t_0+e(x)[w_L+\DT\mu(x)]\), where \(w_L=t_L-t_0\ge0\).
+Then prices rise strictly with the posterior, and
+\[
+P(x)=P(x')\quad\Longleftrightarrow\quad
+\mu(x)=\mu(x')\ \text{and}\ e(x)=e(x').
+\]
+The preparation rule \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a function of the price, and the belief at \(P(x)\)
+is \(\mu(x)\). If also \(g_H>g_L\), threshold-consistent entry is a function of the posterior when an indifferent
+high-cost challenger prepares. When an indifferent high-cost challenger may prepare with any probability,
+orders at \(\tau\) with different entry have different prices, each revealing \(\tau\).
+
+% source: SCAN.md, Part 2; scan/reduction_A3_A5.md, section 2, including the converse price construction.
+% Manuscript location: appendix/A2_beliefs_trading.tex, after line 230.
+\begin{lemma}[The auction through the spread and the threshold]\label{lem:reduction}
+Fix the model's independence and information structure, a prior \(\pi\in(0,1)\), the two-point preparation cost
+with \(\rho\in(0,1)\) and \(c_H>0\), a trading cost \(k>0\), and one pair of tie rules: an indifferent investor
+may mix over its best orders or abstains, and an indifferent high-cost challenger prepares or may prepare with
+any probability. At fixed presence, fix \(0<\lambda<1\); with research, presence is \(\hat\lambda\).
+Fix \(0<\beta<1/2\). Consider two cash second-price auctions with finite-mean classes satisfying the class
+ranking, continuous incumbent laws, \(\DT>0\) and \(\gamma=g_H-g_L>0\), and the same spread and preparation threshold
+\(\tau=(c_H-g_L)/\gamma\). Their equilibrium sets projected onto
+\((\sigma_H,\sigma_L,\mu,e)\) coincide.
+
+The common conditions are Bayes' rule, the threshold entry rule under the chosen tie rule, and optimal orders at
+\[
+\begin{aligned}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,& U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\DT\mu(-1)-k,& U_L(1)&=-e(1)\DT\mu(1)-k,
+\end{aligned}
+\qquad U_j(0)=0.
+\]
+Each auction gives prices and price beliefs by
+\[
+P(x)=t_0+e(x)[w_L+\DT\mu(x)],\qquad
+\zeta(P(x))=\frac{e(x)-\rho}{1-\rho},\qquad \bar\mu(P(x))=\mu(x).
+\]
+With research, fix also the quadratic cost coefficient \(a>0\) and cap \(0<\lb<1\), and require optimal orders
+after a hypothetical success even at zero research. The equilibrium sets projected onto
+\((\hat\lambda,\sigma_H,\sigma_L,\mu,e)\) coincide. The common conditions also include
+\[
+\hat\lambda=\min\{\lb,\Psi/a\},\qquad
+\Psi=\pi\max_q U_H(q)+(1-\pi)\max_q U_L(q),
+\]
+with Bayes' rule evaluated at \(\hat\lambda\). These conclusions hold under all four tie rules.
+\end{lemma}
+
+% source: scan/reduction_A3_A5.md, section 3(a); referee report W1, Solver B 1, positive-threshold qualification.
+% Manuscript location: appendix/A2_beliefs_trading.tex, after line 230; appendix/A4_coexistence.tex:24,57-58.
+\begin{lemma}[The two numbers along a path]\label{lem:twonumbers}
+Fix ranked finite-mean classes, the reserve and the two-point preparation cost. A path is a family \(F_r\) of
+continuous incumbent laws indexed by strength on an interval, with \(F_{r'}\le F_r\) when \(r'>r\). Write
+\(\DT(r)=\DT(F_r)\), \(\gamma(r)=g_H(F_r)-g_L(F_r)\), and, where \(\gamma(r)>0\),
+\(\tau(r)=[c_H-g_L(F_r)]/\gamma(r)\). The class mean gap is fixed:
+\[
+\bar\Gamma=\E_H\theta-\E_L\theta=\DT(r)+\gamma(r).
+\]
+Each \(g_j\) and \(\gamma\) is nonincreasing, and \(\DT\) is nondecreasing. For \(r'>r\),
+\[
+\begin{aligned}
+\DT(r')-\DT(r)&=\int_p^\infty[F_r(y)-F_{r'}(y)]D(y)\,dy,\\
+g_j(F_r)-g_j(F_{r'})&=\int_p^\infty[F_r(y)-F_{r'}(y)][1-G_j(y)]\,dy.
+\end{aligned}
+\]
+Each change is strict exactly when its integral is positive. Where \(\gamma>0\), \(\DT>0\) and \(\tau\ge0\), both
+\(\tau\) and \(\DT\tau\) are nondecreasing. Their exact increments are
+\[
+\tau(r')-\tau(r)=
+\frac{g_L(F_r)-g_L(F_{r'})+\tau(r)[\DT(r')-\DT(r)]}{\gamma(r')},
+\]
+\[
+\DT(r')\tau(r')-\DT(r)\tau(r)
+=\DT(r)[\tau(r')-\tau(r)]+\tau(r')[\DT(r')-\DT(r)].
+\]
+Thus the threshold rises strictly exactly when the numerator in its increment is positive; the product rises
+strictly exactly when the right side of its increment is positive.
+
+On a differentiable path the return \(J=\DT(1-\tau)\) obeys
+\[
+J'=\frac{\bar\Gamma(g_H-c_H)\DT'+\DT\gamma g_H'}{\gamma^2}.
+\]
+Its direction depends on the balance between spread growth and the decline in high-class profit. For point
+classes \(h=\reg{twonum_h}\), \(\ell=\reg{twonum_ell}\), reserve \(p=\reg{twonum_p}\), high cost
+\(c_H=\reg{twonum_cH}\), and \(F_r=U[r-\reg{twonum_halfwidth},r+\reg{twonum_halfwidth}]\) on
+\([\reg{twonum_rlo},\reg{twonum_rhi}]\),
+\[
+\DT=r-\ell,\qquad g_L=0,\qquad g_H=h-r,\qquad \tau=\frac{c_H}{h-r}.
+\]
+Its return falls between the endpoints:
+\[
+\begin{aligned}
+J(\reg{twonum_rlo})&=\reg{twonum_Jlo},\\
+J(\reg{twonum_rhi})&=\reg{twonum_Jhi}<J(\reg{twonum_rlo}).
+\end{aligned}
+\]
+In the uniform-incumbent example below, \(J\) rises on \([r_0,r_2]\) by the uniform case of
+Proposition~\ref{prop:coexistence}(c).
+\end{lemma}
+
+% source: statements/O2/O2_proof.tex; Lemma A.1(c) and the uses enumerated in O2_notes.md.
+% Manuscript location: appendix/A2_beliefs_trading.tex:232-236; sections/02_model.tex:123-125.
+\paragraph{The liquidity share.}\label{par:beta-scope}
+The bound \(\beta\le1/3\) is the inequality \(b_0\ge b\). It extends the posterior bounds of the nonzero orders
+to the zero order, and through it enters only Corollary~\ref{cor:exclusion} and the zero-order part of the
+research bounds. The research parameter region and the slot-feasibility parts of identification range over the
+slots with \(\beta\le1/3\). Every other result holds for every \(0<\beta<1/2\); a corollary that fixes the slot
+holds at that slot.
+
+% source: appendix/A3_proposition2.tex:15-109; referee report W2, Shared Candidate 3 and Proposition 2;
+% statements/O6/O6_proof.tex, eq. (eq:a3-share).
+% Manuscript location: appendix/A3_proposition2.tex:75-86 and sections/04_equilibrium_results.tex:11-44.
+\setcounter{proposition}{1}
+\begin{proposition}[Competition creates competition, full statement]\label{prop:ccc}
+Let the classes satisfy the class ranking and have finite means, let \(F_1\le F_0\) and \(F_2\le F_1\) be
+continuous incumbent laws, and fix \(0<\pi,\rho,\lambda<1\), \(0<\beta<1/2\), \(c_H>0\) and \(k>0\). Write
+\(\Delta_i=\DT(F_i)\), \(B_i=B_{F_i}\), \(b=(1-\lambda)\beta\), and
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\). Suppose that
+\[
+\begin{array}{ll}
+\text{(H1), the high-cost window:}& B_0(\pi)<c_H<B_1(M(\pi)),\\
+\text{(H2), the trading-cost window:}& \Delta_0<k<\rho\kappa(\pi)\Delta_1,\\
+\text{(H3), the exclusion condition:}& B_2(M(\pi))<c_H.
+\end{array}
+\]
+Each economy has a unique equilibrium outcome under all four tie rules.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item At \(F_0\), both classes abstain, every posterior equals \(\pi\), entry is \(\rho\), and all orders share the
+price \(t_{0,0}+\rho[t_{L,0}-t_{0,0}+\Delta_0\pi]\). High-class ownership is \(\pi\rho W_H(F_0)\).
+\item At \(F_1\), class \(H\) buys and class \(L\) sells with probability one. The posteriors after
+\((-1,0,1)\) are \((m(\pi),\pi,M(\pi))\), and entry is \((\rho,\rho,1)\). Prices rise strictly in this order.
+Class entry and total entry are
+\[
+e_H=\rho+(1-\rho)(b+\lambda),\qquad e_L=\rho+(1-\rho)b,\qquad
+\Ent_1=\rho+(1-\rho)(b+\pi\lambda)>\rho.
+\]
+High-class ownership rises exactly when \(e_HW_H(F_1)>\rho W_H(F_0)\). The probability that class \(H\) acquires
+the target, conditional on acquisition by the challenger, rises exactly when
+\begin{equation}\label{eq:a3-share}
+e_HW_H(F_1)W_L(F_0)>e_LW_H(F_0)W_L(F_1).
+\end{equation}
+If class \(H\) outbids the stronger incumbent, \(W_H(F_1)=1\), it also outbids \(F_0\); high-class ownership
+rises from \(\pi\rho\) to \(\pi e_H\), and its takeover share is nondecreasing, strictly exactly when
+\(W_L(F_0)>0\). If \(W_L(F_0)=0\), that share is one at both laws.
+\item At \(F_2\), the orders and posteriors are those of part (ii), entry is \(\rho\) after every order, and the
+three prices differ. High-class ownership is \(\pi\rho W_H(F_2)\).
+\end{enumerate}
+At each law prices are \(P_i(x)=t_{0,i}+e_i(x)[t_{L,i}-t_{0,i}+\Delta_i\mu_i(x)]\), the price belief is
+\(\mu_i(x)\), high-cost preparation is \([e_i(x)-\rho]/(1-\rho)\), and bids are truthful.
+\end{proposition}
+
+% source: referee report W2, Shared Candidate 2, the verification for the example.
+% Manuscript location: appendix/A3_proposition2.tex, after line 110; sections/04_equilibrium_results.tex:63-67.
+\begin{lemma}[Decisive advantage]\label{lem:decisive}
+Fix ranked finite-mean classes, a reserve \(p>0\), a high cost \(c_H>0\), and a family of continuous incumbent
+laws. The family has \emph{decisive advantage} if, for every law \(F\) in it,
+\[
+g_H(F)>c_H\quad\Longrightarrow\quad W_H(F)=1.
+\]
+At every law in this family with \(\DT>0\) and \(g_H>g_L\), any equilibrium that recruits a high-cost challenger
+after some order has \(W_H(F)=1\). This holds at every interior prior, under all four tie rules, both at fixed
+presence and with research at a cap below one. Under (H1)--(H3), decisive advantage at \(F_1\) gives the
+ownership and takeover-share conclusions under outbidding in Proposition~\ref{prop:ccc}(ii).
+
+For point classes \(h>\ell\ge p\) and the full family \(F_r=U[0,r]\), \(r>0\), decisive advantage holds exactly
+when
+\[
+c_H\ge\frac{h^2-p^2}{2h}.
+\]
+\end{lemma}
+
+% source: referee report W2, Shared Candidate 2, Decisive advantage.
+% Manuscript location: sections/04_equilibrium_results.tex:63-67; main-text form of the family condition.
+\paragraph{Decisive advantage.}\label{par:decisive-main}
+A family has decisive advantage when a known high-class challenger's gross profit exceeds \(c_H\) only against
+incumbents it beats with probability one. Every recruiting economy with a positive profit gap then has
+\(W_H=1\), so the ownership and takeover-share conclusions of Proposition~\ref{prop:ccc}(ii) apply.
+
+% source: scan/generality_A1_A2_A6_A8.md, section 4, item 2; referee report W2, Proposition A.5.
+% Manuscript location: sections/06_robustness.tex:25-36; appendix/A6_robustness.tex:157-195.
+\paragraph{Value classes and priors.}\label{par:uniform-classes-scope}
+For every pair of ranked finite-mean classes with a positive mean gap, a reserve \(p>0\), every interior prior and slot, and
+\(0<\rho<1\), the uniform incumbent family \(F_r=U[0,r]\) admits a nonempty set, defined by strict inequalities
+in strengths and costs, on which the hypotheses and ownership conclusion of Proposition~\ref{prop:ccc} hold.
+
+% source: referee report W2, Proposition A.7; scan/generality_A1_A2_A6_A8.md, Complementary signals.
+% Manuscript location: appendix/A6_robustness.tex:383-442 and 481-489.
+\renewcommand{\theproposition}{A.\arabic{proposition}}
+\renewcommand{\theHproposition}{A.\arabic{proposition}}
+\setcounter{proposition}{5}
+\begin{proposition}[Complementary private signals]\label{prop:signals}
+Fix ranked finite-mean classes, a reserve \(p>0\), continuous laws \(F_1\le F_0\), prior one half, the
+two-point preparation cost with \(0<\rho<1\), and a slot \(0<\lambda<1\), \(0<\beta<1/2\). Conditional on class
+\(j\), the signals \(S_I,S_C\), the challenger value and the incumbent value are mutually independent, with
+value laws \(G_j,F_i\). The cost and slot draws are independent of these variables. The binary signals have
+accuracies \(1/2<\alpha_I,\alpha_C<1\):
+\[
+\Pr(S_I=+\mid H)=\Pr(S_I=-\mid L)=\alpha_I,\qquad
+\Pr(S_C=+\mid H)=\Pr(S_C=-\mid L)=\alpha_C.
+\]
+The investor observes \(S_I\); the challenger observes \(S_C\) and the price. Define
+\[
+\begin{gathered}
+M^I=(1-\alpha_I)+(2\alpha_I-1)M(1/2),\quad
+m^I=(1-\alpha_I)+(2\alpha_I-1)m(1/2),\\
+\mu^C_+(\mu)=\frac{\alpha_C\mu}{\alpha_C\mu+(1-\alpha_C)(1-\mu)},\quad
+\mu^C_-(\mu)=\frac{(1-\alpha_C)\mu}{(1-\alpha_C)\mu+\alpha_C(1-\mu)},\\
+\bar\Delta_P(F)=\DT(F)+(1-\rho)(2\alpha_C-1)[t_H(F)-t_0(F)].
+\end{gathered}
+\]
+Suppose that
+\[
+B_{F_0}(\alpha_C)<c_H<B_{F_1}(\mu^C_+(M^I)),\qquad
+(2\alpha_I-1)\bar\Delta_P(F_0)<k<(2\alpha_I-1)\rho\,m(1/2)\DT(F_1).
+\]
+Under all four tie rules, the unique orders at \(F_0\) are abstention after either investor signal, with entry
+\(\rho\) and high-class ownership \(\rho W_H(F_0)/2\). At \(F_1\), the unique orders are a purchase after \(+\)
+and a sale after \(-\); the public posteriors after \((-1,0,1)\) are \((m^I,1/2,M^I)\), the three prices differ,
+and entry strictly exceeds \(\rho\).
+
+At \(F_1\), write \(\zeta_\pm(\mu)\) for high-cost preparation following \(S_C=\pm\) at public belief \(\mu\).
+For \(\mu^C_\pm(\mu)\) strictly above or below the preparation threshold it is respectively one or zero; at
+equality the chosen challenger tie rule applies. Conditional entry is
+\[
+\begin{aligned}
+e_H(\mu)&=\rho+(1-\rho)[\alpha_C\zeta_+(\mu)+(1-\alpha_C)\zeta_-(\mu)],\\
+e_L(\mu)&=\rho+(1-\rho)[(1-\alpha_C)\zeta_+(\mu)+\alpha_C\zeta_-(\mu)].
+\end{aligned}
+\]
+Its class average \(\bar e_H=\sum_x f_H(x)e_H(\mu(x))\) gives ownership \(\Own_{H,1}=\bar e_HW_H(F_1)/2\), where
+\[
+f_H=(b+(1-\alpha_I)\lambda,b_0,b+\alpha_I\lambda),\qquad
+f_L=(b+\alpha_I\lambda,b_0,b+(1-\alpha_I)\lambda).
+\]
+If also \(B_{F_1}(\mu^C_-(M^I))<c_H\), exactly the pair \((X,S_C)=(1,+)\) recruits, and
+\[
+\bar e_H=\rho+(1-\rho)\alpha_C(b+\alpha_I\lambda),\qquad
+\bar e_L=\rho+(1-\rho)(1-\alpha_C)[b+(1-\alpha_I)\lambda].
+\]
+In general high-class ownership rises exactly when \(\bar e_HW_H(F_1)>\rho W_H(F_0)\); in particular it rises if
+\(W_H(F_1)=1\), or if decisive advantage holds at \(F_1\).
+\end{proposition}
+
+\subsection*{The example}
+
+% source: appendix/A3_proposition2.tex:157-221; PLAN.md, S9 and Part 6; statements/O6/O6_proof.tex.
+% Manuscript location: appendix/A3_proposition2.tex:157-221; full Corollary 1, using the label prop:region.
+\begin{named}{Corollary 1 (Recruitment and ownership in the example, full statement)}
+\fixedlabel{prop:region}{1}\fixedlabel{cor:ccc-example}{1}
+Let the classes be point masses at \(h=\reg{prim_h}\) and \(\ell=\reg{prim_ell}\), the incumbent be uniform on
+\([0,r]\), and
+\[
+(p,\rho,c_H,k)=(\reg{prim_p},\reg{prim_rho},\reg{prim_cH},\reg{prim_k}),\qquad
+(r_0,r_1,r_2)=(\reg{prim_r0},\reg{prim_r1},\reg{prim_r2}).
+\]
+Take a slot with \(0<\lambda<1\), \(0<\beta<1/2\), \(u=\lambda/[(1-\lambda)\beta]\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item At prior \(\pi=\reg{prim_pi}\), the high-cost window, trading-cost window and exclusion condition hold
+together exactly on
+\[
+\begin{gathered}
+\reg{u_lo_frac}<u<\reg{u_hi_frac},\\
+\text{equivalently}\quad
+\tau(r_1)=\reg{M_lo_frac}<M(\pi)<\reg{M_hi_frac}=\tau(r_2).
+\end{gathered}
+\]
+This is an interval of presence probabilities at each fixed liquidity share. Under all four tie rules, entry is
+\(\rho\), \(\rho+(1-\rho)(b+\lambda/2)\), \(\rho\) at the three strengths, and high-class ownership is
+\(\rho/2\), \([\rho+(1-\rho)(b+\lambda)]/2\), \(\rho/2\).
+\item For \(u<\reg{u_lo_frac}\), entry at \(r_1\) is \(\rho\). At \(u=\reg{u_lo_frac}\), orders are uniquely zero
+at \(r_0\) and uniquely full at \(r_1,r_2\). When an indifferent high-cost challenger prepares, every conclusion
+of Proposition~\ref{prop:ccc} holds. When it may prepare with any probability, entry after a purchase at \(r_1\)
+ranges over \([\rho,1]\), and total entry there ranges over
+\([\rho,\rho+(1-\rho)(b+\lambda/2)]\). For
+\(\reg{u_hi_frac}\le u<\reg{u_kstrong_frac}\), a purchase at \(r_2\) induces certain preparation when an
+indifferent high-cost challenger prepares. For \(u\ge\reg{u_kstrong_frac}\), the strict upper inequality of the
+trading-cost window at \(r_1\) fails.
+\item If \(1+u=\eu\), all three hypotheses hold exactly when
+\[
+\frac{\tau(r_1)}{\tau(r_1)+[1-\tau(r_1)]\eu}<\pi<
+\frac{\tau(r_2)}{\tau(r_2)+[1-\tau(r_2)]\eu},
+\]
+with endpoints \(\reg{prior_lo_B}\) and \(\reg{prior_hi_B}\) to six places. The high-cost and trading-cost windows
+alone hold exactly between the same lower endpoint and \(\tau(r_0)=\reg{tau_r0_frac}\).
+\item At \(\beta=\reg{beta_B}\), \(1+u=\eu\) and \(\pi=\reg{prim_pi}\), entry at the three strengths is
+\(\reg{entry_r0}\), \(\reg{entry_r1_B}\), \(\reg{entry_r2}\), and high-class ownership is
+\(\reg{own_r0}\), \(\reg{own_r1_B}\), \(\reg{own_r0}\). Class \(H\)'s share of acquisitions won by the challenger
+is respectively \(\reg{share_H_r0}\), \(\reg{share_H_r1_B}\), \(\reg{share_H_r2_B}\).
+\item For these point values and the strength range \([r_0,r_2]\), decisive advantage on the full uniform family
+and the affordability condition \(h-r_2\ge c_H\) of Proposition~\ref{prop:coexistence}(c) hold together exactly
+on the cost window
+\[
+\reg{decisive_cost_lo_frac}\le c_H\le\reg{afford_cost_hi_frac}.
+\]
+The example's cost \(c_H=\reg{prim_cH}\) lies in this window, with margins
+\(\reg{margin_decisive_B_frac}\) and \(\reg{margin_afford_uniform_B_frac}\). For these class values, reserve and cost,
+every economy with a uniform incumbent \(U[0,r]\) in which some order recruits a high-cost challenger has
+\[
+r< h-c_H+\sqrt{(h-c_H)^2-p^2}\approx\reg{decisive_rmax_B}<h,
+\]
+whatever the slot, prior, \(\rho\), \(k\) and research.
+\end{enumerate}
+\end{named}
+
+% source: PLAN.md, S9, Section 4.2; appendix/A3_proposition2.tex:157-221; referee report W2, Proposition 2.
+% Manuscript location: sections/04_equilibrium_results.tex:69-131; short main-text form of Corollary 1.
+\begin{named}{Corollary 1 (main-text form)}\fixedlabel{form:ccc-example-main}{1}
+In the example with prior \(\pi=\reg{prim_pi}\), Proposition~\ref{prop:ccc}'s hypotheses hold together exactly
+for slots with \(\reg{u_lo_frac}<u<\reg{u_hi_frac}\). Entry rises from \(\rho\) at \(r_0\) to
+\(\rho+(1-\rho)(b+\lambda/2)\) at \(r_1\), and returns to \(\rho\) at \(r_2\); high-class ownership
+rises from \(\rho/2\) to \([\rho+(1-\rho)(b+\lambda)]/2\). At the slot with \(1+u=\eu\) and
+\(\beta=\reg{beta_B}\), entry at \(r_1\) is \(\reg{entry_r1_B}\), high-class ownership is \(\reg{own_r1_B}\), and
+class \(H\)'s share of takeovers won by the challenger rises from \(\reg{share_H_r0}\) to
+\(\reg{share_H_r1_B}\). The outcomes hold under all four tie rules.
+\end{named}
+\end{document}

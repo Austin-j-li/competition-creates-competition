@@ -125,3 +125,36 @@ print("  root of g_H(r) = c_H in (p, h): (h - c_H) + sqrt((h - c_H)^2 - p^2) = 4
 print("  h minus that root =", mp.nstr(mp.mpf(10) - root, 20))
 gH = lambda r: h - Fr(r) / 2 - p * p / (2 * Fr(r))
 print("  g_H at r_2 = {} = {}, and c_H - g_H(r_2) = {}".format(gH(r2), float(gH(r2)), float(c_H - gH(r2))))
+
+print()
+print("Exact coordinates and slot window of Corollary 1")
+for name, r in (("r_0", r0), ("r_1", r1), ("r_2", r2)):
+    dT = (r - ell) ** 2 / (2 * r)
+    gL = (ell * ell - p * p) / (2 * r)
+    gH_r = h - r / 2 - p * p / (2 * r)
+    tau = (c_H - gL) / (gH_r - gL)
+    print(name, "spread =", dT, "threshold =", tau, "u at threshold =", (2*tau-1)/(1-tau))
+print("Weak cost margin =", c_H - (h - r0/2 - p*p/(2*r0) + (ell*ell-p*p)/(2*r0))/2)
+print("Weak trade margin =", k - (r0-ell)**2/(2*r0))
+print("Full-order upper u =", rho * ((r1-ell)**2/(2*r1)) / k - 2)
+print("Cost-window lower =", gH_at_h, "upper =", h-r2)
+print()
+print("Translated uniform incumbent: the direction of J")
+for r in (Fr(7), Fr(15, 2)):
+    dT = r - ell
+    gamma = h-r
+    tau = Fr(2)/gamma
+    J = dT*(1-tau)
+    Jprime = 1 - Fr(2)*(h-ell)/(h-r)**2
+    print("center =", r, "half width =", Fr(1, 10), "spread =", dT, "threshold =", tau, "J =", J, "J derivative =", Jprime)
+
+print()
+print("Prior windows at 1 + u = e")
+for name, r in (("lower", r1), ("upper", r2)):
+    dT = (r-ell)**2/(2*r)
+    gL = (ell*ell-p*p)/(2*r)
+    tau = (c_H-gL)/(h-ell-dT)
+    endpoint = I(tau)/(I(tau)+I(1-tau)*e)
+    print(name, show(endpoint))
+print("Trading lower prior", show(3*e/(22+3*e)))
+print("Trading upper prior", show(22/(22+3*e)))

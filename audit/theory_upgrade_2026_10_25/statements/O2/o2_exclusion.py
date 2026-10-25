@@ -75,3 +75,10 @@ for key, val in U.items():
 print("Trading-cost window for these orders: rho Delta_T (1 - pi) = {} < k = {} < rho Delta_T m = {}".format(
     rho * Delta * (1 - pi), k, rho * Delta * m))
 print("Prices ordered as posteriors: P(-1) < P(1) < P(0):", P[-1] < P[1] < P[0])
+
+print("Price-preimage posterior bounds for sets containing a nonzero order")
+for group in ((-1,), (1,), (-1, 0), (0, 1), (-1, 1), (-1, 0, 1)):
+    fH = sum((f["H"][x] for x in group), Fr(0))
+    fL = sum((f["L"][x] for x in group), Fr(0))
+    belief = posterior(fH, fL)
+    print("  orders {}: posterior = {}, lower gap = {}, upper gap = {}".format(group, belief, belief-m, M-belief))

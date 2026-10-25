@@ -439,8 +439,8 @@ for r in (R0, Fr(3, 2), Fr(7, 4), Fr(2), Fr(43, 20), Fr(11, 5), Fr(5, 2), R1, R2
 
 # ================================================================================================
 hdr("5. Lower bound on phi' over the pieces [r_0 + i/10, r_0 + (i+1)/10] of [r_0, r_2]")
-print("  b(l,u) = rho[Delta'(l)(1 - tau(u)) - Delta(u) T(l,u)] - a beta T(l,u)/[beta + (1-2beta)(1-tau(u))]^2,")
-print("  T(l,u) = 3(8u^2 - u + 2)/[2(20l - l^2 - 1)^2] >= tau' on [l,u]")
+print("  b(r',r'') = rho[Delta'(r')(1 - tau(r'')) - Delta(r'') T(r',r'')] - a beta T(r',r'')/[beta + (1-2beta)(1-tau(r''))]^2,")
+print("  T(r',r'') = 3(8(r'')^2 - r'' + 2)/[2(20r' - (r')^2 - 1)^2] >= tau' on [r',r'']")
 pieces = []
 l = R0
 while l < R2:
@@ -452,8 +452,8 @@ for (l, u) in pieces:
     b = b_piece(l, u)
     # the exact derivative at both ends, for comparison with the bound
     dl, du = dphi_floor(l), dphi_floor(u)
-    print(f"  [{float(l):.1f}, {float(u):.1f}]  b = {rnd_down(b, 6)}   phi'(l) = {rnd(dl, 6)}   phi'(u) = {rnd(du, 6)}"
-          f"   b <= min(phi'(l), phi'(u)): {b <= min(dl, du)}")
+    print(f"  [{float(l):.1f}, {float(u):.1f}]  b = {rnd_down(b, 6)}   phi'(r') = {rnd(dl, 6)}   phi'(r'') = {rnd(du, 6)}"
+          f"   b <= min(phi'(r'), phi'(r'')): {b <= min(dl, du)}")
     if bmin is None or b < bmin:
         bmin, argmin = b, (l, u)
 print(f"  number of pieces: {len(pieces)} ; last right end equals r_2: {pieces[-1][1] == R2}")

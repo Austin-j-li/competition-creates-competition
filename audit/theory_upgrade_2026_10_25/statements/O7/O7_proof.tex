@@ -14,9 +14,10 @@ and only if they have the same posterior and the same entry. Hence \(\zeta(P(x))
 preparation rule on the image of \(P\), with values in \([0,1]\), and the belief that (E2) assigns to the price
 \(P(x)\) is \(\mu(x)\). Let also \(g_H>g_L\). When an indifferent high-cost challenger prepares, entry that meets
 Lemma~\ref{lem:prices}(d) is a function of the posterior, so orders with the same posterior have the same price.
-When an indifferent high-cost challenger may prepare with any probability, two orders with the posterior \(\tau\)
-may have different entry; they then have different prices, and each of these prices reveals \(\tau\).
+When an indifferent high-cost challenger may prepare with any probability, orders with the posterior \(\tau\)
+and different entry have different prices, each revealing \(\tau\).
 
+\begin{proof}
 Let \(\mu(x)>\mu(x')\). Then \(e(x)\ge e(x')\), and \eqref{eq:a2-increment} gives
 \(P(x)-P(x')\ge e(x)\DT[\mu(x)-\mu(x')]\ge\rho\DT[\mu(x)-\mu(x')]>0\), because \(w(\mu)\ge w_L\ge0\). Let
 \(\mu(x)=\mu(x')\). Then \(P(x)-P(x')=[e(x)-e(x')]\,w(\mu(x))\), and \(w(\mu(x))=w_L+\DT\mu(x)>0\), because
@@ -29,24 +30,50 @@ first challenger rule, Lemma~\ref{lem:prices}(d) fixes entry at every posterior,
 the identity at equal posteriors gives distinct prices to distinct entries at \(\tau\), and every order with one of
 these prices has the posterior \(\tau\).
 
-Each verification below applies this paragraph to its stated entry before it checks any condition. Where two orders
+\end{proof}
+
+Each construction below applies this paragraph to its stated entry to obtain its price beliefs. Where two orders
 of a stated tuple share a posterior, the tuple gives them the same entry, so they share a price, and the belief at
 that price is their common posterior.
 
 \paragraph{The sale and the zero order in recruiting research.}
-At the prior \(1/2\), let \(\tau>1/2\), and take recruiting research with research \(\hat\lambda>0\), in which class
-\(H\) buys after a success and class \(L\) sells with probability \(z=\sigma_L(-1)\) and abstains otherwise. With
-\(\hat b=(1-\hat\lambda)\beta\) and \(\hat b_0=(1-\hat\lambda)(1-2\beta)\), the posteriors after a sale and after no
-order are
+At the prior \(1/2\), when an indifferent investor may mix, let \(\tau>1/2\), and take recruiting research with \(0<\hat\lambda<1\), in which class
+\(H\) buys after a success and class \(L\) sells with probability \(\sigma_L(-1)\) and abstains otherwise.
+The sale and the zero order have entry \(\rho\) under either challenger tie rule. They share a posterior,
+and hence a price, exactly when
 \[
-\mu(-1)=\frac{\hat b}{2\hat b+\hat\lambda z}\le\frac12,\qquad
-\mu(0)=\frac{\hat b_0}{2\hat b_0+\hat\lambda(1-z)}\le\frac12 ,
+\sigma_L(-1)=\frac{\beta}{1-\beta}.
 \]
-both below \(\tau\), so entry after both orders is \(\rho\) under all four tie rules, and entry after a purchase is
-one. Entry is nondecreasing in the posterior, and the paragraph on constructed tuples applies. The two posteriors
-are equal exactly when \(\hat b(1-z)=\hat b_0z\), that is, when \(z=\hat b/(\hat b+\hat b_0)=\beta/(1-\beta)\), for
-every \(\hat\lambda\). The sale and no order then share a price, and the belief at that price is their common
-posterior; for every other \(z\) the three prices differ. In the example, recruiting research at the cap has
-\(z=\hat s_-(r)/\lb\), which rises strictly while class \(L\) mixes, so the two orders share a posterior at exactly
-one strength, \(r\approx\reg{r_pool_B}\). There the common posterior is \(\reg{pool_mu_B}\), and the common price is
-\(\reg{pool_price_B}\).
+In the example, during recruiting research at the cap, this happens at exactly one strength,
+\[
+r=\fr\!\left(\frac{k}{\rho}\left[2+\frac{(\eu-1)\beta}{1-\beta}\right]\right)
+\approx\reg{r_pool_B}.
+\]
+The common posterior is \(\reg{pool_mu_B}\), and the common price is \(\reg{pool_price_B}\).
+
+\begin{proof}
+With \(\hat b=(1-\hat\lambda)\beta\) and \(\hat b_0=(1-\hat\lambda)(1-2\beta)\), Bayes' rule gives
+\[
+\mu(-1)=\frac{\hat b}{2\hat b+\hat\lambda\sigma_L(-1)}\le\frac12,\qquad
+\mu(0)=\frac{\hat b_0}{2\hat b_0+\hat\lambda[1-\sigma_L(-1)]}\le\frac12.
+\]
+Both posteriors lie strictly below \(\tau\), so both orders have entry \(\rho\) with no challenger tie. A purchase
+fully recruits. Entry is nondecreasing in the posterior, and the paragraph on constructed tuples gives the
+price beliefs. Cross multiplication gives equal nonpurchase posteriors exactly when
+\(\hat b[1-\sigma_L(-1)]=\hat b_0\sigma_L(-1)\). Since
+\(\hat b/(\hat b+\hat b_0)=\beta/(1-\beta)\), this is the stated sale probability, independently of research.
+
+On the example's capped segment where the sale is mixed, the sale earns zero, so
+\[
+\hat s_-(r)=\bar b\left[\frac{\rho\DT(r)}{k}-2\right],\qquad
+\sigma_L(-1)=\frac{\hat s_-(r)}{\lb},\qquad
+\frac{\lb}{\bar b}=\eu-1.
+\]
+The spread rises strictly, so the sale probability rises strictly from zero to one as \(r\) ranges from
+\(r_N\) to \(r_S\). The number \(\beta/(1-\beta)\) lies strictly between zero and one. It is attained once,
+at the spread \((k/\rho)[2+(\eu-1)\beta/(1-\beta)]\). Inverting
+\(\DT(r)=(r-\ell)^2/(2r)\) gives the stated strength. The example's ordering
+\(r_{\lb}<r_N<r_S<r_C\) puts this strength on the capped recruiting segment.
+The sale's zero return gives \(\mu(-1)=k/[\rho\DT(r)]\), and its price is
+\(t_0+\rho(t_L-t_0)+k\); these give the stated common posterior and price.
+\end{proof}

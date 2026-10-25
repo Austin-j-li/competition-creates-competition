@@ -1,0 +1,495 @@
+\input{../tex/preamble}
+\begin{document}
+\makeatletter
+\newcommand{\extlabel}[2]{\@namedef{r@#1}{{#2}{}{}{Doc-Start}{}}}
+\newcommand{\fixedlabel}[2]{\phantomsection\def\@currentlabel{#2}\label{#1}}
+\makeatother
+\extlabel{lem:twonumbers}{A.5}
+\extlabel{lem:decisive}{A.6}
+\extlabel{lem:a4-low}{A.8}
+\extlabel{prop:ccc}{2}
+\renewcommand{\thelemma}{A.\arabic{lemma}}
+\renewcommand{\theHlemma}{A.\arabic{lemma}}
+\setcounter{lemma}{11}
+
+\begin{center}\large Research: statements for the appendix and the main text\end{center}
+
+\subsection*{General results}
+% source: referee report W3, Shared Candidate 1, introductory assumptions and sections 1--4.
+% manuscript: appendix/A5_research.tex:22--62.
+\paragraph{Setting.}
+The classes satisfy the class ranking: \(G_H\le G_L\), both class values are at least the reserve \(p>0\), and both class
+means are finite. The incumbent law \(F\) is continuous, \(\DT=t_H-t_L>0\), \(\gamma=g_H-g_L>0\), and
+\(\tau=(c_H-g_L)/\gamma>1/2\). The prior is \(1/2\), the preparation cost is zero with probability
+\(\rho\in(0,1)\) and \(c_H>0\) otherwise, \(k,a>0\), \(0<\beta<1/2\), and \(0<\lb<1\).
+Research costs \((a/2)\lambda^2\), succeeds with probability \(\lambda\), and is unobserved by market makers
+and the challenger. At a success the investor learns the class. The independence assumptions of the model hold.
+Write
+\[
+ b=(1-\lambda)\beta,\qquad b_0=(1-\lambda)(1-2\beta).
+\]
+\[
+ m_\lambda=\frac{\beta(1-\lambda)}{2\beta+(1-2\beta)\lambda},\quad M_\lambda=1-m_\lambda,
+ \qquad
+ m_\lambda'=-\frac{\beta}{[2\beta+(1-2\beta)\lambda]^2}.
+\]
+For \(1/2<\tau<1\), let
+\[
+ \lambda_E(\tau)=\frac{\beta(2\tau-1)}{\beta+(1-2\beta)(1-\tau)},
+ \qquad J=\DT(1-\tau).
+\]
+For \(\rho\DT\ge2k\), let \(\lambda_Q(\DT)\) be the unique root in \([0,1)\) of
+\begin{equation}\label{eq:a5-floor}
+ a\lambda_Q=\rho\DT m_{\lambda_Q}-k.
+\end{equation}
+It equals zero exactly when \(\rho\DT=2k\).
+A path \((F_r)_{r\in I}\) holds every other primitive fixed and strengthens the incumbent in first-order
+stochastic dominance as \(r\) rises. The spread and, on \(\tau>1/2\), the preparation threshold are
+nondecreasing along such a path.
+
+% source: appendix/A5_research.tex:64--83; referee report W3, Shared Candidate 1, section 3.
+% manuscript: appendix/A5_research.tex:64--83 (notation and general auction scope).
+\begin{lemma}[Joint deviations]\label{lem:a5-joint}
+For a candidate satisfying beliefs, competitive pricing, preparation and truthful bidding, let
+\(\Psi=\tfrac12\max_qU_H(q)+\tfrac12\max_qU_L(q)\) be its best trading value after a research success.
+At its fixed prices and preparation rule, the best payoff of a joint deviation to any
+\(\tilde\lambda\in[0,\lb]\) is \(\tilde\lambda\Psi-(a/2)\tilde\lambda^2\).
+The unique best research choice is \(\min\{\lb,\Psi/a\}\). Thus research optimality is exactly
+\(\hat\lambda=\min\{\lb,\Psi/a\}\), under all four tie rules.
+\end{lemma}
+
+% source: appendix/A5_research.tex:85--103; referee report W3, Shared Candidate 1, section 1.
+% manuscript: appendix/A5_research.tex:85--103 (nonzero-order bounds for beta<1/2).
+\begin{lemma}[Bounds under every profile]\label{lem:a5-bounds}
+Let \(0\le\hat\lambda\le\lb<1\). Under all four tie rules:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For every order profile, the nonzero-order posteriors lie in
+\([m_{\hat\lambda},M_{\hat\lambda}]\), with \(M_{\hat\lambda}\le M_{\lb}\).
+If also \(\beta\le1/3\), the same bound holds for the zero-order posterior under every profile.
+\item For every candidate satisfying beliefs, competitive pricing, preparation and truthful bidding,
+\(P(q)=P(q')\) implies \(\mu(q)=\mu(q')\), and \(\bar\mu(P(q))=\mu(q)\).
+\item Wrong-signed orders satisfy \(U_H(-1)\le-k\) and \(U_L(1)\le-k\); every equilibrium has
+\(\sigma_H(-1)=\sigma_L(1)=0\).
+\item With no wrong-signed orders, \(\mu(-1)\le1/2\le\mu(1)\).
+If also \(\sigma_H(1)=1\), then \(\mu(1)=M_{\hat\lambda}\) and \(\mu(0)\le1/2\).
+\end{enumerate}
+\end{lemma}
+
+% source: referee report W3, Shared Candidate 1, section 1.
+% manuscript: appendix/A5_research.tex:105--120.
+\begin{lemma}[Positive research needs a strict full purchase]\label{lem:a5-buy}
+Under either investor tie rule and either challenger tie rule, every equilibrium with \(\hat\lambda>0\) has
+\(U_H(1)>0\) and \(\sigma_H(1)=1\). Its posteriors satisfy
+\(\mu(1)=M_{\hat\lambda}\), \(\mu(0)\le1/2\) and \(\mu(-1)\le1/2\); entry after a sale or no order is
+\(\rho\). This holds for every \(0<\beta<1/2\).
+\end{lemma}
+
+% source: referee report W3, Shared Candidate 1, section 2, equations (1)--(3).
+% manuscript: appendix/A5_research.tex:122--201 (the low-class restriction); follows :120.
+\begin{lemma}[The low class's sale]\label{lem:a5-sale}
+Let \(0<\lambda\le\lb\), let class \(H\) buy with probability one after a success, and suppose an indifferent investor
+may mix over its best orders. By Lemma~\ref{lem:a4-low} at presence \(\lambda\) and prior \(1/2\),
+the unique low-class sale rate consistent with its best orders is
+\begin{equation}\label{eq:a5-sale}
+ s_-=\lambda\sigma_L(-1)=\min\{\lambda,\ b(\rho\DT/k-2)^+\}.
+\end{equation}
+The remaining low-class probability is on abstention, and
+\[
+ \mu(-1)=\frac{b}{2b+s_-},\qquad
+ \mu(0)=\frac{b_0}{2b_0+\lambda-s_-},\qquad \mu(1)=M_\lambda.
+\]
+Both nonpurchase orders have entry \(\rho\), under either challenger tie rule. Class \(L\) abstains when
+\(\rho\DT\le2k\); it mixes when \(\rho\DT m_\lambda<k<\rho\DT/2\), with
+\(\mu(-1)=k/(\rho\DT)\); and it sells with probability one when \(\rho\DT m_\lambda\ge k\).
+At \(\rho\DT=2k\) its sale rate is zero; at \(\rho\DT m_\lambda=k\) its sale probability is one.
+Its best net payoff is
+\[
+ \max_q U_L(q)=(\rho\DT m_\lambda-k)^+.
+\]
+\end{lemma}
+
+% source: referee report W3, Shared Candidate 1, sections 3--6 and Shared Candidate 2;
+% referee report W2, Shared Candidates 1--3; statements/O3/ and statements/O4/.
+% manuscript: sections/05_research.tex:36--71; appendix/A5_research.tex:122--201,266--314.
+\setcounter{proposition}{3}
+\begin{proposition}[Competition creates research, full statement]\label{prop:research}
+Maintain the setting above. An indifferent investor may mix over its best orders and an indifferent high-cost
+challenger prepares. When an indifferent high-cost challenger may prepare with any probability, select full
+preparation after a purchase that reaches the threshold.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Recruiting research, an equilibrium with positive research and full preparation after a purchase, exists
+exactly when
+\begin{equation}\label{eq:research-exist}
+ \DT>2k,\qquad \frac12<\tau\le M_{\min\{\lambda_R(\DT),\lb\}},
+\end{equation}
+where \(\lambda_R(\DT)\) is the unique root in \((0,1)\) of
+\begin{equation}\label{eq:research-im}
+ 2a\lambda=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+.
+\end{equation}
+Its research is \(\hat\lambda=\min\{\lambda_R(\DT),\lb\}\). Class \(H\) buys strictly and fully, class \(L\)
+uses Lemma~\ref{lem:a5-sale}, and entry is \(e(1)=1\), \(e(0)=e(-1)=\rho\). The posteriors are those of that
+lemma, prices are \(P(x)=t_0+e(x)[t_L-t_0+\DT\mu(x)]\), price beliefs are
+\(\bar\mu(P(x))=\mu(x)\), and bids are truthful. Equal nonpurchase posteriors have equal entry and equal prices.
+
+\item Research is continuous and strictly increasing in \(\DT\) below its cap, and constant at the cap.
+Total entry and class entry are
+\begin{align*}
+ \Ent&=\rho+(1-\rho)[\beta+(1/2-\beta)\hat\lambda],\\
+ e_H&=\rho+(1-\rho)[\beta+(1-\beta)\hat\lambda],\qquad
+ e_L=\rho+(1-\rho)\beta(1-\hat\lambda).
+\end{align*}
+Thus total entry and class-\(H\) entry rise, class-\(L\) entry falls, and the class-\(H\) share of prepared
+challengers rises with the spread, strictly below the cap and weakly throughout the existence set.
+The prepared-value distribution
+\((e_HG_H+e_LG_L)/(e_H+e_L)\) improves in first-order stochastic dominance; its mean rises strictly when research
+rises strictly. For almost every fixed incumbent value \(x\), the high-class acquisition probability is
+\[
+ \Pr(H\text{ acquires}\mid R=x)=
+ \begin{cases}e_H/2,&x<p,\\ e_H[1-G_H(x)]/2,&x\ge p.\end{cases}
+\]
+It rises strictly with the spread below the cap wherever class \(H\) can win. At a class-value atom the auction's
+tie allocation gives the probability of winning; the same comparison holds using that fixed allocation.
+At a value outside the incumbent's support, this expression gives the counterfactual allocation at that value.
+
+While the low class abstains or mixes, and after a sure sale becomes strictly profitable, respectively,
+\[
+ \frac{d\lambda_R}{d\DT}=
+ \frac{m_{\lambda_R}}{2a-\DT m'_{\lambda_R}},\qquad
+ \frac{d\lambda_R}{d\DT}=
+ \frac{(1+\rho)m_{\lambda_R}}{2a-(1+\rho)\DT m'_{\lambda_R}}.
+\]
+If \((1-\rho)k/(2a\rho)<\lb\), these slopes meet with a strict upward jump at
+\(\lambda_R=(1-\rho)k/(2a\rho)\). On an equilibrium path that passes through this intensity, a sure sale's
+profit adds a second return to research. Research and entry are continuous through the first sale, the onset of
+strictly profitable full selling, and the cap. The cap spread, at which research reaches its cap, is
+\[
+ \begin{cases}
+ (2a\lb+k)/m_{\lb},&\lb\le(1-\rho)k/(2a\rho),\\
+ (2a\lb+2k)/[(1+\rho)m_{\lb}],&\lb>(1-\rho)k/(2a\rho).
+ \end{cases}
+\]
+
+\item High-class ownership is \(\Own_H(F)=e_H(F)W_H(F)/2\). For two recruiting economies on a path,
+\[
+ \Own_H(F_{r'})\ge\Own_H(F_r)
+ \quad\Longleftrightarrow\quad
+ \frac{W_H(F_{r'})}{W_H(F_r)}\ge\frac{e_H(F_r)}{e_H(F_{r'})},
+\]
+with the corresponding strict equivalence. These win probabilities are positive. If class \(H\) outbids every
+incumbent along the recruiting part of the path, ownership rises weakly with strength, and strictly for a strict
+increase in the spread from a research intensity below the cap. Decisive advantage (Lemma~\ref{lem:decisive}),
+\(g_H(F)>c_H\Longrightarrow W_H(F)=1\) throughout the family, supplies this outbidding condition at every
+recruiting economy.
+
+\item Let \(I=[r_-,r_+]\) be compact and \(\DT,\tau\) continuous along the path. The capped recruiting set is
+\[
+ \{r\in I:\DT(r)m_{\lb}-k+(\rho\DT(r)m_{\lb}-k)^+\ge2a\lb,\ \tau(r)\le M_{\lb}\}.
+\]
+It is empty, a singleton, or a nondegenerate closed interval. If nonempty, it ends at
+\(\max\{r\in I:\tau(r)\le M_{\lb}\}\).
+
+Suppose the path first reaches the cap spread at \(r_{\lb}>r_-\), with a strictly smaller spread at \(r_-\).
+On \([r_-,r_{\lb}]\), suppose \(\tau<1\), and define
+\[
+ \varphi_a^*=J-k+(\rho J-k)^+-2a\lambda_E(\tau).
+\]
+If \(\varphi_a^*\) is strictly increasing on \([r_-,r_{\lb}]\) and
+\(\varphi_a^*(r_-)<0<\varphi_a^*(r_{\lb})\), the full recruiting set is
+\[
+ [r_R,\ \max\{r\in I:\tau(r)\le M_{\lb}\}],
+\]
+where \(r_R\) is the unique zero of \(\varphi_a^*\) before \(r_{\lb}\).
+Research is below its cap up to \(r_{\lb}\) and at the cap thereafter. A threshold plateau at \(M_{\lb}\) belongs
+to the recruiting set through its last point.
+On a path with continuously differentiable \(\DT,\tau\) on \([r_-,r_{\lb}]\), the cheap-research condition
+\begin{equation}\tag{CR}\label{eq:a5-cheap}
+ [1+\rho\1\{\rho J>k\}]J'
+ -\frac{2a\beta\tau'}{[\beta+(1-2\beta)(1-\tau)]^2}>0
+ \quad\text{almost everywhere on }[r_-,r_{\lb}]
+\end{equation}
+makes \(\varphi_a^*\) strictly increasing there.
+\end{enumerate}
+\end{proposition}
+
+% source: referee report W2, Shared Candidate 1, The comparison equilibrium; W3, Candidate 3.
+% manuscript: appendix/A5_research.tex:284, after the proof of Proposition 4.
+\paragraph{Ownership at the same incumbent.}\fixedlabel{par:a5-ownership-ratio}{4}
+Where recruiting research coexists with zero research, \(\rho\DT\le2k\), their same-incumbent ownership ratio is
+\(\Own_H^{\rm R}/\Own_H^{\rm Z}=e_H/\rho>1\), which rises strictly with the spread below the research cap and
+stays constant at the cap.
+
+% source: referee report W3, Candidate 3, equations (13)--(14); statements/O8/.
+% manuscript: appendix/A5_research.tex:122--201 (lem:a5-middle).
+\begin{lemma}[The three research outcomes]\label{lem:a5-outcomes}
+Maintain the setting above. An indifferent investor may mix over its best orders and an indifferent high-cost
+challenger prepares. The following outcomes exhaust the equilibria.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Zero research exists exactly when \(\rho\DT\le2k\). All posteriors are \(1/2\), entry is \(\rho\), and
+every order has price \(t_0+\rho[t_L-t_0+\DT/2]\). If the inequality is strict, both classes abstain after a
+hypothetical success. At equality, each class uses any mixture of its correct order and abstention; all these
+strategies give the same zero-research outcome.
+\item Recruiting research is exactly the outcome of Proposition~\ref{prop:research}(a).
+\item Floor-entry research exists exactly when
+\[
+ \rho\DT>2k,\qquad \tau>M_{\min\{\lambda_Q(\DT),\lb\}},
+\]
+where \(\lambda_Q\) is the root of \eqref{eq:a5-floor}.
+Research is \(\hat\lambda=\min\{\lambda_Q,\lb\}\), both classes trade strictly and fully after a success, the
+posteriors are \((m_{\hat\lambda},1/2,M_{\hat\lambda})\), and entry is \(\rho\) after every order. Prices are
+\(t_0+\rho[t_L-t_0+\DT\mu(x)]\), price beliefs are the corresponding posteriors, and bids are truthful.
+\end{enumerate}
+Each positive-research outcome has a unique tuple. The two positive-research outcomes coexist exactly when
+\[
+ \rho\DT>2k,\qquad
+ M_{\min\{\lambda_Q,\lb\}}<\tau\le M_{\min\{\lambda_R,\lb\}}.
+\]
+The uncapped roots satisfy \(\lambda_Q<\lambda_R\); their capped values are strictly ordered when
+\(\lambda_Q<\lb\) and coincide when both roots reach the cap. Thus the coexistence band has positive width in
+\(\tau\) exactly when \(\lambda_Q<\lb\). At least one of the three outcomes exists at every auction in the
+stated domain, including \(\tau\ge1\).
+\end{lemma}
+
+% source: appendix/A5_research.tex:203--231; referee report W3, Candidate 3; nonzero-order bounds in section 1.
+% manuscript: appendix/A5_research.tex:203--231 (same condition and conclusion).
+\begin{lemma}[Strong incumbents]\label{lem:a5-strong}
+Maintain the setting above. If \(M_{\lb}\ne\tau\) and
+\begin{equation}\tag{U}\label{eq:a5-U}
+ \rho\DT m_{\lb}-k>a\lb,
+\end{equation}
+then under all four tie rules the equilibrium is unique. Research is \(\lb\), class \(H\) buys and class \(L\)
+sells strictly after a success, and the posteriors are \((m_{\lb},1/2,M_{\lb})\). Entry after a sale and no order
+is \(\rho\), while \(\zeta(P(1))=\1\{M_{\lb}>\tau\}\). Competitive prices, their posterior beliefs and
+truthful bids complete the tuple. With \(\bar b=(1-\lb)\beta\), total entry is
+\(\rho+(1-\rho)(\bar b+\lb/2)\) if \(M_{\lb}>\tau\) and \(\rho\) otherwise.
+\end{lemma}
+
+% source: referee report W3, Candidate 3, CM and I0 subsections, equations (15)--(17).
+% manuscript: appendix/A5_research.tex:387--408.
+\renewcommand{\theremark}{A.\arabic{remark}}
+\begin{remark}[Tie rules with research]\label{rem:researchties}
+Maintain the general setting. When an indifferent investor may mix and an indifferent high-cost challenger may
+prepare with any probability, the outcomes above are supplemented by the following threshold choices.
+For \(1/2<\tau<1\) and \(0<\lambda_E(\tau)<\lb\), the threshold pair has research \(\lambda_E\), full high-class
+purchasing and the low-class sale rule of Lemma~\ref{lem:a5-sale}. Its purchase entry is
+\[
+ e^*=\frac{2a\lambda_E+k-(\rho J-k)^+}{J},
+\]
+and it exists exactly when \(\rho\le e^*\le1\). Entry at a sale and no order is \(\rho\), and the high-cost
+preparation probability at a purchase is \((e^*-\rho)/(1-\rho)\). At \(e^*=1\) it coincides with recruiting
+research; at \(e^*=\rho\) it is floor-entry research with a purchase posterior equal to \(\tau\).
+
+At \(\lambda_E(\tau)=\lb\), the complete threshold family has purchase entry
+\[
+ e(1)\in\left[\max\left\{\rho,\frac{2a\lb+k-(\rho J-k)^+}{J}\right\},1\right],
+\]
+provided the lower endpoint is at most one. Each choice has its own competitive purchase price, research at the
+cap, and total entry \(\rho+(e(1)-\rho)[\beta+(1/2-\beta)\lb]\).
+
+When an indifferent investor abstains, a positive-research candidate at intensity \(\lambda\), including a
+threshold pair, survives exactly when
+\[
+ \rho\DT\le2k\quad\hbox{or}\quad\rho\DT m_\lambda>k.
+\]
+At zero research the abstention rule selects abstention after every hypothetical success. Research itself is a
+unique best response at fixed prices and preparation, because its objective is strictly concave.
+\end{remark}
+
+% source: scan/reduction_A3_A5.md, section 3(f), final displays; appendix/A5_research.tex:410--421.
+% manuscript: appendix/A5_research.tex:410--421.
+\paragraph{Access to prices with research.}\fixedlabel{par:a5-access}{A.5}
+Maintain the general setting, condition~\eqref{eq:a5-U}, and \(\tau<M_{\lb}\). Under all four tie rules, both the
+economy with price access and the economy in which the challenger does not see the price have full orders and
+research at the cap, uniquely. With access only a purchase recruits; with the price hidden entry is \(\rho\)
+after every order. Hence access raises expected proceeds by
+\[
+ (1-\rho)(\bar b+\lb/2)[t_L-t_0+\DT M_{\lb}]>0
+\]
+and surplus, net of research, trading and preparation costs, by
+\[
+ (1-\rho)(\bar b+\lb/2)[\gamma(M_{\lb}-\tau)+pF(p)]>0.
+\]
+
+\subsection*{The example}
+% source: sections/02_model.tex:78--88; appendix/A9_parameters.tex; referee report W3, the example's boundary table.
+% manuscript: appendix/A5_research.tex:22--62,233--314 (example declarations).
+\paragraph{Primitives and strengths.}
+The incumbent is uniform on \([0,r]\), the two class values are \(h=\reg{prim_h}\) and \(\ell=\reg{prim_ell}\),
+the reserve is \(p=\reg{prim_p}\), the prior is \(\reg{prim_pi}\), and the costs and slot satisfy
+\[
+ \rho=\reg{prim_rho},\quad c_H=\reg{prim_cH},\quad k=\reg{prim_k},\quad
+ \beta=\reg{beta_B},\quad a=\reg{res_a},\quad 1+u=\eu.
+\]
+\[
+ \lb=\frac{u\beta}{1+u\beta}\approx\reg{res_cap}.
+\]
+The path is \([r_0,r_2]\), where \(r_0=\reg{prim_r0}\), \(r_1=\reg{prim_r1}\) and \(r_2=\reg{prim_r2}\).
+Write \(\lambda_E(r)=\lambda_E(\tau(r))\), \(\lambda_R(r)=\lambda_R(\DT(r))\), and
+\(\fr(y)=\ell+y+\sqrt{y^2+2\ell y}\). Define
+\begin{gather*}
+ \varphi_a(r)=\DT(r)[1-\tau(r)]-k-2a\lambda_E(r),\qquad
+ \varphi_\rho(r)=\rho\DT(r)[1-\tau(r)]-k-a\lambda_E(r),\\
+ \varphi_a(r_R)=0,\quad r_{\lb}=\fr((2a\lb+k)(1+\eu)),\quad
+ r_N=\fr(2k/\rho),\quad r_S=\fr(k(1+\eu)/\rho),\\
+ \varphi_\rho(r_Q)=0,\quad r_U=\fr((k+a\lb)(1+\eu)/\rho),\quad
+ \tau(r_C)=M_{\lb}=\frac{\eu}{1+\eu}.
+\end{gather*}
+The roots are the unique roots on the path of their stated equations. They satisfy
+\[
+ r_0<r_R<r_{\lb}<r_N<r_S<r_Q<r_U<r_1<r_C<r_2,
+\]
+with values
+\begin{align*}
+ r_R&\approx\reg{res_rR},&r_{\lb}&\approx\reg{res_rcap},&r_N&\approx\reg{res_rN},\\
+ r_S&\approx\reg{rS_B},&r_Q&\approx\reg{res_rQ},&r_U&\approx\reg{res_rUR},&r_C&\approx\reg{res_rC}.
+\end{align*}
+
+% source: statements/O1/O1_proof.tex, lemma and parts (a)--(d); O1_referee.md, sections 1--3.
+% manuscript: appendix/A5_research.tex:286--314, after the general results.
+\begin{lemma}[Floor-entry research along the path]\label{lem:a5-floor}
+Take the example on \([r_0,r_2]\), when an indifferent investor may mix over its best orders and an indifferent
+high-cost challenger prepares.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item The floor margin \(\varphi_\rho\) rises strictly on the path. Its unique zero is \(r_Q\), with
+\(r_N<r_Q<r_U<r_C\). On \((r_N,r_C]\), the threshold exceeds the top posterior at research
+\(\min\{\lambda_Q(\DT(r)),\lb\}\) exactly on \((r_N,r_Q)\), and equals it exactly at \(r_Q\) and \(r_C\).
+\item Floor-entry research is an equilibrium exactly on \((r_N,r_Q)\) and \((r_C,r_2]\), with entry \(\rho\).
+The floor root reaches the cap at \(r_U\). On \([r_N,r_Q]\), it rises strictly from zero to
+\(\lambda_E(r_Q)\approx\reg{res_lambda_floor_rQ}<\lb\); on \((r_C,r_2]\) research is at the cap.
+\item Recruiting research at the cap is an equilibrium exactly on \([r_{\lb},r_C]\), with entry
+\(\reg{res_entry_cap}\).
+\item On \((r_N,r_Q)\), exactly these two equilibria coexist. On \([r_Q,r_C]\), recruiting research at the cap
+is unique; on \((r_C,r_2]\), floor-entry research at the cap is unique.
+\end{enumerate}
+\end{lemma}
+
+% source: referee report W3, the example's boundary table; statements/O1/, statements/O3/, statements/O4/ and statements/O8/.
+% manuscript: sections/05_research.tex:59--71,119--144; appendix/A5_research.tex:233--264,286--314.
+\setcounter{corollary}{2}
+\begin{corollary}[Research equilibria in the example, full statement]\label{cor:research}
+Take the example on \([r_0,r_2]\), when an indifferent investor may mix over its best orders and an indifferent
+high-cost challenger prepares.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item The equilibrium outcomes are exactly as follows:
+\begin{itemize}[leftmargin=1.5em]
+\item on \([r_0,r_R)\), zero research alone;
+\item on \([r_R,r_N]\), zero research and recruiting research;
+\item on \((r_N,r_Q)\), recruiting research at the cap and floor-entry research;
+\item on \([r_Q,r_C]\), recruiting research at the cap alone;
+\item on \((r_C,r_2]\), floor-entry research at the cap alone.
+\end{itemize}
+Recruiting research is below its cap on \([r_R,r_{\lb})\) and at the cap on \([r_{\lb},r_C]\). Its research
+rises from \(\lambda_E(r_R)\approx\reg{res_lambda_rR}\) to \(\lb\), and its entry rises from
+\(\reg{res_entry_rR}\) to \(\reg{res_entry_cap}\), then stays constant through \(r_C\).
+Class \(L\) abstains through \(r_N\), mixes on \((r_N,r_S)\), and sells with probability one on \([r_S,r_C]\).
+Floor-entry research has full orders and entry \(\rho\) throughout its existence set. At \(r_N\), zero research
+has all the hypothetical-success order mixtures in Lemma~\ref{lem:a5-outcomes}(a).
+\item At \(r_0\), the unique equilibrium has zero research and entry \(\rho\).
+At each \(r\in\{\reg{str_r155},\reg{str_r160},\reg{str_r165}\}\), exactly two equilibria coexist: zero research
+and recruiting research with \(\lambda_E(r)<\lambda_R(r)<\lb\). In the recruiting equilibrium class \(H\) buys
+and class \(L\) abstains after a success. At \(r_1\) and \(r_2\), the unique equilibrium has full orders and
+research at the cap, with entry \(\reg{res_entry_r1}\) at \(r_1\) and \(\rho\) at \(r_2\).
+\end{enumerate}
+\end{corollary}
+
+% source: appendix/A5_research.tex:316--385; the six-strength part of Corollary 3.
+% manuscript: appendix/A5_research.tex:316--385 (prop:researchregion).
+\renewcommand{\theproposition}{A.\arabic{proposition}}
+\renewcommand{\theHproposition}{A.\arabic{proposition}}
+\setcounter{proposition}{0}
+\begin{proposition}[The research cap and cost]\label{prop:researchregion}
+Keep the example's primitives other than \(a\) and \(\lb\), with \(\beta=\reg{beta_B}\).
+Under an indifferent investor who may mix and an indifferent high-cost challenger who prepares, the six-strength
+equilibrium pattern in Corollary~\ref{cor:research}(b), with
+\(\lambda_E(r)<\lambda_R(r)<\lb\) at each intermediate strength, holds with strict margins exactly when
+\[
+ \lambda_E(r_1)<\lb<\lambda_E(r_2),\qquad a_{\rm lo}(\lb)<a<a_{\rm up},
+\]
+where
+\[
+ a_{\rm lo}(\lb)=\frac{\DT(\reg{str_r165})m_{\lb}-k}{2\lb},\qquad
+ a_{\rm up}=\frac{\DT(\reg{str_r155})[1-\tau(\reg{str_r155})]-k}{2\lambda_E(\reg{str_r155})}.
+\]
+The cap strip is approximately \((\reg{res_cap_lo},\reg{res_cap_hi})\). At the example's cap,
+\(\lb\approx\reg{res_cap}\), the cost window
+is approximately \((\reg{res_a_lo},\reg{res_a_up})\); at \(a=\reg{res_a}\) the cap range is approximately
+\((\reg{res_cap_lo_a},\reg{res_cap_hi})\). Entry at \(r_1\) is
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lb]\).
+With \(\beta\) varying, \(1+u=\eu\), \(\lb=\lb(\beta)=u\beta/(1+u\beta)\) and \(a=\reg{res_a}\), the
+six-strength pattern, with entry \(\rho+(1-\rho)[\beta+(1/2-\beta)\lb]\) at \(r_1\), holds for
+\(\beta\in(\beta_{\rm lo},\reg{res_beta_upper}]\), where \(\beta_{\rm lo}\approx\reg{res_beta_lo}\).
+\end{proposition}
+
+% source: referee report W3, Candidate 3, CM and I0, equations (15)--(17); O4 computation, parts 3--5.
+% manuscript: appendix/A5_research.tex:387--408 (example part of the remark).
+\begin{named}{Remark~\ref{rem:researchties}, the example}\fixedlabel{rem:researchties-example}{A.1}
+At the three intermediate strengths, allowing an indifferent high-cost challenger to prepare with any probability
+adds the threshold pair, whose entry is \(\reg{res_th_entry_r155}\), \(\reg{res_th_entry_r160}\) and
+\(\reg{res_th_entry_r165}\), respectively. At \(r_C\), its cap family permits every \(e(1)\in[\rho,1]\), and
+total entry fills \([\rho,\reg{res_entry_cap}]\).
+
+When an indifferent investor abstains and an indifferent high-cost challenger prepares, recruiting research is
+absent on \((r_N,r_S]\), and floor-entry research is the unique equilibrium there. When an indifferent high-cost
+challenger may prepare with any probability, the threshold pair at \(r=\reg{str_r200}\) has
+\[
+ \begin{aligned}\lambda=\lambda_E(r)&\approx\reg{res_I0CM_lambda_r200},\\
+ e(1)&\approx\reg{res_I0CM_e1_r200},\\
+ \Ent&\approx\reg{res_I0CM_entry_r200}.\end{aligned}
+\]
+Both trades are strictly profitable in this pair, so it is also an equilibrium when an indifferent investor
+abstains. At all strengths above \(r_U\) other than \(r_C\), the equilibrium is unique under all four tie rules.
+\end{named}
+
+\subsection*{Main-text forms}
+% source: Proposition 4 above, with the same hypotheses and part labels.
+% manuscript: sections/05_research.tex:52--71.
+\begin{named}{Proposition 4. Competition creates research}\fixedlabel{prop:research-short}{4}
+Let the classes satisfy the class ranking, let the incumbent law be continuous with \(\DT>0\), \(g_H>g_L\)
+and \(\tau>1/2\), and let the prior be \(1/2\). Fix \(0<\rho<1\), \(0<\beta<1/2\), \(a,k,c_H>0\) and
+\(0<\lb<1\). An indifferent investor may mix over its best orders and an indifferent high-cost challenger
+prepares; the same recruiting outcome is available when an indifferent high-cost challenger may prepare with
+any probability and prepares fully at the purchase.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Recruiting research exists exactly when \(\DT>2k\) and
+\(1/2<\tau\le M_{\min\{\lambda_R(\DT),\lb\}}\), where \(\lambda_R(\DT)\) is the unique root in \((0,1)\) of
+\[
+ 2a\lambda=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+.
+\]
+Research is \(\min\{\lambda_R(\DT),\lb\}\). Class \(H\) buys with probability one after a success,
+and only a purchase recruits.
+\item Along this equilibrium, research, entry and class-\(H\) entry rise with the spread until research reaches
+its cap; class-\(L\) entry falls, and the pool of prepared challengers improves in first-order stochastic
+dominance. Holding the incumbent's value fixed, the probability of a high-class acquisition rises wherever class
+\(H\) can win, almost everywhere; at value atoms the auction's tie allocation determines the comparison.
+These changes are strict below the cap when the spread rises strictly, and weak throughout. The low class's
+selling leaves research and entry continuous. If a sure sale becomes strictly profitable below the cap, its
+profit adds to the research return and the research schedule has an upward kink.
+\item In recruiting research, across strengths of a path that class \(H\) always outbids, high-class ownership
+rises weakly, and strictly for a strict increase in the spread from research below the cap. Between two
+recruiting strengths more generally, ownership rises exactly when the proportional gain in class-\(H\) entry
+outweighs the loss in its chance of winning once prepared. Decisive advantage supplies the outbidding condition
+(Lemma~\ref{lem:decisive}).
+\item On a compact path with continuous spread and threshold, suppose the spread first reaches the value
+at which research reaches its cap after the first strength, with \(\tau<1\) up to that point. Suppose the exact
+recruitment margin
+\(\DT(1-\tau)-k+(\rho\DT(1-\tau)-k)^+-2a\lambda_E(\tau)\)
+is strictly increasing up to that point, negative at the first strength and positive where research first reaches its cap.
+Then recruiting research holds on one interval, ending at the last strength with \(\tau\le M_{\lb}\).
+The cheap-research condition~\eqref{eq:a5-cheap} makes this margin strictly increasing on a continuously
+differentiable path up to the cap.
+\end{enumerate}
+\end{named}
+
+% source: Corollary 3 above; statements/O1/ and the three-outcome lemma.
+% manuscript: sections/05_research.tex:59--71,119--144.
+\begin{named}{Corollary 3. Research equilibria in the example}\fixedlabel{cor:research-short}{3}
+In the example, take \(a=\reg{res_a}\), an indifferent investor who may mix and an
+indifferent high-cost challenger who prepares. On \([r_0,r_2]\), zero research is the unique outcome below
+\(r_R\); it coexists with recruiting research on \([r_R,r_N]\). Recruiting research reaches its cap at
+\(r_{\lb}\approx\reg{res_rcap}\) and stays there through the entry ceiling \(r_C\approx\reg{res_rC}\).
+On \((r_N,r_Q)\), it coexists with floor-entry research, where \(r_Q\approx\reg{res_rQ}\). On \([r_Q,r_C]\),
+recruiting research at the cap is unique; above \(r_C\), research at the cap with entry \(\rho\) is unique.
+Thus the weak incumbent has zero research, each of the three intermediate strengths has two equilibria,
+and the strong and the very strong incumbent have research at the cap. Entry along recruiting research rises to
+\(\reg{res_entry_cap}\) and remains there through \(r_C\).
+\end{named}
+\end{document}
