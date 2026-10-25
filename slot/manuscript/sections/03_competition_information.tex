@@ -16,27 +16,10 @@ The second-price rule passes the whole value of an admissible challenger to the 
 together. An admissible value also raises proceeds to at least the reserve, so \(t_j\ge t_0\) for both
 classes.
 
-In the point-mass benchmark with the uniform incumbent, integration over \(R\) gives
-\begin{equation}\label{eq:payoffs}
-\begin{aligned}
-t_0&=p\Bigl(1-\frac pr\Bigr),&
-t_H&=\frac r2+\frac{p^2}{2r},\\
-t_L&=\ell-\frac{\ell^2-p^2}{2r},&
-g_H&=h-\frac r2-\frac{p^2}{2r},\\
-g_L&=\frac{\ell^2-p^2}{2r},&
-\DT(r)&=\frac{(r-\ell)^2}{2r}.
-\end{aligned}
-\end{equation}
-The relevant derivatives are
-\begin{equation}\label{eq:derivatives}
-\DT'(r)=\frac12-\frac{\ell^2}{2r^2}>0,\qquad
-g_H'(r)=-\frac12+\frac{p^2}{2r^2}<0,\qquad
-g_L'(r)=-\frac{\ell^2-p^2}{2r^2}<0.
-\end{equation}
-
-Thus a stronger incumbent lowers acquisition profit at every fixed belief while it makes target proceeds more
-sensitive to challenger quality. Proposition~\ref{prop:returns} extends this opposition to every continuous
-incumbent distribution and every pair of classes that satisfies the class ranking~\eqref{eq:classes}.
+A stronger incumbent outbids a prepared challenger more often, and when it does, it pays the challenger's bid.
+Proposition~\ref{prop:returns} shows that this weakly lowers acquisition profit at every fixed belief and weakly
+raises the sensitivity of target proceeds to challenger quality, for every continuous incumbent distribution; the
+second effect uses the class ranking~\eqref{eq:classes}.
 
 \begin{proposition}[Competition and the two returns to information]\label{prop:returns}
 Let the incumbent's value have a continuous distribution \(F\) on \([0,\bar r]\), extended by unity above
@@ -73,13 +56,12 @@ The sum of the two lines of \eqref{eq:spread} under the class ranking~\eqref{eq:
 \[
 \DT(F)+g_H(F)-g_L(F)=\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}].
 \]
-The identity holds for every incumbent distribution, and in the benchmark the right side is \(h-\ell\) at
-every \(r\). A stronger incumbent leaves the value gap between the classes unchanged; it moves the gap from
-the challenger's profit to target proceeds.
+The identity holds for every incumbent distribution, and its right side does not depend on the incumbent. A
+stronger incumbent leaves the value gap between the classes unchanged; it moves the gap from the challenger's
+profit to target proceeds.
 
-The spread approaches zero as \(r\) approaches \(\ell\), since the incumbent then almost never outbids a
-low-class challenger. As \(r\) increases, the spread rises while gross acquisition profit falls at each
-belief. Whether entry rises depends on how this change in payoffs affects the information in the price.
+A stronger incumbent therefore never narrows the spread and never raises gross acquisition profit at any belief.
+Whether entry rises depends on how this change in payoffs affects the information in the price.
 
 \subsection{What the challenger learns from the price}\label{sec:inference}
 
@@ -96,8 +78,8 @@ the belief, so once gross profit at the top posterior falls below \(c_H\), no or
 challenger, in or out of equilibrium.
 
 When \(g_H>g_L\), gross profit covers the high cost exactly when the belief reaches the preparation
-threshold \(\tau=(c_H-g_L)/(g_H-g_L)\): \(B(\mu)\ge c_H\) if and only if \(\mu\ge\tau\). For the uniform
-incumbent I write \(\tau(r)\). A zero-cost challenger prepares after every price, so entry after every order
+threshold \(\tau=(c_H-g_L)/(g_H-g_L)\): \(B(\mu)\ge c_H\) if and only if \(\mu\ge\tau\). Along a path I write
+\(\tau(r)\). A zero-cost challenger prepares after every price, so entry after every order
 is at least \(\rho\), and competitive pricing gives \eqref{eq:price}. When the classes differ in target
 proceeds, the price rises strictly with the posterior. Suppose two orders have one price. Entry after them
 is the same, because entry depends on the order only through the price, and at least \(\rho\); the price
@@ -125,7 +107,7 @@ Class \(H\) buys when \(K_H\) exceeds \(k\) and abstains when it falls short, an
 Market makers price the entry response, and the posterior bounds of Section~\ref{sec:inference} leave some
 uncertainty about the class after every order. The investor's gross return is the entry probability
 times the spread times that residual uncertainty. The lower bound uses the entry floor \(\rho\) and the
-posterior bounds, and the upper bound is the spread. Both bounds hold under every candidate profile, mixed or
+posterior bounds, and the spread bounds the return from above. Both bounds hold under every candidate profile, mixed or
 pure, and their comparison with \(k\) decides when information survives in equilibrium.
 
 Since \(1-M(\pi)=m(1-\pi)\), the bound takes the form \(\kappa(\pi)=m(\min\{\pi,1-\pi\})\). It is largest
@@ -137,5 +119,23 @@ together; the terms that matter are the entry gains \(t_H-t_0\) and \(t_L-t_0\),
 
 Each return depends only on the posterior and entry after its own order, so entry after the zero order
 enters no payoff, and the investor's problem splits by class.
-Appendix~\ref{app:beliefs} gives the formal statement and proof of the trading bound, and
-Appendix~\ref{app:coexistence} uses this split to list every equilibrium along the benchmark path.
+Appendix~\ref{app:beliefs} gives the formal statement and proof of the trading bound, and the coexistence results of
+Section~\ref{sec:coexistence} rest on this split.
+
+\subsection{What the market sees of the auction}\label{sec:twonumbers}
+
+When the spread is positive and class \(H\)'s gross profit exceeds class \(L\)'s, the investor's orders, the market
+makers' posteriors and the challenger's preparation depend on the auction only through the target-payoff spread
+\(\DT\) and the preparation threshold \(\tau\). The spread sets what an informed order earns at each posterior and
+level of entry, and the threshold sets which posteriors recruit a high-cost challenger. Two auctions with the same
+spread and the same threshold, and with every other primitive and the tie rules the same, therefore have the same
+equilibrium orders, posteriors and entry, and, when the investor chooses research, the same research. Prices add the
+levels \(t_0\) and \(t_L\), and ownership adds which bidder wins, so results on ownership carry class \(H\)'s chance
+of beating the incumbent.
+
+A stronger incumbent never narrows the spread (Proposition~\ref{prop:returns}). It never lowers the threshold while a
+challenger known to be in class \(L\) would not prepare at the high cost, \(g_L\le c_H\): it never raises class
+\(L\)'s profit and never widens the profit gap between the classes, so a challenger needs at least as favorable a
+belief before preparation at the high cost pays. Along a path, once \(g_L\le c_H\) holds, it holds against every
+stronger incumbent. Coexistence in Section~\ref{sec:coexistence} and research in Section~\ref{sec:research} are
+statements about these two numbers, and Appendix~\ref{app:beliefs} gives the formal statements and their proofs.
