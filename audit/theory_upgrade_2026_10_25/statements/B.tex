@@ -32,8 +32,7 @@
 %   scan/reduction_A3_A5.md section 1, rows "High-class lemma" and "Low-class lemma" (s* needs tau<1;
 %   the case tau>=1); NOTATION (c), "Paths".
 % Replaces: appendix/A4_coexistence.tex:1-8 (the opening, which names the example as the setting) and
-%   132-157. The opening of A.4 becomes: general results at a fixed law and along a path first, then the
-%   example.
+%   132-157. Order of A.4: general results at a fixed law and along a path, then the example.
 \paragraph{Setting.}
 Throughout this part the classes satisfy the class ranking, and the prior \(\pi\in(0,1)\), the slot
 \((\lambda,\beta)\) with \(0<\lambda<1\) and \(0<\beta<1/2\), and \(\rho\in(0,1)\), \(c_H>0\) and \(k>0\) are fixed. An
@@ -51,13 +50,14 @@ By Lemma~\ref{lem:trading}(a), no equilibrium puts weight on a wrong-signed orde
 \mu_-(s_-)=\frac{\pi b}{b+(1-\pi)s_-},
 \]
 and \(\mu_0(s_+,s_-)\) has the odds \(\frac{\pi}{1-\pi}\cdot\frac{b_0+\lambda-s_+}{b_0+\lambda-s_-}\). On \([0,\lambda]\),
-\(\mu_+\) rises strictly from \(\pi\) to \(M\), and \(\mu_-\) falls strictly from \(\pi\) to \(m\). For \(\tau<1\) let
+\(\mu_+\) rises strictly from \(\pi\) to \(M\), and \(\mu_-\) falls strictly from \(\pi\) to \(m\). The same formula
+defines \(\mu_+(s)\) for every \(s\ge0\), rising strictly to one. For \(\pi<\tau<1\) let
 \[
-s^*=\frac{b\,(\tau-\pi)}{\pi\,(1-\tau)} ,
+s^*=\frac{b\,(\tau-\pi)}{\pi\,(1-\tau)}>0 ,
 \]
-the unique rate with \(\mu_+(s^*)=\tau\); then \(\mu_+(s_+)<\tau\) exactly when \(s_+<s^*\), and \(s^*<\lambda\) exactly
-when \(\tau<M\). If \(\tau\ge M\), and in particular if \(\tau\ge1\), then \(\mu_+(s_+)<\tau\) for every
-\(s_+<\lambda\).
+the rate at which a purchase reaches the threshold, \(\mu_+(s^*)=\tau\). Then \(\mu_+(s_+)<\tau\) exactly when
+\(s_+<s^*\); the rate \(s^*\) is feasible, \(s^*\le\lambda\), exactly when \(\tau\le M\), and \(s^*<\lambda\) exactly when
+\(\tau<M\). If \(\tau\ge M\), and in particular if \(\tau\ge1\), then \(\mu_+(s_+)<\tau\) for every \(s_+<\lambda\).
 
 A path is a family \((F_r)_{r\in I}\) of such laws over an interval \(I\) of strengths, with \(F_{r'}\) first-order
 stochastically dominating \(F_r\) for \(r'>r\) and every other primitive fixed. Along a path \(\DT(r)\) is
@@ -131,18 +131,18 @@ the tuple with the rates \((s_+,s_-)\) is an equilibrium if and only if these fo
 % Source: referee/W1.md, equations (1) and (2) with the proof before them (uniqueness under the default
 %   challenger rule), convexity and the bound 1-tau>=rho*max{pi,1-pi}; equation (3) and the wording
 %   points after it (part (b)); equation (10) (the balance condition, undivided as in NOTATION (d));
-%   equations (4)-(8) (the uniform case, J'>=A*DT^2/gamma^2); equation (12) and the paragraph on the
-%   threshold branch after it (part (c)(iv));
+%   equations (4)-(8) (the uniform case, J'>=(r^2-p^2)DT^2/(2r^2 gamma^2)); equation (12) and the paragraph
+%   after it on the threshold pair (part (c)(iv));
 %   scan/reduction_A3_A5.md section 3(b), 3(c) and 3(d) (part (d)); WORKAROUNDS.md W1, last item (tau>pi
 %   at the start of the path, part (c)(ii)). Proofs: O9 (part (c)(iii)), O5 (part (d)).
 % Replaces: the named "Proposition 3 (full statement)" at appendix/A4_coexistence.tex:287-314, whose
-%   content about the example becomes the full statement of Corollary 2 below. Number: named, unnumbered,
+%   content about the example is the full statement of Corollary 2 below. Number: named, unnumbered,
 %   full statement of Proposition 3 (prop:coexistence). Displays eq:region and eq:entry-inf are numbered
 %   (A.n) in the appendix.
 \begin{named}{Proposition~\ref{prop:coexistence} (full statement)}
 Let the classes satisfy the class ranking, and fix the prior, the slot, \(\rho\), \(c_H\) and \(k\) as above. Parts
-(a) to (c) take the default tie rules: an indifferent investor may mix over its best orders, and an indifferent
-high-cost challenger prepares.
+(a) to (c), except the second sentence of (c)(iv), take the default tie rules: an indifferent investor may mix over
+its best orders, and an indifferent high-cost challenger prepares. That sentence and part (d) state their own.
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
 \item \emph{The region.} A quiet market and an informative market coexist against \(F\) if and only if
 \begin{equation}\label{eq:region}
@@ -177,27 +177,30 @@ incumbent of the path. Then this interval is closed. When it is not empty, it st
 \item The product \(\DT(r)\,[g_H(r)-c_H]\) is nondecreasing, and \(J\) rises strictly, when the incumbent is uniform,
 \(F_r=U[0,r]\) for \(r\) in a compact interval \(I\) with \(p<\min I\), every low-class value lies in
 \([p,\min I]\), every high-class value is at least \(\max I\), and \(\E_H\theta\ge\max I+c_H\).
-\item If, in addition, \(\DT(r)\,[g_H(r)-c_H]^2\) is nondecreasing, then \(\DT(r)\,[1-\tau(r)]^2\) is nondecreasing,
-and the entry of the threshold pair,
+\item If, in addition, \(\DT(r)\,[g_H(r)-c_H]^2\) is nondecreasing, then \(\DT(r)\,[1-\tau(r)]^2\) is nondecreasing.
+When an indifferent investor may mix and an indifferent high-cost challenger may prepare with any probability, the
+threshold pair is a pair of Lemma~\ref{lem:a4-high} exactly at the strengths with \(\pi<\tau(r)<M\) and
+\(\rho J(r)\le k\le J(r)\); on these strengths its entry, with entry \(\rho\) after a sale and after the zero order,
 \[
 \Ent_{\rm T}(r)=\rho+(1-\pi)\,b\,\frac{k-\rho J(r)}{\DT(r)\,[1-\tau(r)]^2},
 \]
-is nonincreasing on the strengths with \(\rho J(r)\le k\le J(r)\).
+is nonincreasing. Where \(\tau(r)=M\), the threshold rate is \(s^*=\lambda\), and a purchase at that rate is a full
+purchase, the pair (F) of Lemma~\ref{lem:a4-high}.
 \end{enumerate}
 \item \emph{Existence at the prior \(1/2\).} Let the prior be \(1/2\) and \(\tau>1/2\), including \(\tau\ge1\), and let an
 indifferent investor mix over its best orders. Under either challenger rule an equilibrium exists against \(F\). If
-\(\rho\DT\le2k\), the quiet market is one. If \(\rho\DT>2k\), let \(t=\min\{\lambda,\,b\,(\rho\DT/k-2)\}\). If
-\(\mu_+(t)<\tau\), both classes trade at the rate \(t\) and entry is \(\rho\) after every order. If
-\(\mu_+(t)\ge\tau\), the low class sells at the rate \(t\), class \(H\) buys at the rate
-\(\min\{\lambda,\,b\,(\DT/k-2)\}\ge t\), a purchase recruits a high-cost challenger, and entry after a sale and after
-the zero order is \(\rho\).
+\(\rho\DT\le2k\), the quiet market is one. If \(\rho\DT>2k\), the low-class rate of Lemma~\ref{lem:a4-low} is
+\(\hat s_-=\min\{\lambda,\,b\,(\rho\DT/k-2)\}>0\). If \(\mu_+(\hat s_-)<\tau\), both classes trade at the rate
+\(\hat s_-\) and entry is \(\rho\) after every order. If \(\mu_+(\hat s_-)\ge\tau\), the low class sells at the rate
+\(\hat s_-\), class \(H\) buys at the rate \(\min\{\lambda,\,b\,(\DT/k-2)\}\ge\hat s_-\), a purchase recruits a
+high-cost challenger, and entry after a sale and after the zero order is \(\rho\).
 \end{enumerate}
 \end{named}
 
 % Main-text form of Proposition 3.
 % Source: the full statement above, parts (a) to (c); plan/lens_maintext.md target T-P3, with part (c)
-%   led by the balance condition and its uniform case (decision 4, first branch; O9 holds), the start
-%   margin g_H>c_H dropped because the interval claim does not use it, and the tie rules named because
+%   led by the balance condition and its uniform case (decision 4, first branch; O9 holds), without the
+%   start margin g_H>c_H, which the interval claim does not use, and with the tie rules named, because
 %   uniqueness and the strict rise depend on them.
 % Replaces: sections/04_equilibrium_results.tex:272-283. Number: Proposition 3, label prop:coexistence,
 %   title "Quiet and informative markets".
@@ -236,11 +239,12 @@ least the largest \(r\), and class \(H\)'s mean value exceeds the largest \(r\) 
 Without the balance condition, the strengths with coexistence along a path can form two disjoint intervals, even
 when class \(H\) outbids every incumbent and its value exceeds every incumbent value by more than \(c_H\). Keep every
 primitive of the example except the incumbent law, take the prior \(1/2\) and any slot with
-\(\tau(r_1)<M(1/2)<\tau(r_2)\), and for \(t\in[0,2]\) let \(F_t\) put weight \(\reg{twopath_weight_lower}\) on a
-lower uniform law and the rest on an upper uniform law, both of half-width \(\reg{twopath_halfwidth}\). The centre of
-the lower law rises linearly from \(\reg{twopath_lower_start}\) to \(\reg{twopath_lower_end}\) as \(t\) runs over
-\([0,1]\) and then stays there; the centre of the upper law stays at \(\reg{twopath_upper_start}\) on \([0,1]\) and
-rises linearly to \(\reg{twopath_upper_end}\) as \(t\) runs over \([1,2]\). Every lower value lies between \(p\) and
+\(\reg{tau_r1_frac}<M(1/2)<\reg{tau_r2_frac}\), the example's thresholds at \(r_1\) and \(r_2\), and for
+\(r\in[0,2]\) let \(F_r\) put weight \(\reg{twopath_weight_lower}\) on a lower uniform law and the rest on an upper
+uniform law, both of half-width \(\reg{twopath_halfwidth}\). The centre of the lower law rises linearly from
+\(\reg{twopath_lower_start}\) to \(\reg{twopath_lower_end}\) as \(r\) runs over \([0,1]\) and then stays there; the
+centre of the upper law stays at \(\reg{twopath_upper_start}\) on \([0,1]\) and rises linearly to
+\(\reg{twopath_upper_end}\) as \(r\) runs over \([1,2]\). Every lower value lies between \(p\) and
 \(\ell\), and every upper value between \(\ell\) and \(h\). On \([0,1]\) the incumbent strengthens only where it loses
 to both classes: both profits fall, the spread stays constant, \(\tau\) rises and \(J\) falls. On \([1,2]\) it
 strengthens between the class values, and the spread widens. A quiet market and an informative market coexist exactly
@@ -259,8 +263,8 @@ The results above take the default tie rules. The two alternatives change the re
 \begin{itemize}[leftmargin=2em]
 \item When an indifferent high-cost challenger may prepare with any probability, a quiet market and an informative
 market coexist against \(F\) exactly when \(F\) satisfies \eqref{eq:region}, or when \(\tau=\pi\) and
-\(k/(1-\pi)<\DT\le\DT^{\rm N}\). At \(\tau=\pi\) the quiet market keeps entry \(\rho\) after every order, and the
-informative market is the purchase of part~(a) with entry \(\rho\) after a sale. Inside the region, wherever \(\tau<M\)
+\(k/(1-\pi)<\DT\le\DT^{\rm N}\). At \(\tau=\pi\), one quiet market has entry \(\rho\) after every order, and one
+informative market is constructed as in part~(a), with entry \(\rho\) after a sale. Inside the region, wherever \(\tau<M\)
 and \(J>k\), the threshold pair with \(e(1)=k/J\) is a further informative market, and its entry lies strictly between
 \(\rho\) and \eqref{eq:entry-inf}. Where \(\tau=M\), a full purchase is an equilibrium with each entry after a purchase
 in \([k/J,1]\).
@@ -274,24 +278,27 @@ may prepare with any probability, the laws with \(\tau=\pi\) and \(\DT^{\rm F}<\
 
 % Source: appendix/A4_coexistence.tex:4-18 and 65-83 (the path, the root function and the marked
 %   strengths), with \fr(d) written \fr(y) (NOTATION (c)) and r_* added to the list.
-% Replaces: appendix/A4_coexistence.tex:4-18 and 65-83; definitions unchanged in substance.
+% Replaces: appendix/A4_coexistence.tex:4-18 and 65-83; the definitions are the manuscript's, with the slot
+%   condition tau(r_1)<M(1/2)<tau(r_2) stated for r_F, r_S and r_C.
 \paragraph{The path and its marked strengths.}
 In the example the classes are point masses at \(h\) and \(\ell\), the incumbent is uniform on \([0,r]\), and
 \((h,\ell,p,\rho,c_H,k)=(\reg{prim_h},\reg{prim_ell},\reg{prim_p},\reg{prim_rho},\reg{prim_cH},\reg{prim_k})\). The path
 is \(r\in[r_0,r_2]\), with \((r_0,r_1,r_2)=(\reg{prim_r0},\reg{prim_r1},\reg{prim_r2})\). On it \(\ell<r<h\), so
 \(\DT(r)>0\) and \(g_H(r)>g_L(r)\). Write \(\fr(y)=\ell+y+\sqrt{y^2+2\ell y}\), the root above \(\ell\) of \(\DT(r)=y\);
-\(\DT(r)\le y\) holds exactly when \(r\le\fr(y)\). At the prior \(1/2\), with \(M=M(1/2)\) and \(m=1-M\), the marked
-strengths are: \(r_A\), the root of \(J(r)=k\) in \((r_0,r_2)\); \(r_F=\fr\bigl(k/(1-M)\bigr)\); \(r_N=\fr(2k/\rho)\);
-\(r_J\), the root of \(\rho J(r)=k\) in \((r_0,r_2)\); \(r_S=\fr\bigl(k/(\rho m)\bigr)\); \(r_C\), the root of
-\(\tau(r)=M\); and \(r_*\), the root of \(\rho\DT(r)\tau(r)=k\). Lemma~\ref{lem:a4-path} makes \(r_A\), \(r_J\), \(r_C\)
-and \(r_*\) unique. The strengths \(r_A\), \(r_N\), \(r_J\) and \(r_*\) do not depend on the slot.
+\(\DT(r)\le y\) holds exactly when \(r\le\fr(y)\). At the prior \(1/2\) write \(M=M(1/2)\) and \(m=1-M\). Four marked
+strengths do not depend on the slot: \(r_A\), the root of \(J(r)=k\) in \((r_0,r_2)\); \(r_N=\fr(2k/\rho)\); \(r_J\),
+the root of \(\rho J(r)=k\) in \((r_0,r_2)\); and \(r_*\), the root of \(\rho\DT(r)\tau(r)=k\) in \((r_0,r_2)\). For a
+slot with \(0<\lambda<1\), \(0<\beta<1/2\) and \(\tau(r_1)<M<\tau(r_2)\), three more are \(r_F=\fr\bigl(k/(1-M)\bigr)\),
+\(r_S=\fr\bigl(k/(\rho m)\bigr)\), and \(r_C\), the root of \(\tau(r)=M\) in \((r_1,r_2)\). Lemma~\ref{lem:a4-path} makes
+\(r_A\), \(r_J\), \(r_C\) and \(r_*\) unique.
 
 % Source: appendix/A4_coexistence.tex:20-29 (lem:a4-path); referee/W1.md, equations (4)-(8) (the uniform
 %   case, with the margin h-r_2-c_H after them), equation (11) and equation (12): part (c) holds on the
 %   whole path.
 %   Hand proofs: (a) as in the manuscript; (b) from Proposition 3(c)(iii) with the margin, and directly from
-%   (DT X)'=DT'(X-Y) with X=g_H-c_H decreasing and Y=-g_H' DT/DT' increasing; (c) from
-%   (DT X^2)'=X DT'(X-2Y) and gamma decreasing; (d) as in the manuscript. No root count remains.
+%   (DT (g_H-c_H))' = DT' [(g_H-c_H) + g_H' DT/DT'], with g_H-c_H decreasing and -g_H' DT/DT' increasing; (c) from
+%   (DT (g_H-c_H)^2)' = (g_H-c_H) DT' [(g_H-c_H) + 2 g_H' DT/DT'] and gamma decreasing; (d) as in the manuscript.
+%   The proof uses no root count.
 % Replaces: appendix/A4_coexistence.tex:20-29 (statement); 31-63 (proof) are rewritten in S5.
 %   Number: Lemma A.10 (was A.4), title "The example path".
 \begin{lemma}[The example path]\label{lem:a4-path}
@@ -322,11 +329,12 @@ r_0<r_A<r_F<r_N<r_J<r_S<r_1<r_C<r_2 .
 \end{lemma}
 
 % Source: appendix/A4_coexistence.tex:258-285 (the forms at the prior 1/2), with the form names of
-%   NOTATION (b). Definitions unchanged in substance.
+%   NOTATION (b). Definitions as in the manuscript, with the slot condition and the tie rules stated.
 % Replaces: appendix/A4_coexistence.tex:258-272 (the tuple list at 273-285 stays).
 \paragraph{The forms at the prior \(1/2\).}
-At the prior \(1/2\), \(1-\mu_+(s_+)=b/(2b+s_+)\), \(\mu_-(s_-)=b/(2b+s_-)\) and \(s^*=b(2\tau-1)/(1-\tau)\). The low class
-sells at the rate of Lemma~\ref{lem:a4-low},
+Take the prior \(1/2\) and a slot with \(\tau(r_1)<M<\tau(r_2)\). Then \(1-\mu_+(s_+)=b/(2b+s_+)\),
+\(\mu_-(s_-)=b/(2b+s_-)\) and \(s^*=b(2\tau-1)/(1-\tau)\). Under the default tie rules the low class sells at the rate
+of Lemma~\ref{lem:a4-low},
 \[
 \hat s_-(r)=0\ \text{on}\ [r_0,r_N],\qquad \hat s_-(r)=b\,[\rho\DT(r)/k-2]\ \text{on}\ (r_N,r_S),\qquad
 \hat s_-(r)=\lambda\ \text{on}\ [r_S,r_2],
@@ -335,10 +343,15 @@ and class \(H\)'s pair takes one of five forms:
 \begin{itemize}[leftmargin=2em]
 \item \textbf{N}, a quiet market: \(s_+=0\) and \(e(1)=\rho\);
 \item \textbf{R}, a mixed purchase that recruits: \(s_+=s_R(r):=b[\DT(r)/k-2]\) and \(e(1)=1\);
-\item \textbf{F}, a full purchase: \(s_+=\lambda\), with \(e(1)=1\) for \(r\le r_C\) and \(e(1)=\rho\) for \(r>r_C\);
+\item \textbf{F}, a full purchase: \(s_+=\lambda\), with \(e(1)=1\) for \(r<r_C\), \(e(1)=1\) at \(r_C\) because an
+indifferent high-cost challenger prepares, and \(e(1)=\rho\) for \(r>r_C\);
 \item \textbf{Q}, mixed orders at the entry floor: \(s_+=s_Q(r):=b[\rho\DT(r)/k-2]=\hat s_-(r)\) and \(e(1)=\rho\);
-\item \textbf{T}, the threshold pair: \(s_+=s^*(r)\) and \(e(1)=e^*(r)=k/J(r)\).
+\item \textbf{T}, the threshold pair: \(s_+=s^*(r)\) and \(e(1)=e^*(r)=k/J(r)\), which requires \(J(r)=k\), that is
+\(r=r_A\).
 \end{itemize}
+The forms R, Q and T need an indifferent investor who may mix. When an indifferent high-cost challenger may prepare
+with any probability, a full purchase at \(r_C\) admits every \(e(1)\in[\rho,1]\), and the threshold pair is a pair of
+Lemma~\ref{lem:a4-high} exactly on \([r_A,r_J]\), where \(\rho J(r)\le k\le J(r)\).
 
 % Source: appendix/A4_coexistence.tex:287-314 (the named "Proposition 3 (full statement)", which is the
 %   example's equilibrium set at the prior 1/2) and the proof at 316-397, whose Step 8 is
@@ -432,34 +445,39 @@ rises strictly while the purchase is mixed and is then constant.
 \end{corollary}
 
 % Source: appendix/A4_coexistence.tex:544-571 (the example under the alternative tie rules); referee/W1.md,
-%   the paragraph on the threshold branch after equation (12) (strict fall in the example) and the
+%   the paragraph on the threshold pair after equation (12) (strict fall in the example) and the
 %   paragraph after the referee's table of example values (the threshold pair at r_A under the default
 %   rules);
 %   scan/reduction_A3_A5.md section 4.2. The strict fall of the threshold pair's entry on all of [r_A, r_J]
-%   uses Lemma A.10(b) and (c) on the whole path, so the step through r_J<2 and its number go.
+%   uses Lemma A.10(b) and (c) on the whole path, with no step through r_J<2.
 % Replaces: appendix/A4_coexistence.tex:544-571 (with the subscripted set of the manuscript written
 %   \widetilde{\mathcal C}, NOTATION (c));
 %   Table A.3 at 573-593 and the closing lines 595-598 stay, with the phrases in place of the codes.
 \paragraph{Other tie rules in the example.}
-At the prior \(1/2\), the threshold pair has entry one after a purchase at \(r_A\) and is an equilibrium there under the
-default tie rules. When an indifferent high-cost challenger may prepare with any probability, the threshold pair is
-also an equilibrium on \((r_A,r_J]\), and its entry falls strictly from \(\Ent_{\rm R}(r_A)\) at \(r_A\) to \(\rho\) at
-\(r_J\), by Lemma~\ref{lem:a4-path}(b) and~(c) and Proposition~\ref{prop:coexistence}(c)(iv); at \(r_C\), entry after a
-purchase in a full purchase can then take any value in \([\rho,1]\). When an indifferent investor abstains, the
-equilibrium set is a quiet market on \([r_0,r_F]\); a quiet market and a full purchase on \((r_F,r_N]\); empty on
-\((r_N,r_S]\), where the low class has no qualifying sale rate; and a full purchase on \((r_S,r_2]\).
+Take the prior \(1/2\) and a slot with \(\tau(r_1)<M(1/2)<\tau(r_2)\). The threshold pair has entry one after a
+purchase at \(r_A\) and is an equilibrium there under the default tie rules. When an indifferent investor may mix and
+an indifferent high-cost challenger may prepare with any probability, the threshold pair is also an equilibrium on
+\((r_A,r_J]\), and its entry falls strictly from \(\Ent_{\rm R}(r_A)\) at \(r_A\) to \(\rho\) at \(r_J\), by
+Lemma~\ref{lem:a4-path}(b) and~(c) and Proposition~\ref{prop:coexistence}(c)(iv); at \(r_C\), entry after a purchase in
+a full purchase can then take any value in \([\rho,1]\). When an indifferent investor abstains, under either
+challenger rule, the equilibrium set is a quiet market on \([r_0,r_F]\); a quiet market and a full purchase on
+\((r_F,r_N]\); empty on \((r_N,r_S]\), where the low class has no qualifying sale rate; and a full purchase on
+\((r_S,r_2]\).
 
-At a general prior, when an indifferent high-cost challenger may prepare with any probability, the coexistence set is
+At a general prior and any slot with \(0<\lambda<1\) and \(0<\beta<1/2\), when an indifferent investor may mix and an
+indifferent high-cost challenger may prepare with any probability, the coexistence set is
 \[
 \widetilde{\mathcal C}(\pi)=\mathcal C(\pi)\cup\{r_\pi\}\quad\text{for }\tau_A<\pi\le\pi_{\max},\qquad
 \widetilde{\mathcal C}(\pi)=\mathcal C(\pi)\ \text{otherwise}.
 \]
-At \(\pi=\pi_{\max}\), the point \(r_\pi=r_*=\reg{rstar}\) is the whole set: there \(M(\pi_{\max})=\reg{M_pimax_B}\),
-the posterior after the zero order is \(\reg{mu0_pimax_B}\), a full purchase earns
-\(\DT(r_*)[1-M(\pi_{\max})]-k=\reg{margin_cmend_B}\) net of the trading cost, and entry is \(\reg{entry_cmend_B}\). When
-an indifferent investor abstains, coexistence holds on the strengths of \(\mathcal C(\pi)\) above
-\(\fr\bigl(k/(1-M(\pi))\bigr)\); when in addition an indifferent high-cost challenger may prepare with any probability,
-the point \(r_\pi\) joins it if \(\fr\bigl(k/(1-M(\pi))\bigr)<r_\pi\le r_N(\pi)\).
+At \(\pi=\pi_{\max}\), the point \(r_\pi=r_*=\reg{rstar}\) is the whole set. At the example's slot
+(\(\lambda=\reg{lambda_B}\), \(\beta=\reg{beta_B}\)), the top posterior is \(M(\pi_{\max})=\reg{M_pimax_B}\), the
+posterior after the zero order is \(\reg{mu0_pimax_B}\), the informative market is a full purchase, which earns
+\(\DT(r_*)[1-M(\pi_{\max})]-k=\reg{margin_cmend_B}\) net of the trading cost, and entry is \(\reg{entry_cmend_B}\). At every
+prior and every slot, when an indifferent investor abstains and an indifferent high-cost challenger prepares,
+coexistence holds on the strengths of \(\mathcal C(\pi)\) above \(\fr\bigl(k/(1-M(\pi))\bigr)\); when an indifferent
+investor abstains and an indifferent high-cost challenger may prepare with any probability, the point \(r_\pi\) joins
+them if \(\fr\bigl(k/(1-M(\pi))\bigr)<r_\pi\le r_N(\pi)\).
 
 % Figure note of fig:coexistence, the sentence on the threshold pair.
 % Source: plan/lens_theory.md target T5; referee/W1.md, the paragraph after the referee's table of
