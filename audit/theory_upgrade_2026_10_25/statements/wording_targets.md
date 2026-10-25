@@ -11,10 +11,11 @@ Each target gives:
 
 Conventions used throughout:
 
-- Every quantity of the example prints through `\reg{}`. A quantity without a value yet is written `\reg{NEW:short_name}`; the last section but one lists each with what it stands for. Constants that are part of a formula or a hypothesis (the prior \(1/2\), \(2k\), \(1/3\), \(3p^2\)) are written as mathematics, as in the current manuscript.
+- Every quantity of the example prints through `\reg{}`, and every key exists in the numbers table; the section "Keys used by the targets" lists the keys added to the numbers table for these targets. Constants that are part of a formula or a hypothesis (the prior \(1/2\), \(2k\), \(1/3\), \(3p^2\)) are written as mathematics, as in the current manuscript.
 - "The default tie rules" is defined once, in Section 2 (target 2.5): an indifferent investor may mix over its best orders, and an indifferent high-cost challenger prepares.
 - "Full two-sided trade": class \(H\) buys and class \(L\) sells, each with probability one. Defined once, at the opening of Section 8 (target 8.1); the introduction says it in words.
-- Corollary labels `cor:region`, `cor:coexistence` and `cor:research` stand for the labels that the mathematics writer fixes for Corollaries 1 to 3. The label `sec:benchmark` of Section 4.2 is kept so that no reference breaks; labels do not print.
+- Corollary labels are the frozen ones: Corollary 1 is `prop:region` (second label `cor:ccc-example`), Corollary 2 is `cor:example-coexistence`, and Corollary 3 is `cor:research` in its full statement and `cor:research-short` in the main-text form. The label `sec:benchmark` of Section 4.2 is kept so that no reference breaks; labels do not print.
+- "The exact recruitment margin" names \(\varphi_a^*\) in the main text; "the recruitment margin" is not used for it.
 - Proposition 1 keeps its statement. Figures and their notes are outside this file (S7).
 
 ---
@@ -65,15 +66,15 @@ acquires the target.
 
 - **Location**: Section 1, `01:38–43`, in place of the text from "challenger, so entry rises" (line 39) to the end of the paragraph (line 43).
 - **Matches**: S5 item 2 (Proposition 2(ii) and its share part). W2 "Shared Candidate 3"; W2 "Do the same workarounds cover Proposition 2" (outbidding at \(F_1\) forces it at \(F_0\)); proof O6.
-- **Scope**: prior: any; tie rules: none needed; trading pattern: the strong incumbent's full two-sided trade, stated in the preceding sentence; condition: a prepared high-class challenger beats the strong incumbent for sure; strictness of the share needs a low-class challenger to beat the weak incumbent with positive probability; weak or strict: ownership and share rise strictly under the stated conditions.
+- **Scope**: prior: any; tie rules: none needed; trading pattern: the strong incumbent's full two-sided trade, stated in the preceding sentence; condition: a prepared high-class challenger beats the strong incumbent for sure; the share clause stands inside that condition and adds that a low-class challenger beats the weak incumbent with positive probability; weak or strict: ownership and share rise strictly under the stated conditions.
 
 ```latex
 challenger, so entry rises even though acquisition profit falls at every fixed belief. When a prepared high-class
 challenger beats the strong incumbent for sure, the probability that a challenger from the high class acquires the
-target rises with entry, and when a low-class challenger beats the weak incumbent with positive probability, the high
-class also wins a larger share of the takeovers that go to a challenger. With the very strong incumbent, the price
-stays informative, but even the most favorable price fails to justify preparation at the high cost, so entry returns
-to its floor.
+target rises with entry; if, in addition, a low-class challenger beats the weak incumbent with positive probability,
+the high class also wins a larger share of the takeovers that go to a challenger. With the very strong incumbent, the
+price stays informative, but even the most favorable price fails to justify preparation at the high cost, so entry
+returns to its floor.
 ```
 
 ### T-1.3. The example as an illustration of the main result
@@ -86,14 +87,14 @@ to its floor.
 As an illustration, in the example of Section~\ref{sec:benchmark}, entry rises from \reg{entry_r0} at the weak
 incumbent to \reg{entry_r1_B} at the strong incumbent, high-class ownership rises from \reg{own_r0} to
 \reg{own_r1_B}, and the high class's share of the takeovers that go to a challenger rises from
-\reg{NEW:own_share_r0} to \reg{NEW:own_share_r1_B}. Over the same change, gross acquisition profit at the prior falls
+\reg{share_H_r0} to \reg{share_H_r1_B}. Over the same change, gross acquisition profit at the prior falls
 from \reg{Bprior_r0} to \reg{Bprior_r1_B}, while the target-payoff spread rises from \reg{Delta_r0} to
 \reg{Delta_r1}. In the example, high-cost preparation stops above the entry ceiling, the strength
 \(r_C\approx\reg{rC_B}\). At the example's auction and costs and the prior \(1/2\), the hypotheses of the main
 result hold exactly when \(\reg{u_lo_frac}<u<\reg{u_hi_frac}\), where \(u\) is the informed presence mass relative
 to the liquidity mass in one direction; equivalently, the top posterior at the prior \(1/2\) lies between the
 preparation thresholds of the strong and the very strong incumbent, \(\reg{M_lo_frac}\) and \(\reg{M_hi_frac}\)
-(Corollary~\ref{cor:region}).
+(Corollary~\ref{prop:region}).
 ```
 
 ### T-1.4. The two numbers and coexistence
@@ -116,7 +117,7 @@ a challenger known to be in the low class would not prepare at the high cost. Wh
 over its best orders and an indifferent high-cost challenger prepares, a quiet market, in which the investor does not
 trade, and an informative market coexist exactly when the threshold lies above the prior and within reach of a
 purchase, and the spread is wide enough that a purchase that just reaches the threshold covers the trading cost but
-narrow enough that no order against an uninformative price covers it (Section~\ref{sec:coexistence}). In the
+narrow enough that no order against an uninformative price earns more than it (Section~\ref{sec:coexistence}). In the
 informative market, entry depends on the incumbent only through the spread: it rises with the spread while the
 investor mixes between a purchase and abstention, and it stays constant once the investor buys for sure. Along any
 path of strengthening incumbents, the strengths at which a quiet market coexists with a sure purchase form one
@@ -173,13 +174,13 @@ weight the rule places on the runner-up's value (Section~\ref{sec:payment}).
 - **Scope**:
   - prior: below the threshold for the weighted test; known and different from one half for counts; \(1/2\) for the sale-impact sentence;
   - tie rules: none needed when the prior lies strictly below the threshold;
-  - trading pattern: the investor buys after good news and sells after bad news, with probability one (full two-sided trade), named once and governing the paragraph;
+  - trading pattern: the investor always buys after good news and always sells after bad news, that is, with probability one (full two-sided trade), named once in the LaTeX and governing the paragraph;
   - condition: winners need the incumbent's value to fall, with positive probability, where the classes differ in their chance of beating it; the sale-impact sentence needs the payoff scale and entry at its floor after a sale and after no order;
   - weak or strict: "exactly when"; "more often" is strict.
 
 ```latex
-When the investor buys after good news and sells after bad news and the prior lies below the preparation threshold,
-a purchase raises the price by more than a sale lowers it, once each impact is weighted by how often its order
+When the investor always buys after good news and always sells after bad news and the prior lies below the
+preparation threshold, a purchase raises the price by more than a sale lowers it, once each impact is weighted by how often its order
 occurs, exactly when the purchase recruits the challenger; the test needs only prices and order frequencies
 (Section~\ref{sec:empirical}). The difference comes from the entry component of the price gap between a purchase and
 a sale; in the example at the strong incumbent, that component is \reg{ba_share_r1_B} of the price gap. Under the
@@ -236,12 +237,13 @@ entry, and ownership do not change.
 ### T-2.3. The liquidity footnote
 
 - **Location**: Section 2.3, the footnote at `02:123–125`, in place of its text.
-- **Matches**: proof O2. The text keeps the present claim for Propositions 2 and 3; whether Proposition 4 joins it is for the referee (item 3 below).
+- **Matches**: proof O2: Propositions 1 to 4 hold for every \(0<\beta<1/2\); the bound \(\beta\le1/3\) enters the posterior bound common to all orders, the exclusion bound, and the research parameter region and the slot-feasibility statements of identification, which range over the model's slots.
 - **Scope**: liquidity probability; the rest as in each proposition.
 
 ```latex
-\footnote{Only the posterior bound at the zero order uses \(\beta\le1/3\), and through it the exclusion bound of
-Section~\ref{sec:inference}; Propositions~\ref{prop:ccc} and~\ref{prop:coexistence} hold for every \(\beta<1/2\)
+\footnote{The posterior bound common to all orders, and through it the exclusion bound of
+Section~\ref{sec:inference}, use \(\beta\le1/3\). The research parameter region and the slot-feasibility statements
+in identification range over the slots of the model. The other results hold for every \(0<\beta<1/2\)
 (Appendix~\ref{app:beliefs}).}
 ```
 
@@ -264,8 +266,9 @@ When the incumbent's distribution matters, I write \(g_j(F)\), \(\DT(F)\), and \
 
 ```latex
 When ties arise, an indifferent investor may mix over its best orders, and an indifferent high-cost challenger
-prepares. I call these the default tie rules; Table~\ref{tab:a4-ties} in Appendix~\ref{app:coexistence} records each
-conclusion that another tie rule changes.
+prepares. I call these the default tie rules. Where another tie rule changes a conclusion, the appendix states the
+change beside the result, and Table~\ref{tab:a4-ties} in Appendix~\ref{app:coexistence} collects the changes for
+coexistence in the example at the prior \(1/2\).
 ```
 
 ### T-2.6. Winning, outbidding and the takeover share
@@ -294,9 +297,9 @@ the challenger is of class \(H\), given that the challenger acquires the target.
 
 ```latex
 A stronger incumbent outbids a prepared challenger more often, and when it does, it pays the challenger's bid.
-Proposition~\ref{prop:returns} shows that this lowers acquisition profit at every fixed belief while it makes target
-proceeds more sensitive to challenger quality, for every continuous incumbent distribution; the second effect uses
-the class ranking~\eqref{eq:classes}.
+Proposition~\ref{prop:returns} shows that this weakly lowers acquisition profit at every fixed belief and weakly
+raises the sensitivity of target proceeds to challenger quality, for every continuous incumbent distribution; the
+second effect uses the class ranking~\eqref{eq:classes}.
 ```
 
 ### T-3.2. The class-gap identity
@@ -348,7 +351,8 @@ Section~\ref{sec:coexistence} rest on this split.
 - **Location**: Section 3, added after `03:141` as Section 3.4.
 - **Matches**: S5 item 1 (the reduction lemma: trading, posteriors and entry depend on the auction only through the spread and the threshold, and a stronger incumbent raises both). `SCAN.md` Part 2; W1 "Solver B 1" (the threshold can fall where it is negative).
 - **Scope**:
-  - prior: any;
+  - prior: any (the reduction lemma holds at every prior, with research included);
+  - other primitives: the research cost and the cap are held fixed with the rest, in the words "every other primitive";
   - tie rules: the same tie rules in both auctions;
   - trading pattern: every equilibrium;
   - condition: \(\DT>0\) and \(g_H>g_L\); the threshold statement holds while \(g_L\le c_H\), which persists along a path once it holds;
@@ -361,7 +365,7 @@ When the spread is positive and class \(H\)'s gross profit exceeds class \(L\)'s
 makers' posteriors and the challenger's preparation depend on the auction only through the target-payoff spread
 \(\DT\) and the preparation threshold \(\tau\). The spread sets what an informed order earns at each posterior and
 level of entry, and the threshold sets which posteriors recruit a high-cost challenger. Two auctions with the same
-spread and the same threshold, and with the same prior, costs, slot and tie rules, therefore have the same
+spread and the same threshold, and with every other primitive and the tie rules the same, therefore have the same
 equilibrium orders, posteriors and entry, and, when the investor chooses research, the same research. Prices add the
 levels \(t_0\) and \(t_L\), and ownership adds which bidder wins, so results on ownership carry class \(H\)'s chance
 of beating the incumbent.
@@ -413,12 +417,12 @@ Section~\ref{sec:benchmark} shows that (H1)--(H3) hold together on an open set o
 ```latex
 The additional entry favors the high class, which places a purchase with probability \(b+\lambda\), while the low
 class places one with probability \(b\). High-class ownership multiplies entry in class \(H\) by class \(H\)'s chance
-of beating the incumbent, and a stronger incumbent lowers that chance when class \(H\) can lose. The condition in
+of beating the incumbent, and a stronger incumbent can lower that chance when class \(H\) can lose. The condition in
 part~(ii) holds whenever the stronger incumbent leaves the high class a good chance to win,
 \((1+\rho)W_H(F_1)\ge2\rho W_H(F_0)>0\), and the high class places a purchase more often than not,
 \(b+\lambda>1/2\). When class \(H\) outbids \(F_1\), its chance to win is one against both incumbents, so ownership
-rises with entry in class \(H\); the stronger incumbent then takes wins only from the low class, and the takeovers
-that go to the challenger shift toward class \(H\).
+rises with entry in class \(H\); the stronger incumbent then takes wins only from the low class, and when a low-class
+challenger can beat the weak incumbent, the takeovers that go to the challenger shift toward class \(H\).
 
 Values and costs alone give outbidding when class \(H\) has a decisive advantage on a family of incumbent
 distributions: against every distribution in the family at which class \(H\)'s gross profit exceeds \(c_H\), class
@@ -478,7 +482,7 @@ example.
   - weak or strict: strict band; entry and ownership rise strictly.
 
 ```latex
-\begin{corollary}[Where the example meets Proposition~\ref{prop:ccc}]\label{cor:region}
+\begin{corollary}[Recruitment and ownership in the example]\label{prop:region}\label{cor:ccc-example}
 In the example at the prior \(1/2\), (H1)--(H3) hold if and only if \(\reg{u_lo_frac}<u<\reg{u_hi_frac}\), that is,
 if and only if the top posterior lies between the preparation thresholds of the strong and the very strong
 incumbent, \(\tau(r_1)=\reg{M_lo_frac}<M(1/2)<\reg{M_hi_frac}=\tau(r_2)\). In the example's slot, with \(1+u=\eu\),
@@ -500,11 +504,11 @@ to \(r_1\): gross acquisition profit at the prior falls from \(\reg{Bprior_r0}\)
 target-payoff spread rises from \(\reg{Delta_r0}\) to \(\reg{Delta_r1}\). In the example's slot, entry rises from
 \(\reg{entry_r0}\) at \(r_0\) to \(\reg{entry_r1_B}\) at \(r_1\), and high-class ownership from \(\reg{own_r0}\) to
 \(\reg{own_r1_B}\). Class \(H\) outbids every incumbent on the path, because \(h\) exceeds \(r_2\), and the strong
-incumbent takes wins only from the low class, so class \(H\)'s takeover share rises from \(\reg{NEW:own_share_r0}\) to
-\(\reg{NEW:own_share_r1_B}\). At \(r_2\) entry returns to \(\reg{entry_r2}\) and the three prices still differ;
+incumbent takes wins only from the low class, so class \(H\)'s takeover share rises from \(\reg{share_H_r0}\) to
+\(\reg{share_H_r1_B}\). At \(r_2\) entry returns to \(\reg{entry_r2}\) and the three prices still differ;
 Table~\ref{tab:outcomes} lists the three equilibrium tuples. With point-mass classes and a uniform incumbent of any
 strength, class \(H\) has a decisive advantage exactly when \(c_H\ge(h^2-p^2)/(2h)\), and the example's high cost
-exceeds \((h^2-p^2)/(2h)=\reg{NEW:cH_DA_floor_B}\): against every uniform incumbent at which a price recruits a
+exceeds \((h^2-p^2)/(2h)=\reg{cH_DA_floor_B}\): against every uniform incumbent at which a price recruits a
 high-cost challenger, class \(H\) outbids the incumbent.
 ```
 
@@ -548,7 +552,7 @@ challenger, and Table~\ref{tab:payoffs} reports both numbers at the three streng
 - **Scope**: as Corollary 1.
 
 ```latex
-Appendix~\ref{app:prop2} states Corollary~\ref{cor:region} in full. Below the band a purchase at \(r_1\) does not
+Appendix~\ref{app:prop2} states Corollary~\ref{prop:region} in full. Below the band a purchase at \(r_1\) does not
 recruit a high-cost challenger, and above it a conclusion of Proposition~\ref{prop:ccc} fails at \(r_2\) or at
 \(r_1\). Table~\ref{tab:region} gives the recruitment region in decimals, with the example's slot and its distance
 to each boundary.
@@ -594,10 +598,10 @@ example.
 ```latex
 Between the weak and the strong incumbent of Proposition~\ref{prop:ccc}, two equilibria can hold against the same
 incumbent. In a quiet market the investor does not trade, the price carries no information, and entry stays at its
-floor; in an informative market a purchase recruits a high-cost challenger. The two numbers of
-Section~\ref{sec:twonumbers} decide where both exist: the threshold must lie above the prior and within reach of a
-purchase, and the spread must be wide enough that a purchase that just reaches the threshold covers the trading cost,
-yet narrow enough that no order against an uninformative price covers it.
+floor; in the informative market that coexists with it, a purchase recruits a high-cost challenger. The two numbers
+of Section~\ref{sec:twonumbers} decide where both exist: the threshold must lie above the prior and within reach of
+a purchase, and the spread must be wide enough that a purchase that just reaches the threshold covers the trading
+cost, yet narrow enough that no order against an uninformative price earns more than it.
 ```
 
 ### T-4.9. Proposition 3
@@ -608,9 +612,9 @@ yet narrow enough that no order against an uninformative price covers it.
   - prior: any \(0<\pi<1\);
   - tie rules: "an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares", named in the statement;
   - trading pattern: the informative market's purchase, mixed or sure; class \(L\) abstains;
-  - condition: \(\DT>0\), \(g_H>g_L\); the region; the balance condition of (c), both parts; the uniform instance;
+  - condition: \(\DT>0\), \(g_H>g_L\); the region; the balance condition of (c), which is the frozen main-text form (the product of the spread and \(g_H-c_H\) does not fall), and the uniform instance;
   - weak or strict: the region has weak inequalities except \(\pi<\tau\); entry rises strictly while class \(H\) mixes; "does not fall" is weak.
-- Fallback for (c), if proof O9 does not stand: "Then the strengths with coexistence form an interval if either of the following holds: [the balance condition]; [the uniform instance]."
+- Part (c) is the frozen main-text form of Proposition 3(c) and omits the start hypothesis \(g_H>c_H\) against the weakest incumbent, which the interval claim does not use. The introduction (T-1.4) and the intuition (T-4.10) keep the proportional words, "the spread grows, in proportion, at least as fast as that excess shrinks", together with the start hypothesis, because the proportional reading needs a positive excess.
 
 ```latex
 \begin{proposition}[Quiet and informative markets]\label{prop:coexistence}
@@ -632,11 +636,11 @@ which rises strictly with the spread while class \(H\) mixes between a purchase 
 class \(H\) buys for sure.
 \item Along a path of such distributions, the strengths at which a quiet market coexists with an informative market
 in which class \(H\) buys for sure form an interval, and every other strength with coexistence lies below it.
-\item Along such a path, suppose that class \(H\)'s gross profit exceeds \(c_H\) against the weakest incumbent and
-that \(\DT\,(g_H-c_H)\) does not fall with strength. Then the strengths with coexistence form an interval. Uniform
-incumbents on \([0,r]\), with \(r\) in a closed interval, satisfy this condition when every low-class value lies
-between \(p\) and the lowest strength, every high-class value is at least the highest strength, and class \(H\)'s mean
-value exceeds the highest strength by at least \(c_H\).
+\item Along a path on which the product of the spread and \(g_H-c_H\) does not fall with strength, the strengths
+with coexistence form an interval, at every prior. Uniform incumbents on \([0,r]\), with \(r\) in a closed interval,
+satisfy this condition when every low-class value lies between the reserve and the lowest strength, every high-class
+value is at least the highest strength, and class \(H\)'s mean value exceeds the highest strength by at least
+\(c_H\).
 \end{enumerate}
 \end{proposition}
 ```
@@ -665,8 +669,9 @@ the two numbers pull in opposite directions: a wider spread raises what a recrui
 threshold makes recruitment harder. As the incumbent strengthens, the economy can enter the region, leave it, and
 enter it again. The strengths with a sure purchase are never split, because each condition that defines them holds on
 one side of a single strength, and a mixed purchase needs a narrower spread than a sure one, so the other strengths
-with coexistence lie below them. The whole set stays in one piece when the spread grows, in proportion, at least as
-fast as class \(H\)'s gross profit in excess of the high cost shrinks, which is the condition of part~(c).
+with coexistence lie below them. When class \(H\)'s gross profit exceeds the high cost against the weakest incumbent,
+the whole set stays in one piece if the spread grows, in proportion, at least as fast as that excess shrinks; part~(c)
+states the condition as a product, which does not fall.
 ```
 
 ### T-4.11. Corollary 2
@@ -681,8 +686,8 @@ fast as class \(H\)'s gross profit in excess of the high cost shrinks, which is 
   - weak or strict: entry rises strictly on \([r_A,r_F]\) and is constant on \([r_F,r_N]\).
 
 ```latex
-\begin{corollary}[Coexistence in the example]\label{cor:coexistence}
-In the example at the prior \(1/2\), let the slot lie in the band of Corollary~\ref{cor:region}, and let an
+\begin{corollary}[Coexistence in the example]\label{cor:example-coexistence}
+In the example at the prior \(1/2\), let the slot lie in the band of Corollary~\ref{prop:region}, and let an
 indifferent investor mix over its best orders and an indifferent high-cost challenger prepare. The strengths at
 which a quiet market and an informative market coexist form the interval \([r_A,r_N]\). In the informative market
 that coexists with a quiet market, entry is \(\rho+(1-\rho)\min\{b\DT(r)/(2k),\,b+\lambda/2\}\); it rises strictly
@@ -726,8 +731,8 @@ and Appendix~\ref{app:coexistence} lists every equilibrium along the path.
 
 ```latex
 The example's high cost lies between the two bounds that these conditions place on it. It is at most
-\(h-r_2=\reg{NEW:cH_afford_ceiling_B}\), so class \(H\)'s value covers the high cost against the strongest incumbent
-and Proposition~\ref{prop:coexistence}(c) applies, and it is at least \((h^2-p^2)/(2h)=\reg{NEW:cH_DA_floor_B}\), so
+\(h-r_2=\reg{cH_afford_ceiling_B}\), so class \(H\)'s value covers the high cost against the strongest incumbent
+and Proposition~\ref{prop:coexistence}(c) applies, and it is at least \((h^2-p^2)/(2h)=\reg{cH_DA_floor_B}\), so
 class \(H\) has the decisive advantage of Section~\ref{sec:ccc}.
 ```
 
@@ -788,8 +793,8 @@ value of research, so research optimality at an interior intensity reads
 \end{equation}
 The left side rises with \(\lambda\), and the right side falls, because more research removes camouflage. When
 \(\DT>2k\), the two sides meet at one intensity \(\lambda_R(\DT)\in(0,1)\), and research is the smaller of
-\(\lambda_R(\DT)\) and the cap \(\lb\). The \emph{recruitment margin} is the right side of \eqref{eq:research} minus
-its left side at the recruitment intensity; it is positive exactly when, at the research level that just lets a
+\(\lambda_R(\DT)\) and the cap \(\lb\). The \emph{exact recruitment margin} is the right side of \eqref{eq:research}
+minus its left side at the recruitment intensity; it is positive exactly when, at the research level that just lets a
 purchase recruit, the value of a success exceeds the marginal cost of research.
 ```
 
@@ -799,9 +804,9 @@ purchase recruit, the value of a success exceeds the marginal cost of research.
 - **Matches**: S5 item 4; `lens_theory.md` 3.7, T3 (parts (a) to (d)). (a) W3 "Shared Candidate 1" sections 1 to 4 (existence condition); (b) W3 section 5 and W2 "Shared Candidate 1" (entry by class); (c) W2 "Ranking and recommendation" item 2 and W2 "Decisive advantage"; (d) W3 section 6 (one upward crossing, no later downward exit, attainment of the cap, then the last point of \(\{\tau\le M_{\lb}\}\)); proofs O3 and O4.
 - **Scope**:
   - prior: \(1/2\);
-  - tie rules: "an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares", named in the statement;
+  - tie rules: "an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares", named in the statement, with the sentence of C's main-text form that the recruiting outcome is also available when an indifferent high-cost challenger may prepare with any probability and prepares fully at the purchase;
   - trading pattern: class \(H\) buys after a success and a purchase recruits; class \(L\) as in the lead-in;
-  - condition: \(\DT>0\), \(g_H>g_L\), \(1/2<\tau<1\); (a) \(\DT>2k\); (c) outbidding; (d) the margin rises, negative against the weakest incumbent, positive where research reaches the cap;
+  - condition: \(\DT>0\), \(g_H>g_L\), \(1/2<\tau<1\); (a) \(\DT>2k\); (c) outbidding; (d) a compact path with continuous spread and threshold, the spread against the weakest incumbent below the cap spread and reached by the path, and, up to the strength at which research reaches its cap, an exact recruitment margin that rises strictly, is negative against the weakest incumbent and is positive where research reaches the cap;
   - weak or strict: research rises strictly below the cap; entry and class entries move strictly with research; ownership "does not fall", strictly below the cap where the spread rises strictly.
 
 ```latex
@@ -809,7 +814,8 @@ purchase recruit, the value of a success exceeds the marginal cost of research.
 Let the classes satisfy the class ranking~\eqref{eq:classes} and the prior be \(1/2\), and let an indifferent
 investor mix over its best orders and an indifferent high-cost challenger prepare. Take incumbent distributions with
 a positive spread, \(g_H>g_L\) and \(1/2<\tau<1\), and consider the equilibrium in which class \(H\) buys after a
-success and a purchase recruits a high-cost challenger.
+success and a purchase recruits a high-cost challenger. The same recruiting outcome is available when an indifferent
+high-cost challenger may prepare with any probability and prepares fully at the purchase.
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
 \item The equilibrium exists if and only if \(\DT>2k\) and \(\tau\le M_\lambda\) at
 \(\lambda=\min\{\lambda_R(\DT),\lb\}\), which is then the investor's research.
@@ -819,10 +825,13 @@ falls.
 \item When class \(H\) outbids the incumbent, high-class ownership equals half the entry in class \(H\). Along a path
 on which class \(H\) outbids every incumbent, ownership does not fall with strength, and it rises strictly where
 research is below the cap and the spread rises strictly.
-\item Along a path of such distributions, suppose that the recruitment margin rises with strength, is negative
-against the weakest incumbent and is positive where research reaches its cap. Then the equilibrium exists exactly on
-an interval of strengths. On it, research rises from the recruitment intensity to the cap and then stays at the cap,
-up to the last strength at which the threshold does not exceed the top posterior at the cap.
+\item Along a compact path of such distributions with continuous spread and threshold, suppose that the spread
+against the weakest incumbent is below the value at which research reaches its cap and that the path reaches that
+value. Suppose that, up to the strength at which research reaches its cap, the exact recruitment margin rises
+strictly, is negative against the weakest incumbent and is positive where research reaches its cap. Then the
+equilibrium exists exactly on an interval of strengths. On it, research rises from the recruitment intensity to the
+cap and then stays at the cap, up to the last strength at which the threshold does not exceed the top posterior at
+the cap.
 \end{enumerate}
 \end{proposition}
 ```
@@ -842,15 +851,17 @@ prepare are more often of class \(H\).
 
 The low class's selling leaves this mechanism in place. A sale never recruits, and while the low class mixes, its sale
 breaks even, so a success has the same value as when the low class abstains. Once a sure sale pays, the sale's
-profit is a second return to research, and the research schedule kinks upward at that point.
+profit is a second return to research, and if research is still below its cap at that point, the research schedule
+kinks upward there.
 
 High-class ownership multiplies entry in class \(H\) by class \(H\)'s chance of beating the incumbent. When class
 \(H\) outbids the incumbent, that chance is one, so ownership rises with research, as part~(c) states.
 
 Along a path the spread and the threshold race as in Section~\ref{sec:coexistence}: a stronger incumbent raises what
-a recruiting purchase earns and the belief it must reach. When the recruitment margin rises, the race tips toward
-recruitment once and does not tip back, and part~(d) keeps the equilibrium on one interval of strengths, which ends
-where even research at the cap leaves the posterior after a purchase below the threshold.
+a recruiting purchase earns and the belief it must reach. When the exact recruitment margin rises up to the strength
+at which research reaches its cap, the race tips toward recruitment once below the cap, and part~(d) keeps the
+equilibrium on one interval of strengths, which ends where even research at the cap leaves the posterior after a
+purchase below the threshold.
 ```
 
 ### T-5.5. Corollary 3
@@ -861,15 +872,15 @@ where even research at the cap leaves the posterior after a purchase below the t
   - prior: \(1/2\);
   - tie rules: the default tie rules, named in the statement;
   - trading pattern: named for each outcome;
-  - condition: \(a=\reg{res_a}\), \(\lb=\reg{res_cap}\), the example's slot;
+  - condition: \(a=\reg{res_a}\), \(\lb\approx\reg{res_cap}\), the example's slot;
   - weak or strict: "exactly on" each set; entry rises strictly on \([r_R,r_{\lb}]\).
 
 ```latex
-\begin{corollary}[Research equilibria in the example]\label{cor:research}
-In the example at the prior \(1/2\), with the research cost \(a=\reg{res_a}\) and the cap \(\lb=\reg{res_cap}\), let
+\begin{corollary}[Research equilibria in the example]\label{cor:research-short}
+In the example at the prior \(1/2\), with the research cost \(a=\reg{res_a}\) and the cap \(\lb\approx\reg{res_cap}\), let
 an indifferent investor mix over its best orders and an indifferent high-cost challenger prepare. Write
 \(r_R\approx\reg{res_rR}\), \(r_{\lb}\approx\reg{res_rcap}\), \(r_N\approx\reg{res_rN}\),
-\(r_Q\approx\reg{NEW:res_rQ}\) and \(r_C\approx\reg{res_rC}\). On the path from \(r_0\) to \(r_2\):
+\(r_Q\approx\reg{res_rQ}\) and \(r_C\approx\reg{res_rC}\). On the path from \(r_0\) to \(r_2\):
 \begin{enumerate}[label=(\roman*),leftmargin=2em]
 \item zero research, with entry \(\rho\), is an equilibrium exactly on \([r_0,r_N]\);
 \item recruiting research is an equilibrium exactly on \([r_R,r_C]\); research is below the cap on \([r_R,r_{\lb})\)
@@ -892,7 +903,7 @@ research at the cap at \(r_2\); at \(r_1\) and \(r_2\) it is the equilibrium of 
 - **Scope**: the example; the three intermediate strengths lie on the recruiting branch, \([r_R,r_{\lb})\).
 
 ```latex
-\textit{Notes.} The example with \(a=\reg{res_a}\) and \(\lb=\reg{res_cap}\). The spread, the threshold and
+\textit{Notes.} The example with \(a=\reg{res_a}\) and \(\lb\approx\reg{res_cap}\). The spread, the threshold and
 \(\lambda_E\) are rational numbers; the other entries are rounded to six places.
 ```
 
@@ -913,8 +924,8 @@ Proposition~\ref{prop:research}(b) states the same comovement wherever the equil
 
 ```latex
 The research cap is the presence probability of the example's slot, so research at the cap reproduces that slot. The
-example meets the condition of Proposition~\ref{prop:research}(d): the recruitment margin rises along the path, is
-negative at \(r_0\) and is positive where research reaches its cap. A researched purchase first recruits at \(r_R\),
+example meets the condition of Proposition~\ref{prop:research}(d): the exact recruitment margin rises strictly from
+\(r_0\) to \(r_{\lb}\), is negative at \(r_0\) and is positive at \(r_{\lb}\). A researched purchase first recruits at \(r_R\),
 where a purchase that just reaches the threshold also pays for its research, \(\DT(1-\tau)=k+2a\lambda_E\); there
 research is \(\reg{res_lambda_rR}\) and entry \(\reg{res_entry_rR}\). Research reaches its cap at \(r_{\lb}\) and
 stays there up to the entry ceiling. The low class starts to sell at \(r_N\) and sells for sure from
@@ -936,7 +947,7 @@ success loses, so research is zero there. Figure~\ref{fig:research} draws the th
 
 ```latex
 The recruiting branch in Figure~\ref{fig:research} starts later than the informative branch of
-Section~\ref{sec:coexistence}, which starts at \(r_A\approx\reg{res_rA}\), because a purchase must pay for research
+Section~\ref{sec:coexistence}, which starts at \(r_A\approx\reg{rA}\), because a purchase must pay for research
 as well as for trade. The two branches also adjust in different ways: with a fixed presence probability the purchase
 rate adjusts through a mixture of the high class, while with research the intensity adjusts and the high class buys
 with probability one after a success.
@@ -946,11 +957,12 @@ with probability one after a success.
 
 - **Location**: Section 5, `05:155–157`, in place of "The equilibrium patterns of Proposition~\ref{prop:research}(b) hold with strict margins exactly when"; the rest of `05:154–160` stays.
 - **Matches**: Proposition A.2 (`prop:researchregion`), re-anchored to Corollary 3 (point 8 below).
-- **Scope**: \(\beta=\reg{beta_B}\); strict margins.
+- **Scope**: \(\beta=\reg{beta_B}\); strict margins; the six-strength pattern of Proposition A.1 (`prop:researchregion`), exact with \(\lambda_E<\lambda_R<\lb\) at each intermediate strength.
 
 ```latex
-The equilibria of Corollary~\ref{cor:research} at \(r_0\), at the three intermediate strengths and at \(r_1\) and
-\(r_2\) hold with strict margins exactly when
+The pattern of Corollary~\ref{cor:research-short} at these strengths (zero research alone at \(r_0\), zero research
+and recruiting research below the cap at each of the three intermediate strengths, and a unique outcome with full
+orders and research at the cap at \(r_1\) and \(r_2\)) holds with strict margins exactly when
 ```
 
 ---
@@ -967,8 +979,8 @@ The four predictions are the price-impact test with the price gap (target 8.3), 
 
 ```latex
 The model gives predictions for publicly visible sale processes in which one bidder is prepared and a challenger has
-not yet committed to diligence. Each prediction concerns one target at one incumbent strength, under the trading
-pattern it names, and Appendix~\ref{app:empirical} states each in full and proves it. Under full two-sided trade,
+not yet committed to diligence. Each prediction names the incumbent, prior, trading-pattern and tie-rule conditions
+it needs, and concerns one target in one public state; Appendix~\ref{app:empirical} states each in full and proves it. Under full two-sided trade,
 class \(H\) buys and class \(L\) sells, each with probability one, and the informed share of nonzero orders is
 \(u/(2+u)\) at every prior. In the example at the prior \(1/2\) and the example's slot, full two-sided trade is the
 unique outcome at every strength between \(r_S\), the strength at which a full sale earns the trading cost, and \(h\);
@@ -985,7 +997,7 @@ this range contains \(r_1\), the entry ceiling \(r_C\) and \(r_2\).
 \paragraph{Entry and incumbent strength.} When the price reaches the challenger before its decision, a stronger
 prepared bidder can raise the probability that the challenger prepares; in the example, that probability rises by
 \(\reg{entry_jump_B}\) from \(r_0\) to \(r_1\). When the price does not reach the challenger, a stronger prepared
-bidder can only lower it. Against a strong enough prepared bidder, entry returns to its floor while the price stays
+bidder can only lower it. Against a strong enough prepared bidder, entry can return to its floor while the price stays
 informative. Proposition~\ref{prop:ccc} gives the first and third comparisons, and the fixed-information control of
 Section~\ref{sec:benchmark} gives the second (Proposition~\ref{prop:control}).
 ```
@@ -996,7 +1008,7 @@ Section~\ref{sec:benchmark} gives the second (Proposition~\ref{prop:control}).
 - **Matches**: S5 item 5 (the weighted price test at every prior, the same moment as the announcement result; the entry-component trend under the reserve condition). W5 "Shared candidate 1" (\(I_+-(f_-/f_+)I_-=(e_+-\rho)A_F(M)\) under full two-sided informed trade and \(B_F(\pi)<c_H\)); W5 "Exact identity with A.14(iv)"; W5 "Entry-component trend: exact condition and counterexamples".
 - **Scope**:
   - prior: below the preparation threshold, any such prior; the equal-frequency remark at \(1/2\);
-  - tie rules: none needed, since the prior lies strictly below the threshold;
+  - tie rules: none needed for the test, since the prior lies strictly below the threshold; the trend uses the prepared-challenger rule of Proposition A.10(vi)(c), which the default tie rules of Section 2 supply;
   - trading pattern: full two-sided trade, named;
   - condition: \(\pi<\tau\); the trend needs a uniform incumbent, the prior and the slot fixed, full two-sided trade and recruitment persisting, and \(3p^2<\min\{\underline\theta,\underline r\}^2\);
   - weak or strict: "exactly when"; the trend is "rises".
@@ -1013,7 +1025,7 @@ exactly when a purchase recruits; the whole entry component sits in the purchase
 strengthens, entry adds more to the price through competition and less by rescuing a sale that the incumbent alone
 would not complete. With a uniform incumbent and the prior and the slot fixed, the entry component rises with
 strength while full two-sided trade and recruitment persist, when \(3p^2<\min\{\underline\theta,\underline r\}^2\),
-where \(\underline\theta\) is the lowest challenger value and \(\underline r\) the lowest strength considered; the
+where \(\underline\theta\) is the lowest challenger value and \(\underline r\) the lowest strength compared; the
 example meets this condition.
 ```
 
@@ -1034,7 +1046,7 @@ it. With a hidden price, the price gap would be \(\reg{ba_class_r1_B}\). At \(r_
 - **Location**: Section 8, `08:33–42`, in place of the two paragraphs.
 - **Matches**: S5 item 5 (the informed share identified at a known prior and by the sale price); decision 5 (the known-prior result and the sale-price inversion; the unknown-prior local result left out). W5 "Full two-sided trade"; W5 "Sale-price identification with an unknown prior" (the inversion \(\pi(1-\pi)\lambda=\bar f(-1)I_-/(\rho\DT)\)).
 - **Scope**:
-  - prior: known and different from one half for counts; known, including \(1/2\), for the sale impact;
+  - prior: known and different from one half for counts; known, including \(1/2\), for the sale impact; the sale impact and the mean order together identify an unknown prior with the presence probability (Proposition A.11(c));
   - tie rules: none needed;
   - trading pattern: full two-sided trade;
   - condition: entry after a sale and after no order at its floor; the payoff scale \(\rho\DT\) known;
@@ -1045,7 +1057,8 @@ it. With a hidden price, the price gap would be \(\reg{ba_class_r1_B}\). At \(r_
 identify the informed investor's presence when the prior is known and differs from one half
 (Proposition~\ref{prop:informedshare}). The sale impact identifies presence at any known prior, one half included:
 when entry after a sale and after no order sits at its floor and the payoff scale \(\rho\DT\) is known, the sale
-impact weighted by the frequency of a sale, divided by \(\rho\DT\), equals \(\pi(1-\pi)\lambda\). At the prior
+impact weighted by the frequency of a sale, divided by \(\rho\DT\), equals \(\pi(1-\pi)\lambda\), and together with
+the mean order \(\lambda(2\pi-1)\) it identifies both the presence probability and the prior. At the prior
 \(1/2\) the counts depend on the slot only through the volume of nonzero orders, so prices separate slots that counts
 cannot. In the example at \(r_1\), the shares consistent with the counts and the investor's incentives form the
 interval from \(\approx\reg{theta_min_counts_B}\) to \(\reg{theta_max_full_eq_r1_B}\), and a slot with share
@@ -1086,7 +1099,7 @@ price under full two-sided trade. In the example class \(H\) outbids every incum
 - **Scope**:
   - prior: every prior;
   - tie rules: every equilibrium, so no tie rule is needed;
-  - trading pattern: any for the positivity; full two-sided trade with a recruiting purchase for the no-order drop in the example;
+  - trading pattern: any for the positivity; full two-sided trade at a prior below the preparation threshold, with a recruiting purchase, for the no-order drop;
   - condition: preparation still uncertain after some order;
   - weak or strict: "exactly when"; the mean over both reports is zero.
 
@@ -1094,10 +1107,11 @@ price under full two-sided trade. In the example class \(H\) outbids every incum
 \paragraph{Announcements.} If a public event after the price reveals only whether the challenger prepared, the mean
 price change over preparation reports is positive exactly when preparation was still uncertain after some order, at
 every prior and in every equilibrium (Proposition~\ref{prop:announcement}); in the example it is
-\(\reg{evprep_mean_r1_B}\) at \(r_1\). The mean change over both reports, with their model probabilities, is zero. An
-opportunity that passes with no order is bad news about entry when a purchase recruits: in the example at \(r_1\),
-the price after no order minus the expected price before the opportunity is \(\reg{pdrop_neutral_r1_B}\), and the
-size of this drop is the weighted difference of the price-impact test.
+\(\reg{evprep_mean_r1_B}\) at \(r_1\). The mean change over both reports, with their model probabilities, is zero. Under
+full two-sided trade at a prior below the preparation threshold, an opportunity that passes with no order is no news
+about the class and, when a purchase recruits, bad news about entry: in the example at \(r_1\), the price after no
+order minus the expected price before the opportunity is \(\reg{pdrop_neutral_r1_B}\), and the size of this drop is
+the weighted difference of the price-impact test.
 ```
 
 ### T-8.8. Two clusters
@@ -1158,47 +1172,94 @@ incumbent strength.
 
 - **Location**: Section 9, `09:23–26`, in place of the paragraph.
 - **Matches**: S5 item 5 (the weighted test).
-- **Scope**: the investor buys after good news and sells after bad news, with probability one; the prior below the threshold.
+- **Scope**: the investor always buys after good news and always sells after bad news, which is probability one; the prior below the threshold.
 
 ```latex
 The next theoretical step is the seller's choice of terms with the whole pricing and trading continuation retained.
 The empirical tests ask whether the challenger's preparation in visible sale processes responds to incumbent
-strength when the price precedes the decision, and, where the investor buys after good news and sells after bad news
-and the prior lies below the preparation threshold, whether a purchase raises the price by more than a sale lowers
+strength when the price precedes the decision, and, where the investor always buys after good news and always sells
+after bad news and the prior lies below the preparation threshold, whether a purchase raises the price by more than a sale lowers
 it once each impact is weighted by how often its order occurs, as Section~\ref{sec:empirical} predicts where a
 purchase recruits.
 ```
 
 ---
 
-## Quantities marked NEW
+## Keys used by the targets
 
-| Placeholder | Quantity | Value | Used in |
+Every `\reg` key in the targets exists in the numbers table. The keys added to the table for these targets are:
+
+| Key | Quantity | Value | Used in |
 |---|---|---|---|
-| `NEW:own_share_r0` | class \(H\)'s takeover share at \(r_0\) in the example: \(\pi\rho/[\pi\rho+(1-\pi)\rho W_L(r_0)]\) with \(W_L(r_0)=\ell/r_0\) | \(6/11\approx0.545455\) | T-1.3, T-4.4b |
-| `NEW:own_share_r1_B` | class \(H\)'s takeover share at \(r_1\) in the example's slot: \(\pi e_H/[\pi e_H+(1-\pi)e_LW_L(r_1)]\), with \(e_H=\rho+(1-\rho)(b+\lambda)\), \(e_L=\rho+(1-\rho)b\), \(W_L(r_1)=\ell/r_1\) | \(\approx0.830691\) | T-1.3, T-4.4b |
-| `NEW:cH_DA_floor_B` | the decisive-advantage bound \((h^2-p^2)/(2h)\) at the example's \(h\) and \(p\) | \(399/80=4.9875\) | T-4.4b, T-4.13 |
-| `NEW:cH_afford_ceiling_B` | the affordability bound \(h-r_2\) of the uniform instance of Proposition 3(c) | \(32/5=6.4\) | T-4.13 |
-| `NEW:res_rQ` | \(r_Q\): the end of floor-entry research below the entry ceiling, the zero of the floor margin, \(\tau(r_Q)=M_\lambda\) at \(\lambda=\lambda_Q(\DT(r_Q))\) | \(\approx2.166995\) | T-5.5 |
+| `share_H_r0` | class \(H\)'s takeover share at \(r_0\) in the example: \(\pi\rho/[\pi\rho+(1-\pi)\rho W_L(r_0)]\) with \(W_L(r_0)=\ell/r_0\) | \(6/11\approx0.545455\) | T-1.3, T-4.4a, T-4.4b |
+| `share_H_r1_B` | class \(H\)'s takeover share at \(r_1\) in the example's slot: \(\pi e_H/[\pi e_H+(1-\pi)e_LW_L(r_1)]\), with \(e_H=\rho+(1-\rho)(b+\lambda)\), \(e_L=\rho+(1-\rho)b\), \(W_L(r_1)=\ell/r_1\) | \(\approx0.830691\) | T-1.3, T-4.4a, T-4.4b |
+| `cH_DA_floor_B` | the decisive-advantage bound \((h^2-p^2)/(2h)\) at the example's \(h\) and \(p\) | \(399/80\) | T-4.4b, T-4.13 |
+| `cH_afford_ceiling_B` | the affordability bound \(h-r_2\) of the uniform instance of Proposition 3(c) | \(32/5\) | T-4.13 |
+| `res_rQ` | \(r_Q\): the end of floor-entry research below the entry ceiling, the zero of the floor margin, \(\tau(r_Q)=M_\lambda\) at \(\lambda=\lambda_Q(\DT(r_Q))\) | \(\approx2.166995\) | T-5.5 |
 
-The decimal values of the first two lines are the prose writer's own arithmetic from \(\reg{b_B}\), \(\reg{lambda_B}\) and \(\rho\); the production assistant computes the printed values. Every other number in this file prints through an existing name.
+The key `rA` prints the start of coexistence \(r_A\) in T-1.4, T-4.12 and T-5.8; `res_rA` holds the same value and is not used.
 
 ---
 
-## Points for the referee to settle
+## Points settled by the referee
 
-1. **Proposition 3(c), the uniform instance (proof O9).** The last sentence of (c) rests on proof O9 (\(\DT(g_H-c_H)\) does not fall along uniform incumbents under the separated and affordable classes). If O9 does not stand, (c) takes the fallback in target 4.9, and the reading in target 4.12 then cites "the uniform condition of part~(c)".
-2. **Proposition 2, strictness of the takeover share (proof O6).** Target 4.1 states strictness exactly when \(W_L(F_0)>0\), with share one at both incumbents otherwise. This is the prose writer's reading of the odds \((e_H/e_L)(W_H/W_L)\) of W2 "Shared Candidate 3" with \(W_L(F_1)\le W_L(F_0)\); `lens_maintext.md` had "\(W_L(F_1)>0\)", which misses the case \(W_L(F_1)=0<W_L(F_0)\).
-3. **The liquidity footnote (proof O2).** Target 2.3 keeps the present claim, Propositions 2 and 3 for every \(\beta<1/2\). Whether the general Proposition 3 still holds there, and whether Proposition 4 joins the list, decides the footnote. The statements of Propositions 3 and 4 name no bound on \(\beta\) and rely on the standing \(0<\beta\le1/3\).
-4. **Proposition 4(d) (proofs O3 and O4).** The recruitment margin is defined in target 5.2 as the gap in \eqref{eq:research} at \(\lambda_E\), which is the exact margin \(J-k+(\rho J-k)^+-2a\lambda_E\). To settle: whether "rises" should be weak or strict; whether (d) needs \(\DT>2k\) along the path or only where the equilibrium exists (the prose writer reads it as implied there by a nonnegative margin and \(\tau>1/2\)); and that the end is the last strength with \(\tau\le M_{\lb}\).
-5. **Tie rules in the summary sentences on coexistence.** The abstract (T-ABS) and the conclusion (T-9.1) say that the two markets "coexist exactly on a region" without the tie phrase; the introduction (T-1.4) and Proposition 3 name both rules. Under "an indifferent high-cost challenger may prepare with any probability" the threshold pair can join and the boundary at \(\tau=\pi\) differs, and under "an indifferent investor abstains" the mixed purchase is not available. The referee decides whether the abstract and the conclusion need the phrase or whether the model's default tie rules cover them.
-6. **Proposition 4 under the other challenger rule.** The statement names the default tie rules. The full statement of `lens_theory.md` 3.7 (T3) also covers "an indifferent high-cost challenger may prepare with any probability" with full preparation selected. The main text leaves that case to the appendix; the referee confirms this is no missing qualifier.
-7. **Research in the two-numbers passage.** Target 3.6 says that two auctions with the same spread and threshold have "the same research". Research is defined at the prior \(1/2\) in Section 5. The referee confirms that the reduction lemma covers research at every prior, or the clause reads "and, at the prior \(1/2\) with research, the same research".
-8. **The anchor of Proposition A.2.** Target 5.9 re-anchors "the patterns of Proposition 4(b)" to the lists of Corollary 3 at \(r_0\), the three intermediate strengths, \(r_1\) and \(r_2\). The referee confirms that Proposition A.2's strip and cost window give exactly these lists, with the list at the intermediate strengths read as zero research and recruiting research below the cap.
-9. **Labels.** `cor:region`, `cor:coexistence` and `cor:research` follow the labels the mathematics writer fixes; `prop:spread` is cited for the weighted test and the price-gap decomposition, which the general A8 statement carries.
-10. **The highest strength of a uniform path.** Proposition 3(c) words the uniform instance with "the lowest strength" and "the highest strength" because \(r_0\) and \(r_2\) name the example's strengths and \(\underline r\) names the lowest strength of a path. If the mathematics writer fixes a symbol for the highest strength, (c) can use the pair of symbols.
-11. **Ranked classes in the robustness paragraph.** Proposition A.7 (complementary signals) extends to ranked classes (S5 item 2). The introduction's robustness paragraph (`01:77–83`) is left as it stands; the referee decides whether it gains "for any ranked classes".
-12. **Identification with an unknown prior.** Target 8.5 states the sale-impact inversion and its use at a known prior. Combining it with the mean order identifies both the prior and presence when the prior is unknown (W5 "Ranking and recommendation" item 2); the target leaves this out, reading decision 5 as excluding it. The referee confirms the reading.
-13. **The lowest strength in the entry-component trend.** Target 8.3 writes \(\underline r\) as "the lowest strength considered". The referee confirms whether the condition is on the weakest incumbent of the whole path or of the stretch on which full two-sided trade and recruitment persist.
-14. **Ownership in the abstract and the opening claim.** T-ABS and T-1.1 state the ownership rise with no outbidding qualifier, under "on an open set of parameters" and "can". This needs Proposition A.5 to give an open set on which ownership rises as well as entry.
-15. **Uniqueness in the example's research list.** T-1.5 says that the unique outcome has no research against the weak incumbent and research at the cap against the strong one. Corollary 3 states this under the default tie rules; the referee decides whether the introduction needs the qualifier or whether every choice at \(r_0\) and \(r_1\) is strict, which would make it hold under all four tie rules.
+1. **Proposition 3(c), the uniform instance (proof O9).** The proof stands. Part (c) stands without the fallback, and T-4.12 cites "the condition of Proposition 3(c)".
+2. **Proposition 2, strictness of the takeover share (proof O6).** The share is nondecreasing, rises strictly exactly when \(W_L(F_0)>0\), and equals one at both incumbents when \(W_L(F_0)=0\). T-4.1 is right.
+3. **The liquidity footnote (proof O2).** Propositions 1 to 4 hold for every \(0<\beta<1/2\); the footnote of T-2.3 is the text of the proof.
+4. **Proposition 4(d) (proofs O3 and O4).** "Rises" is strict and only up to the first strength at which research reaches its cap; the path is compact with continuous spread and threshold, \(\tau<1\) up to that strength, and a spread against the weakest incumbent below the cap spread; \(\DT>2k\) is no separate hypothesis; the end is the last strength with \(\tau\le M_{\lb}\). T-5.3(d) states this.
+5. **Tie rules in the summary sentences on coexistence.** The default tie rules are the model's standing rule (T-2.5), so T-ABS and T-9.1 need no tie phrase for coexistence. The mixing-investor phrase stays wherever research is summarized.
+6. **Proposition 4 under the other challenger rule.** Not a missing qualifier. T-5.3 carries the sentence of the frozen main-text form on the alternative rule.
+7. **Research in the two-numbers passage.** The reduction lemma holds at every prior; "the same research" needs the research cost and the cap held fixed, which T-3.6 states.
+8. **The anchor of Proposition A.1 (research region).** The proposition gives exactly the six-strength pattern; T-5.9 names the pattern.
+9. **Labels.** Corollary 1 is `prop:region` (second label `cor:ccc-example`), Corollary 2 is `cor:example-coexistence`, Corollary 3 is `cor:research` with the main-text form `cor:research-short`. `prop:spread` is the label of Proposition A.10.
+10. **The highest strength of a uniform path.** No symbol is needed; the targets use "the lowest strength" and "the highest strength".
+11. **Ranked classes in the robustness paragraph.** The signal sentence of `01:77–83` needs no change.
+12. **Identification with an unknown prior.** Proposition A.11(c) carries the sale-price inversion with the counts; T-8.5 states that the sale impact and the mean order identify both the presence probability and the prior.
+13. **The lowest strength in the entry-component trend.** The condition binds at the weakest incumbent of the stretch compared; T-8.3 reads "compared".
+14. **Ownership in the abstract and the opening claim.** T-ABS and T-1.1 match Proposition A.5.
+15. **Uniqueness in the example's research list.** The sentence holds under all four tie rules, so T-1.5 needs no qualifier.
+
+---
+
+## Changes after the referee
+
+The referee marked 43 targets "match", 11 "missing qualifier" and 5 "overclaim". Every mark other than "match" is applied, together with every settled point and the coordinator's decisions. The list of issues WR-01 to WR-28 is not part of the referee's report, so each change is named by its target, and a decision that carries a number keeps it.
+
+**Marks other than "match"**
+
+| Target | Mark | Change |
+|---|---|---|
+| T-1.2 | missing qualifier | The share clause is a clause of the sentence about outbidding at the strong incumbent ("if, in addition, a low-class challenger beats the weak incumbent with positive probability"); the scope line says so. |
+| T-1.4 | missing qualifier | "covers it" reads "earns more than it". |
+| T-1.7, T-9.3 | missing qualifier | "always buys ... always sells" stands for "buys ... sells"; the scope lines say probability one. |
+| T-2.3 | overclaim | The footnote is the text of the footnote in the proof of the liquidity bound: the common posterior bound and the exclusion bound use \(\beta\le1/3\), the research parameter region and the slot-feasibility statements of identification range over the model's slots, and the other results hold for every \(0<\beta<1/2\). Proposition 4 is in the list of results that hold. |
+| T-2.5 | overclaim | The sentence says that the appendix states a change beside each result and that the table collects the changes for coexistence in the example at the prior \(1/2\). |
+| T-3.1 | missing qualifier | "weakly lowers" and "weakly raises the sensitivity of target proceeds", as Proposition 1 states. |
+| T-3.6 | missing qualifier | "with every other primitive and the tie rules the same" stands for "with the same prior, costs, slot and tie rules", so that the research cost and the cap are included. The scope line records that the reduction lemma holds at every prior. |
+| T-4.3 | missing qualifier | "can lower that chance"; the shift in the takeover share is stated for the case in which a low-class challenger can beat the weak incumbent. |
+| T-4.8 | overclaim | "the informative market that coexists with it" stands for "an informative market"; "earns more than it" for "covers it". |
+| T-5.3 | missing qualifier | Part (d) takes the four hypotheses of the full statement: a compact path with continuous spread and threshold, a spread against the weakest incumbent below the cap spread that the path reaches, a margin that rises strictly, and the margin condition up to the strength at which research reaches its cap. |
+| T-5.4 | missing qualifier | The kink needs research below its cap at the switch, and the race tips "once below the cap". |
+| T-5.7 | overclaim | The margin "rises strictly from \(r_0\) to \(r_{\lb}\), is negative at \(r_0\) and is positive at \(r_{\lb}\)". |
+| T-5.9 | missing qualifier | The sentence names the six-strength pattern, with research below the cap at the intermediate strengths. |
+| T-8.2 | overclaim | "entry can return to its floor". |
+| T-8.7 | missing qualifier | The sentence on the no-order opportunity holds under full two-sided trade at a prior below the preparation threshold, and says that it is no news about the class. |
+
+**Coordinator decisions**
+
+- **T-4.9 (WR-18).** Part (c) is the frozen main-text form: "the product of the spread and \(g_H-c_H\) does not fall with strength", with the uniform instance and no start hypothesis. T-1.4 and T-4.10 keep the proportional words together with the start hypothesis; the last sentence of T-4.10 says that part (c) states the condition as a product.
+- **Corollary labels (WR-26).** Corollary 1 is `prop:region` with `cor:ccc-example` (T-4.4a, T-1.3, T-4.6, T-4.11), titled "Recruitment and ownership in the example"; Corollary 2 is `cor:example-coexistence` (T-4.11); Corollary 3 is `cor:research-short` in the main-text environment (T-5.5, T-5.9), the label of its full statement being `cor:research`. The frozen full statement of Corollary 1 in A.tex holds `prop:region` and `cor:ccc-example`, and the frozen main-text form holds `form:ccc-example-main`. Where the main-text environment of T-4.4a and the appendix statement both carry `prop:region`, one of them gives the label up when the manuscript is assembled.
+- **The exact recruitment margin (WR-20, WR-28).** T-5.2 defines "the exact recruitment margin"; T-5.3(d), T-5.4 and T-5.7 use the words, and a line among the conventions records the vocabulary.
+- **The cap (WR-21).** T-5.5, its scope line and the note of T-5.6 write \(\lb\approx\reg{res_cap}\).
+- **One key for \(r_A\) (WR-22).** T-5.8 prints `rA`, as T-1.4 and T-4.12 do.
+- **The scope line (WR-23).** The scope line of T-8.3 says that no tie rule is needed for the test and that the trend uses the prepared-challenger rule, which the default tie rules supply.
+- **Optional changes (WR-24, WR-25).** The referee lists three. I adopted all three: T-5.3 carries the sentence on the alternative challenger rule from the main-text form of Proposition 4; T-8.5 adds that the sale impact and the mean order identify both the presence probability and the prior; T-8.1 takes the wording of the frozen main-text opening of Section 8 ("names the incumbent, prior, trading-pattern and tie-rule conditions it needs, and concerns one target in one public state"). T-8.3 reads "compared" for "considered" (referee point 13).
+- **Placeholders.** Every key is real: no placeholder is left, and the closing table is "Keys used by the targets".
+
+**Disagreements**
+
+None.
+
+**Language scan**
+
+No LaTeX block holds a status word, a defensive phrase, a development word or a process word. The hits in the LaTeX blocks are the label `sec:benchmark` (it does not print), the tie phrases, "more likely" as a probability, "no longer" in a comparison across states ("orders no longer predict entry"), and "interval of strengths" in T-5.3(d) and T-5.4, which rests on Proposition 4(d). The hits outside the LaTeX blocks are references that locate a target and name its source, and quotations of the text a target replaces.
