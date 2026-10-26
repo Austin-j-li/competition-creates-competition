@@ -9,8 +9,10 @@ of handout/README.md:
   as read from the files;
 - every displayed number is the display of a slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- the page ships only the locked faces (Fira Sans, Fira Mono, the symbol fallback) and makes
-  no network request.
+- the page ships only the locked faces (Archivo, STIX Two Text, Fira Mono, the symbol fallback) and makes
+  no network request;
+- neither the page nor the handout sources carry the rejected purple palette (the UCL hexes
+  #361A54, #993BFF, #BA82FF or the --ucl-* tokens): the design is the ruled document of DESIGN.md.
 """
 from __future__ import annotations
 
@@ -71,6 +73,16 @@ print(f"PASS {n} number spans and {k} numbers in formulas print their slot regis
 
 # ------------------------------------------------------------------ faces, network
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Fira Sans", "Fira Mono", "CCC Symbols"}, families
+assert families == {"Archivo", "STIX Two Text", "Fira Mono", "CCC Symbols"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
-print("PASS only Fira Sans, Fira Mono and the symbol fallback; no network request")
+print("PASS only Archivo, STIX Two Text, Fira Mono and the symbol fallback; no network request")
+
+# ------------------------------------------------------------------ the rejected palette
+# The ruled document (DESIGN.md at the repository root) has no chrome colour. The purple palette
+# of the earlier "UCL family" design must not come back through any source or the built page.
+PURPLE = re.compile(r"#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b", re.I)
+sources = [out / "index.html"] + sorted(HERE.glob("*.html")) + sorted(HERE.glob("*.css")) + sorted(HERE.glob("*.js")) \
+    + sorted((HERE / "sections").glob("*.html"))
+hits = [f"{f.relative_to(ROOT)}:{m.group(0)}" for f in sources for m in PURPLE.finditer(f.read_text(encoding="utf-8"))]
+assert not hits, f"the rejected purple palette appears: {hits[:6]}"
+print(f"PASS no UCL purple hex or token in the page or in {len(sources) - 1} handout source files")

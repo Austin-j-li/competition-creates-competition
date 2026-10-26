@@ -177,8 +177,47 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
   if (sections !== talk.length) fail(`dist/index.html has ${sections} slides, not ${talk.length}`);
 } else fail('dist/index.html is missing; run python3 presentation/build.py');
 
+/* ---------------------------------------------------------------- the design system */
+/* The deck shares the ruled document of DESIGN.md (repository root) with the research brief. The
+ * tokens that both stylesheets declare must agree, and the rejected purple palette of the earlier
+ * "UCL family" design must not come back through any deck source or the built page. */
+const PURPLE = /#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b/gi;
+const deckFiles = ['deck.css', 'charts.js', 'deck.js', 'template.html', 'content.js'].map((n) => path.join(HERE, n));
+if (fs.existsSync(path.join(dist, 'index.html'))) deckFiles.push(path.join(dist, 'index.html'));
+for (const file of deckFiles) {
+  const text = fs.readFileSync(file, 'utf8');
+  const found = text.match(PURPLE);
+  if (found) fail(`${path.relative(ROOT, file)}: the rejected purple palette appears (${[...new Set(found)].join(', ')})`);
+}
+function rootTokens(css, theme) {
+  const re = theme === 'dark' ? /:root\[data-theme="dark"\]\s*\{([^}]*)\}/ : /:root(?:,\s*:root\[data-theme="light"\])?\s*\{([^}]*)\}/;
+  const m = re.exec(css);
+  if (!m) return null;
+  const out = {};
+  for (const decl of m[1].split(';')) {
+    const i = decl.indexOf(':');
+    if (i < 0) continue;
+    const name = decl.slice(0, i).trim(), value = decl.slice(i + 1).trim().replace(/\s+/g, ' ');
+    if (name.startsWith('--')) out[name] = value;
+  }
+  return out;
+}
+const deckCss = fs.readFileSync(path.join(HERE, 'deck.css'), 'utf8');
+const briefCss = fs.readFileSync(path.join(ROOT, 'handout/style.css'), 'utf8');
+let sharedTokens = 0;
+for (const theme of ['light', 'dark']) {
+  const a = rootTokens(deckCss, theme), b = rootTokens(briefCss, theme);
+  if (!a || !b) { fail(`${theme} theme: a :root token block is missing in deck.css or handout/style.css`); continue; }
+  for (const name of Object.keys(a)) {
+    if (!(name in b)) continue;
+    sharedTokens++;
+    if (a[name] !== b[name]) fail(`${theme} theme: token ${name} is ${a[name]} in deck.css and ${b[name]} in handout/style.css`);
+  }
+}
+
 const mains = frames.filter((f) => !f.backup).length;
 console.log(`Compared ${frames.length} frames (${mains} main, ${frames.length - mains} backup) with slides.tex: order, titles, subtitles, targets and links; ` +
-  `${numberPairs} printed registry keys found on the web frames; ${keys.size} notation symbols; ${mainMinutes} planned minutes before questions.`);
+  `${numberPairs} printed registry keys found on the web frames; ${keys.size} notation symbols; ${mainMinutes} planned minutes before questions; ` +
+  `${sharedTokens} design tokens shared with handout/style.css agree; no purple palette in ${deckFiles.length} deck files.`);
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 console.log('Deck matches slides.tex and the deck contract.');

@@ -1,1 +1,8 @@
+# pdfLaTeX for main.tex and comparison.tex; XeLaTeX for slides.tex (its fonts need fontspec).
+# latexmk exposes its command line to this file as @ARGV, so the engine follows the file name
+# given on the command line: "latexmk slides.tex" runs xelatex, "latexmk main.tex" runs pdflatex.
+# When slides.tex is the file, the pdflatex command itself becomes xelatex, so a -pdf option
+# given on the command line (as a pdfLaTeX compiler setting passes it) still builds the deck
+# with xelatex.
 $pdf_mode = 1;
+if (grep { /(^|\/)slides(\.tex)?$/ } @ARGV) { $pdf_mode = 5; $pdflatex = 'xelatex %O %S'; }

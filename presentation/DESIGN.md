@@ -1,5 +1,10 @@
 # Slides design contract (the ruled document)
 
+The visual system (tokens, type, rules, components, the concept-colour rule and the slop list) is
+`DESIGN.md` at the repository root, shared with the research brief page and the Beamer deck. This
+file is the contract between the slide files; where it quotes a value, the root `DESIGN.md` is the
+source.
+
 The contract between the slide files: `content.js` (the frames), `render.mjs` (build-time
 rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` and `template.html`
 (the engine), `charts.js` (the SVG renderer), `deck.css` (the visual system), `notes.md` (the speaker notes) and `check_deck.mjs`

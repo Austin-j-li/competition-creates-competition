@@ -16,6 +16,7 @@ commit in the system temporary directory.
 import argparse
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -26,13 +27,58 @@ ROOT = Path(__file__).resolve().parents[1]
 # read); it is on the main and laplace branches.
 LAPLACE_COMMIT = "312cf34091a75ed8c0f3dabe42bc0bad57d781f7"
 LAPLACE_PATHS = ["handout", "presentation", "docs", "talk", "tables", "figures_data", "paper", "working_release"]
-ARCHIVE_NOTE = ('<p style="margin:0;max-width:none;padding:0.55rem 1rem;background:#24103b;color:#ffffff;font:500 0.9rem/1.4 '
-                '\'Fira Sans\',system-ui,sans-serif;text-align:center">This is the earlier version of the paper, with '
-                'Laplace order flow. <a href="../" style="color:#d2b4ff">The current version</a> uses one order slot.</p>')
+# The one line that names the archive as the earlier version, set in the site's ruled design: Archivo
+# from the site root's locked fonts, ink on paper, a hairline below, in both themes. The archived page
+# itself keeps its committed design.
+ARCHIVE_NOTE = (
+    '<style>'
+    '@font-face { font-family: "Archivo"; font-style: normal; font-weight: 100 900; font-stretch: 62% 125%; '
+    'font-display: swap; src: url("../fonts/archivo-latin-wdth-normal.woff2") format("woff2"); }'
+    '.ccc-earlier { margin: 0; max-width: none; padding: 0.6rem 2rem; background: #fbfcfc; color: #1e2530; '
+    'border-bottom: 1px solid #c7cdd5; font: 500 0.9rem/1.4 "Archivo", system-ui, Arial, sans-serif; text-align: left; }'
+    '.ccc-earlier a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; '
+    'text-underline-offset: 0.18em; text-decoration-color: #c7cdd5; }'
+    '.ccc-earlier a:hover { text-decoration-color: currentColor; }'
+    ':root[data-theme="dark"] .ccc-earlier { background: #1a1f26; color: #e8ecf1; border-bottom-color: #3d4652; }'
+    ':root[data-theme="dark"] .ccc-earlier a { text-decoration-color: #3d4652; }'
+    '</style>'
+    '<p class="ccc-earlier">This is the earlier version of the paper, with Laplace order flow. '
+    '<a href="../">The current version</a> uses one order slot.</p>')
 
 
 def run(*cmd: str, cwd: Path = ROOT) -> None:
     subprocess.run(list(cmd), cwd=cwd, check=True)
+
+
+# The ruled document (DESIGN.md) has no chrome colour; the purple palette of the earlier "UCL family"
+# design must never be published again. Every staged HTML, CSS and JS file of the current site (the
+# root and /talk/) is scanned. The archive under /laplace/ is the committed page of the pinned
+# Laplace commit and keeps its own design, so it is outside the scan.
+PURPLE = re.compile(r"#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b", re.I)
+
+
+def check_palette(stage: Path) -> int:
+    files = [p for p in stage.rglob("*") if p.is_file() and p.suffix in (".html", ".css", ".js", ".mjs")
+             and not p.relative_to(stage).as_posix().startswith("laplace/")]
+    hits = [f"{p.relative_to(stage)}: {m.group(0)}" for p in files for m in PURPLE.finditer(p.read_text(encoding="utf-8"))]
+    if hits:
+        raise SystemExit("The rejected purple palette appears in the staged site:\n  " + "\n  ".join(hits[:10]))
+    return len(files)
+
+
+def require_main_merged() -> None:
+    """Publishing needs a checkout that contains origin/main: the author's local checkout can sit on an
+    older branch whose committed site is the purple one."""
+    fetched = subprocess.run(["git", "fetch", "--quiet", "origin", "main"], cwd=ROOT, capture_output=True, text=True)
+    if fetched.returncode != 0:
+        raise SystemExit("Could not fetch origin/main to confirm that this checkout is current:\n" + fetched.stderr.strip()
+                         + "\nPublishing needs that confirmation; --stage-only and --dry-run do not.")
+    merged = subprocess.run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"], cwd=ROOT)
+    if merged.returncode != 0:
+        head = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        raise SystemExit(f"This checkout ({head}) does not contain origin/main, so its site may be out of date.\n"
+                         "Update the checkout to main first (git checkout main && git pull, or merge main into this branch),\n"
+                         "then publish again. --stage-only and --dry-run work from any branch.")
 
 
 def laplace_archive() -> Path:
@@ -60,6 +106,8 @@ def main() -> None:
     mode.add_argument("--dry-run", action="store_true", help="stage and run a Wrangler dry run without uploading")
     mode.add_argument("--stage-only", metavar="DIR", help="stage into DIR (replacing it) and stop")
     args = parser.parse_args()
+    if not args.stage_only and not args.dry_run:
+        require_main_merged()
     run(sys.executable, "handout/build.py", "--quiet")
     run(sys.executable, "handout/check_display.py")
     run(sys.executable, "presentation/build.py")
@@ -99,6 +147,7 @@ def main() -> None:
         (stage / "laplace/index.html").write_text(page.replace("<body>", "<body>\n" + ARCHIVE_NOTE, 1), encoding="utf-8")
         expected = sorted(plan)
         assert sorted(p.relative_to(stage).as_posix() for p in stage.rglob("*") if p.is_file()) == expected
+        print(f"No purple palette in the {check_palette(stage)} HTML, CSS and JS files of the current site", flush=True)
         return expected
 
     def report(expected: list[str]) -> str:

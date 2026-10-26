@@ -225,8 +225,23 @@ def regd(key, computed):
 
 
 # ============================================================ style
+# Manuscript palette: navy and brick for the two kinds of branch, grey for the floor branches.
 NAVY, BRICK, GREY, INK = "#1f3a6e", "#b4472e", "#6c6c6c", "#222222"
 BAND_BLUE, BAND_GREY = "#e5eaf4", "#ececec"
+PAPER_PALETTE = (NAVY, BRICK, GREY, INK, BAND_BLUE, BAND_GREY)
+# Slide palette: the ruled-document tokens of DESIGN.md. Ink carries the quiet branch and the
+# region boundaries, the information colour the branches a purchase recruits along and the belief
+# band, the cost colour the preparation threshold, the muted grey the floor branches. The bands are
+# the information tint and the neutral tint on the slide paper colour.
+INK_T, MUTED_T, INFO_T, COST_T = "#1e2530", "#5b6573", "#b54b00", "#006459"
+BAND_INFO_T, BAND_GREY_T = "#f5ece5", "#ebedee"
+TALK_PALETTE = (INK_T, INFO_T, MUTED_T, INK_T, BAND_INFO_T, BAND_GREY_T)
+
+
+def set_palette(talk):
+    """Bind the drawing colours to the manuscript palette or to the slide palette."""
+    global NAVY, BRICK, GREY, INK, BAND_BLUE, BAND_GREY
+    NAVY, BRICK, GREY, INK, BAND_BLUE, BAND_GREY = TALK_PALETTE if talk else PAPER_PALETTE
 DASH_R = (0, (5.0, 2.2))
 DASH_Q = (0, (6.0, 2.0, 1.5, 2.0))
 DASH_T = (0, (3.0, 2.0))
@@ -267,6 +282,7 @@ class Style:
             self.math = "stix"
 
     def apply(self):
+        set_palette(self.talk)
         plt.rcdefaults()
         plt.rcParams.update({
             "pdf.fonttype": 42, "ps.fonttype": 42,
@@ -312,8 +328,8 @@ def mark_x(ax, x, tex, S, level=0, value=None, color="0.3", lvl=0.075, full=True
             color=color, linespacing=1.0, clip_on=False)
 
 
-def lab(ax, x, y, s, S, color=INK, ha="left", va="center", size=None, **kw):
-    ax.text(x, y, s, color=color, ha=ha, va=va, fontsize=size or S.fn, **kw)
+def lab(ax, x, y, s, S, color=None, ha="left", va="center", size=None, **kw):
+    ax.text(x, y, s, color=INK if color is None else color, ha=ha, va=va, fontsize=size or S.fn, **kw)
 
 
 def dot(ax, x, y, S, color="k", open_=False, size=None, z=6):
@@ -330,8 +346,12 @@ def save(fig, name):
 
 # ============================================================ figure 1: beliefs
 def fig_beliefs(talk):
+    global NAVY, BRICK
     S = Style(talk)
     S.apply()
+    if talk:
+        # On the slides the posterior band is information and the threshold is a cost.
+        NAVY, BRICK = INFO_T, COST_T
     size = (7.4, 3.1) if talk else (6.5, 3.05)
     fig = plt.figure(figsize=size)
     gs = GridSpec(1, 2, width_ratios=[1.75, 1.0], wspace=0.42,

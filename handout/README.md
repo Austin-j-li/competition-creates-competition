@@ -16,10 +16,14 @@ mechanism, the four propositions and three corollaries of the main text (the cor
 the example) and the tests are visible; formal statements, derivations and long tables stay in
 native `details` controls.
 
-The design is the "UCL family" direction: a UCL dark-purple masthead with the tabs, a white body
-with cards, pill controls and a dark theme. Purple is chrome only. Two concept colours hold on the
-page and on the slides: `--c-info` for the target-payoff spread and the information chain,
-`--c-cost` for preparation costs and the preparation threshold.
+The design is the ruled document of `DESIGN.md` at the repository root, shared with the web slides
+and the Beamer deck: ink on cool white (slate in the dark theme), STIX Two Text for reading text,
+Archivo for the title, headings and controls, a 2 px rule above the title block and each section
+heading, hairlines elsewhere, no fills, cards, pills, gradients or shadows, and no chrome colour.
+Two concept colours hold inside figures and charts only: `--c-info` for the target-payoff spread
+and the information chain, `--c-cost` for preparation costs, the floor and the window. The purple
+palette of the earlier "UCL family" design is rejected; `check_display.py` and `publish.py` fail
+on any of its hexes or tokens.
 
 ## Build and checks
 
@@ -47,7 +51,8 @@ The two PDFs are built from `slot/manuscript/main.tex` and `slot/manuscript/comp
 - the paper tab states the page counts, hashes and text date read from the two PDFs it ships;
 - every number span prints the display of its slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- only the locked faces load, and the page makes no network request.
+- only the locked faces load, and the page makes no network request;
+- neither the page nor the handout sources carry the rejected purple palette.
 
 `check_browser.js` is the browser check of the Laplace page of 2 October 2026. It still encodes
 that page's expectations (five figures, legacy anchors, 47 slides), which `/laplace/` now serves;
@@ -82,7 +87,11 @@ Requires Python, latexmk, Node.js and npm. The publisher rebuilds the page, runs
   `presentation/build.py` in an extracted copy (cached by commit in the system temporary
   directory), with their two PDFs, provenance record, fonts and KaTeX files.
 
-Speaker notes in Markdown and QA output are never staged. A failed check stops publication.
+Speaker notes in Markdown and QA output are never staged. A failed check stops publication. The
+staged HTML, CSS and JS of the current site (the root and `talk/`) are scanned for the rejected
+purple palette; the archive under `laplace/` keeps its own committed design and is outside the
+scan. Publishing (not `--stage-only` or `--dry-run`) also requires the checkout to contain
+`origin/main` after a fetch, so that a checkout on an older branch cannot republish an older site.
 Wrangler is version-pinned; credentials stay in its machine-local login store, never in this
 repository. Publishing is explicit; pushing research changes to GitHub does not update the website.
 
@@ -124,9 +133,10 @@ as a historical record only.
   (`lambda_B`, `b_B`, `b0_B`, `M_half_B`, `m_half_B`), the marked strengths (`rA`, `rF_B`, `rN`,
   `rJ`, `rS_B`, `rC_B`, `res_rR`, `res_rcap`, `res_rUR`), the points that the figures label, and
   the registry hash.
-- Typefaces are Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
-  "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the Fira
-  subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
+- Typefaces are STIX Two Text (reading text), Archivo (titles, headings, controls; a variable font
+  with weight and width axes) and Fira Mono (hashes), all SIL OFL fontsource subsets, and a symbol
+  fallback, "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the
+  text subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
   generates the font-face rules from the lock and fails if a file is missing, altered or unlocked,
   or if `style.css` declares a font itself.
 - KaTeX 0.18.5 is a local copy under `handout/vendor/`, pinned by sha256 and by the upstream
