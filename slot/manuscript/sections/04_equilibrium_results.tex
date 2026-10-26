@@ -98,7 +98,9 @@ and \(r_2=\reg{prim_r2}\). Values, the reserve and every strength of the path sa
 \end{equation}
 
 In the example's slot the largest likelihood ratio of an order is \(1+u=\eu\), and the liquidity probability is
-\(\beta=\reg{beta_B}\). The presence probability is therefore \(\lambda=u\beta/(1+u\beta)=\reg{lambda_B}\), with
+\(\beta=\reg{beta_B}\), a value inside the model's domain \(\beta\le1/3\). At the prior \(1/2\), whether (H1)--(H3)
+hold depends on the slot only through \(u\) (Corollary~\ref{cor:ccc-example-short}), and \(\beta\) then fixes the
+presence probability \(\lambda=u\beta/(1+u\beta)=\reg{lambda_B}\), with
 \(b=\reg{b_B}\), and the posterior bounds at the prior are \(M(1/2)=\eu/(1+\eu)=\reg{M_half_B}\) and
 \(m(1/2)=\reg{m_half_B}\); Appendix~\ref{app:parameters} lists these values and the arithmetic behind each. With the
 example's classes and reserve, (H1)--(H3) are strict inequalities between continuous functions of
@@ -177,26 +179,25 @@ approaches zero as \(r\) approaches \(\ell\), since the incumbent then almost ne
 challenger, and Table~\ref{tab:payoffs} reports both numbers at the three strengths.
 
 Appendix~\ref{app:prop2} states Corollary~\ref{prop:region} in full. Below the band a purchase at \(r_1\) does not
-recruit a high-cost challenger, and above it a conclusion of Proposition~\ref{prop:ccc} fails at \(r_2\) or at
-\(r_1\). Table~\ref{tab:region} gives the recruitment region in decimals, with the example's slot and its distance
-to each boundary.
+recruit a high-cost challenger, and above it a purchase recruits at \(r_2\), so the exclusion condition fails; far
+above it the trading-cost window fails at \(r_1\). Table~\ref{tab:region} gives the recruitment region in decimals,
+with the example's slot; Table~\ref{tab:margins} in Appendix~\ref{app:parameters} gives its distance to each
+boundary.
 
 \begin{table}[tbp]
 \centering\small\singlespacing
 \caption{The recruitment region in the example.}\label{tab:region}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lcc@{}}
 \toprule
-Parameter & Region & Example & \multicolumn{2}{c}{Margin to the boundary}\\
-\cmidrule(l){4-5}
- & & & lower & upper\\
+Parameter & Region & Example\\
 \midrule
-Mass ratio \(u\) & \((\reg{u_lo},\reg{u_hi})\) & \reg{u_B} & \reg{margin_u_lo_B} & \reg{margin_u_hi_B}\\
-Top posterior \(M(1/2)\) & \((\reg{M_lo},\reg{M_hi})\) & \reg{M_half_B} & \reg{margin_recruit_post_B} & \reg{margin_return_post_B}\\
-Presence \(\lambda\) at \(\beta=\reg{beta_B}\) & \((\reg{lambda_lo_B},\reg{lambda_hi_B})\) & \reg{lambda_B} & \reg{margin_lambda_lo_B} & \reg{margin_lambda_hi_B}\\
-Presence \(\lambda\) at the largest \(\beta\) & \((\reg{lambda_lo_third},\reg{lambda_hi_third})\) & & & \\
-Prior \(\pi\), all three parts & \((\reg{prior_lo_B},\reg{prior_hi_B})\) & \reg{prim_pi} & \reg{margin_prior_lo_B} & \reg{margin_prior_hi_B}\\
-Prior \(\pi\), parts (i) and (ii) & \((\reg{prior_lo_B},\reg{prior_ii_hi})\) & \reg{prim_pi} & \reg{margin_prior_lo_B} & \\
-Liquidity probability \(\beta\) & \((0,1/3]\) & \reg{beta_B} & & \reg{margin_beta_B}\\
+Mass ratio \(u\) & \((\reg{u_lo},\reg{u_hi})\) & \reg{u_B}\\
+Top posterior \(M(1/2)\) & \((\reg{M_lo},\reg{M_hi})\) & \reg{M_half_B}\\
+Presence \(\lambda\) at \(\beta=\reg{beta_B}\) & \((\reg{lambda_lo_B},\reg{lambda_hi_B})\) & \reg{lambda_B}\\
+Presence \(\lambda\) at the largest \(\beta\) & \((\reg{lambda_lo_third},\reg{lambda_hi_third})\) & \\
+Prior \(\pi\), all three parts & \((\reg{prior_lo_B},\reg{prior_hi_B})\) & \reg{prim_pi}\\
+Prior \(\pi\), parts (i) and (ii) & \((\reg{prior_lo_B},\reg{prior_ii_hi})\) & \reg{prim_pi}\\
+Liquidity probability \(\beta\) & \((0,1/3]\) & \reg{beta_B}\\
 \bottomrule
 \end{tabular}
 \par\medskip
@@ -204,7 +205,8 @@ Liquidity probability \(\beta\) & \((0,1/3]\) & \reg{beta_B} & & \reg{margin_bet
 \textit{Notes.} The example's auction and costs, strengths \(r_0,r_1,r_2\). Rows 1 to 4 fix the prior at \(1/2\);
 rows 5 and 6 fix \(1+u=\eu\). Rows 1 to 5 give the ranges on which (H1)--(H3) hold, and row 6 gives the range for (H1)--(H2). Row 7 gives the
 model's liquidity domain at the example's likelihood-ratio bound. Decimal endpoints are rounded to six places; Corollary~\ref{prop:region} in Appendix~\ref{app:prop2} gives the exact
-endpoints.
+endpoints, and Table~\ref{tab:margins} in Appendix~\ref{app:parameters} gives the example's distance to each
+boundary.
 \end{minipage}
 \end{table}
 
@@ -290,7 +292,8 @@ Expected target proceeds & \reg{p4_hidden_r0_proceeds} & \reg{p4_hidden_r1_proce
 \begin{minipage}{0.92\linewidth}\footnotesize
 \textit{Notes.} The example. Panel A: the unique equilibrium at each strength. Panel B: full orders imposed at
 both strengths; at \(r_0\) this profile is a control, not an equilibrium. Panel C: the unique equilibrium when the
-challenger decides on its prior. At \(r_2\) the full-order profile is the equilibrium of Panel A.
+challenger decides on its prior. Panels B and C compare \(r_0\) with \(r_1\); at \(r_2\) the full-order profile is
+the equilibrium of Panel A.
 \end{minipage}
 \end{table}
 
