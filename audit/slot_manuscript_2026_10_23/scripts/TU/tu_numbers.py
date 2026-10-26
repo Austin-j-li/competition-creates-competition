@@ -420,6 +420,14 @@ print(f"  closed form (1485 - sqrt(2127361))/23 in [{rnd_down(lohi((1485 - iv.sq
 add_root("twopath_hi", bq[0], bq[1], 6, "computer-assisted",
          "start of the second piece of sure purchase: the smaller root of J(r) = k on [1, 2], equal to (1485 - sqrt(2127361))/23; "
          "J - k changes sign from negative to positive on the bracket and the spread rises with r")
+add_exact("twopath_lo_frac", x_lo, frac(x_lo), "analytical", "twopath_lo as a fraction: the strength on [0, 1] at which J = k")
+add_exact("twopath_hi_c", Fr(1485), "1485", "analytical", "twopath_hi = (c - sqrt(d))/q: the constant c")
+add_exact("twopath_hi_d", Fr(2127361), "2127361", "analytical", "twopath_hi = (c - sqrt(d))/q: the radicand d")
+add_exact("twopath_hi_q", Fr(23), "23", "analytical", "twopath_hi = (c - sqrt(d))/q: the denominator q")
+D_r0_ell = R0 / 2 - ELL + 3 * ELL ** 2 / (2 * R0)
+print(f"  spread at r_0 with point values and the reserve at ell: r_0/2 - ell + 3 ell^2/(2 r_0) = {frac(D_r0_ell)}")
+add_exact("rsv_Delta_r0_at_ell", D_r0_ell, frac(D_r0_ell), "analytical",
+          "Delta(r_0) with point values at the reserve p = ell: r_0/2 - p + 3 p^2/(2 r_0) at p = 1")
 
 # ================================================================================================
 hdr("2. Takeover shares (area A)")
@@ -474,6 +482,8 @@ print(f"  J(6/5) = {frac(J(R0))} ; tau(6/5) = {frac(tau(R0))} ; lambda_E(6/5) = 
 print(f"  phi_a(r_0) = {frac(phi0)} = {rnd(phi0, 12)}")
 add_exact("res_phi_r0_frac", phi0, frac(phi0), "analytical", "J(r_0) - k - 2 a lambda_E(r_0) at a = 1/40, an exact rational")
 add_exact("res_phi_r0", phi0, rnd(phi0, 6), "analytical", "decimal display of res_phi_r0_frac")
+add_exact("margin_res_phi_r0_B", -phi0, rnd(-phi0, 6), "analytical",
+          "-phi_a(r_0): the margin of the cheap-research condition phi_a(r_0) < 0, an exact rational")
 j74 = J(Fr(7, 4))
 print(f"  J(7/4) = {frac(j74)} ; rho J(7/4) = {rnd(RHO * j74, 9)} < k : {RHO * j74 < K}")
 add_exact("res_J74_frac", j74, frac(j74), "analytical", "J(7/4) = Delta(7/4) (1 - tau(7/4)) = (9/56)(19/55)")
@@ -624,6 +634,17 @@ lq = quad_root(qa, qb, qc)
 print(f"  lambda_Q(Delta(r_Q)) from the quadratic formula in [{rnd_down(lohi(lq)[0], 20)}, {rnd_up(lohi(lq)[1], 20)}] ; "
       f"lambda_E(r_Q) in [{rnd_down(lohi(lamQ)[0], 20)}, {rnd_up(lohi(lamQ)[1], 20)}]")
 print(f"  floor research at r_Q below the cap: {lohi(lamQ)[1] < lohi(CAP)[0]}")
+print("-- the margins of the floor-margin conditions r_N < r_Q < r_U and lambda_E(r_Q) < lambda_bar")
+rQ_iv = span(brQ[0], brQ[1])
+rN_iv = fr_root(I(2 * K / RHO))
+rU_iv = fr_root((I(K) + I(A0) * CAP) * (1 + EUL) / I(RHO))
+print(f"  r_N in [{rnd_down(lohi(rN_iv)[0], 20)}, {rnd_up(lohi(rN_iv)[1], 20)}] ; r_U in [{rnd_down(lohi(rU_iv)[0], 20)}, {rnd_up(lohi(rU_iv)[1], 20)}]")
+add_iv("margin_res_rQ_rN_B", rQ_iv - rN_iv, 6, "computer-assisted",
+       "r_Q - r_N, with r_N = fr(2k/rho) the strength at which rho Delta = 2k")
+add_iv("margin_res_rU_rQ_B", rU_iv - rQ_iv, 6, "computer-assisted",
+       "r_U - r_Q, with r_U = fr((k + a lambda_bar)(1 + e)/rho) the strength at which floor-entry research reaches the cap")
+add_iv("margin_res_cap_lamQ_B", CAP - lamQ, 6, "computer-assisted",
+       "lambda_bar - lambda_E(r_Q): floor-entry research at r_Q lies below the cap")
 
 # ================================================================================================
 hdr("6. The pooling strength (area A, constructed tuples)")

@@ -23,12 +23,12 @@ access raises expected target proceeds and acquisition surplus net of preparatio
 \end{proposition}
 
 \begin{proof}[Proof of Proposition~\ref{prop:access}]
-\emph{The two tuples.} The access tuple is \(\mathcal E_1\) of the proof of Proposition~\ref{prop:ccc}. The hidden
+\emph{The two tuples.} The access tuple is \(\mathcal E_{\rm F}(F_1)\) of the proof of Proposition~\ref{prop:ccc}. The hidden
 tuple has full orders, the posteriors \((m,\pi,M)\) at the orders, the challenger belief \(\pi\) at every price
 because the challenger sees neither the price nor the order, \(\zeta\equiv0\), entry \(\rho\) after every order, the
 prices \(P^0(x)=t_0+\rho\,w(\mu(x))\), and truthful bids. Here and below every object is at \(F_1\).
 
-\emph{Verification of the hidden tuple.} (E1): the full-order likelihoods. (E2): the challenger's belief is its
+\emph{The conditions of the hidden tuple.} (E1): the full-order likelihoods. (E2): the challenger's belief is its
 prior. (E3): \(B_1(\pi)\le B_0(\pi)<c_H\), strictly. (E4): \eqref{eq:a2-terminal} with \(e\equiv\rho\). (E5): with
 \(e\equiv\rho\), the purchase earns \(\rho\Delta_1(1-M)-k\ge\rho\kappa\Delta_1-k>0\) and the sale
 \(\rho\Delta_1m-k>0\), and the wrong-signed orders earn at most \(-k\). (E6): truthful bids. These bounds hold for
@@ -58,7 +58,7 @@ Average over \(R\) and over the class at the posterior \(M\) of the order \(1\):
 bidders, shareholders and traders cancel from this sum.
 \end{proof}
 
-\paragraph{The benchmark, the transfer and the trade scale.}
+\paragraph{The example, the transfer and the trade scale.}
 At \(r_1\), proceeds are \(\reg{p2_base_r1_proceeds}\) with access and \(\reg{p2_base_hidden_proceeds}\) without, a gain of
 \(\reg{p2_access_proceeds_gain}\); net surplus is \(\reg{p2_base_r1_surplus}\) and \(\reg{p2_base_hidden_surplus}\), a gain of
 \(\reg{p2_access_surplus_gain}\). If the execution cost is a resource cost, both economies lose \(\lambda k\), and the
@@ -69,25 +69,23 @@ Lemma~\ref{lem:trading} before the cost \(k\), its expected gross profit is
 G=\lambda\Delta_1\{\pi(1-M)+(1-\pi)\rho m\}=\reg{p2_access_gross_transfer}.
 \]
 Competitive prices give \(\E[V_T-P(X)\mid X]=0\), so \(\E[X(V_T-P(X))]=0\). The informed and the liquidity orders
-partition this expectation, so liquidity traders lose \(G\) in expected gross terms. Let one order unit be \(z\)
-shares per share of float, with the same signal experiment. The economy without an informed investor has the
+partition this expectation, so liquidity traders lose \(G\) in expected gross terms. Measure one order unit in shares per share of float, and
+keep the same signal experiment. The economy without an informed investor has the
 posterior \(\pi\) after every order and entry \(\rho\), so its proceeds equal \(\mathcal R^0\). If initial shareholders
-bear the whole transfer, their total gain over that economy is \((\mathcal R^1-\mathcal R^0)-zG\), positive exactly
-for \(z<(\mathcal R^1-\mathcal R^0)/G=\reg{p2_access_break_even}\). A deterministic external dividend raises \(V_T\)
+bear the whole transfer, their total gain over that economy is \(\mathcal R^1-\mathcal R^0\) minus the order unit
+times \(G\). It is positive exactly when the order unit is below \((\mathcal R^1-\mathcal R^0)/G=\reg{p2_access_break_even}\). A deterministic external dividend raises \(V_T\)
 and every price by its amount. It leaves \(V_T-P\), every order payoff, the challenger's information and entry
-unchanged, and it enters neither proceeds of the sale nor allocation surplus. The values come from
-\nolinkurl{P2_auction/derive.py} (run log
-\nolinkurl{P2_auction/run.log}); with research at the cap, Appendix~\ref{app:research}
-gives the same gains.
+unchanged, and it enters neither proceeds of the sale nor allocation surplus. With research at the cap,
+Appendix~\ref{app:research} gives the same gains.
 
 \paragraph{Access outside the recruitment region.}
 Suppose instead \(B_1(m)<c_H<B_1(\pi)\) and \(k<\rho\kappa\Delta_1\). Without the price, the challenger's belief is
 \(\pi\), so every challenger prepares, and entry is one after every order. With the price, the posteriors are
 \((m,\pi,M)\), and entry is \((\rho,1,1)\). In both economies the bound on every profile forces full orders, so the
-orders, the posteriors and the trading costs coincide, and each tuple is verified as above. Access removes
+orders, the posteriors and the trading costs coincide, and each tuple satisfies (E1) to (E6) as above. Access removes
 high-cost preparation exactly after a sale, which has probability \(b\) in class \(H\) and \(b+\lambda\) in class
 \(L\). Proceeds change by \(-(1-\rho)\{\pi b\,w_H+(1-\pi)(b+\lambda)\,w_L\}<0\), and surplus by
-\(-(1-\rho)[b+(1-\pi)\lambda]\,[B_1(m)-c_H+pF_1(p)]\). Keep the strong benchmark and set
+\(-(1-\rho)[b+(1-\pi)\lambda]\,[B_1(m)-c_H+pF_1(p)]\). Keep the strong incumbent of the example and set
 \(c_H=\reg{access_out_cH}\). Then \(B_1(m)-c_H=\reg{p2_outside_seen_cost_sign_minus}\) and
 \(B_1(\pi)-c_H=\reg{p2_outside_seen_cost_sign_zero}\), and access changes proceeds by \(\reg{p2_outside_proceeds_gain}\)
 and surplus by \(\reg{p2_outside_surplus_gain}\).
@@ -115,13 +113,16 @@ spread equals \((h-\ell)/2\) at every incumbent distribution.
 \end{proposition}
 
 \begin{proof}[Proof of Proposition~\ref{prop:payment}]
-\emph{The continuation.} After preparation, the buyer with the largest value acquires the target, and the next
-buyer's value \(z\) is the enforceable fallback; without a challenger, the fallback is zero. Let the winner's value be
-\(V\). For \(V>z\) and \(0<\omega<1\), Nash bargaining maximizes \((P-z)^\omega(V-P)^{1-\omega}\) over \(z\le P\le V\).
-The logarithm has derivative \(\omega/(P-z)-(1-\omega)/(V-P)\) and a strictly negative second derivative, so the
-unique optimum solves \(\omega(V-P)=(1-\omega)(P-z)\), that is \(P=(1-\omega)z+\omega V\). At \(V=z\), feasibility
-fixes \(P=z\), and at \(\omega=0\) the next buyer accepts the fallback, so \(P=z\). Hence the transfer is
-\(T_\omega(R,\theta)=(1-\omega)\min\{R,\theta\}+\omega\max\{R,\theta\}\).
+\emph{The continuation.} After preparation, the buyer with the largest value, \(\max\{R,\theta\}\), acquires the target,
+and the next buyer's value, \(\min\{R,\theta\}\), is the enforceable fallback; without a challenger, the fallback is
+zero. For \(\max\{R,\theta\}>\min\{R,\theta\}\) and \(0<\omega<1\), Nash bargaining maximizes
+\((T_\omega-\min\{R,\theta\})^\omega(\max\{R,\theta\}-T_\omega)^{1-\omega}\) over
+\(\min\{R,\theta\}\le T_\omega\le\max\{R,\theta\}\). The logarithm has derivative
+\(\omega/(T_\omega-\min\{R,\theta\})-(1-\omega)/(\max\{R,\theta\}-T_\omega)\) and a strictly negative second
+derivative, so the unique optimum solves \(\omega(\max\{R,\theta\}-T_\omega)=(1-\omega)(T_\omega-\min\{R,\theta\})\),
+that is \(T_\omega=(1-\omega)\min\{R,\theta\}+\omega\max\{R,\theta\}\). At \(R=\theta\), feasibility fixes
+\(T_\omega=\theta\), and at \(\omega=0\) the next buyer accepts the fallback, so \(T_\omega=\min\{R,\theta\}\). Hence the
+transfer is \(T_\omega(R,\theta)=(1-\omega)\min\{R,\theta\}+\omega\max\{R,\theta\}\).
 
 \emph{Profit and spread.} A challenger wins when \(\theta>R\) and keeps \(\theta-T_\omega=(1-\omega)(\theta-R)\), so
 \(g_{\theta,\omega}=(1-\omega)\E[(\theta-R)_+]\). For \(R\le\ell\), both classes win, and
@@ -137,25 +138,24 @@ strictly and \(\omega\ne1/2\). At \(\omega=1/2\), the coefficient \(1-2\omega\) 
 \end{proof}
 
 For \(R\sim U[0,r]\), \(\E[(R-\ell)_+]=(r-\ell)^2/(2r)=\DT(r)\), so \(\Delta_\omega(r)=\omega(h-\ell)+(1-2\omega)\DT(r)\).
-In the benchmark, \(\Delta_\omega(r_1)-\Delta_\omega(r_0)=(1-2\omega)[\DT(r_1)-\DT(r_0)]=\reg{pay_gap_coef}\,(1-2\omega)\),
-which is zero exactly at \(\omega=1/2\). This result specifies the acquisition stage after every history; the trading
-and preparation equilibrium under this rule is outside the proposition.
+In the example, \(\Delta_\omega(r_1)-\Delta_\omega(r_0)=(1-2\omega)[\DT(r_1)-\DT(r_0)]=\reg{pay_gap_coef}\,(1-2\omega)\),
+which is zero exactly at \(\omega=1/2\). The proposition fixes the acquisition stage after every history.
 
 \subsubsection*{Reserves}
 
-At a general reserve, a class value below \(p\) gives no admissible bid. For \(R\sim U[0,r]\) and a point value \(v\),
-integration over \(R<p\), \(p\le R<v\) and \(R\ge v\) gives the kernel
+At a general reserve, a class value below \(p\) gives no admissible bid. For \(R\sim U[0,r]\) and a point value \(\theta\),
+integration over \(R<p\), \(p\le R<\theta\) and \(R\ge\theta\) gives the kernel
 \begin{equation}\label{eq:a7-kernel}
-(t_v,g_v,W_v)=
+\bigl(t(\theta),\,g(\theta),\,F(\theta)\1\{\theta\ge p\}\bigr)=
 \begin{cases}
-(t_0,0,0),&v<p,\\
-(p,\,v-p,\,1),&r\le p\le v,\\
-\bigl(v-(v^2-p^2)/(2r),\,(v^2-p^2)/(2r),\,v/r\bigr),&p\le v\le r,\\
-\bigl(r/2+p^2/(2r),\,v-r/2-p^2/(2r),\,1\bigr),&p\le r\le v,
+(t_0,0,0),&\theta<p,\\
+(p,\,\theta-p,\,1),&r\le p\le\theta,\\
+\bigl(\theta-(\theta^2-p^2)/(2r),\,(\theta^2-p^2)/(2r),\,\theta/r\bigr),&p\le\theta\le r,\\
+\bigl(r/2+p^2/(2r),\,\theta-r/2-p^2/(2r),\,1\bigr),&p\le r\le\theta,
 \end{cases}
 \end{equation}
-with \(t_0=p(1-p/r)_+\). The pieces agree at \(v=r\) and at \(p=r\). A class law averages the kernel. Both
-\(t_v\) and \(g_v\) are nondecreasing in \(v\), and \(t_v\ge t_0\); under the class ranking, \(\DT\ge0\), \(w_L\ge0\) and
+with \(t_0=p(1-p/r)_+\). The pieces agree at \(\theta=r\) and at \(p=r\). A class law averages the kernel. Both
+\(t(\theta)\) and \(g(\theta)\) are nondecreasing in \(\theta\), and \(t(\theta)\ge t_0\); under the class ranking, \(\DT\ge0\), \(w_L\ge0\) and
 \(g_H\ge g_L\ge0\). For \(\ell<p<r<h\) with point values, \(t_L=t_0=p-p^2/r\), \(g_L=0\), \(t_H=r/2+p^2/(2r)\),
 \(g_H=h-t_H\) and \(\DT=r/2-p+3p^2/(2r)\). For \(r<p<h\), \(t_0=t_L=g_L=0\), \(t_H=p\), \(g_H=h-p\) and \(\DT=p\).
 
@@ -191,13 +191,14 @@ above, (E5) by the strict bounds, and (E6) by truthful bids. The bounds hold for
 unique, under every pair of tie rules. A purchase has probability \(b+\pi\lambda\), which gives both entry formulas.
 \end{proof}
 
-\paragraph{The benchmark reserves.}
-The node margins below come from \nolinkurl{P2_auction/derive.py} in outward
-interval arithmetic; at each node, \(T=\rho\kappa\DT-k\), \(C=c_H-B(1/2)\) and \(J=B(M)-c_H\).
+\paragraph{Reserves in the example.}
+At each reserve and strength below, three margins decide the outcome: the trading margin \(\rho\kappa\DT-k\), the
+prior-cost margin \(c_H-B(1/2)\) and the top-posterior margin \(B(M)-c_H\). Each follows from the kernel formulas
+above, and the triples list them in this order.
 \begin{itemize}[leftmargin=2em]
-\item \emph{Exclusion.} At the reserve \(\reg{rsv_points_excl}\) with point values, the low class lies below the reserve
-and the high class above both incumbent supports, so the formulas above apply. The margins are
-\((T,C,J)=(\reg{p2_reserve_points_exclude_r0_global},\reg{p2_reserve_points_exclude_r0_prior_cost_margin},
+\item \emph{A reserve that excludes the low class.} At the reserve \(\reg{rsv_points_excl}\) with point values, the low
+class lies below the reserve and the high class above both incumbent supports, so the formulas above apply. The
+margins are \((\reg{p2_reserve_points_exclude_r0_global},\reg{p2_reserve_points_exclude_r0_prior_cost_margin},
 \reg{p2_reserve_points_exclude_r0_cost_sign_plus})\) at \(r_0\) and
 \((\reg{p2_reserve_points_exclude_r1_global},\reg{p2_reserve_points_exclude_r1_prior_cost_margin},
 \reg{p2_reserve_points_exclude_r1_cost_sign_plus})\) at \(r_1\). Part (a) applies, and entry is
@@ -223,22 +224,18 @@ reserve lies above the low band and below the high band. The strong upper profit
 \(h-c_H/M\approx\reg{p2_reserve_weak_top}\); the reserve lies inside this interval, at distances
 \(\reg{margin_p2_deter_lower_B}\) and \(\reg{margin_p2_deter_upper_B}\) from its ends, and \(p_H-r_0=\reg{margin_p2_ph_weak_B}\).
 \item \emph{Why deterrence excludes the weak incumbent.} For point values and \(1<p\le r_0\), the formulas above give
-\(\DT(r_0)-17/20=(p-1)(5p+1)/4\ge0\) and \(\DT(r_1)-1=(p-1)^2/2\ge0\), so the trade margins stay at least
+\(\DT(r_0)-\reg{rsv_Delta_r0_at_ell}=(p-1)(5p+1)/4\ge0\) and \(\DT(r_1)-1=(p-1)^2/2\ge0\), so the trading margins stay at least
 \(\reg{margin_p2_reserve_uniform_weak_B}\) and \(\reg{margin_p2_reserve_uniform_strong_B}\). The strong upper profit is
 \(M(h-r_1/2-p^2/(2r_1))\), which at \(p=r_0\) exceeds \(c_H\) by \(\reg{margin_p2_reserve_admissible_top_B}\) and is larger
 at every lower reserve. The weak upper profit is larger still, and both prior profits lie below \(c_H\). So both
 strengths recruit after a purchase only, and entry is flat. For the narrow bands with
-\(21/20<p\le r_0\), the low band lies below \(p\) and the high band above \(r_1\), so every band object equals the
-point-value object, and the same conclusion holds. Strict deterrence after full exclusion of the low class therefore
+\(\reg{p2_input_bands_low_hi}<p\le r_0\), the low band lies below \(p\) and the high band above \(r_1\), so every band object equals the
+point-value object, and the same conclusion holds. Strict deterrence by a reserve that excludes the low class therefore
 needs \(p>r_0\).
 \item \emph{Boundary reserves.} At \(p=p_H\), the purchase leaves the high-cost challenger indifferent at \(r_1\):
-rule C1 gives entry \((\rho,\rho,1)\), and rule CM allows any last component in \([\rho,1]\); the trade margin there is
+when an indifferent high-cost challenger prepares, entry is \((\rho,\rho,1)\), and when it may prepare with any
+probability, the last component takes any value in \([\rho,1]\); the trading margin there is
 \(\reg{margin_p2_ph_trade_B}\). At \(p=h\) with point values, every acquisition profit is zero, the definition fixes
 zero-cost preparation, \(\DT=h\), the bound \(h\rho\kappa>k\) forces full orders, and entry is
-\(\reg{p2_endpoint_r1_entry}\) with proceeds \(\reg{p2_endpoint_r1_proceeds}\). These are boundary events outside the
-open sets of the proposition.
+\(\reg{p2_endpoint_r1_entry}\) with proceeds \(\reg{p2_endpoint_r1_proceeds}\).
 \end{itemize}
-The independent recomputation \nolinkurl{XP2/xp2_check.py} (run log
-\nolinkurl{XP2/run.log}) derives the orders and entry patterns at every node
-from the bounds on every profile and agrees with every value. A selection of the equilibrium at every reserve, and the
-seller's optimal reserve, are outside these results.

@@ -1,82 +1,65 @@
-\subsection{Parameter declarations and the margins table}\label{app:parameters}
+\subsection{Parameters of the example}\label{app:parameters}
 
-This subsection declares the inputs of every computation and records the margin of every strict hypothesis at the
-benchmark. Table~\ref{tab:a9-declarations} gives calibration B, following Section~\ref{sec:model}:
-an \emph{input} is a declaration, and a derived value follows from its definition. The derived values keep
+This subsection declares the inputs of every computation and records the margin of every strict hypothesis in the
+example. Table~\ref{tab:a9-declarations} gives the example's parameters, following Section~\ref{sec:model}: a
+declared value is a primitive, and a derived value follows from its definition. The derived values keep
 their unrounded definitions in every computation; the decimals are displays.
 
 \begin{table}[ht]
 \centering
-\caption{Declarations at calibration B.}\label{tab:a9-declarations}
+\caption{Parameters of the example.}\label{tab:a9-declarations}
 \footnotesize
 \begin{tabular}{@{}llll@{}}
 \toprule
 Object & Symbol & Value & Kind\\
 \midrule
-Class values & \(h,\ \ell\) & \(\reg{prim_h},\ \reg{prim_ell}\) & input\\
-Reserve & \(p\) & \(\reg{prim_p}\) & input\\
-Zero-cost probability & \(\rho\) & \(\reg{prim_rho}\) & input\\
-Preparation costs & \(c_L,\ c_H\) & \(0,\ \reg{prim_cH}\) & input\\
-Trading cost & \(k\) & \(\reg{prim_k}\) & input\\
-Prior & \(\pi\) & \(\reg{prim_pi}\) & input\\
-Incumbent strengths & \(r_0,\ r_1,\ r_2\) & \(\reg{prim_r0},\ \reg{prim_r1},\ \reg{prim_r2}\) & input\\
-Slot mass ratio & \(u=\eu-1\) & \(\reg{u_B}\) & input\\
-Liquidity order probability & \(\beta\) & \(\reg{beta_B}\), an exact decimal & input\\
+Class values & \(h,\ \ell\) & \(\reg{prim_h},\ \reg{prim_ell}\) & declared\\
+Reserve & \(p\) & \(\reg{prim_p}\) & declared\\
+Zero-cost probability & \(\rho\) & \(\reg{prim_rho}\) & declared\\
+Preparation costs & \(c_L,\ c_H\) & \(0,\ \reg{prim_cH}\) & declared\\
+Trading cost & \(k\) & \(\reg{prim_k}\) & declared\\
+Prior & \(\pi\) & \(\reg{prim_pi}\) & declared\\
+Incumbent strengths & \(r_0,\ r_1,\ r_2\) & \(\reg{prim_r0},\ \reg{prim_r1},\ \reg{prim_r2}\) & declared\\
+Slot mass ratio & \(u=\eu-1\) & \(\reg{u_B}\) & declared\\
+Liquidity order probability & \(\beta\) & \(\reg{beta_B}\), an exact decimal & declared\\
 Presence probability & \(\lambda=u\beta/(1+u\beta)\) & \(\reg{lambda_B}\) & derived\\
 Liquidity masses & \(b,\ b_0\) & \(\reg{b_B},\ \reg{b0_B}\) & derived\\
 Posterior bounds & \(m(\pi),\ M(\pi)\) & \(\reg{m_half_B},\ \reg{M_half_B}\) & derived\\
 \midrule
-Research cost and cap & \(a,\ \lb\) & \(\reg{res_a},\ \reg{res_cap}\) & input\\
-Cost law & \(L;\ \varepsilon\) & \(\reg{atom_L};\ \reg{atom_eps},\ \reg{atom_eps_small}\) & input\\
-Signal accuracies at B & \(\alpha_I,\ \alpha_C\) & \(\reg{sig_comp_aT},\ \reg{sig_comp_d}\) & input\\
-Four-class values & \(\theta_1,\dots,\theta_4\) & \(\reg{four_v1},\ \reg{four_v2},\ \reg{four_v3},\ \reg{four_v4}\) & input\\
-Four-class prior & \(\pi_j\) & \(\reg{four_prior}\) each & input\\
-High cost, access outside recruitment & \(c_H\) & \(\reg{access_out_cH}\) & input\\
-Reserves & \(p\) & \(\reg{rsv_points_excl},\ \reg{rsv_bands_excl},\ \reg{rsv_deter}\) & input\\
+Research cost and cap & \(a,\ \lb\) & \(\reg{res_a},\ \reg{res_cap}\) & declared\\
+Cost law & \(\bar c_0;\ \varepsilon\) & \(\reg{atom_L};\ \reg{atom_eps},\ \reg{atom_eps_small}\) & declared\\
+Signal accuracies & \(\alpha_I,\ \alpha_C\) & \(\reg{sig_comp_aT},\ \reg{sig_comp_d}\) & declared\\
+Four-class values & \(\theta_1,\dots,\theta_4\) & \(\reg{four_v1},\ \reg{four_v2},\ \reg{four_v3},\ \reg{four_v4}\) & declared\\
+Four-class prior & \(\pi_j\) & \(\reg{four_prior}\) each & declared\\
+High cost, access outside recruitment & \(c_H\) & \(\reg{access_out_cH}\) & declared\\
+Reserves & \(p\) & \(\reg{rsv_points_excl},\ \reg{rsv_bands_excl},\ \reg{rsv_deter}\) & declared\\
 \bottomrule
 \end{tabular}
 \par\medskip
 \begin{minipage}{0.92\linewidth}\footnotesize
-\textit{Notes.} The registry keys are \texttt{prim\_*}, \texttt{u\_B}, \texttt{beta\_B}, \texttt{lambda\_B},
-\texttt{b\_B}, \texttt{b0\_B}, \texttt{m\_half\_B}, \texttt{M\_half\_B}, \texttt{res\_a}, \texttt{res\_cap},
-\texttt{atom\_*}, \texttt{sig\_comp\_*}, \texttt{four\_*}, \texttt{access\_out\_cH} and \texttt{rsv\_*}. The upright \(\eu\) is Euler's
-number. The research cap equals the benchmark presence probability, so research at the cap reproduces the benchmark
-slot. The rows below the rule declare the inputs of single results. The economies of Table~\ref{tab:classes} carry
-their own declarations in that table.
+\textit{Notes.} The upright \(\eu\) is Euler's number. The research cap equals the example's presence probability, so
+research at the cap reproduces the example's slot. The rows below the rule declare the inputs of single results. The
+economies of Table~\ref{tab:classes} carry their own declarations in that table.
 \end{minipage}
 \end{table}
 
-\paragraph{The vector \(S(B)\).}
-The signal example of Section~\ref{sec:signals} uses its own vector. It keeps the slot \((u,\beta,\lambda)\), the values
-\(h\) and \(\ell\), the reserve \(p\) and the prior \(\pi\) of calibration B, and it declares
+\paragraph{The signal example.}
+The signal example of Section~\ref{sec:signals} keeps the slot \((u,\beta,\lambda)\), the values \(h\) and \(\ell\),
+the reserve \(p\) and the prior \(\pi\) of the example, and it declares
 \[
 \rho=\reg{sig_rho},\qquad c_H=\reg{sig_cH},\qquad k=\reg{sig_k},\qquad r_0=\reg{sig_r0},\qquad r_1=\reg{sig_r1},
 \]
-and the accuracies \((\alpha_I,\alpha_C)=(\reg{sig_aT},\reg{sig_d})\),
-each an input. Its primitive margins are positive: \(\rho\), \(1-\rho\), \(r_0-\ell\), \(r_1-r_0\), \(h-r_1\),
-\(c_H\) and \(k\) are all positive. The values of \(S(B)\) describe a comparison of strengths within \(S(B)\); they do
-not describe calibration B.
+and the accuracies \((\alpha_I,\alpha_C)=(\reg{sig_aT},\reg{sig_d})\). Its primitive margins \(\rho\), \(1-\rho\),
+\(r_0-\ell\), \(r_1-r_0\), \(h-r_1\), \(c_H\) and \(k\) are positive. Its values compare two strengths within the
+signal example.
 
 \paragraph{The margins table.}
-Table~\ref{tab:margins} lists every strict hypothesis of the paper with its margin at the benchmark, in the
-direction in which a positive number means that the hypothesis holds. A negative entry records a condition that
-fails by design, and the table says which. Each margin comes from the script in its last column; the codes are
-\begin{itemize}[leftmargin=2em,itemsep=0pt]
-\item[{[P1]}] \nolinkurl{P1_core/p1_numbers.py} (run log
-\nolinkurl{p1_numbers.log}) and \nolinkurl{p1_certificates.py} (run log \nolinkurl{p1_certificates.log}) in the same
-folder;
-\item[{[P2]}] \nolinkurl{P2_auction/derive.py} (run log \nolinkurl{run.log});
-\item[{[P3]}] \nolinkurl{P3_research/P3_research.py} (run log
-\nolinkurl{P3_research.log});
-\item[{[P4]}] \nolinkurl{P4_information/derive.py} (run log \nolinkurl{run.log});
-\item[{[P5]}] \nolinkurl{P5_observables/p5_observables.py} (run log
-\nolinkurl{run_log.txt}).
-\end{itemize}
-Every margin that depends on \(\eu\) is computed in outward interval or exact rational interval arithmetic, and its
-sign is certified only when the whole enclosure lies on one side of zero. The independent recomputations in the folders
-\nolinkurl{XP1/}, \nolinkurl{XP2/}, \nolinkurl{XP3/}, \nolinkurl{XP4/} and \nolinkurl{XP5/} reproduce every display; \nolinkurl{XP1/xp1_registry_recompute.csv} and
-\nolinkurl{XP3/exact_enclosures.json} record exact rational endpoints. The structural bound \(\beta\le1/3\) is a domain
-restriction; the table records its distance.
+Table~\ref{tab:margins} lists every strict hypothesis of the paper with its margin in the example. Each margin is the
+exact difference between the two sides of its inequality, signed so that a positive number means that the hypothesis
+holds; decimals round exact values. A margin that depends on \(\eu\) lies between two rational bounds rounded
+outward, and its sign is the common sign of both bounds. A negative entry marks a comparison economy built to fail
+its hypothesis, and the table says which. The bound \(\beta\le1/3\) restricts the domain of the model, and the table
+records its distance.
 
 The margin of (H3) at the upper end of the band is one distance in three units:
 \(c_H-B_{r_2}(M)=\reg{margin_return_B}\) in cost units, \(\tau(r_2)-M=\reg{margin_return_post_B}\) in posterior
@@ -85,136 +68,170 @@ posterior and on the place of \(r_2\), and in cost units it is the smallest marg
 
 \begin{table}[p]
 \centering
-\caption{Strict hypotheses and their margins at the benchmark.}\label{tab:margins}
+\caption{Strict hypotheses and their margins in the example.}\label{tab:margins}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.04}
-\begin{tabular}{@{}llllc@{}}
+\begin{tabular}{@{}llll@{}}
 \toprule
-Result & Hypothesis & Margin & Value at B & Source\\
+Result & Hypothesis & Margin & Value in the example\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:ccc} and Proposition~\ref{prop:region} (calibration B, prior \(\pi=\reg{prim_pi}\))}}\\
-(H1) left & \(B_0(\pi)<c_H\) & \(c_H-B_{r_0}(\pi)\) & \(\reg{margin_weakcost_B}\) & [P1]\\
-(H1) right & \(c_H<B_1(M)\) & \(B_{r_1}(M)-c_H\) & \(\reg{margin_recruit_B}\) & [P1]\\
- & & \(M-\tau(r_1)\) & \(\reg{margin_recruit_post_B}\) & [P1]\\
-(H2) left & \(\Delta_0<k\) & \(k-\DT(r_0)\) & \(\reg{margin_kweak_B}\) & [P1]\\
-(H2) right & \(k<\rho\kappa\Delta_1\) & \(\rho\kappa\DT(r_1)-k\) & \(\reg{margin_kstrong_B}\) & [P1]\\
-(H3) & \(B_2(M)<c_H\) & \(c_H-B_{r_2}(M)\) & \(\reg{margin_return_B}\) & [P1]\\
- & & \(\tau(r_2)-M\) & \(\reg{margin_return_post_B}\) & [P1]\\
-Implied & \(B_1(\pi)<c_H\) & \(c_H-B_{r_1}(\pi)\) & \(\reg{margin_implied_prior_r1}\) & [P1]\\
- & \(k<\rho\kappa\Delta_2\) & \(\rho\kappa\DT(r_2)-k\) & \(\reg{margin_kstrong2_B}\) & [P1]\\
- & \(B_2(\pi)<c_H\) & \(c_H-B_{r_2}(\pi)\) & \(\reg{margin_implied_prior_r2}\) & [P1]\\
-Slot band & \(u>u_{\rm lo}\) & \(u-\reg{u_lo_frac}\) & \(\reg{margin_u_lo_B}\) & [P1]\\
- & \(u<u_{\rm hi}\) & \(\reg{u_hi_frac}-u\) & \(\reg{margin_u_hi_B}\) & [P1]\\
- & \(\lambda\) in its band & distance to lower, upper end & \(\reg{margin_lambda_lo_B}\), \(\reg{margin_lambda_hi_B}\) & [P1]\\
-Prior range & \(\pi\) in its range & distance to lower, upper end & \(\reg{margin_prior_lo_B}\), \(\reg{margin_prior_hi_B}\) & [P1]\\
-Domain & \(\beta\le1/3\) (structural) & \(1/3-\beta\) & \(\reg{margin_beta_B}\) & [P1]\\
-Ownership & \(e_H W_H(F_1)>\rho W_H(F_0)\) & \(e_H-\rho\) (\(W_H=1\)) & \(\reg{margin_p4_ownership_rise_B}\) & [P4]\\
- & \(b+\lambda>1/2\) (sufficient form) & \(b+\lambda-1/2\) & \(\reg{margin_p2_bplus_B}\) & [P2]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:ccc} and Corollary~\ref{prop:region} (prior \(\pi=\reg{prim_pi}\))}}\\
+(H1) left & \(B_0(\pi)<c_H\) & \(c_H-B_{r_0}(\pi)\) & \(\reg{margin_weakcost_B}\)\\
+(H1) right & \(c_H<B_1(M)\) & \(B_{r_1}(M)-c_H\) & \(\reg{margin_recruit_B}\)\\
+ & & \(M-\tau(r_1)\) & \(\reg{margin_recruit_post_B}\)\\
+(H2) left & \(\Delta_0<k\) & \(k-\DT(r_0)\) & \(\reg{margin_kweak_B}\)\\
+(H2) right & \(k<\rho\kappa\Delta_1\) & \(\rho\kappa\DT(r_1)-k\) & \(\reg{margin_kstrong_B}\)\\
+(H3) & \(B_2(M)<c_H\) & \(c_H-B_{r_2}(M)\) & \(\reg{margin_return_B}\)\\
+ & & \(\tau(r_2)-M\) & \(\reg{margin_return_post_B}\)\\
+Implied & \(B_1(\pi)<c_H\) & \(c_H-B_{r_1}(\pi)\) & \(\reg{margin_implied_prior_r1}\)\\
+ & \(k<\rho\kappa\Delta_2\) & \(\rho\kappa\DT(r_2)-k\) & \(\reg{margin_kstrong2_B}\)\\
+ & \(B_2(\pi)<c_H\) & \(c_H-B_{r_2}(\pi)\) & \(\reg{margin_implied_prior_r2}\)\\
+Slot band & \(u>u_{\rm lo}\) & \(u-\reg{u_lo_frac}\) & \(\reg{margin_u_lo_B}\)\\
+ & \(u<u_{\rm hi}\) & \(\reg{u_hi_frac}-u\) & \(\reg{margin_u_hi_B}\)\\
+ & \(\lambda\) in its band & distance to lower, upper end & \(\reg{margin_lambda_lo_B}\), \(\reg{margin_lambda_hi_B}\)\\
+Prior range & \(\pi\) in its range & distance to lower, upper end & \(\reg{margin_prior_lo_B}\), \(\reg{margin_prior_hi_B}\)\\
+Domain & \(\beta\le1/3\) & \(1/3-\beta\) & \(\reg{margin_beta_B}\)\\
+Ownership & \(e_H W_H(F_1)>\rho W_H(F_0)\) & \(e_H-\rho\) (\(W_H=1\)) & \(\reg{margin_p4_ownership_rise_B}\)\\
+ & \(b+\lambda>1/2\) (sufficient form) & \(b+\lambda-1/2\) & \(\reg{margin_p2_bplus_B}\)\\
+Outbidding & \(r_2<h\) & \(h-r_2\) & \(\reg{cH_afford_ceiling_B}\)\\
+Decisive advantage & \((h^2-p^2)/(2h)\le c_H\) & \(c_H-(h^2-p^2)/(2h)\) & \(\reg{margin_decisive_B_frac}\)\\
+Affordability & \(c_H\le h-r_2\) & \(h-r_2-c_H\) & \(\reg{margin_unif_afford_B}\)\\
+Recruitment bound & \(h-c_H+\sqrt{(h-c_H)^2-p^2}<h\) & \(c_H-\sqrt{(h-c_H)^2-p^2}\) & \(\reg{margin_decisive_rmax_B}\)\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:coexistence} and Corollary~\ref{prop:priors} (benchmark path, Lemmas~\ref{lem:a4-path} and~\ref{lem:a4-order})}}\\
-Path & \(\DT>0\), \(g_H>g_L\) on the path & \(\min\DT\); \(\min(g_H-g_L)\) & \(\reg{margin_Delta_pos_B_frac}\); \(\reg{margin_gHgL_B_frac}\) & [P1]\\
- & \(\tau(r_0)>1/2\) & \(\tau(r_0)-1/2\) & \(\reg{margin_tau_r0_half}\) & [P1]\\
- & \(J(r_0)<k\) & \(k-J(r_0)\) & \(\reg{margin_J_r0_B_frac}\) & [P1]\\
- & \(\rho J(r_1)>k\); \(\rho J(r_2)>k\) & \(\rho J-k\) & \(\reg{margin_rhoJ_r1_B_frac}\); \(\reg{margin_rhoJ_r2_B}\) & [P1]\\
- & \(\rho J(2)>k\) (so \(r_J<2\)) & \(\rho J(2)-k\) & \(\reg{margin_rhoJ_2_B_frac}\) & [P1]\\
- & \(\tau(r_2)<3/4\) & \(3/4-\tau(r_2)\) & \(\reg{margin_tau_r2_3q_B_frac}\) & [P1]\\
- & \(\tau(r_N)>1/2\) & \(\tau(r_N)-1/2\) & \(\reg{margin_tau_rN_half_B}\) & [P1]\\
- & \(Q_J(r_0)>0\) & \(Q_J(r_0)\) & \(\reg{QJ_r0}\) & [P1]\\
- & \(u<\reg{u_kstrong_frac}\) & \(\reg{u_kstrong_frac}-u\) & \(\reg{margin_u_kstrong_B}\) & [P1]\\
-Order & \(r_0<r_A\) & \(r_A-r_0\) & \(\reg{gap_rA_r0_B}\) & [P1]\\
- & \(r_A<r_F\) & \(r_F-r_A\) & \(\reg{gap_rF_rA_B}\) & [P1]\\
- & \(r_F<r_N\) & \(r_N-r_F\) & \(\reg{gap_rN_rF_B}\) & [P1]\\
- & \(r_N<r_J\) & \(r_J-r_N\) & \(\reg{gap_rJ_rN_B}\) & [P1]\\
- & \(r_J<r_S\) & \(r_S-r_J\) & \(\reg{gap_rS_rJ_B}\) & [P1]\\
- & \(r_S<r_1\) & \(r_1-r_S\) & \(\reg{gap_r1_rS_B}\) & [P1]\\
- & \(r_1<r_C\) & \(r_C-r_1\) & \(\reg{gap_rC_r1_B}\) & [P1]\\
- & \(r_C<r_2\) & \(r_2-r_C\) & \(\reg{gap_r2_rC_B}\) & [P1]\\
-Priors & \(\pi>\pi_A^{\rm lo}\) & \(\pi-\pi_A^{\rm lo}\) & \(\reg{margin_piA_lo_B}\) & [P1]\\
- & \(\pi<\pi_A^{\rm hi}\) & \(\pi_A^{\rm hi}-\pi\) & \(\reg{margin_piA_hi}\) & [P1]\\
- & \(\tau_A<3/4\) & \(3/4-\tau_A\) & \(\reg{margin_tauA_3q_B}\) & [P1]\\
- & \(\tau_A<\pi_{\max}\) & \(\pi_{\max}-\tau_A\) & \(\reg{margin_pimax_tauA_B}\) & [P1]\\
- & rule CM at \(\pi_{\max}\): purchase at \(r_*\) & \(\DT(r_*)[1-M(\pi_{\max})]-k\) & \(\reg{margin_cmend_B}\) & [P1]\\
-\midrule
-\multicolumn{5}{@{}l}{\emph{Propositions~\ref{prop:research} and~\ref{prop:researchregion} (\(a=\reg{res_a}\), \(\lb=\reg{res_cap}\))}}\\
-Weak & \(B_{r_0}(1/2)<c_H\) & \(c_H-B_{r_0}(1/2)\) & \(\reg{margin_res_half_B}\) & [P3]\\
- & \(\DT(r_0)<k\) & \(k-\DT(r_0)\) & \(\reg{margin_res_weak_B}\) & [P3]\\
-Intermediate & \(\rho\DT(\reg{str_r165})<2k\) & \(2k-\rho\DT\) & \(\reg{margin_res_nosale_B}\) & [P3]\\
- & \(\varphi_a(\reg{str_r155})>0\) & \(\varphi_a(\reg{str_r155})\) & \(\reg{res_phi_r155}\) & [P3]\\
- & \(a<a_{\rm up}\) & \(a_{\rm up}-a\) & \(\reg{margin_res_aup_B}\) & [P3]\\
- & \(\lambda_R(\reg{str_r165})<\lb\) & \(\lb-\lambda_R\) & \(\reg{margin_res_lamcap_B}\) & [P3]\\
- & \(a>a_{\rm lo}(\lb)\) & \(a-a_{\rm lo}\) & \(\reg{margin_res_alo_B}\) & [P3]\\
- & \(a<a_{\rm mono}\) & \(a_{\rm mono}-a\) & \(\reg{margin_res_amono_B}\) & [P3]\\
-Strong & \(\lambda_E(r_1)<\lb\) & \(\lb-\lambda_E(r_1)\) & \(\reg{margin_res_caplo_B}\) & [P3]\\
- & \(\tau(r_1)<M_{\lb}\) & \(M_{\lb}-\tau(r_1)\) & \(\reg{margin_res_tau_r1_B}\) & [P3]\\
- & \(\lb<\lambda_E(r_2)\) & \(\lambda_E(r_2)-\lb\) & \(\reg{margin_res_caphi_B}\) & [P3]\\
- & \(M_{\lb}<\tau(r_2)\) & \(\tau(r_2)-M_{\lb}\) & \(\reg{margin_res_tau_r2_B}\) & [P3]\\
- & (U) at \(r_1\), \(r_2\) & \(\rho\DT m_{\lb}-k-a\lb\) & \(\reg{margin_res_bound_r1_B}\), \(\reg{margin_res_bound_r2_B}\) & [P3]\\
-Branch & \(r_R<\reg{str_r155}\) & \(\reg{str_r155}-r_R\) & \(\reg{margin_res_rR_B}\) & [P3]\\
- & \(\reg{str_r165}<r_{\lb}\) & \(r_{\lb}-\reg{str_r165}\) & \(\reg{margin_res_rcap_B}\) & [P3]\\
- & \(r_{\lb}<r_N\) & \(r_N-r_{\lb}\) & \(\reg{margin_res_rN_B}\) & [P3]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:coexistence}, Corollary~\ref{cor:example-coexistence} and Corollary~\ref{prop:priors} (the example's path, Lemmas~\ref{lem:a4-path} and~\ref{lem:a4-order})}}\\
+Path & \(\DT>0\), \(g_H>g_L\) on the path & \(\min\DT\); \(\min(g_H-g_L)\) & \(\reg{margin_Delta_pos_B_frac}\); \(\reg{margin_gHgL_B_frac}\)\\
+ & \(\tau(r_0)>1/2\) & \(\tau(r_0)-1/2\) & \(\reg{margin_tau_r0_half}\)\\
+ & \(J(r_0)<k\) & \(k-J(r_0)\) & \(\reg{margin_J_r0_B_frac}\)\\
+ & \(\rho J(r_1)>k\); \(\rho J(r_2)>k\) & \(\rho J-k\) & \(\reg{margin_rhoJ_r1_B_frac}\); \(\reg{margin_rhoJ_r2_B}\)\\
+ & \(\tau(r_2)<1-\rho\) & \(1-\rho-\tau(r_2)\) & \(\reg{margin_tau_r2_3q_B_frac}\)\\
+ & \(\tau(r_N)>1/2\) & \(\tau(r_N)-1/2\) & \(\reg{margin_tau_rN_half_B}\)\\
+ & \(u<\reg{u_kstrong_frac}\) & \(\reg{u_kstrong_frac}-u\) & \(\reg{margin_u_kstrong_B}\)\\
+Uniform affordability & \(c_H<h-r_2\) & \(h-r_2-c_H\) & \(\reg{margin_unif_afford_B}\)\\
+Balance & \(\bigl(\DT\,(g_H-c_H)\bigr)'\ge0\) & least value of \(\bigl(\DT\,(g_H-c_H)\bigr)'/\DT'\) & \(\reg{margin_balance_B_frac}\)\\
+Squared balance & \(\bigl(\DT\,(g_H-c_H)^2\bigr)'>0\) & least value of \(\bigl(\DT\,(g_H-c_H)^2\bigr)'/[(g_H-c_H)\DT']\) & \(\reg{margin_balance_sq_B_frac}\)\\
+Order & \(r_0<r_A\) & \(r_A-r_0\) & \(\reg{gap_rA_r0_B}\)\\
+ & \(r_A<r_F\) & \(r_F-r_A\) & \(\reg{gap_rF_rA_B}\)\\
+ & \(r_F<r_N\) & \(r_N-r_F\) & \(\reg{gap_rN_rF_B}\)\\
+ & \(r_N<r_J\) & \(r_J-r_N\) & \(\reg{gap_rJ_rN_B}\)\\
+ & \(r_J<r_S\) & \(r_S-r_J\) & \(\reg{gap_rS_rJ_B}\)\\
+ & \(r_S<r_1\) & \(r_1-r_S\) & \(\reg{gap_r1_rS_B}\)\\
+ & \(\rho^2\DT(r_1)>k\) (gives \(r_S<r_1\)) & \(\rho^2\DT(r_1)-k\) & \(\reg{margin_rho2Delta_r1_B_frac}\)\\
+ & \(r_1<r_C\) & \(r_C-r_1\) & \(\reg{gap_rC_r1_B}\)\\
+ & \(r_C<r_2\) & \(r_2-r_C\) & \(\reg{gap_r2_rC_B}\)\\
+Priors & \(\pi>\pi_A^{\rm lo}\) & \(\pi-\pi_A^{\rm lo}\) & \(\reg{margin_piA_lo_B}\)\\
+ & \(\pi<\pi_A^{\rm hi}\) & \(\pi_A^{\rm hi}-\pi\) & \(\reg{margin_piA_hi}\)\\
+ & \(\tau_A<1-\rho\) & \(1-\rho-\tau_A\) & \(\reg{margin_tauA_3q_B}\)\\
+ & \(\tau_A<\pi_{\max}\) & \(\pi_{\max}-\tau_A\) & \(\reg{margin_pimax_tauA_B}\)\\
+ & purchase at \(r_*\) and \(\pi_{\max}\)\(^\dagger\) & \(\DT(r_*)[1-M(\pi_{\max})]-k\) & \(\reg{margin_cmend_B}\)\\
 \bottomrule
 \end{tabular}
+\par\medskip
+\begin{minipage}{0.95\linewidth}\scriptsize
+\(^\dagger\) When an indifferent high-cost challenger may prepare with any probability.
+\end{minipage}
 \end{table}
 
 \begin{table}[p]
 \ContinuedFloat
 \centering
-\caption{Strict hypotheses and their margins at the benchmark (continued).}
+\caption{Strict hypotheses and their margins in the example (continued).}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.08}
-\begin{tabular}{@{}llllc@{}}
+\begin{tabular}{@{}llll@{}}
 \toprule
-Result & Hypothesis & Margin & Value at B & Source\\
+Result & Hypothesis & Margin & Value in the example\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:control} (full orders held fixed)}}\\
-Weak row & \(c_H<B_0(M)\) & \(B_{r_0}(M)-c_H\) & \(\reg{margin_p4_weak_top_B}\) & [P4]\\
+\multicolumn{4}{@{}l}{\emph{Propositions~\ref{prop:research} and~\ref{prop:researchregion}, Corollary~\ref{cor:research} and Lemma~\ref{lem:a5-floor} (\(a=\reg{res_a}\), \(\lb=\reg{res_cap}\))}}\\
+Weak & \(B_{r_0}(1/2)<c_H\) & \(c_H-B_{r_0}(1/2)\) & \(\reg{margin_res_half_B}\)\\
+ & \(\DT(r_0)<k\) & \(k-\DT(r_0)\) & \(\reg{margin_res_weak_B}\)\\
+Intermediate & \(\rho\DT(\reg{str_r165})<2k\) & \(2k-\rho\DT\) & \(\reg{margin_res_nosale_B}\)\\
+ & \(\varphi_a(\reg{str_r155})>0\) & \(\varphi_a(\reg{str_r155})\) & \(\reg{res_phi_r155}\)\\
+ & \(a<a_{\rm up}\) & \(a_{\rm up}-a\) & \(\reg{margin_res_aup_B}\)\\
+ & \(\lambda_R(\reg{str_r165})<\lb\) & \(\lb-\lambda_R\) & \(\reg{margin_res_lamcap_B}\)\\
+ & \(a>a_{\rm lo}(\lb)\) & \(a-a_{\rm lo}\) & \(\reg{margin_res_alo_B}\)\\
+ & \(a<a_{\rm mono}\) & \(a_{\rm mono}-a\) & \(\reg{margin_res_amono_B}\)\\
+Cheap research & \(\varphi_a^*\) rises on \([r_0,\reg{res_bound_strength}]\) & lower bound on \(\varphi_a'\) & \(\reg{res_phip_lb}\)\\
+ & \(\varphi_a^*(r_0)<0\) & \(-\varphi_a^*(r_0)\) & \(\reg{margin_res_phi_r0_B}\)\\
+ & \(\varphi_a^*(r_{\lb})>0\) & \(\varphi_a^*(r_{\lb})\) & \(\reg{res_phi_rcap}\)\\
+Strong & \(\lambda_E(r_1)<\lb\) & \(\lb-\lambda_E(r_1)\) & \(\reg{margin_res_caplo_B}\)\\
+ & \(\tau(r_1)<M_{\lb}\) & \(M_{\lb}-\tau(r_1)\) & \(\reg{margin_res_tau_r1_B}\)\\
+ & \(\lb<\lambda_E(r_2)\) & \(\lambda_E(r_2)-\lb\) & \(\reg{margin_res_caphi_B}\)\\
+ & \(M_{\lb}<\tau(r_2)\) & \(\tau(r_2)-M_{\lb}\) & \(\reg{margin_res_tau_r2_B}\)\\
+ & (U) at \(r_1\), \(r_2\) & \(\rho\DT m_{\lb}-k-a\lb\) & \(\reg{margin_res_bound_r1_B}\), \(\reg{margin_res_bound_r2_B}\)\\
+Branch & \(r_R<\reg{str_r155}\) & \(\reg{str_r155}-r_R\) & \(\reg{margin_res_rR_B}\)\\
+ & \(\reg{str_r165}<r_{\lb}\) & \(r_{\lb}-\reg{str_r165}\) & \(\reg{margin_res_rcap_B}\)\\
+ & \(r_{\lb}<r_N\) & \(r_N-r_{\lb}\) & \(\reg{margin_res_rN_B}\)\\
+Floor margin & \(\varphi_\rho\) rises on \([r_0,r_2]\) & smallest piece bound on \(\varphi_\rho'\) & \(\reg{margin_res_floor_slope_B}\)\\
+ & \(r_N<r_Q\) & \(r_Q-r_N\) & \(\reg{margin_res_rQ_rN_B}\)\\
+ & \(r_Q<r_U\) & \(r_U-r_Q\) & \(\reg{margin_res_rU_rQ_B}\)\\
+ & \(\lambda_E(r_Q)<\lb\) & \(\lb-\lambda_E(r_Q)\) & \(\reg{margin_res_cap_lamQ_B}\)\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:atomless} (\(L=\reg{atom_L}\), half-width \(\varepsilon=\reg{atom_eps}\))}}\\
-Supports & \(L<B_1(m)\) & \(B_{r_1}(m)-L\) & \(\reg{margin_p4_atomless_floor_B}\) & [P4]\\
- & \(B_0(\pi)<c_-\) & \(c_--B_{r_0}(\pi)\) & \(\reg{margin_p4_atomless_weak_B}\) & [P4]\\
- & \(c_+<B_1(M)\) & \(B_{r_1}(M)-c_+\) & \(\reg{margin_p4_atomless_strong_B}\) & [P4]\\
-Third economy & \(L<B_2(m)\) & \(B_{r_2}(m)-L\) & \(\reg{margin_p4_atomless_floor_r2_B}\) & [P4]\\
- & \(B_2(M)<c_-\) (fails by design) & \(c_--B_{r_2}(M)\) & \(\reg{margin_p4_atomless_return_B}\) & [P4]\\
- & same at \(\varepsilon=\reg{atom_eps_small}\) & \(c_H-\varepsilon-B_{r_2}(M)\) & \(\reg{margin_p4_atomless_small_width_return}\) & [P4]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:control} (full orders held fixed)}}\\
+Weak row & \(c_H<B_0(M)\) & \(B_{r_0}(M)-c_H\) & \(\reg{margin_p4_weak_top_B}\)\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:manyclasses} (four classes) and the three-class collision}}\\
-Separation & \(\rho\gamma>k\) & \(\rho\gamma-k\) & \(\reg{p2_groups_trade}\) & [P2]\\
- & weak range below \(k\) & \(k\) minus the range & \(\reg{p2_groups_weak_range}\) & [P2]\\
- & weak prior profit below \(c_H\) & \(c_H\) minus the profit & \(\reg{p2_groups_weak_cost}\) & [P2]\\
- & \(\bar g_{\mathcal H}>\bar g_{\mathcal L}\) & \(\bar g_{\mathcal H}-\bar g_{\mathcal L}\) & \(\reg{p2_groups_profit_gap}\) & [P2]\\
- & top group profit above \(c_H\) & profit minus \(c_H\) & \(\reg{p2_groups_top}\) & [P2]\\
-Collision & \(\beta>1/4\) & \(\beta-1/4\) & \(\reg{margin_p2_many_beta_B}\) & [P2]\\
- & \(0<w<1\) & \(w\); \(1-w\) & \(\reg{margin_p2_many_w_lower_B}\); \(\reg{margin_p2_many_w_upper_B}\) & [P2]\\
- & strict class choices & choice gaps & \(\reg{p2_many_choice0}\); \(\reg{p2_many_choice1}\); \(\reg{p2_many_choice2}\) & [P2]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:atomless} (\(\bar c_0=\reg{atom_L}\), half-width \(\varepsilon=\reg{atom_eps}\))}}\\
+Supports & \(\bar c_0<B_1(m)\) & \(B_{r_1}(m)-\bar c_0\) & \(\reg{margin_p4_atomless_floor_B}\)\\
+ & \(B_0(\pi)<c_-\) & \(c_--B_{r_0}(\pi)\) & \(\reg{margin_p4_atomless_weak_B}\)\\
+ & \(c_+<B_1(M)\) & \(B_{r_1}(M)-c_+\) & \(\reg{margin_p4_atomless_strong_B}\)\\
+Third economy & \(\bar c_0<B_2(m)\) & \(B_{r_2}(m)-\bar c_0\) & \(\reg{margin_p4_atomless_floor_r2_B}\)\\
+ & \(B_2(M)<c_-\) (fails by design) & \(c_--B_{r_2}(M)\) & \(\reg{margin_p4_atomless_return_B}\)\\
+ & same at \(\varepsilon=\reg{atom_eps_small}\) & \(c_H-\varepsilon-B_{r_2}(M)\) & \(\reg{margin_p4_atomless_small_width_return}\)\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:signals}: the vector \(S(B)\) and calibration B}}\\
-Private exclusion & \(B_{r_0}(\alpha_C)<c_H\) & \(c_H-B_{r_0}(\alpha_C)\) & \(S(B)\): \(\reg{margin_p4_signal_s_private}\); B: \(\reg{margin_p4_signal_comp_b_private}\) & [P4]\\
-Joint entry & \(c_H<B_{r_1}(\phi_+(\mu_+))\) & \(B_{r_1}(\phi_+(\mu_+))-c_H\) & \(S(B)\): \(\reg{margin_p4_signal_s_joint}\); B: \(\reg{margin_p4_signal_comp_b_joint}\) & [P4]\\
-Weak order & \((2\alpha_I-1)D^+(r_0)<k\) & \(k-(2\alpha_I-1)D^+(r_0)\) & \(S(B)\): \(\reg{margin_p4_signal_s_weak}\); B: \(\reg{margin_p4_signal_comp_b_weak}\) & [P4]\\
-Strong order & \(k<(2\alpha_I-1)\rho m\DT(r_1)\) & \((2\alpha_I-1)\rho m\DT(r_1)-k\) & \(S(B)\): \(\reg{margin_p4_signal_s_strong}\); B: \(\reg{margin_p4_signal_comp_b_strong}\) & [P4]\\
-One pair & \(B_{r_1}(\phi_-(\mu_+))<c_H\) & \(c_H-B_{r_1}(\phi_-(\mu_+))\) & \(S(B)\): \(\reg{margin_p4_signal_s_other_pair}\); B: \(\reg{margin_p4_signal_comp_b_other_pair}\) & [P4]\\
-Control at B & no-signal top excluded & \(c_H-B_{r_1}(\mu_+)\) & \(\reg{margin_p4_comp_b_no_y_top_r1}\) & [P4]\\
- & \(\alpha_C\ge\alpha_I\) impossible & weak bound minus \(k\) & \(\reg{margin_p4_b_d_ge_a_impossible}\) & [P4]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:manyclasses} (four classes) and the three-class collision}}\\
+Separation & \(\rho\varsigma>k\) & \(\rho\varsigma-k\) & \(\reg{p2_groups_trade}\)\\
+ & weak range below \(k\) & \(k\) minus the range & \(\reg{p2_groups_weak_range}\)\\
+ & weak prior profit below \(c_H\) & \(c_H\) minus the profit & \(\reg{p2_groups_weak_cost}\)\\
+ & \(\bar g_{\mathcal H}>\bar g_{\mathcal L}\) & \(\bar g_{\mathcal H}-\bar g_{\mathcal L}\) & \(\reg{p2_groups_profit_gap}\)\\
+ & top group profit above \(c_H\) & profit minus \(c_H\) & \(\reg{p2_groups_top}\)\\
+Collision & \(\beta>1/4\) & \(\beta-1/4\) & \(\reg{margin_p2_many_beta_B}\)\\
+ & \(0<\psi<1\) & \(\psi\); \(1-\psi\) & \(\reg{margin_p2_many_w_lower_B}\); \(\reg{margin_p2_many_w_upper_B}\)\\
+ & strict class choices & choice gaps & \(\reg{p2_many_choice0}\); \(\reg{p2_many_choice1}\); \(\reg{p2_many_choice2}\)\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Proposition~\ref{prop:reserves} and the benchmark reserves: \(T=\rho\kappa\DT-k\), \(C=c_H-B(1/2)\), \(J=B(M)-c_H\)}}\\
-Exclusion, points & \(T,C,J\) at \(r_0\) & & \(\reg{p2_reserve_points_exclude_r0_global}\), \(\reg{p2_reserve_points_exclude_r0_prior_cost_margin}\), \(\reg{p2_reserve_points_exclude_r0_cost_sign_plus}\) & [P2]\\
- & \(T,C,J\) at \(r_1\) & & \(\reg{p2_reserve_points_exclude_r1_global}\), \(\reg{p2_reserve_points_exclude_r1_prior_cost_margin}\), \(\reg{p2_reserve_points_exclude_r1_cost_sign_plus}\) & [P2]\\
-Exclusion, bands & \(T,C,J\) at \(r_0\) & & \(\reg{p2_reserve_bands_exclude_r0_global}\), \(\reg{p2_reserve_bands_exclude_r0_prior_cost_margin}\), \(\reg{p2_reserve_bands_exclude_r0_cost_sign_plus}\) & [P2]\\
- & \(T,C,J\) at \(r_1\) & & \(\reg{p2_reserve_bands_exclude_r1_global}\), \(\reg{p2_reserve_bands_exclude_r1_prior_cost_margin}\), \(\reg{p2_reserve_bands_exclude_r1_cost_sign_plus}\) & [P2]\\
-Deterrence & \(T,C,J\) at \(r_0\) & & \(\reg{p2_reserve_points_deter_r0_global}\), \(\reg{p2_reserve_points_deter_r0_prior_cost_margin}\), \(\reg{p2_reserve_points_deter_r0_cost_sign_plus}\) & [P2]\\
- & \(T,C,J\) at \(r_1\) (\(J<0\) required) & & \(\reg{p2_reserve_points_deter_r1_global}\), \(\reg{p2_reserve_points_deter_r1_prior_cost_margin}\), \(\reg{p2_reserve_points_deter_r1_cost_sign_plus}\) & [P2]\\
- & \(p_H<p<h-c_H/M\) & distance to each end & \(\reg{margin_p2_deter_lower_B}\), \(\reg{margin_p2_deter_upper_B}\) & [P2]\\
- & \(p_H>r_0\) & \(p_H-r_0\) & \(\reg{margin_p2_ph_weak_B}\) & [P2]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:signals}: each value cell gives the signal example, then the example}}\\
+Private exclusion & \(B_{r_0}(\alpha_C)<c_H\) & \(c_H-B_{r_0}(\alpha_C)\) & \(\reg{margin_p4_signal_s_private}\); \(\reg{margin_p4_signal_comp_b_private}\)\\
+Joint entry & \(c_H<B_{r_1}(\mu^C_+(M^I))\) & \(B_{r_1}(\mu^C_+(M^I))-c_H\) & \(\reg{margin_p4_signal_s_joint}\); \(\reg{margin_p4_signal_comp_b_joint}\)\\
+Weak order & \((2\alpha_I-1)\bar\Delta_P(r_0)<k\) & \(k-(2\alpha_I-1)\bar\Delta_P(r_0)\) & \(\reg{margin_p4_signal_s_weak}\); \(\reg{margin_p4_signal_comp_b_weak}\)\\
+Strong order & \(k<(2\alpha_I-1)\rho m\DT(r_1)\) & \((2\alpha_I-1)\rho m\DT(r_1)-k\) & \(\reg{margin_p4_signal_s_strong}\); \(\reg{margin_p4_signal_comp_b_strong}\)\\
+One pair & \(B_{r_1}(\mu^C_-(M^I))<c_H\) & \(c_H-B_{r_1}(\mu^C_-(M^I))\) & \(\reg{margin_p4_signal_s_other_pair}\); \(\reg{margin_p4_signal_comp_b_other_pair}\)\\
+Control, the example & no-signal top excluded & \(c_H-B_{r_1}(M^I)\) & \(\reg{margin_p4_comp_b_no_y_top_r1}\)\\
+ & \(\alpha_C\ge\alpha_I\) impossible & weak bound minus \(k\) & \(\reg{margin_p4_b_d_ge_a_impossible}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[tbp]
+\ContinuedFloat
+\centering
+\caption{Strict hypotheses and their margins in the example (continued).}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Result & Hypothesis & Margin & Value in the example\\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Section~\ref{sec:empirical} (full two-sided trade and the two clusters)}}\\
-Full trade & \(r_S<r_C\); \(r_S<h\) & \(r_C-r_S\); \(h-r_S\) & \(\reg{margin_obs_rS_rC_B}\); \(\reg{margin_obs_rS_h_B}\) & [P5]\\
- & \(M>5/8\) & \(M-5/8\) & \(\reg{margin_obs_post_over_58_B}\) & [P5]\\
-Band & full trade at \(r_1\) for every share in the band & weakest bound & \(\reg{margin_obs_band_incentive_B}\) & [P5]\\
-Clusters & \(r_F<\reg{str_r155}\); \(\reg{str_r165}<r_N\) & distances & \(\reg{margin_obs_rF_B}\); \(\reg{margin_obs_rN_B}\) & [P5]\\
- & purchase at \(\reg{str_r155}\); low class abstains at \(\reg{str_r165}\) & \(\DT m-k\); \(k-\rho\DT/2\) & \(\reg{margin_obs_buy_r155_B}\); \(\reg{margin_obs_lowsell_r165_B}\) & [P5]\\
- & purchase recruits at \(\reg{str_r165}\) & \(B(M)-c_H\) & \(\reg{margin_obs_buy_recruit_r165_B}\) & [P5]\\
+\multicolumn{4}{@{}l}{\emph{Proposition~\ref{prop:reserves} and the example's reserves: the trading, prior-cost and top-posterior margins of Appendix~\ref{app:welfare}}}\\
+Low class excluded, points & three margins at \(r_0\) & & \(\reg{p2_reserve_points_exclude_r0_global}\), \(\reg{p2_reserve_points_exclude_r0_prior_cost_margin}\), \(\reg{p2_reserve_points_exclude_r0_cost_sign_plus}\)\\
+ & three margins at \(r_1\) & & \(\reg{p2_reserve_points_exclude_r1_global}\), \(\reg{p2_reserve_points_exclude_r1_prior_cost_margin}\), \(\reg{p2_reserve_points_exclude_r1_cost_sign_plus}\)\\
+Low class excluded, bands & three margins at \(r_0\) & & \(\reg{p2_reserve_bands_exclude_r0_global}\), \(\reg{p2_reserve_bands_exclude_r0_prior_cost_margin}\), \(\reg{p2_reserve_bands_exclude_r0_cost_sign_plus}\)\\
+ & three margins at \(r_1\) & & \(\reg{p2_reserve_bands_exclude_r1_global}\), \(\reg{p2_reserve_bands_exclude_r1_prior_cost_margin}\), \(\reg{p2_reserve_bands_exclude_r1_cost_sign_plus}\)\\
+Deterrence & three margins at \(r_0\) & & \(\reg{p2_reserve_points_deter_r0_global}\), \(\reg{p2_reserve_points_deter_r0_prior_cost_margin}\), \(\reg{p2_reserve_points_deter_r0_cost_sign_plus}\)\\
+ & three margins at \(r_1\) (top-posterior margin negative) & & \(\reg{p2_reserve_points_deter_r1_global}\), \(\reg{p2_reserve_points_deter_r1_prior_cost_margin}\), \(\reg{p2_reserve_points_deter_r1_cost_sign_plus}\)\\
+ & \(p_H<p<h-c_H/M\) & distance to each end & \(\reg{margin_p2_deter_lower_B}\), \(\reg{margin_p2_deter_upper_B}\)\\
+ & \(p_H>r_0\) & \(p_H-r_0\) & \(\reg{margin_p2_ph_weak_B}\)\\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Section~\ref{sec:empirical} (full two-sided trade and the two clusters)}}\\
+Full trade & \(r_S<r_C\); \(r_S<h\) & \(r_C-r_S\); \(h-r_S\) & \(\reg{margin_obs_rS_rC_B}\); \(\reg{margin_obs_rS_h_B}\)\\
+ & \(M>5/8\) & \(M-5/8\) & \(\reg{margin_obs_post_over_58_B}\)\\
+Band & full trade at \(r_1\) for every share in the band & weakest bound & \(\reg{margin_obs_band_incentive_B}\)\\
+ & \(v<\reg{vol_band_max_frac}\) & \(\reg{vol_band_max_frac}-v\) & \(\reg{margin_vol_band_B}\)\\
+Price gap & \(\ell^2-3p^2>0\) & \(\ell^2-3p^2\) & \(\reg{margin_reserve_unif_B}\)\\
+Winner gap & \(D(r)>\Omega(F_r)\) at \(r_1\); at \(r_2\) & \(D(r)-\Omega(F_r)=\ell/r\) & \(\reg{margin_winsep_r1_B}\); \(\reg{margin_winsep_r2_B}\)\\
+Clusters & \(r_F<\reg{str_r155}\); \(\reg{str_r165}<r_N\) & distances & \(\reg{margin_obs_rF_B}\); \(\reg{margin_obs_rN_B}\)\\
+ & purchase at \(\reg{str_r155}\); low class abstains at \(\reg{str_r165}\) & \(\DT m-k\); \(k-\rho\DT/2\) & \(\reg{margin_obs_buy_r155_B}\); \(\reg{margin_obs_lowsell_r165_B}\)\\
+ & purchase recruits at \(\reg{str_r165}\) & \(B(M)-c_H\) & \(\reg{margin_obs_buy_recruit_r165_B}\)\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -222,49 +239,48 @@ Clusters & \(r_F<\reg{str_r155}\); \(\reg{str_r165}<r_N\) & distances & \(\reg{m
 \begin{table}[ht]
 \ContinuedFloat
 \centering
-\caption{Strict hypotheses and their margins at the benchmark (continued): the economies of
+\caption{Strict hypotheses and their margins in the example (continued): the economies of
 Table~\ref{tab:classes}.}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lrrrrrrrc@{}}
+\begin{tabular}{@{}lrrrrrrr@{}}
 \toprule
-Economy & \(C_0\) & \(C_1\) & \(T_0\) & \(T_H\) & \(T_L\) & \(C_2\) & \(O\) & Source\\
+Economy & Prior cost & Top posterior & Weak trade & Purchase & Sale & Exclusion & Ownership\\
 \midrule
-Benchmark & \(\reg{margin_p2_base_weak_cost_B}\) & \(\reg{margin_p2_base_strong_top_B}\) & \(\reg{margin_p2_base_weak_trade_B}\) & \(\reg{margin_p2_base_high_floor_B}\) & \(\reg{margin_p2_base_low_floor_B}\) & \(\reg{margin_p2_base_collapse_B}\) & \(\reg{margin_p2_base_ownership_B}\) & [P2]\\
-Moderate gap & \(\reg{margin_p2_moderate_weak_cost_B}\) & \(\reg{margin_p2_moderate_strong_top_B}\) & \(\reg{margin_p2_moderate_weak_trade_B}\) & \(\reg{margin_p2_moderate_high_floor_B}\) & \(\reg{margin_p2_moderate_low_floor_B}\) & --- & \(\reg{margin_p2_moderate_ownership_B}\) & [P2]\\
-Narrow bands & \(\reg{margin_p2_bands_weak_cost_B}\) & \(\reg{margin_p2_bands_strong_top_B}\) & \(\reg{margin_p2_bands_weak_trade_B}\) & \(\reg{margin_p2_bands_high_floor_B}\) & \(\reg{margin_p2_bands_low_floor_B}\) & \(\reg{margin_p2_bands_collapse_B}\) & \(\reg{margin_p2_bands_ownership_B}\) & [P2]\\
-Low prior & \(\reg{margin_p2_ex_a_weak_cost_B}\) & \(\reg{margin_p2_ex_a_strong_top_B}\) & \(\reg{margin_p2_ex_a_weak_trade_B}\) & \(\reg{margin_p2_ex_a_high_floor_B}\) & \(\reg{margin_p2_ex_a_low_floor_B}\) & \(\reg{margin_p2_ex_a_collapse_B}\) & \(\reg{margin_p2_ex_a_ownership_B}\) & [P2]\\
-High prior & \(\reg{margin_p2_ex_b_weak_cost_B}\) & \(\reg{margin_p2_ex_b_strong_top_B}\) & \(\reg{margin_p2_ex_b_weak_trade_B}\) & \(\reg{margin_p2_ex_b_high_floor_B}\) & \(\reg{margin_p2_ex_b_low_floor_B}\) & \(\reg{margin_p2_ex_b_collapse_B}\) & \(\reg{margin_p2_ex_b_ownership_B}\) & [P2]\\
-Wide classes & \(\reg{margin_p2_ex_c_weak_cost_B}\) & \(\reg{margin_p2_ex_c_strong_top_B}\) & \(\reg{margin_p2_ex_c_weak_trade_B}\) & \(\reg{margin_p2_ex_c_high_floor_B}\) & \(\reg{margin_p2_ex_c_low_floor_B}\) & \(\reg{margin_p2_ex_c_collapse_B}\) & \(\reg{margin_p2_ex_c_ownership_B}\) & [P2]\\
-Same means (control) & \(\reg{margin_p2_ex_d_weak_cost_B}\) & \(\reg{margin_p2_ex_d_strong_top_B}\) & \(\reg{margin_p2_ex_d_weak_trade_B}\) & \(\reg{margin_p2_ex_d_high_floor_B}\) & \(\reg{margin_p2_ex_d_low_floor_B}\) & \(\reg{margin_p2_ex_d_collapse_B}\) & \(\reg{margin_p2_ex_d_ownership_B}\) & [P2]\\
+The example & \(\reg{margin_p2_base_weak_cost_B}\) & \(\reg{margin_p2_base_strong_top_B}\) & \(\reg{margin_p2_base_weak_trade_B}\) & \(\reg{margin_p2_base_high_floor_B}\) & \(\reg{margin_p2_base_low_floor_B}\) & \(\reg{margin_p2_base_collapse_B}\) & \(\reg{margin_p2_base_ownership_B}\)\\
+Moderate gap & \(\reg{margin_p2_moderate_weak_cost_B}\) & \(\reg{margin_p2_moderate_strong_top_B}\) & \(\reg{margin_p2_moderate_weak_trade_B}\) & \(\reg{margin_p2_moderate_high_floor_B}\) & \(\reg{margin_p2_moderate_low_floor_B}\) & --- & \(\reg{margin_p2_moderate_ownership_B}\)\\
+Narrow bands & \(\reg{margin_p2_bands_weak_cost_B}\) & \(\reg{margin_p2_bands_strong_top_B}\) & \(\reg{margin_p2_bands_weak_trade_B}\) & \(\reg{margin_p2_bands_high_floor_B}\) & \(\reg{margin_p2_bands_low_floor_B}\) & \(\reg{margin_p2_bands_collapse_B}\) & \(\reg{margin_p2_bands_ownership_B}\)\\
+Low prior & \(\reg{margin_p2_ex_a_weak_cost_B}\) & \(\reg{margin_p2_ex_a_strong_top_B}\) & \(\reg{margin_p2_ex_a_weak_trade_B}\) & \(\reg{margin_p2_ex_a_high_floor_B}\) & \(\reg{margin_p2_ex_a_low_floor_B}\) & \(\reg{margin_p2_ex_a_collapse_B}\) & \(\reg{margin_p2_ex_a_ownership_B}\)\\
+High prior & \(\reg{margin_p2_ex_b_weak_cost_B}\) & \(\reg{margin_p2_ex_b_strong_top_B}\) & \(\reg{margin_p2_ex_b_weak_trade_B}\) & \(\reg{margin_p2_ex_b_high_floor_B}\) & \(\reg{margin_p2_ex_b_low_floor_B}\) & \(\reg{margin_p2_ex_b_collapse_B}\) & \(\reg{margin_p2_ex_b_ownership_B}\)\\
+Wide classes & \(\reg{margin_p2_ex_c_weak_cost_B}\) & \(\reg{margin_p2_ex_c_strong_top_B}\) & \(\reg{margin_p2_ex_c_weak_trade_B}\) & \(\reg{margin_p2_ex_c_high_floor_B}\) & \(\reg{margin_p2_ex_c_low_floor_B}\) & \(\reg{margin_p2_ex_c_collapse_B}\) & \(\reg{margin_p2_ex_c_ownership_B}\)\\
+Same means & \(\reg{margin_p2_ex_d_weak_cost_B}\) & \(\reg{margin_p2_ex_d_strong_top_B}\) & \(\reg{margin_p2_ex_d_weak_trade_B}\) & \(\reg{margin_p2_ex_d_high_floor_B}\) & \(\reg{margin_p2_ex_d_low_floor_B}\) & \(\reg{margin_p2_ex_d_collapse_B}\) & \(\reg{margin_p2_ex_d_ownership_B}\)\\
 \bottomrule
 \end{tabular}
 \par\medskip
 \begin{minipage}{0.95\linewidth}\footnotesize
-\textit{Notes.} \(C_0=c_H-B_0(\pi)\), \(C_1=B_1(M)-c_H\), \(T_0=k-\Delta_0\), \(T_H=\rho(1-M)\Delta_1-k\),
-\(T_L=\rho m\Delta_1-k\), \(C_2=c_H-B_2(M)\) and \(O=[\rho+(1-\rho)(b+\lambda)]W_H(F_1)-\rho W_H(F_0)\). The moderate-gap
-economy has two strengths. The last row is a control: its negative \(C_1\) is the reason entry stays at \(\rho\), and
-its \(O\) uses the recruitment coefficient that the economy does not reach.
+\textit{Notes.} Prior cost is \(c_H-B_0(\pi)\), the left side of the high-cost window; top posterior is
+\(B_1(M)-c_H\), its right side; weak trade is \(k-\Delta_0\), the left side of the trading-cost window; purchase and
+sale are \(\rho(1-M)\Delta_1-k\) and \(\rho m\Delta_1-k\), the trading margins of the two correct orders at \(F_1\);
+exclusion is \(c_H-B_2(M)\), the exclusion condition; and ownership is
+\([\rho+(1-\rho)(b+\lambda)]W_H(F_1)-\rho W_H(F_0)\). The moderate-gap economy has two strengths. In the last
+economy the two classes have the same means: its negative top-posterior margin keeps entry at \(\rho\), and its
+ownership margin uses the recruitment coefficient that the economy does not reach.
 \end{minipage}
 \end{table}
 
-\paragraph{Open parameter sets.}
-The open-set statement concerns the sufficient conditions of each intended result. Take each row of
-Table~\ref{tab:margins} whose hypothesis holds at the benchmark, with the sign that the row requires. It is a strict
-inequality between continuous functions of the primitives. Together these rows define an open set of primitives that
-contains the benchmark. With the structural bound \(\beta\le1/3\), the set is relatively open in the model domain.
-The statement excludes these entries:
-\begin{itemize}[leftmargin=2em,itemsep=0pt]
-\item the third economy of Proposition~\ref{prop:atomless} at the half-width \(\reg{atom_eps}\), which fails by design;
-\item the control economy with the same means in the last panel, whose negative \(C_1\) is its purpose;
-\item the row that shows that \(\alpha_C\ge\alpha_I\) is impossible at B;
-\item exact ties, such as \(r=r_C\), \(u=u_{\rm lo}\) or the informed share \(\bar\vartheta(r_1)\). These boundary
-equilibria are valid under the stated tie rules, and the strict-margin convention does not remove them.
-\end{itemize}
-The sections through the benchmark are: the slot band and the prior range of
-Proposition~\ref{prop:region} (Table~\ref{tab:region}); the cap strip and the cost window of
-Proposition~\ref{prop:researchregion}; the support conditions of Proposition~\ref{prop:atomless}, which allow every
-half-width below \(\reg{p4_atomless_max_width_floor_r2}\) for all three parts; the reserve intervals of
-Appendix~\ref{app:welfare}; and, for Section~\ref{sec:empirical}, the set \(0<\beta<1/3\) with the slot band and
-\(r_S(M)<r<h\). On the last set the uniqueness margin \(\rho\DT(r)m-k\) tends to zero as \(r\downarrow r_S\), so no
-single positive margin covers the whole interval.
+\paragraph{The parameter set around the example.}
+Each row of Table~\ref{tab:margins} whose hypothesis holds in the example, taken with the sign that the row requires,
+is a strict inequality between continuous functions of the primitives. Together these rows define an open set of
+primitives that contains the example; with the bound \(\beta\le1/3\), the set is relatively open in the model domain.
+The rows that define the set leave out the third economy of Proposition~\ref{prop:atomless} at the half-width
+\(\reg{atom_eps}\), which is built to fail its hypothesis; the economy with the same means in the last panel, whose
+negative top-posterior margin is its purpose; the row that shows that \(\alpha_C\ge\alpha_I\) is impossible in the
+example; and exact ties, such as \(r=r_C\), \(u=u_{\rm lo}\) or the informed share \(1-2k/(\rho\DT(r_1))\) at the
+right end of the band, which are equilibria under the stated tie rules. For Section~\ref{sec:empirical}, the section
+of the set through the example is \(0<\beta<1/3\) with the slot band and \(r_S(M)<r<h\); on it the uniqueness margin
+\(\rho\DT(r)m-k\) is positive at every strength and tends to zero as \(r\downarrow r_S\). The other sections through
+the example are the slot band and the prior range of Corollary~\ref{prop:region} (Table~\ref{tab:region}), the cost
+window of Corollary~\ref{prop:region}(e), the cap strip and the cost window of
+Proposition~\ref{prop:researchregion}, the support conditions of Proposition~\ref{prop:atomless}, which allow every
+half-width below \(\reg{p4_atomless_max_width_floor_r2}\) for all three parts, and the reserve intervals of
+Appendix~\ref{app:welfare}.
