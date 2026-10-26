@@ -91,7 +91,7 @@
           '<div class="box box-cost" data-step="3">Second bidder decides: pay to prepare, or stay out</div>' +
         '</div>' +
         ul([[4, 'One bidder is ready: the <b>incumbent</b>'],
-          [4, 'Incumbent type gives a public clue to strength. Incumbent value stays private ' + cite('Gorbenko and Malenko 2014')],
+          [4, 'The incumbent’s type is public and signals its strength. Its value is private ' + cite('Gorbenko and Malenko 2014')],
           [5, 'A second bidder is not ready: the <b>challenger</b>'],
           [5, 'To bid, the challenger must first <b>prepare</b>: due diligence, finance, approvals'],
           [5, 'That step costs money and time. The probability that the challenger prepares is <b>entry</b>']]) +
@@ -112,13 +112,13 @@
         ul([[1, '<b>Sale rule:</b> cash second-price auction with reserve ' + m('p') + '. The top bid wins and pays ' + m(T`\max\{p,\text{other bid}\}`) + '. Each bidder bids its value'],
           [2, '<b>Incumbent:</b> value ' + m(T`R\sim U[0,r]`) + '. Strength ' + m('r') + ' is public; only the incumbent knows ' + m('R')],
           [3, '<b>Challenger:</b> class ' + m(T`j\in\{H,L\}`) + ', prior ' + m(T`\pi`) + ' on ' + m('H') + ', value from ' + m('G_j') + '. The example uses point masses ' + m('h') + ' and ' + m(T`\ell`)],
-          [3, 'The challenger learns its value after preparation, not before'],
-          [4, cost('<b>Cost:</b> zero with probability ' + m(T`\rho`) + ', else ' + m('c_H>0') + ', with no link to class')]], 'small') +
+          [3, 'The challenger learns its value only after preparation'],
+          [4, cost('<b>Cost:</b> zero with probability ' + m(T`\rho`) + ', else ' + m('c_H>0') + ', independent of class')]], 'small') +
         nav(go('app:notation', 'Notation')) });
 
     frame({ id: 'f3', label: 'F3', num: '6', part: 2, minutes: 2.0, targets: [],
       defines: ['Delta_T', 'tj', 'gj', 'B', 'mu', 'r_01'], widget: 'cases',
-      title: 'One auction, two claims, opposite responses', subtitle: 'Who wins and who pays at incumbent value ' + m('R') + '; in the example ' + m(T`p<\ell<r<h`),
+      title: 'Strength raises the spread and lowers challenger profit', subtitle: 'Who wins and who pays at incumbent value ' + m('R') + '; in the example ' + m(T`p<\ell<r<h`),
       body:
         '<div class="segmented" role="group" aria-label="Incumbent value"><button type="button" data-case="low" aria-pressed="false">' + m(T`R\le\ell`) + '</button><button type="button" data-case="high" aria-pressed="false">' + m(T`R>\ell`) + '</button></div>' +
         '<table class="t-cases"><thead><tr><th>Incumbent value</th><th>Class ' + m('H') + ' challenger</th><th>Class ' + m('L') + ' challenger</th><th>Gap in target proceeds</th></tr></thead><tbody>' +
@@ -145,7 +145,7 @@
             '<div class="sbox" data-step="2"><b>Liquidity trader</b><span class="chance">with probability ' + m(T`1-\lambda`) + '</span>sale, no order or buy, with chances ' + m(T`\beta,\ 1-2\beta,\ \beta`) + '</div>' +
           '</div>' +
           '<span class="arrow" data-step="3" aria-hidden="true">→</span>' +
-          '<div class="sbox slotbox" data-step="3"><b>Order slot</b>one public order ' + m(T`X\in\{-1,0,1\}`) + '<small>no observer sees who filled it; the draw has no link to class, costs or ' + m('R') + '</small></div>' +
+          '<div class="sbox slotbox" data-step="3"><b>Order slot</b>one public order ' + m(T`X\in\{-1,0,1\}`) + '<small>no observer sees who filled it; the draw is independent of class, cost and ' + m('R') + '</small></div>' +
           '<span class="arrow" data-step="4" aria-hidden="true">→</span>' +
           '<div class="sbox" data-step="4"><b>Market makers</b>see ' + m('X') + ' and set<br>' + m(T`P=\mathbb{E}[V_T\mid X]`) + '<small>' + m('V_T') + ' = sale proceeds per share</small></div>' +
           '<span class="arrow" data-step="5" aria-hidden="true">→</span>' +
@@ -169,8 +169,8 @@
           '<span class="pin" id="f5-pin" hidden></span></div><div class="scale"><span style="left:0">0</span><span style="left:' + (100 * H.v('m_half_B')).toFixed(2) + '%">' + m('m') + '</span><span style="left:50%">' + m('\\pi') + '</span><span style="left:' + (100 * H.v('M_half_B')).toFixed(2) + '%">' + m('M') + '</span><span style="left:100%">1</span></div></div>' +
         '<p class="infoset" id="f5-say" aria-live="polite">Select an order to see where the belief goes.</p>' +
         ul([[1, 'Price at belief ' + m(T`\mu`) + ': ' + m(T`P_r(\mu)=t_0+e_r(\mu)\bigl(t_L-t_0+\Delta_T\mu\bigr)`)],
-          [1, 'Entry rule: ' + m(T`e_r(\mu)=\rho+(1-\rho)\,\mathbf{1}\{B_r(\mu)\ge c_H\}`) + ', since the zero cost always pays'],
-          [1, 'Entry at least ' + m(T`\rho`) + ' and ' + m(T`\Delta_T>0`) + ' let the challenger recover ' + m(T`\mu`) + ' from ' + m('P')]], 'small') +
+          [1, 'Entry rule: ' + m(T`e_r(\mu)=\rho+(1-\rho)\,\mathbf{1}\{B_r(\mu)\ge c_H\}`) + ', because a zero-cost challenger always prepares'],
+          [1, 'Because entry is at least ' + m(T`\rho`) + ' and ' + m(T`\Delta_T>0`) + ', the challenger can recover ' + m(T`\mu`) + ' from ' + m('P')]], 'small') +
         take('A buy order moves belief up to ' + m('M(\\pi)') + '. Belief stays short of one.', 2) +
         nav(go('app:belief', 'Posterior bounds')) });
 
@@ -189,7 +189,6 @@
           tr3(m(T`u,\ b`), q('u_B') + ', ' + q('b_B'), 'mass ratio ' + m(T`u=\lambda/b`) + '; here ' + m(T`1+u=e`), 3) +
           tr3(m(T`r_0,\ r_1,\ r_2`), q('prim_r0') + ', ' + q('prim_r1') + ', ' + q('prim_r2'), 'weak, strong, stronger still', 4) +
         '</tbody></table>' +
-        gray('The inputs illustrate the results.') +
         take('Comparisons vary ' + m('r') + ' across ' + m('r_0') + ', ' + m('r_1') + ' and ' + m('r_2') + ' and hold all else fixed.', 4) +
         nav(go('app:bench', 'Recruitment region')) });
 
@@ -198,7 +197,7 @@
       body:
         '<div class="split gainsplit">' +
           '<div class="col">' +
-            ul([[1, 'Buy after ' + m('H') + ': expected share payoff less price. Sell after ' + m('L') + ': price less expected share payoff'],
+            ul([[1, 'A buy after ' + m('H') + ' earns the expected share payoff less the price. A sale after ' + m('L') + ' earns the price less the expected share payoff'],
               [2, 'Each correct order earns at most ' + info(m(T`\Delta_T`)) + ' before cost, under every profile'],
               [3, 'Set ' + m(T`\kappa=\min\{m,1-M\}`) + '. Each correct order earns at least ' + m(T`\rho\kappa`) + info(m(T`\Delta_T`)) + ' before cost']], 'small') +
             '<table class="t-trade" data-step="4"><thead><tr><th></th><th>Trading bound</th><th>Orders ' + m('(q_H,q_L)') + '</th></tr></thead><tbody>' +
@@ -220,13 +219,13 @@
             '<div class="slider"><label for="beliefs-r">incumbent strength ' + m('r') + '</label><input type="range" id="beliefs-r" min="0" max="240" step="1" value="180"><output id="beliefs-r-value" for="beliefs-r">3.00</output></div>' +
           '</div>' +
           '<div class="col text">' +
-            ul([[1, 'Zero cost always pays; cost ' + m('c_H') + ' pays exactly at beliefs at or past ' + m(T`\tau(r)`)],
+            ul([[1, 'A zero-cost challenger always prepares. A challenger with cost ' + m('c_H') + ' prepares exactly at beliefs at or past ' + m(T`\tau(r)`)],
               [2, 'Preparation thresholds: <span class="nw">' + m(T`\tau(r_0)={{tau_r0}}`) + '</span>, <span class="nw">' + m(T`\tau(r_1)={{tau_r1}}`) + '</span>, <span class="nw">' + m(T`\tau(r_2)={{tau_r2}}`) + '</span>; top posterior <span class="nw">' + m(T`M={{M_half_B}}`) + '</span>'],
               [3, 'At ' + m('r_1') + ', a purchase clears the threshold. Past the entry ceiling ' + m('r_C') + ', no order clears it']], 'small') +
             '<div id="beliefs-readout" class="readout" aria-live="polite"></div>' +
           '</div>' +
         '</div>' +
-        take('The entry ceiling ' + m('r_C') + ' sits just below ' + m('r_2') + '.', 3) });
+        take('The entry ceiling ' + m('r_C') + ' lies just below ' + m('r_2') + '.', 3) });
 
     frame({ id: 'f9', label: 'F9', num: '12', part: 4, minutes: 2.0, targets: ['main:prop2'], defines: ['F_W'], widget: '',
       title: 'Proposition 2: a stronger incumbent can raise entry', subtitle: 'Weak ' + m('r_0') + ', strong ' + m('r_1') + ', stronger still ' + m('r_2') + '; all other inputs equal',
@@ -242,7 +241,7 @@
           '<tr><td><b>(H3) Exclusion condition</b></td><td>' + m(T`B_{r_2}(M)<c_H`) + '</td></tr>' +
         '</tbody></table>' +
         '<p class="small" data-step="4">Ownership in part (ii) rises exactly if ' + m(T`[\rho+(1-\rho)(b+\lambda)]\,W_H(F_1)>\rho\,W_H(F_0)`) + ', with ' + m('W_H(F)') + ' as the class ' + m('H') + ' win chance at reserve ' + m('p') + '. If class ' + m('H') + ' outbids ' + m('F_1') + ', ownership rises and class ' + m('H') + '’s takeover share does not fall.</p>' +
-        gray('The outcome is unique in each part, under all four tie rules. Each condition is a strict inequality: the parts hold on an open set of inputs.') +
+        gray('The outcome is unique in each part, under all four tie rules. Each condition is a strict inequality, so the parts hold on an open set of inputs.') +
         take(info('wider ' + m(T`\Delta_T`) + ' → trade pays → informative price → good news clears ' + m('c_H') + ' → entry at high cost'), 5) +
         nav(go('app:prop2', 'Proof structure')) });
 
@@ -275,9 +274,9 @@
         '</tbody></table>' +
         '<div class="bars" id="f11-bars" aria-live="polite"></div>' +
         '</div>' +
-        ul([[1, 'Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then cuts ' + m(T`B_r(\mu)`) + ' at each belief: entry can only fall'],
-          [2, 'Frozen full orders give the same entry up to the entry ceiling ' + m('r_C') + ', then ' + m(T`\rho`) + '. At ' + m('r_0') + ' the control is not an equilibrium'],
-          [3, 'With the price hidden, cost ' + m('c_H') + ' never pays at the prior, so entry stays at ' + m(T`\rho`)]], 'small') +
+        ul([[1, 'Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then weakly lowers ' + m(T`B_r(\mu)`) + ' at each belief, so entry can only fall'],
+          [2, 'The same full orders at both strengths give the same entry up to the entry ceiling ' + m('r_C') + ', then ' + m(T`\rho`) + '. At ' + m('r_0') + ' the control is not an equilibrium'],
+          [3, 'With the price hidden, a challenger with cost ' + m('c_H') + ' never prepares at the prior, so entry stays at ' + m(T`\rho`)]], 'small') +
         take('The rise comes from a change in what the price reveals. At a fixed belief, a stronger incumbent weakly lowers gross profit.', 4) });
 
     frame({ id: 'f12', label: 'F12', num: '15', part: 6, minutes: 0.75, targets: [], defines: [], widget: 'region',
@@ -289,7 +288,7 @@
             ul([[1, 'A quiet market and an informative market coexist exactly when' + d(T`\begin{gathered}\pi<\tau\le M(\pi),\\[2pt] \frac{k}{1-\tau}\le\Delta_T\le\frac{k}{\rho\max\{\pi,1-\pi\}}\end{gathered}`)],
               [2, 'The informative market is then unique: class ' + m('L') + ' abstains, only a purchase recruits a high-cost challenger'],
               [3, 'Entry rises with the spread while class ' + m('H') + ' mixes its purchase, and is constant once it buys for sure'],
-              [4, 'Lower bound: a purchase that reaches ' + m(T`\tau`) + ' covers ' + m('k') + '. Upper bound: an order against a flat price earns at most ' + m('k')]], 'small') +
+              [4, 'At the lower bound, a purchase that reaches ' + m(T`\tau`) + ' covers ' + m('k') + '. At the upper bound, an order against a flat price earns at most ' + m('k')]], 'small') +
           '</div>' +
         '</div>' +
         take('The spread and the preparation threshold decide where both markets exist.', 5) });
@@ -308,23 +307,23 @@
     frame({ id: 'f13', label: 'F13', num: '17', part: 6, minutes: 1.5, targets: ['main:research'], defines: ['a_cap', 'r_R'], widget: 'research',
       title: 'Competition creates research', subtitle: 'Proposition 4 at the prior ' + m(T`\reg{prim_pi}`) + ': costly research sets presence ' + m(T`\lambda`) + ', with a cap ' + m(T`\bar\lambda`),
       body:
-        '<p class="small">Research costs ' + m(T`\tfrac{a}{2}\lambda^2`) + '. A success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At ' + q('str_r155') + ', ' + q('str_r160') + ', ' + q('str_r165') + ' research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + ' and entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165') + '.</p>' +
+        '<p class="small">Research costs ' + m(T`\tfrac{a}{2}\lambda^2`) + '. A success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At ' + q('str_r155') + ', ' + q('str_r160') + ', ' + q('str_r165') + ' research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + '. Entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165') + '.</p>' +
         '<div class="figure wide nolegend" id="research" tabindex="0" aria-label="Figure. Research and entry against incumbent strength in each research equilibrium of the example; arrow keys move the cursor."></div>' +
         '<p class="grayline" data-step="1">Corollary 3: zero research on ' + m('[r_0,r_N]') + '; recruiting research on ' + m(T`[r_R,r_C]\approx[{{res_rR}},{{res_rC}}]`) + ', below the cap until ' + m(T`r_{\bar\lambda}\approx{{res_rcap}}`) + ' and at the cap from there, with entry rising from ' + q('res_entry_rR') + ' to ' + q('res_entry_cap') + ' and then constant; floor-entry research on ' + m('(r_N,r_Q)') + ' and on ' + m('(r_C,r_2]') + '.</p>' +
-        take('Research and entry rise together; research at the cap holds up to the entry ceiling ' + m('r_C') + '.', 2) +
+        take('Research and entry rise together. Research stays at the cap up to the entry ceiling ' + m('r_C') + '.', 2) +
         nav(go('app:research', 'Research in detail')) });
 
     function rrow(a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; }
     frame({ id: 'f14', label: 'F14', num: '18', part: 6, minutes: 1.0, targets: ['main:robust'], defines: ['omega'], widget: '',
-      title: 'The reversal survives changes to the model', subtitle: 'Each row keeps the slot and varies one part of the set-up',
+      title: 'The reversal holds under changes to the model', subtitle: 'Each row keeps the slot and varies one part of the set-up',
       body:
         '<table class="t-robust roomy"><thead><tr><th>Change</th><th>Result</th></tr></thead><tbody>' +
-          '<tr data-step="1"><th>Preparation cost laws (A.3)</th><td>Reversal holds with atoms or none; entry at ' + m('r_1') + ' equals ' + q('p4_atomless_r1_entry') + ' with the example’s band</td></tr>' +
-          '<tr data-step="2"><th>Value classes, priors (A.4, A.5)</th><td>Holds for every ranked pair and prior at suitable costs; at the example’s costs the prior range is ' + m(T`({{prior_lo_B}},\,{{prior_hi_B}})`) + '; many classes need separation</td></tr>' +
+          '<tr data-step="1"><th>Preparation cost laws (A.3)</th><td>The reversal holds with atoms or without atoms; entry at ' + m('r_1') + ' equals ' + q('p4_atomless_r1_entry') + ' with the example’s band</td></tr>' +
+          '<tr data-step="2"><th>Value classes, priors (A.4, A.5)</th><td>Holds for every ranked pair and prior at suitable costs; at the example’s costs the prior range is ' + m(T`({{prior_lo_B}},\,{{prior_hi_B}})`) + '; many classes need a separation condition</td></tr>' +
           '<tr data-step="3"><th>Complementary signals (A.6)</th><td>In the example, with accuracies ' + m(T`({{sig_comp_aT}},\,{{sig_comp_d}})`) + ', entry ' + q('p4_comp_b_r0_entry') + ' → ' + q('p4_comp_b_r1_entry') + '</td></tr>' +
-          '<tr data-step="4"><th>Payment rule (A.8)</th><td>The spread response weakly has the sign of ' + m(T`1-2\omega`) + ' for seller share ' + m(T`\omega`) + '; sale terms sit in the next frame</td></tr>' +
+          '<tr data-step="4"><th>Payment rule (A.8)</th><td>The spread response weakly has the sign of ' + m(T`1-2\omega`) + ' for seller share ' + m(T`\omega`) + '. The next frame covers sale terms</td></tr>' +
         '</tbody></table>' +
-        take('One slot and unit orders carry the result across cost, value and signal variants.', 5) +
+        take('Each variant retains one slot with unit orders.', 5) +
         nav(go('app:robust', 'Extensions'), go('app:sizes', 'Order sizes')) });
 
     frame({ id: 'f15', label: 'F15', num: '19', part: 6, minutes: 1.0, targets: ['main:welfare'], defines: [], widget: 'access',
@@ -337,7 +336,7 @@
         '</tbody></table>' +
         ul([[1, 'Surplus is acquisition surplus net of preparation costs; transfers net out'],
           [2, 'Price access adds preparation only after a purchase, at beliefs that cover ' + m('c_H')],
-          [3, 'Reserves (A.9): at a reserve that excludes the low class entry is flat; strict deterrence at ' + q('rsv_deter') + ' also excludes the weak incumbent']], 'roomy') +
+          [3, 'At a reserve that excludes the low class (A.9), entry is flat. Strict deterrence needs the higher reserve ' + q('rsv_deter') + ', which also excludes the weak incumbent']], 'roomy') +
         nav(go('app:welfare', 'Sale terms in detail')) });
 
     frame({ id: 'f16', label: 'F16', num: '20', part: 7, minutes: 1.0, targets: [], defines: [], widget: '',
@@ -354,8 +353,8 @@
       title: 'Conclusion', subtitle: '',
       body:
         ul([[0, key('A stronger incumbent can bring the challenger in:') + ' in the example, entry ' + q('entry_r0') + ' → ' + q('entry_r1_B') + ', then back to ' + q('entry_r2') + ' at ' + m('r_2')],
-          [1, '<b>Why:</b> strength shifts a value gap to shareholders, trade pays in the slot, and a buy order makes high-cost preparation pay'],
-          [2, '<b>Implication:</b> competition in the auction can create competition for entry, via the stock price before preparation']], 'conclusion') });
+          [1, 'Strength shifts a value gap to shareholders. Trade pays in the slot, and a buy order makes high-cost preparation pay'],
+          [2, 'Competition in the auction can create competition for entry, through the stock price before preparation']], 'conclusion') });
 
     /* ================================================================ backup frames */
 
@@ -389,7 +388,7 @@
       body:
         d(T`\Pr(X{=}1\mid H)\le\lambda+b,\qquad \Pr(X{=}1\mid L)\ge b,\qquad b=(1-\lambda)\beta`) +
         ul(['A buy order in class ' + m('H') + ' comes from the investor or from a liquidity buy. In class ' + m('L') + ', a liquidity buy alone gives chance at least ' + m('b'),
-          'For nonzero orders the bounds need no bound on ' + m(T`\beta`) + ' past ' + m(T`\beta<1/2`) + '. The bound ' + m(T`\beta\le 1/3`) + ' covers the zero order',
+          'For nonzero orders the bounds need no condition on ' + m(T`\beta`) + ' beyond ' + m(T`\beta<1/2`) + '. The bound ' + m(T`\beta\le 1/3`) + ' covers the zero order',
           'Likelihood ratios for ' + m('H') + ' against ' + m('L') + ' then stay in ' + m(T`[1/(1+u),\,1+u]`) + ' at every order, for every investor strategy',
           'Bayes rule turns that band into ' + m(T`m(\pi)\le\mu\le M(\pi)`) + ' at every price',
           'At the example’s prior, the band is ' + m(T`[{{m_half_B}},\,{{M_half_B}}]`) + '. Full orders attain both ends'], 'small') +
@@ -407,7 +406,7 @@
           tr3('Research cost ' + m('a') + ' (Proposition A.1)', m(T`({{res_a_lo}},\,{{res_a_up}})`), q('res_a')) +
           tr3('Research cap ' + m(T`\bar\lambda`), m(T`({{res_cap_lo}},\,{{res_cap_hi}})`), q('res_cap')) +
         '</tbody></table>' +
-        gray('Each region is cut out by strict inequalities: the results hold on an open set of inputs.') +
+        gray('Each region is cut out by strict inequalities, so the results hold on an open set of inputs.') +
         nav(back('main:bench')) });
 
     backup({ id: 'a6', label: 'A6', origin: 'f9', targets: ['app:prop2'], title: 'Proof structure of Proposition 2', subtitle: '',
@@ -441,12 +440,12 @@
           tr3(m('r_N'), q('rN'), 'last strength with a quiet market') +
           tr3(m('r_J'), q('rJ'), 'the full purchase is alone from here') +
           tr3(m('r_S'), q('rS_B'), 'low class sells for certain from here') +
-          tr3(m('r_C'), q('rC_B'), 'entry ceiling: top posterior stops short of ' + m('c_H') + ' past ' + m('r_C')) +
+          tr3(m('r_C'), q('rC_B'), 'entry ceiling: the top posterior stops short of ' + m('c_H') + ' above ' + m('r_C')) +
         '</tbody></table>' +
         ul(['Before ' + m('r_A') + ', a purchase cannot pay at any mix rate, so no informative market exists',
           'On ' + m('[r_A,r_F)') + ', the mix rate adjusts with strength and entry rises with it',
           'From ' + m('r_F') + ' to ' + m('r_N') + ', a full purchase coexists with a quiet market and entry in it is constant',
-          'Past ' + m('r_N') + ', a quiet market fails: a unit order against the flat price pays. Mixed orders at the entry floor join the full purchase on ' + m('(r_N,r_J)') + '; from ' + m('r_J') + ' the full purchase is alone'], 'small') +
+          'Past ' + m('r_N') + ', a quiet market fails: a unit order against the flat price pays. Mixed orders at the entry floor join the full purchase on ' + m('(r_N,r_J)') + '. From ' + m('r_J') + ', the full purchase is alone'], 'small') +
         nav(back('main:coex')) });
 
     backup({ id: 'a9', label: 'A9', origin: 'f13', targets: ['app:research'], title: 'Research in detail', subtitle: '',
@@ -456,9 +455,9 @@
           'Zero research, with entry ' + m(T`\rho`) + ', is an equilibrium exactly on ' + m('[r_0,r_N]'),
           'Recruiting research is an equilibrium exactly on ' + m('[r_R,r_C]') + ': research rises from ' + q('res_lambda_rR') + ' to the cap on ' + m(T`[r_R,r_{\bar\lambda})`) + ' and stays at the cap on ' + m(T`[r_{\bar\lambda},r_C]`) + '; entry rises from ' + q('res_entry_rR') + ' to ' + q('res_entry_cap') + ' and keeps that value up to ' + m('r_C'),
           'Floor-entry research, in which both classes trade after a success, no order recruits and entry is ' + m(T`\rho`) + ', is an equilibrium exactly on ' + m('(r_N,r_Q)') + ' and on ' + m('(r_C,r_2]') + '; there is no other equilibrium',
-          'At ' + q('str_r155') + ', ' + q('str_r160') + ' and ' + q('str_r165') + ' there are exactly two equilibria: zero research, and recruiting research below the cap (class ' + m('H') + ' buys after a success, class ' + m('L') + ' abstains). Research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + ' and entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165'),
+          'At ' + q('str_r155') + ', ' + q('str_r160') + ' and ' + q('str_r165') + ' there are exactly two equilibria: zero research, and recruiting research below the cap (class ' + m('H') + ' buys after a success, class ' + m('L') + ' abstains). Research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + '. Entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165'),
           'The unique equilibrium has zero research at ' + m('r_0') + ', recruiting research at the cap at ' + m('r_1') + ' and floor-entry research at the cap at ' + m('r_2') + ', where entry is ' + m(T`\rho`)], 'small') +
-        gray('Costly research with an alternative arrival has precedent in Dow and Gorton 1997.') +
+        gray('Costly research with an alternative arrival follows Dow and Gorton 1997.') +
         nav(back('main:research')) });
 
     backup({ id: 'a10', label: 'A10', origin: 'f14', targets: ['app:robust'], title: 'Extensions in detail', subtitle: '',
@@ -466,7 +465,7 @@
         '<table class="t-ext"><thead><tr><th>Variant</th><th>Statement in the slot set-up</th></tr></thead><tbody>' +
           '<tr><th>General values, priors (A.4)</th><td>Proposition 2 holds for every ranked pair and prior at suitable costs, under (H1)–(H3) with ' + m(T`m(\pi)`) + ', ' + m(T`M(\pi)`) + '</td></tr>' +
           '<tr><th>Many classes (A.5)</th><td>The result holds under a separation condition on class proceeds; without it one price can pool two posteriors</td></tr>' +
-          '<tr><th>Cost laws (A.3)</th><td>The reversal holds with atoms or none; an atomless high component turns the drop at the entry ceiling into a ramp</td></tr>' +
+          '<tr><th>Cost laws (A.3)</th><td>The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp</td></tr>' +
           '<tr><th>Private signals (A.6)</th><td>In the example, accuracies ' + m(T`({{sig_comp_aT}},\,{{sig_comp_d}})`) + ' give entry ' + q('p4_comp_b_r0_entry') + ' → ' + q('p4_comp_b_r1_entry') + '; without the challenger signal entry is ' + q('p4_comp_b_no_y_r1_entry') + ' at both strengths</td></tr>' +
           '<tr><th>Price access (A.7)</th><td>Shareholders gain in total at every trade scale below ' + q('p2_access_break_even') + '</td></tr>' +
           '<tr><th>Payment rule (A.8)</th><td>The spread response weakly has the sign of ' + m(T`1-2\omega`) + '; strictly when ' + m(T`\omega\ne1/2`) + ' and ' + m(T`\mathbb{E}[(R-\ell)_+]`) + ' changes strictly</td></tr>' +
@@ -477,7 +476,7 @@
       body:
         ul(['The slot set-up uses unit orders ' + m(T`\{-1,0,1\}`) + ', so every order is on path and no off-path belief enters',
           'A menu of continuous order sizes needs a convention for the sizes that no class uses, as in Edmans, Goldstein and Jiang 2015',
-          'Another route keeps every size on path through additive liquidity flow',
+          'Additive liquidity flow also keeps every size on path',
           'With Laplace noise of scale ' + m(T`\xi`) + ' and full unit orders, the top posterior equals the slot value ' + m('M(\\pi)') + ' when ' + m(T`1+u=e^{2/\xi}`),
           'The two set-ups then share the posterior bounds. They differ in the probability that each class reaches the top posterior'], 'roomy') +
         take('Unit orders keep prices on path at every order.') +
@@ -486,7 +485,7 @@
     backup({ id: 'a12', label: 'A12', origin: 'f15', targets: ['app:welfare'], title: 'Sale terms in detail', subtitle: '',
       body:
         ul(['<b>Price access (A.7):</b> at ' + m('r_1') + ', proceeds gain equals ' + q('p2_access_proceeds_gain') + ' and net surplus gain equals ' + q('p2_access_surplus_gain'),
-          'Orders and trade costs match in the two access cases at ' + m('r_1') + '; access adds preparation after a purchase only',
+          'Orders and trade costs are the same in the two access cases at ' + m('r_1') + '. Access adds preparation only after a purchase',
           '<b>Reserve (A.9):</b> at the reserve ' + q('rsv_points_excl') + ', which excludes the low class, full orders hold at both strengths and entry is flat',
           'Strict deterrence needs reserve ' + q('rsv_deter') + ', a level that excludes the low class and the weak incumbent',
           '<b>Payment rule (A.8):</b> with seller share ' + m(T`\omega`) + ', the spread response weakly has the sign of ' + m(T`1-2\omega`) + '; strictly when ' + m(T`\omega\ne1/2`) + ' and ' + m(T`\mathbb{E}[(R-\ell)_+]`) + ' changes strictly'], 'small') +

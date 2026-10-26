@@ -245,7 +245,7 @@ Stock Prices and the Discovery of Takeover Bidders}
 \vspace{-6pt}
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item One bidder is ready: the \textbf{incumbent}
-\item Incumbent type gives a public clue to strength. Incumbent value stays private \graycite{Gorbenko and Malenko 2014}
+\item The incumbent's type is public and signals its strength. Its value is private \graycite{Gorbenko and Malenko 2014}
 \item A second bidder is not ready: the \textbf{challenger}
 \item To bid, the challenger must first \textbf{prepare}: due diligence, finance, approvals
 \item That step costs money and time. The probability that the challenger prepares is \textbf{entry}
@@ -283,8 +283,8 @@ Stock Prices and the Discovery of Takeover Bidders}
 \item \textbf{Sale rule:} cash second-price auction with reserve $p$. The top bid wins and pays $\max\{p,\text{other bid}\}$. Each bidder bids its value
 \item \textbf{Incumbent:} value $R\sim U[0,r]$. Strength $r$ is public; only the incumbent knows $R$
 \item \textbf{Challenger:} class $j\in\{H,L\}$, prior $\pi$ on $H$, value from $G_j$. The example uses point masses $h$ and $\ell$
-\item The challenger learns its value after preparation, not before
-\item \Cost{\textbf{Cost:} zero with probability $\rho$, else $c_H>0$, with no link to class}
+\item The challenger learns its value only after preparation
+\item \Cost{\textbf{Cost:} zero with probability $\rho$, else $c_H>0$, independent of class}
 \end{itemize}}
 \NavGap
 \PlaceNav{\hyperlink{app:notation}{\beamergotobutton{Notation}}}
@@ -293,7 +293,7 @@ Stock Prices and the Discovery of Takeover Bidders}
 % ======================================================================
 % M6. One auction, two claims
 % ======================================================================
-\begin{frame}[label=F3]{One auction, two claims, opposite responses}
+\begin{frame}[label=F3]{Strength raises the spread and lowers challenger profit}
 \framesubtitle{Who wins and who pays at incumbent value $R$; in the example $p<\ell<r<h$}
 \vspace{2pt}
 \begin{center}\small
@@ -328,10 +328,10 @@ B_r(\mu)=g_L+\mu(g_H-g_L)\ &\downarrow && \text{gross profit at belief $\mu$}
 \framesubtitle{The challenger sees the price, not the order and not the class}
 \hypertarget{main:slot}{}
 \begin{enumerate}\setlength{\itemsep}{2pt}
-\item One public order opportunity comes first. The name for it is the \textbf{order slot}
+\item One public order comes first: the \textbf{order slot}
 \item With probability $\lambda$, the \textbf{informed investor} fills the slot. The investor sees class $j$ and picks $q\in\{-1,0,1\}$. A nonzero order costs $k$
 \item With probability $1-\lambda$, a \textbf{liquidity trader} fills the slot. Sale, no order and buy have probabilities $\beta$, $1-2\beta$, $\beta$
-\item No observer sees slot identity. The identity draw has no link to class, costs or $R$
+\item No observer sees who filled the slot. The draw is independent of class, cost and $R$
 \item Market makers see order $X\in\{-1,0,1\}$ and set $P=\mathbb{E}[V_T\mid X]$, with $V_T$ as sale proceeds per share
 \end{enumerate}
 \vspace{-2pt}
@@ -365,8 +365,8 @@ Belief $\mu$ & $\reg{m_half_B}$ & $\reg{prim_pi}$ & $\reg{M_half_B}$\\
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
 \item Price at belief $\mu$: $P_r(\mu)=t_0+e_r(\mu)\bigl(t_L-t_0+\Info{\Delta_T}\mu\bigr)$
-\item Entry rule: $e_r(\mu)=\rho+(1-\rho)\,\mathbf{1}\{B_r(\mu)\ge c_H\}$, since the zero cost always pays
-\item Entry at least $\rho$ and $\Delta_T>0$ let the challenger recover $\mu$ from $P$
+\item Entry rule: $e_r(\mu)=\rho+(1-\rho)\,\mathbf{1}\{B_r(\mu)\ge c_H\}$, because a zero-cost challenger always prepares
+\item Because entry is at least $\rho$ and $\Delta_T>0$, the challenger can recover $\mu$ from $P$
 \end{itemize}}
 \TakeawayWithNav[0.3em]{A buy order moves belief up to $M(\pi)$. Belief stays short of one.}
 \PlaceNav{\hyperlink{app:belief}{\beamergotobutton{Posterior bounds}}}
@@ -395,7 +395,6 @@ $r_0,r_1,r_2$ & $\reg{prim_r0}$, $\reg{prim_r1}$, $\reg{prim_r2}$ & weak, strong
 \end{tabular}
 \end{center}
 \vspace{-4pt}
-\GrayLine{The inputs illustrate the results.}
 \TakeawayWithNav[0.5em]{Comparisons vary $r$ across $r_0$, $r_1$ and $r_2$ and hold all else fixed.}
 \PlaceNav{\hyperlink{app:bench}{\beamergotobutton{Recruitment region}}}
 \end{frame}
@@ -408,7 +407,7 @@ $r_0,r_1,r_2$ & $\reg{prim_r0}$, $\reg{prim_r1}$, $\reg{prim_r2}$ & weak, strong
 \vspace{2pt}
 {\small
 \begin{itemize}\setlength{\itemsep}{3pt}
-\item Buy after $H$: expected share payoff less price. Sell after $L$: price less expected share payoff
+\item A buy after $H$ earns the expected share payoff less the price. A sale after $L$ earns the price less the expected share payoff
 \item Each correct order earns at most $\Info{\Delta_T}$ before cost, under every profile
 \item Set $\kappa=\min\{m,1-M\}$. Each correct order earns at least $\rho\kappa\,\Info{\Delta_T}$ before cost
 \end{itemize}}
@@ -438,11 +437,11 @@ Strong $r_1$ & $\rho\kappa\,\Info{\Delta_T(r_1)}-k=\reg{margin_kstrong_B}>0$ & $
 \vspace{-6pt}
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
-\item Zero cost always pays; cost $c_H$ pays exactly at beliefs at or past $\tau(r)$
+\item A zero-cost challenger always prepares. A challenger with cost $c_H$ prepares exactly at beliefs at or past $\tau(r)$
 \item Preparation thresholds: $\tau(r_0)=\reg{tau_r0}$, $\tau(r_1)=\reg{tau_r1}$, $\tau(r_2)=\reg{tau_r2}$; top posterior $M=\reg{M_half_B}$
 \item At $r_1$, a purchase clears the threshold. Past the entry ceiling $r_C$, no order clears it
 \end{itemize}}
-\Takeaway[0.3em]{The entry ceiling $r_C$ sits just below $r_2$.}
+\Takeaway[0.3em]{The entry ceiling $r_C$ lies just below $r_2$.}
 \end{frame}
 
 % ======================================================================
@@ -468,7 +467,7 @@ Strong $r_1$ & $\rho\kappa\,\Info{\Delta_T(r_1)}-k=\reg{margin_kstrong_B}>0$ & $
 \vspace{0pt}
 {\small Ownership in part (ii) rises exactly if $[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)$, with $W_H(F)$ as the class $H$ win chance at reserve $p$. If class $H$ outbids $F_1$, ownership rises and class $H$'s takeover share does not fall.\par}
 \vspace{0pt}
-\GrayLine{The outcome is unique in each part, under all four tie rules. Each condition is a strict inequality: the parts hold on an open set of inputs.}
+\GrayLine{The outcome is unique in each part, under all four tie rules. Each condition is a strict inequality, so the parts hold on an open set of inputs.}
 \TakeawayWithNav[0.3em]{\Info{wider $\Delta_T$ $\to$ trade pays $\to$ informative price $\to$ good news clears $c_H$ $\to$ entry at high cost}}
 \PlaceNav{\hyperlink{app:prop2}{\beamergotobutton{Proof structure}}}
 \end{frame}
@@ -522,9 +521,9 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \vspace{2pt}
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
-\item Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then cuts $B_r(\mu)$ at each belief: entry can only fall
-\item Frozen full orders give the same entry up to the entry ceiling $r_C$, then $\rho$. At $r_0$ the control is not an equilibrium
-\item With the price hidden, cost $c_H$ never pays at the prior, so entry stays at $\rho$
+\item Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then weakly lowers $B_r(\mu)$ at each belief, so entry can only fall
+\item The same full orders at both strengths give the same entry up to the entry ceiling $r_C$, then $\rho$. At $r_0$ the control is not an equilibrium
+\item With the price hidden, a challenger with cost $c_H$ never prepares at the prior, so entry stays at $\rho$
 \end{itemize}}
 \Takeaway{The rise comes from a change in what the price reveals. At a fixed belief, a stronger incumbent weakly lowers gross profit.}
 \end{frame}
@@ -546,7 +545,7 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \[\begin{gathered}\pi<\tau\le M(\pi),\\[2pt] \frac{k}{1-\tau}\le\Delta_T\le\frac{k}{\rho\max\{\pi,1-\pi\}}\end{gathered}\]
 \item The informative market is then unique: class $L$ abstains, only a purchase recruits a high-cost challenger
 \item Entry rises with the spread while class $H$ mixes its purchase, and is constant once it buys for sure
-\item Lower bound: a purchase that reaches $\tau$ covers $k$. Upper bound: an order against a flat price earns at most $k$
+\item At the lower bound, a purchase that reaches $\tau$ covers $k$. At the upper bound, an order against a flat price earns at most $k$
 \end{itemize}}
 \end{columns}
 \Takeaway[0.3em]{The spread and the preparation threshold decide where both markets exist.}
@@ -580,20 +579,20 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \begin{frame}[label=F13,shrink=3]{Competition creates research}
 \framesubtitle{Proposition 4 at the prior $\reg{prim_pi}$: costly research sets presence $\lambda$, with a cap $\bar\lambda$}
 \hypertarget{main:research}{}
-{\small Research costs $\tfrac{a}{2}\lambda^2$. A success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At $\reg{str_r155}$, $\reg{str_r160}$, $\reg{str_r165}$ research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$ and entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$.\par}
+{\small Research costs $\tfrac{a}{2}\lambda^2$. A success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At $\reg{str_r155}$, $\reg{str_r160}$, $\reg{str_r165}$ research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$. Entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$.\par}
 \begin{center}
 \includegraphics[width=\linewidth,height=0.325\textheight,keepaspectratio]{research_talk.pdf}
 \end{center}
 \vspace{-9pt}
 \GrayLine{Corollary 3: zero research on $[r_0,r_N]$; recruiting research on $[r_R,r_C]\approx[\reg{res_rR},\reg{res_rC}]$, below the cap until $r_{\bar\lambda}\approx\reg{res_rcap}$ and at the cap from there, with entry rising from $\reg{res_entry_rR}$ to $\reg{res_entry_cap}$ and then constant; floor-entry research on $(r_N,r_Q)$ and on $(r_C,r_2]$.}
-\TakeawayWithNav[0.3em]{Research and entry rise together; research at the cap holds up to the entry ceiling $r_C$.}
+\TakeawayWithNav[0.3em]{Research and entry rise together. Research stays at the cap up to the entry ceiling $r_C$.}
 \PlaceNav{\hyperlink{app:research}{\beamergotobutton{Research in detail}}}
 \end{frame}
 
 % ======================================================================
 % M17. Robustness in one frame
 % ======================================================================
-\begin{frame}[label=F14]{The reversal survives changes to the model}
+\begin{frame}[label=F14]{The reversal holds under changes to the model}
 \framesubtitle{Each row keeps the slot and varies one part of the set-up}
 \hypertarget{main:robust}{}
 \vspace{2pt}
@@ -602,15 +601,15 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \toprule
 Change & Result\\
 \midrule
-Preparation cost laws (A.3) & Reversal holds with atoms or none; entry at $r_1$ equals $\reg{p4_atomless_r1_entry}$ with the example's band\\
-Value classes, priors (A.4, A.5) & Holds for every ranked pair and prior at suitable costs; at the example's costs the prior range is $(\reg{prior_lo_B},\reg{prior_hi_B})$; many classes need separation\\
+Preparation cost laws (A.3) & The reversal holds with atoms or without atoms; entry at $r_1$ equals $\reg{p4_atomless_r1_entry}$ with the example's band\\
+Value classes, priors (A.4, A.5) & Holds for every ranked pair and prior at suitable costs; at the example's costs the prior range is $(\reg{prior_lo_B},\reg{prior_hi_B})$; many classes need a separation condition\\
 Complementary signals (A.6) & In the example, with accuracies $(\reg{sig_comp_aT},\reg{sig_comp_d})$, entry $\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}$\\
-Payment rule (A.8) & The spread response weakly has the sign of $1-2\omega$ for seller share $\omega$; sale terms sit in the next frame\\
+Payment rule (A.8) & The spread response weakly has the sign of $1-2\omega$ for seller share $\omega$. The next frame covers sale terms\\
 \bottomrule
 \end{tabular}
 \end{center}
 \vspace{-2pt}
-\TakeawayWithNav[0.3em]{One slot and unit orders carry the result across cost, value and signal variants.}
+\TakeawayWithNav[0.3em]{Each variant retains one slot with unit orders.}
 \PlaceNav{\hyperlink{app:robust}{\beamergotobutton{Extensions}}\NavSep\hyperlink{app:sizes}{\beamergotobutton{Order sizes}}}
 \end{frame}
 
@@ -636,7 +635,7 @@ Surplus net of preparation costs & $\reg{p2_base_r1_surplus}$ & $\reg{p2_base_hi
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item Surplus is acquisition surplus net of preparation costs; transfers net out
 \item Price access adds preparation only after a purchase, at beliefs that cover $c_H$
-\item Reserves (A.9): at a reserve that excludes the low class entry is flat; strict deterrence at $\reg{rsv_deter}$ also excludes the weak incumbent
+\item At a reserve that excludes the low class (A.9), entry is flat. Strict deterrence needs the higher reserve $\reg{rsv_deter}$, which also excludes the weak incumbent
 \end{itemize}}
 \NavGap
 \PlaceNav{\hyperlink{app:welfare}{\beamergotobutton{Sale terms in detail}}}
@@ -664,8 +663,8 @@ Surplus net of preparation costs & $\reg{p2_base_r1_surplus}$ & $\reg{p2_base_hi
 \begin{frame}[label=F17]{Conclusion}
 \begin{itemize}\setlength{\itemsep}{18pt}
 \item \KeyIdea{A stronger incumbent can bring the challenger in:} in the example, entry $\reg{entry_r0}\to\reg{entry_r1_B}$, then back to $\reg{entry_r2}$ at $r_2$
-\item \textbf{Why:} strength shifts a value gap to shareholders, trade pays in the slot, and a buy order makes high-cost preparation pay
-\item \textbf{Implication:} competition in the auction can create competition for entry, via the stock price before preparation
+\item Strength shifts a value gap to shareholders. Trade pays in the slot, and a buy order makes high-cost preparation pay
+\item Competition in the auction can create competition for entry, through the stock price before preparation
 \end{itemize}
 \end{frame}
 
@@ -770,7 +769,7 @@ $a$; $\bar\lambda$; $\omega$ & research cost; cap; seller share in A.8\\
 {\small
 \begin{itemize}\setlength{\itemsep}{3pt}
 \item A buy order in class $H$ comes from the investor or from a liquidity buy. In class $L$, a liquidity buy alone gives chance at least $b$
-\item For nonzero orders the bounds need no bound on $\beta$ past $\beta<1/2$. The bound $\beta\le 1/3$ covers the zero order
+\item For nonzero orders the bounds need no condition on $\beta$ beyond $\beta<1/2$. The bound $\beta\le 1/3$ covers the zero order
 \item Likelihood ratios for $H$ against $L$ then stay in $[1/(1+u),\,1+u]$ at every order, for every investor strategy
 \item Bayes rule turns that band into $m(\pi)\le\mu\le M(\pi)$ at every price
 \item At the example's prior, the band is $[\reg{m_half_B},\reg{M_half_B}]$. Full orders attain both ends
@@ -799,7 +798,7 @@ Research cap $\bar\lambda$ & $(\reg{res_cap_lo},\reg{res_cap_hi})$ & $\reg{res_c
 \bottomrule
 \end{tabular}
 \end{center}
-\GrayLine{Each region is cut out by strict inequalities: the results hold on an open set of inputs.}
+\GrayLine{Each region is cut out by strict inequalities, so the results hold on an open set of inputs.}
 \BackButton{main:bench}
 \end{frame}
 
@@ -856,7 +855,7 @@ $r_F$ & $\reg{rF_B}$ & first strength with a certain purchase in it\\
 $r_N$ & $\reg{rN}$ & last strength with a quiet market\\
 $r_J$ & $\reg{rJ}$ & the full purchase is alone from here\\
 $r_S$ & $\reg{rS_B}$ & low class sells for certain from here\\
-$r_C$ & $\reg{rC_B}$ & entry ceiling: top posterior stops short of $c_H$ past $r_C$\\
+$r_C$ & $\reg{rC_B}$ & entry ceiling: the top posterior stops short of $c_H$ above $r_C$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -865,7 +864,7 @@ $r_C$ & $\reg{rC_B}$ & entry ceiling: top posterior stops short of $c_H$ past $r
 \item Before $r_A$, a purchase cannot pay at any mix rate, so no informative market exists
 \item On $[r_A,r_F)$, the mix rate adjusts with strength and entry rises with it
 \item From $r_F$ to $r_N$, a full purchase coexists with a quiet market and entry in it is constant
-\item Past $r_N$, a quiet market fails: a unit order against the flat price pays. Mixed orders at the entry floor join the full purchase on $(r_N,r_J)$; from $r_J$ the full purchase is alone
+\item Past $r_N$, a quiet market fails: a unit order against the flat price pays. Mixed orders at the entry floor join the full purchase on $(r_N,r_J)$. From $r_J$, the full purchase is alone
 \end{itemize}}
 \BackButton{main:coex}
 \end{frame}
@@ -880,10 +879,10 @@ $r_C$ & $\reg{rC_B}$ & entry ceiling: top posterior stops short of $c_H$ past $r
 \item Zero research, with entry $\rho$, is an equilibrium exactly on $[r_0,r_N]$
 \item Recruiting research is an equilibrium exactly on $[r_R,r_C]$: research rises from $\reg{res_lambda_rR}$ to the cap on $[r_R,r_{\bar\lambda})$ and stays at the cap on $[r_{\bar\lambda},r_C]$; entry rises from $\reg{res_entry_rR}$ to $\reg{res_entry_cap}$ and keeps that value up to $r_C$
 \item Floor-entry research, in which both classes trade after a success, no order recruits and entry is $\rho$, is an equilibrium exactly on $(r_N,r_Q)$ and on $(r_C,r_2]$; there is no other equilibrium
-\item At $\reg{str_r155}$, $\reg{str_r160}$ and $\reg{str_r165}$ there are exactly two equilibria: zero research, and recruiting research below the cap (class $H$ buys after a success, class $L$ abstains). Research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$ and entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$
+\item At $\reg{str_r155}$, $\reg{str_r160}$ and $\reg{str_r165}$ there are exactly two equilibria: zero research, and recruiting research below the cap (class $H$ buys after a success, class $L$ abstains). Research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$. Entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$
 \item The unique equilibrium has zero research at $r_0$, recruiting research at the cap at $r_1$ and floor-entry research at the cap at $r_2$, where entry is $\rho$
 \end{itemize}}
-\GrayLine{Costly research with an alternative arrival has precedent in Dow and Gorton 1997.}
+\GrayLine{Costly research with an alternative arrival follows Dow and Gorton 1997.}
 \BackButton{main:research}
 \end{frame}
 
@@ -898,7 +897,7 @@ Variant & Statement in the slot set-up\\
 \midrule
 General values, priors (A.4) & Proposition 2 holds for every ranked pair and prior at suitable costs, under (H1)--(H3) with $m(\pi)$, $M(\pi)$\\
 Many classes (A.5) & The result holds under a separation condition on class proceeds; without it one price can pool two posteriors\\
-Cost laws (A.3) & The reversal holds with atoms or none; an atomless high component turns the drop at the entry ceiling into a ramp\\
+Cost laws (A.3) & The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp\\
 Private signals (A.6) & In the example, accuracies $(\reg{sig_comp_aT},\reg{sig_comp_d})$ give entry $\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}$; without the challenger signal entry is $\reg{p4_comp_b_no_y_r1_entry}$ at both strengths\\
 Price access (A.7) & Shareholders gain in total at every trade scale below $\reg{p2_access_break_even}$\\
 Payment rule (A.8) & The spread response weakly has the sign of $1-2\omega$; strictly when $\omega\ne1/2$ and $\mathbb{E}[(R-\ell)_+]$ changes strictly\\
@@ -915,7 +914,7 @@ Payment rule (A.8) & The spread response weakly has the sign of $1-2\omega$; str
 \begin{itemize}\setlength{\itemsep}{4pt}
 \item The slot set-up uses unit orders $\{-1,0,1\}$, so every order is on path and no off-path belief enters
 \item A menu of continuous order sizes needs a convention for the sizes that no class uses, as in Edmans, Goldstein and Jiang 2015
-\item Another route keeps every size on path through additive liquidity flow
+\item Additive liquidity flow also keeps every size on path
 \item With Laplace noise of scale $\xi$ and full unit orders, the top posterior equals the slot value $M(\pi)$ when $1+u=e^{2/\xi}$
 \item The two set-ups then share the posterior bounds. They differ in the probability that each class reaches the top posterior
 \end{itemize}}
@@ -929,7 +928,7 @@ Payment rule (A.8) & The spread response weakly has the sign of $1-2\omega$; str
 {\small
 \begin{itemize}\setlength{\itemsep}{4pt}
 \item \textbf{Price access (A.7):} at $r_1$, proceeds gain equals $\reg{p2_access_proceeds_gain}$ and net surplus gain equals $\reg{p2_access_surplus_gain}$
-\item Orders and trade costs match in the two access cases at $r_1$; access adds preparation after a purchase only
+\item Orders and trade costs are the same in the two access cases at $r_1$. Access adds preparation only after a purchase
 \item \textbf{Reserve (A.9):} at the reserve $\reg{rsv_points_excl}$, which excludes the low class, full orders hold at both strengths and entry is flat
 \item Strict deterrence needs reserve $\reg{rsv_deter}$, a level that excludes the low class and the weak incumbent
 \item \textbf{Payment rule (A.8):} with seller share $\omega$, the spread response weakly has the sign of $1-2\omega$; strictly when $\omega\ne1/2$ and $\mathbb{E}[(R-\ell)_+]$ changes strictly
