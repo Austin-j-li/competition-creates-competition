@@ -1,7 +1,7 @@
-/* Explore the benchmark path of the order-slot version.
+/* Explore the example's path in the order-slot version.
  *
  * A slider on incumbent strength r. At each r the widget lists the equilibria that Appendix A4 of
- * the manuscript gives on the benchmark path (prior 1/2; an indifferent investor may mix; an
+ * the manuscript gives on the example's path (prior 1/2; an indifferent investor may mix; an
  * indifferent high-cost challenger prepares), and for the chosen one it shows the posterior after
  * each order against the preparation threshold, entry and the price after each order, total entry
  * and high-class ownership. The chart below is Figure 3: entry along the whole path, every form.
@@ -15,7 +15,7 @@
 
   var CCC = (window.CCC = window.CCC || {});
   var STEP = 0.005;
-  var NAMES = { N: 'No informed trade', R: 'Mixed purchase that recruits', F: 'Full purchase', Q: 'Mixed orders at the floor' };
+  var NAMES = { N: 'Quiet market', R: 'Mixed purchase that recruits', F: 'Full purchase', Q: 'Mixed orders at the entry floor' };
   var ORDERS = [['-1', 'Sale'], ['0', 'No order'], ['1', 'Purchase']];
   var state = { initialised: false, P: null, r: NaN, preset: null, sel: null, el: {}, rafPending: false, pendingR: NaN };
 
@@ -79,7 +79,7 @@
     return '<svg class="belief-line" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Posterior after each order against the threshold">' + out + '</svg>';
   }
 
-  /* ---------- Figure 3: entry along the benchmark path ---------- */
+  /* ---------- Figure 3: entry along the example's path ---------- */
   function path(D, t, opts) {
     var S = CCC.slot, P = S.inputs(D), narrow = !!(opts && opts.narrow), C = CCC.charts, ENT = S.plateau(P), traces = [];
     function seg(name, group, lo, hi, fy, color, dash, width, show, ax, ay, n) {
@@ -94,12 +94,12 @@
     }
     [['x', 'y', true], ['x2', 'y2', false]].forEach(function (p) {
       var ax = p[0], ay = p[1], show = p[2];
-      traces.push(seg('N: no informed trade', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
+      traces.push(seg('N: quiet market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
       traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.info, 'dash', 2.6, show, ax, ay));
       traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
       traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
-      traces.push(seg('Q: mixed orders at the floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
-      traces.push(seg('T: threshold branch (if an indifferent challenger may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
+      traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
+      traces.push(seg('T: threshold pair (if an indifferent challenger may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
       traces.push(dot(P.rA, P.entry_rA, t.info, false, ax, ay, 'R'));
       traces.push(dot(P.rF, ENT, t.info, false, ax, ay, 'F'));
       traces.push(dot(P.rC, ENT, t.info, false, ax, ay, 'F'));
@@ -173,7 +173,7 @@
     root.classList.add('explorer');
     while (root.firstChild) root.removeChild(root.firstChild);
     var head = el('div', 'explorer-head');
-    head.appendChild(el('span', 'explorer-title', 'Explore the benchmark path'));
+    head.appendChild(el('span', 'explorer-title', 'Explore the example’s path'));
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
@@ -222,9 +222,9 @@
     fig.tabIndex = 0;
     var mount = el('div', 'chart-mount');
     mount.id = 'chart-explorer';
-    mount.setAttribute('aria-label', 'Entry against incumbent strength in every equilibrium of the benchmark path');
+    mount.setAttribute('aria-label', 'Entry against incumbent strength in every equilibrium of the example’s path');
     fig.appendChild(mount);
-    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the benchmark path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N has no informed trade, R is a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders without recruitment. The thin dashed T branch exists only when an indifferent high-cost challenger may prepare with any probability. Filled markers belong to a branch and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. Under challenger mixing, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
+    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the quiet market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost challenger may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. Under challenger mixing, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
     state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };

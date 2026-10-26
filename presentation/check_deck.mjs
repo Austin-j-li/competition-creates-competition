@@ -89,10 +89,10 @@ global.window = {};
 require('./content.js');
 const enc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let LATEX = [];
-/* {{key}} prints a registry display inside a formula; for the symbol order check it stands for a digit. */
+/* {{key}} or \reg{key} prints a registry display inside a formula; for the symbol order check it stands for a digit. */
 const withKeys = (l) => {
-  LATEX.push(l.replace(/\{\{[A-Za-z0-9_]+\}\}/g, '0'));
-  const keys = [...l.matchAll(/\{\{([A-Za-z0-9_]+)\}\}/g)].map((x) => x[1]);
+  LATEX.push(l.replace(/\{\{[A-Za-z0-9_]+\}\}|\\reg\{[A-Za-z0-9_]+\}/g, '0'));
+  const keys = [...l.matchAll(/\{\{([A-Za-z0-9_]+)\}\}|\\reg\{([A-Za-z0-9_]+)\}/g)].map((x) => x[1] || x[2]);
   return keys.length ? `<span class="q q-tex" data-q="${enc(keys.join(' '))}">$${enc(l)}$</span>` : `<span class="m" data-latex="${enc(l)}">$${enc(l)}$</span>`;
 };
 const H = {

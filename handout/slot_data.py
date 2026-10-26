@@ -10,7 +10,7 @@ status, source_script, run_log and note. The manuscript prints the same rows thr
 (slot/manuscript/numbers.tex). The page prints each row's display, so a number on the page and
 the same number in the PDF agree to the last digit.
 
-The data script carries the declared primitives and the marked strengths of the benchmark path.
+The data script carries the declared primitives and the marked strengths of the example's path.
 The charts draw curves from the closed forms of the manuscript at these declarations; markers and
 labels use the registry rows themselves. Nothing here solves for an equilibrium. Stdlib only.
 """
@@ -32,13 +32,14 @@ INPUTS = {
     "beta": "beta_B", "a": "res_a",
 }
 # Rows derived from the declarations: the slot, the posterior bounds, the marked strengths of the
-# benchmark path and the research branch, and the points that the figures label.
+# example's path and of its research equilibria, and the points that the figures label.
 DERIVED = {
     "lambda": "lambda_B", "b": "b_B", "b0": "b0_B", "u": "u_B", "M": "M_half_B", "m": "m_half_B",
     "cap": "res_cap", "rA": "rA", "rF": "rF_B", "rN": "rN", "rJ": "rJ", "rS": "rS_B", "rC": "rC_B",
     "rR": "res_rR", "rRbar": "res_rcap", "rU": "res_rUR",
     "entry_floor": "entry_r0", "entry_plateau": "entry_r1_B", "entry_rA": "entry_rA_B",
-    "entry_rR": "res_entry_rR", "lambda_rR": "res_lambda_rR",
+    "entry_rR": "res_entry_rR", "lambda_rR": "res_lambda_rR", "entry_cap": "res_entry_cap",
+    "rQ": "res_rQ", "lambda_floor_rQ": "res_lambda_floor_rQ",
     "tau_r0": "tau_r0", "tau_r1": "tau_r1", "tau_r2": "tau_r2",
     "Delta_r0": "Delta_r0", "Delta_r1": "Delta_r1", "Delta_r2": "Delta_r2",
     "Bprior_r0": "Bprior_r0", "Bprior_r1": "Bprior_r1_B", "Bprior_r2": "Bprior_r2",

@@ -8,8 +8,8 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 ## 1. Brief
 
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk
-(30.25 planned minutes and a question reserve). All 33 frames stay in the Beamer order and
-organisation: the title, 20 numbered frames and 12 backups. The look copies the Beamer deck
+(30.25 planned minutes and a question reserve). All 34 frames stay in the Beamer order and
+organisation: the title, 21 numbered frames and 12 backups. The look copies the Beamer deck
 (moloch in the UCL palette) and the handout of the same design.
 
 Invariants:
@@ -23,7 +23,7 @@ Invariants:
 - No status labels. The registry's status column is never read, shown or embedded.
 - Purple is chrome only. `--c-info` (#AA4B00) marks the target-payoff spread and the information
   chain; `--c-cost` (#006F50) marks preparation costs and the cost line.
-- The curves of the figures are closed forms of the paper at the benchmark, computed at build time
+- The curves of the figures are closed forms of the paper in the example, computed at build time
   from registry primitives; no widget solves an equilibrium.
 
 ## 2. The helper contract (content.js)
@@ -33,7 +33,7 @@ the check, never from `content.js`.
 
 | Helper | Meaning |
 |---|---|
-| `H.m(latex)`, `H.d(latex)` | inline and display mathematics. `{{key}}` inside the formula prints the registry display of `key`. |
+| `H.m(latex)`, `H.d(latex)` | inline and display mathematics. `{{key}}` or `\reg{key}` inside the formula prints the registry display of `key`; `\reg{key}` keeps a subtitle identical to its `slides.tex` text. |
 | `H.q(key)` | a registry number in running text: the display that `\reg{key}` prints |
 | `H.v(key)` | the registry value as a number, for layout only (the position of a mark on a scale) |
 | `H.go(target, text)` | a link button to a `\hypertarget` name, as `\hyperlink` does |
@@ -99,11 +99,12 @@ Class vocabulary for the body: `.lead`, `.small`, `.roomy`, `.claims`, `.keyidea
 | `infosets` | F2 | `.tl[data-info]`, `#f2-infoset` | focus, hover or click shows the agent's information set |
 | `cases` | F3 | `.segmented [data-case]`, `tr[data-row]` | highlights the row R ≤ ℓ or R > ℓ |
 | `orders` | F5 | `.segmented [data-order]`, `#f5-pin`, `#f5-say` | an order moves a pin on the belief scale to m(π), π or M(π) and explains where it comes from |
-| `gain` | F7 | `#gain` | the floor ρκΔ_T and the ceiling Δ_T of a correct order in units of k, on a log axis, with the strengths where only no trade or only full orders can occur |
+| `gain` | F7 | `#gain` | the floor ρκΔ_T and the ceiling Δ_T of a correct order in units of k, on a log axis, with the strengths where only a quiet market or only full orders can occur |
 | `beliefs` | F8 | `#beliefs`, `#beliefs-r`, `#beliefs-r-value`, `#beliefs-readout` | the threshold belief τ(r) against the band [m, M]; the slider reads the plotted curve and says whether a buy order clears the threshold |
 | `controls` | F11 | `.segmented [data-row]`, `#f11-bars` | highlights a row and draws its two entry values |
-| `coex` | F12 | `#coex` | entry on each branch at the prior, whole path (a) and thresholds (b) |
-| `research` | F13 | `#research` | research intensity (a) and entry (b) on the research branch |
+| `region` | F12 | `#region` | the coexistence region of Proposition 3 in the plane of Δ_T and τ, with the example's path through r_0, r_A, r_F, r_N |
+| `coex` | F12b | `#coex` | entry in each equilibrium at the prior, whole path (a) and the marked strengths (b), with the threshold pair T |
+| `research` | F13 | `#research` | research (a) and entry (b) along the path in zero, recruiting and floor-entry research (Corollary 3) |
 | `access` | F15 | `.segmented [data-col]` | highlights a column |
 | `notation` | A2 | `#notation-table` | the A2 table from the notation rows |
 
@@ -162,7 +163,7 @@ sentence what the selected object is.
 ## 9. Data
 
 `window.CCC_DATA` holds `registry` (the key, value and display of every key the slides print, and
-nothing else) and `fig` (the curves and the benchmark inputs for the four figures). `window.CCC_DECK`
+nothing else) and `fig` (the curves and the example's inputs for the figures). `window.CCC_DECK`
 holds the frame list, the parts, the notation rows, the total of numbered slides and the
 checkpoint line; `window.CCC_NOTES` holds the speaker notes by label, from `notes.md`.
 

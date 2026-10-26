@@ -10,10 +10,11 @@ reachable through one link on the paper tab, "Earlier version: Laplace order flo
 (its front page and its two PDFs) and `/laplace/talk/` (its slides).
 
 The brief has six sections: the setting, the mechanism, the main result and its controls, the
-benchmark path (coexistence and research), robustness with welfare and sale terms, and the
-empirical implications. Only their headings appear in the sidebar. The model, the mechanism, the
-three propositions of the main text and the tests are visible; formal statements, derivations
-and long tables stay in native `details` controls.
+path between the three economies (coexistence and research), robustness with welfare and sale
+terms, and the empirical implications. Only their headings appear in the sidebar. The model, the
+mechanism, the four propositions and three corollaries of the main text (the corollaries state
+the example) and the tests are visible; formal statements, derivations and long tables stay in
+native `details` controls.
 
 The design is the "UCL family" direction: a UCL dark-purple masthead with the tabs, a white body
 with cards, pill controls and a dark theme. Purple is chrome only. Two concept colours hold on the
@@ -139,12 +140,14 @@ with a legend of toggle buttons, a hover readout and a keyboard cursor. The slid
 figures, which the deck used; `figures.js` removes them from this page's registry of figures.
 
 `figures.js` holds `CCC.slot`, the closed forms of the manuscript at the registry declarations:
-the benchmark auction payoffs, the order laws, posteriors, entry and prices of each equilibrium
-form on the benchmark path (Appendix A4), and the research branch (Section 5). It draws
-Figure 1 (the two returns), Figure 2 (beliefs and the entry ceiling) and Figure 4 (research).
+the auction payoffs of the example, the order laws, posteriors, entry and prices of each
+equilibrium form on the example's path (Corollary 2, Appendix A4), and recruiting and floor-entry
+research (Proposition 4, Corollary 3). It draws Figure 1 (the two returns), Figure 2 (beliefs and
+the entry ceiling) and Figure 4 (research and entry in each research equilibrium, as Corollary 3
+lists them).
 `explorer.js` is the explorer of Section 4: a slider on incumbent strength, the equilibria that
 Appendix A4 lists at that strength, the posterior after each order against the threshold, the
-order table, and Figure 3 (entry along the benchmark path, every form). Marked strengths and
+order table, and Figure 3 (entry along the example's path, every form). Marked strengths and
 labelled points are registry rows; the curves and the readouts evaluate the closed forms. Nothing
 on the page searches for an equilibrium.
 

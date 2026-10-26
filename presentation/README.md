@@ -1,7 +1,7 @@
 # Seminar slides (the /talk/ page)
 
 The web version of the Beamer talk in `slot/manuscript/slides.tex`, the seminar talk for the
-order-slot version of the paper: the title, 20 numbered slides, then 12 backups (A1 to A12), with
+order-slot version of the paper: the title, 21 numbered slides, then 12 backups (A1 to A12), with
 the same titles, numbers and backup links as the Beamer deck.
 
 ## Open and present
@@ -20,7 +20,7 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
 - Home: title. End: conclusion. The main sequence stops at the conclusion, as the PDF does.
 - A link button jumps to its backup. Back, or Escape, returns to the slide and the step it
   came from. Arrow keys inside the backups move between backups.
-- O: overview of all 33 frames by part. N: speaker notes. G: notation. T: dark or light theme.
+- O: overview of all 34 frames by part. N: speaker notes. G: notation. T: dark or light theme.
   F: fullscreen. R: reset the slide. ?: controls. A focused slider or figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
@@ -36,8 +36,8 @@ dim room. The choice persists in the browser under the same key as the front pag
   that `\reg{key}` prints in `slides.tex`.
 - `render.mjs` renders the slide records at build time: KaTeX for the mathematics, and a stop
   on any registry key the registry does not hold.
-- `figdata.py` computes the curves of the four figures from the closed forms of the paper at
-  the benchmark. Primitives and boundaries come from registry keys.
+- `figdata.py` computes the curves of the four figures from the closed forms of the paper in
+  the example. Primitives and boundaries come from registry keys.
 - `charts.js` is the SVG renderer of the figures, a trimmed copy of the handout's; it holds no builders.
 - `deck.js` is the engine: navigation, reveals, the link graph, panels and the widgets.
 - `deck.css` is the visual system: the moloch chrome of the Beamer deck in the UCL palette,
@@ -48,8 +48,9 @@ Interactive parts: the F2 timeline shows each agent's information set; F3 highli
 the payment table; F5 sends a pin to the belief an order induces; F7 draws the floor and the
 ceiling of the gain from a correct order against the order cost; F8 draws the threshold belief
 against strength with a strength slider; F11 switches between the full model and the two
-information controls; F12 draws entry on each equilibrium branch; F13 draws the research
-branch; F15 highlights a column. No widget solves an equilibrium. Hover or arrow keys over a
+information controls; F12 draws the coexistence region with the example's path; F12b draws entry
+in each equilibrium; F13 draws research and entry in each research equilibrium; F15 highlights a
+column. No widget solves an equilibrium. Hover or arrow keys over a
 figure give its values.
 
 ## Build and checks
@@ -86,7 +87,7 @@ With the preview server running:
 presentation/export_pdf.sh
 ```
 
-Headless Chrome prints all 33 frames with every reveal visible to `dist/presentation.pdf` at
+Headless Chrome prints all 34 frames with every reveal visible to `dist/presentation.pdf` at
 16 by 9 inches. The script opens the page with `?print=1`, which draws every figure and table
 first. Headless Chrome can hang on some machines; the Beamer PDF of `slides.tex` is the printable
 alternative. Inspect the rendered PDF after any edit.

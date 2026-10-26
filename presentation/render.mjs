@@ -55,10 +55,12 @@ function q(key) {
   return `<span class="q" data-q="${esc(key)}" title="${esc(key + ' = ' + plain(r.display))}">${shown}</span>`;
 }
 
-/* Mathematics; {{key}} inside the formula is replaced by the registry display before KaTeX runs. */
+/* Mathematics; {{key}} or \reg{key} inside the formula is replaced by the registry display before KaTeX
+   runs. \reg{key} keeps a formula of a subtitle identical to its slides.tex text. */
 function withKeys(latex, display) {
   const keys = [];
-  const filled = latex.replace(/\{\{([A-Za-z0-9_]+)\}\}/g, (_, k) => {
+  const filled = latex.replace(/\{\{([A-Za-z0-9_]+)\}\}|\\reg\{([A-Za-z0-9_]+)\}/g, (_, k1, k2) => {
+    const k = k1 || k2;
     const r = row(k);
     keys.push(k);
     return r ? texOf(r.display).replace(/^-(?=\d)/, '-') : '??';

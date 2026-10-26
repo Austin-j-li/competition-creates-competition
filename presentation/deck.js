@@ -185,7 +185,7 @@
       '<span><kbd>F</kbd></span><span>fullscreen</span>' +
       '<span><kbd>R</kbd></span><span>reset the slide</span>' +
       '<span><kbd>Esc</kbd></span><span>back from a backup slide, or close a panel</span></div>' +
-      '<p class="notes-meta">Numbers carry their registry key on hover. Figures draw closed forms of the paper at the benchmark; the slider reads those curves and solves no equilibrium.</p>');
+      '<p class="notes-meta">Numbers carry their registry key on hover. Figures draw closed forms of the paper in the example; the slider reads those curves and solves no equilibrium.</p>');
   }
   function fullscreen() {
     try { if (document.fullscreenElement) document.exitFullscreen(); else doc.requestFullscreen(); }
@@ -275,10 +275,43 @@
     return { traces: traces, layout: layout };
   }
 
-  /* F12: entry on each branch at the prior, whole path (a) and the strengths where the thresholds sit (b). */
+  /* F12: the coexistence region at the prior 1/2 in the plane of the spread and the threshold, with the example's path. */
+  function specRegion(t) {
+    var G = D.fig.region, I = D.fig.inputs, navy = t.accent, brick = t.info;
+    var left = G.left, top = I.M;
+    var xs = left.Delta.concat([G.D_N, G.D_N]), ys = left.tau.concat([top, 0.5]);
+    var traces = [
+      { mode: 'lines', name: 'coexistence region', showlegend: false, x: xs.concat([xs[0]]), y: ys.concat([ys[0]]), fill: 'toself', fillcolor: t.regionA, line: { color: t.regionA, width: 0.1 }, hovertemplate: 'skip' },
+      // closed edges: Δ_T = k/(1−τ), Δ_T = 2k/ρ and τ = M(π); the edge τ = π is open and stays the dotted prior line
+      { mode: 'lines', name: 'coexistence region', x: left.Delta.concat([G.D_N, G.D_N]), y: left.tau.concat([top, 0.5]), line: line(t, navy, 'solid', 2), hovertemplate: 'skip' },
+      { mode: 'lines', name: 'Δ<sub>T</sub> = k/(1−M)', x: [G.D_F, G.D_F], y: [0.5, top], line: line(t, navy, 'dash', 1.4), hovertemplate: 'skip' },
+      { mode: 'lines', name: 'path of the example', x: G.path.Delta, y: G.path.tau, customdata: G.path.r.map(function (r) { return [r.toFixed(3)]; }), line: line(t, brick, 'solid', 3),
+        hovertemplate: '<i>r</i> = %{customdata[0]}<extra>path of the example</extra>' }
+    ];
+    var layout = { height: 400, margin: { l: 78, r: 20, t: 30, b: 60 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [0, 0.2], dtick: 0.05, tick0: 0, title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', range: [0.45, 0.765], dtick: 0.1, tick0: 0.5, title: { text: 'preparation threshold τ' } } };
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
+    layout.annotations.push(at('π = ' + reg('prim_pi'), 0.004, I.pi, t.muted, { yanchor: 'top', yshift: -3 }));
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: top, y1: top, line: { color: navy, width: 1.2, dash: 'dot' }, layer: 'below' });
+    layout.annotations.push(at('<i>M</i>(π)', 0.004, top, navy, { yshift: 3 }));
+    var M = G.marks;
+    traces.push(dot([M.prim_r0[0]], [M.prim_r0[1]], t.ink, false, 'x', 'y', 10));
+    traces.push(dot([M.rA[0], M.rF_B[0], M.rN[0]], [M.rA[1], M.rF_B[1], M.rN[1]], brick, false, 'x', 'y', 10));
+    layout.annotations.push(at('<i>r</i><sub>0</sub>', M.prim_r0[0], M.prim_r0[1], t.ink, { xanchor: 'left', yanchor: 'top', yshift: -6, xshift: 4 }));
+    layout.annotations.push(at('<i>r</i><sub>A</sub>', M.rA[0], M.rA[1], brick, { xanchor: 'right', yanchor: 'bottom', xshift: -4, yshift: 6 }));
+    layout.annotations.push(at('<i>r</i><sub>F</sub>', M.rF_B[0], M.rF_B[1], brick, { xanchor: 'left', yanchor: 'bottom', xshift: 2, yshift: 8 }));
+    layout.annotations.push(at('<i>r</i><sub>N</sub>', M.rN[0], M.rN[1], brick, { xanchor: 'left', yanchor: 'top', xshift: 6, yshift: -6 }));
+    layout.annotations.push(at('coexistence', (G.D_F + G.D_N) / 2, 0.69, navy, { xanchor: 'center', size: 16 }));
+    layout.annotations.push(at('R', 0.063, 0.55, navy, { xanchor: 'center', size: 16 }));
+    layout.annotations.push(at('F', (G.D_F + G.D_N) / 2, 0.55, navy, { xanchor: 'center', size: 16 }));
+    return { traces: traces, layout: layout };
+  }
+
+  /* F12b: entry in each equilibrium at the prior, whole path (a) and the strengths where the marked strengths sit (b). */
   function specCoex(t) {
     var E = D.fig.entry, I = D.fig.inputs, B = D.fig.bounds;
-    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 292, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 240, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
     var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], range: [1.2, 3.6], dtick: 0.4, tick0: 1.2 }, { x: 'x2', y: 'y2', dom: [0.57, 1], range: [1.2, 2.4], dtick: 0.2, tick0: 1.2 }];
     panels.forEach(function (P, j) {
       layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: 'incumbent strength <i>r</i>' } };
@@ -289,9 +322,10 @@
         traces.push({ mode: 'lines', name: name, legendgroup: grp || name, showlegend: j === 0, x: br.r, y: br.y, customdata: pts(br.r, br.y), xaxis: P.x, yaxis: P.y,
           line: line(t, color, dash, w), hovertemplate: tpl + ' = %{customdata[0]}<extra>' + name + '</extra>' });
       }
-      add('N: no informed trade', E.N, navy, 'solid', 3.2, 'entry');
-      add('Q: mixed orders at the floor', E.Q, grey, 'dashdot', 3, 'entry');
-      add('R: mixed purchase', E.R, brick, 'dash', 3.2, 'entry');
+      add('T: threshold pair', E.T, t.ink, 'dash', 1.4, 'entry');
+      add('N: quiet market', E.N, navy, 'solid', 3.2, 'entry');
+      add('Q: mixed orders at the entry floor', E.Q, grey, 'dashdot', 3, 'entry');
+      add('R: mixed purchase that recruits', E.R, brick, 'dash', 3.2, 'entry');
       add('F: full purchase', E.F, brick, 'solid', 3.2, 'entry');
       add('F above r_C', E.F_floor, brick, 'solid', 3.2, 'entry', 'F: full purchase');
       var end = function (a) { return a[a.length - 1]; };
@@ -301,8 +335,8 @@
     var lab = function (txt, x, ax, lvl) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + lvl * 17, xanchor: 'center', font: { size: 14, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
     lab('<i>r</i><sub>0</sub>', I.r0, 'x', 0); lab('<i>r</i><sub>1</sub>', I.r1, 'x', 0); lab('<i>r</i><sub>2</sub>', I.r2, 'x', 0); lab('<i>r</i><sub>C</sub>', B.rC_B, 'x', 1);
     lab('<i>r</i><sub>A</sub>', B.rA, 'x2', 0); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2', 1); lab('<i>r</i><sub>N</sub>', B.rN, 'x2', 0); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2', 1); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2', 0);
-    layout.annotations.push({ text: 'N and<br>informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.45, yanchor: 'middle', xanchor: 'center', font: { size: 14, color: t.accent } });
-    layout.annotations.push(at('N: no trade', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yshift: 4 }));
+    layout.annotations.push({ text: 'quiet and<br>informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.45, yanchor: 'middle', xanchor: 'center', font: { size: 14, color: t.accent } });
+    layout.annotations.push(at('N: quiet market', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yshift: 4 }));
     layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, E.Q.y[0], t.c3, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 4 }));
     layout.annotations.push(at('R: mixed purchase', 1.455, 0.455, t.info, { xref: 'x2', yref: 'y2', yshift: 0 }));
     layout.annotations.push(at('F: full purchase', 1.62, E.F.y[0], t.info, { xref: 'x2', yref: 'y2', yshift: 4 }));
@@ -311,36 +345,45 @@
     return { traces: traces, layout: layout };
   }
 
-  /* F13: research intensity (a) and entry (b) on the strengths where the research branch lives. */
+  /* F13: research (a) and entry (b) along the path in each research equilibrium (Corollary 3). */
   function specResearch(t) {
     var R = D.fig.research, I = D.fig.inputs, B = D.fig.bounds, rho = I.rho;
-    var navy = t.accent, brick = t.info, traces = [], layout = { height: 262, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
-    var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], name: 'λ', ylab: 'research intensity λ', range: [-0.03, 0.42], dtick: 0.1, tick0: 0 },
-      { x: 'x2', y: 'y2', dom: [0.57, 1], name: 'E', ylab: 'total entry', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2 }];
+    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 262, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var panels = [{ x: 'x', y: 'y', name: 'λ', ylab: 'research λ', range: [-0.03, 0.42], dtick: 0.1, tick0: 0, dom: [0, 0.47] },
+      { x: 'x2', y: 'y2', name: 'entry', ylab: 'entry', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, dom: [0.57, 1] }];
     panels.forEach(function (P, j) {
-      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: [1.2, 2.0], dtick: 0.2, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } };
+      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: [I.r0, I.r2], dtick: 0.4, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } };
       layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: P.ylab } };
-      layout.shapes.push(band(B.rN, 2.0, t.regionC, P.x));
       layout.annotations.push(panelTag(j ? '(b)' : '(a)', P.x, P.y, t));
-      var zero = j ? rho : 0, cap = j ? R.plateau : R.cap_value, ys = j ? R.branch.entry : R.branch.lambda;
-      traces.push({ mode: 'lines', name: 'zero research', legendgroup: 'zero', showlegend: j === 0, x: R.zero.r, y: R.zero.r.map(function () { return zero; }), xaxis: P.x, yaxis: P.y, line: line(t, navy), customdata: R.zero.r.map(function () { return [zero]; }), hovertemplate: P.name + ' = %{customdata[0]}<extra>zero research</extra>' });
-      traces.push({ mode: 'lines', name: 'research branch', legendgroup: 'branch', showlegend: j === 0, x: R.branch.r, y: ys, xaxis: P.x, yaxis: P.y, line: line(t, brick, 'dash'), customdata: pts(R.branch.r, ys), hovertemplate: P.name + ' = %{customdata[0]}<extra>research branch</extra>' });
-      traces.push({ mode: 'lines', name: 'research at the cap', legendgroup: 'cap', showlegend: j === 0, x: R.cap.r, y: R.cap.r.map(function () { return cap; }), xaxis: P.x, yaxis: P.y, line: line(t, brick), customdata: R.cap.r.map(function () { return [cap]; }), hovertemplate: P.name + ' = %{customdata[0]}<extra>research at the cap</extra>' });
-      traces.push(dot([B.rN], [zero], navy, false, P.x, P.y, 8), dot([B.res_rR], [ys[0]], brick, false, P.x, P.y, 8), dot([B.res_rcap], [cap], brick, false, P.x, P.y, 8), dot([B.rN], [cap], brick, true, P.x, P.y, 9));
-      [[B.res_rR, 'r<sub>R</sub>', 0], [B.res_rcap, 'r̄<sub>R</sub>', 0], [B.rN, 'r<sub>N</sub>', 1]].forEach(function (mk) {
+      var zero = j ? rho : 0, cap = j ? R.plateau : R.cap_value, ys = j ? R.recruit.entry : R.recruit.lambda;
+      var fy = j ? R.floor.entry : R.floor.lambda, fcap = j ? rho : R.cap_value;
+      var seg = function (name, grp, xs, yv, color, dash) {
+        traces.push({ mode: 'lines', name: name, legendgroup: grp, showlegend: j === 0 && !!name, x: xs, y: yv, xaxis: P.x, yaxis: P.y, line: line(t, color, dash), customdata: pts(xs, yv),
+          hovertemplate: P.name + ' = %{customdata[0]}<extra>' + (name || grp) + '</extra>' });
+      };
+      seg('zero research', 'zero research', R.zero.r, R.zero.r.map(function () { return zero; }), navy);
+      seg('recruiting research', 'recruiting research', R.recruit.r, ys, brick, 'dash');
+      seg('', 'recruiting research', R.cap.r, R.cap.r.map(function () { return cap; }), brick);
+      seg('floor-entry research', 'floor-entry research', R.floor.r, fy, grey, 'dashdot');
+      seg('', 'floor-entry research', R.floor_cap.r, R.floor_cap.r.map(function () { return fcap; }), grey, 'dashdot');
+      var end = function (a) { return a[a.length - 1]; };
+      // open markers first: at r_C the filled marker belongs to recruiting research at the cap
+      traces.push(dot([end(R.floor.r), B.res_rC], [end(fy), fcap], grey, true, P.x, P.y, 9));
+      traces.push(dot([B.res_rR, B.res_rcap, B.res_rC], [ys[0], cap, cap], brick, false, P.x, P.y, 8));
+      traces.push(dot([B.res_rN], [zero], navy, false, P.x, P.y, 8));
+      [[B.res_rR, 'r<sub>R</sub>', 1], [B.res_rcap, 'r<sub>λ̄</sub>', 0], [B.res_rN, 'r<sub>N</sub>', 1], [B.res_rQ, 'r<sub>Q</sub>', 0], [B.res_rC, 'r<sub>C</sub>', 0]].forEach(function (mk) {
         layout.shapes.push(vline(mk[0], t.muted, 'dot', P.x));
-        layout.annotations.push({ text: mk[1].replace(/^r/, '<i>r</i>').replace('r̄', '<i>r̄</i>'), xref: P.x, x: mk[0], yref: P.y + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + mk[2] * 17, xanchor: 'center', font: { size: 14, color: t.muted } });
+        layout.annotations.push({ text: mk[1].replace(/^r/, '<i>r</i>'), xref: P.x, x: mk[0], yref: P.y + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + mk[2] * 17, xanchor: 'center', font: { size: 14, color: t.muted } });
       });
-      layout.annotations.push({ text: 'beyond <i>r</i><sub>N</sub>', xref: P.x, x: (B.rN + 2.0) / 2, yref: P.y + ' domain', y: 0.5, yanchor: 'middle', xanchor: 'center', font: { size: 15, color: t.muted } });
     });
-    layout.annotations.push(at('cap λ̄ = ' + reg('res_cap'), 1.21, D.fig.research.cap_value, t.muted, { yshift: 4, size: 14 }));
-    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 1.2, x1: B.res_rcap, y0: R.cap_value, y1: R.cap_value, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
-    layout.annotations.push(at('zero research', 1.21, 0, t.accent, { yshift: 5, size: 14 }));
-    layout.annotations.push(at('research branch', 1.58, 0.14, t.info, { yshift: 0, size: 14 }));
-    layout.annotations.push(at('zero research', 1.21, I.rho, t.accent, { xref: 'x2', yref: 'y2', yshift: 5, size: 14 }));
-    layout.annotations.push(at('research branch', 1.50, 0.40, t.info, { xref: 'x2', yref: 'y2', yshift: 0, size: 14 }));
-    layout.annotations.push(at(reg('res_entry_rR'), B.res_rR - 0.012, R.branch.entry[0], t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yanchor: 'top', yshift: -8, size: 14 }));
-    layout.annotations.push(at(reg('res_entry_cap'), B.res_rcap, R.plateau, t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 8, size: 14 }));
+    layout.annotations.push(at('cap λ̄ = ' + reg('res_cap'), 1.21, R.cap_value, t.muted, { yshift: 4, size: 14 }));
+    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: I.r0, x1: B.res_rcap, y0: R.cap_value, y1: R.cap_value, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
+    layout.annotations.push(at('zero', 1.22, 0, t.accent, { yshift: 5, size: 14 }));
+    layout.annotations.push(at('recruiting', 2.6, R.cap_value, t.info, { xanchor: 'center', yshift: 5, size: 14 }));
+    layout.annotations.push(at('floor-entry', 2.0, 0.1, t.c3, { xanchor: 'left', size: 14 }));
+    layout.annotations.push(at('zero', 1.22, I.rho, t.accent, { xref: 'x2', yref: 'y2', yanchor: 'top', yshift: -5, size: 14 }));
+    layout.annotations.push(at('recruiting', 2.6, R.plateau, t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 5, size: 14 }));
+    layout.annotations.push(at('floor-entry', 2.1, I.rho, t.c3, { xref: 'x2', yref: 'y2', xanchor: 'left', yshift: 5, size: 14 }));
     return { traces: traces, layout: layout };
   }
 
@@ -456,6 +499,7 @@
     },
     reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); $$('.hl', s).forEach(function (c) { c.classList.remove('hl'); }); }
   };
+  widgets.region = { render: function (s) { drawChart($('#region', s), specRegion(tokens()), 'region'); } };
   widgets.coex = { render: function (s) { drawChart($('#coex', s), specCoex(tokens()), 'coex'); } };
   widgets.research = { render: function (s) { drawChart($('#research', s), specResearch(tokens()), 'research'); } };
   widgets.notation = {
@@ -472,7 +516,7 @@
   function renderWidget(force) {
     var s = slides[index], w = widgets[s.dataset.widget];
     if (!w || !w.render) return;
-    if (!force && s.dataset.rendered === '1' && !/^(gain|beliefs|coex|research)$/.test(s.dataset.widget)) return;
+    if (!force && s.dataset.rendered === '1' && !/^(gain|beliefs|region|coex|research)$/.test(s.dataset.widget)) return;
     try { w.render(s); s.dataset.rendered = '1'; } catch (e) { errors.push(s.id + ': ' + e.message); }
   }
 

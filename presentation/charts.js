@@ -206,7 +206,8 @@
       }
       var ln = tr.line || {};
       var da = dashArray(ln.dash, ln.width);
-      if (d) out += '<path class="tr-line" d="' + d + '" fill="none" stroke="' + ln.color + '" stroke-width="' + (ln.width || 2) + '"' +
+      var filled = tr.fill === 'toself' && tr.fillcolor;
+      if (d) out += '<path class="tr-line" d="' + d + (filled ? 'Z' : '') + '" fill="' + (filled ? tr.fillcolor : 'none') + '" stroke="' + ln.color + '" stroke-width="' + (ln.width || 2) + '"' +
         (da ? ' stroke-dasharray="' + da + '"' : '') + ' stroke-linecap="round" stroke-linejoin="round"/>';
     }
     if (tr.error_y && tr.error_y.visible !== false) {

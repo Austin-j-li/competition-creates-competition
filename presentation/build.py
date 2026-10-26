@@ -172,12 +172,13 @@ def build() -> None:
     notes = read_notes(frames)
     figures = figdata.build(registry)
     used = {k: registry[k] for k in rendered["used"]}
-    for key in ("rA", "rF_B", "rN", "rJ", "rS_B", "rC_B", "res_rR", "res_rcap", "res_rUR", "prim_r0", "prim_r1", "prim_r2"):
+    for key in ("rA", "rF_B", "rN", "rJ", "rS_B", "rC_B", "res_rR", "res_rcap", "res_rN", "res_rQ", "res_rC",
+                "res_lambda_floor_rQ", "prim_r0", "prim_r1", "prim_r2"):
         used[key] = registry[key]
     total = max(int(f["num"]) for f in frames if not f.get("backup"))
     minutes = sum(f["minutes"] for f in frames if not f.get("backup"))
     checkpoints = ("Checkpoints: slide 6 by 9 min; slide 8 by 12.5 min, else skip slide 9; slide 12 by 20.25 min, else skip "
-                   "slides 15 and 17; slide 14 by 23.5 min, else give slide 16 as one sentence and skip slide 18.")
+                   "slides 15, 16 and 18; slide 14 by 23.5 min, else give slide 17 as one sentence and skip slide 19.")
 
     meta = {
         "frames": [{k: f.get(k) for k in ("id", "label", "num", "part", "minutes", "backup", "origin", "targets", "widget")}
