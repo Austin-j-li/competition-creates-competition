@@ -11,3 +11,5 @@ No automatic schedule is used. Do not begin a second writer on a branch with unf
 Use the programs through their documented interfaces and report their output. Do not author or extend tests, fixtures or testing frameworks, and do not run a test suite. Recommendations in DECISIONS.md are not answers. Stop at S1 until Austin answers all decisions; stop before final delivery to the manuscript service.
 
 Every completed stage ends with its report, a plain content commit, and a push of `theory-upgrade` only. No force-push, merge into `main`, pull request or delivery push is authorized by these records.
+
+As of 26 October 2026 the update is complete through S13 (`S13.md`); `HANDOFF.md` records the 25 October pause during S4 and is superseded.
