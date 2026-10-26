@@ -13,11 +13,11 @@
   var CCC = (window.CCC = window.CCC || {});
   var SVGNS = 'http://www.w3.org/2000/svg';
   var FALLBACK = {
-    bg: '#ffffff', surface: '#f6f3fa', ink: '#1a1523', muted: '#5f5a68', grid: '#ebe7f0', line: '#d9d3e2',
-    accent: '#361A54', accentSoft: 'rgba(54,26,84,0.10)', c2: '#AA4B00', c3: '#6d6676',
-    regionA: 'rgba(54,26,84,0.08)', regionB: 'rgba(170,75,0,0.08)', regionC: 'rgba(95,90,104,0.10)',
-    info: '#AA4B00', cost: '#006F50',
-    fontSans: '"Fira Sans", "CCC Symbols", Arial, sans-serif',
+    bg: '#fbfcfc', surface: '#f1f3f5', ink: '#1e2530', muted: '#5b6573', grid: '#e4e8ec', line: '#c7cdd5',
+    accent: '#1e2530', accentSoft: 'rgba(30,37,48,0.08)', c2: '#b54b00', c3: '#5b6573',
+    regionA: 'rgba(30,37,48,0.07)', regionB: 'rgba(181,75,0,0.09)', regionC: 'rgba(91,101,115,0.10)',
+    info: '#b54b00', cost: '#006459',
+    fontSans: '"Archivo", "CCC Symbols", Arial, sans-serif',
     fontMono: '"Fira Mono", "CCC Symbols", monospace'
   };
   var VARS = {

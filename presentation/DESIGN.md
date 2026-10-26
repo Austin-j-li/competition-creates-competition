@@ -1,4 +1,4 @@
-# Slides design contract ("UCL family")
+# Slides design contract (the ruled document)
 
 The contract between the slide files: `content.js` (the frames), `render.mjs` (build-time
 rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` and `template.html`
@@ -9,8 +9,11 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk
 (30.25 planned minutes and a question reserve). All 34 frames stay in the Beamer order and
-organisation: the title, 21 numbered frames and 12 backups. The look copies the Beamer deck
-(moloch in the UCL palette) and the handout of the same design.
+organisation: the title, 21 numbered frames and 12 backups. The look is the ruled document system
+of the front page: ink on cool white paper (slate in the dark theme), Archivo for titles and
+instruments, STIX Two Text for prose, two rule weights (a 1 px hairline and a 2 px ink rule) and no
+fills, cards, pills, shadows, gradients or side stripes. The 2 px rule under each frame title is the
+progress rule. The Beamer PDF keeps its own theme.
 
 Invariants:
 
@@ -21,8 +24,16 @@ Invariants:
   `audit/slot_manuscript_2026_10_23/registry/registry.csv`, the string that `\reg{key}` prints in
   `slides.tex`. The build stops on a key the registry does not hold. No decimal is typed into a slide.
 - No status labels. The registry's status column is never read, shown or embedded.
-- Purple is chrome only. `--c-info` (#AA4B00) marks the target-payoff spread and the information
-  chain; `--c-cost` (#006F50) marks preparation costs and the cost line.
+- The chrome has no colour: links, buttons, the rail, the focus ring and the slider thumb are ink.
+  `--c-info` (#b54b00, #f6a157 in the dark theme) marks the target-payoff spread and the
+  information chain; `--c-cost` (#006459, #46b3a8) marks preparation costs and the cost line.
+  Nothing else is coloured, and no UCL colour appears.
+- Controls share one grammar: text, with an underline. The active choice has a 2 px ink underline
+  (the rail, the choice buttons, the pager); a link button has a 1 px underline that becomes 2 px on
+  hover. A switched-off legend entry is struck through.
+- Exhibits (figures, tables, the timeline, the order-slot flow) span the content column; prose and
+  captions stop at the text measure. Registry numbers keep their provenance hover, marked by a
+  faint dotted hairline; numbers in prose are STIX with tabular figures.
 - The curves of the figures are closed forms of the paper in the example, computed at build time
   from registry primitives; no widget solves an equilibrium.
 
@@ -116,21 +127,26 @@ before printing; `export_pdf.sh` uses it.
 ## 6. Tokens and type
 
 ```css
-:root { --ucl-dark:#361A54; --ucl-bright:#993BFF; --ucl-mid:#BA82FF; --bg:#ffffff;
-  --surface:#f6f3fa; --ink:#14111a; --muted:#5d5866; --gray-text:#616161; --line:#d9d3e2;
-  --c-info:#AA4B00; --c-cost:#006F50;
-  --font-sans:"Fira Sans","CCC Symbols",system-ui,Arial,sans-serif;
+:root { --bg:#fbfcfc; --page:#e7eaee; --ink:#1e2530; --muted:#5b6573; --line:#c7cdd5; --grid:#e4e8ec;
+  --rule:#1e2530; --c-info:#b54b00; --c-cost:#006459;
+  --font-serif:"STIX Two Text","CCC Symbols",Georgia,serif;
+  --font-sans:"Archivo","CCC Symbols",system-ui,Arial,sans-serif;
   --font-mono:"Fira Mono","CCC Symbols",ui-monospace,Menlo,monospace }
 ```
 
-The dark theme swaps the ground to #17101f and lightens the concept colours. The faces are the
-handout's locked files (`handout/fonts.lock.json`): Fira Sans 400 to 700 with italic, Fira Mono
-400 to 700, and the "CCC Symbols" fallback for arrows and relations.
+The dark theme is slate paper (#1a1f26, ink #e8ecf1, muted #a3adb9, hairline #3d4652) with the two
+concept colours lightened; it has no tint and no glow. The faces are the deck's locked files
+(`presentation/fonts.lock.json`): Archivo (variable weight and width, normal and italic), STIX Two Text
+400 to 600 with italic, Fira Mono, and the "CCC Symbols" fallback for arrows and relations.
+`build.py` writes the `@font-face` rules, with `font-stretch` for the variable Archivo, and embeds
+the local font data so the staged deck carries its own faces.
 
-Type scale at 1600 x 900: slide title 48 px Fira Sans 500 on the purple band; subtitle 25 px;
-body 31 px; small 27 px; grey lines 23 px; tables 27 px (dense backups 20 to 25 px); link buttons
-19 px. Slide padding 26 px 56 px. The progress rule under the title band is 5 px, bright purple,
-as long as the frame number over 20.
+Type scale at 1600 x 900. Archivo: frame title 44 px at weight 600; the title frame 48 px at 600 and
+112% width; frame number 44 px muted; tables 27 px with tabular figures (dense backups 20 to 25 px);
+link buttons 19 px; figure text 12 to 20 px drawn at a zoom of 1.4. STIX Two Text: subtitle 28 px
+muted; body 33 px at line height 1.32; small 29 px; grey lines 25 px; takeaway 33 px at weight 500
+under a 2 px ink rule. Mathematics is KaTeX at 1.02 em; the seam with STIX is accepted. Slide padding
+26 px 56 px.
 
 ## 7. Parts
 

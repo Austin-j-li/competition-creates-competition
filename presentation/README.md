@@ -24,7 +24,7 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
   F: fullscreen. R: reset the slide. ?: controls. A focused slider or figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
-on a laptop and a projector. The light theme matches the Beamer deck; the dark theme suits a
+on a laptop and a projector. The light theme is ink on white paper; the dark theme is slate, for a
 dim room. The choice persists in the browser under the same key as the front page.
 
 ## Content and design
@@ -40,9 +40,13 @@ dim room. The choice persists in the browser under the same key as the front pag
   the example. Primitives and boundaries come from registry keys.
 - `charts.js` is the SVG renderer of the figures, a trimmed copy of the handout's; it holds no builders.
 - `deck.js` is the engine: navigation, reveals, the link graph, panels and the widgets.
-- `deck.css` is the visual system: the moloch chrome of the Beamer deck in the UCL palette,
-  Fira Sans for text and Fira Mono for numbers.
+- `deck.css` is the visual system, the ruled document of the front page: ink on cool white paper
+  (slate in the dark theme), Archivo for titles, tables, figures and controls, STIX Two Text for
+  prose, two rule weights, no fills, cards, pills or shadows. Controls are text with an underline.
 - `notes.md` holds the speaker notes, one block per frame, headed `## LABEL | timing`.
+
+Exhibits (figures, tables, the timeline, the order-slot flow) span the content column; prose and
+captions stop at the text measure.
 
 Interactive parts: the F2 timeline shows each agent's information set; F3 highlights a case of
 the payment table; F5 sends a pin to the belief an order induces; F7 draws the floor and the

@@ -6,7 +6,7 @@ Steps: read the slot registry (audit/slot_manuscript_2026_10_23/registry/registr
 slide records of content.js with presentation/render.mjs (KaTeX at build time; every number is the
 registry display of its key, as \\reg{key} prints it in slot/manuscript/slides.tex); compute the
 figure curves with presentation/figdata.py; read the speaker notes from presentation/notes.md; assemble
-dist/index.html with the locked Fira faces and the local KaTeX copy of the handout; record source
+dist/index.html with the locked faces and the local KaTeX copy of the handout; record source
 hashes; then run check_deck.mjs, which compares the deck with slot/manuscript/slides.tex. Any failure
 stops the build. Python and Node standard libraries only.
 """
@@ -52,7 +52,8 @@ def font_faces(lock: dict, prefix: str = "fonts/") -> str:
     for name, v in lock.items():
         if v.get("kind") != "face":
             continue
-        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]}; '
+        stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
                      f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 
@@ -135,7 +136,7 @@ def build() -> None:
             shutil.rmtree(child) if child.is_dir() else child.unlink()
     out.mkdir(exist_ok=True)
 
-    # Fonts: the handout's locked Fira faces, symbol fallback and licences.
+    # Fonts: the handout's locked faces (Archivo, STIX Two Text, Fira Mono), symbol fallback and licences.
     fonts = json.loads((ROOT / "handout/fonts.lock.json").read_text())
     (out / "fonts").mkdir()
     for name, entry in fonts.items():
