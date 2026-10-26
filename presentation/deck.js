@@ -239,7 +239,7 @@
       xaxis: { domain: [0, 1], anchor: 'y', range: [1, 3.2], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
       yaxis: { domain: [0, 1], anchor: 'x', type: 'log', range: [-1.7, 1.8], tickvals: [0.1, 1, 10], ticktext: ['0.1', '1', '10'], title: { text: 'gain per correct order, in units of <i>k</i>' } } };
     layout.shapes.push(band(1, G.r_k, t.regionA), band(rS, 3.2, t.regionB));
-    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: t.cost, width: 2.4 }, layer: 'below' });
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: t.cost, width: 2.2 }, layer: 'above' });
     layout.shapes.push(vline(I.r0, t.muted), vline(I.r1, t.muted));
     layout.annotations.push(at('cost <i>k</i>', 1.56, 1, t.cost, { xanchor: 'left', yshift: 4 }));
     layout.annotations.push(label(1.005, 'no trade only', t.muted, { xanchor: 'left', size: 14 }));

@@ -9,7 +9,7 @@ of handout/README.md:
   as read from the files;
 - every displayed number is the display of a slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- the page ships only the locked faces (Fira Sans, Fira Mono, the symbol fallback) and makes
+- the page ships only the locked faces (Archivo, STIX Two Text, Fira Mono, the symbol fallback) and makes
   no network request.
 """
 from __future__ import annotations
@@ -71,6 +71,6 @@ print(f"PASS {n} number spans and {k} numbers in formulas print their slot regis
 
 # ------------------------------------------------------------------ faces, network
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Fira Sans", "Fira Mono", "CCC Symbols"}, families
+assert families == {"Archivo", "STIX Two Text", "Fira Mono", "CCC Symbols"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
-print("PASS only Fira Sans, Fira Mono and the symbol fallback; no network request")
+print("PASS only Archivo, STIX Two Text, Fira Mono and the symbol fallback; no network request")

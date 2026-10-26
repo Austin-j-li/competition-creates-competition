@@ -36,6 +36,15 @@ latexmk -c                    # remove the auxiliary files
 The manuscript and the comparison use the `newtx` fonts and `natbib` with the `aer` style.
 Do not commit the PDF files.
 
+The study guide also has a complete HTML edition. From the repository root, run
+`python3 slot/study_guide/web/build.py` and then `python3 slot/study_guide/web/check_display.py`.
+The build requires Pandoc and the guide's `main.aux` cross-reference file. It writes
+`slot/study_guide/index.html` and local assets under `slot/study_guide/web/assets/`. Open the HTML
+file directly, or serve `slot/study_guide/` with a static web server. The symbolic argument comes
+first; benchmark values and interactive charts follow in Part II. With `@playwright/test` available,
+`check_browser.spec.js` checks both themes at desktop and phone widths, including the charts and
+explorer. Set `CCC_GUIDE_URL` to the served guide address when running that Playwright spec.
+
 ## Numbers
 
 The documents print every number through `\reg{key}`. Do not type a number in the text, and do

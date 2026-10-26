@@ -3,7 +3,8 @@
 Edit `handout/`, then regenerate the HTML. Do not edit `docs/index.html` directly.
 
 The site presents the order-slot version of the paper (`slot/manuscript/`). The front page has three
-tabs. The research brief is designed for 10 to 15 minutes of reading. "Read the paper" shows the
+tabs. The research brief is written to be read in 10 to 15 minutes; the page states no reading
+time. "Read the paper" shows the
 manuscript with its appendix and the note that compares the order slot with the Laplace order flow
 of the earlier version. "Seminar talk" links the slides under `/talk/`. The earlier version stays
 reachable through one link on the paper tab, "Earlier version: Laplace order flow", at `/laplace/`
@@ -15,10 +16,36 @@ empirical implications. Only their headings appear in the sidebar. The model, th
 three propositions of the main text and the tests are visible; formal statements, derivations
 and long tables stay in native `details` controls.
 
-The design is the "UCL family" direction: a UCL dark-purple masthead with the tabs, a white body
-with cards, pill controls and a dark theme. Purple is chrome only. Two concept colours hold on the
-page and on the slides: `--c-info` for the target-payoff spread and the information chain,
-`--c-cost` for preparation costs and the preparation threshold.
+The design is the ruled document (decided 25 October 2026). The page is set like the paper's own
+apparatus:
+
+- The reading column is STIX Two Text at 18 px with line height 1.6 and a measure of 64ch, with
+  `text-wrap: pretty`. Titles, headings and chrome are Archivo; the title is set at 112 % width,
+  weight 600. Headings use `text-wrap: balance`. Mathematics is KaTeX.
+- Palette: light paper `#fbfcfc`, ink `#1e2530`, muted `#5b6573`, hairline `#c7cdd5`, grid
+  `#e4e8ec`; dark paper `#1a1f26`, ink `#e8ecf1`, muted `#a3adb9`, hairline `#3d4652`. Two concept
+  colours appear only where they mean something, in the figures and the information chain:
+  `--c-info` for the target-payoff spread and the information chain, `--c-cost` for preparation
+  costs and the preparation threshold. The chrome has no colour: links, focus, the slider, the
+  active tab and every control are ink. No UCL colour appears on the website or the web slides.
+- Rules: a 2 px ink rule above the title block and above each section heading (`h2`), and 1 px
+  hairlines everywhere else. No pills, cards, shadows, side stripes, gradients, glows or badges,
+  and no label set above a heading.
+- Labels are bold run-in words in Archivo at the start of their paragraph ("Answer.", "In
+  short.", "An illustrative sale process.", the two paths of the mechanism map, the propositions),
+  never uppercase capitals above the text. The page states no reading time.
+- Controls share one grammar: text, with a 2 px ink underline when active. This holds for the
+  tabs, the stepper, the explorer presets and equilibrium picker, the PDF viewer and the legend
+  toggles (a hidden series is struck through). Links set as actions are underlined text.
+- Exhibits span the full content column: figures, tables, the stepper, the mechanism map and the
+  explorer. Prose and captions stop at the text measure (`--measure`, about 64ch). Figures sit
+  between hairlines, with the legend as text and line swatches above the plot and the caption at
+  the measure. Tables are booktabs: a 1 px ink rule above and below, a hairline under the head,
+  no row rules. Folds open on hairlines with a plus and minus sign. The explorer is an instrument
+  row between hairlines with tabular readouts.
+- Registry numbers are set in STIX with tabular figures, never in monospace, with a faint hairline
+  dotted underline and their provenance on hover.
+- The dark theme is slate paper with no tint and no glow.
 
 ## Build and checks
 
@@ -123,11 +150,12 @@ as a historical record only.
   (`lambda_B`, `b_B`, `b0_B`, `M_half_B`, `m_half_B`), the marked strengths (`rA`, `rF_B`, `rN`,
   `rJ`, `rS_B`, `rC_B`, `res_rR`, `res_rcap`, `res_rUR`), the points that the figures label, and
   the registry hash.
-- Typefaces are Fira Sans and Fira Mono (SIL OFL, fontsource subsets) and a symbol fallback,
-  "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the Fira
-  subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
-  generates the font-face rules from the lock and fails if a file is missing, altered or unlocked,
-  or if `style.css` declares a font itself.
+- Typefaces are STIX Two Text (text), Archivo (titles and chrome, a variable-width face), Fira
+  Mono (hashes and code only; SIL OFL, fontsource subsets) and a symbol fallback, "CCC Symbols", a
+  byte copy of KaTeX_Main-Regular for the arrows and relations that the subsets omit. All are
+  pinned by sha256 in `fonts.lock.json` with their licences; the slides read the same lock and
+  files. The build generates the font-face rules from the lock, with `font-stretch` for Archivo,
+  and fails if a file is missing, altered or unlocked, or if `style.css` declares a font file.
 - KaTeX 0.18.5 is a local copy under `handout/vendor/`, pinned by sha256 and by the upstream
   sha512 integrity in `vendor.lock.json`. The slides use the same copy.
 

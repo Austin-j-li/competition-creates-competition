@@ -177,7 +177,7 @@
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
-    var lab = el('label', 'explorer-label', 'Incumbent strength r');
+    var lab = markup('label', 'explorer-label', 'Incumbent strength <i>r</i>');
     lab.setAttribute('for', 'explorer-r');
     controls.appendChild(lab);
     var range = document.createElement('input');
@@ -188,12 +188,16 @@
     var out = el('output', 'live explorer-r-value', '');
     out.setAttribute('for', 'explorer-r');
     controls.appendChild(out);
-    var pre = el('div', 'explorer-presets');
+    var pre = el('div', 'explorer-presets'), presetButtons = [];
+    pre.setAttribute('role', 'group');
+    pre.setAttribute('aria-label', 'Marked strengths');
     presets(P).forEach(function (p) {
       var b = markup('button', 'preset', p.sub ? '<i>r</i><sub>' + p.sub + '</sub>' : '<i>r</i> = ' + p.display);
       b.type = 'button';
       b.title = presetLabel(p, false);
+      b.setAttribute('aria-pressed', 'false');
       b.addEventListener('click', function () { setR(p.value, p); });
+      presetButtons.push([b, p]);
       pre.appendChild(b);
     });
     controls.appendChild(pre);
@@ -227,7 +231,7 @@
     fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the benchmark path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N has no informed trade, R is a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders without recruitment. The thin dashed T branch exists only when an indifferent high-cost challenger may prepare with any probability. Filled markers belong to a branch and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. Under challenger mixing, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
-    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };
+    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount, presets: presetButtons };
     range.addEventListener('input', function () { schedule(snap(Number(range.value))); });
     range.addEventListener('change', function () { schedule(snap(Number(range.value))); });
     picker.addEventListener('click', function (ev) {
@@ -248,6 +252,7 @@
     E.out.title = shown;
     if (E.range.value !== String(r)) E.range.value = String(r);
     E.range.setAttribute('aria-valuetext', shown);
+    E.presets.forEach(function (bp) { bp[0].setAttribute('aria-pressed', state.preset && state.preset.key === bp[1].key ? 'true' : 'false'); });
     E.cells.Delta.textContent = d6(A.Delta);
     E.cells.gH.textContent = d6(A.gH);
     E.cells.gL.textContent = d6(A.gL);
