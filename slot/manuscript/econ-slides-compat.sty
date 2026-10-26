@@ -19,7 +19,7 @@
 \ProvidesPackage{econ-slides-compat}[2026/07/15 econ-slides interface adapter]
 
 % ---- Packages the interface (and the skill's table/figure patterns) need ----
-\RequirePackage{amsmath,amssymb,bm}
+\RequirePackage{amsmath,amssymb}
 \RequirePackage{booktabs,array,multirow,multicol}
 \RequirePackage{threeparttable}
 \RequirePackage{graphicx}
@@ -68,21 +68,24 @@
 \newcommand{\PlaceNav}[1]{\PlaceNavShift{-2em}{#1}}
 \newcommand{\BackButton}[1]{\PlaceNav{\hyperlink{#1}{\beamerreturnbutton{Back}}}}
 
-% ResultBox tinted with the host theme's own structure color, so it blends
-% with whatever theme the user chose. The color is captured at \begin{document}
-% (after the theme has set it) and resolved when the box is drawn.
+% ResultBox in the ruled style: no fill, no frame; a hairline above and
+% below, the title set in Archivo SemiBold. The rule colour is the host
+% theme's structure colour, captured at \begin{document}.
 \colorlet{es@structure}{blue!60!black}   % fallback until the theme is known
 \AtBeginDocument{\usebeamercolor{structure}\colorlet{es@structure}{structure.fg}}
-\newtcolorbox{ResultBox}[1][Main result]{%
-  colback=es@structure!8!white, colframe=es@structure!80!black,
-  coltitle=white, title={\textbf{#1}}, fonttitle=\small,
-  boxsep=2pt, top=3pt, bottom=3pt, left=6pt, right=6pt,
-  boxrule=0.8pt, arc=1.5pt}
+\newenvironment{ResultBox}[1][Main result]{%
+  \par\vspace{0.2em}\noindent{\color{es@structure!45}\rule{\linewidth}{0.4pt}}\par
+  \vspace{0.25em}\noindent{\sffamily\bfseries\small #1}\par
+  \vspace{0.15em}\noindent\ignorespaces}{%
+  \par\vspace{0.25em}\noindent{\color{es@structure!45}\rule{\linewidth}{0.4pt}}\par
+  \vspace{0.2em}}
 
 \newcommand{\AppendixStart}{%
   \appendix
   \gdef\insertframenumber{A\arabic{framenumber}}%
-  \begin{frame}[plain]\centering\vfill{\Huge\bfseries Appendix}\vfill\end{frame}%
+  \begin{frame}[plain]\vfill
+    {\color{es@structure}\rule{\linewidth}{2pt}}\par\vspace{0.7em}
+    {\sffamily\Huge\bfseries Appendix}\par\vfill\end{frame}%
   \addtocounter{framenumber}{-1}}
 
 \endinput

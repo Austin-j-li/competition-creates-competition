@@ -311,7 +311,7 @@
   /* F12b: entry in each equilibrium at the prior, whole path (a) and the strengths where the marked strengths sit (b). */
   function specCoex(t) {
     var E = D.fig.entry, I = D.fig.inputs, B = D.fig.bounds;
-    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 240, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 220, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
     var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], range: [1.2, 3.6], dtick: 0.4, tick0: 1.2 }, { x: 'x2', y: 'y2', dom: [0.57, 1], range: [1.2, 2.4], dtick: 0.2, tick0: 1.2 }];
     panels.forEach(function (P, j) {
       layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: 'incumbent strength <i>r</i>' } };
@@ -348,7 +348,7 @@
   /* F13: research (a) and entry (b) along the path in each research equilibrium (Corollary 3). */
   function specResearch(t) {
     var R = D.fig.research, I = D.fig.inputs, B = D.fig.bounds, rho = I.rho;
-    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 262, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
+    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 242, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
     var panels = [{ x: 'x', y: 'y', name: 'λ', ylab: 'research λ', range: [-0.03, 0.42], dtick: 0.1, tick0: 0, dom: [0, 0.47] },
       { x: 'x2', y: 'y2', name: 'entry', ylab: 'entry', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, dom: [0.57, 1] }];
     panels.forEach(function (P, j) {

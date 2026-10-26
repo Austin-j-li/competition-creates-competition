@@ -1,84 +1,162 @@
 % slides.tex -- talk for the order-slot manuscript
 % "Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders" (Austin Li).
-% Look and frame style: overleaf/talk/talk.tex (moloch, UCL palette, Fira Sans, 16:9, XeLaTeX).
+% Look and frame style: the ruled document (ink on white, STIX Two Text for reading
+% text, STIX Two Math for mathematics, Archivo for titles and chrome, 16:9, XeLaTeX).
+% The Archivo files sit in fonts/ beside OFL.txt; STIX Two comes from TeX Live (stix2-otf).
 % Every printed value uses \reg{<key>} from numbers.tex (generated; do not edit numbers.tex).
 % Keys used here are listed in audit/slot_manuscript_2026_10_23/memos/W2_keys.md.
 % Navigation: main frames carry \hypertarget{main:...}; backups carry \hypertarget{app:...}
 % and a \BackButton to their single origin frame. No overlays.
 \documentclass[10pt,aspectratio=169]{beamer}
-\usetheme[progressbar=frametitle,
-  frametitle margin left=10.95pt,frametitle margin right=10.95pt]{moloch}
-\setbeamertemplate{page number in head/foot}[totalframenumber]
+\usefonttheme{professionalfonts}
 \setbeamersize{text margin left=10.95pt,text margin right=10.95pt}
 \usepackage{fontspec}
-\setsansfont{FiraSans}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold,
+\setmainfont{STIXTwoText}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold,
   ItalicFont=*-Italic, BoldItalicFont=*-SemiBoldItalic]
-\definecolor{uclDark}{HTML}{361A54}
-\definecolor{uclBright}{HTML}{993BFF}
-\definecolor{uclMid}{HTML}{BA82FF}
-\setbeamercolor{normal text}{fg=black}
-\setbeamercolor{structure}{fg=uclDark}
-\setbeamercolor{frametitle}{bg=uclDark,fg=white}
-\setbeamercolor{progress bar}{fg=uclBright,bg=uclDark!60}
-\setbeamerfont{framesubtitle}{series=\mdseries,size=\small}
+\setsansfont{Archivo}[Path=fonts/, Extension=.ttf, UprightFont=*-Regular, BoldFont=*-SemiBold,
+  ItalicFont=*-Italic, BoldItalicFont=*-SemiBoldItalic]
+\renewcommand{\familydefault}{\rmdefault}
+% The ruled-document tokens: ink and greys carry the reading text and chrome;
+% the two concept colours belong to diagrams, figures and their keys.
+\definecolor{cPaper}{HTML}{FBFCFC}
+\definecolor{cInk}{HTML}{1E2530}
+\definecolor{cMuted}{HTML}{5B6573}
+\definecolor{cLine}{HTML}{C7CDD5}
+\definecolor{cInfo}{HTML}{B54B00}
+\definecolor{cCost}{HTML}{006459}
+\setbeamercolor{background canvas}{bg=cPaper}
+\setbeamercolor{normal text}{fg=cInk,bg=cPaper}
+\setbeamercolor{structure}{fg=cInk}
+\setbeamercolor{palette primary}{fg=cInk,bg=cPaper}
+\setbeamercolor{palette secondary}{fg=cInk,bg=cPaper}
+\setbeamercolor{palette tertiary}{fg=cInk,bg=cPaper}
+\setbeamercolor{palette quaternary}{fg=cInk,bg=cPaper}
+\setbeamercolor{frametitle}{fg=cInk,bg=cPaper}
+\setbeamercolor{framesubtitle}{fg=cMuted,bg=cPaper}
+\setbeamercolor{title}{fg=cInk,bg=cPaper}
+\setbeamercolor{author}{fg=cInk}
+\setbeamercolor{institute}{fg=cMuted}
+\setbeamercolor{date}{fg=cMuted}
+\setbeamercolor{footline}{fg=cMuted,bg=cPaper}
+\setbeamercolor{page number in head/foot}{fg=cMuted}
+\setbeamercolor{itemize item}{fg=cInk}
+\setbeamercolor{itemize subitem}{fg=cMuted}
+\setbeamercolor{itemize subsubitem}{fg=cMuted}
+\setbeamercolor{enumerate item}{fg=cInk}
+\setbeamercolor{enumerate subitem}{fg=cInk}
+\setbeamercolor{block title}{fg=cInk,bg=cPaper}
+\setbeamercolor{block body}{fg=cInk,bg=cPaper}
+\setbeamercolor{block title alerted}{fg=cInk,bg=cPaper}
+\setbeamercolor{block body alerted}{fg=cInk,bg=cPaper}
+\setbeamercolor{block title example}{fg=cInk,bg=cPaper}
+\setbeamercolor{block body example}{fg=cInk,bg=cPaper}
+\setbeamercolor{button}{fg=cInk,bg=cPaper}
+\setbeamercolor{button border}{fg=cInk}
+\setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{author}{family=\sffamily,size=\large}
+\setbeamerfont{institute}{family=\sffamily,size=\small}
+\setbeamerfont{date}{family=\sffamily,size=\small}
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\large}
+\setbeamerfont{framesubtitle}{family=\rmfamily,series=\mdseries,size=\small}
+\setbeamerfont{footline}{family=\sffamily,size=\tiny}
+\setbeamerfont{page number in head/foot}{family=\sffamily,size=\tiny}
+\setbeamerfont{button}{family=\sffamily,size=\scriptsize}
+\setbeamertemplate{button}{{\usebeamerfont{button}%
+  \usebeamercolor[fg]{button}\underline{\insertbuttontext}}}
+\setbeamerfont{block title}{family=\sffamily,series=\bfseries}
+\setbeamertemplate{itemize item}{\raise0.2ex\hbox{\sffamily\small\textendash}}
+\setbeamertemplate{itemize subitem}{\raise0.2ex\hbox{\sffamily\footnotesize\textendash}}
+\setbeamertemplate{itemize subsubitem}{\raise0.2ex\hbox{\sffamily\footnotesize\textperiodcentered}}
+\setbeamertemplate{enumerate item}{\sffamily\bfseries\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\sffamily\insertsubenumlabel.}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
 \usepackage{econ-slides-compat}
 \makeatletter
-\newif\iftalk@appendix
-\let\talk@AppendixStart\AppendixStart
-\renewcommand{\AppendixStart}{\global\talk@appendixtrue\talk@AppendixStart}
-\setbeamertemplate{progress bar in head/foot}{%
-  \nointerlineskip
-  \iftalk@appendix\else
-  \pgfmathsetlength{\moloch@progressinheadfoot}{%
-    \paperwidth*min(1,\number\value{framenumber}/max(1,\inserttotalframenumber))}%
-  \begin{beamercolorbox}[wd=\paperwidth]{progress bar in head/foot}
-    \begin{tikzpicture}
-      \fill[bg] (0,0) rectangle (\paperwidth,\moloch@progressinheadfoot@linewidth);
-      \fill[fg] (0,0) rectangle (\moloch@progressinheadfoot,\moloch@progressinheadfoot@linewidth);
-    \end{tikzpicture}
-  \end{beamercolorbox}\fi}
+\newlength{\ruled@prog}
+\newlength{\ruled@rest}
+% Frame head: the Archivo title on the left, the muted subtitle under it, then
+% the rule: a 2 pt ink segment in proportion to the frame number over the
+% full-width hairline. Backups carry the hairline alone.
+\setbeamertemplate{frametitle}{%
+  \ifx\insertframetitle\@empty\else
+    \vspace{0.3em}
+    {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}
+    \ifx\insertframesubtitle\@empty\else
+      \vspace{0.1em}{\usebeamerfont{framesubtitle}%
+        \usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi
+    \vspace{0.32em}
+    \ifbeamer@inappendix
+      {\color{cLine}\rule{\linewidth}{0.4pt}}\par
+    \else
+      \setlength{\ruled@prog}{\dimexpr\linewidth*\value{framenumber}/\inserttotalframenumber\relax}%
+      \setlength{\ruled@rest}{\dimexpr\linewidth-\ruled@prog\relax}%
+      {\color{cInk}\rule{\ruled@prog}{2pt}}%
+      {\color{cLine}\rule[0.8pt]{\ruled@rest}{0.4pt}}\par
+    \fi
+    \vspace{0.15em}
+  \fi}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.2ex,dp=1.4ex,
+      leftskip=\beamer@leftmargin,rightskip=\beamer@rightmargin]{footline}
+    \usebeamerfont{footline}\insertshorttitle\hfill
+    \insertframenumber\,/\,\inserttotalframenumber
+  \end{beamercolorbox}}
+% Title page: a 2 pt ink rule above the title, a hairline below it, the
+% author and the institute in Archivo under the hairline.
+\setbeamertemplate{title page}{%
+  \vspace*{0.26\paperheight}
+  {\color{cInk}\rule{\linewidth}{2pt}}\par\vspace{1.1em}
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}
+  \vspace{1.1em}{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.9em}
+  {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}
+  \vspace{0.35em}
+  {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}
+  \ifx\insertdate\@empty\else
+    \vspace{0.35em}{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}\fi
+  \vfill}
 \makeatother
 \AtBeginDocument{\usebeamercolor{normal text}}
-\usefonttheme[onlymath]{serif}
 \usepackage{amsmath,amssymb,mathtools}
+\usepackage{unicode-math}
+\setmathfont{STIX Two Math}
+\setmathfont{STIX Two Math}[version=bold]
 \usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.1pt}
+\setlength{\lightrulewidth}{0.4pt}
+\setlength{\cmidrulewidth}{0.4pt}
 \usepackage{array}
+\AtBeginEnvironment{tabular}{\sffamily}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 \graphicspath{{figures/}}
 \input{numbers}
 
-\colorlet{cInfo}{cAccentB!80!black}
-\colorlet{cCost}{cAccentC!70!black}
-\colorlet{cGrayText}{black!62}
+\colorlet{cGrayText}{cMuted}
 \newcommand{\GrayLine}[1]{\par{\color{cGrayText}\footnotesize #1\par}}
 \providecommand{\graycite}{}
 \renewcommand{\graycite}[1]{{\color{cGrayText}\footnotesize #1}}
 \newcommand{\NavSep}{\hspace{0.35em}}
-\setbeamercolor{button}{use=structure,bg=structure.fg,fg=white}
-\setbeamercolor{button border}{use=structure,fg=structure.fg}
-\newcommand{\Info}[1]{\textcolor{cInfo}{#1}}
-\newcommand{\Cost}[1]{\textcolor{cCost}{#1}}
+\newcommand{\Info}[1]{#1}
+\newcommand{\Cost}[1]{#1}
 \newcommand{\PropItem}[1]{\par\noindent\hangindent=1.9em\hangafter=1\makebox[1.9em][l]{#1}}
 \renewcommand{\PlaceNavShift}[2]{%
   \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=south east, inner sep=0pt, outer sep=0pt]
       at ([xshift=#1,yshift=0.5cm]current page.south east) {#2};
   \end{tikzpicture}}
-\newcommand{\TakeawayBody}[1]{\begin{minipage}{\textwidth}\raggedright\normalsize
-    \setbox0=\hbox{{\usebeamercolor[fg]{structure}\raise0.7pt\hbox{\scriptsize$\bullet$}}\hspace{0.55em}}%
-    \hangindent=\wd0 \hangafter=1 \noindent\box0 #1\par
-  \end{minipage}}
+\newcommand{\TakeawayBody}[1]{\vspace{-0.3em}{\color{cInk}\rule{\linewidth}{2pt}}\par
+  \vspace{0.28em}{\raggedright\normalsize #1\par}}
 \renewcommand{\Takeaway}[2][\ExhibitReadingGap]{\par\vspace{#1}\noindent\TakeawayBody{#2}\par}
 \renewcommand{\TakeawayWithNav}[2][\ExhibitReadingGap]{\par\vspace{#1}\noindent\TakeawayBody{#2}\par\vspace{0.45cm}}
 \newcommand{\ModelBox}[2]{\parbox[t][1.85cm][t]{2.45cm}{\footnotesize\raggedright\hyphenpenalty=10000\relax
-  \hspace*{7pt}\textbf{#1}\par\vspace{1pt}#2}}
+  {\sffamily\bfseries #1}\par\vspace{1pt}#2}}
 \newcommand{\NavGap}{\par\vspace{0.45cm}}
 % one panel of the three-panel coexistence figure; the trim is left, bottom, right, top in bp
 \newcommand{\CoexPanel}[2]{\includegraphics[clip,trim=#1,#2]{coexistence_talk.pdf}}
-% panel (b) alone: the trim leaves the edge of the label of panel (c), which a white patch covers
+% panel (b) alone: the trim leaves the edge of the label of panel (c), which a paper-colour patch covers
 \newcommand{\CoexRegion}[1]{\begin{tikzpicture}\node[inner sep=0pt,anchor=north west](f){\CoexPanel{224 22 310 0}{#1}};
-  \fill[white]([xshift=-5pt]f.north east) rectangle ([xshift=2pt,yshift=-42pt]f.north east);\end{tikzpicture}}
+  \fill[cPaper]([xshift=-5pt]f.north east) rectangle ([xshift=2pt,yshift=-42pt]f.north east);\end{tikzpicture}}
 \let\AdapterBackButton\BackButton
 \renewcommand{\BackButton}[1]{\NavGap\AdapterBackButton{#1}}
 
@@ -90,24 +168,17 @@ Stock Prices and the Discovery of Takeover Bidders}
 
 \begin{document}
 
-{\setbeamercolor{background canvas}{bg=uclDark}
-\setbeamercolor{normal text}{fg=white}\usebeamercolor[fg]{normal text}
-\setbeamercolor{title}{fg=white}\setbeamercolor{author}{fg=white}
-\setbeamercolor{institute}{fg=uclMid}\setbeamercolor{title separator}{fg=uclBright}
 \begin{frame}[plain,noframenumbering,label=F0]
 \titlepage
-\end{frame}}
+\end{frame}
 
 % ======================================================================
 % M1. The question (no title bar: the question fills the frame)
 % ======================================================================
 \begin{frame}[label=Q1]
 \vfill
-\begin{center}
-\begin{minipage}{0.94\textwidth}\centering
-{\Large\KeyIdea{Does a stronger bidder in a merger auction\\ scare off its competitor, or draw in more competition?}\par}
-\end{minipage}
-\end{center}
+{\color{cInk}\rule{\linewidth}{2pt}}\par\vspace{0.8em}
+{\sffamily\Large\bfseries\raggedright Does a stronger bidder in a merger auction\\ scare off its competitor, or draw in more competition?\par}
 \vspace{1.4em}
 \begin{itemize}\setlength{\itemsep}{6pt}
 \item A competitor pays to check the books before it can bid
@@ -158,12 +229,14 @@ Stock Prices and the Discovery of Takeover Bidders}
 \framesubtitle{The decision interval}
 \begin{center}
 \begin{tikzpicture}[
-  box/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=center,
-    text width=3.9cm, minimum height=0.85cm, font={\footnotesize\hyphenpenalty=10000\relax}, inner sep=3pt},
-  arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
+  box/.style={draw=none, align=left,
+    text width=3.9cm, minimum height=0.85cm, font={\footnotesize\sffamily\hyphenpenalty=10000\relax}, inner sep=3pt,
+    path picture={\draw[cInk,line width=0.4pt] (path picture bounding box.north west) -- (path picture bounding box.north east);}},
+  costbox/.style={box,path picture={\draw[cCost,line width=0.8pt] (path picture bounding box.north west) -- (path picture bounding box.north east);}},
+  arr/.style={-{Stealth[length=5pt]}, line width=0.6pt, cMuted}]
   \node[box] (a) {Sale is public; one bidder is already in};
   \node[box, right=0.8cm of a] (b) {Target stock still trades};
-  \node[box, right=0.8cm of b, draw=cCost, line width=1.1pt] (c)
+  \node[costbox, right=0.8cm of b] (c)
     {Second bidder decides: pay to prepare, or stay out};
   \draw[arr] (a) -- (b);
   \draw[arr] (b) -- (c);
@@ -188,18 +261,19 @@ Stock Prices and the Discovery of Takeover Bidders}
 \hypertarget{main:notation}{}
 \begin{center}
 \begin{tikzpicture}[
-  box/.style={draw=black!55, rounded corners=3pt, line width=0.6pt, align=left,
-    text width=2.45cm, inner xsep=4pt, inner ysep=4pt},
-  num/.style={circle, fill=black!65, text=white, font=\scriptsize\bfseries,
-    inner sep=0pt, minimum size=11pt},
-  arr/.style={-{Stealth[length=5pt]}, line width=0.7pt, black!60}]
+  box/.style={draw=none, align=left,
+    text width=2.45cm, inner xsep=4pt, inner ysep=4pt,
+    path picture={\draw[cInk,line width=0.4pt] (path picture bounding box.north west) -- (path picture bounding box.north east);}},
+  costbox/.style={box,path picture={\draw[cCost,line width=0.8pt] (path picture bounding box.north west) -- (path picture bounding box.north east);}},
+  num/.style={text=cMuted, font=\sffamily\scriptsize\bfseries, inner sep=0pt, anchor=north west},
+  arr/.style={-{Stealth[length=5pt]}, line width=0.6pt, cMuted}]
   \node[box] (s) {\ModelBox{Seller}{announces the sale rule before any trade}};
   \node[box, right=0.33cm of s] (i) {\ModelBox{Order slot}{one unit order reaches the market}};
   \node[box, right=0.33cm of i] (m) {\ModelBox{Market makers}{see the order only; set the stock price}};
-  \node[box, right=0.33cm of m, draw=cCost, line width=1.1pt] (c)
+  \node[costbox, right=0.33cm of m] (c)
     {\ModelBox{Challenger}{sees the price and its own cost; prepares or stays out}};
   \node[box, right=0.33cm of c] (b) {\ModelBox{Bidders}{the incumbent and a prepared challenger bid values}};
-  \foreach \x/\n in {s/1, i/2, m/3, c/4, b/5} {\node[num] at ([xshift=2pt,yshift=-1pt]\x.north west) {\n};}
+  \foreach \x/\n in {s/1, i/2, m/3, c/4, b/5} {\node[num] at ([xshift=3pt,yshift=-2pt]\x.north west) {\n};}
   \draw[arr] (s) -- (i); \draw[arr] (i) -- (m); \draw[arr] (m) -- (c); \draw[arr] (c) -- (b);
 \end{tikzpicture}
 \end{center}
@@ -374,7 +448,7 @@ Strong $r_1$ & $\rho\kappa\,\Info{\Delta_T(r_1)}-k=\reg{margin_kstrong_B}>0$ & $
 % ======================================================================
 % M12. Proposition 2
 % ======================================================================
-\begin{frame}[label=F9]{Proposition 2: a stronger incumbent can raise entry}
+\begin{frame}[label=F9,shrink=4]{Proposition 2: a stronger incumbent can raise entry}
 \framesubtitle{Weak $r_0$, strong $r_1$, stronger still $r_2$; all other inputs equal}
 \hypertarget{main:prop2}{}
 \begin{ResultBox}[Proposition 2, under the conditions below]
@@ -383,17 +457,17 @@ Strong $r_1$ & $\rho\kappa\,\Info{\Delta_T(r_1)}-k=\reg{margin_kstrong_B}>0$ & $
 \PropItem{(ii)}\textbf{Strong $r_1$:} full orders $(1,-1)$; price informative; entry $>\rho$
 \PropItem{(iii)}\textbf{Stronger still $r_2$:} full orders; price informative; entry back to $\rho$\par
 \end{ResultBox}
-\vspace{-2pt}
+\vspace{-5pt}
 {\small
-\renewcommand{\arraystretch}{1.1}
-\begin{tabular}{@{}l@{\hspace{0.8em}}l@{}}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}[t]{@{}l@{\hspace{0.8em}}l@{}}
 \Cost{\textbf{(H1) High-cost window}} & $B_{r_0}(\pi)<c_H<B_{r_1}(M)$\\
 \Info{\textbf{(H2) Trading-cost window}} & $\Delta_T(r_0)<k<\rho\kappa\,\Delta_T(r_1)$, $\kappa=\min\{m,1-M\}$\\
 \textbf{(H3) Exclusion condition} & $B_{r_2}(M)<c_H$\\
 \end{tabular}\par}
-\vspace{2pt}
+\vspace{0pt}
 {\small Ownership in part (ii) rises exactly if $[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)$, with $W_H(F)$ as the class $H$ win chance at reserve $p$. If class $H$ outbids $F_1$, ownership rises and class $H$'s takeover share does not fall.\par}
-\vspace{2pt}
+\vspace{0pt}
 \GrayLine{The outcome is unique in each part, under all four tie rules. Each condition is a strict inequality: the parts hold on an open set of inputs.}
 \TakeawayWithNav[0.3em]{\Info{wider $\Delta_T$ $\to$ trade pays $\to$ informative price $\to$ good news clears $c_H$ $\to$ entry at high cost}}
 \PlaceNav{\hyperlink{app:prop2}{\beamergotobutton{Proof structure}}}
@@ -458,7 +532,7 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 % ======================================================================
 % M15. Coexistence
 % ======================================================================
-\begin{frame}[label=F12]{Quiet and informative markets coexist}
+\begin{frame}[label=F12,shrink=8]{Quiet and informative markets coexist}
 \framesubtitle{Proposition 3 at a fixed presence probability $\lambda$: where both exist}
 \begin{columns}[T]
 \column{0.47\textwidth}
@@ -481,14 +555,14 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 % ======================================================================
 % M15b. Coexistence along the example's path
 % ======================================================================
-\begin{frame}[label=F12b]{In the example, coexistence runs from $r_A$ to $r_N$}
+\begin{frame}[label=F12b,shrink=3]{In the example, coexistence runs from $r_A$ to $r_N$}
 \framesubtitle{Corollary 2: entry along the path of strengths}
 \hypertarget{main:coex}{}
 \begin{center}
-\CoexPanel{0 22 510 0}{height=0.35\textheight,keepaspectratio}\hspace{0.8em}\CoexPanel{424 22 0 0}{height=0.35\textheight,keepaspectratio}
+\CoexPanel{0 22 510 0}{height=0.318\textheight,keepaspectratio}\hspace{0.8em}\CoexPanel{424 22 0 0}{height=0.318\textheight,keepaspectratio}
 \end{center}
-\vspace{-4pt}
-{\footnotesize \textcolor[HTML]{1F3A6E}{\textbf{N}} quiet market \hspace{0.7em} \textcolor[HTML]{B4472E}{\textbf{R}} mixed purchase that recruits \hspace{0.7em} \textcolor[HTML]{B4472E}{\textbf{F}} full purchase \hspace{0.7em} \textcolor[HTML]{6C6C6C}{\textbf{Q}} mixed orders at the entry floor \hspace{0.7em} \textbf{T} threshold pair\par}
+\vspace{-7pt}
+{\footnotesize\sffamily \textcolor{cInk}{\textbf{N}} quiet market \hspace{0.7em} \textcolor{cInfo}{\textbf{R}} mixed purchase that recruits \hspace{0.7em} \textcolor{cInfo}{\textbf{F}} full purchase \hspace{0.7em} \textcolor{cMuted}{\textbf{Q}} mixed orders at the entry floor \hspace{0.7em} \textbf{T} threshold pair\par}
 \vspace{2pt}
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
@@ -503,14 +577,14 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 % ======================================================================
 % M16. Competition creates research
 % ======================================================================
-\begin{frame}[label=F13]{Competition creates research}
+\begin{frame}[label=F13,shrink=3]{Competition creates research}
 \framesubtitle{Proposition 4 at the prior $\reg{prim_pi}$: costly research sets presence $\lambda$, with a cap $\bar\lambda$}
 \hypertarget{main:research}{}
 {\small Research cost $\tfrac{a}{2}\lambda^2$; a success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At $\reg{str_r155}$, $\reg{str_r160}$, $\reg{str_r165}$ research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$ and entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$.\par}
 \begin{center}
-\includegraphics[width=\linewidth,height=0.37\textheight,keepaspectratio]{research_talk.pdf}
+\includegraphics[width=\linewidth,height=0.325\textheight,keepaspectratio]{research_talk.pdf}
 \end{center}
-\vspace{-6pt}
+\vspace{-9pt}
 \GrayLine{Corollary 3: zero research on $[r_0,r_N]$; recruiting research on $[r_R,r_C]\approx[\reg{res_rR},\reg{res_rC}]$, below the cap until $r_{\bar\lambda}\approx\reg{res_rcap}$ and at the cap from there, with entry rising from $\reg{res_entry_rR}$ to $\reg{res_entry_cap}$ and then constant; floor-entry research on $(r_N,r_Q)$ and on $(r_C,r_2]$.}
 \TakeawayWithNav[0.3em]{Research and entry rise together; research at the cap holds up to the entry ceiling $r_C$.}
 \PlaceNav{\hyperlink{app:research}{\beamergotobutton{Research in detail}}}
@@ -571,7 +645,7 @@ Surplus net of preparation costs & $\reg{p2_base_r1_surplus}$ & $\reg{p2_base_hi
 % ======================================================================
 % M19. Empirical implications
 % ======================================================================
-\begin{frame}[label=F16]{Empirical implications}
+\begin{frame}[label=F16,shrink=2]{Empirical implications}
 \framesubtitle{Public sales with a ready incumbent and a challenger free to prepare; Propositions A.10--A.13}
 \begin{itemize}\setlength{\itemsep}{6pt}
 \item \textbf{Entry:} a stronger incumbent can raise preparation starts, at prices set before the start; with the price hidden, it can only lower them
@@ -768,7 +842,7 @@ e_H=\rho+(1-\rho)(\lambda+b),\qquad e_L=\rho+(1-\rho)b,\qquad
 \end{frame}
 
 % ---------------------------------------------------------------- A8
-\begin{frame}[label=A8]{Marked strengths of the coexistence region}
+\begin{frame}[label=A8,shrink=2]{Marked strengths of the coexistence region}
 \hypertarget{app:coex}{}
 \vspace{2pt}
 \begin{center}\small

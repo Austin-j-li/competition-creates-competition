@@ -12,6 +12,7 @@ stops the build. Python and Node standard libraries only.
 """
 from __future__ import annotations
 
+import base64
 import csv
 import hashlib
 import html
@@ -46,15 +47,16 @@ def read_registry() -> dict[str, dict[str, str]]:
 # Locked static files (the handout's fonts and KaTeX)
 
 
-def font_faces(lock: dict, prefix: str = "fonts/") -> str:
+def font_faces(lock: dict) -> str:
     """@font-face rules generated from the lock, so the stylesheet cannot drift from the files."""
     rules = []
     for name, v in lock.items():
         if v.get("kind") != "face":
             continue
+        data = base64.b64encode((HERE / "fonts" / name).read_bytes()).decode("ascii")
         stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
         rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
-                     f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
+                     f'font-display: swap; src: url("data:font/woff2;base64,{data}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 
 
@@ -136,15 +138,22 @@ def build() -> None:
             shutil.rmtree(child) if child.is_dir() else child.unlink()
     out.mkdir(exist_ok=True)
 
-    # Fonts: the handout's locked faces (Archivo, STIX Two Text, Fira Mono), symbol fallback and licences.
-    fonts = json.loads((ROOT / "handout/fonts.lock.json").read_text())
+    # Fonts: the deck's locked faces, symbol fallback and licences. The brief's locked files also
+    # ship under /talk/fonts/ because the publisher stages one shared list for both pages.
+    deck_fonts = json.loads((HERE / "fonts.lock.json").read_text())
+    brief_fonts = json.loads((ROOT / "handout/fonts.lock.json").read_text())
     (out / "fonts").mkdir()
-    for name, entry in fonts.items():
+    for name, entry in deck_fonts.items():
+        body = (HERE / "fonts" / name).read_bytes()
+        if digest(body) != entry["sha256"]:
+            raise ValueError("Font hash mismatch: " + name)
+        (out / "fonts" / name).write_bytes(body)
+    for name, entry in brief_fonts.items():
         body = (ROOT / "handout/fonts" / name).read_bytes()
         if digest(body) != entry["sha256"]:
             raise ValueError("Font hash mismatch: " + name)
         (out / "fonts" / name).write_bytes(body)
-    faces = font_faces(fonts, "fonts/")
+    faces = font_faces(deck_fonts)
 
     # KaTeX: the handout's locked local copy.
     vendor = json.loads((ROOT / "handout/vendor.lock.json").read_text())
@@ -214,7 +223,7 @@ def build() -> None:
     for name in ("audit/slot_manuscript_2026_10_23/registry/registry.csv", "slot/manuscript/slides.tex",
                  "presentation/content.js", "presentation/render.mjs", "presentation/figdata.py", "presentation/notes.md",
                  "presentation/deck.js", "presentation/deck.css", "presentation/template.html", "presentation/check_deck.mjs",
-                 "presentation/charts.js", "handout/fonts.lock.json", "handout/vendor.lock.json"):
+                 "presentation/charts.js", "presentation/fonts.lock.json", "handout/fonts.lock.json", "handout/vendor.lock.json"):
         sources[name] = digest((ROOT / name).read_bytes())
     (out / "provenance.json").write_text(json.dumps({
         "sources": sources, "frames": len(frames), "registry_keys_used": len(rendered["used"]),

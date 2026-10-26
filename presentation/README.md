@@ -64,7 +64,7 @@ python3 presentation/build.py
 node presentation/check_deck.mjs
 ```
 
-The build reads the slot registry, verifies the fonts and KaTeX against the handout's locks,
+The build reads the slot registry, verifies the fonts against the deck's lock and KaTeX against the handout's lock,
 renders the slides, computes the figure curves, reads the notes, writes `dist/index.html`,
 `dist/provenance.json` and `dist/speaker-notes.md`, and runs `check_deck.mjs`. Any failure stops
 the build.

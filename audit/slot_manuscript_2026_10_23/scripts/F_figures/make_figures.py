@@ -13,12 +13,12 @@ The log prints each boundary beside the registry display value. Nothing is asser
 
 Run from the repository root:
   .venv/bin/python audit/slot_manuscript_2026_10_23/scripts/F_figures/make_figures.py
-Optional argument --out DIR: the six PDFs, the PNG previews and the run log go to DIR (created if needed), and the
-converted font cache goes to DIR/.mpl. Without it the PDFs go to slot/manuscript/figures/, and the PNG previews
-(png/), the run log (run_log.txt) and the font cache (.mpl/) go beside this script.
-The Fira Sans file comes from `kpsewhich FiraSans-Regular.otf`, then from the folder named by the environment variable
-FIRA_SANS_DIR; the path used is printed when the program starts. The converted font is cached under a name that
-carries a hash of the source file, so that a different Fira file is never served from an older cache.
+Optional argument --out DIR: the six PDFs, the PNG previews and the run log go to DIR (created if needed). Without
+it the PDFs go to slot/manuscript/figures/, and the PNG previews (png/) and the run log (run_log.txt) go beside
+this script.
+The slide versions set their text in Archivo: the TrueType files in slot/manuscript/fonts/ (the static Archivo
+faces as served by Google Fonts, with OFL.txt beside them). The paths used are printed when the program starts.
+The manuscript versions keep STIXGeneral text and STIX math.
 """
 import argparse
 import csv
@@ -232,86 +232,24 @@ DASH_Q = (0, (6.0, 2.0, 1.5, 2.0))
 DASH_T = (0, (3.0, 2.0))
 
 
-def fira_truetype(src, dst):
-    """Convert the CFF outlines of an OpenType font to TrueType outlines (fontTools recipe), so that the
-    PDF embeds a plain TrueType font (Type 42). Needed because matplotlib embeds CFF fonts in a wrapper that
-    some PDF readers reject."""
-    from fontTools.ttLib import TTFont, newTable
-    from fontTools.pens.cu2quPen import Cu2QuPen
-    from fontTools.pens.ttGlyphPen import TTGlyphPen
-
-    font = TTFont(str(src))
-    order = font.getGlyphOrder()
-    gset = font.getGlyphSet()
-    glyf = newTable("glyf")
-    glyf.glyphOrder = order
-    glyf.glyphs = {}
-    for name in order:
-        pen = TTGlyphPen(gset)
-        gset[name].draw(Cu2QuPen(pen, 1.0, reverse_direction=True))
-        glyf.glyphs[name] = pen.glyph()
-    font["loca"] = newTable("loca")
-    font["glyf"] = glyf
-    del font["CFF "]
-    if "VORG" in font:
-        del font["VORG"]
-    glyf.compile(font)
-    hmtx = font["hmtx"]
-    for name, glyph in glyf.glyphs.items():
-        if hasattr(glyph, "xMin"):
-            hmtx[name] = (hmtx[name][0], glyph.xMin)
-    maxp = font["maxp"] = newTable("maxp")
-    maxp.tableVersion = 0x00010000
-    maxp.maxZones, maxp.maxTwilightPoints, maxp.maxStorage = 1, 0, 0
-    maxp.maxFunctionDefs, maxp.maxInstructionDefs, maxp.maxStackElements = 0, 0, 0
-    maxp.maxSizeOfInstructions, maxp.maxComponentElements = 0, max(
-        (len(g.components) if hasattr(g, "components") else 0) for g in glyf.glyphs.values())
-    maxp.maxPoints = maxp.maxContours = maxp.maxCompositePoints = maxp.maxCompositeContours = 0
-    maxp.maxComponentDepth = 0
-    maxp.numGlyphs = len(order)
-    post = font["post"]
-    post.formatType = 2.0
-    post.extraNames = []
-    post.mapping = {}
-    post.glyphOrder = order
-    for rec in list(font["name"].names):
-        if rec.nameID in (1, 4, 16):
-            rec.string = "Fira Sans TT" if rec.nameID != 4 else "Fira Sans TT Regular"
-    font.sfntVersion = "\000\001\000\000"
-    font.save(str(dst))
+FONTS_DIR = ROOT / "slot" / "manuscript" / "fonts"
 
 
-def find_fira():
-    """Locate FiraSans-Regular.otf: kpsewhich first, then the folder named by FIRA_SANS_DIR. Returns (path or None, how)."""
-    try:
-        res = subprocess.run(["kpsewhich", "FiraSans-Regular.otf"], capture_output=True, text=True, check=False)
-        found = res.stdout.strip().splitlines()[0] if res.stdout.strip() else ""
-    except FileNotFoundError:
-        found = ""
-    if found and pathlib.Path(found).exists():
-        return pathlib.Path(found), "kpsewhich"
-    env = os.environ.get("FIRA_SANS_DIR", "").strip()
-    if env and (pathlib.Path(env).expanduser() / "FiraSans-Regular.otf").exists():
-        return pathlib.Path(env).expanduser() / "FiraSans-Regular.otf", "FIRA_SANS_DIR"
-    return None, "not found"
-
-
-def register_fira():
-    src, how = find_fira()
-    if src is None:
-        print("Fira Sans: FiraSans-Regular.otf not found by kpsewhich or in FIRA_SANS_DIR; slide figures use DejaVu Sans")
+def register_archivo():
+    """Register the Archivo TrueType files of slot/manuscript/fonts/ with matplotlib, so that the slide
+    figures embed Archivo (TrueType, Type 42). Prints the paths used; returns True when Archivo-Regular
+    is present."""
+    files = sorted(FONTS_DIR.glob("Archivo-*.ttf"))
+    if not (FONTS_DIR / "Archivo-Regular.ttf").exists():
+        print(f"Archivo: Archivo-Regular.ttf not found in {FONTS_DIR}; slide figures use DejaVu Sans")
         return False
-    print(f"Fira Sans: {src} ({how})")
-    digest = hashlib.sha256(src.read_bytes()).hexdigest()[:12]
-    dst = MPL_CACHE / f"FiraSans-Regular-tt-{digest}.ttf"
-    if not dst.exists():
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        fira_truetype(src, dst)
-    fm.fontManager.addfont(str(dst))
+    for f in files:
+        fm.fontManager.addfont(str(f))
+        print(f"Archivo: {f}")
     return True
 
 
-FIRA_OK = False
+ARCHIVO_OK = False
 
 
 class Style:
@@ -320,8 +258,8 @@ class Style:
         if talk:
             self.fs, self.fl, self.ft, self.fm_, self.fn = 11.0, 12.0, 10.5, 10.0, 10.5
             self.lw, self.lwt, self.lwd, self.ms = 2.9, 1.3, 1.1, 6.5
-            self.family = "Fira Sans TT" if FIRA_OK else "DejaVu Sans"
-            self.math = "cm"
+            self.family = "Archivo" if ARCHIVO_OK else "DejaVu Sans"
+            self.math = "stix"
         else:
             self.fs, self.fl, self.ft, self.fm_, self.fn = 8.0, 9.0, 8.0, 8.0, 7.5
             self.lw, self.lwt, self.lwd, self.ms = 1.9, 0.8, 0.7, 4.6
@@ -343,6 +281,19 @@ class Style:
             "axes.spines.top": False, "axes.spines.right": False,
             "axes.unicode_minus": False, "savefig.dpi": 300,
         })
+        if self.talk:
+            # Slide figures in the ruled-document tokens: in-figure text and
+            # axes in ink, tick labels in the muted grey. Curve colours are
+            # set by the drawing calls and stay as they are.
+            plt.rcParams.update({
+                "text.color": "#1e2530", "axes.edgecolor": "#1e2530",
+                "axes.labelcolor": "#1e2530",
+                "xtick.color": "#5b6573", "ytick.color": "#5b6573",
+                "xtick.labelcolor": "#5b6573", "ytick.labelcolor": "#5b6573",
+                # The slide paper colour, so a figure shows no box on the slide.
+                "figure.facecolor": "#fbfcfc", "axes.facecolor": "#fbfcfc",
+                "savefig.facecolor": "#fbfcfc",
+            })
 
 
 def panel_label(ax, text, S, dx=-0.085, dy=1.02):
@@ -779,7 +730,7 @@ def fig_research(talk):
 
 # ============================================================ build
 def main(argv=None):
-    global OUT, PNG, LOGFILE, MPL_CACHE, OUT_LABEL, FIRA_OK
+    global OUT, PNG, LOGFILE, MPL_CACHE, OUT_LABEL, ARCHIVO_OK
     ap = argparse.ArgumentParser(description="Figures of the order-slot manuscript.")
     ap.add_argument("--out", metavar="DIR", default=None,
                     help="write the six PDFs, the PNG previews and the run log to DIR instead of the manuscript folder")
@@ -789,11 +740,11 @@ def main(argv=None):
         LOGFILE = OUT / "run_log.txt"
         MPL_CACHE = OUT / ".mpl"
         OUT_LABEL = str(OUT)
-    FIRA_OK = register_fira()
+    ARCHIVO_OK = register_archivo()
     OUT.mkdir(parents=True, exist_ok=True)
     PNG.mkdir(parents=True, exist_ok=True)
     log("make_figures.py: figures of the order-slot manuscript")
-    log(f"fonts: Fira Sans registered: {FIRA_OK}; matplotlib {matplotlib.__version__}; mpmath dps {mp.dps}")
+    log(f"fonts: Archivo registered: {ARCHIVO_OK}; matplotlib {matplotlib.__version__}; mpmath dps {mp.dps}")
     log("")
     log("Primitives: h=10 ell=1 p=1/2 rho=1/4 c_H=6 k=1/50 pi=1/2; 1+u=e, beta=0.294655; research a=1/40, cap=lambda-bar(beta)")
     log(f"u={float(PM.u):.10f}  lambda-bar={float(PM.lam):.10f}  b={float(PM.b):.10f}  "
@@ -876,8 +827,9 @@ def main(argv=None):
     log("  Markers: filled = the value is attained at that strength; open = approached, not attained.")
     log("  Nodes (black): r_0, 1.55, 1.60, 1.65, r_1 = 3, r_2 = 18/5.")
     log("Fonts: manuscript figures use STIXGeneral text and STIX math (TrueType, Type 42).")
-    log("  Slide figures use Fira Sans (Regular) with Computer Modern math; the CFF outlines of Fira Sans are converted")
-    log("  to TrueType outlines with fontTools (cu2qu, error bound 1 font unit) so that the PDF embeds a TrueType font.")
+    log("  Slide figures use Archivo (Regular, from slot/manuscript/fonts/) with STIX math; in-figure text and axes")
+    log("  are ink (#1e2530) with tick labels in the muted grey (#5b6573). The Archivo files are TrueType, so the")
+    log("  PDF embeds a TrueType font (Type 42) directly.")
     log("")
 
     made = []
