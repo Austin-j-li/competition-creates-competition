@@ -8,7 +8,7 @@ Intuition: A low-class sale need not end the competition-creates-research mechan
 
 **Recommendation.** Use this as the general research result. Retain the present abstention-only interval as the benchmark illustration, or under Candidate 2's sufficient conditions.
 
-**Source boundary.** I read the common brief, W3, the scan and its two named mathematical reports, then the relevant manuscript passages. The manuscript working copy is at commit 69c25f4704f30d9b999856d85d3dbafa1e0bee41. The ingredients below are the trading payoffs in [A2, Informed trading](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A2_beliefs_trading.tex:173), research optimality and the full-purchase lemma in [A5](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A5_research.tex:64), and the low-class best response in [A4](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A4_coexistence.tex:193). The proposed continuation below is derived here; it is not asserted by those sources. No other solver output in workarounds/raw was read.
+**Source boundary.** I read the common brief, W3, the scan and its two named mathematical reports, then the relevant manuscript passages. The manuscript working copy is at commit 69c25f4704f30d9b999856d85d3dbafa1e0bee41. The ingredients below are the trading payoffs in [A2, Informed trading](overleaf/slot/appendix/A2_beliefs_trading.tex:173), research optimality and the full-purchase lemma in [A5](overleaf/slot/appendix/A5_research.tex:64), and the low-class best response in [A4](overleaf/slot/appendix/A4_coexistence.tex:193). The proposed continuation below is derived here; it is not asserted by those sources. No other solver output in workarounds/raw was read.
 
 ### Formal statement
 
@@ -537,7 +537,7 @@ Thus “cheap enough research” can guarantee both single crossing and the desi
 
 ### Benchmark check
 
-On \(r\in[6/5,7/4]\), use the primitive bounds already employed in [the manuscript's branch proof](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A5_research.tex:286):
+On \(r\in[6/5,7/4]\), use the primitive bounds already employed in [the manuscript's branch proof](overleaf/slot/appendix/A5_research.tex:286):
 
 \[
 d=\frac{11}{72},\qquad

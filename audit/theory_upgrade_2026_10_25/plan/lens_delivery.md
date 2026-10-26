@@ -92,9 +92,9 @@ of the stage, the mathematics writer-written prose included.
 Shell names used below:
 
 ```bash
-REPO=/Users/austinli/Projects/competition-creates-competition
+REPO=the repository root
 MASTER=$REPO/overleaf/slot                     # Overleaf master, its own Git repository
-WT=/Users/austinli/Projects/ccc-theory-upgrade # parent-repository worktree, new branch
+WT=~/Projects/ccc-theory-upgrade # parent-repository worktree, new branch
 TEAM=$WT/audit/slot_manuscript_2026_10_23
 BR=theory-upgrade-2026-10-25                   # branch name in both repositories
 ```

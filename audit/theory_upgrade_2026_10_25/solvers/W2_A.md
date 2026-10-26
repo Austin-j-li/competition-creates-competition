@@ -28,7 +28,7 @@ Derivation:
    e_L(\lambda)=\rho+(1-\rho)\beta(1-\lambda).
    $$
 
-   Preparation is independent of $(\theta,R)$ conditional on class, so $O_H^R=W_He_H/2$. This independence is the same factorisation used in [A3, ownership proof](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A3_proposition2.tex:75).
+   Preparation is independent of $(\theta,R)$ conditional on class, so $O_H^R=W_He_H/2$. This independence is the same factorisation used in [A3, ownership proof](overleaf/slot/appendix/A3_proposition2.tex:75).
 
 2. The sale posterior on this branch is $1/2$, with entry $\rho$. Since class L abstains, its sale payoff must satisfy
 
@@ -36,7 +36,7 @@ Derivation:
    \rho\Delta/2-k\le0.
    $$
 
-   At zero research all orders are liquidity orders, so all posteriors equal $1/2<\tau$, entry is $\rho$, and prices coincide. At those prices a hypothetical successful investor's correct order earns $\rho\Delta/2-k\le0$, a wrong-signed order earns at most $-k$, and abstention earns zero. Choose abstention after either class: it is allowed under IM and I0, including equality. The successful-research trading value is zero, so the best research choice is uniquely zero. This constructs Z as an equilibrium of the **same research game**. Compare [A5, Z construction](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A5_research.tex:141).
+   At zero research all orders are liquidity orders, so all posteriors equal $1/2<\tau$, entry is $\rho$, and prices coincide. At those prices a hypothetical successful investor's correct order earns $\rho\Delta/2-k\le0$, a wrong-signed order earns at most $-k$, and abstention earns zero. Choose abstention after either class: it is allowed under IM and I0, including equality. The successful-research trading value is zero, so the best research choice is uniquely zero. This constructs Z as an equilibrium of the **same research game**. Compare [A5, Z construction](overleaf/slot/appendix/A5_research.tex:141).
 
 3. For $\lambda\in[0,1)$, let
 
@@ -267,9 +267,9 @@ For the economics, the weakness matters to a claim about **who acquires**, not t
 
 ## Other findings (errors in the manuscript, anything surprising)
 
-1. **The current benchmark proposition is correct; the obstacle is its unrestricted generalisation.** [Proposition 4(a)](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/sections/05_research.tex:52) explicitly assumes the benchmark auction, and [its proof](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A5_research.tex:266) explicitly invokes $h>r$ and $W_H=1$. A general theorem should retain $W_H$ or use Candidate 1. This is not a counterexample within the proposition's currently stated benchmark domain.
+1. **The current benchmark proposition is correct; the obstacle is its unrestricted generalisation.** [Proposition 4(a)](overleaf/slot/sections/05_research.tex:52) explicitly assumes the benchmark auction, and [its proof](overleaf/slot/appendix/A5_research.tex:266) explicitly invokes $h>r$ and $W_H=1$. A general theorem should retain $W_H$ or use Candidate 1. This is not a counterexample within the proposition's currently stated benchmark domain.
 
-2. **The related robustness results already distinguish the relevant cases.** [Proposition 2](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/sections/04_equilibrium_results.tex:35) and [A.4](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A6_robustness.tex:92) state the exact ownership inequality. [A.5's construction](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A6_robustness.tex:180) obtains it by continuity of $W_H$, so its ownership claim survives. The ownership formula following [A.7](/Users/austinli/Projects/competition-creates-competition/overleaf/slot/appendix/A6_robustness.tex:481) uses $h>r_1$; a general extension must write $\tfrac12 e_HW_H(F_1)$, rather than $e_H/2$. The same-incumbent normalisation also cancels $W_H$ there whenever the baseline class-H entry is $\rho$. None of these observations calls for changing the baseline two-point cost law.
+2. **The related robustness results already distinguish the relevant cases.** [Proposition 2](overleaf/slot/sections/04_equilibrium_results.tex:35) and [A.4](overleaf/slot/appendix/A6_robustness.tex:92) state the exact ownership inequality. [A.5's construction](overleaf/slot/appendix/A6_robustness.tex:180) obtains it by continuity of $W_H$, so its ownership claim survives. The ownership formula following [A.7](overleaf/slot/appendix/A6_robustness.tex:481) uses $h>r_1$; a general extension must write $\tfrac12 e_HW_H(F_1)$, rather than $e_H/2$. The same-incumbent normalisation also cancels $W_H$ there whenever the baseline class-H entry is $\rho$. None of these observations calls for changing the baseline two-point cost law.
 
 3. **A conditional acquisition share is not an unconditional repair.** The share of H among successful challenger acquisitions is
 

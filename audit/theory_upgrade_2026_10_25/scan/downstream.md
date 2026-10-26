@@ -1,6 +1,6 @@
 # Downstream-consumer report: theory upgrade of Propositions 3, 4, A.2, Corollary A.2 and A.11–A.14
 
-I changed no files and ran nothing. Everything below is from reading files and grep. Paths are relative to `/Users/austinli/Projects/competition-creates-competition`. `OL` means `overleaf/slot`, `SM` means `slot/manuscript`, and `AUD` means `audit/slot_manuscript_2026_10_23`.
+I changed no files and ran nothing. Everything below is from reading files and grep. Paths are relative to `the repository root`. `OL` means `overleaf/slot`, `SM` means `slot/manuscript`, and `AUD` means `audit/slot_manuscript_2026_10_23`.
 
 ## 0. Findings that affect planning
 
