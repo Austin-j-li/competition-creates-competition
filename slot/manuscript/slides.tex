@@ -253,7 +253,7 @@ B_r(\mu)=g_L+\mu(g_H-g_L)\ &\downarrow && \text{gross profit at belief $\mu$}
 \begin{frame}[label=F4]{The order slot: one trade before the decision}
 \framesubtitle{The challenger sees the price, not the order and not the class}
 \hypertarget{main:slot}{}
-\begin{enumerate}\setlength{\itemsep}{5pt}
+\begin{enumerate}\setlength{\itemsep}{2pt}
 \item One public order opportunity comes first. The name for it is the \textbf{order slot}
 \item With probability $\lambda$, the \textbf{informed investor} fills the slot. The investor sees class $j$ and picks $q\in\{-1,0,1\}$. A nonzero order costs $k$
 \item With probability $1-\lambda$, a \textbf{liquidity trader} fills the slot. Sale, no order and buy have probabilities $\beta$, $1-2\beta$, $\beta$
@@ -261,7 +261,7 @@ B_r(\mu)=g_L+\mu(g_H-g_L)\ &\downarrow && \text{gross profit at belief $\mu$}
 \item Market makers see order $X\in\{-1,0,1\}$ and set $P=\mathbb{E}[V_T\mid X]$, with $V_T$ as sale proceeds per share
 \end{enumerate}
 \vspace{-2pt}
-{\small Set $b=(1-\lambda)\beta$ and $u=\lambda/b$: the informed presence mass relative to the liquidity mass in one direction. The number $1+u$ is the largest likelihood ratio of an order. The bound $0<\beta\le 1/3$ holds throughout.\par}
+{\small Set $b=(1-\lambda)\beta$ and $u=\lambda/b$: the informed presence mass relative to the liquidity mass in one direction. The number $1+u$ is the largest likelihood ratio of an order. The bound $0<\beta\le 1/3$ holds throughout. Throughout, an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares.\par}
 \TakeawayWithNav{Every order can come from either class. No price reveals the class with certainty.}
 \PlaceNav{\hyperlink{app:slot}{\beamergotobutton{Equilibrium object}}}
 \end{frame}
@@ -448,7 +448,7 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \vspace{2pt}
 {\small
 \begin{itemize}\setlength{\itemsep}{2pt}
-\item At any fixed price experiment that says nothing about the incumbent's value beyond the class, a stronger incumbent cuts $B_r(\mu)$ at each belief: entry can only fall
+\item Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then cuts $B_r(\mu)$ at each belief: entry can only fall
 \item Frozen full orders give the same entry up to the entry ceiling $r_C$, then $\rho$. At $r_0$ the control is not an equilibrium
 \item With the price hidden, cost $c_H$ never pays at the prior, so entry stays at $\rho$
 \end{itemize}}
@@ -485,7 +485,7 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \framesubtitle{Corollary 2: entry along the path of strengths}
 \hypertarget{main:coex}{}
 \begin{center}
-\CoexPanel{0 22 510 0}{height=0.41\textheight,keepaspectratio}\hspace{0.8em}\CoexPanel{424 22 0 0}{height=0.41\textheight,keepaspectratio}
+\CoexPanel{0 22 510 0}{height=0.35\textheight,keepaspectratio}\hspace{0.8em}\CoexPanel{424 22 0 0}{height=0.35\textheight,keepaspectratio}
 \end{center}
 \vspace{-4pt}
 {\footnotesize \textcolor[HTML]{1F3A6E}{\textbf{N}} quiet market \hspace{0.7em} \textcolor[HTML]{B4472E}{\textbf{R}} mixed purchase that recruits \hspace{0.7em} \textcolor[HTML]{B4472E}{\textbf{F}} full purchase \hspace{0.7em} \textcolor[HTML]{6C6C6C}{\textbf{Q}} mixed orders at the entry floor \hspace{0.7em} \textbf{T} threshold pair\par}
@@ -494,6 +494,7 @@ Price hidden from the challenger & $\reg{p4_hidden_r0_entry}$ & $\reg{p4_hidden_
 \begin{itemize}\setlength{\itemsep}{2pt}
 \item On $[\reg{rA},\reg{rN}]$, a quiet market and an informative market coexist; class $H$ mixes its purchase up to $\reg{rF_B}$ and buys for sure from there
 \item Entry rises strictly on $[r_A,r_F]$, stays at $\reg{entry_r1_B}$ up to the entry ceiling $r_C$ and returns to $\rho$ above it
+\item The path is for the slot band of Corollary 1, $\tau(r_1)<M<\tau(r_2)$
 \end{itemize}}
 \TakeawayWithNav[0.3em]{Coexistence spans $[r_A,r_N]$.}
 \PlaceNav{\hyperlink{app:coex}{\beamergotobutton{Marked strengths}}}
@@ -574,9 +575,9 @@ Surplus net of preparation costs & $\reg{p2_base_r1_surplus}$ & $\reg{p2_base_hi
 \framesubtitle{Public sales with a ready incumbent and a challenger free to prepare; Propositions A.10--A.13}
 \begin{itemize}\setlength{\itemsep}{6pt}
 \item \textbf{Entry:} a stronger incumbent can raise preparation starts, at prices set before the start; with the price hidden, it can only lower them
-\item \textbf{Price gap:} the weighted purchase impact exceeds the weighted sale impact exactly when a purchase recruits. At $r_1$ the price gap is $\reg{ba_r1_B}$, with entry component $\reg{ba_share_r1_B}$ of it; above $r_C$ the entry component is zero
-\item \textbf{Informed share:} full two-sided trade is the unique outcome for $r>r_S$, $r_S\approx\reg{rS_B}$; the sale impact and the mean order then identify presence and prior
-\item \textbf{Winners:} orders predict the winner even above the entry ceiling $r_C$, where they no longer predict entry
+\item \textbf{Price gap:} under full two-sided trade at a prior below the preparation threshold, the weighted purchase impact exceeds the weighted sale impact exactly when a purchase recruits. At $r_1$ the price gap is $\reg{ba_r1_B}$, with entry component $\reg{ba_share_r1_B}$ of it; above $r_C$ the entry component is zero
+\item \textbf{Informed share:} full two-sided trade is the unique outcome for $r_S<r<h$, $r_S\approx\reg{rS_B}$. With entry $\rho$ after a sale and no order and $\rho\Delta_T$ known, the sale impact and the mean order then identify presence and prior
+\item \textbf{Winners:} under full two-sided trade, orders predict the winner when class $H$ outbids class $L$, even above the entry ceiling $r_C$, where they no longer predict entry
 \end{itemize}
 \medskip
 \GrayLine{Outcome: the start of costly preparation. A valid test uses the price before that start. Returns before a bid can also reflect an expected bid (Schwert 1996).}

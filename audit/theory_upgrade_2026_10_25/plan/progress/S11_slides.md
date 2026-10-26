@@ -85,6 +85,20 @@ I rendered the whole deck at 110 dpi and read every changed frame (including Q2,
 
 The scan lists no "benchmark", status label, "no trade", "entrant", "admissible", "threshold" for a marked strength, or defensive hit. The whole file was read for the rule card: no status label, no "benchmark", no process word, no tool or model name.
 
+## Changes after the referee
+
+The referee's consumer read (S12) found nine non-matches in the slides and the comparison note. All are fixed in `slides.tex` and `comparison.tex`.
+
+- **Default tie rules (C02, C03, C04, C08):** the rules are stated once, on F4, the frame that sets out the order slot and the equilibrium notion: "Throughout, an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares." Proposition 3 (F12), Corollary 2 (F12b), Proposition 4 and Corollary 3 (F13) and the research details (A9) rely on that statement and do not repeat it.
+- **C01 (F11, Proposition A.2):** the first bullet says that, given the class and the signal, the two values keep their class and incumbent laws, and that cost is independent of class, values and signal.
+- **C03 (F12b, Corollary 2):** a bullet adds the slot band of Corollary 1, \(\tau(r_1)<M<\tau(r_2)\). The two panels are cut from 0.41 to 0.35 of the text height to keep the frame inside its box.
+- **C05 (F16, price gap):** the bullet begins "under full two-sided trade at a prior below the preparation threshold".
+- **C06 (F16, informed share):** the bullet adds entry \(\rho\) after a sale and no order, with \(\rho\Delta_T\) known; the range of full two-sided trade reads \(r_S<r<h\), as in Proposition A.10.
+- **C07 (F16, winners):** the bullet reads "under full two-sided trade, orders predict the winner when class \(H\) outbids class \(L\)".
+- **C09 (comparison note, number of prices):** full two-sided trade is the unique outcome "for \(r_S<r<h\)", in place of the endpoints "from \(r_S\) to \(h\)".
+
+The slides build with no overfull box and no undefined reference (35 pages). F4, F11, F12b and F16 were rendered at 80 dpi and read: no text leaves a frame. The comparison note builds with no overfull box. The language scan with `--extra` on both files lists 17 counted hits in the slides, as before (one "no longer" comparative static on F16 and 15 bold definitions and legend letters; the "check" hit is the Q1 "check the books"), none in the comparison note, and the allowed tie-rule phrases, now including the F4 sentence.
+
 ## Left for later
 
 - The key list memo (five rows, above).
