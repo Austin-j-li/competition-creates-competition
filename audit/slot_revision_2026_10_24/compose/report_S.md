@@ -5,7 +5,7 @@
 The status vocabulary is out of the manuscript. No hypothesis, conclusion, number, inequality, or quantifier changes.
 
 - Branch: `t3/remove-result-status-vocabulary`, based on `c78e2c3`
-- Commit: `80804f05afa65aa473d2544b26169f4530b9ab83` ("Remove the result-status vocabulary from the manuscript", with the `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` trailer)
+- Commit: `80804f05afa65aa473d2544b26169f4530b9ab83` ("Remove the result-status vocabulary from the manuscript")
 - Not pushed.
 - Diff: 15 files changed, 107 insertions, 118 deletions.
 - No `\label`, `\eqref`, `\cite`, or `\reg{}` in retained text changes. The only `\ref{}` occurrences that leave sit inside the two method sentences after Propositions 3 and 4, which the brief names for deletion.
