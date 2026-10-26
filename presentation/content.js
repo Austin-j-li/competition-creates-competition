@@ -56,7 +56,7 @@
       body:
         '<p class="bigq">' + key('Does a stronger bidder in a merger auction<br>scare off its competitor, or draw in more competition?') + '</p>' +
         ul([[1, 'A competitor pays to check the books before it can bid'],
-          [2, 'Preemptive bids: a first bidder opens high, so the competitor stays out'],
+          [2, 'A first bidder bids high at the start to preempt the competitor'],
           [3, 'To the target, one more bidder beats the best negotiation']], 'roomy') +
         '<p class="grayline" data-step="3">Fishman 1988 | Bulow and Klemperer 1996</p>' });
 
@@ -67,9 +67,9 @@
           [1, 'The next bidder, the <b>challenger</b>, must first <b>prepare</b>: diligence, finance, approvals'],
           [2, 'A stronger incumbent raises the price a victorious challenger pays'],
           [3, 'So preparation pays less, and fewer challengers prepare'],
-          [4, 'Preparing is a choice: costs decide who shows up']], 'roomy') +
+          [4, 'A challenger prepares only when preparation pays']], 'roomy') +
         gray('Fishman 1988; Hirshleifer and Png 1989 | Samuelson 1985; Levin and Smith 1994') +
-        take('Strength deters: preparing pays less, so fewer challengers come.', 5) +
+        take('A stronger incumbent lowers the return to preparation, so fewer challengers prepare.', 5) +
         nav(go('app:refs', 'References')) });
 
     frame({ id: 'q3', label: 'Q3', num: '3', part: 1, minutes: 1.0, targets: [], defines: [], widget: '',
@@ -78,8 +78,8 @@
         ul([[0, 'An outside investor knows the challenger class and can fill one order slot'],
           [1, 'A stronger incumbent shifts a value gap to target shareholders'],
           [2, 'Sale proceeds then depend more on the challenger class'],
-          [3, 'Trade pays, the price becomes informative, good news covers a high cost'],
-          [4, 'In the example, entry rises: <span class="bench-inline">' + q('entry_r0') + ' → ' + q('entry_r1_B') + '</span>']], 'roomy') +
+          [3, 'Informed trade pays, so the price becomes informative. Good news then covers a high cost'],
+          [4, 'So a stronger incumbent can draw the challenger in']], 'roomy') +
         take(key('The channel is information.') + ' Hold price information fixed, and a stronger incumbent does not raise entry.', 5) });
 
     frame({ id: 'f1', label: 'F1', num: '4', part: 2, minutes: 1.0, targets: [], defines: [], widget: '',
@@ -95,7 +95,7 @@
           [5, 'A second bidder is not ready: the <b>challenger</b>'],
           [5, 'To bid, the challenger must first <b>prepare</b>: due diligence, finance, approvals'],
           [5, 'That step costs money and time. The probability that the challenger prepares is <b>entry</b>']]) +
-        take('The focus is that interval: after the sale turns public, before the challenger decision.', 6) });
+        take('That interval runs from the sale becoming public to the challenger decision.', 6) });
 
     frame({ id: 'f2', label: 'F2', num: '5', part: 2, minutes: 2.0, targets: ['main:notation'],
       defines: ['R', 'r', 'class', 'pi', 'h', 'ell', 'p', 'rho', 'c_H'], widget: 'infosets', short: 'Model',
@@ -133,7 +133,7 @@
         '</div>' +
         gray(m('t_j') + ' is expected target proceeds with a class ' + m('j') + ' challenger. Proposition 1: profit falls weakly under any first-order strengthening; the spread rises weakly for ranked classes.') +
         '<p class="small" data-step="2">In the example, the spread moves ' + q('Delta_r0') + ' → ' + q('Delta_r1') + ' from ' + m('r_0') + ' to ' + m('r_1') + ', and profit at the prior moves ' + q('Bprior_r0') + ' → ' + q('Bprior_r1_B') + '.</p>' +
-        take('One shift, opposite signs: the challenger keeps less, and proceeds depend more on class.', 3) });
+        take('Challenger profit falls weakly. The target-payoff spread rises weakly.', 3) });
 
     frame({ id: 'f4', label: 'F4', num: '7', part: 3, minutes: 1.75, targets: ['main:slot'],
       defines: ['lambda', 'q', 'k', 'beta', 'X', 'P', 'V_T', 'b', 'u'], widget: '',
@@ -151,7 +151,7 @@
           '<span class="arrow" data-step="5" aria-hidden="true">→</span>' +
           '<div class="sbox sbox-cost" data-step="5"><b>Challenger</b>sees ' + m('P') + '<small>not ' + m('X') + ', not ' + m('j') + '</small></div>' +
         '</div>' +
-        '<p class="small" data-step="6">Set ' + m(T`b=(1-\lambda)\beta`) + ' and ' + m(T`u=\lambda/b`) + ': the informed presence mass relative to the liquidity mass in one direction. The number ' + m('1+u') + ' is the largest likelihood ratio of an order. The bound ' + m(T`0<\beta\le 1/3`) + ' holds throughout. Throughout, an indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares.</p>' +
+        '<p class="small" data-step="6">Set ' + m(T`b=(1-\lambda)\beta`) + ' and ' + m(T`u=\lambda/b`) + ': the informed presence mass relative to the liquidity mass in one direction. The number ' + m('1+u') + ' is the largest likelihood ratio of an order. The bound ' + m(T`0<\beta\le 1/3`) + ' holds throughout. An indifferent investor may mix over its best orders and an indifferent high-cost challenger prepares.</p>' +
         take('Every order can come from either class. No price reveals the class with certainty.', 7) +
         nav(go('app:slot', 'Equilibrium object')) });
 
@@ -209,7 +209,7 @@
           '</div>' +
           '<div class="col"><div class="figure" id="gain" tabindex="0" aria-label="Figure. The gain of a correctly signed order against incumbent strength, in units of the order cost k, between its floor and its ceiling; arrow keys move the cursor."></div></div>' +
         '</div>' +
-        take('The shift that cuts challenger profit switches informed trade on.', 4) });
+        take('The same rise in ' + m('r') + ' that lowers challenger profit makes a correct order cover ' + m('k') + '.', 4) });
 
     frame({ id: 'f8', label: 'F8', num: '11', part: 4, minutes: 2.25, targets: [], defines: ['tau', 'r_C'], widget: 'beliefs',
       title: 'Only good news makes high-cost preparation pay', subtitle: 'Preparation threshold ' + m(T`\tau(r)=(c_H-g_L)/(g_H-g_L)`) + ', with ' + m(T`B_r(\tau)=c_H`),
@@ -260,7 +260,7 @@
           '<tr data-step="3"><th>Class ' + m('H') + ' ownership</th><td>' + q('own_r0') + '</td><td class="strong">' + q('own_r1_B') + '</td><td>' + q('own_r2_B') + '</td></tr>' +
         '</tbody></table>' +
         gray('Corollary 1: (H1)–(H3) hold together exactly for ' + m(T`{{u_lo_frac}}<u<{{u_hi_frac}}`) + ', that is, ' + m(T`\tau(r_1)<M<\tau(r_2)`) + '; here ' + m(T`u={{u_B}}`) + '.') +
-        take('Rise, then return: past the entry ceiling ' + m(T`r_C\approx{{rC_B}}`) + ', the top posterior cannot cover ' + m('c_H') + '.', 4) +
+        take('Past the entry ceiling ' + m(T`r_C\approx{{rC_B}}`) + ', the top posterior cannot cover ' + m('c_H') + '.', 4) +
         nav(go('app:outcome', 'Entry formulas')) });
 
     frame({ id: 'f11', label: 'F11', num: '14', part: 5, minutes: 1.75, targets: [], defines: [], widget: 'controls',
@@ -278,7 +278,7 @@
         ul([[1, 'Given the class and the signal, the two values keep their class and incumbent laws, and cost is independent of class, values and signal. A stronger incumbent then cuts ' + m(T`B_r(\mu)`) + ' at each belief: entry can only fall'],
           [2, 'Frozen full orders give the same entry up to the entry ceiling ' + m('r_C') + ', then ' + m(T`\rho`) + '. At ' + m('r_0') + ' the control is not an equilibrium'],
           [3, 'With the price hidden, cost ' + m('c_H') + ' never pays at the prior, so entry stays at ' + m(T`\rho`)]], 'small') +
-        take('The rise comes from a change in what the price reveals. Deterrence stays at each belief.', 4) });
+        take('The rise comes from a change in what the price reveals. At a fixed belief, a stronger incumbent weakly lowers gross profit.', 4) });
 
     frame({ id: 'f12', label: 'F12', num: '15', part: 6, minutes: 0.75, targets: [], defines: [], widget: 'region',
       title: 'Quiet and informative markets coexist', subtitle: 'Proposition 3 at a fixed presence probability ' + m(T`\lambda`) + ': where both exist',
@@ -301,14 +301,14 @@
         '<p class="small keyline"><b class="k-n">N</b> quiet market <b class="k-r">R</b> mixed purchase that recruits <b class="k-r">F</b> full purchase <b class="k-q">Q</b> mixed orders at the entry floor <b class="k-t">T</b> threshold pair</p>' +
         ul([[1, 'On ' + m(T`[{{rA}},{{rN}}]`) + ', a quiet market and an informative market coexist; class ' + m('H') + ' mixes its purchase up to ' + q('rF_B') + ' and buys for sure from there'],
           [2, 'Entry rises strictly on ' + m('[r_A,r_F]') + ', stays at ' + q('entry_r1_B') + ' up to the entry ceiling ' + m('r_C') + ' and returns to ' + m(T`\rho`) + ' above it'],
-          [3, 'The path is for the slot band of Corollary 1, ' + m(T`\tau(r_1)<M<\tau(r_2)`)]], 'small') +
+          [3, 'The path uses the slot band of Corollary 1, ' + m(T`\tau(r_1)<M<\tau(r_2)`)]], 'small') +
         take('Coexistence spans ' + m('[r_A,r_N]') + '.', 3) +
         nav(go('app:coex', 'Marked strengths')) });
 
     frame({ id: 'f13', label: 'F13', num: '17', part: 6, minutes: 1.5, targets: ['main:research'], defines: ['a_cap', 'r_R'], widget: 'research',
       title: 'Competition creates research', subtitle: 'Proposition 4 at the prior ' + m(T`\reg{prim_pi}`) + ': costly research sets presence ' + m(T`\lambda`) + ', with a cap ' + m(T`\bar\lambda`),
       body:
-        '<p class="small">Research cost ' + m(T`\tfrac{a}{2}\lambda^2`) + '; a success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At ' + q('str_r155') + ', ' + q('str_r160') + ', ' + q('str_r165') + ' research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + ' and entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165') + '.</p>' +
+        '<p class="small">Research costs ' + m(T`\tfrac{a}{2}\lambda^2`) + '. A success reveals the class and fills the slot. When a purchase recruits, research rises with the spread up to the cap, and entry rises with research. At ' + q('str_r155') + ', ' + q('str_r160') + ', ' + q('str_r165') + ' research is ' + q('res_lambda_r155') + ', ' + q('res_lambda_r160') + ', ' + q('res_lambda_r165') + ' and entry is ' + q('res_entry_r155') + ', ' + q('res_entry_r160') + ', ' + q('res_entry_r165') + '.</p>' +
         '<div class="figure wide nolegend" id="research" tabindex="0" aria-label="Figure. Research and entry against incumbent strength in each research equilibrium of the example; arrow keys move the cursor."></div>' +
         '<p class="grayline" data-step="1">Corollary 3: zero research on ' + m('[r_0,r_N]') + '; recruiting research on ' + m(T`[r_R,r_C]\approx[{{res_rR}},{{res_rC}}]`) + ', below the cap until ' + m(T`r_{\bar\lambda}\approx{{res_rcap}}`) + ' and at the cap from there, with entry rising from ' + q('res_entry_rR') + ' to ' + q('res_entry_cap') + ' and then constant; floor-entry research on ' + m('(r_N,r_Q)') + ' and on ' + m('(r_C,r_2]') + '.</p>' +
         take('Research and entry rise together; research at the cap holds up to the entry ceiling ' + m('r_C') + '.', 2) +
@@ -347,8 +347,8 @@
           [2, '<b>Price gap:</b> under full two-sided trade at a prior below the preparation threshold, the weighted purchase impact exceeds the weighted sale impact exactly when a purchase recruits. At ' + m('r_1') + ' the price gap is ' + q('ba_r1_B') + ', with entry component ' + q('ba_share_r1_B') + ' of it; above ' + m('r_C') + ' the entry component is zero'],
           [3, '<b>Informed share:</b> full two-sided trade is the unique outcome for ' + m(T`r_S<r<h`) + ', ' + m(T`r_S\approx{{rS_B}}`) + '. With entry ' + m(T`\rho`) + ' after a sale and no order and ' + m(T`\rho\Delta_T`) + ' known, the sale impact and the mean order then identify presence and prior'],
           [4, '<b>Winners:</b> under full two-sided trade, orders predict the winner when class ' + m('H') + ' outbids class ' + m('L') + ', even above the entry ceiling ' + m('r_C') + ', where they no longer predict entry']], 'mid') +
-        gray('Outcome: the start of costly preparation. A valid test uses the price before that start. Returns before a bid can also reflect an expected bid (Schwert 1996).') +
-        take('Incumbent strength, the early price path and the start of preparation move as a set.', 5) });
+        gray('The outcome is the start of costly preparation. A valid test uses the price before that start. Returns before a bid can also reflect an expected bid (Schwert 1996).') +
+        take('Strength, early prices and preparation starts must be measured together.', 5) });
 
     frame({ id: 'f17', label: 'F17', num: '21', part: 7, minutes: 0.75, targets: [], defines: [], widget: '',
       title: 'Conclusion', subtitle: '',
@@ -393,7 +393,7 @@
           'Likelihood ratios for ' + m('H') + ' against ' + m('L') + ' then stay in ' + m(T`[1/(1+u),\,1+u]`) + ' at every order, for every investor strategy',
           'Bayes rule turns that band into ' + m(T`m(\pi)\le\mu\le M(\pi)`) + ' at every price',
           'At the example’s prior, the band is ' + m(T`[{{m_half_B}},\,{{M_half_B}}]`) + '. Full orders attain both ends'], 'small') +
-        take('Uniqueness proofs use bounds on every profile, not just on the candidate tuple.') +
+        take('The uniqueness argument applies the bounds to every profile.') +
         nav(back('main:belief')) });
 
     backup({ id: 'a5', label: 'A5', origin: 'f6', targets: ['app:bench'], title: 'Recruitment and research regions in the example', subtitle: '',
@@ -430,7 +430,7 @@
           'At the example’s prior, entry is ' + q('entry_r1_B') + ' and class ' + m('H') + ' ownership is ' + q('own_r1_B'),
           'At ' + m('r_0') + ', a quiet market gives a flat price, so entry is ' + q('entry_r0') + ' and ownership is ' + q('own_r0'),
           'At ' + m('r_2') + ', no price covers ' + m('c_H') + ', so entry is ' + q('entry_r2') + ' and ownership is ' + q('own_r2_B') + ', with full orders',
-          'Auction inputs: ' + m(T`B_r(\pi)`) + ' equals ' + q('Bprior_r0') + ', ' + q('Bprior_r1_B') + ', ' + q('Bprior_r2') + ' at ' + m('r_0') + ', ' + m('r_1') + ', ' + m('r_2')], 'small') +
+          m(T`B_r(\pi)`) + ' equals ' + q('Bprior_r0') + ', ' + q('Bprior_r1_B') + ', ' + q('Bprior_r2') + ' at ' + m('r_0') + ', ' + m('r_1') + ', ' + m('r_2')], 'small') +
         nav(back('main:outcome')) });
 
     backup({ id: 'a8', label: 'A8', origin: 'f12b', targets: ['app:coex'], title: 'Marked strengths of the coexistence region', subtitle: '',
@@ -452,7 +452,7 @@
     backup({ id: 'a9', label: 'A9', origin: 'f13', targets: ['app:research'], title: 'Research in detail', subtitle: '',
       body:
         ul(['Research picks ' + m(T`\lambda`) + ' in ' + m(T`[0,\bar\lambda]`) + ' before the slot, at cost ' + m(T`\tfrac{a}{2}\lambda^2`) + ' (Proposition 4)',
-          'The example’s research inputs: ' + m('a={{res_a}}') + ' and cap ' + m(T`\bar\lambda={{res_cap}}`) + '. Marked strengths: ' + m(T`r_R\approx{{res_rR}}`) + ', ' + m(T`r_{\bar\lambda}\approx{{res_rcap}}`) + ', ' + m(T`r_N\approx{{res_rN}}`) + ', ' + m(T`r_Q\approx{{res_rQ}}`) + ', ' + m(T`r_C\approx{{res_rC}}`),
+          'In the example, ' + m('a={{res_a}}') + ' and the cap is ' + m(T`\bar\lambda={{res_cap}}`) + '. The marked strengths are ' + m(T`r_R\approx{{res_rR}}`) + ', ' + m(T`r_{\bar\lambda}\approx{{res_rcap}}`) + ', ' + m(T`r_N\approx{{res_rN}}`) + ', ' + m(T`r_Q\approx{{res_rQ}}`) + ', ' + m(T`r_C\approx{{res_rC}}`),
           'Zero research, with entry ' + m(T`\rho`) + ', is an equilibrium exactly on ' + m('[r_0,r_N]'),
           'Recruiting research is an equilibrium exactly on ' + m('[r_R,r_C]') + ': research rises from ' + q('res_lambda_rR') + ' to the cap on ' + m(T`[r_R,r_{\bar\lambda})`) + ' and stays at the cap on ' + m(T`[r_{\bar\lambda},r_C]`) + '; entry rises from ' + q('res_entry_rR') + ' to ' + q('res_entry_cap') + ' and keeps that value up to ' + m('r_C'),
           'Floor-entry research, in which both classes trade after a success, no order recruits and entry is ' + m(T`\rho`) + ', is an equilibrium exactly on ' + m('(r_N,r_Q)') + ' and on ' + m('(r_C,r_2]') + '; there is no other equilibrium',
