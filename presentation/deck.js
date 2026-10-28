@@ -145,7 +145,7 @@
   function closePanel() { var d = $('#panel'); if (d.open) d.close(); $('#stage').focus({ preventScroll: true }); }
   function partName(p) { var x = (META.parts || []).filter(function (q) { return String(q.n) === String(p); })[0]; return x ? x.name : ''; }
   function overview() {
-    var html = '<p class="notes-meta">All ' + slides.length + ' frames of the Beamer deck in their order: the title, slides 1 to ' + TOTAL + ', then the backups A1 to A' + (slides.length - mainCount) + '.</p>';
+    var html = '<p class="notes-meta">All ' + slides.length + ' frames of the Beamer deck in their order: the title, slides 1 to ' + TOTAL + ', then the ' + (slides.length - mainCount) + ' backup frames.</p>';
     var numOf = {};
     (META.frames || []).forEach(function (f) { numOf[f.id] = f.num; });
     (META.parts || []).forEach(function (p) {
@@ -228,27 +228,23 @@
     return { mode: 'markers', x: x, y: y, showlegend: false, hovertemplate: 'skip', xaxis: xa || 'x', yaxis: ya || 'y', marker: { symbol: open ? 'circle-open' : 'circle', size: size || 9, color: color } };
   }
 
-  /* F7: the gain of a correctly signed order lies between its floor and its ceiling; compared with k. */
+  /* Slide 13 (F7): the shape of the gain bounds, symbols only. The ceiling and the floor of the gain of a
+     correct order against strength on a log scale, and the order cost k. No ticks, no hover values, no
+     example strengths: slide 13 comes before the first example slide. */
   function specGain(t) {
-    var G = D.fig.gain, I = D.fig.inputs, B = D.fig.bounds, rS = B.rS_B;
+    var G = D.fig.gain, B = D.fig.bounds, n = G.r.length - 1, x1 = G.r[n];
     var traces = [
-      { mode: 'lines', name: 'ceiling Δ<sub>T</sub>', x: G.r, y: G.upper, customdata: pts(G.r, G.upper), line: line(t, t.info), hovertemplate: '%{customdata[0]} <i>k</i><extra>ceiling Δ<sub>T</sub></extra>' },
-      { mode: 'lines', name: 'floor ρκΔ<sub>T</sub>', x: G.r, y: G.lower, customdata: pts(G.r, G.lower), line: line(t, t.info, 'dash'), hovertemplate: '%{customdata[0]} <i>k</i><extra>floor ρκΔ<sub>T</sub></extra>' }
+      { mode: 'lines', name: 'ceiling', showlegend: false, x: G.r, y: G.upper, line: line(t, t.info), hovertemplate: 'skip' },
+      { mode: 'lines', name: 'floor', showlegend: false, x: G.r, y: G.lower, line: line(t, t.info, 'dash'), hovertemplate: 'skip' }
     ];
-    var layout = { height: 395, margin: { l: 78, r: 20, t: 66, b: 56 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 1], anchor: 'y', range: [1, 3.2], dtick: 0.5, tick0: 1, title: { text: 'incumbent strength <i>r</i>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', type: 'log', range: [-1.7, 1.8], tickvals: [0.1, 1, 10], ticktext: ['0.1', '1', '10'], title: { text: 'gain per correct order, in units of <i>k</i>' } } };
-    layout.shapes.push(band(1, G.r_k, t.regionA), band(rS, 3.2, t.regionB));
+    var layout = { height: 300, margin: { l: 24, r: 118, t: 18, b: 40 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [G.r[0], x1], tickvals: [], showticklabels: false, title: { text: '<i>r</i>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', type: 'log', range: [-1.7, 1.8], tickvals: [], showticklabels: false } };
+    layout.shapes.push(band(G.r[0], G.r_k, t.regionA), band(B.rS_B, x1, t.regionB));
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: t.cost, width: 2.2 }, layer: 'above' });
-    layout.shapes.push(vline(I.r0, t.muted), vline(I.r1, t.muted));
-    layout.annotations.push(at('cost <i>k</i>', 1.56, 1, t.cost, { xanchor: 'left', yshift: 4 }));
-    layout.annotations.push(label(1.005, 'no trade only', t.muted, { xanchor: 'left', size: 14 }));
-    layout.annotations.push(label((G.r_k + rS) / 2, 'Bounds inconclusive', t.muted, { size: 14, yshift: 24 }));
-    layout.annotations.push(label(3.19, 'full orders only', t.muted, { xanchor: 'right', size: 14 }));
-    layout.annotations.push({ text: 'weak <i>r</i><sub>0</sub>', xref: 'x', x: I.r0, xanchor: 'left', yref: 'y domain', y: 0, yanchor: 'bottom', xshift: 4, yshift: 6, font: { size: 15, color: t.muted } });
-    layout.annotations.push({ text: 'strong <i>r</i><sub>1</sub>', xref: 'x', x: I.r1, xanchor: 'right', yref: 'y domain', y: 0, yanchor: 'bottom', xshift: -4, yshift: 6, font: { size: 15, color: t.muted } });
-    var i0 = G.r.indexOf(I.r0), i1 = G.r.indexOf(I.r1);
-    traces.push(dot([I.r0], [G.upper[i0]], t.info, false), dot([I.r1], [G.lower[i1]], t.info, false));
+    layout.annotations.push(at('Δ<sub>T</sub>', x1, G.upper[n], t.info, { xanchor: 'left', yanchor: 'middle', xshift: 8, yshift: 0, size: 17 }));
+    layout.annotations.push(at('ρκ(π)Δ<sub>T</sub>', x1, G.lower[n], t.info, { xanchor: 'left', yanchor: 'middle', xshift: 8, yshift: 0, size: 17 }));
+    layout.annotations.push(at('<i>k</i>', G.r[0], 1, t.cost, { xanchor: 'left', xshift: 6, yshift: 4, size: 17 }));
     return { traces: traces, layout: layout };
   }
 
@@ -260,14 +256,14 @@
     var layout = { height: 330, margin: { l: 70, r: 20, t: 44, b: 54 }, shapes: [], annotations: [],
       xaxis: { domain: [0, 1], anchor: 'y', range: [1.2, 3.6], dtick: 0.4, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } },
       yaxis: { domain: [0, 1], anchor: 'x', range: [0.2, 0.8], dtick: 0.1, tick0: 0.2, title: { text: 'belief' } } };
-    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.m, y1: I.M, fillcolor: t.regionB, layer: 'below' });
+    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.m, y1: I.M, fillcolor: t.regionC, layer: 'below' });
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dash' }, layer: 'below' });
     [['prim_r0', 'weak <i>r</i><sub>0</sub>'], ['prim_r1', 'strong <i>r</i><sub>1</sub>'], ['prim_r2', 'still <i>r</i><sub>2</sub>']].forEach(function (mk) {
       var x = regNum(mk[0]); layout.shapes.push(vline(x, t.muted)); layout.annotations.push(label(x, mk[1], t.muted, { size: 14 }));
     });
-    layout.annotations.push(at('<i>M</i> = ' + reg('M_half_B'), 1.22, I.M, t.info, { yshift: 3 }));
+    layout.annotations.push(at('<i>M</i>(π)', 1.22, I.M, t.info, { yshift: 3 }));
     layout.annotations.push(at('prior ' + reg('prim_pi'), 1.22, I.pi, t.muted, { yshift: 3 }));
-    layout.annotations.push(at('<i>m</i> = ' + reg('m_half_B'), 1.22, I.m, t.info, { yanchor: 'top', yshift: -3 }));
+    layout.annotations.push(at('<i>m</i>(π)', 1.22, I.m, t.info, { yanchor: 'top', yshift: -3 }));
     layout.annotations.push(at('<i>r</i><sub>C</sub>', B.rC_B, I.M, t.cost, { xanchor: 'center', yanchor: 'top', yshift: -8 }));
     traces.push(dot([B.rC_B], [I.M], t.cost, true, 'x', 'y', 11));
     layout.shapes.push({ type: 'line', xref: 'x', yref: 'y domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.accent, width: 2 } });
@@ -288,7 +284,7 @@
       { mode: 'lines', name: 'path of the example', x: G.path.Delta, y: G.path.tau, customdata: G.path.r.map(function (r) { return [r.toFixed(3)]; }), line: line(t, brick, 'solid', 3),
         hovertemplate: '<i>r</i> = %{customdata[0]}<extra>path of the example</extra>' }
     ];
-    var layout = { height: 400, margin: { l: 78, r: 20, t: 30, b: 60 }, shapes: [], annotations: [],
+    var layout = { height: 340, margin: { l: 78, r: 20, t: 30, b: 60 }, shapes: [], annotations: [],
       xaxis: { domain: [0, 1], anchor: 'y', range: [0, 0.2], dtick: 0.05, tick0: 0, title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' } },
       yaxis: { domain: [0, 1], anchor: 'x', range: [0.45, 0.765], dtick: 0.1, tick0: 0.5, title: { text: 'preparation threshold τ' } } };
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
@@ -335,8 +331,8 @@
     var lab = function (txt, x, ax, lvl) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + lvl * 17, xanchor: 'center', font: { size: 14, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
     lab('<i>r</i><sub>0</sub>', I.r0, 'x', 0); lab('<i>r</i><sub>1</sub>', I.r1, 'x', 0); lab('<i>r</i><sub>2</sub>', I.r2, 'x', 0); lab('<i>r</i><sub>C</sub>', B.rC_B, 'x', 1);
     lab('<i>r</i><sub>A</sub>', B.rA, 'x2', 0); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2', 1); lab('<i>r</i><sub>N</sub>', B.rN, 'x2', 0); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2', 1); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2', 0);
-    layout.annotations.push({ text: 'quiet and<br>informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.45, yanchor: 'middle', xanchor: 'center', font: { size: 14, color: t.accent } });
-    layout.annotations.push(at('N: quiet market', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yshift: 4 }));
+    layout.annotations.push({ text: 'quiet and informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.4, yanchor: 'middle', xanchor: 'center', bgcolor: true, font: { size: 13, color: t.accent } });
+    layout.annotations.push(at('N: quiet market', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yanchor: 'top', yshift: -4 }));
     layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, E.Q.y[0], t.c3, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 4 }));
     layout.annotations.push(at('R: mixed purchase', 1.455, 0.455, t.info, { xref: 'x2', yref: 'y2', yshift: 0 }));
     layout.annotations.push(at('F: full purchase', 1.62, E.F.y[0], t.info, { xref: 'x2', yref: 'y2', yshift: 4 }));
@@ -399,59 +395,20 @@
   }
 
   /* ---------- widgets ---------- */
-  var INFOSETS = {
-    seller: 'Seller: announces the sale rule, a cash second-price auction with reserve p, before any trade. The rule is public.',
-    slot: 'Order slot: one public slot. With probability λ the informed investor fills it and sees the challenger’s class; otherwise a liquidity trader fills it. No one sees who filled it.',
-    makers: 'Market makers: see the order X in the slot, not who placed it. They set the stock price P at expected sale proceeds per share, given X.',
-    challenger: 'Challenger: sees the stock price and its own preparation cost. It does not see the order, the class or the incumbent’s value R. Paying the cost reveals its value.',
-    bidders: 'Bidders: the incumbent knows R ∼ U[0, r], and r is public. An entered challenger knows its value. Each bids its value.'
-  };
-  widgets.infosets = {
-    render: function (s) {
-      $$('.tl', s).forEach(function (b) {
-        b.setAttribute('aria-pressed', 'false');
-        b.onclick = b.onfocus = b.onmouseenter = function () {
-          $$('.tl', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          $('#f2-infoset').textContent = INFOSETS[b.dataset.info];
-        };
-      });
-    }
-  };
+  /* Slide 10 (F3): select a row of the payment cases to rule it. */
   widgets.cases = {
     render: function (s) {
-      $$('.segmented button', s).forEach(function (b) {
-        b.onclick = function () {
-          var on = b.getAttribute('aria-pressed') !== 'true';
-          $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(on && x === b)); });
-          $$('tr[data-row]', s).forEach(function (tr) { tr.classList.toggle('hl', on && tr.dataset.row === b.dataset.case); });
+      $$('tr[data-row]', s).forEach(function (tr) {
+        tr.tabIndex = 0;
+        tr.onclick = tr.onkeydown = function (e) {
+          if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+          if (e.type === 'keydown') e.preventDefault();
+          var on = !tr.classList.contains('hl');
+          $$('tr[data-row]', s).forEach(function (x) { x.classList.toggle('hl', on && x === tr); });
         };
       });
     },
-    reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); $$('tr.hl', s).forEach(function (tr) { tr.classList.remove('hl'); }); }
-  };
-  /* F5: select an order to see the belief it induces under full orders. */
-  widgets.orders = {
-    render: function (s) {
-      var say = {
-        '-1': 'A sale comes from the informed investor in class L or from a liquidity sale in either class. The belief falls to m(π) = ' + reg('m_half_B') + ', the floor for every investor strategy.',
-        '0': 'Only a liquidity trader abstains, in both classes with the same chance. The belief stays at the prior ' + reg('prim_pi') + '.',
-        '1': 'A buy comes from the informed investor in class H or from a liquidity buy in either class. The belief rises to M(π) = ' + reg('M_half_B') + ', the ceiling for every investor strategy.'
-      };
-      var pos = { '-1': regNum('m_half_B'), '0': 0.5, '1': regNum('M_half_B') };
-      var pick = function (o) {
-        $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.order === o)); });
-        $$('[data-order]', $('.t-orders', s)).forEach(function (c) { c.classList.toggle('hl', c.dataset.order === o); });
-        var pin = $('#f5-pin', s); pin.hidden = false; pin.style.left = (100 * pos[o]).toFixed(2) + '%';
-        $('#f5-say', s).textContent = say[o];
-      };
-      $$('.segmented button', s).forEach(function (b) { b.onclick = function () { pick(b.dataset.order); }; });
-      widgets.orders.pick = pick;
-    },
-    reset: function (s) {
-      $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      $$('.hl', s).forEach(function (c) { c.classList.remove('hl'); });
-      $('#f5-pin', s).hidden = true; $('#f5-say', s).textContent = 'Select an order to see where the belief goes.';
-    }
+    reset: function (s) { $$('tr.hl', s).forEach(function (tr) { tr.classList.remove('hl'); }); }
   };
   widgets.gain = { render: function (s) { drawChart($('#gain', s), specGain(tokens()), 'gain'); } };
   widgets.beliefs = {
@@ -462,42 +419,30 @@
       widgets.beliefs.draw(s);
     },
     draw: function (s) {
-      var Bf = D.fig.belief, I = D.fig.inputs, i = beliefsIndex, r = Bf.r[i];
+      var Bf = D.fig.belief, i = beliefsIndex;
       drawChart($('#beliefs', s), specBeliefs(tokens(), i), 'beliefs');
-      $('#beliefs-r-value', s).textContent = r.toFixed(2);
-      var clears = Bf.tau[i] <= I.M, f = function (x) { return x.toFixed(3); };
-      $('#beliefs-readout', s).innerHTML =
-        '<p>At <i>r</i> = <b>' + r.toFixed(2) + '</b>: τ(<i>r</i>) = <b>' + f(Bf.tau[i]) + '</b>, top belief <i>M</i> = <b>' + reg('M_half_B') + '</b>, <i>B<sub>r</sub></i>(<i>M</i>) = <b>' + f(Bf.B_M[i]) + '</b> against <i>c<sub>H</sub></i> = <b>' + reg('prim_cH') + '</b></p>' +
-        '<p><span class="chip ' + (clears ? 'ok' : 'no') + '">' + (clears ? 'a buy order clears the threshold' : 'no order clears the threshold') + '</span></p>' +
-        '<p class="note">Values on the plotted curve; the ceiling <i>r</i><sub>C</sub> = ' + reg('rC_B') + '.</p>';
+      $('#beliefs-r-value', s).textContent = Bf.r[i].toFixed(2);
     },
     reset: function () { beliefsIndex = 180; }
   };
+  /* Slide 18 (F11): select a row of the entry table; the bars draw its two entries. */
   widgets.controls = {
     render: function (s) {
       var pick = function (row) {
-        $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.row === row)); });
-        $$('tr[data-row]', s).forEach(function (tr) { tr.classList.toggle('hl', tr.dataset.row === row); });
+        $$('tr[data-row]', s).forEach(function (tr) { tr.classList.toggle('hl', tr.dataset.row === row); tr.setAttribute('aria-selected', String(tr.dataset.row === row)); });
         var tr = $('tr[data-row="' + row + '"]', s), vals = $$('td .q', tr).map(function (q) { return { shown: q.textContent, v: regNum(q.dataset.q) }; });
         var bar = function (lab, o) { return '<div class="bar-row"><span>' + lab + '</span><div class="bar' + (row === 'eq' ? ' info' : '') + '" style="transform:scaleX(' + o.v + ')"></div><span class="num">' + o.shown + '</span></div>'; };
-        $('#f11-bars', s).innerHTML = '<p class="small">Entry</p>' + bar('<i>r</i><sub>0</sub>', vals[0]) + bar('<i>r</i><sub>1</sub>', vals[1]);
+        $('#f11-bars', s).innerHTML = bar('<i>r</i><sub>0</sub>', vals[0]) + bar('<i>r</i><sub>1</sub>', vals[1]);
+        widgets.controls.row = row;
       };
-      $$('.segmented button', s).forEach(function (b) { b.onclick = function () { pick(b.dataset.row); }; });
-      pick(($('.segmented button[aria-pressed="true"]', s) || {}).dataset ? $('.segmented button[aria-pressed="true"]', s).dataset.row : 'eq');
-    },
-    reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.row === 'eq')); }); }
-  };
-  widgets.access = {
-    render: function (s) {
-      $$('.segmented button', s).forEach(function (b) {
-        b.onclick = function () {
-          var on = b.getAttribute('aria-pressed') !== 'true';
-          $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', String(on && x === b)); });
-          $$('[data-col]', $('table', s)).forEach(function (c) { c.classList.toggle('hl', on && c.dataset.col === b.dataset.col); });
-        };
+      $$('tr[data-row]', s).forEach(function (tr) {
+        tr.tabIndex = 0;
+        tr.onclick = function () { pick(tr.dataset.row); };
+        tr.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(tr.dataset.row); } };
       });
+      pick(widgets.controls.row || 'eq');
     },
-    reset: function (s) { $$('.segmented button', s).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); $$('.hl', s).forEach(function (c) { c.classList.remove('hl'); }); }
+    reset: function () { widgets.controls.row = 'eq'; }
   };
   widgets.region = { render: function (s) { drawChart($('#region', s), specRegion(tokens()), 'region'); } };
   widgets.coex = { render: function (s) { drawChart($('#coex', s), specCoex(tokens()), 'coex'); } };

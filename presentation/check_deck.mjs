@@ -81,8 +81,12 @@ const talk = [];
   talk[0].title = title.replace(/\s+/g, ' ').trim();
 }
 
-/* The registry keys that slides.tex prints on a frame with \reg{key}. */
-const regKeys = (f) => [...stripComments(f.body).matchAll(/\\reg\{([A-Za-z0-9_]+)\}/g)].map((x) => x[1]);
+/* The registry keys that slides.tex prints on a frame with \reg{key} or \regr{key}{digits}. */
+const regKeys = (f) => [...stripComments(f.body).matchAll(/\\regr?\{([A-Za-z0-9_]+)\}/g)].map((x) => x[1]);
+const regRounds = (f) => [...stripComments(f.body).matchAll(/\\regr\{([A-Za-z0-9_]+)\}\{(\d)\}/g)].map((x) => `${x[1]}:${x[2]}`);
+/* \regr rounds the registry display in TeX; the web rounds the registry value. Both must print the same. */
+const roundDisplay = (key, d) => Number(REG[key].display).toFixed(d);
+const roundValue = (key, d) => { const [a, b] = String(REG[key].value).split('/'); return (b === undefined ? Number(a) : Number(a) / Number(b)).toFixed(d); };
 
 /* ---------------------------------------------------------------- content.js through stub helpers */
 global.window = {};
@@ -90,25 +94,29 @@ require('./content.js');
 const enc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let LATEX = [];
 /* {{key}} or \reg{key} prints a registry display inside a formula; for the symbol order check it stands for a digit. */
+let VALUES = [];
 const withKeys = (l) => {
-  LATEX.push(l.replace(/\{\{[A-Za-z0-9_]+\}\}|\\reg\{[A-Za-z0-9_]+\}/g, '0'));
-  const keys = [...l.matchAll(/\{\{([A-Za-z0-9_]+)\}\}|\\reg\{([A-Za-z0-9_]+)\}/g)].map((x) => x[1] || x[2]);
-  return keys.length ? `<span class="q q-tex" data-q="${enc(keys.join(' '))}">$${enc(l)}$</span>` : `<span class="m" data-latex="${enc(l)}">$${enc(l)}$</span>`;
+  LATEX.push(l.replace(/\{\{[A-Za-z0-9_]+(?:\|\d)?\}\}|\\reg\{[A-Za-z0-9_]+\}/g, '0'));
+  const found = [...l.matchAll(/\{\{([A-Za-z0-9_]+)(?:\|(\d))?\}\}|\\reg\{([A-Za-z0-9_]+)\}/g)];
+  const keys = found.map((x) => x[1] || x[3]);
+  const rounds = found.filter((x) => x[2] !== undefined).map((x) => `${x[1]}:${x[2]}`);
+  return keys.length ? `<span class="q q-tex" data-q="${enc(keys.join(' '))}" data-round="${enc(rounds.join(' '))}">$${enc(l)}$</span>` : `<span class="m" data-latex="${enc(l)}">$${enc(l)}$</span>`;
 };
 const H = {
   m: withKeys,
   d: withKeys,
-  q: (key) => `<span class="q" data-q="${enc(key)}">${enc(REG[key] ? REG[key].display : '?')}</span>`,
-  v: (key) => { const [a, b] = String(REG[key] ? REG[key].value : 'NaN').split('/'); return b === undefined ? Number(a) : Number(a) / Number(b); },
+  q: (key, digits) => `<span class="q" data-q="${enc(key)}" data-round="${digits === undefined ? '' : enc(key + ':' + digits)}">${enc(REG[key] ? REG[key].display : '?')}</span>`,
+  v: (key) => { VALUES.push(key); const [a, b] = String(REG[key] ? REG[key].value : 'NaN').split('/'); return b === undefined ? Number(a) : Number(a) / Number(b); },
   go: (target, text) => `<button data-target="${enc(target)}">${text}</button>`,
   back: (target) => `<button data-back="${enc(target)}">Back</button>`
 };
-const latexOf = {};
-H.endFrame = (label) => { latexOf[label] = LATEX; LATEX = []; };
+const latexOf = {}, valuesOf = {};
+H.endFrame = (label) => { latexOf[label] = LATEX; LATEX = []; valuesOf[label] = VALUES; VALUES = []; };
 const deck = window.createDeck(H);
 const frames = deck.frames;
 const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 const qkeys = (html) => [...html.matchAll(/data-q="([^"]*)"/g)].flatMap((m) => m[1].split(' '));
+const qrounds = (html) => [...html.matchAll(/data-round="([^"]*)"/g)].flatMap((m) => m[1].split(' ')).filter(Boolean);
 
 /* ---------------------------------------------------------------- drift */
 if (frames.length !== talk.length) fail(`content.js has ${frames.length} frames; slides.tex has ${talk.length}`);
@@ -131,6 +139,30 @@ talk.forEach((t, i) => {
     numberPairs++;
     if (!have.has(k)) fail(`${where}: slides.tex prints \\reg{${k}}; the web frame does not carry it`);
   }
+  // rounded numbers: the same keys at the same digits, and TeX and the web print the same string
+  const webRounds = qrounds((f.subtitle || '') + (f.body || '')).sort(), texRounds = regRounds(t).sort();
+  if (JSON.stringify(webRounds) !== JSON.stringify(texRounds)) fail(`${where}: rounded numbers ${JSON.stringify(webRounds)} differ from slides.tex ${JSON.stringify(texRounds)}`);
+  for (const r of texRounds) {
+    const [k, d] = r.split(':');
+    if (REG[k] && roundDisplay(k, Number(d)) !== roundValue(k, Number(d))) fail(`${where}: ${k} rounds to ${roundDisplay(k, Number(d))} from its display and ${roundValue(k, Number(d))} from its value`);
+  }
+});
+
+/* No example number before the first example slide (S16): no registry number on the slide face or in a
+   subtitle, no decimal in the text, no registry value used for layout, and no \reg in the Beamer frame. */
+const FIRST_EXAMPLE = 16;
+let earlyFrames = 0;
+talk.forEach((t, i) => {
+  const f = frames[i];
+  if (!f || f.backup || !(Number(f.num) < FIRST_EXAMPLE)) return;
+  earlyFrames++;
+  const html = (f.subtitle || '') + ' ' + (f.body || '');
+  if (qkeys(html).length) fail(`${f.label}: example number before slide ${FIRST_EXAMPLE} (${qkeys(html).join(', ')})`);
+  // section references such as "Paper §2.1" are not example numbers
+  const dec = plain(html.replace(/data-[a-z]+="[^"]*"/g, '')).replace(/§\s*\d+(\.\d+)*/g, ' ').match(/\d+\.\d+/g);
+  if (dec) fail(`${f.label}: decimal ${dec.join(', ')} before slide ${FIRST_EXAMPLE}`);
+  if ((valuesOf[f.label] || []).length) fail(`${f.label}: registry value used for layout before slide ${FIRST_EXAMPLE} (${valuesOf[f.label].join(', ')})`);
+  if (regKeys(t).length) fail(`${t.label}: slides.tex prints a registry number before slide ${FIRST_EXAMPLE}`);
 });
 
 /* ---------------------------------------------------------------- contract */
@@ -150,7 +182,7 @@ for (const f of frames) {
     if (!/data-back=/.test(f.body)) fail(`${f.label}: backup without a Back button`);
   }
 }
-if (Math.abs(mainMinutes - 30.25) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 30.25 of the timing plan`);
+if (Math.abs(mainMinutes - 45) > 1e-9) fail(`main frames sum to ${mainMinutes} minutes, not the 45 of the timing plan`);
 
 /* every symbol is defined on its slide or an earlier one, in deck order */
 const keys = new Set(deck.glossary.map((g) => g.key));
@@ -218,6 +250,7 @@ for (const theme of ['light', 'dark']) {
 const mains = frames.filter((f) => !f.backup).length;
 console.log(`Compared ${frames.length} frames (${mains} main, ${frames.length - mains} backup) with slides.tex: order, titles, subtitles, targets and links; ` +
   `${numberPairs} printed registry keys found on the web frames; ${keys.size} notation symbols; ${mainMinutes} planned minutes before questions; ` +
-  `${sharedTokens} design tokens shared with handout/style.css agree; no purple palette in ${deckFiles.length} deck files.`);
+  `${sharedTokens} design tokens shared with handout/style.css agree; no purple palette in ${deckFiles.length} deck files; ` +
+  `no example number on the ${earlyFrames} frames before slide ${FIRST_EXAMPLE}.`);
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 console.log('Deck matches slides.tex and the deck contract.');

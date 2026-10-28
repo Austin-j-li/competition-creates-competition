@@ -1,6 +1,6 @@
 ---
 name: Competition Creates Competition
-description: The ruled document. One visual system for the research brief page, the web slides and the Beamer deck of the paper.
+description: The ruled document. One visual system for the website of the paper, the research brief page and the web slides. The Beamer deck in Overleaf uses a classic Beamer theme instead.
 colors:
   paper: "#fbfcfc"
   paper-stage: "#e7eaee"
@@ -91,8 +91,8 @@ components:
 
 **Creative North Star: "The Ruled Document"**
 
-The paper's three public surfaces are set as one document from the paper's own apparatus: a
-research brief page, a web slide deck and a Beamer deck, all read by finance and economics
+The paper's two web surfaces are set as one document from the paper's own apparatus: a
+research brief page and a web slide deck, both read by finance and economics
 professors, the author's supervisor and seminar audiences. The page is ink on cool white paper,
 slate in the dark theme. Structure comes from two rule weights and from type, never from fills:
 a 2 px ink rule sits above the title block and above each section heading of the brief, under
@@ -115,7 +115,7 @@ elements. Registry numbers are set in the text face with tabular figures and a f
 underline that carries their provenance on hover.
 
 **Key Characteristics:**
-- One palette, one type pairing and one rule grammar across the brief page, the web slides and the Beamer deck.
+- One palette, one type pairing and one rule grammar across the brief page and the web slides. The Beamer deck is outside this system (see the rule below).
 - Hierarchy by rule weight and type, never by fill, card, pill, shadow, gradient or side stripe.
 - Chrome in ink and grey; the two concept colours live inside exhibits only.
 - Exhibits span the content column; prose and captions stop at the measure.
@@ -158,12 +158,12 @@ A cool neutral scale from paper to ink, and two concept colours reserved for exh
 **Character:** a scholarly text face carries the reading and a sober grotesque carries the apparatus, so that the page reads as the paper's own document with its instruments set apart by family rather than by colour. Numbers are tabular everywhere.
 
 ### Hierarchy
-- **Display** (600, clamp(2.2rem, 4vw, 3rem), 1.02, width 112%): the title of the brief page; the title of the deck at 48 px and width 112% on the 1600 by 900 stage; the Beamer title in Archivo SemiBold at \LARGE.
-- **Headline** (600, clamp(1.6rem, 2.2vw, 1.85rem), 1.15): a section heading of the brief, under its 2 px rule; a slide title at 44 px on the stage, Archivo SemiBold \large in Beamer.
+- **Display** (600, clamp(2.2rem, 4vw, 3rem), 1.02, width 112%): the title of the brief page; the title of the deck at 48 px and width 112% on the 1600 by 900 stage.
+- **Headline** (600, clamp(1.6rem, 2.2vw, 1.85rem), 1.15): a section heading of the brief, under its 2 px rule; a slide title at 44 px on the stage.
 - **Title** (600, 1.12rem, 1.25): a subsection heading of the brief; the name of a result box on a slide (26 px).
-- **Body** (400, 1.125rem, 1.6): the reading column at a 64ch measure on the brief; 33 px at 1.32 on a slide; STIX Two Text 10 pt in Beamer. The subtitle of the brief is the body face in italic; a slide subtitle is the body face in muted grey (28 px).
-- **Label** (500 or 600, 0.85 to 0.98rem, 1.35, sentence case): tabs, the contents, buttons, legend entries, table heads, captions' opening words, the record line under the byline; 19 to 23 px on the stage; Archivo \footnotesize and \tiny in Beamer.
-- **Mathematics**: KaTeX at 1.02 em on the web; STIX Two Math in Beamer. The seam between KaTeX and STIX Two Text is accepted.
+- **Body** (400, 1.125rem, 1.6): the reading column at a 64ch measure on the brief; 33 px at 1.32 on a slide. The subtitle of the brief is the body face in italic; a slide subtitle is the body face in muted grey (28 px).
+- **Label** (500 or 600, 0.85 to 0.98rem, 1.35, sentence case): tabs, the contents, buttons, legend entries, table heads, captions' opening words, the record line under the byline; 19 to 23 px on the stage.
+- **Mathematics**: KaTeX at 1.02 em on the web. The seam between KaTeX and STIX Two Text is accepted.
 
 ### Named Rules
 **The Run-In Rule.** A labelled paragraph opens with a bold Archivo run-in word at 0.93 em followed by a period ("Answer.", "In short.", "An illustrative sale process.", "Proposition 2 · Competition creates competition."). No label sits above a heading or a paragraph in capitals, small capitals or letterspacing.
@@ -178,7 +178,6 @@ The brief page is a document with a narrow apparatus column: at 1024 px and abov
 
 The web deck is a fixed 1600 by 900 design surface scaled to the window, with a 44 px tools bar above and a 52 px rail below, both on paper with a hairline. A slide has 26 px top and 56 px side padding; the head holds the title and the frame number on one line, the subtitle under it and the progress rule at the bottom (done fraction in 2 px ink over a full-width hairline; a backup carries the full 2 px rule). The body is a column; a takeaway sits at the bottom above a 2 px rule; link buttons sit on the right of the foot. Columns inside a slide use 30 to 40 px gaps.
 
-The Beamer deck is 16:9 at 10 pt with 10.95 pt side margins. The frame head repeats the web head: the Archivo title, the muted subtitle, the progress rule as a 2 pt ink segment over a 0.4 pt hairline (a hairline alone in the appendix). The footline prints the short title and the frame number in muted Archivo \tiny. The title page carries a 2 pt rule above the title and a hairline below it.
 
 At 760 px and below the mechanism map and the PDF list fall to one column, the stepper to three tabs; at 600 px and below the body is 1.0625rem, the explorer's slider takes a row of its own and the readouts fall to two columns; at 480 px the tabs tighten and the stepper falls to two tabs. The web deck hides the secondary tools under 760 px and shows only the current part in the rail.
 
@@ -198,7 +197,6 @@ Rectilinear. Every corner is square (radius 0): buttons, inputs, the tooltip, th
 ### Title block
 - **Brief page:** the 2 px rule, then the title (Display), the subtitle in italic body type, the byline in Archivo at 1rem, the record line in muted Archivo at 0.88rem ("Theory working paper · Text revised …"), then the tab row. The theme control sits at the top right as a text control.
 - **Web deck:** the cover is a ruled block on paper: the title between a 2 px rule and a hairline, the author in Archivo 32 px, the institute in muted body type with a hairline under it, a one-line hint in muted Archivo 18 px.
-- **Beamer:** the 2 pt rule, the title in Archivo SemiBold, a hairline, the author and the institute.
 
 ### Section heading
 - A 2 px ink rule with 0.9rem below it, then the heading (Headline), 1.4rem to the first paragraph. Subsection headings (Title) carry no rule.
@@ -215,14 +213,13 @@ Rectilinear. Every corner is square (radius 0): buttons, inputs, the tooltip, th
 ### Statement box (propositions)
 - **Brief page:** between two hairlines with 0.9rem above; the title runs in ("Proposition 2 · Competition creates competition."), the statement follows in body type, a fold with a left hairline holds the full statement.
 - **Web deck:** a result box is ruled 2 px above and below with a hairline under its Archivo title; numbered items hang at 64 px.
-- **Beamer:** blocks have no fill; the item label is an Archivo dash.
 
 ### Tables
-- Booktabs: 1 px ink rules above and below, a hairline under the Archivo head, numbers right-aligned and tabular, row heads at weight 400. On a slide, 27 px (20 to 25 px for dense backups) with a 2 px rule above the head and under the last row, a highlighted row ruled above and below in 2 px ink. In Beamer, booktabs with a 1.1 pt heavy rule and 0.4 pt light rules, tables in Archivo.
+- Booktabs: 1 px ink rules above and below, a hairline under the Archivo head, numbers right-aligned and tabular, row heads at weight 400. On a slide, 27 px (20 to 25 px for dense backups) with a 2 px rule above the head and under the last row, a highlighted row ruled above and below in 2 px ink.
 
 ### Figures and charts
 - The SVG renderer draws ink curves, the two concept colours and muted grey; gridlines are grid-coloured dotted; axes titles and ticks are Archivo 12 to 13.5 px. A hairline sits above the legend and below the plot; the caption opens with a bold Archivo run-in ("Figure 1.") and stays at the measure. Hover readouts are paper with a hairline border. On a slide the renderer draws at a zoom of 1.4.
-- The Beamer figures (the `_talk` PDFs) use the same palette: in-figure text and axes in ink, tick labels muted, the quiet branch and region boundaries in ink, the branches a purchase recruits along and the posterior band in the information colour, the preparation threshold in the cost colour, the floor branches in muted grey, the bands as the information tint (#f5ece5) and the neutral tint (#ebedee) on the slide paper colour. The manuscript figures keep their own navy and brick palette.
+- The `_talk` figure PDFs, which the Beamer deck includes, use this palette: in-figure text and axes in ink, tick labels muted, the quiet branch and region boundaries in ink, the branches a purchase recruits along and the posterior band in the information colour, the preparation threshold in the cost colour, the floor branches in muted grey, the bands as the information tint (#f5ece5) and the neutral tint (#ebedee) on the slide paper colour. The manuscript figures keep their own navy and brick palette.
 
 ### Diagrams
 - The mechanism map: two columns under a 1 px ink rule each, the information path's rule and its run-in in the information colour, the end of each path over a hairline in Archivo.
@@ -231,8 +228,8 @@ Rectilinear. Every corner is square (radius 0): buttons, inputs, the tooltip, th
 ### Navigation of the web deck
 - The tools bar: the way back to the brief, the deck title in muted grey, text controls with hairline underlines. The rail: the parts as text, the current part underlined in 2 px ink; the pager with ink arrows, the counter and the step label in tabular figures.
 
-### Footline (Beamer) and colophon (brief)
-- Beamer: the short title and "n / N" in muted Archivo \tiny on paper. Brief: the colophon under a hairline in muted Archivo at 0.85rem, with the build line in Fira Mono.
+### Colophon (brief)
+- The colophon under a hairline in muted Archivo at 0.85rem, with the build line in Fira Mono.
 
 ## Do's and Don'ts
 
@@ -256,8 +253,18 @@ The slop list these surfaces are checked against, by the design detector and by 
 - **Don't** add a third colour, a decorative illustration, a background figure or an icon set; an arrow is the one drawn glyph.
 - **Don't** put a number on the motivation slides (the title and the three question frames).
 
+## The Beamer deck uses a classic theme
+
+Rule from 28 October 2026. The slide deck in Overleaf (`slot/manuscript/slides.tex`) uses a stock
+classic Beamer theme, now Madrid, loaded by `ccc-classic.sty`. The website keeps the ruled
+document: the research brief page and the web slides under `/talk/` follow this file. Every later
+change to the Overleaf slides keeps a classic Beamer theme and never brings the ruled look into
+Beamer; every later change to the website keeps the ruled look. The words, numbers, frame order,
+titles, subtitles and links stay identical between the two decks (`presentation/check_deck.mjs`);
+only the look differs.
+
 ## Where each surface implements the system
 
 - **Research brief page** (`handout/`): `style.css` (tokens in its `:root` blocks, type, layout, components), `template.html` (the title block, tabs, contents, opening question, paper and talk tabs, colophon), `charts.js` (the SVG renderer; its fallback tokens repeat the palette), `figures.js` and `explorer.js` (the figures and the explorer through the renderer's tokens), `fonts/` with `fonts.lock.json` (STIX Two Text, Archivo, Fira Mono, the symbol fallback), `build.py` (generates the font faces and the preload from the lock, assembles the page), `check_display.py` (the locked faces, the registry numbers, the palette guard), `publish.py` (the palette guard on the staged site and the main-branch gate), `README.md`.
 - **Web slides** (`presentation/`): `deck.css` (the same `:root` tokens; `check_deck.mjs` fails when a shared token differs from `handout/style.css`), `charts.js`, `deck.js`, `template.html`, `fonts/` with `fonts.lock.json`, `build.py`, `check_deck.mjs` (the drift check against the Beamer deck, the palette guard and the token check), `DESIGN.md` (the contract between the slide files), `README.md`.
-- **Beamer deck** (`slot/manuscript/`): `ccc-ruled.sty` (fonts, colours, frame head, footline, title page, the layout macros), `slides.tex` (the frames only; loads the style file), `fonts/` (Archivo with `OFL.txt`), `figures/*_talk.pdf` (from `audit/slot_manuscript_2026_10_23/scripts/F_figures/make_figures.py`, slide palette), `latexmkrc` (XeLaTeX for the deck, pdfLaTeX for the manuscript and the comparison note), `START_HERE.txt`.
+- **Beamer deck** (`slot/manuscript/`), outside the ruled document: `ccc-classic.sty` (the stock Madrid theme and the layout macros the frames use), `slides.tex` (the frames only; loads the style file), `figures/*_talk.pdf` (from `audit/slot_manuscript_2026_10_23/scripts/F_figures/make_figures.py`, slide palette), `latexmkrc` (XeLaTeX for the deck, pdfLaTeX for the manuscript and the comparison note), `START_HERE.txt`.

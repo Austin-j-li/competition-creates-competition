@@ -1,5 +1,5 @@
 #!/bin/sh
-# Export dist/presentation.pdf with headless Chrome: all slides (the title, slides 1 to 20 and the backups A1 to A12), every reveal shown (print styles).
+# Export dist/presentation.pdf with headless Chrome: all 43 frames (the title, slides 1 to 26 and the backups B1 to B12 on 16 pages), every reveal shown (print styles).
 # Serve dist first:  python3 -m http.server 8766 --bind 127.0.0.1 --directory presentation/dist
 set -e
 HERE=$(cd "$(dirname "$0")" && pwd)

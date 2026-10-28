@@ -49,6 +49,14 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 - Every completed exercise writes a run manifest: inputs, method, tolerances, software
   versions, output hashes, pass/fail.
 
+## Slide decks
+
+- The Beamer deck in Overleaf (`slot/manuscript/slides.tex`) always uses a classic Beamer theme
+  (Madrid, through `slot/manuscript/ccc-classic.sty`). The website, the research brief page and the
+  web slides, keeps the ruled design of `DESIGN.md`. Keep this split on every change: never move
+  the ruled look into Beamer or a Beamer theme onto the website. Words, numbers, frames and links
+  stay identical between the decks.
+
 ## Working rules
 
 - Use the GitHub repository and remote specified in `README.md` for source control, issues,

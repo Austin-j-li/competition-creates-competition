@@ -30,8 +30,8 @@ import figdata  # noqa: E402
 
 REGISTRY = ROOT / "audit/slot_manuscript_2026_10_23/registry/registry.csv"
 SLIDES_TEX = ROOT / "slot/manuscript/slides.tex"
-PARTS = [(1, "Question"), (2, "Setting"), (3, "Price"), (4, "Mechanism"), (5, "Result"), (6, "Beyond"),
-         (7, "Close"), ("B", "Backups")]
+PARTS = [(1, "Why the question matters"), (2, "Model"), (3, "Mechanism"), (4, "Main result"), (5, "Path and research"),
+         (6, "Scope, money, tests"), ("B", "Backups")]
 
 
 def digest(body: bytes) -> str:
@@ -114,7 +114,8 @@ def slide_html(f: dict) -> str:
         attrs["data-backup"] = "true"
         attrs["data-origin"] = f["origin"]
     attr = " ".join(f'{k}="{html.escape(v)}"' for k, v in attrs.items())
-    cls = "slide" + (" title-slide" if f["id"] == "f0" else "") + (" backup" if f.get("backup") else "") + (" nohead" if not f["title"] and f["id"] != "f0" else "")
+    cls = ("slide" + (" title-slide" if f["id"] == "f0" else "") + (" backup" if f.get("backup") else "")
+           + (" nohead" if not f["title"] and f["id"] != "f0" else "") + (" " + f["cls"] if f.get("cls") else ""))
     label = f'{html.escape(f["num"])}. {html.escape(plain_title)}'
     if f["id"] == "f0":
         return f'<section class="{cls}" {attr} aria-label="Title">{f["body"]}</section>'
@@ -187,8 +188,9 @@ def build() -> None:
         used[key] = registry[key]
     total = max(int(f["num"]) for f in frames if not f.get("backup"))
     minutes = sum(f["minutes"] for f in frames if not f.get("backup"))
-    checkpoints = ("Checkpoints: slide 6 by 9 min; slide 8 by 12.5 min, else skip slide 9; slide 12 by 20.25 min, else skip "
-                   "slides 15, 16 and 18; slide 14 by 23.5 min, else give slide 17 as one sentence and skip slide 19.")
+    checkpoints = ("Checkpoints: minute 9 ends slide 4; minute 18 ends slide 9; minute 25 ends slide 13; minute 34 ends slide 18; "
+                   "minute 45 ends slide 26. Cuts in order: slide 20 to one spoken sentence; slide 22 to one spoken sentence; "
+                   "slide 23 to its takeaway line. Never cut slides 4, 9, 11, 14, 18 or 25.")
 
     meta = {
         "frames": [{k: f.get(k) for k in ("id", "label", "num", "part", "minutes", "backup", "origin", "targets", "widget")}

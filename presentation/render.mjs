@@ -47,10 +47,20 @@ const texOf = (display) => display.replace(/\\ensuremath\{(.*)\}$/, '$1').replac
 const needsMath = (display) => /\\/.test(plain(display));
 const pretty = (s) => String(s).replace(/^-(?=\d)/, '−');
 
-/* A registry number in running text. */
-function q(key) {
+/* A registry value rounded to fewer decimals, as \regr{key}{digits} prints it in slides.tex (the talk
+   prints some strengths with three decimals where the registry display has six). */
+function rounded(r, digits) {
+  const [a, b] = String(r.value).split('/');
+  return (b === undefined ? Number(a) : Number(a) / Number(b)).toFixed(digits);
+}
+
+/* A registry number in running text; digits, when given, rounds it as \regr does. */
+function q(key, digits) {
   const r = row(key);
   if (!r) return `<span class="math-error">??${esc(key)}</span>`;
+  if (digits !== undefined) {
+    return `<span class="q" data-q="${esc(key)}" data-round="${digits}" title="${esc(key + ' = ' + plain(r.display))}">${esc(rounded(r, digits))}</span>`;
+  }
   const shown = needsMath(r.display) ? tex(texOf(r.display)) : esc(pretty(plain(r.display)));
   return `<span class="q" data-q="${esc(key)}" title="${esc(key + ' = ' + plain(r.display))}">${shown}</span>`;
 }
@@ -58,17 +68,19 @@ function q(key) {
 /* Mathematics; {{key}} or \reg{key} inside the formula is replaced by the registry display before KaTeX
    runs. \reg{key} keeps a formula of a subtitle identical to its slides.tex text. */
 function withKeys(latex, display) {
-  const keys = [];
-  const filled = latex.replace(/\{\{([A-Za-z0-9_]+)\}\}|\\reg\{([A-Za-z0-9_]+)\}/g, (_, k1, k2) => {
+  const keys = [], rounds = [];
+  const filled = latex.replace(/\{\{([A-Za-z0-9_]+)(?:\|(\d))?\}\}|\\reg\{([A-Za-z0-9_]+)\}/g, (_, k1, d, k2) => {
     const k = k1 || k2;
     const r = row(k);
     keys.push(k);
+    if (d !== undefined) { rounds.push(`${k}:${d}`); return r ? rounded(r, Number(d)) : '??'; }
     return r ? texOf(r.display).replace(/^-(?=\d)/, '-') : '??';
   });
   const html = tex(filled, display);
   if (!keys.length) return html;
   const title = keys.map((k) => `${k} = ${REG[k] ? plain(REG[k].display) : '?'}`).join('; ');
-  return `<span class="q q-tex" data-q="${esc(keys.join(' '))}" title="${esc(title)}">${html}</span>`;
+  const round = rounds.length ? ` data-round="${esc(rounds.join(' '))}"` : '';
+  return `<span class="q q-tex" data-q="${esc(keys.join(' '))}"${round} title="${esc(title)}">${html}</span>`;
 }
 
 /* The registry value as a number, for layout (the position of a mark on a scale). */

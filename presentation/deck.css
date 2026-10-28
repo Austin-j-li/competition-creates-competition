@@ -174,16 +174,6 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .flow .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
 .flow .arrow::before { content: ""; display: block; width: 28px; height: 28px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 
-.timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px; margin: 4px 0 18px; }
-.tl { position: relative; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; text-align: left; border: 0; border-top: 1px solid var(--ink); background: transparent; padding: 18px 0 0; font-family: var(--font-sans); font-size: 23px; line-height: 1.3; min-height: 170px; }
-.tl b { display: block; font-size: 26px; font-weight: 600; margin-bottom: 6px; }
-.tl-n { position: absolute; top: -12px; left: 0; padding: 0 10px 0 0; background: var(--bg); color: var(--muted); font-size: 15px; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; }
-.tl-cost { border-top: 2px solid var(--c-cost); padding-top: 17px; }
-.tl:hover { border-top-width: 2px; padding-top: 17px; }
-.tl[aria-pressed="true"] { border-top: 2px solid var(--ink); padding-top: 17px; }
-.tl[aria-pressed="true"].tl-cost { border-top-color: var(--c-cost); }
-.tl[aria-pressed="true"] b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
-.infoset { min-height: 64px; margin: 4px 0 12px !important; padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 28px; color: var(--ink); }
 
 /* Choices: text buttons, the chosen one underlined in 2 px ink. */
 .segmented { display: inline-flex; gap: 30px; margin: 0 0 14px; padding-right: 30px; border-bottom: 1px solid var(--line); font-family: var(--font-sans); }
@@ -320,7 +310,7 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .beliefbar .tick { position: absolute; top: -12px; width: 1px; height: 24px; background: var(--ink); }
 .beliefbar .pin { position: absolute; top: -17px; width: 4px; height: 34px; background: var(--ink); transform: translateX(-2px); transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .beliefbar .scale { position: relative; height: 36px; font-size: 24px; margin-top: 16px; font-family: var(--font-serif); }
-.beliefbar .scale span { position: absolute; transform: translateX(-50%); }
+.beliefbar .scale > span { position: absolute; transform: translateX(-50%); }
 
 .gainsplit { grid-template-columns: 1.3fr 1fr; align-items: start; }
 
@@ -411,8 +401,190 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .keyline .k-q { color: var(--muted); }
 .keyline .k-t { color: var(--ink); }
 
-/* F5 carries the most: formula, choice, table, scale, strip, three lines. */
-#f5 .infoset { min-height: 46px; padding: 6px 0; margin: 2px 0 8px !important; font-size: 27px; }
-#f5 .t-orders th, #f5 .t-orders td { padding-top: 4px; padding-bottom: 4px; }
-#f5 .beliefbar { margin: 4px 0 2px; }
-#f5 .beliefbar .scale { height: 30px; margin-top: 12px; }
+/* ---------- the 45-minute talk ---------- */
+
+/* Slide 1: the question set large. */
+.bigtitle .slide-head h2 { font-size: 56px; line-height: 1.1; padding-right: 140px; }
+.bigtitle .slide-head .sub { margin-top: 12px; }
+
+/* Three ruled columns: a hairline above each, ragged text. */
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; margin: 40px 0 0; }
+.rcol { border-top: 1px solid var(--ink); padding-top: 16px; font-size: 32px; line-height: 1.34; }
+.rcol b { font-weight: 600; }
+
+/* The foot zone: citations, credits and scope limits in small type at the foot of the body. A small
+   line inside the body is small type in place. The link buttons sit in the footer strip. */
+.footzone { margin-top: auto; padding-top: 10px; }
+.takeaway + .footzone { margin-top: 0 !important; }
+.slide p.foot { margin: 0 0 4px; color: var(--gray-text); font-size: 21px; line-height: 1.36; }
+.slide p.smallline { margin: 2px 0 10px; color: var(--gray-text); font-size: 24px; line-height: 1.36; }
+.takeaway { font-size: 32px; }
+.takeaway b { font-weight: 600; }
+.slide .nav { position: absolute; right: 56px; bottom: 4px; margin: 0 !important; padding: 0; z-index: 3; }
+.slide-body > .nav:last-child { margin: 0 !important; }
+
+/* Slide 4: the large line between rules, the formal line, the preview, the roadmap at the foot. */
+.slide p.bigline { margin: 18px 0 30px; padding: 22px 0 24px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 39px; line-height: 1.22; text-wrap: balance; }
+.slide p.bigline b { font-weight: 600; }
+.slide p.formal { margin: 0; font-size: 33px; }
+.cols3 + .roadmap, .slide p.roadmap { margin: auto 0 0; padding-top: 14px; font-family: var(--font-sans); font-size: 25px; color: var(--muted); }
+
+/* A line ruled above with a hairline: the sale rule, the slot line, the outcome line. */
+.slide p.ruled-line { margin: 10px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+.slide p.lead { font-size: 32px; margin-top: 24px; }
+.slide p.caption { font-size: 27px; line-height: 1.32; margin: 0 0 10px; }
+.slide .xs, .slide ul.xs, .slide ol.xs { font-size: 25px; line-height: 1.32; }
+.slide ul.xs li, .slide ol.xs li { margin-bottom: 4px; }
+.slide ol > li::marker { font-family: var(--font-sans); font-weight: 600; color: var(--ink); }
+
+/* Slide 5: the decision interval. */
+.flow-3 { margin: 30px 0 34px; gap: 30px; }
+.flow-3 .box { width: 430px; font-size: 29px; min-height: 0; }
+.flow-3 .arrow { margin-top: 18px; }
+
+/* Slide 7: the order slot; each box is a bold head, a dash and the rest. */
+.slotflow .sbox { font-family: var(--font-serif); font-size: 24px; line-height: 1.3; }
+.slotflow .sbox b { display: inline; font-family: var(--font-sans); font-size: 24px; margin: 0; }
+.slotflow .slotsrc { flex: 1.5; gap: 24px; }
+.slotflow .slotbox { flex: 0.95; }
+.slotflow .makerbox { flex: 1.05; align-self: flex-start; }
+.slotflow .sbox-cost { flex: 0.95; }
+
+/* Tables of the main slides. */
+.slide table.t-lit3, .slide table.t-inv, .slide table.t-cases, .slide table.t-prop2, .slide table.t-out, .slide table.t-scope { width: 100%; }
+.t-lit3 { font-size: 25px !important; }
+.t-lit3 td { padding: 12px 22px 12px 0; line-height: 1.28; }
+.t-lit3 td:first-child { width: 270px; font-weight: 500; }
+.t-inv { font-size: 24px !important; }
+.t-inv td { padding: 6px 20px 6px 0; line-height: 1.26; }
+.t-inv td:first-child { width: 330px; }
+.t-cases { font-size: 27px !important; }
+.t-cases td { padding: 12px 22px 12px 0; line-height: 1.28; }
+.t-cases tr[data-row] { cursor: pointer; }
+.t-prop2 { font-size: 25px !important; margin-bottom: 8px !important; }
+.t-prop2 td { padding: 5px 16px 5px 0; line-height: 1.24; }
+.t-prop2 td:first-child { width: 340px; }
+.t-out { font-size: 26px !important; }
+.t-out td { padding: 8px 18px 8px 0; }
+.t-out td:not(:first-child), .t-out thead th:not(:first-child) { text-align: center; }
+.t-out td:first-child { width: 560px; }
+.t-scope { font-size: 29px !important; }
+.t-scope td { padding: 12px 22px 12px 0; line-height: 1.3; }
+.t-scope td:first-child { width: 430px; font-weight: 500; }
+.t-controls tr[data-row] { cursor: pointer; }
+.t-controls td:not(:first-child), .t-controls thead th:not(:first-child) { text-align: center; }
+.t-access2 { width: 100%; font-size: 26px !important; }
+.t-access2 td:first-child { white-space: nowrap; }
+.t-access2 td:not(:first-child), .t-access2 thead th:not(:first-child) { text-align: center; }
+.t-access2 thead th { line-height: 1.2; }
+
+/* Slide 9: the five conditions of the definition. */
+.slide ol.defs { font-size: 28px; line-height: 1.3; margin-bottom: 4px; padding-left: 1.3em; }
+.slide ol.defs li { margin-bottom: 4px; }
+.slide ol.defs .display-math { margin: 0; }
+.slide ol.defs .katex-display { margin: 0.15em 0; }
+
+/* A statement between rules: Proposition 1, the control theorem. */
+.propblock { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 10px 0 4px; margin: 6px 0 10px; }
+.slide ol.props { margin: 0; padding-left: 1.3em; font-size: 32px; }
+.slide ol.props li { margin-bottom: 8px; }
+.propblock.theorem p { margin: 0 0 8px; font-size: 30px; }
+
+/* Slide 12: the belief band, symbols only. */
+#s12 .display-math { font-size: 0.9em; margin-bottom: 4px; }
+#s12 .beliefbar { margin: 2px 0 6px; padding: 0 160px; }
+#s12 .beliefbar .band { background: var(--line); top: -6px; height: 11px; }
+#s12 .beliefbar .scale { height: 40px; margin-top: 24px; }
+#s13 .display-math { margin: 0 0 4px; font-size: 0.95em; }
+#s13 .gainsplit { grid-template-columns: 1.15fr 1fr; gap: 36px; margin-top: 4px; }
+
+/* Slide 14: conditions and result lines. */
+.slide ul.conds { font-size: 26px; line-height: 1.28; margin-bottom: 6px; }
+.slide ul.conds li { margin-bottom: 3px; }
+.result-lines p { margin: 0 0 4px; font-size: 26px; line-height: 1.3; }
+
+/* Slide 15: the proof map, four ruled steps joined by arrows, each tagged with its source slide. */
+.proofmap { display: flex; align-items: flex-start; gap: 16px; margin: 30px 0 0; font-family: var(--font-serif); }
+.pbox { flex: 1; border-top: 1px solid var(--ink); padding-top: 12px; font-size: 28px; line-height: 1.32; }
+.ptag { display: block; margin-bottom: 8px; font-family: var(--font-sans); font-size: 19px; font-weight: 600; color: var(--muted); }
+.ptag b { margin-right: 18px; color: var(--ink); }
+.proofmap .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
+.proofmap .arrow::before { content: ""; display: block; width: 26px; height: 26px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
+
+/* Slides 16, 19, 20, 22: figure and words. */
+#s16 .beliefsplit { grid-template-columns: 1.2fr 1fr; gap: 34px; }
+#s16 .slider { font-size: 22px; }
+.regionsplit { grid-template-columns: 0.82fr 1.18fr; gap: 34px; }
+#s19 .col.text .display-math { font-size: 0.86em; margin: 0 0 4px; }
+#s19 .col.text ul.small { font-size: 25px; }
+#s19 .col.text ul.small li { margin-bottom: 4px; }
+#s20 ul.small, #s22 ul.small { font-size: 26px; }
+#s20 ul.small li, #s22 ul.small li { margin-bottom: 2px; }
+#s20 .figure, #s22 .figure { margin-bottom: 4px; }
+#s18 .split.wide { grid-template-columns: 2.6fr 1fr; gap: 40px; }
+#s18 .bars { font-size: 21px; }
+
+/* Slide 21: the set-up change, a rule, then the claims. */
+.setup p { margin: 0 0 6px; font-size: 29px; line-height: 1.3; }
+.setup { padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid var(--ink); }
+.slide p.definition { font-size: 29px; line-height: 1.3; margin: 0 0 8px; }
+#s21 ul.small { font-size: 29px; }
+#s21 ul.small li { margin-bottom: 4px; }
+
+/* Slide 24 and slide 25. */
+.accesssplit { grid-template-columns: 1.15fr 1fr; gap: 40px; }
+.accesssplit p.small { font-size: 30px; margin-bottom: 10px; }
+#s24 p.small { font-size: 30px; }
+.testsplit { grid-template-columns: 1fr 300px; gap: 40px; }
+.testsplit p.small { font-size: 28px; margin-bottom: 8px; }
+#s25 .testsplit .xs { font-size: 27px; }
+.slide ol.predictions { padding-left: 1.3em; }
+.impact { position: relative; width: 300px; height: 330px; margin-top: 10px; font-family: var(--font-serif); }
+.impact svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.impact .brace { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.impact .brace.info { stroke: var(--c-info); stroke-width: 3; }
+.impact .brace.muted { stroke: var(--muted); stroke-width: 2; }
+.impact .lvl { position: absolute; left: 48px; right: 0; display: flex; align-items: center; gap: 12px; transform: translateY(-50%); font-size: 27px; }
+.impact .lvl-line { display: block; width: 130px; height: 0; border-top: 2px solid var(--ink); }
+
+/* Slide 26: three lines, the chain between rules, the last line. */
+.slide ol.conclusion { font-size: 37px; margin: 26px 0 0; padding-left: 1.3em; }
+.slide ol.conclusion li { margin-bottom: 24px; }
+.slide p.chain { margin: 20px 0 0; padding: 18px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-family: var(--font-sans); font-size: 29px; }
+.slide p.lastline { margin: auto 0 0; font-size: 31px; }
+
+/* Backups. */
+.twotables { display: grid; grid-template-columns: 1fr 1.08fr; gap: 36px; align-items: start; }
+.twotables table { width: 100%; font-size: 23px !important; }
+.twotables td { padding: 5px 12px 5px 0; line-height: 1.25; }
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.panels4 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 48px; margin-top: 10px; }
+.rpanel { border-top: 1px solid var(--ink); padding-top: 12px; font-size: 27px; line-height: 1.32; }
+.rpanel b { display: block; margin-bottom: 6px; font-family: var(--font-sans); font-weight: 600; font-size: 25px; }
+.rpanel p { margin: 0 0 8px; }
+.t-payoffs, .t-panels, .t-econ { width: 100%; }
+.t-payoffs { font-size: 20px !important; }
+.t-payoffs td { padding: 3px 14px 3px 0; }
+.t-payoffs td:not(:first-child), .t-payoffs thead th:not(:first-child) { text-align: center; }
+.t-panels { font-size: 18px !important; }
+.t-panels td, .t-panels th { padding: 2px 14px 2px 0; line-height: 1.22; }
+.t-panels td:not(:first-child), .t-panels thead th:not(:first-child) { text-align: center; }
+.t-panels tr.panel td { padding-top: 6px; }
+.t-econ { font-size: 19px !important; }
+.t-econ td, .t-econ th { padding: 3px 12px 3px 0; line-height: 1.22; }
+.t-econ tr.panel td { padding-top: 8px; color: var(--muted); }
+.t-econ tr.subhead th { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-weight: 600; }
+.t-econ tr.last-a td { border-bottom: 1px solid var(--ink); }
+.t-thresh { font-size: 23px !important; }
+.t-thresh td { padding: 4px 18px 4px 0; }
+#b6 ol.steps { font-size: 27px; }
+#b6 ol.steps li { margin-bottom: 8px !important; }
+#b6b .display-math { margin: 0 0 2px; font-size: 0.8em; }
+#b6b ul.xs { font-size: 21px; }
+#b6b .twocol { gap: 28px; }
+#b2 .notation { font-size: 22px; gap: 28px; }
+#b2 .notation table { font-size: 22px !important; }
+#b2 .notation td { padding: 3px 10px 3px 0; line-height: 1.22; }
+#b2 .notation td:first-child { white-space: nowrap; }
+.refs li { font-size: 24px; }
+#s18 .bar-row { grid-template-columns: 44px 1fr 104px; }
