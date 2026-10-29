@@ -166,7 +166,7 @@ Bayes' rule determines beliefs after orders and prices. Liquidity trade makes ev
 
 Zero cost prepares. High cost c sub H prepares when rival gross profit B covers it, including equality. An indifferent informed trader may mix. Each prepared bidder bids its value. Each strength needs a fresh equilibrium.
 
-## Frame 10 — Strength never raises rival profit and never narrows the spread
+## Frame 10 — Strength lowers rival profit and widens the spread
 
 *2.0 minutes · ends at 18:00*
 
