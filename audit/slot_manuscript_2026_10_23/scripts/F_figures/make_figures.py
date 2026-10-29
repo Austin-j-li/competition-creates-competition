@@ -16,7 +16,7 @@ Run from the repository root:
 Optional argument --out DIR: the six PDFs, the PNG previews and the run log go to DIR (created if needed). Without
 it the PDFs go to slot/manuscript/figures/, and the PNG previews (png/) and the run log (run_log.txt) go beside
 this script.
-The slide versions set their text in Archivo: the TrueType files in slot/manuscript/fonts/ (the static Archivo
+The slide versions set their text in Archivo: the TrueType files in fonts/ beside this script (the static Archivo
 faces as served by Google Fonts, with OFL.txt beside them). The paths used are printed when the program starts.
 The manuscript versions keep STIXGeneral text and STIX math.
 The slide versions leave out every label that slides.tex covers with \\FigCover and sets again with \\FigText
@@ -250,11 +250,11 @@ DASH_Q = (0, (6.0, 2.0, 1.5, 2.0))
 DASH_T = (0, (3.0, 2.0))
 
 
-FONTS_DIR = ROOT / "slot" / "manuscript" / "fonts"
+FONTS_DIR = HERE / "fonts"
 
 
 def register_archivo():
-    """Register the Archivo TrueType files of slot/manuscript/fonts/ with matplotlib, so that the slide
+    """Register the Archivo TrueType files of fonts/ beside this script with matplotlib, so that the slide
     figures embed Archivo (TrueType, Type 42). Prints the paths used; returns True when Archivo-Regular
     is present."""
     files = sorted(FONTS_DIR.glob("Archivo-*.ttf"))
@@ -866,7 +866,7 @@ def main(argv=None):
     log("  Markers: filled = the value is attained at that strength; open = approached, not attained.")
     log("  Nodes (black): r_0, 1.55, 1.60, 1.65, r_1 = 3, r_2 = 18/5.")
     log("Fonts: manuscript figures use STIXGeneral text and STIX math (TrueType, Type 42).")
-    log("  Slide figures use Archivo (Regular, from slot/manuscript/fonts/) with STIX math; in-figure text and axes")
+    log("  Slide figures use Archivo (Regular, from fonts/ beside this script) with STIX math; in-figure text and axes")
     log("  are ink (#1e2530) with tick labels in the muted grey (#5b6573). The Archivo files are TrueType, so the")
     log("  PDF embeds a TrueType font (Type 42) directly.")
     log("Slide figures leave out the labels that slides.tex covers with \\FigCover and sets again with \\FigText:")
