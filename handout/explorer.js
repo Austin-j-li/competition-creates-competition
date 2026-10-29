@@ -40,14 +40,14 @@
     if (f.t === 0) low = 'class <i>L</i> abstains';
     else if (Math.abs(f.sellL - 1) < 1e-12) low = 'class <i>L</i> sells with probability one';
     else low = 'class <i>L</i> sells with ' + prob(f.sellL);
-    if (f.id === 'N') return 'Neither class trades. Every order leaves the posterior at the prior and has the same price, so only a zero-cost challenger prepares.';
+    if (f.id === 'N') return 'Neither class trades. Every order leaves the posterior at the prior and has the same price, so only a zero-cost rival prepares.';
     if (f.id === 'R') return 'Class <i>H</i> buys with ' + prob(f.buyH) + ' and otherwise abstains; ' + low + '. ' +
-      (Math.abs(f.mu['1'] - f.A.tau) < 1e-9 ? 'A purchase just reaches the threshold and recruits a high-cost challenger; the purchase earns exactly the trading cost.'
-        : 'A purchase lifts the posterior above the threshold and recruits a high-cost challenger.');
-    if (f.id === 'Q') return 'Class <i>H</i> buys and class <i>L</i> sells, each with ' + prob(f.buyH) + '. The purchase posterior stays below the threshold, so no order recruits a high-cost challenger.';
+      (Math.abs(f.mu['1'] - f.A.tau) < 1e-9 ? 'A purchase just reaches the threshold and recruits a high-cost rival; the purchase earns exactly the trading cost.'
+        : 'A purchase lifts the posterior above the threshold and recruits a high-cost rival.');
+    if (f.id === 'Q') return 'Class <i>H</i> buys and class <i>L</i> sells, each with ' + prob(f.buyH) + '. The purchase posterior stays below the threshold, so no order recruits a high-cost rival.';
     return 'Class <i>H</i> buys with probability one; ' + low + '. ' + (f.e['1'] === 1
-      ? 'A purchase reaches the top posterior and recruits a high-cost challenger.'
-      : 'Above the entry ceiling the top posterior falls short of the threshold, so no order recruits a high-cost challenger and entry is at its floor.');
+      ? 'A purchase reaches the top posterior and recruits a high-cost rival.'
+      : 'Above the entry ceiling the top posterior falls short of the threshold, so no order recruits a high-cost rival and entry is at its floor.');
   }
 
   /* ---------- the posterior after each order, on a belief line ---------- */
@@ -99,7 +99,7 @@
       traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
       traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
       traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
-      traces.push(seg('T: threshold pair (if an indifferent challenger may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
+      traces.push(seg('T: threshold pair (if an indifferent rival may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
       traces.push(dot(P.rA, P.entry_rA, t.info, false, ax, ay, 'R'));
       traces.push(dot(P.rF, ENT, t.info, false, ax, ay, 'F'));
       traces.push(dot(P.rC, ENT, t.info, false, ax, ay, 'F'));
@@ -134,7 +134,7 @@
       });
       layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.ink, width: 1.4 } });
     });
-    layout.annotations.push({ text: 'T endpoint (challenger mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
+    layout.annotations.push({ text: 'T endpoint (rival mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
       xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
     layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
     eqs.forEach(function (f) {
@@ -224,7 +224,7 @@
     mount.id = 'chart-explorer';
     mount.setAttribute('aria-label', 'Entry against incumbent strength in every equilibrium of the example’s path');
     fig.appendChild(mount);
-    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the quiet market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost challenger may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. Under challenger mixing, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
+    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the quiet market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost rival may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. When the rival mixes, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
     state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };
