@@ -15,7 +15,7 @@
 
   var CCC = (window.CCC = window.CCC || {});
   var STEP = 0.005;
-  var NAMES = { N: 'Quiet market', R: 'Mixed purchase that recruits', F: 'Full purchase', Q: 'Mixed orders at the entry floor' };
+  var NAMES = { N: 'Uninformative market', R: 'Mixed purchase that recruits', F: 'Full purchase', Q: 'Mixed orders at the entry floor' };
   var ORDERS = [['-1', 'Sale'], ['0', 'No order'], ['1', 'Purchase']];
   var state = { initialised: false, P: null, r: NaN, preset: null, sel: null, el: {}, rafPending: false, pendingR: NaN };
 
@@ -94,7 +94,7 @@
     }
     [['x', 'y', true], ['x2', 'y2', false]].forEach(function (p) {
       var ax = p[0], ay = p[1], show = p[2];
-      traces.push(seg('N: quiet market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
+      traces.push(seg('N: uninformative market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
       traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.info, 'dash', 2.6, show, ax, ay));
       traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
       traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
@@ -224,7 +224,7 @@
     mount.id = 'chart-explorer';
     mount.setAttribute('aria-label', 'Entry against incumbent strength in every equilibrium of the example’s path');
     fig.appendChild(mount);
-    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the quiet market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost rival may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. When the rival mixes, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
+    fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the uninformative market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost rival may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. When the rival mixes, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
     state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };

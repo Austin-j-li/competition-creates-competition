@@ -36,7 +36,7 @@ Thank you. I am Austin Li, from the Department of Economics at University Colleg
 
 *2.5 minutes · ends at 3:00*
 
-A listed company announces that it is open to a sale. The incumbent has done its homework. The rival must decide whether to pay for months of diligence. Meanwhile the stock trades, and a sector fund that follows the company's customers trades it too.
+A listed company announces that it is open to a sale. The incumbent has done its homework. The rival must decide whether to pay for months of diligence. Meanwhile the stock trades, and an informed trader that follows the company's customers trades it too.
 
 Does a stronger incumbent always keep the rival out?
 
@@ -44,7 +44,7 @@ The seller cares about discovery. A public sale tries to find one more bidder be
 
 The rival cares about the diligence bill. It must check contracts, liabilities and technology, secure finance and approvals, and commit scarce capacity. Those costs come before an executable offer. A stronger incumbent can reduce the return from that work. But the rival can also learn from the stock price before it pays. The price may help it decide whether good synergy justifies the cost.
 
-The market matters because prices move before bids move. The sector fund can know facts about customers and demand that bear on the rival's synergy. Its trade can put some of that knowledge into the price. The price can then change the decision to prepare.
+The market matters because prices move before bids move. The informed trader can know facts about customers and demand that bear on the rival's synergy. Its trade can put some of that knowledge into the price. The price can then change the decision to prepare.
 
 The seller needs discovery, the rival needs a reason to pay, and the market can supply news before commitment. The question connects all three.
 
