@@ -13,12 +13,12 @@
   var CCC = (window.CCC = window.CCC || {});
   var SVGNS = 'http://www.w3.org/2000/svg';
   var FALLBACK = {
-    bg: '#fbfcfc', surface: '#f1f3f5', ink: '#1e2530', muted: '#5b6573', grid: '#e4e8ec', line: '#c7cdd5',
-    accent: '#1e2530', accentSoft: 'rgba(30,37,48,0.08)', c2: '#b54b00', c3: '#5b6573',
-    regionA: 'rgba(30,37,48,0.07)', regionB: 'rgba(181,75,0,0.09)', regionC: 'rgba(91,101,115,0.10)',
-    info: '#b54b00', cost: '#006459',
-    fontSans: '"Archivo", "CCC Symbols", Arial, sans-serif',
-    fontMono: '"Fira Mono", "CCC Symbols", monospace'
+    bg: '#ffffff', surface: '#f2f2f2', ink: '#1c1c1c', muted: '#666666', grid: '#e6e6e6', line: '#c9c9c9',
+    accent: '#1c1c1c', accentSoft: 'rgba(122,31,31,0.08)', c2: '#7a1f1f', c3: '#666666',
+    regionA: 'rgba(28,28,28,0.07)', regionB: 'rgba(122,31,31,0.08)', regionC: 'rgba(102,102,102,0.12)',
+    info: '#7a1f1f', cost: '#1c1c1c',
+    fontSans: '"Libertinus Sans", "Libertinus Math", Arial, sans-serif',
+    fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {
     bg: '--bg', surface: '--surface', ink: '--ink', muted: '--muted', grid: '--grid', line: '--line',

@@ -1,6 +1,6 @@
-# Slides design contract (the ruled document)
+# Slides design contract (the journal look)
 
-The visual system (tokens, type, rules, components, the concept-colour rule and the slop list) is
+The visual system (tokens, type, rules, components, the one-accent rule and the slop list) is
 `DESIGN.md` at the repository root, shared with the research brief page. This
 file is the contract between the slide files; where it quotes a value, the root `DESIGN.md` is the
 source.
@@ -15,11 +15,13 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk
 (45 planned minutes, the title included). All 43 frames stay in the Beamer order and
 organisation: the title, 26 numbered slides and 16 backup pages for backups B1 to B12. The look is
-the ruled document system of the front page: ink on cool white paper (slate in the dark theme), Archivo for titles and
-instruments, STIX Two Text for prose, two rule weights (a 1 px hairline and a 2 px ink rule) and no
-fills, cards, pills, shadows, gradients or side stripes. The 2 px rule under each frame title is the
-progress rule. The Beamer deck in Overleaf uses a classic Beamer theme (Madrid, `ccc-classic.sty`)
-by rule; the web slides keep the ruled look. Words, numbers, frames and links stay identical.
+the journal look of the Beamer deck (`ccc-journal.sty`, chosen by the author on 29 October 2026),
+shared with the research brief page: Libertinus Serif for the body, Libertinus Sans for titles,
+tags, labels and the footline, white paper, one oxblood accent (#7A1F1F) and greys; no bars, fills,
+cards, pills, shadows or gradients. A frame is a bold sans title over a 3 px accent rule, the body,
+the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline with the
+short title in small capitals, the link buttons and the frame number. Words, numbers, frames and
+links stay identical between the two decks. Section 11 names the class for each Beamer macro.
 
 Invariants:
 
@@ -32,16 +34,18 @@ Invariants:
   decks print the same string. The build stops on a key the registry does not hold. No decimal is
   typed into a slide.
 - No status labels. The registry's status column is never read, shown or embedded.
-- The chrome has no colour: links, buttons, the rail, the focus ring and the slider thumb are ink.
-  `--c-info` (#b54b00, #f6a157 in the dark theme) marks the target-payoff spread and the
-  information chain; `--c-cost` (#006459, #46b3a8) marks preparation costs and the cost line.
-  Nothing else is coloured, and no UCL colour appears.
-- Controls share one grammar: text, with an underline. The active choice has a 2 px ink underline
-  (the rail, the choice buttons, the pager); a link button has a 1 px underline that becomes 2 px on
-  hover. A switched-off legend entry is struck through.
+- The accent is the only chrome colour: the rule under a title, the rule above a statement or a
+  takeaway, tags, bullets, the active rail entry or control, the link buttons and the focus ring.
+  Figures draw in ink (`--chart-1`, `--c-cost`), the accent (`--chart-2`, `--c-info`) and greys
+  (`--chart-3`), told apart by dash and marker. Nothing else is coloured, no UCL colour appears, and
+  `check_deck.mjs` fails on a hex outside the journal palette.
+- Controls share one grammar: sans text with an underline. The active choice is accent at weight
+  700 with a 2 px accent underline (the rail, the choice buttons, the pager). A link button on a
+  slide is the Beamer button: accent text on a light grey rounded ground with a triangle. A
+  switched-off legend entry is struck through.
 - Exhibits (figures, tables, the timeline, the order-slot flow) span the content column; prose and
   captions stop at the text measure. Registry numbers keep their provenance hover, marked by a
-  faint dotted hairline; numbers in prose are STIX with tabular figures.
+  faint dotted hairline; numbers in prose are Libertinus Serif with tabular figures.
 - The curves of the figures are closed forms of the paper in the example, computed at build time
   from registry primitives; no widget solves an equilibrium.
 
@@ -109,7 +113,9 @@ Links are `button.goto[data-target]`; Back is `button.goto.back[data-back]`.
 
 Class vocabulary for the body: `.bigtitle` (on the slide), `.cover`, `.lead`, `.bigline`,
 `.formal`, `.roadmap`, `.small`, `.mid`, `.xs`, `.roomy`, `.smallline`, `.grayline`,
-`.ruled-line`, `.caption`, `.definition`, `.setup`, `.takeaway`, `.footzone > .foot`, `.nav`,
+`.ruled-line`, `.caption`, `.definition`, `.setup`, `.takeaway`, `.intuition`, `.statement > .statement-tag`,
+`.deflist`, `.colhead`, `.ruledcol`, `.footline`, `.gloss`, `.largeline`, `.rule-accent`, `.rule-light`,
+`.model-strip > .current` (section 11), `.footzone > .foot`, `.nav`,
 `.chain`, `.lastline`, `.info`, `.muted`, `.nw`, `.cols3 > .rcol`, `.flow > .box` (`.flow-3`,
 `.box-cost`, `.arrow`), `.slotflow > .slotsrc`, `.sbox` (`.slotbox`, `.makerbox`, `.sbox-cost`),
 `.beliefbar > .track > .band`, `.tick`, `.scale`, `.propblock` (`.theorem`), `.result-lines`,
@@ -143,26 +149,28 @@ before printing; `export_pdf.sh` uses it.
 ## 6. Tokens and type
 
 ```css
-:root { --bg:#fbfcfc; --page:#e7eaee; --ink:#1e2530; --muted:#5b6573; --line:#c7cdd5; --grid:#e4e8ec;
-  --rule:#1e2530; --c-info:#b54b00; --c-cost:#006459;
-  --font-serif:"STIX Two Text","CCC Symbols",Georgia,serif;
-  --font-sans:"Archivo","CCC Symbols",system-ui,Arial,sans-serif;
-  --font-mono:"Fira Mono","CCC Symbols",ui-monospace,Menlo,monospace }
+:root { --bg:#ffffff; --page:#e9e9e9; --ink:#1c1c1c; --muted:#666666; --line:#c9c9c9; --grid:#e6e6e6;
+  --rule:#7a1f1f; --accent:#7a1f1f; --c-info:#7a1f1f; --c-cost:#1c1c1c;
+  --chart-1:#1c1c1c; --chart-2:#7a1f1f; --chart-3:#666666;
+  --font-serif:"Libertinus Serif","Libertinus Math",Georgia,serif;
+  --font-sans:"Libertinus Sans","Libertinus Math",system-ui,Arial,sans-serif }
 ```
 
-The dark theme is slate paper (#1a1f26, ink #e8ecf1, muted #a3adb9, hairline #3d4652) with the two
-concept colours lightened; it has no tint and no glow. The faces are the deck's locked files
-(`presentation/fonts.lock.json`): Archivo (variable weight and width, normal and italic), STIX Two Text
-400 to 600 with italic, Fira Mono, and the "CCC Symbols" fallback for arrows and relations.
-`build.py` writes the `@font-face` rules, with `font-stretch` for the variable Archivo, and embeds
-the local font data so the staged deck carries its own faces.
+The dark theme is slate paper (#171717, ink #ebebeb, muted #a3a3a3, hairline #474747) with the
+accent lightened to #d4908f; it has no tint and no glow. The faces are the deck's locked files
+(`presentation/fonts.lock.json`, identical to `handout/fonts.lock.json`): Libertinus Serif 400 and
+700 with italics, Libertinus Sans 400 and 700 with the regular italic, and Libertinus Math subset
+to the symbol blocks as the fallback for arrows, relations and operators. `build.py` writes the
+`@font-face` rules and embeds the font data so the staged deck carries its own faces. Mathematics
+is KaTeX at 1.04 em; the seam with Libertinus is accepted.
 
-Type scale at 1600 x 900. Archivo: frame title 44 px at weight 600 (56 px on S1, `.bigtitle`); the
-title frame 48 px at 600 and 112% width; frame number 44 px muted; tables 27 px with tabular figures
-(dense backups 20 to 25 px); link buttons 19 px; figure text 12 to 20 px drawn at a zoom of 1.4.
-STIX Two Text: subtitle 28 px muted; body 33 px at line height 1.32; small 29 px; grey lines 25 px;
-takeaway 32 px at weight 500 under a 2 px ink rule. Mathematics is KaTeX at 1.02 em; the seam with STIX is accepted. Slide padding
-26 px 56 px.
+Type scale at 1600 x 900, where 1 pt of the 16:9 Beamer page is 3.5 px. Libertinus Sans: frame
+title 50 px at weight 700 (60 px on S1, `.bigtitle`, the \LARGE of the deck); statement tag 30 px
+in the accent; table heads 27 px; link buttons 20 px; the footline 23 px in small capitals; figure
+text 12.5 to 20 px drawn at a zoom of 1.4. Libertinus Serif: the title frame 60 px at 700; body
+32 px at line height 1.3 (\Body); subtitle 27 px italic muted; statement body and gloss 28 px;
+small 28 px, xs 25 px; foot lines 23 px muted; takeaway 32 px at 700 over a 3 px accent rule;
+intuition 32 px italic over a hairline; the large line 42 px at 700. Slide padding 22 px 40 px.
 
 ## 7. Parts
 
@@ -221,3 +229,28 @@ minutes and the checkpoint line; `window.CCC_NOTES` holds the speaker notes by l
 Checkpoints: minute 9 ends slide 4; minute 18 ends slide 9; minute 25 ends slide 13; minute 34 ends
 slide 18; minute 45 ends slide 26. Cuts in order: slide 20 to one spoken sentence; slide 22 to one
 spoken sentence; slide 23 to its takeaway line. Never cut slides 4, 9, 11, 14, 18 or 25.
+
+## 11. The class for each Beamer macro
+
+The macros of `ccc-journal.sty` and the class that prints the same thing on a web frame. A later
+port of the Overleaf deck frame by frame uses these in `content.js`; `deck.css` holds the rules.
+
+| Beamer | Web | Prints as |
+|---|---|---|
+| `\Body` | the default size of `.slide-body` (32 px); `.small` is \footnotesize, `.xs` is \scriptsize | the body of a main frame |
+| `\begin{Statement}{tag}` | `<div class="statement"><p class="statement-tag">tag</p> ... </div>` (`.resultbox` with `.resultbox-title`, and `.propblock`, print the same way) | an accent rule, a bold sans tag in the accent, the body one size down, a light rule |
+| `\begin{DefList}` and `\DefRow{label}{text}` | `<dl class="deflist"><dt>label</dt><dd>text</dd> ... </dl>` (`.deflist.narrow` for a 220 px label column) | a label column: bold sans labels on the left, text on the right |
+| `\ColHead{head}` | `<b class="colhead">head</b>` at the top of a column (`.rcol > b:first-child` and `.rpanel > b` print the same way) | a bold sans head in the accent over an accent rule |
+| `\RuledCol{text}` | `<div class="ruledcol">text</div>` | a column that opens with an accent rule |
+| `\Intuition{text}` | `<p class="intuition">text</p>` as a late child of `.slide-body` | pinned above the foot zone: a light rule, then the italic sentence |
+| `\TakeawayEnd{text}` (and `\Takeaway`) | `<p class="takeaway">text</p>` as a late child of `.slide-body` | pinned above the foot zone: an accent rule, then the bold line |
+| `\FootLine{text}`, `\SmallLine{text}` | `<div class="footzone"><p class="footline">text</p></div>` (`p.foot` and `p.smallline` print the same way) | grey pointer lines in small type at the foot of the body |
+| `\Gloss{text}`, `\GrayLine{text}` | `<p class="gloss">text</p>` (`.grayline` prints the same way) | a grey sentence one size down |
+| `\LargeLine{text}` | `<p class="largeline">text</p>` (`p.bigline` prints the same way) | one large bold statement between an accent rule and a light rule |
+| `\NavyRule` | `<hr class="rule-accent">` | a rule in the accent |
+| `\LightRule` | `<hr class="rule-light">` | a light hairline |
+| `\ModelStrip{3,4}` | `<ul class="model-strip"><li>Players</li>...<li class="current">Information</li>...</ul>` under the head | the six parts of the model; the current ones bold accent, the others grey |
+| `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the accent rule |
+| `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | the Beamer button in the footline: accent text on a light rounded ground with a triangle |
+| `\BackupId{B1}` and the frame number | `.foot-num` (the build writes the number or the label; `deck.js` adds `data-total` on a main frame) | `n / N` on a main frame, the label on a backup, nothing on the title frame |
+| `\titlepage` | `.cover` with `h1`, `.cover-author`, `.cover-inst` | a short accent rule, the serif title, the author and the department in sans |

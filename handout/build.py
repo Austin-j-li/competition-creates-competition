@@ -106,8 +106,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["Archivo", "CCC Symbols", "Fira Mono", "STIX Two Text"],
-              f"faces are Archivo, STIX Two Text, Fira Mono and the symbol fallback ({', '.join(families)})")
+    rep.check(families == ["Libertinus Math", "Libertinus Sans", "Libertinus Serif"],
+              f"faces are Libertinus Serif, Libertinus Sans and Libertinus Math ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -428,7 +428,7 @@ def main() -> int:
             rep.check(bool(scripts[slot]), f"{fname} present")
             rep.check("</script" not in scripts[slot], f"{fname} contains no </script")
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
-                             for n in ("stix-two-text-latin-400-normal.woff2", "archivo-latin-wdth-normal.woff2"))
+                             for n in ("libertinus-serif-400-normal.woff2", "libertinus-sans-700-normal.woff2"))
         revision = facts["paper.pdf"]["created"] if ok else ""
         build_meta = ('<p class="build-meta">Sources (sha256, first 12 hex): '
                       f'registry {slot_data.sha256(ROOT)[:12] if registry else ""}; '

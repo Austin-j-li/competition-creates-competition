@@ -1,39 +1,43 @@
-/* Slides stylesheet: the ruled document system shared with the front page (DESIGN.md at the
-   repository root holds the tokens and components; the :root blocks below repeat its values and
-   check_deck.mjs fails when they drift from handout/style.css). Ink on cool white paper
-   (slate in the dark theme); two rule weights do the structural work, a 1 px hairline and a 2 px ink
-   rule; no fills, cards, pills, shadows or gradients. Every control shares one grammar: text, with
-   an underline (2 px ink when it is the active choice). The 2 px rule under each frame title is the
-   progress rule. --c-info marks the target-payoff spread and the information chain; --c-cost marks
-   preparation costs, the floor and the cost line; nothing else is coloured. Prose is set in STIX Two
-   Text; titles, tables, figures and controls in Archivo. The stage is a fixed 1600 x 900 design
-   surface that deck.js scales to the window, so sizes below are design pixels. The font-face rules
-   come first in the page; build.py generates them from fonts.lock.json. */
+/* Slides stylesheet: the journal look shared with the research brief (DESIGN.md at the repository
+   root holds the tokens and components; the :root blocks below repeat its values and check_deck.mjs
+   fails when they drift from handout/style.css). A frame is set like a frame of the Beamer deck:
+   a bold sans title in ink over a 1 pt accent rule, the body in Libertinus Serif, a statement as an
+   accent rule, a bold sans tag in the accent, the body and a light rule, the takeaway or the
+   intuition pinned above the foot zone, grey pointer lines in the foot zone, and a footline with
+   the short title in sans small capitals, the link buttons and the frame number. White paper, one
+   oxblood accent, greys; no bars, fills, shadows or gradients. The series of a figure are ink, the
+   accent and greys, told apart by dash and marker. The stage is a fixed 1600 x 900 design surface
+   that deck.js scales to the window, so sizes below are design pixels; 1 pt of the 16:9 Beamer page
+   is 3.5 px here. The font-face rules come first in the page; build.py generates them from
+   fonts.lock.json. presentation/DESIGN.md names the class that stands for each Beamer macro. */
 
 :root, :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #fbfcfc; --page: #e7eaee; --surface: #f1f3f5; --surface-2: #e7eaee; --ink: #1e2530; --muted: #5b6573;
-  --gray-text: #5b6573; --line: #c7cdd5; --grid: #e4e8ec; --rule: #1e2530; --heading: #1e2530;
-  --accent: #1e2530; --accent-ink: #fbfcfc; --accent-soft: rgba(30, 37, 48, 0.08);
-  --chart-1: #1e2530; --chart-2: #b54b00; --chart-3: #5b6573;
-  --c-info: #b54b00; --c-cost: #006459;
-  --region-a: rgba(30, 37, 48, 0.07); --region-b: rgba(181, 75, 0, 0.09); --region-c: rgba(91, 101, 115, 0.10);
-  --selection: rgba(30, 37, 48, 0.14);
+  --bg: #ffffff; --page: #e9e9e9; --surface: #f2f2f2; --surface-2: #ebebeb; --ink: #1c1c1c; --muted: #666666;
+  --gray-text: #666666; --line: #c9c9c9; --grid: #e6e6e6; --rule: #7a1f1f; --heading: #1c1c1c;
+  --accent: #7a1f1f; --accent-ink: #ffffff; --accent-soft: rgba(122, 31, 31, 0.08);
+  --chart-1: #1c1c1c; --chart-2: #7a1f1f; --chart-3: #666666;
+  --c-info: #7a1f1f; --c-cost: #1c1c1c;
+  --region-a: rgba(28, 28, 28, 0.07); --region-b: rgba(122, 31, 31, 0.08); --region-c: rgba(102, 102, 102, 0.12);
+  --fail: #7a1f1f;
+  --selection: rgba(122, 31, 31, 0.14);
   --i-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h13M9 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
-  --font-serif: "STIX Two Text", "CCC Symbols", Georgia, "Times New Roman", serif;
-  --font-sans: "Archivo", "CCC Symbols", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --font-mono: "Fira Mono", "CCC Symbols", ui-monospace, Menlo, Consolas, monospace;
+  --i-tri: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l9 6-9 6z' fill='%23000'/%3E%3C/svg%3E");
+  --font-serif: "Libertinus Serif", "Libertinus Math", Georgia, "Times New Roman", serif;
+  --font-sans: "Libertinus Sans", "Libertinus Math", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
   --stage-scale: 1;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #1a1f26; --page: #10141a; --surface: #232931; --surface-2: #2c333c; --ink: #e8ecf1; --muted: #a3adb9;
-  --gray-text: #a3adb9; --line: #3d4652; --grid: #2a313a; --rule: #e8ecf1; --heading: #e8ecf1;
-  --accent: #e8ecf1; --accent-ink: #1a1f26; --accent-soft: rgba(232, 236, 241, 0.10);
-  --chart-1: #e8ecf1; --chart-2: #f6a157; --chart-3: #a3adb9;
-  --c-info: #f6a157; --c-cost: #46b3a8;
-  --region-a: rgba(232, 236, 241, 0.10); --region-b: rgba(246, 161, 87, 0.12); --region-c: rgba(163, 173, 185, 0.12);
-  --selection: rgba(232, 236, 241, 0.22);
+  --bg: #171717; --page: #0d0d0d; --surface: #242424; --surface-2: #2a2a2a; --ink: #ebebeb; --muted: #a3a3a3;
+  --gray-text: #a3a3a3; --line: #474747; --grid: #2e2e2e; --rule: #d4908f; --heading: #ebebeb;
+  --accent: #d4908f; --accent-ink: #171717; --accent-soft: rgba(212, 144, 143, 0.12);
+  --chart-1: #ebebeb; --chart-2: #d4908f; --chart-3: #a3a3a3;
+  --c-info: #d4908f; --c-cost: #ebebeb;
+  --region-a: rgba(235, 235, 235, 0.10); --region-b: rgba(212, 144, 143, 0.14); --region-c: rgba(163, 163, 163, 0.14);
+  --fail: #d4908f;
+  --selection: rgba(212, 144, 143, 0.25);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -42,38 +46,38 @@ html, body { margin: 0; height: 100%; }
 body.deck { background: var(--page); color: var(--ink); font-family: var(--font-sans); overflow: hidden; caret-color: var(--ink); }
 ::selection { background: var(--selection); color: var(--ink); }
 button { font: inherit; color: inherit; cursor: pointer; }
-:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .skip-link { position: absolute; top: -5rem; left: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--bg); color: var(--ink); border: 1px solid var(--ink); border-radius: 0; }
 .skip-link:focus { top: 0.5rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .num { font-variant-numeric: tabular-nums; }
 kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border: 1px solid var(--line); border-radius: 0; padding: 0 0.4rem; background: transparent; }
 
-/* ---------- tools bar and rail: text, with an underline for the active choice ---------- */
+/* ---------- tools bar and rail: sans text; the active choice in the accent with an underline ---------- */
 
-.hud { position: fixed; top: 0; left: 0; right: 0; height: 44px; z-index: 10; display: flex; align-items: center; gap: 0.25rem; padding: 0 16px; background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); font-size: 14px; }
-.hud-home { color: var(--ink); text-decoration: none; font-weight: 600; margin-right: 0.9rem; white-space: nowrap; }
-.hud-home::before { content: ""; display: inline-block; width: 0.7em; height: 0.7em; margin-right: 0.35em; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
-.hud-home:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
-.hud-title { margin-right: auto; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hud button { border: 0; background: transparent; color: var(--ink); padding: 0.2rem 0.55rem; font-size: 14px; white-space: nowrap; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
-.hud button:hover { text-decoration-color: var(--ink); text-decoration-thickness: 2px; }
-.rail-bar { position: fixed; left: 0; right: 0; bottom: 0; height: 52px; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 16px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; font-variant-numeric: tabular-nums; }
+.hud { position: fixed; top: 0; left: 0; right: 0; height: 44px; z-index: 10; display: flex; align-items: center; gap: 0.25rem; padding: 0 16px; background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); font-size: 15px; }
+.hud-home { color: var(--ink); text-decoration: none; font-weight: 700; margin-right: 0.9rem; white-space: nowrap; }
+.hud-home::before { content: ""; display: inline-block; width: 0.7em; height: 0.7em; margin-right: 0.35em; background: var(--accent); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
+.hud-home:hover { color: var(--accent); }
+.hud-title { margin-right: auto; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-caps: small-caps; text-transform: lowercase; letter-spacing: 0.02em; }
+.hud button { border: 0; background: transparent; color: var(--ink); padding: 0.2rem 0.55rem; font-size: 15px; white-space: nowrap; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.hud button:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.rail-bar { position: fixed; left: 0; right: 0; bottom: 0; height: 52px; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 16px; background: var(--bg); border-top: 1px solid var(--line); font-size: 14px; font-variant-numeric: tabular-nums; }
 .rail { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; }
 .rail li { padding: 5px 0 3px; border-bottom: 2px solid transparent; color: var(--muted); white-space: nowrap; }
 .rail li button { all: unset; cursor: pointer; }
-.rail li button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.rail li button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .rail li:hover { color: var(--ink); }
 .rail li.done { color: var(--ink); }
-.rail li.current { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+.rail li.current { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
 .pager { display: flex; align-items: center; gap: 0.7rem; white-space: nowrap; }
 .pager button { border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--ink); border-radius: 0; min-width: 2rem; height: 1.9rem; padding: 0 0.4rem; line-height: 1; }
 #previous, #next { font-size: 0; }
 #previous::before, #next::before { content: ""; display: inline-block; width: 15px; height: 15px; vertical-align: middle; background: currentColor; -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 #previous::before { transform: scaleX(-1); }
-.pager button:hover { border-bottom-color: var(--ink); }
+.pager button:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .pager button:disabled { opacity: 0.35; cursor: default; border-bottom-color: transparent; }
-.pager #return { border-bottom-color: var(--ink); font-weight: 600; font-size: 13px; }
+.pager #return { border-bottom-color: var(--accent); color: var(--accent); font-weight: 700; font-size: 14px; }
 .pager #return::before { content: ""; display: inline-block; width: 0.8em; height: 0.8em; margin-right: 0.4em; background: currentColor; -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
 #counter { min-width: 5.5ch; text-align: center; }
 #progress-label { color: var(--muted); min-width: 12ch; }
@@ -83,63 +87,73 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 #stage { position: fixed; top: 44px; bottom: 52px; left: 0; right: 0; overflow: hidden; }
 #stage:focus { outline: none; }
 #deck { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; transform: translate(-50%, -50%) scale(var(--stage-scale)); transform-origin: center center; }
-.slide { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-serif); font-size: 33px; line-height: 1.32; outline: 1px solid var(--line); overflow: hidden; }
+/* The body size of a main frame is \Body (\small, 9 pt): 32 px here. */
+.slide { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-serif); font-size: 32px; line-height: 1.3; outline: 1px solid var(--line); overflow: hidden; }
 .slide.active { display: flex; }
 
-/* The frame head: the title and the frame number on one line, the subtitle, then the progress
-   rule (done fraction in 2 px ink, remainder a hairline). */
-.slide-head { position: relative; flex: none; margin: 0 56px; padding: 26px 0 16px; min-height: 130px; font-family: var(--font-sans); }
-.backup .slide-head { min-height: 0; }
-.slide-head h2 { margin: 0; padding-right: 120px; font-size: 44px; font-weight: 600; line-height: 1.12; letter-spacing: -0.005em; color: var(--ink); text-wrap: balance; }
-.slide-head .sub { margin: 8px 0 0; padding-right: 120px; font-family: var(--font-serif); font-size: 28px; color: var(--muted); line-height: 1.25; }
-.slide::before { content: attr(data-num); position: absolute; top: 26px; right: 56px; font-family: var(--font-sans); font-size: 44px; font-weight: 400; line-height: 1.12; color: var(--muted); font-variant-numeric: tabular-nums; }
-.title-slide::before { content: none; }
-.slide-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
-.slide-head::before { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: var(--progress, 0%); background: var(--ink); z-index: 2; }
-.backup .slide-head::before { width: 100%; }
+/* The frame head: the title in bold sans, the subtitle in grey italic under it, then the accent rule;
+   the body starts under that rule. */
+.slide-head { position: relative; flex: none; margin: 0 40px; padding: 22px 0 10px; font-family: var(--font-sans); }
+.slide-head h2 { margin: 0; font-size: 50px; font-weight: 700; line-height: 1.1; letter-spacing: 0; color: var(--ink); text-wrap: balance; }
+.slide-head .sub { margin: 4px 0 0; font-family: var(--font-serif); font-style: italic; font-size: 27px; color: var(--gray-text); line-height: 1.25; }
+.slide-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent); }
 .slide-head .katex { color: inherit; }
 .slide-head .q { color: inherit; }
 
-.slide-body { flex: 1 1 auto; min-height: 0; padding: 26px 56px 0; display: flex; flex-direction: column; }
-.slide-foot { flex: none; display: flex; justify-content: space-between; align-items: center; padding: 6px 56px 12px; font-family: var(--font-sans); font-size: 15px; color: var(--muted); }
-.foot-num { display: none; }
+.slide-body { flex: 1 1 auto; min-height: 0; padding: 18px 40px 0; display: flex; flex-direction: column; }
+/* The footline: the short title in sans small capitals, the link buttons, the frame number. */
+.slide-foot { flex: none; display: flex; justify-content: space-between; align-items: baseline; padding: 6px 40px 12px; font-family: var(--font-sans); font-size: 23px; color: var(--gray-text); font-variant-numeric: tabular-nums; }
+.foot-title { font-variant-caps: small-caps; text-transform: lowercase; letter-spacing: 0.02em; }
+.foot-num { padding-left: 170px; }
+.foot-num::after { content: " / " attr(data-total); }
+.backup .foot-num::after, .foot-num:not([data-total])::after { content: none; }
+.title-slide .slide-foot { display: none; }
 .nohead .slide-body { justify-content: center; padding-top: 40px; }
 
 /* ---------- type and content ---------- */
 
-.slide p { margin: 0 0 14px; }
+.slide p { margin: 0 0 12px; }
 .slide p, .slide li, .grayline, .propitem { text-wrap: pretty; }
 .slide ul, .slide ol { margin: 0 0 12px; padding-left: 1.15em; }
 .slide li { margin: 0 0 10px; }
-.slide ul > li::marker { color: var(--muted); content: "\2013\00a0\00a0"; }
-.slide ul.small, .slide p.small, .slide .small { font-size: 29px; }
+/* Bullets: a small accent square, as in the deck; numbered items a bold number. */
+.slide ul > li::marker { color: var(--accent); content: "\25A0\00a0\00a0"; font-size: 0.62em; }
+.slide ol > li::marker { font-weight: 700; color: var(--ink); }
+.slide ul.small, .slide p.small, .slide .small { font-size: 28px; }
 .slide ul.small li { margin-bottom: 6px; }
-.slide ul.roomy { font-size: 35px; }
+.slide ul.roomy { font-size: 34px; }
 .slide ul.roomy li { margin-bottom: 22px; }
-.slide ul.mid { font-size: 31px; }
+.slide ul.mid { font-size: 30px; }
 .slide ul.mid li { margin-bottom: 14px; }
-.slide ul.conclusion li { margin-bottom: 44px; font-size: 36px; }
+.slide ul.conclusion li { margin-bottom: 44px; font-size: 35px; }
 .slide ul.claims > li { margin-bottom: 14px; }
 .slide .lead { font-size: 32px; }
 .slide .bench { display: block; font-size: 30px; margin-top: 6px; }
-.slide b, .slide strong { font-weight: 600; }
-.keyidea { color: var(--ink); font-weight: 600; }
+.slide b, .slide strong { font-weight: 700; }
+.keyidea { color: var(--ink); font-weight: 700; }
 .info { color: var(--c-info); }
 .cost { color: var(--c-cost); }
 .info .katex, .cost .katex { color: inherit; }
-.grayline, .slide .small-note { color: var(--gray-text); font-size: 25px; line-height: 1.38; }
+/* \Gloss and \GrayLine: a grey sentence in the body, one size down. */
+.gloss, .grayline, .slide .small-note { color: var(--gray-text); font-size: 28px; line-height: 1.32; }
 .graycite { color: var(--gray-text); font-size: 0.82em; }
 .center { text-align: center; }
-.bigq { margin: 0 0 40px !important; padding-top: 26px; border-top: 2px solid var(--ink); max-width: 1320px; font-family: var(--font-sans); font-size: 52px; font-weight: 600; line-height: 1.16; letter-spacing: -0.01em; text-wrap: balance; }
-.bigq .keyidea { font-weight: 600; }
-.bench-inline { font-variant-numeric: tabular-nums; font-weight: 600; }
-.takeaway { margin-top: auto !important; padding: 14px 0 0; border-top: 2px solid var(--ink); font-size: 33px; font-weight: 500; text-wrap: balance; }
+.bigq { margin: 0 0 40px !important; padding: 20px 0 22px; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); max-width: 1320px; font-family: var(--font-serif); font-size: 44px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+.bigq .keyidea { font-weight: 700; }
+.bench-inline { font-variant-numeric: tabular-nums; font-weight: 700; }
+/* \TakeawayEnd: pinned above the foot zone, an accent rule, then the bold line. */
+.takeaway { margin-top: auto !important; padding: 10px 0 0; border-top: 3px solid var(--accent); font-size: 32px; font-weight: 700; text-wrap: pretty; }
+.takeaway b { font-weight: 700; }
+/* \Intuition: pinned above the foot zone, a light rule, then the italic sentence. */
+.intuition { margin: auto 0 0 !important; padding: 8px 0 0; border-top: 1px solid var(--line); font-size: 32px; font-style: italic; text-wrap: pretty; }
+.takeaway + .intuition, .intuition + .takeaway { margin-top: 10px !important; }
 .slide-body > .takeaway + .nav { margin-top: 10px; }
-.nav { display: flex; justify-content: flex-end; gap: 30px; margin: auto 0 0 !important; padding-top: 12px; font-family: var(--font-sans); }
+.nav { display: flex; justify-content: flex-end; gap: 14px; margin: auto 0 0 !important; padding-top: 12px; font-family: var(--font-sans); }
 .takeaway ~ .nav { margin-top: 10px !important; }
-.goto { border: 0; background: transparent; color: var(--ink); border-radius: 0; padding: 4px 0; font-size: 19px; font-weight: 500; line-height: 1.3; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.32em; }
-.goto::before { content: ""; display: inline-block; width: 0.75em; height: 0.75em; margin-right: 0.45em; vertical-align: -0.02em; background: currentColor; -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
-.goto:hover { text-decoration-thickness: 2px; }
+/* The link buttons of the footline, as Beamer draws them: accent text on a light rounded ground. */
+.goto { border: 0; background: var(--surface-2); color: var(--accent); border-radius: 6px; padding: 1px 12px 2px 9px; font-size: 20px; font-weight: 400; line-height: 1.3; text-decoration: none; white-space: nowrap; }
+.goto::before { content: ""; display: inline-block; width: 0.55em; height: 0.55em; margin-right: 0.3em; vertical-align: 0.02em; background: currentColor; -webkit-mask: var(--i-tri) center / contain no-repeat; mask: var(--i-tri) center / contain no-repeat; }
+.goto:hover { background: var(--accent); color: var(--accent-ink); }
 .goto.back::before { transform: scaleX(-1); }
 
 /* registry numbers: the provenance is a hover title; the mark is a faint dotted hairline */
@@ -153,50 +167,95 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide [data-step]:not(.shown) { opacity: 0; transform: translateY(6px); pointer-events: none; }
 
 /* math */
-.slide .katex { font-size: 1.02em; }
+.slide .katex { font-size: 1.04em; }
 .display-math { flex: none; margin: 6px 0 14px; overflow: hidden; }
 .display-math .katex-display { margin: 0.3em 0; }
 
+/* ---------- the frame skeleton: the classes that stand for the Beamer macros ---------- */
+
+/* \NavyRule and \LightRule: a rule in the accent or a light hairline, on an hr or a div. */
+.rule-accent { border: 0; border-top: 3px solid var(--accent); margin: 8px 0; height: 0; }
+.rule-light { border: 0; border-top: 1px solid var(--line); margin: 8px 0; height: 0; }
+/* Statement: an accent rule, a bold sans tag in the accent, the body one size down, a light rule.
+   .resultbox and .propblock, the earlier names, print the same way. */
+.statement, .resultbox, .propblock { border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); background: transparent; margin: 4px 0 16px; padding: 6px 0 4px; }
+.statement-tag, .resultbox-title { margin: 0 0 4px !important; padding: 0; border: 0; color: var(--accent); font-family: var(--font-sans); font-weight: 700; font-size: 30px; line-height: 1.2; }
+.statement > :not(.statement-tag), .resultbox > :not(.resultbox-title), .propblock { font-size: 28px; line-height: 1.3; }
+.statement p, .resultbox p, .propblock p { margin: 0 0 8px; }
+.statement .display-math, .resultbox .display-math, .propblock .display-math { margin: 2px 0 8px; }
+.propitem { margin: 0 !important; padding: 6px 0 4px 64px; position: relative; font-size: 28px; }
+.propitem:first-of-type { padding-top: 8px; }
+.propitem:last-child { padding-bottom: 8px; }
+.propitem > .propnum { position: absolute; left: 0; font-family: var(--font-sans); font-size: 26px; font-weight: 700; }
+.slide ol.props { margin: 0; padding-left: 1.3em; font-size: 30px; }
+.slide ol.props li { margin-bottom: 8px; }
+.propblock.theorem p { margin: 0 0 8px; font-size: 28px; }
+/* DefList: a label column, bold sans labels on the left, text on the right. */
+.deflist { display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 16px; row-gap: 8px; margin: 0 0 12px; }
+.deflist dt { font-family: var(--font-sans); font-weight: 700; margin: 0; }
+.deflist dd { margin: 0; }
+.deflist.narrow { grid-template-columns: 220px minmax(0, 1fr); }
+/* \ColHead: a bold sans head in the accent over an accent rule, at the top of a column. */
+.colhead { display: block; font-family: var(--font-sans); font-weight: 700; color: var(--accent); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+/* \RuledCol: a column that opens with an accent rule. */
+.ruledcol { border-top: 2px solid var(--accent); padding-top: 10px; }
+/* \FootLine and \SmallLine: grey pointer lines in small type, in the foot zone. */
+.footzone { margin-top: auto; padding-top: 10px; }
+.takeaway + .footzone, .intuition + .footzone { margin-top: 0 !important; }
+.footline, .slide p.foot { margin: 0 0 4px; color: var(--gray-text); font-size: 23px; line-height: 1.34; }
+.slide p.smallline { margin: 2px 0 10px; color: var(--gray-text); font-size: 23px; line-height: 1.34; }
+/* \LargeLine: one large bold statement between an accent rule and a light rule. */
+.largeline, .slide p.bigline { margin: 14px 0 26px; padding: 16px 0 18px; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 42px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+.slide p.bigline b { font-weight: 700; }
+/* \ModelStrip: the six parts of the model under the title of frames 5 to 9; the current ones in bold
+   accent, the others grey, light bullets between them. */
+.model-strip { display: flex; justify-content: space-between; align-items: baseline; list-style: none; margin: -4px 0 14px; padding: 0; font-family: var(--font-sans); font-size: 26px; color: var(--gray-text); }
+.model-strip li { display: flex; flex: 1; align-items: baseline; margin: 0; }
+.model-strip li:last-child { flex: 0; }
+.model-strip li:not(:last-child)::after { content: "\2022"; color: var(--line); margin: 0 auto; }
+.model-strip .current { color: var(--accent); font-weight: 700; }
+.model-strip .current::after { color: var(--line); font-weight: 400; }
+
 /* ---------- components ---------- */
 
-/* The title frame: a ruled block on paper. */
-.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 130px; background: var(--bg); color: var(--ink); }
-.cover h1 { margin: 0 0 28px; padding: 36px 0 32px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); padding-right: 0; font-family: var(--font-sans); font-size: 48px; font-weight: 600; font-stretch: 112%; line-height: 1.14; letter-spacing: -0.01em; text-wrap: balance; }
-.cover-author { font-family: var(--font-sans); font-size: 32px; font-weight: 500; margin: 0 0 6px; }
-.cover-inst { font-size: 29px; color: var(--muted); margin: 0; padding-bottom: 28px; border-bottom: 1px solid var(--line); line-height: 1.3; }
-.cover .hint { margin: 0; padding-top: 18px; font-family: var(--font-sans); font-size: 18px; color: var(--muted); }
+/* The title frame: a short accent rule, the serif title, the author and the department. */
+.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 130px 60px; background: var(--bg); color: var(--ink); }
+.cover::before { content: ""; display: block; width: 240px; border-top: 5px solid var(--accent); margin-bottom: 44px; }
+.cover h1 { margin: 0 0 40px; padding: 0; border: 0; font-family: var(--font-serif); font-size: 60px; font-weight: 700; line-height: 1.18; letter-spacing: 0; text-wrap: balance; }
+.cover-author { font-family: var(--font-sans); font-size: 34px; font-weight: 400; margin: 0 0 6px; }
+.cover-inst { font-family: var(--font-sans); font-size: 34px; color: var(--ink); margin: 0; padding: 0; border: 0; line-height: 1.3; }
+.cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--muted); }
 .title-slide { background: var(--bg); }
 
-/* Steps of a process: a ruled head each, joined by an arrow. */
+/* Steps of a process: an accent-ruled head each, joined by an arrow. */
 .flow { display: flex; align-items: stretch; justify-content: flex-start; gap: 22px; margin: 6px 0 22px; font-family: var(--font-sans); }
-.box { border: 0; border-top: 1px solid var(--ink); padding: 14px 0 0; font-size: 26px; text-align: left; width: 400px; min-height: 92px; display: block; }
+.box { border: 0; border-top: 2px solid var(--accent); padding: 14px 0 0; font-size: 26px; text-align: left; width: 400px; min-height: 92px; display: block; }
 .box-cost { border-top: 2px solid var(--c-cost); }
 .flow .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
 .flow .arrow::before { content: ""; display: block; width: 28px; height: 28px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 
-
-/* Choices: text buttons, the chosen one underlined in 2 px ink. */
+/* Choices: text buttons, the chosen one in the accent with an underline. */
 .segmented { display: inline-flex; gap: 30px; margin: 0 0 14px; padding-right: 30px; border-bottom: 1px solid var(--line); font-family: var(--font-sans); }
 .segmented button { border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; color: var(--ink); border-radius: 0; padding: 4px 0 6px; font-size: 23px; }
 .segmented button:hover { border-bottom-color: var(--muted); }
-.segmented button[aria-pressed="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+.segmented button[aria-pressed="true"] { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
 .segmented button .katex { color: inherit; }
 
-/* Tables: booktabs rules, tabular figures. A highlighted row is ruled above and below. */
-.slide table { border-collapse: collapse; font-family: var(--font-sans); font-size: 27px; font-variant-numeric: tabular-nums; margin: 0 0 12px; }
+/* Tables: booktabs rules, tabular figures, the head in bold sans. A highlighted row is ruled above and below. */
+.slide table { border-collapse: collapse; font-family: var(--font-serif); font-size: 27px; font-variant-numeric: tabular-nums; margin: 0 0 12px; }
 .slide th, .slide td { padding: 7px 18px 7px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grid); }
-.slide thead th { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); font-weight: 600; }
+.slide thead th { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); font-family: var(--font-sans); font-weight: 700; }
 .slide tbody tr:last-child th, .slide tbody tr:last-child td { border-bottom: 2px solid var(--ink); }
-.slide th { font-weight: 500; }
+.slide th { font-weight: 400; }
 .slide tr.panel td { color: var(--muted); padding-top: 10px; }
-.slide tr.total td { font-weight: 600; }
+.slide tr.total td { font-weight: 700; }
 .slide td .sub, .slide th .sub { display: block; font-size: 0.78em; color: var(--gray-text); font-weight: 400; }
-tr.hl > th, tr.hl > td { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
+tr.hl > th, tr.hl > td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+td.hl, th.hl { font-weight: 700; border-bottom-color: var(--ink); }
 .t-cases { width: 100%; }
 .t-cases td, .t-cases th { padding-right: 24px; }
-.t-cases td.gap { font-weight: 600; }
-.two-lines > div { display: flex; align-items: baseline; gap: 14px; margin: 4px 0 6px 40px; font-size: 31px; }
+.t-cases td.gap { font-weight: 700; }
+.two-lines > div { display: flex; align-items: baseline; gap: 14px; margin: 4px 0 6px 40px; font-size: 30px; }
 .two-lines .gloss { color: var(--muted); font-size: 27px; }
 .two-lines .info .gloss { color: var(--c-info); }
 .arrowword { font-weight: 700; font-family: var(--font-sans); }
@@ -215,32 +274,25 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .bar-row { display: grid; grid-template-columns: 70px 1fr 80px; align-items: center; gap: 10px; }
 .bar { height: 20px; background: var(--chart-1); border-radius: 0; transform-origin: left center; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .bar.info { background: var(--c-info); }
-/* The statement of a result: ruled above and below, a hairline under its title. */
-.resultbox { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: transparent; margin: 4px 0 20px; padding: 0; }
-.resultbox-title { margin: 0 !important; padding: 10px 0 8px; border-bottom: 1px solid var(--line); color: var(--ink); font-family: var(--font-sans); font-weight: 600; font-size: 26px; }
-.propitem { margin: 0 !important; padding: 8px 0 6px 64px; position: relative; font-size: 31px; }
-.propitem:first-of-type { padding-top: 12px; }
-.propitem:last-child { padding-bottom: 12px; }
-.propitem > .propnum { position: absolute; left: 0; font-family: var(--font-sans); font-size: 27px; font-weight: 600; }
 .t-conditions { margin-bottom: 8px; }
 .t-conditions td { font-size: 26px; border: 0 !important; border-bottom: 1px solid var(--grid) !important; padding: 5px 24px 5px 0; }
 .split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
 .split.narrow { grid-template-columns: 1.3fr 1fr; }
 .split.wide { grid-template-columns: 3fr 1fr; align-items: center; gap: 30px; }
-.split .col.text { font-size: 29px; }
+.split .col.text { font-size: 28px; }
 .slider { display: flex; align-items: center; gap: 14px; font-family: var(--font-sans); font-size: 23px; margin: 4px 0; }
 .slider input { flex: 1; height: 34px; -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
 .slider input::-webkit-slider-runnable-track { height: 1.5px; background: var(--ink); }
-.slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 32px; margin-top: -15px; background: var(--ink); border: 0; border-radius: 0; }
+.slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 32px; margin-top: -15px; background: var(--accent); border: 0; border-radius: 0; }
 .slider input::-moz-range-track { height: 1.5px; background: var(--ink); }
-.slider input::-moz-range-thumb { width: 4px; height: 32px; background: var(--ink); border: 0; border-radius: 0; }
+.slider input::-moz-range-thumb { width: 4px; height: 32px; background: var(--accent); border: 0; border-radius: 0; }
 .slider output { font-variant-numeric: tabular-nums; min-width: 4ch; }
 .readout { font-family: var(--font-sans); font-size: 20px; color: var(--ink); }
 .readout p { margin: 0 0 4px; }
-.readout b { font-variant-numeric: tabular-nums; font-weight: 600; }
-.readout .chip { display: inline; padding: 0 0 1px; border: 0; margin: 2px 0 0; font-weight: 600; }
-.readout .chip.ok { color: var(--ink); border-bottom: 2px solid var(--ink); }
-.readout .chip.no { color: var(--muted); border-bottom: 1px dashed var(--muted); font-weight: 500; }
+.readout b { font-variant-numeric: tabular-nums; font-weight: 700; }
+.readout .chip { display: inline; padding: 0 0 1px; border: 0; margin: 2px 0 0; font-weight: 700; }
+.readout .chip.ok { color: var(--accent); border-bottom: 2px solid var(--accent); }
+.readout .chip.no { color: var(--muted); border-bottom: 1px dashed var(--muted); font-weight: 400; }
 .readout .note { color: var(--gray-text); font-size: 18px; }
 .beliefsplit { grid-template-columns: 1.35fr 1fr; align-items: start; }
 .beliefsplit .readout { font-size: 22px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -248,7 +300,7 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .beliefsplit .readout .chip { font-size: 20px; }
 .t-robust th:first-child { width: 440px; }
 .t-robust td { text-align: left; width: auto; font-size: 26px; }
-.t-robust th { font-weight: 600; font-size: 26px; }
+.t-robust th { font-weight: 700; font-size: 26px; }
 .t-robust thead th { text-align: left; }
 .t-robust.roomy th, .t-robust.roomy td { padding-top: 16px; padding-bottom: 16px; }
 .t-robust.roomy td, .t-robust.roomy th { font-size: 29px; }
@@ -277,7 +329,7 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .t-trade td.nw { white-space: nowrap; }
 .t-region, .t-thresh, .t-ext { width: 100%; font-size: 25px; }
 .t-thresh td:nth-child(2) { font-variant-numeric: tabular-nums; }
-.t-ext th { width: 360px; font-weight: 600; }
+.t-ext th { width: 360px; font-weight: 700; }
 .t-ext td { font-size: 24px; }
 .nw { white-space: nowrap; }
 .steps { padding-left: 1.4em !important; }
@@ -297,10 +349,10 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .slotflow .arrow::before { content: ""; display: block; width: 28px; height: 28px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 .slotsrc { display: flex; flex-direction: column; gap: 22px; flex: 1.45; }
 .sbox { flex: 1; border-top: 1px solid var(--ink); padding: 12px 0 0; font-size: 25px; line-height: 1.3; }
-.sbox b { display: block; font-size: 26px; font-weight: 600; margin-bottom: 2px; }
+.sbox b { display: block; font-size: 26px; font-weight: 700; margin-bottom: 2px; }
 .sbox small { display: block; margin-top: 6px; font-size: 20px; color: var(--gray-text); line-height: 1.3; }
 .sbox .chance { float: none; display: block; color: var(--muted); font-weight: 400; margin-bottom: 4px; }
-.slotbox { flex: 1.1; align-self: flex-start; border-top: 2px solid var(--ink); }
+.slotbox { flex: 1.1; align-self: flex-start; border-top: 2px solid var(--accent); }
 .sbox-cost { flex: 0.9; align-self: flex-start; border-top: 2px solid var(--c-cost); }
 
 /* The belief scale: a line, the band of possible beliefs thick, three ticks, one pin. */
@@ -308,7 +360,7 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .beliefbar .track { position: relative; height: 0; border-top: 1px solid var(--ink); margin-top: 16px; }
 .beliefbar .band { position: absolute; top: -4px; height: 7px; background: var(--c-info); }
 .beliefbar .tick { position: absolute; top: -12px; width: 1px; height: 24px; background: var(--ink); }
-.beliefbar .pin { position: absolute; top: -17px; width: 4px; height: 34px; background: var(--ink); transform: translateX(-2px); transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.beliefbar .pin { position: absolute; top: -17px; width: 4px; height: 34px; background: var(--accent); transform: translateX(-2px); transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .beliefbar .scale { position: relative; height: 36px; font-size: 24px; margin-top: 16px; font-family: var(--font-serif); }
 .beliefbar .scale > span { position: absolute; transform: translateX(-50%); }
 
@@ -319,7 +371,7 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .figure { width: 100%; margin-bottom: 12px; border-top: 1px solid var(--line); padding-top: 8px; font-family: var(--font-sans); }
 .figure.wide { max-width: 1320px; margin: 0; }
 .figure .chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; margin: 0 0 6px; }
-.legend-title { font-size: 16px; font-weight: 600; color: var(--muted); margin: 0 2px 0 0; }
+.legend-title { font-size: 17px; font-weight: 700; color: var(--muted); margin: 0 2px 0 0; }
 .legend-item { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; line-height: 1.25; padding: 2px 0; border: 0; border-radius: 0; background: transparent; color: var(--ink); text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
 .legend-item:hover { text-decoration-color: var(--ink); }
 .legend-item[aria-pressed="false"] { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
@@ -327,32 +379,32 @@ td.hl, th.hl { font-weight: 600; border-bottom-color: var(--ink); }
 .chart-canvas { position: relative; border-bottom: 1px solid var(--line); }
 .chart-canvas svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
 svg.plot text { font-family: var(--font-sans); }
-svg.plot .tick { font-size: 12px; font-variant-numeric: tabular-nums; }
+svg.plot .tick { font-size: 12.5px; font-variant-numeric: tabular-nums; }
 svg.plot .axis-title { font-size: 13.5px; }
 svg.plot .panel-label { font-weight: 700; }
 .chart-tip { position: absolute; z-index: 5; pointer-events: none; min-width: 200px; max-width: 360px; padding: 8px 12px; background: var(--bg); color: var(--ink); border: 1px solid var(--ink); border-radius: 0; font-size: 16px; line-height: 1.35; font-variant-numeric: tabular-nums; }
 .tip-head { color: var(--muted); margin-bottom: 4px; }
 .tip-row { display: flex; gap: 8px; align-items: baseline; margin-top: 4px; }
-.tip-row b { font-weight: 600; }
+.tip-row b { font-weight: 700; }
 .tip-key { flex: none; width: 10px; height: 10px; border-radius: 0; }
 
 /* ---------- dialogs ---------- */
 
 dialog#panel { width: min(92vw, 1100px); max-height: 86vh; border: 1px solid var(--ink); border-radius: 0; padding: 1.2rem 1.5rem; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
-dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
-.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); }
-.panel-head h2 { margin: 0; font-size: 1.25rem; font-weight: 600; color: var(--ink); }
+dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+.panel-head h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--ink); }
 #close-panel { border: 0; background: transparent; border-radius: 0; padding: 0.2rem 0; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
-#close-panel:hover { text-decoration-thickness: 2px; }
+#close-panel:hover { color: var(--accent); }
 #panel-body { overflow: auto; max-height: calc(86vh - 5rem); font-size: 16px; scrollbar-width: thin; scrollbar-color: var(--line) var(--bg); }
-#panel-body h3 { font-weight: 600; }
+#panel-body h3 { font-weight: 700; }
 .overview-part { margin: 0 0 1rem; }
-.overview-part h3 { margin: 0.8rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--line); font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+.overview-part h3 { margin: 0.8rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--accent); font-size: 0.95rem; font-weight: 700; color: var(--accent); }
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.45rem 1.2rem; }
 .ov { display: flex; flex-direction: column; justify-content: flex-start; text-align: left; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 0; padding: 0.5rem 0 0.4rem; font-size: 0.86rem; line-height: 1.3; }
-.ov:hover { border-top-color: var(--ink); }
+.ov:hover { border-top-color: var(--accent); color: var(--accent); }
 .ov small { display: block; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 0.15rem; }
-.ov.current { border-top: 2px solid var(--ink); padding-top: calc(0.5rem - 1px); font-weight: 600; }
+.ov.current { border-top: 2px solid var(--accent); padding-top: calc(0.5rem - 1px); font-weight: 700; }
 .ov.backup { border-top-style: dashed; }
 .notes-meta { color: var(--muted); font-size: 0.9rem; }
 .notes-body { font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.55; }
@@ -396,38 +448,30 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .keyline { margin: 6px 0 10px; color: var(--muted); }
 .keyline b { margin-left: 18px; }
 .keyline b:first-child { margin-left: 0; }
-.keyline .k-n { color: var(--accent); }
+.keyline .k-n { color: var(--ink); }
 .keyline .k-r { color: var(--c-info); }
 .keyline .k-q { color: var(--muted); }
 .keyline .k-t { color: var(--ink); }
 
 /* ---------- the 45-minute talk ---------- */
 
-/* Slide 1: the question set large. */
-.bigtitle .slide-head h2 { font-size: 56px; line-height: 1.1; padding-right: 140px; }
-.bigtitle .slide-head .sub { margin-top: 12px; }
+/* Slide 1: the question set large (\LARGE). */
+.bigtitle .slide-head h2 { font-size: 60px; line-height: 1.1; }
+.bigtitle .slide-head .sub { margin-top: 8px; }
 
-/* Three ruled columns: a hairline above each, ragged text. */
+/* Three columns with a column head each: the head in bold sans over an accent rule, ragged text. */
 .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; margin: 40px 0 0; }
-.rcol { border-top: 1px solid var(--ink); padding-top: 16px; font-size: 32px; line-height: 1.34; }
-.rcol b { font-weight: 600; }
+.rcol { padding-top: 0; font-size: 31px; line-height: 1.34; }
+.rcol b { font-weight: 700; }
+.rcol > b:first-child { display: block; font-family: var(--font-sans); color: var(--accent); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
 
-/* The foot zone: citations, credits and scope limits in small type at the foot of the body. A small
-   line inside the body is small type in place. The link buttons sit in the footer strip. */
-.footzone { margin-top: auto; padding-top: 10px; }
-.takeaway + .footzone { margin-top: 0 !important; }
-.slide p.foot { margin: 0 0 4px; color: var(--gray-text); font-size: 21px; line-height: 1.36; }
-.slide p.smallline { margin: 2px 0 10px; color: var(--gray-text); font-size: 24px; line-height: 1.36; }
-.takeaway { font-size: 32px; }
-.takeaway b { font-weight: 600; }
-.slide .nav { position: absolute; right: 56px; bottom: 4px; margin: 0 !important; padding: 0; z-index: 3; }
+/* The link buttons sit in the footline, left of the frame number. */
+.slide .nav { position: absolute; right: 150px; bottom: 10px; margin: 0 !important; padding: 0; z-index: 3; }
 .slide-body > .nav:last-child { margin: 0 !important; }
 
 /* Slide 4: the large line between rules, the formal line, the preview, the roadmap at the foot. */
-.slide p.bigline { margin: 18px 0 30px; padding: 22px 0 24px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 39px; line-height: 1.22; text-wrap: balance; }
-.slide p.bigline b { font-weight: 600; }
-.slide p.formal { margin: 0; font-size: 33px; }
-.cols3 + .roadmap, .slide p.roadmap { margin: auto 0 0; padding-top: 14px; font-family: var(--font-sans); font-size: 25px; color: var(--muted); }
+.slide p.formal { margin: 0; font-size: 32px; }
+.cols3 + .roadmap, .slide p.roadmap { margin: auto 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-family: var(--font-sans); font-size: 24px; color: var(--muted); }
 
 /* A line ruled above with a hairline: the sale rule, the slot line, the outcome line. */
 .slide p.ruled-line { margin: 10px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
@@ -435,7 +479,6 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .slide p.caption { font-size: 27px; line-height: 1.32; margin: 0 0 10px; }
 .slide .xs, .slide ul.xs, .slide ol.xs { font-size: 25px; line-height: 1.32; }
 .slide ul.xs li, .slide ol.xs li { margin-bottom: 4px; }
-.slide ol > li::marker { font-family: var(--font-sans); font-weight: 600; color: var(--ink); }
 
 /* Slide 5: the decision interval. */
 .flow-3 { margin: 30px 0 34px; gap: 30px; }
@@ -454,7 +497,7 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .slide table.t-lit3, .slide table.t-inv, .slide table.t-cases, .slide table.t-prop2, .slide table.t-out, .slide table.t-scope { width: 100%; }
 .t-lit3 { font-size: 25px !important; }
 .t-lit3 td { padding: 12px 22px 12px 0; line-height: 1.28; }
-.t-lit3 td:first-child { width: 270px; font-weight: 500; }
+.t-lit3 td:first-child { width: 270px; font-weight: 700; }
 .t-inv { font-size: 24px !important; }
 .t-inv td { padding: 6px 20px 6px 0; line-height: 1.26; }
 .t-inv td:first-child { width: 330px; }
@@ -470,7 +513,7 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .t-out td:first-child { width: 560px; }
 .t-scope { font-size: 29px !important; }
 .t-scope td { padding: 12px 22px 12px 0; line-height: 1.3; }
-.t-scope td:first-child { width: 430px; font-weight: 500; }
+.t-scope td:first-child { width: 430px; font-weight: 700; }
 .t-controls tr[data-row] { cursor: pointer; }
 .t-controls td:not(:first-child), .t-controls thead th:not(:first-child) { text-align: center; }
 .t-access2 { width: 100%; font-size: 26px !important; }
@@ -483,12 +526,6 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .slide ol.defs li { margin-bottom: 4px; }
 .slide ol.defs .display-math { margin: 0; }
 .slide ol.defs .katex-display { margin: 0.15em 0; }
-
-/* A statement between rules: Proposition 1, the control theorem. */
-.propblock { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 10px 0 4px; margin: 6px 0 10px; }
-.slide ol.props { margin: 0; padding-left: 1.3em; font-size: 32px; }
-.slide ol.props li { margin-bottom: 8px; }
-.propblock.theorem p { margin: 0 0 8px; font-size: 30px; }
 
 /* Slide 12: the belief band, symbols only. */
 #s12 .display-math { font-size: 0.9em; margin-bottom: 4px; }
@@ -505,9 +542,9 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 
 /* Slide 15: the proof map, four ruled steps joined by arrows, each tagged with its source slide. */
 .proofmap { display: flex; align-items: flex-start; gap: 16px; margin: 30px 0 0; font-family: var(--font-serif); }
-.pbox { flex: 1; border-top: 1px solid var(--ink); padding-top: 12px; font-size: 28px; line-height: 1.32; }
-.ptag { display: block; margin-bottom: 8px; font-family: var(--font-sans); font-size: 19px; font-weight: 600; color: var(--muted); }
-.ptag b { margin-right: 18px; color: var(--ink); }
+.pbox { flex: 1; border-top: 2px solid var(--accent); padding-top: 12px; font-size: 28px; line-height: 1.32; }
+.ptag { display: block; margin-bottom: 8px; font-family: var(--font-sans); font-size: 20px; font-weight: 700; color: var(--muted); }
+.ptag b { margin-right: 18px; color: var(--accent); }
 .proofmap .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
 .proofmap .arrow::before { content: ""; display: block; width: 26px; height: 26px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 
@@ -548,9 +585,9 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .impact .lvl-line { display: block; width: 130px; height: 0; border-top: 2px solid var(--ink); }
 
 /* Slide 26: three lines, the chain between rules, the last line. */
-.slide ol.conclusion { font-size: 37px; margin: 26px 0 0; padding-left: 1.3em; }
+.slide ol.conclusion { font-size: 36px; margin: 26px 0 0; padding-left: 1.3em; }
 .slide ol.conclusion li { margin-bottom: 24px; }
-.slide p.chain { margin: 20px 0 0; padding: 18px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-family: var(--font-sans); font-size: 29px; }
+.slide p.chain { margin: 20px 0 0; padding: 18px 0; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-weight: 700; font-size: 30px; }
 .slide p.lastline { margin: auto 0 0; font-size: 31px; }
 
 /* Backups. */
@@ -559,8 +596,8 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .twotables td { padding: 5px 12px 5px 0; line-height: 1.25; }
 .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
 .panels4 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 48px; margin-top: 10px; }
-.rpanel { border-top: 1px solid var(--ink); padding-top: 12px; font-size: 27px; line-height: 1.32; }
-.rpanel b { display: block; margin-bottom: 6px; font-family: var(--font-sans); font-weight: 600; font-size: 25px; }
+.rpanel { padding-top: 0; font-size: 27px; line-height: 1.32; }
+.rpanel b { display: block; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid var(--accent); font-family: var(--font-sans); font-weight: 700; font-size: 25px; color: var(--accent); }
 .rpanel p { margin: 0 0 8px; }
 .t-payoffs, .t-panels, .t-econ { width: 100%; }
 .t-payoffs { font-size: 20px !important; }
@@ -573,7 +610,7 @@ dialog::backdrop { background: rgba(30, 37, 48, 0.45); }
 .t-econ { font-size: 19px !important; }
 .t-econ td, .t-econ th { padding: 3px 12px 3px 0; line-height: 1.22; }
 .t-econ tr.panel td { padding-top: 8px; color: var(--muted); }
-.t-econ tr.subhead th { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-weight: 600; }
+.t-econ tr.subhead th { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-weight: 700; }
 .t-econ tr.last-a td { border-bottom: 1px solid var(--ink); }
 .t-thresh { font-size: 23px !important; }
 .t-thresh td { padding: 4px 18px 4px 0; }

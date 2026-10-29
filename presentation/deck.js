@@ -32,6 +32,8 @@
   var targetOf = {};
   slides.forEach(function (s) { (s.dataset.targets || '').split(' ').forEach(function (t) { if (t) targetOf[t] = s.id; }); });
   var mainCount = slides.filter(function (s) { return s.dataset.backup !== 'true'; }).length;
+  /* The footline prints "n / total" on a main frame; a backup prints its label alone. */
+  slides.forEach(function (s) { var n = s.querySelector('.foot-num'); if (n && s.dataset.backup !== 'true') n.dataset.total = String(TOTAL); });
   var index = 0, step = 0, steps = {}, returns = [];
   var widgets = {};
 

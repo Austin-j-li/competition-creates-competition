@@ -9,10 +9,12 @@ of handout/README.md:
   as read from the files;
 - every displayed number is the display of a slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- the page ships only the locked faces (Archivo, STIX Two Text, Fira Mono, the symbol fallback) and makes
+- the page ships only the locked faces (Libertinus Serif, Libertinus Sans, Libertinus Math) and makes
   no network request;
-- neither the page nor the handout sources carry the rejected purple palette (the UCL hexes
-  #361A54, #993BFF, #BA82FF or the --ucl-* tokens): the design is the ruled document of DESIGN.md.
+- the page and the handout styles use only the journal palette of DESIGN.md (white paper, ink,
+  greys and the oxblood accent #7A1F1F, with the composed dark theme), and neither the page nor
+  the handout sources carry the rejected purple palette (the UCL hexes #361A54, #993BFF, #BA82FF
+  or the --ucl-* tokens).
 """
 from __future__ import annotations
 
@@ -73,13 +75,35 @@ print(f"PASS {n} number spans and {k} numbers in formulas print their slot regis
 
 # ------------------------------------------------------------------ faces, network
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Archivo", "STIX Two Text", "Fira Mono", "CCC Symbols"}, families
+assert families == {"Libertinus Serif", "Libertinus Sans", "Libertinus Math"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
-print("PASS only Archivo, STIX Two Text, Fira Mono and the symbol fallback; no network request")
+print("PASS only Libertinus Serif, Libertinus Sans and Libertinus Math; no network request")
+
+# ------------------------------------------------------------------ the journal palette
+# The journal look (DESIGN.md at the repository root) has one chrome colour, the oxblood accent;
+# everything else is white, ink or grey, with the composed dark theme. Every hex colour in the
+# stylesheet, the template, the renderer and the built page's styles must be in that palette, and
+# the accent token must be the oxblood of the Beamer deck.
+JOURNAL = {
+    "#ffffff", "#f2f2f2", "#1c1c1c", "#666666", "#c9c9c9", "#e6e6e6", "#7a1f1f",  # white paper
+    "#171717", "#242424", "#ebebeb", "#a3a3a3", "#474747", "#2e2e2e", "#d4908f",  # the dark theme
+    "#000000",  # print
+}
+HEX = re.compile(r"#[0-9a-f]{6}\b", re.I)
+styled = [HERE / "style.css", HERE / "template.html", HERE / "charts.js"]
+page_styles = "".join(re.findall(r"<style\b[^>]*>(.*?)</style>", page, re.S))
+stray = sorted({f"{f.name}:{m.group(0)}" for f in styled for m in HEX.finditer(f.read_text(encoding="utf-8"))
+                if m.group(0).lower() not in JOURNAL}
+               | {f"index.html:{m.group(0)}" for m in HEX.finditer(page_styles) if m.group(0).lower() not in JOURNAL})
+assert not stray, f"a colour outside the journal palette: {stray[:8]}"
+light = re.search(r":root,\s*:root\[data-theme=\"light\"\]\s*\{([^}]*)\}", (HERE / "style.css").read_text(encoding="utf-8")).group(1)
+assert re.search(r"--accent:\s*#7a1f1f\s*;", light, re.I), "the accent token is not the oxblood #7A1F1F"
+assert re.search(r"--bg:\s*#ffffff\s*;", light, re.I), "the paper is not white"
+print(f"PASS every hex colour in {len(styled)} styled sources and the page styles is in the journal palette; the accent is #7A1F1F on white")
 
 # ------------------------------------------------------------------ the rejected palette
-# The ruled document (DESIGN.md at the repository root) has no chrome colour. The purple palette
-# of the earlier "UCL family" design must not come back through any source or the built page.
+# The purple palette of the earlier "UCL family" design must not come back through any source or
+# the built page.
 PURPLE = re.compile(r"#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b", re.I)
 sources = [out / "index.html"] + sorted(HERE.glob("*.html")) + sorted(HERE.glob("*.css")) + sorted(HERE.glob("*.js")) \
     + sorted((HERE / "sections").glob("*.html"))

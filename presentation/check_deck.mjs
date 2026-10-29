@@ -210,9 +210,11 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
 } else fail('dist/index.html is missing; run python3 presentation/build.py');
 
 /* ---------------------------------------------------------------- the design system */
-/* The deck shares the ruled document of DESIGN.md (repository root) with the research brief. The
- * tokens that both stylesheets declare must agree, and the rejected purple palette of the earlier
- * "UCL family" design must not come back through any deck source or the built page. */
+/* The deck shares the journal look of DESIGN.md (repository root) with the research brief: white
+ * paper, ink, greys and one oxblood accent, with a composed dark theme. Every hex colour in the deck
+ * styles, the renderer, the engine and the built page's styles must be in that palette; the tokens
+ * that both stylesheets declare must agree; and the rejected purple palette of the earlier "UCL
+ * family" design must not come back through any deck source or the built page. */
 const PURPLE = /#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b/gi;
 const deckFiles = ['deck.css', 'charts.js', 'deck.js', 'template.html', 'content.js'].map((n) => path.join(HERE, n));
 if (fs.existsSync(path.join(dist, 'index.html'))) deckFiles.push(path.join(dist, 'index.html'));
@@ -220,6 +222,21 @@ for (const file of deckFiles) {
   const text = fs.readFileSync(file, 'utf8');
   const found = text.match(PURPLE);
   if (found) fail(`${path.relative(ROOT, file)}: the rejected purple palette appears (${[...new Set(found)].join(', ')})`);
+}
+const JOURNAL = new Set([
+  '#ffffff', '#f2f2f2', '#ebebeb', '#e9e9e9', '#1c1c1c', '#666666', '#c9c9c9', '#e6e6e6', '#7a1f1f',
+  '#171717', '#0d0d0d', '#242424', '#2a2a2a', '#a3a3a3', '#474747', '#2e2e2e', '#d4908f',
+  '#000000']);
+const HEX = /#[0-9a-f]{6}\b/gi;
+const styledFiles = ['deck.css', 'charts.js', 'deck.js', 'template.html'].map((n) => path.join(HERE, n));
+const styledTexts = styledFiles.map((f) => [path.relative(ROOT, f), fs.readFileSync(f, 'utf8')]);
+if (fs.existsSync(path.join(dist, 'index.html'))) {
+  const page = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  styledTexts.push(['presentation/dist/index.html (styles)', [...page.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n')]);
+}
+for (const [name, text] of styledTexts) {
+  const stray = [...new Set((text.match(HEX) || []).map((h) => h.toLowerCase()).filter((h) => !JOURNAL.has(h)))];
+  if (stray.length) fail(`${name}: colour outside the journal palette (${stray.join(', ')})`);
 }
 function rootTokens(css, theme) {
   const re = theme === 'dark' ? /:root\[data-theme="dark"\]\s*\{([^}]*)\}/ : /:root(?:,\s*:root\[data-theme="light"\])?\s*\{([^}]*)\}/;
@@ -247,10 +264,14 @@ for (const theme of ['light', 'dark']) {
   }
 }
 
+const lightTokens = rootTokens(deckCss, 'light') || {};
+if ((lightTokens['--accent'] || '').toLowerCase() !== '#7a1f1f') fail(`deck.css: --accent is ${lightTokens['--accent']}, not the oxblood #7a1f1f`);
+if ((lightTokens['--bg'] || '').toLowerCase() !== '#ffffff') fail(`deck.css: --bg is ${lightTokens['--bg']}, not white paper`);
+
 const mains = frames.filter((f) => !f.backup).length;
 console.log(`Compared ${frames.length} frames (${mains} main, ${frames.length - mains} backup) with slides.tex: order, titles, subtitles, targets and links; ` +
   `${numberPairs} printed registry keys found on the web frames; ${keys.size} notation symbols; ${mainMinutes} planned minutes before questions; ` +
-  `${sharedTokens} design tokens shared with handout/style.css agree; no purple palette in ${deckFiles.length} deck files; ` +
+  `${sharedTokens} design tokens shared with handout/style.css agree; only the journal palette in ${styledTexts.length} styled files and no purple palette in ${deckFiles.length} deck files; ` +
   `no example number on the ${earlyFrames} frames before slide ${FIRST_EXAMPLE}.`);
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 console.log('Deck matches slides.tex and the deck contract.');
