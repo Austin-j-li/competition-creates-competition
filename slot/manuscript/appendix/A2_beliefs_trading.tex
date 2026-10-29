@@ -13,7 +13,7 @@ The conditions (E1) to (E6) are those of Definition~\ref{def:equilibrium}.
 \item A \emph{profile} is a pair \((\sigma_H,\sigma_L)\) of order distributions, pure or mixed, with wrong-signed
 orders allowed. A \emph{candidate} is a tuple \(\mathcal E\) that satisfies (E1) to (E4) and (E6) for some
 profile. An equilibrium is a candidate that also satisfies (E5).
-\item A deviation by the investor holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed
+\item A deviation by the informed trader holds the candidate's price function \(P\) and preparation rule \(\zeta\) fixed
 and changes only the order that reaches them; a comparison across incumbents solves the equilibrium in each
 economy to compare outcomes across economies.
 \item A uniqueness proof derives its bounds for every candidate. It does not use the proposed tuple.
@@ -75,7 +75,7 @@ is \(\beta\le1/3\). Then \(\lambda/b_0\le\lambda/b=u\), and the argument of part
 \(1+u\), so \((\mu(-1),\mu(0),\mu(1))=(m(\pi),\pi,M(\pi))\).
 
 \emph{Beliefs at a price.} Fix a price \(\bar P\) in the image of \(P\), and let \(X(\bar P)=\{x:P(x)=\bar P\}\).
-By (E2), the challenger's belief \(\bar\mu(\bar P)\) has the odds
+By (E2), the rival's belief \(\bar\mu(\bar P)\) has the odds
 \[
 \frac{\bar\mu(\bar P)}{1-\bar\mu(\bar P)}=\frac{\pi}{1-\pi}\cdot
 \frac{\sum_{x\in X(\bar P)}f_H(x)}{\sum_{x\in X(\bar P)}f_L(x)} .
@@ -98,7 +98,7 @@ Let \(\beta\le1/3\), \(g_H\ge g_L\) and \(B(M(\pi))<c_H\). Fix any profile and a
 (E3). By Lemma~\ref{lem:beliefs}(b)--(c), \(\mu(x)\le M(\pi)\) at every order, and by the step on beliefs at a price,
 \(\bar\mu(\bar P)\le M(\pi)\) at every price. Since \(g_H\ge g_L\), \(B(\mu)=g_L+\mu(g_H-g_L)\) is nondecreasing in
 \(\mu\). Hence \(B(\bar\mu(\bar P))\le B(M(\pi))<c_H\) at every price, and (E3) gives \(\zeta(\bar P)=0\) with no
-tie. The conclusion holds under both challenger rules. The bound at the zero order is the only use of
+tie. The conclusion holds under both tie rules for the rival. The bound at the zero order is the only use of
 \(\beta\le1/3\) in this proof.
 \end{proof}
 
@@ -108,22 +108,21 @@ Let \(\DT>0\) and \(g_H>g_L\). Fix a tuple that satisfies (E1)--(E4) and (E6).
 \begin{enumerate}[label=(\alph*),leftmargin=2em]
 \item \emph{Floor.} \(e(x)\ge\rho\) for every order \(x\).
 \item \emph{Price.} \(P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr]\) for every order \(x\).
-\item \emph{Sufficiency.} If \(P(x)=P(x')\), then \(\mu(x)=\mu(x')\). The challenger's belief at the price \(P(x)\)
+\item \emph{Sufficiency.} If \(P(x)=P(x')\), then \(\mu(x)=\mu(x')\). The rival's belief at the price \(P(x)\)
 is \(\mu(x)\).
 \item \emph{Entry.} \(e(x)=\rho\) if \(\mu(x)<\tau\), and \(e(x)=1\) if \(\mu(x)\ge\tau\).
 \item \emph{Monotonicity.} If \(\mu(x)>\mu(x')\), then \(e(x)\ge e(x')\) and
 \(P(x)-P(x')\ge\rho\DT\,[\mu(x)-\mu(x')]>0\).
 \end{enumerate}
 \end{lemma}
-When an indifferent high-cost challenger may prepare with any probability, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both
-challenger rules.
+When an indifferent high-cost rival may prepare with any probability, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both tie rules for the rival.
 
 \begin{proof}[Proof of Lemma~\ref{lem:prices}]
 Fix a candidate, and let \(\DT>0\) and \(g_H>g_L\). The proof has a preliminary step and five parts.
 
-\emph{Step 0: the terminal payoff given the class and the order.} The challenger's choice depends only on the
+\emph{Step 0: the terminal payoff given the class and the order.} The rival's choice depends only on the
 price \(P(x)\) and its cost \(C\). The cost is independent of the class, the values, the incumbent's value and the
-slot draws. Given the class \(j\) and the order \(x\), the challenger therefore prepares with probability
+slot draws. Given the class \(j\) and the order \(x\), the rival therefore prepares with probability
 \(e(x)=\rho+(1-\rho)\zeta(P(x))\), and this event is independent of \((\theta,R)\). The order depends on the class
 and the slot draws only, so it carries no information about \((\theta,R)\) given \(j\). Bids are truthful by (E6).
 With entry, expected proceeds in class \(j\) are \(t_j\); without entry, they are \(t_0\). Hence
@@ -131,7 +130,7 @@ With entry, expected proceeds in class \(j\) are \(t_j\); without entry, they ar
 \E[V_T\mid j,X=x]=t_0+e(x)\,w_j .
 \end{equation}
 
-\emph{Part (a): the floor.} The zero-cost challenger prepares after every price (Definition~\ref{def:equilibrium}),
+\emph{Part (a): the floor.} The zero-cost rival prepares after every price (Definition~\ref{def:equilibrium}),
 and it has probability \(\rho\). Hence \(e(x)\ge\rho\) at every order.
 
 \emph{Part (b): the price.} Average \eqref{eq:a2-terminal} over the class with the weights \(\mu(x)\) and
@@ -145,9 +144,9 @@ lies between the smallest and the largest posterior of the orders with the price
 equal, so \(\bar\mu(P(x))=\mu(x)\). The price therefore reveals the posterior.
 
 \emph{Part (d): entry.} Since \(g_H>g_L\), \(B(\mu)>c_H\) exactly when \(\mu>\tau\). By part (c), the
-challenger's gross profit at \(P(x)\) is \(B(\mu(x))\). Condition (E3) gives \(e(x)=\rho\) if \(\mu(x)<\tau\) and
-\(e(x)=1\) if \(\mu(x)>\tau\). At \(\mu(x)=\tau\), \(e(x)=1\) when an indifferent high-cost challenger prepares, and \(e(x)\) can take any value in
-\([\rho,1]\) when an indifferent high-cost challenger may prepare with any probability.
+rival's gross profit at \(P(x)\) is \(B(\mu(x))\). Condition (E3) gives \(e(x)=\rho\) if \(\mu(x)<\tau\) and
+\(e(x)=1\) if \(\mu(x)>\tau\). At \(\mu(x)=\tau\), \(e(x)=1\) when an indifferent high-cost rival prepares, and \(e(x)\) can take any value in
+\([\rho,1]\) when an indifferent high-cost rival may prepare with any probability.
 
 \emph{Part (e): monotonicity.} Let \(\mu(x)>\mu(x')\). If \(\mu(x')<\tau\), then \(e(x')=\rho\le e(x)\). If
 \(\mu(x')\ge\tau\), then \(\mu(x)>\tau\) and \(e(x)=1\ge e(x')\). Part (b) gives
@@ -168,7 +167,7 @@ P(x)=P(x')\quad\Longleftrightarrow\quad
 \]
 The preparation rule \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a function of the price, and the belief at \(P(x)\)
 is \(\mu(x)\). If also \(g_H>g_L\), threshold-consistent entry is a function of the posterior when an indifferent
-high-cost challenger prepares. When an indifferent high-cost challenger may prepare with any probability,
+high-cost rival prepares. When an indifferent high-cost rival may prepare with any probability,
 orders at \(\tau\) with different entry have different prices, each revealing \(\tau\).
 
 \begin{proof}
@@ -179,8 +178,7 @@ Let \(\mu(x)>\mu(x')\). Then \(e(x)\ge e(x')\), and \eqref{eq:a2-increment} give
 price formula gives the converse. So \(\zeta\) is a function of the price, and \(e(x)\in[\rho,1]\) puts its values in
 \([0,1]\). At a price \(\bar P\), all orders with the price \(\bar P\) share one posterior, so by \eqref{eq:odds}
 they share one likelihood ratio \(f_H(x)/f_L(x)\). The ratio of sums in the step on beliefs at a price, in the
-proof of Lemma~\ref{lem:beliefs}, equals that likelihood ratio, and (E2) gives the common posterior. Under the
-first challenger rule, threshold-consistent entry is \(\rho\) below \(\tau\) and one at and above \(\tau\), a function
+proof of Lemma~\ref{lem:beliefs}, equals that likelihood ratio, and (E2) gives the common posterior. Under the first tie rule for the rival, threshold-consistent entry is \(\rho\) below \(\tau\) and one at and above \(\tau\), a function
 of the posterior. Under the second,
 the identity at equal posteriors gives distinct prices to distinct entries at \(\tau\), and every order with one of
 these prices has the posterior \(\tau\).
@@ -189,7 +187,7 @@ these prices has the posterior \(\tau\).
 % STRUCTURE: Lemma 3 <- Section 3.3
 \begin{lemma}[Informed trading]\label{lem:trading}
 Let \(\DT\ge0\). Fix a tuple that satisfies (E1), (E4) and (E6), with entry \(e(x)\in[\rho,1]\) after every order.
-Conditional on its arrival, the investor in each class earns
+Conditional on its arrival, the informed trader in each class earns
 \[
 \begin{aligned}
 U_H(1)&=e(1)\DT[1-\mu(1)]-k,&\quad U_H(0)&=0,&\quad U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
@@ -228,9 +226,9 @@ and \(U_L(1)=-e(1)\DT\mu(1)-k\) are at most \(-k<0=U_j(0)\). No class puts weigh
 
 \emph{Part (b).} By part (a), class \(H\) compares the purchase with abstention, and
 \(U_H(1)-U_H(0)=K_H-k\). Class \(H\) buys with probability one if \(K_H>k\) and abstains if \(K_H<k\). If \(K_H=k\),
-the purchase and abstention are its two maximizers: an indifferent investor may mix over them or abstains. Class \(L\) compares the sale with abstention, and \(U_L(-1)-U_L(0)=K_L-k\). Class \(L\) sells with
+the purchase and abstention are its two maximizers: an indifferent informed trader may mix over them or abstains. Class \(L\) compares the sale with abstention, and \(U_L(-1)-U_L(0)=K_L-k\). Class \(L\) sells with
 probability one if \(K_L>k\) and abstains if \(K_L<k\). If \(K_L=k\), the sale and abstention are its two maximizers:
-an indifferent investor may mix over them or abstains.
+an indifferent informed trader may mix over them or abstains.
 
 \emph{Part (c).} By Lemma~\ref{lem:beliefs}(b), \(\mu(1)\le M(\pi)\) and \(\mu(-1)\ge m(\pi)\) under every profile,
 for every \(\beta<1/2\). Also \(\rho\le e\le1\) and \(0\le\mu\le1\). Hence
@@ -241,14 +239,14 @@ for every \(\beta<1/2\). Also \(\rho\le e\le1\) and \(0\le\mu\le1\). Hence
 The upper bounds use only \(e\le1\) and \(0\le\mu\le1\).
 
 \emph{Part (d).} The return \(K_H\) depends on the tuple only through \((\mu(1),e(1))\), and \(K_L\) only through
-\((\mu(-1),e(-1))\). Entry after the zero order enters no payoff. The ex ante payoff of the investor is
+\((\mu(-1),e(-1))\). Entry after the zero order enters no payoff. The ex ante payoff of the informed trader is
 \(\lambda\,U_j(q)\), and the factor \(\lambda>0\) changes no comparison.
 \end{proof}
 
 \begin{lemma}[The auction through the spread and the threshold]\label{lem:reduction}
 Fix the model's independence and information structure, a prior \(\pi\in(0,1)\), the two-point preparation cost
-with \(\rho\in(0,1)\) and \(c_H>0\), a trading cost \(k>0\), and one pair of tie rules: an indifferent investor
-may mix over its best orders or abstains, and an indifferent high-cost challenger prepares or may prepare with
+with \(\rho\in(0,1)\) and \(c_H>0\), a trading cost \(k>0\), and one pair of tie rules: an indifferent informed trader
+may mix over its best orders or abstains, and an indifferent high-cost rival prepares or may prepare with
 any probability. At fixed presence, fix \(0<\lambda<1\); with research, presence is \(\hat\lambda\).
 Fix \(0<\beta<1/2\). Consider two cash second-price auctions with finite-mean classes satisfying the class
 ranking, continuous incumbent laws, \(\DT>0\) and \(\gamma=g_H-g_L>0\), and the same spread and preparation threshold

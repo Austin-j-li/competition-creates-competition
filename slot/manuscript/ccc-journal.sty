@@ -1,0 +1,183 @@
+% ccc-journal.sty: the look of the Beamer deck of "Competition Creates Competition".
+% The journal look (chosen by the author on 29 October 2026 from five demos): Libertinus Serif for the
+% reading text and Libertinus Math for the mathematics, Libertinus Sans for frame titles, tags, the
+% model strip and the footline, one oxblood accent for rules and tags, white paper. No bars, boxes or
+% fills. It replaced the default theme in navy (28 October 2026) and Madrid before that. The website
+% (the research brief page and the web slides under /talk/) keeps the ruled document of DESIGN.md.
+% This file holds everything slides.tex needs: packages, fonts, colours, the frame title, the title
+% page and the footline, the flat result statement, the frame skeleton (statement, intuition and foot
+% zones), the label column, the model strip, the link buttons, the flow-box styles of the diagrams and
+% the start of the backups. XeLaTeX (see latexmkrc).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ccc-journal}[2026/10/29 the journal look of the talk]
+\usetheme{default}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\RequirePackage{econ-slides-compat}
+\RequirePackage{amsmath,amssymb,mathtools}
+\RequirePackage{booktabs,array}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ---------------------------------------------------------------- Fonts
+\RequirePackage{fontspec}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\RequirePackage{unicode-math}
+\setmathfont{Libertinus Math}
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\Large}
+\setbeamerfont{framesubtitle}{family=\rmfamily,shape=\itshape,size=\small}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{author}{family=\sffamily,size=\normalsize}
+% The body of a main frame is \Body (\small), set at frame level right after \begin{frame}.
+\newcommand{\Body}{\small}
+
+% ---------------------------------------------------------------- Colours
+% Ink for text, one accent (oxblood) for titles' rules, tags and diagram marks; greys for glosses,
+% pointer lines and hairlines. The information and cost colours of the diagrams match the _talk figures.
+\definecolor{cAccent}{HTML}{7A1F1F}
+\colorlet{cNavy}{cAccent}
+\definecolor{cInk}{HTML}{1C1C1C}
+\definecolor{cLine}{HTML}{C9C9C9}
+\definecolor{cGrayText}{HTML}{666666}
+\colorlet{cMuted}{cGrayText}
+\colorlet{cPaper}{white}
+\definecolor{cInfo}{HTML}{B54B00}
+\definecolor{cCost}{HTML}{006459}
+\setbeamercolor{normal text}{fg=cInk,bg=white}
+\setbeamercolor{structure}{fg=cAccent}
+\setbeamercolor{frametitle}{fg=cInk,bg=white}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cInk}
+\setbeamercolor{author}{fg=cInk}
+\setbeamercolor{item}{fg=cAccent}
+\setbeamercolor{enumerate item}{fg=cAccent}
+\setbeamercolor{itemize/enumerate body}{fg=cInk}
+\setbeamercolor{itemize/enumerate subbody}{fg=cInk}
+\setbeamercolor{description body}{fg=cInk}
+\setbeamercolor{button}{bg=black!8,fg=cAccent}
+\setbeamercolor{button border}{fg=black!30}
+\setbeamercolor{block title}{fg=cAccent,bg=white}
+\setbeamercolor{block body}{fg=cInk,bg=white}
+% econ-slides-compat selects the structure colour at the start of the document; reading text is ink.
+\AtBeginDocument{\usebeamercolor[fg]{normal text}}
+
+% ---------------------------------------------------------------- Frame furniture
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{itemize items}{\raise0.25ex\hbox{\scriptsize$\blacksquare$}}
+\setbeamertemplate{enumerate items}{\textbf{\insertenumlabel.}}
+\setbeamersize{text margin left=0.4cm,text margin right=0.4cm}
+\setlength{\leftmargini}{1.1em}
+
+% Frame title: bold sans in ink, optional italic subtitle in grey, then a 1 pt accent rule. Every frame
+% starts its body at the same height under that rule.
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vskip0.08cm
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}%
+  \ifx\insertframesubtitle\@empty\else
+    \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi
+  \vskip0.05cm{\color{cAccent}\rule{\linewidth}{1pt}}\par\vskip-0.18cm}
+\makeatother
+
+% Title page: a short accent rule, the serif title, the author line (name, then department).
+\makeatletter
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.2\textheight
+    {\color{cAccent}\rule{0.18\linewidth}{1.4pt}}\par\vskip0.5cm
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vskip0.6cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vfil}}
+\makeatother
+
+% Footline: the short title in sans small capitals on the left; link buttons, then the frame number (a
+% backup shows its backup id) on the right. \PlaceNav stores the buttons for the page it is called on.
+\makeatletter
+\gdef\ccc@nav{}
+\gdef\ccc@bid{}
+\newcommand{\BackupId}[1]{\gdef\ccc@bid{#1}}
+\renewcommand{\PlaceNav}[1]{\gdef\ccc@nav{#1}}
+\renewcommand{\BackButton}[1]{\gdef\ccc@nav{\hyperlink{#1}{\beamerreturnbutton{Back}}}}
+\newcommand{\NavSep}{\hspace{0.35em}}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\sffamily\scriptsize\scshape\color{cGrayText}\MakeLowercase{\insertshorttitle}}\hfill
+    \ccc@nav\hspace*{0.9em}{\sffamily\scriptsize\color{cGrayText}\ifbeamer@inappendix\ccc@bid\else\insertframenumber{} / \inserttotalframenumber\fi}%
+  \end{beamercolorbox}}%
+  \vskip1pt\global\let\ccc@nav\@empty}
+\makeatother
+
+% ---------------------------------------------------------------- Rules and the result statement
+% Rules start a paragraph before they colour anything: Beamer inserts the frame title at the first
+% paragraph of a frame, and a colour group there displaces it.
+\newcommand{\NavyRule}{\par\noindent\textcolor{cAccent}{\rule{\linewidth}{0.8pt}}\par}
+\newcommand{\LightRule}{\par\noindent\textcolor{cLine}{\rule{\linewidth}{0.4pt}}\par}
+% A result statement prints as a theorem statement: an accent rule, a bold sans tag in the accent, the
+% body one size below \Body, a light closing rule. No fill, rounded corners or shadow. A plain
+% environment, not a Beamer block: a block at the top of a [t] frame adds its own vertical gap.
+%   \begin{Statement}{Proposition 2} ... \end{Statement}
+\newenvironment{Statement}[1]{\vspace{-2pt}\NavyRule\vskip1pt
+  \noindent{\sffamily\bfseries\small\color{cAccent}#1}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+% The Beamer block prints the same way, for any frame that still uses it.
+\setbeamertemplate{block begin}{%
+  \par\vskip\smallskipamount
+  {\color{cAccent}\rule{\linewidth}{0.8pt}}\par\vskip2pt
+  \noindent{\sffamily\bfseries\small\color{cAccent}\insertblocktitle}\par\vskip3pt\noindent\ignorespaces}
+\setbeamertemplate{block end}{%
+  \par\vspace{3pt}{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vskip\smallskipamount}
+\newcommand{\ResultTag}[1]{#1}
+
+% ---------------------------------------------------------------- Frame skeleton
+% The intuition or takeaway is pinned above the foot zone by \vfill, so it sits at one height on every
+% frame that has one. The foot zone holds grey pointer lines in small type. \Gloss is a grey sentence
+% beside or under a hypothesis.
+\newcommand{\Intuition}[1]{\par\vfill\LightRule\vspace{0.1em}{\small\itshape\raggedright #1\par}}
+\newcommand{\TakeawayEnd}[1]{\par\vfill\NavyRule\vspace{0.2em}\noindent{\raggedright\textbf{#1}\par}}
+\renewcommand{\Takeaway}[1]{\TakeawayEnd{#1}}
+\newcommand{\FootLine}[1]{\par\vspace{0.15em}{\color{cGrayText}\scriptsize\raggedright #1\par}}
+\newcommand{\SmallLine}[1]{\FootLine{#1}}
+\newcommand{\GrayLine}[1]{\par{\color{cGrayText}\footnotesize #1\par}}
+\newcommand{\Gloss}[1]{\par{\color{cGrayText}\footnotesize\raggedright #1\par}}
+\newcommand{\TightMath}{\setlength{\abovedisplayskip}{3pt plus 1pt}\setlength{\belowdisplayskip}{3pt plus 1pt}%
+  \setlength{\abovedisplayshortskip}{1pt}\setlength{\belowdisplayshortskip}{2pt plus 1pt}}
+% The large line of frames 4 and 19: one large bold statement between an accent rule and a light rule.
+\newcommand{\LargeLine}[1]{\par{\color{cAccent}\rule{\linewidth}{0.8pt}}\par\vspace{0.35em}%
+  \noindent{\raggedright\large\textbf{#1}\par}\vspace{0.35em}{\color{cLine}\rule{\linewidth}{0.4pt}}\par}
+% A label column: bold sans labels on the left, text on the right. \DefRow{label}{text} inside \DefList.
+\newenvironment{DefList}[1][2.9cm]{\par\begin{tabular}{@{}>{\raggedright\arraybackslash}p{#1}@{\hspace{0.45em}}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-#1-0.45em\relax}@{}}}{\end{tabular}\par}
+\newcommand{\DefRow}[2]{{\sffamily\bfseries #1} & #2\\[2pt]}
+% A column with a bold sans head above an accent rule (frame 1 and backup B6).
+\newcommand{\RuledCol}[1]{\par\noindent\textcolor{cAccent}{\rule{\linewidth}{0.6pt}}\par\vspace{0.35em}{\raggedright #1\par}}
+\newcommand{\ColHead}[1]{\noindent{\sffamily\bfseries\color{cAccent}#1}\par\vspace{0.2em}{\color{cAccent}\rule{\linewidth}{0.6pt}}\par\vspace{0.35em}}
+
+% ---------------------------------------------------------------- Model strip
+% Under the frame title of frames 5 to 9: the six parts of the model; the current ones in bold accent,
+% the others grey. \ModelStrip{3,4}.
+\makeatletter
+\newcommand{\ModelStrip}[1]{\edef\ccc@cur{,#1,}%
+  \par\vspace{-0.1em}{\sffamily\footnotesize\noindent
+  \ccc@strip{1}{Players}\ccc@stripsep\ccc@strip{2}{Timing}\ccc@stripsep\ccc@strip{3}{Information}\ccc@stripsep
+  \ccc@strip{4}{Actions}\ccc@stripsep\ccc@strip{5}{Payoffs}\ccc@stripsep\ccc@strip{6}{Equilibrium}\par}
+  \vspace{0.35em}}
+\newcommand{\ccc@strip}[2]{\edef\ccc@test{\noexpand\in@{,#1,}{\ccc@cur}}\ccc@test
+  \ifin@{\color{cAccent}\textbf{#2}}\else{\color{cGrayText}#2}\fi}
+\newcommand{\ccc@stripsep}{\hfill{\color{cLine}\textbullet}\hfill}
+\makeatother
+
+% ---------------------------------------------------------------- Diagrams
+\tikzset{
+  flowbox/.style={draw=cAccent, line width=0.5pt, rounded corners=2pt, fill=cAccent!5, align=left,
+    font={\footnotesize\hyphenpenalty=10000\relax}, inner xsep=4pt, inner ysep=4pt},
+  flowcost/.style={flowbox, draw=cCost, fill=cCost!6},
+  flowarr/.style={-{Stealth[length=5pt]}, line width=0.6pt, black!55}}
+
+% Backups: no divider frame and no frame number.
+\newcommand{\BackupStart}{\appendix}
+\endinput

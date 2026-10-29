@@ -1,606 +1,853 @@
-% slides.tex -- 45-minute talk for the order-slot manuscript
+% slides.tex -- talk for the order-slot manuscript
 % "Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders" (Austin Li).
-% The frame text is presentation/SLIDEPACK_45_VERBATIM.md in the research repository, printed
-% word for word: title, 26 main frames, backups B1 to B12 (B6, B8 and B9 run over more than one page).
-% Look: a stock classic Beamer theme (Madrid), loaded by ccc-classic.sty. Rule from 28 October 2026:
-% the Overleaf deck always uses a classic Beamer theme; the website keeps the ruled design of
-% DESIGN.md. 16:9, XeLaTeX (see latexmkrc).
+% Title, 19 main frames, and backups B1 to B16. Frames 5 to 9 keep the model strip: Players,
+% Timing, Information, Actions, Payoffs, Equilibrium. Result frames state each formal result once,
+% with a grey gloss (\Gloss) only where it adds economics, scope, or a tie rule, and one intuition
+% sentence in italics (\Intuition). Proposition 2 proof steps live in backup B2; frame 13 states
+% the proof idea in one line.
+% Locked words: incumbent / rival (frame 5 defines incumbent bidder, potential rival bidder); informed trader; weak / strong / very strong for $F_0,F_1,F_2$;
+% synergy class $j$; shareholder spread $\Delta_T$; prepares (act), entry (probability), recruits
+% (high-cost entry past the floor); target proceeds; rival gross profit $B(\mu)$;
+% news in prose, signal only for $S$ on the fixed-information frame.
+% Look: the journal look of ccc-journal.sty (chosen on 29 October 2026 from five demos): Libertinus
+% Serif text and Libertinus Math, Libertinus Sans titles and tags, one oxblood accent, white paper. The
+% website keeps the ruled design of DESIGN.md. 16:9, XeLaTeX (see latexmkrc).
+% Frame skeleton (28 October 2026, evening): the body starts under the rule of the frame title; the body
+% size of a main frame is \Body (\small), set at frame level right after \begin{frame}, never inside a
+% brace group around the first paragraph (Beamer inserts the frame title at the first paragraph, and a
+% group there displaces it). A result statement is \begin{Statement}{tag}: an accent rule, a bold tag, the
+% body, a light rule. The intuition (\Intuition) or takeaway (\TakeawayEnd) is pinned above the foot
+% zone, so it sits at one height on every frame; grey pointer lines (\FootLine) form the foot zone.
+% The body of a statement is one size down (\footnotesize) on every frame: at \Body the densest overflow.
 % Every printed value uses \reg{<key>} from numbers.tex (generated; do not edit numbers.tex).
-% \regr{<key>}{<digits>} rounds the registry display of a key to fewer decimals, for the strengths
-% that the talk prints with three decimals. No registry number appears before frame S16.
-% Navigation: main frames carry \hypertarget{main:...}; backups carry \hypertarget{app:...}
-% and a \BackButton to their origin frame. No overlays.
-% slides.tex holds only the frames; ccc-classic.sty holds the theme and the layout macros.
-\documentclass[10pt,aspectratio=169]{beamer}
-\usepackage{ccc-classic}
+% \regr{<key>}{<digits>} rounds the registry value of a key to <digits> places and keeps trailing
+% zeros (0.250); \regq does the same for a key that holds a fraction (1/4). No registry number
+% appears before frame 14.
+% This deck is a handout: one page per frame, no click builds. Each frame shows the final state of
+% its slide. The website carries the click builds, in the order of "Builds" in the slide text.
+% Navigation: main frames carry \hypertarget{main:s<n>}; backups carry \hypertarget{app:b<n>}
+% and a \BackButton to their origin frame. Frames 11 and 12 link to B2; frame 13 links to B1
+% and B2; frame 14 to B10; frame 15 to B11; frame 16 to B3 and B12; frame 17 to B4; frame 18 to B13.
+% slides.tex holds the frames and the drawing macros of this deck; ccc-journal.sty holds the look
+% and the layout macros.
+\documentclass[10pt,aspectratio=169,handout]{beamer}
+\usepackage{ccc-journal}
+\usepackage{siunitx}
 \graphicspath{{figures/}}
 \input{numbers}
-\newcommand{\regr}[2]{\fpeval{round(\csname reg@#1\endcsname,#2)}}
-% one panel of the three-panel coexistence figure; the trim is left, bottom, right, top in bp
-\newcommand{\CoexPanel}[2]{\includegraphics[clip,trim=#1,#2]{coexistence_talk.pdf}}
-% panel (b) alone: the trim leaves the edge of the label of panel (c), which a paper-colour patch covers
-\newcommand{\CoexRegion}[1]{\begin{tikzpicture}\node[inner sep=0pt,anchor=north west](f){\CoexPanel{224 22 310 0}{#1}};
-  \fill[cPaper]([xshift=-5pt]f.north east) rectangle ([xshift=2pt,yshift=-42pt]f.north east);\end{tikzpicture}}
+\newcommand{\regr}[2]{\ifcsname reg@#1\endcsname\num[round-mode=places,round-precision=#2]{\csname reg@#1\endcsname}\else\reg{#1}\fi}
+\newcommand{\regq}[2]{\ifcsname reg@#1\endcsname\pgfmathparse{\csname reg@#1\endcsname}\num[round-mode=places,round-precision=#2]{\pgfmathresult}\else\reg{#1}\fi}
+
+% The number line of frame 8, at one draw R with p < R < theta.
+% \SplitLine[<earlier x>]{<x of R>}{<label of R>}; x in cm on a 13 cm line.
+% With the optional argument, a faded tick marks the earlier position of R and an arrow shows the move.
+\newcommand{\SplitLine}[3][]{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[cMuted,line width=0.6pt] (0,0) -- (13,0);
+  \if\relax\detokenize{#1}\relax\else
+    \draw[cLine,line width=1.2pt] (#1,-0.18) -- (#1,0.18);
+    \draw[flowarr] (#1+0.1,-0.3) -- (#2-0.1,-0.3);
+  \fi
+  \draw[cInk,line width=1.2pt] (0.3,-0.18) -- (0.3,0.18) node[pos=0,below=3pt] {$0$};
+  \draw[cInk,line width=1.2pt] (2.2,-0.18) -- (2.2,0.18);
+  \draw[cInk,line width=1.2pt] (11.5,-0.18) -- (11.5,0.18);
+  \draw[cAccent,line width=1.6pt] (#2,-0.18) -- (#2,0.18);
+  \node[below=10pt,anchor=north] at (2.2,0) {reserve $p$};
+  \node[below=10pt,anchor=north] at (11.5,0) {rival's value $\theta$};
+  \node[below=24pt,anchor=north,text=cAccent] at (#2,0) {#3};
+  \draw[cInfo,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (0.35,0.3) -- (#2-0.05,0.3)
+    node[midway,above=7pt,text=cInfo] {target proceeds};
+  \draw[cCost,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (#2+0.05,0.3) -- (11.45,0.3)
+    node[midway,above=7pt,text=cCost] {gross auction profit};
+  \node[anchor=west,font=\scriptsize,text=cGrayText] at (11.9,0.42) {one draw $R$};
+\end{tikzpicture}}
+
+% The number line of frame 10: the synergy value gap between the poor-synergy and the good-synergy
+% value, split at the incumbent's value. \GapLine{<earlier x>}{<x>}; x in cm on a 13 cm line.
+% The part below the incumbent's value goes to shareholders, the part above it to the rival.
+\newcommand{\GapLine}[2]{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[cMuted,line width=0.6pt] (0,0) -- (13,0);
+  \draw[cLine,line width=1.2pt] (#1,-0.18) -- (#1,0.18);
+  \draw[flowarr] (#1+0.1,-0.3) -- (#2-0.1,-0.3);
+  \draw[cInk,line width=1.2pt] (1.5,-0.18) -- (1.5,0.18);
+  \draw[cInk,line width=1.2pt] (11.5,-0.18) -- (11.5,0.18);
+  \draw[cAccent,line width=1.6pt] (#2,-0.18) -- (#2,0.18);
+  \node[below=10pt,anchor=north] at (1.5,0) {poor-synergy value};
+  \node[below=10pt,anchor=north] at (11.5,0) {good-synergy value};
+  \node[below=24pt,anchor=north,text=cAccent] at (#2,0) {incumbent's value moves right};
+  \draw[cInfo,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (1.55,0.3) -- (#2-0.05,0.3)
+    node[midway,above=7pt,text=cInfo] {shareholders' part};
+  \draw[cCost,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (#2+0.05,0.3) -- (11.45,0.3)
+    node[midway,above=7pt,text=cCost] {rival's part};
+\end{tikzpicture}}
+
+% A cropped figure with paper-colour patches over its old labels and new labels in the talk's words.
+% \FigCrop{<file>}{<trim l>}{<trim b>}{<trim r>}{<trim t>}{<full width>}{<full height>}{<width>}{<patches>}
+% Trims and sizes are in bp. \FigCover and \FigText take the figure's own coordinates in bp,
+% measured from its top-left corner (as pdftotext -bbox reports them).
+\definecolor{figBg}{RGB}{251,252,252}
+\definecolor{figBand}{RGB}{235,237,238}
+\newcommand{\FigCrop}[9]{\begin{tikzpicture}
+  \node[inner sep=0pt,anchor=south west] (f) at (0,0) {\includegraphics[clip,trim=#2 #3 #4 #5,width=#8]{#1}};
+  \begin{scope}[x={(f.south east)},y={(f.north west)}]
+  \pgfmathsetmacro\fl{#2}\pgfmathsetmacro\fcw{#6-#2-#4}\pgfmathsetmacro\fyb{#7-#3}\pgfmathsetmacro\fch{#7-#3-#5}
+  #9
+  \end{scope}\end{tikzpicture}}
+\newcommand{\FigCover}[5][figBg]{\fill[#1] ({(#2-\fl)/\fcw},{(\fyb-#5)/\fch}) rectangle ({(#4-\fl)/\fcw},{(\fyb-#3)/\fch});}
+\newcommand{\FigText}[4][]{\node[inner sep=0pt,font=\scriptsize\sffamily,text=black!80,#1] at ({(#2-\fl)/\fcw},{(\fyb-#3)/\fch}) {#4};}
+
+% The figures with their new labels.
+% beliefs_talk.pdf, panel (a): top belief, band floor, and the strength axis in the locked names.
+\newcommand{\BeliefsFig}[1]{\FigCrop{beliefs_talk.pdf}{0}{0}{210}{0}{532.8}{223.2}{#1}{%
+  \FigCover{5}{13}{27}{31}
+  \FigCover{50}{41}{196}{59.6}\FigText[anchor=west,text=cInfo]{53}{51}{top belief $M(\pi)$}
+  \FigCover[figBand]{50}{139.5}{211}{157}\FigText[anchor=west,text=cInfo]{53}{148.5}{band floor $m(\pi)$}
+  \FigCover{110}{189}{230}{209}\FigText{170}{198.5}{incumbent strength, $r$}}}
+% research_talk.pdf, both panels: axis labels in the slide text's words; the strength labels are \tiny,
+% so that the two panels' labels stay apart at the widths of frame 14 and B12.
+\newcommand{\ResearchFig}[1]{\FigCrop{research_talk.pdf}{0}{0}{0}{0}{532.8}{223.2}{#1}{%
+  \FigCover{1}{56}{22}{166}\FigText[rotate=90]{12}{111}{research $\lambda$}
+  \FigCover{273}{84}{291}{133}\FigText[rotate=90]{282}{108}{total entry $\mathsf{E}$}
+  \FigCover{90}{193.5}{208}{213}\FigText[font=\tiny\sffamily]{149}{203}{strength, weak to very strong}
+  \FigCover{361}{193.5}{479}{213}\FigText[font=\tiny\sffamily]{420}{203}{strength, weak to very strong}}}
+% beliefs_talk.pdf, panel (b) alone: the close-up between the strong and the very strong incumbent.
+% The printed values are covered and set again through the registry.
+\definecolor{figShade}{RGB}{245,236,229}
+\newcommand{\BeliefsFigB}[1]{\FigCrop{beliefs_talk.pdf}{324}{0}{0}{0}{532.8}{223.2}{#1}{%
+  \FigCover{326}{13}{347}{30}\FigCover{384}{33}{466}{50}\FigCover[figShade]{384}{54.5}{466}{70}%
+  \FigText[anchor=west,font=\tiny\sffamily]{386}{41}{$\tau(r_2)\approx\reg{tau_r2}$}%
+  \FigText[anchor=west,font=\tiny\sffamily]{386}{62}{$M(1/2)\approx\reg{M_half_B}$}%
+  \FigCover[figShade]{449}{122}{522}{152.5}\FigCover{449}{156}{522}{173}%
+  \FigText[anchor=east,font=\tiny\sffamily]{520}{130}{band for $M(1/2)$}%
+  \FigText[anchor=east,font=\tiny\sffamily]{520}{144}{$\tau(r_1)=\reg{tau_r1}$}%
+  \FigCover{390}{190}{516}{210}\FigText{450}{200}{incumbent strength, $r$}}}
+% coexistence_talk.pdf: panel (b) alone; panels (a) and (c). The legend is trimmed off.
+\newcommand{\CoexRegion}[1]{\FigCrop{coexistence_talk.pdf}{224}{22}{310}{0}{734.4}{237.6}{#1}{%
+  \FigCover{419}{25}{425}{43}
+  \FigCover{281}{174.5}{412}{194.5}\FigText{346}{184.5}{shareholder spread, $\Delta_T$}}}
+\newcommand{\CoexPanelA}[1]{\FigCrop{coexistence_talk.pdf}{0}{22}{510}{0}{734.4}{237.6}{#1}{%
+  \FigCover{75}{175}{196}{195}\FigText{134}{184.5}{incumbent strength, $r$}}}
+\newcommand{\CoexPanelC}[1]{\FigCrop{coexistence_talk.pdf}{424}{22}{0}{0}{734.4}{237.6}{#1}{%
+  \FigCover{539}{175}{661}{195}\FigText{600}{184.5}{incumbent strength, $r$}}}
 
 \title[Competition Creates Competition]{Competition Creates Competition:\texorpdfstring{\\[2pt]}{ }%
 Stock Prices and the Discovery of Takeover Bidders}
-\author[Austin Li]{Austin Li · Department of Economics, University College London}
+% The author line of the title page: the name, then the department on its own line.
+\author[Austin Li]{Austin Li\texorpdfstring{\\[3pt]{\normalsize Department of Economics, University College London}}{, Department of Economics, University College London}}
 \date{}
 
 \begin{document}
 
+% ---------------------------------------------------------------- Title
 \begin{frame}[plain,noframenumbering,label=S0]
 \titlepage
 \end{frame}
 
-% ======================================================================
-% Part I. Why the question matters
-% ======================================================================
-
-% ---------------------------------------------------------------- Slide 1
+% ---------------------------------------------------------------- Frame 1
+% Three columns across the 16:9 width, each with its head above a rule; the citation in the foot zone.
 {\setbeamerfont{frametitle}{size=\LARGE}
-\begin{frame}[t,label=S1]{Does a stronger bidder in a merger auction always deter others from entering?}
+\begin{frame}[t,label=S1]{Does a stronger incumbent always keep the rival out?}
 \framesubtitle{Why the answer matters}
+\hypertarget{main:s1}{}
 \vspace{2.2em}
 \begin{columns}[T,totalwidth=\linewidth]
-\column{0.315\linewidth}
-\RuledCol{\textbf{Sellers must find the second buyer.} A public sale tries to discover one more buyer. Does a visible strong buyer help the search, or end the search?}
-\column{0.315\linewidth}
-\RuledCol{\textbf{Buyers pay before they know.} Diligence costs money before any offer exists. Does a strong rival kill the case for diligence, or make the market signal worth more?}
-\column{0.315\linewidth}
-\RuledCol{\textbf{Prices move before bids move.} Early price action may cause the second bid. The price may not only forecast the bid.}
+\column{0.31\linewidth}
+\ColHead{Seller}A public sale must find a rival bidder. A stronger incumbent can help find one, or end the search.
+\column{0.31\linewidth}
+\ColHead{Rival}Preparation costs money before a bid is possible. The stock price can show whether the cost may pay.
+\column{0.31\linewidth}
+\ColHead{Price}Stock trade comes before preparation. A price move can cause entry, not only forecast it.
 \end{columns}
 \vfill
-\FootLine{One more bidder carries first-order value in Bulow and Klemperer (1996). This paper holds the sale rule fixed and studies entry into the sale.}
+\FootLine{One extra bidder can change sale proceeds at first order (Bulow and Klemperer, 1996). Here the sale rule stays fixed. The object is entry.}
 \end{frame}}
 
-% ---------------------------------------------------------------- Slide 2
-\begin{frame}[t,label=S2]{The received answer: a stronger rival pays less for your diligence}
-\framesubtitle{Deterrence at fixed information}
+% ---------------------------------------------------------------- Frame 2
+\begin{frame}[t,label=S2]{The received answer: strength cannot raise entry}
+\framesubtitle{When what the rival can learn stays fixed}
 \hypertarget{main:s2}{}
-\vspace{1.4em}
-\begin{itemize}\setlength{\itemsep}{10pt}
-\item A buyer pays to check the books before it can bid.
-\item A stronger first buyer raises the price a winning second buyer must pay.
-\item The same diligence then earns less. Fewer buyers prepare.
+\vspace{0.6em}
+\begin{itemize}\setlength{\itemsep}{8pt}
+\item The rival pays to learn its value before it can bid.
+\item A stronger incumbent weakly cuts the rival's expected auction profit at a fixed belief.
+\item Some preparation costs then fail to pay. Entry cannot rise.
+\item Fishman (1988): a chosen preemptive bid. Here: a public strength shift. The value itself stays private.
 \end{itemize}
-\TakeawayEnd{The logic holds when what the buyer knows stays fixed.}
+\TakeawayEnd{This holds when pre-preparation information stays fixed.}
 \FootLine{Fishman (1988); Hirshleifer and Png (1989). Auction entry: Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994); Gentry and Stroup (2019).}
-\FootLine{In Fishman, the first buyer chooses a preemptive bid. Below, strength is a public type, not a chosen bid.}
-\PlaceNav{\hyperlink{app:b1}{\beamergotobutton{Backup B1}}}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 3
-\begin{frame}[t,label=S3]{Three literatures each hold one piece fixed}
-\framesubtitle{What each strand keeps, and what each strand misses}
-\vspace{1.0em}
-{\small\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.75cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{3.15cm}>{\raggedright\arraybackslash}p{3.4cm}@{}}
-\toprule
-Strand & Closest work & Keeps & Misses here\\
-\midrule
-Costly entry into auctions & Fishman (1988); Roberts and Sweeting (2013) & Costly preparation and selective entry & A market before preparation\\
-Prices guide real decisions & \textbf{Dow, Goldstein and Guembel (2017)}; Edmans, Goldstein and Jiang (2015) & A price that changes a real choice & Entry under a sale rule that splits surplus\\
-Informed trade around takeovers & Kyle and Vila (1991); Luo (2005) & Informed orders and price learning & An outside trader before entry, with no stake\\
-\bottomrule
-\end{tabular}}
-\TakeawayEnd{Each strand freezes the object that moves in this paper.}
-\PlaceNav{\hyperlink{app:b1}{\beamergotobutton{Backup B1}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 4
-\begin{frame}[t,label=S4]{This paper: strength can pay for the signal that brings the rival in}
-\framesubtitle{Contribution and roadmap}
-\vspace{1.0em}
-{\color{cInk}\rule{\linewidth}{2pt}}\par\vspace{0.55em}
-{\sffamily\large\bfseries\raggedright A stronger first buyer taxes the second buyer's profit and pays for information about that buyer. Entry rises when the information payment beats the tax.\par}
-\vspace{0.55em}{\color{cLine}\rule{\linewidth}{0.4pt}}\par
-\vspace{1.1em}
-{\raggedright Keep deterrence at each belief. Add a market before preparation. The outside trader holds the claim that gains what the entrant loses.\par}
-\vspace{1.1em}
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.315\linewidth}
-\RuledCol{\textbf{Weak rival:} flat price, entry at its floor.}
-\column{0.315\linewidth}
-\RuledCol{\textbf{Strong rival:} live price, entry above its floor.}
-\column{0.315\linewidth}
-\RuledCol{\textbf{Very strong rival:} live price, entry back at its floor.}
-\end{columns}
-\vfill
-{\sffamily\small\color{cMuted}\raggedright Model $\rightarrow$ Mechanism $\rightarrow$ Main result and control $\rightarrow$ Path and research $\rightarrow$ Scope and tests\par}
-\vspace{0.2em}
-\end{frame}
-
-% ======================================================================
-% Part II. Model
-% ======================================================================
-
-% ---------------------------------------------------------------- Slide 5
-\begin{frame}[t,label=S5]{One buyer is ready. One buyer still decides.}
-\framesubtitle{The decision interval · Paper §2.1}
-\vspace{1.6em}
-\begin{center}
-\begin{tikzpicture}[box/.style={flowbox,text width=3.95cm,minimum height=0.95cm,font={\small\sffamily\hyphenpenalty=10000\relax}}]
-  \node[box] (a) {Sale is public; one buyer is ready};
-  \node[box, right=0.8cm of a] (b) {Target stock still trades};
-  \node[box, flowcost, text width=3.95cm, minimum height=0.95cm, font={\small\sffamily\hyphenpenalty=10000\relax}, right=0.8cm of b] (c)
-    {Second buyer decides — pay for diligence, or stay out};
-  \draw[flowarr] (a) -- (b);
-  \draw[flowarr] (b) -- (c);
-\end{tikzpicture}
-\end{center}
-\vspace{1.4em}
-{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.5em}
-{\raggedright Cash second-price auction with reserve $p>0$, committed before trade. Highest admissible bid wins and pays $\max\{p,\ \text{highest rival bid}\}$. No sale without an admissible bid.\par}
-\vfill
-\FootLine{Disclosure records show this window: Imprivata (2016); Boone and Mulherin (2007); Gentry and Stroup (2019).}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 6
-\begin{frame}[t,label=S6]{Who draws what, and who sees it}
-\framesubtitle{Values, classes, costs · Paper §2.2}
-\hypertarget{main:s6}{}
-\vspace{-0.4em}
-{\small\renewcommand{\arraystretch}{1.05}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{5.6cm}>{\raggedright\arraybackslash}p{5.4cm}@{}}
-\toprule
-Object & Law & Who learns it, and when\\
-\midrule
-First buyer value $R$ & Continuous $F$ on $[0,\bar r]$ & First buyer before bids; $F$ itself is public\\
-Fit class $j\in\{H,L\}$ & Prior $\pi=\Pr(H)\in(0,1)$ & Specialist investor before trade; no one else\\
-Second buyer value $\theta$ & $G_j$ given class, finite mean, atoms allowed & Second buyer only after it pays $C$\\
-Diligence bill $C$ & $0$ with chance $\rho\in(0,1)$; else $c_H>0$ & Second buyer after the price\\
-\bottomrule
-\end{tabular}}
-\vspace{0.2em}
-{\footnotesize
-\begin{itemize}\setlength{\itemsep}{0pt}
-\item Class ranking: $G_H(y)\le G_L(y)$ for every $y$, and $G_H(p^-)=G_L(p^-)=0$. In words: $H$ first-order dominates $L$, and every value clears the reserve.
-\item The pair $(j,\theta)$, the value $R$, the bill $C$, and the slot draws are mutually independent. The bill carries no news about fit.
-\item A strength path $\{F_r\}$ orders distributions by first-order dominance. Higher $r$ means a stronger first buyer, with all else fixed.
-\end{itemize}}
-\SmallLine{Write $D(y)=G_L(y)-G_H(y)$ for the class gap at value $y$.}
-\FootLine{Strength as a public distribution follows type-based valuation differences in Gorbenko and Malenko (2014). Class-indexed values with costly revelation follow selective entry in Roberts and Sweeting (2013).}
-\PlaceNav{\hyperlink{app:b2}{\beamergotobutton{Backup B2}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 7
-\begin{frame}[t,label=S7]{One trade happens before the diligence decision}
-\framesubtitle{The order slot · Paper §2.3}
-\hypertarget{main:s7}{}
-\vspace{0.4em}
-\begin{center}
-\begin{tikzpicture}[box/.style={flowbox,font={\footnotesize\hyphenpenalty=10000\relax}}]
-  \node[box, text width=4.0cm] (inv) {\textbf{\sffamily Specialist investor} — fills the slot with probability $\lambda$; sees class $j$; picks $q\in\{-1,0,1\}$; a nonzero order costs $k>0$};
-  \node[box, text width=4.0cm, below=0.35cm of inv] (liq) {\textbf{\sffamily Liquidity trader} — fills the slot with probability $1-\lambda$; sells, does nothing, or buys with chances $\beta,\ 1-2\beta,\ \beta$, where $0<\beta\le 1/3$};
-  \node[box, text width=2.75cm, anchor=north west] (slot) at ([xshift=0.55cm]inv.north east) {\textbf{\sffamily Order slot} — one public order $X\in\{-1,0,1\}$; no observer sees who filled it};
-  \node[box, text width=2.95cm, anchor=north west] (mm) at ([xshift=0.55cm]slot.north east) {\textbf{\sffamily Market makers} — see $X$ only; set $P=\mathbb{E}[V_T\mid X]$, where $V_T$ is the sale proceeds per share};
-  \node[box, flowcost, font={\footnotesize\hyphenpenalty=10000\relax}, text width=2.6cm, anchor=north west] (sb) at ([xshift=0.55cm]mm.north east) {\textbf{\sffamily Second buyer} — sees the price $P$ and bill $C$; sees neither $X$ nor $j$};
-  \draw[flowarr] ([yshift=-0.55cm]inv.north east) -- ([yshift=-0.55cm]slot.north west);
-  \draw[flowarr] (liq.east) -| ([xshift=-0.28cm,yshift=-0.55cm]slot.north west);
-  \draw[flowarr] ([yshift=-0.55cm]slot.north east) -- ([yshift=-0.55cm]mm.north west);
-  \draw[flowarr] ([yshift=-0.55cm]mm.north east) -- ([yshift=-0.55cm]sb.north west);
-\end{tikzpicture}
-\end{center}
-\vspace{0.4em}
-{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.4em}
-{\small\raggedright A liquidity order in one direction arrives with probability $b=(1-\lambda)\beta$. Set $u=\lambda/b$. The number $1+u$ caps the likelihood ratio of one order.\par}
-\vfill
-\FootLine{Alternative arrival: Dow and Gorton (1997). Unit orders and unit cost: Edmans, Goldstein and Jiang (2015). Zero-profit pricing: Glosten and Milgrom (1985); Kyle (1985).}
-\PlaceNav{\hyperlink{app:b11}{\beamergotobutton{Backup B11}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 8
-\begin{frame}[t,label=S8]{The auction splits each value between shareholders and the buyer}
-\framesubtitle{Payoff objects · Paper §2.4 and §3.1}
-\vspace{0.6em}
-{\raggedright Take a prepared second buyer with value $\theta\ge p$. It pays $\max\{p,R\}$ when it wins. The first buyer pays $\theta$ when it wins.\par}
-\[
-t(\theta)=\max\{p,\min(R,\theta)\},\qquad g(\theta)=(\theta-\max\{p,R\})_+,\qquad t(\theta)+g(\theta)=\theta
-\]
-\begin{itemize}\setlength{\itemsep}{3pt}
-\item Class means: $t_j=\mathbb{E}_j[t(\theta)]$ and $g_j=\mathbb{E}_j[g(\theta)]$ for $j\in\{H,L\}$. Without entry, $t_0=p[1-F(p)]$.
-\item Target-payoff spread: $\Delta_T=t_H-t_L$. Read it as: how much more shareholders get with a good fit than with a poor fit.
-\item At belief $\mu=\Pr(H)$, expected buyer profit is $B(\mu)=g_L+\mu(g_H-g_L)$.
-\item Win chance: $W_j(F)=\mathbb{E}_j[F(\theta)\mathbf 1\{\theta\ge p\}]$. Class $H$ outbids $F$ when $W_H(F)=1$.
-\end{itemize}
-\TakeawayEnd{The traded claim and the entrant claim sum to the same value. Strength moves the split.}
-\vspace{0.2em}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 9
-\begin{frame}[t,label=S9]{Equilibrium: orders, prices, beliefs, preparation, bids}
-\framesubtitle{Definition · Paper §2.4}
-\hypertarget{main:s9}{}
-{\small
-\begin{enumerate}\setlength{\itemsep}{0pt}
-\item \textbf{Orders.} One distribution over $\{-1,0,1\}$ for each class. Mixing and wrong-signed orders are allowed.
-\item \textbf{Beliefs and prices.} $\mu(x)=\Pr(H\mid X=x)$ by Bayes' rule. Every order can come from each class, so no off-path belief arises. Prices are competitive:
-\vspace{-0.7em}\[P(x)=t_0+e(x)\,\bigl[t_L-t_0+\Delta_T\,\mu(x)\bigr]\]\vspace{-1.25em}
-\item \textbf{Preparation.} $e(x)$ is the chance the second buyer prepares after price $P(x)$. A zero bill always prepares. A bill $c_H$ prepares exactly at beliefs with $B(\mu)\ge c_H$.
-\item \textbf{Investor choice.} Class $j$ picks $q$ to maximise $U_j(q)=q\,\bigl[t_0+e(q)(t_j-t_0)-P(q)\bigr]-k|q|$ at the candidate prices and entry rule.
-\item \textbf{Bids.} Each prepared bidder with value at or above $p$ bids its value.
-\end{enumerate}}
-\SmallLine{Default tie rules: an indifferent investor may mix over best orders; an indifferent buyer at bill $c_H$ prepares. Proposition 2 holds under all four tie-rule pairs.}
-\vspace{0.1em}
-{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.15em}
-{\footnotesize\raggedright Entry $\mathsf{E}$ = chance the second buyer prepares. Ownership $\mathsf{O}_H$ = chance a good-fit second buyer wins. Takeover share = chance the winner is a good fit, given the second buyer wins.\par}
-\vspace{0.15em}
-{\footnotesize\raggedright Strengthen $F$. Solve the equilibrium again in full. Nothing carries across economies except the primitives.\par}
-\vfill
-\PlaceNav{\hyperlink{app:b3}{\beamergotobutton{Backup B3}}}
-\end{frame}
-
-% ======================================================================
-% Part III. Mechanism
-% ======================================================================
-
-% ---------------------------------------------------------------- Slide 10
-\begin{frame}[t,label=S10]{Win or lose, the second buyer sets what shareholders get}
-\framesubtitle{Payment cases at each $R$ · Paper §3.1 · General}
-\vspace{1.0em}
-{\small\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{3.1cm}@{}}
-\toprule
-First buyer value $R$ & Good fit $H$ & Poor fit $L$ & Gap in target proceeds\\
-\midrule
-$R$ low, at or below poor-fit values & Wins, pays $\max\{p,R\}$ & Wins, pays $\max\{p,R\}$ & None\\
-$R$ high, above poor-fit values & May win, pays $\max\{p,R\}$ & Loses; first buyer pays the poor-fit bid & \textbf{Fit decides proceeds}\\
-\bottomrule
-\end{tabular}}\par
-\vspace{1.2em}
-{\raggedright Slice the fit gap at each value level $y>p$. The slice reaches shareholders when the first buyer outbids the second buyer at that level and pays its bid. The slice stays with the second buyer in the other case.\par}
-\TakeawayEnd{A stronger first buyer outbids at more levels. More slices reach shareholders.}
-\vspace{0.2em}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 11
-\begin{frame}[t,label=S11]{Strength takes from the buyer and gives to the signal}
-\framesubtitle{Proposition 1 · Paper §3.1 · General result}
-\hypertarget{main:s11}{}
-\vspace{0.9em}
-{\color{cInk}\rule{\linewidth}{0.4pt}}\par\vspace{0.35em}
-\begin{enumerate}\setlength{\itemsep}{3pt}
-\item At each fixed belief, a stronger first buyer weakly lowers expected buyer profit $B(\mu)$.
-\item Under the class ranking, a stronger first buyer weakly raises the shareholder spread $\Delta_T$.
-\end{enumerate}
-\vspace{0.1em}{\color{cInk}\rule{\linewidth}{0.4pt}}\par
-\[
-\Delta_T(F)+g_H(F)-g_L(F)=\mathbb{E}_H[\max\{\theta,p\}]-\mathbb{E}_L[\max\{\theta,p\}]
-\]
-{\raggedright The right side does not depend on $F$. Strength leaves the fit gap the same size. Strength moves the gap between pockets.\par}
-\TakeawayEnd{Deterrence and informativeness come from the same shift. One force creates the other.}
-\FootLine{Strict signs hold under the overlap conditions in Proposition 1. Detail: Backup B5.}
-\PlaceNav{\hyperlink{app:b5}{\beamergotobutton{Backup B5}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 12
-\begin{frame}[t,label=S12]{One order can point. It cannot prove.}
-\framesubtitle{Belief band and threshold · Paper §3.2 and §3.4 · General}
-\vspace{-1.1em}
-% split across two lines: the formula, then its scope
-\begin{gather*}
-m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}\ \le\ \mu\ \le\ \frac{\pi(1+u)}{\pi(1+u)+1-\pi}=M(\pi)\\
-\text{after every order, under every strategy}
-\end{gather*}
-\vspace{-1.5em}
-\begin{center}
-\begin{tikzpicture}[x=9cm,y=0.8cm]
-  \fill[cLine!55] (0.28,-0.11) rectangle (0.72,0.11);
-  \draw[cMuted,line width=0.5pt] (0,0) -- (1,0);
-  \foreach \x/\l in {0.28/{m(\pi)},0.5/{\pi},0.72/{M(\pi)}} {\draw[cInk,line width=0.8pt] (\x,-0.17) -- (\x,0.17); \node[below=1pt,font=\small] at (\x,-0.17) {$\l$};}
-\end{tikzpicture}
-\end{center}
-\vspace{-0.9em}
-{\small
-\begin{itemize}\setlength{\itemsep}{0pt}
-\item Price reads belief off. With entry at least $\rho$ and $\Delta_T>0$, the price rises strictly in $\mu$. The second buyer recovers $\mu$ from $P$.
-\item Threshold $\tau=(c_H-g_L)/(g_H-g_L)$, when $g_H>g_L$. A bill $c_H$ pays exactly when $\mu\ge\tau$.
-\item Exclusion bound: once $B(M(\pi))<c_H$, no order recruits a buyer at bill $c_H$, in equilibrium or out of equilibrium.
-\item Two-numbers rule: when $\Delta_T>0$ and $g_H>g_L$, orders, beliefs, and preparation depend on the auction only through $\Delta_T$ and $\tau$.
-\end{itemize}}
-\TakeawayEnd{The best signal in this market stops at $M(\pi)$. Recruitment lives or dies at that cap.}
-\FootLine{The two-numbers rule holds with all other primitives and tie rules fixed. Price levels also need $t_0$ and $t_L$. Ownership also needs $W_H$.}
-\vspace{0.2em}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 13
-\begin{frame}[t,label=S13]{A correct order keeps a slice the price cannot take}
-\framesubtitle{Trading bounds · Paper §3.3 · General}
-\vspace{-0.4em}
-\[
-K_H=e(1)\,\Delta_T\,[1-\mu(1)],\qquad K_L=e(-1)\,\Delta_T\,\mu(-1)
-\]
-\vspace{-1.0em}
-\[
-\rho\,\kappa(\pi)\,\Delta_T\ \le\ K_H,\,K_L\ \le\ \Delta_T,\qquad \kappa(\pi)=\min\{m(\pi),\,1-M(\pi)\}
-\]
-\vspace{-0.8em}
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.56\linewidth}
-{\small
-\begin{itemize}\setlength{\itemsep}{1.5pt}
-\item Read the gain as: entry chance $\times$ shareholder spread $\times$ doubt the price leaves behind.
-\item Rational pricing charges for expected entry. The band leaves residual doubt. The zero-bill floor $\rho$ turns doubt into a floor on gain.
-\item A wrong-signed order never pays. Each class trades exactly when its correct-order gain beats $k$.
-\end{itemize}}
-\column{0.42\linewidth}
-\begin{center}
-% the shape of the gain bounds against strength on a log scale; symbols only, no ticks
-\begin{tikzpicture}
-\begin{axis}[width=5.9cm, height=3.6cm, ymode=log, xmin=1, xmax=3.2, ymin=0.03, ymax=70,
-  axis lines=left, ticks=none, xlabel={$r$}, xlabel style={at={(1,0)},anchor=north east,font=\small},
-  axis line style={cMuted,line width=0.5pt}, clip=false, every axis plot/.append style={line width=1.1pt}]
-  \addplot[cInfo, domain=1.03:3.2, samples=80] {25*(x-1)^2/x} node[pos=1, anchor=west, font=\footnotesize] {$\Delta_T$};
-  \addplot[cInfo, dashed, domain=1.12:3.2, samples=80] {0.06724*25*(x-1)^2/x} node[pos=1, anchor=west, font=\footnotesize] {$\rho\kappa(\pi)\Delta_T$};
-  \addplot[cCost, domain=1:3.2, samples=2] {1} node[pos=0, anchor=south west, font=\footnotesize] {$k$};
-\end{axis}
-\end{tikzpicture}
-\end{center}
-\end{columns}
-\TakeawayEnd{Compare each bound with $k$. Ceiling below $k$: no trade. Floor above $k$: full orders.}
-\FootLine{Both bounds hold under every candidate profile, pure or mixed.}
-\vspace{0.2em}
-\end{frame}
-
-% ======================================================================
-% Part IV. Main result
-% ======================================================================
-
-% ---------------------------------------------------------------- Slide 14
-\begin{frame}[t,label=S14]{A stronger first buyer can bring the second buyer in}
-\framesubtitle{Proposition 2 · Paper §4.1 · General result}
-\hypertarget{main:s14}{}
-\vspace{-0.7em}
-{\footnotesize\renewcommand{\arraystretch}{1.0}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{3.7cm}@{}}
-\toprule
- & Weak $F_0$ & Strong $F_1$ & Very strong $F_2$\\
-\midrule
-Fund orders & None & Buys on good fit; sells on poor fit & Buys on good fit; sells on poor fit\\
-Beliefs after sale, no order, purchase & $\pi,\ \pi,\ \pi$ & $m(\pi),\ \pi,\ M(\pi)$ & $m(\pi),\ \pi,\ M(\pi)$\\
-Price & One price; no news & $P(-1)<P(0)<P(1)$ & Three prices; still news\\
-Entry & $\rho$ & $\boldsymbol{\rho+(1-\rho)(b+\pi\lambda)>\rho}$ & Back to $\rho$\\
-\bottomrule
-\end{tabular}}
-\vspace{0.25em}
-{\footnotesize
-\begin{itemize}\setlength{\itemsep}{0pt}
-\item (H1) $B_0(\pi)<c_H<B_1(M(\pi))$ — profit at the prior falls short of the bill at $F_0$; profit at top news covers the bill at $F_1$.
-\item (H2) $\Delta_0<k<\rho\kappa(\pi)\Delta_1$ — trade cannot pay at $F_0$ and must pay at $F_1$.
-\item (H3) $B_2(M(\pi))<c_H$ — even top news cannot pay the bill at $F_2$.
-\end{itemize}
-\vspace{0.05em}
-{\raggedright Classes meet the ranking. $F_1$ first-order strengthens $F_0$. $F_2$ first-order strengthens $F_1$. All other primitives stay fixed.\par}
-\vspace{0.05em}
-{\raggedright Each outcome is unique under all four tie-rule pairs. Conditions (H1)--(H3) hold together on an open set.\par}
-\vspace{0.05em}
-{\raggedright Good-fit ownership rises exactly when $e_HW_H(F_1)>\rho W_H(F_0)$, where $e_H=\rho+(1-\rho)(b+\lambda)$. Ownership rises for sure when $W_H(F_1)=1$.\par}}
-\TakeawayEnd{Entry rises, then returns. The price stays live after entry dies.}
-\PlaceNav{\hyperlink{app:b6}{\beamergotobutton{Backup B6}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 15
-\begin{frame}[t,label=S15]{The bounds settle each economy before any guess}
-\framesubtitle{Proof map for Proposition 2 · Paper §4.1}
-\vspace{1.0em}
-\begin{center}
-\begin{tikzpicture}[pstep/.style={flowbox,text width=3.15cm,font={\footnotesize\hyphenpenalty=10000\relax}},
-  tag/.style={font=\sffamily\scriptsize\bfseries,text=cMuted,inner sep=0pt,anchor=south west}]
-  \node[pstep] (s1) {At $F_0$, (H2) gives $\Delta_0<k$. By the trading bound, each correct order earns less than $k$ under every profile. No trade survives.};
-  \node[pstep, anchor=north west] (s2) at ([xshift=0.45cm]s1.north east) {At $F_1$, (H2) gives $\rho\kappa(\pi)\Delta_1>k$. By the trading bound, each correct order earns more than $k$ under every profile. Full orders survive alone.};
-  \node[pstep, anchor=north west] (s3) at ([xshift=0.45cm]s2.north east) {Full orders at $F_1$ give belief $M(\pi)$ after a purchase. By (H1), $B_1(M(\pi))>c_H$. A purchase pays the bill. Other orders do not reach $M(\pi)$.};
-  \node[pstep, anchor=north west] (s4) at ([xshift=0.45cm]s3.north east) {At $F_2$, trade stays full by the same bound logic. By (H3) and the exclusion bound, $B_2(M(\pi))<c_H$. No order pays the high bill. Entry returns to $\rho$.};
-  \foreach \s/\n/\src in {s1/1/13, s2/2/13, s3/3/12, s4/4/12} {\node[tag] at ([xshift=3pt,yshift=3pt]\s.north west) {\n\quad Slide \src};}
-  \draw[flowarr] ([yshift=-0.5cm]s1.north east) -- ([yshift=-0.5cm]s2.north west);
-  \draw[flowarr] ([yshift=-0.5cm]s2.north east) -- ([yshift=-0.5cm]s3.north west);
-  \draw[flowarr] ([yshift=-0.5cm]s3.north east) -- ([yshift=-0.5cm]s4.north west);
-\end{tikzpicture}
-\end{center}
-\TakeawayEnd{Each step binds for every profile. That is why each outcome stands alone.}
-\PlaceNav{\hyperlink{app:b6}{\beamergotobutton{Backup B6}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 16
-\begin{frame}[t,label=S16]{In the example, only a purchase clears the bar}
-\framesubtitle{Illustration of Proposition 2 · Paper §4.2, Corollary 1 · Example only}
-\hypertarget{main:s16}{}
-\vspace{0.2em}
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.53\linewidth}
-\includegraphics[width=\linewidth,height=0.47\textheight,keepaspectratio]{beliefs_talk.pdf}
-\column{0.45\linewidth}
-{\small\raggedright Threshold $\tau(r)$ against strength $r$. Grey band: beliefs one order can produce, from $m(\reg{prim_pi})$ to $M(\reg{prim_pi})$.\par}
+% ---------------------------------------------------------------- Frame 3
+\begin{frame}[t,label=S3]{Where the paper sits: price feedback meets costly entry}
+\hypertarget{main:s3}{}
+\Body
 \vspace{0.3em}
-{\small
-\begin{itemize}\setlength{\itemsep}{2pt}
-\item Prior $\reg{prim_pi}$ stays below $\tau(r)$ at each strength. A flat price never pays the high bill.
-\item Top signal $M(\reg{prim_pi})=\reg{M_half_B}$ clears $\tau(r_1)=\reg{tau_r1}$ at the strong incumbent.
-\item Curves meet at the entry ceiling $r_C\approx\regr{rC_B}{3}$, just below $r_2=\reg{prim_r2}$. Past $r_C$, no signal pays the bill.
-\end{itemize}}
-\end{columns}
-\TakeawayEnd{The figure draws (H1) and (H3). The example proves nothing.}
-\FootLine{Example inputs: $h=\reg{prim_h}$, $\ell=\reg{prim_ell}$, $\pi=\reg{prim_pi}$, $p=\reg{prim_p}$, $\rho=\reg{prim_rho}$, $c_H=\reg{prim_cH}$, $k=\reg{prim_k}$; uniform $R$ on $[0,r]$; $r_0=\reg{prim_r0}$, $r_1=\reg{prim_r1}$, $r_2=\reg{prim_r2}$. Full inputs and region: Backup B4.}
-\PlaceNav{\hyperlink{app:b4}{\beamergotobutton{Backup B4}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 17
-\begin{frame}[t,label=S17]{In the example, entry rises while buyer profit falls}
-\framesubtitle{Illustration of Proposition 2 · Paper §4.2, Corollary 1 · Example only}
-\vspace{0.6em}
-\begin{center}{\small\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\centering\arraybackslash}p{2.7cm}>{\centering\arraybackslash}p{2.7cm}>{\centering\arraybackslash}p{2.9cm}@{}}
+{\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{5.3cm}@{}}
 \toprule
- & Weak $r_0=\reg{prim_r0}$ & Strong $r_1=\reg{prim_r1}$ & Very strong $r_2=\reg{prim_r2}$\\
+Strand & Core idea & Difference here\\
 \midrule
-Buyer keeps at prior, $B_r(\reg{prim_pi})$ & \reg{Bprior_r0} & \reg{Bprior_r1_B} & \reg{Bprior_r2}\\
-Shareholder spread, $\Delta_T(r)$ & \reg{Delta_r0} & \reg{Delta_r1} & \reg{Delta_r2}\\
-Fund orders (good fit, poor fit) & $(0,\ 0)$ & $(1,\ {-1})$ & $(1,\ {-1})$\\
-Price & Flat & Informative & Informative\\
-Entry & \reg{entry_r0} & \textbf{\reg{entry_r1_B}} & \reg{entry_r2}\\
-Good-fit ownership & \reg{own_r0} & \textbf{\reg{own_r1_B}} & \reg{own_r2_B}\\
+\textbf{Price feedback} --- Dow, Goldstein and Guembel (2017, closest antecedent); Edmans, Goldstein and Jiang (2015) & Price guides a real decision & The decision is rival preparation\\
+\textbf{Costly entry} --- Fishman (1988); Roberts and Sweeting (2013) & Preparation cost deters entry & Price news can rise with incumbent strength\\
+\textbf{Takeover trade} --- Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991) & Trade moves target prices & Outside informed trader, no initial position, no target control\\
 \bottomrule
-\end{tabular}}\end{center}
-\TakeawayEnd{Profit falls at each step. The signal value rises. Entry follows the signal, then hits its cap.}
-\FootLine{(H1)--(H3) hold exactly when the top signal sits between the two bars: $\tau(r_1)<M(\reg{prim_pi})<\tau(r_2)$. Region and margins: Backup B4. Full payoff and outcome tables: Backup B6.}
-\PlaceNav{\hyperlink{app:b4}{\beamergotobutton{Backup B4}}\NavSep\hyperlink{app:b6}{\beamergotobutton{Backup B6}}}
+\end{tabular}}
+\TakeawayEnd{An outside informed trader can put synergy news in the price. Incumbent strength can raise the return to that trade.}
+\PlaceNav{\hyperlink{app:b14}{\beamergotobutton{B14}}}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 18
-\begin{frame}[t,label=S18]{Freeze the news, and strength only scares buyers off}
-\framesubtitle{Fixed-information control · Paper §4.2 and Proposition A.2 · General}
-\vspace{0.2em}
-{\color{cInk}\rule{\linewidth}{0.4pt}}\par\vspace{0.3em}
-{\raggedright Fix the law of class and signal, the class value laws, and the cost law. A stronger first buyer can only lower entry.\par}
-\vspace{0.25em}
-{\raggedright Entry falls by exactly the chance that the bill sits between buyer profit at the two strengths.\par}
-\vspace{0.1em}{\color{cInk}\rule{\linewidth}{0.4pt}}\par
+% ---------------------------------------------------------------- Frame 4
+\begin{frame}[t,label=S4]{This paper: a stronger incumbent can recruit the rival}
+\hypertarget{main:s4}{}
+\Body
+\LargeLine{A stronger incumbent weakly cuts the rival's profit at each belief. It can also widen the shareholder spread. Informed trade can then pay, and the price can recruit the rival.}
+\vspace{0.4em}
+\begin{enumerate}\setlength{\itemsep}{4pt}
+\item \textbf{Non-monotone entry:} entry can rise from the weak to the strong incumbent, then return to its floor. Each case has a unique outcome (Proposition 2).
+\item \textbf{Value split:} strength weakly cuts rival profit and weakly widens the shareholder spread (Proposition 1).
+\item \textbf{Information control:} with pre-preparation information fixed, a stronger incumbent cannot raise entry.
+\end{enumerate}
+\vspace{0.5em}
+{\raggedright Extensions: costly research by the informed trader; gains for sellers from a visible price; a purchase-impact prediction.\par}
+\vfill
+\LightRule
+{\sffamily\color{cGrayText}Roadmap: Model $\rightarrow$ Mechanism and main result $\rightarrow$ Fixed-information control $\rightarrow$ Extensions and prediction.\par}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 5
+% A label column: the players and the sale rule as rows; the independence sentence and the pointer to
+% the next frame in the foot zone.
+\begin{frame}[t,label=S5]{Players and the sale rule}
+\hypertarget{main:s5}{}
+\ModelStrip{1}
+\Body
+{\raggedright A listed target has standalone value $0$. Values and costs are per share. All agents are risk neutral.\par}
+\begin{DefList}
+\DefRow{Incumbent}{\textbf{incumbent bidder, already prepared:} it knows its value $R$ and faces no further preparation cost. $R\sim F$; $F$ is public, continuous on $[0,\bar r]$, and others do not observe the draw before bids. \textbf{Stronger} means a replacement $\widetilde F$ with $\widetilde F(y)\le F(y)$ for each $y$.}
+\DefRow{Rival}{\textbf{potential rival bidder:} sees the price, then decides whether to prepare. \textbf{Synergy class:} $j=H$ (good synergy) or $j=L$ (poor synergy), with prior $\pi=\Pr(j=H)\in(0,1)$. Its value $\theta$ has law $G_j$ in class $j$; each $G_j$ has a finite mean.}
+\DefRow{Class ranking}{$G_H(y)\le G_L(y)$ for each $y$ --- class $H$ draws weakly higher values. Also $\theta\ge p$ almost surely under each $G_j$, where $p>0$ is the auction reserve below. The sale and the rival's identity are public; its synergy class is not public.}
+\DefRow{Preparation cost $C$}{$C=0$ with probability $\rho\in(0,1)$; else $C=c_H>0$, the high cost ($H$ in $c_H$ means high, not class $H$). Pay $C$ to learn $\theta$ and to bid; a rival who does not pay cannot bid. ($\rho$ is the entry floor on frame 9.)}
+\DefRow{Sale}{the seller commits before trade to a cash second-price auction with reserve $p>0$. Sale proceeds go to target shareholders.}
+\end{DefList}
+\vfill
+\LightRule
+{\footnotesize\raggedright The pair $(j,\theta)$, the value $R$, the cost $C$, and the trading-slot draws are independent. Neither bidder trades target shares. The next frame adds the trading slot: informed trader, liquidity trader, competitive market makers.\par}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 6
+\begin{frame}[t,label=S6]{Timing: one trading slot, then preparation}
+\hypertarget{main:s6}{}
+\ModelStrip{2}
+\Body
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  dot/.style={circle,fill=cAccent,text=white,font=\scriptsize\bfseries\sffamily,inner sep=0pt,minimum size=14pt},
+  lab/.style={text width=2.75cm,align=center,font={\small\hyphenpenalty=10000\relax},anchor=north}]
+  \foreach \i/\x in {1/0,2/2.95,3/5.9,4/8.85,5/11.8} {\node[dot] (d\i) at (\x,0) {\i};}
+  \draw[flowarr] (d1) -- (d2);
+  \draw[flowarr] (d2) -- (d3);
+  \draw[flowarr] (d3) -- (d4);
+  \draw[flowarr] (d4) -- (d5);
+  \node[lab] at (0,-0.4) {Seller commits: auction, reserve $p$};
+  \node[lab] at (2.95,-0.4) {Trading slot: outcome $X$};
+  \node[lab] at (5.9,-0.4) {Market makers set $P(X)$};
+  \node[lab] at (8.85,-0.4) {Rival sees $P$, learns $C$, prepares or stays out};
+  \node[lab] at (11.8,-0.4) {Rival, if prepared, learns $\theta$; bids; payoffs};
+\end{tikzpicture}
+\end{center}
 \vspace{-0.5em}
-\begin{center}{\small\renewcommand{\arraystretch}{1.05}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.6cm}>{\centering\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{2.6cm}@{}}
-\toprule
-Entry & Weak $r_0$ & Strong $r_1$\\
-\midrule
-Full model, orders re-solved & \reg{entry_r0} & \textbf{\reg{entry_r1_B}}\\
-Full orders held fixed at each strength & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r1_entry}\\
-Second buyer cannot see the price & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r1_entry}\\
-\bottomrule
-\end{tabular}}\end{center}
-\vspace{-0.4em}
-\SmallLine{Row 2 at $r_0$ is a control, not an equilibrium. In the slot, fixed order laws give the same belief after each order at each strength.}
-\TakeawayEnd{The rise needs the signal itself to change with strength. Frozen news gives flat entry, then a fall past the ceiling.}
-\PlaceNav{\hyperlink{app:b6}{\beamergotobutton{Backup B6}}}
+\LightRule
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item One trading slot comes before preparation. Its outcome is $X\in\{-1,0,1\}$: $-1$ stock sale, $0$ no trade, $1$ stock purchase.
+\item With probability $\lambda\in(0,1)$ --- the informed presence --- the slot goes to an outside informed trader. It observes the synergy class $j$ and chooses an order $q\in\{-1,0,1\}$; each nonzero order costs $k>0$.
+\item With probability $1-\lambda$, a liquidity trader fills the slot and submits $-1$, $0$, $1$ with probabilities $\beta$, $1-2\beta$, $\beta$, where $0<\beta\le 1/3$.
+\item Competitive market makers observe the outcome $X$ only. They set $P(X)=\mathbb{E}[V_T\mid X]$, where $V_T$ is target proceeds per share. In equilibrium that expectation holds the rival's entry response to the price.
+\end{itemize}
 \end{frame}
 
-% ======================================================================
-% Part V. Path and research
-% ======================================================================
+% ---------------------------------------------------------------- Frame 7
+\begin{frame}[t,label=S7]{Information and choices}
+\hypertarget{main:s7}{}
+\ModelStrip{3,4}
+\Body
+{\footnotesize\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.9cm}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{5.1cm}@{}}
+\toprule
+Player & Observes & Chooses\\
+\midrule
+Seller & public primitives & auction and reserve $p$, before trade\\
+Incumbent & its value $R$ & bid $R$ if $R\ge p$\\
+Informed trader (slot with prob.\ $\lambda$) & class $j$, not $\theta$ & order $q$; cost $k$ if $q\ne0$\\
+Liquidity trader (slot with prob.\ $1-\lambda$) & no private information & order drawn with $(\beta,\,1-2\beta,\,\beta)$\\
+Market makers & outcome $X$, not who traded & price $P(X)=\mathbb{E}[V_T\mid X]$\\
+Rival & price $P$ (not $X$ on its own), then cost $C$; knows neither $j$ nor $\theta$ before it pays & prepare or stay out; if it prepares, learn $\theta$, then bid $\theta$\\
+\bottomrule
+\end{tabular}}
+\vspace{0.3em}
+{\footnotesize Public primitives are common knowledge; the table lists each player's own information.\par}
+\vspace{0.5em}
+\begin{itemize}\setlength{\itemsep}{3pt}
+\item \textbf{Order belief:} $\mu(x)=\Pr(j=H\mid X=x)$ --- the belief of an observer who sees the realised outcome $X=x$.
+\item \textbf{Price belief:} $\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)$ --- the rival's belief. One price pools all outcomes with that price.
+\end{itemize}
+\end{frame}
 
-% ---------------------------------------------------------------- Slide 19
-\begin{frame}[t,label=S19]{Quiet and loud markets can sit at the same strength}
-\framesubtitle{Proposition 3 · Paper §4.3 · General result, default tie rules}
+% ---------------------------------------------------------------- Frame 8
+\begin{frame}[t,label=S8]{Payoffs}
+\hypertarget{main:s8}{}
+\ModelStrip{5}
+\Body
+\begin{center}\SplitLine{6.2}{incumbent's value $R$}\end{center}
+\vspace{-0.5em}
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item Fix a prepared rival with value $\theta\ge p$, and average over $R$. Shareholders receive the auction payment $\max\{p,\min(R,\theta)\}$; its mean is $t(\theta)$. With $(z)_+=\max\{z,0\}$, the rival's gross profit is $g(\theta)=\mathbb E_R[(\theta-\max\{p,R\})_+]$, before cost $C$. In expectation, $t(\theta)+g(\theta)=\theta$.
+\item $\mathbb E_j$ denotes expectation under $G_j$. Class means are $t_j=\mathbb E_j[t(\theta)]$ and $g_j=\mathbb E_j[g(\theta)]$. With no rival entry, the incumbent alone pays $p$ if $R\ge p$; expected proceeds are $t_0=p[1-F(p)]$.
+\item \textbf{Shareholder spread:} $\Delta_T=t_H-t_L$ --- extra expected target proceeds in class $H$ versus class $L$ if the rival prepares. \textbf{Rival gross profit} at belief $\mu$ is $B(\mu)=g_L+\mu(g_H-g_L)$, the $\mu$-weighted mean of class gross profits, before $C$. Net gain from preparation: $B(\text{price belief})-C$.
+\item The informed trader with order $q$ earns $q[V_T-P(q)]-k|q|$, where $P(q)$ is the price after order $q$.
+\end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 9
+% A label column: the four parts of the equilibrium as rows under the solution concept.
+\begin{frame}[t,label=S9]{Equilibrium with competitive prices}
+\hypertarget{main:s9}{}
+\ModelStrip{6}
+\Body
+{\raggedright Solution concept: perfect Bayesian equilibrium with break-even prices from competitive market makers.\par}
+\vspace{0.15em}
+\begin{DefList}[3.0cm]
+\DefRow{Orders}{let $e(x)$ be the probability that the rival prepares after realised outcome $X=x$, through the price $P(x)$. An informed trader who sees class $j$ gets expected net payoff $U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|$ from chosen order $q$; the term $t_0+e(q)(t_j-t_0)$ is expected target proceeds in class $j$. For each $j$, the informed trader puts positive probability only on orders $q$ that maximize $U_j(q)$, with the schedules $P(\cdot)$ and $e(\cdot)$ at their equilibrium values.}
+\DefRow{Competitive prices}{$P(x)=\mathbb{E}[V_T\mid X=x]=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]$. With entry, expected proceeds are $t_L+\mu(x)\Delta_T$; without entry they are $t_0$. Zero-cost preparation below gives the entry floor $e(x)\ge\rho$.}
+\DefRow{Beliefs}{the order belief $\mu(x)=\Pr(j=H\mid X=x)$ follows Bayes' rule. The rival's price belief $\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)$ pools all outcomes with that price. It can differ from $\mu(x)$ for any one pooled outcome. Liquidity trade gives each outcome positive probability in each class, so Bayes' rule pins down order beliefs.}
+\DefRow{Preparation and bids}{a rival with $C=0$ prepares at each price. With $C=c_H$, it prepares if and only if $B(\bar\mu)\ge c_H$ at its price belief. A prepared rival bids $\theta$; the incumbent bids $R$ subject to the reserve.}
+\end{DefList}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 10
+% Rows: the hypotheses full width, then parts (a) and (b) side by side, then the identity; the
+% number line under the statement; the intuition pinned above the foot.
+\begin{frame}[t,label=S10]{Strength never raises rival profit and never narrows the spread}
+\hypertarget{main:s10}{}
+\Body\TightMath
+\begin{Statement}{Proposition 1}
+\raggedright
+Let $F$ and $\widetilde F$ be continuous incumbent value distributions,
+with $\widetilde F(y)\le F(y)$ for every $y$.
+\Gloss{The new incumbent draws high values more often.}
+Hold the reserve and the finite-mean class laws fixed.\par
+\vspace{0.1em}
+\begin{minipage}[t]{0.46\linewidth}\raggedright
+(a) For $j\in\{H,L\}$ and every $\mu\in[0,1]$,
+\[
+g_j(\widetilde F)\le g_j(F),\qquad
+B_{\widetilde F}(\mu)\le B_F(\mu).
+\]
+Here $B_F(\mu)=g_L(F)+\mu[g_H(F)-g_L(F)]$.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.51\linewidth}\raggedright
+(b) Under the class ranking,
+\[
+G_H(y)\le G_L(y)\quad\text{for every }y,\qquad
+G_H(p^-)=G_L(p^-)=0,
+\]
+the shareholder spread satisfies $\Delta_T(\widetilde F)\ge\Delta_T(F)$.
+\Gloss{Good-synergy values are higher, and all meet the reserve.}
+\end{minipage}\par
+\vspace{0.1em}
+Since both classes meet the reserve almost surely,
+$\Delta_T(F)+[g_H(F)-g_L(F)]
+=\mathbb E_H[\theta]-\mathbb E_L[\theta]$.
+The right side does not depend on $F$.
+\end{Statement}
+\par\centerline{\scalebox{0.6}{\GapLine{5.4}{8.2}}}\par
+\Intuition{A stronger incumbent can move part of the rival's gain from good synergy to the target's shareholders.}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 11
+% Rows: the definitions full width; the band and the price-reveals-belief part side by side; the
+% preparation rule with its cases beside it.
+\begin{frame}[t,label=S11]{Beliefs stay in a band, and the price reveals the belief}
+\hypertarget{main:s11}{}
+\Body\TightMath
+\begin{Statement}{Belief bounds}
+\raggedright
+Define\quad $b=(1-\lambda)\beta,\qquad u=\dfrac{\lambda}{b},\qquad
+m(\pi)=\dfrac{\pi}{\pi+(1-\pi)(1+u)},\qquad
+M(\pi)=\dfrac{\pi(1+u)}{\pi(1+u)+1-\pi}.$\par
+\begin{minipage}[t]{0.46\linewidth}\raggedright
+For every pure or mixed order strategy and every $x\in\{-1,0,1\}$,
+\[
+0<\beta\le\frac13
+\quad\Longrightarrow\quad
+m(\pi)\le\mu(x)\le M(\pi).
+\]
+\Gloss{With $\beta\le1/3$, liquidity trade covers every outcome, including no trade.}
+The price belief $\bar\mu$ obeys the same bounds.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.51\linewidth}\raggedright
+Suppose $\Delta_T>0$, $g_H>g_L$ and $\rho\in(0,1)$.
+Under Bayes' rule, optimal preparation, competitive prices and truthful bids,
+\[
+\begin{aligned}
+&P(x)=P(x')\ \Longrightarrow\ \mu(x)=\mu(x'),\\
+&\Pr(H\mid P(X)=P(x))=\mu(x).
+\end{aligned}
+\]
+\end{minipage}\par
+\begin{minipage}[t]{0.46\linewidth}\raggedright
+\textbf{Preparation rule.} Define the threshold $\tau=(c_H-g_L)/(g_H-g_L)$.
+\Gloss{At the belief $\tau$, rival gross profit equals the high cost.}
+Under the default preparation rule,
+\Gloss{A rival at the threshold prepares.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.51\linewidth}\raggedright
+\[
+\begin{aligned}
+&C=c_H:\quad\text{prepare exactly when }\mu(x)\ge\tau,\\
+&e(x)=\begin{cases}\rho,&\mu(x)<\tau,\\1,&\mu(x)\ge\tau.\end{cases}
+\end{aligned}
+\]
+\end{minipage}
+\end{Statement}
+\Intuition{A liquidity trader can place any order, so an order can move the belief but never settles the synergy class.}
+\PlaceNav{\hyperlink{app:b2}{\beamergotobutton{B2}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 12
+\begin{frame}[t,label=S12]{A correct order earns between a fixed share and all of the spread}
+\hypertarget{main:s12}{}
+\Body\TightMath
+\begin{Statement}{Trading bounds}
+\raggedright
+Let $\Delta_T\ge0$ and $k>0$.
+Take any order profile with Bayes beliefs, competitive prices, truthful bids,
+and $e(x)\in[\rho,1]$.
+\Gloss{The bounds hold for every trading plan, optimal or not.}
+The gross gains from the correct orders are
+\[
+K_H=e(1)\Delta_T[1-\mu(1)],\qquad
+K_L=e(-1)\Delta_T\mu(-1).
+\]
+Define $\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}$.
+\Gloss{The value $\kappa(\pi)$ is the least doubt any order leaves.}
+For either class $j\in\{H,L\}$,
+\[
+\rho\kappa(\pi)\Delta_T\le K_j\le\Delta_T.
+\]
+A wrong-signed order earns at most $-k<0$; abstention earns zero.
+The informed trader who sees class $H$ buys if $K_H>k$ and abstains if $K_H<k$.
+The informed trader who sees class $L$ sells if $K_L>k$ and abstains if $K_L<k$.
+At $K_j=k$, the correct order and abstention are both optimal, and any mixture of the two is optimal.
+\end{Statement}
+\Intuition{Gross gain scales with the shareholder spread and with the doubt an order leaves. Net gain subtracts $k$, so doubt alone does not pay.}
+\PlaceNav{\hyperlink{app:b2}{\beamergotobutton{B2}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 13
+% Rows: the setup full width; the hypotheses beside their glosses; the outcome table beside the entry
+% comparison.
+\begin{frame}[t,label=S13]{Strength can raise entry, then return it to its floor}
+\hypertarget{main:s13}{}
+\Body\TightMath
+\begin{Statement}{Proposition 2}
+\raggedright
+Classes have finite means and satisfy $G_H\le G_L$, $G_H(p^-)=G_L(p^-)=0$. Steps $F_2\le F_1\le F_0$: weak, strong, very strong.
+Fix the class laws and $p>0$; $\pi,\rho,\lambda\in(0,1)$; $\beta\in(0,1/2)$ (nonzero-order bounds only); and $c_H,k>0$.
+Write $\Delta_i=\Delta_T(F_i)$ and $B_i=B_{F_i}$.
+Suppose\par
+\vspace{0.15em}
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{0pt}
+$\begin{array}{@{}ll@{}}
+\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\
+\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\
+\mathrm{(H3)}&B_2(M(\pi))<c_H.
+\end{array}$
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\linewidth}
+\vspace{0pt}
+\Gloss{(H1) Prior misses $c_H$ at $F_0$; a purchase clears it at $F_1$.}
+\Gloss{(H2) Order cost stops trade at $F_0$, not at $F_1$.}
+\Gloss{(H3) At $F_2$, even a purchase cannot pay $c_H$.}
+\end{minipage}\par
+\vspace{0.3em}
+\begin{minipage}[t]{0.55\linewidth}
+\vspace{0pt}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Orders $(H,L)$ & Beliefs $(-1,0,1)$ & Entry $(-1,0,1)$\\
+\midrule
+$F_0$ weak:\ $(0,0)$ & $(\pi,\pi,\pi)$ & $(\rho,\rho,\rho)$\\
+$F_1$ strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,1)$\\
+$F_2$ very strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,\rho)$\\
+\bottomrule
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{0pt}\raggedright
+Let $\mathsf E_i$ denote total entry at $F_i$.
+Then
+\[
+\mathsf E_0=\mathsf E_2=\rho
+<\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda).
+\]
+The outcome is unique in each of the three economies,
+under all four pairs of tie rules.
+\end{minipage}\par
+\end{Statement}
+\Intuition{A wider shareholder spread pays the informed trader to trade, and a purchase recruits. At $F_2$, profit at the top belief stays below $c_H$.}
+\FootLine{Proof idea: the frame 11--12 bounds hold for each candidate outcome; strict gaps then fix orders, beliefs, and entry. Steps: \hyperlink{app:b2}{B2}. Open set: frame 14. Exact form: \hyperlink{app:b1}{B1}.}
+\PlaceNav{\hyperlink{app:b1}{\beamergotobutton{B1}}\NavSep\hyperlink{app:b2}{\beamergotobutton{B2}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 14
+% The close-up figure at a readable width beside the corollary.
+\begin{frame}[t,label=S14]{Example: the top belief lies exactly between two thresholds}
+\hypertarget{main:s14}{}
+\Body\TightMath
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.31\linewidth}
+\vspace{0.2em}
+\BeliefsFigB{\linewidth}
+\column{0.67\linewidth}
+\begin{Statement}{Corollary 1}
+\raggedright
+The class values are point masses: $\theta=h$ in class $H$ and $\theta=\ell$ in class $L$, with $(h,\ell,p)=(\reg{prim_h},\reg{prim_ell},\reg{prim_p})$.
+The incumbent has $R\sim\mathrm{Unif}[0,r]$; a larger $r$ means a stronger incumbent. The three strengths are $(r_0,r_1,r_2)=(\reg{prim_r0},\reg{prim_r1},\reg{prim_r2})$.
+At $\pi=1/2$, in this family,
+\[
+\mathrm{(H1)}\text{--}\mathrm{(H3)}
+\quad\Longleftrightarrow\quad
+\tau(r_1)<M(1/2)<\tau(r_2),
+\]
+where $\tau(r_1)=\reg{tau_r1_frac}$ and $\tau(r_2)=\reg{tau_r2_frac}$.
+The example sets $u=\mathrm e-1$, where $\mathrm e$ is Euler's number, so the top belief after a purchase is $M(1/2)=\mathrm e/(1+\mathrm e)\simeq\reg{M_half_B}$.
+\end{Statement}
+\end{columns}
+\Intuition{Against the strong incumbent, a purchase lifts the belief just above the threshold; against the very strong one, the threshold rises just above that belief.}
+\FootLine{Other inputs: $(\pi,\rho,c_H,k)=(\reg{prim_pi},\reg{prim_rho},\reg{prim_cH},\reg{prim_k})$; liquidity chance $\beta=\reg{beta_B}$ (exact decimal); presence from $u=\lambda/[(1-\lambda)\beta]$. Inputs and regions in full: \hyperlink{app:b10}{B10}.}
+\PlaceNav{\hyperlink{app:b10}{\beamergotobutton{B10}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 15
+% The statement on the left with its three glosses together under the three conditions; the control
+% table on the right, its top rule level with the statement rule.
+\begin{frame}[t,label=S15]{With fixed information, strength cannot raise entry}
+\hypertarget{main:s15}{}
+\Body\TightMath
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.54\linewidth}
+\begin{Statement}{Fixed information}
+\raggedright
+Fix the joint law of the class $j$ and the signal $S$ that the rival observes.
+Fix the class laws $G_j$, the reserve, and the preparation-cost law.
+In economy $i$, conditional on $(j,S)$, the values $\theta$ and $R$
+are independent, with laws $G_j$ and $F_i$.
+The cost $C$ is independent of the class, both values and $S$.
+\Gloss{What the rival can learn does not change.
+The signal adds no news about values past the class.
+The preparation cost carries no news about values.}
+Let an indifferent rival prepare.
+If $F_1\le F_0$, entry cannot rise:
+\[
+\mathsf E_1\le\mathsf E_0,
+\]
+where $\mathsf E_i$ is the probability of preparation in economy $i$.
+\end{Statement}
+\column{0.44\linewidth}
+\vspace{\smallskipamount}
+{\footnotesize
+\renewcommand{\arraystretch}{1.3}\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{1.55cm}>{\centering\arraybackslash}p{1.55cm}@{}}
+\toprule
+Entry in the example & Weak & Strong\\
+\midrule
+Full model, orders solved again & At floor $\rho$ & \textbf{Above floor $\rho$}\\
+Full informed orders imposed (control) & Above floor $\rho$ & Above floor $\rho$\\
+Stock price hidden & At floor $\rho$ & At floor $\rho$\\
+\bottomrule
+\end{tabular}\par}
+\vspace{0.5em}
+{\footnotesize\raggedright In the middle row, the rival still reads the stock price, and full informed orders are imposed at both strengths; at the weak strength they are not optimal.\par}
+\end{columns}
+\Intuition{With fixed information, a stronger incumbent only lowers the profit at each belief, so it can only remove reasons to prepare.}
+\PlaceNav{\hyperlink{app:b11}{\beamergotobutton{B11}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 16
+% The one change from frame 6 as a lead-in above the statement; inside it, the conditions on the left
+% and the result on the right.
+\begin{frame}[t,label=S16]{Costly research: spread, research, and total entry rise together}
+\hypertarget{main:s16}{}
+\Body\TightMath
+\noindent One change from frame 6. The informed trader now chooses presence $\lambda\in[0,\bar\lambda]$ at cost $(a/2)\lambda^2$, with $a>0$ and $0<\bar\lambda<1$. With chance $\lambda$ it learns the synergy class and fills the slot. Else liquidity fills the slot.\par\vspace{-0.5em}
+\begin{Statement}{Proposition 4}
+\raggedright
+\begin{minipage}[t]{0.46\linewidth}\raggedright
+Assume the class ranking, $\pi=1/2$, $\Delta_T>0$, $g_H>g_L$ and $\tau>1/2$.
+\Gloss{The prior alone does not justify the high cost.}
+An indifferent informed trader may mix; an indifferent high-cost rival prepares.
+At presence $\lambda$, write $M_\lambda$ for the top belief after a purchase and $m_\lambda=1-M_\lambda$ for the band floor.
+For $\Delta_T>2k$, interior research $\lambda_R(\Delta_T)\in(0,1)$ is the unique root of the first-order condition in \hyperlink{app:b12}{B12}. Equilibrium research is $\widehat\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}$.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.51\linewidth}\raggedright
+The recruiting equilibrium --- the informed trader who learns class $H$ buys after success, and only a purchase recruits --- exists exactly when
+\[
+\Delta_T>2k\qquad\text{and}\qquad\tau\le M_{\widehat\lambda}.
+\]
+\Gloss{The spread pays for trade, and a purchase clears $\tau$.}
+Its research $\widehat\lambda$ rises strictly with $\Delta_T$ below the cap and stays constant at the cap. Total entry is
+\[
+\mathsf E=\rho+(1-\rho)[\beta+(1/2-\beta)\widehat\lambda].
+\]
+As research rises, $\mathsf E$ and class-$H$ entry rise strictly, while class-$L$ entry falls strictly.
+\end{minipage}\par
+\end{Statement}
+\Intuition{A wider shareholder spread pays for research until the cap. More research sorts entry toward good synergy.}
+\FootLine{First-order condition, branches, class entry formulas, and the research figure: \hyperlink{app:b12}{B12}. Fixed-research coexistence: \hyperlink{app:b3}{B3}.}
+\PlaceNav{\hyperlink{app:b3}{\beamergotobutton{B3}}\NavSep\hyperlink{app:b12}{\beamergotobutton{B12}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 17
+\begin{frame}[t,label=S17]{At $F_1$, a visible price raises expected proceeds and net surplus}
+\hypertarget{main:s17}{}
+\Body\TightMath
+\begin{Statement}{Price access}
+\raggedright
+Hold the incumbent at $F_1$ (strong) under Proposition 2's hypotheses.
+Compare price access with an economy where the rival sees neither the price nor the order.
+Hold all other primitives fixed; prices stay competitive in both economies.
+
+Let $\mathcal R$ denote expected target proceeds and $\mathcal W$ expected acquisition surplus net of preparation costs.
+Superscripts $1$ and $0$ denote price access and access to neither price nor order.
+Both economies keep unique full informed orders. Then
+\[
+\mathcal R^1>\mathcal R^0
+\qquad\text{and}\qquad
+\mathcal W^1>\mathcal W^0.
+\]
+Access adds preparation after a purchase only, where $B_1(M(\pi))>c_H$.
+\end{Statement}
+\Intuition{The visible price reveals the purchase belief $M(\pi)$. The high-cost rival then prepares only where gross profit covers $c_H$.}
+\FootLine{Exact differences, example values, and the paper's separate payment-rule and reserve comparisons: \hyperlink{app:b4}{B4}.}
+\PlaceNav{\hyperlink{app:b4}{\beamergotobutton{B4}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 18
+% The price line as the figure of the frame, then the statement in two columns.
+\begin{frame}[t,label=S18]{Purchase impact reveals recruitment}
+\hypertarget{main:s18}{}
+\Body\TightMath
+\begin{center}
+\scalebox{0.8}{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[cMuted,line width=0.6pt] (0,0) -- (13.5,0);
+  \draw[cInk,line width=1.2pt] (1.0,-0.18) -- (1.0,0.18) node[pos=0,below=3pt] {sale-order price};
+  \draw[cInk,line width=1.2pt] (4.6,-0.18) -- (4.6,0.18) node[pos=0,below=3pt] {no-order price};
+  \draw[cInk,line width=1.2pt] (12.2,-0.18) -- (12.2,0.18) node[pos=0,below=3pt] {purchase price};
+  \draw[cMuted,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (1.05,0.32) -- (4.55,0.32)
+    node[midway,above=7pt] {sale-order impact $I_-$};
+  \draw[cAccent,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (4.65,0.32) -- (12.15,0.32)
+    node[midway,above=7pt,text=cAccent] {purchase impact $I_+$};
+  \draw[cInfo,line width=3pt] (8.2,0) -- (12.2,0);
+  \node[text=cInfo,below=3pt] at (9.6,-0.18) {entry part};
+\end{tikzpicture}}
+\end{center}
+\vspace{-0.3em}
+\begin{Statement}{Weighted price impact}
+\raggedright
+\begin{minipage}[t]{0.48\linewidth}\raggedright
+Assume the class ranking, $\Delta_T>0$, $g_H>g_L$, full two-sided trade
+(the informed trader who sees class $H$ buys; the informed trader who sees class $L$ sells), and $\pi<\tau$.
+\Gloss{At the prior, rival gross profit falls short of $c_H$.}
+Define order frequencies $\bar f(x)=\Pr(X=x)$ and impacts $I_+=P(1)-P(0)$ and $I_-=P(0)-P(-1)$.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}\raggedright
+Then $\bar f(1)=b+\pi\lambda$, $\bar f(-1)=b+(1-\pi)\lambda$, and
+\[
+\begin{aligned}&\bar f(1)I_+-\bar f(-1)I_->0\\&\Longleftrightarrow\ e(1)>\rho.\end{aligned}
+\]
+At $\pi=1/2$, the order frequencies are equal, so
+\[
+I_+>I_-\quad\Longleftrightarrow\quad e(1)>\rho.
+\]
+\end{minipage}\par
+\end{Statement}
+\Intuition{Recruitment adds an entry part to the purchase price. Weight by order frequency, and that part makes purchase impact exceed sale-order impact.}
+\FootLine{With no recruitment ($e(x)=\rho$ after each outcome), orders still predict the winner when $W_H>W_L$: \hyperlink{app:b13}{B13}. The test needs the price dated before preparation starts, and a record of the no-trade outcome.}
+\PlaceNav{\hyperlink{app:b13}{\beamergotobutton{B13}}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 19
+\begin{frame}[t,label=S19]{Competition can create competition}
 \hypertarget{main:s19}{}
+\vspace{0.2em}
+\LargeLine{A stronger incumbent can induce rival entry through a more informative stock price.}
+\vspace{0.6em}
+\begin{itemize}\setlength{\itemsep}{7pt}
+\item \textbf{Main result.} Entry rises against the strong incumbent and returns to its floor against the very strong one (Proposition 2, on an open set).
+\item \textbf{Discipline.} Strength weakly cuts rival gross profit and weakly widens the shareholder spread. Freeze what the rival can learn, and strength cannot raise entry.
+\item \textbf{Implication.} At the strong incumbent, a visible price raises expected target proceeds and net surplus. In data, recruitment sits in the frequency-weighted purchase impact.
+\end{itemize}
+\vfill
+\LightRule
+{\small\raggedright With costly research, a wider shareholder spread also raises research until the cap, and sorts entry toward good synergy.\par}
+\end{frame}
+% ######################################################################
+% BACKUPS
+% ######################################################################
+\BackupStart
+
+% ---------------------------------------------------------------- B1
+\begin{frame}[t,label=B1]{Proposition 2 in exact form}
+\hypertarget{app:b1}{}\BackupId{B1}
+\footnotesize
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item Setup: the synergy laws satisfy the class ranking (good synergy first-order dominates poor synergy; each value meets the reserve $p$) and have finite means. The incumbent's value law $F$ is continuous on $[0,\bar r]$, with finite upper bound $\bar r$. Laws $F_0$, $F_1$, $F_2$ satisfy $F_2\le F_1\le F_0$, so each step is a first-order stochastic strengthening. Fixed: prior $\pi$, entry floor $\rho$ and presence $\lambda$, each in $(0,1)$; liquidity chance $\beta\in(0,1/2)$; high cost $c_H>0$; order cost $k>0$. Write $b=(1-\lambda)\beta$ for the liquidity mass in one direction, and $\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}$ for the common lower bound on residual doubt, with band floor $m(\pi)$ and top belief $M(\pi)$.
+\item With $B_i$ rival gross profit and $\Delta_i$ shareholder spread $\Delta_T$ against $F_i$: (H1) $B_0(\pi)<c_H<B_1(M(\pi))$. (H2) $\Delta_0<k<\rho\,\kappa(\pi)\,\Delta_1$. (H3) $B_2(M(\pi))<c_H$.
+\item Weak $F_0$: informed orders $(0,0)$ by synergy class (good, poor); belief $\mu(x)=\pi$ after each order $x$; entry $e(x)=\rho$ after each order; total entry $\rho$; one stock price. Strong $F_1$: orders $(1,-1)$; beliefs after a sale, no order, a purchase are $(m(\pi),\pi,M(\pi))$; entry is $(\rho,\rho,1)$; prices rise strictly; total entry is $\rho+(1-\rho)(b+\pi\lambda)>\rho$; entry under good synergy is $\rho+(1-\rho)(b+\lambda)$, and under poor synergy $\rho+(1-\rho)b$. Very strong $F_2$: orders and beliefs as at $F_1$; entry $\rho$ after each order; total entry $\rho$; three distinct prices.
+\item Ownership: $W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]$ is the win chance of a prepared rival in case $j$, where $\theta$ is its value and the indicator $\mathbf{1}\{\theta\ge p\}$ equals one when the value meets the reserve $p$, and zero otherwise. Good-synergy ownership rises from $F_0$ to $F_1$ exactly when $e_H W_H(F_1)>\rho\,W_H(F_0)$, with $e_H$ entry under good synergy at $F_1$. If $W_H(F_1)=1$, good-synergy ownership rises from $\pi\rho$ to $\pi e_H$, and the good-synergy share of rival wins rises strictly exactly when $W_L(F_0)>0$.
+\item The outcome in each economy is unique under each of the four tie-rule pairs. With the example synergy values and reserve of \hyperlink{main:s14}{frame 14}, (H1) to (H3) hold together on an open set of inputs.
+\end{itemize}
+\BackButton{main:s13}
+\end{frame}
+
+% ---------------------------------------------------------------- B2, page 1
+\begin{frame}[t,label=B2]{Why each outcome is unique}
+\framesubtitle{Posterior bounds, entry and prices}
+\hypertarget{app:b2}{}\BackupId{B2}
+\small
+\begin{itemize}\setlength{\itemsep}{6pt}
+\item \textbf{Lemma A.1} (order probabilities and beliefs), for any order plans: each order has positive probability in each synergy class. For a sale or a purchase, the chance of that order in class $j$ lies between $b$ and $b+\lambda$, where $b=(1-\lambda)\beta$ is the liquidity mass in one direction and $\lambda$ is presence. With $u=\lambda/b$, each nonzero order has likelihood ratio between $1/(1+u)$ and $1+u$, so the belief $\mu$ after that order lies in $[m(\pi),M(\pi)]$, where $M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]$ and $m(\pi)=\pi/[\pi+(1-\pi)(1+u)]$. The no-order case lies in the same band when $\beta\le1/3$. Under full orders, good synergy buys and poor synergy sells, the beliefs after a sale, no order, a purchase are $(m(\pi),\pi,M(\pi))$. A belief at a price lies between the smallest and largest beliefs of the orders with that price.
+\item \textbf{Lemma A.2} (entry and prices): entry $e(x)\ge\rho$ after each order $x$, with entry floor $\rho\in(0,1)$. The price after order $x$ is $P(x)=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]$, with proceeds $t_0$ without entry and $t_L$ under poor synergy. When $\Delta_T>0$ and rival gross profit rises with the belief $\mu$, equal prices give equal beliefs, so the price reveals $\mu(x)$; entry is $\rho$ when $\mu(x)<\tau$ and $1$ when $\mu(x)\ge\tau$, with threshold $\tau$ (at $\mu(x)=\tau$, any entry in $[\rho,1]$ can hold when an indifferent high-cost rival may prepare with any probability); prices rise strictly with $\mu$.
+\end{itemize}
+% B2 serves frames 11, 12 and 13; each return button names its origin frame.
+\PlaceNav{\hyperlink{main:s11}{\beamerreturnbutton{11}}\NavSep\hyperlink{main:s12}{\beamerreturnbutton{12}}\NavSep\hyperlink{main:s13}{\beamerreturnbutton{13}}}
+\end{frame}
+
+% ---------------------------------------------------------------- B2, page 2
+\begin{frame}[t,label=B2b]{Why each outcome is unique}
+\framesubtitle{Trading bounds and the four-step proof}
+\BackupId{B2}
+\footnotesize
+\begin{itemize}\setlength{\itemsep}{4pt}
+\item \textbf{Lemma A.3} (informed trading): the gain before order cost $k$ from a correct purchase under good synergy is $K_H=e(1)\,\Delta_T\,[1-\mu(1)]$; from a correct sale under poor synergy, $K_L=e(-1)\,\Delta_T\,\mu(-1)$. Under every order plan, $\rho\,\Delta_T[1-M(\pi)]\le K_H\le\Delta_T$ and $\rho\,\Delta_T\,m(\pi)\le K_L\le\Delta_T$. With $\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}$, each gain lies between $\rho\,\kappa(\pi)\,\Delta_T$ and $\Delta_T$; the purchase bound uses $1-M(\pi)$ and the sale bound uses $m(\pi)$. A wrong-signed order earns at most $-k$. Good synergy buys when $K_H>k$ and stays out when $K_H<k$; poor synergy compares $K_L$ with $k$ in the same way.
+\item Four-step proof: 1.~Weak: each gain is at most $\Delta_T$, below $k$, so no informed order; the belief stays at the prior; entry stays at $\rho$. 2.~Strong: each gain is at least $\rho\,\kappa(\pi)\,\Delta_T$, above $k$, so full orders hold under every candidate; beliefs are $(m(\pi),\pi,M(\pi))$. 3.~A purchase reaches $M(\pi)$, rival gross profit there strictly exceeds the high cost, so entry after a purchase is $1$; after other orders entry stays at $\rho$. 4.~Very strong: full orders stay, but rival gross profit at $M(\pi)$ falls short of the high cost, so entry returns to $\rho$ after each order.
+\end{itemize}
+\vspace{0.6em}
+\begin{center}
+\begin{tikzpicture}[pstep/.style={flowbox,text width=3.2cm,minimum height=1.1cm,font={\scriptsize\hyphenpenalty=10000\relax}},
+  tag/.style={font=\sffamily\scriptsize\bfseries,text=cMuted,inner sep=0pt,anchor=south west}]
+  \node[pstep] (s1) {Weak: gain cap below $k$\\ $K_j\le\Delta_0<k$};
+  \node[pstep, right=0.35cm of s1] (s2) {Strong: gain floor above $k$\\ $K_j\ge\rho\kappa(\pi)\Delta_1>k$};
+  \node[pstep, right=0.35cm of s2] (s3) {Purchase reaches $M(\pi)$\\ $B_1(M(\pi))>c_H$};
+  \node[pstep, flowcost, text width=3.2cm, minimum height=1.1cm, font={\scriptsize\hyphenpenalty=10000\relax},
+    right=0.35cm of s3] (s4) {Very strong: $M(\pi)$ falls short\\ $B_2(M(\pi))<c_H$};
+  \foreach \i in {1,2,3,4} {\node[tag] at ([xshift=2pt,yshift=3pt]s\i.north west) {\i};}
+  \draw[flowarr] (s1) -- (s2);
+  \draw[flowarr] (s2) -- (s3);
+  \draw[flowarr] (s3) -- (s4);
+\end{tikzpicture}
+\end{center}
+\vspace{0.4em}
+{\small\raggedright Each comparison is strict, so no tie rule changes the outcome.\par}
+\PlaceNav{\hyperlink{main:s11}{\beamerreturnbutton{11}}\NavSep\hyperlink{main:s12}{\beamerreturnbutton{12}}\NavSep\hyperlink{main:s13}{\beamerreturnbutton{13}}}
+\end{frame}
+
+% ---------------------------------------------------------------- B3, page 1
+\begin{frame}[t,label=B3]{Informative and uninformative markets at one strength}
+\framesubtitle{Proposition 3 · Paper §4.3 · Default tie rules}
+\hypertarget{app:b3}{}\BackupId{B3}
 \vspace{-0.2em}
 \begin{columns}[T,totalwidth=\linewidth]
-\column{0.33\linewidth}
+\column{0.29\linewidth}
 \vspace{0.2em}
-\CoexRegion{width=\linewidth,height=0.5\textheight,keepaspectratio}
-\column{0.65\linewidth}
+\CoexRegion{3.6cm}
+\column{0.69\linewidth}
 {\footnotesize
 \vspace{-0.9em}
 \[\pi<\tau\le M(\pi),\qquad \frac{k}{1-\tau}\ \le\ \Delta_T\ \le\ \frac{k}{\rho\max\{\pi,1-\pi\}}\]
 \vspace{-1.1em}
 \begin{itemize}\setlength{\itemsep}{1pt}
-\item Inside this region, two markets coexist. Quiet market: no fund trade, one price, entry $\rho$. Loud market: only a purchase recruits, and entry is
+\item Inside this region, two markets coexist. Uninformative market: no informed trade, one price, entry $\rho$. Informative market: only a purchase recruits, and entry is
 \vspace{-0.6em}\[\rho+(1-\rho)\min\Bigl\{\frac{(1-\pi)\,b\,\Delta_T}{k},\ b+\pi\lambda\Bigr\}\]\vspace{-1.0em}
-\item Entry in the loud market rises strictly with $\Delta_T$ while the good-fit fund mixes. Entry stays flat once the good-fit fund buys for sure. The loud market is unique inside the region.
+\item Entry in the informative market rises strictly with $\Delta_T$ while the informed trader mixes on good synergy. Entry stays flat once the informed trader buys for sure on good synergy. The informative market is unique inside the region.
 \item Self-confirming logic, market by market. Expect no recruitment: one order earns at most the floor return, so silence pays. Expect recruitment: a purchase lifts entry, so trade pays.
 \end{itemize}}
 \end{columns}
-\SmallLine{Scope: class ranking, $\Delta_T>0$, $g_H>g_L$, default tie rules. In general, strengths with coexistence need not form one interval. Interval results: Backup B7.}
-\TakeawayEnd{Between the Proposition 2 economies, the market can sit in either mood at one strength.}
-\PlaceNav{\hyperlink{app:b7}{\beamergotobutton{Backup B7}}}
+\vspace{0.1em}
+\SmallLine{Scope: synergy ranking, $\Delta_T>0$, $g_H>g_L$, default tie rules. In general, strengths with coexistence need not form one interval. Interval results: Backup B3, page 3.}
+\TakeawayEnd{Between the Proposition 2 economies, an uninformative and an informative equilibrium can coexist at one strength.}
+\BackButton{main:s16}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 20
-\begin{frame}[t,label=S20]{In the example, both markets live between $r_A$ and $r_N$}
-\framesubtitle{Illustration of Proposition 3 · Paper §4.3, Corollary 2 · Example only}
+% ---------------------------------------------------------------- B3, page 2
+\begin{frame}[t,label=B3b]{Informative and uninformative markets at one strength}
+\framesubtitle{Corollary 2 · Paper §4.3}
+\BackupId{B3}
 \vspace{0.1em}
 \begin{center}
-\CoexPanel{0 22 510 0}{height=0.35\textheight,keepaspectratio}\hspace{0.8em}\CoexPanel{424 22 0 0}{height=0.35\textheight,keepaspectratio}
+\CoexPanelA{3.0cm}\hspace{1em}\CoexPanelC{4.18cm}
 \end{center}
-\vspace{-0.9em}
+\vspace{-0.6em}
 {\footnotesize\raggedright Entry against strength $r$. Shaded band: coexistence interval $[r_A,r_N]$.\par}
 \vspace{0.2em}
 {\footnotesize
 \begin{itemize}\setlength{\itemsep}{0pt}
-\item Loud entry starts at $\reg{entry_rA_B}$ when $r_A\approx\regr{rA}{3}$ opens the band. Quiet entry stays at $\reg{entry_r0}$.
-\item Loud entry rises to $\reg{entry_plateau_B}$ at $r_F\approx\regr{rF_B}{3}$, where the good-fit fund buys for sure. Loud entry then stays flat.
-\item The quiet market dies at $r_N\approx\regr{rN}{3}$. Loud entry holds to $r_C$, then drops to its floor.
+\item Informative entry starts at $\reg{entry_rA_B}$ when $r_A\approx\regr{rA}{3}$ opens the band. Uninformative entry stays at $\reg{entry_r0}$.
+\item Informative entry rises to $\reg{entry_plateau_B}$ at $r_F\approx\regr{rF_B}{3}$, where the informed trader buys for sure on good synergy. Informative entry then stays flat.
+\item The uninformative market dies at $r_N\approx\regr{rN}{3}$. Informative entry holds to $r_C$, then drops to its floor.
 \end{itemize}}
-\TakeawayEnd{Along one path, entry can climb, sit flat, then fall — with a jump when the loud market opens.}
-\FootLine{Full equilibrium list and marked strengths $r_J$, $r_S$: Backup B7.}
-\PlaceNav{\hyperlink{app:b7}{\beamergotobutton{Backup B7}}}
+\TakeawayEnd{Along one path, entry can climb, sit flat, then fall — with a jump when the informative market opens.}
+\FootLine{Full equilibrium list and marked strengths $r_J$, $r_S$: Backup B3, page 3.}
+\BackButton{main:s16}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 21
-\begin{frame}[t,label=S21]{Make the fund pay for its view, and strength buys more views}
-\framesubtitle{Proposition 4 · Paper §5 · General result at prior $1/2$}
-\hypertarget{main:s21}{}
-\vspace{0.1em}
-{\small\raggedright One change only. Before it learns the class, the fund picks research $\lambda\in[0,\bar\lambda]$ at cost $(a/2)\lambda^2$. Success has chance $\lambda$, reveals the class, and fills the slot. Failure hands the slot to liquidity.\par}
-\vspace{0.2em}
-{\small\raggedright More research adds fund orders and removes liquidity cover. The prior is $1/2$ throughout this block.\par}
-\vspace{0.3em}{\color{cInk}\rule{\linewidth}{0.4pt}}\par\vspace{0.3em}
-{\small\raggedright At research $\lambda$, write $M_\lambda$ for the top belief after a purchase. Recruitment intensity $\lambda_E(\tau)$ solves $M_\lambda=\tau$: a full purchase recruits exactly at or past this research level.\par}
-\vspace{0.1em}
-{\small
-\begin{itemize}\setlength{\itemsep}{1.5pt}
-\item In the recruiting equilibrium, research $\min\{\lambda_R(\Delta_T),\bar\lambda\}$ rises strictly with $\Delta_T$ until the cap, then stays at the cap.
-\item Entry $\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]$ rises with research. Good-fit entry rises with research. Poor-fit entry falls.
-\item The recruiting equilibrium exists exactly when $\Delta_T>2k$ and $\tau\le M_\lambda$ at $\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}$.
-\end{itemize}}
-\SmallLine{Research level $\lambda_R(\Delta_T)$ solves $2a\lambda=\Delta_T m_\lambda-k$ away from a paying sure sale. Full condition: Backup B8. Scope: default tie rules, $\tau>1/2$.}
-\TakeawayEnd{A wider spread pays for more digging. More digging brings more good-fit buyers in.}
-\PlaceNav{\hyperlink{app:b8}{\beamergotobutton{Backup B8}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 22
-\begin{frame}[t,label=S22]{In the example, research and entry climb together}
-\framesubtitle{Illustration of Proposition 4 · Paper §5, research corollary · Example only}
-\vspace{0.1em}
-\begin{center}
-\includegraphics[width=\linewidth,height=0.325\textheight,keepaspectratio]{research_talk.pdf}
-\end{center}
-\vspace{-0.6em}
-{\small\raggedright Research $\lambda$ and entry against strength $r$. Research cost $a=\reg{res_a}$. Cap $\bar\lambda=\reg{res_cap}$.\par}
-\vspace{0.2em}
-{\small
-\begin{itemize}\setlength{\itemsep}{1.5pt}
-\item Recruiting research opens at $r_R\approx\regr{res_rR}{3}$. Entry there is $\reg{res_entry_rR}$.
-\item Research reaches the cap at $r_{\bar\lambda}\approx\regr{res_rcap}{3}$. Entry reaches $\reg{res_entry_cap}$ and holds to $r_C$.
-\item Zero research coexists on $[r_0,r_N]$. At $r_1$ and $r_2$ the sole outcome sits at the cap and matches Proposition 2.
-\end{itemize}}
-\TakeawayEnd{At the cap, the research economy is the Proposition 2 economy. One model, one dial.}
-\FootLine{Floor-entry research branch, cap region, and three-strength table: Backup B8.}
-\PlaceNav{\hyperlink{app:b8}{\beamergotobutton{Backup B8}}}
-\end{frame}
-
-% ======================================================================
-% Part VI. Scope, money, tests
-% ======================================================================
-
-% ---------------------------------------------------------------- Slide 23
-\begin{frame}[t,label=S23]{The result does not rest on the example's shape}
-\framesubtitle{Scope checks · Paper §6 · Each row keeps the slot and varies one part}
-\hypertarget{main:s23}{}
-\vspace{0.6em}
-{\small\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{10.0cm}@{}}
+% ---------------------------------------------------------------- B3, page 3
+\begin{frame}[t,label=B3c]{Informative and uninformative markets at one strength}
+\framesubtitle{Coexistence in full: interval parts and marked strengths}
+\BackupId{B3}
+\vspace{-4pt}
+\begin{center}\footnotesize
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}lll@{}}
 \toprule
-Change one part & Result\\
+Strength & Value in the example & Role\\
 \midrule
-Any diligence-bill law & Low bills and high bills, with atoms or without atoms, inside the (H1) window keep the rise. A smooth high-bill group turns the ceiling drop into a ramp.\\
-Any ranked fit classes, any prior & Some strengths and bills always deliver the reversal. Point-mass fits are not the kind case.\\
-Many fit classes & The reversal holds under a separation condition. Without separation, one price can carry two fit mixes.\\
-Second buyer has its own signal & At prior $1/2$, the rise can hold when the buyer's signal beats the fund's signal. In the stated signal example, entry needs both signals.\\
+$r_A$ & $\reg{rA}$ & first strength with an informative market\\
+$r_F$ & $\reg{rF_B}$ & first strength with a certain purchase in it\\
+$r_N$ & $\reg{rN}$ & last strength with an uninformative market\\
+$r_J$ & $\reg{rJ}$ & the full purchase is alone from here\\
+$r_S$ & $\reg{rS_B}$ & the informed trader sells for certain on poor synergy from here\\
+$r_C$ & $\reg{rC_B}$ & entry ceiling: the top belief stops short of $c_H$ above $r_C$\\
 \bottomrule
-\end{tabular}}
-\TakeawayEnd{The slot carries the mechanism. The shapes around the slot can change.}
-\FootLine{Formal statements and the six-economy table: Backup B9. Continuous order sizes: Backup B11.}
-\PlaceNav{\hyperlink{app:b9}{\beamergotobutton{Backup B9}}\NavSep\hyperlink{app:b11}{\beamergotobutton{Backup B11}}}
+\end{tabular}
+\end{center}
+\vspace{-4pt}
+{\footnotesize
+\begin{itemize}\setlength{\itemsep}{1.5pt}
+\item Before $r_A$, a purchase cannot pay at any mix rate, so no informative market exists
+\item On $[r_A,r_F)$, the mix rate adjusts with strength and entry rises with it
+\item From $r_F$ to $r_N$, a full purchase coexists with an uninformative market and entry in it is constant
+\item Past $r_N$, an uninformative market fails: a unit order against the uninformative price pays. Mixed orders at the entry floor join the full purchase on $(r_N,r_J)$. From $r_J$, the full purchase is alone
+\end{itemize}}
+\vspace{2pt}
+{\footnotesize\raggedright In general, strengths with coexistence need not form one interval. Sure-purchase strengths form one interval. Under the nonfalling product $\Delta_T(g_H-c_H)$, the whole set forms one interval at each prior.\par}
+\BackButton{main:s16}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 24
-\begin{frame}[t,label=S24]{Let the buyer see the price, and shareholders gain}
+% ---------------------------------------------------------------- B4, page 1
+\begin{frame}[t,label=B4]{Price access and sale terms}
 \framesubtitle{Price access and sale terms · Paper §7}
-\hypertarget{main:s24}{}
+\hypertarget{app:b4}{}\BackupId{B4}
 \vspace{0.1em}
 \begin{columns}[T,totalwidth=\linewidth]
 \column{0.53\linewidth}
-{\footnotesize\raggedright At the strong incumbent $F_1$, under (H1)--(H3), price access raises expected target proceeds and surplus net of diligence bills.\par}
+{\footnotesize\raggedright At the strong incumbent $F_1$, under (H1)--(H3), price access raises expected target proceeds and surplus net of preparation costs.\par}
 \vspace{0.3em}
-{\footnotesize\raggedright Why: fund orders stay full when the price hides, so trading cost matches in both worlds. Access adds only diligence where profit covers the bill.\par}
+{\footnotesize\raggedright Why: informed trader orders stay full when the price hides, so trading cost matches in both worlds. Access adds only preparation where profit covers the cost.\par}
 \column{0.45\linewidth}
 {\footnotesize\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.55cm}>{\centering\arraybackslash}p{2.1cm}>{\centering\arraybackslash}p{2.25cm}@{}}
@@ -613,410 +860,107 @@ Price hidden & \reg{p2_base_hidden_proceeds} & \reg{p2_base_hidden_surplus}\\
 \end{tabular}}
 \end{columns}
 \vspace{0.1em}
-\SmallLine{Scope: inside the recruitment region, where the high bill does not pay at the prior. Outside that region, a live price can deter diligence after a sale. Detail: Backup B10.}
+\SmallLine{Scope: inside the recruitment region, where the high cost does not pay at the prior. Outside that region, an informative price can deter preparation after a sale. Detail: Backup B4, page 2.}
 \vspace{0.2em}
-{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.15em}
-{\small\raggedright \textbf{Payment rule (separate bargaining set-up).} Competition moves the spread with the sign of $1-2\omega$, where $\omega$ is seller bargaining weight. Second price is $\omega=0$: full weight on the runner-up bid.\par}
+\LightRule\vspace{0.15em}
+{\small\raggedright \textbf{Payment rule (separate bargaining set-up: zero reserve, point-mass classes, $R<h$).} Competition moves the spread with the sign of $1-2\omega$, where $\omega$ is seller bargaining weight. Second price is $\omega=0$: full weight on the runner-up bid.\par}
 \vspace{0.1em}
-{\small\raggedright \textbf{Reserve.} A reserve that excludes the poor fit can make the price live at both strengths. Entry then sits flat in strength. Strict deterrence needs still more.\par}
-\TakeawayEnd{Sale terms set two prices at once: the price to win, and the price that speaks before entry.}
-\PlaceNav{\hyperlink{app:b10}{\beamergotobutton{Backup B10}}}
+{\small\raggedright \textbf{Reserve.} A reserve that excludes poor synergy can make the price informative at both strengths. Entry then sits flat in strength. Strict deterrence needs still more.\par}
+\TakeawayEnd{Sale terms set the payment to win and the information in the stock price before entry.}
+\BackButton{main:s17}
 \end{frame}
 
-% ---------------------------------------------------------------- Slide 25
-\begin{frame}[t,label=S25]{A recruiting purchase moves the price more than a sale}
-\framesubtitle{Predictions · Paper §8 · Full two-sided trade, prior below $\tau$}
-\hypertarget{main:s25}{}
-\vspace{-0.3em}
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.80\linewidth}
-{\footnotesize\raggedright Weight each price impact by how often its order occurs. Weighted purchase impact beats weighted sale impact exactly when a purchase recruits the second buyer.\par}
-\vspace{0.15em}
-{\footnotesize
-\begin{itemize}\setlength{\itemsep}{0.5pt}
-\item At prior $1/2$, order frequencies match. Compare raw impacts: $P(1)-P(0)$ against $P(0)-P(-1)$.
-\item The price gap $P(1)-P(-1)$ splits into a class part, $\rho\Delta_T[M(\pi)-m(\pi)]$, and an entry part. The entry part is positive exactly under recruitment, and it sits wholly in the purchase impact.
+% ---------------------------------------------------------------- B4, page 2
+\begin{frame}[t,label=B4b]{Price access and sale terms}
+\framesubtitle{Sale terms in full: access, payment rule, reserves}
+\BackupId{B4}
+\small
+\begin{itemize}\setlength{\itemsep}{4pt}
+\item \textbf{Price access (A.7):} at $r_1$, proceeds gain equals $\reg{p2_access_proceeds_gain}$ and net surplus gain equals $\reg{p2_access_surplus_gain}$
+\item Orders and trade costs are the same in the two access cases at $r_1$. Access adds preparation only after a purchase
+\item \textbf{Reserve (A.9):} at the reserve $\reg{rsv_points_excl}$, which excludes poor synergy, full orders hold at both strengths and entry is flat
+\item Strict deterrence needs reserve $\reg{rsv_deter}$, a level that excludes poor synergy and the weak incumbent
+\item \textbf{Payment rule (A.8):} zero reserve, point-mass classes, $R<h$. With seller share $\omega$, the spread is $\Delta_\omega=\omega(h-\ell)+(1-2\omega)\mathbb{E}[(R-\ell)_+]$, so its response weakly has the sign of $1-2\omega$; strictly when $\omega\ne1/2$ and $\mathbb{E}[(R-\ell)_+]$ changes strictly
 \end{itemize}
-\vspace{0.1em}
-\begin{enumerate}\setlength{\itemsep}{0.5pt}
-\item Entry can rise with first-buyer strength only when the price lands before diligence starts. Hide the price, and entry can only fall.
-\item Past the entry ceiling, orders stop predicting entry. Orders keep predicting the winner.
-\item At prior $1/2$, order counts cannot separate slot types. Prices can.
-\end{enumerate}}
-\vspace{0.05em}
-{\footnotesize\textbf{Date the price before diligence starts. Record the zero order.}\par}
-\column{0.18\linewidth}
-\begin{center}
-% three price levels; the purchase impact sits above P(0), the sale impact below
-\begin{tikzpicture}[x=1cm,y=1cm]
-  \foreach \y/\l in {0/{P(-1)},0.9/{P(0)},2.75/{P(1)}} {\draw[cInk,line width=0.9pt] (0,\y) -- (1.15,\y); \node[anchor=west,font=\small,inner sep=2pt] at (1.18,\y) {$\l$};}
-  \draw[cMuted,line width=0.8pt,decorate,decoration={brace,amplitude=4pt,mirror}] (-0.12,0.9) -- (-0.12,0.02);
-  \draw[cInfo,line width=1.0pt,decorate,decoration={brace,amplitude=5pt,mirror}] (-0.12,2.73) -- (-0.12,0.92);
-\end{tikzpicture}
-\end{center}
-\end{columns}
-\SmallLine{In the example at $r_1$, the entry part is $\reg{ba_share_r1_B}$ of the price gap. Fund-share and announcement detail: Backup B12.}
-\TakeawayEnd{Test recruitment in prices first. The sharpest test needs no auction object.}
-\PlaceNav{\hyperlink{app:b12}{\beamergotobutton{Backup B12}}}
-\end{frame}
-
-% ---------------------------------------------------------------- Slide 26
-\begin{frame}[t,label=S26]{Competition can create competition}
-\framesubtitle{Conclusion}
-\vspace{1.2em}
-{\large
-\begin{enumerate}\setlength{\itemsep}{12pt}
-\item A stronger first buyer taxes the second buyer's profit.
-\item The same strength pays for information about that buyer.
-\item Entry follows the winner of that race.
-\end{enumerate}}
-\vspace{1.6em}
-{\color{cInk}\rule{\linewidth}{0.4pt}}\par\vspace{0.5em}
-{\sffamily\raggedright Wider spread $\rightarrow$ trade pays $\rightarrow$ live price $\rightarrow$ good news pays the bill $\rightarrow$ second buyer enters\par}
-\vspace{0.5em}{\color{cInk}\rule{\linewidth}{0.4pt}}\par
-\vfill
-{\raggedright Next step: the seller picks sale terms with this whole chain live.\par}
-\vspace{0.6em}
-\end{frame}
-
-% ######################################################################
-% BACKUPS
-% ######################################################################
-\BackupStart
-
-% ---------------------------------------------------------------- B1
-\begin{frame}[label=B1]{References}
-\hypertarget{app:b1}{}
+\vspace{0.2em}
+{\footnotesize\raggedright Exact differences at $F_1$, with $\mathcal R$ expected target proceeds and $\mathcal W$ expected surplus net of preparation costs; superscripts $1$ price access, $0$ neither price nor order:\par}
 {\footnotesize
-\begin{columns}[T]
-\column{0.49\textwidth}
-\raggedright
-Admati and Pfleiderer (2009). \emph{Rev. Financ. Stud.} 22.\par\smallskip
-Betton, Eckbo, Thompson and Thorburn (2014). \emph{J. Finance} 69.\par\smallskip
-Bond, Edmans and Goldstein (2012). \emph{Annu. Rev. Financ. Econ.} 4.\par\smallskip
-Boone and Mulherin (2007). \emph{J. Finance} 62.\par\smallskip
-Bulow and Klemperer (1996). \emph{Amer. Econ. Rev.} 86.\par\smallskip
-Dow and Gorton (1997). \emph{J. Finance} 52.\par\smallskip
-Dow, Goldstein and Guembel (2017). \emph{J. Eur. Econ. Assoc.} 15.\par\smallskip
-Edmans, Goldstein and Jiang (2012). \emph{J. Finance} 67.
-\column{0.49\textwidth}
-\raggedright
-Edmans, Goldstein and Jiang (2015). \emph{Amer. Econ. Rev.} 105.\par\smallskip
-Fishman (1988). \emph{RAND J. Econ.} 19.\par\smallskip
-Foucault and Fr\'esard (2014). \emph{J. Financ. Econ.} 111.\par\smallskip
-Gorbenko and Malenko (2014). \emph{J. Finance} 69.\par\smallskip
-Hirshleifer and Png (1989). \emph{Rev. Financ. Stud.} 2.\par\smallskip
-Levin and Smith (1994). \emph{Amer. Econ. Rev.} 84.\par\smallskip
-Samuelson (1985). \emph{Econ. Letters} 17.\par\smallskip
-Schwert (1996). \emph{J. Finance} 51.
-\end{columns}}
-\BackButton{main:s2}
-\end{frame}
-
-% ---------------------------------------------------------------- B2
-\begin{frame}[label=B2]{Notation}
-\hypertarget{app:b2}{}
-\vspace{2pt}
-{\scriptsize\renewcommand{\arraystretch}{1.05}
-\begin{columns}[T]
-\column{0.49\textwidth}
-\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{4.9cm}@{}}
-\toprule
-Symbol & Meaning\\
-\midrule
-$R$; $r$ & incumbent value $R\sim U[0,r]$; strength $r$\\
-$\{F_r\}$ & strength path; orders distributions by first-order dominance; higher $r$ means a stronger first buyer, with all else fixed\\
-$j\in\{H,L\}$; $G_j$ & challenger class; value law in class $j$\\
-$D(y)$ & $G_L(y)-G_H(y)$, the class gap at value $y$\\
-$h,\ell$; $\pi$ & the example's class values; prior on $H$\\
-$p$ & reserve price, not the stock price\\
-$0,c_H$; $\rho$ & preparation costs; $\rho$ is the zero-cost probability\\
-$t_0,t_H,t_L$ & proceeds with no entry, a class $H$ challenger, a class $L$ challenger\\
-$\Delta_T$ & target-payoff spread $t_H-t_L$\\
-$g_H,g_L$; $B_r(\mu)$ & class profits before cost; profit at belief $\mu$\\
-$W_j(F)$ & win chance: $\mathbb{E}_j[F(\theta)\mathbf 1\{\theta\ge p\}]$\\
-\bottomrule
-\end{tabular}
-\column{0.49\textwidth}
-\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{4.9cm}@{}}
-\toprule
-Symbol & Meaning\\
-\midrule
-$\lambda$; $\beta$ & informed presence chance; liquidity order chance\\
-$b$; $u$ & $b=(1-\lambda)\beta$; mass ratio $u=\lambda/b$\\
-$X$; $P$; $V_T$ & slot order; stock price; proceeds per share\\
-$\mu$; $m,M$; $\kappa$ & belief $\Pr(H\mid P)$; bounds; $\kappa=\min\{m,1-M\}$\\
-$\tau(r)$ & preparation threshold: $B_r(\tau)=c_H$\\
-$e_r(\mu)$ & entry probability at belief $\mu$\\
-$\mathsf{E}$ & entry: chance the second buyer prepares\\
-$\mathsf{O}_H$ & ownership: chance a good-fit second buyer wins\\
-$(q_H,q_L)$ & investor orders after class $H$, class $L$\\
-$W_H(F)$ & class $H$ win chance at reserve $p$ against incumbent law $F$\\
-$a$; $\bar\lambda$; $\omega$ & research cost; cap; seller share in A.8\\
-\bottomrule
-\end{tabular}
-\end{columns}}
-\BackButton{main:s6}
-\end{frame}
-
-% ---------------------------------------------------------------- B3
-\begin{frame}[label=B3]{Equilibrium in full: six conditions and tie rules}
-\hypertarget{app:b3}{}
-{\small
-\begin{itemize}\setlength{\itemsep}{3pt}
-\item \textbf{Tuple:} order laws for each class, a price for each order in $\{-1,0,1\}$, beliefs at each price, the entry rule, the bids
-\item \textbf{Prices:} $P(X)=\mathbb{E}[V_T\mid X]$ at each order, with entry at that price inside $V_T$
-\item \textbf{Beliefs:} Bayes rule from the order laws at each price. Every order is on path, so no off-path belief enters
-\item \textbf{Entry:} the zero cost always prepares; cost $c_H$ prepares exactly at prices with $B_r(\mu)\ge c_H$
-\item \textbf{Investor:} the order law puts weight only on best replies at the stated price and entry rules, net of cost $k$
-\item \textbf{Bids:} each bidder bids its value in the second-price auction
-\item \textbf{Tie rules:} a tied investor may mix; a tied cost $c_H$ type prepares. Proposition 2 holds under all four tie rules
-\end{itemize}}
-\vspace{0.4em}
-{\small\raggedright Proposition 2 holds under all four tie-rule pairs. Propositions 3 and 4 use the default tie rules.\par}
-\BackButton{main:s9}
-\end{frame}
-
-% ---------------------------------------------------------------- B4
-\begin{frame}[label=B4]{The example: inputs, recruitment region, and margins}
-\hypertarget{app:b4}{}
-\vspace{-2pt}
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.43\linewidth}
-{\scriptsize\renewcommand{\arraystretch}{1.1}
-\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{1.75cm}>{\raggedright\arraybackslash}p{2.55cm}@{}}
-\toprule
-Input & Value & Meaning\\
-\midrule
-$h$, $\ell$ & $\reg{prim_h}$, $\reg{prim_ell}$ & class $H$ and class $L$ values\\
-$p$ & $\reg{prim_p}$ & reserve price\\
-$\pi$, $\rho$ & $\reg{prim_pi}$, $\reg{prim_rho}$ & prior on $H$; probability of zero cost\\
-Costs $0$, $c_H$, $k$ & $0$, $\reg{prim_cH}$, $\reg{prim_k}$ & preparation costs; cost of a nonzero order\\
-$\beta$, $\lambda$ & $\reg{beta_B}$, $\reg{lambda_B}$ & liquidity order chance; informed presence chance\\
-$u$, $b$ & $\reg{u_B}$, $\reg{b_B}$ & mass ratio $u=\lambda/b$; here $1+u=e$\\
-$r_0,r_1,r_2$ & $\reg{prim_r0}$, $\reg{prim_r1}$, $\reg{prim_r2}$ & weak, strong, stronger still\\
-\bottomrule
-\end{tabular}}
-\column{0.55\linewidth}
-{\scriptsize\renewcommand{\arraystretch}{1.1}
-\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.45cm}>{\raggedright\arraybackslash}p{3.3cm}l@{}}
-\toprule
-Object & Region & Example\\
-\midrule
-Mass ratio $u$ (Corollary 1) & $(\reg{u_lo},\reg{u_hi})$ & $\reg{u_B}$\\
-Top posterior $M$ at prior $\reg{prim_pi}$ & $(\reg{M_lo},\reg{M_hi})$ & $\reg{M_half_B}$\\
-Liquidity chance $\beta$ & $0<\beta\le 1/3$ & $\reg{beta_B}$\\
-Presence chance $\lambda$ at that $\beta$ & from $u=\lambda/((1-\lambda)\beta)$ & $\reg{lambda_B}$\\
-Prior $\pi$ for Proposition 2 & $(\reg{prior_lo_B},\reg{prior_hi_B})$ & $\reg{prim_pi}$\\
-Research cost $a$ (Proposition A.1) & $(\reg{res_a_lo},\reg{res_a_up})$ & $\reg{res_a}$\\
-Research cap $\bar\lambda$ & $(\reg{res_cap_lo},\reg{res_cap_hi})$ & $\reg{res_cap}$\\
-\bottomrule
-\end{tabular}}
-\end{columns}
-\vspace{0.6em}
-\GrayLine{Each region is cut out by strict inequalities, so the results hold on an open set of inputs.}
-\BackButton{main:s16}
+\[
+\begin{aligned}
+\mathcal R^1-\mathcal R^0
+&=(1-\rho)\{\pi(b+\lambda)(t_H-t_0)+(1-\pi)b(t_L-t_0)\}>0,\\
+\mathcal W^1-\mathcal W^0
+&=(1-\rho)(b+\pi\lambda)\,[B_1(M(\pi))-c_H+pF_1(p)]>0.
+\end{aligned}
+\]}
+\vspace{0.1em}
+{\small\raggedright Preparation, sale, and two admissible bidders are three distinct events once a reserve can exclude.\par}
+\BackButton{main:s17}
 \end{frame}
 
 % ---------------------------------------------------------------- B5
-\begin{frame}[label=B5]{Proposition 1 in full: forms, strict signs, equal admissibility}
-\hypertarget{app:b5}{}
-\begin{itemize}\setlength{\itemsep}{10pt}
-\item $\Delta_T(F)=pF(p)D(p^-)+\int_p^\infty[1-F(y)]D(y)\,dy$ and $g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy$.
-\item Profit falls strictly exactly when $\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy>0$. Spread rises strictly exactly when $\int_p^\infty[F(y)-\tilde F(y)]D(y)\,dy>0$.
-\item Without the class ranking, the reserve term $pF(p)D(p^-)$ can reverse the spread sign. Equal admissibility is the exact fix.
+\begin{frame}[t,label=B5]{Who the informed trader is}
+\hypertarget{app:b5}{}\BackupId{B5}
+\vspace{1.0em}
+\begin{itemize}\setlength{\itemsep}{12pt}
+\item The informed trader is an outsider with sector expertise. It holds no net position in the target before trade. It has no control rights, and it cannot acquire the target.
+\item Its information concerns the rival's synergy class. It forms that view from its own research on the target's customers, technology, and demand.
+\item It observes the synergy class, good synergy ($H$) or poor synergy ($L$). It does not observe the rival's value.
+\item Neither bidder trades target shares. The informed trader stands outside the sale and earns only its trading payoff: sale proceeds per share minus the stock price on a purchase, the reverse on a sale, less order cost $k$ on a nonzero order.
 \end{itemize}
-\BackButton{main:s11}
+\BackButton{main:s6}
 \end{frame}
 
 % ---------------------------------------------------------------- B6, page 1
-\begin{frame}[label=B6]{Proposition 2 in full: tuples, payoff tables, control panels}
-\hypertarget{app:b6}{}
-\setbeamertemplate{enumerate items}{\textbf{\insertenumlabel.}}
-{\small
-\begin{enumerate}\setlength{\itemsep}{3pt}
-\item \textbf{Bounds for every profile:} posterior band $m\le\mu\le M$; gain per unit at most $\Delta_T$; entry at least $\rho$
-\item \textbf{Weak $r_0$:} $\Delta_T(r_0)<k$ makes each nonzero order lose in expectation. A quiet market is the sole outcome; entry is $\rho$
-\item \textbf{Strong $r_1$:} $k<\rho\kappa\,\Delta_T(r_1)$ makes each correct order pay under every profile; a wrong-signed order always loses. Orders are $(1,-1)$
-\item \textbf{Entry at $r_1$:} a buy order gives belief $M$ with $B_{r_1}(M)>c_H$, so cost $c_H$ prepares after a buy order. Entry exceeds $\rho$
-\item \textbf{Return at $r_2$:} trade still pays, but $B_{r_2}(M)<c_H$ keeps cost $c_H$ out at every price. Entry is $\rho$
-\end{enumerate}}
-\vspace{2pt}
-{\small Ownership: with $W_H(F)=\mathbb{E}_H[F(\theta)\mathbf{1}\{\theta\ge p\}]$, class $H$ ownership rises exactly if $[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)$.\par}
-\vspace{4pt}
-{\small Share rises exactly when $e_HW_H(F_1)W_L(F_0)>e_LW_H(F_0)W_L(F_1)$; in the example, share rises from $\reg{share_H_r0}$ to $\reg{share_H_r1_B}$.\par}
-\BackButton{main:s14}
+\begin{frame}[t,label=B6]{Scope}
+\framesubtitle{Scope checks · Paper §6 · Each row keeps the slot and varies one part}
+\hypertarget{app:b6}{}\BackupId{B6}
+\small
+\vspace{0.4em}
+{\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{10.0cm}@{}}
+\toprule
+Change one part & Result\\
+\midrule
+Any preparation-cost law & Under (H2), low costs below $B_1(m(\pi))$ and high costs between $B_0(\pi)$ and $B_1(M(\pi))$, with atoms or without atoms, keep the rise. An atomless high-cost component turns the ceiling drop into a ramp.\\
+Any ranked classes with class $H$ higher in mean, any prior & For uniform incumbent values, an open set of strengths and costs delivers the reversal. Point-mass synergy values are not the kind case.\\
+Many synergy classes & The reversal holds under a separation condition. Without separation, one price can carry two synergy mixes.\\
+Rival has its own signal & At prior $1/2$, the rise can hold when the rival's accuracy $\alpha_C$ exceeds the informed trader's accuracy $\alpha_I$. In the stated signal example, entry needs both signals.\\
+\bottomrule
+\end{tabular}}
+\TakeawayEnd{The slot carries the mechanism. The shapes around the slot can change.}
+\FootLine{Formal statements and the six-economy table: Backup B6, pages 2 and 3. Continuous order sizes: Backup B15.}
+\BackButton{main:s13}
 \end{frame}
 
 % ---------------------------------------------------------------- B6, page 2
-\begin{frame}[label=B6b]{Proposition 2 in full: tuples, payoff tables, control panels}
-\vspace{-6pt}
-{\scriptsize Under full orders, class $H$ faces a buy order with chance $\lambda+b$ and class $L$ with chance $b$.\par}
-\vspace{-6pt}
-{\scriptsize\[
-e_H=\rho+(1-\rho)(\lambda+b),\qquad e_L=\rho+(1-\rho)b,\qquad \text{entry}=\pi e_H+(1-\pi)e_L
-\]}
-\vspace{-9pt}
-{\scriptsize
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.49\linewidth}
-\begin{itemize}\setlength{\itemsep}{1pt}
-\item At $r_1$, cost $c_H$ prepares after a buy order and only after a buy order. Class entry rates are $e_H$ and $e_L$
-\item At the example's prior, entry is $\reg{entry_r1_B}$ and class $H$ ownership is $\reg{own_r1_B}$
-\item At $r_0$, a quiet market gives a flat price, so entry is $\reg{entry_r0}$ and ownership is $\reg{own_r0}$
-\end{itemize}
-\column{0.49\linewidth}
-\begin{itemize}\setlength{\itemsep}{1pt}
-\item At $r_2$, no price covers $c_H$, so entry is $\reg{entry_r2}$ and ownership is $\reg{own_r2_B}$, with full orders
-\item $B_r(\pi)$ equals $\reg{Bprior_r0}$, $\reg{Bprior_r1_B}$, $\reg{Bprior_r2}$ at $r_0$, $r_1$, $r_2$
-\end{itemize}
-\end{columns}}
+\begin{frame}[t,label=B6b]{Scope}
+\framesubtitle{Scope in full: costs, synergy classes, separation, signals}
+\BackupId{B6}
+\small
 \vspace{2pt}
-\begin{center}{\scriptsize\renewcommand{\arraystretch}{1.02}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.0cm}ccc@{}}
-\toprule
- & $r_0=\reg{prim_r0}$ & $r_1=\reg{prim_r1}$ & $r_2=\reg{prim_r2}$\\
-\midrule
-Proceeds without entry, $t_0$ & \reg{p2_base_r0_t0} & \reg{p2_base_r1_t0} & \reg{p2_base_r2_t0}\\
-Proceeds with a high-class challenger, $t_H$ & \reg{p2_base_r0_th} & \reg{p2_base_r1_th} & \reg{p2_base_r2_th}\\
-Proceeds with a low-class challenger, $t_L$ & \reg{p2_base_r0_tl} & \reg{p2_base_r1_tl} & \reg{p2_base_r2_tl}\\
-Target-payoff spread, $\Delta_T$ & \reg{Delta_r0} & \reg{Delta_r1} & \reg{Delta_r2}\\
-Gross profit of class $H$, $g_H$ & \reg{p2_base_r0_gh} & \reg{p2_base_r1_gh} & \reg{p2_base_r2_gh}\\
-Gross profit of class $L$, $g_L$ & \reg{p2_base_r0_gl} & \reg{p2_base_r1_gl} & \reg{p2_base_r2_gl}\\
-Gross profit at the prior, $B_r(\reg{prim_pi})$ & \reg{Bprior_r0} & \reg{Bprior_r1_B} & \reg{Bprior_r2}\\
-Preparation threshold, $\tau(r)$ & \reg{tau_r0} & \reg{tau_r1} & \reg{tau_r2}\\
-\bottomrule
-\end{tabular}}\end{center}
-\BackButton{main:s14}
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.485\linewidth}
+\ColHead{Cost laws (A.3)}The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp\par
+\vspace{1.0em}
+\ColHead{Many synergy classes (A.5)}The result holds under a separation condition on synergy proceeds; without it one price can pool two beliefs\par\vspace{3pt}Without separation, two orders can carry two synergy mixes at one price.
+\column{0.485\linewidth}
+\ColHead{General values, priors (A.4)}Proposition 2 holds for every ranked pair with class $H$ higher in mean, and every prior, at suitable uniform incumbent values and costs, under (H1)--(H3) with $m(\pi)$, $M(\pi)$\par
+\vspace{1.0em}
+\ColHead{Private signals (A.6)}In the example, accuracies $(\alpha_I,\alpha_C)=(\reg{sig_comp_aT},\reg{sig_comp_d})$ give entry $\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}$; without the rival's signal entry is $\reg{p4_comp_b_no_y_r1_entry}$ at both strengths\par
+\end{columns}
+\BackButton{main:s13}
 \end{frame}
 
 % ---------------------------------------------------------------- B6, page 3
-\begin{frame}[label=B6c]{Proposition 2 in full: tuples, payoff tables, control panels}
-\vspace{-6pt}
-\begin{center}{\scriptsize\renewcommand{\arraystretch}{0.98}
-\begin{tabular}{@{}lccc@{}}
-\toprule
- & $r_0=\reg{prim_r0}$ & $r_1=\reg{prim_r1}$ & $r_2=\reg{prim_r2}$\\
-\midrule
-\multicolumn{4}{@{}l}{\emph{Panel A. Equilibrium (Proposition 2)}}\\
-Informed orders, classes $H$ and $L$ & $(0,0)$ & $(1,-1)$ & $(1,-1)$\\
-Posterior after a sale & \reg{p2_base_r0_mu_minus} & \reg{p2_base_r1_mu_minus} & \reg{p2_base_r2_mu_minus}\\
-Posterior after no order & \reg{p2_base_r0_mu_zero} & \reg{p2_base_r1_mu_zero} & \reg{p2_base_r2_mu_zero}\\
-Posterior after a purchase & \reg{p2_base_r0_mu_plus} & \reg{p2_base_r1_mu_plus} & \reg{p2_base_r2_mu_plus}\\
-High-cost preparation & none & after a purchase & none\\
-Price after a sale & \reg{price_r0} & \reg{price_r1_m1_B} & \reg{price_r2_m1_B}\\
-Price after no order & \reg{price_r0} & \reg{price_r1_0_B} & \reg{price_r2_0_B}\\
-Price after a purchase & \reg{price_r0} & \reg{price_r1_p1_B} & \reg{price_r2_p1_B}\\
-Entry $\mathsf{E}$ & \reg{entry_r0} & \reg{entry_r1_B} & \reg{entry_r2}\\
-High-class ownership $\mathsf{O}_H$ & \reg{own_r0} & \reg{own_r1_B} & \reg{own_r2_B}\\
-Expected target proceeds & \reg{p4_base_r0_proceeds} & \reg{p4_base_r1_proceeds} & \reg{p4_base_r2_proceeds}\\
-\midrule
-\multicolumn{4}{@{}l}{\emph{Panel B. Full orders held fixed (Proposition A.2)}}\\
-Entry $\mathsf{E}$ & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r1_entry} & \\
-High-class ownership $\mathsf{O}_H$ & \reg{p4_frozen_r0_own} & \reg{p4_frozen_r1_own} & \\
-Expected target proceeds & \reg{p4_frozen_r0_proceeds} & \reg{p4_frozen_r1_proceeds} & \\
-\midrule
-\multicolumn{4}{@{}l}{\emph{Panel C. The challenger does not see the price}}\\
-Informed orders, classes $H$ and $L$ & $(0,0)$ & $(1,-1)$ & \\
-Entry $\mathsf{E}$ & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r1_entry} & \\
-High-class ownership $\mathsf{O}_H$ & \reg{p4_hidden_r0_own} & \reg{p4_hidden_r1_own} & \\
-Expected target proceeds & \reg{p4_hidden_r0_proceeds} & \reg{p4_hidden_r1_proceeds} & \\
-\bottomrule
-\end{tabular}}\end{center}
-\BackButton{main:s14}
-\end{frame}
-
-% ---------------------------------------------------------------- B7
-\begin{frame}[label=B7]{Coexistence in full: interval parts and marked strengths}
-\hypertarget{app:b7}{}
-\vspace{-4pt}
-\begin{center}\footnotesize
-\renewcommand{\arraystretch}{1.08}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Strength & Value in the example & Role\\
-\midrule
-$r_A$ & $\reg{rA}$ & first strength with an informative market\\
-$r_F$ & $\reg{rF_B}$ & first strength with a certain purchase in it\\
-$r_N$ & $\reg{rN}$ & last strength with a quiet market\\
-$r_J$ & $\reg{rJ}$ & the full purchase is alone from here\\
-$r_S$ & $\reg{rS_B}$ & low class sells for certain from here\\
-$r_C$ & $\reg{rC_B}$ & entry ceiling: the top posterior stops short of $c_H$ above $r_C$\\
-\bottomrule
-\end{tabular}
-\end{center}
-\vspace{-4pt}
-{\footnotesize
-\begin{itemize}\setlength{\itemsep}{1.5pt}
-\item Before $r_A$, a purchase cannot pay at any mix rate, so no informative market exists
-\item On $[r_A,r_F)$, the mix rate adjusts with strength and entry rises with it
-\item From $r_F$ to $r_N$, a full purchase coexists with a quiet market and entry in it is constant
-\item Past $r_N$, a quiet market fails: a unit order against the flat price pays. Mixed orders at the entry floor join the full purchase on $(r_N,r_J)$. From $r_J$, the full purchase is alone
-\end{itemize}}
-\vspace{2pt}
-{\footnotesize\raggedright In general, strengths with coexistence need not form one interval. Sure-purchase strengths form one interval. Under the nonfalling product $\Delta_T(g_H-c_H)$, the whole set forms one interval at each prior.\par}
-\BackButton{main:s19}
-\end{frame}
-
-% ---------------------------------------------------------------- B8, page 1
-\begin{frame}[label=B8]{Research in full: first-order condition, branches, cap region}
-\hypertarget{app:b8}{}
-\vspace{-6pt}
-\[
-2a\lambda=\Delta_T m_\lambda-k+(\rho\Delta_T m_\lambda-k)^+
-\]
-\vspace{-6pt}
-{\small
-\begin{itemize}\setlength{\itemsep}{3pt}
-\item Research picks $\lambda$ in $[0,\bar\lambda]$ before the slot, at cost $\tfrac{a}{2}\lambda^2$ (Proposition 4)
-\item In the example, $a=\reg{res_a}$ and the cap is $\bar\lambda=\reg{res_cap}$. The marked strengths are $r_R\approx\reg{res_rR}$, $r_{\bar\lambda}\approx\reg{res_rcap}$, $r_N\approx\reg{res_rN}$, $r_Q\approx\reg{res_rQ}$, $r_C\approx\reg{res_rC}$
-\item Zero research, with entry $\rho$, is an equilibrium exactly on $[r_0,r_N]$
-\item Recruiting research is an equilibrium exactly on $[r_R,r_C]$: research rises from $\reg{res_lambda_rR}$ to the cap on $[r_R,r_{\bar\lambda})$ and stays at the cap on $[r_{\bar\lambda},r_C]$; entry rises from $\reg{res_entry_rR}$ to $\reg{res_entry_cap}$ and keeps that value up to $r_C$
-\end{itemize}}
-\vspace{4pt}
-{\small\raggedright Zero research on $[r_0,r_N]$; recruiting research on $[r_R,r_C]$; floor-entry research on $(r_N,r_Q)$ and $(r_C,r_2]$, with $r_Q\approx\regr{res_rQ}{3}$.\par}
-\BackButton{main:s21}
-\end{frame}
-
-% ---------------------------------------------------------------- B8, page 2
-\begin{frame}[label=B8b]{Research in full: first-order condition, branches, cap region}
-\vspace{0pt}% keeps the brace group below from being read as a subtitle
-{\small
-\begin{itemize}\setlength{\itemsep}{3pt}
-\item Floor-entry research, in which both classes trade after a success, no order recruits and entry is $\rho$, is an equilibrium exactly on $(r_N,r_Q)$ and on $(r_C,r_2]$; there is no other equilibrium
-\item At $\reg{str_r155}$, $\reg{str_r160}$ and $\reg{str_r165}$ there are exactly two equilibria: zero research, and recruiting research below the cap (class $H$ buys after a success, class $L$ abstains). Research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$. Entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$
-\item The unique equilibrium has zero research at $r_0$, recruiting research at the cap at $r_1$ and floor-entry research at the cap at $r_2$, where entry is $\rho$
-\end{itemize}}
-\GrayLine{Costly research with an alternative arrival follows Dow and Gorton 1997.}
-\BackButton{main:s21}
-\end{frame}
-
-% ---------------------------------------------------------------- B9, page 1
-\begin{frame}[label=B9]{Scope in full: costs, classes, separation, signals}
-\hypertarget{app:b9}{}
-\vspace{2pt}
-{\small
-\begin{columns}[T,totalwidth=\linewidth]
-\column{0.485\linewidth}
-\RuledCol{\textbf{\sffamily Cost laws (A.3)}\par\vspace{2pt}The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp}
-\vspace{1.0em}
-\RuledCol{\textbf{\sffamily Many classes (A.5)}\par\vspace{2pt}The result holds under a separation condition on class proceeds; without it one price can pool two posteriors\par\vspace{3pt}Without separation, two orders can carry two fit mixes at one price.}
-\column{0.485\linewidth}
-\RuledCol{\textbf{\sffamily General values, priors (A.4)}\par\vspace{2pt}Proposition 2 holds for every ranked pair and prior at suitable costs, under (H1)--(H3) with $m(\pi)$, $M(\pi)$}
-\vspace{1.0em}
-\RuledCol{\textbf{\sffamily Private signals (A.6)}\par\vspace{2pt}In the example, accuracies $(\reg{sig_comp_aT},\reg{sig_comp_d})$ give entry $\reg{p4_comp_b_r0_entry}\to\reg{p4_comp_b_r1_entry}$; without the challenger signal entry is $\reg{p4_comp_b_no_y_r1_entry}$ at both strengths}
-\end{columns}}
-\BackButton{main:s23}
-\end{frame}
-
-% ---------------------------------------------------------------- B9, page 2
-\begin{frame}[label=B9b]{Scope in full: costs, classes, separation, signals}
+\begin{frame}[t,label=B6c]{Scope}
+\BackupId{B6}
 \vspace{-6pt}
 \begin{center}{\scriptsize\renewcommand{\arraystretch}{1.0}\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lllcccccc@{}}
 \toprule
 \multicolumn{9}{@{}l}{\emph{Panel A. Primitives}}\\
-Economy & Low class & High class & $\pi$ & $c_H$ & $k$ & $r_0$ & $r_1$ & $r_2$\\
+Economy & Poor synergy & Good synergy & $\pi$ & $c_H$ & $k$ & $r_0$ & $r_1$ & $r_2$\\
 \midrule
 Moderate gap & $\reg{p2_input_moderate_low_lo}$ & $\reg{p2_input_moderate_high_lo}$ & \reg{p2_input_moderate_pi}
  & \reg{p2_input_moderate_cost} & \reg{p2_input_moderate_k} & \reg{p2_input_moderate_r0} & \reg{p2_input_moderate_r1} & \\
@@ -1037,7 +981,7 @@ Same means, points & $\reg{p2_input_ex_d_low_lo}$ & $\reg{p2_input_ex_d_high_lo}
  & \reg{p2_input_ex_d_r0} & \reg{p2_input_ex_d_r1} & \reg{p2_input_ex_d_r2}\\
 \midrule
 \multicolumn{9}{@{}l}{\emph{Panel B. Outcomes}}\\
-Economy & Entry $\mathsf{E}_0$ & Entry $\mathsf{E}_1$ & \multicolumn{6}{l}{High-class ownership $\mathsf{O}_{H,1}$}\\
+Economy & Entry $\mathsf{E}_0$ & Entry $\mathsf{E}_1$ & \multicolumn{6}{l}{Good-synergy ownership $\mathsf{O}_{H,1}$}\\
 \midrule
 Moderate gap & \reg{p2_moderate_r0_entry} & \reg{p2_moderate_r1_entry} & \multicolumn{6}{l}{\reg{p2_moderate_r1_ownership}}\\
 Narrow bands & \reg{p2_bands_r0_entry} & \reg{p2_bands_r1_entry} & \multicolumn{6}{l}{\reg{p2_bands_r1_ownership}}\\
@@ -1047,53 +991,574 @@ Wide classes & \reg{p2_ex_c_r0_entry} & \reg{p2_ex_c_r1_entry} & \multicolumn{6}
 Same means, points & \reg{p2_ex_d_r0_entry} & \reg{p2_ex_d_r1_entry} & \multicolumn{6}{l}{\reg{p2_ex_d_r1_ownership}}\\
 \bottomrule
 \end{tabular}}\end{center}
-\BackButton{main:s23}
+\BackButton{main:s13}
+\end{frame}
+
+% ---------------------------------------------------------------- B7
+\begin{frame}[t,label=B7]{The order slot in full}
+\framesubtitle{The order slot · Paper §2.3}
+\hypertarget{app:b7}{}\BackupId{B7}
+\vspace{0.4em}
+\begin{center}
+\begin{tikzpicture}[box/.style={flowbox,font={\footnotesize\hyphenpenalty=10000\relax}}]
+  \node[box, text width=4.0cm] (inv) {\textbf{\sffamily Informed trader} — fills the slot with probability $\lambda$; sees synergy $j$; picks $q\in\{-1,0,1\}$; a nonzero order costs $k>0$};
+  \node[box, text width=4.0cm, below=0.35cm of inv] (liq) {\textbf{\sffamily Liquidity trader} — fills the slot with probability $1-\lambda$; sells, does nothing, or buys with chances $\beta,\ 1-2\beta,\ \beta$, where $0<\beta\le 1/3$};
+  \node[box, text width=2.75cm, anchor=north west] (slot) at ([xshift=0.55cm]inv.north east) {\textbf{\sffamily Order slot} — one public order $X\in\{-1,0,1\}$; no observer sees who filled it};
+  \node[box, text width=2.95cm, anchor=north west] (mm) at ([xshift=0.55cm]slot.north east) {\textbf{\sffamily Market makers} — see $X$ only; set $P=\mathbb{E}[V_T\mid X]$, where $V_T$ is the sale proceeds per share};
+  \node[box, flowcost, font={\footnotesize\hyphenpenalty=10000\relax}, text width=2.6cm, anchor=north west] (sb) at ([xshift=0.55cm]mm.north east) {\textbf{\sffamily Rival} — sees the price $P$ and cost $C$; sees neither $X$ nor $j$};
+  \draw[flowarr] ([yshift=-0.55cm]inv.north east) -- ([yshift=-0.55cm]slot.north west);
+  \draw[flowarr] (liq.east) -| ([xshift=-0.28cm,yshift=-0.55cm]slot.north west);
+  \draw[flowarr] ([yshift=-0.55cm]slot.north east) -- ([yshift=-0.55cm]mm.north west);
+  \draw[flowarr] ([yshift=-0.55cm]mm.north east) -- ([yshift=-0.55cm]sb.north west);
+\end{tikzpicture}
+\end{center}
+\vspace{0.4em}
+\LightRule\vspace{0.4em}
+{\small\raggedright A liquidity order in one direction arrives with probability $b=(1-\lambda)\beta$. Set $u=\lambda/b$. The number $1+u$ caps the likelihood ratio of one order.\par}
+\vfill
+\FootLine{Alternative arrival: Dow and Gorton (1997). Unit orders and unit cost: Edmans, Goldstein and Jiang (2015). Zero-profit pricing: Glosten and Milgrom (1985); Kyle (1985).}
+\BackButton{main:s6}
+\end{frame}
+
+% ---------------------------------------------------------------- B8, page 1
+\begin{frame}[t,label=B8]{Payoffs and Proposition 1 in full}
+\framesubtitle{Payoff objects · Paper §2.4 and §3.1}
+\hypertarget{app:b8}{}\BackupId{B8}
+\vspace{0.6em}
+{\raggedright Take a prepared rival with value $\theta\ge p$. It pays $\max\{p,R\}$ when it wins. The incumbent pays $\theta$ when it wins.\par}
+\[
+t(\theta)=\mathbb{E}_R\bigl[\max\{p,\min(R,\theta)\}\bigr],\qquad g(\theta)=\mathbb{E}_R\bigl[(\theta-\max\{p,R\})_+\bigr],\qquad t(\theta)+g(\theta)=\theta
+\]
+\vspace{-0.4em}
+{\small\raggedright $\mathbb{E}_R$ averages over the incumbent's value $R\sim F$.\par}
+\begin{itemize}\setlength{\itemsep}{3pt}
+\item Synergy means: $t_j=\mathbb{E}_j[t(\theta)]$ and $g_j=\mathbb{E}_j[g(\theta)]$ for $j\in\{H,L\}$. Without entry, $t_0=p[1-F(p)]$.
+\item Shareholder spread: $\Delta_T=t_H-t_L$. Read it as: how much more shareholders get with good synergy than with poor synergy.
+\item At belief $\mu=\Pr(H)$, expected rival gross profit is $B(\mu)=g_L+\mu(g_H-g_L)$.
+\item Win chance: $W_j(F)=\mathbb{E}_j[F(\theta)\mathbf 1\{\theta\ge p\}]$. A good-synergy rival outbids $F$ when $W_H(F)=1$.
+\end{itemize}
+\TakeawayEnd{The traded claim and the rival's claim sum to the same value. Strength moves the split.}
+\BackButton{main:s10}
+\end{frame}
+
+% ---------------------------------------------------------------- B8, page 2
+\begin{frame}[t,label=B8s]{Payoffs and Proposition 1 in full}
+\framesubtitle{Proposition 1 · Paper §3.1}
+\BackupId{B8}
+\small
+\vspace{0.4em}
+\begin{Statement}{Proposition 1}
+\raggedright
+Let $\tilde F\le F$ be a first-order stochastic strengthening of the distribution $F$.\par\vspace{2pt}
+(a) For any class laws with finite means, gross auction profit $g_H$ and $g_L$ weakly fall. Rival profit $B(\mu)$ weakly falls at each fixed belief $\mu$.\par\vspace{2pt}
+(b) Under the class ranking $G_H\le G_L$, the shareholder spread $\Delta_T$ weakly rises.\par\vspace{2pt}
+Under the class ranking, $\Delta_T(F)+g_H(F)-g_L(F)=\mathbb{E}_H[\max\{\theta,p\}]-\mathbb{E}_L[\max\{\theta,p\}]$, with the rival's value $\theta$ and reserve $p$.
+\end{Statement}
+\vspace{0.6em}
+\begin{itemize}
+\item Intuition: one class value gap is fixed, and strength moves its split between target proceeds and rival gross profit.
+\end{itemize}
+\BackButton{main:s10}
+\end{frame}
+
+% ---------------------------------------------------------------- B8, page 3
+\begin{frame}[t,label=B8b]{Payoffs and Proposition 1 in full}
+\framesubtitle{Proposition 1 in full: forms, strict signs, equal admissibility}
+\BackupId{B8}
+\vspace{0.6em}
+\begin{itemize}\setlength{\itemsep}{10pt}
+\item With class gap $D(y)=G_L(y)-G_H(y)$: $\Delta_T(F)=pF(p)D(p^-)+\int_p^\infty[1-F(y)]D(y)\,dy$ and $g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy$.
+\item Profit falls strictly exactly when $\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy>0$. Spread rises strictly exactly when $\int_p^\infty[F(y)-\tilde F(y)]D(y)\,dy>0$.
+\item Without the class ranking, the reserve term $pF(p)D(p^-)$ can reverse the spread sign. With no class atom at the reserve, the spread weakly rises under every strengthening exactly when class $H$ dominates above the reserve and the classes have equal admissibility, $G_H(p^-)=G_L(p^-)$.
+\end{itemize}
+\BackButton{main:s10}
+\end{frame}
+
+% ---------------------------------------------------------------- B9
+\begin{frame}[t,label=B9]{Equilibrium in full}
+\hypertarget{app:b9}{}\BackupId{B9}
+\footnotesize
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item Tuple: $\mathcal{E}=(\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)$, with truthful bids. Order distribution in class $j$: $\sigma_j$ on $\{-1,0,1\}$. Order belief: $\mu(x)=\Pr(j=H\mid X=x)$. Stock price after order $x$: $P(x)$. Belief at a price: $\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)$. High-cost preparation probability at price $\bar P$: $\zeta(\bar P)$. Cost $C=0$ prepares at each price.
+\item Liquidity probabilities: $\eta(-1)=\eta(1)=\beta$ and $\eta(0)=1-2\beta$. Order probability in class $j$: $f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)$, with presence $\lambda$. Entry after order $x$: $e(x)=\rho+(1-\rho)\zeta(P(x))$, with entry floor $\rho$.
+\item (E1) Order beliefs by Bayes' rule: $\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]$ after each order $x$, with prior $\pi$.
+\item (E2) Beliefs at a price by Bayes' rule: $\bar\mu(\bar P)=\pi\sum_{x:\,P(x)=\bar P}f_H(x)\big/\sum_{x:\,P(x)=\bar P}[\pi f_H(x)+(1-\pi)f_L(x)]$ at each price $\bar P$ that occurs.
+\item (E3) Preparation: $\zeta(\bar P)=1$ when rival gross profit $B(\bar\mu(\bar P))>c_H$, and $\zeta(\bar P)=0$ when $B(\bar\mu(\bar P))<c_H$, with high cost $c_H$. At equality, the tie rule applies.
+\item (E4) Competitive prices: $P(x)=\mathbb{E}[V_T\mid X=x]$ after each order $x$, with sale proceeds per share $V_T$. In payoff objects, $P(x)=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]$, with shareholder spread $\Delta_T$ and class proceeds $t_L$, $t_0$ from frame 8.
+\item (E5) Orders: $\sigma_j(q)>0$ only when the order $q$ maximizes the informed trader's class-$j$ payoff $U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|$, with order cost $k$. Prices $P$ and entry $e$ stay at the stated functions.
+\item (E6) Truthful bids: each prepared bidder with value at or above reserve $p$ bids its value.
+\item Tie rules, default pair: an indifferent informed trader may mix over its best orders, and an indifferent rival at cost $c_H$ prepares. Other rules: an indifferent informed trader abstains, or an indifferent rival at cost $c_H$ prepares with any probability.
+\end{itemize}
+\BackButton{main:s9}
 \end{frame}
 
 % ---------------------------------------------------------------- B10
-\begin{frame}[label=B10]{Sale terms in full: access, payment rule, reserves}
-\hypertarget{app:b10}{}
-{\small
-\begin{itemize}\setlength{\itemsep}{4pt}
-\item \textbf{Price access (A.7):} at $r_1$, proceeds gain equals $\reg{p2_access_proceeds_gain}$ and net surplus gain equals $\reg{p2_access_surplus_gain}$
-\item Orders and trade costs are the same in the two access cases at $r_1$. Access adds preparation only after a purchase
-\item \textbf{Reserve (A.9):} at the reserve $\reg{rsv_points_excl}$, which excludes the low class, full orders hold at both strengths and entry is flat
-\item Strict deterrence needs reserve $\reg{rsv_deter}$, a level that excludes the low class and the weak incumbent
-\item \textbf{Payment rule (A.8):} with seller share $\omega$, the spread response weakly has the sign of $1-2\omega$; strictly when $\omega\ne1/2$ and $\mathbb{E}[(R-\ell)_+]$ changes strictly
-\end{itemize}}
-\vspace{0.4em}
-{\small\raggedright Preparation, sale, and two admissible bidders are three distinct events once a reserve can exclude.\par}
-\BackButton{main:s24}
+\begin{frame}[t,label=B10]{The example in full}
+\hypertarget{app:b10}{}\BackupId{B10}
+\vspace{-2pt}
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.43\linewidth}
+{\scriptsize\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{1.75cm}>{\raggedright\arraybackslash}p{2.55cm}@{}}
+\toprule
+Input & Value & Meaning\\
+\midrule
+$h$, $\ell$ & $\reg{prim_h}$, $\reg{prim_ell}$ & good-synergy and poor-synergy values\\
+$p$ & $\reg{prim_p}$ & reserve price\\
+$\pi$, $\rho$ & $\reg{prim_pi}$, $\reg{prim_rho}$ & prior on good synergy; probability of zero cost\\
+Costs $0$, $c_H$, $k$ & $0$, $\reg{prim_cH}$, $\reg{prim_k}$ & preparation costs; cost of a nonzero order\\
+$\beta$, $\lambda$ & $\reg{beta_B}$, $\reg{lambda_B}$ & liquidity order chance; informed presence chance\\
+$u$, $b$ & $\reg{u_B}$, $\reg{b_B}$ & mass ratio $u=\lambda/b$; here $1+u=\mathrm{e}$\\
+$r_0,r_1,r_2$ & $\reg{prim_r0}$, $\reg{prim_r1}$, $\reg{prim_r2}$ & weak, strong, stronger still\\
+\bottomrule
+\end{tabular}}
+\column{0.55\linewidth}
+{\scriptsize\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.45cm}>{\raggedright\arraybackslash}p{3.3cm}l@{}}
+\toprule
+Object & Region & Example\\
+\midrule
+Mass ratio $u$ (Corollary 1) & $(\reg{u_lo},\reg{u_hi})$ & $\reg{u_B}$\\
+Top belief $M$ at prior $\reg{prim_pi}$ & $(\reg{M_lo},\reg{M_hi})$ & $\reg{M_half_B}$\\
+Liquidity chance $\beta$ & $0<\beta\le 1/3$ & $\reg{beta_B}$\\
+Presence chance $\lambda$ at that $\beta$ & from $u=\lambda/((1-\lambda)\beta)$ & $\reg{lambda_B}$\\
+Prior $\pi$ for Proposition 2 & $(\reg{prior_lo_B},\reg{prior_hi_B})$ & $\reg{prim_pi}$\\
+Research cost $a$ (Proposition A.1) & $(\reg{res_a_lo},\reg{res_a_up})$ & $\reg{res_a}$\\
+Research cap $\bar\lambda$ & $(\reg{res_cap_lo},\reg{res_cap_hi})$ & $\reg{res_cap}$\\
+\bottomrule
+\end{tabular}}
+\end{columns}
+\vspace{0.6em}
+\GrayLine{Each region is cut out by strict inequalities, so the results hold on an open set of inputs.}
+\BackButton{main:s14}
 \end{frame}
 
-% ---------------------------------------------------------------- B11
-\begin{frame}[label=B11]{Continuous order sizes need a convention}
-\hypertarget{app:b11}{}
+% ---------------------------------------------------------------- B11, page 1
+\begin{frame}[t,label=B11]{Outcomes and controls in full}
+\framesubtitle{Corollary 1 · Paper §4.2}
+\hypertarget{app:b11}{}\BackupId{B11}
+\vspace{0.3em}
+\begin{center}{\small\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.6cm}>{\centering\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{2.9cm}@{}}
+\toprule
+ & Weak $r_0=\reg{prim_r0}$ & Strong $r_1=\reg{prim_r1}$ & Very strong $r_2=\reg{prim_r2}$\\
+\midrule
+Rival profit at the prior, $B_r(\reg{prim_pi})$ & \reg{Bprior_r0} & \reg{Bprior_r1_B} & \reg{Bprior_r2}\\
+Shareholder spread, $\Delta_T(r)$ & \reg{Delta_r0} & \reg{Delta_r1} & \reg{Delta_r2}\\
+Informed trader orders (good synergy, poor synergy) & $(0,\ 0)$ & $(1,\ {-1})$ & $(1,\ {-1})$\\
+Price & Uninformative & Informative & Informative\\
+Entry & \reg{entry_r0} & \textbf{\reg{entry_r1_B}} & \reg{entry_r2}\\
+Good-synergy ownership & \reg{own_r0} & \textbf{\reg{own_r1_B}} & \reg{own_r2_B}\\
+\bottomrule
+\end{tabular}}\end{center}
+\TakeawayEnd{At each step, rival gross profit falls and the shareholder spread rises. Entry rises against the strong incumbent and returns to its floor against the very strong one.}
+\FootLine{In the example at prior $\reg{prim_pi}$, (H1)--(H3) hold exactly when the top belief sits between the two thresholds: $\tau(r_1)<M(\reg{prim_pi})<\tau(r_2)$. Region and margins: Backup B10. Fixed-information control: Backup B11, pages 2 and 3. Full payoff and outcome tables: Backup B11, pages 4 to 6.}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B11, page 2
+\begin{frame}[t,label=B11s]{Outcomes and controls in full}
+\framesubtitle{Fixed-information control · Paper §4.2 and Proposition A.2}
+\BackupId{B11}
+\vspace{0.2em}
+\LightRule\vspace{0.3em}
+{\raggedright Fix the law of synergy and signal, the synergy value laws, and the cost law. A stronger incumbent cannot raise entry.\par}
+\vspace{0.25em}
+{\raggedright Entry falls by exactly the chance that the preparation cost $C$ sits between rival gross profit at the two strengths.\par}
+\vspace{0.1em}\LightRule
+\vspace{-0.5em}
+\begin{center}{\small\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.6cm}>{\centering\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{2.6cm}@{}}
+\toprule
+Entry & Weak $r_0$ & Strong $r_1$\\
+\midrule
+Full model, orders re-solved & \reg{entry_r0} & \textbf{\reg{entry_r1_B}}\\
+Full orders held fixed at each strength & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r1_entry}\\
+Rival cannot see the price & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r1_entry}\\
+\bottomrule
+\end{tabular}}\end{center}
+\vspace{-0.4em}
+\SmallLine{Row 2 at $r_0$ is a control, not an equilibrium. In the slot, fixed order laws give the same belief after each order at each strength.}
+\TakeawayEnd{The rise needs the signal itself to change with strength. Frozen news gives flat entry, then a fall past the ceiling.}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B11, page 3
+\begin{frame}[t,label=B11f]{Outcomes and controls in full}
+\framesubtitle{The exact fall of entry under fixed information · Proposition A.2}
+\BackupId{B11}
+\small
+\vspace{0.6em}
+\begin{Statement}{Proposition A.2 (Fixed information)}
+\raggedright
+Fix the joint law of class $j$ and signal $S$, the class value laws $G_j$, and an independent cost law for preparation cost $C$. Conditional on $(j,S)$, the values $\theta$ and $R$ are independent with laws $G_j$ and $F_i$ in economy $i$, with signal belief $\mu(S)=\Pr(j=H\mid S)$. For a strengthening from $F_0$ to $F_1$, total entry $\mathsf{E}$ falls by exactly $\mathsf{E}_0-\mathsf{E}_1=\Pr\{B_1(\mu(S))<C\le B_0(\mu(S))\}\ge0$, with rival gross profit $B_i$ at $F_i$.
+\end{Statement}
+\vspace{0.8em}
+\begin{itemize}
+\item The rival still reads the stock price $P$ here. The fixed object is the joint law of the signal and the class.
+\end{itemize}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B11, page 4
+\begin{frame}[t,label=B11b]{Outcomes and controls in full}
+\framesubtitle{Proposition 2 in full: tuples, payoff tables, control panels}
+\BackupId{B11}
+\small
+\begin{enumerate}\setlength{\itemsep}{3pt}
+\item \textbf{Bounds for every profile:} belief band $m\le\mu\le M$; gain per unit at most $\Delta_T$; entry at least $\rho$
+\item \textbf{Weak $r_0$:} $\Delta_T(r_0)<k$ makes each nonzero order lose in expectation. An uninformative market is the sole outcome; entry is $\rho$
+\item \textbf{Strong $r_1$:} $k<\rho\kappa\,\Delta_T(r_1)$ makes each correct order pay under every profile; a wrong-signed order always loses. Orders are $(1,-1)$
+\item \textbf{Entry at $r_1$:} a buy order gives belief $M$ with $B_{r_1}(M)>c_H$, so cost $c_H$ prepares after a buy order. Entry exceeds $\rho$
+\item \textbf{Return at $r_2$:} trade still pays, but $B_{r_2}(M)<c_H$ keeps cost $c_H$ out at every price. Entry is $\rho$
+\end{enumerate}
+\vspace{2pt}
+{\small Ownership: with $W_H(F)=\mathbb{E}_H[F(\theta)\mathbf{1}\{\theta\ge p\}]$, good-synergy ownership rises exactly if $[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)$.\par}
+\vspace{4pt}
+{\small Share rises exactly when $e_HW_H(F_1)W_L(F_0)>e_LW_H(F_0)W_L(F_1)$; in the example, share rises from $\reg{share_H_r0}$ to $\reg{share_H_r1_B}$.\par}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B11, page 5
+\begin{frame}[t,label=B11c]{Outcomes and controls in full}
+\BackupId{B11}
+\vspace{-6pt}
+{\scriptsize Under full orders, a good-synergy rival faces a buy order with chance $\lambda+b$, and a poor-synergy rival with chance $b$.\par}
+\vspace{-6pt}
+{\scriptsize\[
+e_H=\rho+(1-\rho)(\lambda+b),\qquad e_L=\rho+(1-\rho)b,\qquad \text{entry}=\pi e_H+(1-\pi)e_L
+\]}
+\vspace{-9pt}
+{\scriptsize
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.49\linewidth}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item At $r_1$, cost $c_H$ prepares after a buy order and only after a buy order. Synergy entry rates are $e_H$ and $e_L$
+\item At the example's prior, entry is $\reg{entry_r1_B}$ and good-synergy ownership is $\reg{own_r1_B}$
+\item At $r_0$, an uninformative market gives an uninformative price, so entry is $\reg{entry_r0}$ and ownership is $\reg{own_r0}$
+\end{itemize}
+\column{0.49\linewidth}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item At $r_2$, no price covers $c_H$, so entry is $\reg{entry_r2}$ and ownership is $\reg{own_r2_B}$, with full orders
+\item $B_r(\pi)$ equals $\reg{Bprior_r0}$, $\reg{Bprior_r1_B}$, $\reg{Bprior_r2}$ at $r_0$, $r_1$, $r_2$
+\end{itemize}
+\end{columns}}
+\vspace{2pt}
+\begin{center}{\scriptsize\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.4cm}ccc@{}}
+\toprule
+ & $r_0=\reg{prim_r0}$ & $r_1=\reg{prim_r1}$ & $r_2=\reg{prim_r2}$\\
+\midrule
+Proceeds without entry, $t_0$ & \reg{p2_base_r0_t0} & \reg{p2_base_r1_t0} & \reg{p2_base_r2_t0}\\
+Proceeds with a good-synergy rival, $t_H$ & \reg{p2_base_r0_th} & \reg{p2_base_r1_th} & \reg{p2_base_r2_th}\\
+Proceeds with a poor-synergy rival, $t_L$ & \reg{p2_base_r0_tl} & \reg{p2_base_r1_tl} & \reg{p2_base_r2_tl}\\
+Shareholder spread, $\Delta_T$ & \reg{Delta_r0} & \reg{Delta_r1} & \reg{Delta_r2}\\
+Rival profit, good synergy, $g_H$ & \reg{p2_base_r0_gh} & \reg{p2_base_r1_gh} & \reg{p2_base_r2_gh}\\
+Rival profit, poor synergy, $g_L$ & \reg{p2_base_r0_gl} & \reg{p2_base_r1_gl} & \reg{p2_base_r2_gl}\\
+Rival profit at the prior, $B_r(\reg{prim_pi})$ & \reg{Bprior_r0} & \reg{Bprior_r1_B} & \reg{Bprior_r2}\\
+Preparation threshold, $\tau(r)$ & \reg{tau_r0} & \reg{tau_r1} & \reg{tau_r2}\\
+\bottomrule
+\end{tabular}}\end{center}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B11, page 6
+\begin{frame}[t,label=B11d]{Outcomes and controls in full}
+\BackupId{B11}
+\vspace{-6pt}
+\begin{center}{\scriptsize\renewcommand{\arraystretch}{0.98}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $r_0=\reg{prim_r0}$ & $r_1=\reg{prim_r1}$ & $r_2=\reg{prim_r2}$\\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Panel A. Equilibrium (Proposition 2)}}\\
+Informed orders, good synergy and poor synergy & $(0,0)$ & $(1,-1)$ & $(1,-1)$\\
+Belief after a sale & \reg{p2_base_r0_mu_minus} & \reg{p2_base_r1_mu_minus} & \reg{p2_base_r2_mu_minus}\\
+Belief after no order & \reg{p2_base_r0_mu_zero} & \reg{p2_base_r1_mu_zero} & \reg{p2_base_r2_mu_zero}\\
+Belief after a purchase & \reg{p2_base_r0_mu_plus} & \reg{p2_base_r1_mu_plus} & \reg{p2_base_r2_mu_plus}\\
+High-cost preparation & none & after a purchase & none\\
+Price after a sale & \reg{price_r0} & \reg{price_r1_m1_B} & \reg{price_r2_m1_B}\\
+Price after no order & \reg{price_r0} & \reg{price_r1_0_B} & \reg{price_r2_0_B}\\
+Price after a purchase & \reg{price_r0} & \reg{price_r1_p1_B} & \reg{price_r2_p1_B}\\
+Entry $\mathsf{E}$ & \reg{entry_r0} & \reg{entry_r1_B} & \reg{entry_r2}\\
+Good-synergy ownership $\mathsf{O}_H$ & \reg{own_r0} & \reg{own_r1_B} & \reg{own_r2_B}\\
+Expected target proceeds & \reg{p4_base_r0_proceeds} & \reg{p4_base_r1_proceeds} & \reg{p4_base_r2_proceeds}\\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Panel B. Full orders held fixed (Proposition A.2)}}\\
+Entry $\mathsf{E}$ & \reg{p4_frozen_r0_entry} & \reg{p4_frozen_r1_entry} & \\
+Good-synergy ownership $\mathsf{O}_H$ & \reg{p4_frozen_r0_own} & \reg{p4_frozen_r1_own} & \\
+Expected target proceeds & \reg{p4_frozen_r0_proceeds} & \reg{p4_frozen_r1_proceeds} & \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Panel C. The rival does not see the price}}\\
+Informed orders, good synergy and poor synergy & $(0,0)$ & $(1,-1)$ & \\
+Entry $\mathsf{E}$ & \reg{p4_hidden_r0_entry} & \reg{p4_hidden_r1_entry} & \\
+Good-synergy ownership $\mathsf{O}_H$ & \reg{p4_hidden_r0_own} & \reg{p4_hidden_r1_own} & \\
+Expected target proceeds & \reg{p4_hidden_r0_proceeds} & \reg{p4_hidden_r1_proceeds} & \\
+\bottomrule
+\end{tabular}}\end{center}
+\BackButton{main:s15}
+\end{frame}
+
+% ---------------------------------------------------------------- B12, page 1
+\begin{frame}[t,label=B12]{Research in full}
+\framesubtitle{Proposition 4 · Paper §5 · Prior $1/2$}
+\hypertarget{app:b12}{}\BackupId{B12}
+\vspace{0.1em}
+{\small\raggedright One change only. Before it learns the synergy, the informed trader picks research $\lambda\in[0,\bar\lambda]$ at cost $(a/2)\lambda^2$. Success has chance $\lambda$, reveals the synergy, and fills the slot. Failure hands the slot to liquidity.\par}
+\vspace{0.2em}
+{\small\raggedright More research adds informed trader orders and removes liquidity cover. The prior is $1/2$ throughout this block.\par}
+\vspace{0.3em}\LightRule\vspace{0.3em}
+{\small\raggedright At research $\lambda$, write $M_\lambda$ for the top belief after a purchase. Recruitment intensity $\lambda_E(\tau)$ solves $M_\lambda=\tau$: a full purchase recruits exactly at or past this research level.\par}
+\vspace{0.1em}
 {\small
+\begin{itemize}\setlength{\itemsep}{1.5pt}
+\item In the recruiting equilibrium, research $\min\{\lambda_R(\Delta_T),\bar\lambda\}$ rises strictly with $\Delta_T$ until the cap, then stays at the cap.
+\item Entry $\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]$ rises with research. Good-synergy entry rises with research. Poor-synergy entry falls.
+\item The recruiting equilibrium exists exactly when $\Delta_T>2k$ and $\tau\le M_\lambda$ at $\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}$.
+\end{itemize}}
+\SmallLine{Interior research $\lambda_R(\Delta_T)$ solves $2a\lambda=\Delta_T m_\lambda-k+(\rho\Delta_T m_\lambda-k)_+$, with band floor $m_\lambda=1-M_\lambda$. Branches: Backup B12, page 3. Scope: default tie rules, $\tau>1/2$.}
+\TakeawayEnd{A wider spread pays for more research. More research brings in a good-synergy rival more often.}
+\BackButton{main:s16}
+\end{frame}
+
+% ---------------------------------------------------------------- B12, page 2
+\begin{frame}[t,label=B12b]{Research in full}
+\framesubtitle{Research corollary · Paper §5}
+\BackupId{B12}
+\vspace{0.1em}
+\begin{center}
+\ResearchFig{7.8cm}
+\end{center}
+\vspace{-0.6em}
+{\small\raggedright Research $\lambda$ and entry against strength $r$. Research cost $a=\reg{res_a}$. Cap $\bar\lambda=\reg{res_cap}$.\par}
+\vspace{0.2em}
+{\small
+\begin{itemize}\setlength{\itemsep}{1.5pt}
+\item Recruiting research opens at $r_R\approx\regr{res_rR}{3}$. Entry there is $\reg{res_entry_rR}$.
+\item Research reaches the cap at $r_{\bar\lambda}\approx\regr{res_rcap}{3}$. Entry reaches $\reg{res_entry_cap}$ and holds to $r_C$.
+\item Zero research coexists on $[r_0,r_N]$. At $r_1$ and $r_2$ the sole outcome sits at the cap and matches Proposition 2.
+\end{itemize}}
+\TakeawayEnd{At the cap, the research economy is the Proposition 2 economy.}
+\FootLine{Floor-entry research branch, cap region, and three-strength table: Backup B12, pages 3 and 4.}
+\BackButton{main:s16}
+\end{frame}
+
+% ---------------------------------------------------------------- B12, page 3
+\begin{frame}[t,label=B12c]{Research in full}
+\framesubtitle{Research in full: first-order condition, branches, cap region}
+\BackupId{B12}
+\vspace{-6pt}
+\[
+2a\lambda=\Delta_T m_\lambda-k+(\rho\Delta_T m_\lambda-k)_+
+\]
+\vspace{-6pt}
+{\small
+\begin{itemize}\setlength{\itemsep}{3pt}
+\item Research picks $\lambda$ in $[0,\bar\lambda]$ before the slot, at cost $\tfrac{a}{2}\lambda^2$ (Proposition 4)
+\item In the example, $a=\reg{res_a}$ and the cap is $\bar\lambda=\reg{res_cap}$. The marked strengths are $r_R\approx\reg{res_rR}$, $r_{\bar\lambda}\approx\reg{res_rcap}$, $r_N\approx\reg{res_rN}$, $r_Q\approx\reg{res_rQ}$, $r_C\approx\reg{res_rC}$
+\item Zero research, with entry $\rho$, is an equilibrium exactly on $[r_0,r_N]$
+\item Recruiting research is an equilibrium exactly on $[r_R,r_C]$: research rises from $\reg{res_lambda_rR}$ to the cap on $[r_R,r_{\bar\lambda})$ and stays at the cap on $[r_{\bar\lambda},r_C]$; entry rises from $\reg{res_entry_rR}$ to $\reg{res_entry_cap}$ and keeps that value up to $r_C$
+\end{itemize}}
+\vspace{4pt}
+{\small\raggedright Zero research on $[r_0,r_N]$; recruiting research on $[r_R,r_C]$; floor-entry research on $(r_N,r_Q)$ and $(r_C,r_2]$, with $r_Q\approx\regr{res_rQ}{3}$.\par}
+\BackButton{main:s16}
+\end{frame}
+
+% ---------------------------------------------------------------- B12, page 4
+\begin{frame}[t,label=B12d]{Research in full}
+\BackupId{B12}
+\vspace{0.4em}
+{\small
+\begin{itemize}\setlength{\itemsep}{3pt}
+\item Floor-entry research, in which the informed trader trades in both synergy classes after a success, no order recruits and entry is $\rho$, is an equilibrium exactly on $(r_N,r_Q)$ and on $(r_C,r_2]$; there is no other equilibrium
+\item At $\reg{str_r155}$, $\reg{str_r160}$ and $\reg{str_r165}$ there are exactly two equilibria: zero research, and recruiting research below the cap (the informed trader buys on good synergy after a success and abstains on poor synergy). Research is $\reg{res_lambda_r155}$, $\reg{res_lambda_r160}$, $\reg{res_lambda_r165}$. Entry is $\reg{res_entry_r155}$, $\reg{res_entry_r160}$, $\reg{res_entry_r165}$
+\item The unique equilibrium has zero research at $r_0$, recruiting research at the cap at $r_1$ and floor-entry research at the cap at $r_2$, where entry is $\rho$
+\end{itemize}}
+\GrayLine{Costly research with an alternative arrival follows Dow and Gorton 1997.}
+\BackButton{main:s16}
+\end{frame}
+
+% ---------------------------------------------------------------- B13, page 1
+\begin{frame}[t,label=B13]{Predictions in full}
+\framesubtitle{Predictions · Paper §8 · Full two-sided trade, prior below $\tau$}
+\hypertarget{app:b13}{}\BackupId{B13}
+\vspace{-0.3em}
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.80\linewidth}
+{\footnotesize\raggedright Weight each price impact by how often its order occurs. Weighted purchase impact beats weighted sale impact exactly when a purchase recruits the rival.\par}
+\vspace{0.15em}
+{\footnotesize
+\begin{itemize}\setlength{\itemsep}{0.5pt}
+\item At prior $1/2$, order frequencies match. Compare raw impacts: $P(1)-P(0)$ against $P(0)-P(-1)$.
+\item The price gap $P(1)-P(-1)$ splits into a synergy part, $\rho\Delta_T[M(\pi)-m(\pi)]$, and an entry part. The entry part is positive exactly under recruitment, and it sits wholly in the purchase impact.
+\end{itemize}
+\vspace{0.1em}
+\begin{enumerate}\setlength{\itemsep}{0.5pt}
+\item Entry can rise with incumbent strength only when the price lands before preparation starts. Hide the price, and entry can only fall.
+\item Past the entry ceiling, orders stop predicting entry. Orders keep predicting the winner when $W_H>W_L$.
+\item At prior $1/2$, order counts cannot separate slot types. Prices can.
+\end{enumerate}}
+\vspace{0.05em}
+{\footnotesize\textbf{Date the price before preparation starts. Record the zero order.}\par}
+\column{0.18\linewidth}
+\begin{center}
+% three price levels; the purchase impact sits above P(0), the sale impact below
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \foreach \y/\l in {0/{P(-1)},0.9/{P(0)},2.75/{P(1)}} {\draw[cInk,line width=0.9pt] (0,\y) -- (1.15,\y); \node[anchor=west,font=\small,inner sep=2pt] at (1.18,\y) {$\l$};}
+  \draw[cMuted,line width=0.8pt,decorate,decoration={brace,amplitude=4pt,mirror}] (-0.12,0.9) -- (-0.12,0.02);
+  \draw[cInfo,line width=1.0pt,decorate,decoration={brace,amplitude=5pt,mirror}] (-0.12,2.73) -- (-0.12,0.92);
+\end{tikzpicture}
+\end{center}
+\end{columns}
+\SmallLine{In the example at $r_1$, the entry part is $\reg{ba_share_r1_B}$ of the price gap. Informed-trader share and announcement detail: Backup B13, page 2.}
+\TakeawayEnd{Test recruitment in prices first. The sharpest test needs no auction object.}
+\BackButton{main:s18}
+\end{frame}
+
+% ---------------------------------------------------------------- B13, page 2
+\begin{frame}[t,label=B13b]{Predictions in full}
+\BackupId{B13}
+\small
+\vspace{0.4em}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item Mean order under full two-sided trade is $\lambda(2\pi-1)$. Counts name informed presence only when the prior is known and differs from $1/2$.
+\item At prior $1/2$, sale impact plus volume name presence when entry sits at its floor after a sale and after no order, with payoff scale $\rho\Delta_T$ known.
+\item For a prepared rival, the winner gap after purchase against sale equals $[M(\pi)-m(\pi)](W_H-W_L)$, with win chance $W_j$ in class $j$. The prediction is strict only when $W_H>W_L$.
+\item A report that reveals preparation alone carries a positive mean price change exactly when preparation stayed uncertain after some order. Both reports together average to zero.
+\item At one middle strength, sale processes can form two clusters: uninformative prices with mean order zero, or informative prices with mean order $\lambda/2$.
+\item Count preparation starts, not public offers alone. Date incumbent strength from public records before the preparation decision.
+\end{itemize}
+\BackButton{main:s18}
+\end{frame}
+
+% ---------------------------------------------------------------- B13, page 3
+\begin{frame}[t,label=B13c]{Predictions in full}
+\framesubtitle{Weighted price impact and the winner · Proposition A.10}
+\BackupId{B13}
+\small
+\vspace{0.6em}
+\begin{itemize}\setlength{\itemsep}{6pt}
+\item Let order frequency be $\bar f(x)=\Pr(X=x)$, purchase impact $I_+=P(1)-P(0)$, and sale impact $I_-=P(0)-P(-1)$. \textbf{Proposition A.10:} under full two-sided trade, class $H$ buys and class $L$ sells with probability one, and prior $\pi<{}$threshold $\tau$, the weighted difference $\bar f(1)I_+-\bar f(-1)I_-$ is positive exactly when entry after a purchase exceeds the floor, $e(1)>\rho$. At prior $\pi=1/2$ the frequencies agree, and the raw impacts $I_+$ and $I_-$ compare directly. The entry part of the price gap $P(1)-P(-1)$ sits in purchase impact $I_+$.
+\item Under the same full two-sided trade, where entry $e(x)=\rho$ after each order, the order $X$ does not predict entry. It still predicts the winner exactly when the win chance $W_H$ exceeds $W_L$, with $W_j=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]$ for a prepared rival of class $j$; the indicator $\mathbf{1}\{\theta\ge p\}$ is one when the value meets the reserve. For a prepared rival, the win-probability gap after a purchase against a sale is $[M(\pi)-m(\pi)](W_H-W_L)$.
+\end{itemize}
+\BackButton{main:s18}
+\end{frame}
+
+% ---------------------------------------------------------------- B14, page 1
+\begin{frame}[t,label=B14]{References and the full literature table}
+\framesubtitle{What each strand gives the paper, and what the paper adds}
+\hypertarget{app:b14}{}\BackupId{B14}
+{\footnotesize\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.4cm}@{}}
+\toprule
+Strand & Closest work & Builds on & Adds\\
+\midrule
+Prices guide real decisions & Dow, Goldstein and Guembel (2017); Edmans, Goldstein and Jiang (2015); Bond, Edmans and Goldstein (2012); Foucault and Fr\'esard (2014) & The price as an information source; real decisions feed back into the incentive to produce information & The decision is a rival's entry, and the sale splits one value between shareholders and that rival\\
+Costly entry into auctions & Fishman (1988); Hirshleifer and Png (1989); Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994); Roberts and Sweeting (2013); Gentry and Stroup (2019) & Costly preparation, deterrence and selective entry & Pre-entry information that moves with competition\\
+Takeover prices and trading & Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991); Luo (2005); Betton, Eckbo, Thompson and Thorburn (2014) & Target prices shape takeovers; informed orders hide in liquidity trade; bidders learn from prices after a bid & An outside informed trader with no stake informs a rival bidder before it prepares\\
+\bottomrule
+\end{tabular}}
+\BackButton{main:s3}
+\end{frame}
+
+% ---------------------------------------------------------------- B14, page 2
+\begin{frame}[t,label=B14b]{References and the full literature table}
+\BackupId{B14}
+\footnotesize
+\begin{columns}[T]
+\column{0.49\textwidth}
+\raggedright
+Admati and Pfleiderer (2009). \emph{Rev. Financ. Stud.} 22.\par\smallskip
+Betton, Eckbo, Thompson and Thorburn (2014). \emph{J. Finance} 69.\par\smallskip
+Bond, Edmans and Goldstein (2012). \emph{Annu. Rev. Financ. Econ.} 4.\par\smallskip
+Boone and Mulherin (2007). \emph{J. Finance} 62.\par\smallskip
+Bulow and Klemperer (1996). \emph{Amer. Econ. Rev.} 86.\par\smallskip
+Dow and Gorton (1997). \emph{J. Finance} 52.\par\smallskip
+Dow, Goldstein and Guembel (2017). \emph{J. Eur. Econ. Assoc.} 15.\par\smallskip
+Edmans, Goldstein and Jiang (2012). \emph{J. Finance} 67.\par\smallskip
+Edmans, Goldstein and Jiang (2015). \emph{Amer. Econ. Rev.} 105.\par\smallskip
+Fishman (1988). \emph{RAND J. Econ.} 19.\par\smallskip
+Foucault and Fr\'esard (2014). \emph{J. Financ. Econ.} 111.\par\smallskip
+Gentry and Stroup (2019). \emph{J. Financ. Econ.} 132.
+\column{0.49\textwidth}
+\raggedright
+Gorbenko and Malenko (2014). \emph{J. Finance} 69.\par\smallskip
+Hirshleifer and Png (1989). \emph{Rev. Financ. Stud.} 2.\par\smallskip
+Kyle and Vila (1991). \emph{RAND J. Econ.} 22.\par\smallskip
+Levin and Smith (1994). \emph{Amer. Econ. Rev.} 84.\par\smallskip
+McAfee and McMillan (1987). \emph{Econ. Letters} 23.\par\smallskip
+Luo (2005). \emph{J. Finance} 60.\par\smallskip
+Roberts and Sweeting (2013). \emph{Amer. Econ. Rev.} 103.\par\smallskip
+Samuelson (1985). \emph{Econ. Letters} 17.\par\smallskip
+Schwert (1996). \emph{J. Finance} 51.
+\end{columns}
+\BackButton{main:s3}
+\end{frame}
+
+% ---------------------------------------------------------------- B15
+\begin{frame}[t,label=B15]{Continuous order sizes}
+\hypertarget{app:b15}{}\BackupId{B15}
+\small
+\vspace{0.4em}
 \begin{itemize}\setlength{\itemsep}{4pt}
 \item The slot set-up uses unit orders $\{-1,0,1\}$, so every order is on path and no off-path belief enters
-\item A menu of continuous order sizes needs a convention for the sizes that no class uses, as in Edmans, Goldstein and Jiang 2015
+\item A menu of continuous order sizes needs a convention for the sizes that no synergy class uses, as in Edmans, Goldstein and Jiang 2015
 \item Additive liquidity flow also keeps every size on path
-\item With Laplace noise of scale $\xi$ and full unit orders, the top posterior equals the slot value $M(\pi)$ when $1+u=e^{2/\xi}$
-\item The two set-ups then share the posterior bounds. They differ in the probability that each class reaches the top posterior
-\end{itemize}}
+\item With Laplace noise of scale $\xi$ and full unit orders, the top belief equals the slot value $M(\pi)$ when $1+u=\mathrm{e}^{2/\xi}$
+\item The two set-ups then share the belief bounds. They differ in the probability that each synergy class reaches the top belief
+\end{itemize}
 \Takeaway{Unit orders keep prices on path at every order.}
 \BackButton{main:s7}
 \end{frame}
 
-% ---------------------------------------------------------------- B12
-\begin{frame}[label=B12]{Predictions in full: fund share, winners, announcements, clusters}
-\hypertarget{app:b12}{}
-{\small
-\begin{itemize}\setlength{\itemsep}{5pt}
-\item Mean order under full two-sided trade is $\lambda(2\pi-1)$. Counts name fund presence only when the prior is known and differs from $1/2$.
-\item At prior $1/2$, sale impact plus volume name presence when entry sits at its floor after a sale and after no order, with payoff scale $\rho\Delta_T$ known.
-\item Winner gap after purchase against sale equals $[M(\pi)-m(\pi)]$ times the class gap in chances to beat the first buyer.
-\item A report that reveals preparation alone carries a positive mean price change exactly when preparation stayed uncertain after some order. Both reports together average to zero.
-\item At one middle strength, sale processes can form two clusters: quiet prices with mean order zero, or live prices with mean order $\lambda/2$.
-\item Count diligence starts, not public offers alone. Date first-buyer strength from public records before the diligence call.
-\end{itemize}}
-\BackButton{main:s25}
+% ---------------------------------------------------------------- B16, page 1
+\begin{frame}[t,label=B16]{Notation}
+\hypertarget{app:b16}{}\BackupId{B16}
+\vspace{-4pt}
+{\footnotesize\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{9.6cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\toprule
+Symbol & Gloss & First defined\\
+\midrule
+$R$, $F$ & incumbent's value $R$; its distribution $F$, with $R\sim F$ in the general model; in the paper's example (frames 14--16 and their backups), $R$ is uniform on $[0,r]$ & frame 5\\
+$j$, $\pi$, $\theta$, $G_j$ & synergy class $j\in\{H,L\}$; prior $\pi=\Pr(j=H)$; rival's value $\theta$; class value law $G_j$ for $\theta$ given $j$ & frame 5\\
+$p$ & reserve $p$ of the cash second-price auction & frame 5\\
+$C$, $c_H$, $\rho$ & baseline preparation cost $C\in\{0,c_H\}$ (B11 also allows any fixed independent cost law); high cost $c_H$; entry floor $\rho=\Pr(C=0)\in(0,1)$ & frame 5\\
+$X$, $q$, $\lambda$, $\beta$, $k$ & slot outcome $X$; the informed trader's chosen order $q$; presence $\lambda$; liquidity probability $\beta$; order cost $k$ & frame 6\\
+$P$, $V_T$, $\mathbb{E}[\cdot]$ & stock price $P(X)=\mathbb{E}[V_T\mid X]$; target proceeds per share $V_T$; expectation $\mathbb{E}[\cdot]$ & frame 6\\
+$\mu(x)$, $\bar\mu(\bar P)$ & order belief $\mu(x)=\Pr(j=H\mid X=x)$; belief at a price $\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)$. The two agree under Lemma A.2, with $\Delta_T>0$, $g_H>g_L$, and $e(x)\ge\rho$ & frames 7, 9, 11\\
+$t(\theta)$, $g(\theta)$ & expected target proceeds $t(\theta)$; gross auction profit $g(\theta)$, at value $\theta\ge p$ & frame 8\\
+$t_j$, $g_j$, $t_0$ & class means of $t(\theta)$, $g(\theta)$ in class $j$; proceeds with no entry $t_0=p[1-F(p)]$ & frame 8\\
+$\Delta_T$, $B(\mu)$ & shareholder spread $\Delta_T=t_H-t_L$; rival gross profit $B(\mu)=g_L+\mu(g_H-g_L)$ at belief $\mu$ (before $C$) & frame 8\\
+$e(x)$, $\mathsf{E}$ & entry after order $x$, $e(x)\ge\rho$; total entry $\mathsf{E}$, the probability that the rival prepares & frame 9, B11\\
+\bottomrule
+\end{tabular}}
+\BackButton{main:s5}
+\end{frame}
+
+% ---------------------------------------------------------------- B16, page 2
+\begin{frame}[t,label=B16b]{Notation}
+\BackupId{B16}
+\vspace{-4pt}
+{\footnotesize\renewcommand{\arraystretch}{0.92}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{9.6cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\toprule
+Symbol & Gloss & First defined\\
+\midrule
+$U_j(q)$ & payoff from order $q$; informed trader sees class $j$ & frame 9\\
+$\tilde F$, $F_i$ & strengthening $\tilde F\le F$ in B8; distributions $F_0$, $F_1$, $F_2$ in B1, with $B_i$, $\Delta_i$ at $F_i$ & B8, B1\\
+$b$, $u$, $m(\pi)$, $M(\pi)$ & liquidity mass $b=(1-\lambda)\beta$; relative informed mass $u=\lambda/b$; band floor $m(\pi)$; top belief $M(\pi)$ & frame 11, B2\\
+$\tau$, $\kappa(\pi)$ & threshold $\tau=(c_H-g_L)/(g_H-g_L)$ when $g_H>g_L$; residual doubt $\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}$ & frame 12, B1\\
+$K_H$, $K_L$ & gross returns of a purchase in class $H$ and a sale in class $L$, before order cost $k$ & frame 12, B2\\
+$h$, $\ell$, $r$ & point-mass values $h$ (class $H$) and $\ell$ (class $L$); strength $r$ with $R$ uniform on $[0,r]$ & frame 14\\
+$S$, $\mu(S)$ & fixed signal $S$; signal belief $\mu(S)=\Pr(j=H\mid S)$ & frame 15, B11\\
+$a$, $\bar\lambda$, $\lambda_R$, $M_\lambda$, $m_\lambda$ & research cost coefficient $a>0$ in $(a/2)\lambda^2$; research cap $\bar\lambda\in(0,1)$; interior research $\lambda_R(\Delta_T)$; top belief $M_\lambda$ and band floor $m_\lambda$ at presence $\lambda$ & frame 16, B12\\
+$\bar f(x)$, $I_+$, $I_-$, $W_j$ & order frequency $\bar f(x)=\Pr(X=x)$; purchase impact $I_+=P(1)-P(0)$; sale-order impact $I_-=P(0)-P(-1)$; win chance $W_j$ of a prepared class-$j$ rival & frame 18, B13\\
+$\sigma_j$, $\eta$, $f_j(x)$, $\zeta$ & order distribution $\sigma_j$; liquidity probabilities $\eta$; order probability $f_j(x)$ in class $j$; high-cost preparation probability $\zeta$ at a price & B9\\
+$e_H$, $e_L$, $W_j(F)$ & entry in class $H$, class $L$; win chance $W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]$ against distribution $F$ & frame 16, B1, B13\\
+\bottomrule
+\end{tabular}}
+\BackButton{main:s5}
 \end{frame}
 
 \end{document}

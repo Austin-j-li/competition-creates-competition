@@ -49,10 +49,12 @@
 
 \noindent
 This note sets two trading stages for the model of \emph{Competition Creates Competition} side by side. In the
-order slot, the trading stage of the paper, an informed investor and a liquidity trader are alternative arrivals in
-one public order opportunity. In the Laplace set-up, the investor chooses a continuous order and Laplace noise hides
+order slot, the trading stage of the paper, an informed trader and a liquidity trader are alternative arrivals in
+one public order opportunity. In the Laplace set-up, the informed trader chooses a continuous order and Laplace noise hides
 it; this is the trading stage of the manuscript of 22 October 2026 with the same title. The auction, the preparation
-cost and the challenger's decision are the same in both. Section~\ref{sec:setups} states the two set-ups,
+cost and the decision of the potential rival bidder
+are the same in both. The Laplace manuscript calls the rival the challenger and the informed trader the investor.
+Section~\ref{sec:setups} states the two set-ups,
 Section~\ref{sec:results} sets out what each delivers, result by result, and Section~\ref{sec:differ} names the
 features of each trading stage that the differences come from.
 
@@ -64,33 +66,34 @@ superscript \(\mathrm{Lap}\), and the Laplace noise scale is \(\xi\).
 %==========================================================================================
 \section{The two set-ups}\label{sec:setups}
 
-\paragraph{Shared primitives.} A challenger of class \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\), has a value
-\(\theta\sim G_j\). The classes satisfy the class ranking: \(G_H\) dominates \(G_L\), and both supports lie above
-the reserve \(p\). The incumbent's value is \(R\sim F\). The challenger's preparation cost is zero with probability
+\paragraph{Shared primitives.} One bidder, the incumbent bidder, or the incumbent, is already prepared. A second
+bidder, the potential rival bidder, or the rival, has a class \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\), and a
+value \(\theta\sim G_j\). The classes satisfy the class ranking: \(G_H\) dominates \(G_L\), and both supports lie above
+the reserve \(p\). The incumbent's value is \(R\sim F\). The rival's preparation cost is zero with probability
 \(\rho\) and \(c_H\) otherwise, and prepared bidders bid their values in a second-price auction with reserve \(p\).
 The auction gives the proceeds \(t_0\) without entry and \(t_j\) after entry in class \(j\), the gross profits
 \(g_j\), the target-payoff spread \(\DT=t_H-t_L\), gross profit \(B(\mu)=g_L+\mu(g_H-g_L)\) at the belief \(\mu\), and
-the preparation threshold \(\tau=(c_H-g_L)/(g_H-g_L)\). Entry \(\Ent\) is the probability that the challenger
-prepares, and high-class ownership \(\Own_H\) the probability that a class-\(H\) challenger acquires the target.
+the preparation threshold \(\tau=(c_H-g_L)/(g_H-g_L)\). Entry \(\Ent\) is the probability that the rival
+prepares, and high-class ownership \(\Own_H\) the probability that a class-\(H\) rival acquires the target.
 
 In the example the classes are point masses at \(h=\reg{prim_h}\) and \(\ell=\reg{prim_ell}\), the incumbent is
 uniform on \([0,r]\), and \((p,\rho,c_H,k)=(\reg{prim_p},\reg{prim_rho},\reg{prim_cH},\reg{prim_k})\), with prior
 \(\reg{prim_pi}\) and the strengths \(r_0=\reg{prim_r0}\), \(r_1=\reg{prim_r1}\) and \(r_2=\reg{prim_r2}\). Both
 set-ups use this example.
 
-\paragraph{The order slot.} One public order opportunity comes before the challenger's decision. With probability
-\(\lambda\in(0,1)\) the informed investor fills it: it sees the class and chooses \(q\in\{-1,0,1\}\), and a nonzero
+\paragraph{The order slot.} One public order opportunity comes before the rival's decision. With probability
+\(\lambda\in(0,1)\) the informed trader fills it: it sees the class and chooses \(q\in\{-1,0,1\}\), and a nonzero
 order costs \(k\). With probability \(1-\lambda\) a liquidity trader fills it and sells, abstains or buys one unit
 with probabilities \(\beta\), \(1-2\beta\) and \(\beta\), where \(0<\beta\le1/3\), for reasons apart from the sale. No one observes who filled
-the slot. Market makers see the order \(X\in\{-1,0,1\}\) and set \(P=\E[V_T\mid X]\), where \(V_T\) is the terminal
+the slot. Competitive market makers see the order \(X\in\{-1,0,1\}\) and set \(P=\E[V_T\mid X]\), where \(V_T\) is the terminal
 payoff of a target share. The device is the alternative-arrival structure of \citet{DowGorton1997}, in which an
 informed order and a liquidity order of the same size are alternative arrivals in one opportunity; the unit menu,
 the presence probability and the unit cost follow \citet{EdmansGoldsteinJiang2015}. The liquidity mass in one
 direction is \(b=(1-\lambda)\beta\), and \(1+u\), with \(u=\lambda/b\), is the largest likelihood ratio that one order
 can carry. In the example \(1+u=\eu\) and \(\beta=\reg{beta_B}\), so \(\lambda=\reg{lambda_B}\) and \(b=\reg{b_B}\).
-Section~5 of the paper adds a research stage in which the investor chooses \(\lambda\) at a cost.
+Section~5 of the paper adds a research stage in which the informed trader chooses \(\lambda\) at a cost.
 
-\paragraph{The Laplace set-up.} The investor observes the class and submits an order \(q\in[-1,1]\) at the cost
+\paragraph{The Laplace set-up.} The informed trader observes the class and submits an order \(q\in[-1,1]\) at the cost
 \(k|q|\). Noise demand has the Laplace density \(\eu^{-|z|/\xi}/(2\xi)\) with scale \(\xi>1\). Market makers see the
 flow, the sum of the order and the noise, and set its price at the expected terminal payoff. The likelihood ratio of
 a flow lies in \([\eu^{-2/\xi},\eu^{2/\xi}]\). In the example \(\xi=\reg{lap_b}\), so \(\eu^{2/\xi}=\eu\), the slot's
@@ -108,11 +111,11 @@ What hides the order & a liquidity trader fills the slot with probability \(1-\l
 What market makers see & the order \(X\in\{-1,0,1\}\) & the flow, a real number\\
 Largest likelihood ratio & \(1+u\), \(u=\lambda/[(1-\lambda)\beta]\) & \(\eu^{2/\xi}\)\\
 Posterior bounds & \([m(\pi),M(\pi)]\) after every nonzero order, and after the zero order when \(\beta\le1/3\) & \([m(\pi),M(\pi)]\) at every flow\\
-Price and belief & equal prices give equal posteriors when \(\DT>0\) & the challenger inverts the price through the entry floor when \(\DT>0\)\\
-Investor's problem & one comparison per class: the gross return \(K_j\) against \(k\) & a derivative bound on order sizes in \([0,1]\)\\
+Price and belief & equal prices give equal posteriors when \(\DT>0\) & the rival inverts the price through the entry floor when \(\DT>0\)\\
+Informed trader's problem & one comparison per class: the gross return \(K_j\) against \(k\) & a derivative bound on order sizes in \([0,1]\)\\
 Trading bound in Proposition 2 & \(k<\rho\kappa(\pi)\DT(F_1)\) & \(k<(1-1/\xi)\rho\kappa(\pi)\DT(F_1)\)\\
 Primitives it adds & a unit menu, a presence probability, an exogenous liquidity motive; with research, a quadratic cost and a cap & a continuous order and a Laplace law with \(\xi>1\); Proposition L-A.5 extends to every density with a bounded score\\
-Tie rules & an indifferent investor may mix over its best orders, and an indifferent high-cost challenger prepares; the other two rules are stated where they change a conclusion (Table~A.3) & an indifferent high-cost challenger prepares; Propositions L-2 and L-3 need no rule for the investor\\
+Tie rules & an indifferent informed trader may mix over its best orders, and an indifferent high-cost rival prepares; the other two rules are stated where they change a conclusion (Table~A.3) & an indifferent high-cost rival prepares; Propositions L-2 and L-3 need no tie rule for the informed trader\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -121,9 +124,9 @@ With \(1+u=\eu^{2/\xi}\) the two set-ups have the same posterior bounds,
 \(M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]\) and \(m(\pi)=\pi/[\pi+(1-\pi)(1+u)]\), and in the example
 \(M(1/2)=\eu/(1+\eu)=\reg{M_half_B}\) and \(m(1/2)=\reg{m_half_B}\) in both. Every order or flow has positive
 probability or density in both classes, so every price is on path and neither set-up needs an off-path belief. The
-zero-cost challenger prepares after every price, so entry is at least \(\rho\), and the gross return of a correct unit
+zero-cost rival prepares after every price, so entry is at least \(\rho\), and the gross return of a correct unit
 order lies between \(\rho\kappa(\pi)\DT\) and \(\DT\), with \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\), in both
-(Lemma~A.3; equation L-11). The investor's problem differs: in the slot each class compares one gross return with
+(Lemma~A.3; equation L-11). The informed trader's problem differs: in the slot each class compares one gross return with
 \(k\), while in the Laplace set-up a score bound, \(|f'|\le f/\xi\) for the noise density \(f\), shows that a
 correctly signed order of size \(s\) has marginal profit at least \((1-s/\xi)\) times its gross return minus \(k\).
 The slot's trading bound therefore carries no factor \(1-1/\xi\).
@@ -163,12 +166,12 @@ Empirical predictions & Section 8, Propositions A.10 to A.13: entry and incumben
 bound of the noise in the Laplace set-up. In the slot the bound after a nonzero order holds for every \(\beta<1/2\),
 and the bound after the zero order uses \(\beta\le1/3\). Both set-ups read the posterior from the price: in the slot,
 two orders with one price have the same entry and therefore the same posterior (Lemma~A.2); in the Laplace set-up, the
-challenger inverts the identity \(P=t_0+e(P)[t_L-t_0+\DT\mu]\) through the entry floor (Proposition~L-A.2). When
+rival inverts the identity \(P=t_0+e(P)[t_L-t_0+\DT\mu]\) through the entry floor (Proposition~L-A.2). When
 \(\DT>0\) and \(g_H>g_L\), the auction enters the slot's orders, posteriors, entry and research only through \(\DT\) and \(\tau\) (Lemma~A.4), and a
 stronger incumbent never narrows the spread and, while \(g_L\le c_H\), never lowers the threshold (Lemma~A.5).
 
 \paragraph{Proposition 1.} The result concerns the auction alone, so it is the same in both set-ups: a stronger
-incumbent moves the class value gap from the challenger's profit to target proceeds.
+incumbent moves the class value gap from the rival's profit to target proceeds.
 
 \paragraph{Proposition 2.} The three economies have the same outcomes in both set-ups: a quiet market against the
 weak incumbent, full orders that recruit after a purchase against the strong incumbent, and full orders with entry at
@@ -188,7 +191,7 @@ in the two set-ups: the cost window \((\reg{lap_cH_lo},\reg{lap_cH_hi})\), the p
 \(\reg{lap_prior_ii_hi}\) in the Laplace set-up. In the slot the region in the example is an exact band for \(u\)
 (Corollary~1).
 
-\paragraph{Fixed information.} Both set-ups hold the information in the price fixed and let the challenger decide
+\paragraph{Fixed information.} Both set-ups hold the information in the price fixed and let the rival decide
 again: a stronger incumbent then lowers gross profit at every belief, so entry cannot rise (Proposition~A.2;
 Proposition~L-A.3). In the slot, Proposition~A.2 covers every experiment whose signal is independent of both values
 given the class, and every cost law independent of the class, the values and the signal. With full orders held fixed,
@@ -204,7 +207,7 @@ every equilibrium on \([r_0,r_2]\) for every slot in the band of Corollary~1. Co
 \([r_A,r_N]\approx[\reg{rA},\reg{rN}]\). In the informative market class \(H\) buys at the rate \(b[\DT(r)/k-2]\) up to
 \(r_F\approx\reg{rF_B}\), so entry rises strictly from \(\reg{entry_rA_B}\) at \(r_A\) through \(\reg{entry_mb_r145_B}\) at
 \(\reg{str_r145}\) to \(\reg{entry_r1_B}\) at \(r_F\), and keeps that value up to \(r_C\). The low class abstains up to
-\(r_N\), mixes on \((r_N,r_S)\) and sells for sure from \(r_S\approx\reg{rS_B}\). When an indifferent high-cost challenger
+\(r_N\), mixes on \((r_N,r_S)\) and sells for sure from \(r_S\approx\reg{rS_B}\). When an indifferent high-cost rival
 may prepare with any probability, the threshold pair is also an equilibrium on \((r_A,r_J]\), with
 \(r_J\approx\reg{rJ}\), and its entry falls strictly from \(\reg{entry_rA_B}\) to \(\rho\) (Table~A.3). At other priors
 (Corollary~A.2), coexistence starts at \(r_A\) for priors between \(\approx\reg{piA_lo_B}\) and \(\approx\reg{piA_hi}\), starts where
@@ -221,9 +224,9 @@ the quiet market. Entry in these equilibria rises strictly, from \(\reg{lap_P3_e
 \(\reg{lap_P3_entry_r160}\) to \(\reg{lap_P3_entry_r165}\). In the slot, at the same three strengths, entry in the
 informative market is \(\reg{entry_r1_B}\) beside the quiet market.
 
-\paragraph{Proposition 4.} Only the slot has a research stage. Before it learns the class, the investor chooses an
+\paragraph{Proposition 4.} Only the slot has a research stage. Before it learns the class, the informed trader chooses an
 intensity \(\lambda\in[0,\bar\lambda]\) at the cost \((a/2)\lambda^2\), and the intensity is the presence probability.
-At the prior \(1/2\), when an indifferent investor may mix and an indifferent high-cost challenger prepares,
+At the prior \(1/2\), when an indifferent informed trader may mix and an indifferent high-cost rival prepares,
 recruiting research solves \(2a\lambda=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+\), capped at
 \(\bar\lambda\), and research and entry rise with the spread up to the cap (Proposition~4). In the example, with
 \(a=\reg{res_a}\) and \(\bar\lambda\approx\reg{res_cap}\) (Corollary~3), zero research is an equilibrium exactly on
@@ -267,15 +270,15 @@ reserve \(\reg{rsv_deter}\), which also excludes the weak incumbent: entry falls
 \(\reg{p2_reserve_points_deter_r0_entry}\) to \(\reg{p2_reserve_points_deter_r1_entry}\) (Proposition~A.9(b)).
 
 \paragraph{Empirical predictions.} Both set-ups give three predictions. When the price precedes the decision, a
-stronger prepared bidder can raise the probability of further preparation; when it does not, it can only lower it; and
-against a strong enough prepared bidder, preparation returns to its floor while the price stays informative. The slot
+stronger incumbent can raise the probability of further preparation; when it does not, it can only lower it; and
+against a strong enough incumbent, preparation returns to its floor while the price stays informative. The slot
 derives observables from one order opportunity. Under full two-sided trade at a prior below the threshold, the
 purchase impact weighted by the frequency of a purchase exceeds the sale impact weighted by the frequency of a sale
 exactly when a purchase recruits (Proposition~A.10). The price gap \(P(1)-P(-1)\) is \(\reg{ba_r1_B}\) at \(r_1\),
-and \(\reg{ba_share_r1_B}\) of it is the entry component. Order counts identify the investor's presence at a known
+and \(\reg{ba_share_r1_B}\) of it is the entry component. Order counts identify the informed trader's presence at a known
 prior away from \(1/2\), and the sale impact identifies it at any known prior; at the prior \(1/2\) the shares
 consistent with counts and incentives at \(r_1\) lie between \(\approx\reg{theta_min_counts_B}\) and
-\(\reg{theta_max_full_eq_r1_B}\) (Proposition~A.11). Under full two-sided trade a prepared challenger wins
+\(\reg{theta_max_full_eq_r1_B}\) (Proposition~A.11). Under full two-sided trade a prepared rival wins
 more often after a purchase than after a sale exactly when, with positive probability, a high-class value beats the
 incumbent more often than a low-class value; this holds also above \(r_C\), where orders do not predict entry
 (Proposition~A.12), and the mean price change over preparation reports is positive exactly when
@@ -288,7 +291,7 @@ demand over the decision interval, and its three predictions are stated for that
 \paragraph{The order menu.} A continuous menu gives the low class a sale of any size. Its marginal profit falls
 strictly with the size of the sale, so a root of its first-order condition is a global optimum (Online
 Appendix~L-B.2), and the partial sales of Proposition~L-3 follow. On the unit menu a sale is all or nothing, and the
-continuous margin is a mixture probability: the low class mixes on \((r_N,r_S)\) when an indifferent investor may mix
+continuous margin is a mixture probability: the low class mixes on \((r_N,r_S)\) when an indifferent informed trader may mix
 (Corollary~2; Table~A.3). The same holds for the rise of entry at intermediate strengths. In the Laplace set-up the
 size of the sale carries it; in the slot, the high class's purchase rate carries it on \([r_A,r_F]\) at a fixed
 presence probability, and the research intensity carries it on \([r_R,r_{\bar\lambda}]\). The slot's rise at a fixed
@@ -304,11 +307,11 @@ set along the path a finite list: each class has three orders, and each gross re
 own rate, so Corollaries~2 and~3 list every equilibrium at every strength from \(r_0\) to \(r_2\). In the example,
 full two-sided trade is the unique outcome for \(r_S<r<h\) (Section~8).
 
-\paragraph{What the market observes.} Both set-ups price one trade before the challenger's decision. The slot is one
+\paragraph{What the market observes.} Both set-ups price one trade before the rival's decision. The slot is one
 public order opportunity at a known date, and its counterpart is the first prespecified public opportunity after the
 sale becomes public, with an opportunity without an order recorded as a zero; the Laplace flow is the aggregate net
-demand of the decision interval. In both set-ups the entry ceiling \(r_C\) is a tie for the high-cost challenger after
-the top posterior, so the challenger's tie rule decides entry at \(r_C\) itself.
+demand of the decision interval. In both set-ups the entry ceiling \(r_C\) is a tie for the high-cost rival after
+the top posterior, so the rival's tie rule decides entry at \(r_C\) itself.
 
 \bibliographystyle{aer}
 \setlength{\bibsep}{3pt}
