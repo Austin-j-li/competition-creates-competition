@@ -19,6 +19,9 @@ this script.
 The slide versions set their text in Archivo: the TrueType files in slot/manuscript/fonts/ (the static Archivo
 faces as served by Google Fonts, with OFL.txt beside them). The paths used are printed when the program starts.
 The manuscript versions keep STIXGeneral text and STIX math.
+The slide versions leave out every label that slides.tex covers with \\FigCover and sets again with \\FigText
+(axis titles, panel letters and printed values); the layout, the curves and the other labels are those of the
+covered version, so the covers and the new labels stay aligned.
 """
 import argparse
 import csv
@@ -229,7 +232,7 @@ def regd(key, computed):
 NAVY, BRICK, GREY, INK = "#1f3a6e", "#b4472e", "#6c6c6c", "#222222"
 BAND_BLUE, BAND_GREY = "#e5eaf4", "#ececec"
 PAPER_PALETTE = (NAVY, BRICK, GREY, INK, BAND_BLUE, BAND_GREY)
-# Slide palette: the ruled-document tokens of DESIGN.md. Ink carries the quiet branch and the
+# Slide palette: the ruled-document tokens of DESIGN.md. Ink carries the uninformative branch and the
 # region boundaries, the information colour the branches a purchase recruits along and the belief
 # band, the cost colour the preparation threshold, the muted grey the floor branches. The bands are
 # the information tint and the neutral tint on the slide paper colour.
@@ -380,11 +383,16 @@ def fig_beliefs(talk):
     axa.set_ylim(0.2, 0.84)
     axa.set_xticks([1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6])
     axa.set_yticks([0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
-    axa.set_xlabel(r"incumbent strength, $r$")
+    if not talk:
+        axa.set_xlabel(r"incumbent strength, $r$")
     axa.set_ylabel(r"preparation threshold, $\tau(r)$")
     xl = 1.27
-    lab(axa, xl, Mv + 0.022, r"top posterior $M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="bottom")
-    lab(axa, xl, mv + 0.022, r"bottom posterior $m(1/2)\approx %s$" % regd("m_half_B", d6(PM.m)), S, color=NAVY, va="bottom")
+    if not talk:
+        # On the slides these labels are set by \FigText in slides.tex.
+        lab(axa, xl, Mv + 0.022, r"top posterior $M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY,
+            va="bottom")
+        lab(axa, xl, mv + 0.022, r"bottom posterior $m(1/2)\approx %s$" % regd("m_half_B", d6(PM.m)), S, color=NAVY,
+            va="bottom")
     lab(axa, xl, 0.5 + 0.022, r"prior $1/2$", S, color="0.35", va="bottom")
     lab(axa, 1.9 if not talk else 2.0, 0.60 if not talk else 0.585, r"threshold $\tau(r)$", S, color=BRICK, va="center")
     axa.annotate("", xy=(2.0 if not talk else 2.1, float(tau(PF, 2.0 if not talk else 2.1)) - 0.012),
@@ -394,7 +402,8 @@ def fig_beliefs(talk):
     axa.annotate(r"entry ceiling $r_C$", xy=(rC, Mv), xytext=(3.27, 0.60), fontsize=S.fn,
                  ha="center", va="top", color="k",
                  arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.3", shrinkA=1, shrinkB=3.5))
-    panel_label(axa, "(a)", S, dx=-0.17 if not talk else -0.145, dy=1.075)
+    if not talk:
+        panel_label(axa, "(a)", S, dx=-0.17, dy=1.075)
 
     # --- (b) the band for M(1/2)
     r2x = np.linspace(R1, R2, 400)
@@ -413,14 +422,18 @@ def fig_beliefs(talk):
     axb.set_xticks([3.0, 3.2, 3.4, 3.6])
     axb.set_xticklabels([r"$r_1$", "3.2", "3.4", r"$r_2$"])
     axb.set_yticks([0.700, 0.710, 0.720, 0.730])
-    axb.set_xlabel(r"incumbent strength, $r$")
     axb.set_ylabel(r"belief, $\tau(r)$ and $M(1/2)$")
-    lab(axb, 3.02, t2 + 0.0010, r"$\tau(r_2)\approx %s$" % regd("tau_r2", d6(t2)), S, color=NAVY, va="bottom")
-    lab(axb, 3.02, Mv - 0.0009, r"$M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="top")
-    lab(axb, 3.585, t1 + 0.0010, r"$\tau(r_1)=%s$" % regd("tau_r1", d6(t1)), S, color=NAVY, ha="right", va="bottom")
-    lab(axb, 3.585, 0.7105 if talk else 0.7095, r"band for $M(1/2)$", S, color=NAVY, ha="right", va="center")
-    lab(axb, rC - 0.012, 0.7022, r"$r_C\approx %s$" % regd("rC_B", d6(rC)), S, color="0.2", ha="right", va="center")
-    panel_label(axb, "(b)", S, dx=-0.34 if not talk else -0.36, dy=1.075)
+    if not talk:
+        # On the slides the axis title, the printed values and the panel letter are set by \FigText in slides.tex.
+        axb.set_xlabel(r"incumbent strength, $r$")
+        lab(axb, 3.02, t2 + 0.0010, r"$\tau(r_2)\approx %s$" % regd("tau_r2", d6(t2)), S, color=NAVY, va="bottom")
+        lab(axb, 3.02, Mv - 0.0009, r"$M(1/2)\approx %s$" % regd("M_half_B", d6(PM.M)), S, color=NAVY, va="top")
+        lab(axb, 3.585, t1 + 0.0010, r"$\tau(r_1)=%s$" % regd("tau_r1", d6(t1)), S, color=NAVY, ha="right",
+            va="bottom")
+        lab(axb, 3.585, 0.7095, r"band for $M(1/2)$", S, color=NAVY, ha="right", va="center")
+        lab(axb, rC - 0.012, 0.7022, r"$r_C\approx %s$" % regd("rC_B", d6(rC)), S, color="0.2", ha="right",
+            va="center")
+        panel_label(axb, "(b)", S, dx=-0.34, dy=1.075)
     return fig
 
 
@@ -438,7 +451,7 @@ def draw_branches(ax, S, markers=True):
     # T: threshold pair (thin dashed)
     rt = np.linspace(rA, rJ, 300)
     ax.plot(rt, ent_threshold(PF, rt), color="k", ls=DASH_T, lw=S.lwt * 1.15, zorder=3)
-    # N: quiet market, closed at r_N
+    # N: uninformative market, closed at r_N
     ax.plot([R0, rN], [RHO, RHO], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4)
     mk(rN, RHO, NAVY)
     # Q: mixed orders at the entry floor, open at both ends
@@ -496,7 +509,9 @@ def draw_region(ax, S, talk):
     for key in ("rA", "rF", "rN"):
         r_ = BF[key]
         dot(ax, float(Delta(PF, r_)), float(tau(PF, r_)), S, color=BRICK, z=7)
-    ax.set_xlabel(r"target-payoff spread, $\Delta_T$")
+    if not talk:
+        # On the slides the axis title is set by \FigText in slides.tex.
+        ax.set_xlabel(r"target-payoff spread, $\Delta_T$")
     ax.set_ylabel(r"preparation threshold, $\tau$" if not talk else r"threshold, $\tau$")
     if talk:
         ax.set_xticks([0.0, 0.1, 0.2])
@@ -541,7 +556,9 @@ def fig_coexistence(talk):
     for ax, yl in ((axa, ylo), (axb, ylob)):
         ax.set_ylim(yl, yhi)
         ax.set_yticks([0.2, 0.3, 0.4, 0.5, 0.6])
-        ax.set_xlabel(r"incumbent strength, $r$")
+        if not talk:
+            # On the slides the axis title is set by \FigText in slides.tex.
+            ax.set_xlabel(r"incumbent strength, $r$")
         ax.axvspan(rA, rN, color=BAND_BLUE, lw=0, zorder=0)
     axa.set_ylabel(r"entry, $\mathsf{E}$")
     axb.set_ylabel(r"entry, $\mathsf{E}$") if not talk else None
@@ -574,7 +591,8 @@ def fig_coexistence(talk):
     panel_label(axb, "(c)", S, dx=-0.098 if not talk else -0.19, dy=1.17 if not talk else 1.06)
     # direct labels (zoom)
     if not talk:
-        lab(axb, ZLO + 0.012, RHO - 0.024, r"N: quiet market", S, color=NAVY, va="top")
+        # Centred between r_F and r_N, as the F label is; at the left edge the name would cross the line at r_A.
+        lab(axb, (rF + rN) / 2, RHO - 0.024, r"N: uninformative market", S, color=NAVY, ha="center", va="top")
         axb.annotate(r"Q: mixed orders at the entry floor", xy=(1.857, RHO), xytext=(1.857, RHO - 0.05),
                      fontsize=S.fn, color="0.35", ha="center", va="top",
                      arrowprops=dict(arrowstyle="-", lw=S.lwt, color="0.5", shrinkA=0, shrinkB=3))
@@ -600,7 +618,7 @@ def fig_coexistence(talk):
         hs = [Line2D([], [], color=NAVY, lw=S.lw), Line2D([], [], color=BRICK, ls=DASH_R, lw=S.lw),
               Line2D([], [], color=BRICK, lw=S.lw), Line2D([], [], color=GREY, ls=DASH_Q, lw=S.lw),
               Line2D([], [], color="k", ls=DASH_T, lw=S.lwt * 1.15)]
-        ls_ = [r"N quiet market", r"R mixed purchase that recruits", r"F full purchase",
+        ls_ = [r"N uninformative market", r"R mixed purchase that recruits", r"F full purchase",
                r"Q mixed orders at the entry floor", r"T threshold pair"]
         fig.legend(hs, ls_, loc="lower center", ncol=5, frameon=False, fontsize=S.fn - 1.0, handlelength=1.7,
                    columnspacing=1.1, handletextpad=0.5, bbox_to_anchor=(0.5, -0.015))
@@ -648,7 +666,9 @@ def fig_research(talk):
     # ---------------- panel (a): research intensity
     al.set_ylim(-0.025, 0.40)
     al.set_yticks([0.0, 0.1, 0.2, 0.3, 0.4])
-    al.set_ylabel(r"research intensity, $\lambda$")
+    if not talk:
+        # On the slides the axis titles are set by \FigText in slides.tex.
+        al.set_ylabel(r"research intensity, $\lambda$")
     al.plot([R0, rRb], [CAP, CAP], color="0.55", ls=(0, (1.2, 2.2)), lw=S.lwt, zorder=1)
     # zero research, closed at r_N
     al.plot([R0, rN], [0, 0], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4, clip_on=False)
@@ -696,7 +716,8 @@ def fig_research(talk):
     # ---------------- panel (b): entry
     bl.set_ylim(0.20, 0.58)
     bl.set_yticks([0.2, 0.3, 0.4, 0.5])
-    bl.set_ylabel(r"entry, $\mathsf{E}$")
+    if not talk:
+        bl.set_ylabel(r"entry, $\mathsf{E}$")
     # zero research, closed at r_N
     bl.plot([R0, rN], [RHO, RHO], color=NAVY, lw=S.lw, solid_capstyle="butt", zorder=4)
     # floor-entry research at the entry floor
@@ -721,8 +742,6 @@ def fig_research(talk):
         lab(bl, 1.24, RHO - 0.016, r"zero", S, color=NAVY, va="top")
         lab(bl, 2.60, ENT1 + 0.02, r"recruiting", S, color=BRICK, ha="center", va="bottom")
         lab(bl, 2.22, RHO + 0.03, r"floor-entry", S, color="0.3", ha="left", va="bottom")
-        for ax_ in (al, bl):
-            ax_.set_xlabel(r"incumbent strength, $r$")
     else:
         lab(bl, 1.21, RHO - 0.014, r"zero research", S, color=NAVY, va="top")
         lab(bl, (rN + rQ) / 2, RHO - 0.014, r"floor-entry research", S, color="0.3", ha="center", va="top")
@@ -850,6 +869,10 @@ def main(argv=None):
     log("  Slide figures use Archivo (Regular, from slot/manuscript/fonts/) with STIX math; in-figure text and axes")
     log("  are ink (#1e2530) with tick labels in the muted grey (#5b6573). The Archivo files are TrueType, so the")
     log("  PDF embeds a TrueType font (Type 42) directly.")
+    log("Slide figures leave out the labels that slides.tex covers with \\FigCover and sets again with \\FigText:")
+    log("  beliefs: the panel letters, the axis titles of strength, the posterior labels of (a), the printed values")
+    log("  and the band label of (b); coexistence: the axis titles of strength and of the target-payoff spread;")
+    log("  research: all four axis titles. The layout is unchanged.")
     log("")
 
     made = []
