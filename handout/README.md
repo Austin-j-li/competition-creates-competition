@@ -16,14 +16,14 @@ mechanism, the four propositions and three corollaries of the main text (the cor
 the example) and the tests are visible; formal statements, derivations and long tables stay in
 native `details` controls.
 
-The design is the ruled document of `DESIGN.md` at the repository root, shared with the web slides
-and the Beamer deck: ink on cool white (slate in the dark theme), STIX Two Text for reading text,
-Archivo for the title, headings and controls, a 2 px rule above the title block and each section
-heading, hairlines elsewhere, no fills, cards, pills, gradients or shadows, and no chrome colour.
-Two concept colours hold inside figures and charts only: `--c-info` for the target-payoff spread
-and the information chain, `--c-cost` for preparation costs, the floor and the window. The purple
-palette of the earlier "UCL family" design is rejected; `check_display.py` and `publish.py` fail
-on any of its hexes or tokens.
+The design is the journal look of `DESIGN.md` at the repository root, shared with the web slides
+and matched to the Beamer deck (`slot/manuscript/ccc-journal.sty`): Libertinus Serif for reading
+text and the title, Libertinus Sans for headings, tags, labels and controls, Libertinus Math as the
+symbol fallback, white paper (slate in the dark theme), one oxblood accent (#7A1F1F) and greys, a
+short accent rule above the title, an accent rule under each section heading, hairlines elsewhere, and no fills,
+cards, pills, gradients or shadows. Figures draw in ink, the accent and greys, told apart by dash
+and marker. The purple palette of the earlier "UCL family" design is rejected; `check_display.py`
+and `publish.py` fail on any of its hexes or tokens.
 
 ## Build and checks
 
@@ -133,12 +133,12 @@ as a historical record only.
   (`lambda_B`, `b_B`, `b0_B`, `M_half_B`, `m_half_B`), the marked strengths (`rA`, `rF_B`, `rN`,
   `rJ`, `rS_B`, `rC_B`, `res_rR`, `res_rcap`, `res_rUR`), the points that the figures label, and
   the registry hash.
-- Typefaces are STIX Two Text (reading text), Archivo (titles, headings, controls; a variable font
-  with weight and width axes) and Fira Mono (hashes), all SIL OFL fontsource subsets, and a symbol
-  fallback, "CCC Symbols", a byte copy of KaTeX_Main-Regular for the arrows and relations that the
-  text subsets omit. All are pinned by sha256 in `fonts.lock.json` with their licences. The build
-  generates the font-face rules from the lock and fails if a file is missing, altered or unlocked,
-  or if `style.css` declares a font itself.
+- Typefaces are Libertinus Serif (reading text and the title; 400 and 700 with italics), Libertinus
+  Sans (headings, tags, labels and controls) and Libertinus Math, subset to the symbol blocks, as
+  the fallback for arrows, relations and operators, all SIL OFL. The web slides use the same files.
+  All are pinned by sha256 in `fonts.lock.json` with their licence. The build generates the
+  font-face rules from the lock and fails if a file is missing, altered or unlocked, or if
+  `style.css` declares a font itself.
 - KaTeX 0.18.5 is a local copy under `handout/vendor/`, pinned by sha256 and by the upstream
   sha512 integrity in `vendor.lock.json`. The slides use the same copy.
 

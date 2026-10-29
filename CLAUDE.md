@@ -51,11 +51,12 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Slide decks
 
-- The Beamer deck in Overleaf (`slot/manuscript/slides.tex`) always uses a classic Beamer theme
-  (Madrid, through `slot/manuscript/ccc-classic.sty`). The website, the research brief page and the
-  web slides, keeps the ruled design of `DESIGN.md`. Keep this split on every change: never move
-  the ruled look into Beamer or a Beamer theme onto the website. Words, numbers, frames and links
-  stay identical between the decks.
+- The Beamer deck (`slot/manuscript/slides.tex`, copied from the Overleaf project) is the master
+  of the talk. It uses the journal look of `slot/manuscript/ccc-journal.sty`; the website, the
+  research brief page and the web slides, uses the same look through `DESIGN.md`. The web slides
+  (`presentation/`) copy the master frame by frame: words, numbers, frames and links stay identical,
+  and `presentation/check_deck.mjs` fails on any drift. The speaker notes are
+  `slot/manuscript/slides_script.md`. Edit the deck in Overleaf first, then the web slides.
 
 ## Working rules
 
