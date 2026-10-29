@@ -68,7 +68,7 @@ def build(registry: dict) -> dict:
 
     def entry_R(r): return rho + (1 - rho) * b * delta(r) / (2 * k)
     def entry_T(r):
-        """Entry on the threshold pair T, when an indifferent high-cost challenger may prepare with any probability."""
+        """Entry on the threshold pair T, when an indifferent high-cost rival may prepare with any probability."""
         D, t = delta(r), tau(r)
         return rho + (b / 2) * (k - rho * D * (1 - t)) / (D * (1 - t) ** 2)
     plateau = rho + (1 - rho) * (b + lam / 2)

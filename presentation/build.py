@@ -107,7 +107,7 @@ def read_notes(frames: list[dict]) -> dict:
         m = re.match(r"(.+?)(?: — (B\d+))?\s*$", head.strip())
         question, target = m.group(1), m.group(2) or last_main
         entry = notes.setdefault(target, {"timing": "prepared answer", "html": "", "source": "slot/manuscript/slides_script.md"})
-        entry["html"] += f'<p class="cue"><b>Prepared answer: {html.escape(question)}</b></p>' + note_html(body)
+        entry["html"] += f'<p class="cue"><b>Prepared answer: {html.escape(question, quote=False)}</b></p>' + note_html(body)
     missing = [f["label"] for f in frames if not f.get("backup") and f["label"] not in notes]
     extra = [k for k in notes if k not in labels]
     if missing or extra:
