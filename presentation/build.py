@@ -5,10 +5,11 @@
 Steps: read the slot registry (audit/slot_manuscript_2026_10_23/registry/registry.csv); render the
 slide records of content.js with presentation/render.mjs (KaTeX at build time; every number is the
 registry display of its key, as \\reg{key} prints it in slot/manuscript/slides.tex); compute the
-figure curves with presentation/figdata.py; read the speaker notes from presentation/notes.md; assemble
-dist/index.html with the locked faces and the local KaTeX copy of the handout; record source
-hashes; then run check_deck.mjs, which compares the deck with slot/manuscript/slides.tex. Any failure
-stops the build. Python and Node standard libraries only.
+figure curves with presentation/figdata.py; read the speaker notes from the spoken script
+slot/manuscript/slides_script.md (one block per main frame; a prepared answer goes to the backup it
+names); assemble dist/index.html with the locked faces and the local KaTeX copy of the handout;
+record source hashes; then run check_deck.mjs, which compares the deck with slot/manuscript/slides.tex
+and the script. Any failure stops the build. Python and Node standard libraries only.
 """
 from __future__ import annotations
 
@@ -30,8 +31,11 @@ import figdata  # noqa: E402
 
 REGISTRY = ROOT / "audit/slot_manuscript_2026_10_23/registry/registry.csv"
 SLIDES_TEX = ROOT / "slot/manuscript/slides.tex"
-PARTS = [(1, "Why the question matters"), (2, "Model"), (3, "Mechanism"), (4, "Main result"), (5, "Path and research"),
-         (6, "Scope, money, tests"), ("B", "Backups")]
+SCRIPT = ROOT / "slot/manuscript/slides_script.md"
+# The parts follow the roadmap line of frame 4: Model, Mechanism and main result, Fixed-information
+# control, Extensions and prediction.
+PARTS = [(1, "Question"), (2, "Model"), (3, "Mechanism and main result"), (4, "Fixed-information control"),
+         (5, "Extensions and prediction"), (6, "Conclusion"), ("B", "Backups")]
 
 
 def digest(body: bytes) -> str:
@@ -67,35 +71,47 @@ def katex_css() -> str:
 
 
 # ------------------------------------------------------------------------------------------------
-# Speaker notes from presentation/notes.md
+# Speaker notes from slot/manuscript/slides_script.md
 
 
 def note_html(body: str) -> str:
     def plain(s: str) -> str:
         s = html.escape(s, quote=False)
+        s = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", s)
         s = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", s)
         s = re.sub(r"\$([^$]+)\$", lambda mm: '<span class="tex" data-tex="' + html.escape(mm.group(1).replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")) + '"></span>', s)
         return s
-    out = []
-    for para in [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", body) if p.strip()]:
-        if para.startswith("Cue:"):
-            out.append(f'<p class="cue"><b>Live cue:</b> {plain(para[4:].strip())}</p>')
-        else:
-            out.append(f"<p>{plain(para)}</p>")
-    return "".join(out)
+    return "".join(f"<p>{plain(p)}</p>" for p in [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", body) if p.strip()])
 
 
 def read_notes(frames: list[dict]) -> dict:
-    text = (HERE / "notes.md").read_text(encoding="utf-8")
+    """The spoken text of each main frame (## Title, ## Frame N) with its timing line, and the prepared
+    answers (### question — Bn) on the first page of the backup each names; answers that name no backup
+    go to the last main frame."""
+    text = SCRIPT.read_text(encoding="utf-8")
     notes: dict[str, dict] = {}
-    for block in re.split(r"(?m)^## ", text)[1:]:
+    labels = {f["label"] for f in frames}
+    last_main = [f["label"] for f in frames if not f.get("backup")][-1]
+    answers, _, prepared = text.partition("\n## Prepared answers")
+    for block in re.split(r"(?m)^## ", answers)[1:]:
         head, _, body = block.partition("\n")
-        label, _, timing = head.partition("|")
-        notes[label.strip()] = {"timing": timing.strip(), "html": note_html(body), "source": "presentation/notes.md"}
-    missing = [f["label"] for f in frames if f["label"] not in notes]
-    extra = [k for k in notes if k not in {f["label"] for f in frames}]
+        m = re.match(r"(Title|Frame (\d+)) — ", head)
+        if not m:
+            continue
+        label = "S" + (m.group(2) or "0")
+        tm = re.match(r"\s*\*([^*]+)\*\s*\n", body)
+        timing = tm.group(1).strip() if tm else ""
+        notes[label] = {"timing": timing, "html": note_html(body[tm.end():] if tm else body), "source": "slot/manuscript/slides_script.md"}
+    for block in re.split(r"(?m)^### ", prepared)[1:]:
+        head, _, body = block.partition("\n")
+        m = re.match(r"(.+?)(?: — (B\d+))?\s*$", head.strip())
+        question, target = m.group(1), m.group(2) or last_main
+        entry = notes.setdefault(target, {"timing": "prepared answer", "html": "", "source": "slot/manuscript/slides_script.md"})
+        entry["html"] += f'<p class="cue"><b>Prepared answer: {html.escape(question)}</b></p>' + note_html(body)
+    missing = [f["label"] for f in frames if not f.get("backup") and f["label"] not in notes]
+    extra = [k for k in notes if k not in labels]
     if missing or extra:
-        raise SystemExit(f"notes.md: frames without a block: {missing}; blocks without a frame: {extra}")
+        raise SystemExit(f"slides_script.md: main frames without a block: {missing}; blocks without a frame: {extra}")
     return notes
 
 
@@ -183,14 +199,16 @@ def build() -> None:
     notes = read_notes(frames)
     figures = figdata.build(registry)
     used = {k: registry[k] for k in rendered["used"]}
+    # Keys the figures print or place at runtime (frame 14, B3, B12).
     for key in ("rA", "rF_B", "rN", "rJ", "rS_B", "rC_B", "res_rR", "res_rcap", "res_rN", "res_rQ", "res_rC",
-                "res_lambda_floor_rQ", "prim_r0", "prim_r1", "prim_r2"):
+                "res_lambda_floor_rQ", "prim_r0", "prim_r1", "prim_r2", "prim_pi", "res_cap", "tau_r1", "tau_r2", "M_half_B",
+                "str_r155", "str_r160", "str_r165", "res_lambda_r155", "res_lambda_r160", "res_lambda_r165",
+                "res_entry_r155", "res_entry_r160", "res_entry_r165"):
         used[key] = registry[key]
     total = max(int(f["num"]) for f in frames if not f.get("backup"))
     minutes = sum(f["minutes"] for f in frames if not f.get("backup"))
-    checkpoints = ("Checkpoints: minute 9 ends slide 4; minute 18 ends slide 9; minute 25 ends slide 13; minute 34 ends slide 18; "
-                   "minute 45 ends slide 26. Cuts in order: slide 20 to one spoken sentence; slide 22 to one spoken sentence; "
-                   "slide 23 to its takeaway line. Never cut slides 4, 9, 11, 14, 18 or 25.")
+    planned = re.search(r"^Prepared speech: .*$", SCRIPT.read_text(encoding="utf-8"), re.M)
+    checkpoints = planned.group(0) if planned else ""
 
     meta = {
         "frames": [{k: f.get(k) for k in ("id", "label", "num", "part", "minutes", "backup", "origin", "targets", "widget")}
@@ -223,7 +241,8 @@ def build() -> None:
 
     sources = {}
     for name in ("audit/slot_manuscript_2026_10_23/registry/registry.csv", "slot/manuscript/slides.tex",
-                 "presentation/content.js", "presentation/render.mjs", "presentation/figdata.py", "presentation/notes.md",
+                 "slot/manuscript/slides_script.md",
+                 "presentation/content.js", "presentation/render.mjs", "presentation/figdata.py",
                  "presentation/deck.js", "presentation/deck.css", "presentation/template.html", "presentation/check_deck.mjs",
                  "presentation/charts.js", "presentation/fonts.lock.json", "handout/fonts.lock.json", "handout/vendor.lock.json"):
         sources[name] = digest((ROOT / name).read_bytes())
@@ -234,8 +253,10 @@ def build() -> None:
 
     md = ["# Competition Creates Competition", "",
           f"Speaker notes: {len([f for f in frames if not f.get('backup')])} main frames "
-          f"({minutes:g} planned minutes) and {len([f for f in frames if f.get('backup')])} backups.", "", checkpoints, ""]
+          f"({minutes:g} planned minutes) and {len([f for f in frames if f.get('backup')])} backup pages.", "", checkpoints, ""]
     for f in frames:
+        if f["label"] not in notes:
+            continue
         n = notes[f["label"]]
         md.append(f"## {f['label']}. {re.sub(r'[$]', '', f['title']) or f['short']}")
         md.append("")

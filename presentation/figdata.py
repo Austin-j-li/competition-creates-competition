@@ -81,17 +81,12 @@ def build(registry: dict) -> dict:
         xs = grid(lo, hi, (hi - lo) / n)
         return {"r": xs, "y": [r4(y)] * len(xs)}
 
-    # F7: the gross return of a correctly signed order lies between rho*kappa*Delta and Delta.
-    rs = grid(1.01, 3.2, 0.01)
-    r_k = ell + k + math.sqrt(k * k + 2 * ell * k)   # Delta(r) = k: below it no order covers the cost
-    gain = {"r": rs, "upper": [r4(delta(r) / k) for r in rs], "lower": [r4(rho * kappa * delta(r) / k) for r in rs], "r_k": r4(r_k)}
-
-    # F8: the threshold belief and the profit at the posterior bounds, 1.2 to 3.6.
+    # Frame 14: the threshold belief and the profit at the belief bounds, 1.2 to 3.6 (the figure shows r_1 to r_2).
     rb = grid(1.2, 3.6, 0.01)
     belief = {"r": rb, "tau": [r4(tau(r)) for r in rb], "B_M": [r4(B(r, M)) for r in rb],
               "B_prior": [r4(B(r, pi)) for r in rb], "B_m": [r4(B(r, m)) for r in rb]}
 
-    # F12: the coexistence region at the prior 1/2 (Proposition 3): pi < tau <= M and k/(1 - tau) <= Delta <= 2k/rho,
+    # B3: the coexistence region at the prior 1/2 (Proposition 3): pi < tau <= M and k/(1 - tau) <= Delta <= 2k/rho,
     # with the example's path (Delta(r), tau(r)) from r_0 until the spread leaves the window at 0.2.
     taus = grid(0.5, M, (M - 0.5) / 60)
     r_out = ell + 0.2 + math.sqrt(0.2 * 0.2 + 2 * ell * 0.2)
@@ -102,7 +97,7 @@ def build(registry: dict) -> dict:
               "marks": {key: [r4(delta(bd[key])), r4(tau(bd[key]))] for key in ("rA", "rF_B", "rN")}
               | {"prim_r0": [r4(delta(r0)), r4(tau(r0))]}}
 
-    # F12b: entry in each equilibrium at the prior (Corollary 2).
+    # B3, page 2: entry in each equilibrium at the prior (Corollary 2).
     rR_ = grid(bd["rA"], bd["rF_B"], (bd["rF_B"] - bd["rA"]) / 60)
     rT_ = grid(bd["rA"], bd["rJ"], (bd["rJ"] - bd["rA"]) / 80)
     entry = {"N": flat(r0, bd["rN"], rho), "Q": flat(bd["rN"], bd["rJ"], rho, 8),
@@ -110,7 +105,7 @@ def build(registry: dict) -> dict:
              "T": {"r": rT_, "y": [r4(entry_T(r)) for r in rT_]},
              "F": flat(bd["rF_B"], bd["rC_B"], plateau, 60), "F_floor": flat(bd["rC_B"], r2, rho, 4)}
 
-    # F13: research along the path (Corollary 3): zero research on [r_0, r_N]; recruiting research below the cap on
+    # B12, page 2: research along the path (Corollary 3): zero research on [r_0, r_N]; recruiting research below the cap on
     # [r_R, r_lambda-bar) and at the cap on [r_lambda-bar, r_C]; floor-entry research on (r_N, r_Q) and at the cap on (r_C, r_2].
     rb2 = grid(bd["res_rR"], bd["res_rcap"], (bd["res_rcap"] - bd["res_rR"]) / 40)
     lamb = [lam_R(r) for r in rb2]
@@ -123,4 +118,4 @@ def build(registry: dict) -> dict:
                 "cap_value": r4(lam), "plateau": r4(plateau)}
 
     return {"inputs": {"r0": r0, "r1": r1, "r2": r2, "rho": rho, "k": k, "cH": cH, "pi": pi, "m": m, "M": M, "kappa": kappa},
-            "bounds": bd, "gain": gain, "belief": belief, "region": region, "entry": entry, "research": research}
+            "bounds": bd, "belief": belief, "region": region, "entry": entry, "research": research}

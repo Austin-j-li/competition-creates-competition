@@ -118,10 +118,13 @@
     returns.push({ index: index, step: step });
     go(id, { step: 0 });
   }
-  /* Back returns to the place the link was followed from; without one, to the link's target. */
+  /* Back returns to the place the link was followed from when that is the button's target (B2 has one
+     return button for each of frames 11, 12 and 13); otherwise to the button's target. */
   function back(target) {
-    if (returns.length) { var r = returns.pop(); go(r.index, { step: r.step }); return; }
-    var id = target ? targetOf[target] : null;
+    var want = target ? targetOf[target] : null;
+    if (returns.length && (!want || slides[returns[returns.length - 1].index].id === want)) { var r = returns.pop(); go(r.index, { step: r.step }); return; }
+    returns = [];
+    var id = want;
     if (!id) {
       var s = slides[index], b = $('.goto.back', s);
       id = b ? targetOf[b.dataset.back] : (s.dataset.origin || null);
@@ -187,7 +190,7 @@
       '<span><kbd>F</kbd></span><span>fullscreen</span>' +
       '<span><kbd>R</kbd></span><span>reset the slide</span>' +
       '<span><kbd>Esc</kbd></span><span>back from a backup slide, or close a panel</span></div>' +
-      '<p class="notes-meta">Numbers carry their registry key on hover. Figures draw closed forms of the paper in the example; the slider reads those curves and solves no equilibrium.</p>');
+      '<p class="notes-meta">Numbers carry their registry key on hover. Figures draw closed forms of the paper in the example and solve no equilibrium.</p>');
   }
   function fullscreen() {
     try { if (document.fullscreenElement) document.exitFullscreen(); else doc.requestFullscreen(); }
@@ -230,158 +233,150 @@
     return { mode: 'markers', x: x, y: y, showlegend: false, hovertemplate: 'skip', xaxis: xa || 'x', yaxis: ya || 'y', marker: { symbol: open ? 'circle-open' : 'circle', size: size || 9, color: color } };
   }
 
-  /* Slide 13 (F7): the shape of the gain bounds, symbols only. The ceiling and the floor of the gain of a
-     correct order against strength on a log scale, and the order cost k. No ticks, no hover values, no
-     example strengths: slide 13 comes before the first example slide. */
-  function specGain(t) {
-    var G = D.fig.gain, B = D.fig.bounds, n = G.r.length - 1, x1 = G.r[n];
-    var traces = [
-      { mode: 'lines', name: 'ceiling', showlegend: false, x: G.r, y: G.upper, line: line(t, t.info), hovertemplate: 'skip' },
-      { mode: 'lines', name: 'floor', showlegend: false, x: G.r, y: G.lower, line: line(t, t.info, 'dash'), hovertemplate: 'skip' }
-    ];
-    var layout = { height: 300, margin: { l: 24, r: 118, t: 18, b: 40 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 1], anchor: 'y', range: [G.r[0], x1], tickvals: [], showticklabels: false, title: { text: '<i>r</i>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', type: 'log', range: [-1.7, 1.8], tickvals: [], showticklabels: false } };
-    layout.shapes.push(band(G.r[0], G.r_k, t.regionA), band(B.rS_B, x1, t.regionB));
-    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: t.cost, width: 2.2 }, layer: 'above' });
-    layout.annotations.push(at('Δ<sub>T</sub>', x1, G.upper[n], t.info, { xanchor: 'left', yanchor: 'middle', xshift: 8, yshift: 0, size: 17 }));
-    layout.annotations.push(at('ρκ(π)Δ<sub>T</sub>', x1, G.lower[n], t.info, { xanchor: 'left', yanchor: 'middle', xshift: 8, yshift: 0, size: 17 }));
-    layout.annotations.push(at('<i>k</i>', G.r[0], 1, t.cost, { xanchor: 'left', xshift: 6, yshift: 4, size: 17 }));
+  /* Frame 14: the close-up of the threshold belief between the strong incumbent r_1 and the very strong
+     incumbent r_2 (panel (b) of the belief figure of slides.tex), with the top belief M(1/2), the band
+     up to it from tau(r_1), and the three values the Beamer figure prints. */
+  function specBeliefs(t) {
+    var Bf = D.fig.belief, I = D.fig.inputs, r1 = I.r1, r2 = I.r2, M = I.M, t1 = regNum('tau_r1'), t2 = regNum('tau_r2');
+    var xs = [], ys = [];
+    Bf.r.forEach(function (r, i) { if (r >= r1 - 1e-9 && r <= r2 + 1e-9) { xs.push(r); ys.push(Bf.tau[i]); } });
+    var traces = [{ mode: 'lines', name: 'threshold belief τ(<i>r</i>)', x: xs, y: ys, customdata: pts(xs, ys), line: line(t, t.cost, 'solid', 3.4), hovertemplate: 'τ(<i>r</i>) = %{customdata[0]}<extra>threshold belief</extra>' }];
+    var layout = { height: 290, margin: { l: 62, r: 14, t: 34, b: 50 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [r1, r2], tickvals: [r1, 3.2, 3.4, r2], ticktext: ['r₁', '3.2', '3.4', 'r₂'], title: { text: 'incumbent strength, <i>r</i>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', range: [0.70, 0.735], tickvals: [0.70, 0.71, 0.72, 0.73], ticktext: ['0.70', '0.71', '0.72', '0.73'], title: { text: 'belief, τ(<i>r</i>) and <i>M</i>(1/2)' } } };
+    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: t1, y1: M, fillcolor: t.regionB, layer: 'below' });
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: M, y1: M, line: { color: t.info, width: 3 }, layer: 'below' });
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: t1, y1: t1, line: { color: t.info, width: 1.2 }, layer: 'below' });
+    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: t2, y1: t2, line: { color: t.bg, width: 1.2, dash: 'dash' }, layer: 'below' });
+    layout.shapes.push(vline(r2, t.muted));
+    layout.annotations.push(at('τ(<i>r</i><sub>2</sub>) ≈ ' + reg('tau_r2'), r1 + 0.02, t2, t.ink, { yshift: 6, size: 12 }));
+    layout.annotations.push(at('<i>M</i>(1/2) ≈ ' + reg('M_half_B'), r1 + 0.02, M, t.ink, { yanchor: 'top', yshift: -6, size: 12 }));
+    layout.annotations.push(at('band for <i>M</i>(1/2)', r2 - 0.02, t1 + 0.0042, t.ink, { xanchor: 'right', yshift: 0, size: 12 }));
+    layout.annotations.push(at('τ(<i>r</i><sub>1</sub>) = ' + reg('tau_r1'), r2 - 0.02, t1, t.ink, { xanchor: 'right', yshift: 4, size: 12 }));
+    traces.push(dot([r1], [t1], t.cost, false, 'x', 'y', 11));
+    traces.push(dot([r2], [t2], t.cost, true, 'x', 'y', 11));
     return { traces: traces, layout: layout };
   }
 
-  /* F8: the threshold belief against strength, the band of beliefs a price can induce, and the slider's strength. */
-  var beliefsIndex = 180;
-  function specBeliefs(t, i) {
-    var Bf = D.fig.belief, I = D.fig.inputs, B = D.fig.bounds, r = Bf.r[i];
-    var traces = [{ mode: 'lines', name: 'threshold belief τ(<i>r</i>)', x: Bf.r, y: Bf.tau, customdata: pts(Bf.r, Bf.tau), line: line(t, t.cost, 'solid', 3.4), hovertemplate: '%{customdata[0]}<extra>threshold belief τ(<i>r</i>)</extra>' }];
-    var layout = { height: 330, margin: { l: 70, r: 20, t: 44, b: 54 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 1], anchor: 'y', range: [1.2, 3.6], dtick: 0.4, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', range: [0.2, 0.8], dtick: 0.1, tick0: 0.2, title: { text: 'belief' } } };
-    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.m, y1: I.M, fillcolor: t.regionC, layer: 'below' });
-    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dash' }, layer: 'below' });
-    [['prim_r0', 'weak <i>r</i><sub>0</sub>'], ['prim_r1', 'strong <i>r</i><sub>1</sub>'], ['prim_r2', 'still <i>r</i><sub>2</sub>']].forEach(function (mk) {
-      var x = regNum(mk[0]); layout.shapes.push(vline(x, t.muted)); layout.annotations.push(label(x, mk[1], t.muted, { size: 14 }));
-    });
-    layout.annotations.push(at('<i>M</i>(π)', 1.22, I.M, t.info, { yshift: 3 }));
-    layout.annotations.push(at('prior ' + reg('prim_pi'), 1.22, I.pi, t.muted, { yshift: 3 }));
-    layout.annotations.push(at('<i>m</i>(π)', 1.22, I.m, t.info, { yanchor: 'top', yshift: -3 }));
-    layout.annotations.push(at('<i>r</i><sub>C</sub>', B.rC_B, I.M, t.cost, { xanchor: 'center', yanchor: 'top', yshift: -8 }));
-    traces.push(dot([B.rC_B], [I.M], t.cost, true, 'x', 'y', 11));
-    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.accent, width: 2 } });
-    traces.push({ mode: 'markers', name: 'slider', showlegend: false, x: [r], y: [Bf.tau[i]], hovertemplate: 'skip', marker: { symbol: 'circle', size: 12, color: t.accent, line: { width: 2, color: t.bg } } });
-    return { traces: traces, layout: layout };
-  }
-
-  /* F12: the coexistence region at the prior 1/2 in the plane of the spread and the threshold, with the example's path. */
+  /* B3: the coexistence region at the prior 1/2 in the plane of the spread and the threshold, with the example's path. */
   function specRegion(t) {
     var G = D.fig.region, I = D.fig.inputs, navy = t.accent, brick = t.info;
     var left = G.left, top = I.M;
     var xs = left.Delta.concat([G.D_N, G.D_N]), ys = left.tau.concat([top, 0.5]);
     var traces = [
-      { mode: 'lines', name: 'coexistence region', showlegend: false, x: xs.concat([xs[0]]), y: ys.concat([ys[0]]), fill: 'toself', fillcolor: t.regionA, line: { color: t.regionA, width: 0.1 }, hovertemplate: 'skip' },
+      { mode: 'lines', name: 'coexistence region', showlegend: false, x: xs.concat([xs[0]]), y: ys.concat([ys[0]]), fill: 'toself', fillcolor: t.regionB, line: { color: t.regionB, width: 0.1 }, hovertemplate: 'skip' },
       // closed edges: Δ_T = k/(1−τ), Δ_T = 2k/ρ and τ = M(π); the edge τ = π is open and stays the dotted prior line
-      { mode: 'lines', name: 'coexistence region', x: left.Delta.concat([G.D_N, G.D_N]), y: left.tau.concat([top, 0.5]), line: line(t, navy, 'solid', 2), hovertemplate: 'skip' },
-      { mode: 'lines', name: 'Δ<sub>T</sub> = k/(1−M)', x: [G.D_F, G.D_F], y: [0.5, top], line: line(t, navy, 'dash', 1.4), hovertemplate: 'skip' },
+      { mode: 'lines', name: 'coexistence region', x: left.Delta.concat([G.D_N, G.D_N]), y: left.tau.concat([top, 0.5]), line: line(t, t.ink, 'solid', 2), hovertemplate: 'skip' },
+      { mode: 'lines', name: 'Δ<sub>T</sub> = k/(1−M)', x: [G.D_F, G.D_F], y: [0.5, top], line: line(t, t.ink, 'dash', 1.4), hovertemplate: 'skip' },
       { mode: 'lines', name: 'path of the example', x: G.path.Delta, y: G.path.tau, customdata: G.path.r.map(function (r) { return [r.toFixed(3)]; }), line: line(t, brick, 'solid', 3),
         hovertemplate: '<i>r</i> = %{customdata[0]}<extra>path of the example</extra>' }
     ];
-    var layout = { height: 340, margin: { l: 78, r: 20, t: 30, b: 60 }, shapes: [], annotations: [],
-      xaxis: { domain: [0, 1], anchor: 'y', range: [0, 0.2], dtick: 0.05, tick0: 0, title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' } },
-      yaxis: { domain: [0, 1], anchor: 'x', range: [0.45, 0.765], dtick: 0.1, tick0: 0.5, title: { text: 'preparation threshold τ' } } };
+    var layout = { height: 300, margin: { l: 60, r: 12, t: 30, b: 52 }, shapes: [], annotations: [],
+      xaxis: { domain: [0, 1], anchor: 'y', range: [0, 0.2], tickvals: [0, 0.1, 0.2], ticktext: ['0.0', '0.1', '0.2'], title: { text: 'shareholder spread, Δ<sub><i>T</i></sub>' } },
+      yaxis: { domain: [0, 1], anchor: 'x', range: [0.48, 0.765], tickvals: [0.5, 0.6, 0.7], ticktext: ['0.5', '0.6', '0.7'], title: { text: 'threshold, τ' } } };
+    layout.annotations.push(panelTag('(b)', 'x', 'y', t));
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: I.pi, y1: I.pi, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
-    layout.annotations.push(at('π = ' + reg('prim_pi'), 0.004, I.pi, t.muted, { yanchor: 'top', yshift: -3 }));
-    layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: top, y1: top, line: { color: navy, width: 1.2, dash: 'dot' }, layer: 'below' });
-    layout.annotations.push(at('<i>M</i>(π)', 0.004, top, navy, { yshift: 3 }));
-    var M = G.marks;
-    traces.push(dot([M.prim_r0[0]], [M.prim_r0[1]], t.ink, false, 'x', 'y', 10));
-    traces.push(dot([M.rA[0], M.rF_B[0], M.rN[0]], [M.rA[1], M.rF_B[1], M.rN[1]], brick, false, 'x', 'y', 10));
-    layout.annotations.push(at('<i>r</i><sub>0</sub>', M.prim_r0[0], M.prim_r0[1], t.ink, { xanchor: 'left', yanchor: 'top', yshift: -6, xshift: 4 }));
-    layout.annotations.push(at('<i>r</i><sub>A</sub>', M.rA[0], M.rA[1], brick, { xanchor: 'right', yanchor: 'bottom', xshift: -4, yshift: 6 }));
-    layout.annotations.push(at('<i>r</i><sub>F</sub>', M.rF_B[0], M.rF_B[1], brick, { xanchor: 'left', yanchor: 'bottom', xshift: 2, yshift: 8 }));
-    layout.annotations.push(at('<i>r</i><sub>N</sub>', M.rN[0], M.rN[1], brick, { xanchor: 'left', yanchor: 'top', xshift: 6, yshift: -6 }));
-    layout.annotations.push(at('coexistence', (G.D_F + G.D_N) / 2, 0.69, navy, { xanchor: 'center', size: 16 }));
-    layout.annotations.push(at('R', 0.063, 0.55, navy, { xanchor: 'center', size: 16 }));
-    layout.annotations.push(at('F', (G.D_F + G.D_N) / 2, 0.55, navy, { xanchor: 'center', size: 16 }));
+    layout.annotations.push(at('π = ' + reg('prim_pi'), 0.004, I.pi, t.ink, { yanchor: 'top', yshift: -3, size: 12 }));
+    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 0, x1: G.D_F, y0: top, y1: top, line: { color: t.ink, width: 1.2, dash: 'dot' }, layer: 'below' });
+    layout.annotations.push(at('<i>M</i>(1/2)', 0.004, top, t.ink, { yshift: 3, size: 12 }));
+    var Mk = G.marks;
+    traces.push(dot([Mk.prim_r0[0]], [Mk.prim_r0[1]], t.ink, false, 'x', 'y', 10));
+    traces.push(dot([Mk.rA[0], Mk.rF_B[0], Mk.rN[0]], [Mk.rA[1], Mk.rF_B[1], Mk.rN[1]], brick, false, 'x', 'y', 10));
+    layout.annotations.push(at('<i>r</i><sub>0</sub>', Mk.prim_r0[0], Mk.prim_r0[1], t.ink, { xanchor: 'left', yanchor: 'top', yshift: -6, xshift: 2, size: 13 }));
+    layout.annotations.push(at('<i>r</i><sub>A</sub>', Mk.rA[0], Mk.rA[1], brick, { xanchor: 'right', yanchor: 'bottom', xshift: -2, yshift: 6, size: 13 }));
+    layout.annotations.push(at('<i>r</i><sub>F</sub>', Mk.rF_B[0], Mk.rF_B[1], brick, { xanchor: 'left', yanchor: 'bottom', xshift: 0, yshift: 8, size: 13 }));
+    layout.annotations.push(at('<i>r</i><sub>N</sub>', Mk.rN[0], Mk.rN[1], brick, { xanchor: 'left', yanchor: 'top', xshift: 4, yshift: -6, size: 13 }));
+    layout.annotations.push(at('coexistence', (G.D_F + G.D_N) / 2, 0.705, t.ink, { xanchor: 'center', size: 13 }));
     return { traces: traces, layout: layout };
   }
 
-  /* F12b: entry in each equilibrium at the prior, whole path (a) and the strengths where the marked strengths sit (b). */
+  /* B3, page 2: entry in each equilibrium at the prior, the whole path (a) and the marked strengths (c). */
   function specCoex(t) {
     var E = D.fig.entry, I = D.fig.inputs, B = D.fig.bounds;
-    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 220, margin: { l: 66, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
-    var panels = [{ x: 'x', y: 'y', dom: [0, 0.47], range: [1.2, 3.6], dtick: 0.4, tick0: 1.2 }, { x: 'x2', y: 'y2', dom: [0.57, 1], range: [1.2, 2.4], dtick: 0.2, tick0: 1.2 }];
+    var brick = t.info, grey = t.c3, traces = [], layout = { height: 215, margin: { l: 52, r: 10, t: 40, b: 46 }, shapes: [], annotations: [] };
+    var panels = [{ x: 'x', y: 'y', dom: [0, 0.39], range: [1.2, 3.6], tickvals: [1.2, 2.0, 2.8, 3.6], tag: '(a)' },
+      { x: 'x2', y: 'y2', dom: [0.49, 1], range: [1.26, 2.4], tickvals: [1.4, 1.8, 2.2], tag: '(c)' }];
     panels.forEach(function (P, j) {
-      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: 'incumbent strength <i>r</i>' } };
-      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, title: { text: j ? '' : 'entry' } };
-      layout.shapes.push(band(B.rA, B.rN, t.regionA, P.x));
-      layout.annotations.push(panelTag(j ? '(b)' : '(a)', P.x, P.y, t));
-      function add(name, br, color, dash, w, tpl, grp) {
-        traces.push({ mode: 'lines', name: name, legendgroup: grp || name, showlegend: j === 0, x: br.r, y: br.y, customdata: pts(br.r, br.y), xaxis: P.x, yaxis: P.y,
-          line: line(t, color, dash, w), hovertemplate: tpl + ' = %{customdata[0]}<extra>' + name + '</extra>' });
+      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, tickvals: P.tickvals, ticktext: P.tickvals.map(function (v) { return v.toFixed(1); }), title: { text: 'incumbent strength, <i>r</i>' } };
+      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: [0.17, 0.62], dtick: 0.1, tick0: 0.2, title: { text: j ? '' : 'entry, <i>E</i>' } };
+      layout.shapes.push(band(B.rA, B.rN, t.regionB, P.x));
+      var tag = panelTag(P.tag, P.x, P.y, t); tag.xshift = j ? -40 : -50; layout.annotations.push(tag);
+      function add(name, br, color, dash, w, grp) {
+        traces.push({ mode: 'lines', name: name, legendgroup: grp || name, showlegend: false, x: br.r, y: br.y, customdata: pts(br.r, br.y), xaxis: P.x, yaxis: P.y,
+          line: line(t, color, dash, w), hovertemplate: 'entry = %{customdata[0]}<extra>' + name + '</extra>' });
       }
-      add('T: threshold pair', E.T, t.ink, 'dash', 1.4, 'entry');
-      add('N: quiet market', E.N, navy, 'solid', 3.2, 'entry');
-      add('Q: mixed orders at the entry floor', E.Q, grey, 'dashdot', 3, 'entry');
-      add('R: mixed purchase that recruits', E.R, brick, 'dash', 3.2, 'entry');
-      add('F: full purchase', E.F, brick, 'solid', 3.2, 'entry');
-      add('F above r_C', E.F_floor, brick, 'solid', 3.2, 'entry', 'F: full purchase');
+      add('T threshold pair', E.T, t.ink, 'dash', 1.4);
+      add('N uninformative market', E.N, t.ink, 'solid', 3.2);
+      add('Q mixed orders at the entry floor', E.Q, grey, 'dashdot', 3);
+      add('R mixed purchase that recruits', E.R, brick, 'dash', 3.2);
+      add('F full purchase', E.F, brick, 'solid', 3.2);
+      add('F above r_C', E.F_floor, brick, 'solid', 3.2, 'F full purchase');
       var end = function (a) { return a[a.length - 1]; };
-      traces.push(dot([end(E.N.r), E.R.r[0], E.F.r[0], end(E.F.r)], [end(E.N.y), E.R.y[0], E.F.y[0], end(E.F.y)], navy, false, P.x, P.y, 8));
-      traces.push(dot([E.Q.r[0], end(E.Q.r), E.F_floor.r[0]], [E.Q.y[0], end(E.Q.y), E.F_floor.y[0]], grey, true, P.x, P.y, 9));
+      traces.push(dot([E.R.r[0], E.F.r[0], end(E.F.r)], [E.R.y[0], E.F.y[0], end(E.F.y)], brick, false, P.x, P.y, 8));
+      traces.push(dot([end(E.N.r), end(E.Q.r)], [end(E.N.y), end(E.Q.y)], grey, true, P.x, P.y, 9));
+      traces.push(dot([E.F_floor.r[E.F_floor.r.length - 1]], [E.F_floor.y[0]], brick, true, P.x, P.y, 9));
     });
-    var lab = function (txt, x, ax, lvl) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + lvl * 17, xanchor: 'center', font: { size: 14, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
-    lab('<i>r</i><sub>0</sub>', I.r0, 'x', 0); lab('<i>r</i><sub>1</sub>', I.r1, 'x', 0); lab('<i>r</i><sub>2</sub>', I.r2, 'x', 0); lab('<i>r</i><sub>C</sub>', B.rC_B, 'x', 1);
-    lab('<i>r</i><sub>A</sub>', B.rA, 'x2', 0); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2', 1); lab('<i>r</i><sub>N</sub>', B.rN, 'x2', 0); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2', 1); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2', 0);
-    layout.annotations.push({ text: 'quiet and informative<br>coexist', xref: 'x2', x: (B.rA + B.rN) / 2, yref: 'y2 domain', y: 0.4, yanchor: 'middle', xanchor: 'center', bgcolor: true, font: { size: 13, color: t.accent } });
-    layout.annotations.push(at('N: quiet market', 1.215, E.N.y[0], t.accent, { xref: 'x2', yref: 'y2', yanchor: 'top', yshift: -4 }));
-    layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, E.Q.y[0], t.c3, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 4 }));
-    layout.annotations.push(at('R: mixed purchase', 1.455, 0.455, t.info, { xref: 'x2', yref: 'y2', yshift: 0 }));
-    layout.annotations.push(at('F: full purchase', 1.62, E.F.y[0], t.info, { xref: 'x2', yref: 'y2', yshift: 4 }));
-    layout.annotations.push(at('F', 2.6, E.F.y[0], t.info, { xref: 'x', yref: 'y', xanchor: 'center', yshift: 4 }));
-    layout.annotations.push(at('N', 1.35, E.N.y[0], t.accent, { xref: 'x', yref: 'y', xanchor: 'center', yshift: 4 }));
+    var lab = function (txt, x, ax) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4, xanchor: 'center', font: { size: 12, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
+    lab('<i>r</i><sub>C</sub>', B.rC_B, 'x');
+    layout.shapes.push(vline(B.rA, t.muted, 'dot', 'x'), vline(B.rN, t.muted, 'dot', 'x'));
+    lab('<i>r</i><sub>A</sub>', B.rA, 'x2'); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2'); lab('<i>r</i><sub>N</sub>', B.rN, 'x2'); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2'); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2');
+    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 1.3, x1: 2.4, y0: 0.585, y1: 0.585, line: { color: t.muted, width: 1.4 }, layer: 'above' });
+    layout.annotations.push(at('(c)', 2.45, 0.585, t.muted, { yanchor: 'middle', yshift: 0, size: 12 }));
+    layout.annotations.push(at('F', 3.1, E.F.y[0], brick, { xanchor: 'center', yshift: 5, size: 13 }));
+    layout.annotations.push(at('F', I.r2, I.rho, brick, { xanchor: 'right', xshift: -6, yshift: 8, size: 13 }));
+    layout.annotations.push(at('N', 1.3, I.rho, t.ink, { xanchor: 'center', yshift: 5, size: 13 }));
+    layout.annotations.push(at('R', B.rA, E.R.y[0], brick, { xref: 'x2', yref: 'y2', xanchor: 'right', xshift: -6, yshift: 2, size: 13 }));
+    layout.annotations.push(at('F', 2.33, E.F.y[0], brick, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 5, size: 13 }));
+    layout.annotations.push(at('T', 1.86, 0.31, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 0, size: 13 }));
+    layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, I.rho, grey, { xref: 'x2', yref: 'y2', xanchor: 'center', yanchor: 'top', yshift: -6, size: 13 }));
+    layout.annotations.push(at('N', 1.28, I.rho, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'left', yanchor: 'top', yshift: -6, size: 13 }));
+    layout.annotations.push(at('coexistence', (B.rA + B.rN) / 2, 0.18, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 2, size: 12 }));
     return { traces: traces, layout: layout };
   }
 
-  /* F13: research (a) and entry (b) along the path in each research equilibrium (Corollary 3). */
+  /* B12, page 2: research (a) and total entry (b) along the path in each research equilibrium, with the
+     example strengths of B12, page 4 and r_1, r_2 marked. */
   function specResearch(t) {
     var R = D.fig.research, I = D.fig.inputs, B = D.fig.bounds, rho = I.rho;
-    var navy = t.accent, brick = t.info, grey = t.c3, traces = [], layout = { height: 242, margin: { l: 70, r: 16, t: 50, b: 52 }, shapes: [], annotations: [] };
-    var panels = [{ x: 'x', y: 'y', name: 'λ', ylab: 'research λ', range: [-0.03, 0.42], dtick: 0.1, tick0: 0, dom: [0, 0.47] },
-      { x: 'x2', y: 'y2', name: 'entry', ylab: 'entry', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, dom: [0.57, 1] }];
+    var brick = t.info, grey = t.c3, traces = [], layout = { height: 234, margin: { l: 58, r: 10, t: 44, b: 46 }, shapes: [], annotations: [] };
+    var panels = [{ x: 'x', y: 'y', name: 'λ', ylab: 'research <i>λ</i>', range: [-0.03, 0.42], dtick: 0.1, tick0: 0, dom: [0, 0.43] },
+      { x: 'x2', y: 'y2', name: 'entry', ylab: 'total entry <i>E</i>', range: [0.2, 0.58], dtick: 0.1, tick0: 0.2, dom: [0.6, 1] }];
+    var ex = ['155', '160', '165'];
     panels.forEach(function (P, j) {
-      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: [I.r0, I.r2], dtick: 0.4, tick0: 1.2, title: { text: 'incumbent strength <i>r</i>' } };
+      layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: [I.r0, I.r2], tickvals: [1.2, 2.0, 2.8, 3.6], ticktext: ['1.2', '2.0', '2.8', '3.6'], title: { text: 'strength, weak to very strong' } };
       layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: P.range, dtick: P.dtick, tick0: P.tick0, title: { text: P.ylab } };
       layout.annotations.push(panelTag(j ? '(b)' : '(a)', P.x, P.y, t));
       var zero = j ? rho : 0, cap = j ? R.plateau : R.cap_value, ys = j ? R.recruit.entry : R.recruit.lambda;
       var fy = j ? R.floor.entry : R.floor.lambda, fcap = j ? rho : R.cap_value;
-      var seg = function (name, grp, xs, yv, color, dash) {
-        traces.push({ mode: 'lines', name: name, legendgroup: grp, showlegend: j === 0 && !!name, x: xs, y: yv, xaxis: P.x, yaxis: P.y, line: line(t, color, dash), customdata: pts(xs, yv),
-          hovertemplate: P.name + ' = %{customdata[0]}<extra>' + (name || grp) + '</extra>' });
+      var seg = function (name, xs, yv, color, dash) {
+        traces.push({ mode: 'lines', name: name, showlegend: false, x: xs, y: yv, xaxis: P.x, yaxis: P.y, line: line(t, color, dash), customdata: pts(xs, yv),
+          hovertemplate: P.name + ' = %{customdata[0]}<extra>' + name + '</extra>' });
       };
-      seg('zero research', 'zero research', R.zero.r, R.zero.r.map(function () { return zero; }), navy);
-      seg('recruiting research', 'recruiting research', R.recruit.r, ys, brick, 'dash');
-      seg('', 'recruiting research', R.cap.r, R.cap.r.map(function () { return cap; }), brick);
-      seg('floor-entry research', 'floor-entry research', R.floor.r, fy, grey, 'dashdot');
-      seg('', 'floor-entry research', R.floor_cap.r, R.floor_cap.r.map(function () { return fcap; }), grey, 'dashdot');
+      seg('zero research', R.zero.r, R.zero.r.map(function () { return zero; }), t.ink);
+      seg('recruiting research', R.recruit.r, ys, brick, 'dash');
+      seg('recruiting research', R.cap.r, R.cap.r.map(function () { return cap; }), brick);
+      seg('floor-entry research', R.floor.r, fy, grey, 'dashdot');
+      seg('floor-entry research', R.floor_cap.r, R.floor_cap.r.map(function () { return fcap; }), grey, 'dashdot');
       var end = function (a) { return a[a.length - 1]; };
-      // open markers first: at r_C the filled marker belongs to recruiting research at the cap
-      traces.push(dot([end(R.floor.r), B.res_rC], [end(fy), fcap], grey, true, P.x, P.y, 9));
-      traces.push(dot([B.res_rR, B.res_rcap, B.res_rC], [ys[0], cap, cap], brick, false, P.x, P.y, 8));
-      traces.push(dot([B.res_rN], [zero], navy, false, P.x, P.y, 8));
-      [[B.res_rR, 'r<sub>R</sub>', 1], [B.res_rcap, 'r<sub>λ̄</sub>', 0], [B.res_rN, 'r<sub>N</sub>', 1], [B.res_rQ, 'r<sub>Q</sub>', 0], [B.res_rC, 'r<sub>C</sub>', 0]].forEach(function (mk) {
+      traces.push(dot([end(R.floor.r)], [end(fy)], grey, true, P.x, P.y, 9));
+      traces.push(dot([B.res_rR], [ys[0]], brick, false, P.x, P.y, 8));
+      // the example strengths: r_0, the three middle strengths of B12 page 4 (both equilibria), r_N, r_1 and r_2
+      var exr = ex.map(function (s) { return regNum('str_r' + s); });
+      var exv = ex.map(function (s) { return regNum(j ? 'res_entry_r' + s : 'res_lambda_r' + s); });
+      traces.push(dot([I.r0].concat(exr, [B.res_rN]), [zero, zero, zero, zero, zero], t.ink, false, P.x, P.y, 8));
+      traces.push(dot(exr.concat([B.res_rcap, I.r1, I.r2]), exv.concat([cap, cap, j ? rho : cap]), t.ink, false, P.x, P.y, 8));
+      [[B.res_rR, 'r<sub>R</sub>', 0], [B.res_rcap, 'r<sub>λ̄</sub>', 1], [B.res_rN, 'r<sub>N</sub>', 0], [B.res_rQ, 'r<sub>Q</sub>', 0], [B.res_rC, 'r<sub>C</sub>', 0]].forEach(function (mk) {
         layout.shapes.push(vline(mk[0], t.muted, 'dot', P.x));
-        layout.annotations.push({ text: mk[1].replace(/^r/, '<i>r</i>'), xref: P.x, x: mk[0], yref: P.y + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + mk[2] * 17, xanchor: 'center', font: { size: 14, color: t.muted } });
+        if (!j) layout.annotations.push({ text: mk[1].replace(/^r/, '<i>r</i>'), xref: P.x, x: mk[0], yref: P.y + ' domain', y: 1, yanchor: 'bottom', yshift: 4 + mk[2] * 15, xanchor: 'center', font: { size: 12, color: t.muted } });
       });
     });
-    layout.annotations.push(at('cap λ̄ = ' + reg('res_cap'), 1.21, R.cap_value, t.muted, { yshift: 4, size: 14 }));
     layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: I.r0, x1: B.res_rcap, y0: R.cap_value, y1: R.cap_value, line: { color: t.muted, width: 1.2, dash: 'dot' }, layer: 'below' });
-    layout.annotations.push(at('zero', 1.22, 0, t.accent, { yshift: 5, size: 14 }));
-    layout.annotations.push(at('recruiting', 2.6, R.cap_value, t.info, { xanchor: 'center', yshift: 5, size: 14 }));
-    layout.annotations.push(at('floor-entry', 2.0, 0.1, t.c3, { xanchor: 'left', size: 14 }));
-    layout.annotations.push(at('zero', 1.22, I.rho, t.accent, { xref: 'x2', yref: 'y2', yanchor: 'top', yshift: -5, size: 14 }));
-    layout.annotations.push(at('recruiting', 2.6, R.plateau, t.info, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 5, size: 14 }));
-    layout.annotations.push(at('floor-entry', 2.1, I.rho, t.c3, { xref: 'x2', yref: 'y2', xanchor: 'left', yshift: 5, size: 14 }));
+    layout.annotations.push(at('zero', 1.22, 0, t.ink, { yshift: 6, size: 12 }));
+    layout.annotations.push(at('recruiting', 2.3, R.cap_value, brick, { xanchor: 'center', yshift: 5, size: 12 }));
+    layout.annotations.push(at('floor-entry', 2.2, 0.2, grey, { xanchor: 'left', size: 12 }));
+    layout.annotations.push(at('zero', 1.22, I.rho, t.ink, { xref: 'x2', yref: 'y2', yanchor: 'top', yshift: -5, size: 12 }));
+    layout.annotations.push(at('recruiting', 2.8, R.plateau, brick, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 5, size: 12 }));
+    layout.annotations.push(at('floor-entry', 2.2, I.rho + 0.05, grey, { xref: 'x2', yref: 'y2', xanchor: 'left', yshift: 0, size: 12 }));
     return { traces: traces, layout: layout };
   }
 
@@ -396,74 +391,16 @@
     return st;
   }
 
-  /* ---------- widgets ---------- */
-  /* Slide 10 (F3): select a row of the payment cases to rule it. */
-  widgets.cases = {
-    render: function (s) {
-      $$('tr[data-row]', s).forEach(function (tr) {
-        tr.tabIndex = 0;
-        tr.onclick = tr.onkeydown = function (e) {
-          if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
-          if (e.type === 'keydown') e.preventDefault();
-          var on = !tr.classList.contains('hl');
-          $$('tr[data-row]', s).forEach(function (x) { x.classList.toggle('hl', on && x === tr); });
-        };
-      });
-    },
-    reset: function (s) { $$('tr.hl', s).forEach(function (tr) { tr.classList.remove('hl'); }); }
-  };
-  widgets.gain = { render: function (s) { drawChart($('#gain', s), specGain(tokens()), 'gain'); } };
-  widgets.beliefs = {
-    render: function (s) {
-      var input = $('#beliefs-r', s);
-      input.value = String(beliefsIndex);
-      input.oninput = function () { beliefsIndex = Number(input.value); widgets.beliefs.draw(s); };
-      widgets.beliefs.draw(s);
-    },
-    draw: function (s) {
-      var Bf = D.fig.belief, i = beliefsIndex;
-      drawChart($('#beliefs', s), specBeliefs(tokens(), i), 'beliefs');
-      $('#beliefs-r-value', s).textContent = Bf.r[i].toFixed(2);
-    },
-    reset: function () { beliefsIndex = 180; }
-  };
-  /* Slide 18 (F11): select a row of the entry table; the bars draw its two entries. */
-  widgets.controls = {
-    render: function (s) {
-      var pick = function (row) {
-        $$('tr[data-row]', s).forEach(function (tr) { tr.classList.toggle('hl', tr.dataset.row === row); tr.setAttribute('aria-selected', String(tr.dataset.row === row)); });
-        var tr = $('tr[data-row="' + row + '"]', s), vals = $$('td .q', tr).map(function (q) { return { shown: q.textContent, v: regNum(q.dataset.q) }; });
-        var bar = function (lab, o) { return '<div class="bar-row"><span>' + lab + '</span><div class="bar' + (row === 'eq' ? ' info' : '') + '" style="transform:scaleX(' + o.v + ')"></div><span class="num">' + o.shown + '</span></div>'; };
-        $('#f11-bars', s).innerHTML = bar('<i>r</i><sub>0</sub>', vals[0]) + bar('<i>r</i><sub>1</sub>', vals[1]);
-        widgets.controls.row = row;
-      };
-      $$('tr[data-row]', s).forEach(function (tr) {
-        tr.tabIndex = 0;
-        tr.onclick = function () { pick(tr.dataset.row); };
-        tr.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(tr.dataset.row); } };
-      });
-      pick(widgets.controls.row || 'eq');
-    },
-    reset: function () { widgets.controls.row = 'eq'; }
-  };
+  /* ---------- widgets: the four figures ---------- */
+  widgets.beliefs = { render: function (s) { drawChart($('#beliefs', s), specBeliefs(tokens()), 'beliefs'); } };
   widgets.region = { render: function (s) { drawChart($('#region', s), specRegion(tokens()), 'region'); } };
   widgets.coex = { render: function (s) { drawChart($('#coex', s), specCoex(tokens()), 'coex'); } };
   widgets.research = { render: function (s) { drawChart($('#research', s), specResearch(tokens()), 'research'); } };
-  widgets.notation = {
-    render: function (s) {
-      var host = $('#notation-table', s);
-      if (host.dataset.done) return;
-      host.innerHTML = (META.notation || []).map(function (col) {
-        return '<table><thead><tr><th>Symbol</th><th>Meaning</th></tr></thead><tbody>' + col.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody></table>';
-      }).join('');
-      host.dataset.done = '1';
-    }
-  };
 
   function renderWidget(force) {
     var s = slides[index], w = widgets[s.dataset.widget];
     if (!w || !w.render) return;
-    if (!force && s.dataset.rendered === '1' && !/^(gain|beliefs|region|coex|research)$/.test(s.dataset.widget)) return;
+    if (!force && s.dataset.rendered === '1' && !/^(beliefs|region|coex|research)$/.test(s.dataset.widget)) return;
     try { w.render(s); s.dataset.rendered = '1'; } catch (e) { errors.push(s.id + ': ' + e.message); }
   }
 
@@ -475,8 +412,8 @@
       tg.setAttribute('aria-expanded', String(open)); if (t) t.hidden = !open;
       return;
     }
-    var gt = e.target.closest && e.target.closest('.goto[data-target]');
-    if (gt) { follow(gt.dataset.target); return; }
+    var gt = e.target.closest && e.target.closest('.goto[data-target], .xlink[data-target]');
+    if (gt) { e.preventDefault(); follow(gt.dataset.target); return; }
     var bk = e.target.closest && e.target.closest('.goto[data-back]');
     if (bk) { back(bk.dataset.back); return; }
     var jump = e.target.closest && e.target.closest('[data-jump]');

@@ -1,7 +1,7 @@
 /* Render the slide records of content.js to HTML at build time.
  *
  * Reads one JSON object on stdin: { registry: { "<key>": { value, display } } }, the slot registry.
- * Writes { frames, notation, glossary, numbers, used } to stdout. Supplies the helpers of the
+ * Writes { frames, notation, numbers, used } to stdout. Supplies the helpers of the
  * content.js contract: KaTeX renders the mathematics here, and every number is the registry
  * display of its key, the string that \reg{key} prints in slot/manuscript/slides.tex. A key that the
  * registry does not hold stops the build. Node standard library and the locked KaTeX copy only.
@@ -97,7 +97,8 @@ const H = {
   q,
   v: value,
   go: (target, text) => `<button type="button" class="goto" data-target="${esc(target)}">${text}</button>`,
-  back: (target) => `<button type="button" class="goto back" data-back="${esc(target)}">Back</button>`
+  back: (target, text) => `<button type="button" class="goto back" data-back="${esc(target)}">${text === undefined ? 'Back' : text}</button>`,
+  link: (target, text) => `<a class="xlink" href="#" data-target="${esc(target)}">${text}</a>`
 };
 
 /* Titles are slides.tex strings: $...$ is mathematics. */
@@ -123,5 +124,5 @@ if (problems.length) {
   process.exit(1);
 }
 process.stdout.write(JSON.stringify({
-  frames, notation: deck.notation, glossary: deck.glossary, numbers, used: [...used].sort()
+  frames, notation: deck.notation, numbers, used: [...used].sort()
 }));

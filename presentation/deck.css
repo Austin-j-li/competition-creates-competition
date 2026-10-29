@@ -88,7 +88,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 #stage:focus { outline: none; }
 #deck { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; transform: translate(-50%, -50%) scale(var(--stage-scale)); transform-origin: center center; }
 /* The body size of a main frame is \Body (\small, 9 pt): 32 px here. */
-.slide { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-serif); font-size: 32px; line-height: 1.3; outline: 1px solid var(--line); overflow: hidden; }
+.slide { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-serif); font-size: 32px; line-height: 1.22; outline: 1px solid var(--line); overflow: hidden; }
 .slide.active { display: flex; }
 
 /* The frame head: the title in bold sans, the subtitle in grey italic under it, then the accent rule;
@@ -100,7 +100,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide-head .katex { color: inherit; }
 .slide-head .q { color: inherit; }
 
-.slide-body { flex: 1 1 auto; min-height: 0; padding: 18px 40px 0; display: flex; flex-direction: column; }
+.slide-body { flex: 1 1 auto; min-height: 0; padding: 12px 40px 0; display: flex; flex-direction: column; }
 /* The footline: the short title in sans small capitals, the link buttons, the frame number. */
 .slide-foot { flex: none; display: flex; justify-content: space-between; align-items: baseline; padding: 6px 40px 12px; font-family: var(--font-sans); font-size: 23px; color: var(--gray-text); font-variant-numeric: tabular-nums; }
 .foot-title { font-variant-caps: small-caps; text-transform: lowercase; letter-spacing: 0.02em; }
@@ -112,7 +112,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* ---------- type and content ---------- */
 
-.slide p { margin: 0 0 12px; }
+.slide p { margin: 0 0 6px; }
 .slide p, .slide li, .grayline, .propitem { text-wrap: pretty; }
 .slide ul, .slide ol { margin: 0 0 12px; padding-left: 1.15em; }
 .slide li { margin: 0 0 10px; }
@@ -167,7 +167,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide [data-step]:not(.shown) { opacity: 0; transform: translateY(6px); pointer-events: none; }
 
 /* math */
-.slide .katex { font-size: 1.04em; }
+.slide .katex { font-size: 0.95em; }
 .display-math { flex: none; margin: 6px 0 14px; overflow: hidden; }
 .display-math .katex-display { margin: 0.3em 0; }
 
@@ -175,7 +175,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* \NavyRule and \LightRule: a rule in the accent or a light hairline, on an hr or a div. */
 .rule-accent { border: 0; border-top: 3px solid var(--accent); margin: 8px 0; height: 0; }
-.rule-light { border: 0; border-top: 1px solid var(--line); margin: 8px 0; height: 0; }
+.rule-light { border: 0; border-top: 1px solid var(--line); margin: 5px 0; height: 0; }
 /* Statement: an accent rule, a bold sans tag in the accent, the body one size down, a light rule.
    .resultbox and .propblock, the earlier names, print the same way. */
 .statement, .resultbox, .propblock { border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); background: transparent; margin: 4px 0 16px; padding: 6px 0 4px; }
@@ -191,7 +191,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide ol.props li { margin-bottom: 8px; }
 .propblock.theorem p { margin: 0 0 8px; font-size: 28px; }
 /* DefList: a label column, bold sans labels on the left, text on the right. */
-.deflist { display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 16px; row-gap: 8px; margin: 0 0 12px; }
+.deflist { display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 16px; row-gap: 2px; margin: 0 0 4px; }
 .deflist dt { font-family: var(--font-sans); font-weight: 700; margin: 0; }
 .deflist dd { margin: 0; }
 .deflist.narrow { grid-template-columns: 220px minmax(0, 1fr); }
@@ -209,7 +209,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide p.bigline b { font-weight: 700; }
 /* \ModelStrip: the six parts of the model under the title of frames 5 to 9; the current ones in bold
    accent, the others grey, light bullets between them. */
-.model-strip { display: flex; justify-content: space-between; align-items: baseline; list-style: none; margin: -4px 0 14px; padding: 0; font-family: var(--font-sans); font-size: 26px; color: var(--gray-text); }
+.model-strip { display: flex; justify-content: space-between; align-items: baseline; list-style: none; margin: -4px 0 8px; padding: 0; font-family: var(--font-sans); font-size: 26px; line-height: 1.2; color: var(--gray-text); }
 .model-strip li { display: flex; flex: 1; align-items: baseline; margin: 0; }
 .model-strip li:last-child { flex: 0; }
 .model-strip li:not(:last-child)::after { content: "\2022"; color: var(--line); margin: 0 auto; }
@@ -219,27 +219,13 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 /* ---------- components ---------- */
 
 /* The title frame: a short accent rule, the serif title, the author and the department. */
-.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 130px 60px; background: var(--bg); color: var(--ink); }
+.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 60px; background: var(--bg); color: var(--ink); }
 .cover::before { content: ""; display: block; width: 240px; border-top: 5px solid var(--accent); margin-bottom: 44px; }
 .cover h1 { margin: 0 0 40px; padding: 0; border: 0; font-family: var(--font-serif); font-size: 60px; font-weight: 700; line-height: 1.18; letter-spacing: 0; text-wrap: balance; }
 .cover-author { font-family: var(--font-sans); font-size: 34px; font-weight: 400; margin: 0 0 6px; }
 .cover-inst { font-family: var(--font-sans); font-size: 34px; color: var(--ink); margin: 0; padding: 0; border: 0; line-height: 1.3; }
 .cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--muted); }
 .title-slide { background: var(--bg); }
-
-/* Steps of a process: an accent-ruled head each, joined by an arrow. */
-.flow { display: flex; align-items: stretch; justify-content: flex-start; gap: 22px; margin: 6px 0 22px; font-family: var(--font-sans); }
-.box { border: 0; border-top: 2px solid var(--accent); padding: 14px 0 0; font-size: 26px; text-align: left; width: 400px; min-height: 92px; display: block; }
-.box-cost { border-top: 2px solid var(--c-cost); }
-.flow .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
-.flow .arrow::before { content: ""; display: block; width: 28px; height: 28px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
-
-/* Choices: text buttons, the chosen one in the accent with an underline. */
-.segmented { display: inline-flex; gap: 30px; margin: 0 0 14px; padding-right: 30px; border-bottom: 1px solid var(--line); font-family: var(--font-sans); }
-.segmented button { border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; color: var(--ink); border-radius: 0; padding: 4px 0 6px; font-size: 23px; }
-.segmented button:hover { border-bottom-color: var(--muted); }
-.segmented button[aria-pressed="true"] { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
-.segmented button .katex { color: inherit; }
 
 /* Tables: booktabs rules, tabular figures, the head in bold sans. A highlighted row is ruled above and below. */
 .slide table { border-collapse: collapse; font-family: var(--font-serif); font-size: 27px; font-variant-numeric: tabular-nums; margin: 0 0 12px; }
@@ -252,119 +238,6 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide td .sub, .slide th .sub { display: block; font-size: 0.78em; color: var(--gray-text); font-weight: 400; }
 tr.hl > th, tr.hl > td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
 td.hl, th.hl { font-weight: 700; border-bottom-color: var(--ink); }
-.t-cases { width: 100%; }
-.t-cases td, .t-cases th { padding-right: 24px; }
-.t-cases td.gap { font-weight: 700; }
-.two-lines > div { display: flex; align-items: baseline; gap: 14px; margin: 4px 0 6px 40px; font-size: 30px; }
-.two-lines .gloss { color: var(--muted); font-size: 27px; }
-.two-lines .info .gloss { color: var(--c-info); }
-.arrowword { font-weight: 700; font-family: var(--font-sans); }
-.t-factors { margin: 6px auto 8px !important; }
-.t-factors td { text-align: center; border: 0 !important; border-top: 2px solid var(--ink) !important; border-bottom: 2px solid var(--ink) !important; font-size: 25px; padding: 8px 12px !important; vertical-align: middle; }
-.t-bench { margin-left: 0 !important; }
-.t-bench th:first-child { width: 540px; }
-.t-bench td, .t-bench thead th { text-align: center; width: 210px; }
-.t-bench .strong { font-weight: 700; }
-.t-bench .words { color: var(--gray-text); font-style: italic; }
-.t-controls { font-size: 25px !important; }
-.t-controls thead th { white-space: nowrap; }
-.t-controls th:first-child { width: 520px; }
-.t-controls td { vertical-align: middle; }
-.bars { display: flex; flex-direction: column; gap: 14px; justify-content: center; font-family: var(--font-sans); font-size: 20px; }
-.bar-row { display: grid; grid-template-columns: 70px 1fr 80px; align-items: center; gap: 10px; }
-.bar { height: 20px; background: var(--chart-1); border-radius: 0; transform-origin: left center; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-.bar.info { background: var(--c-info); }
-.t-conditions { margin-bottom: 8px; }
-.t-conditions td { font-size: 26px; border: 0 !important; border-bottom: 1px solid var(--grid) !important; padding: 5px 24px 5px 0; }
-.split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
-.split.narrow { grid-template-columns: 1.3fr 1fr; }
-.split.wide { grid-template-columns: 3fr 1fr; align-items: center; gap: 30px; }
-.split .col.text { font-size: 28px; }
-.slider { display: flex; align-items: center; gap: 14px; font-family: var(--font-sans); font-size: 23px; margin: 4px 0; }
-.slider input { flex: 1; height: 34px; -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
-.slider input::-webkit-slider-runnable-track { height: 1.5px; background: var(--ink); }
-.slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 32px; margin-top: -15px; background: var(--accent); border: 0; border-radius: 0; }
-.slider input::-moz-range-track { height: 1.5px; background: var(--ink); }
-.slider input::-moz-range-thumb { width: 4px; height: 32px; background: var(--accent); border: 0; border-radius: 0; }
-.slider output { font-variant-numeric: tabular-nums; min-width: 4ch; }
-.readout { font-family: var(--font-sans); font-size: 20px; color: var(--ink); }
-.readout p { margin: 0 0 4px; }
-.readout b { font-variant-numeric: tabular-nums; font-weight: 700; }
-.readout .chip { display: inline; padding: 0 0 1px; border: 0; margin: 2px 0 0; font-weight: 700; }
-.readout .chip.ok { color: var(--accent); border-bottom: 2px solid var(--accent); }
-.readout .chip.no { color: var(--muted); border-bottom: 1px dashed var(--muted); font-weight: 400; }
-.readout .note { color: var(--gray-text); font-size: 18px; }
-.beliefsplit { grid-template-columns: 1.35fr 1fr; align-items: start; }
-.beliefsplit .readout { font-size: 22px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
-.beliefsplit .readout .note { font-size: 18px; }
-.beliefsplit .readout .chip { font-size: 20px; }
-.t-robust th:first-child { width: 440px; }
-.t-robust td { text-align: left; width: auto; font-size: 26px; }
-.t-robust th { font-weight: 700; font-size: 26px; }
-.t-robust thead th { text-align: left; }
-.t-robust.roomy th, .t-robust.roomy td { padding-top: 16px; padding-bottom: 16px; }
-.t-robust.roomy td, .t-robust.roomy th { font-size: 29px; }
-.t-access { width: 100%; }
-.t-access td, .t-access thead th:not(:first-child) { text-align: center; }
-.t-access.roomy { font-size: 31px; }
-.t-access.roomy td, .t-access.roomy th { padding-top: 12px; padding-bottom: 12px; }
-.t-cert { width: 100%; }
-.t-cert td, .t-cert th { text-align: center; }
-.t-lit { font-size: 20.5px !important; width: 100%; }
-.t-lit td { padding: 4px 14px 4px 0 !important; line-height: 1.25; }
-.hover-rows tbody tr:hover td { border-bottom-color: var(--ink); }
-.t-omit th { width: 230px; font-weight: 700; }
-.t-omit td { font-size: 26px; }
-.t-prim { font-size: 23px !important; margin: 0 auto 8px !important; }
-.t-prim td { text-align: center; }
-.t-inputs { font-size: 29px !important; width: 100%; }
-.t-inputs td, .t-inputs th { padding: 11px 16px 11px 0; text-align: center; }
-.t-inputs th:last-child, .t-inputs td:last-child { text-align: left; }
-.t-outcomes td { text-align: center; }
-.t-orders { margin: 2px 0 6px !important; }
-.t-orders th, .t-orders td { text-align: center; }
-.t-orders th:first-child, .t-orders td:first-child { text-align: left; width: 480px; }
-.t-trade { font-size: 24px; margin-top: 6px !important; }
-.t-trade td, .t-trade th { padding-right: 14px; }
-.t-trade td.nw { white-space: nowrap; }
-.t-region, .t-thresh, .t-ext { width: 100%; font-size: 25px; }
-.t-thresh td:nth-child(2) { font-variant-numeric: tabular-nums; }
-.t-ext th { width: 360px; font-weight: 700; }
-.t-ext td { font-size: 24px; }
-.nw { white-space: nowrap; }
-.steps { padding-left: 1.4em !important; }
-.steps li { margin-bottom: 14px !important; }
-.notation { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 25px; }
-.notation table { font-size: 25px !important; width: 100%; }
-.notation td { padding: 8px 12px 8px 0; }
-.notation td:first-child { white-space: nowrap; padding-right: 20px; }
-.refs { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; font-size: 24px; }
-.refs ul { list-style: none; padding: 0 !important; margin: 0; }
-.refs li { margin: 0 0 9px !important; }
-.refs ul > li::marker { content: none; }
-
-/* The order slot: steps of a process, ruled like the timeline. */
-.slotflow { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin: 6px 0 16px; font-family: var(--font-sans); }
-.slotflow .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
-.slotflow .arrow::before { content: ""; display: block; width: 28px; height: 28px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
-.slotsrc { display: flex; flex-direction: column; gap: 22px; flex: 1.45; }
-.sbox { flex: 1; border-top: 1px solid var(--ink); padding: 12px 0 0; font-size: 25px; line-height: 1.3; }
-.sbox b { display: block; font-size: 26px; font-weight: 700; margin-bottom: 2px; }
-.sbox small { display: block; margin-top: 6px; font-size: 20px; color: var(--gray-text); line-height: 1.3; }
-.sbox .chance { float: none; display: block; color: var(--muted); font-weight: 400; margin-bottom: 4px; }
-.slotbox { flex: 1.1; align-self: flex-start; border-top: 2px solid var(--accent); }
-.sbox-cost { flex: 0.9; align-self: flex-start; border-top: 2px solid var(--c-cost); }
-
-/* The belief scale: a line, the band of possible beliefs thick, three ticks, one pin. */
-.beliefbar { margin: 8px 0 6px; padding: 0 26px; font-family: var(--font-sans); }
-.beliefbar .track { position: relative; height: 0; border-top: 1px solid var(--ink); margin-top: 16px; }
-.beliefbar .band { position: absolute; top: -4px; height: 7px; background: var(--c-info); }
-.beliefbar .tick { position: absolute; top: -12px; width: 1px; height: 24px; background: var(--ink); }
-.beliefbar .pin { position: absolute; top: -17px; width: 4px; height: 34px; background: var(--accent); transform: translateX(-2px); transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-.beliefbar .scale { position: relative; height: 36px; font-size: 24px; margin-top: 16px; font-family: var(--font-serif); }
-.beliefbar .scale > span { position: absolute; transform: translateX(-50%); }
-
-.gainsplit { grid-template-columns: 1.3fr 1fr; align-items: start; }
 
 /* ---------- figures drawn by charts.js: a hairline frame; legend as text with swatches ---------- */
 
@@ -443,185 +316,133 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
   .beliefbar .pin { display: none; }
 }
 
-.regionsplit { grid-template-columns: 1.15fr 1fr; align-items: start; }
-.regionsplit .display-math { font-size: 0.95em; margin: 8px 0; }
-.keyline { margin: 6px 0 10px; color: var(--muted); }
-.keyline b { margin-left: 18px; }
-.keyline b:first-child { margin-left: 0; }
-.keyline .k-n { color: var(--ink); }
-.keyline .k-r { color: var(--c-info); }
-.keyline .k-q { color: var(--muted); }
-.keyline .k-t { color: var(--ink); }
 
-/* ---------- the 45-minute talk ---------- */
-
-/* Slide 1: the question set large (\LARGE). */
+/* Frame 1: the question set large (\LARGE). */
 .bigtitle .slide-head h2 { font-size: 60px; line-height: 1.1; }
 .bigtitle .slide-head .sub { margin-top: 8px; }
-
-/* Three columns with a column head each: the head in bold sans over an accent rule, ragged text. */
-.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; margin: 40px 0 0; }
-.rcol { padding-top: 0; font-size: 31px; line-height: 1.34; }
-.rcol b { font-weight: 700; }
-.rcol > b:first-child { display: block; font-family: var(--font-sans); color: var(--accent); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
 
 /* The link buttons sit in the footline, left of the frame number. */
 .slide .nav { position: absolute; right: 150px; bottom: 10px; margin: 0 !important; padding: 0; z-index: 3; }
 .slide-body > .nav:last-child { margin: 0 !important; }
 
-/* Slide 4: the large line between rules, the formal line, the preview, the roadmap at the foot. */
-.slide p.formal { margin: 0; font-size: 32px; }
-.cols3 + .roadmap, .slide p.roadmap { margin: auto 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-family: var(--font-sans); font-size: 24px; color: var(--muted); }
+/* ---------- the frames of the Overleaf deck: body sizes, columns, tables, diagrams ---------- */
 
-/* A line ruled above with a hairline: the sale rule, the slot line, the outcome line. */
-.slide p.ruled-line { margin: 10px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
-.slide p.lead { font-size: 32px; margin-top: 24px; }
-.slide p.caption { font-size: 27px; line-height: 1.32; margin: 0 0 10px; }
-.slide .xs, .slide ul.xs, .slide ol.xs { font-size: 25px; line-height: 1.32; }
-.slide ul.xs li, .slide ol.xs li { margin-bottom: 4px; }
+/* Body sizes. \Body (\small, 9 pt) is the default; a frame without \Body prints at \normalsize (sz-n),
+   a backup may set \footnotesize (sz-f) or \scriptsize (sz-x) at frame level. fs-* set one block. */
+.slide.sz-n .slide-body { font-size: 35px; }
+.slide.sz-f .slide-body { font-size: 28px; }
+.slide.sz-x .slide-body { font-size: 25px; }
+.slide .fs-n { font-size: 35px; }
+.slide .fs-s { font-size: 32px; }
+.slide .fs-f { font-size: 28px; }
+.slide .fs-x { font-size: 25px; }
+.slide.sz-x .statement > :not(.statement-tag) { font-size: 25px; }
+.slide .mt-n { margin-top: -12px; }
+.slide .mt-6 { margin-top: 6px; }
+.slide .mt-10 { margin-top: 10px; }
+/* Lists: \itemsep in design pixels through --gap; Beamer squares and bold accent numbers. */
+.slide ul, .slide ol { margin: 0 0 10px; padding-left: 1.1em; }
+.slide li { margin: 0 0 var(--gap, 6px); }
+.slide li:last-child { margin-bottom: 0; }
+.slide ol > li::marker { color: var(--accent); font-weight: 700; }
+.slide li .display-math { margin: 4px 0; }
+/* Spacing: \vfill pushes what follows to the foot; \vspace is a fixed height. */
+.vfill { margin-top: auto; }
+.vsp { flex: none; }
+.vfill + .rule-light { margin-top: 0; }
+.slide p.roadline { margin: 0; font-family: var(--font-sans); color: var(--gray-text); }
+/* Beamer columns and minipages: the widths are fractions of the text width, the rest is the gap. */
+.jcols { display: flex; justify-content: space-between; align-items: flex-start; gap: 0; }
+.jcols > .jcol { flex: none; min-width: 0; }
+.jcols > .jcol > :last-child { margin-bottom: 0; }
+.jcenter { display: flex; justify-content: center; }
+.statement .jcols { margin: 0 0 6px; }
+.statement .gloss { font-size: inherit; margin: 0 0 6px; }
+.statement p { margin: 0 0 6px; }
+/* Tables in booktabs: rules above and below the head and at the end, \midrule where marked; no row
+   rules; the head in the text face, as Beamer sets it. \arraystretch through stretch-*. */
+.slide table.tj { margin: 0 0 8px; border-collapse: collapse; }
+.slide table.tj:not([class*="fs-"]) { font-size: inherit; }
+.slide table.tj.fs-s { font-size: 32px; }
+.slide table.tj.fs-f { font-size: 28px; }
+.slide table.tj.fs-x { font-size: 25px; }
+.slide table.tj th, .slide table.tj td { padding: 4px 16px 4px 0; border-bottom: 0; line-height: 1.24; vertical-align: top; }
+.slide table.tj th:last-child, .slide table.tj td:last-child { padding-right: 0; }
+.slide table.tj thead th { font-family: var(--font-serif); font-weight: 400; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.slide table.tj thead tr.panel th { border-bottom: 0; text-align: left; }
+.slide table.tj thead tr.panel + tr th { border-top: 0; }
+.slide table.tj tbody tr:last-child td { border-bottom: 2px solid var(--ink); }
+.slide table.tj tr.mid td { border-top: 1px solid var(--ink); }
+.slide table.tj .c { text-align: center; }
+.slide table.tj.stretch-135 td, .slide table.tj.stretch-135 th { padding-top: 9px; padding-bottom: 9px; }
+.slide table.tj.stretch-130 td, .slide table.tj.stretch-130 th { padding-top: 8px; padding-bottom: 8px; }
+.slide table.tj.stretch-120 td, .slide table.tj.stretch-120 th { padding-top: 6px; padding-bottom: 6px; }
+.slide table.tj.stretch-115 td, .slide table.tj.stretch-115 th { padding-top: 5px; padding-bottom: 5px; }
+.slide table.tj.stretch-110 td, .slide table.tj.stretch-110 th,
+.slide table.tj.stretch-108 td, .slide table.tj.stretch-108 th,
+.slide table.tj.stretch-105 td, .slide table.tj.stretch-105 th { padding-top: 3px; padding-bottom: 3px; }
+.slide table.tj.stretch-100 td, .slide table.tj.stretch-100 th,
+.slide table.tj.stretch-098 td, .slide table.tj.stretch-098 th { padding-top: 1px; padding-bottom: 1px; }
+.slide table.tj.tight td, .slide table.tj.tight th { padding-right: 14px; }
+.slide table.tj.econ td, .slide table.tj.econ th { padding-right: 14px; }
+.slide table.notation-table td { padding-top: 2px; padding-bottom: 2px; }
+.refs2 p { margin: 0 0 6px; }
+/* Figures drawn by charts.js on a frame of the Overleaf deck: no frame line, as the Beamer figures. */
+.figure.plain { border-top: 0; padding-top: 0; margin-bottom: 6px; }
+#beliefs { width: 100%; }
+#region { width: 100%; }
+.coexfig { width: 780px; }
+.researchfig { width: 800px; }
 
-/* Slide 5: the decision interval. */
-.flow-3 { margin: 30px 0 34px; gap: 30px; }
-.flow-3 .box { width: 430px; font-size: 29px; min-height: 0; }
-.flow-3 .arrow { margin-top: 18px; }
-
-/* Slide 7: the order slot; each box is a bold head, a dash and the rest. */
-.slotflow .sbox { font-family: var(--font-serif); font-size: 24px; line-height: 1.3; }
-.slotflow .sbox b { display: inline; font-family: var(--font-sans); font-size: 24px; margin: 0; }
-.slotflow .slotsrc { flex: 1.5; gap: 24px; }
-.slotflow .slotbox { flex: 0.95; }
-.slotflow .makerbox { flex: 1.05; align-self: flex-start; }
-.slotflow .sbox-cost { flex: 0.95; }
-
-/* Tables of the main slides. */
-.slide table.t-lit3, .slide table.t-inv, .slide table.t-cases, .slide table.t-prop2, .slide table.t-out, .slide table.t-scope { width: 100%; }
-.t-lit3 { font-size: 25px !important; }
-.t-lit3 td { padding: 12px 22px 12px 0; line-height: 1.28; }
-.t-lit3 td:first-child { width: 270px; font-weight: 700; }
-.t-inv { font-size: 24px !important; }
-.t-inv td { padding: 6px 20px 6px 0; line-height: 1.26; }
-.t-inv td:first-child { width: 330px; }
-.t-cases { font-size: 27px !important; }
-.t-cases td { padding: 12px 22px 12px 0; line-height: 1.28; }
-.t-cases tr[data-row] { cursor: pointer; }
-.t-prop2 { font-size: 25px !important; margin-bottom: 8px !important; }
-.t-prop2 td { padding: 5px 16px 5px 0; line-height: 1.24; }
-.t-prop2 td:first-child { width: 340px; }
-.t-out { font-size: 26px !important; }
-.t-out td { padding: 8px 18px 8px 0; }
-.t-out td:not(:first-child), .t-out thead th:not(:first-child) { text-align: center; }
-.t-out td:first-child { width: 560px; }
-.t-scope { font-size: 29px !important; }
-.t-scope td { padding: 12px 22px 12px 0; line-height: 1.3; }
-.t-scope td:first-child { width: 430px; font-weight: 700; }
-.t-controls tr[data-row] { cursor: pointer; }
-.t-controls td:not(:first-child), .t-controls thead th:not(:first-child) { text-align: center; }
-.t-access2 { width: 100%; font-size: 26px !important; }
-.t-access2 td:first-child { white-space: nowrap; }
-.t-access2 td:not(:first-child), .t-access2 thead th:not(:first-child) { text-align: center; }
-.t-access2 thead th { line-height: 1.2; }
-
-/* Slide 9: the five conditions of the definition. */
-.slide ol.defs { font-size: 28px; line-height: 1.3; margin-bottom: 4px; padding-left: 1.3em; }
-.slide ol.defs li { margin-bottom: 4px; }
-.slide ol.defs .display-math { margin: 0; }
-.slide ol.defs .katex-display { margin: 0.15em 0; }
-
-/* Slide 12: the belief band, symbols only. */
-#s12 .display-math { font-size: 0.9em; margin-bottom: 4px; }
-#s12 .beliefbar { margin: 2px 0 6px; padding: 0 160px; }
-#s12 .beliefbar .band { background: var(--line); top: -6px; height: 11px; }
-#s12 .beliefbar .scale { height: 40px; margin-top: 24px; }
-#s13 .display-math { margin: 0 0 4px; font-size: 0.95em; }
-#s13 .gainsplit { grid-template-columns: 1.15fr 1fr; gap: 36px; margin-top: 4px; }
-
-/* Slide 14: conditions and result lines. */
-.slide ul.conds { font-size: 26px; line-height: 1.28; margin-bottom: 6px; }
-.slide ul.conds li { margin-bottom: 3px; }
-.result-lines p { margin: 0 0 4px; font-size: 26px; line-height: 1.3; }
-
-/* Slide 15: the proof map, four ruled steps joined by arrows, each tagged with its source slide. */
-.proofmap { display: flex; align-items: flex-start; gap: 16px; margin: 30px 0 0; font-family: var(--font-serif); }
-.pbox { flex: 1; border-top: 2px solid var(--accent); padding-top: 12px; font-size: 28px; line-height: 1.32; }
-.ptag { display: block; margin-bottom: 8px; font-family: var(--font-sans); font-size: 20px; font-weight: 700; color: var(--muted); }
-.ptag b { margin-right: 18px; color: var(--accent); }
-.proofmap .arrow { align-self: flex-start; margin-top: 4px; font-size: 0; }
-.proofmap .arrow::before { content: ""; display: block; width: 26px; height: 26px; background: var(--muted); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
-
-/* Slides 16, 19, 20, 22: figure and words. */
-#s16 .beliefsplit { grid-template-columns: 1.2fr 1fr; gap: 34px; }
-#s16 .slider { font-size: 22px; }
-.regionsplit { grid-template-columns: 0.82fr 1.18fr; gap: 34px; }
-#s19 .col.text .display-math { font-size: 0.86em; margin: 0 0 4px; }
-#s19 .col.text ul.small { font-size: 25px; }
-#s19 .col.text ul.small li { margin-bottom: 4px; }
-#s20 ul.small, #s22 ul.small { font-size: 26px; }
-#s20 ul.small li, #s22 ul.small li { margin-bottom: 2px; }
-#s20 .figure, #s22 .figure { margin-bottom: 4px; }
-#s18 .split.wide { grid-template-columns: 2.6fr 1fr; gap: 40px; }
-#s18 .bars { font-size: 21px; }
-
-/* Slide 21: the set-up change, a rule, then the claims. */
-.setup p { margin: 0 0 6px; font-size: 29px; line-height: 1.3; }
-.setup { padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid var(--ink); }
-.slide p.definition { font-size: 29px; line-height: 1.3; margin: 0 0 8px; }
-#s21 ul.small { font-size: 29px; }
-#s21 ul.small li { margin-bottom: 4px; }
-
-/* Slide 24 and slide 25. */
-.accesssplit { grid-template-columns: 1.15fr 1fr; gap: 40px; }
-.accesssplit p.small { font-size: 30px; margin-bottom: 10px; }
-#s24 p.small { font-size: 30px; }
-.testsplit { grid-template-columns: 1fr 300px; gap: 40px; }
-.testsplit p.small { font-size: 28px; margin-bottom: 8px; }
-#s25 .testsplit .xs { font-size: 27px; }
-.slide ol.predictions { padding-left: 1.3em; }
-.impact { position: relative; width: 300px; height: 330px; margin-top: 10px; font-family: var(--font-serif); }
-.impact svg { position: absolute; left: 0; top: 0; overflow: visible; }
-.impact .brace { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.impact .brace.info { stroke: var(--c-info); stroke-width: 3; }
-.impact .brace.muted { stroke: var(--muted); stroke-width: 2; }
-.impact .lvl { position: absolute; left: 48px; right: 0; display: flex; align-items: center; gap: 12px; transform: translateY(-50%); font-size: 27px; }
-.impact .lvl-line { display: block; width: 130px; height: 0; border-top: 2px solid var(--ink); }
-
-/* Slide 26: three lines, the chain between rules, the last line. */
-.slide ol.conclusion { font-size: 36px; margin: 26px 0 0; padding-left: 1.3em; }
-.slide ol.conclusion li { margin-bottom: 24px; }
-.slide p.chain { margin: 20px 0 0; padding: 18px 0; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-weight: 700; font-size: 30px; }
-.slide p.lastline { margin: auto 0 0; font-size: 31px; }
-
-/* Backups. */
-.twotables { display: grid; grid-template-columns: 1fr 1.08fr; gap: 36px; align-items: start; }
-.twotables table { width: 100%; font-size: 23px !important; }
-.twotables td { padding: 5px 12px 5px 0; line-height: 1.25; }
-.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
-.panels4 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 48px; margin-top: 10px; }
-.rpanel { padding-top: 0; font-size: 27px; line-height: 1.32; }
-.rpanel b { display: block; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid var(--accent); font-family: var(--font-sans); font-weight: 700; font-size: 25px; color: var(--accent); }
-.rpanel p { margin: 0 0 8px; }
-.t-payoffs, .t-panels, .t-econ { width: 100%; }
-.t-payoffs { font-size: 20px !important; }
-.t-payoffs td { padding: 3px 14px 3px 0; }
-.t-payoffs td:not(:first-child), .t-payoffs thead th:not(:first-child) { text-align: center; }
-.t-panels { font-size: 18px !important; }
-.t-panels td, .t-panels th { padding: 2px 14px 2px 0; line-height: 1.22; }
-.t-panels td:not(:first-child), .t-panels thead th:not(:first-child) { text-align: center; }
-.t-panels tr.panel td { padding-top: 6px; }
-.t-econ { font-size: 19px !important; }
-.t-econ td, .t-econ th { padding: 3px 12px 3px 0; line-height: 1.22; }
-.t-econ tr.panel td { padding-top: 8px; color: var(--muted); }
-.t-econ tr.subhead th { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-weight: 700; }
-.t-econ tr.last-a td { border-bottom: 1px solid var(--ink); }
-.t-thresh { font-size: 23px !important; }
-.t-thresh td { padding: 4px 18px 4px 0; }
-#b6 ol.steps { font-size: 27px; }
-#b6 ol.steps li { margin-bottom: 8px !important; }
-#b6b .display-math { margin: 0 0 2px; font-size: 0.8em; }
-#b6b ul.xs { font-size: 21px; }
-#b6b .twocol { gap: 28px; }
-#b2 .notation { font-size: 22px; gap: 28px; }
-#b2 .notation table { font-size: 22px !important; }
-#b2 .notation td { padding: 3px 10px 3px 0; line-height: 1.22; }
-#b2 .notation td:first-child { white-space: nowrap; }
-.refs li { font-size: 24px; }
-#s18 .bar-row { grid-template-columns: 44px 1fr 104px; }
+/* Diagrams: the TikZ pictures of slides.tex as SVG and HTML. Ink, the accent and greys only. */
+.diagram { font-family: var(--font-serif); }
+.dg-svg { display: block; overflow: visible; font-family: var(--font-serif); font-size: 32px; }
+.dg-svg text { fill: var(--ink); }
+.dg-svg text.dg-accent, .dg-svg text.dg-info { fill: var(--accent); }
+.dg-svg text.dg-cost { fill: var(--ink); }
+.dg-svg text.dg-muted { fill: var(--gray-text); }
+.dg-svg text.dg-dotnum { fill: var(--accent-ink); font-family: var(--font-sans); font-weight: 700; }
+.dg-axis { stroke: var(--muted); stroke-width: 2; }
+.dg-tick { stroke: var(--ink); stroke-width: 4; }
+.dg-tick.accent { stroke: var(--accent); stroke-width: 5.5; }
+.dg-tick.faded { stroke: var(--line); }
+.dg-entry { stroke: var(--accent); stroke-width: 10; }
+.dg-level { stroke: var(--ink); stroke-width: 3; }
+.dg-arrow { stroke: var(--muted); stroke-width: 2; }
+.dg-tipfill { fill: var(--muted); }
+.dg-dot { fill: var(--accent); }
+.dg-brace { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.dg-brace.info, .dg-brace.accent { stroke: var(--accent); }
+.dg-brace.cost { stroke: var(--ink); }
+.dg-brace.muted { stroke: var(--muted); }
+/* Frame 6: five numbered steps; the labels sit under the dots, 2.75 cm wide. */
+.timeline { width: 1456px; margin: 6px 0 0; }
+.tl-labels { display: flex; gap: 20px; }
+.tl-labels p { flex: none; width: 275px; margin: 8px 0 0 !important; text-align: center; font-size: 32px; line-height: 1.22; }
+/* Boxes of a flow (B2 page 2, B7): a hairline in the accent or in ink; no fill. */
+.fbox { border: 1.5px solid var(--accent); border-radius: 3px; padding: 10px 14px; text-align: left; line-height: 1.26; }
+.fbox.cost { border-color: var(--ink); }
+.fbox b { font-family: var(--font-sans); font-weight: 700; }
+.pflow { display: flex; align-items: center; font-size: 25px; }
+.pflow .pbox { position: relative; width: 348px; min-height: 110px; }
+.pflow .ptag { position: absolute; left: 2px; top: -28px; font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--muted); }
+.farrow { flex: none; width: 35px; height: 2px; background: var(--muted); position: relative; }
+.farrow::after { content: ""; position: absolute; right: -1px; top: -6px; border-left: 11px solid var(--muted); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+.sflow { position: relative; display: grid; grid-template-columns: 428px 55px 303px 55px 323px 55px 288px; grid-template-rows: 190px 35px auto; font-size: 28px; }
+.sflow .fbox { align-self: start; }
+.sflow .sf-inv { grid-column: 1; grid-row: 1; height: 190px; }
+.sflow .sf-liq { grid-column: 1; grid-row: 3; height: 190px; }
+.sflow .sf-slot { grid-column: 3; grid-row: 1 / 4; }
+.sflow .sf-mm { grid-column: 5; grid-row: 1 / 4; }
+.sflow .sf-sb { grid-column: 7; grid-row: 1 / 4; }
+.sf-a { position: absolute; top: 55px; height: 2px; width: 50px; background: var(--muted); }
+.sf-a::after { content: ""; position: absolute; right: -1px; top: -6px; border-left: 11px solid var(--muted); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+.sf-a1 { left: 430px; }
+.sf-a2 { left: 788px; }
+.sf-a3 { left: 1166px; }
+.sf-elbow { position: absolute; left: 430px; width: 27px; top: 58px; height: 262px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); }
+.sf-elbow::after { content: ""; position: absolute; right: -8px; top: -4px; border-bottom: 11px solid var(--muted); border-left: 7px solid transparent; border-right: 7px solid transparent; }
+.figure.plain .chart-canvas { border-bottom: 0; }
+.slide-body > :last-child, .slide-body > :nth-last-child(2):has(+ .nav) { margin-bottom: 0; }
+.xlink { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.18em; }
+.xlink:hover { color: var(--accent); text-decoration-color: var(--accent); }
