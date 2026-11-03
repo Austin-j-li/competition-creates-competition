@@ -1,9 +1,9 @@
 # Seminar slides (the /talk/ page)
 
 The web version of the Beamer talk in `slot/manuscript/slides.tex` (the Overleaf deck), the seminar
-talk for the order-slot version of the paper: 56 frames, the title, 19 numbered frames, then
-backups B1 to B16 on 36 pages, with the same words, numbers, titles and links as the Beamer deck.
-The planned speech is 33.5 minutes with the title, in a 45-minute slot.
+talk for the order-slot version of the paper: 57 frames, the title, 19 numbered frames, then
+backups B1 to B17 on 37 pages, with the same words, numbers, titles and links as the Beamer deck.
+The planned speech is 28 minutes with the title, in a 30-minute talk.
 
 ## Open and present
 
@@ -22,7 +22,7 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
 - A link button, or an inline link such as "B2" in a foot line, jumps to its backup. Back, or
   Escape, returns to the frame it came from. B2 has one return button for each of frames 11, 12
   and 13. Arrow keys inside the backups move between backup pages.
-- O: overview of all 56 frames by part. N: speaker notes. G: notation. T: dark or light theme.
+- O: overview of all 57 frames by part. N: speaker notes. G: notation. T: dark or light theme.
   F: fullscreen. R: reset the slide. ?: controls. A focused figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
