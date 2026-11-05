@@ -214,7 +214,7 @@ pm = mp.mpf(1) / 2
 
 
 def F_pow(rbar):
-    """F(y) = (y/rbar)^2 on [0, rbar]: a continuous incumbent law."""
+    """F(y) = (y/rbar)^2 on [0, rbar]: a continuous incumbent distribution."""
     rbar = mp.mpf(rbar)
     return lambda y: mp.mpf(0) if y <= 0 else (min(y / rbar, 1)) ** 2
 

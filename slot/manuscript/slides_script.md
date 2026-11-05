@@ -58,7 +58,7 @@ The rival pays before it can bid. A stronger incumbent can make a profitable win
 
 Fishman gives the classic takeover deterrence argument. In Fishman, the first bidder chooses a preemptive bid. Here strength is a public distribution of value, and the realized value stays private until bids.
 
-The logic holds when what the rival knows stays fixed. With the information, values and cost law fixed, entry cannot rise.
+The logic holds when what the rival knows stays fixed. With the information, values and cost distribution fixed, entry cannot rise.
 
 I keep that force. I add a target stock price before preparation and let its information respond to competition. The next step is to explain why a stronger incumbent can make that price say more.
 
@@ -94,7 +94,7 @@ Standalone value is zero. Values and costs are per share. All agents are risk ne
 
 The incumbent is already prepared. Its value R follows public continuous distribution F, and R stays private until bids. Strength means a first-order stochastic shift toward higher values.
 
-The rival sees the price, then decides whether to prepare. Its class j is H, good synergy, or L, poor synergy. Prior pi is the chance of H. Value theta has law G sub j. The class ranking puts G sub H weakly below G sub L at every value level, and every value meets reserve p.
+The rival sees the price, then decides whether to prepare. Its class j is H, good synergy, or L, poor synergy. Prior pi is the chance of H. Value theta has distribution G sub j. The class ranking puts G sub H weakly below G sub L at every value level, and every value meets reserve p.
 
 Cost C is zero with probability rho, the entry floor; otherwise it is positive high cost c sub H. Payment reveals theta and permits a bid.
 
@@ -168,7 +168,7 @@ Zero cost prepares. High cost prepares when rival gross profit covers it, includ
 
 *1.5 minutes · ends at 15:30*
 
-Proposition one compares two distributions for incumbent value. F tilde lies weakly below F at every value, which means a stronger incumbent. Hold the reserve and both class value laws fixed.
+Proposition one compares two distributions for incumbent value. F tilde lies weakly below F at every value, which means a stronger incumbent. Hold the reserve and both class value distributions fixed.
 
 For either synergy class, class profit under F tilde is at most its value under F. Rival gross profit B at every fixed belief also weakly falls.
 
@@ -210,7 +210,7 @@ With entry and beliefs fixed, a wider spread raises these gross gains.
 
 *3.5 minutes · ends at 21:30*
 
-Proposition two compares three economies with the same class laws, reserve, costs, prior and order opportunity. F two lies below F one, which lies below F zero. Each step strengthens the incumbent. Beta here can be anything below one half, because the proof uses only the bounds after a purchase and a sale.
+Proposition two compares three economies with the same class distributions, reserve, costs, prior and order opportunity. F two lies below F one, which lies below F zero. Each step strengthens the incumbent. Beta here can be anything below one half, because the proof uses only the bounds after a purchase and a sale.
 
 Delta sub i is the shareholder spread in economy i; B sub i is rival gross profit there. Three strict conditions do the work.
 
@@ -250,7 +250,7 @@ Set u to Euler's number minus one. Then the top belief is about zero point seven
 
 *1.5 minutes · ends at 24:00*
 
-Now hold the information fixed. Fix the joint law of synergy class j and the rival's signal S. Keep both class value laws, reserve and cost law unchanged. The signal carries no further news about values within a class.
+Now hold the information fixed. Fix the joint distribution of synergy class j and the rival's signal S. Keep both class value distributions, reserve and cost distribution unchanged. The signal carries no further news about values within a class.
 
 When F one lies weakly below F zero, total entry E one is at most E zero. At each unchanged belief, strength weakly lowers rival gross profit. It can remove a reason to prepare.
 

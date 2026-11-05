@@ -12,7 +12,7 @@
  *
  * The slot at the prior 1/2: a liquidity order of each sign has mass b, no liquidity order b_0,
  * the investor is present with probability lambda. With informed purchase rate s (class H) and
- * informed sale rate t (class L), the order laws on (-1, 0, 1) are
+ * informed sale rate t (class L), the order distributions on (-1, 0, 1) are
  *   f_H = (b, b_0 + lambda - s, b + s),   f_L = (b + t, b_0 + lambda - t, b),
  * the posteriors are mu(1) = (b+s)/(2b+s), mu(-1) = b/(2b+t), mu(0) = f_H(0)/(f_H(0) + f_L(0)),
  * and the price is P(x) = t_0 + e(x) [t_L - t_0 + Delta_T mu(x)].

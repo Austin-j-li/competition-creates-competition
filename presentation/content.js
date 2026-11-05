@@ -201,7 +201,7 @@
         P('A listed target has standalone value ' + m('0') + '. Values and costs are per share. All agents are risk neutral.') +
         deflist([
           ['Incumbent', '<b>incumbent bidder, already prepared:</b> it knows its value ' + m('R') + ' and faces no further preparation cost. ' + m(T`R\sim F`) + '; ' + m('F') + ' is public, continuous on ' + m(T`[0,\bar r]`) + ', and others do not observe the draw before bids. <b>Stronger</b> means a replacement ' + m(T`\widetilde F`) + ' with ' + m(T`\widetilde F(y)\le F(y)`) + ' for each ' + m('y') + '.'],
-          ['Rival', '<b>potential rival bidder:</b> sees the price, then decides whether to prepare. <b>Synergy class:</b> ' + m('j=H') + ' (good synergy) or ' + m('j=L') + ' (poor synergy), with prior ' + m(T`\pi=\Pr(j=H)\in(0,1)`) + '. Its value ' + m(T`\theta`) + ' has law ' + m('G_j') + ' in class ' + m('j') + '; each ' + m('G_j') + ' has a finite mean.'],
+          ['Rival', '<b>potential rival bidder:</b> sees the price, then decides whether to prepare. <b>Synergy class:</b> ' + m('j=H') + ' (good synergy) or ' + m('j=L') + ' (poor synergy), with prior ' + m(T`\pi=\Pr(j=H)\in(0,1)`) + '. Its value ' + m(T`\theta`) + ' has distribution ' + m('G_j') + ' in class ' + m('j') + '; each ' + m('G_j') + ' has a finite mean.'],
           ['Class ranking', m(T`G_H(y)\le G_L(y)`) + ' for each ' + m('y') + ' — class ' + m('H') + ' draws weakly higher values. Also ' + m(T`\theta\ge p`) + ' almost surely under each ' + m('G_j') + ', where ' + m('p>0') + ' is the auction reserve below. The sale and the rival’s identity are public; its synergy class is not public.'],
           ['Preparation cost ' + m('C'), m('C=0') + ' with probability ' + m(T`\rho\in(0,1)`) + '; else ' + m('C=c_H>0') + ', the high cost (' + m('H') + ' in ' + m('c_H') + ' means high, not class ' + m('H') + '). Pay ' + m('C') + ' to learn ' + m(T`\theta`) + ' and to bid; a rival who does not pay cannot bid. (' + m(T`\rho`) + ' is the entry floor on frame 9.)'],
           ['Sale', 'the seller commits before trade to a cash second-price auction with reserve ' + m('p>0') + '. Sale proceeds go to target shareholders.']]) +
@@ -268,7 +268,7 @@
       body: st('Proposition 1',
           P('Let ' + m('F') + ' and ' + m(T`\widetilde F`) + ' be continuous incumbent value distributions, with ' + m(T`\widetilde F(y)\le F(y)`) + ' for every ' + m('y') + '.') +
           gloss('The new incumbent draws high values more often.') +
-          P('Hold the reserve and the finite-mean class laws fixed.') +
+          P('Hold the reserve and the finite-mean class distributions fixed.') +
           cols([[0.46, P('(a) For ' + m(T`j\in\{H,L\}`) + ' and every ' + m(T`\mu\in[0,1]`) + ',') + d(T`g_j(\widetilde F)\le g_j(F),\qquad B_{\widetilde F}(\mu)\le B_F(\mu).`) +
               P('Here ' + m(T`B_F(\mu)=g_L(F)+\mu[g_H(F)-g_L(F)]`) + '.')],
             [0.51, P('(b) Under the class ranking,') + d(T`G_H(y)\le G_L(y)\quad\text{for every }y,\qquad G_H(p^-)=G_L(p^-)=0,`) +
@@ -307,7 +307,7 @@
     main({ id: 's13', label: 'S13', num: '13', part: 3, minutes: 3.5, targets: ['main:s13'],
       title: 'Strength can raise entry, then return it to its floor',
       body: st('Proposition 2',
-          P('Classes have finite means and satisfy ' + m(T`G_H\le G_L`) + ', ' + m(T`G_H(p^-)=G_L(p^-)=0`) + '. Steps ' + m(T`F_2\le F_1\le F_0`) + ': weak, strong, very strong. Fix the class laws and ' + m('p>0') + '; ' + m(T`\pi,\rho,\lambda\in(0,1)`) + '; ' + m(T`\beta\in(0,1/2)`) + ' (nonzero-order bounds only); and ' + m('c_H,k>0') + '. Write ' + m(T`\Delta_i=\Delta_T(F_i)`) + ' and ' + m('B_i=B_{F_i}') + '. Suppose') +
+          P('Classes have finite means and satisfy ' + m(T`G_H\le G_L`) + ', ' + m(T`G_H(p^-)=G_L(p^-)=0`) + '. Steps ' + m(T`F_2\le F_1\le F_0`) + ': weak, strong, very strong. Fix the class distributions and ' + m('p>0') + '; ' + m(T`\pi,\rho,\lambda\in(0,1)`) + '; ' + m(T`\beta\in(0,1/2)`) + ' (nonzero-order bounds only); and ' + m('c_H,k>0') + '. Write ' + m(T`\Delta_i=\Delta_T(F_i)`) + ' and ' + m('B_i=B_{F_i}') + '. Suppose') +
           cols([[0.42, P(m(T`\begin{array}{ll}\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\\mathrm{(H3)}&B_2(M(\pi))<c_H.\end{array}`))],
             [0.55, gloss('(H1) Prior misses ' + m('c_H') + ' at ' + m('F_0') + '; a purchase clears it at ' + m('F_1') + '.') +
               gloss('(H2) Order cost stops trade at ' + m('F_0') + ', not at ' + m('F_1') + '.') +
@@ -338,7 +338,7 @@
     main({ id: 's15', label: 'S15', num: '15', part: 4, minutes: 1.5, targets: ['main:s15'],
       title: 'With fixed information, strength cannot raise entry',
       body: cols([[0.54, st('Fixed information',
-            P('Fix the joint law of the class ' + m('j') + ' and the signal ' + m('S') + ' that the rival observes. Fix the class laws ' + m('G_j') + ', the reserve, and the preparation-cost law. In economy ' + m('i') + ', conditional on ' + m('(j,S)') + ', the values ' + m(T`\theta`) + ' and ' + m('R') + ' are independent, with laws ' + m('G_j') + ' and ' + m('F_i') + '. The cost ' + m('C') + ' is independent of the class, both values and ' + m('S') + '.') +
+            P('Fix the joint distribution of the class ' + m('j') + ' and the signal ' + m('S') + ' that the rival observes. Fix the class distributions ' + m('G_j') + ', the reserve, and the preparation-cost distribution. In economy ' + m('i') + ', conditional on ' + m('(j,S)') + ', the values ' + m(T`\theta`) + ' and ' + m('R') + ' are independent, with distributions ' + m('G_j') + ' and ' + m('F_i') + '. The cost ' + m('C') + ' is independent of the class, both values and ' + m('S') + '.') +
             gloss('What the rival can learn does not change. The signal adds no news about values past the class. The preparation cost carries no news about values.') +
             P('Let an indifferent rival prepare. If ' + m(T`F_1\le F_0`) + ', entry cannot rise:') + d(T`\mathsf E_1\le\mathsf E_0,`) +
             P('where ' + m(T`\mathsf E_i`) + ' is the probability of preparation in economy ' + m('i') + '.'))],
@@ -422,7 +422,7 @@
     var B = function (t) { return nav(back(t)); };
 
     bk({ id: 'b1', label: 'B1', targets: ['app:b1'], cls: 'sz-f', title: 'Proposition 2 in exact form',
-      body: ul(['Setup: the synergy laws satisfy the class ranking (good synergy first-order dominates poor synergy; each value meets the reserve ' + m('p') + ') and have finite means. The incumbent’s value law ' + m('F') + ' is continuous on ' + m(T`[0,\bar r]`) + ', with finite upper bound ' + m(T`\bar r`) + '. Laws ' + m('F_0') + ', ' + m('F_1') + ', ' + m('F_2') + ' satisfy ' + m(T`F_2\le F_1\le F_0`) + ', so each step is a first-order stochastic strengthening. Fixed: prior ' + m(T`\pi`) + ', entry floor ' + m(T`\rho`) + ' and presence ' + m(T`\lambda`) + ', each in ' + m('(0,1)') + '; liquidity chance ' + m(T`\beta\in(0,1/2)`) + '; high cost ' + m('c_H>0') + '; order cost ' + m('k>0') + '. Write ' + m(T`b=(1-\lambda)\beta`) + ' for the liquidity mass in one direction, and ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ' for the common lower bound on residual doubt, with band floor ' + m(T`m(\pi)`) + ' and top belief ' + m(T`M(\pi)`) + '.',
+      body: ul(['Setup: the synergy distributions satisfy the class ranking (good synergy first-order dominates poor synergy; each value meets the reserve ' + m('p') + ') and have finite means. The incumbent’s value distribution ' + m('F') + ' is continuous on ' + m(T`[0,\bar r]`) + ', with finite upper bound ' + m(T`\bar r`) + '. Distributions ' + m('F_0') + ', ' + m('F_1') + ', ' + m('F_2') + ' satisfy ' + m(T`F_2\le F_1\le F_0`) + ', so each step is a first-order stochastic strengthening. Fixed: prior ' + m(T`\pi`) + ', entry floor ' + m(T`\rho`) + ' and presence ' + m(T`\lambda`) + ', each in ' + m('(0,1)') + '; liquidity chance ' + m(T`\beta\in(0,1/2)`) + '; high cost ' + m('c_H>0') + '; order cost ' + m('k>0') + '. Write ' + m(T`b=(1-\lambda)\beta`) + ' for the liquidity mass in one direction, and ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ' for the common lower bound on residual doubt, with band floor ' + m(T`m(\pi)`) + ' and top belief ' + m(T`M(\pi)`) + '.',
           'With ' + m('B_i') + ' rival gross profit and ' + m(T`\Delta_i`) + ' shareholder spread ' + m(T`\Delta_T`) + ' against ' + m('F_i') + ': (H1) ' + m(T`B_0(\pi)<c_H<B_1(M(\pi))`) + '. (H2) ' + m(T`\Delta_0<k<\rho\,\kappa(\pi)\,\Delta_1`) + '. (H3) ' + m(T`B_2(M(\pi))<c_H`) + '.',
           'Weak ' + m('F_0') + ': informed orders ' + m('(0,0)') + ' by synergy class (good, poor); belief ' + m(T`\mu(x)=\pi`) + ' after each order ' + m('x') + '; entry ' + m(T`e(x)=\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; one stock price. Strong ' + m('F_1') + ': orders ' + m('(1,-1)') + '; beliefs after a sale, no order, a purchase are ' + m(T`(m(\pi),\pi,M(\pi))`) + '; entry is ' + m(T`(\rho,\rho,1)`) + '; prices rise strictly; total entry is ' + m(T`\rho+(1-\rho)(b+\pi\lambda)>\rho`) + '; entry under good synergy is ' + m(T`\rho+(1-\rho)(b+\lambda)`) + ', and under poor synergy ' + m(T`\rho+(1-\rho)b`) + '. Very strong ' + m('F_2') + ': orders and beliefs as at ' + m('F_1') + '; entry ' + m(T`\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; three distinct prices.',
           'Ownership: ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ' is the win chance of a prepared rival in case ' + m('j') + ', where ' + m(T`\theta`) + ' is its value and the indicator ' + m(T`\mathbf{1}\{\theta\ge p\}`) + ' equals one when the value meets the reserve ' + m('p') + ', and zero otherwise. Good-synergy ownership rises from ' + m('F_0') + ' to ' + m('F_1') + ' exactly when ' + m(T`e_H W_H(F_1)>\rho\,W_H(F_0)`) + ', with ' + m('e_H') + ' entry under good synergy at ' + m('F_1') + '. If ' + m('W_H(F_1)=1') + ', good-synergy ownership rises from ' + m(T`\pi\rho`) + ' to ' + m(T`\pi e_H`) + ', and the good-synergy share of rival wins rises strictly exactly when ' + m('W_L(F_0)>0') + '.',
@@ -520,7 +520,7 @@
     bk({ id: 'b6', label: 'B6', targets: ['app:b6'], title: 'Scope', subtitle: 'Scope checks · Paper §6 · Each row keeps the slot and varies one part',
       body: vsp(14) +
         table({ widths: [460, 1000], cls: 'stretch-130', head: ['Change one part', 'Result'], rows: [
-          ['Any preparation-cost law', 'Under (H2), low costs below ' + m(T`B_1(m(\pi))`) + ' and high costs between ' + m(T`B_0(\pi)`) + ' and ' + m(T`B_1(M(\pi))`) + ', with atoms or without atoms, keep the rise. An atomless high-cost component turns the ceiling drop into a ramp.'],
+          ['Any preparation-cost distribution', 'Under (H2), low costs below ' + m(T`B_1(m(\pi))`) + ' and high costs between ' + m(T`B_0(\pi)`) + ' and ' + m(T`B_1(M(\pi))`) + ', with atoms or without atoms, keep the rise. An atomless high-cost component turns the ceiling drop into a ramp.'],
           ['Any ranked classes with class ' + m('H') + ' higher in mean, any prior', 'For uniform incumbent values, an open set of strengths and costs delivers the reversal. Point-mass synergy values are not essential.'],
           ['Many synergy classes', 'The reversal holds under a separation condition. Without separation, one price can carry two synergy mixes.'],
           ['Rival has its own signal', 'At prior ' + m('1/2') + ', the rise can hold when the rival’s accuracy ' + m(T`\alpha_C`) + ' exceeds the informed trader’s accuracy ' + m(T`\alpha_I`) + '. In the stated signal example, entry needs both signals.']] }) +
@@ -530,7 +530,7 @@
 
     bk({ id: 'b6b', label: 'B6b', title: 'Scope', subtitle: 'Scope in full: costs, synergy classes, separation, signals',
       body: vsp(7) +
-        cols([[0.485, colhead('Cost laws (A.3)') + P('The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp') + vsp(32) +
+        cols([[0.485, colhead('Cost distributions (A.3)') + P('The reversal holds with atoms or without atoms; an atomless high component turns the drop at the entry ceiling into a ramp') + vsp(32) +
             colhead('Many synergy classes (A.5)') + P('The result holds under a separation condition on synergy proceeds; without it one price can pool two beliefs') + P('Without separation, two orders can carry two synergy mixes at one price.')],
           [0.485, colhead('General values, priors (A.4)') + P('Proposition 2 holds for every ranked pair with class ' + m('H') + ' higher in mean, and every prior, at suitable uniform incumbent values and costs, under (H1)–(H3) with ' + m(T`m(\pi)`) + ', ' + m(T`M(\pi)`)) + vsp(32) +
             colhead('Private signals (A.6)') + P('In the example, accuracies ' + m(T`(\alpha_I,\alpha_C)=({{sig_comp_aT}},{{sig_comp_d}})`) + ' give entry ' + m(T`{{p4_comp_b_r0_entry}}\to{{p4_comp_b_r1_entry}}`) + '; without the rival’s signal entry is ' + m(T`{{p4_comp_b_no_y_r1_entry}}`) + ' at both strengths')]]) +
@@ -586,7 +586,7 @@
       body: vsp(14) +
         st('Proposition 1',
           P('Let ' + m(T`\tilde F\le F`) + ' be a first-order stochastic strengthening of the distribution ' + m('F') + '.') +
-          P('(a) For any class laws with finite means, gross auction profit ' + m('g_H') + ' and ' + m('g_L') + ' weakly fall. Rival profit ' + m(T`B(\mu)`) + ' weakly falls at each fixed belief ' + m(T`\mu`) + '.') +
+          P('(a) For any class distributions with finite means, gross auction profit ' + m('g_H') + ' and ' + m('g_L') + ' weakly fall. Rival profit ' + m(T`B(\mu)`) + ' weakly falls at each fixed belief ' + m(T`\mu`) + '.') +
           P('(b) Under the class ranking ' + m(T`G_H\le G_L`) + ', the shareholder spread ' + m(T`\Delta_T`) + ' weakly rises.') +
           P('Under the class ranking, ' + m(T`\Delta_T(F)+g_H(F)-g_L(F)=\mathbb{E}_H[\max\{\theta,p\}]-\mathbb{E}_L[\max\{\theta,p\}]`) + ', with the rival’s value ' + m(T`\theta`) + ' and reserve ' + m('p') + '.')) +
         vsp(21) +
@@ -649,22 +649,22 @@
 
     bk({ id: 'b11s', label: 'B11s', title: 'Outcomes and controls in full', subtitle: 'Fixed-information control · Paper §4.2 and Proposition A.2',
       body: vsp(7) + ruleL + vsp(10) +
-        P('Fix the law of synergy and signal, the synergy value laws, and the cost law. A stronger incumbent cannot raise entry.') + vsp(8) +
+        P('Fix the distribution of synergy and signal, the synergy value distributions, and the cost distribution. A stronger incumbent cannot raise entry.') + vsp(8) +
         P('Entry falls by exactly the chance that the preparation cost ' + m('C') + ' sits between rival gross profit at the two strengths.') + vsp(3) + ruleL +
         center(table({ widths: [660, 260, 260], align: 'lcc', cls: 'fs-s stretch-105', head: ['Entry', 'Weak ' + m('r_0'), 'Strong ' + m('r_1')], rows: [
           ['Full model, orders re-solved', q('entry_r0'), '<b>' + q('entry_r1_B') + '</b>'],
           ['Full orders held fixed at each strength', q('p4_frozen_r0_entry'), q('p4_frozen_r1_entry')],
           ['Rival cannot see the price', q('p4_hidden_r0_entry'), q('p4_hidden_r1_entry')]] })) +
-        smallline('Row 2 at ' + m('r_0') + ' is a control, not an equilibrium. In the slot, fixed order laws give the same belief after each order at each strength.') +
+        smallline('Row 2 at ' + m('r_0') + ' is a control, not an equilibrium. In the slot, fixed order distributions give the same belief after each order at each strength.') +
         takeaway('The rise needs the signal itself to change with strength. Frozen news gives flat entry, then a fall past the ceiling.') +
         B('main:s15') }, 'main:s15');
 
     bk({ id: 'b11f', label: 'B11f', title: 'Outcomes and controls in full', subtitle: 'The exact fall of entry under fixed information · Proposition A.2',
       body: vsp(21) +
         st('Proposition A.2 (Fixed information)',
-          P('Fix the joint law of class ' + m('j') + ' and signal ' + m('S') + ', the class value laws ' + m('G_j') + ', and an independent cost law for preparation cost ' + m('C') + '. Conditional on ' + m('(j,S)') + ', the values ' + m(T`\theta`) + ' and ' + m('R') + ' are independent with laws ' + m('G_j') + ' and ' + m('F_i') + ' in economy ' + m('i') + ', with signal belief ' + m(T`\mu(S)=\Pr(j=H\mid S)`) + '. For a strengthening from ' + m('F_0') + ' to ' + m('F_1') + ', total entry ' + m(T`\mathsf{E}`) + ' falls by exactly ' + m(T`\mathsf{E}_0-\mathsf{E}_1=\Pr\{B_1(\mu(S))<C\le B_0(\mu(S))\}\ge0`) + ', with rival gross profit ' + m('B_i') + ' at ' + m('F_i') + '.')) +
+          P('Fix the joint distribution of class ' + m('j') + ' and signal ' + m('S') + ', the class value distributions ' + m('G_j') + ', and an independent cost distribution for preparation cost ' + m('C') + '. Conditional on ' + m('(j,S)') + ', the values ' + m(T`\theta`) + ' and ' + m('R') + ' are independent with distributions ' + m('G_j') + ' and ' + m('F_i') + ' in economy ' + m('i') + ', with signal belief ' + m(T`\mu(S)=\Pr(j=H\mid S)`) + '. For a strengthening from ' + m('F_0') + ' to ' + m('F_1') + ', total entry ' + m(T`\mathsf{E}`) + ' falls by exactly ' + m(T`\mathsf{E}_0-\mathsf{E}_1=\Pr\{B_1(\mu(S))<C\le B_0(\mu(S))\}\ge0`) + ', with rival gross profit ' + m('B_i') + ' at ' + m('F_i') + '.')) +
         vsp(28) +
-        ul(['The rival still reads the stock price ' + m('P') + ' here. The fixed object is the joint law of the signal and the class.']) +
+        ul(['The rival still reads the stock price ' + m('P') + ' here. The fixed object is the joint distribution of the signal and the class.']) +
         B('main:s15') }, 'main:s15');
 
     bk({ id: 'b11b', label: 'B11b', title: 'Outcomes and controls in full', subtitle: 'Proposition 2 in full: tuples, payoff tables, control panels',
@@ -837,9 +837,9 @@
        B16 pages and the notation panel. */
     var NOTATION = [
       [[m('R') + ', ' + m('F'), 'incumbent’s value ' + m('R') + '; its distribution ' + m('F') + ', with ' + m(T`R\sim F`) + ' in the general model; in the paper’s example (frames 14–16 and their backups), ' + m('R') + ' is uniform on ' + m('[0,r]'), 'frame 5'],
-        [m('j') + ', ' + m(T`\pi`) + ', ' + m(T`\theta`) + ', ' + m('G_j'), 'synergy class ' + m(T`j\in\{H,L\}`) + '; prior ' + m(T`\pi=\Pr(j=H)`) + '; rival’s value ' + m(T`\theta`) + '; class value law ' + m('G_j') + ' for ' + m(T`\theta`) + ' given ' + m('j'), 'frame 5'],
+        [m('j') + ', ' + m(T`\pi`) + ', ' + m(T`\theta`) + ', ' + m('G_j'), 'synergy class ' + m(T`j\in\{H,L\}`) + '; prior ' + m(T`\pi=\Pr(j=H)`) + '; rival’s value ' + m(T`\theta`) + '; class value distribution ' + m('G_j') + ' for ' + m(T`\theta`) + ' given ' + m('j'), 'frame 5'],
         [m('p'), 'reserve ' + m('p') + ' of the cash second-price auction', 'frame 5'],
-        [m('C') + ', ' + m('c_H') + ', ' + m(T`\rho`), 'baseline preparation cost ' + m(T`C\in\{0,c_H\}`) + ' (B11 also allows any fixed independent cost law); high cost ' + m('c_H') + '; entry floor ' + m(T`\rho=\Pr(C=0)\in(0,1)`), 'frame 5'],
+        [m('C') + ', ' + m('c_H') + ', ' + m(T`\rho`), 'baseline preparation cost ' + m(T`C\in\{0,c_H\}`) + ' (B11 also allows any fixed independent cost distribution); high cost ' + m('c_H') + '; entry floor ' + m(T`\rho=\Pr(C=0)\in(0,1)`), 'frame 5'],
         [m('X') + ', ' + m('q') + ', ' + m(T`\lambda`) + ', ' + m(T`\beta`) + ', ' + m('k'), 'slot outcome ' + m('X') + '; the informed trader’s chosen order ' + m('q') + '; presence ' + m(T`\lambda`) + '; liquidity probability ' + m(T`\beta`) + '; order cost ' + m('k'), 'frame 6'],
         [m('P') + ', ' + m('V_T') + ', ' + m(T`\mathbb{E}[\cdot]`), 'stock price ' + m(T`P(X)=\mathbb{E}[V_T\mid X]`) + '; target proceeds per share ' + m('V_T') + '; expectation ' + m(T`\mathbb{E}[\cdot]`), 'frame 6'],
         [m(T`\mu(x)`) + ', ' + m(T`\bar\mu(\bar P)`), 'order belief ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + '; belief at a price ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + '. The two agree under Lemma A.2, with ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ', and ' + m(T`e(x)\ge\rho`), 'frames 7, 9, 11'],

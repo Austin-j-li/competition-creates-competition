@@ -150,7 +150,7 @@ with a legend of toggle buttons, a hover readout and a keyboard cursor. The slid
 figures, which the deck used; `figures.js` removes them from this page's registry of figures.
 
 `figures.js` holds `CCC.slot`, the closed forms of the manuscript at the registry declarations:
-the auction payoffs of the example, the order laws, posteriors, entry and prices of each
+the auction payoffs of the example, the order distributions, posteriors, entry and prices of each
 equilibrium form on the example's path (Corollary 2, Appendix A4), and recruiting and floor-entry
 research (Proposition 4, Corollary 3). It draws Figure 1 (the two returns), Figure 2 (beliefs and
 the entry ceiling) and Figure 4 (research and entry in each research equilibrium, as Corollary 3

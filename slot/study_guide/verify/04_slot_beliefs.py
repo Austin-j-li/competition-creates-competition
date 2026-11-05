@@ -1,4 +1,4 @@
-"""Print the order laws, beliefs and prices used in chapter 04. No assertions."""
+"""Print the order distributions, beliefs and prices used in chapter 04. No assertions."""
 
 from fractions import Fraction as Q
 
@@ -14,7 +14,7 @@ def decimal(value: Q | mp.mpf) -> str:
 
 
 def order_law(lam: Q | mp.mpf, beta: Q | mp.mpf, profile: tuple) -> tuple:
-    """Return the conditional law on the ordered menu (-1, 0, 1)."""
+    """Return the conditional distribution on the ordered menu (-1, 0, 1)."""
     eta = (beta, 1 - 2 * beta, beta)
     return tuple((1 - lam) * mass + lam * informed for mass, informed in zip(eta, profile))
 
