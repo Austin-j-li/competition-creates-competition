@@ -1,0 +1,95 @@
+\chapter{What survives when the model changes}\label{ch:robustness}
+
+\begin{chapterplan}
+Propositions A.3 to A.6 change one feature of the base model at a time. Each proof follows Proposition~2: orders
+first, then posteriors, entry and prices.
+\end{chapterplan}
+
+%==================================================================
+\section{Preparation cost laws}\label{sec:robustness-costs}
+
+The cost law mixes a low and a high component, \(\Phi=\rho\Phi^0+(1-\rho)\Phi^1\), with
+\(\operatorname{supp}\Phi^0\subset[0,\bar c_0]\) and \(\operatorname{supp}\Phi^1\subset[c_-,c_+]\). Write \(B_i=B_{F_i}\),
+\(\Delta_i=\DT(F_i)\), \(m=m(\pi)\), \(M=M(\pi)\) and \(\kappa=\kappa(\pi)=\min\{m,1-M\}\).
+
+\begin{paperresult}{Proposition A.3 (Preparation cost laws)}
+Let the classes satisfy the class ranking, and let \(F_1\) strengthen \(F_0\). The cost law is
+\(\Phi=\rho\Phi^0+(1-\rho)\Phi^1\) as above. Suppose
+\[
+0<\bar c_0<B_1(m),\qquad B_0(\pi)<c_-<c_+<B_1(M),\qquad \Delta_0<k<\rho\kappa\Delta_1.
+\]
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item At \(F_0\), the unique orders are zero, and entry is \(\rho\).
+\item At \(F_1\), the unique orders are full, and only a purchase recruits the high component. Entry is \(\rho+(1-\rho)(b+\pi\lambda)\). High-class ownership rises if and only if \([\rho+(1-\rho)(b+\lambda)]\,W_H(F_1)>\rho\,W_H(F_0)\).
+\end{enumerate}
+\end{paperresult}
+
+\emph{Proof.} The new step is the entry floor. A price belief \(\bar\mu\) at a nonzero order is at least \(m\), so
+\(B_i(\bar\mu)\ge B_i(m)\ge B_1(m)>\bar c_0\): every low cost prepares, and \(e(\pm1)\ge\rho\). The trading bounds give
+zero orders at \(F_0\) and full orders at \(F_1\). Only a purchase covers the high costs, \(B_1(M)>c_+\), so entry
+is \((\rho,\rho,1)\). A profit margin over every low cost replaces the zero cost.
+
+%==================================================================
+\section{Value classes and priors}\label{sec:robustness-classes}
+
+\begin{paperresult}{Proposition A.4 (Value classes and priors)}
+Fix classes that satisfy the class ranking with \(\E_H[\theta]>\E_L[\theta]\), a reserve \(p>0\), and any \(\pi,\rho\in(0,1)\) and slot \((\lambda,\beta)\). For uniform incumbents, a nonempty open set of strengths and costs \((r_0,r_1,r_2,c_H,k)\) satisfies (H1)--(H3) and the ownership condition of Proposition~2. On this set every conclusion of Proposition~2 holds.
+\end{paperresult}
+
+\emph{Proof.} Let \(D=G_L-G_H\), \(\Gamma(x)=\int_p^xD(y)\,dy\), \(\bar\Gamma=\E_H[\theta]-\E_L[\theta]\) and
+\(\theta_*=\inf\{x\ge p:\Gamma(x)>0\}\). Against \(U[0,r]\),
+\begin{align*}
+\DT(r)&=\frac1r\int_p^r\Gamma(y)\,dy\le\frac{(r-\theta_*)\,\bar\Gamma}{r}\to0\quad(r\downarrow\theta_*) \why{integration by parts; \(\Gamma=0\) below \(\theta_*\)}\\
+g_H(r)-g_L(r)&=\bar\Gamma-\DT(r)\ge p\,\bar\Gamma/r>0 \why{class-gap identity}
+\end{align*}
+So pick \(r_0<r_1\) just above \(\theta_*\), \(c_H\) and \(k\) inside the two open windows, and \(r_2\) large.
+
+\begin{watchout}
+Some costs work for every prior, but the example's costs do not work for every prior.
+\end{watchout}
+
+%==================================================================
+\section{Many classes under separation}\label{sec:robustness-many}
+
+With many classes the posterior is a vector, but the price is one number. Nonzero orders give posterior vectors in \(\mathcal M_\pi=\{\nu:\nu_j/\pi_j\le(1+u)\,\nu_l/\pi_l\ \text{for all }j,l\}\). Split the classes into a high
+group \(\mathcal H\) and a low group \(\mathcal L\), let \(\bar\pi=\sum_{j\in\mathcal H}\pi_j\), and let \(\bar g_{\mathcal
+H},\bar g_{\mathcal L}\) be the prior-weighted group means of \(g_{j,1}\).
+
+\begin{paperresult}{Proposition A.5 (Many classes under separation)}
+Let the incumbent strengthen from \(F_0\) to \(F_1\). Suppose
+\[
+\max_jt_{j,0}-\min_jt_{j,0}<k,\qquad \sum_j\pi_jg_{j,0}<c_H,
+\]
+\[
+\min_{j\in\mathcal H}t_{j,1}-\max_{\nu\in\mathcal M_\pi}\nu\cdot t_1>\frac k\rho,\qquad
+\min_{\nu\in\mathcal M_\pi}\nu\cdot t_1-\max_{j\in\mathcal L}t_{j,1}>\frac k\rho,
+\]
+and \(\bar g_{\mathcal H}>\bar g_{\mathcal L}\) and \(\bar g_{\mathcal L}+M(\bar\pi)(\bar g_{\mathcal H}-\bar g_{\mathcal L})>c_H\).
+Then at \(F_0\) the unique orders are zero, and entry is \(\rho\). At \(F_1\) the unique orders are a purchase in every high-group class and a sale in every low-group class, only a purchase recruits, and entry is \(\rho+(1-\rho)(b+\bar\pi\lambda)>\rho\). These conclusions hold under either challenger rule.
+\end{paperresult}
+
+\emph{Proof.} Class \(j\) earns \(U_j(q)=q\,e(q)[t_j-\mu(q)\cdot t]-k|q|\), with \(e\in[\rho,1]\). At \(F_0\) every
+nonzero order loses. At \(F_1\), separation makes the purchase strictly best in \(\mathcal H\) and the sale in
+\(\mathcal L\). Each group then shares one order law, so the group posterior \(\mu_{\mathcal H}\) is the two-class
+posterior at the prior \(\bar\pi\), and \(B(\mu)=\bar g_{\mathcal L}+\mu_{\mathcal H}(\bar g_{\mathcal H}-\bar g_{\mathcal
+L})\). The price reveals \(\mu_{\mathcal H}\). Without separation, one price can carry two vectors.
+
+%==================================================================
+\section{Complementary private signals}\label{sec:robustness-signals}
+
+Proposition A.6 gives the investor a signal \(S_I\) and the challenger a signal \(S_C\), with accuracies
+\(\alpha_I,\alpha_C\in(\tfrac12,1)\). A purchase gives the public posterior \(M^I=(1-\alpha_I)+(2\alpha_I-1)M(\tfrac12)\), and \(\mu^C_+(\mu)\) is the challenger's belief
+after \(S_C=+\). The paper's conditions are
+\[
+B_{F_0}(\alpha_C)<c_H<B_{F_1}(\mu^C_+(M^I)),\qquad
+(2\alpha_I-1)\bar\Delta_P(F_0)<k<(2\alpha_I-1)\rho\,m(\tfrac12)\DT(F_1),
+\]
+with \(\bar\Delta_P(F)=\DT(F)+(1-\rho)(2\alpha_C-1)[t_H(F)-t_0(F)]\). Then, under all four tie rules, the investor
+abstains at \(F_0\), with entry \(\rho\); at \(F_1\) it trades on its signal, and entry exceeds \(\rho\).
+The price slope \(\Delta_P=e_L\DT+(e_H-e_L)w_H\in[\rho\DT,\bar\Delta_P]\) bounds the investor's returns. In the paper's examples both sources are needed: a favorable \(S_C\) alone does not cover \(c_H\).
+
+\begin{chaptersummary}
+The core of Proposition~2 survives each change. A low cost range replaces the zero cost when profit at the lowest
+feasible belief covers it. Every pair of ranked classes with different means and every prior admit some costs and strengths that work.
+Separation lets one price reveal a posterior vector, and private signals complement the price.
+\end{chaptersummary}

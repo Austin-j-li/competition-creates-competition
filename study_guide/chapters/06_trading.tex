@@ -1,0 +1,1006 @@
+\chapter{The informed investor}\label{ch:trading}
+
+\begin{chapterplan}
+The question of this chapter: what does an informed order earn when the price already counts the entry that the
+order brings, and which features of the auction does the answer use?
+
+After this chapter you can:
+\begin{itemize}
+\item derive the gross return of a purchase in class \(H\) and of a sale in class \(L\), one line at a time;
+\item explain why a wrong-signed order never pays, and when each class buys, sells or abstains;
+\item derive the trading bound and explain why the class that the prior favors binds;
+\item explain why orders, posteriors, entry and research depend on the auction only through the spread \(\DT\)
+and the threshold \(\tau\);
+\item show that a stronger incumbent never narrows the spread and, while \(g_L\le c_H\), never lowers the
+threshold.
+\end{itemize}
+\end{chapterplan}
+
+% =====================================================================
+\section{What an informed order can earn}\label{sec:trading-intuition}
+
+The informed investor knows the challenger's class. When it fills the order slot, it can buy one unit of the
+target's stock, sell one unit, or place no order. The market makers see the order but not who placed it. They set
+the price equal to the expected terminal payoff of a share, given the order. The challenger then reads the price
+and decides whether to prepare.
+
+Take a purchase by the investor in class \(H\). The purchase moves the market makers' belief toward class \(H\).
+If the belief rises far enough, a high-cost challenger prepares, so entry rises and expected target proceeds rise
+with it. The market makers know how the challenger responds to each price, so they put the expected entry gain
+into the price. The investor therefore pays, inside the price, for the entry that its own order brings.
+
+What is left for the investor is the one thing that the market makers do not know: the class. After a purchase,
+the market makers still give some weight to class \(L\), because a liquidity trader can place the same
+order. They value the share as an average over the two classes, and the investor values it at the class-\(H\)
+level. The gap is the spread \(\DT\) times the weight that the market gives to the wrong class. This gap matters
+only when the challenger prepares, because without entry the target receives \(t_0\) in both classes.
+
+\begin{keyidea}
+The gross return of an informed order is entry times the spread times the residual uncertainty about the class.
+For a purchase in class \(H\) it is \(e(1)\,\DT\,[1-\mu(1)]\). For a sale in class \(L\) it is
+\(e(-1)\,\DT\,\mu(-1)\).
+\end{keyidea}
+
+\begin{analogy}[a bet on a match that may not take place]
+This analogy is the guide's own. A ticket on a football match pays a fixed base amount if the match does not take
+place. If the match takes place, the ticket pays more on average when a star player plays. You know whether the
+star plays. A bookmaker sees your order, but not whether you know anything, and sets a fair price. The fair price
+contains the base amount, the chance of the match, and the bookmaker's belief about the star. So the base amount
+and the chance of the match give you no edge. Your edge is the chance of the match, times the payout gap, times
+the bookmaker's doubt about the star.
+
+\emph{Where the analogy breaks.} In the model, the price itself changes the chance that the ``match'' takes place,
+because the challenger reads the price before it prepares. A bookmaker's price does not decide whether a match
+takes place. The analogy fits the gross return at fixed prices and entry, which is how the investor evaluates an
+order. It says nothing about how entry responds to prices in equilibrium.
+\end{analogy}
+
+Each of the three factors can remove the return. If the class did not affect proceeds (\(\DT=0\)), knowledge of
+the class would be worth nothing. If a purchase revealed the class completely, the price would already contain
+everything that the investor knows. If the challenger never prepared, a share would pay \(t_0\) in both classes.
+The rest of the chapter makes this story exact.
+
+% =====================================================================
+\section{The set-up}\label{sec:trading-setup}
+
+This section recalls the symbols that the chapter uses.
+\begin{itemize}
+\item The challenger's class is \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\in(0,1)\).
+\item With probability \(\lambda\in(0,1)\) the informed investor fills the order slot. It sees the class and
+chooses an order \(q\in\{-1,0,1\}\): sell, abstain, or buy one unit. A nonzero order costs \(k>0\).
+\item With probability \(1-\lambda\) a liquidity trader fills the slot and sells, abstains or buys with
+probabilities \(\beta\), \(1-2\beta\) and \(\beta\). A liquidity order in one direction arrives with probability
+\(b=(1-\lambda)\beta\), and \(u=\lambda/b\).
+\item After the order \(x\), the market makers' posterior is \(\mu(x)=\Pr(j=H\mid X=x)\), and the price is \(P(x)\).
+\item Entry \(e(x)\) is the probability that the challenger prepares after the price \(P(x)\). A zero-cost
+challenger appears with probability \(\rho\in(0,1)\) and prepares after every price, so
+\(e(x)=\rho+(1-\rho)\,\zeta(P(x))\in[\rho,1]\), where \(\zeta\) is the probability that a high-cost challenger
+prepares.
+\item Expected target proceeds are \(t_0\) without entry and \(t_j\) after entry in class \(j\). The target-payoff
+spread is \(\DT=t_H-t_L\).
+\end{itemize}
+
+The paper's appendix uses two short names. The \emph{entry gain} in class \(j\) is \(w_j=t_j-t_0\), the rise in
+expected proceeds that entry brings. Its average at the belief \(\mu\) is \(w(\mu)=(1-\mu)\,w_L+\mu\,w_H\).
+Proposition~1 and Chapter~\ref{ch:auction} give \(w_H\ge w_L\ge0\). Section~\ref{sec:beliefs-setup} derives the short form of the average, \(w(\mu)=w_L+\DT\,\mu=t_L-t_0+\DT\,\mu\), because \(w_H-w_L=t_H-t_L=\DT\).
+
+\paragraph{The investor's objective.} If the investor places the order \(q\), its order is the whole order that the
+market makers see. It trades at the price \(P(q)\) and earns \(q\,[V_T-P(q)]-k|q|\), where \(V_T\) is the terminal
+payoff of a share. Section~\ref{sec:model-equilibrium} of Chapter~\ref{ch:model} takes the expectation given the class \(j\) and
+the order \(q\):
+\begin{equation}\label{eq:trading-objective}
+U_j(q)=q\,\bigl[t_0+e(q)\,(t_j-t_0)-P(q)\bigr]-k|q| .
+\end{equation}
+The first term in the bracket is the expected terminal payoff given the class and the order. Steps 1 to 3 of
+Section~\ref{sec:beliefs-priceformula} derive it, in \eqref{eq:beliefs-terminal}:
+\[
+\E[V_T\mid j,X=q]=t_0+e(q)\,w_j .
+\]
+In words: the challenger prepares with probability \(e(q)\) in both classes, because its choice depends only on the
+price and its cost. If it prepares, the target expects \(t_j\); if not, it expects \(t_0\).
+
+\paragraph{The price.} The market makers set \(P(x)=\E[V_T\mid X=x]\). Step 4 of
+Section~\ref{sec:beliefs-priceformula} averages \eqref{eq:beliefs-terminal} over the class, with the weights
+\(\mu(x)\) and \(1-\mu(x)\), and obtains the price formula \eqref{eq:beliefs-price}:
+\[
+P(x)=\mu(x)\,[t_0+e(x)\,w_H]+[1-\mu(x)]\,[t_0+e(x)\,w_L]=t_0+e(x)\,\bigl[t_L-t_0+\DT\,\mu(x)\bigr].
+\]
+The first form shows the fact behind every cancellation in this chapter. The price is the market makers' average,
+over the two classes, of the same expected payoff that enters the investor's objective. The investor in class \(H\)
+receives the class-\(H\) version and pays the average.
+
+\begin{watchout}
+The price formula needs only Bayes consistency (E1), competitive prices (E4), truthful bids (E6) and a cost that is
+independent of the class. It does not need a positive spread. What needs a positive spread \emph{and} a positive
+entry floor \(\rho\) is the step of Section~\ref{sec:beliefs-reveal}: that the price reveals the posterior. Also,
+the price is affine in the posterior only at a fixed level of entry. Equilibrium prices reflect entry too.
+\end{watchout}
+
+\paragraph{Deviations and the posterior bounds.} When the investor considers the order \(q\), it takes the
+candidate's price \(P(q)\) and entry \(e(q)\) as given. A comparison across economies, such as across incumbent
+strengths, is a different exercise: it solves the equilibrium again in each economy. Recall the posterior bounds
+\eqref{eq:beliefs-bounds}:
+\[
+M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi},\qquad m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)} .
+\]
+Under every investor strategy, mixed or pure, the posterior after a purchase or a sale lies between these two
+bounds, for every \(0<\beta<1/2\) (Lemma A.1(b)). The reason is that each class reaches each nonzero order through
+a liquidity trader with probability \(b>0\).
+
+% =====================================================================
+\section{The gross return of an order}\label{sec:trading-returns}
+
+The paper collects the investor's problem in one lemma. This section proves its six payoffs and part (a), and
+Sections~\ref{sec:trading-best} to~\ref{sec:trading-split} prove parts (b) to (d).
+
+\begin{paperresult}{Lemma A.3 (Informed trading)}
+Let \(\DT\ge0\). Fix a tuple that satisfies (E1), (E4) and (E6), with entry \(e(x)\in[\rho,1]\) after every order.
+Conditional on its arrival, the investor in each class earns
+\[
+\begin{aligned}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,& U_H(0)&=0,& U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\DT\,\mu(-1)-k,& U_L(0)&=0,& U_L(1)&=-e(1)\DT\,\mu(1)-k.
+\end{aligned}
+\]
+Write \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\,\mu(-1)\) for the gross returns of the two correct orders.
+\begin{enumerate}[label=(\alph*)]
+\item A wrong-signed order earns at most \(-k\), so abstention strictly beats it.
+\item Class \(H\) buys if \(K_H>k\) and abstains if \(K_H<k\). At \(K_H=k\), the purchase and abstention are its two
+best orders. Class \(L\) sells if \(K_L>k\) and abstains if \(K_L<k\). At \(K_L=k\), the sale and abstention are
+its two best orders.
+\item Under every candidate profile, \(\rho\DT[1-M(\pi)]\le K_H\le\DT\) and \(\rho\DT\,m(\pi)\le K_L\le\DT\).
+Hence \(\rho\,\kappa(\pi)\DT\le K_j\le\DT\), where \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\).
+\item \(K_H\) depends on the candidate only through \(\mu(1)\) and \(e(1)\), and \(K_L\) only through \(\mu(-1)\)
+and \(e(-1)\).
+\end{enumerate}
+\end{paperresult}
+
+A plain reading:
+\begin{itemize}
+\item \emph{Hypotheses.} The spread can be zero. The tuple needs Bayes consistency, competitive prices and truthful
+bids, and entry between \(\rho\) and one. It need not be an equilibrium, so the lemma holds in and out of
+equilibrium.
+\item \emph{Payoffs.} ``Conditional on its arrival'' means: given that the investor fills the slot. Each class has
+a correct order (a purchase for \(H\), a sale for \(L\)), a wrong-signed order, and abstention, which earns zero.
+\(K_H\) and \(K_L\) are the payoffs of the correct orders before the cost.
+\item \emph{(a)} The investor never trades against its own information. \emph{(b)} Each class compares its gross
+return with the cost. \emph{(c)} The gross returns have a floor, a fixed share of the spread, and a ceiling, the
+spread, in every \emph{candidate}: a tuple that meets all equilibrium conditions except, possibly, the investor's
+optimality (E5). \emph{(d)} The return of a purchase uses only what happens after a purchase, and the return of a
+sale only what happens after a sale.
+\end{itemize}
+
+\subsection{Step 1: the gross returns}
+
+Substitute the price formula into the bracket of \eqref{eq:trading-objective}. Start with class \(H\).
+
+\begin{derivation}[the bracket in class \(H\)]
+\begin{align*}
+&t_0+e(q)(t_H-t_0)-P(q)\\
+&\quad= t_0+e(q)(t_H-t_0)-\bigl\{t_0+e(q)\,[t_L-t_0+\DT\,\mu(q)]\bigr\} \why{substitute the price formula}\\
+&\quad= e(q)(t_H-t_0)-e(q)\,[t_L-t_0+\DT\,\mu(q)] \why{\(t_0-t_0=0\)}\\
+&\quad= e(q)\,\bigl[(t_H-t_0)-(t_L-t_0)-\DT\,\mu(q)\bigr] \why{factor out \(e(q)\)}\\
+&\quad= e(q)\,\bigl[t_H-t_L-\DT\,\mu(q)\bigr] \why{\(-t_0+t_0=0\)}\\
+&\quad= e(q)\,\bigl[\DT-\DT\,\mu(q)\bigr] \why{\(\DT=t_H-t_L\)}\\
+&\quad= e(q)\,\DT\,[1-\mu(q)] \why{factor out \(\DT\)}
+\end{align*}
+\end{derivation}
+
+\begin{derivation}[the bracket in class \(L\): the same steps with \(t_L\) in place of \(t_H\)]
+\begin{align*}
+&t_0+e(q)(t_L-t_0)-P(q)\\
+&\quad= e(q)(t_L-t_0)-e(q)\,[t_L-t_0+\DT\,\mu(q)] \why{substitute; \(t_0-t_0=0\)}\\
+&\quad= e(q)\,\bigl[(t_L-t_0)-(t_L-t_0)-\DT\,\mu(q)\bigr] \why{factor out \(e(q)\)}\\
+&\quad= -e(q)\,\DT\,\mu(q) \why{\((t_L-t_0)-(t_L-t_0)=0\)}
+\end{align*}
+\end{derivation}
+
+Multiply each bracket by \(q\) and subtract \(k|q|\). In class \(H\), \(U_H(q)=q\,e(q)\,\DT\,[1-\mu(q)]-k|q|\); in
+class \(L\), \(U_L(q)=-q\,e(q)\,\DT\,\mu(q)-k|q|\).
+
+\begin{derivation}[the six payoffs]
+\begin{align*}
+U_H(1) &= e(1)\,\DT\,[1-\mu(1)]-k \why{\(q=1\), \(|q|=1\)}\\
+U_H(0) &= 0\cdot e(0)\,\DT\,[1-\mu(0)]-0=0 \why{\(q=0\), \(|q|=0\)}\\
+U_H(-1) &= -e(-1)\,\DT\,[1-\mu(-1)]-k \why{\(q=-1\), \(|q|=1\)}\\
+U_L(-1) &= e(-1)\,\DT\,\mu(-1)-k \why{\(q=-1\): \(-q=1\), \(|q|=1\)}\\
+U_L(0) &= 0 \why{\(q=0\)}\\
+U_L(1) &= -e(1)\,\DT\,\mu(1)-k \why{\(q=1\), \(|q|=1\)}
+\end{align*}
+\end{derivation}
+
+These are the six payoffs of Lemma A.3. The two correct orders have the gross returns
+\begin{equation}\label{eq:trading-returns}
+K_H=e(1)\,\DT\,\bigl[1-\mu(1)\bigr],\qquad K_L=e(-1)\,\DT\,\mu(-1).
+\end{equation}
+
+\begin{intuition}[why \(t_0\) cancels]
+The proceeds \(t_0\) are what the target receives when no challenger prepares. They enter the terminal payoff and,
+with the same coefficient one, the price. The investor receives \(t_0\) at the end and pays \(t_0\) at the start,
+so they net out. The low-class entry gain \(e(q)\,w_L\) cancels for the same reason: every class brings at least
+\(w_L\) when the challenger prepares, and the market knows it. What remains is the part of the entry gain that
+depends on the class, \(\DT\), times the weight that the price gives to the wrong class.
+\end{intuition}
+
+The same result reads well in entry gains. The investor in class \(H\) receives its own gain \(w_H\) per unit of
+entry and pays the market's average gain \(w(\mu)\):
+\begin{align*}
+\E[V_T\mid H,X=q]-P(q) &= e(q)\,\bigl[w_H-(1-\mu(q))\,w_L-\mu(q)\,w_H\bigr] \why{\(t_0\) cancels; definition of \(w\)}\\
+&= e(q)\,[1-\mu(q)]\,(w_H-w_L) \why{collect the terms}\\
+&= e(q)\,\DT\,[1-\mu(q)] \why{\(w_H-w_L=\DT\)}
+\end{align*}
+In the same way, \(P(q)-\E[V_T\mid L,X=q]=e(q)\,\mu(q)\,(w_H-w_L)=e(q)\,\DT\,\mu(q)\).
+
+\paragraph{What this says.} A purchase by class \(H\) earns, before its cost, entry times the spread times the
+market's residual weight on class \(L\). A sale by class \(L\) earns entry times the spread times the residual
+weight on class \(H\). Test the extremes.
+\begin{itemize}
+\item If \(\DT=0\), then \(K_H=K_L=0\), and every nonzero order loses its cost \(k\).
+\item A purchase that revealed the class, \(\mu(1)=1\), would give \(K_H=0\). The slot prevents this: a liquidity purchase is
+always possible, so \(\mu(1)\le M(\pi)<1\).
+\item A purchase that does not recruit has \(e(1)=\rho\). At a fixed posterior, a recruitment multiplies the return
+by \(1/\rho\).
+\item When the investor is rare (\(u\) small), posteriors stay near the prior, and \(K_H\) is near
+\(e(1)\,\DT\,(1-\pi)\).
+\end{itemize}
+
+\begin{checkyourself}\label{q:trading-level}
+Suppose a change in the auction raises \(t_0\), \(t_H\) and \(t_L\) by the same amount \(z>0\), and leaves
+posteriors and entry unchanged. Show, step by step, what happens to each price and to \(K_H\) and \(K_L\).
+\end{checkyourself}
+
+\subsection{Step 2: wrong-signed orders}
+
+A wrong-signed order is a sale by class \(H\) or a purchase by class \(L\). Part (a) says that it never pays.
+
+\begin{derivation}[each wrong-signed order earns at most \(-k\)]
+For a sale by class \(H\):
+\begin{align*}
+e(-1)\,\DT\,[1-\mu(-1)] &\ge 0 \why{\(e\ge\rho>0\), \(\DT\ge0\), \(\mu(-1)\le1\)}\\
+-e(-1)\,\DT\,[1-\mu(-1)] &\le 0 \why{multiply by \(-1\); the inequality turns}\\
+U_H(-1)=-e(-1)\,\DT\,[1-\mu(-1)]-k &\le -k<0=U_H(0) \why{subtract \(k\); \(k>0\)}
+\end{align*}
+For a purchase by class \(L\):
+\begin{align*}
+e(1)\,\DT\,\mu(1) &\ge 0 \why{\(e\ge\rho>0\), \(\DT\ge0\), \(\mu(1)\ge0\)}\\
+U_L(1)=-e(1)\,\DT\,\mu(1)-k &\le -k<0=U_L(0) \why{multiply by \(-1\) (the inequality turns); subtract \(k\)}
+\end{align*}
+\end{derivation}
+
+So abstention strictly beats each wrong-signed order, and under the investor's optimality (E5) no class puts
+positive probability on one. The definition of equilibrium allows wrong-signed orders; part (a) is what removes
+them, for every tuple that meets the hypotheses.
+
+\begin{intuition}[a trade against your own news]
+A sale by class \(H\) sells the share at a price that averages in class \(L\). The share is worth more than that to
+an investor who knows the class is \(H\). So the sale hands the residual uncertainty to the market makers.
+The gross part can be zero, for example when \(\DT=0\), but it is never positive, and the cost \(k\) makes the payoff
+strictly negative.
+\end{intuition}
+
+% =====================================================================
+\section{The best order in each class}\label{sec:trading-best}
+
+By part (a), each class compares only its correct order with abstention. The payoffs of Step 1 give
+\[
+U_H(1)-U_H(0)=K_H-k,\qquad U_L(-1)-U_L(0)=K_L-k .
+\]
+This gives part (b) of Lemma A.3, case by case.
+\begin{itemize}
+\item If \(K_H>k\), the purchase is the unique best order: class \(H\) buys with probability one.
+\item If \(K_H<k\), abstention is the unique best order: class \(H\) abstains.
+\item If \(K_H=k\), the purchase and abstention are the two best orders, and the investor's tie rule decides. Under
+the default tie rules, an indifferent investor may mix over them, that is, buy with any probability. Under the
+other investor rule, it abstains.
+\end{itemize}
+Class \(L\) is the same, with \(K_L\) in place of \(K_H\) and a sale in place of a purchase. The investor's ex ante
+payoff is \(\lambda\,U_j(q)\). The factor \(\lambda>0\) multiplies every order's payoff, so it changes no
+comparison.
+
+\begin{intuition}[why a mixed order can be a best response]
+The return \(K_H\) is not a fixed number. The more often class \(H\) buys, the more a purchase reveals, and the
+less residual uncertainty is left to earn on. So at fixed entry the return of a purchase falls as the purchase rate
+rises, and a purchase rate can adjust until the return equals the cost. Chapter~\ref{ch:coexistence} uses this.
+\end{intuition}
+
+To see the fall, recall that in equilibrium class \(L\) never buys. Write \(s_+=\lambda\,\sigma_H(1)\) for the
+probability that the investor in class \(H\) fills the slot and buys. A purchase then arrives with probability
+\(b+s_+\) in class \(H\) and \(b\) in class \(L\), and Bayes' rule (Section~\ref{sec:toolkit-bayes}) gives
+\begin{align*}
+\mu(1) &= \frac{\pi\,(b+s_+)}{\pi\,(b+s_+)+(1-\pi)\,b}=\frac{\pi\,(b+s_+)}{b+\pi s_+} \why{Bayes' rule; \(\pi b+(1-\pi)b=b\)}\\
+1-\mu(1) &= \frac{b+\pi s_+-\pi b-\pi s_+}{b+\pi s_+}=\frac{(1-\pi)\,b}{b+\pi s_+} \why{common denominator}
+\end{align*}
+The numerator does not depend on \(s_+\), and the denominator rises with \(s_+\), so \(1-\mu(1)\) falls. At
+\(s_+=0\) it is \(1-\pi\). At \(s_+=\lambda\) it is \((1-\pi)/(1+\pi u)=1-M(\pi)\).
+
+\begin{checkyourself}\label{q:trading-reveal}
+Suppose, against the model, that a purchase revealed the class completely, so that \(\mu(1)=1\). What would
+\(K_H\) and \(U_H(1)\) be? Which class would then buy? Explain why the order slot rules this situation out.
+\end{checkyourself}
+
+% =====================================================================
+\section{The trading bound}\label{sec:trading-bound}
+
+Part (c) of Lemma A.3 gives a floor and a ceiling for each gross return. The paper calls it the trading bound:
+\begin{equation}\label{eq:trading-bound}
+\rho\,\kappa(\pi)\,\DT\;\le\;K_H,\,K_L\;\le\;\DT,\qquad \kappa(\pi)=\min\{m(\pi),\,1-M(\pi)\}.
+\end{equation}
+Its ingredients are two ranges from earlier chapters: entry lies in \([\rho,1]\), and the posterior after a nonzero
+order lies in \([m(\pi),M(\pi)]\).
+
+\begin{derivation}[the floors]
+All factors are nonnegative: \(e\ge\rho>0\), \(\DT\ge0\), \(1-\mu(1)\ge1-M(\pi)>0\) and \(\mu(-1)\ge m(\pi)>0\).
+So each inequality keeps its direction when it is multiplied by a nonnegative number.
+\begin{align*}
+K_H &= e(1)\,\DT\,[1-\mu(1)] \why{definition}\\
+&\ge \rho\,\DT\,[1-\mu(1)] \why{\(e(1)\ge\rho\); times \(\DT[1-\mu(1)]\ge0\)}\\
+&\ge \rho\,\DT\,[1-M(\pi)] \why{\(\mu(1)\le M(\pi)\); times \(\rho\DT\ge0\)}\\
+&\ge \rho\,\kappa(\pi)\,\DT \why{\(1-M(\pi)\ge\kappa(\pi)\)}\\[4pt]
+K_L &= e(-1)\,\DT\,\mu(-1) \why{definition}\\
+&\ge \rho\,\DT\,\mu(-1) \why{\(e(-1)\ge\rho\); times \(\DT\mu(-1)\ge0\)}\\
+&\ge \rho\,\DT\,m(\pi) \why{\(\mu(-1)\ge m(\pi)\); times \(\rho\DT\ge0\)}\\
+&\ge \rho\,\kappa(\pi)\,\DT \why{\(m(\pi)\ge\kappa(\pi)\)}
+\end{align*}
+\end{derivation}
+
+For the ceiling, entry and the posterior lie in \([0,1]\), so \(e(1)[1-\mu(1)]\le1\) and \(e(-1)\mu(-1)\le1\).
+Multiply by \(\DT\ge0\): \(K_H\le\DT\) and \(K_L\le\DT\). The ceiling uses only \(e\le1\) and \(0\le\mu\le1\).
+
+\paragraph{What this says.} The ceiling would need full entry and a price that puts all its weight on the wrong
+class. The posterior bounds rule out the second, so with \(\DT>0\) no order reaches the ceiling.
+The floor is the worst case: entry only at the floor \(\rho\), and the posterior pushed as far toward the investor's own
+class as the slot allows. Even then the zero-cost challenger prepares, and a liquidity trader hides the order.
+
+\subsection{The shape of \texorpdfstring{\(\kappa(\pi)\)}{kappa}}
+
+The paper writes the bound in a second form, \(\kappa(\pi)=m(\min\{\pi,1-\pi\})\). Two facts give it.
+
+\emph{Fact 1: \(1-M(\pi)=m(1-\pi)\).} This is the mirror identity \eqref{eq:toolkit-mirror} of
+Section~\ref{sec:toolkit-odds}. In words: the weight that a top posterior leaves on class \(L\) equals the bottom
+posterior of a market whose prior on class \(H\) is \(1-\pi\). The two classes swap roles.
+
+\begin{derivation}[fact 2: \(m\) rises strictly]
+For a prior \(x\in(0,1)\),
+\begin{align*}
+m(x) &= \frac{x}{x+(1-x)(1+u)}=\frac{x}{x+1+u-x-xu} \why{expand \((1-x)(1+u)\)}\\
+&= \frac{x}{1+u(1-x)} \why{\(x-x=0\); \(u-xu=u(1-x)\)}
+\end{align*}
+As \(x\) rises, the numerator rises and the denominator falls, because \(u>0\). Both stay positive, so \(m(x)\)
+rises strictly.
+\end{derivation}
+
+With the two facts,
+\begin{align*}
+\kappa(\pi) &= \min\{m(\pi),\,m(1-\pi)\} \why{fact 1}\\
+&= m\bigl(\min\{\pi,1-\pi\}\bigr) \why{fact 2: the smaller argument gives the smaller value}\\
+&\le m\bigl(\tfrac12\bigr) \why{\(\min\{\pi,1-\pi\}\le\tfrac12\); fact 2}\\
+&= \frac{1/2}{1+u/2}=\frac{1}{2+u} \why{fact 2 form at \(x=\tfrac12\); multiply above and below by 2}
+\end{align*}
+The last inequality is an equality only at \(\pi=\tfrac12\), because \(m\) rises strictly. So the bound is largest
+at the prior \(\tfrac12\), where it equals \(1/(2+u)\), and smaller at every other prior
+(Figure~\ref{fig:trading-kappa}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=9cm,y=4.4cm]
+\draw[-{Stealth[length=2mm]}] (0,0) -- (1.07,0) node[right] {\(\pi\)};
+\draw[-{Stealth[length=2mm]}] (0,0) -- (0,1.08);
+\node[below] at (0,0) {\(0\)};
+\draw (1,0.02) -- (1,-0.02) node[below] {\(1\)};
+\draw (0.5,0.02) -- (0.5,-0.02) node[below] {\(\tfrac12\)};
+\draw (0.01,1) -- (-0.01,1) node[left] {\(1\)};
+\draw[rulegrey, domain=0.001:0.999, samples=80, smooth] plot (\x, {\x/(1+1.5*(1-\x))});
+\draw[rulegrey, domain=0.001:0.999, samples=80, smooth] plot (\x, {(1-\x)/(1+1.5*\x)});
+\node[right, notegrey] at (1,0.8) {\(m(\pi)\)};
+\node[left, notegrey] at (0,0.8) {\(1-M(\pi)\)};
+\draw[accent, very thick, domain=0.001:0.5, samples=60, smooth] plot (\x, {\x/(1+1.5*(1-\x))});
+\draw[accent, very thick, domain=0.5:0.999, samples=60, smooth] plot (\x, {(1-\x)/(1+1.5*\x)});
+\draw[dotted] (0.5,0) -- (0.5,0.2857);
+\draw[dotted] (0,0.2857) -- (0.5,0.2857);
+\node[left] at (0,0.2857) {\(\tfrac{1}{2+u}\)};
+\node[accent, above] at (0.5,0.29) {\(\kappa(\pi)\)};
+\end{tikzpicture}
+\caption{The bound \(\kappa(\pi)\) (thick line) is the lower of the grey curves \(m(\pi)\) and \(1-M(\pi)\). Left
+of \(\tfrac12\), class \(L\)'s floor binds; right of \(\tfrac12\), class \(H\)'s floor binds. The peak is at the
+prior \(\tfrac12\). The curves are drawn for one value of \(u\); the shape is the same for every \(u>0\).}
+\label{fig:trading-kappa}
+\end{figure}
+
+\paragraph{Which class binds.} If the prior favors class \(H\), \(\pi>\tfrac12\), then \(1-\pi<\pi\) and
+\(\kappa(\pi)=m(1-\pi)=1-M(\pi)\), the floor of \(K_H\). If \(\pi<\tfrac12\), then \(\kappa(\pi)=m(\pi)\), the floor
+of \(K_L\). Either way the favored class binds, because the price already leans toward it. When \(\pi\) is high, a
+purchase pushes a posterior that is already high even closer to one. Little weight on class \(L\) remains, so little
+is left for class \(H\) to earn. A sale by class \(L\) starts from the same high prior and has much more to correct.
+
+\paragraph{Extreme cases.} When the investor is rare relative to liquidity (\(u\) near zero), \(m(\pi)\) and
+\(M(\pi)\) are near \(\pi\), so \(\kappa(\pi)\) is near \(\min\{\pi,1-\pi\}\). When the investor is common (\(u\)
+large), a purchase or a sale can reveal almost all that the investor knows: \(m(\pi)\) is near zero and \(M(\pi)\)
+is near one, so \(\kappa(\pi)\) is near zero. When the prior is near zero or one,
+\(\kappa(\pi)\) is near zero, because one class is almost certain before any trade.
+
+\begin{checkyourself}\label{q:trading-prior}
+Let \(\pi>\tfrac12\). Show, with each step, that \(1-M(\pi)<m(\pi)\). Then say in words which investor has the
+smaller guaranteed return, and why.
+\end{checkyourself}
+
+\subsection{What a bound for every candidate buys}
+
+The bound holds under every candidate profile, mixed or pure. Its derivation used only three facts: entry lies in
+\([\rho,1]\), the spread is nonnegative, and the posteriors after nonzero orders lie in \([m(\pi),M(\pi)]\). None of
+them uses the investor's optimality (E5) or a guess about the profile. So the bound constrains every candidate
+before anyone solves for the equilibrium. This is how the paper proves uniqueness: a uniqueness proof derives its
+bounds for every candidate and does not use the proposed tuple. Chapter~\ref{ch:ccc} uses both sides.
+\begin{itemize}
+\item If \(\DT<k\), then \(K_j\le\DT<k\) in every candidate. By parts (a) and (b), each class abstains, so no
+equilibrium has informed trade.
+\item If \(\rho\,\kappa(\pi)\,\DT>k\), then \(K_j>k\) in every candidate. By parts (a) and (b), class \(H\) buys for
+sure and class \(L\) sells for sure in every equilibrium.
+\end{itemize}
+When \(\rho\,\kappa(\pi)\,\DT\le k\le\DT\), the bound alone does not decide the orders. Chapter~\ref{ch:coexistence}
+studies that region.
+
+\begin{watchout}
+Keep the domain of \(\beta\) of each result.
+\begin{itemize}
+\item The trading bound uses the posterior bounds only after the nonzero orders (Lemma A.1(b)), so it holds for
+every \(0<\beta<1/2\).
+\item The restriction \(\beta\le1/3\) is the inequality \(b_0\ge b\), where \(b_0=(1-\lambda)(1-2\beta)\) is the
+probability of a liquidity abstention. It extends the posterior bounds to the zero order, and through this it enters
+only the exclusion bound (Corollary A.1) and the zero-order part of the research bounds. The research parameter
+region and the slot-feasibility parts of identification also range over the slots with \(\beta\le1/3\).
+\item A price reached by at least one nonzero order gives a belief in \([m(\pi),M(\pi)]\) for every
+\(0<\beta<1/2\), even when the price pools that order with the zero order (Section~\ref{sec:beliefs-price-belief}).
+\end{itemize}
+The lower bound is also positive only because \(\rho>0\): with \(\rho=0\), a purchase that does not recruit would
+earn nothing.
+\end{watchout}
+
+% =====================================================================
+\section{The problem splits by class}\label{sec:trading-split}
+
+Part (d) of Lemma A.3 is visible in \eqref{eq:trading-returns}. \(K_H\) contains only \(\mu(1)\) and \(e(1)\), and
+\(K_L\) only \(\mu(-1)\) and \(e(-1)\). Entry after the zero order enters no payoff: abstention earns zero whatever
+happens after the zero order, because \(q=0\) multiplies the bracket by zero.
+
+Combine part (d) with part (a). In equilibrium, class \(L\) never buys and class \(H\) never sells. So
+\(\mu(1)\) depends only on how often class \(H\) buys (Section~\ref{sec:trading-best}), and \(\mu(-1)\) only on how
+often class \(L\) sells. When \(\DT>0\) and \(g_H>g_L\), entry after each order follows its own posterior through
+the threshold rule. So:
+\begin{itemize}
+\item the conditions of class \(H\) involve only its purchase rate, \(\mu(1)\) and \(e(1)\);
+\item the conditions of class \(L\) involve only its sale rate, \(\mu(-1)\) and \(e(-1)\).
+\end{itemize}
+The investor's problem splits into two separate problems, one for each class. The classes still meet at the zero
+order, whose posterior depends on both rates, but nothing after the zero order enters any payoff.
+Chapter~\ref{ch:coexistence} uses this split: it solves the purchase side and the sale side one at a time.
+
+% =====================================================================
+\section{The two numbers}\label{sec:trading-twonumbers}
+
+Look back at what the investor's problem uses. The payoffs use the auction only through the spread \(\DT\). The
+entry rule uses it only through the threshold. Recall \eqref{eq:beliefs-threshold}: when \(g_H>g_L\), the
+threshold \(\tau=(c_H-g_L)/(g_H-g_L)\) is the belief at which gross acquisition profit
+\(B(\mu)=g_L+\mu\,(g_H-g_L)\) equals the high preparation cost \(c_H\). So the spread sets what an informed order
+earns at each posterior and level of entry, and the threshold sets which posteriors recruit a high-cost
+challenger. Write \(\gamma=g_H-g_L\) for the profit gap between the classes.
+
+\begin{paperresult}{Lemma A.4 (The auction through the spread and the threshold)}
+Fix the model's independence and information structure, a prior \(\pi\in(0,1)\), the two-point preparation cost
+with \(\rho\in(0,1)\) and \(c_H>0\), a trading cost \(k>0\), and one pair of tie rules: an indifferent investor may
+mix over its best orders or abstains, and an indifferent high-cost challenger prepares or may prepare with any
+probability. At fixed presence, fix \(0<\lambda<1\); with research, presence is \(\hat\lambda\). Fix
+\(0<\beta<1/2\). Consider two cash second-price auctions with finite-mean classes satisfying the class ranking,
+continuous incumbent laws, \(\DT>0\) and \(\gamma=g_H-g_L>0\), and the same spread and preparation threshold
+\(\tau=(c_H-g_L)/\gamma\). Their equilibrium sets projected onto \((\sigma_H,\sigma_L,\mu,e)\) coincide.
+
+The common conditions are Bayes' rule, the threshold entry rule under the chosen tie rule, and optimal orders at
+\[
+\begin{aligned}
+U_H(1)&=e(1)\DT[1-\mu(1)]-k,& U_H(-1)&=-e(-1)\DT[1-\mu(-1)]-k,\\
+U_L(-1)&=e(-1)\DT\mu(-1)-k,& U_L(1)&=-e(1)\DT\mu(1)-k,
+\end{aligned}
+\qquad U_j(0)=0.
+\]
+Each auction gives prices and price beliefs by
+\[
+P(x)=t_0+e(x)[w_L+\DT\mu(x)],\qquad \zeta(P(x))=\frac{e(x)-\rho}{1-\rho},\qquad \bar\mu(P(x))=\mu(x).
+\]
+With research, fix also the quadratic cost coefficient \(a>0\) and cap \(0<\lb<1\), and require optimal orders
+after a hypothetical success even at zero research. The equilibrium sets projected onto
+\((\hat\lambda,\sigma_H,\sigma_L,\mu,e)\) coincide. The common conditions also include
+\[
+\hat\lambda=\min\{\lb,\Psi/a\},\qquad \Psi=\pi\max_q U_H(q)+(1-\pi)\max_q U_L(q),
+\]
+with Bayes' rule evaluated at \(\hat\lambda\). These conclusions hold under all four tie rules.
+\end{paperresult}
+
+A plain reading:
+\begin{itemize}
+\item \emph{Held fixed:} everything outside the auction, that is, the information structure, the prior, \(\rho\)
+and \(c_H\), the trading cost \(k\), the slot, and one choice of tie rules for the investor and the challenger.
+The guide reads the phrase ``every other primitive and the tie rules the same'' of Section 3.4 of the paper as
+this list.
+\item \emph{Not on the fixed list:} the classes, the reserve and the incumbent's law. The statement asks only that
+each auction have finite-mean classes with the class ranking, a continuous incumbent law, \(\DT>0\) and
+\(\gamma>0\), and that the two auctions share \(\DT\) and \(\tau\). Their levels \(t_0\), \(t_L\), \(g_L\) and
+\(g_H\) can differ.
+\item \emph{The conclusion:} drop from each equilibrium its prices, price beliefs and preparation rule, and keep
+the orders, the posteriors and entry. The two auctions then have exactly the same list of such objects. These
+objects solve the common conditions, which contain \(\DT\) and \(\tau\) and no other feature of the auction. Each
+auction builds its own prices from its own \(t_0\) and \(w_L=t_L-t_0\).
+\item \emph{Research:} when the investor buys its presence \(\hat\lambda\) at a quadratic cost, the same holds with
+\(\hat\lambda\) added to the list.
+\end{itemize}
+
+\subsection{The proof}
+
+The proof has two directions: every equilibrium of either auction solves the common conditions, and every solution
+of the common conditions is part of an equilibrium in each auction.
+
+\paragraph{Step 1: the price reveals the posterior.} In either auction \(\DT>0\), \(\gamma>0\) and \(\rho>0\), so
+Lemma A.2(c) applies (Section~\ref{sec:beliefs-reveal}). The challenger's belief at the price \(P(x)\) equals
+\(\mu(x)\).
+
+\paragraph{Step 2: the entry rule uses only \(\tau\).}
+\begin{align*}
+B(\mu)-c_H &= g_L+\mu\,\gamma-c_H \why{\(B(\mu)=g_L+\mu\gamma\)}\\
+&= \gamma\,\Bigl[\mu-\frac{c_H-g_L}{\gamma}\Bigr]=\gamma\,(\mu-\tau) \why{factor out \(\gamma>0\); definition of \(\tau\)}
+\end{align*}
+Since \(\gamma>0\), \(B(\mu)-c_H\) has the sign of \(\mu-\tau\). With Step 1, entry optimality (E3) reads:
+\begin{itemize}
+\item if \(\mu(x)<\tau\), then \(e(x)=\rho\);
+\item if \(\mu(x)>\tau\), then \(e(x)=\rho+(1-\rho)=1\);
+\item if \(\mu(x)=\tau\), then \(e(x)=1\) when an indifferent high-cost challenger prepares, and \(e(x)\) can take
+any value in \([\rho,1]\) when it may prepare with any probability.
+\end{itemize}
+This threshold rule uses \(\tau\), \(\rho\) and the tie rule, and nothing else from the auction.
+
+\paragraph{Step 3: the payoffs use only \(\DT\).} Lemma A.3 gives the four nonzero-order payoffs, and
+\(U_j(0)=0\). The levels \(t_0\) and \(w_L\) cancel (Section~\ref{sec:trading-returns}).
+
+\paragraph{Step 4: Bayes' rule does not use the auction.} Posteriors come from the prior, the slot and the profile.
+
+So every equilibrium of either auction gives orders, posteriors and entry that solve the common conditions, and
+these conditions are the same in both auctions. This is the first direction.
+
+\paragraph{Step 5: from a solution back to an equilibrium.} Take orders, posteriors and entry that solve the common
+conditions, and fix one auction. Build its prices, price beliefs and preparation rule, and check (E1) to (E6).
+
+\emph{5a. Entry does not fall when the posterior rises.} This is the entry step of Lemma A.2(e)
+(Section~\ref{sec:beliefs-reveal}), applied to the threshold rule of Step 2. Let \(\mu(x)>\mu(x')\). If \(\mu(x')<\tau\), then
+\(e(x')=\rho\le e(x)\). If \(\mu(x')\ge\tau\), then \(\mu(x)>\tau\), so \(e(x)=1\ge e(x')\).
+
+\emph{5b. Prices, preparation rule and price beliefs.} Set \(P(x)=t_0+e(x)\,[w_L+\DT\mu(x)]\) with this
+auction's \(t_0\) and \(w_L\). Then set \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) and \(\bar\mu(P(x))=\mu(x)\). The
+claim on constructed tuples (Section~\ref{sec:beliefs-constructed}) needs \(\DT>0\), entry in \([\rho,1]\), and
+entry that does not fall when the posterior rises. Step 5a gives the last of these. The claim then gives:
+\begin{itemize}
+\item two orders share a price exactly when they share the posterior and entry, by the increment identity
+\eqref{eq:beliefs-increment};
+\item so \(\zeta\) is a function of the price, with values in \([0,1]\);
+\item so \(\bar\mu\) is well defined, and it equals the posterior of the event \(\{x:P(x)=\bar P\}\), because all
+orders in this event share one likelihood ratio.
+\end{itemize}
+Under the alternative challenger rule, two orders at \(\tau\) can have different entry. They then get different
+prices, and each of these prices reveals the posterior \(\tau\).
+
+\emph{5c. The six conditions.} Check each condition by direct substitution.
+\begin{itemize}
+\item (E1) is a common condition.
+\item (E2) is the last point of 5b.
+\item (E3) holds by Step 2, since the belief at each price is \(\mu(x)\).
+\item (E4) holds because Steps 1 to 4 of Section~\ref{sec:beliefs-priceformula} compute
+\(\E[V_T\mid X=x]=t_0+e(x)\,w(\mu(x))\) from (E1), the truthful bids and the independence of the cost. This
+computation does not use (E4), and the price of 5b equals its result.
+\item (E5) holds because, by Lemma A.3, the payoffs at these prices are the payoffs of the common conditions.
+\item (E6) holds because truthful bids are weakly dominant (Chapter~\ref{ch:auction}).
+\end{itemize}
+So the tuple is an equilibrium of this auction. The same construction works in the other auction, so the projected
+equilibrium sets coincide.
+
+\paragraph{Step 6: research.} The investor chooses an intensity \(\tilde\lambda\in[0,\lb]\) at the cost
+\((a/2)\tilde\lambda^2\) before it learns the class. Market makers and the challenger do not see this choice, so
+prices and entry stay fixed. Research succeeds with probability \(\tilde\lambda\); the investor then learns the
+class (\(H\) with probability \(\pi\)) and places its best order. After a failure a liquidity trader fills the slot
+and the investor earns zero. The expected payoff is
+\[
+\tilde\lambda\bigl[\pi\max_qU_H(q)+(1-\pi)\max_qU_L(q)\bigr]-\frac a2\tilde\lambda^2=\tilde\lambda\,\Psi-\frac a2\tilde\lambda^2 .
+\]
+Its derivative \(\Psi-a\tilde\lambda\) falls strictly, so the payoff is strictly concave. Also \(\Psi\ge0\), because
+\(U_j(0)=0\) gives \(\max_qU_j(q)\ge0\). If \(\Psi/a\le\lb\), the first-order condition \(\Psi-a\tilde\lambda=0\)
+gives \(\tilde\lambda=\Psi/a\in[0,\lb]\). If \(\Psi/a>\lb\), the derivative is positive on all of \([0,\lb]\), and
+the best choice is \(\lb\). Together, \(\hat\lambda=\min\{\lb,\Psi/a\}\). The value \(\Psi\) uses only the payoffs of
+Lemma A.3, and \(a\) and \(\lb\) are common, so the research condition is the same in both auctions. At zero
+intensity, the required optimality after a hypothetical success gives the same best orders. Bayes' rule uses
+\(\hat\lambda\) as the presence probability in both.
+
+\begin{watchout}
+Keep the hypotheses of Lemma A.4.
+\begin{itemize}
+\item \emph{A positive spread.} Steps 1 and 5b need \(\DT>0\), with \(\rho>0\). Otherwise the price need not reveal
+the posterior.
+\item \emph{A positive profit gap.} Step 2 needs \(\gamma>0\). With \(\gamma=0\), gross profit does not depend on the
+belief, and no threshold exists.
+\item \emph{The same tie rules and other primitives.} Entry at \(\mu=\tau\) and the choice at \(K_j=k\) depend on
+the tie rules. The lemma holds under each of the four pairs, but both auctions must use the same pair.
+\end{itemize}
+\end{watchout}
+
+\subsection{What the lemma means}
+
+Orders, posteriors, entry and research depend on the auction only through two numbers, the spread \(\DT\) and the
+threshold \(\tau\). Two other objects need more.
+\begin{itemize}
+\item \emph{Prices} add the levels \(t_0\) and \(t_L\): \(P(x)=t_0+e(x)\,[t_L-t_0+\DT\,\mu(x)]\).
+\item \emph{Ownership} adds who wins. High-class ownership is the prior times entry in class \(H\) times class
+\(H\)'s chance to win against the incumbent, \(W_H(F)\). So every result on ownership carries \(W_H(F)\). This is why
+the clean rise of high-class ownership in Chapter~\ref{ch:ccc} needs class \(H\) to outbid the stronger incumbent,
+\(W_H(F_1)=1\).
+\end{itemize}
+
+\begin{checkyourself}\label{q:trading-levels-two}
+Two auctions satisfy the hypotheses of Lemma A.4 with the same \(\DT\) and \(\tau\), but different \(t_0\) and
+\(t_L\). Which equilibrium objects agree, and which can differ? Write the difference of the two prices after an
+order \(x\) in symbols.
+\end{checkyourself}
+
+% =====================================================================
+\section{The two numbers along a path}\label{sec:trading-path}
+
+Recall that a path is a family \(\{F_r\}\) of continuous incumbent laws, indexed by a strength \(r\) in an interval.
+Whenever \(r'>r\), the law \(F_{r'}\) is a first-order stochastic strengthening of \(F_r\)
+(Section~\ref{sec:toolkit-fosd}): \(F_{r'}(y)\le F_r(y)\) at every \(y\).
+
+\begin{paperresult}{Lemma A.5 (The two numbers along a path)}
+Fix ranked finite-mean classes, the reserve and the two-point preparation cost. A path is a family \(F_r\) of
+continuous incumbent laws indexed by strength on an interval, with \(F_{r'}\le F_r\) when \(r'>r\). Write
+\(\DT(r)=\DT(F_r)\), \(\gamma(r)=g_H(F_r)-g_L(F_r)\), and, where \(\gamma(r)>0\),
+\(\tau(r)=[c_H-g_L(F_r)]/\gamma(r)\). The class mean gap is fixed:
+\[
+\bar\Gamma=\E_H\theta-\E_L\theta=\DT(r)+\gamma(r).
+\]
+Each \(g_j\) and \(\gamma\) is nonincreasing, and \(\DT\) is nondecreasing. For \(r'>r\),
+\[
+\begin{aligned}
+\DT(r')-\DT(r)&=\int_p^\infty[F_r(y)-F_{r'}(y)]D(y)\,dy,\\
+g_j(F_r)-g_j(F_{r'})&=\int_p^\infty[F_r(y)-F_{r'}(y)][1-G_j(y)]\,dy.
+\end{aligned}
+\]
+Each change is strict exactly when its integral is positive. Where \(\gamma>0\), \(\DT>0\) and \(\tau\ge0\), both
+\(\tau\) and \(\DT\tau\) are nondecreasing. Their exact increments are
+\[
+\tau(r')-\tau(r)=\frac{g_L(F_r)-g_L(F_{r'})+\tau(r)[\DT(r')-\DT(r)]}{\gamma(r')},
+\]
+\[
+\DT(r')\tau(r')-\DT(r)\tau(r)=\DT(r)[\tau(r')-\tau(r)]+\tau(r')[\DT(r')-\DT(r)].
+\]
+Thus the threshold rises strictly exactly when the numerator in its increment is positive; the product rises
+strictly exactly when the right side of its increment is positive.
+
+On a differentiable path the return \(J=\DT(1-\tau)\) obeys
+\[
+J'=\frac{\bar\Gamma(g_H-c_H)\DT'+\DT\gamma g_H'}{\gamma^2}.
+\]
+Its direction depends on the balance between spread growth and the decline in high-class profit. The paper gives an
+instance with point classes \(h\) and \(\ell\), a reserve \(p\), a high cost \(c_H\), and \(F_r\) uniform on a short
+interval centered at \(r\). The strengths \(r\) run over an interval on which every incumbent value lies strictly
+between \(\ell\) and \(h\). There
+\[
+\DT=r-\ell,\qquad g_L=0,\qquad g_H=h-r,\qquad \tau=\frac{c_H}{h-r},
+\]
+and the return \(J\) is lower at the right end of the interval of strengths than at the left end. In the
+uniform-incumbent example, \(J\) rises on \([r_0,r_2]\) by the uniform case of Proposition~3(c).
+\end{paperresult}
+
+The paper states the instance with particular values of \(h\), \(\ell\), \(p\), \(c_H\), the interval and the two end
+values of \(J\). The box above gives it in words. Chapter~\ref{app:numbers} lists the values; you do not need them.
+
+A plain reading:
+\begin{itemize}
+\item Only the incumbent changes along the path, and the sum of the spread and the profit gap stays fixed.
+\item A stronger incumbent never raises either class's gross profit, never widens the profit gap, and never narrows
+the spread. The two integrals measure each change exactly.
+\item Where the profit gap and the spread are positive and the threshold is not negative, a stronger incumbent
+never lowers the threshold, and the product \(\DT\tau\) never falls.
+\item The number \(J=\DT(1-\tau)\) can rise or fall. The instance shows a fall; the paper's example shows a rise.
+\end{itemize}
+
+What is \(J\)? Read it off \eqref{eq:trading-returns}. A purchase whose posterior just reaches the threshold,
+\(\mu(1)=\tau\), recruits a high-cost challenger under the default tie rules, so \(e(1)=1\) and
+\(K_H=\DT\,(1-\tau)=J\). So \(J\) is the gross return of a purchase that just reaches \(\tau\) and recruits.
+Chapter~\ref{ch:coexistence} uses \(J\), and also the product \(\DT\tau\).
+
+\paragraph{Step 1: the class mean gap is fixed.} Recall the class-gap identity \eqref{eq:auction-gap}. Under the
+class ranking every value meets the reserve, so \(\max\{\theta,p\}=\theta\) with probability one, and
+\begin{align*}
+\DT(r)+\gamma(r) &= \E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}] \why{class-gap identity at \(F_r\)}\\
+&= \E_H\theta-\E_L\theta=\bar\Gamma \why{every value meets the reserve}
+\end{align*}
+The right side does not contain \(F_r\). The paper's proof reaches the same point through the split
+\(t_j+g_j=\E_j\theta\) of Chapter~\ref{ch:auction}: subtract the split of class \(L\) from that of class \(H\). A
+stronger incumbent moves the class value gap between the profit gap and the spread and leaves the total unchanged.
+
+\paragraph{Step 2: the profit changes.} Recall the gross profit integral \eqref{eq:auction-gross},
+\(g_j(F)=\int_p^\infty F(y)\,[1-G_j(y)]\,dy\). It adds up, over levels \(y\) above the reserve, the probability that
+the incumbent's value lies below \(y\) times the probability that the challenger's value lies above \(y\). Then
+\begin{align*}
+\gamma(F) &= \int_p^\infty F(y)\,\bigl[G_L(y)-G_H(y)\bigr]\,dy=\int_p^\infty F(y)\,D(y)\,dy \why{\(g_H-g_L\); the 1s cancel}\\
+g_j(F_r)-g_j(F_{r'}) &= \int_p^\infty\bigl[F_r(y)-F_{r'}(y)\bigr]\,[1-G_j(y)]\,dy\ge0 \why{\(F_r\ge F_{r'}\), \(1-G_j\ge0\)}
+\end{align*}
+This is Proposition~1(a). In the same way, \(\gamma(r)-\gamma(r')=\int_p^\infty[F_r-F_{r'}]\,D\,dy\ge0\), because
+\(D\ge0\) under the class ranking.
+
+\paragraph{Step 3: the spread change.}
+\begin{align*}
+\DT(r')-\DT(r) &= \bigl[\bar\Gamma-\gamma(r')\bigr]-\bigl[\bar\Gamma-\gamma(r)\bigr]=\gamma(r)-\gamma(r') \why{Step 1 at \(r'\) and \(r\)}\\
+&= \int_p^\infty\bigl[F_r(y)-F_{r'}(y)\bigr]\,D(y)\,dy\ge0 \why{Step 2; \(F_r\ge F_{r'}\), \(D\ge0\)}
+\end{align*}
+This is Proposition~1(b). Each integrand in Steps 2 and 3 is nonnegative, so each change is zero or positive, and
+strictly positive exactly when its integral is positive. Proposition~1 gives weak inequalities; strictness needs
+these integral conditions.
+
+\paragraph{Step 4: where the threshold is defined and nonnegative.} The threshold is defined where \(\gamma(r)>0\).
+There,
+\[
+\tau(r)\ge0 \iff c_H-g_L(F_r)\ge0 \iff g_L(F_r)\le c_H ,
+\]
+because multiplication by \(\gamma(r)>0\) keeps the direction. So the lemma's condition \(\tau\ge0\) is the
+condition \(g_L\le c_H\): a challenger known to be in class \(L\) earns at most the high preparation cost. The two
+conditions persist in opposite directions along a path.
+\begin{itemize}
+\item \(g_L\le c_H\) persists toward stronger incumbents: \(g_L\) is nonincreasing (Step 2), so
+\(g_L(F_{r'})\le g_L(F_r)\le c_H\) for \(r'>r\). Once it holds, it holds against every stronger incumbent.
+\item \(\gamma>0\) persists toward weaker incumbents: \(\gamma\) is nonincreasing, so \(\gamma(r')>0\) gives
+\(\gamma(r)\ge\gamma(r')>0\) for \(r<r'\). The threshold need not be defined along the whole path.
+\end{itemize}
+So to compare \(r<r'\), the lemma needs \(\gamma(r')>0\) and \(\tau(r)\ge0\).
+
+\paragraph{Step 5: the threshold never falls.} First a picture. Gross profit \(B_r(\mu)=g_L(F_r)+\mu\,\gamma(r)\) is
+a straight line in the belief: height \(g_L\) at \(\mu=0\), height \(g_H\) at \(\mu=1\), slope \(\gamma\). The
+threshold is where it crosses \(c_H\). A stronger incumbent lowers the intercept and flattens the line, so the line
+reaches \(c_H\) further right (Figure~\ref{fig:trading-threshold}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=10cm,y=0.95cm]
+\draw[-{Stealth[length=2mm]}] (0,0) -- (1.1,0) node[right] {\(\mu\)};
+\draw[-{Stealth[length=2mm]}] (0,0) -- (0,4.6);
+\node[below] at (0,0) {\(0\)};
+\draw (1,0.06) -- (1,-0.06) node[below] {\(1\)};
+\draw[dashed, notegrey] (0,2.4) -- (1.02,2.4) node[right] {\(c_H\)};
+\draw[accent, thick] (0,1.0) -- (1,4.2) node[right] {\(B_r\)};
+\draw[ink, thick] (0,0.4) -- (1,3.2) node[right] {\(B_{r'}\)};
+\node[left] at (0,1.0) {\(g_L(F_r)\)};
+\node[left] at (0,0.4) {\(g_L(F_{r'})\)};
+\draw[dotted] (0.4375,2.4) -- (0.4375,0) node[below] {\(\tau(r)\)};
+\draw[dotted] (0.7143,2.4) -- (0.7143,0) node[below] {\(\tau(r')\)};
+\end{tikzpicture}
+\caption{Gross profit as a function of the belief, against a weaker incumbent (\(B_r\)) and a stronger one
+(\(B_{r'}\)). The stronger incumbent lowers the intercept \(g_L\) and the slope \(\gamma\). When the threshold \(\tau(r)\)
+is not negative, the line \(B_{r'}\) at that belief lies at or below \(c_H\), so it meets \(c_H\) further right. The figure is the guide's own, and the positions are only a picture.}
+\label{fig:trading-threshold}
+\end{figure}
+
+The guide's own short argument shows the condition hidden in the picture. At the threshold of the weaker
+incumbent, \(B_r(\tau(r))=c_H\), and
+\begin{align*}
+B_{r'}(\tau(r)) &= g_L(F_{r'})+\tau(r)\,\gamma(r') \why{definition of \(B_{r'}\)}\\
+&\le g_L(F_r)+\tau(r)\,\gamma(r') \why{\(g_L(F_{r'})\le g_L(F_r)\)}\\
+&\le g_L(F_r)+\tau(r)\,\gamma(r) \why{\(\gamma(r')\le\gamma(r)\) and \(\tau(r)\ge0\)}\\
+&= c_H \why{definition of \(\tau(r)\)}
+\end{align*}
+The line \(B_{r'}\) rises with \(\mu\) and is at or below \(c_H\) at \(\tau(r)\), so it reaches \(c_H\) at a belief at
+or above \(\tau(r)\). The third line needs \(\tau(r)\ge0\): with a negative \(\tau(r)\), the product of \(\tau(r)\)
+and the smaller slope is the \emph{larger} number.
+
+The paper's proof gives the exact increment, with \(\gamma(r')=\gamma(r)-[\DT(r')-\DT(r)]\) from Steps 1 and 3.
+
+\begin{derivation}[the increment of the threshold]
+\begin{align*}
+\tau(r)\,\gamma(r') &= \tau(r)\,\gamma(r)-\tau(r)\,[\DT(r')-\DT(r)] \why{Steps 1 and 3}\\
+&= c_H-g_L(F_r)-\tau(r)\,[\DT(r')-\DT(r)] \why{\(\tau(r)\gamma(r)=c_H-g_L(F_r)\)}\\[4pt]
+\tau(r')-\tau(r) &= \frac{c_H-g_L(F_{r'})-\tau(r)\,\gamma(r')}{\gamma(r')} \why{common denominator \(\gamma(r')\)}\\
+&= \frac{c_H-g_L(F_{r'})-c_H+g_L(F_r)+\tau(r)\,[\DT(r')-\DT(r)]}{\gamma(r')} \why{line 2}\\
+&= \frac{g_L(F_r)-g_L(F_{r'})+\tau(r)\,[\DT(r')-\DT(r)]}{\gamma(r')} \why{\(c_H-c_H=0\)}
+\end{align*}
+\end{derivation}
+
+In the numerator, \(g_L(F_r)-g_L(F_{r'})\ge0\) by Proposition~1(a), \(\tau(r)\ge0\) by assumption, and
+\(\DT(r')-\DT(r)\ge0\) by Proposition~1(b). The denominator \(\gamma(r')\) is positive. So \(\tau(r')\ge\tau(r)\).
+The threshold rises strictly exactly when the numerator is positive: when \(g_L\) falls strictly, or when the
+spread widens strictly at a positive threshold.
+
+\begin{intuition}[why a stronger incumbent raises the threshold]
+A stronger incumbent never raises class \(L\)'s profit and never widens the profit gap between the classes. So a
+challenger needs at least as favorable a belief before preparation at the high cost pays. The profit gap shrinks
+because the class value gap moves from the challenger's profit to target proceeds (Step 1).
+\end{intuition}
+
+\paragraph{Step 6: why the condition \(g_L\le c_H\) is needed.} Suppose \(g_L(F_r)>c_H\). Then \(\tau(r)<0\), and
+\(B_r(\mu)\ge g_L(F_r)>c_H\) at every belief, so a high-cost challenger prepares after every price and entry is
+one after every order. The threshold does not bind. In this region the second term of the increment,
+\(\tau(r)\,[\DT(r')-\DT(r)]\), is negative when the spread widens strictly. If \(g_L\) does not change, that term
+is the whole numerator, and the threshold falls. So ``a stronger incumbent never lowers the threshold'' holds only
+while \(g_L\le c_H\).
+
+\begin{watchout}
+Keep two conditions with the statement on the threshold.
+\begin{itemize}
+\item \(g_L\le c_H\), that is \(\tau\ge0\). Without it the threshold can fall. Once it holds on a path, it holds at
+every stronger incumbent, because \(g_L\) never rises.
+\item \(\gamma>0\), so that the threshold exists. This condition can fail as the incumbent grows stronger, because
+\(\gamma\) never rises. As \(\gamma\) falls toward zero with \(c_H-g_L>0\), the threshold grows without bound and
+soon exceeds one; then no posterior recruits.
+\end{itemize}
+\end{watchout}
+
+\paragraph{Step 7: the product \(\DT\tau\).}
+\begin{align*}
+&\DT(r')\tau(r')-\DT(r)\tau(r)\\
+&\quad= \DT(r')\tau(r')-\DT(r)\tau(r')+\DT(r)\tau(r')-\DT(r)\tau(r) \why{add and subtract \(\DT(r)\tau(r')\)}\\
+&\quad= \tau(r')\,[\DT(r')-\DT(r)]+\DT(r)\,[\tau(r')-\tau(r)] \why{factor each pair}
+\end{align*}
+Both terms are nonnegative, since \(\tau(r')\ge\tau(r)\ge0\), \(\DT(r')\ge\DT(r)>0\) and \(\tau(r')-\tau(r)\ge0\).
+So the product never falls, and it rises strictly exactly when the sum is positive.
+
+\paragraph{Step 8: the return of a purchase that just recruits.} \(J=\DT(1-\tau)\) has one factor that never falls
+and one that never rises, so its direction is not fixed. First,
+\[
+1-\tau=\frac{\gamma-(c_H-g_L)}{\gamma}=\frac{g_H-g_L-c_H+g_L}{\gamma}=\frac{g_H-c_H}{\gamma},
+\]
+so \(J=\DT\,(g_H-c_H)/\gamma\). Along the path \(\gamma=\bar\Gamma-\DT\) with \(\bar\Gamma\) fixed, so
+\(\gamma'=-\DT'\).
+
+\begin{derivation}[the derivative of \(J\)]
+\begin{align*}
+J' &= \frac{(g_H-c_H)\DT'+\DT g_H'}{\gamma}+\DT(g_H-c_H)\Bigl(-\frac{\gamma'}{\gamma^2}\Bigr) \why{product rule; \(c_H\) fixed}\\
+&= \frac{(g_H-c_H)\DT'+\DT g_H'}{\gamma}+\frac{\DT(g_H-c_H)\DT'}{\gamma^2} \why{\(\gamma'=-\DT'\)}\\
+&= \frac{(g_H-c_H)\DT'\gamma+\DT\gamma g_H'+\DT(g_H-c_H)\DT'}{\gamma^2} \why{common denominator \(\gamma^2\)}\\
+&= \frac{(g_H-c_H)\DT'(\gamma+\DT)+\DT\gamma g_H'}{\gamma^2} \why{collect the \(\DT'\) terms}\\
+&= \frac{\bar\Gamma(g_H-c_H)\DT'+\DT\gamma g_H'}{\gamma^2} \why{\(\gamma+\DT=\bar\Gamma\)}
+\end{align*}
+\end{derivation}
+
+Where \(g_H>c_H\), the first term is the gain from spread growth (\(\DT'\ge0\)), and it is nonnegative. The second
+term is the loss from the decline in high-class profit (\(g_H'\le0\)), and it is nonpositive. The direction of
+\(J\) depends on which is larger.
+
+\paragraph{Step 9: the instance in symbols.} Take point classes: the value is \(h\) in class \(H\) and \(\ell\) in
+class \(L\), with \(p<\ell<h\). Let the incumbent be uniform on a short interval centered at \(r\), with every
+incumbent value strictly between \(\ell\) and \(h\).
+\begin{itemize}
+\item Class \(L\): the incumbent always wins and pays the challenger's bid \(\ell\), which meets the reserve. So
+\(t_L=\ell\) and \(g_L=0\).
+\item Class \(H\): the challenger always wins and pays \(\max\{p,R\}=R\), because \(R>\ell>p\). So \(t_H=\E R=r\)
+and \(g_H=\E[h-R]=h-r\).
+\end{itemize}
+Hence \(\DT=r-\ell\), \(\gamma=h-r\) and \(\tau=c_H/(h-r)\). As a check, \(\DT+\gamma=h-\ell=\bar\Gamma\), free of
+\(r\).
+
+The guide's own reading of these formulas shows the shape of \(J=(r-\ell)\bigl(1-c_H/(h-r)\bigr)\) without numbers.
+It holds only where the formulas hold, that is, while every incumbent value stays strictly between \(\ell\) and
+\(h\). The first factor rises with \(r\). The second falls with \(r\) and reaches zero at \(r=h-c_H\). So, if the
+path reaches near \(h-c_H\) with the formulas still valid, \(J\) falls toward zero there, even though the spread
+continues to rise. The derivative agrees: with \(\DT'=1\), \(g_H'=-1\) and \(\bar\Gamma=h-\ell\), the numerator of
+\(J'\) is
+\[
+(h-\ell)(h-r-c_H)-(r-\ell)(h-r).
+\]
+Near \(r=h-c_H\) the first product is near zero and the second is positive, so the numerator is negative. The paper
+picks particular values and finds \(J\) lower at the right end of its interval than at the left end.
+
+\paragraph{Step 10: the paper's example.} In the example, the incumbent is uniform on \([0,r]\), and \(J\) rises on
+the interval \([r_0,r_2]\) of strengths (Chapter~\ref{ch:coexistence}). Proposition~3(c) gives that
+\(\DT\,(g_H-c_H)\) is nondecreasing there, with \(g_H>c_H\), while \(\gamma=\bar\Gamma-\DT\) falls strictly where
+\(\DT\) rises. A positive numerator that does not fall, over a positive denominator that falls, gives a ratio that rises.
+
+\begin{checkyourself}\label{q:trading-negative}
+On a path, suppose \(g_L(F_r)>c_H\) at the strength \(r\), and that \(g_L\) is the same at a stronger incumbent
+\(r'\) while the spread widens strictly. What is the sign of \(\tau(r)\)? What is entry after each order at \(r\)?
+Use the increment formula to show that \(\tau(r')<\tau(r)\).
+\end{checkyourself}
+
+% =====================================================================
+\section{The race between the spread and the threshold}\label{sec:trading-race}
+
+Put Lemma A.5 next to Proposition~1(b). Along a path, while \(g_L\le c_H\) and the profit gap stays positive, a
+stronger incumbent does two things.
+\begin{itemize}
+\item It never narrows the spread. A wider spread raises what an informed order earns at every posterior and level
+of entry, and in particular what a purchase that recruits earns.
+\item It never lowers the threshold. A higher threshold means that a purchase must push the posterior further
+before a high-cost challenger prepares, so recruitment becomes harder.
+\end{itemize}
+The two numbers pull in opposite directions. When \(\DT>0\) and \(g_H>g_L\), Lemma A.4 says that they are all that
+the market sees of the auction.
+So every question about orders, posteriors and entry along a path becomes a question about this race.
+
+The race has no fixed winner: the return \(J\) of a purchase that just recruits falls in the instance of
+Lemma A.5 and rises in the paper's example. The later results say which side wins under their own conditions.
+\begin{itemize}
+\item Chapter~\ref{ch:ccc} compares three incumbents. From a weak incumbent to a stronger one, the spread wins:
+informed trade starts, and a purchase recruits a high-cost challenger. Against a still stronger incumbent, the
+threshold wins: informed trade stays, but no order recruits.
+\item Chapter~\ref{ch:coexistence} follows the race through the region where quiet and informative markets coexist.
+The economy can enter that region, leave it and enter it again as the incumbent grows stronger.
+\item Chapter~\ref{ch:research} adds research. A higher threshold needs more research before a purchase recruits,
+and a wider spread raises what that purchase earns.
+\end{itemize}
+Each of these comparisons solves the equilibrium again in each economy. The deviation payoffs of this chapter, at
+fixed prices and entry, are the tool inside each economy.
+
+\begin{chaptersummary}
+\begin{itemize}
+\item Market makers put the expected entry gain into the price, so the investor earns only on the class: the gross
+return is entry times the spread times the residual uncertainty, \(K_H=e(1)\DT[1-\mu(1)]\) and
+\(K_L=e(-1)\DT\,\mu(-1)\).
+\item The proceeds \(t_0\) and the low-class entry gain cancel, because the price is the market's average of the
+same payoff that the investor receives.
+\item A wrong-signed order earns at most \(-k\). Each class trades when its gross return exceeds \(k\), abstains when
+it falls short, and may mix at equality under the default tie rules.
+\item The trading bound \(\rho\,\kappa(\pi)\DT\le K_H,K_L\le\DT\) holds in every candidate, mixed or pure. Its factor
+\(\kappa(\pi)=m(\min\{\pi,1-\pi\})\) peaks at \(1/(2+u)\) at the prior \(\tfrac12\), and the favored class binds.
+\item The problem splits by class, because each return uses only the posterior and entry after its own order.
+\item With \(\DT>0\) and \(g_H>g_L\), orders, posteriors, entry and research depend on the auction only through
+\(\DT\) and \(\tau\); prices add \(t_0\) and \(t_L\), and ownership adds who wins.
+\item A stronger incumbent never narrows the spread and, while \(g_L\le c_H\), never lowers the threshold. The two
+numbers race, and the later chapters study who wins.
+\end{itemize}
+\end{chaptersummary}
+
+% =====================================================================
+\answersection
+
+\answer{\ref{q:trading-level}}{Write the raised levels with primes: \(t_0'=t_0+z\), \(t_H'=t_H+z\),
+\(t_L'=t_L+z\). The spread is unchanged, \(\DT'=t_H'-t_L'=\DT\), and so is the low-class gain,
+\(t_L'-t_0'=t_L-t_0\). At the same posterior and entry,
+\begin{align*}
+P'(x) &= t_0'+e(x)\,\bigl[t_L'-t_0'+\DT'\mu(x)\bigr] \why{price formula}\\
+&= t_0+z+e(x)\,\bigl[t_L-t_0+\DT\mu(x)\bigr] \why{\(t_0'=t_0+z\); gain and spread unchanged}\\
+&= P(x)+z \why{price formula before the change}
+\end{align*}
+So every price rises by \(z\). The gross returns \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\mu(-1)\) contain only
+entry, the spread and the posteriors, so they do not change. In words: the share pays \(z\) more in every outcome,
+the price rises by \(z\), and the investor receives the extra \(z\) and pays it, as with \(t_0\). Section 2.2 of the
+paper makes the same point for a common standalone component: it shifts prices and payoffs by a constant and leaves
+incentives unchanged.}
+
+\answer{\ref{q:trading-reveal}}{With \(\mu(1)=1\), \(K_H=e(1)\,\DT\,(1-1)=0\), so \(U_H(1)=-k<0=U_H(0)\), and class
+\(H\) strictly prefers abstention. Class \(L\) does not buy either, because a purchase is wrong-signed for it and
+earns at most \(-k\) (part (a)). So no informed investor buys. Then a purchase comes only from liquidity traders,
+with probability \(b\) in each class, and Bayes' rule gives \(\mu(1)=\pi<1\), which contradicts \(\mu(1)=1\). The
+slot also rules the situation out directly. A liquidity purchase arrives with probability \(b>0\) in both classes,
+so the likelihood ratio of a purchase is at most \(1+u\). Hence \(\mu(1)\le M(\pi)<1\) under every profile
+(Lemma A.1(b)).}
+
+\answer{\ref{q:trading-prior}}{Since \(\pi>\tfrac12\), \(1-\pi<\tfrac12<\pi\). Then
+\begin{align*}
+1-M(\pi) &= m(1-\pi) \why{fact 1}\\
+&< m(\pi) \why{fact 2 and \(1-\pi<\pi\)}
+\end{align*}
+So \(\kappa(\pi)=1-M(\pi)\), the floor of class \(H\): the investor in class \(H\) has the smaller guaranteed
+return. The prior already leans toward class \(H\), and a purchase can push the posterior up to \(M(\pi)\), close to
+one. Little weight on class \(L\) then remains in the price, and class \(H\) earns only on that weight. A sale by
+class \(L\) leaves a posterior of at least \(m(\pi)\), which is larger, so the residual weight on class \(H\) that
+class \(L\) earns on is larger.}
+
+\answer{\ref{q:trading-levels-two}}{By Lemma A.4, the orders \((\sigma_H,\sigma_L)\), the posteriors \(\mu\) and
+entry \(e\) agree, because they solve the same common conditions; with research, \(\hat\lambda\) agrees too. The
+belief at the price of each order is \(\mu(x)\) in both auctions, and the high-cost preparation probability at that
+price is \((e(x)-\rho)/(1-\rho)\) in both. The prices can differ. With primes for the second auction, and the same
+\(e\), \(\mu\) and \(\DT\),
+\begin{align*}
+P(x)-P'(x) &= t_0+e(x)\,[t_L-t_0+\DT\mu(x)]-t_0'-e(x)\,[t_L'-t_0'+\DT\mu(x)] \why{price formulas}\\
+&= (t_0-t_0')+e(x)\,\bigl[(t_L-t_0)-(t_L'-t_0')\bigr] \why{\(e(x)\DT\mu(x)\) cancels}
+\end{align*}
+Ownership can differ too, because it carries class \(H\)'s chance to win against each auction's incumbent, \(W_H(F)\).}
+
+\answer{\ref{q:trading-negative}}{Here \(\tau(r)=[c_H-g_L(F_r)]/\gamma(r)\) has a negative numerator and a positive
+denominator, so \(\tau(r)<0\). Gross profit \(B_r(\mu)=g_L(F_r)+\mu\gamma(r)\) is at least \(g_L(F_r)>c_H\) at every
+belief \(\mu\ge0\), so a high-cost challenger prepares after every price, and entry is one after every order. The
+question assumes that the threshold is defined at \(r'\), that is, \(\gamma(r')>0\). Then
+\begin{align*}
+\tau(r')-\tau(r) &= \frac{g_L(F_r)-g_L(F_{r'})+\tau(r)\,[\DT(r')-\DT(r)]}{\gamma(r')} \why{Lemma A.5}\\
+&= \frac{\tau(r)\,[\DT(r')-\DT(r)]}{\gamma(r')}<0 \why{\(g_L\) unchanged; \(\tau(r)<0\), \(\DT(r')>\DT(r)\)}
+\end{align*}
+So the threshold falls. Entry does not change, because every posterior already lies above a negative threshold.}

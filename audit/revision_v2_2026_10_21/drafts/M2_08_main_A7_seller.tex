@@ -1,0 +1,130 @@
+% Four replacements in Appendix A.7. Lines 2264-2335 (payoffs over the reserve domain,
+% the continuation object, (A.42)-(A.44)) stand without change. No \NUM placeholders:
+% every value below is a formula, and the endpoint revenue is \rho h/2.
+% Removed here: Proposition A.10 and equations (A.45)-(A.49). The integrator decides
+% whether later equation tags keep (A.50) onward or close the gap. These fragments
+% keep (A.50) and (A.51) so that no other reference moves.
+
+% REPLACES: main.tex lines 2336-2465 ("\subsubsection{Price pooling at fixed orders} ..." to "... and revenue fall as the cutoff rises.")
+\subsubsection{The price experiment at fixed
+orders}\label{the-price-experiment-at-fixed-orders}
+
+On the reserve domain \(p\in[0,h]\) gross acquisition profit is
+nonnegative for each challenger value, so it is nonnegative at every belief.
+The zero-cost realization therefore prepares at every price, strictly
+whenever gross profit is positive and by the tie rule when it is zero.
+Entry is at least \(\rho\) at every price and at every reserve in this domain.
+Preparation cannot vanish on a set of flows, so no set of flows is left
+to collect at a no-entry price.
+
+Fix the orders and a reserve with \(\Delta_T(p,r)=t_H(p,r)-t_L(p,r)>0\).
+Write \(B_{p,r}(\mu)\) for belief-weighted gross profit at that reserve and
+\(e(\mu)\) for the entry probability it induces under the two-point cost law.
+Then \(e(\mu)\ge\rho\), \(e\) is nondecreasing, and competitive pricing gives
+\(P(\mu)=t_0(p,r)+e(\mu)[t_L(p,r)-t_0(p,r)+\Delta_T(p,r)\mu]\).
+The bracket is nonnegative. A prepared low-value challenger that meets the reserve
+pays \(\max\{p,\min(R,\ell)\}\ge p\mathbf1\{R\ge p\}\) in each incumbent state, and
+one that fails the reserve leaves the no-challenger payment in place, so
+\(t_L(p,r)\ge t_0(p,r)\).
+For \(\mu_2>\mu_1\) the price increment is therefore at least
+\(\rho\Delta_T(p,r)(\mu_2-\mu_1)>0\).
+Distinct raw order-flow posteriors give distinct prices, and the buyer
+recovers \(\mu_X\) from the price. This is the increment argument of
+\hyperref[result-proposition-a-2]{Proposition A.2} read at a general reserve.
+Only flows that share one posterior share a price. A Laplace plateau is such a
+set, and its price is then an atom with that common posterior.
+
+Two continuations with the same orders and a positive spread therefore have the
+same price mapping. They remain different elements of \(\mathcal E(p,r)\) only
+through different orders. The seller's problem \eqref{eq:paper-a-44} still needs
+a selection after every reserve, because the order profile itself can vary with
+the reserve and can be nonunique at one reserve.
+Dow et al. (\citeproc{ref-DowGoldsteinGuembel2017}{2017}) distinguish
+continuations by their pooling regions in a setting without this entry floor.
+That margin is absent here on the part of the domain with a positive spread.
+At a reserve with \(\Delta_T(p,r)=0\) the price carries no spread to invert, and
+the constant-price candidate is checked directly. No comparison below uses such
+a reserve.
+
+% REPLACES: main.tex lines 2466-2512 ("\subsubsection{Exact reserve events} ..." to "... comparison.")
+\subsubsection{Exact reserve events}\label{exact-reserve-events}
+
+One participation equality remains in the interior of the reserve domain, the
+expensive-entry event. The zero-cost equality sits at the endpoint of the
+domain. Neither event is an interior point of a strict-inequality region, and
+the same continuation need not be supported on both sides of the interior event.
+
+\emph{Domain endpoint at the high value.} When the reserve exceeds incumbent support
+and excludes the low class, \(g_H=h-p\), \(g_L=0\), \(t_H=p\), and
+\(t_0=t_L=0\). At the lowest feasible belief gross profit is \(B_p(m)=m(h-p)\).
+It is strictly positive for every \(p<h\) and equals the zero preparation cost only at
+
+\[
+p_L=h.
+\tag{A.50}\label{eq:paper-a-50}
+\]
+
+At that endpoint the high-value challenger earns no rent. The tie rule admits
+the zero-cost realization at every price, with equality \(B(\mu)=0\) at each
+belief; the high-cost realization stays out because \(0<c_H\).
+Entry is therefore \(\rho\) at every price. The inversion above and the global
+bound of \hyperref[pa-proofs]{Appendix A.2} apply with \(e\ge\rho\) under
+equality, giving unique full orders. Then \(\mathsf E=\rho\), the sale
+probability is \(\rho/2\), and \(\mathcal R_T=\rho h/2\). Preparation
+here never produces two admissible bidders: the incumbent is excluded.
+Offsets from this event run only below \(h\), inside the domain, where the
+zero-cost comparison is strict. There is no interior low-cost floor event left
+to locate.
+
+\emph{Strong-incumbent expensive entry.} With the low class excluded and
+\(\ell<p<r\), \(g_H=h-r/2-p^2/(2r)\) and \(g_L=0\). The upper-posterior
+entry event \(Mg_H=c_H\) occurs at
+
+\[
+p_H=\sqrt{2r\left(h-\frac{c_H}{M}\right)-r^2},
+\tag{A.51}\label{eq:paper-a-51}
+\]
+
+which at \(r=r_1\) lies in \((\ell,r_1)\). There \(\tau=M\) and
+\(x^*=1\), so \(\alpha_H=\tfrac12\) and \(\alpha_L=\tfrac12e^{-2/b}\):
+the plateau has positive probability and entry at indifference admits
+the expensive type on it. The zero-cost realization prepares strictly there,
+since at the lowest belief \(mg_H=mc_H/M>0\). No separate floor condition
+is needed. The global full-order bound is checked
+separately from this equality. Both events are evaluated from their
+defining identities, not from a rounded reserve and a floating-point
+comparison.
+
+% REPLACES: main.tex lines 2527-2536 ("the preparation, admissible-challenger, sale, ..." to "... rather than as e_H/2.")
+the preparation, admissible-challenger, sale, and two-admissible-bidder
+probabilities. Inclusion and exclusion give
+\(\mathsf S=\Pr(R\ge p)+\mathsf A-\mathsf C_2\), and
+\(0\le\mathsf C_2\le\mathsf A\le\mathsf E\le1\). Preparation is not the
+same event as two admissible bidders. At the endpoint event \(p_L=h\),
+\(\mathsf C_2=0\) while \(\mathsf E=\rho>0\). At the strong-incumbent ceiling
+event, \(p_H<r_1\) and \(\mathsf C_2=(1-p_H/r_1)e_H/2>0\), because a
+prepared high-value challenger and the incumbent can both be admissible.
+Outside the benchmark support, high-value ownership is computed from the
+actual allocation event rather than as \(e_H/2\).
+
+% REPLACES: main.tex lines 2564-2583 ("The term -p/r is the direct effect ..." to "... remains open.")
+The term \(-p/r\) is the direct effect on acquisition profit; the
+posterior derivative is the change in information generated by trading,
+which vanishes locally when orders stay at their bounds and can be
+nonzero when they adjust. The decomposition requires a continuously
+differentiable pure branch, a continuously differentiable cost CDF, and
+an integrable dominating function for the integrand in
+\eqref{eq:paper-a-54}; Online Appendix A.10 states these conditions.
+There is no general sign restriction on the information term. At an
+atomic preparation threshold or on a nonregular
+continuation, the level objective \eqref{eq:paper-a-44} with the
+complete conditional laws is the correct object.
+
+The reserve sweep in Online Appendix C.6 records continuations found
+under the declared searches, with continuation identity taken from the
+full object \eqref{eq:paper-a-43} and with the endpoint reserve
+\eqref{eq:paper-a-50} and the ceiling event \eqref{eq:paper-a-51} included. It does not
+prove existence at unresolved reserves, exhaust \(\mathcal E(p,r)\), or
+establish a global seller optimum. Characterizing seller-optimal terms,
+their commitment timing, and whether they preserve the entry reversal
+remains open.

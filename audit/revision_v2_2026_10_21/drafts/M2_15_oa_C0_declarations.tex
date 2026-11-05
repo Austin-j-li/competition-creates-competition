@@ -1,0 +1,91 @@
+% Six replacements in Online Appendix C.0.
+% Schema decision for the integrator and the numerics team: the key c_L stays in the
+% input declarations and in the parameter-column list, with value 0 everywhere.
+% The manuscripts' prose no longer carries the symbol. If the numerics contract
+% drops the key instead, delete those three key assignments and the column name in
+% the same change; do not do one without the other.
+% Numbers: \NUM{atomless_low_upper} gives the upper end of the low atomless support
+% in the declared law, and \NUM{atomless_epsilon_C} its width parameter. The numerics
+% report fixes the law. If the law is uniform on [0,\varepsilon_C], the two values agree.
+
+% REPLACES: online_appendix.tex lines 1875-1885 ("h = 10; ell = 1; p = 0.5; ..." to "... atomless_alternative_reserve = 1.1.")
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h = 10; ell = 1; p = 0.5; rho = 0.25;}
+\NormalTok{c\_L = 0; c\_H = 6; b = 2; k = 0.02;}
+\NormalTok{r\_weak = 1.2; r\_strong = 3; r\_collapse = 3.6;}
+\NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5;}
+\NormalTok{entry\_at\_indifference = yes; bid\_equal\_reserve\_is\_admissible = yes;}
+\NormalTok{cost\_halfwidth = \NUM{atomless_epsilon_C}; cost\_low\_support = [0, \NUM{atomless_low_upper}]; value\_band\_halfwidth = 0.05;}
+\NormalTok{binary\_alternative\_reserve = 1.01; atomless\_alternative\_reserve = 1.1.}
+\end{Highlighting}
+\end{Shaded}
+
+% REPLACES: online_appendix.tex lines 1891-1898 ("h = 2; ell = 1; p = 0.5; ..." to "... fundamental_prior_H = 0.5.")
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h = 2; ell = 1; p = 0.5; rho = 0.25;}
+\NormalTok{c\_L = 0; c\_H = 0.89; b = 2; k = 0.002;}
+\NormalTok{r\_weak = 1.05; r\_strong = 1.5;}
+\NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5.}
+\end{Highlighting}
+\end{Shaded}
+
+% REPLACES: online_appendix.tex lines 1904-1912 ("h = 10; ell = 1; p = 0.5; rho = 0.85; ..." to "... T_and_Y_independent_given_fundamental = yes.")
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h = 10; ell = 1; p = 0.5; rho = 0.85;}
+\NormalTok{c\_L = 0; c\_H = 7.14; b = 2; k = 0.015;}
+\NormalTok{r\_weak = 1.1; r\_strong = 2.3; a = 0.70; d = 0.75;}
+\NormalTok{noise = Laplace; cost = atomic; fundamental\_prior\_H = 0.5;}
+\NormalTok{T\_and\_Y\_independent\_given\_fundamental = yes.}
+\end{Highlighting}
+\end{Shaded}
+
+% REPLACES: online_appendix.tex lines 1943-1961 ("pool_reserve = 7; ..." to "... C2_mixed_search_minimum_starts = 3;")
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pricing\_family\_coverage = recorded per row (text);}
+\NormalTok{exhaustive\_pricing\_search = false unless a separate exhaustive argument is recorded;}
+\NormalTok{order\_identity\_tolerance = 1e{-}6;}
+\NormalTok{atom\_identity\_tolerance = 1e{-}8;}
+\NormalTok{event\_arithmetic\_digits = 50;}
+\NormalTok{event\_sign\_resolution = 1e{-}40;}
+\NormalTok{event\_offsets = \{1e{-}4, 1e{-}6, 1e{-}8\};}
+\NormalTok{tie\_rule = entry\_at\_indifference; bid\_equal\_reserve\_admissible;}
+\NormalTok{           upper plateau enters at tau = M; lower plateau binds only at B(m) = 0;}
+\NormalTok{outcome\_measures = \{E, A, S, C2, O\_H\} with S = Pr(R \textgreater{}= p) + A {-} C2;}
+\NormalTok{C2\_mixed\_search\_minimum\_starts = 3;}
+\end{Highlighting}
+\end{Shaded}
+
+% REPLACES: online_appendix.tex lines 1963-1977 ("These controls govern the continuation records ..." to "... treating nearby inequalities as equalities.")
+These controls govern the continuation records of C.2 and C.6 and the
+event exercise C.6c. A price atom is validated by the
+rule in \eqref{eq:oa-oa-79} applied to its full preimage, followed by
+four checks: the buyer's preparation decision is optimal at
+its price information set, the conditional target payoff equals the
+price pointwise in flow, distinct price regions do not
+collide (a collision is one preimage), and every unilateral investor
+deviation is evaluated against the entire fixed price and preparation
+schedule. Under the declared cost laws an atom with no entry can arise only
+at a degenerate reserve; the checks apply in the same form to plateau atoms.
+Average price equal to average payoff is a necessary identity
+and is recorded, but it accepts nothing on its own. An exact declared
+event is evaluated from its defining identity in fifty-digit arithmetic
+with the tie rule applied to the identity; a non-event input has its
+sign evaluated at that precision and is reported unresolved if the sign
+is closer to zero than the declared resolution. A tolerance for residual
+acceptance is not a rule for treating nearby inequalities as equalities.
+
+% REPLACES: online_appendix.tex lines 2058-2066 ("CSV is the boundary between numerical calculations ..." to "... not an economic selection rule.")
+CSV is the boundary between numerical calculations and presentation.
+Files use UTF-8 and quoted headers when a mathematical symbol contains
+punctuation. Parameter columns use the symbols
+\texttt{h,\ ell,\ p,\ rho,\ c\_L,\ c\_H,\ b,\ k,\ r}, with \texttt{c\_L}
+recorded as \texttt{0} in every declaration; additional columns
+such as
+\texttt{Delta\_T,\ B\_prior,\ q\_H,\ q\_L,\ e\_H,\ e\_L,\ E,\ O\_H,\ R\_T,\ tau,\ x\_star}
+are transliterations of the paper's notation. The data dictionary below
+each exercise defines every additional symbol. A branch identifier is a
+data label, not an economic selection rule.

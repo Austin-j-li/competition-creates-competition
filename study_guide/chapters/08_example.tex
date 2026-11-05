@@ -1,0 +1,1107 @@
+\chapter{The example and the two controls}\label{ch:example}
+
+\begin{chapterplan}
+The question of this chapter: what does the paper's one example look like, and what do its two controls say about
+the source of the rise in entry?
+
+After this chapter, you can do these things:
+\begin{itemize}
+\item Derive the six auction objects of the example in two ways, and derive the preparation threshold
+  \(\tau(r)\) and its slope.
+\item Show why, at the prior \(\tfrac12\), the hypotheses (H1)--(H3) of Proposition~2 reduce to one band for the
+  top posterior, and state Corollary~1.
+\item Explain the entry ceiling \(r_C\), and why the band of top posteriors is narrow.
+\item State and prove the fixed-information control, Proposition~A.2, and say why its slot version needs a
+  positive spread in each economy.
+\item Read the two control panels of the paper's outcome table, and say what they show together.
+\end{itemize}
+\end{chapterplan}
+
+% ====================================================================
+\section{Why one example}\label{sec:example-why}
+
+Chapters~\ref{ch:auction} to~\ref{ch:ccc} work with general classes and a general incumbent. Proposition~2 says: if
+(H1), (H2) and (H3) hold, entry first rises and later falls across three incumbents. Two questions remain. Can the
+three strict conditions hold at the same time, when (H1) needs gross profit to stay high against the strong
+incumbent and (H3) needs it to fall low against the very strong one? And what do the objects look like in a
+figure? The paper answers both with one economy, \emph{the example} (Section~4.2 of the paper). The numbers and
+figures of the paper come from it.
+
+In words, the example is a small economy with every part of the model. Each class has one value: a challenger of
+class \(H\) has the value \(h\), and a challenger of class \(L\) has the value \(\ell\). So the class
+and the value coincide, and preparation teaches the challenger nothing beyond its class. The incumbent's value is
+uniform on an interval \([0,r]\). One number, the strength \(r\), then describes the incumbent, and a larger \(r\)
+is a stronger incumbent. With these choices every integral of Chapter~\ref{ch:auction} has a short closed form.
+
+\begin{analogy}[a prototype]
+An engineer has a list of requirements that pull against each other, and builds one prototype that meets all of
+them. The prototype shows that the list is not contradictory and lets everyone see the parts. The example plays
+this role for Proposition~2, and small changes of its parameters keep all three conditions
+(Section~\ref{sec:example-open}).
+
+Where the analogy breaks: a prototype is a physical test, and its success could be luck. Every statement about the
+example is an exact consequence of the propositions.
+\end{analogy}
+
+The first part of the chapter computes the example. The second part uses it for two controls. Each control removes
+one channel and asks whether the rise in entry survives.
+
+% ====================================================================
+\section{The primitives}\label{sec:example-primitives}
+
+This section lists the example's primitives in symbols. Chapter~\ref{app:numbers} gives their values.
+
+\begin{itemize}
+\item \emph{Classes.} The class distribution \(G_H\) puts all its mass on \(h\), and \(G_L\) puts all its mass on
+  \(\ell\). In the notation of Section~\ref{sec:toolkit-cdf}, \(G_H(y)=\1\{y\ge h\}\) and \(G_L(y)=\1\{y\ge\ell\}\).
+\item \emph{Reserve.} The seller's reserve is \(p>0\).
+\item \emph{Incumbent.} The incumbent's value \(R\) is uniform on \([0,r]\). Its distribution function is
+  \(F_r(y)=y/r\) for \(0\le y\le r\) and \(F_r(y)=1\) for \(y\ge r\) (Section~\ref{sec:toolkit-cdf}).
+\item \emph{Order of the values.} The values, the reserve and every strength on the path satisfy
+  \begin{equation}\label{eq:example-order}
+  0<p<\ell<r<h.
+  \end{equation}
+\item \emph{Other primitives.} The prior is \(\pi=\Pr(j=H)\), the zero-cost probability is \(\rho\), the high cost
+  is \(c_H\), and the trading cost is \(k\). Money is measured in units of the low value. The weak, the strong and
+  the very strong incumbent have the strengths \(r_0<r_1<r_2\). The paper fixes the prior at \(\tfrac12\).
+\end{itemize}
+
+Each inequality in \eqref{eq:example-order} has a job.
+\begin{itemize}
+\item \(p<\ell\): the reserve lies below both values, so every value meets the reserve. With \(\ell<h\), this gives
+  the class ranking \eqref{eq:model-classes}: \(G_H\le G_L\) everywhere and \(G_H(p^-)=G_L(p^-)=0\).
+\item \(\ell<r\): the incumbent's value lies above \(\ell\) with the positive probability \(1-\ell/r\). So the
+  incumbent sometimes beats a class-\(L\) challenger, and Section~\ref{sec:example-auction} shows that this makes
+  the spread positive.
+\item \(r<h\): the incumbent's value never reaches \(h\). So a prepared class-\(H\) challenger always wins, and
+  \(W_H(F_r)=F_r(h)=1\). Recall from \eqref{eq:model-W} that \(W_j(F)\) is the probability that a prepared class-\(j\)
+  challenger beats the incumbent.
+\end{itemize}
+
+\emph{Why a larger \(r\) is a stronger incumbent.} For \(r'>r\), \(F_{r'}(y)\le F_r(y)\) at every \(y\): on
+\([0,r]\), \(y/r'\le y/r\); on \((r,r']\), \(y/r'\le1\); above \(r'\), both equal one. So an increase in \(r\) is a
+first-order stochastic strengthening, and the uniform laws form a path (Section~\ref{sec:toolkit-fosd}). Every
+comparison along the path solves the equilibrium again at each strength.
+
+\emph{The slot.} Recall the order slot. With probability \(\lambda\) the informed investor fills the slot. Otherwise
+a liquidity trader fills it, and it sells, abstains or buys with the probabilities \(\beta\), \(1-2\beta\) and
+\(\beta\). A liquidity order in one direction has probability \(b=(1-\lambda)\beta\), and a liquidity abstention
+has probability \(b_0=(1-\lambda)(1-2\beta)\). The mass ratio is \(u=\lambda/b\), and the largest likelihood ratio of
+one order is \(1+u\) (Chapter~\ref{ch:beliefs}). In the example's slot, \(1+u=\eu\), Euler's number, and \(\beta\)
+lies inside the model's domain \(\beta\le1/3\) (Section~4.2 of the paper). Corollary~1 below lets the slot vary over
+\(0<\lambda<1\) and \(0<\beta<1/2\). Keep the two domains apart.
+
+% ====================================================================
+\section{The auction in the example}\label{sec:example-auction}
+
+The auction objects are \(t_0\), \(t_H\), \(t_L\), \(g_H\), \(g_L\) and \(\DT=t_H-t_L\). Recall what they mean
+(Chapter~\ref{ch:auction}): \(t_0\) is the expected target proceeds when no challenger prepares; \(t_j\) is the
+expected target proceeds after a class-\(j\) challenger prepares; \(g_j\) is that challenger's expected gross
+acquisition profit, before its cost. This section derives all six in two ways.
+
+\subsection{Route 1: the case table}
+
+Each bidder bids its value (Section~\ref{sec:auction-bids}). So the winner pays the larger of the reserve and the
+other bidder's value, when that bidder bids. Table~\ref{tab:example-cases} applies this rule to the example. A tie
+\(R=\ell\) has probability zero, because \(F_r\) is continuous, so the table ignores it.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Who wins and who pays in the example, at each incumbent value \(R\in[0,r]\).}
+\label{tab:example-cases}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Incumbent value & Class \(H\): winner & price & Class \(L\): winner & price\\
+\midrule
+\(R<p\) & challenger & \(p\) & challenger & \(p\)\\
+\(p\le R<\ell\) & challenger & \(R\) & challenger & \(R\)\\
+\(\ell<R\le r\) & challenger & \(R\) & incumbent & \(\ell\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+When \(R<p\), the incumbent does not bid, and either challenger buys at \(p\). When \(p\le R<\ell\), either
+challenger wins and pays \(R\). When \(\ell<R\le r\), class \(H\) still wins, since \(R\le r<h\), while class \(L\)
+loses and the incumbent pays its bid \(\ell\). The two classes differ only in the last row. A winner keeps its
+value minus the price, and a loser keeps nothing.
+
+Every expectation over \(R\) has the same form. The density of \(R\) is \(1/r\) on \([0,r]\), so
+\(\E[\varphi(R)]=\frac1r\int_0^r\varphi(y)\,dy\) for any payment \(\varphi\). The integral adds up the payment at
+each incumbent value, and the factor \(1/r\) turns the sum into an average.
+
+Without a challenger, the incumbent buys at \(p\) when \(R\ge p\), so \eqref{eq:model-t0} gives
+\(t_0=p\,[1-F_r(p)]=p(1-p/r)\), since \(F_r(p)=p/r\) for \(p<r\).
+
+\begin{derivation}[the proceeds with a class-\(H\) challenger]
+The target receives \(p\) when \(R<p\) and \(R\) when \(R\ge p\) (first column of prices).
+\begin{align*}
+t_H&=\frac1r\Bigl[\int_0^p p\,dy+\int_p^r y\,dy\Bigr] \why{the class-\(H\) prices}\\
+&=\frac1r\Bigl[p\cdot p+\frac{r^2-p^2}{2}\Bigr] \why{constant times length; \(\int y\,dy=y^2/2\)}\\
+&=\frac1r\cdot\frac{2p^2+r^2-p^2}{2} \why{common denominator}\\
+&=\frac{r^2+p^2}{2r}=\frac r2+\frac{p^2}{2r} \why{split the fraction}
+\end{align*}
+\end{derivation}
+
+In words, \(t_H=\E[\max\{p,R\}]\): class \(H\) always wins, and it pays the incumbent's value or the reserve,
+whichever is larger.
+
+\begin{derivation}[the proceeds with a class-\(L\) challenger]
+The target receives \(p\), then \(R\), then \(\ell\) on the three rows.
+\begin{align*}
+t_L&=\frac1r\Bigl[\int_0^p p\,dy+\int_p^\ell y\,dy+\int_\ell^r \ell\,dy\Bigr] \why{the class-\(L\) prices}\\
+&=\frac1r\Bigl[p^2+\frac{\ell^2-p^2}{2}+\ell(r-\ell)\Bigr] \why{the three integrals}\\
+&=\frac1r\Bigl[\frac{p^2}{2}+\frac{\ell^2}{2}-\ell^2+\ell r\Bigr] \why{expand}\\
+&=\frac1r\Bigl[\ell r-\frac{\ell^2-p^2}{2}\Bigr] \why{collect \(\ell^2\) and \(p^2\)}\\
+&=\ell-\frac{\ell^2-p^2}{2r} \why{divide each term by \(r\)}
+\end{align*}
+\end{derivation}
+
+Class \(H\) wins at every \(R\) and keeps \(h-\max\{p,R\}\). So
+\begin{align*}
+g_H&=\frac1r\int_0^r h\,dy-\frac1r\int_0^r\max\{p,y\}\,dy \why{the class-\(H\) rows; linearity}\\
+&=h-t_H=h-\frac r2-\frac{p^2}{2r} \why{the second term is \(t_H\)}
+\end{align*}
+
+\begin{derivation}[the gross profit of class \(L\)]
+Class \(L\) keeps \(\ell-p\) when \(R<p\), keeps \(\ell-R\) when \(p\le R<\ell\), and keeps nothing when it loses.
+\begin{align*}
+g_L&=\frac1r\Bigl[\int_0^p(\ell-p)\,dy+\int_p^\ell(\ell-y)\,dy+\int_\ell^r0\,dy\Bigr] \why{the class-\(L\) rows}\\
+&=\frac1r\Bigl[p(\ell-p)+\frac{(\ell-p)^2}{2}\Bigr] \why{see the next line}\\
+&=\frac{\ell-p}{r}\Bigl[p+\frac{\ell-p}{2}\Bigr] \why{factor out \(\ell-p\)}\\
+&=\frac{\ell-p}{r}\cdot\frac{\ell+p}{2}=\frac{\ell^2-p^2}{2r} \why{\((\ell-p)(\ell+p)=\ell^2-p^2\)}
+\end{align*}
+The middle integral is
+\(\int_p^\ell(\ell-y)\,dy=\bigl[\ell y-\tfrac{y^2}{2}\bigr]_p^\ell=\tfrac{\ell^2}{2}-\ell p+\tfrac{p^2}{2}
+=\tfrac{(\ell-p)^2}{2}\).
+\end{derivation}
+
+Subtract to get the spread. The \(p^2\) terms cancel:
+\[
+\DT=t_H-t_L=\frac r2-\ell+\frac{\ell^2}{2r}=\frac{r^2-2\ell r+\ell^2}{2r}=\frac{(r-\ell)^2}{2r}.
+\]
+
+\subsection{Route 2: the general formulas}
+
+Chapter~\ref{ch:auction} gives every auction object as an integral over levels \(y\). For the point masses,
+\(1-G_H(y)=\1\{y<h\}\), \(1-G_L(y)=\1\{y<\ell\}\), and the class difference is
+\(D(y)=G_L(y)-G_H(y)=\1\{\ell\le y<h\}\), with \(D(p^-)=0\) (Section~\ref{sec:auction-slices}).
+
+\begin{derivation}[the gross profits from \eqref{eq:auction-gross}]
+The integral adds up, over levels \(y\) above the reserve, the probability that the challenger's value passes
+\(y\) times the probability that the incumbent lies below \(y\).
+\begin{align*}
+g_H&=\int_p^\infty\1\{y<h\}\,F_r(y)\,dy=\int_p^hF_r(y)\,dy \why{\eqref{eq:auction-gross}}\\
+&=\int_p^r\frac yr\,dy+\int_r^h1\,dy \why{split at \(r\); \(p<r<h\)}\\
+&=\frac{r^2-p^2}{2r}+(h-r) \why{the two integrals}\\
+&=h-\frac r2-\frac{p^2}{2r} \why{\(\tfrac{r^2}{2r}-r=-\tfrac r2\)}\\[4pt]
+g_L&=\int_p^\infty\1\{y<\ell\}\,F_r(y)\,dy=\int_p^\ell\frac yr\,dy \why{\eqref{eq:auction-gross}; \(\ell<r\)}\\
+&=\frac{\ell^2-p^2}{2r} \why{\(\int y\,dy=y^2/2\)}
+\end{align*}
+\end{derivation}
+
+\begin{derivation}[the spread from \eqref{eq:auction-spread}]
+The integral adds up, over levels \(y\), the class difference \(D(y)\) times the probability that the incumbent
+lies above \(y\). That is the chance that the slice at \(y\) reaches the target.
+\begin{align*}
+\DT&=pF_r(p)\,D(p^-)+\int_p^\infty\bigl[1-F_r(y)\bigr]D(y)\,dy \why{\eqref{eq:auction-spread}}\\
+&=0+\int_\ell^h\bigl[1-F_r(y)\bigr]\,dy \why{\(D(p^-)=0\); \(D=\1\{\ell\le y<h\}\)}\\
+&=\int_\ell^r\Bigl(1-\frac yr\Bigr)dy+\int_r^h0\,dy \why{\(F_r=1\) above \(r\)}\\
+&=(r-\ell)-\frac{r^2-\ell^2}{2r} \why{the integral}\\
+&=(r-\ell)\Bigl[1-\frac{r+\ell}{2r}\Bigr] \why{\(r^2-\ell^2=(r-\ell)(r+\ell)\)}\\
+&=(r-\ell)\cdot\frac{r-\ell}{2r}=\frac{(r-\ell)^2}{2r} \why{\(1-\tfrac{r+\ell}{2r}=\tfrac{r-\ell}{2r}\)}
+\end{align*}
+\end{derivation}
+
+The proceeds follow from the split \eqref{eq:auction-split}: for a value that meets the reserve,
+\(t(\theta)+g(\theta)=\theta\). Each class has one value, so
+\begin{align*}
+t_H&=h-g_H=\frac r2+\frac{p^2}{2r} \why{split at \(\theta=h\)}\\
+t_L&=\ell-g_L=\ell-\frac{\ell^2-p^2}{2r} \why{split at \(\theta=\ell\)}
+\end{align*}
+Both routes agree.
+
+\subsection{A third look at the spread}
+
+At one incumbent value, the class difference in proceeds is \(\Gamma(R)=(R-\ell)^+\) for \(R<h\)
+(Section~\ref{sec:auction-slices}): the last row of the table. The spread is its average:
+\begin{align*}
+\DT&=\E\bigl[(R-\ell)^+\bigr] \why{\(\DT=\E_F[\Gamma(R)]\)}\\
+&=\frac1r\int_\ell^r(y-\ell)\,dy \why{\((y-\ell)^+=0\) for \(y\le\ell\)}\\
+&=\frac1r\Bigl[\frac{(y-\ell)^2}{2}\Bigr]_\ell^r=\frac{(r-\ell)^2}{2r} \why{the integral}
+\end{align*}
+This form splits into two factors: \(\DT=\Pr(R>\ell)\cdot\E[R-\ell\mid R>\ell]\). Given \(R>\ell\), the value \(R\) is
+uniform on \((\ell,r]\), so the conditional mean of \(R-\ell\) is \((r-\ell)/2\). Hence
+\[
+\DT=\frac{r-\ell}{r}\cdot\frac{r-\ell}{2}.
+\]
+
+The six objects of the example, equation (8) of the paper (with the integrals in its equation (A.1)), are
+\begin{equation}\label{eq:example-payoffs}
+\begin{aligned}
+t_0&=p\Bigl(1-\frac pr\Bigr),& t_H&=\frac r2+\frac{p^2}{2r},& t_L&=\ell-\frac{\ell^2-p^2}{2r},\\
+g_H&=h-\frac r2-\frac{p^2}{2r},& g_L&=\frac{\ell^2-p^2}{2r},& \DT(r)&=\frac{(r-\ell)^2}{2r}.
+\end{aligned}
+\end{equation}
+As a check, \(t_H+g_H=h\) and \(t_L+g_L=\ell\), as the split requires.
+
+\begin{intuition}[what the six formulas say]
+\begin{itemize}
+\item Class \(H\) always wins, so its profit is its value minus its expected payment, \(g_H=h-t_H\).
+\item Class \(L\) earns only when the incumbent lies below \(\ell\), and its margin \(\ell-\max\{p,R\}\) is at most
+  \(\ell-p\). So \(g_L\) is small, and it shrinks like \(1/r\) as the incumbent strengthens.
+\item The spread needs two things at once: the incumbent must beat class \(L\), and it must then pay a price
+  \(\ell\) that falls short of what class \(H\) would pay. Each factor is small when \(r\) is near \(\ell\).
+\end{itemize}
+\end{intuition}
+
+% ====================================================================
+\section{How the objects move with strength}\label{sec:example-shape}
+
+\subsection{The three derivatives}
+
+Write \(\DT\) as a sum before you differentiate:
+\(\DT(r)=\tfrac{r^2-2\ell r+\ell^2}{2r}=\tfrac r2-\ell+\tfrac{\ell^2}{2r}\). The derivative of \(1/r\) is
+\(-1/r^2\).
+
+\begin{derivation}[the derivatives of the spread and the two gross profits]
+\begin{align*}
+\DT'(r)&=\frac12-\frac{\ell^2}{2r^2} \why{differentiate \(\tfrac r2-\ell+\tfrac{\ell^2}{2r}\)}\\
+&=\frac{r^2-\ell^2}{2r^2}>0 \why{\(r>\ell>0\)}\\[4pt]
+g_H'(r)&=-\frac12+\frac{p^2}{2r^2} \why{differentiate \(h-\tfrac r2-\tfrac{p^2}{2r}\)}\\
+&=-\frac{r^2-p^2}{2r^2}<0 \why{\(r>p>0\)}\\[4pt]
+g_L'(r)&=-\frac{\ell^2-p^2}{2r^2}<0 \why{differentiate \(\tfrac{\ell^2-p^2}{2r}\); \(\ell>p\)}
+\end{align*}
+\end{derivation}
+
+These are the paper's derivatives, equation (9) of Section~4.2. Their signs follow from \eqref{eq:example-order}:
+\(r>\ell\), \(r>p\) and \(\ell>p\). Proposition~1 promised only weak directions for a general strengthening. In the
+example all three changes are strict at every strength on the path.
+
+Gross profit at a belief \(\mu\) is \(B_r(\mu)=(1-\mu)\,g_L(r)+\mu\,g_H(r)\). So
+\begin{align*}
+\frac{\partial B_r(\mu)}{\partial r}&=(1-\mu)\,g_L'(r)+\mu\,g_H'(r) \why{differentiate term by term}\\
+&<0 \why{both derivatives \(<0\); weights \(\ge0\), sum one}
+\end{align*}
+for every \(\mu\in[0,1]\) (Appendix~A.1 of the paper). Gross profit falls strictly at every belief, while the
+spread rises strictly. The two forces of Chapter~\ref{ch:ccc} move in opposite directions at every strength above
+\(\ell\).
+
+\emph{The payment of class \(H\).} Since \(g_H=h-t_H\), the fall of \(g_H\) is the rise of class \(H\)'s expected
+payment \(t_H=r/2+p^2/(2r)\):
+\[
+t_H'(r)=\frac12-\frac{p^2}{2r^2},\qquad 0<t_H'(r)<\frac12 .
+\]
+Class \(H\) pays \(\max\{p,R\}\). The mean of a uniform value on \([0,r]\) is \(r/2\), so it rises by one half per
+unit of strength. The reserve puts a floor under the payment, and this floor slows the rise a little. So class
+\(H\)'s payment rises by less than one half per unit of strength. Section~\ref{sec:example-ceiling} uses this fact.
+
+\subsection{The class-gap identity in the example}
+
+The profit gap is
+\begin{align*}
+\gamma(r)=g_H-g_L&=h-\frac r2-\frac{p^2}{2r}-\frac{\ell^2-p^2}{2r} \why{\eqref{eq:example-payoffs}}\\
+&=h-\frac r2-\frac{\ell^2}{2r} \why{the \(p^2\) terms cancel}\\
+&=\frac{2rh-r^2-\ell^2}{2r} \why{common denominator \(2r\)}
+\end{align*}
+It is positive: Chapter~\ref{ch:auction} (Check yourself~\ref{q:auction-pointgross}) gives
+\(g_H-g_L=\int_\ell^hF_r(y)\,dy\), and \(F_r(y)>0\) for \(y>0\).
+
+The class-gap identity \eqref{eq:auction-gap} says that \(\DT+g_H-g_L\) equals
+\(\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}]\). In the example the right side is \(h-\ell\), since both values
+exceed \(p\). Check the left side:
+\begin{align*}
+\DT+g_H-g_L&=\frac{(r-\ell)^2}{2r}+\frac{2rh-r^2-\ell^2}{2r} \why{the two formulas}\\
+&=\frac{r^2-2r\ell+\ell^2+2rh-r^2-\ell^2}{2r} \why{expand \((r-\ell)^2\)}\\
+&=\frac{2rh-2r\ell}{2r}=h-\ell \why{\(r^2\) and \(\ell^2\) cancel}
+\end{align*}
+The right side of the identity is \(h-\ell\) at every \(r\) (Section~4.2 of the paper). So every unit by which the
+spread rises is a unit by which the profit gap falls. The derivatives agree:
+\(g_H'-g_L'=-\tfrac12+\tfrac{\ell^2}{2r^2}=-\DT'\).
+
+\subsection{The shape of the spread}
+
+The formula \(\DT(r)=(r-\ell)^2/(2r)\) gives the shape.
+\begin{itemize}
+\item At \(r=\ell\), \(\DT=0\). Its slope there is also zero: \(\DT'(\ell)=\tfrac12-\tfrac{\ell^2}{2\ell^2}=0\).
+\item Above \(\ell\), \(\DT'>0\), so the spread rises with strength.
+\end{itemize}
+The reason is in the two factors of Section~\ref{sec:example-auction}. When \(r\) is near \(\ell\), the incumbent
+almost never outbids a class-\(L\) challenger: \(\Pr(R>\ell)=(r-\ell)/r\) is small. And when it does, its value
+lies only a little above \(\ell\), so class \(H\) pays only a little more than the incumbent pays for class \(L\).
+The product of two small factors is very small, and the spread starts flat (Section~4.2 of the paper).
+
+\begin{checkyourself}
+\label{q:example-reserve}
+The spread \(\DT=(r-\ell)^2/(2r)\) contains no \(p\).
+(a)~Use Table~\ref{tab:example-cases} to explain why the reserve does not affect the spread.
+(b)~What happens to \(g_L\) as \(p\) rises toward \(\ell\), with \(p<\ell\) kept? Explain in words.
+\end{checkyourself}
+
+\subsection{The preparation threshold}
+
+Recall the preparation threshold \eqref{eq:beliefs-threshold}: when \(g_H>g_L\), it is the belief at which gross
+profit equals the high cost, \(\tau=(c_H-g_L)/(g_H-g_L)\). A high-cost challenger prepares exactly when its belief
+reaches \(\tau\), under the default tie rule.
+
+\begin{derivation}[the threshold of the example]
+Multiply the numerator and the denominator by \(2r>0\).
+\begin{align*}
+\tau(r)&=\frac{c_H-g_L}{g_H-g_L} \why{\eqref{eq:beliefs-threshold}}\\
+&=\frac{c_H-\frac{\ell^2-p^2}{2r}}{\frac{2rh-r^2-\ell^2}{2r}} \why{\(g_L\) and \(\gamma\) above}\\
+&=\frac{2rc_H-(\ell^2-p^2)}{2rh-r^2-\ell^2} \why{multiply above and below by \(2r\)}
+\end{align*}
+\end{derivation}
+
+This is the paper's threshold (Section~4.2):
+\begin{equation}\label{eq:example-tau}
+\tau(r)=\frac{2rc_H-(\ell^2-p^2)}{2rh-r^2-\ell^2}.
+\end{equation}
+The denominator equals \(2r\gamma(r)>0\).
+
+\emph{The threshold rises with strength.} Lemma~A.5 (Section~\ref{sec:trading-path}) says that the threshold never
+falls along a path where \(\gamma>0\) and \(\tau\ge0\). Its increment has the numerator
+\(g_L(F_r)-g_L(F_{r'})+\tau(r)[\DT(r')-\DT(r)]\). Both conditions hold on the example's path:
+\begin{itemize}
+\item \(\gamma(r)>0\), shown above;
+\item \(\tau\ge0\) means \(g_L\le c_H\); Section~\ref{sec:trading-path} shows that without it the threshold can
+  fall. At the example's values, \(\tau(\ell)>\pi>0\) (Appendix~A.6 of the paper), so
+  \(c_H>g_L(\ell)\). Since \(g_L\) falls with \(r\), \(c_H>g_L(r)\) at every \(r\ge\ell\).
+\end{itemize}
+In the example \(g_L\) falls strictly, so the first term of the numerator is positive and the second is
+nonnegative. So \(\tau\) rises strictly on the path (Appendix~A.6 of the paper: \(\tau\) rises on \(\ell\le r\le h\)).
+
+At \(r=\ell\) the denominator is \(2\ell(h-\ell)\), so \(\tau(\ell)=[2\ell c_H-(\ell^2-p^2)]/[2\ell(h-\ell)]\).
+Section~\ref{sec:example-control} uses this value.
+
+% ====================================================================
+\section{Corollary 1: the band of slots}\label{sec:example-corollary}
+
+Recall the three conditions of Proposition~2 (Chapter~\ref{ch:ccc}), with \(B_i=B_{r_i}\) and
+\(\Delta_i=\DT(r_i)\):
+\[
+\text{(H1)}\ \ B_0(\pi)<c_H<B_1(M(\pi)),\qquad
+\text{(H2)}\ \ \Delta_0<k<\rho\,\kappa(\pi)\,\Delta_1,\qquad
+\text{(H3)}\ \ B_2(M(\pi))<c_H.
+\]
+Here \(M(\pi)\) and \(m(\pi)\) are the top and the bottom posterior \eqref{eq:beliefs-bounds}, and
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\) is the factor in the trading bound \eqref{eq:trading-bound}. In the example,
+the auction is fixed by \(h\), \(\ell\), \(p\) and \(r\), so only the slot and the prior remain free inside these
+conditions.
+
+For the statement, write three numbers built from the example's auction, costs and strengths:
+\[
+u_{\rm lo}=\frac{2\tau(r_1)-1}{1-\tau(r_1)},\qquad
+u_{\rm hi}=\frac{2\tau(r_2)-1}{1-\tau(r_2)},\qquad
+u_k=\frac{\rho\,\DT(r_1)}{k}-2.
+\]
+The paper prints their values. Here they are the band of Chapter~\ref{app:numbers}.
+
+\needspace{12\baselineskip}
+\begin{paperresult}{Corollary 1 (Recruitment and ownership in the example, full statement)}
+Let the classes be point masses at \(h\) and \(\ell\), the incumbent be uniform on \([0,r]\), and let
+\((p,\rho,c_H,k)\) and \((r_0,r_1,r_2)\) take the example's values. Take a slot with \(0<\lambda<1\),
+\(0<\beta<1/2\), \(u=\lambda/[(1-\lambda)\beta]\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item At prior \(\pi=\tfrac12\), the high-cost window, trading-cost window and exclusion condition hold together
+  exactly on \(u_{\rm lo}<u<u_{\rm hi}\), equivalently \(\tau(r_1)<M(\pi)<\tau(r_2)\), with the endpoints of the band
+  of Chapter~\ref{app:numbers}. This is an interval of presence probabilities at each fixed liquidity share. Under
+  all four tie rules, entry is \(\rho\), \(\rho+(1-\rho)(b+\lambda/2)\), \(\rho\) at the three strengths, and
+  high-class ownership is \(\rho/2\), \([\rho+(1-\rho)(b+\lambda)]/2\), \(\rho/2\).
+\item For \(u<u_{\rm lo}\), entry at \(r_1\) is \(\rho\). At \(u=u_{\rm lo}\), orders are uniquely zero at \(r_0\)
+  and uniquely full at \(r_1,r_2\). When an indifferent high-cost challenger prepares, every conclusion of
+  Proposition~2 holds. When it may prepare with any probability, entry after a purchase at \(r_1\) ranges over
+  \([\rho,1]\), and total entry there ranges over \([\rho,\rho+(1-\rho)(b+\lambda/2)]\). For
+  \(u_{\rm hi}\le u<u_k\), a purchase at \(r_2\) induces certain preparation when an indifferent high-cost
+  challenger prepares. For \(u\ge u_k\), the strict upper inequality of the trading-cost window at \(r_1\) fails.
+\item If \(1+u=\eu\), all three hypotheses hold exactly when
+  \[
+  \frac{\tau(r_1)}{\tau(r_1)+[1-\tau(r_1)]\eu}<\pi<\frac{\tau(r_2)}{\tau(r_2)+[1-\tau(r_2)]\eu},
+  \]
+  with the endpoints of Chapter~\ref{app:numbers}. The high-cost and trading-cost windows alone hold exactly
+  between the same lower endpoint and \(\tau(r_0)\).
+\item At the example's slot (\(1+u=\eu\) and the example's \(\beta\)) and \(\pi=\tfrac12\), entry, high-class
+  ownership and class \(H\)'s share of the acquisitions won by the challenger take, at the three strengths, the
+  values of Chapter~\ref{app:numbers}.
+\item For these point values and the strength range \([r_0,r_2]\), decisive advantage on the full uniform family
+  and the affordability condition \(h-r_2\ge c_H\) of Proposition~3(c) hold together exactly on the cost window
+  \[
+  \frac{h^2-p^2}{2h}\le c_H\le h-r_2 .
+  \]
+  The example's cost lies in this window, with positive margins. For these class values, reserve and cost, every
+  economy with a uniform incumbent \(U[0,r]\) in which some order recruits a high-cost challenger has
+  \[
+  r<h-c_H+\sqrt{(h-c_H)^2-p^2}<h,
+  \]
+  whatever the slot, prior, \(\rho\), \(k\) and research.
+\end{enumerate}
+\end{paperresult}
+
+The short form in the main text (Section~4.2 of the paper) adds one line: on the band, class \(H\) outbids every
+incumbent on the path, entry rises from \(\rho\) at \(r_0\) to \(\rho+(1-\rho)(b+\pi\lambda)\) at \(r_1\) and returns
+to \(\rho\) at \(r_2\), and high-class ownership rises from \(\pi\rho\) to \(\pi[\rho+(1-\rho)(b+\lambda)]\).
+
+In plain words: at the prior \(\tfrac12\), Proposition~2 applies in the example exactly when the top posterior falls
+in a band whose ends are the thresholds of the strong and the very strong incumbent (a). Outside the band one
+condition fails, and at the lower edge the tie rule matters (b). With the example's slot, the band is a range of
+priors (c). Part (e) makes class \(H\) outbid every incumbent against which a price recruits
+(Section~\ref{sec:example-decisive}).
+
+\subsection{Why the conditions reduce to a band}\label{sec:example-reduction}
+
+The proof of part (a) (Appendix~A.3 of the paper) checks each of the five inequalities in (H1)--(H3). Two of them do
+not involve the slot. The other three each give one bound on \(u\).
+
+\paragraph{Step 1: the posterior bounds at the prior one half.} Put \(\pi=\tfrac12\) in \eqref{eq:beliefs-bounds}.
+\begin{align*}
+M(\tfrac12)&=\frac{\tfrac12(1+u)}{\tfrac12(1+u)+\tfrac12} \why{\eqref{eq:beliefs-bounds}}\\
+&=\frac{1+u}{2+u} \why{multiply above and below by 2}\\[4pt]
+m(\tfrac12)&=\frac{\tfrac12}{\tfrac12+\tfrac12(1+u)}=\frac{1}{2+u} \why{same steps}\\[4pt]
+1-M(\tfrac12)&=\frac{2+u-1-u}{2+u}=\frac{1}{2+u} \why{common denominator}
+\end{align*}
+So \(m(\tfrac12)=1-M(\tfrac12)\), and \(\kappa(\tfrac12)=1/(2+u)\). Also \(M(\tfrac12)=1-\tfrac1{2+u}\) rises strictly
+with \(u\).
+
+\paragraph{Step 2: the two conditions without the slot.} The left side of (H1), \(B_{r_0}(\tfrac12)<c_H\), contains
+only the auction at \(r_0\), the prior and the high cost. The left side of (H2), \(\DT(r_0)<k\), contains only the
+spread at \(r_0\) and the trading cost. Neither depends on \(\lambda\) or \(\beta\). Both hold at the example's
+values, with positive margins (Appendix~A.3 of the paper). The first one says \(\tau(r_0)>\tfrac12\).
+
+\paragraph{Step 3: the right side of (H1).} At \(r_1\), \(g_H>g_L\), so \(B_{r_1}\) rises strictly with the belief,
+and \(c_H<B_{r_1}(M)\) holds exactly when \(M>\tau(r_1)\) (Section~\ref{sec:beliefs-threshold}). Turn this into a
+bound on \(u\). Both thresholds on the path lie below one at the example's values, so \(1-\tau>0\).
+\begin{align*}
+M(\tfrac12)>\tau&\iff\frac{1+u}{2+u}>\tau \why{Step 1}\\
+&\iff 1+u>\tau(2+u) \why{multiply by \(2+u>0\)}\\
+&\iff u-\tau u>2\tau-1 \why{subtract \(1+\tau u\)}\\
+&\iff u>\frac{2\tau-1}{1-\tau} \why{divide by \(1-\tau>0\)}
+\end{align*}
+With \(\tau=\tau(r_1)\), the right side of (H1) is \(u>u_{\rm lo}\).
+
+\paragraph{Step 4: the exclusion condition.} The same steps with the opposite inequality give
+\(B_{r_2}(M)<c_H\iff M<\tau(r_2)\iff u<u_{\rm hi}\).
+
+\paragraph{Step 5: the right side of (H2).}
+\begin{align*}
+k<\rho\,\kappa(\tfrac12)\,\DT(r_1)&\iff k<\frac{\rho\,\DT(r_1)}{2+u} \why{Step 1}\\
+&\iff 2+u<\frac{\rho\,\DT(r_1)}{k} \why{multiply by \((2+u)/k>0\)}\\
+&\iff u<\frac{\rho\,\DT(r_1)}{k}-2=u_k \why{subtract 2}
+\end{align*}
+At the example's values, \(u_{\rm hi}<u_k\). So Step 4 implies Step 5, and the right side of (H2) adds no further
+restriction inside the band.
+
+\paragraph{Step 6: combine.} Given Step 2, the five inequalities hold together exactly when
+\(u_{\rm lo}<u<u_{\rm hi}\). Steps 3 and 4 show that this is the same as \(\tau(r_1)<M(\tfrac12)<\tau(r_2)\): the top
+posterior lies between the thresholds of the strong and the very strong incumbent.
+
+\paragraph{Step 7: an interval of presence probabilities.} From \(u=\lambda/[(1-\lambda)\beta]\), solve for
+\(\lambda\) at a fixed \(\beta\).
+\begin{align*}
+u\beta(1-\lambda)&=\lambda \why{multiply by \((1-\lambda)\beta\)}\\
+u\beta&=\lambda(1+u\beta) \why{add \(u\beta\lambda\) to both sides}\\
+\lambda&=\frac{u\beta}{1+u\beta}=1-\frac{1}{1+u\beta} \why{divide by \(1+u\beta\)}
+\end{align*}
+At a fixed \(\beta\), \(\lambda\) rises strictly with \(u\). So the band of \(u\) is an open interval of
+\(\lambda\).
+
+\begin{keyidea}
+At the prior \(\tfrac12\), the conditions of Proposition~2 contain the slot only through the top posterior
+\(M(\tfrac12)=(1+u)/(2+u)\) and the factor \(\kappa(\tfrac12)=1/(2+u)\). Both are functions of \(u\) alone. Two slots
+with the same \(u\) and different \((\lambda,\beta)\) give the same answer.
+\end{keyidea}
+
+The slot enters the outcomes in more ways. Entry contains \(b\) and \(\lambda\) separately. Use \eqref{eq:ccc-entry}
+at \(\pi=\tfrac12\):
+\begin{align*}
+\Ent_1&=\rho+(1-\rho)(b+\pi\lambda) \why{\eqref{eq:ccc-entry}}\\
+&=\rho+(1-\rho)\Bigl(b+\frac\lambda2\Bigr) \why{\(\pi=\tfrac12\)}
+\end{align*}
+The term \(b+\lambda/2\) is the probability of a purchase: a liquidity purchase with probability \(b\) in both
+classes, plus an informed purchase with probability \(\lambda\) in class \(H\), which has prior weight one half.
+Entry includes the floor \(\rho\) of the zero-cost challenger. At \(r_0\) and \(r_2\), entry is \(\rho\)
+(Proposition~2(i) and (iii)).
+
+For ownership, recall \(\Own_H=\pi\,e_H\,W_H(F)\), with \(e_H\) the entry in class \(H\) (Chapter~\ref{ch:model}).
+Every strength on the path lies below \(h\), so \(W_H=1\) at all three. Proposition~2(ii) gives
+\(e_H=\rho+(1-\rho)(b+\lambda)\) at \(r_1\), and \(e_H=\rho\) at \(r_0\) and \(r_2\). So ownership is
+\(\rho/2\), \([\rho+(1-\rho)(b+\lambda)]/2\) and \(\rho/2\).
+
+For part (d), the share of class \(H\) among the acquisitions won by the challenger is \(\Own_H/(\Own_H+\Own_L)\),
+with \(\Own_L=(1-\pi)\,e_L\,W_L(F)\). Class \(L\) wins when \(R<\ell\), so \(W_L(F_r)=F_r(\ell)=\ell/r\). The share is
+\[
+\frac{\pi\,e_H}{\pi\,e_H+(1-\pi)\,e_L\,\ell/r}
+\]
+(Appendix~A.3 of the paper). From \(r_0\) to \(r_1\), the ratio \(e_H/e_L\) rises and \(\ell/r\) falls, so the share
+rises. Proposition~2(ii) says the same: the share rises strictly when \(W_L(F_0)>0\), and here \(W_L(F_0)=\ell/r_0>0\).
+
+\subsection{Outside the band and other priors}
+
+Part (b) reads each edge. Below the band, orders are still full at \(r_1\), but \(M<\tau(r_1)\), so no order
+recruits and entry at \(r_1\) stays at \(\rho\); this is the case that Chapter~\ref{ch:ccc} mentions when the right
+side of (H1) fails. At the lower edge, \(M=\tau(r_1)\), and a purchase leaves the high-cost challenger indifferent:
+the tie rule decides. Above the band, \(M\ge\tau(r_2)\), so a purchase at \(r_2\) recruits under the default tie
+rule. For \(u\ge u_k\), the trading bound fails to force full orders at \(r_1\).
+
+Part (c) fixes the slot at \(1+u=\eu\) and lets the prior vary. Recall that the posterior rises with its odds
+(Section~\ref{sec:toolkit-odds}), and that odds \(o\) give the probability \(o/(1+o)\).
+
+\begin{derivation}[the top posterior above a threshold, as a condition on the prior]
+\begin{align*}
+M(\pi)>\tau&\iff\frac{M(\pi)}{1-M(\pi)}>\frac{\tau}{1-\tau} \why{odds rise with the probability}\\
+&\iff\frac{\pi(1+u)}{1-\pi}>\frac{\tau}{1-\tau} \why{the odds of \(M(\pi)\)}\\
+&\iff\frac{\pi}{1-\pi}>\frac{\tau}{(1-\tau)(1+u)} \why{divide by \(1+u>0\)}\\
+&\iff\pi>\frac{\tau}{\tau+(1-\tau)(1+u)} \why{odds \(o\) give \(o/(1+o)\)}
+\end{align*}
+\end{derivation}
+
+With \(\tau=\tau(r_1)\) and \(1+u=\eu\), the right side of (H1) gives the lower end of the range in part (c). With
+\(\tau=\tau(r_2)\) and the reverse inequality, (H3) gives the upper end. The left side of (H1) is
+\(B_{r_0}(\pi)<c_H\), that is \(\pi<\tau(r_0)\). The left side of (H2) does not contain \(\pi\). The right side of
+(H2) gives a range of priors on which \(\kappa(\pi)\) is large enough, and at the example's values this range
+contains the other two (Appendix~A.3 of the paper). So the range of part (c) remains. Without (H3) its upper end
+is \(\tau(r_0)\). The range of priors in part (c) is narrow. Its upper end lies just above the example's prior.
+
+\subsection{An open set of parameters}\label{sec:example-open}
+
+The paper adds that (H1)--(H3) hold on an open set of parameters that contains the example (Section~4.2 and
+Appendix~A.3 of the paper). The argument is the open-set fact of Section~\ref{sec:toolkit-monotone}: a finite list of
+strict inequalities between continuous functions survives small changes of the parameters.
+
+Keep the example's classes and reserve, with each incumbent uniform on \([0,r_i]\). Each side of (H1)--(H3)
+is a continuous function of \((r_0,r_1,r_2,c_H,k,\rho,\pi,\lambda,\beta)\): \(B_r(\mu)\) and \(\DT(r)\) by
+\eqref{eq:example-payoffs}; \(u=\lambda/[(1-\lambda)\beta]\), and with it \(M(\pi)\) and \(m(\pi)\); and
+\(\kappa\), a minimum of two continuous functions. All five inequalities are strict at the example. So every
+parameter list near enough to the example keeps all five, and Proposition~2 still applies. The set is open in the
+domain \(0<\beta<1/2\). In words, the reversal in the example is not a knife-edge case. The fact says nothing about
+the size of the set, and the band of Chapter~\ref{app:numbers} is narrow.
+
+\begin{checkyourself}
+\label{q:example-ceiling}
+Take a slot in the band, at the prior \(\tfrac12\). The entry ceiling \(r_C\) is the strength at which
+\(\tau(r)=M(\tfrac12)\) (Section~\ref{sec:example-ceiling}).
+(a)~Show that \(r_C\) lies strictly between \(r_1\) and \(r_2\).
+(b)~Explain why a larger \(u\) inside the band moves \(r_C\) to a higher strength.
+(c)~Say what happens to entry at \(r_2\) when \(u\) passes \(u_{\rm hi}\), with \(u<u_k\) kept.
+\end{checkyourself}
+
+% ====================================================================
+\section{Decisive advantage in the example}\label{sec:example-decisive}
+
+In the example's three economies class \(H\) outbids the incumbent, because \(r_2<h\). Decisive advantage asks
+more: does class \(H\) outbid \emph{every} uniform incumbent against which a price recruits? Recall from Lemma~A.6
+(Section~\ref{sec:ccc-decisive}) that a family of incumbent laws has decisive advantage when \(g_H(F)>c_H\) implies
+\(W_H(F)=1\) for every law \(F\) in it, and that the full uniform family has it exactly when
+\(c_H\ge(h^2-p^2)/(2h)\). Here is the short version in the example's notation.
+
+\begin{derivation}[decisive advantage for the uniform family]
+\emph{The chance to win.} For \(r\le h\), \(W_H(F_r)=F_r(h)=1\). For \(r>h\), \(W_H(F_r)=h/r<1\).
+
+\emph{Gross profit of class \(H\) at every strength.} By \eqref{eq:auction-gross}, \(g_H(r)=\int_p^hF_r(y)\,dy\).
+\begin{align*}
+r\le p:\quad g_H&=\int_p^h1\,dy=h-p \why{\(F_r=1\) above \(r\)}\\
+p<r\le h:\quad g_H&=h-\frac r2-\frac{p^2}{2r} \why{\eqref{eq:example-payoffs}}\\
+r\ge h:\quad g_H&=\int_p^h\frac yr\,dy=\frac{h^2-p^2}{2r} \why{\(F_r(y)=y/r\) on \([p,h]\)}
+\end{align*}
+The middle line at \(r=h\) gives \(h-\tfrac h2-\tfrac{p^2}{2h}=\tfrac{h^2-p^2}{2h}\), the value of the last line at
+\(r=h\). So \(g_H\) is continuous. It falls strictly for \(r>p\): the middle line has \(g_H'<0\), and the last line
+falls like \(1/r\).
+
+\emph{The equivalence.} Write \(\bar g=g_H(h)=(h^2-p^2)/(2h)\). If \(c_H\ge\bar g\), every \(r\) with
+\(g_H(r)>c_H\ge g_H(h)\) has \(r<h\), since \(g_H\) falls strictly above \(p\); there \(W_H=1\). If \(c_H<\bar g\),
+continuity gives \(g_H(r)>c_H\) at strengths a little above \(h\), where \(W_H=h/r<1\).
+\end{derivation}
+
+\begin{intuition}[what the cost floor means]
+The number \((h^2-p^2)/(2h)\) is class \(H\)'s gross profit against the uniform incumbent on \([0,h]\), the strongest
+uniform incumbent that class \(H\) still beats for sure. If the high cost is at least this profit, then gross profit
+can exceed the cost only against weaker incumbents, and class \(H\) beats all of them.
+\end{intuition}
+
+\emph{What it buys.} A recruited high-cost challenger needs \(B(\bar\mu)\ge c_H\) at an interior belief
+\(\bar\mu<1\), and Lemma~A.6 then gives \(g_H>c_H\) (Section~\ref{sec:ccc-decisive}). The example's high cost exceeds
+\((h^2-p^2)/(2h)\) (Section~4.2 of the paper). So, against every uniform incumbent at which a price recruits a
+high-cost challenger, class \(H\) outbids the incumbent. High-class ownership is then \(\pi e_H\), and the
+takeover-share conclusions of Proposition~2(ii) apply: the strong incumbent takes wins only from the low class.
+
+\emph{The recruitment bound of part (e).} Recruitment needs \(g_H(r)>c_H\). Find where \(g_H\) crosses \(c_H\). For
+\(r\le p\), \(g_H=h-p\), and \(h-p>c_H\) at the example's values (Appendix~A.3 of the paper). For \(r\ge h\),
+\(g_H\le\bar g<c_H\), since the example's cost exceeds \(\bar g\). So \(g_H\) meets \(c_H\) in \((p,h)\), where the middle formula applies.
+\begin{align*}
+h-\frac r2-\frac{p^2}{2r}=c_H&\iff 2rh-r^2-p^2=2rc_H \why{multiply by \(2r>0\)}\\
+&\iff r^2-2(h-c_H)\,r+p^2=0 \why{rearrange}\\
+&\iff r=(h-c_H)\pm\sqrt{(h-c_H)^2-p^2} \why{quadratic formula}
+\end{align*}
+The roots are real because \(h-c_H>p\). Their product is \(p^2\), so the lower root lies below \(p\) and the upper
+root lies above \(p\). The upper root is the only point where \(g_H=c_H\), and since \(g_H\) falls strictly, \(g_H(r)>c_H\) exactly
+when \(r<h-c_H+\sqrt{(h-c_H)^2-p^2}\). This bound lies below \(h\):
+\begin{align*}
+h-c_H+\sqrt{(h-c_H)^2-p^2}<h&\iff\sqrt{(h-c_H)^2-p^2}<c_H \why{subtract \(h-c_H\)}\\
+&\iff h^2-2hc_H-p^2<0 \why{square; both sides \(\ge0\)}\\
+&\iff c_H>\frac{h^2-p^2}{2h} \why{divide by \(2h>0\)}
+\end{align*}
+The example's cost satisfies the last line strictly. The bound uses only the auction and \(c_H\), so it holds
+whatever the slot, prior, \(\rho\), \(k\) and research.
+
+The upper end of the cost window, \(c_H\le h-r_2\), is the affordability condition of Proposition~3(c).
+Chapter~\ref{ch:coexistence} uses it.
+
+% ====================================================================
+\section{The entry ceiling and the width of the band}\label{sec:example-ceiling}
+
+\subsection{The entry ceiling}
+
+The entry ceiling \(r_C\) is the strength at which the threshold meets the top posterior, \(\tau(r_C)=M(\tfrac12)\)
+(Section~4.2 of the paper). On the band, \(\tau(r_1)<M<\tau(r_2)\). The threshold is continuous and rises strictly,
+so the intermediate value theorem (Section~\ref{sec:toolkit-monotone}) gives exactly one such strength, and it lies
+between \(r_1\) and \(r_2\). In the example, \(r_C\) lies just below \(r_2\).
+
+\emph{The exclusion condition holds above the ceiling.} Gross profit at every belief falls strictly with strength
+above \(\ell\) (Section~\ref{sec:example-shape}). At the ceiling, \(B_{r_C}(M)=c_H\). So for every \(r\) in
+\((r_C,h)\),
+\begin{align*}
+B_r(M)&<B_{r_C}(M) \why{\(B\) falls strictly in \(r\); \(r>r_C\)}\\
+&=c_H \why{\(\tau(r_C)=M\)}
+\end{align*}
+So (H3) holds with any \(r_2\) in \((r_C,h)\) (Section~4.2 of the paper). Parts (i) and (ii) of Proposition~2 do
+not use the exclusion condition, so they hold whatever \(r_2\) is.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{beliefs}
+\caption{Beliefs and the entry ceiling in the example, at the prior \(\tfrac12\). Panel (a): the preparation
+threshold \(\tau(r)\) rises with strength from \(r_0\) to \(r_2\); the grey band holds every posterior between
+\(m(\tfrac12)\) and \(M(\tfrac12)\); the threshold meets the top of the band at the entry ceiling \(r_C\). Panel (b):
+the strengths from \(r_1\) to \(r_2\) on a finer vertical scale; the shaded band holds every top posterior that puts
+\(r_C\) between \(r_1\) and \(r_2\). The printed values are those of Chapter~\ref{app:numbers}.}
+\label{fig:example-beliefs}
+\end{figure}
+
+\subsection{How to read the figure}
+
+Figure~\ref{fig:example-beliefs} is the paper's Figure~1. In panel (a), the dotted line at the prior \(\tfrac12\)
+lies below the threshold at every strength, so an uninformative price never recruits a high-cost challenger on the
+path. The grey band holds every posterior that an investor strategy can produce, when \(\beta\le1/3\) (Lemma~A.1).
+The threshold curve rises until it meets the top of the band at \(r_C\), just below \(r_2\). To the left of
+\(r_C\), a purchase that lifts the belief to \(M\) recruits; to the right, nothing recruits. Panel (b) enlarges the
+strengths from \(r_1\) to \(r_2\) on a much finer vertical scale. Its shaded band runs from \(\tau(r_1)\) to
+\(\tau(r_2)\), the band of Corollary~1(a), and the example's top posterior lies just below its upper edge.
+
+\subsection{Why the band is narrow}
+
+Both ends of the band are thresholds, so the width of the band is the rise of the threshold from \(r_1\) to
+\(r_2\). The paper explains the narrow band with one sentence: the threshold rises slowly, because class \(H\)'s expected payment
+\(r/2+p^2/(2r)\) rises by less than one half per unit of strength, a change that is small next to the gap
+\(g_H-g_L\) (Section~4.2 of the paper). The next derivation is the guide's own form of this sentence.
+
+\begin{derivation}[the slope of the threshold]
+The threshold moves so that gross profit at the threshold stays equal to the cost: \(B_r(\tau(r))=c_H\) at every
+\(r\). Differentiate both sides in \(r\). The left side depends on \(r\) directly and through \(\tau(r)\).
+\begin{align*}
+0&=\frac{d}{dr}\Bigl[g_L(r)+\tau(r)\,\gamma(r)\Bigr] \why{\(B_r(\tau)=g_L+\tau\gamma\); \(c_H\) fixed}\\
+&=g_L'+\tau'\gamma+\tau\gamma' \why{product rule}\\
+&=g_L'+\tau(g_H'-g_L')+\tau'\gamma \why{\(\gamma'=g_H'-g_L'\)}\\
+&=(1-\tau)\,g_L'+\tau\,g_H'+\tau'\gamma \why{collect \(g_L'\)}
+\end{align*}
+Solve for \(\tau'\):
+\begin{equation*}
+\tau'(r)=\frac{(1-\tau)\,\bigl(-g_L'(r)\bigr)+\tau\,\bigl(-g_H'(r)\bigr)}{\gamma(r)} .
+\end{equation*}
+The numerator is the fall of gross profit at the belief \(\tau\), per unit of strength.
+\end{derivation}
+
+Next, bound the two falls. From Section~\ref{sec:example-shape}:
+\begin{align*}
+-g_H'(r)&=t_H'(r)=\frac12-\frac{p^2}{2r^2}\in\Bigl(0,\frac12\Bigr) \why{class \(H\)'s payment}\\
+-g_L'(r)&=\frac{\ell^2-p^2}{2r^2}<\frac{\ell^2}{2r^2}<\frac12 \why{\(r>\ell\)}
+\end{align*}
+and \(-g_L'(r)>0\). Where \(0\le\tau\le1\), the numerator of \(\tau'\) is an average of two numbers in
+\((0,\tfrac12)\), with weights \(1-\tau\) and \(\tau\). So it lies in \((0,\tfrac12)\), and
+\[
+0<\tau'(r)<\frac{1}{2\gamma(r)} .
+\]
+In words: per unit of strength, the threshold rises by less than one half divided by the profit gap. The gap
+\(\gamma=g_H-g_L=h-\ell-\DT\) is large when the class values lie far apart. Then the threshold barely moves, and two
+strengths a modest distance apart give two thresholds close together. The band of top posteriors between them is
+narrow.
+
+At the other extreme, a small profit gap would let a small fall in profit move the threshold a lot, and the band
+would be wide.
+
+\begin{checkyourself}
+\label{q:example-width}
+Use \(0<\tau'(r)<1/[2\gamma(r)]\) on \([r_1,r_2]\), and the fact that \(\gamma\) falls with \(r\), to show that
+\[
+\tau(r_2)-\tau(r_1)<\frac{r_2-r_1}{2\gamma(r_2)} .
+\]
+Say in words why a large profit gap makes the band of Corollary~1 narrow.
+\end{checkyourself}
+
+% ====================================================================
+\section{The fixed-information control}\label{sec:example-control}
+
+The second part of the chapter asks where the rise in entry comes from. Proposition~2 compares economies in which
+two things change together: the incumbent is stronger, and the information in the price is different. A control
+holds one of them fixed.
+
+\begin{intuition}[hold the information fixed]
+Suppose the challenger learns the same thing about its class whatever the incumbent. A stronger incumbent lowers
+gross profit at every belief (Proposition~1(a)), so a challenger that prepares against the strong incumbent also
+prepares against the weak one. Entry can only fall.
+\end{intuition}
+
+\begin{analogy}[the loudspeaker again]
+Chapter~\ref{ch:ccc} pictured the informed investor as a loudspeaker. Panel~B of the paper's outcome table fixes the
+message at every strength. Panel~C keeps the loudspeaker on but plugs the listener's ears.
+
+Where the analogy breaks: at the weak incumbent the investor would not trade, because trade does not pay there.
+Panel~B forces the message anyway, so at that strength it is not an equilibrium.
+\end{analogy}
+
+\subsection{The statement}
+
+\needspace{10\baselineskip}
+\begin{paperresult}{Proposition A.2 (Fixed information)}
+Fix the joint law of the class \(j\) and a signal \(S\) that the challenger observes. Fix the class value laws
+\(G_j\) and the cost law. In each economy \(i\), require that, conditional on \((j,S)\), the joint law of
+\((\theta,R)\) is \(G_j\otimes F_i\). The cost is independent of the class, both values and \(S\). If the incumbent
+strengthens from \(F_0\) to \(F_1\), entry is nonincreasing when an indifferent high-cost challenger prepares. Its
+decrease is exactly
+\[
+\Ent_0-\Ent_1=\Pr\bigl\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\bigr\},\qquad \mu(S)=\Pr(j=H\mid S),
+\]
+and the decrease is strict exactly when this probability is positive.
+\end{paperresult}
+
+In plain words, line by line:
+\begin{itemize}
+\item \emph{The signal.} \(S\) is whatever the challenger sees before it decides. Its joint law with the class is
+  the same in both economies. So the challenger's belief \(\mu(S)\) has the same law in both economies.
+\item \emph{The product law \(G_j\otimes F_i\).} Given the class and the signal, the challenger's value has the law
+  \(G_j\), the incumbent's value has the law \(F_i\), and the two are independent (Section~4.2 of the paper).
+\item \emph{The cost} has any law, the same in both economies, and is independent of everything else.
+\item \emph{The conclusion.} Under the default tie rule, entry cannot rise. It falls by the probability that the
+  cost lies above gross profit against the strong incumbent and at or below gross profit against the weak one.
+\end{itemize}
+
+\subsection{The proof}
+
+\paragraph{Step 1: the belief at the decision.} The cost is independent of the class, the values and \(S\). So when
+the challenger learns its cost, it learns nothing more about its class. Its complete class belief at the decision is
+\(\mu(S)=\Pr(j=H\mid S)\).
+
+\paragraph{Step 2: gross profit at the decision.} A prepared challenger keeps \((\theta-\max\{p,R\})^+\); for
+\(\theta<p\) this is zero, as for a challenger that does not bid. Average over the class and then over the values.
+\begin{align*}
+\E\bigl[(\theta-\max\{p,R\})^+\mid S\bigr]
+&=\sum_{j}\Pr(j\mid S)\,\E\bigl[(\theta-\max\{p,R\})^+\mid j,S\bigr] \why{total expectation}\\
+&=\bigl(1-\mu(S)\bigr)\,g_L(F_i)+\mu(S)\,g_H(F_i) \why{given \((j,S)\): \(G_j\otimes F_i\)}\\
+&=B_{F_i}\bigl(\mu(S)\bigr) \why{definition of \(B\)}
+\end{align*}
+The second line uses the product law: given \((j,S)\), the pair \((\theta,R)\) has exactly the law that defines
+\(g_j(F_i)\) (Chapter~\ref{ch:auction}).
+
+\paragraph{Step 3: the preparation rule and entry.} The challenger compares its cost with gross profit. When an
+indifferent high-cost challenger prepares, it prepares exactly when \(C\le B_{F_i}(\mu(S))\). Entry is the probability
+of this event:
+\[
+\Ent_i=\Pr\bigl\{C\le B_{F_i}(\mu(S))\bigr\}=\E\bigl[\1\{C\le B_{F_i}(\mu(S))\}\bigr].
+\]
+
+\paragraph{Step 4: gross profit is lower against the stronger incumbent.} Proposition~1(a)
+(Section~\ref{sec:auction-prop1}) gives \(B_{F_1}(\mu)\le B_{F_0}(\mu)\) at every belief \(\mu\). Write
+\(B_0=B_{F_0}(\mu(S))\) and \(B_1=B_{F_1}(\mu(S))\) for short, so \(B_1\le B_0\).
+
+\paragraph{Step 5: a pointwise identity.} Compare the two indicators at each value of \(C\). If \(C\le B_1\), then
+also \(C\le B_0\), and both are one. If \(B_1<C\le B_0\), the first is one and the second is zero. If \(C>B_0\), both
+are zero. So, at every outcome,
+\[
+\1\{C\le B_0\}-\1\{C\le B_1\}=\1\{B_1<C\le B_0\}\ge0 .
+\]
+
+\paragraph{Step 6: take expectations.} The joint law of \((S,C)\) is the same in both economies: the law of \((j,S)\)
+is fixed, and \(C\) is independent of \(S\) with a fixed law. The function \(\mu(\cdot)\) is the same, too. Only the
+function \(B_{F_i}\) changes.
+\begin{align*}
+\Ent_0-\Ent_1&=\E\bigl[\1\{C\le B_0\}\bigr]-\E\bigl[\1\{C\le B_1\}\bigr] \why{Step 3}\\
+&=\E\bigl[\1\{C\le B_0\}-\1\{C\le B_1\}\bigr] \why{linearity; same law of \((S,C)\)}\\
+&=\E\bigl[\1\{B_1<C\le B_0\}\bigr] \why{Step 5}\\
+&=\Pr\bigl\{B_{F_1}(\mu(S))<C\le B_{F_0}(\mu(S))\bigr\}\ge0 \why{expectation of an indicator}
+\end{align*}
+Entry does not rise, and it falls strictly exactly when this probability is positive.
+
+\paragraph{Step 7: another tie rule.} Suppose an indifferent high-cost challenger prepares with a probability \(q\)
+that is the same in both economies, so it prepares with probability \(\1\{C<B_i\}+q\,\1\{C=B_i\}\). With
+\(B_1\le B_0\), the difference of the two expressions is \(0\) for \(C<B_1\) and for \(C>B_0\), \(1-q\) at
+\(C=B_1<B_0\), \(1\) strictly between, \(q\) at \(C=B_0>B_1\), and \(0\) when the two profits are equal. Each value
+is nonnegative, so entry does not rise under this common tie probability either (Appendix~A.6 of the paper).
+
+\emph{The two-point cost.} With \(C\in\{0,c_H\}\), the cost \(C=0\) never lies in the interval
+\((B_1,B_0]\), because gross profit is never negative, \(B_1\ge0\). The cost is \(c_H\) with probability
+\(1-\rho\), independently of \(S\). So
+\[
+\Ent_0-\Ent_1=(1-\rho)\,\Pr\bigl\{B_{F_1}(\mu(S))<c_H\le B_{F_0}(\mu(S))\bigr\}.
+\]
+In words: entry falls by the high-cost share times the probability of a signal whose belief recruits against the
+weak incumbent but not against the strong one.
+
+\begin{watchout}
+The control keeps three independence conditions, and each one is needed.
+\begin{itemize}
+\item \emph{The signal says nothing about the values beyond the class.} If \(S\) carried news about \(\theta\) given
+  the class, gross profit at the decision would not be \(B_{F_i}(\mu(S))\), and Step 2 would fail. The same
+  condition appears in the paper's signal extension (Chapter~\ref{ch:robustness}).
+\item \emph{The incumbent's value is independent of the class and the signal.} Otherwise the signal could carry news about
+  \(R\), and gross profit at the decision would not be computed with \(F_i\).
+\item \emph{The cost is independent of everything.} Otherwise the cost would carry news about the class, and
+  \(\mu(S)\) would not be the belief at the decision (Step 1).
+\end{itemize}
+\end{watchout}
+
+\subsection{The control in the order slot}\label{sec:example-slot}
+
+In the model the challenger sees a price, and the price comes from the order slot. The slot version of the
+experiment fixes \(\lambda\), \(\beta\), \(\pi\), the cost law and both order distributions (Section~4.2 of the
+paper). The appendix uses full orders, \((\sigma_H,\sigma_L)=(\delta_1,\delta_{-1})\): class \(H\) buys and class
+\(L\) sells for sure (Appendix~A.6 of the paper). The question is whether the price then gives the challenger the
+same information at every strength.
+
+\begin{derivation}[competitive prices reveal the same posterior at every strength]
+\emph{Step 1: posteriors.} With full orders, Lemma~A.1(d) gives the posteriors \((m,\pi,M)\) after the orders
+\((-1,0,1)\). They depend only on \(\lambda\), \(\beta\), \(\pi\) and the orders, not on \(r\).
+
+\emph{Step 2: entry and prices.} Let entry follow the threshold rule under the default tie rule,
+\(e_r(\mu)=\rho+(1-\rho)\,\1\{B_r(\mu)\ge c_H\}\). Since \(g_H\ge g_L\), \(B_r\) never falls with the belief, so a
+higher posterior never gets lower entry. Set the competitive price \eqref{eq:beliefs-price},
+\(P(x)=t_0+e_r(\mu(x))\,w(\mu(x))\), with \(w(\mu)=t_L-t_0+\DT\mu\).
+
+\emph{Step 3: each price reveals its posterior.} The paragraph on constructed tuples
+(Section~\ref{sec:beliefs-constructed}) applies when \(\DT>0\): entry is in \([\rho,1]\) and never lower at a higher
+posterior. It gives prices that rise strictly with the posterior. So the three prices differ, and each price reveals
+its posterior.
+
+\emph{Step 4: the signal.} The challenger's belief is \(\mu(X)\), a function of the order. The law of the order given
+the class does not depend on \(r\). Given the class and the order, the values have the law \(G_j\otimes F_r\),
+because the order depends only on the class and the slot draws. So the hypotheses of Proposition~A.2 hold, with the
+order as the signal.
+\end{derivation}
+
+\begin{watchout}
+The slot version keeps the price information fixed only if the spread is positive in each economy that it compares
+(Appendix~A.2 and A.6 of the paper; Section~\ref{sec:beliefs-reveal}).
+\begin{itemize}
+\item With \(\DT=0\), the price is \(P(x)=t_0+e(x)(t_L-t_0)\). It does not move with the posterior. Two orders with
+  different posteriors and the same entry would share one price, and the challenger would see only an average of
+  their posteriors. The information would then differ from the economies with \(\DT>0\).
+\item The entry floor \(\rho>0\) keeps the posterior term \(e(x)\DT\mu(x)\) in the price.
+\item In the example, \(\DT(r)=(r-\ell)^2/(2r)>0\) at every strength above \(\ell\). The spread at the weak
+  incumbent is small, but it is positive, so the control works there too.
+\end{itemize}
+\end{watchout}
+
+\subsection{The control in the example}
+
+Apply the control to the example at the prior \(\tfrac12\), with full orders at every strength on the path.
+
+\emph{Only the top posterior can recruit.} At the example's values, the threshold at \(r=\ell\) exceeds the prior,
+\[
+\tau(\ell)=\frac{2\ell c_H-(\ell^2-p^2)}{2\ell(h-\ell)}>\pi
+\]
+(Appendix~A.6 of the paper), and \(\tau\) rises on \([\ell,h]\). So \(\tau(r)>\pi>m\) at every strength. After a sale or
+no order, entry is \(\rho\). After a purchase, the belief is \(M\), and it recruits exactly when \(M\ge\tau(r)\), that
+is, when \(r\le r_C\).
+
+\emph{Entry with information held fixed.} A purchase has probability \(\pi(b+\lambda)+(1-\pi)b=b+\pi\lambda\).
+\begin{align*}
+r\le r_C:\quad\Ent&=(b+\pi\lambda)\cdot1+\bigl[1-(b+\pi\lambda)\bigr]\rho \why{a purchase recruits}\\
+&=\rho+(1-\rho)\Bigl(b+\frac\lambda2\Bigr) \why{rearrange; \(\pi=\tfrac12\)}\\
+r>r_C:\quad\Ent&=\rho \why{no order recruits}
+\end{align*}
+So entry is \(\rho+(1-\rho)(b+\lambda/2)\) on \((\ell,r_C]\) and \(\rho\) above \(r_C\).
+
+\emph{The probability of Proposition~A.2.} With the two-point cost, the fall is \((1-\rho)\) times the probability
+of an order whose posterior recruits against the weaker incumbent and not against the stronger one.
+\begin{itemize}
+\item From \(r_0\) to \(r_1\): the sale and no order recruit at neither strength, and a purchase recruits at both,
+  since \(r_0<r_1<r_C\). No order switches. The probability is zero, and entry stays the same.
+\item From \(r_1\) to \(r_2\): a purchase recruits at \(r_1\le r_C\) and not at \(r_2>r_C\). The probability is
+  \((1-\rho)\Pr(X=1)=(1-\rho)(b+\lambda/2)\), and entry falls by exactly this amount, to \(\rho\).
+\end{itemize}
+
+\begin{watchout}
+Panel~B imposes full orders. It is a control, and at the weak incumbent it is not an equilibrium. There, the
+purchase earns \(\Delta_0(1-M)-k\) and the sale earns \(\rho\Delta_0m-k\), and both are negative because
+\(\Delta_0<k\). So the investor would rather abstain (Appendix~A.6 of the paper). At \(r_1\), the bound
+\(\rho\kappa\Delta_1>k\) forces full orders in every candidate (Step~2 of the proof of Proposition~2), so the
+imposed profile is the unique equilibrium there. Keep the distinction of Chapter~\ref{ch:model}: the control fixes
+the orders across economies, while each equilibrium comparison solves every economy again.
+\end{watchout}
+
+\begin{checkyourself}
+\label{q:example-control}
+In the slot version of the control in the example, at the prior \(\tfrac12\), take two strengths \(r<r'\) in
+\((\ell,h)\). Find the probability of Proposition~A.2 in three cases: (a)~\(r<r'\le r_C\); (b)~\(r\le r_C<r'\);
+(c)~\(r_C<r<r'\). In each case, say in words why entry changes or does not change.
+\end{checkyourself}
+
+% ====================================================================
+\section{The two panels and what they show}\label{sec:example-panels}
+
+The paper's outcome table (Table~3 of the paper) has three panels for the example. Panel~A lists the equilibrium of
+Proposition~2 at \(r_0\), \(r_1\) and \(r_2\): entry rises from \(\rho\) and falls back to \(\rho\). Panels~B and~C are
+the two controls. Both compare \(r_0\) with \(r_1\). The numbers are in Chapter~\ref{app:numbers}; this section reads
+the panels in words.
+
+\subsection{Panel B: full orders held fixed}
+
+Panel~B imposes full orders at both strengths, so the posteriors are the same at \(r_0\) and \(r_1\), and the
+prices reveal them. Only the top posterior can recruit, and it recruits at both strengths, because both lie below
+the entry ceiling. So entry is the same at the two strengths, and it equals the entry of Panel~A at \(r_1\). With information fixed,
+entry stays constant from \(r_0\) to \(r_1\) and falls only above the entry ceiling \(r_C\). This is
+Proposition~A.2 at work: at fixed information, a stronger incumbent never raises entry.
+
+\subsection{Panel C: the challenger does not see the price}
+
+Panel~C hides the price from the challenger. The challenger then decides on its prior. Gross profit at the prior
+falls short of the high cost at both strengths: \(B_{r_1}(\pi)\le B_{r_0}(\pi)<c_H\), by Proposition~1(a) and the left
+side of (H1). So only the zero-cost challenger prepares, and entry stays at the floor \(\rho\) after every order, at
+both strengths.
+
+The investor still never trades at \(r_0\), and it still trades fully at \(r_1\), where the trading bound with
+entry fixed at \(\rho\) exceeds the trading cost (Appendix~A.6 of the paper). The price at \(r_1\) carries
+information, but nobody who decides on entry reads it.
+
+\subsection{What the two controls show together}
+
+Each control removes one link of the chain in Proposition~2.
+\begin{itemize}
+\item Panel~B removes the change in information and keeps the change in strength. Entry does not rise. So the
+  stronger incumbent, by itself, does not create the rise.
+\item Panel~C keeps the trade that the stronger incumbent creates, and it cuts the link from the price to the
+  challenger. Entry does not rise. So trade, by itself, does not create the rise either.
+\end{itemize}
+Only Panel~A has both links: the stronger incumbent makes informed trade pay, the trade puts information into the
+price, and the challenger reads it. The paper concludes that the two controls locate the reversal in the information
+that trading creates (Section~4.2 of the paper). Incumbent strength changes that information, and the entry response
+to it exceeds the direct deterrence of a stronger incumbent at fixed information.
+
+A picture to keep in mind, which is the guide's own use of the table, splits the rise from \(r_0\) to \(r_1\) into two
+moves. First, at the weak incumbent, switch from the silent price of Panel~A to the full-order information of
+Panel~B: entry rises from \(\rho\) to \(\rho+(1-\rho)(b+\lambda/2)\), the response to information. Second, at
+full-order information, strengthen the incumbent from \(r_0\) to \(r_1\): entry does not change, so deterrence at
+fixed information is zero over this step. The two moves together give the rise of Panel~A. Deterrence at fixed information becomes positive only above the
+entry ceiling, where it removes the recruitment after a purchase. That is the fall from \(r_1\) to \(r_2\).
+
+\begin{checkyourself}
+\label{q:example-hidden}
+In Panel~C the challenger decides on its prior.
+(a)~Show that the investor at \(r_1\) still buys in class \(H\) and sells in class \(L\), although no purchase recruits.
+(b)~Write the three prices at \(r_1\), and show that they differ.
+(c)~Explain why entry is still \(\rho\).
+\end{checkyourself}
+
+% ====================================================================
+\begin{chaptersummary}
+\begin{itemize}
+\item The example has one value in each class, a reserve below both values, and an incumbent uniform on \([0,r]\)
+  with \(\ell<r<h\); a larger \(r\) is a stronger incumbent, and class \(H\) always wins.
+\item Its auction objects have closed forms: \(g_H=h-r/2-p^2/(2r)\), \(g_L=(\ell^2-p^2)/(2r)\) and
+  \(\DT=(r-\ell)^2/(2r)\); both profits fall strictly and the spread rises strictly with \(r\), and
+  \(\DT+g_H-g_L=h-\ell\).
+\item The threshold \(\tau(r)=[2rc_H-(\ell^2-p^2)]/(2rh-r^2-\ell^2)\) rises slowly, by less than \(1/(2\gamma)\) per unit
+  of strength, because class \(H\)'s payment rises by less than one half per unit.
+\item At the prior \(\tfrac12\), (H1)--(H3) hold exactly when the top posterior lies between \(\tau(r_1)\) and
+  \(\tau(r_2)\); they depend on the slot only through \(u\), and they hold on an open set of parameters.
+\item The entry ceiling \(r_C\), where \(\tau(r_C)=M(\tfrac12)\), lies just below \(r_2\); with a high cost above
+  \((h^2-p^2)/(2h)\), class \(H\) outbids every uniform incumbent against which a price recruits.
+\item At fixed information, a stronger incumbent can only lower entry, by the probability that the cost lies between
+  the two gross profits; in the slot this needs a positive spread in each economy.
+\item With full orders held fixed, entry is flat from \(r_0\) to \(r_1\); with the price hidden, entry stays at
+  \(\rho\); so the rise comes from the information that trading puts into the price.
+\end{itemize}
+\end{chaptersummary}
+
+% ====================================================================
+\answersection
+
+\answer{\ref{q:example-reserve}}{%
+(a)~In Table~\ref{tab:example-cases}, the first two rows give the same price for both classes: \(p\) when \(R<p\),
+and \(R\) when \(p\le R<\ell\). Only the third row differs: class \(H\) pays \(R\), and with class \(L\) the incumbent
+pays \(\ell\). In that row \(R>\ell>p\), so the reserve does not bind for either class. The reserve enters both
+classes' proceeds in the same way and cancels in the difference:
+\begin{align*}
+t_H-t_L&=\frac1r\int_\ell^r(y-\ell)\,dy \why{only the third row differs}\\
+&=\frac{(r-\ell)^2}{2r} \why{the integral}
+\end{align*}
+(b)~\(g_L=(\ell^2-p^2)/(2r)\) falls as \(p\) rises, and it tends to zero as \(p\) approaches \(\ell\). In words, class
+\(L\) earns \(\ell-\max\{p,R\}\) only when \(R<\ell\). This margin is at most \(\ell-p\), so a reserve near \(\ell\)
+leaves class \(L\) almost nothing.}
+
+\answer{\ref{q:example-ceiling}}{%
+(a)~In the band, \(\tau(r_1)<M(\tfrac12)<\tau(r_2)\). The threshold is continuous and rises strictly on the path
+(Section~\ref{sec:example-shape}). The intermediate value theorem gives a strength \(r_C\) in \((r_1,r_2)\) with
+\(\tau(r_C)=M(\tfrac12)\), and strict monotonicity makes it unique.
+
+(b)~\(M(\tfrac12)=(1+u)/(2+u)=1-1/(2+u)\) rises strictly with \(u\). The threshold curve does not depend on the
+slot. A higher level \(M\) meets an increasing curve further to the right, so \(r_C\) moves to a higher strength. In words,
+more informed presence relative to liquidity makes a purchase stronger news, and stronger news
+recruits against stronger incumbents.
+
+(c)~For \(u_{\rm hi}\le u<u_k\), \(M\ge\tau(r_2)\), so \(r_C\ge r_2\). Orders are still full at \(r_2\), because the
+trading bound forces them (Corollary~1(b)). A purchase at \(r_2\) lifts the belief to \(M\ge\tau(r_2)\) and recruits
+under the default tie rule. Entry at \(r_2\) is then \(\rho+(1-\rho)(b+\lambda/2)\) instead of \(\rho\), and the fall
+of entry from \(r_1\) to \(r_2\) disappears.}
+
+\answer{\ref{q:example-width}}{%
+The fundamental theorem of calculus writes the rise of \(\tau\) as the integral of its slope.
+\begin{align*}
+\tau(r_2)-\tau(r_1)&=\int_{r_1}^{r_2}\tau'(r)\,dr \why{fundamental theorem of calculus}\\
+&<\int_{r_1}^{r_2}\frac{1}{2\gamma(r)}\,dr \why{\(\tau'<1/(2\gamma)\)}\\
+&\le\int_{r_1}^{r_2}\frac{1}{2\gamma(r_2)}\,dr \why{\(\gamma(r)\ge\gamma(r_2)>0\) for \(r\le r_2\)}\\
+&=\frac{r_2-r_1}{2\gamma(r_2)} \why{a constant integrand}
+\end{align*}
+The third line uses \(\gamma'=-\DT'<0\): the profit gap falls with \(r\), so it is smallest at \(r_2\), and its
+reciprocal is largest there. The bound \(\tau'<1/(2\gamma)\) needs \(0\le\tau\le1\) on \([r_1,r_2]\), which holds in the
+example.
+
+In words: per unit of strength, gross profit at the threshold falls by less than one half, and the belief must
+rise by that fall divided by the slope \(\gamma\) of gross profit in the belief. A steep line, that is, a large
+profit gap, needs only a small move of the belief, so the two ends of the band lie close together.}
+
+\answer{\ref{q:example-control}}{%
+With full orders the posteriors are \((m,\tfrac12,M)\) at every strength. A sale and no order never recruit, because
+\(\tau>\tfrac12>m\) on the path. A purchase recruits at a strength \(s\) exactly when \(s\le r_C\). By
+Proposition~A.2 with the two-point cost, the probability is \((1-\rho)\) times the probability of an order that
+recruits at \(r\) and not at \(r'\).
+\begin{itemize}
+\item[(a)] \(r<r'\le r_C\): a purchase recruits at both strengths. No order switches, so the probability is zero.
+  Gross profit at \(M\) falls, but it still covers \(c_H\) at \(r'\). Entry stays at \(\rho+(1-\rho)(b+\lambda/2)\).
+\item[(b)] \(r\le r_C<r'\): a purchase recruits at \(r\) and not at \(r'\). The probability is
+  \((1-\rho)\Pr(X=1)=(1-\rho)(b+\lambda/2)\). Entry falls from \(\rho+(1-\rho)(b+\lambda/2)\) to \(\rho\).
+\item[(c)] \(r_C<r<r'\): no order recruits at either strength. The probability is zero, and entry stays at \(\rho\).
+\end{itemize}
+So entry with information held fixed is a step: flat, then one drop at the ceiling, then flat. It never rises.}
+
+\answer{\ref{q:example-hidden}}{%
+(a)~The challenger ignores the price, so entry is \(e(x)=\rho\) after every order in every candidate. The trading
+returns of the two correct orders then satisfy
+\begin{align*}
+K_H&=\rho\,\Delta_1\,[1-\mu(1)] \why{\eqref{eq:trading-returns} with \(e(1)=\rho\)}\\
+&\ge\rho\,\Delta_1\,[1-M] \why{\(\mu(1)\le M\), Lemma~A.1(b)}\\
+&\ge\rho\,\kappa\,\Delta_1>k \why{definition of \(\kappa\); right side of (H2)}
+\end{align*}
+and in the same way \(K_L=\rho\Delta_1\mu(-1)\ge\rho\, m\,\Delta_1\ge\rho\kappa\Delta_1>k\). So in every candidate a
+purchase beats abstention in class \(H\), and a sale beats abstention in class \(L\) (Lemma~A.3(b)). Wrong-signed
+orders lose (Lemma~A.3(a)). So the investor trades fully, and no recruitment is needed for this.
+
+(b)~With full orders, the posteriors are \((m,\pi,M)\). Write \(w_L=t_{L,1}-t_{0,1}\). The prices are
+\(P(x)=t_{0,1}+\rho\,[w_L+\Delta_1\mu(x)]\), so
+\begin{align*}
+P(0)-P(-1)&=\rho\,\Delta_1\,(\pi-m) \why{\(t_{0,1}\) and \(\rho w_L\) cancel}\\
+P(1)-P(0)&=\rho\,\Delta_1\,(M-\pi) \why{same steps}
+\end{align*}
+Both differences are positive, because \(\rho>0\), \(\Delta_1>0\) and \(m<\pi<M\). So the three prices differ, and the
+price moves with the order.
+
+(c)~The challenger does not see the price, so its belief stays at the prior \(\pi\). Gross profit there is
+\(B_{r_1}(\pi)\le B_{r_0}(\pi)<c_H\), by Proposition~1(a) and the left side of (H1). A high-cost challenger never
+prepares, and only the zero-cost challenger does. Entry is \(\rho\) after every order. The information is in the
+price, but nobody who decides on entry reads it.}

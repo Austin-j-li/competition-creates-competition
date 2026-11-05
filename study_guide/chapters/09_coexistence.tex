@@ -1,0 +1,1787 @@
+\chapter{Quiet and informative markets}\label{ch:coexistence}
+
+\begin{chapterplan}
+The question of this chapter: against one and the same incumbent, can the price stay silent in one equilibrium and
+recruit a high-cost challenger in another, and where along a path of incumbents does this happen?
+
+After this chapter you can:
+\begin{itemize}
+\item explain in words why a quiet market and an informative market can each confirm itself against the same
+incumbent;
+\item derive the condition for a quiet market and the four conditions for coexistence, one step at a time;
+\item derive the purchase probability of class \(H\) and entry in the informative market, and show that entry rises
+with the spread while class \(H\) mixes;
+\item prove the three parts of Proposition~3 with the lemmas on the high class, the low class and the product
+structure;
+\item read Corollary~2 and Figure~\ref{fig:coexistence-path}, name the marked strengths in their order, and say which
+conclusions depend on the tie rules.
+\end{itemize}
+\end{chapterplan}
+
+% =====================================================================
+\section{Two ways for one market to work}\label{sec:coexistence-words}
+
+Chapter~\ref{ch:ccc} compared three economies and found exactly one equilibrium in each. There the strict
+conditions (H1) to (H3) fixed the investor's orders before anything else: against the weak incumbent no order could
+pay, and against the strong incumbent every correct order paid. This chapter looks at the strengths between those
+two. There the trading bound \eqref{eq:trading-bound} does not decide the orders (Section~\ref{sec:trading-bound}),
+and the answer depends on what the market expects.
+
+Fix one incumbent. Suppose first that nobody expects the price to recruit a high-cost challenger. Then entry is the
+floor \(\rho\) after every order. An informed order earns entry times the spread times the doubt that remains about
+the class (Section~\ref{sec:trading-returns}), so with entry at the floor it earns little. If this is below the
+trading cost \(k\), the investor stays out. With no informed orders, every order comes from a liquidity trader, the
+price says nothing, and the belief stays at the prior. If the prior lies below the preparation threshold, no
+high-cost challenger prepares. So nobody has a reason to expect recruitment, and the expectation confirms itself.
+This is a \emph{quiet market}.
+
+Suppose instead that everybody expects a purchase to recruit. Then entry after a purchase is one. At a fixed
+posterior, this multiplies the return of a purchase by \(1/\rho\). If the larger return covers \(k\), class \(H\)
+buys. Its purchases make a purchase good news about class \(H\). If the posterior after a purchase reaches the
+threshold \(\tau\), a high-cost challenger does prepare after a purchase. Again the expectation confirms itself.
+This is an \emph{informative market}.
+
+Both stories use the same incumbent, the same costs and the same order slot. Only the expectation differs. Each
+story is an equilibrium in the sense of Section~\ref{sec:toolkit-games}: given what the others do, no player gains
+by a change of its own plan alone. That section named this case as its example of several equilibria.
+
+\begin{keyidea}
+Recruitment raises the return of a purchase, and informed purchases are what make recruitment happen. So ``no
+trade and no recruitment'' and ``trade and recruitment'' can both be consistent against one incumbent.
+\end{keyidea}
+
+\begin{analogy}[a scout and a club]
+This analogy is the guide's own. A scout knows whether a young player is good. A tip to a club costs the scout a
+fixed fee to send. The scout earns a share of the gain only when the club invites the player to a trial, and a trial
+is expensive for the club.
+
+Suppose that clubs ignore tips. Then a tip rarely leads to a trial and earns little, so the scout does not pay the
+fee. No tips arrive, and the clubs are right to ignore the tip line. Suppose instead that clubs invite a player after
+a tip. Then a tip earns much more, and the scout sends tips about good players. A tip becomes good news, and the
+clubs are right to invite.
+
+Where the analogy breaks:
+\begin{itemize}
+\item The investor is not paid by the challenger. It earns from trade, and market makers put the expected entry
+into the price. So the investor earns only on the doubt that remains after its order.
+\item A liquidity trader can place the same order. A purchase is never proof of class \(H\).
+\item In the model some challengers prepare whatever the price says: the zero-cost challenger, with probability
+\(\rho\). So even a silent price leaves the investor a small return. A very wide spread makes this small return
+cover \(k\), and then the quiet market ends.
+\item When a purchase earns exactly \(k\), the investor may buy with any probability. The model uses this: in an
+informative market class \(H\) may mix.
+\end{itemize}
+\end{analogy}
+
+Lemma~A.4 (Section~\ref{sec:trading-twonumbers}) says that orders, posteriors and entry depend on the auction only
+through two numbers: the spread \(\DT\) and the threshold \(\tau\). So the incumbents at which both markets exist form
+a region in the plane of these two numbers. Section~4.3 of the paper describes the region in words:
+\begin{itemize}
+\item the threshold lies above the prior, so an uninformative price does not recruit;
+\item the threshold lies within reach of a purchase;
+\item the spread is wide enough that a purchase that just reaches the threshold, and recruits, covers \(k\);
+\item the spread is narrow enough that no order against an uninformative price earns more than \(k\).
+\end{itemize}
+Sections~\ref{sec:coexistence-quiet} and~\ref{sec:coexistence-informative} derive each condition.
+
+% =====================================================================
+\section{The set-up}\label{sec:coexistence-setup}
+
+This section recalls the symbols of the chapter and adds a few short names from Appendix~A.4 of the paper.
+\begin{itemize}
+\item The challenger's class is \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\in(0,1)\).
+\item With probability \(\lambda\in(0,1)\) the informed investor fills the order slot. It knows the class and places
+\(q\in\{-1,0,1\}\). A nonzero order costs \(k>0\). Otherwise a liquidity trader sells, abstains or buys with
+probabilities \(\beta\), \(1-2\beta\) and \(\beta\). Appendix~A.4 fixes \(0<\beta<1/2\).
+\item A liquidity order in one direction has probability \(b=(1-\lambda)\beta\), a liquidity abstention has
+probability \(b_0=(1-\lambda)(1-2\beta)\), and \(u=\lambda/b\).
+\item The posterior after the order \(x\) is \(\mu(x)\). The top and bottom posteriors are \(M=M(\pi)\) and
+\(m=m(\pi)\) of \eqref{eq:beliefs-bounds}.
+\item The preparation cost is zero with probability \(\rho\in(0,1)\) and \(c_H>0\) otherwise. Entry after the order
+\(x\) is \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\), so \(e(x)\ge\rho\): the entry floor.
+\item The incumbent law \(F\) is continuous, with a positive spread \(\DT=t_H-t_L>0\) and \(g_H>g_L\). The
+preparation threshold is \(\tau=(c_H-g_L)/(g_H-g_L)\), equation \eqref{eq:beliefs-threshold}.
+\item The gross returns of the two correct orders are \(K_H=e(1)\DT[1-\mu(1)]\) and \(K_L=e(-1)\DT\mu(-1)\),
+equation \eqref{eq:trading-returns}. A wrong-signed order earns at most \(-k\) (Lemma~A.3(a)). Class \(H\) buys if
+\(K_H>k\) and abstains if \(K_H<k\); at \(K_H=k\) both orders are best (Lemma~A.3(b)). Class \(L\) is the same with
+\(K_L\) and a sale.
+\item The default tie rules (Section~\ref{sec:model-ties}): an indifferent investor may mix over its best orders,
+and an indifferent high-cost challenger prepares.
+\end{itemize}
+
+With \(\DT>0\), \(g_H>g_L\) and \(\rho>0\), the price reveals the posterior (Section~\ref{sec:beliefs-reveal}). Under
+the default challenger rule, entry follows the posterior (Lemma~A.2(d)):
+\[
+e(x)=\rho\quad\text{if }\mu(x)<\tau,\qquad e(x)=1\quad\text{if }\mu(x)\ge\tau .
+\]
+
+The paper uses two words for equilibria. A \emph{quiet market} is an equilibrium in which both classes abstain,
+\(\sigma_H=\sigma_L=\delta_0\). An \emph{informative market} is an equilibrium with informed trade: some class places
+a nonzero order with positive probability.
+
+Appendix~A.4 adds three short names:
+\[
+J=\DT\,(1-\tau),\qquad \DT^{\rm F}=\frac{k}{1-M},\qquad \DT^{\rm N}=\frac{k}{\rho\max\{\pi,1-\pi\}} .
+\]
+\begin{itemize}
+\item \(J\) is the gross return of a purchase whose posterior just reaches the threshold and that recruits: put
+\(e(1)=1\) and \(\mu(1)=\tau\) into \(K_H\) (Section~\ref{sec:trading-path}).
+\item \(\DT^{\rm F}\) is the spread at which a full purchase that recruits earns exactly \(k\):
+\(\DT^{\rm F}(1-M)=k\).
+\item \(\DT^{\rm N}\) is the spread at which the better of the two unit orders against an uninformative price, with
+entry \(\rho\), earns exactly \(k\). Section~\ref{sec:coexistence-quiet} derives it.
+\end{itemize}
+The letters follow the paper's labels: F for a full purchase, N for a quiet market.
+
+\subsection{The posterior after a purchase and after a sale}
+
+By Lemma~A.3(a), no equilibrium puts weight on a wrong-signed order. So class \(L\) never buys and class \(H\) never
+sells. Write
+\[
+s_+=\lambda\,\sigma_H(1),\qquad s_-=\lambda\,\sigma_L(-1)
+\]
+for the probability that the investor is present and buys in class \(H\), and that it is present and sells in
+class \(L\). The guide calls them the purchase rate and the sale rate. Both lie in \([0,\lambda]\).
+
+\begin{derivation}[order probabilities]
+Equation~\eqref{eq:model-orderprob} gives \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\). In class \(H\),
+\(\sigma_H(-1)=0\) and \(\lambda\sigma_H(0)=\lambda-s_+\). In class \(L\), \(\sigma_L(1)=0\) and
+\(\lambda\sigma_L(0)=\lambda-s_-\). So, on the orders \((-1,0,1)\),
+\begin{align*}
+f_H &= \bigl(b,\; b_0+\lambda-s_+,\; b+s_+\bigr), \why{liquidity part plus informed part}\\
+f_L &= \bigl(b+s_-,\; b_0+\lambda-s_-,\; b\bigr). \why{the same in class \(L\)}
+\end{align*}
+\end{derivation}
+
+Bayes' rule (Section~\ref{sec:toolkit-bayes}) turns these into posteriors. Write \(\mu_+(s_+)\) for the posterior
+after a purchase and \(\mu_-(s_-)\) for the posterior after a sale.
+
+\begin{derivation}[the posteriors]
+\begin{align*}
+\mu_+(s_+) &= \frac{\pi(b+s_+)}{\pi(b+s_+)+(1-\pi)\,b} \why{Bayes' rule at \(x=1\)}\\
+&= \frac{\pi(b+s_+)}{b+\pi s_+} \why{\(\pi b+(1-\pi)b=b\)}\\[3pt]
+1-\mu_+(s_+) &= \frac{b+\pi s_+-\pi b-\pi s_+}{b+\pi s_+} \why{common denominator}\\
+&= \frac{(1-\pi)\,b}{b+\pi s_+} \why{collect terms}\\[3pt]
+\mu_-(s_-) &= \frac{\pi b}{\pi b+(1-\pi)(b+s_-)} \why{Bayes' rule at \(x=-1\)}\\
+&= \frac{\pi b}{b+(1-\pi)s_-} \why{\(\pi b+(1-\pi)b=b\)}
+\end{align*}
+The odds form (Section~\ref{sec:toolkit-odds}) gives the zero order:
+\[
+\frac{\mu_0}{1-\mu_0}=\frac{\pi}{1-\pi}\cdot\frac{b_0+\lambda-s_+}{b_0+\lambda-s_-}.
+\]
+\end{derivation}
+
+Each posterior moves in one direction with its rate.
+\begin{itemize}
+\item In \(1-\mu_+(s)=(1-\pi)b/(b+\pi s)\), the numerator is fixed and the denominator rises with \(s\). So \(\mu_+\)
+rises strictly. At \(s=0\) it is \(\pi\). As \(s\) grows without bound, the formula approaches one.
+\item In \(\mu_-(s)=\pi b/[b+(1-\pi)s]\), the numerator is fixed and the denominator rises with \(s\). So \(\mu_-\)
+falls strictly from \(\pi\) at \(s=0\).
+\end{itemize}
+At the full rate \(s=\lambda\), the two formulas give the bounds of \eqref{eq:beliefs-bounds}:
+\begin{align*}
+1-M &= \frac{1-\pi}{\pi(1+u)+1-\pi} \why{one minus \(M(\pi)\)}\\
+&= \frac{(1-\pi)\,b}{\pi(b+\lambda)+(1-\pi)\,b} \why{multiply above and below by \(b\); \(bu=\lambda\)}\\
+&= \frac{(1-\pi)\,b}{b+\pi\lambda}=1-\mu_+(\lambda) \why{\(\pi b+(1-\pi)b=b\)}
+\end{align*}
+In the same way, \(m=\pi b/[b+(1-\pi)\lambda]=\mu_-(\lambda)\). So on \([0,\lambda]\) the posterior after a purchase
+rises from \(\pi\) to \(M\), and the posterior after a sale falls from \(\pi\) to \(m\).
+
+\begin{intuition}[a purchase is better news when class \(H\) buys more often]
+The liquidity purchases are a fixed cover in both classes. Each extra purchase by class \(H\) tilts the pool of
+purchases toward class \(H\). So the more often class \(H\) buys, the more a purchase reveals, and the less doubt it
+leaves.
+\end{intuition}
+
+\subsection{The purchase rate that just reaches the threshold}
+
+Let \(\pi<\tau<1\). At which purchase rate does the posterior after a purchase equal \(\tau\)?
+
+\begin{derivation}[the rate \(s^*\)]
+\begin{align*}
+\frac{\pi(b+s)}{b+\pi s} &= \tau \why{the posterior equals the threshold}\\
+\pi(b+s) &= \tau(b+\pi s) \why{multiply by \(b+\pi s>0\)}\\
+\pi b+\pi s &= \tau b+\tau\pi s \why{expand}\\
+\pi s-\tau\pi s &= \tau b-\pi b \why{collect the terms in \(s\) on the left}\\
+\pi s\,(1-\tau) &= b\,(\tau-\pi) \why{factor}\\
+s^* &= \frac{b\,(\tau-\pi)}{\pi\,(1-\tau)} \why{divide by \(\pi(1-\tau)>0\)}
+\end{align*}
+\end{derivation}
+
+The rate \(s^*\) is positive because \(\tau>\pi\). Since \(\mu_+\) rises strictly:
+\begin{itemize}
+\item \(\mu_+(s_+)<\tau\) exactly when \(s_+<s^*\);
+\item \(s^*\le\lambda\) exactly when \(\tau=\mu_+(s^*)\le\mu_+(\lambda)=M\), and \(s^*<\lambda\) exactly when \(\tau<M\);
+\item if \(\tau\ge M\), every \(s_+<\lambda\) has \(\mu_+(s_+)<M\le\tau\), so no purchase at a rate below \(\lambda\)
+reaches the threshold.
+\end{itemize}
+In words, \(s^*\) is the least purchase rate at which a purchase is good enough news to recruit.
+
+% =====================================================================
+\section{The quiet market}\label{sec:coexistence-quiet}
+
+In a quiet market both classes abstain, so \(s_+=s_-=0\). This section finds when it is an equilibrium, in the case
+\(\pi<\tau\). The proof of Proposition~3(a) treats the case \(\pi\ge\tau\) (Section~\ref{sec:coexistence-proof-a}).
+
+The intuition is short. In a quiet market the price is silent, so the only entry that an informed order can use is
+the floor: the zero-cost challenger prepares whatever the price says. A deviation by the investor therefore earns
+\(\rho\DT\) times the doubt at the prior. The quiet market survives as long as this floor return stays at or below
+\(k\) in both classes.
+
+\begin{derivation}[the quiet market, when \(\pi<\tau\)]
+\emph{Step 1: every posterior is the prior.} With \(s_+=s_-=0\), the order probabilities of
+Section~\ref{sec:coexistence-setup} agree in the two classes: \(f_H=f_L=(b,\,b_0+\lambda,\,b)\). The odds form gives
+\begin{align*}
+\frac{\mu(x)}{1-\mu(x)} &= \frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)} \why{odds form of Bayes' rule}\\
+&= \frac{\pi}{1-\pi} \why{\(f_H(x)=f_L(x)\)}
+\end{align*}
+Equal odds give equal probabilities, so \(\mu(x)=\pi\) after every order. This is Step~1 of Part~(i) in
+Section~\ref{sec:ccc-proof}.
+
+\emph{Step 2: one price, and entry at the floor.} Every belief is \(\pi<\tau\), so a high-cost challenger stays out,
+with no tie, and \(e(x)=\rho\) after every order. The price formula \eqref{eq:beliefs-price} gives the same price
+\(t_0+\rho\,[t_L-t_0+\DT\pi]\) after every order. This single price pools all orders, and its belief is \(\pi\).
+
+\emph{Step 3: the deviations.} A deviation by the investor faces the candidate's price and entry
+(Section~\ref{sec:model-ties}). After a purchase, the price is the pooled price, with belief \(\pi\) and entry
+\(\rho\). So
+\begin{align*}
+K_H &= e(1)\,\DT\,[1-\mu(1)] \why{equation~\eqref{eq:trading-returns}}\\
+&= \rho\,\DT\,(1-\pi) \why{\(e(1)=\rho\), \(\mu(1)=\pi\)}\\[3pt]
+K_L &= e(-1)\,\DT\,\mu(-1) \why{equation~\eqref{eq:trading-returns}}\\
+&= \rho\,\DT\,\pi \why{\(e(-1)=\rho\), \(\mu(-1)=\pi\)}
+\end{align*}
+
+\emph{Step 4: abstention must be a best order.} A wrong-signed order earns at most \(-k<0\). Abstention earns zero.
+By Lemma~A.3(b), abstention is a best order of class \(H\) exactly when \(K_H\le k\). If \(K_H<k\), it is the only
+best order. If \(K_H=k\), the purchase and abstention are both best, and the default investor rule allows any mix,
+so abstention for sure is allowed. The same holds for class \(L\) with \(K_L\).
+
+\emph{Step 5: combine.}
+\begin{align*}
+&\rho\,\DT\,(1-\pi)\le k\ \text{ and }\ \rho\,\DT\,\pi\le k \why{Steps 3 and 4}\\
+&\iff \rho\,\DT\,\max\{\pi,1-\pi\}\le k \why{both hold exactly when the larger one holds}\\
+&\iff \DT\le\frac{k}{\rho\max\{\pi,1-\pi\}}=\DT^{\rm N} \why{divide by \(\rho\max\{\pi,1-\pi\}>0\)}
+\end{align*}
+\end{derivation}
+
+So, when \(\pi<\tau\),
+\begin{equation}\label{eq:coexistence-quiet}
+\text{a quiet market is an equilibrium}\iff\DT\le\DT^{\rm N}=\frac{k}{\rho\max\{\pi,1-\pi\}} .
+\end{equation}
+There is then exactly one quiet market: its entry is \(\rho\) after every order, and the price formula fixes its
+price.
+
+\paragraph{What this says.} The quiet market needs a narrow spread. It does not need a wide one, because nothing in it
+uses the spread to pay for trade. Test the extremes.
+\begin{itemize}
+\item As \(\rho\) falls toward zero, \(\DT^{\rm N}\) grows without bound. Without the zero-cost challenger, a silent
+price would give an informed order nothing, and a quiet market would survive every spread.
+\item At the prior \(1/2\), \(\max\{\pi,1-\pi\}=1/2\) and \(\DT^{\rm N}=2k/\rho\). This is the largest value of
+\(\DT^{\rm N}\) over all priors, because \(\max\{\pi,1-\pi\}\ge1/2\).
+\item For a prior near zero or one, \(\max\{\pi,1-\pi\}\) is near one and \(\DT^{\rm N}\) is near \(k/\rho\).
+\end{itemize}
+
+\begin{watchout}
+In Step~3 a purchase does not recruit, because the price after a purchase is the pooled price with belief \(\pi\). A
+deviation faces the candidate's prices and entry. It does not bring the informative market with it. The comparison of
+the two markets is a comparison of two equilibria, each solved on its own.
+\end{watchout}
+
+\begin{checkyourself}\label{q:coexistence-binds}
+Let \(\pi>1/2\) and \(\pi<\tau\). In a quiet market, which of \(K_H\) and \(K_L\) is larger, and which class is
+closer to trade? In the trading bound of Section~\ref{sec:trading-bound}, the class that the prior favours binds.
+Explain in words why the quiet market gives the opposite answer.
+\end{checkyourself}
+
+% =====================================================================
+\section{The informative market}\label{sec:coexistence-informative}
+
+Keep \(\pi<\tau\), and let the quiet market be an equilibrium: \(\DT\le\DT^{\rm N}\). This section finds every
+informative market that can exist next to it. The argument has four steps: the low class, the zero order, the
+purchase, and the purchase rate.
+
+\paragraph{Step 1: class \(L\) abstains.} A sale is bad news for class \(H\), so it never recruits. It earns at floor
+entry, and the quiet-market condition says that orders at floor entry do not pay, even at the prior. A sale that the
+market expects pays even less, because it leaves less doubt.
+
+\begin{derivation}[class \(L\) abstains]
+The posterior after a sale is \(\mu_-(s_-)\le\mu_-(0)=\pi<\tau\), so \(e(-1)=\rho\). Suppose \(s_->0\). Then
+\begin{align*}
+K_L &= e(-1)\,\DT\,\mu_-(s_-) \why{equation~\eqref{eq:trading-returns}}\\
+&= \rho\,\DT\,\mu_-(s_-) \why{\(e(-1)=\rho\)}\\
+&< \rho\,\DT\,\pi \why{\(\mu_-(s_-)<\pi\) for \(s_->0\); \(\rho\DT>0\)}\\
+&\le \rho\,\DT\,\max\{\pi,1-\pi\}\le k \why{\(\DT\le\DT^{\rm N}\), equation~\eqref{eq:coexistence-quiet}}
+\end{align*}
+So class \(L\) strictly prefers abstention (Lemma~A.3(b)), and it cannot sell with positive probability. Hence
+\(s_-=0\).
+\end{derivation}
+
+\paragraph{Step 2: only a purchase can recruit.} With \(s_-=0\), the sale has the posterior \(\mu_-(0)=\pi<\tau\).
+For the zero order,
+\begin{align*}
+\frac{b_0+\lambda-s_+}{b_0+\lambda} &\le 1 \why{\(s_+\ge0\)}\\
+\frac{\mu_0}{1-\mu_0}=\frac{\pi}{1-\pi}\cdot\frac{b_0+\lambda-s_+}{b_0+\lambda} &\le \frac{\pi}{1-\pi}
+\why{multiply by the prior odds \(>0\)}
+\end{align*}
+The posterior rises with its odds, so \(\mu_0\le\pi<\tau\). So \(e(0)=e(-1)=\rho\). Only the posterior after a
+purchase can reach the threshold.
+
+\paragraph{Step 3: the purchase must recruit.} In an informative market class \(L\) abstains (Step~1), so class
+\(H\) buys with positive probability: \(s_+>0\).
+
+\begin{derivation}[two conditions for an informative market]
+\emph{The purchase recruits.} Suppose \(\mu_+(s_+)<\tau\). Then \(e(1)=\rho\), and
+\begin{align*}
+K_H &= \rho\,\DT\,[1-\mu_+(s_+)] \why{\(e(1)=\rho\)}\\
+&< \rho\,\DT\,(1-\pi) \why{\(\mu_+(s_+)>\pi\) for \(s_+>0\)}\\
+&\le k \why{\(\DT\le\DT^{\rm N}\)}
+\end{align*}
+So class \(H\) would strictly prefer abstention, which contradicts \(s_+>0\). Hence \(\mu_+(s_+)\ge\tau\), and
+\(e(1)=1\) under the default challenger rule.
+
+\emph{The threshold is within reach.} The posterior \(\mu_+(s_+)\ge\tau\) at a rate \(s_+\le\lambda\) needs
+\(\tau\le\mu_+(s_+)\le\mu_+(\lambda)=M\). So \(\tau\le M\).
+
+\emph{The spread pays for a purchase at the threshold.} Class \(H\) buys with positive probability, so its purchase
+is a best order: \(K_H\ge k\) (Lemma~A.3(b)). Then
+\begin{align*}
+k &\le K_H=e(1)\,\DT\,[1-\mu_+(s_+)] \why{Lemma~A.3(b)}\\
+&\le \DT\,[1-\mu_+(s_+)] \why{\(e(1)\le1\)}\\
+&\le \DT\,(1-\tau)=J \why{\(\mu_+(s_+)\ge\tau\)}
+\end{align*}
+Since \(\tau\le M<1\), \(1-\tau>0\), and \(k\le\DT(1-\tau)\) reads \(\DT\ge k/(1-\tau)\).
+\end{derivation}
+
+So, given \(\pi<\tau\) and \(\DT\le\DT^{\rm N}\), an informative market needs \(\tau\le M\) and
+\(k/(1-\tau)\le\DT\).
+
+\paragraph{Step 4: the purchase rate.} Let \(\tau\le M\) and \(J\ge k\). Write
+\[
+K(s)=\DT\,[1-\mu_+(s)]=\frac{\DT\,(1-\pi)\,b}{b+\pi s}
+\]
+for the return of a purchase at the rate \(s\) when it recruits. It falls strictly in \(s\). At \(s=s^*\) it is
+\(\DT(1-\tau)=J\ge k\), and at \(s=\lambda\) it is \(\DT(1-M)\). Two cases follow.
+\begin{itemize}
+\item \emph{Case 1: \(\DT(1-M)\ge k\), that is \(\DT\ge\DT^{\rm F}\).} A full purchase still pays at the top
+posterior. Class \(H\) buys for sure: \(s_+=\lambda\), the posterior is \(M\ge\tau\), and \(e(1)=1\) (at \(M=\tau\)
+the indifferent challenger prepares). Its return is \(\DT(1-M)\ge k\). No other rate works. A rate below \(s^*\)
+does not recruit (Step~3). A rate \(s\) in \([s^*,\lambda)\) has \(K(s)>K(\lambda)\ge k\), so class \(H\) strictly
+prefers to buy and cannot mix.
+\item \emph{Case 2: \(\DT(1-M)<k\le J\).} Then \(1-M<1-\tau\), so \(\tau<M\). The full purchase fails, since class
+\(H\) would strictly prefer to abstain at \(K(\lambda)<k\). The function \(K\) is continuous and strictly decreasing
+on \([s^*,\lambda]\), from \(J\ge k\) down to \(\DT(1-M)<k\). By the intermediate value theorem
+(Section~\ref{sec:toolkit-monotone}), exactly one rate \(s_+\in[s^*,\lambda)\) has \(K(s_+)=k\). At this rate class
+\(H\) is indifferent and mixes. If \(J>k\), then \(s_+>s^*\) and the posterior lies strictly above \(\tau\): the paper
+calls this a \emph{mixed purchase that recruits} (label R). If \(J=k\), then \(s_+=s^*\) and the posterior equals
+\(\tau\). The challenger is then indifferent and, under the default rule, prepares: the paper calls this the
+\emph{threshold pair} (label T).
+\end{itemize}
+
+\begin{intuition}[why class \(H\) mixes]
+The return of a purchase falls as class \(H\) buys more often, because a purchase then reveals more and leaves less
+doubt to earn on. When even the full purchase leaves too little doubt to cover \(k\), class \(H\) buys only so often
+that the doubt left after a purchase pays exactly \(k\).
+\end{intuition}
+
+\subsection{The purchase probability and entry}
+
+While class \(H\) mixes, the purchase recruits and earns exactly the trading cost:
+\begin{equation}\label{eq:coexistence-indiff}
+\DT\,[1-\mu(1)]=k,\qquad\text{so}\qquad \mu(1)=1-\frac{k}{\DT}.
+\end{equation}
+The posterior after a purchase is then fixed by the spread and the trading cost alone. Bayes' rule turns it into the
+purchase rate.
+
+\begin{derivation}[the purchase rate while class \(H\) mixes]
+\begin{align*}
+\frac{(1-\pi)\,b}{b+\pi s_+} &= \frac{k}{\DT} \why{\(1-\mu_+(s_+)\) and \eqref{eq:coexistence-indiff}}\\
+b+\pi s_+ &= \frac{(1-\pi)\,b\,\DT}{k} \why{multiply by \((b+\pi s_+)\DT/k>0\)}\\
+\pi s_+ &= \frac{(1-\pi)\,b\,\DT}{k}-b=b\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{subtract \(b\); factor \(b\)}\\
+s_+ &= \frac{b}{\pi}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{divide by \(\pi>0\)}
+\end{align*}
+The probability with which class \(H\) buys is \(\sigma_H(1)=s_+/\lambda\):
+\begin{align*}
+\sigma_H(1) &= \frac{b}{\pi\lambda}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{divide by \(\lambda\)}\\
+&= \frac{1}{\pi u}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{\(b/\lambda=1/u\)}
+\end{align*}
+\end{derivation}
+
+The rate reaches \(\lambda\) exactly at the spread \(\DT^{\rm F}\):
+\begin{align*}
+\frac{b}{\pi}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr]\ge\lambda
+&\iff \frac{(1-\pi)\DT}{k}-1\ge\frac{\pi\lambda}{b} \why{multiply by \(\pi/b>0\)}\\
+&\iff \frac{(1-\pi)\DT}{k}\ge\frac{b+\pi\lambda}{b} \why{add \(1=b/b\)}\\
+&\iff \DT\,\frac{(1-\pi)\,b}{b+\pi\lambda}\ge k \why{multiply by \(kb/(b+\pi\lambda)>0\)}\\
+&\iff \DT\,(1-M)\ge k \why{\(1-M=(1-\pi)b/(b+\pi\lambda)\)}
+\end{align*}
+So the two cases of Step~4 fit in one formula, the rate of Appendix~A.4:
+\begin{equation}\label{eq:coexistence-rate}
+s_+=\min\Bigl\{\lambda,\;\frac{b}{\pi}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr]\Bigr\}.
+\end{equation}
+
+Entry is the probability that the challenger prepares. It adds up, over the three orders, the probability of the
+order times entry after it.
+
+\begin{derivation}[entry in the informative market]
+The probability of a purchase is
+\begin{align*}
+\Pr(X=1) &= \pi f_H(1)+(1-\pi)f_L(1) \why{total probability over the classes}\\
+&= \pi(b+s_+)+(1-\pi)\,b=b+\pi s_+ \why{\(\pi b+(1-\pi)b=b\)}
+\end{align*}
+With \(e(0)=e(-1)=\rho\) and \(e(1)=1\),
+\begin{align*}
+\Ent &= \sum_x\Pr(X=x)\,e(x) \why{total probability over the orders}\\
+&= \rho\,[1-\Pr(X=1)]+1\cdot\Pr(X=1) \why{entry \(\rho\) after the two other orders}\\
+&= \rho+(1-\rho)\Pr(X=1)=\rho+(1-\rho)(b+\pi s_+) \why{collect terms}
+\end{align*}
+While class \(H\) mixes, line 2 of the rate derivation gives \(b+\pi s_+=(1-\pi)b\DT/k\). When class \(H\) buys for
+sure, \(b+\pi s_+=b+\pi\lambda\). The map \(s\mapsto b+\pi s\) rises, so \(b+\pi\min\{\lambda,\tilde s\}=\min\{b+\pi
+\lambda,\,b+\pi\tilde s\}\), and
+\begin{equation}\label{eq:coexistence-entry}
+\Ent=\rho+(1-\rho)\min\Bigl\{\frac{(1-\pi)\,b\,\DT}{k},\;b+\pi\lambda\Bigr\}.
+\end{equation}
+\end{derivation}
+
+This is the entry formula of Proposition~3(a), equation~(A.8) of the paper. When class \(H\) buys for sure it equals
+\eqref{eq:ccc-entry}, entry against the strong incumbent of Proposition~2. The two terms of the minimum are equal
+exactly when \((1-\pi)b\DT/k=b+\pi\lambda\), that is, when \(\DT(1-\pi)b/(b+\pi\lambda)=k\), that is, at
+\(\DT=\DT^{\rm F}\). So:
+\begin{itemize}
+\item for \(\DT<\DT^{\rm F}\), entry is \(\rho+(1-\rho)(1-\pi)b\DT/k\), a straight line in \(\DT\) with the positive
+slope \((1-\rho)(1-\pi)b/k\): it rises strictly with the spread;
+\item for \(\DT\ge\DT^{\rm F}\), entry is the constant \(\rho+(1-\rho)(b+\pi\lambda)\);
+\item at \(\DT^{\rm F}\) the two pieces meet, so entry has no jump.
+\end{itemize}
+The prior, \(b\), \(\lambda\), \(k\) and \(\rho\) are fixed, so entry depends on the incumbent only through the
+spread. The threshold decides only whether the economy lies in the region. Between two incumbents at which the
+markets coexist, entry in the informative market is at least as high against the one with the wider spread.
+
+\begin{intuition}[why entry rises with the spread]
+While class \(H\) mixes, a purchase that recruits earns exactly \(k\). A wider spread raises the return per unit of
+doubt, so the purchase must leave less doubt. The purchase rate rises, purchases become more frequent, and each
+purchase recruits. Entry rises with them until class \(H\) buys for sure.
+\end{intuition}
+
+There is a second way to see the entry formula. It is the guide's own.
+\begin{align*}
+\Pr(X=1)\,[1-\mu(1)] &= \Pr(X=1\text{ and }j=L) \why{\(1-\mu(1)=\Pr(j=L\mid X=1)\)}\\
+&= (1-\pi)\,b \why{in class \(L\) only a liquidity trader buys}
+\end{align*}
+So \(\Pr(X=1)=(1-\pi)b/[1-\mu(1)]\). While class \(H\) mixes, \(1-\mu(1)=k/\DT\), so \(\Pr(X=1)=(1-\pi)b\DT/k\). In
+words, the class-\(L\) purchases are a fixed pool. Indifference fixes the share of class \(L\) among all purchases at
+\(k/\DT\). A wider spread needs a smaller share, so more class-\(H\) purchases must join the fixed pool.
+
+Test the formula at its two ends.
+\begin{itemize}
+\item \emph{The left edge, \(J=k\).} Then \(\DT=k/(1-\tau)\), the posterior after a purchase is \(1-k/\DT=\tau\), and
+the rate is \(s^*\): the threshold pair. Entry is \(\rho+(1-\rho)(1-\pi)b/(1-\tau)\), from
+\((1-\pi)b\DT/k\) at \(\DT=k/(1-\tau)\).
+\item \emph{The spread \(\DT^{\rm F}\).} Then \(\sigma_H(1)=1\), and entry reaches \(\rho+(1-\rho)(b+\pi\lambda)\).
+\end{itemize}
+
+\begin{watchout}
+\begin{itemize}
+\item A mixed purchase needs the default investor rule. If an indifferent investor abstains, class \(H\) cannot mix,
+and at spreads below \(\DT^{\rm F}\) no informative market exists next to the quiet market.
+\item The threshold pair at \(J=k\) needs the default challenger rule: the posterior equals \(\tau\), and an
+indifferent high-cost challenger must prepare.
+\item The entry formula describes one informative market at one incumbent. A statement across incumbents compares
+two equilibria, each solved again in its own economy.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:coexistence-mix}
+Let \(\pi=1/2\). Write the purchase probability \(\sigma_H(1)\) of class \(H\), while it mixes, in terms of \(\DT\),
+\(k\) and \(u\). Show that it rises strictly with \(\DT\) and equals one exactly when \(\DT=k(2+u)\). Check that
+\(k(2+u)=\DT^{\rm F}\) at this prior.
+\end{checkyourself}
+
+% =====================================================================
+\section{Proposition 3}\label{sec:coexistence-statement}
+
+Here is the result as Section~4.3 of the paper states it.
+
+\begin{paperresult}{Proposition 3 (Quiet and informative markets)}
+Let the classes satisfy the class ranking~(1), let \(0<\pi<1\), \(0<\rho<1\), \(k>0\) and a slot \((\lambda,\beta)\)
+be given, and let an indifferent investor mix over its best orders and an indifferent high-cost challenger prepare.
+Take an incumbent distribution with a positive spread \(\DT\) and \(g_H>g_L\), and write \(\tau\) for its preparation
+threshold.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item A quiet market and an informative market coexist if and only if
+\[
+\pi<\tau\le M(\pi),\qquad \frac{k}{1-\tau}\le\DT\le\frac{k}{\rho\max\{\pi,1-\pi\}}.
+\]
+The informative market is then unique: class \(L\) abstains, only a purchase recruits a high-cost challenger, and
+entry is
+\[
+\rho+(1-\rho)\min\Bigl\{\frac{(1-\pi)\,b\,\DT}{k},\;b+\pi\lambda\Bigr\},
+\]
+which rises strictly with the spread while class \(H\) mixes between a purchase and abstention and is constant once
+class \(H\) buys for sure.
+\item Along a path of such distributions, the strengths at which a quiet market coexists with an informative market
+in which class \(H\) buys for sure form an interval, and every other strength with coexistence lies below it. Every
+gap in coexistence lies at spreads too narrow for a sure purchase to pay.
+\item Along a path on which the product of the spread and \(g_H-c_H\) does not fall with strength, the strengths
+with coexistence form an interval, at every prior. Uniform incumbents on \([0,r]\), with \(r\) in a closed interval
+above the reserve, satisfy this condition when every low-class value lies between the reserve and the lowest
+strength, every high-class value is at least the highest strength, and class \(H\)'s mean value exceeds the highest
+strength by at least \(c_H\).
+\end{enumerate}
+\end{paperresult}
+
+A plain reading, line by line:
+\begin{itemize}
+\item \emph{Hypotheses.} The classes are ranked. The prior, the floor \(\rho\), the trading cost and the slot are
+free; Appendix~A.4 fixes \(0<\lambda<1\) and \(0<\beta<1/2\). The tie rules are the default ones. The incumbent law
+has a positive spread and \(g_H>g_L\), so the price reveals the posterior and the threshold \(\tau\) exists; the
+appendix also takes the law continuous. Nothing like (H1) to (H3) is assumed.
+\item \emph{Part (a).} The four conditions of Section~\ref{sec:coexistence-words} decide coexistence, in both
+directions. In the region the informative market is unique, and it is the market of
+Section~\ref{sec:coexistence-informative}.
+\item \emph{Part (b).} Move along a path of incumbents that grow stronger. The strengths at which the informative
+market has a full purchase form one interval, and the strengths with a mixed purchase lie to its left. A hole in the
+coexistence set can occur only where the spread is below \(\DT^{\rm F}\).
+\item \emph{Part (c).} A condition on the path, the \emph{balance condition}, keeps the whole coexistence set in one
+piece. The last sentence gives a family of uniform incumbents that meets it.
+\end{itemize}
+
+Appendix~A.4 restates the proposition at more length. Its part (a) adds the purchase rate
+\eqref{eq:coexistence-rate}; the type of the informative market (a full purchase if \(\DT\ge\DT^{\rm F}\), the
+threshold pair if \(\DT<\DT^{\rm F}\) and \(J=k\), a mixed purchase that recruits if \(\DT<\DT^{\rm F}\) and
+\(J>k\)); the fact that the region holds exactly two equilibria; the fact that entry depends on the incumbent only
+through the spread; and the shape of the region. Its part (c) has four items, and a part (d) shows that an
+equilibrium exists at the prior \(1/2\). The guide covers each item where it fits.
+
+\begin{watchout}
+Proposition~3 uses the default tie rules. Proposition~2 holds under all four tie rules, because its strict
+conditions keep every player away from a tie. Here ties are part of the result: a mixed purchase is an indifference
+of the investor, the threshold pair is an indifference of the challenger, and the edge \(\DT=\DT^{\rm N}\) is an
+indifference of the investor in the quiet market. Section~\ref{sec:coexistence-ties} says what changes under the other
+rules.
+\end{watchout}
+
+% =====================================================================
+\section{The proof of part (a)}\label{sec:coexistence-proof-a}
+
+The proof in Appendix~A.4 has four steps. Step~1 rules out a prior at or above the threshold. Three lemmas then
+describe every equilibrium when \(\pi<\tau\), one piece at a time. Steps~2 to~4 apply them. Fix an incumbent law
+\(F\) and the default tie rules.
+
+\paragraph{Step 1: a prior at or above the threshold.} Let \(\pi\ge\tau\).
+
+\begin{derivation}[no coexistence when \(\pi\ge\tau\)]
+\emph{The quiet market.} Every posterior is \(\pi\ge\tau\), so entry is one after every order (Lemma~A.2(d); at
+\(\pi=\tau\) the indifferent challenger prepares). The deviations earn \(K_H=\DT(1-\pi)\) and \(K_L=\DT\pi\). So a
+quiet market needs \(\DT\max\{\pi,1-\pi\}\le k\).
+
+\emph{No informative market under this inequality.} Take a candidate with informed trade. By Lemma~A.3(a) it has no
+wrong-signed order. If \(s_+>0\), then \(\mu(1)=\mu_+(s_+)>\pi\ge\tau\), so \(e(1)=1\), and
+\begin{align*}
+K_H &= \DT\,[1-\mu_+(s_+)] \why{\(e(1)=1\)}\\
+&< \DT\,(1-\pi)\le k \why{\(\mu_+(s_+)>\pi\); the quiet-market inequality}
+\end{align*}
+So class \(H\) strictly prefers abstention. If \(s_->0\), then \(\mu(-1)=\mu_-(s_-)<\pi\) and \(e(-1)\le1\), so
+\begin{align*}
+K_L &= e(-1)\,\DT\,\mu_-(s_-) \why{equation~\eqref{eq:trading-returns}}\\
+&\le \DT\,\mu_-(s_-)<\DT\,\pi\le k \why{\(e(-1)\le1\); \(\mu_-(s_-)<\pi\); the inequality}
+\end{align*}
+So class \(L\) strictly prefers abstention. In both cases the candidate fails (E5).
+\end{derivation}
+
+So coexistence needs \(\pi<\tau\). In words: when the prior already recruits, information cannot add entry. It can
+only take doubt away, so every informed order earns less than a deviation from the quiet market.
+
+\subsection{Three lemmas}
+
+From here on let \(\pi<\tau\). Appendix~A.4 states three lemmas. They hold under each pair of tie rules, and they do
+not assume that the quiet market is an equilibrium.
+
+\begin{paperresult}{Lemma A.7 (The high class)}
+Let \(\pi<\tau\). In a candidate with no wrong-signed order, the pair \((s_+,e(1))\) satisfies (E1) to (E3) at the
+order \(1\), and (E5) for class \(H\), exactly when it is one of these five pairs.
+\begin{itemize}[leftmargin=2.5em]
+\item[(N)] \(s_+=0\) and \(e(1)=\rho\), with \(\rho\DT(1-\pi)\le k\).
+\item[(Q)] \(0<s_+<\lambda\), \(\mu_+(s_+)<\tau\), \(e(1)=\rho\) and \(\rho\DT[1-\mu_+(s_+)]=k\). This pair needs an
+indifferent investor who may mix.
+\item[(R)] \(0<s_+<\lambda\), \(\mu_+(s_+)>\tau\), \(e(1)=1\) and \(\DT[1-\mu_+(s_+)]=k\). This pair needs an
+indifferent investor who may mix.
+\item[(T)] \(0<s_+<\lambda\), \(\mu_+(s_+)=\tau\), that is \(s_+=s^*\), and \(e(1)=e^*:=k/J\). When an indifferent
+high-cost challenger prepares, this requires \(e^*=1\), that is \(J=k\). When an indifferent high-cost challenger may
+prepare with any probability, it requires \(\rho\le e^*\le1\), that is \(\rho J\le k\le J\). This pair needs an
+indifferent investor who may mix.
+\item[(F)] \(s_+=\lambda\). Here \(e(1)=1\) if \(M>\tau\) and \(e(1)=\rho\) if \(M<\tau\). If \(M=\tau\), then
+\(e(1)=1\) when an indifferent high-cost challenger prepares, and \(e(1)\in[\rho,1]\) when it may prepare with any
+probability. The return satisfies \(e(1)\DT(1-M)\ge k\) when an indifferent investor may mix, and
+\(e(1)\DT(1-M)>k\) when an indifferent investor abstains.
+\end{itemize}
+Each equation in (Q) and (R) has at most one solution. If \(\tau\ge M\), and in particular if \(\tau\ge1\), the pairs
+(R) and (T) do not occur, and (F) has \(e(1)=\rho\) when \(\tau>M\).
+\end{paperresult}
+
+A plain reading. The split by class (Section~\ref{sec:trading-split}) lets the lemma look at class \(H\) and the
+purchase alone. It lists every purchase rate, with the entry after a purchase, that agrees with Bayes' rule, the
+challenger's choice and class \(H\)'s best order. The five letters name the five shapes: no purchase (N); a mixed
+purchase that does not recruit, at the entry floor (Q); a mixed purchase that recruits (R); a mixed purchase that
+lands exactly on the threshold (T); and a full purchase (F).
+
+\begin{derivation}[proof of Lemma A.7]
+By Lemma~A.3(b), (E5) for class \(H\) reads as follows.
+\begin{itemize}
+\item At \(s_+=0\), class \(H\) never buys, so abstention must be best: \(K_H\le k\).
+\item At \(s_+=\lambda\), class \(H\) always buys, so the purchase must be best: \(K_H\ge k\) when an indifferent
+investor may mix, and \(K_H>k\) when it abstains, because that rule picks abstention at a tie.
+\item At \(0<s_+<\lambda\), class \(H\) mixes, so it must be indifferent: \(K_H=k\). A mix needs an indifferent
+investor who may mix.
+\end{itemize}
+Here \(K_H=e(1)\DT[1-\mu_+(s_+)]\), and \(e(1)\) follows from Lemma~A.2(d) at the posterior \(\mu_+(s_+)\). Go through
+the cases.
+\begin{itemize}
+\item \(s_+=0\): \(\mu_+(0)=\pi<\tau\), so \(e(1)=\rho\) and \(K_H=\rho\DT(1-\pi)\le k\). This is (N).
+\item \(0<s_+<\lambda\) with \(\mu_+(s_+)<\tau\): \(e(1)=\rho\), and \(K_H=k\) is the equation of (Q).
+\item \(0<s_+<\lambda\) with \(\mu_+(s_+)>\tau\): \(e(1)=1\), and \(K_H=k\) is the equation of (R).
+\item \(0<s_+<\lambda\) with \(\mu_+(s_+)=\tau\): then \(s_+=s^*<\lambda\), so \(\pi<\tau<M<1\) and \(J=\DT(1-\tau)>0\).
+The condition \(K_H=e(1)\DT(1-\tau)=e(1)J=k\) gives \(e(1)=k/J=e^*\). If the indifferent challenger prepares,
+\(e(1)=1\), so \(J=k\). If it may prepare with any probability, \(e(1)\) can be any value in \([\rho,1]\), so the
+condition is \(\rho\le k/J\le1\). This is (T).
+\item \(s_+=\lambda\): \(\mu_+(\lambda)=M\). Lemma~A.2(d) at \(M\) gives \(e(1)\), and the condition on \(K_H\) is that
+of (F).
+\end{itemize}
+The function \(1-\mu_+\) falls strictly and \(\DT>0\), so \(\rho\DT[1-\mu_+(s)]\) and \(\DT[1-\mu_+(s)]\) fall
+strictly in \(s\). Each equals \(k\) at most once. If \(\tau\ge M\), then \(\mu_+(s_+)<M\le\tau\) for every
+\(s_+<\lambda\), so (R) and (T) do not occur; and \(M<\tau\) gives \(e(1)=\rho\) in (F).
+\end{derivation}
+
+\begin{paperresult}{Lemma A.8 (The low class)}
+Let \(\pi<\tau\). Then \(\mu_-(s_-)\le\pi<\tau\) for every \(s_-\), so \(e(-1)=\rho\) in every candidate. In a
+candidate with no wrong-signed order, the rate \(s_-\) satisfies (E1) to (E3) at the order \(-1\), and (E5) for class
+\(L\), exactly when it is one of these:
+\begin{itemize}[leftmargin=2.5em]
+\item[(N)] \(s_-=0\), with \(\rho\DT\pi\le k\);
+\item[(Q)] \(0<s_-<\lambda\), with \(\rho\DT\mu_-(s_-)=k\); this rate needs an indifferent investor who may mix;
+\item[(F)] \(s_-=\lambda\), with \(\rho\DT m\ge k\) when an indifferent investor may mix, and \(\rho\DT m>k\) when an
+indifferent investor abstains.
+\end{itemize}
+When an indifferent investor may mix, exactly one rate qualifies:
+\[
+\hat s_-=\begin{cases}0, & \rho\DT\pi\le k,\\[2pt]
+\dfrac{b\,(\pi\rho\DT/k-1)}{1-\pi}, & \rho\DT m<k<\rho\DT\pi,\\[6pt]
+\lambda, & \rho\DT m\ge k.\end{cases}
+\]
+When an indifferent investor abstains, no rate qualifies if \(\rho\DT m\le k<\rho\DT\pi\).
+\end{paperresult}
+
+A plain reading. When the prior lies below the threshold, a sale never recruits, so class \(L\) always trades at
+floor entry. Its sale rate is set by one comparison with \(k\). The more often class \(L\) sells, the more a sale
+reveals and the less it earns. So class \(L\) abstains when even a sale at the prior does not pay, sells for sure when
+even the full sale pays, and mixes in between.
+
+\begin{derivation}[proof of Lemma A.8]
+Since \(\mu_-\) falls, \(\mu_-(s_-)\le\mu_-(0)=\pi<\tau\), so Lemma~A.2(d) gives \(e(-1)=\rho\). Then
+\(K_L=\rho\DT\mu_-(s_-)\) is continuous and strictly decreasing in \(s_-\), from \(\rho\DT\pi\) at \(s_-=0\) to
+\(\rho\DT m\) at \(s_-=\lambda\). By Lemma~A.3(b), (E5) for class \(L\) requires \(K_L\le k\) at \(s_-=0\);
+\(K_L\ge k\) at \(s_-=\lambda\) when an indifferent investor may mix, and \(K_L>k\) when it abstains; and \(K_L=k\)
+at \(0<s_-<\lambda\), which needs an indifferent investor who may mix. This gives (N), (Q) and (F).
+
+\emph{One rate when the investor may mix.}
+\begin{itemize}
+\item If \(\rho\DT\pi\le k\): then \(K_L<\rho\DT\pi\le k\) for every \(s_->0\), so only \(s_-=0\) qualifies.
+\item If \(\rho\DT m\ge k\): then \(K_L>\rho\DT m\ge k\) for every \(s_-<\lambda\), so only \(s_-=\lambda\) qualifies.
+\item Otherwise \(\rho\DT m<k<\rho\DT\pi\). The intermediate value theorem and strict monotonicity give exactly one
+interior root, and neither end qualifies.
+\end{itemize}
+The interior root solves \(\rho\DT\mu_-(s)=k\):
+\begin{align*}
+\frac{\pi b}{b+(1-\pi)s} &= \frac{k}{\rho\DT} \why{\(\mu_-(s)\); divide by \(\rho\DT\)}\\
+b+(1-\pi)s &= \frac{\pi b\,\rho\DT}{k} \why{multiply by \([b+(1-\pi)s]\rho\DT/k\)}\\
+(1-\pi)s &= b\Bigl(\frac{\pi\rho\DT}{k}-1\Bigr) \why{subtract \(b\); factor \(b\)}\\
+s &= \frac{b\,(\pi\rho\DT/k-1)}{1-\pi} \why{divide by \(1-\pi>0\)}
+\end{align*}
+
+\emph{No rate when the investor abstains.} Let \(\rho\DT m\le k<\rho\DT\pi\). The rate \(s_-=0\) fails, because
+\(K_L=\rho\DT\pi>k\) there, so class \(L\) strictly prefers to sell. The rate \(s_-=\lambda\) fails, because
+\(K_L=\rho\DT m\le k\) there, and this rule needs a strict inequality. An interior rate needs a mix.
+\end{derivation}
+
+\begin{paperresult}{Lemma A.9 (Product structure)}
+Let \(\pi<\tau\), and take rates with \(s_+\ge s_-\). Then \(\mu_0(s_+,s_-)\le\pi<\tau\). Under each pair of tie rules,
+the tuple with the rates \((s_+,s_-)\) is an equilibrium if and only if these four conditions hold:
+\begin{enumerate}[label=(\roman*),leftmargin=2.5em]
+\item \((s_+,e(1))\) is a pair of Lemma~A.7;
+\item \(s_-\) is a rate of Lemma~A.8;
+\item \(e(0)=e(-1)=\rho\);
+\item the prices are \(P(x)=t_0+e(x)\,w(\mu(x))\), and \(\bar\mu(P(x))=\mu(x)\).
+\end{enumerate}
+\end{paperresult}
+
+A plain reading. An equilibrium is built from one piece for class \(H\) and one piece for class \(L\), with entry at
+the floor after the zero order and a sale, and prices from the price formula. The rule ``purchase rate at least sale
+rate'' keeps the zero order below the threshold, so the two pieces do not interact. Recall
+\(w(\mu)=t_L-t_0+\DT\mu\) from Section~\ref{sec:beliefs-priceformula}.
+
+\begin{derivation}[proof of Lemma A.9]
+\emph{The zero order.} If \(s_+\ge s_-\), then \(b_0+\lambda-s_+\le b_0+\lambda-s_-\). So the odds of \(\mu_0\) are
+at most \(\pi/(1-\pi)\), and \(\mu_0\le\pi<\tau\).
+
+\emph{Necessity.} Take an equilibrium. The posteriors \(\mu_0\) and \(\mu_-(s_-)\) lie below \(\tau\), so
+Lemma~A.2(d) gives \(e(0)=e(-1)=\rho\): condition (iii). Lemma~A.2(b) and~(c) give the prices and the price beliefs:
+condition (iv). By Lemma~A.3(d), (E5) for class \(H\) involves only \((s_+,\mu(1),e(1))\), and (E5) for class \(L\)
+only \((s_-,\mu(-1),e(-1))\). So (E5) gives (i) and (ii).
+
+\emph{Sufficiency.} Take rates and entry that satisfy (i) to (iv). Check each condition of the definition.
+\begin{itemize}
+\item (E1): the posteriors are computed from \(f_H\) and \(f_L\) by Bayes' rule.
+\item (E2): entry lies in \([\rho,1]\) and does not fall when the posterior rises. It is \(\rho\) at \(\mu_-(s_-)\) and
+\(\mu_0\), both at most \(\pi<\tau\), and it is \(e(1)\ge\rho\) at \(\mu_+(s_+)\ge\pi\), with \(e(1)=1\) when
+\(\mu_+(s_+)>\tau\). Next, two orders with a common posterior. One of them is \(0\) or \(-1\), so the common
+posterior is at most \(\pi\). If the order \(1\) is one of them, then \(\mu_+(s_+)\le\pi\) forces \(s_+=0\), the
+pair (N), with \(e(1)=\rho\). So orders with a common posterior have a common entry. By the result on prices built
+from a profile (Section~\ref{sec:beliefs-constructed}), orders share a price exactly when they share the posterior
+and entry, the rule \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a function of the price, and the belief at each price
+is the common posterior of its orders. This is (E2).
+\item (E3): at each price the belief is the posterior of its orders, and the stated entry is the one that
+Lemma~A.2(d) allows at that posterior, under the challenger rule in use. Condition (i) states it after a purchase;
+the other two posteriors lie below \(\tau\).
+\item (E4): the price formula \eqref{eq:beliefs-price} with the stated entry.
+\item (E5): by Lemma~A.3(d), class \(H\)'s payoffs involve only \((s_+,\mu(1),e(1))\), and class \(L\)'s only
+\((s_-,\mu(-1),e(-1))\). Conditions (i) and (ii) state optimality for each, and Lemma~A.3(a) rules out the
+wrong-signed orders.
+\item (E6): truthful bids are weakly dominant (Chapter~\ref{ch:auction}).
+\end{itemize}
+\end{derivation}
+
+\begin{watchout}
+The condition \(s_+\ge s_-\) does real work. It puts the posterior after the zero order at or below \(\pi\), below the
+threshold. Without it, class \(L\) could sell more often than class \(H\) buys, the zero order would become good news
+about class \(H\), and its posterior could reach \(\tau\). This direct bound also explains why the chapter never needs
+\(\beta\le1/3\): the posterior bound at the zero order (Lemma~A.1(c)) is not used.
+\end{watchout}
+
+\subsection{Steps 2 to 4}
+
+\paragraph{Step 2: the quiet market when \(\pi<\tau\).} A quiet market has \(s_+=s_-=0\), so \(s_+\ge s_-\) and
+Lemma~A.9 applies. It is an equilibrium exactly when \((0,e(1))\) is the pair (N) of Lemma~A.7 and \(0\) is the rate
+(N) of Lemma~A.8:
+\[
+\rho\DT(1-\pi)\le k\quad\text{and}\quad\rho\DT\pi\le k,\qquad\text{that is}\qquad\DT\le\DT^{\rm N}.
+\]
+This is \eqref{eq:coexistence-quiet}. Its entry is \(\rho\) after every order, and condition (iv) fixes its prices,
+so there is exactly one quiet market.
+
+\paragraph{Step 3: informative markets when \(\pi<\tau\) and \(\DT\le\DT^{\rm N}\).}
+
+\begin{derivation}[necessity]
+Since \(\rho\DT\pi\le k\), Lemma~A.8 gives \(s_-=0\) in every equilibrium. Then \(s_+\ge0=s_-\), and by Lemma~A.9 the
+equilibria are the pairs of Lemma~A.7 with \(s_-=0\) and entry \(\rho\) after the orders \(0\) and \(-1\). An
+informative market has \(s_+>0\).
+\begin{itemize}
+\item The pair (Q) is impossible: \(\rho\DT[1-\mu_+(s_+)]<\rho\DT(1-\pi)\le k\) for \(s_+>0\).
+\item The pair (F) with \(M<\tau\) is impossible for the same reason: its return is \(\rho\DT(1-M)<k\).
+\item The other pairs, (R), (T) and (F) with \(M\ge\tau\), need \(\mu_+(s_+)\ge\tau\) for some \(s_+\le\lambda\), so
+\(\tau\le M\). Since \(e(1)\le1\), they also need \(k\le e(1)\DT[1-\mu_+(s_+)]\le\DT(1-\tau)=J\), that is
+\(\DT\ge k/(1-\tau)\).
+\end{itemize}
+With Step~1, coexistence implies \(\pi<\tau\le M\) and \(k/(1-\tau)\le\DT\le\DT^{\rm N}\).
+\end{derivation}
+
+\begin{derivation}[sufficiency and uniqueness]
+Let the four conditions hold. Then \(\tau\le M<1\) and \(J\ge k\), and Step~2 gives the quiet market.
+\begin{itemize}
+\item If \(\DT\ge\DT^{\rm F}\), that is \(\DT(1-M)\ge k\), the pair (F) holds with \(e(1)=1\); at \(M=\tau\) the
+indifferent challenger chooses this. It is the only informative pair: at every \(s_+<\lambda\) with
+\(\mu_+(s_+)\ge\tau\), the return \(\DT[1-\mu_+(s_+)]\) exceeds \(\DT(1-M)\ge k\), so neither (R) nor (T) holds.
+\item If \(\DT<\DT^{\rm F}\), then \(\DT(1-M)<k\le J=\DT(1-\tau)\), so \(\tau<M\) and (F) fails. The return
+\(s\mapsto\DT[1-\mu_+(s)]\) is continuous and strictly decreasing on \([s^*,\lambda]\), from \(J\ge k\) to
+\(\DT(1-M)<k\). So it equals \(k\) at exactly one \(s_+\in[s^*,\lambda)\). At \(s_+=s^*\), which happens exactly when
+\(J=k\), this is (T) with \(e^*=1\). At \(s_+>s^*\) it is (R). No other informative pair exists.
+\end{itemize}
+In every case the low class abstains, entry after the orders \(0\) and \(-1\) is \(\rho\), and Lemma~A.9 completes the
+tuple. The rate is \eqref{eq:coexistence-rate}, derived in Section~\ref{sec:coexistence-informative}.
+\end{derivation}
+
+So in the region the equilibria are exactly two: the quiet market and one informative market.
+
+\paragraph{Step 4: entry and the shape of the region.} Section~\ref{sec:coexistence-informative} derived the entry
+formula \eqref{eq:coexistence-entry} and its shape. Two facts about the region remain.
+
+\begin{derivation}[the region is convex]
+Since \(\tau\le M<1\), the inequality \(k/(1-\tau)\le\DT\) reads \(\tau\le1-k/\DT\). So the region is the set of
+pairs \((\DT,\tau)\) with \(\DT>0\) and
+\[
+\pi<\tau,\qquad\tau\le M,\qquad\tau\le\varphi(\DT),\qquad\DT\le\DT^{\rm N},\qquad\text{where }\varphi(\DT)=1-\frac{k}{\DT}.
+\]
+The function \(\varphi\) is concave: \(\varphi'(\DT)=k/\DT^2\) falls as \(\DT\) rises. Take two pairs with
+\(\tau_1\le\varphi(\Delta_1)\) and \(\tau_2\le\varphi(\Delta_2)\), and a weight \(a\in[0,1]\). Then
+\begin{align*}
+a\tau_1+(1-a)\tau_2 &\le a\,\varphi(\Delta_1)+(1-a)\,\varphi(\Delta_2) \why{each \(\tau_i\le\varphi(\Delta_i)\)}\\
+&\le \varphi\bigl(a\Delta_1+(1-a)\Delta_2\bigr) \why{\(\varphi\) is concave}
+\end{align*}
+So the set below the graph of \(\varphi\) is convex: the segment between two of its points stays in it. Each of the
+other three conditions defines a half-plane, which is convex. An intersection of convex sets is convex.
+\end{derivation}
+
+\begin{derivation}[the threshold cannot be too close to one]
+Put the two spread bounds together:
+\begin{align*}
+\frac{k}{1-\tau} &\le \frac{k}{\rho\max\{\pi,1-\pi\}} \why{\(k/(1-\tau)\le\DT\le\DT^{\rm N}\)}\\
+\frac{1}{1-\tau} &\le \frac{1}{\rho\max\{\pi,1-\pi\}} \why{divide by \(k>0\)}\\
+\rho\max\{\pi,1-\pi\} &\le 1-\tau \why{reciprocals of positive numbers; the inequality turns}\\
+\tau &\le 1-\rho\max\{\pi,1-\pi\} \why{rearrange}
+\end{align*}
+With \(\pi<\tau\) and \(\max\{\pi,1-\pi\}\ge\pi\):
+\begin{align*}
+\pi &< 1-\rho\max\{\pi,1-\pi\}\le1-\rho\pi \why{the line above}\\
+\pi\,(1+\rho) &< 1 \why{add \(\rho\pi\)}\\
+\pi &< \frac{1}{1+\rho} \why{divide by \(1+\rho>0\)}
+\end{align*}
+\end{derivation}
+
+In words: a purchase that just reaches the threshold leaves the doubt \(1-\tau\) and must pay; an order against a
+silent price leaves the doubt \(\max\{\pi,1-\pi\}\), at entry \(\rho\), and must not pay. So the doubt \(1-\tau\) must
+be at least \(\rho\max\{\pi,1-\pi\}\). A prior that strongly favours class \(H\) leaves too little room between
+itself and the largest admissible threshold, and coexistence needs \(\pi<1/(1+\rho)\).
+Figure~\ref{fig:coexistence-region} draws the region.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+\fill[accent!15] plot[domain=0.2:0.37037,samples=40,smooth] ({10*\x},{6-1/\x}) -- (8,3.3) -- (8,1) -- cycle;
+\draw[-{Stealth[length=2mm]}] (0,0) -- (10.6,0) node[right] {\(\DT\)};
+\draw[-{Stealth[length=2mm]}] (0,0) -- (0,4.6) node[above] {\(\tau\)};
+\draw[rulegrey,dotted] plot[domain=0.17:0.2,samples=10,smooth] ({10*\x},{6-1/\x});
+\draw[rulegrey,dotted] plot[domain=0.37037:0.8,samples=40,smooth] ({10*\x},{6-1/\x});
+\draw[accent,thick] plot[domain=0.2:0.37037,samples=40,smooth] ({10*\x},{6-1/\x});
+\draw[accent,thick] (3.7037,3.3) -- (8,3.3);
+\draw[accent,thick] (8,1) -- (8,3.3);
+\draw[accent,thick,dotted] (2,1) -- (8,1);
+\draw[dashed,ink] (3.7037,1) -- (3.7037,3.3);
+\draw[dotted,rulegrey] (0,1) -- (2,1);
+\draw[dotted,rulegrey] (0,3.3) -- (3.7037,3.3);
+\draw[dotted,rulegrey] (2,0) -- (2,1);
+\draw[dotted,rulegrey] (3.7037,0) -- (3.7037,1);
+\draw[dotted,rulegrey] (8,0) -- (8,1);
+\node[left] at (0,1) {\(\pi\)};
+\node[left] at (0,3.3) {\(M(\pi)\)};
+\node[below] at (2,0) {\(\frac{k}{1-\pi}\)};
+\node[below] at (3.7037,0) {\(\DT^{\rm F}\)};
+\node[below] at (8,0) {\(\DT^{\rm N}\)};
+\node at (3.2,1.7) {R};
+\node at (5.9,2.1) {F};
+\node[left] at (2.75,2.6) {\(J=k\)};
+\node[above] at (5.85,3.3) {\(\tau=M(\pi)\)};
+\node[right] at (8,2.15) {\(\DT=\DT^{\rm N}\)};
+\node[text=notegrey] at (5.6,0.6) {\(\tau=\pi\), not in the region};
+\end{tikzpicture}
+\caption{A picture to keep in mind: the coexistence region of Proposition~3(a) in the plane of the spread \(\DT\)
+and the threshold \(\tau\). The shaded set holds the pairs with \(\pi<\tau\le M(\pi)\) and
+\(k/(1-\tau)\le\DT\le\DT^{\rm N}\). Its left edge is the curve \(\tau=1-k/\DT\), where \(J=k\); this curve meets the
+top edge at \(\DT^{\rm F}\). The dashed line divides the mixed purchase that recruits (R) from the full purchase (F).
+Solid edges belong to the region, and the dotted lower edge does not. The positions are only a picture.}
+\label{fig:coexistence-region}
+\end{figure}
+
+The left edge meets the top edge exactly at \(\DT^{\rm F}\): at \(\tau=M\), the condition \(\DT=k/(1-\tau)\) reads
+\(\DT=k/(1-M)=\DT^{\rm F}\). So the part with a mixed purchase lies to the left of the dashed line, below the top edge
+and right of the curve.
+
+\begin{checkyourself}\label{q:coexistence-edge}
+Take an incumbent on the left edge of the region, \(J=k\), with \(\pi<\tau<M\) and \(\DT\le\DT^{\rm N}\). Show that
+the purchase rate \eqref{eq:coexistence-rate} equals \(s^*\). Explain why this informative market needs the default
+challenger rule, and what entry after a purchase would have to be under the other challenger rule.
+\end{checkyourself}
+
+% =====================================================================
+\section{Part (b): the strengths with a sure purchase}\label{sec:coexistence-proof-b}
+
+Recall that a path is a family \((F_r)\) of such laws over an interval of strengths, with \(F_{r'}\) a first-order
+stochastic strengthening of \(F_r\) for \(r'>r\) and every other primitive fixed (Section~\ref{sec:trading-path}).
+Along a path, \(\DT(r)\) never falls, and \(g_H(r)\), \(g_L(r)\) and \(\gamma(r)=g_H(r)-g_L(r)\) never rise
+(Lemma~A.5). Each strength is a separate economy, and the coexistence set at that strength comes from solving that
+economy.
+
+First the idea in words. As the incumbent strengthens, three of the four conditions of the region move in one
+direction only. The condition \(\pi<\tau\), once true, stays true; the conditions \(\tau\le M\) and
+\(\DT\le\DT^{\rm N}\), once false, stay false. The fourth condition, \(J\ge k\), has no fixed direction. For a sure
+purchase, the fourth condition is replaced by \(\DT\ge\DT^{\rm F}\), which also moves in one direction. So the sure
+purchase lives on one interval.
+
+Two words from Appendix~A.4. A set of strengths is an \emph{up-set} if it contains every strength above each of its
+members, and a \emph{down-set} if it contains every strength below each of its members.
+
+\begin{derivation}[up-sets and down-sets meet in an interval]
+Let \(S\) be an intersection of up-sets and down-sets, and let \(r'<r<r''\) with \(r'\) and \(r''\) in \(S\).
+\begin{itemize}
+\item Each up-set contains \(r'\), so it contains every strength above \(r'\), and in particular \(r\).
+\item Each down-set contains \(r''\), so it contains every strength below \(r''\), and in particular \(r\).
+\end{itemize}
+So \(r\in S\). A set that contains every strength between two of its members is an interval.
+\end{derivation}
+
+\begin{derivation}[the direction of each condition]
+\emph{Gross profit at a fixed belief never rises.} For every \(\mu\in[0,1]\),
+\begin{align*}
+B_r(\mu) &= \mu\,g_H(r)+(1-\mu)\,g_L(r) \why{definition of \(B\)}\\
+&\ge \mu\,g_H(r')+(1-\mu)\,g_L(r')=B_{r'}(\mu)\quad(r'>r) \why{each \(g_j\) never rises; weights \(\ge0\)}
+\end{align*}
+
+\emph{The threshold conditions.} Since \(\gamma(r)>0\), \(B_r(\mu)-c_H=\gamma(r)\,[\mu-\tau(r)]\)
+(Section~\ref{sec:trading-twonumbers}), so \(B_r(\mu)-c_H\) has the sign of \(\mu-\tau(r)\). Hence
+\begin{align*}
+\pi<\tau(r) &\iff B_r(\pi)<c_H, \why{sign rule at \(\mu=\pi\)}\\
+\tau(r)\le M &\iff B_r(M)\ge c_H. \why{sign rule at \(\mu=M\)}
+\end{align*}
+If \(B_r(\pi)<c_H\) and \(r'>r\), then \(B_{r'}(\pi)\le B_r(\pi)<c_H\): the first set is an up-set. If
+\(B_{r''}(M)\ge c_H\) and \(r<r''\), then \(B_r(M)\ge B_{r''}(M)\ge c_H\): the second set is a down-set.
+
+\emph{The spread conditions.} \(\DT\) never falls, so \(\{r:\DT(r)\ge\DT^{\rm F}\}\) is an up-set and
+\(\{r:\DT(r)\le\DT^{\rm N}\}\) is a down-set.
+\end{derivation}
+
+This argument uses gross profit at a fixed belief, not the threshold itself. So it needs no condition like
+\(g_L\le c_H\), which the statement ``a stronger incumbent never lowers the threshold'' needs
+(Section~\ref{sec:trading-path}).
+
+\begin{derivation}[proof of part (b)]
+\emph{The sure-purchase set is an interval.} By part (a), a quiet market coexists with a full purchase exactly where
+the region holds and \(\DT(r)\ge\DT^{\rm F}\). There the condition \(J\ge k\) holds by itself:
+\begin{align*}
+J &= \DT(1-\tau) \why{definition}\\
+&\ge \DT(1-M) \why{\(\tau\le M\)}\\
+&\ge k \why{\(\DT\ge\DT^{\rm F}\)}
+\end{align*}
+So this set is \(S_{\rm F}=\{r:\pi<\tau(r)\le M,\ \DT^{\rm F}\le\DT(r)\le\DT^{\rm N}\}\): two up-sets and two
+down-sets. It is an interval.
+
+\emph{Every other strength with coexistence lies below it.} At a strength \(r\) with coexistence and a mixed purchase
+that recruits, or the threshold pair, part (a) gives \(\DT(r)<\DT^{\rm F}\). Take any \(r'\in S_{\rm F}\). If \(r\ge r'\),
+then \(\DT(r)\ge\DT(r')\ge\DT^{\rm F}\), because \(\DT\) never falls. That is false, so \(r<r'\).
+
+\emph{A gap lies at a narrow spread.} The set \(A=\{r:\pi<\tau(r)\le M,\ \DT(r)\le\DT^{\rm N}\}\) is an interval (one
+up-set and two down-sets), and it contains every strength with coexistence. Let coexistence hold at \(r'\) and \(r''\)
+but not at \(r\), with \(r'<r<r''\). Then \(r\in A\). If \(\DT(r)\ge\DT^{\rm F}\), then \(r\in S_{\rm F}\), and
+coexistence would hold at \(r\). So \(\DT(r)<\DT^{\rm F}\).
+\end{derivation}
+
+\begin{intuition}[why the sure purchase is never split]
+Each condition that defines the sure-purchase stretch holds on one side of a single strength. A mixed purchase needs
+a narrower spread than a sure one, and the spread only widens along the path. So the strengths with a mixed purchase
+come first, and the sure-purchase stretch comes after them, in one piece. A hole can appear only where the economy
+relies on a mixed purchase, that is, where \(J\ge k\) must hold by itself.
+\end{intuition}
+
+% =====================================================================
+\section{Part (c): the balance condition}\label{sec:coexistence-proof-c}
+
+The only condition of the region with no fixed direction is \(J\ge k\). Part (c) gives it a direction. Recall from
+Section~\ref{sec:trading-path} that \(1-\tau=(g_H-c_H)/\gamma\), so
+\[
+J=\DT\,(1-\tau)=\frac{\DT\,(g_H-c_H)}{\gamma},\qquad \gamma=\bar\Gamma-\DT,
+\]
+where \(\bar\Gamma=\E_H\theta-\E_L\theta\) is the fixed class mean gap (Lemma~A.5). The \emph{balance condition} of
+Appendix~A.4 is: the product \(\DT(r)\,[g_H(r)-c_H]\) is nondecreasing in \(r\).
+
+The paper reads it in words: where class \(H\)'s gross profit exceeds the high cost, the spread must grow, in
+proportion, at least as fast as the excess \(g_H-c_H\) shrinks. On a differentiable path, where \(g_H>c_H\):
+\begin{align*}
+\bigl(\DT\,(g_H-c_H)\bigr)'\ge0
+&\iff \DT'\,(g_H-c_H)+\DT\,g_H'\ge0 \why{product rule; \(c_H\) fixed}\\
+&\iff \frac{\DT'}{\DT}\ge\frac{-g_H'}{g_H-c_H} \why{divide by \(\DT(g_H-c_H)>0\); rearrange}
+\end{align*}
+The left side is the growth rate of the spread, and the right side is the rate at which the excess shrinks.
+
+\paragraph{Part (c)(i).} Let the balance condition hold along a path. Then the strengths with \(J(r)\ge k\) form an
+up-set, on which \(J\) is nondecreasing and rises strictly wherever \(\DT\) rises strictly. The strengths with
+coexistence form an interval, at every prior and every slot.
+
+\begin{derivation}[proof of part (c)(i)]
+Let \(J(r)\ge k\) and \(r'>r\). Since \(\gamma(r)>0\) and \(J(r)\ge k>0\),
+\(\DT(r)[g_H(r)-c_H]=\gamma(r)J(r)>0\). Then
+\begin{align*}
+J(r') &= \frac{\DT(r')\,[g_H(r')-c_H]}{\gamma(r')} \why{\(J=\DT(g_H-c_H)/\gamma\)}\\
+&\ge \frac{\DT(r)\,[g_H(r)-c_H]}{\gamma(r')} \why{balance condition; \(\gamma(r')>0\)}\\
+&\ge \frac{\DT(r)\,[g_H(r)-c_H]}{\gamma(r)} \why{\(0<\gamma(r')\le\gamma(r)\); positive numerator}\\
+&= J(r)\ge k
+\end{align*}
+So \(\{J\ge k\}\) is an up-set, and \(J\) does not fall on it. If \(\DT(r')>\DT(r)\), then
+\(\gamma(r')=\bar\Gamma-\DT(r')<\gamma(r)\), and the third line is strict.
+
+By part (a), and because \(\tau\le M<1\) at every strength with coexistence, the condition \(k/(1-\tau)\le\DT\) is
+\(J\ge k\). So the strengths with coexistence are
+\[
+\{\pi<\tau\}\cap\{J\ge k\}\cap\{\tau\le M\}\cap\{\DT\le\DT^{\rm N}\}:
+\]
+two up-sets and two down-sets, by Section~\ref{sec:coexistence-proof-b}. They form an interval. The balance condition
+does not involve the prior or the slot, so the argument holds at every prior and every slot.
+\end{derivation}
+
+\paragraph{Part (c)(ii).} Let the interval of strengths \(I\) be closed and bounded, let \(\DT\) and \(\tau\) be
+continuous in \(r\), and let \(\tau>\pi\) at the weakest incumbent of the path. Then the coexistence interval is
+closed. When it is not empty, it starts at the weakest strength with \(J(r)\ge k\) and ends at the smaller of the
+strongest strength with \(\tau(r)\le M\) and the strongest strength with \(\DT(r)\le\DT^{\rm N}\).
+
+\emph{Proof.} The set \(\{\pi<\tau\}\) is an up-set that contains \(\min I\), so it is all of \(I\). Continuity makes
+\(\{J\ge k\}\), \(\{\tau\le M\}\) and \(\{\DT\le\DT^{\rm N}\}\) closed subsets of \(I\). A closed up-set of \(I\) is
+empty or runs from its least element to \(\max I\). A closed down-set is empty or runs from \(\min I\) to its largest
+element. The intersection is therefore empty or the closed interval with the stated ends.
+
+\paragraph{Part (c)(iii): uniform incumbents.} Let \(F_r=U[0,r]\) for \(r\) in a closed and bounded interval \(I\)
+with \(p<\min I\). Suppose that every low-class value lies in \([p,\min I]\), every high-class value is at least
+\(\max I\), and \(\E_H\theta\ge\max I+c_H\). Then \(\DT(r)[g_H(r)-c_H]\) is nondecreasing on \(I\), and \(J\) rises
+strictly. For point classes at \(h\) and \(\ell\), the hypotheses read \(\ell\in[p,\min I]\), \(p<\min I\) and
+\(\max I+c_H\le h\).
+
+The proof has four steps. Fix \(r\in I\), and let \(R\) be uniform on \([0,r]\). Every \(r\in I\) has \(r>p\), so
+\((r^2-p^2)/(2r^2)>0\).
+
+\begin{derivation}[Step 1: the auction terms]
+\emph{A high-class challenger.} Its value \(\theta\ge\max I\ge r\) beats every incumbent value, and it pays
+\(\max\{p,R\}\). The mean payment adds up the reserve when \(R<p\) and \(R\) itself when \(R\ge p\):
+\begin{align*}
+\E\max\{p,R\} &= p\Pr(R<p)+\int_p^r y\,\frac{1}{r}\,dy \why{split at \(p\); density \(1/r\)}\\
+&= \frac{p^2}{r}+\frac{r^2-p^2}{2r}=\frac r2+\frac{p^2}{2r} \why{\(\Pr(R<p)=p/r\); common denominator}
+\end{align*}
+\emph{A low-class challenger.} Its value \(\theta\in[p,\min I]\subseteq[p,r]\). It wins when \(R<\theta\) and keeps
+\(\theta-\max\{p,R\}\). Its mean rent adds up these gains over the incumbent values below \(\theta\):
+\begin{align*}
+\E(\theta-\max\{p,R\})_+ &= (\theta-p)\frac{p}{r}+\int_p^\theta(\theta-y)\,\frac1r\,dy \why{\(R<p\): pays \(p\); \(p\le R<\theta\): pays \(R\)}\\
+&= \frac{(\theta-p)\,p}{r}+\frac{(\theta-p)^2}{2r} \why{\(\int_p^\theta(\theta-y)\,dy=(\theta-p)^2/2\)}\\
+&= \frac{(\theta-p)(2p+\theta-p)}{2r}=\frac{\theta^2-p^2}{2r} \why{factor \(\theta-p\)}
+\end{align*}
+The target receives \(\theta\) minus this rent: when the challenger wins it pays \(\max\{p,R\}\), and when it loses
+the incumbent pays the challenger's bid \(\theta\), with zero rent. Averages over each class give
+\begin{align*}
+g_H &= \E_H\theta-\frac r2-\frac{p^2}{2r},\qquad g_L=\frac{\E_L\theta^2-p^2}{2r}, \why{the two lines above}\\
+\DT &= t_H-t_L=\frac r2+\frac{p^2}{2r}-\E_L\theta+\frac{\E_L\theta^2-p^2}{2r} \why{\(t_H=\E\max\{p,R\}\), \(t_L=\E_L\theta-g_L\)}\\
+&= \frac{r^2-2r\,\E_L\theta+\E_L\theta^2}{2r}=\frac{\E_L(r-\theta)^2}{2r} \why{\(p^2\) cancels; common denominator}
+\end{align*}
+So \(\gamma=g_H-g_L=\E_H\theta-r/2-\E_L\theta^2/(2r)\), and \(\DT+\gamma=\E_H\theta-\E_L\theta=\bar\Gamma\). The
+derivatives are
+\begin{align*}
+\DT' &= \frac12-\frac{\E_L\theta^2}{2r^2}=\frac{r^2-\E_L\theta^2}{2r^2}\ge0, \why{\(\E_L\theta^2\le(\min I)^2\le r^2\)}\\
+g_H' &= -\frac12+\frac{p^2}{2r^2}=-\frac{r^2-p^2}{2r^2},\qquad \gamma'=-\DT'. \why{\(\bar\Gamma\) is fixed}
+\end{align*}
+Also \(\DT(r)>0\) for every \(r>\min I\), because every low-class value is at most \(\min I<r\).
+\end{derivation}
+
+For point classes, \(\DT=(r-\ell)^2/(2r)\), the example's spread of Chapter~\ref{ch:example}.
+
+\begin{derivation}[Step 2: three inequalities]
+\emph{First, the excess \(g_H-c_H\) is large.} Since \(\E_H\theta-c_H\ge\max I\ge r\),
+\begin{align*}
+g_H-c_H &= \E_H\theta-c_H-\frac r2-\frac{p^2}{2r} \why{Step 1}\\
+&\ge r-\frac r2-\frac{p^2}{2r}=\frac{r^2-p^2}{2r}=r\cdot\frac{r^2-p^2}{2r^2}>0 \why{\(\E_H\theta-c_H\ge r\)}
+\end{align*}
+\emph{Second, the spread grows at least in proportion to \(r\).}
+\begin{align*}
+r\DT'-\DT &= \frac r2-\frac{\E_L\theta^2}{2r}-\frac r2+\E_L\theta-\frac{\E_L\theta^2}{2r} \why{Step 1}\\
+&= \E_L\theta-\frac{\E_L\theta^2}{r}=\E_L\Bigl[\theta\Bigl(1-\frac\theta r\Bigr)\Bigr]\ge0 \why{\(0\le\theta\le r\)}
+\end{align*}
+\emph{Third, the profit gap is positive.} With \(\E_H\theta\ge r+c_H\) and \(\E_L\theta^2\le r^2\),
+\[
+\gamma\ge(r+c_H)-\frac r2-\frac{r^2}{2r}=c_H>0 .
+\]
+Hence \(g_H>g_L\), and \(\bar\Gamma=\DT+\gamma>0\).
+\end{derivation}
+
+\begin{derivation}[Step 3: the product]
+\begin{align*}
+\bigl(\DT\,(g_H-c_H)\bigr)' &= \DT'\,(g_H-c_H)+\DT\,g_H' \why{product rule}\\
+&= \DT'\,(g_H-c_H)-\frac{r^2-p^2}{2r^2}\,\DT \why{Step 1}\\
+&\ge \DT'\,r\,\frac{r^2-p^2}{2r^2}-\frac{r^2-p^2}{2r^2}\,\DT \why{first inequality; \(\DT'\ge0\)}\\
+&= \frac{r^2-p^2}{2r^2}\,\bigl(r\DT'-\DT\bigr)\ge0 \why{factor; second inequality}
+\end{align*}
+So \(\DT(r)[g_H(r)-c_H]\) is nondecreasing on \(I\).
+\end{derivation}
+
+\begin{derivation}[Step 4: the return \(J\)]
+Lemma~A.5 gives \(J'\) on a differentiable path (Section~\ref{sec:trading-path}). Write \(c=(r^2-p^2)/(2r^2)>0\).
+\begin{align*}
+J' &= \frac{\bar\Gamma\,(g_H-c_H)\,\DT'+\DT\,\gamma\,g_H'}{\gamma^2} \why{Lemma~A.5}\\
+&= \frac{\bar\Gamma\,(g_H-c_H)\,\DT'-c\,\DT\,\gamma}{\gamma^2} \why{\(g_H'=-c\)}\\
+&\ge \frac{c\,\bigl(\bar\Gamma\,r\DT'-\DT\,\gamma\bigr)}{\gamma^2} \why{\(g_H-c_H\ge rc\); \(\bar\Gamma\DT'\ge0\)}\\
+&\ge \frac{c\,\bigl(\bar\Gamma\,\DT-\DT\,\gamma\bigr)}{\gamma^2} \why{\(r\DT'\ge\DT\); \(\bar\Gamma>0\)}\\
+&= \frac{c\,\DT\,(\bar\Gamma-\gamma)}{\gamma^2}=\frac{c\,\DT^2}{\gamma^2} \why{\(\bar\Gamma-\gamma=\DT\)}
+\end{align*}
+The bound is positive wherever \(\DT>0\), which includes every \(r>\min I\). So \(J\) rises strictly on \(I\).
+\end{derivation}
+
+\paragraph{What this says.} In this uniform family, a stronger incumbent raises the spread fast enough to beat the
+fall in class \(H\)'s excess profit. Class \(H\) beats every incumbent, so its payment rises by less than one half
+per unit of strength, while the spread rises at least in proportion to strength. Once a purchase that just reaches the
+threshold covers \(k\), it covers \(k\) at every stronger incumbent of the family, and the coexistence set is one
+interval at every prior. The example meets the hypotheses: its incumbent is uniform, \(\ell\) lies between \(p\) and
+\(r_0\), and \(h\) exceeds \(r_2\) by more than \(c_H\) (Section~4.3 of the paper).
+
+\begin{watchout}
+Keep each hypothesis of part (c)(iii).
+\begin{itemize}
+\item \(\E_H\theta\ge\max I+c_H\) gives \(g_H-c_H\ge r(r^2-p^2)/(2r^2)\), the first inequality of Step~2. Without it the
+excess can shrink faster than the spread grows, as in the instance of Lemma~A.5 where \(J\) falls.
+\item Every low-class value in \([p,\min I]\) gives \(\DT'\ge0\) and \(r\DT'\ge\DT\).
+\item Every high-class value at least \(\max I\) makes class \(H\) win for sure, so its payment is
+\(r/2+p^2/(2r)\).
+\end{itemize}
+The two-interval path of Section~\ref{sec:coexistence-race} keeps class \(H\) winning for sure, with a value above
+every incumbent value by more than \(c_H\), and still splits the coexistence set. The uniform shape matters.
+\end{watchout}
+
+% =====================================================================
+\section{The race between the spread and the threshold}\label{sec:coexistence-race}
+
+Section~\ref{sec:trading-race} described a race. Along a path, while \(g_L\le c_H\) and the profit gap stays
+positive, a stronger incumbent never narrows the spread and never lowers the threshold. A wider spread raises what a
+purchase that recruits earns. A higher threshold makes recruitment harder. In the coexistence region the race is the
+number \(J=\DT(1-\tau)\): its first factor never falls and its second never rises.
+
+So as the incumbent strengthens, the economy can enter the region (when \(J\) rises to \(k\)), leave it (when \(J\)
+falls below \(k\)), and enter it again (when \(J\) rises to \(k\) once more). The other three conditions cannot
+produce this: \(\{\pi<\tau\}\) can only switch on, and \(\{\tau\le M\}\) and \(\{\DT\le\DT^{\rm N}\}\) can only switch
+off.
+
+\paragraph{A path with two intervals.} Appendix~A.4 builds such a path. It keeps every primitive of the example except
+the incumbent law, takes the prior \(1/2\) and a slot with \(\tau(r_1)<M(1/2)<\tau(r_2)\). The incumbent law is a mix
+of two uniform laws of the same small width, a lower one and an upper one, with fixed weights.
+\begin{itemize}
+\item On the first half of the path only the lower law moves up, and its values stay between \(p\) and \(\ell\). The
+incumbent strengthens only where it loses to both classes. Both gross profits fall, the spread stays constant, the
+threshold rises, and \(J\) falls.
+\item On the second half only the upper law moves up, with values between \(\ell\) and \(h\). The incumbent
+strengthens between the class values, and the spread widens.
+\end{itemize}
+A quiet market and an informative market coexist exactly on an initial stretch and on a final stretch of the path,
+with a gap between them. The two stretches end and start at the two strengths where \(J=k\). The strengths with a sure
+purchase form one interval inside the second stretch, and on the gap the spread lies below \(\DT^{\rm F}\), as part
+(b) requires.
+
+\begin{derivation}[why the first half moves \(J\) down]
+For point classes, \(D(y)=G_L(y)-G_H(y)=\1\{\ell\le y<h\}\), \(1-G_H(y)=\1\{y<h\}\) and \(1-G_L(y)=\1\{y<\ell\}\). On
+the first half, \(F_r-F_{r'}\) is zero outside \([p,\ell)\) (Section~\ref{sec:toolkit-fosd}). Lemma~A.5 gives
+\begin{align*}
+\DT(r')-\DT(r) &= \int_p^\infty[F_r-F_{r'}]\,D\,dy=0 \why{\(D=0\) below \(\ell\)}\\
+g_j(r)-g_j(r') &= \int_p^\infty[F_r-F_{r'}]\,[1-G_j]\,dy=\int_p^\ell[F_r-F_{r'}]\,dy \why{\(1-G_j=1\) below \(\ell\), both \(j\)}
+\end{align*}
+So \(g_H\) and \(g_L\) fall by the same positive amount, and \(\gamma=g_H-g_L\) stays fixed. Then
+\(\tau=(c_H-g_L)/\gamma\) rises, because its numerator rises and its denominator stays fixed, and
+\(J=\DT(1-\tau)\) falls, because \(\DT\) stays fixed.
+\end{derivation}
+
+The balance condition fails on the first half: the spread is constant while \(g_H-c_H\) falls, so the product
+\(\DT(g_H-c_H)\) falls. This is what part (c) rules out. Under the balance condition, \(\{J\ge k\}\) is an up-set
+(part (c)(i)). Once a purchase that just reaches the threshold covers \(k\), it covers \(k\) at every stronger
+incumbent. The economy can then leave the region only through \(\tau\le M\) or \(\DT\le\DT^{\rm N}\), and it cannot
+return through either. So it enters once and leaves once.
+
+\begin{checkyourself}\label{q:coexistence-gap}
+On a path, suppose that over a stretch of strengths the spread stays constant while \(g_H\) and \(g_L\) fall by the
+same positive amount, with \(g_L\le c_H<g_H\). Show that \(\tau\) rises and \(J\) falls on the stretch. Show that the
+balance condition fails there. Which condition of the region can switch off on this stretch and switch on again later?
+\end{checkyourself}
+
+% =====================================================================
+\section{Corollary 2: coexistence in the example}\label{sec:coexistence-example}
+
+The example has point classes at \(h\) and \(\ell\), a reserve \(p\), and an incumbent uniform on \([0,r]\). The path
+is \(r\in[r_0,r_2]\), and on it \(p<\ell<r<h\). Chapter~\ref{ch:example} derives
+\[
+\DT(r)=\frac{(r-\ell)^2}{2r},\qquad \tau(r)=\frac{2rc_H-(\ell^2-p^2)}{2rh-r^2-\ell^2}.
+\]
+On the path \(\DT(r)>0\), and \(\gamma=(2rh-r^2-\ell^2)/(2r)>0\) because \(2rh-r^2-\ell^2-(r^2-\ell^2)=2r(h-r)>0\) and
+\(r^2-\ell^2>0\). So every law of the path meets the hypotheses of Proposition~3. Take the prior \(1/2\) and a slot in
+the band of Corollary~1: \(0<\lambda<1\), \(0<\beta<1/2\) and \(\tau(r_1)<M(1/2)<\tau(r_2)\). Write \(M=M(1/2)\) and
+\(m=1-M\).
+
+\begin{derivation}[the formulas at the prior \(1/2\)]
+\begin{align*}
+1-\mu_+(s) &= \frac{b/2}{b+s/2}=\frac{b}{2b+s} \why{\(\pi=1/2\); multiply above and below by \(2\)}\\
+\mu_-(s) &= \frac{b/2}{b+s/2}=\frac{b}{2b+s} \why{the same steps}\\
+1-M &= \frac{b}{2b+\lambda}=\frac{1}{2+u}=m \why{\(s=\lambda\); divide above and below by \(b\)}\\
+s^* &= \frac{b\,(\tau-1/2)}{(1/2)(1-\tau)}=\frac{b\,(2\tau-1)}{1-\tau} \why{multiply above and below by \(2\)}
+\end{align*}
+\end{derivation}
+
+At the prior \(1/2\) the doubt left after a purchase at rate \(s\) equals the doubt left after a sale at rate \(s\).
+This symmetry makes the sale side and the purchase side easy to compare.
+
+\paragraph{A root function.} The paper writes \(\fr(y)=\ell+y+\sqrt{y^2+2\ell y}\) for the root above \(\ell\) of
+\(\DT(r)=y\), for \(y>0\):
+\begin{align*}
+\frac{(r-\ell)^2}{2r} &= y \why{\(\DT(r)=y\)}\\
+r^2-2(\ell+y)\,r+\ell^2 &= 0 \why{multiply by \(2r\); expand; collect}\\
+r &= \ell+y\pm\sqrt{(\ell+y)^2-\ell^2}=\ell+y\pm\sqrt{y^2+2\ell y} \why{quadratic formula}
+\end{align*}
+The root with the minus sign lies below \(\ell\), because \(\sqrt{y^2+2\ell y}>y\). Above \(\ell\) the spread rises
+strictly (\(\DT'=\tfrac12-\ell^2/(2r^2)>0\)), so for \(r>\ell\), \(\DT(r)\le y\) holds exactly when \(r\le\fr(y)\).
+
+\subsection{The marked strengths}
+
+Each marked strength is the strength at which one order just earns the trading cost, or at which the threshold meets
+the top posterior.
+\begin{itemize}
+\item \(r_A\): the root of \(J(r)=k\) in \((r_0,r_2)\). A purchase that just reaches the threshold and recruits earns
+\(k\).
+\item \(r_F=\fr\bigl(k/(1-M)\bigr)\): \(\DT(r)(1-M)=k\). A full purchase that recruits earns \(k\).
+\item \(r_N=\fr(2k/\rho)\): \(\rho\DT(r)/2=k\). A unit order against an uninformative price earns \(k\): entry
+\(\rho\) and the posterior \(1/2\) give \(\rho\DT\cdot\tfrac12\).
+\item \(r_J\): the root of \(\rho J(r)=k\) in \((r_0,r_2)\). A purchase that just reaches the threshold but does not
+recruit, at entry \(\rho\), earns \(k\).
+\item \(r_S=\fr\bigl(k/(\rho m)\bigr)\): \(\rho\DT(r)m=k\). A full sale earns \(k\).
+\item \(r_C\): the root of \(\tau(r)=M\) in \((r_1,r_2)\), that is of \(B_r(M)=c_H\). This is the entry ceiling:
+above it even the top posterior does not recruit.
+\item \(r_*\): the root of \(\rho\DT(r)\tau(r)=k\) in \((r_0,r_2)\). It matters only at other priors
+(Section~\ref{sec:coexistence-priors}).
+\end{itemize}
+The strengths \(r_A\), \(r_N\), \(r_J\) and \(r_*\) do not depend on the slot. The strengths \(r_F\), \(r_S\) and \(r_C\)
+depend on it through \(M\). Chapter~\ref{app:numbers} lists the values at the example's slot.
+
+\begin{paperresult}{Lemma A.10 (The example path)}
+On the path \([r_0,r_2]\) of the example:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \(\tau\) is strictly increasing, with \(\tau(r_0)>1/2\) and \(\tau(r_2)<1-\rho\).
+\item The path is a uniform incumbent of Proposition~3(c)(iii), with \(h-r_2-c_H>0\). The product
+\(\DT(r)\,[g_H(r)-c_H]\) has a positive derivative at every \(r\). Hence \(J\) is strictly increasing, with
+\(J(r_0)<k\) and \(\rho J(r_2)>k\).
+\item The product \(\DT(r)\,[g_H(r)-c_H]^2\) has a positive derivative at every \(r\), and \(\DT(r)\,[1-\tau(r)]^2\) is
+strictly increasing on the whole path.
+\item \(\DT(r)\,\tau(r)\) is strictly increasing.
+\end{enumerate}
+\end{paperresult}
+
+The paper states each value and each margin in this lemma as an exact number. The guide keeps only the inequalities
+that the proofs use; Chapter~\ref{app:numbers} lists the numbers.
+
+\begin{derivation}[proof of Lemma A.10]
+\emph{(a)} Write \(\tau=N/D\) with \(N=2rc_H-\ell^2+p^2\) and \(D=2rh-r^2-\ell^2>0\). The derivative of \(\tau\) has
+the sign of \(N'D-ND'\):
+\begin{align*}
+N'D-ND' &= 2c_H\,(2rh-r^2-\ell^2)-\bigl(2rc_H-\ell^2+p^2\bigr)(2h-2r) \why{\(N'=2c_H\), \(D'=2h-2r\)}\\
+&= 4c_Hrh-2c_Hr^2-2c_H\ell^2-4c_Hrh+4c_Hr^2+2(\ell^2-p^2)(h-r) \why{expand}\\
+&= 2c_H\,(r^2-\ell^2)+2(\ell^2-p^2)(h-r)>0 \why{collect; \(\ell<r<h\), \(\ell\ge p\)}
+\end{align*}
+The values of the example give \(\tau(r_0)>1/2\) and \(\tau(r_2)<1-\rho\).
+
+\emph{(b)} The interval \(I=[r_0,r_2]\) has \(p<\ell<r_0\) and \(r_2+c_H<h\), so part (c)(iii) applies:
+\(\DT(g_H-c_H)\) is nondecreasing and \(J\) rises strictly. The paper also bounds the derivative directly. From
+\(\DT'=(r-\ell)(r+\ell)/(2r^2)\), the ratio \(\DT/\DT'\) is \(r(r-\ell)/(r+\ell)\), so
+\begin{align*}
+\bigl(\DT(g_H-c_H)\bigr)' &= \DT'(g_H-c_H)+\DT\,g_H' \why{product rule}\\
+&= \DT'\Bigl[g_H-c_H+\frac{\DT}{\DT'}\,g_H'\Bigr] \why{factor \(\DT'>0\)}\\
+&= \DT'\Bigl[g_H-c_H-\frac{(r^2-p^2)(r-\ell)}{2r(r+\ell)}\Bigr] \why{\(g_H'=-(r^2-p^2)/(2r^2)\)}
+\end{align*}
+In the bracket, \(g_H-c_H\) falls strictly and the subtracted term rises strictly, as the product of the positive
+increasing functions \((r^2-p^2)/(2r)\) and \((r-\ell)/(r+\ell)\). So the bracket is smallest at \(r_2\), and the
+example's values make it positive there. The endpoint values \(J(r_0)<k\) and \(\rho J(r_2)>k\) follow from the
+closed form of \(J\) at the example's values.
+
+\emph{(c)} In the same way,
+\[
+\bigl(\DT(g_H-c_H)^2\bigr)'=(g_H-c_H)\,\DT'\Bigl[g_H-c_H-\frac{(r^2-p^2)(r-\ell)}{r(r+\ell)}\Bigr],
+\]
+and the bracket, strictly decreasing for the same reasons, is positive at \(r_2\) at the example's values. Since
+\(g_H-c_H>0\), the derivative is positive. Then \(\DT(1-\tau)^2=\DT(g_H-c_H)^2/\gamma^2\) has a positive, strictly
+increasing numerator and a positive, strictly decreasing denominator (\(\gamma'=-\DT'<0\)), so it rises strictly.
+
+\emph{(d)} \(\DT\) and \(\tau\) are positive and strictly increasing on the path, by \(\DT'>0\) and (a), so their
+product is strictly increasing.
+\end{derivation}
+
+By part (b), \(J(r_0)<k<\rho J(r_2)<J(r_2)\) and \(\rho J(r_0)<J(r_0)<k\). So the roots \(r_A\) of \(J=k\) and \(r_J\) of
+\(\rho J=k\) exist in \((r_0,r_2)\), and they are unique because \(J\) rises strictly. The root \(r_C\) is unique
+because \(\tau\) rises strictly, and \(r_*\) because \(\DT\tau\) does.
+
+\begin{paperresult}{Lemma A.11 (The order of the marked strengths)}
+For every slot with \(0<\lambda<1\), \(0<\beta<1/2\) and \(\tau(r_1)<M(1/2)<\tau(r_2)\),
+\[
+r_0<r_A<r_F<r_N<r_J<r_S<r_1<r_C<r_2 .
+\]
+\end{paperresult}
+
+\begin{derivation}[proof of Lemma A.11]
+Every strength in the chain exceeds \(\ell\), where \(\DT\) rises strictly. Besides Lemma~A.10 and the band, the proof
+uses two facts of the example's values: \(\rho J(r_1)>k\) and \(\rho^2\DT(r_1)>k\).
+\begin{itemize}
+\item \(r_0<r_A<r_1\): \(J(r_0)<k<\rho J(r_1)<J(r_1)\), and \(J\) rises strictly.
+\item \(r_A<r_F\): \(\DT(r_A)<k/(1-M)\) reads \((1-M)\DT(r_A)<k=(1-\tau(r_A))\DT(r_A)\), that is \(M>\tau(r_A)\). This
+holds because \(M>\tau(r_1)>\tau(r_A)\), since \(r_A<r_1\).
+\item \(r_F<r_N\): \(k/(1-M)<2k/\rho\) reads \(M<1-\rho/2\). This holds because \(M<\tau(r_2)<1-\rho\), by
+Lemma~A.10(a).
+\item \(r_N<r_J\): \(\rho\DT(r_J)[1-\tau(r_J)]=k\) and \(\tau(r_J)>\tau(r_0)>1/2\) give
+\(\rho\DT(r_J)/2>\rho\DT(r_J)[1-\tau(r_J)]=k\), that is \(\DT(r_J)>2k/\rho=\DT(r_N)\).
+\item \(r_J<r_S\): \(\DT(r_J)<k/(\rho m)\) reads \(\rho(1-M)\DT(r_J)<k=\rho(1-\tau(r_J))\DT(r_J)\), that is
+\(M>\tau(r_J)\). The fact \(\rho J(r_1)>k\) gives \(r_J<r_1\), so \(M>\tau(r_1)>\tau(r_J)\).
+\item \(r_S<r_1\): the claim is \(\rho m\DT(r_1)>k\). By Lemma~A.10(a), \(m=1-M>1-\tau(r_2)>\rho\), so
+\(\rho m\DT(r_1)>\rho^2\DT(r_1)>k\).
+\item \(r_1<r_C<r_2\): this is the band, since \(\tau\) rises strictly.
+\end{itemize}
+\end{derivation}
+
+Read the chain as a walk along the path. First a purchase at the threshold that recruits starts to pay (\(r_A\)),
+then a full purchase that recruits (\(r_F\)), then an order against a silent price (\(r_N\)), then a purchase at the
+threshold without recruitment (\(r_J\)), then a full sale (\(r_S\)). Far to the right the threshold passes the top
+posterior (\(r_C\)).
+
+\subsection{The equilibrium set}
+
+At the prior \(1/2\), the low class sells at the rate of Lemma~A.8, which at this prior reads
+\[
+\hat s_-(r)=0\ \text{on}\ [r_0,r_N],\qquad \hat s_-(r)=b\,[\rho\DT(r)/k-2]\ \text{on}\ (r_N,r_S),\qquad
+\hat s_-(r)=\lambda\ \text{on}\ [r_S,r_2].
+\]
+The middle formula is \(b(\pi\rho\DT/k-1)/(1-\pi)\) at \(\pi=1/2\). Class \(H\)'s pair takes one of five forms:
+\begin{itemize}
+\item \textbf{N}, a quiet market: \(s_+=0\) and \(e(1)=\rho\);
+\item \textbf{R}, a mixed purchase that recruits: \(s_+=s_R(r):=b[\DT(r)/k-2]\) and \(e(1)=1\);
+\item \textbf{F}, a full purchase: \(s_+=\lambda\), with \(e(1)=1\) for \(r\le r_C\) (at \(r_C\) because an
+indifferent high-cost challenger prepares) and \(e(1)=\rho\) for \(r>r_C\);
+\item \textbf{Q}, mixed orders at the entry floor: \(s_+=s_Q(r):=b[\rho\DT(r)/k-2]=\hat s_-(r)\) and \(e(1)=\rho\);
+\item \textbf{T}, the threshold pair: \(s_+=s^*(r)\) and \(e(1)=k/J(r)\), which under the default rule requires
+\(J(r)=k\), that is \(r=r_A\).
+\end{itemize}
+The forms R, Q and T need an indifferent investor who may mix. In Q both classes trade at the same rate, no order
+recruits, and entry stays at the floor.
+
+\begin{paperresult}{Corollary 2 (Coexistence in the example, the full statement of Appendix A.4)}
+Take the example at the prior \(1/2\), a slot with \(0<\lambda<1\), \(0<\beta<1/2\) and \(\tau(r_1)<M(1/2)<\tau(r_2)\),
+and the default tie rules. The equilibrium set at each strength of the path is
+\begin{center}\upshape
+\begin{tabular}{@{}ll@{}}
+\toprule
+Strength & Equilibria\\
+\midrule
+\(r_0\le r<r_A\) & \textbf{N}\\
+\(r=r_A\) & \textbf{N}; \textbf{T} with entry one after a purchase\\
+\(r_A<r<r_F\) & \textbf{N}; \textbf{R}\\
+\(r_F\le r\le r_N\) & \textbf{N}; \textbf{F}\\
+\(r_N<r<r_J\) & \textbf{F}; \textbf{Q}\\
+\(r_J\le r\le r_2\) & \textbf{F}\\
+\bottomrule
+\end{tabular}
+\end{center}
+In each, the low class sells at the rate \(\hat s_-(r)\). Entry is \(\rho\) in a quiet market and in mixed orders at
+the entry floor; \(\Ent_{\rm R}(r)=\rho+(1-\rho)\,b\DT(r)/(2k)\) in a mixed purchase that recruits, and
+\(\Ent_{\rm R}(r_A)\) in the threshold pair at \(r_A\); and \(\Ent_{\rm F}=\rho+(1-\rho)(b+\lambda/2)\) in a full
+purchase up to \(r_C\), with \(\Ent_{\rm F}=\rho\) above \(r_C\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item A quiet market and an informative market coexist exactly on \([r_A,r_N]\).
+\item Along the informative branch, entry is \(\rho+(1-\rho)\min\{b\DT(r)/(2k),\,b+\lambda/2\}\) on \([r_A,r_C]\) and
+\(\rho\) on \((r_C,r_2]\). It is continuous on \([r_A,r_C]\), rises strictly on \([r_A,r_F]\), is constant on
+\([r_F,r_C]\), and returns to the floor \(\rho\) above the entry ceiling \(r_C\).
+\item The equilibrium set is nonempty at every strength.
+\end{enumerate}
+\end{paperresult}
+
+The main text states a short version: an equilibrium exists at every strength from \(r_0\) to \(r_2\), coexistence
+holds exactly on \([r_A,r_N]\), and in the informative market that coexists with a quiet market entry is
+\(\rho+(1-\rho)\min\{b\DT(r)/(2k),\,b+\lambda/2\}\), rising strictly on \([r_A,r_F]\) and constant on \([r_F,r_N]\);
+with a full purchase, entry keeps this value up to \(r_C\) and equals \(\rho\) above it. The three economies of
+Proposition~2 sit at \(r_0\), \(r_1\) and \(r_2\), and the table fills in the strengths between them: one quiet market
+at \(r_0\), one full purchase that recruits at \(r_1\), and one full purchase at floor entry at \(r_2\).
+
+\paragraph{The proof.} Appendix~A.4 proves the corollary in eight steps. The guide groups them in four.
+
+\begin{derivation}[Step 1: the frame]
+By Lemma~A.10(a), \(\tau(r)\ge\tau(r_0)>1/2=\pi\) on the whole path, so Lemmas~A.7 to~A.9 apply at every strength.
+Every equilibrium combines a pair of Lemma~A.7 with a rate of Lemma~A.8. Recall \(1-M=1/(2+u)\) and \(ub=\lambda\).
+\end{derivation}
+
+\begin{derivation}[Step 2: the high-class pairs along the path]
+\emph{(N)} holds exactly when \(\rho\DT/2\le k\), that is \(r\le r_N\).
+
+\emph{(R).} The equation \(\DT\,b/(2b+s)=k\) gives \(2b+s=b\DT/k\), so \(s=s_R(r)\). Then
+\begin{align*}
+\mu_+(s_R)>\tau &\iff \frac{k}{\DT}<1-\tau \why{\(1-\mu_+(s_R)=b/(2b+s_R)=k/\DT\)}\\
+&\iff k<J(r)\iff r>r_A \why{multiply by \(\DT>0\); \(J\) rises strictly}\\
+s_R<\lambda &\iff \frac{\DT}{k}<2+u \why{divide \(b(\DT/k-2)<\lambda\) by \(b\); add \(2\)}\\
+&\iff \DT(1-M)<k\iff r<r_F \why{\(1-M=1/(2+u)\)}
+\end{align*}
+The rate is positive for \(r>r_A\): there \(J>k\) and \(\tau>1/2\) give \(\DT/2>\DT(1-\tau)>k\), so \(\DT/k>2\). This
+check is the guide's own. So (R) holds exactly on \((r_A,r_F)\).
+
+\emph{(Q).} The equation \(\rho\DT\,b/(2b+s)=k\) gives \(s=s_Q(r)\). Then \(s_Q>0\) exactly when \(\rho\DT>2k\), that is
+\(r>r_N\); \(\mu_+(s_Q)<\tau\) exactly when \(k/(\rho\DT)>1-\tau\), that is \(\rho J(r)<k\), that is \(r<r_J\); and
+\(s_Q<\lambda\) exactly when \(\rho\DT(1-M)<k\), that is \(r<r_S\). Since \(r_J<r_S\), (Q) holds exactly on
+\((r_N,r_J)\).
+
+\emph{(T).} \(s^*\in(0,\lambda)\) exactly when \(1/2<\tau(r)<M\), that is \(r<r_C\). Also \(\rho\le k/J\le1\) exactly when
+\(\rho J\le k\le J\), that is \(r_A\le r\le r_J\), and \(k/J=1\) exactly when \(r=r_A\). Since \(r_J<r_C\), (T) holds at
+\(r_A\) under the default challenger rule.
+
+\emph{(F).} For \(r<r_C\), \(M>\tau(r)\), so \(e(1)=1\), and the condition is \(\DT(1-M)\ge k\), that is \(r\ge r_F\). For
+\(r>r_C\), \(M<\tau(r)\), so \(e(1)=\rho\), and \(\rho\DT(1-M)\ge k\) holds because \(r>r_C>r_S\). At \(r=r_C\), the
+indifferent challenger prepares, \(e(1)=1\), and the condition holds because \(\DT(r_C)(1-M)>\rho\DT(r_C)(1-M)>k\). So
+(F) holds exactly when \(r\ge r_F\).
+\end{derivation}
+
+\begin{derivation}[Step 3: the low-class rate and the rule \(s_+\ge s_-\)]
+At the prior \(1/2\), Lemma~A.8 gives \(s_-=0\) exactly when \(\rho\DT/2\le k\), that is \(r\le r_N\); \(s_-=\lambda\)
+exactly when \(\rho\DT m\ge k\), that is \(r\ge r_S\); and \(\hat s_-(r)\) in between.
+
+For \(r\le r_N\), \(s_-=0\le s_+\). For \(r>r_N\), the pairs of Step~2 under the default rules are (F), with
+\(s_+=\lambda\ge s_-\), and (Q), with \(s_+=s_Q(r)=\hat s_-(r)\); the pairs (R) and (T) occur only below \(r_F<r_N\). So
+\(s_+\ge s_-\) in every combination, and Lemma~A.9 makes the equilibrium set the set of all these combinations, with
+entry \(\rho\) after the zero order and a sale.
+\end{derivation}
+
+\begin{derivation}[Step 4: the set, entry and existence]
+\emph{The set.} Put Step~2 together with the order of Lemma~A.11. On \([r_0,r_A)\) only (N) holds. At \(r_A\), (N) and
+(T). On \((r_A,r_F)\), (N) and (R). On \([r_F,r_N]\), (N) and (F). On \((r_N,r_J)\), (F) and (Q). On \([r_J,r_2]\), only
+(F). This is the table, and part (a) follows. On \([r_0,r_N]\) it is Proposition~3(a) on the path, since there
+\(\DT\le\DT^{\rm N}\), \(1/2<\tau<M\), and \(J\ge k\) exactly when \(r\ge r_A\).
+
+\emph{Entry.} With \(e(0)=e(-1)=\rho\) and \(\Pr(X=1)=\tfrac12(b+s_+)+\tfrac12b=b+s_+/2\),
+\begin{align*}
+\Ent &= \rho\,[1-\Pr(X=1)]+e(1)\Pr(X=1)=\rho+[e(1)-\rho]\,(b+s_+/2) \why{total probability over orders}\\
+b+\frac{s_R}{2} &= b+\frac b2\Bigl(\frac{\DT}{k}-2\Bigr)=\frac{b\,\DT}{2k} \why{form R}\\
+\frac{b\,\DT(r_F)}{2k} &= \frac{b\,(2+u)}{2}=b+\frac{\lambda}{2} \why{\(\DT(r_F)=k(2+u)\); \(ub=\lambda\)}
+\end{align*}
+So a mixed purchase that recruits has \(\Ent_{\rm R}(r)=\rho+(1-\rho)b\DT(r)/(2k)\), which rises strictly because \(\DT\)
+does, and it meets the full purchase at \(r_F\) with no jump. A full purchase has \(b+\lambda/2\), so
+\(\Ent_{\rm F}=\rho+(1-\rho)(b+\lambda/2)\) with \(e(1)=1\) up to \(r_C\), and \(\Ent_{\rm F}=\rho\) above \(r_C\). The forms
+N and Q have \(e(1)=\rho\), so entry is \(\rho\). At \(r_A\), \(J=k\) gives \(\DT/k=1/(1-\tau)\), so
+\(s_R=b[1/(1-\tau)-2]=b(2\tau-1)/(1-\tau)=s^*\): the threshold pair is the limit of the mixed purchase, with entry
+\(\Ent_{\rm R}(r_A)\). This gives part (b).
+
+\emph{Existence.} A quiet market exists on \([r_0,r_N]\) and a full purchase on \([r_F,r_2]\). Since \(r_F<r_N\), every
+strength has an equilibrium. This is part (c). Proposition~3(d) gives existence at the prior \(1/2\) for a general
+incumbent law with \(\tau>1/2\).
+\end{derivation}
+
+\begin{intuition}[a walk along the path]
+At the weak end the spread is so narrow that even a purchase that just reaches the threshold, and recruits, does not
+cover \(k\): only the quiet market exists. At \(r_A\) that purchase covers \(k\) exactly, and the informative market
+appears as the threshold pair. On \((r_A,r_F)\) class \(H\) mixes, and its purchase rate and entry rise with the spread.
+From \(r_F\) class \(H\) buys for sure, and entry stays on a plateau. At \(r_N\) an order against a silent price starts
+to pay, so the quiet market ends and coexistence ends with it. Beyond \(r_N\) the low class starts to sell, and from
+\(r_S\) it sells for sure. At \(r_C\) the threshold passes the top posterior, and the full purchase stops recruiting.
+\end{intuition}
+
+% =====================================================================
+\section{Reading the figure}\label{sec:coexistence-figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{coexistence}
+\caption{Entry and the coexistence region along the example's path, at the prior \(1/2\), under the default tie
+rules. Panels (a) and (c) plot entry against the strength \(r\) in each equilibrium of Corollary~2; panel (c)
+enlarges the strengths around the shaded coexistence interval \([r_A,r_N]\). Panel (b) draws the region of
+Proposition~3(a) in the plane of \(\DT\) and \(\tau\), with the curve \((\DT(r),\tau(r))\) of the path. The labels N,
+R, F, Q and T name the quiet market, the mixed purchase that recruits, the full purchase, mixed orders at the entry
+floor and the threshold pair. Chapter~\ref{app:numbers} lists the values of the marked strengths.}
+\label{fig:coexistence-path}
+\end{figure}
+
+The paper's notes give one rule for the markers: a filled marker belongs to its curve, and an open marker does not.
+
+\paragraph{Panel (a): the whole path.} The quiet market N is a flat line at the floor \(\rho\), from \(r_0\) to \(r_N\).
+The informative branch starts at \(r_A\) above the floor, rises along the mixed purchase R up to \(r_F\), and then stays
+on the plateau of the full purchase F up to the entry ceiling \(r_C\). At \(r_C\) the filled marker on the plateau shows
+that the full purchase still recruits there, because an indifferent high-cost challenger prepares. Above \(r_C\) the
+full purchase has entry \(\rho\): the open marker at the floor. The dashed curve that falls from the start of R is the
+threshold pair T under the other challenger rule (Section~\ref{sec:coexistence-ties}). So entry along the informative
+branch first rises with the spread, then stays flat, then drops to the floor when even the top posterior stops
+recruiting.
+
+\paragraph{Panel (c): around the coexistence interval.} The shaded band runs from \(r_A\) to \(r_N\). Inside it two
+equilibria exist at every strength: N at the floor, and R or F above it. The step from R to F at \(r_F\) has no jump.
+To the right of \(r_N\), the quiet market is gone, and the mixed orders at the entry floor Q run at the floor from
+\(r_N\) to \(r_J\), next to the full purchase. The labels above the plateau show what the low class does in the full
+purchase: it abstains up to \(r_N\), mixes from \(r_N\) to \(r_S\) (``mixed sales''), and sells for sure from \(r_S\)
+(``full trade''). The dashed curve T falls from the level of R at \(r_A\) to the floor at \(r_J\).
+
+\paragraph{Panel (b): the region and the path.} The axes are the spread \(\DT\) and the threshold \(\tau\). The region
+is the set with \(1/2<\tau\le M(1/2)\) and \(k/(1-\tau)\le\DT\le2k/\rho\), at the example's slot: the shape of
+Figure~\ref{fig:coexistence-region}. Its edges:
+\begin{itemize}
+\item the dotted lower edge \(\tau=1/2\) lies outside the region: at \(\tau=\pi\), the quiet market under the default
+challenger rule has entry one after every order, the case of Step~1 in Section~\ref{sec:coexistence-proof-a};
+\item the top edge \(\tau=M(1/2)\) belongs to it: there a full purchase reaches the threshold, and the indifferent
+challenger prepares;
+\item the left edge, the curve \(\DT=k/(1-\tau)\), belongs to it: there the threshold pair recruits, again because the
+indifferent challenger prepares;
+\item the right edge \(\DT=2k/\rho\) belongs to it: there the investor in the quiet market is indifferent, and it may
+abstain.
+\end{itemize}
+The dashed line \(\DT=k/(1-M(1/2))\) divides the mixed purchase R, on its left, from the full purchase F. The curve
+traces \((\DT(r),\tau(r))\) from \(r_0\). Both coordinates rise with \(r\), and the threshold rises slowly. The curve
+enters the region through the left edge at \(r_A\), crosses the dashed line at \(r_F\), leaves the region through the
+right edge at \(r_N\), and continues toward \(r_1\) and \(r_2\) beyond the panel. It never touches the top edge on this
+stretch, because \(r_C\) lies far to the right of \(r_N\).
+
+% =====================================================================
+\section{Other tie rules}\label{sec:coexistence-ties}
+
+Proposition~3 and Corollary~2 take the default tie rules. Appendix~A.4 states what the other rules change. The
+reasons all come from Lemmas~A.7 to~A.9, which hold under each pair of rules.
+
+\paragraph{A general incumbent law.}
+\begin{itemize}
+\item \emph{The investor may mix, and the challenger may prepare with any probability.} Coexistence holds exactly in
+the region of part (a), or when \(\tau=\pi\) and \(k/(1-\pi)<\DT\le\DT^{\rm N}\). At \(\tau=\pi\), entry \(\rho\) after
+every order is allowed at the belief \(\pi=\tau\), which gives a quiet market; and a purchase at a positive rate has a
+posterior above \(\tau\), so it recruits, and it pays when \(\DT(1-\pi)>k\). Inside the region, wherever \(\tau<M\) and
+\(J>k\), the threshold pair with \(e(1)=k/J\) is a further informative market. Its entry lies strictly between \(\rho\)
+and \eqref{eq:coexistence-entry}: \(e^*=k/J<1\), and \(e^*>\rho\) because \(\rho J<\rho\DT(1-\pi)\le k\). Where
+\(\tau=M\), a full purchase is an equilibrium with each entry after a purchase in \([k/J,1]\).
+\item \emph{The investor abstains, and the challenger prepares.} Coexistence holds exactly when \(\pi<\tau\le M\) and
+\(\DT^{\rm F}<\DT\le\DT^{\rm N}\), and the informative market is the full purchase. Without mixes the pairs R, T and Q
+drop out, and the full purchase needs the strict return \(\DT(1-M)>k\).
+\item \emph{The investor abstains, and the challenger may prepare with any probability.} The laws with \(\tau=\pi\) and
+\(\DT^{\rm F}<\DT\le\DT^{\rm N}\) join this set.
+\end{itemize}
+
+\paragraph{Proposition 3(c)(iv).} If, beyond the balance condition, \(\DT(r)[g_H(r)-c_H]^2\) is nondecreasing, then
+\(\DT(r)[1-\tau(r)]^2\) is nondecreasing. When an indifferent investor may mix and an indifferent high-cost challenger
+may prepare with any probability, the threshold pair is a pair of Lemma~A.7 exactly at the strengths with
+\(\pi<\tau(r)<M\) and \(\rho J(r)\le k\le J(r)\). There its entry, with entry \(\rho\) after a sale and after the zero
+order, is
+\[
+\Ent_{\rm T}(r)=\rho+(1-\pi)\,b\,\frac{k-\rho J(r)}{\DT(r)\,[1-\tau(r)]^2},
+\]
+and it is nonincreasing. Where \(\tau(r)=M\), the threshold rate is \(s^*=\lambda\), and the purchase is the full
+purchase (F).
+
+\begin{derivation}[the entry of the threshold pair, and why it falls]
+\emph{The first claim.} \(\DT(1-\tau)^2=\DT(g_H-c_H)^2/\gamma^2\). The numerator is nonnegative and nondecreasing by
+hypothesis, and \(1/\gamma^2\) is positive and nondecreasing because \(\gamma>0\) never rises. A product of two
+nonnegative nondecreasing functions is nondecreasing.
+
+\emph{The entry.} Entry is \(\rho+(e^*-\rho)(b+\pi s^*)\), by the entry derivation of
+Section~\ref{sec:coexistence-informative} with \(e(1)=e^*\). Then
+\begin{align*}
+b+\pi s^* &= b+\frac{b\,(\tau-\pi)}{1-\tau}=\frac{b\,(1-\tau+\tau-\pi)}{1-\tau}=\frac{(1-\pi)\,b}{1-\tau} \why{\(s^*\); common denominator}\\
+e^*-\rho &= \frac{k}{J}-\rho=\frac{k-\rho J}{\DT(1-\tau)} \why{\(e^*=k/J\), \(J=\DT(1-\tau)\)}\\
+(e^*-\rho)(b+\pi s^*) &= (1-\pi)\,b\,\frac{k-\rho J}{\DT(1-\tau)^2} \why{multiply}
+\end{align*}
+
+\emph{It falls.} Take \(r<r'\) in this set. Both have \(J\ge k\), so part (c)(i) gives \(J(r')\ge J(r)\) and
+\(0\le k-\rho J(r')\le k-\rho J(r)\). The first claim gives \(\DT(r')[1-\tau(r')]^2\ge\DT(r)[1-\tau(r)]^2>0\). A smaller
+numerator over a larger denominator gives \(\Ent_{\rm T}(r')\le\Ent_{\rm T}(r)\).
+\end{derivation}
+
+In words: as the incumbent strengthens, \(J\) rises, so a smaller entry \(e^*=k/J\) after a purchase already pays the
+investor. The threshold pair then recruits less and less, until at \(\rho J=k\) it recruits nobody beyond the floor.
+
+\paragraph{The example at the prior \(1/2\).} Table~\ref{tab:coexistence-ties} copies the paper's Table~A.3.
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+ & \multicolumn{2}{l}{Investor may mix} & \multicolumn{2}{l}{Investor abstains}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Result & prepares & any probability & prepares & any probability\\
+\midrule
+Proposition~2 & holds & holds & holds & holds\\
+Quiet market \textbf{N} & \([r_0,r_N]\) & \([r_0,r_N]\) & \([r_0,r_N]\) & \([r_0,r_N]\)\\
+Mixed purchase \textbf{R} & \((r_A,r_F)\) & \((r_A,r_F)\) & none & none\\
+Threshold pair \textbf{T} & \(r_A\) only & \([r_A,r_J]\) & none & none\\
+Full purchase \textbf{F} & \([r_F,r_2]\) & \([r_F,r_2]\) & \((r_F,r_N]\cup(r_S,r_2]\) & \((r_F,r_N]\cup(r_S,r_2]\)\\
+Set on \((r_N,r_J)\) & \textbf{F}; \textbf{Q} & \textbf{F}; \textbf{Q}; \textbf{T} & empty & empty\\
+Set at \(r_J\) & \textbf{F} & \textbf{F}; \textbf{T} & empty & empty\\
+Set on \((r_J,r_S]\) & \textbf{F} & \textbf{F} & empty & empty\\
+Entry after a purchase at \(r_C\) & \(1\) & any in \([\rho,1]\) & \(1\) & any in \([\rho,1]\)\\
+Coexistence & \([r_A,r_N]\) & \([r_A,r_N]\) & \((r_F,r_N]\) & \((r_F,r_N]\)\\
+\bottomrule
+\end{tabular}
+\caption{Which conclusions depend on the tie rules in the example, at the prior \(1/2\). The column heads give what an
+indifferent investor does (may mix over its best orders, or abstains) and what an indifferent high-cost challenger
+does (prepares, or may prepare with any probability). Source: Table~A.3 of the paper.}
+\label{tab:coexistence-ties}
+\end{table}
+
+What changes, in words:
+\begin{itemize}
+\item Proposition~2 and the stretch of the quiet market do not depend on the tie rules.
+\item The challenger rule matters only through the threshold pair and the point \(r_C\). When an indifferent
+high-cost challenger may prepare with any probability, the threshold pair is also an equilibrium on \((r_A,r_J]\). Its
+entry falls strictly from \(\Ent_{\rm R}(r_A)\) at \(r_A\) to \(\rho\) at \(r_J\), by Lemma~A.10(b) and~(c) and
+Proposition~3(c)(iv). At \(r_C\), entry after a purchase in the full purchase can take any value in \([\rho,1]\). The
+coexistence interval stays \([r_A,r_N]\).
+\item The investor rule matters more. When an indifferent investor abstains, the mixed purchase and the threshold pair
+disappear, and coexistence shrinks to \((r_F,r_N]\). Entry in the informative market then has no strict rise: it is
+on the plateau wherever the market exists.
+\item When an indifferent investor abstains, the equilibrium set is empty on \((r_N,r_S]\), under either challenger
+rule. There the low class has no qualifying sale rate (Lemma~A.8). So an equilibrium at every strength of the path
+needs the rule that an indifferent investor may mix.
+\end{itemize}
+
+At a general prior, when an indifferent investor may mix and an indifferent high-cost challenger may prepare with
+any probability, the coexistence set of Section~\ref{sec:coexistence-priors} gains the single strength \(r_\pi\), where
+\(\tau(r_\pi)=\pi\), for priors in \((\tau_A,\pi_{\max}]\). When an indifferent investor abstains, coexistence keeps only
+the strengths at which a full purchase pays strictly.
+
+\begin{checkyourself}\label{q:coexistence-abstain}
+Let an indifferent investor abstain. Explain, step by step, why the example has no equilibrium at a strength \(r\) in
+\((r_N,r_S]\). Which case of Lemma~A.8 applies? Why does the full purchase of class \(H\) not rescue the tuple?
+\end{checkyourself}
+
+% =====================================================================
+\section{Coexistence at other priors}\label{sec:coexistence-priors}
+
+Corollary~2 fixes the prior at \(1/2\). Appendix~A.4 also describes the coexistence set at every prior, in the
+example, under the default tie rules (Corollary~A.2). This section gives its shape and the reason for each case.
+
+Write \(r_N(\pi)=\fr\bigl(k/(\rho\max\{\pi,1-\pi\})\bigr)\), the strength at which an order against a silent price
+starts to pay. Write \(r_C(\pi)\) for the largest strength with \(\tau(r)\le M(\pi)\), when one exists, and \(r_\pi\)
+for the strength with \(\tau(r_\pi)=\pi\), when \(\tau(r_0)\le\pi\le\tau(r_2)\). Let \(\tau_A=\tau(r_A)\). Three priors
+divide the cases:
+\begin{itemize}
+\item \(\pi_A^{\rm lo}\), with \(M(\pi_A^{\rm lo})=\tau_A\): the prior whose top posterior just reaches the threshold
+at \(r_A\);
+\item \(\pi_A^{\rm hi}=\tau_A\): the prior that equals the threshold at \(r_A\);
+\item \(\pi_{\max}=\tau(r_*)\): the prior that equals the threshold at \(r_*\), where \(\rho\DT\tau=k\).
+\end{itemize}
+The odds form gives \(\pi_A^{\rm lo}\): its odds times \(1+u\) equal the odds of \(\tau_A\), so
+\begin{align*}
+\frac{\pi_A^{\rm lo}}{1-\pi_A^{\rm lo}} &= \frac{\tau_A}{(1-\tau_A)(1+u)} \why{divide the odds of \(\tau_A\) by \(1+u\)}\\
+\pi_A^{\rm lo} &= \frac{\tau_A}{\tau_A+(1-\tau_A)(1+u)} \why{probability from odds}
+\end{align*}
+The priors \(\pi_A^{\rm hi}\) and \(\pi_{\max}\) do not depend on the slot. The prior \(\pi_A^{\rm lo}\) depends on it
+through \(u\).
+
+\begin{paperresult}{Corollary A.2 (Coexistence at every prior)}
+Take the example, any slot with \(0<\lambda<1\) and \(0<\beta<1/2\), any prior \(\pi\in(0,1)\), and the default tie
+rules. The set \(\mathcal C(\pi)\) of strengths on the path at which a quiet market and an informative market coexist
+is the set of Proposition~3(a) on the path,
+\[
+\mathcal C(\pi)=\bigl\{r\in[r_0,r_2]:\ r\ge r_A,\ \ \pi<\tau(r)\le M(\pi),\ \ \rho\DT(r)\max\{\pi,1-\pi\}\le k\bigr\}.
+\]
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item If \(\pi<\pi_A^{\rm lo}\), \(\mathcal C(\pi)\) is empty. At \(\pi=\pi_A^{\rm lo}\), \(\mathcal C(\pi)=\{r_A\}\).
+\item If \(\pi_A^{\rm lo}<\pi<\pi_A^{\rm hi}\), then \(\mathcal C(\pi)=[r_A,\min\{r_N(\pi),r_C(\pi)\}]\), a nondegenerate
+interval. Coexistence starts at \(r_A\) for every prior in this window and every slot.
+\item If \(\pi_A^{\rm hi}\le\pi<\pi_{\max}\), then \(\mathcal C(\pi)=(r_\pi,\min\{r_N(\pi),r_C(\pi)\}]\), a nonempty
+interval with \(r_\pi\ge r_A\). Coexistence starts where the prior reaches the threshold.
+\item If \(\pi\ge\pi_{\max}\), \(\mathcal C(\pi)\) is empty.
+\end{enumerate}
+At each \(r\in\mathcal C(\pi)\) the informative market is a mixed purchase that recruits or a full purchase, and the
+threshold pair at \(r_A\) in case (b). Its entry is \(\rho+(1-\rho)\min\{(1-\pi)\,b\DT(r)/k,\ b+\pi\lambda\}\), which
+rises strictly while the purchase is mixed and is then constant.
+\end{paperresult}
+
+Why the set has this form: by Proposition~3(a), coexistence at \(r\) needs \(\pi<\tau(r)\le M(\pi)\) and
+\(k/(1-\tau(r))\le\DT(r)\le\DT^{\rm N}\). Under \(\tau(r)\le M(\pi)<1\), the first spread condition is \(J(r)\ge k\), which
+holds exactly when \(r\ge r_A\), because \(J\) rises strictly on the path. The number \(r_A\) contains neither the prior
+nor the slot. The second spread condition is \(\rho\DT(r)\max\{\pi,1-\pi\}\le k\). Each case then follows from the
+direction of each condition along the path.
+\begin{itemize}
+\item \emph{Low priors, case (a).} A low prior gives a low top posterior. Coexistence needs \(r\ge r_A\), where
+\(\tau(r)\ge\tau_A\), and \(\tau(r)\le M(\pi)\). Both hold together only if \(M(\pi)\ge\tau_A\), that is
+\(\pi\ge\pi_A^{\rm lo}\). In the paper's words, below \(\pi_A^{\rm lo}\) even the top posterior cannot reach the
+threshold once a purchase can pay for itself.
+\item \emph{Middle priors, case (b).} The prior lies below \(\tau_A\), so \(\pi<\tau(r)\) holds at every \(r\ge r_A\),
+and the top posterior exceeds \(\tau_A\). Coexistence starts at \(r_A\), for every prior in the window, and ends when
+either the threshold passes the top posterior or an order against a silent price starts to pay. At \(r_A\) the
+informative market is the threshold pair.
+\item \emph{Higher priors, case (c).} The prior is at least \(\tau_A\), so the threshold must first rise above the
+prior. Coexistence starts just after \(r_\pi\), where the threshold passes the prior. The left end is open, because at
+\(\tau=\pi\) the default challenger rule gives entry one after every order in the quiet market.
+\item \emph{High priors, case (d).} For \(\pi\ge\pi_{\max}>1/2\), the quiet market needs \(\rho\DT(r)\pi\le k\). Any
+\(r\) with \(\pi<\tau(r)\) has \(r>r_\pi\ge r_*\), so \(\rho\DT(r)\pi>\rho\DT(r_*)\tau(r_*)=k\). In the paper's words,
+the quiet market ends before the prior falls below the threshold.
+\end{itemize}
+This agrees with the bound of part (a): coexistence needs \(\pi<1/(1+\rho)\), so a prior that strongly favours class
+\(H\) rules it out. The paper reports the three priors at the example's slot in decimals; Chapter~\ref{app:numbers}
+lists them.
+
+\begin{chaptersummary}
+Against one incumbent, a quiet market and an informative market can both be equilibria, because recruitment raises
+the return of a purchase and informed purchases make recruitment happen. Under the default tie rules they coexist
+exactly when \(\pi<\tau\le M(\pi)\) and \(k/(1-\tau)\le\DT\le k/(\rho\max\{\pi,1-\pi\})\): the threshold lies above
+the prior and within reach of a purchase, a purchase that just reaches the threshold and recruits covers \(k\), and no
+order against a silent price does. In the region the informative market is unique: class \(L\) abstains, only a
+purchase recruits, and class \(H\) mixes until the doubt left after a purchase pays exactly \(k\). Entry there is
+\(\rho+(1-\rho)\min\{(1-\pi)b\DT/k,\,b+\pi\lambda\}\), which rises strictly with the spread while class \(H\) mixes and
+is constant once it buys for sure. Along a path the sure-purchase strengths form one interval, and the whole
+coexistence set is one interval under the balance condition, which uniform incumbents with an affordable high class
+satisfy. In the example at the prior \(1/2\), coexistence runs exactly from \(r_A\) to \(r_N\), with a sure purchase
+from \(r_F\), in the order \(r_0<r_A<r_F<r_N<r_J<r_S<r_1<r_C<r_2\).
+\end{chaptersummary}
+
+% =====================================================================
+\needspace{10\baselineskip}
+\answersection
+
+\answer{\ref{q:coexistence-binds}}{Section~\ref{sec:coexistence-quiet} gives \(K_H=\rho\DT(1-\pi)\) and
+\(K_L=\rho\DT\pi\). Then
+\begin{align*}
+K_L-K_H &= \rho\,\DT\,\bigl[\pi-(1-\pi)\bigr] \why{subtract}\\
+&= \rho\,\DT\,(2\pi-1)>0 \why{\(\pi>1/2\); \(\rho\DT>0\)}
+\end{align*}
+So \(K_L>K_H\), and \(\max\{\pi,1-\pi\}=\pi\): the sale of class \(L\) binds, and \(\DT^{\rm N}=k/(\rho\pi)\). Class
+\(L\), which the prior disfavours, is closer to trade.
+
+In words: the silent price keeps the belief at \(\pi\). Class \(L\) earns on the weight that the price gives to class
+\(H\), which is \(\pi\), large. Class \(H\) earns on the weight on class \(L\), which is \(1-\pi\), small. The trading
+bound is different. It is a floor over every candidate, so it puts each order's posterior as far toward the
+investor's own class as the slot allows: \(M\) after a purchase, \(m\) after a sale. When the prior already leans
+toward class \(H\), a purchase can push the belief close to one, and class \(H\) is left with little doubt to earn
+on. In the quiet market no order moves the belief, so the lean of the prior helps class \(L\) instead.}
+
+\answer{\ref{q:coexistence-mix}}{At \(\pi=1/2\), the formula of Section~\ref{sec:coexistence-informative} gives
+\begin{align*}
+\sigma_H(1) &= \frac{1}{\pi u}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{the purchase probability while class \(H\) mixes}\\
+&= \frac{2}{u}\Bigl[\frac{\DT}{2k}-1\Bigr] \why{\(\pi=1-\pi=1/2\)}\\
+&= \frac{1}{u}\Bigl[\frac{\DT}{k}-2\Bigr] \why{multiply out the \(2\)}
+\end{align*}
+The slope in \(\DT\) is \(1/(uk)>0\), so \(\sigma_H(1)\) rises strictly with the spread. It equals one exactly when
+\(\DT/k-2=u\), that is \(\DT=k(2+u)\). At \(\pi=1/2\), \(1-M(1/2)=1/(2+u)\)
+(Section~\ref{sec:coexistence-example}), so
+\[
+\DT^{\rm F}=\frac{k}{1-M(1/2)}=k\,(2+u).
+\]
+So class \(H\) buys for sure exactly from the spread \(\DT^{\rm F}\) on, as Step~4 of
+Section~\ref{sec:coexistence-informative} says.}
+
+\answer{\ref{q:coexistence-edge}}{On the left edge \(J=\DT(1-\tau)=k\), so \(\DT=k/(1-\tau)\) and \(\DT(1-M)<\DT(1-\tau)=k\)
+because \(\tau<M\). So \(\DT<\DT^{\rm F}\), and the rate is the second term of \eqref{eq:coexistence-rate}:
+\begin{align*}
+s_+ &= \frac{b}{\pi}\Bigl[\frac{(1-\pi)\DT}{k}-1\Bigr] \why{class \(H\) mixes}\\
+&= \frac{b}{\pi}\Bigl[\frac{1-\pi}{1-\tau}-1\Bigr] \why{\(\DT/k=1/(1-\tau)\)}\\
+&= \frac{b}{\pi}\cdot\frac{1-\pi-1+\tau}{1-\tau}=\frac{b\,(\tau-\pi)}{\pi\,(1-\tau)}=s^* \why{common denominator}
+\end{align*}
+At this rate the posterior after a purchase is exactly \(\tau\). The high-cost challenger is indifferent, and the
+purchase earns \(e(1)\DT(1-\tau)=e(1)\,k\). Class \(H\) mixes, so this must equal \(k\), which needs \(e(1)=1\): every
+high-cost challenger must prepare at the tie. The default challenger rule gives exactly this. Under the other
+challenger rule, \(e(1)\) may be any value in \([\rho,1]\), and the pair (T) of Lemma~A.7 requires \(e(1)=k/J\). On the
+edge \(J=k\), this is again \(e(1)=1\). So the market exists under both challenger rules here, but under the other rule
+it is one of many entry values the rule allows, and only the value one keeps class \(H\) indifferent. Inside the region,
+where \(J>k\), the other rule adds a threshold pair with the smaller entry \(k/J\).}
+
+\answer{\ref{q:coexistence-gap}}{Write \(\delta>0\) for the common fall of \(g_H\) and \(g_L\) between two strengths \(r<r'\)
+of the stretch. Then \(\gamma(r')=g_H(r)-\delta-[g_L(r)-\delta]=\gamma(r)\), and
+\begin{align*}
+\tau(r')-\tau(r) &= \frac{c_H-g_L(r)+\delta}{\gamma(r)}-\frac{c_H-g_L(r)}{\gamma(r)} \why{definition of \(\tau\); \(\gamma\) fixed}\\
+&= \frac{\delta}{\gamma(r)}>0 \why{\(\delta>0\), \(\gamma>0\)}\\[3pt]
+J(r')-J(r) &= \DT\,[1-\tau(r')]-\DT\,[1-\tau(r)] \why{\(\DT\) fixed}\\
+&= -\DT\,\bigl[\tau(r')-\tau(r)\bigr]<0 \why{\(\DT>0\); the line above}
+\end{align*}
+So \(\tau\) rises and \(J\) falls. The product in the balance condition changes by
+\[
+\DT\,[g_H(r')-c_H]-\DT\,[g_H(r)-c_H]=-\DT\,\delta<0,
+\]
+so it falls, and the balance condition fails. The condition \(J\ge k\) can switch off on this stretch: if \(J(r)\ge k\)
+at the start, \(J\) can fall below \(k\). Later, on a stretch where the spread widens, \(J\) can rise above \(k\) again.
+The conditions \(\pi<\tau\), \(\tau\le M\) and \(\DT\le\DT^{\rm N}\) cannot switch back, because each moves in one
+direction along every path (Section~\ref{sec:coexistence-proof-b}). This is the two-interval path of
+Section~\ref{sec:coexistence-race}.}
+
+\answer{\ref{q:coexistence-abstain}}{\emph{Step 1: the two inequalities.} On \((r_N,r_S]\), \(r>r_N\) gives
+\(\rho\DT(r)/2>k\), and \(r\le r_S\) gives \(\rho\DT(r)m\le k\), because \(\DT\) rises strictly on the path. So
+\(\rho\DT m\le k<\rho\DT\pi\) at \(\pi=1/2\).
+
+\emph{Step 2: Lemma~A.8.} On the path \(\tau>1/2=\pi\), so the lemma applies, and every sale has entry \(\rho\). Its
+last sentence covers this case: when an indifferent investor abstains, no rate qualifies. In detail:
+\begin{itemize}
+\item \(s_-=0\) fails: \(K_L=\rho\DT/2>k\), so a sale strictly beats abstention and class \(L\) must sell;
+\item \(s_-=\lambda\) fails: \(K_L=\rho\DT m\le k\), and under this rule the investor sells for sure only if
+\(K_L>k\);
+\item an interior rate fails: it needs a mix, and this rule allows none.
+\end{itemize}
+
+\emph{Step 3: the full purchase does not help.} By Lemma~A.3(d), class \(L\)'s payoffs involve only \(s_-\),
+\(\mu(-1)\) and \(e(-1)\). With no wrong-signed orders, \(\mu(-1)=\mu_-(s_-)\) depends only on \(s_-\), and
+\(e(-1)=\rho\). So class \(H\)'s purchase rate does not enter class \(L\)'s problem, and no choice of class \(H\) can
+give class \(L\) a best response. Every candidate fails (E5) for class \(L\), so the equilibrium set is empty on
+\((r_N,r_S]\). In words: the low class wants to sell when nobody expects it to, and does not want to sell for sure when
+everybody expects it to; only a mix would balance the two, and this rule forbids a mix.}

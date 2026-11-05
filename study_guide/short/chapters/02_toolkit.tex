@@ -1,0 +1,154 @@
+\chapter{The probability toolkit}\label{ch:toolkit}
+
+\begin{chapterplan}
+Which tools does the paper use? Bayes' rule with likelihood ratios serves the beliefs (Chapter~\ref{ch:beliefs}).
+Distribution functions, the tail formula, the win probability and dominance serve the auction
+(Chapter~\ref{ch:auction}). Expectations at a belief serve the later chapters.
+\end{chapterplan}
+
+The challenger has class \(j\in\{H,L\}\), prior \(\pi=\Pr(j=H)\in(0,1)\), and value \(\theta\) with distribution \(G_j\). The incumbent has value \(R\).
+
+% =====================================================================
+\section{Bayes' rule}\label{sec:toolkit-bayes}
+
+Let a signal \(S\) take the value \(s\) with probability \(f_H(s)=\Pr(S=s\mid H)\) in class \(H\) and
+\(f_L(s)=\Pr(S=s\mid L)\) in class \(L\). The law of total probability gives \(\Pr(S=s)=\pi f_H(s)+(1-\pi)f_L(s)\).
+If \(\Pr(S=s)>0\), the posterior is
+\begin{equation}\label{eq:toolkit-bayes}
+\mu(s)=\Pr(H\mid S=s)=\frac{\pi f_H(s)}{\pi f_H(s)+(1-\pi)f_L(s)}.
+\end{equation}
+Divide by \(\pi\) and rearrange: \(\mu(s)>\pi\) exactly when \(f_H(s)>f_L(s)\). A signal counts in favour of the class
+that makes it more likely. In the paper the signal is the order \(x\), and condition (E1) of Definition~A.1 is
+\eqref{eq:toolkit-bayes} with \(s=x\).
+
+The rule needs \(\Pr(S=s)>0\). In the paper every order has positive probability in both classes.
+
+% =====================================================================
+\section{Bayes' rule in odds form}\label{sec:toolkit-odds}
+
+The odds of \(\mu\) are \(\mu/(1-\mu)\), and the likelihood ratio of \(s\) is \(f_H(s)/f_L(s)\). Divide
+\eqref{eq:toolkit-bayes} by \(1-\mu(s)=(1-\pi)f_L(s)/[\pi f_H(s)+(1-\pi)f_L(s)]\):
+\begin{equation}\label{eq:toolkit-odds}
+\frac{\mu(s)}{1-\mu(s)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(s)}{f_L(s)}.
+\end{equation}
+The map from odds \(o\) to the probability \(o/(1+o)\) is strictly increasing. So a bound on the odds gives a bound
+on the probability in the same direction.
+
+\begin{keyidea}
+If every likelihood ratio lies between \(1/(1+u)\) and \(1+u\), for some \(u>0\), then every posterior lies between
+the bottom and the top posterior:
+\begin{equation}\label{eq:toolkit-bounds}
+m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}\;\le\;\mu(s)\;\le\;M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi}.
+\end{equation}
+\end{keyidea}
+
+\begin{align*}
+\frac{\mu(s)}{1-\mu(s)}&\le\frac{\pi(1+u)}{1-\pi}=:o_{\max}
+\why{odds form; likelihood ratio at most \(1+u\)}\\
+\mu(s)&\le\frac{o_{\max}}{1+o_{\max}}=\frac{\pi(1+u)}{\pi(1+u)+1-\pi}=M(\pi)
+\why{\(o\mapsto o/(1+o)\) increases; cancel \(1-\pi\)}
+\end{align*}
+The bottom posterior follows in the same way with \(o_{\min}=\pi/[(1-\pi)(1+u)]\). In the paper the bound is a
+result, with \(u=\lambda/b\) (Chapter~\ref{ch:beliefs}).
+
+\emph{Averages of posteriors.} An observer who sees only that \(S\in A\), such as a challenger who sees a price that
+several orders share, holds the belief \(\Pr(H\mid S\in A)=\sum_{s\in A}w_s\,\mu(s)\), with the weights \(w_s=\Pr(S=s)/\Pr(S\in A)\ge0\) that add up to one.
+An average of numbers in \([m(\pi),M(\pi)]\) stays in that interval. So every belief at a price obeys the bounds.
+
+\emph{The mirror identity.} Put \(1-\pi\) in place of \(\pi\) in \(m\):
+\begin{equation}\label{eq:toolkit-mirror}
+1-M(\pi)=\frac{1-\pi}{\pi(1+u)+1-\pi}=m(1-\pi).
+\end{equation}
+The function \(m\) is increasing. So the paper's \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\) equals \(m(\min\{\pi,1-\pi\})\).
+
+% =====================================================================
+\section{Distribution functions, left limits and atoms}\label{sec:toolkit-cdf}
+
+The distribution function of \(\theta\) is \(G(y)=\Pr(\theta\le y)\). It is nondecreasing and continuous from the
+right. Its left limit \(G(p^-)=\lim_{y\uparrow p}G(y)=\Pr(\theta<p)\) excludes the value \(p\), and the jump
+\(G(p)-G(p^-)=\Pr(\theta=p)\) is an atom. The complement rule gives
+\begin{equation}\label{eq:toolkit-geq}
+\Pr(\theta\ge p)=1-G(p^-),\qquad \Pr(\theta>p)=1-G(p).
+\end{equation}
+A bid equal to the reserve is admissible, so a class-\(j\) value fails the reserve with probability \(G_j(p^-)\). The
+class ranking asks for \(G_H(p^-)=G_L(p^-)=0\). The class laws may have atoms; the example uses point masses, with
+\(G(y)=\1\{y\ge h\}\). The incumbent law \(F\) is continuous on \([0,\bar r]\) and extended by unity above \(\bar r\).
+The uniform law on \([0,r]\) has \(F(y)=\min\{y/r,1\}\) for \(y\ge0\).
+
+\begin{watchout}
+\(G(p^-)\) and \(G(p)\) differ by the atom at \(p\). For a point mass at the reserve, \(G(p^-)=0\) but \(G(p)=1\).
+\end{watchout}
+
+% =====================================================================
+\section{Expectation at a belief}\label{sec:toolkit-expectation}
+
+Expectation is linear, \(\E[aX+bY+c]=a\E[X]+b\E[Y]+c\), with no need for independence, and
+\(\E[\1\{A\}]=\Pr(A)\). The class expectation \(\E_j\) uses \(G_j\), and the paper writes
+\(t_j=\E_j[t(\theta)]\) and \(g_j=\E_j[g(\theta)]\). Averages go in two stages:
+\(\E[\varphi(\theta)]=\pi\E_H[\varphi(\theta)]+(1-\pi)\E_L[\varphi(\theta)]\).
+
+Suppose the signal is independent of the value given the class. Then the signal changes only the weights on the
+classes, and with \(\mu=\Pr(H\mid S=s)\)
+\begin{equation}\label{eq:toolkit-B}
+B(\mu)=\mu\,g_H+(1-\mu)\,g_L=g_L+\mu\,(g_H-g_L).
+\end{equation}
+Gross profit is a straight line in the belief. If \(g_H>g_L\), then
+\(B(\mu)\ge c_H\iff\mu\ge\tau=(c_H-g_L)/(g_H-g_L)\), the preparation threshold. At a fixed entry \(e(x)\), the price is
+also a straight line in the posterior: \(P(x)=t_0+e(x)\,[t_L-t_0+\DT\,\mu(x)]\), with \(\DT=t_H-t_L\).
+
+% =====================================================================
+\section{The tail formula}\label{sec:toolkit-tail}
+
+\begin{keyidea}
+For \(X\ge0\) with distribution function \(G\), \(\E[X]=\int_0^\infty[1-G(y)]\,dy\). Also, for \(c,p\ge0\),
+\begin{equation}\label{eq:toolkit-pospart} \E[(X-c)_+]=\int_c^\infty[1-G(y)]\,dy,\qquad \E[\max\{X,p\}]=p+\int_p^\infty[1-G(y)]\,dy. \end{equation}
+If \(R\) has a continuous distribution function \(F\) and \(\theta\ge p\) is fixed,
+\begin{equation}\label{eq:toolkit-fixed}
+\E_R\bigl[(\theta-\max\{p,R\})_+\bigr]=\int_p^\theta F(y)\,dy.
+\end{equation}
+\end{keyidea}
+
+Each proof has two steps. Write the variable as an integral of an indicator, and then swap the expectation and the
+integral. The swap is valid because the integrand is nonnegative (Tonelli). For the first formula,
+\(X=\int_0^\infty\1\{y<X\}\,dy\), so \(\E[X]=\int_0^\infty\Pr(X>y)\,dy\).
+For \eqref{eq:toolkit-pospart} the integral starts at \(c\). The formula for \(\max\{X,p\}\) uses
+\(\max\{X,p\}=p+(X-p)_+\). For \eqref{eq:toolkit-fixed}, check the three cases \(R<p\), \(p\le R<\theta\) and
+\(R\ge\theta\) to get \((\theta-\max\{p,R\})_+=\int_p^\theta\1\{R<y\}\,dy\). Then \(\Pr(R<y)=F(y)\).
+
+Formula \eqref{eq:toolkit-fixed} is the challenger's gross profit \(g(\theta)\). The challenger keeps the slice of its value at the level \(y\) exactly when the incumbent's value lies below \(y\), which has probability \(F(y)\).
+
+With the uniform incumbent and a point mass at \(h\), \(p<r<h\):
+\(g_H=\int_p^r(y/r)\,dy+\int_r^h1\,dy=h-r/2-p^2/(2r)\), because \(F=1\) above \(r\).
+
+% =====================================================================
+\section{Maxima, minima and the probability to win}\label{sec:toolkit-maxmin}
+
+For independent \(X\) and \(Y\), ``both'' becomes a product: \(\Pr(\max\{X,Y\}\le y)=F_X(y)F_Y(y)\) and \(\Pr(\min\{X,Y\}>y)=[1-F_X(y)][1-F_Y(y)]\).
+With a continuous \(F\), a fixed value \(\theta\) beats \(R\) with probability \(F(\theta)\), and a tie has probability
+zero. A prepared challenger wins when \(\theta\ge p\) and \(R<\theta\), so
+\begin{equation}\label{eq:toolkit-win}
+W_j(F)=\E_j\bigl[F(\theta)\,\1\{\theta\ge p\}\bigr].
+\end{equation}
+In the example, \(W_H=F(h)=1\) and \(W_L=\ell/r\), for \(p<\ell<r<h\). Under the class ranking the target receives
+\(\max\{p,\min(R,\theta)\}\). The minimum formula and \eqref{eq:toolkit-pospart} then give \(t_j=p+\int_p^\infty[1-F(y)]\,[1-G_j(y)]\,dy\).
+
+% =====================================================================
+\section{First-order stochastic dominance}\label{sec:toolkit-fosd}
+
+\(\tilde G\) dominates \(G\) when \(\tilde G(y)\le G(y)\) at every \(y\). The class ranking is \(G_H\le G_L\); a strengthening of the incumbent is \(\tilde F\le F\).
+For \(X\ge0\) and \(\varphi'\ge0\), the tail formula extends to
+\(\E[\varphi(X)]=\varphi(0)+\int_0^\infty\varphi'(y)[1-G(y)]\,dy\). So \(\E_{\tilde G}[\varphi(X)]-\E_G[\varphi(X)]=\int_0^\infty\varphi'(y)\,[G(y)-\tilde G(y)]\,dy\ge0\).
+The class difference \(D(y)=G_L(y)-G_H(y)\ge0\) is the extra probability that a class-\(H\) value passes \(y\), and
+\(\E_H[\theta]-\E_L[\theta]=\int_0^\infty D(y)\,dy\). For point masses, \(D(y)=\1\{\ell\le y<h\}\). Uniform incumbents
+form a path: for \(r'>r\), \(y/r'\le y/r\) on \([0,r]\) and \(y/r'\le1\) on \((r,r']\).
+
+\begin{watchout}
+Dominance means a \emph{smaller} distribution function. A stronger incumbent lowers \(F\), so a challenger at any
+fixed value wins less often. Two laws whose distribution functions cross are not ranked.
+\end{watchout}
+
+\begin{chaptersummary}
+A bound \(1+u\) on every ratio keeps every
+posterior, and every average of posteriors, in \([m(\pi),M(\pi)]\). Gross profit at a belief is the straight line
+\(B(\mu)=g_L+\mu(g_H-g_L)\). The tail formula gives \(g(\theta)=\int_p^\theta F(y)\,dy\). A stronger incumbent has a smaller \(F\) at every level.
+\end{chaptersummary}

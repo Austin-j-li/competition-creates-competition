@@ -1,0 +1,1528 @@
+\chapter{The probability toolkit}\label{ch:toolkit}
+
+\begin{chapterplan}
+Which tools from probability and game theory does the paper use, and how does each tool work?
+After this chapter you can:
+\begin{itemize}
+\item update a belief about the challenger's class with Bayes' rule, in its usual form and in odds form;
+\item read a distribution function, its left limit and its atoms, and get expectations from it with the tail formula;
+\item compare two distributions by first-order stochastic dominance, and say what a stronger incumbent is;
+\item say what a best response, a mixed strategy, an equilibrium and a unilateral deviation are;
+\item solve a linear threshold condition, and say when a strict inequality survives small changes of the parameters.
+\end{itemize}
+\end{chapterplan}
+
+You can skim the tools that you already know. Later chapters cite each tool by its section, so you can come back
+when a chapter needs one. Each section has the same order: an intuition in words, the statement, a full
+derivation, a short illustration with the paper's objects, and one check-yourself question. No section uses
+a numerical example.
+
+The illustrations use four objects from the paper (Sections~2.2 and~4.2 of the paper):
+\begin{itemize}
+\item a challenger in one of two quality classes, \(H\) or \(L\), with the prior \(\pi=\Pr(j=H)\) and \(0<\pi<1\);
+\item the distribution \(G_j\) of the challenger's acquisition value \(\theta\), given its class \(j\);
+\item an incumbent whose value \(R\) is uniform on \([0,r]\), as in the paper's example;
+\item a point mass at \(h\): a value that equals \(h\) with probability one, as for class \(H\) in the example.
+\end{itemize}
+
+The tools serve the later chapters in this way:
+\begin{itemize}
+\item Bayes' rule and its odds form (Sections~\ref{sec:toolkit-bayes} and~\ref{sec:toolkit-odds}) serve
+Chapter~\ref{ch:beliefs}, where the price carries news about the class.
+\item Distribution functions, expectations, the tail formula, maxima and dominance
+(Sections~\ref{sec:toolkit-cdf} to~\ref{sec:toolkit-fosd}) serve the auction payoffs in Chapter~\ref{ch:auction}
+and the example in Chapter~\ref{ch:example}.
+\item The game-theory words (Section~\ref{sec:toolkit-games}) serve Chapters~\ref{ch:model}, \ref{ch:trading}
+and~\ref{ch:coexistence}.
+\item Monotone functions and thresholds (Section~\ref{sec:toolkit-monotone}) appear in every chapter from
+Chapter~\ref{ch:beliefs} on.
+\end{itemize}
+
+% =====================================================================
+\section{Events, conditional probability and Bayes' rule}\label{sec:toolkit-bayes}
+
+\begin{intuition}[news moves a belief]
+The challenger does not know its class. Suppose that it sees a signal, and that the signal is more likely in one
+class than in the other. Bayes' rule turns the prior probability of class \(H\) into a posterior probability after
+the signal. The signal counts in favour of the class that makes the signal more likely. The prior decides where
+the belief starts.
+\end{intuition}
+
+\subsection{Events and conditional probability}
+
+An event is a set of outcomes, such as ``the challenger is in class \(H\)'' or ``the order is a purchase''. For an
+event \(A\), \(\Pr(A)\) is its probability, and ``not \(A\)'' has the probability \(1-\Pr(A)\). The event ``\(A\)
+and \(B\)'' is written \(A\cap B\).
+
+The conditional probability of \(A\) given \(B\) is
+\begin{equation}\label{eq:toolkit-cond}
+\Pr(A\mid B)=\frac{\Pr(A\cap B)}{\Pr(B)},\qquad \Pr(B)>0.
+\end{equation}
+In words: among the outcomes where \(B\) happens, it is the share where \(A\) also happens. Multiply both sides by
+\(\Pr(B)\) to get the multiplication rule, \(\Pr(A\cap B)=\Pr(A\mid B)\Pr(B)\). The roles of \(A\) and \(B\) can
+be swapped, so also \(\Pr(A\cap B)=\Pr(B\mid A)\Pr(A)\) when \(\Pr(A)>0\).
+
+Two events are independent when
+\[
+\Pr(A\cap B)=\Pr(A)\Pr(B).
+\]
+When \(\Pr(B)>0\), divide by \(\Pr(B)\): independence says \(\Pr(A\mid B)=\Pr(A)\). News about \(B\) does not change
+the probability of \(A\). Random variables are independent when every event about one is independent of every
+event about the other. The paper uses this word often. For example, the preparation cost is independent of the
+class and of the value, so the cost carries no information about either (Section~2.2 of the paper).
+
+\subsection{The law of total probability}
+
+Let a signal \(S\) take the value \(s\) with probability \(f_H(s)\) in class \(H\) and \(f_L(s)\) in class \(L\):
+\[
+f_H(s)=\Pr(S=s\mid H),\qquad f_L(s)=\Pr(S=s\mid L).
+\]
+These are probabilities of the signal given the class. They are not probabilities of the class. The two classes
+split the outcomes: exactly one of them happens.
+
+\begin{derivation}[the law of total probability]
+\begin{align*}
+\Pr(S=s)
+&=\Pr(\{S=s\}\cap H)+\Pr(\{S=s\}\cap L) \why{\(H\) and \(L\) split the outcomes}\\
+&=\Pr(S=s\mid H)\Pr(H)+\Pr(S=s\mid L)\Pr(L) \why{multiplication rule, twice}\\
+&=\pi f_H(s)+(1-\pi)f_L(s) \why{notation, and \(\Pr(L)=1-\pi\)}
+\end{align*}
+\end{derivation}
+
+The probability of the signal is an average of its two class probabilities. The weights are the class
+probabilities.
+
+\subsection{Bayes' rule}
+
+Write \(\mu(s)=\Pr(H\mid S=s)\) for the posterior, the probability of class \(H\) after the signal \(s\).
+
+\begin{derivation}[Bayes' rule]
+Assume \(\Pr(S=s)>0\).
+\begin{align}
+\mu(s)=\Pr(H\mid S=s)
+&=\frac{\Pr(H\cap\{S=s\})}{\Pr(S=s)} \why{definition \eqref{eq:toolkit-cond}}\notag\\
+&=\frac{\Pr(S=s\mid H)\Pr(H)}{\Pr(S=s)} \why{multiplication rule, with the roles swapped}\notag\\
+&=\frac{\pi f_H(s)}{\pi f_H(s)+(1-\pi)f_L(s)} \whyinline{law of total probability}\label{eq:toolkit-bayes}
+\end{align}
+\end{derivation}
+
+The numerator is the probability of the path ``class \(H\), then signal \(s\)''. The denominator adds the
+probabilities of the two paths that end in the signal \(s\). Figure~\ref{fig:toolkit-tree} shows the four paths.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small,
+  lev/.style={inner sep=2pt}]
+\node[lev] (root) at (0,0) {start};
+\node[lev] (H) at (3.2,1.3) {class \(H\)};
+\node[lev] (L) at (3.2,-1.3) {class \(L\)};
+\node[lev,anchor=west] (Hs) at (6.4,2.0) {signal \(s\):\ \(\pi f_H(s)\)};
+\node[lev,anchor=west] (Hn) at (6.4,0.6) {other signal:\ \(\pi[1-f_H(s)]\)};
+\node[lev,anchor=west] (Ls) at (6.4,-0.6) {signal \(s\):\ \((1-\pi)f_L(s)\)};
+\node[lev,anchor=west] (Ln) at (6.4,-2.0) {other signal:\ \((1-\pi)[1-f_L(s)]\)};
+\draw[rulegrey] (root) -- node[above,sloped,text=ink] {\(\pi\)} (H);
+\draw[rulegrey] (root) -- node[below,sloped,text=ink] {\(1-\pi\)} (L);
+\draw[rulegrey] (H.east) -- node[above,sloped,text=ink] {\(f_H(s)\)} (Hs.west);
+\draw[rulegrey] (H.east) -- (Hn.west);
+\draw[rulegrey] (L.east) -- node[above,sloped,text=ink] {\(f_L(s)\)} (Ls.west);
+\draw[rulegrey] (L.east) -- (Ln.west);
+\end{tikzpicture}
+\caption{A probability tree for the class and one signal. Each path probability is the product of the
+probabilities along the path. The posterior after the signal \(s\) is the share of the top path among the two
+paths that end in \(s\).}\label{fig:toolkit-tree}
+\end{figure}
+
+The posterior rises above the prior exactly when the signal is more likely in class
+\(H\). To see this, compare \(\mu(s)\) with \(\pi\).
+\begin{align*}
+\mu(s)>\pi
+&\iff\frac{f_H(s)}{\pi f_H(s)+(1-\pi)f_L(s)}>1 \why{divide \eqref{eq:toolkit-bayes} by \(\pi>0\)}\\
+&\iff f_H(s)>\pi f_H(s)+(1-\pi)f_L(s) \why{multiply by the positive denominator}\\
+&\iff(1-\pi)f_H(s)>(1-\pi)f_L(s) \why{subtract \(\pi f_H(s)\) from both sides}\\
+&\iff f_H(s)>f_L(s) \why{divide by \(1-\pi>0\)}
+\end{align*}
+The same steps with ``\(<\)'' show that the posterior falls when \(f_H(s)<f_L(s)\). The same steps with
+``\(=\)'' show that it equals the prior when \(f_H(s)=f_L(s)\). Look at two extreme cases. If
+\(f_L(s)=0<f_H(s)\), the posterior is one: the signal proves the class. If \(\pi\) is near zero and both
+\(f_H(s)\) and \(f_L(s)\) are positive, the posterior is also near zero. One signal of bounded strength cannot
+overturn a strong prior.
+
+In the paper, the signal is the order \(x\) that market makers see. The paper writes \(f_j(x)\) for the
+probability of the order \(x\) in class \(j\), and \(\mu(x)\) for the posterior. Condition (E1) of
+Definition~A.1 is formula~\eqref{eq:toolkit-bayes} with \(s=x\). Chapter~\ref{ch:beliefs} computes \(f_j(x)\) for
+the paper's trading set-up.
+
+\begin{watchout}
+\begin{itemize}
+\item Bayes' rule needs \(\Pr(S=s)>0\). After a signal of probability zero, the posterior is not defined by the
+rule. In the paper every order has positive probability in both classes, so the rule applies after every order
+(Lemma~A.1(a); Chapter~\ref{ch:beliefs}).
+\item Keep \(\Pr(S=s\mid H)\) and \(\Pr(H\mid S=s)\) apart. The first is \(f_H(s)\), a property of the signal. The
+second is the posterior \(\mu(s)\), which also depends on the prior.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-bayes}
+Use formula~\eqref{eq:toolkit-bayes}.
+(a)~Suppose \(f_H(s)=f_L(s)>0\). Show that the posterior equals the prior.
+(b)~Suppose \(f_L(s)=0<f_H(s)\). Find the posterior.
+(c)~Fix \(f_H(s)>0\) and \(f_L(s)>0\). What happens to the posterior when the prior \(\pi\) moves toward one?
+\end{checkyourself}
+
+% =====================================================================
+\section{Bayes' rule in odds form}\label{sec:toolkit-odds}
+
+\begin{intuition}[one signal can move the odds only so far]
+Odds compare two probabilities: the odds of class \(H\) are \(\Pr(H)/\Pr(L)\). In odds form, Bayes' rule is one
+multiplication. The signal multiplies the prior odds by its likelihood ratio \(f_H(s)/f_L(s)\). Suppose that no
+signal is more than \(1+u\) times as likely in one class as in the other. Then no signal can multiply the odds by
+more than \(1+u\), or divide them by more than \(1+u\). So one signal can move the belief only inside a fixed
+interval around the prior.
+\end{intuition}
+
+\subsection{The odds form}
+
+The odds of a probability \(\mu\) with \(0<\mu<1\) are \(o=\mu/(1-\mu)\). The likelihood ratio of the signal \(s\)
+is \(f_H(s)/f_L(s)\).
+
+\begin{derivation}[posterior odds equal prior odds times the likelihood ratio]
+Assume \(f_L(s)>0\). Start from Bayes' rule~\eqref{eq:toolkit-bayes} and write \(N=\pi f_H(s)+(1-\pi)f_L(s)\) for
+its denominator.
+\begin{align}
+1-\mu(s)
+&=\frac{N-\pi f_H(s)}{N} \why{write \(1\) as \(N/N\)}\notag\\
+&=\frac{(1-\pi)f_L(s)}{N} \why{definition of \(N\)}\notag\\
+\frac{\mu(s)}{1-\mu(s)}
+&=\frac{\pi f_H(s)/N}{(1-\pi)f_L(s)/N} \why{divide the two formulas}\notag\\
+&=\frac{\pi}{1-\pi}\cdot\frac{f_H(s)}{f_L(s)} \whyinline{\(N\) cancels; split the fraction}\label{eq:toolkit-odds}
+\end{align}
+\end{derivation}
+
+This is the odds form of Bayes' rule in the paper's Appendix~A.2, with the order \(x\) in place of the signal \(s\).
+
+To go back from odds to a probability, solve \(o=\mu/(1-\mu)\) for \(\mu\).
+\begin{align*}
+o(1-\mu)&=\mu \why{multiply by \(1-\mu>0\)}\\
+o&=\mu+o\mu=\mu(1+o) \why{add \(o\mu\) to both sides}\\
+\mu&=\frac{o}{1+o}=1-\frac1{1+o} \why{divide by \(1+o>0\)}
+\end{align*}
+As \(o\) rises, \(1/(1+o)\) falls, so \(\mu\) rises. The map from odds to probability is strictly increasing. The
+rest of this section uses this fact: a bound on the odds gives a bound on the probability, in the same direction.
+
+\subsection{The top and the bottom posterior}
+
+\begin{keyidea}
+Assume that every likelihood ratio lies between \(1/(1+u)\) and \(1+u\), for a number \(u>0\). Then every posterior
+lies between the bottom posterior \(m(\pi)\) and the top posterior \(M(\pi)\):
+\begin{equation}\label{eq:toolkit-bounds}
+m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}\;\le\;\mu(s)\;\le\;M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi}.
+\end{equation}
+\end{keyidea}
+
+In this chapter the bound on the likelihood ratio is an assumption. In the paper it is a result: the paper's
+trading set-up gives the bound with \(u=\lambda/b\) (Section~2.3 of the paper). Chapter~\ref{ch:beliefs} derives
+it, together with the condition on the trading set-up that it needs.
+
+\begin{derivation}[the top posterior]
+\begin{align*}
+\frac{\mu(s)}{1-\mu(s)}
+&=\frac{\pi}{1-\pi}\cdot\frac{f_H(s)}{f_L(s)} \why{odds form \eqref{eq:toolkit-odds}}\\
+&\le\frac{\pi}{1-\pi}(1+u)=:o_{\max} \why{likelihood ratio at most \(1+u\); prior odds \(>0\)}
+\end{align*}
+The map \(o\mapsto o/(1+o)\) is increasing, so \(\mu(s)\le o_{\max}/(1+o_{\max})\). Compute this bound.
+\begin{align*}
+\frac{o_{\max}}{1+o_{\max}}
+&=\frac{\pi(1+u)/(1-\pi)}{1+\pi(1+u)/(1-\pi)} \why{substitute \(o_{\max}\)}\\
+&=\frac{\pi(1+u)/(1-\pi)}{[(1-\pi)+\pi(1+u)]/(1-\pi)} \why{common denominator below}\\
+&=\frac{\pi(1+u)}{\pi(1+u)+1-\pi}=M(\pi) \why{cancel \(1-\pi\)}
+\end{align*}
+\end{derivation}
+
+\begin{derivation}[the bottom posterior]
+\begin{align*}
+\frac{\mu(s)}{1-\mu(s)}
+&=\frac{\pi}{1-\pi}\cdot\frac{f_H(s)}{f_L(s)} \why{odds form \eqref{eq:toolkit-odds}}\\
+&\ge\frac{\pi}{(1-\pi)(1+u)}=:o_{\min} \why{likelihood ratio at least \(1/(1+u)\)}
+\end{align*}
+The map \(o\mapsto o/(1+o)\) is increasing, so \(\mu(s)\ge o_{\min}/(1+o_{\min})\).
+\begin{align*}
+\frac{o_{\min}}{1+o_{\min}}
+&=\frac{\pi/[(1-\pi)(1+u)]}{1+\pi/[(1-\pi)(1+u)]} \why{substitute \(o_{\min}\)}\\
+&=\frac{\pi/[(1-\pi)(1+u)]}{[(1-\pi)(1+u)+\pi]/[(1-\pi)(1+u)]} \why{common denominator below}\\
+&=\frac{\pi}{\pi+(1-\pi)(1+u)}=m(\pi) \why{cancel \((1-\pi)(1+u)\)}
+\end{align*}
+\end{derivation}
+
+A signal with the largest likelihood ratio \(1+u\) gives exactly \(M(\pi)\). A signal
+with the smallest ratio \(1/(1+u)\) gives exactly \(m(\pi)\). The number \(u\) measures how strong one signal can
+be. Test the two extremes.
+\begin{itemize}
+\item As \(u\) falls to zero, both \(1+u\) and \(1/(1+u)\) approach one. Then \(M(\pi)\) and \(m(\pi)\) both
+approach \(\pi\): no signal can move the belief.
+\item As \(u\) grows without limit, divide the numerator and the denominator of \(M(\pi)\) by \(1+u\):
+\(M(\pi)=\pi/[\pi+(1-\pi)/(1+u)]\), which approaches \(\pi/\pi=1\). In \(m(\pi)\) the term \((1-\pi)(1+u)\) in the
+denominator grows without limit, so \(m(\pi)\) approaches zero. A single signal can then come close to proof of the
+class.
+\end{itemize}
+
+\subsection{Averages of posteriors}
+
+Sometimes an observer does not see the signal itself. It sees only that the signal lies in a set \(A\) of values.
+For example, the challenger sees a price, and two orders can have the same price. The observer's belief is
+\(\Pr(H\mid S\in A)\). This belief is an average of the posteriors \(\mu(s)\) over the signals in \(A\).
+
+\begin{derivation}[a coarse belief is an average of posteriors]
+Assume \(\Pr(S\in A)>0\), and write \(w_s=\Pr(S=s)/\Pr(S\in A)\) for each \(s\in A\).
+\begin{align*}
+\Pr(H\mid S\in A)
+&=\frac{\Pr(H\cap\{S\in A\})}{\Pr(S\in A)} \why{definition \eqref{eq:toolkit-cond}}\\
+&=\frac{\sum_{s\in A}\Pr(H\cap\{S=s\})}{\Pr(S\in A)} \why{the events \(\{S=s\}\), \(s\in A\), do not overlap}\\
+&=\frac{\sum_{s\in A}\Pr(H\mid S=s)\Pr(S=s)}{\Pr(S\in A)} \why{multiplication rule}\\
+&=\sum_{s\in A}w_s\,\mu(s) \why{definitions of \(w_s\) and \(\mu(s)\)}
+\end{align*}
+Each weight \(w_s\) is nonnegative. The weights add up to one, because
+\(\sum_{s\in A}\Pr(S=s)=\Pr(S\in A)\).
+\end{derivation}
+
+An average of numbers in an interval stays in the interval. Suppose \(m(\pi)\le\mu(s)\le M(\pi)\) for every \(s\in
+A\).
+\begin{align*}
+\Pr(H\mid S\in A)=\sum_{s\in A}w_s\,\mu(s)
+&\le\sum_{s\in A}w_s\,M(\pi) \why{\(\mu(s)\le M(\pi)\) and \(w_s\ge0\)}\\
+&=M(\pi)\sum_{s\in A}w_s=M(\pi) \why{the weights add up to one}
+\end{align*}
+The same steps with \(\ge\) and \(m(\pi)\) give \(\Pr(H\mid S\in A)\ge m(\pi)\).
+
+The paper's appendix uses a second route to the same end (Lemma~A.1, ``beliefs at a price''). In odds form, the
+coarse belief has the likelihood ratio \(\sum_{s\in A}f_H(s)\big/\sum_{s\in A}f_L(s)\). A ratio of two sums of
+positive terms lies between the smallest and the largest ratio of its terms. To see the upper half, suppose
+\(f_H(s)\le K f_L(s)\) for each \(s\in A\). Add these inequalities over \(s\in A\) to get \(\sum f_H(s)\le K\sum
+f_L(s)\), and divide by \(\sum f_L(s)>0\). The lower half is the same with \(\ge\).
+
+\subsection{A symmetry of the two bounds}
+
+The two bounds mirror each other:
+\begin{equation}\label{eq:toolkit-mirror}
+1-M(\pi)=m(1-\pi).
+\end{equation}
+
+\begin{derivation}[the mirror identity]
+\begin{align*}
+1-M(\pi)
+&=\frac{\pi(1+u)+1-\pi-\pi(1+u)}{\pi(1+u)+1-\pi} \why{write \(1\) with the denominator of \(M(\pi)\)}\\
+&=\frac{1-\pi}{\pi(1+u)+1-\pi} \why{cancel \(\pi(1+u)\) above}\\
+m(1-\pi)
+&=\frac{1-\pi}{(1-\pi)+[1-(1-\pi)](1+u)} \why{put \(1-\pi\) in place of \(\pi\) in \(m\)}\\
+&=\frac{1-\pi}{(1-\pi)+\pi(1+u)} \why{\(1-(1-\pi)=\pi\)}
+\end{align*}
+The two right sides are equal.
+\end{derivation}
+
+In words: \(1-M(\pi)\) is the lowest probability of class \(L\) after one signal. Swap the names of the classes.
+Class \(L\) then has the prior \(1-\pi\), and the bound on the likelihood ratio stays the same, because it is
+symmetric. So the lowest posterior of class \(L\) is the bottom posterior at the prior \(1-\pi\).
+
+The paper uses the mirror identity in its trading bound (Section~3.3 of the paper). There
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\), and the identity turns it into \(\min\{m(\pi),m(1-\pi)\}\). The function
+\(m\) is increasing: write \(m(\pi)=1/[1+(1+u)(1-\pi)/\pi]\), and note that \((1-\pi)/\pi\) falls as \(\pi\) rises.
+So the smaller of \(m(\pi)\) and \(m(1-\pi)\) is \(m\) at the smaller of \(\pi\) and \(1-\pi\), and
+\(\kappa(\pi)=m(\min\{\pi,1-\pi\})\), as in the paper.
+
+\begin{watchout}
+\begin{itemize}
+\item The bounds are for one observation. The guide's own illustration, which the paper does not need: two
+signals that are independent given the class multiply the odds twice. Their combined likelihood ratio can reach
+\((1+u)^2\).
+\item The average argument needs weights that are nonnegative and add up to one. The law of total probability
+gives both.
+\item The bound on the likelihood ratio must hold for every signal that the observer can see. Chapter~\ref{ch:beliefs}
+shows which condition of the paper secures it for each order.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-odds}
+(a)~Show that \(m(\pi)<\pi<M(\pi)\) for every \(u>0\) and \(0<\pi<1\).
+(b)~Show that \(M(1/2)=(1+u)/(2+u)\) and \(m(1/2)=1/(2+u)\), and that the two add up to one.
+\end{checkyourself}
+
+% =====================================================================
+\section{Distribution functions, left limits and atoms}\label{sec:toolkit-cdf}
+
+\begin{intuition}[the probability collected up to each level]
+A distribution function answers one question at each level \(y\): how likely is the value to be at most \(y\)?
+Read from left to right, the function collects probability. A jump shows a single value with positive
+probability, an atom. A function without jumps belongs to a continuous distribution, where each single value has
+probability zero.
+\end{intuition}
+
+\subsection{The distribution function}
+
+The distribution function of a random value \(\theta\) is
+\begin{equation}\label{eq:toolkit-cdf}
+G(y)=\Pr(\theta\le y)\qquad\text{for every number }y.
+\end{equation}
+It has three properties.
+\begin{itemize}
+\item \(G\) is nondecreasing. If \(y<y'\), the event \(\{\theta\le y\}\) is part of the event \(\{\theta\le
+y'\}\), so \(G(y)\le G(y')\).
+\item \(G(y)\) is near zero for \(y\) far to the left, and near one for \(y\) far to the right.
+\item \(G\) is continuous from the right. As \(y\) falls toward a level \(a\) from above, \(G(y)\) approaches
+\(G(a)\).
+\end{itemize}
+
+The probability of an interval is a difference of two values of \(G\). For \(a<b\):
+\begin{align*}
+G(b)=\Pr(\theta\le b)
+&=\Pr(\theta\le a)+\Pr(a<\theta\le b) \why{the two events do not overlap}\\
+&=G(a)+\Pr(a<\theta\le b) \why{definition \eqref{eq:toolkit-cdf}}
+\end{align*}
+So \(\Pr(a<\theta\le b)=G(b)-G(a)\).
+
+\subsection{The left limit and atoms}
+
+The left limit \(G(p^-)\) is the number that \(G(y)\) approaches as \(y\) rises toward \(p\) from below. It is the
+probability of a value strictly below \(p\):
+\begin{equation}\label{eq:toolkit-left}
+G(p^-)=\lim_{y\uparrow p}G(y)=\Pr(\theta<p).
+\end{equation}
+The reason in words: as \(y\) rises toward \(p\), the event \(\{\theta\le y\}\) grows and fills the event
+\(\{\theta<p\}\). It never contains the value \(p\) itself.
+
+An atom is a single value with positive probability. The jump of \(G\) at \(p\) is the probability of the value
+\(p\).
+\begin{align*}
+\Pr(\theta=p)
+&=\Pr(\theta\le p)-\Pr(\theta<p) \why{\(\{\theta\le p\}\) is \(\{\theta<p\}\) plus \(\{\theta=p\}\)}\\
+&=G(p)-G(p^-) \why{definitions \eqref{eq:toolkit-cdf} and \eqref{eq:toolkit-left}}
+\end{align*}
+Two consequences follow from the complement rule:
+\begin{equation}\label{eq:toolkit-geq}
+\Pr(\theta\ge p)=1-G(p^-),\qquad \Pr(\theta>p)=1-G(p).
+\end{equation}
+A distribution is continuous when \(G\) has no jump, so that \(G(p^-)=G(p)\) at every \(p\). Then each single value
+has probability zero, and \(\Pr(\theta\ge p)=\Pr(\theta>p)\).
+
+\subsection{How the paper uses these objects}
+
+\begin{itemize}
+\item \emph{The reserve.} A bid equal to the reserve is admissible (Section~2.2 of the paper). A class-\(j\) value
+fails the reserve when \(\theta<p\), and this has the probability \(G_j(p^-)\). The class ranking asks for
+\(G_H(p^-)=G_L(p^-)=0\): every value meets the reserve.
+\item \emph{Atoms in the classes.} The class distributions \(G_H\) and \(G_L\) may have atoms (Section~2.2 of the
+paper). The example uses point masses, which are atoms of probability one.
+\item \emph{The incumbent.} The incumbent's distribution \(F\) is continuous on \([0,\bar r]\), and it is
+``extended by unity above \(\bar r\)'': \(F(y)=1\) for \(y>\bar r\). The incumbent's value never exceeds \(\bar r\),
+so a value at most \(y\) is certain there. The extension lets a formula integrate \(F\) over \([p,\infty)\) with no
+separate case above \(\bar r\). In the same way, \(F(y)=0\) for \(y<0\), because \(R\ge0\).
+\end{itemize}
+
+\subsection{Two illustrations}
+
+A point mass at \(h\) has the distribution function \(G(y)=\1\{y\ge h\}\). Here \(\1\{\cdot\}\) is the
+indicator: it equals one when the condition in the braces holds and zero otherwise. Check the two cases.
+\begin{itemize}
+\item If \(y<h\), the value \(h\) lies above \(y\), so the event \(\{\theta\le y\}\) never happens: \(G(y)=0\).
+\item If \(y\ge h\), the value \(h\) is at most \(y\), so the event always happens: \(G(y)=1\).
+\end{itemize}
+So \(G(h^-)=0\) and \(G(h)=1\). The jump at \(h\) has height one: an atom of probability one. By
+\eqref{eq:toolkit-geq}, \(\Pr(\theta\ge h)=1-0=1\) and \(\Pr(\theta>h)=1-1=0\).
+
+The uniform distribution on \([0,r]\) spreads its probability evenly over \([0,r]\), with the density \(1/r\). Its
+distribution function is
+\begin{equation}\label{eq:toolkit-uniform}
+F(y)=\begin{cases}0,& y<0,\\ y/r,& 0\le y\le r,\\ 1,& y>r.\end{cases}
+\end{equation}
+For the middle line, add up the density from \(0\) to \(y\):
+\begin{align*}
+F(y)=\Pr(R\le y)&=\int_0^y\frac1r\,dz \why{the density is \(1/r\) on \([0,r]\)}\\
+&=\frac yr \why{a constant integrand times the length \(y\)}
+\end{align*}
+At \(y=r\) the middle line gives \(r/r=1\), the value above \(r\). At \(y=0\) it gives \(0\), the value below
+zero. So \(F\) has no jump: the uniform law is continuous, and \(\Pr(R=y)=0\) for every \(y\). Here
+\(\bar r=r\), and for \(y\ge0\) the three lines combine into \(F(y)=\min\{y/r,1\}\). Figure~\ref{fig:toolkit-cdfs}
+draws both functions.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=2.2cm,font=\small]
+\draw[-{Latex[length=2mm]}] (0,0) -- (6.2,0) node[below] {\(y\)};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,1.3);
+\draw (0.08,1) -- (-0.08,1) node[left] {\(1\)};
+\node[left] at (0,0) {\(0\)};
+\draw[dashed,rulegrey] (3.5,0) -- (3.5,1);
+\draw[accent,very thick] (0,0) -- (3.5,0);
+\draw[accent,very thick] (3.5,1) -- (5.9,1);
+\filldraw[fill=white,draw=accent,thick] (3.5,0) circle (2pt);
+\fill[accent] (3.5,1) circle (2pt);
+\node[below] at (3.5,0) {\(h\)};
+\node[above] at (4.7,1) {\(G(y)\)};
+\node at (3.1,-0.42) {(a) a point mass at \(h\)};
+\begin{scope}[xshift=8.2cm]
+\draw[-{Latex[length=2mm]}] (0,0) -- (6.2,0) node[below] {\(y\)};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,1.3);
+\draw (0.08,1) -- (-0.08,1) node[left] {\(1\)};
+\node[left] at (0,0) {\(0\)};
+\draw[dashed,rulegrey] (4,0) -- (4,1);
+\draw[accent,very thick] (0,0) -- (4,1) -- (5.9,1);
+\node[below] at (4,0) {\(r\)};
+\node[above left] at (2.3,0.55) {\(F(y)=y/r\)};
+\node at (3.1,-0.42) {(b) uniform on \([0,r]\)};
+\end{scope}
+\end{tikzpicture}
+\caption{Two distribution functions. In (a) the function jumps from zero to one at \(h\): the filled dot shows
+that \(G(h)=1\), and the open dot shows that \(G(h^-)=0\). In (b) the function rises in a straight line and has
+no jump, so the distribution is continuous.}\label{fig:toolkit-cdfs}
+\end{figure}
+
+\begin{watchout}
+\begin{itemize}
+\item \(G(p^-)\) and \(G(p)\) differ by the atom at \(p\). For a point mass at the reserve, \(G(p^-)=0\) but
+\(G(p)=1\). A mix-up turns ``every value meets the reserve'' into ``no value passes the reserve''.
+\item The paper treats the two kinds of distribution differently. The class distributions \(G_j\) may have atoms.
+The incumbent's distribution \(F\) is continuous, so that a tie \(R=\theta\) has probability zero
+(Section~2.2 of the paper; Section~\ref{sec:toolkit-maxmin} below).
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-cdf}
+Let class \(L\) be a point mass at \(\ell\), and suppose that the reserve equals \(\ell\), so \(p=\ell\).
+(a)~Find \(G_L(p^-)\) and \(G_L(p)\).
+(b)~Does every class-\(L\) value meet the reserve?
+(c)~Which of the two numbers does the class ranking restrict, and does the restriction hold here?
+\end{checkyourself}
+
+% =====================================================================
+\section{Expectation, conditional expectation and averages over classes}\label{sec:toolkit-expectation}
+
+\begin{intuition}[average in two stages]
+An expectation is an average with probabilities as weights. Two facts do most of the work in the paper. First,
+the average of a sum is the sum of the averages. Second, you can average in two stages: first inside each class,
+then across the classes, with the class probabilities as weights. The second fact makes every expectation at a
+belief \(\mu\) a straight line in \(\mu\).
+\end{intuition}
+
+\subsection{Expectation and linearity}
+
+If \(X\) takes finitely many values, its expectation is \(\E[X]=\sum_x x\Pr(X=x)\). For a function \(\varphi\),
+\(\E[\varphi(X)]=\sum_x\varphi(x)\Pr(X=x)\). The illustrations of this chapter need two special cases.
+\begin{itemize}
+\item For a point mass at \(h\), \(\E[\varphi(\theta)]=\varphi(h)\). There is one value, with probability one.
+\item For the uniform law on \([0,r]\), \(\E[\varphi(R)]=\frac1r\int_0^r\varphi(y)\,dy\). The integral replaces
+the sum, and the density \(1/r\) replaces the probability of each value. With \(\varphi(y)=y\), this gives
+\(\E[R]=\frac1r\cdot\frac{r^2}2=\frac r2\).
+\end{itemize}
+
+Expectation is linear: for numbers \(a\), \(b\), \(c\),
+\begin{equation}\label{eq:toolkit-linear}
+\E[aX+bY+c]=a\E[X]+b\E[Y]+c.
+\end{equation}
+
+\begin{derivation}[linearity]
+Take a finite set of outcomes \(\omega\), each with the probability \(\Pr(\omega)\). The variables \(X\) and \(Y\)
+take the values \(X(\omega)\) and \(Y(\omega)\).
+\begin{align*}
+\E[aX+bY+c]
+&=\sum_\omega[aX(\omega)+bY(\omega)+c]\Pr(\omega) \why{definition, outcome by outcome}\\
+&=a\sum_\omega X(\omega)\Pr(\omega)+b\sum_\omega Y(\omega)\Pr(\omega) \why{split the sum}\\
+&\qquad+c\sum_\omega\Pr(\omega)\\
+&=a\E[X]+b\E[Y]+c \why{definition; probabilities add up to one}
+\end{align*}
+\end{derivation}
+
+Linearity needs no independence between \(X\) and \(Y\).
+
+The expectation of an indicator is a probability:
+\begin{equation}\label{eq:toolkit-indicator}
+\E\bigl[\1\{A\}\bigr]=1\cdot\Pr(A)+0\cdot\bigl(1-\Pr(A)\bigr)=\Pr(A).
+\end{equation}
+As an illustration, take the target's expected proceeds without entry, \(t_0=p[1-F(p)]\) (Section~2.2 of the
+paper). Without a challenger, the incumbent buys at the reserve when its value meets the reserve. So the
+proceeds are \(p\,\1\{R\ge p\}\).
+\begin{align*}
+t_0=\E\bigl[p\,\1\{R\ge p\}\bigr]
+&=p\,\E\bigl[\1\{R\ge p\}\bigr] \why{linearity \eqref{eq:toolkit-linear}}\\
+&=p\Pr(R\ge p) \why{expectation of an indicator \eqref{eq:toolkit-indicator}}\\
+&=p[1-F(p^-)] \why{complement rule \eqref{eq:toolkit-geq}}\\
+&=p[1-F(p)] \why{\(F\) is continuous}\\
+&=p\Bigl(1-\frac pr\Bigr) \why{uniform \eqref{eq:toolkit-uniform}, with \(p\le r\)}
+\end{align*}
+The last line is the paper's \(t_0\) in the example, where \(p<r\) (Appendix~A.1).
+
+\subsection{Conditional expectation given the class}
+
+The class expectation \(\E_j[\varphi(\theta)]\) is the expectation of \(\varphi(\theta)\) given the class \(j\). It
+uses the class distribution \(G_j\). The paper defines its class objects in this way (Section~2.4 of the paper):
+\[
+t_j=\E_j[t(\theta)],\qquad g_j=\E_j[g(\theta)],\qquad j\in\{H,L\}.
+\]
+Here \(t(\theta)\) is the target's expected proceeds after the challenger prepares, at a known challenger value
+\(\theta\). In the same way, \(g(\theta)\) is the challenger's expected gross acquisition profit at the value
+\(\theta\). In the example the
+classes are point masses at \(h\) and \(\ell\). So the class expectation is the function at one point:
+\(t_H=t(h)\), \(t_L=t(\ell)\), \(g_H=g(h)\) and \(g_L=g(\ell)\).
+
+\subsection{The law of iterated expectations}
+
+The overall expectation is the average of the class expectations, with the class probabilities as weights:
+\begin{equation}\label{eq:toolkit-lie}
+\E[\varphi(\theta)]=\pi\,\E_H[\varphi(\theta)]+(1-\pi)\,\E_L[\varphi(\theta)].
+\end{equation}
+
+\begin{derivation}[an average over the classes]
+Take a value \(\theta\) with finitely many values \(y\).
+\begin{align*}
+\E[\varphi(\theta)]
+&=\sum_y\varphi(y)\Pr(\theta=y) \why{definition}\\
+&=\sum_y\varphi(y)\bigl[\pi\Pr(\theta=y\mid H)+(1-\pi)\Pr(\theta=y\mid L)\bigr]
+\why{total probability (Section~\ref{sec:toolkit-bayes})}\\
+&=\pi\sum_y\varphi(y)\Pr(\theta=y\mid H) \why{split the sum}\\
+&\qquad+(1-\pi)\sum_y\varphi(y)\Pr(\theta=y\mid L)\\
+&=\pi\,\E_H[\varphi(\theta)]+(1-\pi)\,\E_L[\varphi(\theta)] \why{definition of \(\E_j\)}
+\end{align*}
+In the third line, \(\pi\) and \(1-\pi\) move out of the sums because they do not depend on \(y\). With a density,
+the sums become integrals and the steps are the same.
+\end{derivation}
+
+\subsection{Expectations at a belief}
+
+Suppose that an observer sees a signal \(S=s\) and holds the belief \(\mu=\Pr(H\mid S=s)\). Assume that the signal
+is independent of the value given the class:
+\[
+\Pr(\theta=y\mid j,\ S=s)=\Pr(\theta=y\mid j)\qquad\text{for each class }j\text{ and each value }y.
+\]
+
+\begin{derivation}[an expectation at a belief]
+\begin{align*}
+\E[\varphi(\theta)\mid S=s]
+&=\sum_y\varphi(y)\Pr(\theta=y\mid S=s) \why{definition}\\
+&=\sum_y\varphi(y)\bigl[\mu\Pr(\theta=y\mid H,S=s) \why{total probability, given \(S=s\)}\\
+&\qquad+(1-\mu)\Pr(\theta=y\mid L,S=s)\bigr]\\
+&=\sum_y\varphi(y)\bigl[\mu\Pr(\theta=y\mid H)+(1-\mu)\Pr(\theta=y\mid L)\bigr]
+\why{independent given the class}\\
+&=\mu\,\E_H[\varphi(\theta)]+(1-\mu)\,\E_L[\varphi(\theta)] \why{split the sum}
+\end{align*}
+\end{derivation}
+
+The signal changes only the weights on the two classes. It does not change the class distributions \(G_H\) and
+\(G_L\). Apply this to the gross profit, \(\varphi=g\):
+\begin{align}
+B(\mu)&=\mu\,g_H+(1-\mu)\,g_L \why{the formula above, with \(\varphi=g\)}\notag\\
+&=g_L+\mu\,(g_H-g_L) \whyinline{collect the terms in \(\mu\)}\label{eq:toolkit-B}
+\end{align}
+This is the paper's formula for gross profit at a belief (Section~2.4 of the paper). The paper gives the reason in
+one phrase: the challenger's value depends on the price only through its class.
+
+In words, \(B\) is a straight line in \(\mu\). It equals \(g_L\) at \(\mu=0\) and \(g_H\) at \(\mu=1\), and its
+slope \(g_H-g_L\) is the profit gap between the classes. A belief halfway between zero and one gives a profit
+halfway between \(g_L\) and \(g_H\). At the extreme \(g_H=g_L\), the line is flat, and news about the class does not
+change gross profit.
+
+The same argument makes the expected proceeds at a belief a straight line, at a fixed probability of entry. The
+paper's price after an order \(x\) has this form (Section~2.4 of the paper):
+\[
+P(x)=t_0+e(x)\,\bigl[t_L-t_0+\DT\,\mu(x)\bigr].
+\]
+Here \(e(x)\) is entry after the order, and \(\DT=t_H-t_L\) is the target-payoff spread. Later chapters derive
+this formula.
+
+\begin{watchout}
+\begin{itemize}
+\item \(B(\mu)\) is a straight line because the signal is independent of the value given the class. Without this
+independence, the signal would also change the class distributions, and \(B\) would not be linear in \(\mu\). The
+paper's extension with private signals of the investor and the challenger keeps this hypothesis (Chapter~\ref{ch:robustness}).
+\item The price is a straight line in the posterior only at a fixed level of entry. In equilibrium, entry also
+depends on the posterior, so equilibrium prices also reflect entry.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-expectation}
+The paper writes \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
+\(w(\mu)=(1-\mu)w_L+\mu w_H\) for its average at the belief \(\mu\) (Appendix~A.2).
+(a)~Show that \(w(\mu)=t_L-t_0+\DT\,\mu\).
+(b)~What are \(w(0)\), \(w(1)\) and the slope of \(w\)?
+\end{checkyourself}
+
+% =====================================================================
+\section{The tail formula}\label{sec:toolkit-tail}
+
+\begin{intuition}[an expectation adds up thin slices]
+Think of a nonnegative value \(X\) as a stack of thin horizontal slices, from the floor at zero up to the height
+\(X\). The slice at the height \(y\) is in the stack exactly when \(X\) passes \(y\). To find the average height of
+the stack, add up all the slices, and weight each slice by the probability that it is present. That probability
+is \(\Pr(X>y)=1-G(y)\). So the expectation is the area under the curve \(1-G(y)\).
+\end{intuition}
+
+\subsection{The formula}
+
+\begin{keyidea}
+For a random value \(X\ge0\) with the distribution function \(G\),
+\begin{equation}\label{eq:toolkit-tail}
+\E[X]=\int_0^\infty\Pr(X>y)\,dy=\int_0^\infty[1-G(y)]\,dy.
+\end{equation}
+\end{keyidea}
+
+The integral adds up, over every level \(y\) from zero upward, the probability that \(X\) passes the level.
+
+\begin{derivation}[the tail formula]
+First write \(X\) itself as an integral. The length of the interval \([0,X]\) is \(X\):
+\begin{align*}
+X&=\int_0^X 1\,dy \why{the length of \([0,X]\)}\\
+&=\int_0^\infty\1\{y<X\}\,dy \why{the indicator is one below \(X\) and zero from \(X\) on}
+\end{align*}
+Then take the expectation of both sides.
+\begin{align*}
+\E[X]&=\E\Bigl[\int_0^\infty\1\{y<X\}\,dy\Bigr] \why{take expectations}\\
+&=\int_0^\infty\E\bigl[\1\{y<X\}\bigr]\,dy \why{swap the expectation and the integral (see below)}\\
+&=\int_0^\infty\Pr(X>y)\,dy \why{expectation of an indicator \eqref{eq:toolkit-indicator}}\\
+&=\int_0^\infty[1-G(y)]\,dy \why{complement rule \eqref{eq:toolkit-geq}}
+\end{align*}
+\end{derivation}
+
+The second step swaps two operations: an average over outcomes and a sum over levels. The analogy below explains
+why the swap is allowed.
+
+\begin{analogy}[a table added up in two orders]
+Picture a table. Each row is an outcome \(\omega\), and each column is a thin level from \(y\) to \(y+dy\). The
+entry in row \(\omega\) and column \(y\) is \(\Pr(\omega)\cdot\1\{y<X(\omega)\}\,dy\). Add each row along the
+columns first: row \(\omega\) gives \(\Pr(\omega)X(\omega)\), and the rows together give \(\E[X]\). Add each column
+over the rows first: column \(y\) gives \(\Pr(X>y)\,dy\), and the columns together give the integral. Both orders
+add up the same entries, so they give the same total.
+
+Where the analogy breaks: with infinitely many rows or
+columns, entries of both signs can give two different totals in the two orders. Nonnegative entries always give
+one total. The paper cites Tonelli's theorem for this step (Appendix~A.1), and it is the reason for \(X\ge0\).
+\end{analogy}
+
+A remark on ``\(>\)'' and ``\(\ge\)''. The two probabilities \(\Pr(X>y)\) and \(\Pr(X\ge y)\) differ by
+\(\Pr(X=y)\), which is positive only at atoms. A distribution has at most one atom of probability above
+\(\tfrac12\), at most two above \(\tfrac13\), and so on, so its atoms form a list. An integral does not change when
+the integrand changes at a list of single points. So \(\E[X]=\int_0^\infty\Pr(X\ge y)\,dy\) as well. The paper uses
+this remark for the class distributions (Appendix~A.1).
+
+Figure~\ref{fig:toolkit-tail}(a) shows the formula as an area. The thin strip at the level \(y\) has the width
+\(dy\) and the height \(1-G(y)\).
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=2.4cm,font=\small]
+\fill[accent!15] (0,0) -- plot[domain=0:5.6,samples=60] (\x,{exp(-0.55*\x)}) -- (5.6,0) -- cycle;
+\fill[accent!55] (1.6,0) rectangle (1.8,{exp(-0.55*1.7)});
+\draw[accent,very thick] plot[domain=0:5.6,samples=60] (\x,{exp(-0.55*\x)});
+\draw[-{Latex[length=2mm]}] (0,0) -- (6.2,0) node[below] {\(y\)};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,1.25);
+\draw (0.08,1) -- (-0.08,1) node[left] {\(1\)};
+\node[left] at (0,0) {\(0\)};
+\node[below] at (1.7,0) {\(y\)};
+\draw[->,notegrey] (2.6,0.75) node[right,text=ink] {\(1-G(y)\)} -- (1.85,0.45);
+\node at (3.1,-0.4) {(a) \(\E[X]\) is the whole area};
+\begin{scope}[xshift=8.2cm]
+\fill[accent!15] (0,0) -- plot[domain=0:2.2,samples=30] (\x,{exp(-0.55*\x)}) -- (2.2,0) -- cycle;
+\fill[accent!45] (2.2,0) -- plot[domain=2.2:5.6,samples=40] (\x,{exp(-0.55*\x)}) -- (5.6,0) -- cycle;
+\draw[accent,very thick] plot[domain=0:5.6,samples=60] (\x,{exp(-0.55*\x)});
+\draw[-{Latex[length=2mm]}] (0,0) -- (6.2,0) node[below] {\(y\)};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,1.25);
+\draw (0.08,1) -- (-0.08,1) node[left] {\(1\)};
+\node[left] at (0,0) {\(0\)};
+\draw[dashed,rulegrey] (2.2,0) -- (2.2,{exp(-0.55*2.2)});
+\node[below] at (2.2,0) {\(c\)};
+\node[font=\footnotesize] at (0.95,0.2) {\(\E[\min\{X,c\}]\)};
+\draw[->,notegrey] (4.1,0.62) node[above,text=ink] {\(\E[(X-c)_+]\)} -- (3.1,0.1);
+\node at (3.1,-0.4) {(b) the area split at \(c\)};
+\end{scope}
+\end{tikzpicture}
+\caption{The tail formula as an area. The curve is \(1-G(y)\), the probability that \(X\) passes the level \(y\).
+In (a), the whole shaded area is \(\E[X]\), and the dark strip is one slice. In (b), the area to the left of \(c\)
+is \(\E[\min\{X,c\}]\), and the area to the right of \(c\) is \(\E[(X-c)_+]\), where \((x)_+=\max\{x,0\}\).}\label{fig:toolkit-tail}
+\end{figure}
+
+Two illustrations confirm the formula against the direct computation.
+\begin{itemize}
+\item A point mass at \(h\) has \(1-G(y)=\1\{y<h\}\). The formula gives \(\int_0^\infty\1\{y<h\}\,dy=h\), the
+value itself.
+\item The uniform law on \([0,r]\) has \(1-F(y)=1-y/r\) on \([0,r]\) and zero above \(r\). The formula gives
+\[
+\int_0^r\Bigl(1-\frac yr\Bigr)dy=\Bigl[y-\frac{y^2}{2r}\Bigr]_0^r=r-\frac r2=\frac r2,
+\]
+the mean \(\E[R]=r/2\) of Section~\ref{sec:toolkit-expectation}.
+\end{itemize}
+
+In words: a distribution that passes every level with a larger probability has a larger mean. Section~\ref{sec:toolkit-fosd} builds on this point.
+
+\subsection{Four formulas that follow}
+
+Four versions of the tail formula serve the later chapters. Each one cuts the stack of slices at a level. The
+paper writes \((x)_+=\max\{x,0\}\) for the positive part of a number \(x\), and this guide keeps that notation.
+Section~\ref{sec:toolkit-monotone} lists its rules.
+
+\begin{keyidea}
+Let \(X\ge0\) have the distribution function \(G\), and let \(c\ge0\) and \(p\ge0\). Then
+\begin{align}
+\E[(X-c)_+]&=\int_c^\infty[1-G(y)]\,dy,\label{eq:toolkit-pospart}\\
+\E[\max\{X,p\}]&=p+\int_p^\infty[1-G(y)]\,dy,\label{eq:toolkit-max}\\
+\E[\min\{X,c\}]&=\int_0^c[1-G(y)]\,dy.\label{eq:toolkit-min}
+\end{align}
+Let \(R\) have a continuous distribution function \(F\), and fix a number \(\theta\ge p\). Then
+\begin{equation}\label{eq:toolkit-fixed}
+\E_R\bigl[(\theta-\max\{p,R\})_+\bigr]=\int_p^\theta F(y)\,dy.
+\end{equation}
+\end{keyidea}
+
+Each proof has the same two steps. First, write the variable as an integral of an indicator, and check the
+cases. Second, take expectations and swap, as in the tail formula.
+
+\begin{derivation}[the slices above \(c\): formula \eqref{eq:toolkit-pospart}]
+The claim is \((X-c)_+=\int_c^\infty\1\{y<X\}\,dy\). Check the two cases.
+\begin{itemize}
+\item If \(X\le c\), the left side is zero. On the right, every \(y\ge c\) has \(y\ge X\), so the indicator is
+zero and the integral is zero.
+\item If \(X>c\), the left side is \(X-c\). On the right, the indicator is one for \(c\le y<X\) and zero for
+\(y\ge X\), so the integral is the length \(X-c\).
+\end{itemize}
+Take expectations:
+\begin{align*}
+\E[(X-c)_+]&=\int_c^\infty\E\bigl[\1\{y<X\}\bigr]\,dy \why{swap; the integrand is nonnegative}\\
+&=\int_c^\infty[1-G(y)]\,dy \why{\(\E[\1\{y<X\}]=\Pr(X>y)=1-G(y)\)}
+\end{align*}
+\end{derivation}
+
+\begin{derivation}[a floor at \(p\): formula \eqref{eq:toolkit-max}]
+First, \(\max\{X,p\}=p+(X-p)_+\). If \(X\ge p\), both sides equal \(X\). If \(X<p\), both sides equal \(p\). Then
+\begin{align*}
+\E[\max\{X,p\}]&=p+\E[(X-p)_+] \why{linearity \eqref{eq:toolkit-linear}}\\
+&=p+\int_p^\infty[1-G(y)]\,dy \why{formula \eqref{eq:toolkit-pospart} with \(c=p\)}
+\end{align*}
+\end{derivation}
+
+In words: a floor at \(p\) gives \(p\) for sure, plus the slices above \(p\). The paper uses this formula for
+\(\E_j[\max\{\theta,p\}]\) (Appendix~A.1).
+
+\begin{derivation}[the slices below \(c\): formula \eqref{eq:toolkit-min}]
+The claim is \(\min\{X,c\}=\int_0^c\1\{y<X\}\,dy\). Check the two cases.
+\begin{itemize}
+\item If \(X\ge c\), the indicator is one for every \(y\) in \([0,c)\), so the integral is \(c=\min\{X,c\}\).
+\item If \(X<c\), the indicator is one for \(0\le y<X\) and zero for \(X\le y<c\), so the integral is
+\(X=\min\{X,c\}\).
+\end{itemize}
+Take expectations:
+\begin{align*}
+\E[\min\{X,c\}]&=\int_0^c\E\bigl[\1\{y<X\}\bigr]\,dy \why{swap; the integrand is nonnegative}\\
+&=\int_0^c[1-G(y)]\,dy \why{expectation of an indicator}
+\end{align*}
+\end{derivation}
+
+The last two cuts fit together. In every case \(\min\{X,c\}+(X-c)_+=X\): the slices below \(c\) plus the slices
+above \(c\) make the whole stack. In the integrals, \(\int_0^c+\int_c^\infty=\int_0^\infty\).
+Figure~\ref{fig:toolkit-tail}(b) shows the split.
+
+\begin{derivation}[a fixed value against a random incumbent: formula \eqref{eq:toolkit-fixed}]
+Fix \(\theta\ge p\). The claim is \((\theta-\max\{p,R\})_+=\int_p^\theta\1\{R<y\}\,dy\). Check the three cases.
+\begin{itemize}
+\item If \(R<p\), then \(\max\{p,R\}=p\), and the left side is \(\theta-p\). On the right, every \(y\ge p\) has
+\(R<y\), so the integral is the length \(\theta-p\).
+\item If \(p\le R<\theta\), then \(\max\{p,R\}=R\), and the left side is \(\theta-R\). On the right, the indicator
+is zero for \(p\le y\le R\) and one for \(R<y\le\theta\), so the integral is \(\theta-R\).
+\item If \(R\ge\theta\), the left side is zero. On the right, every \(y\le\theta\) has \(y\le R\), so the
+indicator is zero and the integral is zero.
+\end{itemize}
+Take the expectation over \(R\):
+\begin{align*}
+\E_R\bigl[(\theta-\max\{p,R\})_+\bigr]
+&=\int_p^\theta\Pr(R<y)\,dy \why{swap; expectation of an indicator}\\
+&=\int_p^\theta F(y)\,dy \why{\(F\) is continuous, so \(\Pr(R<y)=F(y)\)}
+\end{align*}
+\end{derivation}
+
+The paper reads this formula as an acquisition profit. A prepared challenger with the value \(\theta\ge p\)
+keeps \((\theta-\max\{p,R\})_+\) (Section~3.1 of the paper). So its expected gross profit is
+\(g(\theta)=\int_p^\theta F(y)\,dy\) (Appendix~A.1). The slices picture explains it. Cut the challenger's
+value between \(p\) and \(\theta\) into thin slices. The challenger keeps the slice at the level \(y\) exactly when
+the incumbent's value lies below \(y\), and that has the probability \(F(y)\).
+
+As an illustration, take the uniform incumbent on \([0,r]\) and a point mass at \(h\), with \(p<r<h\). The integral
+adds up \(F(y)\) from \(p\) to \(h\), and \(F\) has a different formula below and above \(r\).
+\begin{align*}
+\int_p^hF(y)\,dy
+&=\int_p^r\frac yr\,dy+\int_r^h1\,dy \why{\(F(y)=y/r\) below \(r\), and \(F=1\) above \(r\)}\\
+&=\frac{r^2-p^2}{2r}+(h-r) \why{antiderivative \(y^2/(2r)\); length of \([r,h]\)}\\
+&=h-\frac r2-\frac{p^2}{2r} \why{\(r^2/(2r)=r/2\); collect the terms}
+\end{align*}
+This is the paper's \(g_H\) in the example (Section~4.2 of the paper). The second integral uses the extension of
+\(F\) by unity above \(r\). Between \(r\) and \(h\), the challenger keeps every slice, because the incumbent never
+reaches those levels.
+
+\begin{watchout}
+\begin{itemize}
+\item The tail formula in this form needs \(X\ge0\). The nonnegative integrand is what permits the swap.
+\item The formulas for \(\max\{X,p\}\) and \(\min\{X,c\}\) need \(p\ge0\) and \(c\ge0\), because the slices start at
+zero. In the paper, \(p>0\).
+\item In formulas \eqref{eq:toolkit-pospart} to \eqref{eq:toolkit-min} the integrand is the tail \(1-G\). In
+formula \eqref{eq:toolkit-fixed} it is \(F\) itself, because the challenger keeps a slice when the incumbent lies
+below it.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-tail}
+Take the uniform incumbent on \([0,r]\) and a point mass at \(\ell\), with \(p<\ell<r\).
+(a)~Use formula~\eqref{eq:toolkit-fixed} to find \(g(\ell)=\int_p^\ell F(y)\,dy\).
+(b)~Say how \(g(\ell)\) changes when \(r\) rises, and what happens as \(\ell\) approaches \(p\).
+\end{checkyourself}
+
+% =====================================================================
+\section{Maxima, minima and the probability to win}\label{sec:toolkit-maxmin}
+
+\begin{intuition}[``both'' becomes a product]
+The larger of two values is at most \(y\) exactly when both values are at most \(y\). The smaller of two values is
+above \(y\) exactly when both values are above \(y\). When the two values are independent, the probability of
+``both'' is the product of the two probabilities. A fixed value beats a random value when the random value falls
+below it, and with a continuous distribution a tie has probability zero.
+\end{intuition}
+
+\subsection{The maximum and the minimum of two independent values}
+
+Let \(X\) and \(Y\) be independent, with the distribution functions \(F_X\) and \(F_Y\).
+
+\begin{derivation}[the maximum and the minimum]
+\begin{align}
+\Pr(\max\{X,Y\}\le y)
+&=\Pr(X\le y\text{ and }Y\le y) \why{the larger is at most \(y\) when both are}\notag\\
+&=\Pr(X\le y)\Pr(Y\le y) \why{independence}\notag\\
+&=F_X(y)\,F_Y(y) \whyinline{definition \eqref{eq:toolkit-cdf}}\label{eq:toolkit-maxcdf}\\[4pt]
+\Pr(\min\{X,Y\}>y)
+&=\Pr(X>y\text{ and }Y>y) \why{the smaller is above \(y\) when both are}\notag\\
+&=\Pr(X>y)\Pr(Y>y) \why{independence}\notag\\
+&=[1-F_X(y)]\,[1-F_Y(y)] \whyinline{complement rule \eqref{eq:toolkit-geq}}\label{eq:toolkit-mintail}
+\end{align}
+\end{derivation}
+
+In words: the maximum stays at or below a level only if both values do, and the minimum passes a level only if
+both values pass it. Each formula multiplies two numbers between zero and one, so the product is at most
+each factor.
+
+\subsection{A fixed value against a random value}
+
+Fix a number \(\theta\), and let \(R\) have a continuous distribution function \(F\).
+\begin{align*}
+\Pr(R<\theta)&=F(\theta^-) \why{left limit \eqref{eq:toolkit-left}}\\
+&=F(\theta) \why{\(F\) is continuous}\\
+\Pr(R=\theta)&=F(\theta)-F(\theta^-)=0 \why{the jump at \(\theta\); \(F\) has no jump}
+\end{align*}
+So the probability that the fixed value \(\theta\) beats \(R\) is \(F(\theta)\), and a tie has probability zero.
+This is why the paper assumes a continuous \(F\): acquisition-value ties then have probability zero
+(Section~2.2 of the paper).
+
+\subsection{The probability that a prepared challenger wins}
+
+The paper writes the probability that a prepared class-\(j\) challenger wins against the incumbent distribution
+\(F\) as (Section~2.4 of the paper)
+\begin{equation}\label{eq:toolkit-win}
+W_j(F)=\E_j\bigl[F(\theta)\,\1\{\theta\ge p\}\bigr].
+\end{equation}
+The formula combines the tools above. The highest admissible bid wins, and a bid equal to the reserve is
+admissible (Section~2.2 of the paper).
+
+So a prepared challenger with the value \(\theta\) wins in two cases. If
+\(R<p\le\theta\), it is the only admissible bidder. If \(p\le R<\theta\), it outbids the incumbent. Together, it
+wins exactly when \(\theta\ge p\) and \(R<\theta\). Chapter~\ref{ch:auction} reads the auction rule in detail.
+
+\begin{derivation}[the win probability]
+Given the value \(\theta=y\):
+\begin{align*}
+\Pr(\text{win}\mid\theta=y)&=\1\{y\ge p\}\Pr(R<y) \why{\(R\) is independent of \(\theta\)}\\
+&=\1\{y\ge p\}\,F(y) \why{\(F\) is continuous}
+\end{align*}
+Average over the class distribution \(G_j\), as in the law of iterated expectations
+(Section~\ref{sec:toolkit-expectation}). The result is \(W_j(F)=\E_j[F(\theta)\1\{\theta\ge p\}]\).
+\end{derivation}
+
+With the uniform incumbent on \([0,r]\) and the example's point masses, where \(p<\ell<r<h\):
+\begin{align*}
+W_H&=F(h)\,\1\{h\ge p\}=1 \why{\(h>r\), so \(F(h)=1\); and \(h>p\)}\\
+W_L&=F(\ell)\,\1\{\ell\ge p\}=\frac{\ell}{r} \why{\(p<\ell<r\), so \(F(\ell)=\ell/r\)}
+\end{align*}
+Class \(H\) wins for sure: in the paper's words, class \(H\) outbids the incumbent, \(W_H(F)=1\). Class \(L\) wins
+less often against a stronger incumbent, because \(\ell/r\) falls as \(r\) rises.
+
+\subsection{An illustration with the minimum}
+
+The minimum formula gives a short route to the target's proceeds. Under the class ranking every challenger value
+meets the reserve, and the target receives \(\max\{p,\min(R,\theta)\}\) after the challenger prepares
+(Section~3.1 of the paper). Write \(Z=\min(R,\theta)\ge0\), where \(R\) and \(\theta\) are independent given the
+class.
+\begin{align*}
+\Pr(Z>y)&=[1-F(y)]\,[1-G_j(y)] \why{minimum formula \eqref{eq:toolkit-mintail}}\\
+t_j=\E_j\bigl[\max\{p,Z\}\bigr]&=p+\int_p^\infty\Pr(Z>y)\,dy \why{floor formula \eqref{eq:toolkit-max}}\\
+&=p+\int_p^\infty[1-F(y)]\,[1-G_j(y)]\,dy \why{substitute the first line}
+\end{align*}
+The integral adds up the slices above the reserve that both bidders pass, since the target collects the second
+bid. The result agrees with the paper's formula for \(t_j\) in Appendix~A.1 under the class ranking. There, the
+two terms \(t_0+pF(p)[1-G_j(p^-)]\) reduce to \(p[1-F(p)]+pF(p)=p\), because \(G_j(p^-)=0\).
+Chapter~\ref{ch:auction} derives the formula from the auction rule.
+
+\begin{watchout}
+\begin{itemize}
+\item The product formulas need independence. In the paper, the challenger's class and value, the incumbent's
+value, the cost and the draws of the order slot are mutually independent (Section~2.2 of the paper).
+\item The win probability \(F(\theta)\) needs a continuous \(F\). With an atom of \(F\) at \(\theta\), the tie
+\(R=\theta\) has positive probability, and the auction would need a rule to break it.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-maxmin}
+Suppose, against the paper's assumption, that the incumbent's value has an atom of probability \(a>0\) at a value
+\(v\). A challenger with the value \(\theta=v\) bids against it.
+(a)~Find \(\Pr(R<\theta)\) and \(\Pr(R\le\theta)\) in terms of \(F(v)\) and \(a\).
+(b)~Why does the win probability then differ from \(F(\theta)\)?
+\end{checkyourself}
+
+% =====================================================================
+\section{First-order stochastic dominance}\label{sec:toolkit-fosd}
+
+\begin{intuition}[higher at every level]
+One distribution dominates another when it makes high values more likely at every level. In terms of
+distribution functions, the dominant distribution has a smaller \(G\) at every \(y\): it is less likely to be at
+most \(y\). Then every increasing function of the value has a weakly larger average. For the incumbent, a stronger
+incumbent is less likely to have a value below any level, so a challenger at a given value beats it less often.
+\end{intuition}
+
+\subsection{The definition}
+
+A distribution \(\tilde G\) dominates a distribution \(G\) in the first order when
+\begin{equation}\label{eq:toolkit-fosd}
+\tilde G(y)\le G(y)\qquad\text{for every }y.
+\end{equation}
+Subtract both sides from one: \(1-\tilde G(y)\ge1-G(y)\). At every level, the dominant distribution passes the
+level with at least the same probability. The paper uses the definition in three places.
+\begin{itemize}
+\item The class ranking \(G_H\le G_L\): class \(H\) dominates class \(L\) (Section~2.2 of the paper).
+\item A strengthening \(\tilde F\le F\) of the incumbent (Proposition~1).
+\item A path \(\{F_r\}\): \(F_{r'}\le F_r\) whenever \(r'>r\), so a larger \(r\) means a stronger incumbent
+(Section~2.2 of the paper).
+\end{itemize}
+
+\subsection{Dominance raises the average of every increasing function}
+
+\begin{keyidea}
+Let \(X\ge0\), let \(\tilde G\le G\), and let \(\varphi\) be differentiable with \(\varphi'\ge0\), with finite expectations
+under both laws. Then \(\E_{\tilde G}[\varphi(X)]\ge\E_G[\varphi(X)]\).
+\end{keyidea}
+
+This is the direction that the paper uses. The proof has two steps. The first step extends the tail formula to a
+function \(\varphi\).
+
+\begin{derivation}[the tail formula for an increasing function]
+\begin{align}
+\varphi(X)&=\varphi(0)+\int_0^X\varphi'(y)\,dy \why{fundamental theorem of calculus}\notag\\
+&=\varphi(0)+\int_0^\infty \varphi'(y)\,\1\{y<X\}\,dy \why{the indicator cuts the integral at \(X\)}\notag\\
+\E[\varphi(X)]&=\varphi(0)+\int_0^\infty \varphi'(y)\,\E\bigl[\1\{y<X\}\bigr]\,dy \why{linearity; swap, integrand \(\ge0\)}\notag\\
+&=\varphi(0)+\int_0^\infty \varphi'(y)\,[1-G(y)]\,dy \whyinline{expectation of an indicator}\label{eq:toolkit-tailu}
+\end{align}
+\end{derivation}
+
+The integral adds up, level by level, the gain \(\varphi'(y)\) from one more slice of value, weighted by the probability
+that the value reaches the slice. With \(\varphi(x)=x\), the gain is one at every level, and \eqref{eq:toolkit-tailu}
+is the tail formula~\eqref{eq:toolkit-tail}.
+
+\begin{derivation}[the comparison]
+\begin{align*}
+&\E_{\tilde G}[\varphi(X)]-\E_G[\varphi(X)]\\
+&\qquad=\int_0^\infty \varphi'(y)[1-\tilde G(y)]\,dy-\int_0^\infty \varphi'(y)[1-G(y)]\,dy \why{\eqref{eq:toolkit-tailu}; \(\varphi(0)\) cancels}\\
+&\qquad=\int_0^\infty \varphi'(y)\,[G(y)-\tilde G(y)]\,dy \why{combine the integrals}\\
+&\qquad\ge0 \why{\(\varphi'\ge0\) and \(G-\tilde G\ge0\)}
+\end{align*}
+\end{derivation}
+
+In words: at each level, the dominant law adds the extra probability \(G(y)-\tilde G(y)\) of a pass, and each pass
+is worth \(\varphi'(y)\ge0\). The finite expectations are no problem in the paper. The incumbent's values lie in
+\([0,\bar r]\), and the class distributions have finite means (Section~2.2 of the paper).
+
+The other direction holds too, if step functions count as increasing functions. The step function
+\(\1\{x>y\}\) is nondecreasing in \(x\), and its expectation is \(1-G(y)\). If every nondecreasing function has a
+weakly larger expectation under \(\tilde G\), then \(1-\tilde G(y)\ge1-G(y)\), which is \(\tilde G(y)\le G(y)\).
+
+\subsection{The class difference \(D\)}
+
+The paper writes \(D(y)=G_L(y)-G_H(y)\) (Section~2.2 of the paper). Rewrite it with tails:
+\[
+D(y)=[1-G_H(y)]-[1-G_L(y)].
+\]
+So \(D(y)\) is the extra probability that a class-\(H\) value passes the level \(y\). Under the class ranking,
+\(D(y)\ge0\) at every \(y\). Apply the tail formula to each class and subtract:
+\begin{align*}
+\E_H[\theta]-\E_L[\theta]
+&=\int_0^\infty[1-G_H(y)]\,dy-\int_0^\infty[1-G_L(y)]\,dy \why{tail formula \eqref{eq:toolkit-tail}, twice}\\
+&=\int_0^\infty D(y)\,dy \why{combine the integrals}
+\end{align*}
+The mean gap between the classes is the sum of the slices at which class \(H\) passes more often.
+
+For the example's point masses, with \(\ell<h\),
+\[
+D(y)=\1\{y\ge\ell\}-\1\{y\ge h\}=\1\{\ell\le y<h\}.
+\]
+Check the three regions. Below \(\ell\), both indicators are zero. From \(\ell\) up to \(h\), only the first is
+one. From \(h\) on, both are one, and they cancel. The paper uses this form (Appendix~A.1). The mean gap is
+\(\int_0^\infty\1\{\ell\le y<h\}\,dy=h-\ell\), as it should be.
+
+\subsection{Uniform incumbents form a path}
+
+Let \(r'>r>0\). The uniform law on \([0,r']\) dominates the uniform law on \([0,r]\). Compare
+\(F_{r'}\) and \(F_r\) from \eqref{eq:toolkit-uniform} in four regions.
+\begin{itemize}
+\item \(y<0\): both are zero.
+\item \(0\le y\le r\): \(F_{r'}(y)=y/r'\le y/r=F_r(y)\), because \(y\ge0\) and \(1/r'<1/r\). The inequality is
+strict for \(y>0\).
+\item \(r<y\le r'\): \(F_{r'}(y)=y/r'\le1=F_r(y)\), because \(y\le r'\).
+\item \(y>r'\): both are one.
+\end{itemize}
+So \(F_{r'}\le F_r\) everywhere. In the paper's words, an increase in \(r\) strengthens the uniform incumbent, and
+the strengths form a path (Section~4.2 of the paper).
+
+\subsection{Why a stronger incumbent has a smaller \(F\)}
+
+Read \(F(y)=\Pr(R\le y)\) from the challenger's side. By Section~\ref{sec:toolkit-maxmin}, a challenger with the
+value \(\theta\) beats the incumbent with the probability \(F(\theta)\). A stronger incumbent is less likely to have
+a value at most \(y\), at every level \(y\). So \(F\) is smaller at every level, and a challenger at any fixed value
+wins less often. The paper states this in words: a stronger incumbent never raises the probability that a
+prepared challenger wins (Section~3.1 of the paper).
+
+Two distributions need not be ranked. As an illustration of our own, compare a point mass at \(a>0\) with the
+uniform law on \([0,2a]\). Below
+\(a\), the point mass has \(G=0\), and the uniform law has \(y/(2a)>0\) for \(y>0\). From \(a\) up to \(2a\), the
+point mass has \(G=1\), and the uniform law has \(y/(2a)<1\). The two functions cross, so neither law dominates the
+other.
+
+\begin{watchout}
+\begin{itemize}
+\item Keep the direction straight. Dominance means a smaller distribution function. A strengthening of the
+incumbent lowers \(F\).
+\item Dominance is a comparison at every level. Two laws that cross are not ranked, and Proposition~1 does not
+apply to them.
+\item A strengthening can leave \(F\) unchanged on some levels, as the uniform laws do above \(r'\). So its effects
+are weak in general. Proposition~1 states the integral conditions that make them strict.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-fosd}
+Let \(\tilde F\le F\) be two continuous incumbent distributions, and fix a challenger value \(\theta\ge p\).
+(a)~Show that the challenger's expected gross profit \(\int_p^\theta F(y)\,dy\) of
+Section~\ref{sec:toolkit-tail} is weakly smaller under \(\tilde F\).
+(b)~Say in words why, with the slices picture.
+\end{checkyourself}
+
+% =====================================================================
+\section{Games, equilibrium and deviations}\label{sec:toolkit-games}
+
+\begin{intuition}[no one gains alone]
+An equilibrium is a list of plans, one for each player, in which no player can gain by a change of its own plan
+alone. Each player takes the plans of the others as given. Beliefs come from the plans by Bayes' rule. A mixed plan
+is a lottery over actions, and a player uses a lottery only when the actions in it pay the same.
+\end{intuition}
+
+\subsection{Players, strategies and best responses}
+
+\begin{itemize}
+\item A \emph{player} is a decision maker. In the paper the players are the informed investor, the challenger
+and the bidders in the auction. The market makers set the price equal to the expected value of a share given
+the order, which the paper calls competitive prices.
+\item A \emph{strategy} is a complete plan: an action for each situation that the player can face. The
+investor's strategy gives, for each class \(j\), a distribution \(\sigma_j\) over the orders \(\{-1,0,1\}\). The
+challenger's strategy says, for each price and each cost, whether it prepares (Section~2.4 of the paper).
+\item A \emph{best response} is a strategy that gives the player the highest expected payoff, given the
+strategies of the others.
+\item A \emph{Nash equilibrium} is a list of strategies, one for each player, in which each strategy is a best
+response to the others.
+\end{itemize}
+The paper's equilibrium (Definition~A.1) also fixes the beliefs and the prices, in six conditions.
+Chapter~\ref{ch:model} reads them one by one.
+
+\subsection{Mixed strategies and the indifference rule}
+
+A mixed strategy puts the probability \(\sigma(a)\) on each action \(a\). Hold the strategies of the others fixed,
+and write \(U(a)\) for the expected payoff of the action \(a\). By linearity, the mix pays the average
+\(\sum_a\sigma(a)U(a)\).
+
+\begin{keyidea}
+A mix is a best response exactly when every action that it uses, with \(\sigma(a)>0\), has the highest payoff. In
+particular, a player that mixes between two actions is indifferent between them.
+\end{keyidea}
+
+\begin{derivation}[the indifference rule]
+Write \(U^*=\max_aU(a)\) for the highest payoff.
+\begin{align*}
+\sum_a\sigma(a)U(a)
+&=\sum_a\sigma(a)U^*-\sum_a\sigma(a)\,[U^*-U(a)] \why{add and subtract \(\sum_a\sigma(a)U^*\)}\\
+&=U^*-\sum_a\sigma(a)\,[U^*-U(a)] \why{the weights add up to one}
+\end{align*}
+Each term \(\sigma(a)[U^*-U(a)]\) is nonnegative. So the mix pays at most \(U^*\). It pays exactly \(U^*\) when
+every term is zero, that is, when each action with \(\sigma(a)>0\) has \(U(a)=U^*\).
+\end{derivation}
+
+The paper's condition (E5) is this rule for the investor: \(\sigma_j(q)>0\) only if the order \(q\) maximizes
+\(U_j(q)\) (Definition~A.1).
+
+\subsection{Weakly dominant strategies}
+
+A strategy is weakly dominant when it pays at least as much as any other strategy of the player. This must hold
+against every possible choice of the others. The word ``weakly'' allows ties: against some choices of the others, another
+strategy can pay the same. A weakly dominant strategy is a best response whatever the others do, so the player
+needs no belief about them. In the paper's second-price auction, a bid equal to one's value is weakly dominant for
+a bidder whose value meets the reserve (Section~2.2 of the paper). Chapter~\ref{ch:auction} proves it.
+
+\subsection{Beliefs from strategies}
+
+In an equilibrium each player knows the strategies of the others, but not their private information. So an
+observer reads an action through the strategy. Suppose that an informed player sends a signal \(s\) with the
+probability \(\sigma_H\) in class \(H\) and \(\sigma_L\) in class \(L\). Bayes' rule~\eqref{eq:toolkit-bayes} with
+\(f_j(s)=\sigma_j\) gives the observer's posterior after \(s\):
+\[
+\mu(s)=\frac{\pi\sigma_H}{\pi\sigma_H+(1-\pi)\sigma_L}.
+\]
+Two cases show the range.
+\begin{itemize}
+\item If \(\sigma_H=\sigma_L>0\), then \(\mu(s)=\pi\). A plan that treats both classes alike reveals nothing.
+\item If \(\sigma_H=1\) and \(\sigma_L=0\), then \(\mu(s)=1\). A plan that separates the classes reveals the
+class.
+\end{itemize}
+The belief depends on the strategy that the observer expects. In the paper, a liquidity trader can place every
+order, so the order that market makers see is a noisy signal. The posterior after a purchase or a sale therefore
+stays inside the bounds of Section~\ref{sec:toolkit-odds}. The posterior after no order stays inside them when
+the probability \(\beta\) of a liquidity purchase is at most \(1/3\). Chapter~\ref{ch:beliefs} shows how.
+
+\subsection{Unilateral deviations}
+
+To test an equilibrium, change the strategy of one player and hold everything else fixed. ``Everything else''
+includes the strategies of the others, and also the prices and the entry probabilities that come from them. The
+reason: the others do not see the change. They see only the action, and they read it through the strategy of the
+candidate equilibrium. In the paper, the investor's deviation payoff is \(U_j(q)\) at the candidate's price
+\(P(q)\) and entry \(e(q)\) (Section~2.4 of the paper; Appendix~A.2).
+
+\begin{analogy}[a posted price list]
+A shopper changes what goes into the basket, but the price list of the shop stays the same. The shop does not
+know that this shopper changed plans. Where the analogy breaks: in the model the price comes after the order. It
+comes from a rule, the candidate's price function. A deviation cannot change the rule, because market makers cannot
+tell an order after a deviation from an order that they expect.
+\end{analogy}
+
+\subsection{Several equilibria and tie rules}
+
+More than one list of strategies can pass the test. This can happen when a player's payoff depends on how the
+others read its action, and the way they read it depends on the strategy. In the paper, a quiet market and an informative
+market can both be equilibria in the same economy (Chapter~\ref{ch:coexistence}).
+
+At an indifference, the definition must say what the indifferent player does. The paper's default tie rules are
+these: an indifferent investor may mix over its best orders, and an indifferent high-cost challenger prepares. The
+alternatives are that an indifferent investor abstains, and that an indifferent high-cost challenger may prepare
+with any probability (Section~2.4 of the paper). Two rules for each player give four tie rules in total. Each
+result states its tie rule. Proposition~2 holds under all four, and Propositions~3 and~4 use the default tie
+rules.
+
+\subsection{Comparisons across economies}
+
+A comparison of two economies, such as a weak and a strong incumbent, solves the equilibrium again in each economy
+(Section~2.4 of the paper). Prices, beliefs and entry can all differ between the two economies. A deviation is a
+different exercise: it holds prices and entry fixed inside one economy.
+
+\begin{watchout}
+\begin{itemize}
+\item Keep a deviation and a comparison apart. A deviation faces fixed prices and entry. A comparison across
+incumbent strengths solves the equilibrium again in each economy.
+\item The indifference rule applies to the actions that a mix uses. An action outside the mix may pay less.
+\item State the tie rule with each result. A conclusion can depend on what an indifferent player does.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-games}
+In a candidate equilibrium, the investor in class \(H\) mixes between a purchase (\(q=1\)) and no order
+(\(q=0\)).
+(a)~What must hold for \(U_H(1)\), \(U_H(0)\) and \(U_H(-1)\)?
+(b)~Suppose instead that \(U_H(1)>U_H(0)\). Why does the candidate fail?
+(c)~When the investor tests a deviation to a pure purchase, which price and which entry probability does it face?
+\end{checkyourself}
+
+% =====================================================================
+\section{Monotone functions, thresholds and strict inequalities}\label{sec:toolkit-monotone}
+
+\begin{intuition}[one threshold, and room to spare]
+Many arguments in the paper compare one quantity with a level. When the quantity moves in one direction only, it
+crosses the level at most once, and one threshold splits the cases. A strict inequality has room to spare, so a
+small change of the parameters cannot break it.
+\end{intuition}
+
+\subsection{Monotone functions}
+
+A function \(\varphi\) is nondecreasing when \(x<x'\) implies \(\varphi(x)\le\varphi(x')\). It is strictly
+increasing when \(x<x'\) implies \(\varphi(x)<\varphi(x')\). Nonincreasing and strictly decreasing functions are
+the mirror cases. This chapter met three examples:
+\begin{itemize}
+\item the map \(o\mapsto o/(1+o)\) from odds to a probability is strictly increasing
+(Section~\ref{sec:toolkit-odds});
+\item every distribution function is nondecreasing (Section~\ref{sec:toolkit-cdf});
+\item \(B(\mu)=g_L+\mu(g_H-g_L)\) is nondecreasing when \(g_H\ge g_L\) (Section~\ref{sec:toolkit-expectation}).
+\end{itemize}
+
+A monotone function turns a bound on its input into a bound on its output. The paper's exclusion bound is an
+instance (Section~3.2 of the paper; Corollary~A.1). Suppose that \(g_H\ge g_L\), and that every belief \(\mu\) that
+the challenger can hold satisfies \(\mu\le M(\pi)\). In the paper this holds after every order and at every price
+when \(\beta\le1/3\), and Corollary~A.1 states this domain (Chapter~\ref{ch:beliefs}). If \(B(M(\pi))<c_H\), then at
+every such belief
+\begin{align*}
+B(\mu)&\le B(M(\pi)) \why{\(B\) is nondecreasing and \(\mu\le M(\pi)\)}\\
+&<c_H \why{assumption}
+\end{align*}
+So gross profit falls short of the high cost at every belief, and no price recruits a high-cost challenger.
+
+\subsection{The positive part and the indicator}
+
+Recall the positive part of a number \(x\), \((x)_+=\max\{x,0\}\) (Section~\ref{sec:toolkit-tail}). Its rules:
+\begin{itemize}
+\item \((x)_+\ge0\) and \((x)_+\ge x\);
+\item \((x)_+=x\,\1\{x>0\}\);
+\item \((x)_+\) is nondecreasing in \(x\);
+\item \(\max\{a,b\}=b+(a-b)_+\) and \(\min\{a,b\}=a-(a-b)_+\).
+\end{itemize}
+Check the last rule in two cases. If \(a\ge b\), then \(\max\{a,b\}=a=b+(a-b)\) and \(\min\{a,b\}=b=a-(a-b)\). If
+\(a<b\), then \((a-b)_+=0\), so the right sides are \(b\) and \(a\), the maximum and the minimum. In the paper, a
+prepared challenger keeps \((\theta-\max\{p,R\})_+\) (Section~3.1 of the paper).
+
+The indicator \(\1\{A\}\) equals one when \(A\) holds and zero otherwise. Its rules:
+\begin{itemize}
+\item \(\1\{A\}\,\1\{B\}=\1\{A\text{ and }B\}\), because the product is one only when both factors are one;
+\item \(\1\{\text{not }A\}=1-\1\{A\}\);
+\item \(\E[\1\{A\}]=\Pr(A)\), by \eqref{eq:toolkit-indicator}.
+\end{itemize}
+These rules give the point-mass difference of Section~\ref{sec:toolkit-fosd} in one more way, for \(\ell<h\):
+\begin{align*}
+\1\{\ell\le y<h\}
+&=\1\{y\ge\ell\}\,\bigl(1-\1\{y\ge h\}\bigr) \why{``\(y\ge\ell\) and not \(y\ge h\)''}\\
+&=\1\{y\ge\ell\}-\1\{y\ge\ell\}\,\1\{y\ge h\} \why{expand}\\
+&=\1\{y\ge\ell\}-\1\{y\ge h\} \why{\(y\ge h\) implies \(y\ge\ell\)}
+\end{align*}
+
+\subsection{A straight line crosses a level once}
+
+Take \(B(\mu)=g_L+\mu(g_H-g_L)\) from \eqref{eq:toolkit-B}, and suppose that \(g_H>g_L\).
+
+\begin{derivation}[the preparation threshold]
+\begin{align}
+B(\mu)\ge c_H
+&\iff g_L+\mu(g_H-g_L)\ge c_H \why{formula \eqref{eq:toolkit-B}}\notag\\
+&\iff \mu(g_H-g_L)\ge c_H-g_L \why{subtract \(g_L\) from both sides}\notag\\
+&\iff \mu\ge\frac{c_H-g_L}{g_H-g_L}=\tau \whyinline{divide by \(g_H-g_L>0\); the direction stays}\label{eq:toolkit-tau}
+\end{align}
+\end{derivation}
+
+This is the paper's preparation threshold \(\tau\) (Section~3.2 of the paper): when \(g_H>g_L\), \(B(\mu)\ge c_H\)
+if and only if \(\mu\ge\tau\). The negation of both sides gives \(B(\mu)<c_H\) if and only if \(\mu<\tau\). So the
+exclusion condition \(B(M(\pi))<c_H\) says that the top posterior falls short of the threshold, \(M(\pi)<\tau\).
+
+The sign of the slope matters.
+\begin{itemize}
+\item If \(g_H<g_L\), the last step divides by a negative number, and the inequality turns around:
+\(B(\mu)\ge c_H\) if and only if \(\mu\le\tau\). This case does not arise under the class ranking, which gives
+\(g_H\ge g_L\) (Appendix~A.1).
+\item If \(g_H=g_L\), then \(B(\mu)=g_L\) at every belief. Either every belief passes, when \(g_L\ge c_H\), or none
+passes, when \(g_L<c_H\). The threshold is not defined, and news about the class cannot change the challenger's
+choice.
+\end{itemize}
+Check yourself~\ref{q:toolkit-monotone} asks where \(\tau\) lies relative to zero and one.
+
+\subsection{Weak and strict inequalities}
+
+The paper tracks the difference between \(\le\) and \(<\) with care, for three reasons.
+\begin{itemize}
+\item \emph{Ties.} Condition (E3) fixes the high-cost challenger's choice when \(B>c_H\) or \(B<c_H\). At
+\(B=c_H\), a tie rule decides. Under the default rule, the indifferent challenger prepares, so it prepares exactly
+when \(\mu\ge\tau\), a weak inequality (Lemma~A.2(d)).
+\item \emph{Weak conclusions.} Proposition~1 says that a strengthening weakly lowers \(g_j\) and weakly raises the
+spread. A strict change needs the integral conditions that the proposition states.
+\item \emph{Strict hypotheses.} The hypotheses (H1)--(H3) of Proposition~2 are strict inequalities, and every
+comparison behind the result is strict. So the outcome is the same under all four tie rules (Section~4.1 of the
+paper).
+\end{itemize}
+
+\subsection{The intermediate value theorem}
+
+Let \(\varphi\) be continuous on an interval \([a,b]\): its graph has no jumps. If \(\varphi(a)<k<\varphi(b)\), or
+\(\varphi(a)>k>\varphi(b)\), then \(\varphi(x)=k\) at some \(x\) between \(a\) and \(b\). A graph without jumps
+cannot get from below the level to above it without a point on the level. If \(\varphi\) is also strictly
+monotone, this point is unique, because a strictly monotone function never takes the same value twice.
+
+As an illustration, let \(g_L<c_H<g_H\). The function \(B\) is continuous on \([0,1]\), with \(B(0)=g_L<c_H\) and
+\(B(1)=g_H>c_H\). The theorem gives a belief in \((0,1)\) at which \(B=c_H\). Since \(B\) is strictly increasing,
+there is only one such belief, and formula~\eqref{eq:toolkit-tau} names it: \(\tau\). The paper uses the theorem
+in the same way for the probability with which the investor mixes (Appendix~A.4; Chapter~\ref{ch:coexistence}).
+
+\subsection{An open set of parameters}
+
+\begin{keyidea}
+Let \(f\) and \(g\) be continuous functions of a list of parameters \(x\), and let \(f(x_0)>g(x_0)\). Then
+\(f(x)>g(x)\) for every \(x\) near enough to \(x_0\).
+\end{keyidea}
+
+\begin{derivation}[strict inequalities survive small changes]
+Write \(d=f(x_0)-g(x_0)>0\) for the gap. By continuity, every \(x\) near enough to \(x_0\) has
+\(|f(x)-f(x_0)|<d/2\) and \(|g(x)-g(x_0)|<d/2\). For such \(x\):
+\begin{align*}
+f(x)&>f(x_0)-\tfrac d2 \why{\(f\) moves by less than \(d/2\)}\\
+&=g(x_0)+\tfrac d2 \why{\(f(x_0)=g(x_0)+d\)}\\
+&>g(x) \why{\(g\) moves by less than \(d/2\)}
+\end{align*}
+\end{derivation}
+
+A finite list of strict inequalities also survives: take the smallest of the neighborhoods. So the set of
+parameters at which the list holds is open: each point in it has a small neighborhood inside it. A weak
+inequality has no room to spare. At an equality \(f(x_0)=g(x_0)\), a small change can push \(f\) below \(g\).
+
+The paper uses this argument for its main result. Fix the example's classes and reserve, and let the incumbents
+be uniform. Then the hypotheses (H1)--(H3) are strict inequalities between continuous functions of
+\((r_0,r_1,r_2,c_H,k,\rho,\pi,\lambda,\beta)\). So they hold on an open set of these parameters that contains the
+example (Section~4.2 of the paper; Appendix~A.3). In words, the result is not a
+knife-edge case: small changes of the parameters keep it.
+
+\begin{watchout}
+\begin{itemize}
+\item Division by \(g_H-g_L\) keeps the direction of an inequality only when \(g_H-g_L>0\).
+\item ``Open'' says that small changes keep the result. It says nothing about the size of the set.
+\item An open set needs both strictness and continuity. A weak inequality, or a function with a jump, can fail
+after a small change.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:toolkit-monotone}
+Let \(g_H>g_L\).
+(a)~Describe the set of beliefs \(\mu\in[0,1]\) with \(B(\mu)\ge c_H\) in three cases: \(c_H\le g_L\);
+\(g_L<c_H\le g_H\); and \(c_H>g_H\).
+(b)~Suppose that every belief that the challenger can hold lies in \([m(\pi),M(\pi)]\). Which condition on \(\tau\)
+rules out high-cost preparation at every such belief?
+\end{checkyourself}
+
+% =====================================================================
+\begin{chaptersummary}
+Bayes' rule updates the belief about the class, and in odds form it multiplies the prior odds by the likelihood
+ratio. A bound \(1+u\) on every likelihood ratio keeps every posterior, and every average of posteriors, between
+\(m(\pi)\) and \(M(\pi)\). A distribution function and its left limit give the probabilities of ``at most'' and
+``below'', and the tail formula turns them into expectations, slice by slice. Every expectation at a belief is a
+straight line in the belief when the signal is independent of the value given the class, so
+\(B(\mu)=g_L+\mu(g_H-g_L)\). A stronger incumbent has a smaller distribution function at every level, so a
+challenger at any fixed value wins less often. An equilibrium is a list of best responses with consistent
+beliefs: a deviation holds prices and entry fixed, and a comparison of economies solves each economy again. A
+straight line with a positive slope crosses a level once, at the threshold \(\tau\), and strict inequalities between
+continuous functions survive small changes of the parameters.
+\end{chaptersummary}
+
+% =====================================================================
+\answersection
+
+\answer{\ref{q:toolkit-bayes}}{%
+(a)~Put \(f_H(s)=f_L(s)=f\) into formula~\eqref{eq:toolkit-bayes}.
+\begin{align*}
+\mu(s)&=\frac{\pi f}{\pi f+(1-\pi)f} \why{substitute}\\
+&=\frac{\pi f}{f} \why{\(\pi f+(1-\pi)f=f\)}\\
+&=\pi \why{cancel \(f>0\)}
+\end{align*}
+A signal that is equally likely in both classes carries no news about the class.\par
+(b)~Put \(f_L(s)=0\): \(\mu(s)=\pi f_H(s)/[\pi f_H(s)+0]=1\). Only class \(H\) can send this signal.\par
+(c)~As \(\pi\) approaches one, the term \((1-\pi)f_L(s)\) in the denominator approaches zero, while \(\pi f_H(s)\)
+approaches \(f_H(s)>0\). So the posterior approaches one. A strong prior stays strong after one signal of bounded
+strength.}
+
+\answer{\ref{q:toolkit-odds}}{%
+(a)~Start with the top posterior.
+\begin{align*}
+M(\pi)>\pi
+&\iff\frac{1+u}{\pi(1+u)+1-\pi}>1 \why{divide by \(\pi>0\)}\\
+&\iff 1+u>\pi(1+u)+1-\pi \why{multiply by the positive denominator}\\
+&\iff(1-\pi)(1+u)>1-\pi \why{subtract \(\pi(1+u)\) from both sides}\\
+&\iff u>0 \why{divide by \(1-\pi>0\), subtract one}
+\end{align*}
+For the bottom posterior, \(m(\pi)<\pi\) is the same as \(1/[\pi+(1-\pi)(1+u)]<1\), after division by \(\pi>0\).
+This is \(\pi+(1-\pi)(1+u)>1\), that is \((1-\pi)(1+u)>1-\pi\), that is \(u>0\).\par
+(b)~Put \(\pi=1/2\).
+\begin{align*}
+M(1/2)&=\frac{\tfrac12(1+u)}{\tfrac12(1+u)+\tfrac12}=\frac{1+u}{2+u} \why{multiply above and below by \(2\)}\\
+m(1/2)&=\frac{\tfrac12}{\tfrac12+\tfrac12(1+u)}=\frac{1}{2+u} \why{multiply above and below by \(2\)}
+\end{align*}
+The sum is \((1+u+1)/(2+u)=1\). This also follows from the mirror identity~\eqref{eq:toolkit-mirror} at
+\(\pi=1/2\), where \(1-\pi=\pi\).}
+
+\answer{\ref{q:toolkit-cdf}}{%
+(a)~All the probability of class \(L\) sits at \(\ell=p\). No value lies strictly below \(p\), so
+\(G_L(p^-)=\Pr(\theta<\ell)=0\). Every value is at most \(p\), so \(G_L(p)=\Pr(\theta\le\ell)=1\).\par
+(b)~Yes. A bid equal to the reserve is admissible, and by \eqref{eq:toolkit-geq},
+\(\Pr(\theta\ge p)=1-G_L(p^-)=1\). The number \(G_L(p)=1\) would wrongly suggest that every value fails, because it
+also counts the values equal to \(p\).\par
+(c)~The class ranking restricts the left limit, \(G_L(p^-)=0\), and the restriction holds here. The example itself
+keeps a gap, \(p<\ell\) (Section~4.2 of the paper).}
+
+\answer{\ref{q:toolkit-expectation}}{%
+(a)~Substitute \(w_j=t_j-t_0\) and collect the terms.
+\begin{align*}
+w(\mu)&=(1-\mu)(t_L-t_0)+\mu(t_H-t_0) \why{definitions}\\
+&=(t_L-t_0)-\mu(t_L-t_0)+\mu(t_H-t_0) \why{expand the first product}\\
+&=t_L-t_0+\mu\,[(t_H-t_0)-(t_L-t_0)] \why{collect the terms in \(\mu\)}\\
+&=t_L-t_0+\mu\,(t_H-t_L) \why{\(t_0\) cancels inside the bracket}\\
+&=t_L-t_0+\DT\,\mu \why{\(\DT=t_H-t_L\)}
+\end{align*}\par
+(b)~At \(\mu=0\), \(w(0)=t_L-t_0=w_L\). At \(\mu=1\), \(w(1)=t_L-t_0+t_H-t_L=w_H\). The slope is the target-payoff
+spread \(\DT\). The function is a straight line for the same reason as \(B(\mu)\): the belief only moves the
+weights on the two classes.}
+
+\answer{\ref{q:toolkit-tail}}{%
+(a)~On \([p,\ell]\) every level lies below \(r\), so \(F(y)=y/r\) there.
+\begin{align*}
+g(\ell)=\int_p^\ell F(y)\,dy&=\int_p^\ell\frac yr\,dy \why{\(\ell<r\), so \(F(y)=y/r\) on \([p,\ell]\)}\\
+&=\Bigl[\frac{y^2}{2r}\Bigr]_p^\ell \why{antiderivative of \(y/r\)}\\
+&=\frac{\ell^2-p^2}{2r} \why{upper limit minus lower limit}
+\end{align*}
+This is the paper's \(g_L\) in the example (Section~4.2 of the paper).\par
+(b)~The numerator \(\ell^2-p^2\) is positive and does not depend on \(r\), and the denominator \(2r\) rises with
+\(r\). So \(g(\ell)\) falls as the incumbent strengthens, and it approaches zero when \(r\) grows without limit. In
+slices: a stronger uniform incumbent lies below each level \(y\) less often, so the challenger keeps each slice less
+often. As \(\ell\) approaches \(p\), the numerator approaches zero: a value just above the reserve leaves almost no
+slices to keep. The formula needs \(r>\ell\). For \(r\le\ell\), the integrand is one on the part of \([p,\ell]\)
+above \(r\), and the integral changes form.}
+
+\answer{\ref{q:toolkit-maxmin}}{%
+(a)~The atom makes \(F\) jump by \(a\) at \(v\), so \(F(v^-)=F(v)-a\). Then
+\(\Pr(R<\theta)=F(v^-)=F(v)-a\), by \eqref{eq:toolkit-left}, and \(\Pr(R\le\theta)=F(v)\). The two differ by
+\(\Pr(R=v)=a>0\).\par
+(b)~With the probability \(a\), the two values are equal, and the two bids tie. The winner then depends on a rule
+that breaks ties. So the win probability can lie anywhere between \(F(v)-a\) and \(F(v)\), and the formula
+\(F(\theta)\) does not follow. A continuous \(F\) removes the problem: ties have probability zero.}
+
+\answer{\ref{q:toolkit-fosd}}{%
+(a)~Write the difference as one integral.
+\begin{align*}
+\int_p^\theta F(y)\,dy-\int_p^\theta\tilde F(y)\,dy
+&=\int_p^\theta[F(y)-\tilde F(y)]\,dy \why{combine the integrals}\\
+&\ge0 \why{\(F(y)-\tilde F(y)\ge0\) at every \(y\), and \(\theta\ge p\)}
+\end{align*}
+So the expected gross profit at the value \(\theta\) is weakly smaller under \(\tilde F\).\par
+(b)~The challenger keeps the slice of value at the level \(y\) when the incumbent's value lies below \(y\). A
+stronger incumbent lies below each level with a weakly smaller probability, so the challenger keeps each slice
+weakly less often. The fall is strict when \(\tilde F<F\) on a set of levels between \(p\) and \(\theta\) of
+positive length. Proposition~1(a) states the same comparison for the class averages \(g_j\).}
+
+\answer{\ref{q:toolkit-games}}{%
+(a)~By the indifference rule, the two orders in the mix pay the same, and no order pays more:
+\(U_H(1)=U_H(0)\ge U_H(-1)\).\par
+(b)~If \(U_H(1)>U_H(0)\), the mix pays \(\sigma_H(1)U_H(1)+\sigma_H(0)U_H(0)\), which is below \(U_H(1)\) because
+\(\sigma_H(0)>0\). A pure purchase pays more, so the mix is not a best response. Condition (E5) fails, and the
+candidate is not an equilibrium.\par
+(c)~It faces the candidate's price after a purchase, \(P(1)\), and the candidate's entry after a purchase,
+\(e(1)\). Market makers and the challenger do not see the change of plan, so they keep the price and the entry
+rule of the candidate.}
+
+\answer{\ref{q:toolkit-monotone}}{%
+(a)~By \eqref{eq:toolkit-tau}, the set is \(\{\mu\in[0,1]:\mu\ge\tau\}\), with \(\tau=(c_H-g_L)/(g_H-g_L)\). The
+denominator is positive, so the sign of \(\tau\) is the sign of \(c_H-g_L\), and \(\tau\le1\) exactly when
+\(c_H-g_L\le g_H-g_L\), that is \(c_H\le g_H\).
+\begin{itemize}
+\item \(c_H\le g_L\): then \(\tau\le0\), and every belief in \([0,1]\) passes. Even a challenger sure of class
+\(L\) covers the high cost.
+\item \(g_L<c_H\le g_H\): then \(0<\tau\le1\), and the beliefs that pass form the interval \([\tau,1]\).
+\item \(c_H>g_H\): then \(\tau>1\), and no belief in \([0,1]\) passes. Even a challenger sure of class \(H\) does
+not cover the high cost.
+\end{itemize}\par
+(b)~High-cost preparation needs a belief \(\mu\ge\tau\). The largest belief that the challenger can hold is
+\(M(\pi)\). So the condition \(M(\pi)<\tau\) rules out high-cost preparation at every belief. By
+Section~\ref{sec:toolkit-monotone}, this is the same as \(B(M(\pi))<c_H\), the paper's exclusion condition.}

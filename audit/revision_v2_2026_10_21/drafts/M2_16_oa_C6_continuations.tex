@@ -1,0 +1,123 @@
+% Five replacements in Online Appendix C.6. The payoff oracle, the sweep design,
+% identity and deduplication, reporting, and the output schemas stand, subject to
+% the dictionary wording in the last replacement. No \NUM placeholders.
+% In this subsection "pooling" as a solver branch (line 2784 and the branch names)
+% means zero informed orders. That usage stays.
+
+% REPLACES: online_appendix.tex lines 2700-2739 ("\textbf{Complete continuations.} ..." to "... fixed schedule.")
+\textbf{Complete continuations.} A candidate at a reserve is accepted
+only as a complete continuation in the sense of \eqref{eq:oa-oa-53}: the
+investor's state- or class-contingent order distribution, the pricing
+rule with every positive-mass price atom, the buyer's information at
+each price (the atom posterior on an atom, the inverted posterior
+elsewhere), the preparation rule by observed price and cost, and the
+validation evidence. For a candidate order profile, compute its raw flow
+posterior \(\mu_X\). When \(\Delta_T>0\), the benchmark inversion applies to
+each price, because entry is at least \(\rho\) at every flow under the
+declared cost laws. A positive-mass atom can still arise where \(\mu_X\) is
+constant, as on a posterior plateau. Its posterior is the integral over the
+full preimage of that price:
+
+\[
+\mu(P=P_a)=\frac{\int_{\{x:P(x)=P_a\}}a_H(x)\,dx}
+{\int_{\{x:P(x)=P_a\}}[a_H(x)+a_L(x)]\,dx}
+\tag{OA.79}\label{eq:oa-oa-79}
+\]
+
+for an atom at price \(P_a\). At a degenerate reserve \(P_a\) can be \(t_0\)
+itself. The formula is used only when the denominator is positive.
+The buyer's entry rule at that price uses this atom posterior and nothing finer; a
+candidate whose buyer acts on the raw posterior inside an atom with one
+posterior value loses nothing, and a candidate that assigns one price to flows
+with distinct raw posteriors while the buyer acts on those posteriors is not
+measurable with respect to the price and is rejected. The convenient
+construction for independent costs,
+\(P(\mu)=t_0+H_C(B(\mu))[t_L-t_0+\Delta_T\mu]\), prices every
+flow by the inversion; it is strictly increasing wherever
+\(\Delta_T>0\) and the cost law gives \(H_C(B(\mu))\ge\rho\).
+It is the one pricing family the C.6 node solver
+constructs, and the row says so: \texttt{pricing\_family\_coverage}
+records that no other pricing family was scanned at that node and
+\texttt{exhaustive\_pricing\_search} is false. That record is now a coverage
+statement about order profiles and degenerate reserves, not about pooling
+regions: \hyperref[oa-a-pools]{Section A.11} shows that at fixed orders with
+\(\Delta_T>0\) no second price mapping survives the buyer check.
+This does not establish uniqueness of the order profile at a reserve. Every
+accepted candidate must pass the price-atom validation of C.0: atom
+posterior from the full preimage, buyer optimality at the atom
+posterior and pointwise on other prices, competitive pricing
+pointwise in flow on both regions, no collision between an atom and the
+rest of the price range, and every unilateral deviation against the whole
+fixed schedule.
+
+% REPLACES: online_appendix.tex lines 2741-2747 ("At reserves with \Delta_T=0, ..." to "... entry conditions.")
+At reserves with \(\Delta_T=0\), no sale possible, or a degenerate
+payoff, analyze the constant-price candidate directly. Zero orders use the
+actual prior entry probability \(e_0=H_C(B(1/2))\), and their correctly
+signed deviation coefficient is \(e_0\Delta_T/2-k\); under the declared
+atomic law \(e_0\ge\rho\), so that coefficient starts from
+\(\rho\Delta_T/2-k\), while a cost law with no atom at zero can still give a
+smaller \(e_0\) at a reserve where gross profit is zero. When \(e_0=0\), no trade and no
+entry are supported by constant pricing. All accepted candidates must
+satisfy the original conditional pricing and entry conditions.
+
+% REPLACES: online_appendix.tex lines 2749-2754 ("\textbf{Specified comparisons.} ..." to "... not a global reserve optimum.")
+\textbf{Specified comparisons.} At the declared reserves, verify the
+relevant strict no-trade or full-order bounds using the class payoff
+spread and the entry value at the lowest belief \(e(m)=H_C(B_r(m))\),
+which is at least \(\rho\) under the declared laws. Compute entry and
+seller revenue and compare each alternative reserve with the original
+one at the same strength. This reproduces the profitable alternatives,
+not a global reserve optimum.
+
+% REPLACES: online_appendix.tex lines 2758-2777 ("\textbf{Event grid.} ..." to "... record does not assume it.")
+\textbf{Event grid.} The sweep and the event exercise share one grid
+rule. Beyond the declared reserve mesh, every node set contains the
+support and participation events \(0\), \(\ell\), \(r\), \(h\); in the
+class economy \(\ell\pm\varepsilon_V\) and \(h\pm\varepsilon_V\); the
+declared reserve alternatives; and the two exact events of the paper
+appendix, the endpoint equality \(p_L=h\) and the
+expensive-entry ceiling equality \(p_H=\sqrt{2r(h-c_H/M)-r^2}\), each
+attached to the strength at which its defining regime applies. Every
+event carries one-sided offsets \texttt{1e-4}, \texttt{1e-6}, and
+\texttt{1e-8} on both sides where the offset stays in \([0,h]\) (or
+\([0,h+\varepsilon_V]\)), so that the regime classification on each side
+is tested separately. At \(p_L=h\) the offsets run only below the endpoint.
+An exact event is stored by its defining relation
+and recomputed from it at fifty digits; its decimal expansion is
+reference only and never decides a tie. The tie rule is applied to the
+identity: at \(p_L\) the zero-cost realization enters at every belief under
+\(B(\mu)=0\), and at \(p_H\) the high-cost type enters on the upper
+plateau under \(\tau=M\) with \(x^*=1\). A node whose inequality sign
+cannot be resolved at that precision is written as unresolved. The same
+continuation need not be supported on both sides of the interior event, and the
+record does not assume it.
+
+% REPLACES: online_appendix.tex lines 2900-2921 ("\texttt{low_cost_floor_relation} and ..." to "... not written as a no-entry pool.")
+\texttt{low\_cost\_floor\_relation} and \texttt{ceiling\_relation} take
+the values strict positive, strict negative, equality event, or
+unresolved, from the fifty-digit evaluation. The first relation now compares
+gross profit at the lowest belief, \(B_r(m)\) in the node's regime, with the
+zero preparation cost; its equality event inside the reserve domain is the
+endpoint \(p_L=h\). \texttt{candidate\_id} is
+the attempt identity and \texttt{continuation\_id} the economic identity
+defined above; \texttt{duplicate\_of} is empty or the representative's
+candidate identity; \texttt{identity\_note} records
+same-orders-different-atoms cases. \texttt{parameter\_set\_id} is the
+canonical string of exact declarations (not a hash);
+\texttt{institution\_id}, \texttt{information\_structure\_id}, and
+\texttt{tie\_rule\_id} are the literal definitions of the sale rule, of
+who observes what, and of the tie conventions. \texttt{order\_rule\_id}
+is the canonical order profile; \texttt{price\_rule\_id} names the
+pricing family, its price atoms, and the positive-entry price map.
+\texttt{pricing\_family\_coverage} and
+\texttt{exhaustive\_pricing\_search} are as declared in C.0.
+\texttt{pool\_id}, \texttt{pool\_set\_definition},
+\texttt{pool\_cutoff\_exact}, \texttt{price\_atom\_value},
+\texttt{state\_H\_pool\_mass}, \texttt{state\_L\_pool\_mass},
+\texttt{pool\_probability}, and \texttt{pool\_posterior} describe a
+constant-price atom when one exists and are \texttt{n/a} otherwise. Under the
+declared cost laws such an atom has entry at least \(\rho\) at each reserve
+with \(\Delta_T>0\); a no-entry atom is possible only at a degenerate reserve.
+A plateau atom in a flat posterior tail is recorded through the same columns,
+with its preimage stated in \texttt{pool\_set\_definition}.

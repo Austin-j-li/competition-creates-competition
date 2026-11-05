@@ -1,0 +1,188 @@
+\chapter{The model}\label{ch:model}
+
+\begin{chapterplan}
+The question: what are the rules of the game, who knows what at each date, and what must an equilibrium satisfy?
+The chapter derives the order probabilities, \(t_0\), entry, ownership, and the investor's objective. It contains no result of the paper.
+\end{chapterplan}
+
+%==================================================================
+\section{The setting and the players}\label{sec:model-players}
+
+A listed company is for sale in public. The incumbent already prepared; the challenger must still decide whether to pay a sunk preparation cost.
+Meanwhile the stock trades, an investor who knows the challenger's fit trades it, and the challenger reads the price.
+All strategic agents are risk neutral, and neither bidder trades the stock.
+\begin{itemize}[nosep]
+\item \emph{The seller} (the target's board) commits in public, before any trade, to a cash second-price auction with reserve \(p>0\). Only a prepared bidder can bid; a bid of at least \(p\) is admissible. The highest admissible bidder wins and pays the larger of \(p\) and the highest competing admissible bid. Without an admissible bid there is no sale.
+\item \emph{The incumbent} is prepared. It knows its value \(R\) before it bids. The market knows only the distribution \(F\) of \(R\).
+\item \emph{The challenger} at the start knows neither its class nor its value. It sees the price, then learns its cost \(C\) in private, then decides. If it pays \(C\), it learns its value and may bid.
+\item \emph{The informed investor} is an outside sector specialist with no net position and no control rights. It sees the challenger's class \(j\). A nonzero order costs it \(k>0\).
+\item \emph{The liquidity trader} trades for reasons that have no link to the sale.
+\item \emph{The market makers} are competitive and risk neutral. They see the order and nothing else. Each share held at the sale, their inventory included, receives the terminal payoff \(V_T\).
+\end{itemize}
+
+The sequence of events is fixed:
+(1) the seller announces the sale rule;
+(2) the investor learns the class \(j\);
+(3) the slot draw selects the investor with probability \(\lambda\), and a liquidity trader otherwise;
+(4) the selected trader places its order;
+(5) the market makers set the price from the order;
+(6) the challenger sees the price, learns its cost \(C\) in private, and decides whether to prepare;
+(7) prepared bidders learn their values and bid;
+(8) ownership and payoffs are realized.
+The challenger never sees the order, its class, or \(R\).
+
+%==================================================================
+\section{Values, classes, and costs}\label{sec:model-values}
+
+The target's standalone value is normalized to zero. All values and costs are per target share.
+
+\emph{The incumbent.} Its value \(R\) has a continuous distribution \(F\) on \([0,\bar r]\), extended by unity above \(\bar r\).
+Continuity gives \(\Pr(R=y)=0\) at every \(y\), so ties have probability zero and the auction needs no tie rule.
+A distribution \(\tilde F\) is a \emph{strengthening} of \(F\) when \(\tilde F(y)\le F(y)\) for every \(y\).
+A \emph{path} \(\{F_r\}\) has \(F_{r'}\) a strengthening of \(F_r\) whenever \(r'>r\), with all else fixed; the example uses \(F_r(y)=y/r\) on \([0,r]\).
+
+\emph{The challenger.} Its class is \(j\in\{H,L\}\) with prior \(\pi=\Pr(j=H)\in(0,1)\).
+Given \(j\), its value \(\theta\) has a distribution \(G_j\) on \([0,\infty)\) with a finite mean; atoms are allowed.
+Write \(D(y)=G_L(y)-G_H(y)\). The paper assumes the \emph{class ranking}:
+\begin{equation}\label{eq:model-classes}
+G_H(y)\le G_L(y)\quad\text{for every }y,\qquad G_H(p^-)=G_L(p^-)=0.
+\end{equation}
+The first half says class \(H\) dominates class \(L\). The second half says that every value of either class meets the reserve.
+
+\emph{Costs.} After it sees the price, the challenger learns \(C\in\{0,c_H\}\), with \(\Pr(C=0)=\rho\in(0,1)\) and \(c_H>0\).
+A prepared bidder earns \((\theta-\max\{p,Y\})_+\ge0\), where \(Y\) is the highest competing admissible bid.
+So preparation cannot hurt a zero-cost challenger, and it prepares after every price.
+
+\emph{Independence.} The pair \((j,\theta)\), the value \(R\), the cost \(C\), and the slot draws are mutually independent.
+So the cost carries no news about the class, the price carries no news about \(R\), and, given the class, \(\theta\) is independent of the order.
+
+\begin{watchout}
+The two halves of \eqref{eq:model-classes} do different jobs. The first says which class is better.
+The second sets to zero the reserve term \(pF(p)D(p^-)\) of the spread (Chapter~\ref{ch:auction}).
+Proposition~1(c) shows that, without atoms at \(p\), the weakest restriction is dominance above the reserve plus equal admissibility, \(G_H(p^-)=G_L(p^-)\).
+\end{watchout}
+
+\emph{The sale without entry.} Each prepared bidder whose value meets the reserve bids its value, which is weakly dominant (Chapter~\ref{ch:auction}).
+Without entry, the incumbent buys at \(p\) when \(R\ge p\), and otherwise there is no sale. Since \(F\) is continuous,
+\begin{equation}\label{eq:model-t0}
+t_0=\E\bigl[p\,\1\{R\ge p\}\bigr]=p\,\Pr(R\ge p)=p\,[1-F(p)].
+\end{equation}
+If \(p\ge\bar r\), then \(t_0=0\). In the example, \(t_0=p(1-p/r)\).
+
+%==================================================================
+\section{The order slot and prices}\label{sec:model-slot}
+
+Trade takes place in one public order slot, before the challenger decides. Exactly one trader fills it, and the market makers do not see who.
+With probability \(\lambda\in(0,1)\), the investor fills it and chooses \(q\in\{-1,0,1\}\) with a strategy \(\sigma_j\), pure or mixed.
+With probability \(1-\lambda\), a liquidity trader fills it with the order distribution \(\eta(-1)=\eta(1)=\beta\), \(\eta(0)=1-2\beta\), where \(0<\beta\le1/3\).
+Total probability over who fills the slot gives the probability of order \(x\) in class \(j\).
+With \(b=(1-\lambda)\beta\) and \(0\le\sigma_j(x)\le1\):
+\begin{equation}\label{eq:model-orderprob}
+f_j(x)=(1-\lambda)\,\eta(x)+\lambda\,\sigma_j(x),\qquad b\le f_j(x)\le b+\lambda\quad\text{for }x\in\{-1,1\}.
+\end{equation}
+The zero order has \(b_0=(1-\lambda)(1-2\beta)\) in place of \(b\).
+
+Let \(u=\lambda/b\). For a nonzero order, the likelihood ratio \(f_H(x)/f_L(x)\) is at most \((b+\lambda)/b=1+u\), and at least \(1/(1+u)\).
+For the zero order, \(b_0\ge b\iff1-2\beta\ge\beta\iff\beta\le1/3\), and then \(1+\lambda/b_0\le1+u\).
+So under \(\beta\le1/3\) no order carries a likelihood ratio above \(1+u\).
+Chapter~\ref{ch:beliefs} shows that every posterior lies between
+\begin{equation}\label{eq:model-bounds}
+M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi},\qquad
+m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}.
+\end{equation}
+
+\begin{watchout}
+Do not harmonize the domains of \(\beta\). The slot is defined with \(0<\beta\le1/3\), and the common posterior bound and the exclusion bound (Corollary~A.1) use it.
+Proposition~2 states \(0<\beta<1/2\): its proof needs bounds only at the nonzero orders. Copy the domain of each result from its statement.
+\end{watchout}
+
+\emph{Prices and profit.} Competitive market makers earn zero expected profit on each order, so \(P(x)=\E[V_T\mid X=x]\).
+The investor's order is the whole order, so it trades at \(P(q)\). Its profit is
+\begin{equation}\label{eq:model-profit}
+q\,\bigl[V_T-P(q)\bigr]-k\,|q|.
+\end{equation}
+The payoff \(V_T\) depends on entry, and entry depends on the price. The equilibrium conditions resolve this loop.
+
+%==================================================================
+\section{The payoff objects}\label{sec:model-payoffs}
+
+For a prepared challenger of value \(\theta\), \(t(\theta)\) is the expected target proceeds and \(g(\theta)\) the expected gross profit, both over \(R\) with truthful bids. For \(\theta\ge p\), \(t(\theta)+g(\theta)=\theta\).
+Define \(t_j=\E_j[t(\theta)]\), \(g_j=\E_j[g(\theta)]\), and the target-payoff spread \(\DT=t_H-t_L\).
+These depend on no belief. Write \(g_j(F)\), \(\DT(F)\), \(B_F\), or \(g_j(r)\), \(\DT(r)\), \(B_r\) along a path.
+
+\emph{Gross profit at a belief.} At the belief \(\mu=\Pr(j=H\mid\bar P)\), total expectation over the class gives \(B(\mu)=\E[g(\theta)\mid\bar P]=(1-\mu)g_L+\mu g_H=g_L+\mu(g_H-g_L)\), because given \(j\) the value \(\theta\) is independent of the price.
+
+\emph{The gain from entry.} Define \(w_j=t_j-t_0\) and \(w(\mu)=(1-\mu)w_L+\mu w_H\). Then \(w_H-w_L=\DT\) and \(w(\mu)=t_L-t_0+\DT\,\mu\).
+
+\emph{Entry.} Let \(\zeta(P(x))\) be the probability that a high-cost challenger prepares after the price \(P(x)\). Since \(C\) is independent of the class and the order, \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\ge\rho\).
+Entry in class \(j\) is \(e_j=\sum_xf_j(x)\,e(x)\), and total entry is \(\Ent=\pi e_H+(1-\pi)e_L\).
+
+\emph{Ownership.} High-class ownership \(\Own_H\) is the probability that the challenger is of class \(H\) and acquires the target. It is a joint probability, not a conditional one.
+Given the class, the event ``prepares'' depends on \(C\) and the slot draws, and the event ``would win'' (\(\theta\ge p\), \(R<\theta\)) depends on \(\theta\) and \(R\). These are independent, so
+\[
+\Own_H=\pi\,\Pr(\text{prepares}\mid H)\,\Pr(\text{would win}\mid H)=\pi\,e_H\,W_H(F),\qquad W_j(F)=\E_j\bigl[F(\theta)\,\1\{\theta\ge p\}\bigr].
+\]
+Class \(H\) outbids the incumbent \(F\) when \(W_H(F)=1\).
+A stronger incumbent can raise \(e_H\) through the price and lower \(W_H\), so the clean rise of ownership in Proposition~2 asks that \(W_H(F_1)=1\) (Chapter~\ref{ch:ccc}).
+With \(\Own_L=(1-\pi)e_LW_L(F)\), the takeover share of class \(H\) is \(\Own_H/(\Own_H+\Own_L)\).
+
+%==================================================================
+\section{The equilibrium}\label{sec:model-equilibrium}
+
+\begin{paperresult}{Definition A.1 (Equilibrium)}
+Write \(\eta(-1)=\eta(1)=\beta\) and \(\eta(0)=1-2\beta\).
+An equilibrium is a tuple \(\mathcal{E}=(\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)\), together with the bids of the prepared bidders.
+Here \(\sigma_j\) is a probability distribution on \(\{-1,0,1\}\), the order of the informed investor in class \(j\), and mixed and wrong-signed orders are allowed;
+\(\mu(x)=\Pr(j=H\mid X=x)\) is the market makers' posterior;
+\(P(x)\) is the price after each order;
+\(\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)\) is the challenger's belief at each price \(\bar P\) in the image of \(P\);
+and \(\zeta(\bar P)\in[0,1]\) is the probability that a high-cost challenger prepares after the price \(\bar P\).
+A zero-cost challenger prepares after every price.
+For each order \(x\), \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\) and \(e(x)=\rho+(1-\rho)\zeta(P(x))\).
+The tuple satisfies six conditions.
+\begin{enumerate}[label=(E\arabic*),leftmargin=3em]
+\item Bayes consistency. \(\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]\) for every order \(x\).
+\item Challenger beliefs. For every price \(\bar P\) in the image, \(\bar\mu(\bar P)\) is the posterior of class \(H\) given the event \(\{x:P(x)=\bar P\}\), computed from \(f_H\) and \(f_L\).
+\item Entry optimality. For every price \(\bar P\) in the image, \(\zeta(\bar P)=1\) if \(B(\bar\mu(\bar P))>c_H\) and \(\zeta(\bar P)=0\) if \(B(\bar\mu(\bar P))<c_H\). At equality, the challenger's tie rule applies.
+\item Competitive prices. \(P(x)=\E[V_T\mid X=x]\) for every order \(x\).
+\item Investor optimality. For each class \(j\), \(\sigma_j(q)>0\) only if \(q\) maximizes \(U_j(q)=q\,[t_0+e(q)(t_j-t_0)-P(q)]-k|q|\) over \(q\in\{-1,0,1\}\), with \(P(\cdot)\) and \(e(\cdot)\) held at their values in \(\mathcal{E}\).
+\item Truthful bids. Each prepared bidder whose value meets the reserve bids its value.
+\end{enumerate}
+\end{paperresult}
+
+In (E2) the challenger pools orders that share a price. With \(g_H>g_L\), (E3) is a threshold rule at the belief \(\tau\) where \(B(\tau)=c_H\).
+
+\emph{No off-path beliefs.} Since \(\lambda<1\) and \(\eta(x)>0\) for \(0<\beta<1/2\), \(f_j(x)\ge(1-\lambda)\eta(x)>0\) under every strategy. So Bayes' rule defines every posterior, and \(0<\mu(x)<1\).
+
+\begin{derivation}[the investor's objective and the price]
+Let \(A\) be the event that the challenger prepares. Given \(j\) and \(X=x\), \(\Pr(A)=e(x)\), and \(A\) is independent of \((\theta,R)\). On \(A\) the expected proceeds are \(t_j\); off \(A\) they are \(t_0\). Then \(\E[V_T\mid j,X=x]=e(x)\,t_j+[1-e(x)]\,t_0=t_0+e(x)(t_j-t_0)\). Take the expectation of \eqref{eq:model-profit} at fixed \(q\) and \(P(q)\), and average over the class with the weights \(\mu(x)\) for (E4):
+\begin{align}
+U_j(q)&=q\,\bigl[t_0+e(q)\,(t_j-t_0)-P(q)\bigr]-k|q|,\notag\\
+P(x)&=t_0+e(x)\,w(\mu(x))=t_0+e(x)\,\bigl[t_L-t_0+\DT\,\mu(x)\bigr].\label{eq:model-price}
+\end{align}
+\end{derivation}
+The investor knows the class, so it values a share at \(t_0+e(q)(t_j-t_0)\); it trades on the gap to \(P(q)\) and pays \(k\).
+
+The price is affine in \(\mu(x)\) only at a fixed level of entry, and entry moves with the belief by (E3).
+The price reveals the posterior only when \(\DT>0\) and \(\rho>0\): then \(e(x)\ge\rho>0\) and a higher posterior gives a strictly higher price (Lemma~A.2, Chapter~\ref{ch:beliefs}).
+
+%==================================================================
+\section{Ties, deviations, and money}\label{sec:model-ties}
+
+By default an indifferent investor may mix over its best orders, and an indifferent high-cost challenger prepares.
+The alternatives (the investor abstains; the challenger prepares with any probability) give four tie rules in all.
+Proposition~2 holds under all four; Propositions~3 and~4 take the default rules.
+A unilateral deviation by the investor faces the candidate's fixed \(P(q)\) and \(e(q)\).
+A comparison across incumbent strengths solves the equilibrium again in each economy; the paper's results on a stronger incumbent are of this second kind.
+
+\emph{Money.} A common standalone component shifts \(V_T\) and \(P(q)\) by the same constant, so incentives do not change.
+A common rescale by \(s>0\) of every value, the reserve, and every cost rescales prices and payoffs by \(s\), and changes no order, belief, entry, or ownership:
+Bayes' rule contains no money, both sides of \(B(\mu)\gtrless c_H\) and every \(U_j(q)\) scale by \(s\), and win comparisons keep their answers.
+
+\begin{chaptersummary}
+The class ranking says class \(H\) dominates and every value meets the reserve.
+The slot gives \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\), so one order carries a likelihood ratio of at most \(1+u\); for the zero order this uses \(\beta\le1/3\).
+Without entry the target receives \(t_0=p[1-F(p)]\); entry \(e(x)\) never falls below \(\rho\), and \(\Own_H=\pi e_HW_H(F)\).
+An equilibrium has six conditions, every order is on path, and \(U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|\).
+A deviation faces fixed prices and entry; a comparison across economies solves the equilibrium again.
+\end{chaptersummary}

@@ -1,0 +1,143 @@
+% preamble.tex: packages, macros and boxes for the study guide.
+% Chapters use only the macros and environments defined here. Do not add packages in a chapter.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{stix2}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\graphicspath{{source/figures/}}
+
+% ---------------------------------------------------------------- colours
+% Grey ink and one dark accent. No bright colours.
+\definecolor{ink}{HTML}{1F2328}
+\definecolor{accent}{HTML}{2E4A62}
+\definecolor{rulegrey}{HTML}{8C959F}
+\definecolor{fillgrey}{HTML}{F4F5F6}
+\definecolor{notegrey}{HTML}{57606A}
+\color{ink}
+
+\hypersetup{
+  pdftitle={Competition Creates Competition: A Study Guide},
+  pdfauthor={Austin Li},
+  colorlinks=true,
+  linkcolor=accent,
+  citecolor=accent,
+  urlcolor=accent}
+
+% ---------------------------------------------------------------- layout
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\linespread{1.08}
+\allowdisplaybreaks
+\setlist{itemsep=0.25em,topsep=0.4em}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{ink}}
+  {\large\color{notegrey}\MakeUppercase{\chaptertitlename}~\thechapter}
+  {0.4em}
+  {\LARGE}
+  [\vspace{0.3em}{\color{rulegrey}\titlerule[0.6pt]}]
+\titlespacing*{\chapter}{0pt}{0pt}{2.2em}
+\titleformat{\section}{\normalfont\large\bfseries\color{ink}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{ink}}{\thesubsection}{0.8em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{notegrey}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{notegrey}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{rulegrey}\hrule height\headrulewidth width\headwidth}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{notegrey}\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------------------------------------------------------------- manuscript macros
+% These match the manuscript, so formulas read the same in both documents.
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\DT}{\Delta_T}
+\newcommand{\eu}{\mathrm{e}}          % Euler's number (entry is e(x))
+\newcommand{\Ent}{\mathsf{E}}          % entry, the preparation probability
+\newcommand{\Own}{\mathsf{O}}          % ownership
+\newcommand{\fr}{\mathfrak{r}}         % root of Delta_T(r) = d above ell
+\newcommand{\lb}{\bar\lambda}          % research cap
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\Prob}{\Pr}
+
+% ---------------------------------------------------------------- derivation notes
+% \why{rule} puts a short grey note at the right of a derivation line.
+% Use it inside align or align*:   &= a+b \why{linearity of expectation}
+% The note is set as a tag, so amsmath moves it to its own line when the equation is too wide.
+\newcommand{\why}[1]{\tag*{\small\color{notegrey}[#1]}}
+% \whyinline{rule} gives the same note inside running text or a single display.
+\newcommand{\whyinline}[1]{\quad\text{\small\color{notegrey}[#1]}}
+
+% ---------------------------------------------------------------- boxes
+\tcbset{
+  guidebox/.style={
+    enhanced, breakable,
+    colback=fillgrey, colframe=rulegrey,
+    boxrule=0pt, leftrule=1.6pt, arc=0pt, outer arc=0pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    before skip=0.9em, after skip=0.9em,
+    fonttitle=\bfseries\small, coltitle=accent,
+    attach title to upper, after title={\quad}}
+}
+
+% In this chapter: the question and the plan. One per chapter, at the start.
+\newtcolorbox{chapterplan}{guidebox, colback=white, leftrule=0pt, toprule=0.6pt, bottomrule=0.6pt,
+  colframe=rulegrey, title={In this chapter}, attach title to upper=false, detach title, before upper={\tcbtitle\par\smallskip}}
+
+% Intuition in words, before or after the algebra. Optional title.
+\newtcolorbox{intuition}[1][]{guidebox, title={In words\ifx\relax#1\relax\else: #1\fi}}
+
+% One-sentence key idea.
+\newtcolorbox{keyidea}{guidebox, leftrule=3pt, title={Key idea}}
+
+% A result of the paper, stated with its exact hypotheses. Argument: the name.
+\newtcolorbox{paperresult}[1]{guidebox, colback=white, boxrule=0.6pt, leftrule=0.6pt,
+  title={#1}, attach title to upper=false, detach title, before upper={\tcbtitle\par\smallskip\itshape}}
+
+% A hypothesis or a distinction that is easy to lose.
+\newtcolorbox{watchout}{guidebox, leftrule=1.6pt, colframe=ink, title={Watch out}}
+
+% A question for the reader. The answer goes in the chapter's Answers section.
+\newcounter{checkq}[chapter]
+\renewcommand{\thecheckq}{\thechapter.\arabic{checkq}}
+% The counter steps outside the box, so a \label inside the box takes the question number.
+\newtcolorbox{checkyourselfbox}{guidebox, colback=white, leftrule=1.6pt, colframe=accent,
+  title={Check yourself \thecheckq}}
+\newenvironment{checkyourself}{\refstepcounter{checkq}\begin{checkyourselfbox}}{\end{checkyourselfbox}}
+
+% An analogy with its limit. Optional title.
+\newtcolorbox{analogy}[1][]{guidebox, title={An analogy\ifx\relax#1\relax\else: #1\fi}}
+
+% A derivation block: no fill, a thin left rule, can break across pages.
+\newtcolorbox{derivation}[1][]{enhanced, breakable, colback=white, colframe=rulegrey,
+  boxrule=0pt, leftrule=0.8pt, arc=0pt, outer arc=0pt, left=8pt, right=0pt, top=2pt, bottom=2pt,
+  before skip=0.8em, after skip=0.8em,
+  title={Derivation\ifx\relax#1\relax\else: #1\fi}, fonttitle=\bfseries\small, coltitle=accent,
+  attach title to upper, after title={\par\smallskip}}
+
+% Chapter summary at the end of the chapter.
+\newtcolorbox{chaptersummary}{guidebox, colback=white, leftrule=0pt, toprule=0.6pt, bottomrule=0.6pt,
+  title={What to remember}, attach title to upper=false, detach title, before upper={\tcbtitle\par\smallskip}}
+
+% Answers section heading for the check-yourself questions.
+\newcommand{\answersection}{\section*{Answers to the check-yourself questions}\addcontentsline{toc}{section}{Answers to the check-yourself questions}}
+% \answer{3.2}{text} prints one worked answer.
+\newcommand{\answer}[2]{\par\needspace{3\baselineskip}\textbf{\color{accent}#1.}\quad #2\par}

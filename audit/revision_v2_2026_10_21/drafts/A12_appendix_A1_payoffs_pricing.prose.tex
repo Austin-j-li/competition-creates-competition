@@ -1,0 +1,275 @@
+% FRAGMENT A12 (drafter A: class model and main results)
+% REPLACES: main.tex lines 1254–1397 ("\section{Appendix A}\label{paper-appendix}" to "… conditional-probability argument. \(\square\)")
+%   This covers the Appendix A opening and Appendix A.1 (proof of Proposition 1,
+%   Propositions A.1 and A.2).
+% LABELS KEPT: paper-appendix, pa-results, proof-of-proposition-1, eq:paper-a-1,
+%   eq:paper-a-2, posterior-bounds, result-proposition-a-1,
+%   price-sufficiency-and-residual-profits, result-proposition-a-2, eq:paper-a-3.
+% LABELS REMOVED: none.  LABELS ADDED: none.
+% TAGS: (A.1)–(A.3) keep their numbers and their objects: (A.1) the point-mass uniform
+%   integrals, (A.2) the indicator integrals (now with the class kernel), (A.3) the price
+%   increment. All other new displays are unnumbered.
+% NEW SYMBOLS: \xi(R) (expected difference in proceeds between the classes at incumbent
+%   value R; local to the proof).
+% NEW CITATIONS: none.  NUM PLACEHOLDERS: none.
+% SOURCES: Q1_N_main.md Claims 1–4 (N1)–(N9), 6, 7; SYNTHESIS.md A.1 rows 1–3 (including
+%   the correction that the F-free split also holds when F(p)=0).
+% ONLINE APPENDIX POINTERS kept as in the manuscript (A.1, A.2, A.3). Those Online Appendix
+%   sections are written for the point-mass case; drafter B's scope note B05 records which
+%   arguments carry over to classes.
+
+\section{Appendix A}\label{paper-appendix}
+
+This appendix proves every result in the paper. Each statement
+carries its status once: analytical, computer-assisted, numerical
+diagnostic, or open. Statements use the class model of
+\hyperref[sec-model]{Section 2}. A statement that needs the
+point-mass benchmark says so. The Online Appendix holds the
+probability-space construction, regular conditional distributions,
+null-set invariance under deviations, convolution regularity, the
+Stieltjes argument, interval endpoint ordering, the complete signal
+laws, and the numerical definitions. Equations \eqref{eq:paper-1} to
+\eqref{eq:paper-14} are in the main text.
+
+\subsection{A.1 Acquisition payoffs and Bayesian
+pricing}\label{pa-results}
+
+\subsubsection{\texorpdfstring{Proof of
+\hyperref[result-proposition-1]{Proposition
+1}}{Proof of Proposition 1}}\label{proof-of-proposition-1}
+
+Without entry the target receives \(p\mathbf1\{R\ge p\}\). A prepared
+challenger with \(\theta\ge p\) wins at \(\theta>R\) and pays
+\(\max\{p,R\}\). A loss makes the incumbent pay \(\theta\). The target
+receives \(\max\{p,\min(R,\theta)\}\) and the challenger keeps
+\((\theta-\max\{p,R\})_+\). At \(\theta<p\) the challenger does not
+bid. The target again receives \(p\mathbf1\{R\ge p\}\) and the
+challenger keeps nothing. Truthful bidding is weakly dominant at
+every competing bid. No payoff here rests on a shading conjecture or
+a belief. In the point-mass benchmark with the uniform incumbent,
+
+\[
+\begin{aligned}
+t_H&=\frac1r\left[\int_0^p p\,du+\int_p^r u\,du\right],\\
+t_L&=\frac1r\left[\int_0^p p\,du+\int_p^\ell u\,du+\int_\ell^r\ell\,du\right],\\
+g_L&=\frac1r\left[\int_0^p(\ell-p)\,du+\int_p^\ell(\ell-u)\,du\right],
+\end{aligned}
+\tag{A.1}\label{eq:paper-a-1}
+\]
+
+which evaluate to \eqref{eq:paper-4} and differentiate to
+\eqref{eq:paper-5}.
+
+For general classes and a continuous \(F\), write the payments as
+integrals of indicators. For \(\theta\ge p\),
+
+\[
+\max\{p,\min(R,\theta)\}=p+\int_p^\theta\mathbf1\{R>u\}\,du,
+\qquad
+(\theta-\max\{p,R\})_+=\int_p^\theta\mathbf1\{R<u\}\,du.
+\tag{A.2}\label{eq:paper-a-2}
+\]
+
+The two indicators sum to one for almost every \(u\), which gives
+\(t(\theta)+g(\theta)=\theta\). Tonelli's theorem applied to the
+nonnegative integrands gives
+\(t(\theta)=p+\int_p^\theta[1-F(u)]\,du\) and
+\(g(\theta)=\int_p^\theta F(u)\,du\) for \(\theta\ge p\), while
+\(t(\theta)=t_0=p[1-F(p)]\) and \(g(\theta)=0\) for \(\theta<p\). At
+\(\theta=p\), \(t\) jumps by \(pF(p)\): when the incumbent fails the
+reserve, an admissible challenger buys at \(p\) and an inadmissible one
+leaves the target unsold. Hence, for every \(\theta\),
+
+\[
+t(\theta)=t_0+pF(p)\mathbf1\{\theta\ge p\}
++\int_p^\infty\mathbf1\{u\le\theta\}[1-F(u)]\,du,\qquad
+g(\theta)=\int_p^\infty\mathbf1\{u\le\theta\}F(u)\,du .
+\]
+
+Take the class expectation and apply Tonelli's theorem again, with
+\(\mathbb E_j\mathbf1\{\theta\ge p\}=1-G_j(p^-)\) and
+\(\Pr_j(\theta\ge u)=1-G_j(u)\) for almost every \(u\). This gives
+
+\[
+t_j=t_0+pF(p)[1-G_j(p^-)]+\int_p^\infty[1-G_j(u)][1-F(u)]\,du
+\]
+
+and \(g_j\) in \eqref{eq:paper-6}; subtracting the classes gives
+\(\Delta_T\) in \eqref{eq:paper-6}. The finite class means make every
+integral finite. Since
+\(\mathbb E_j[\max\{\theta,p\}]=p+\int_p^\infty[1-G_j(u)]\,du\), adding
+the two lines of \eqref{eq:paper-6} gives the split in its general form,
+
+\[
+\Delta_T(F)+g_H(F)-g_L(F)
+=pF(p)D(p^-)+\mathbb E_H[\max\{\theta,p\}]-\mathbb E_L[\max\{\theta,p\}].
+\]
+
+The reserve term vanishes under equal admissibility, and also when the
+incumbent always meets the reserve, \(F(p)=0\).
+
+\emph{Part (a).} In \eqref{eq:paper-6} the weight \(1-G_j\) on \(F\) is
+nonnegative, so the pointwise decrease from \(F\) to \(\tilde F\) lowers
+\(g_j\), strictly exactly when
+\(\int_p^\infty[1-G_j][F-\tilde F]\,du>0\). Gross profit at a fixed
+belief is an average of \(g_H\) and \(g_L\) with fixed weights, so it
+falls as well.
+
+\emph{Part (b).} Subtracting \eqref{eq:paper-6} at the two
+distributions,
+
+\[
+\Delta_T(\tilde F)-\Delta_T(F)
+=\int_p^\infty[F(u)-\tilde F(u)]D(u)\,du-p[F(p)-\tilde F(p)]D(p^-).
+\]
+
+Under the restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2} the second
+term is zero and the integrand is nonnegative, so the spread rises,
+strictly exactly when the integral is positive.
+
+\emph{Part (c).} Fix the incumbent's value \(R\). If \(R\ge p\), the
+target receives \(\min\{R,\max\{\theta,p\}\}\) for every challenger
+value: an admissible challenger and the incumbent both bid at least
+\(p\), and an inadmissible challenger leaves the incumbent to pay \(p\).
+If \(R<p\), the target receives \(p\mathbf1\{\theta\ge p\}\). Since
+\(\mathbb E_j[\min\{R,\max\{\theta,p\}\}]=p+\int_p^R[1-G_j(u)]\,du\)
+for \(R\ge p\), the expected difference in proceeds between the classes
+at incumbent value \(R\) is
+
+\[
+\xi(R)=
+\begin{cases}
+pD(p^-), & R<p,\\[3pt]
+\int_p^RD(u)\,du, & R\ge p,
+\end{cases}
+\]
+
+and \(\Delta_T(F)=\mathbb E_F[\xi(R)]\). The function \(\xi\)
+is bounded, constant below \(p\), continuous on \([p,\infty)\) with
+derivative \(D\) almost everywhere, and moves from \(pD(p^-)\) to
+\(\xi(p)=0\) at \(p\). It is nondecreasing if and only if
+\(D\ge0\) almost everywhere above \(p\) and \(D(p^-)\le0\). If
+\(\xi\) is nondecreasing, every first-order stochastic
+strengthening raises \(\mathbb E_F[\xi(R)]\). If it is not,
+continuity on each side of \(p\) gives points \(0<x_1<x_2\), both
+different from \(p\), with \(\xi(x_1)>\xi(x_2)\). Let \(F\) be
+uniform on \([x_1-\eta,x_1+\eta]\) and let \(\tilde F\) be the same law
+shifted to \(x_2\). Then \(\tilde F\le F\), and as \(\eta\to0\),
+\(\Delta_T(\tilde F)-\Delta_T(F)\to\xi(x_2)-\xi(x_1)<0\). If
+the support must start at zero, mix the same small uniform component on
+\([0,\bar r]\) into both laws; this scales the difference by a positive
+factor and keeps its sign. Because distribution functions are
+right-continuous, \(D\ge0\) almost everywhere above \(p\) is the same
+as \(D(u)\ge0\) for every \(u>p\), and it implies \(D(p)\ge0\). When
+neither class has an atom at \(p\), \(D(p^-)=D(p)\ge0\), so the
+condition holds exactly when \(D(p^-)=0\), which with the ranking above
+the reserve is the pair of restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2}.
+
+For the point masses with \(p<\ell\), \(D(u)=\mathbf1\{\ell\le u<h\}\),
+\(D(p^-)=0\), and \(\xi(R)=(R-\ell)_+\) for \(R<h\). Equation
+\eqref{eq:paper-6} then gives \(\Delta_T=\int_\ell^h[1-F(u)]\,du\),
+or \(\int_\ell^{\bar r}[1-F(u)]\,du\) at \(\bar r<h\), and
+\(g_j=\int_p^\theta F(u)\,du\) at \(\theta=h\) and \(\theta=\ell\).
+The kernel \(\xi\) belongs to the cash second-price rule with reserve.
+\hyperref[sec-the-payment-rule]{Section 6.2} changes the rule and the
+kernel with it. Online Appendix A.2 gives the measure formulation.
+\(\square\)
+
+\Needspace{10\baselineskip}
+
+\subsubsection{Posterior bounds}\label{posterior-bounds}
+
+\protect\phantomsection\label{result-proposition-a-1}{\textbf{Proposition
+A.1 (posterior bounds; analytical).}} \emph{For arbitrary mixed
+class-contingent orders on \([-1,1]\), the order-flow posterior
+\(\mu_X\) and the posterior based on the price lie in
+\([m(\pi),M(\pi)]\), where \(a_H\), \(a_L\), \(\mu_X\), \(m(\pi)\), and
+\(M(\pi)\) are defined in \eqref{eq:paper-7}.}
+
+For any feasible orders \(q,q'\) the triangle inequality gives
+\(\big||x-q|-|x-q'|\big|\le|q-q'|\le2\), which is \eqref{eq:paper-8}.
+Integrating against \(d\sigma_H(q)\,d\sigma_L(q')\) preserves both
+inequalities, so \(e^{-2/b}a_L\le a_H\le e^{2/b}a_L\) for arbitrary
+conditional mixtures. Since
+\(\log[\mu_X/(1-\mu_X)]=\log[\pi/(1-\pi)]+\log(a_H/a_L)\), the log odds
+of the posterior lie within \(2/b\) of the log odds of the prior, which
+is \(m(\pi)\le\mu_X\le M(\pi)\). No monotone or pure strategy is
+assumed. Because the price is a function of \(X\), the price posterior
+is \(\mathbb E[\mu_X\mid P]\) by the tower property and inherits the
+interval. The bounds satisfy \(1-M(\pi)=m(1-\pi)\), so
+\(\kappa(\pi)=m(\min\{\pi,1-\pi\})\), and at \(\pi=1/2\) they are \(m\)
+and \(M=1-m\). Online Appendix A.1 gives the measure-theoretic version,
+including the null-set invariance under unilateral deviations.
+\(\square\)
+
+\Needspace{10\baselineskip}
+
+\subsubsection{Price sufficiency and residual
+profits}\label{price-sufficiency-and-residual-profits}
+
+\protect\phantomsection\label{result-proposition-a-2}{\textbf{Proposition
+A.2 (price sufficiency and residual profits; analytical).}}
+\emph{Suppose \(\Delta_T>0\). In every candidate equilibrium the
+observed price reveals \(\mu_X\) almost surely. Entry and competitive
+pricing take the form \eqref{eq:paper-9}, and the residual advantages
+of an informed buyer of shares in class \(H\) and of an informed short
+seller in class \(L\) are given by \eqref{eq:paper-11}, with
+\(\rho\kappa(\pi)\Delta_T\le A_H(x),A_L(x)\le\Delta_T\).}
+
+\emph{Floor.} The low-cost challenger pays nothing, and its gross profit
+at every belief is an expectation of nonnegative auction rents, so it
+prepares at every price, by the tie rule when that profit is zero.
+Cost-averaged entry conditional on the price, \(e(P)\), is therefore at
+least \(\rho\). This holds before any division and needs no condition on
+beliefs.
+
+\emph{Gross profit at a price.} The challenger's value depends on flow
+only through its class, so its expected gross profit given the price is
+\(\sum_j\Pr(j\mid P)g_j=B(\Pr(H\mid P))\). Its preparation decision
+therefore depends on the price only through its posterior.
+
+\emph{Inversion.} Entry depends on \((P,C)\), and \(C\) is independent
+of the class and of flow, so
+\(\mathbb E[V_T\mid j,x]=t_0+e(P(x))(t_j-t_0)\). Competitive pricing
+gives the first line of \eqref{eq:paper-10} pointwise in flow, with
+\(e(P)\) a function of the price. Since
+\(e(P)\Delta_T\ge\rho\Delta_T>0\), the second line of
+\eqref{eq:paper-10} expresses \(\mu_X\) as a Borel function of \(P\).
+Conditioning \(\mu_X\) on the price therefore leaves it unchanged, and
+\(\Pr(H\mid P)=\mathbb E[\mu_X\mid P]=\mu_X\) almost surely. Entry is
+then \eqref{eq:paper-9} with the buyer's own posterior.
+
+\emph{Construction.} Put \(w_L=t_L-t_0\ge0\). Under the restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2},
+\(g_H\ge g_L\), so entry is nondecreasing in the belief. For
+\(\mu_2>\mu_1\), \eqref{eq:paper-9} gives
+
+\[
+P(\mu_2)-P(\mu_1)
+=e(\mu_2)\Delta_T(\mu_2-\mu_1)+[e(\mu_2)-e(\mu_1)](w_L+\Delta_T\mu_1)
+\ge\rho\Delta_T(\mu_2-\mu_1)>0,
+\tag{A.3}\label{eq:paper-a-3}
+\]
+
+because entry is nondecreasing and the bracket is nonnegative. The price
+is therefore strictly increasing in the posterior, including across the
+jump where high-cost preparation becomes worthwhile, and its inverse on
+its image is measurable. A price value inside the skipped interval is
+generated by no flow. A flat posterior tail maps into an actual price
+atom, which is conditioned on as an atom.
+
+\emph{Residuals.} Conditional on class \(j\) and flow \(x\), expected
+terminal value is \(t_0+e(P(x))(t_j-t_0)\), in which the no-entry
+proceeds and the public entry effect both appear. Subtracting the
+rational price \(t_0+e(P(x))[w_L+\Delta_T\mu_X(x)]\) in class \(H\), and
+reversing the subtraction in class \(L\), the terms \(t_0\) and
+\(e\,w_L\) cancel and leave \eqref{eq:paper-11}. No unanticipated
+premium is attached. This step uses neither the inversion nor the sign
+of \(\Delta_T\). The bounds follow from \(\rho\le e\le1\) and
+\(m(\pi)\le\mu_X\le M(\pi)\): \(A_H\ge\rho[1-M(\pi)]\Delta_T\) and
+\(A_L\ge\rho m(\pi)\Delta_T\). If instead \(\Delta_T=0\), both residuals
+vanish, every nonzero order loses its trading cost, and the posterior
+stays at the prior, which the constant price then reveals. Online
+Appendix A.3 supplies the conditional-probability argument. \(\square\)

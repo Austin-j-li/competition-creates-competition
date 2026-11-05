@@ -1,0 +1,1624 @@
+\chapter{Competition creates research}\label{ch:research}
+
+\begin{chapterplan}
+\textbf{The question.} When the informed investor must pay for its information, does a stronger incumbent still
+bring informed trade and more entry?
+
+After this chapter you can:
+\begin{itemize}
+\item explain in words why research raises the posterior after a purchase, and why this lowers what each informed
+purchase earns;
+\item derive the top posterior \(M_\lambda\), the bottom posterior \(m_\lambda\) and the recruitment intensity
+\(\lambda_E(\tau)\) at the prior \(1/2\);
+\item derive the research condition \(2a\lambda=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+\) and show that it has one
+root \(\lambda_R(\DT)\) when \(\DT>2k\);
+\item state Proposition~4 with its tie rules and prove each part, with the entry formula
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]\);
+\item read Corollary~3 and its figure: where zero research, recruiting research and floor-entry research are
+equilibria in the example.
+\end{itemize}
+\end{chapterplan}
+
+% =====================================================================
+\section{Research in words}\label{sec:research-words}
+
+In the earlier chapters, the informed investor filled the order slot with a fixed probability \(\lambda\). The paper
+calls \(\lambda\) the presence probability. This chapter lets the investor choose it. The investor is a sector
+specialist. Before the order opportunity, it can study the target's customers, technology and demand. This work may
+reveal the challenger's class. If it does, the investor fills the slot with an order. If it does not, a liquidity
+trader fills the slot.
+
+So research is the presence probability of the earlier chapters, chosen at a cost. Each success puts an informed
+order in the slot. More research has two effects on what the market sees.
+\begin{itemize}
+\item \emph{More informed purchases.} After a success in class \(H\), the investor buys. So a purchase becomes more
+frequent in class \(H\).
+\item \emph{Fewer liquidity orders.} The slot has room for one order. A success takes the place of a liquidity
+order, in both classes.
+\end{itemize}
+Both effects make a purchase better news for class \(H\), so the posterior after a purchase rises. Recall from
+Chapter~\ref{ch:trading} that an informed purchase earns entry times the spread times the market's remaining weight
+on class \(L\). More research shrinks that remaining weight. Each order hides less, so each success earns less. The
+paper says that research reduces the camouflage of the investor's own orders.
+
+A wider target-payoff spread works in the other direction. It raises what an informed order earns at every
+posterior. So a wider spread makes research pay more, and the investor researches more. Chapter~\ref{ch:trading}
+showed that a stronger incumbent never narrows the spread. This is the route from competition to research.
+
+Research also matters for entry. A high-cost challenger prepares only when its belief reaches the preparation
+threshold \(\tau\). With more research, the posterior after a purchase climbs higher. Above some research level, a
+purchase recruits a high-cost challenger. The chapter finds when the investor chooses such a level, and what then
+happens to entry and to ownership.
+
+One more feature shapes every result. Market makers and the challenger do not see how much research the investor
+does. They price and decide at the research level that they expect. In equilibrium, this expectation is correct.
+
+\begin{analogy}[a tipster who chooses how hard to look]
+This picture is the guide's own. A betting exchange takes one bet on a horse each day. A tipster can study the
+horse's fitness before the bet. If the study works, the tipster places the day's bet, in the right direction. If
+it fails, a casual punter places a random bet. The exchange sets fair odds after the bet, and it does not see who
+placed it.
+
+If the tipster studies harder, more bets come from the tipster and fewer from casual punters. The exchange expects
+this, so it moves the odds more after each bet. Each informed bet then earns less. A larger gap between the payouts
+of a fit and an unfit horse makes each informed bet earn more, so the tipster studies harder.
+
+Where the analogy breaks:
+\begin{itemize}
+\item In the model, the price changes what a share is worth, because it decides whether a high-cost challenger
+prepares. Odds do not decide whether a race takes place.
+\item The investor earns on its class news only through entry, and it pays a cost \(k\) for each order.
+\item Research has a cap \(\lb\) below one: some facts about the match appear only through the challenger's own
+diligence.
+\end{itemize}
+\end{analogy}
+
+\begin{keyidea}
+Research is the presence probability chosen at a cost. The value of a success falls with research, because research
+removes camouflage, and it rises with the spread. So a wider spread brings more research, and enough research lets a
+purchase recruit a high-cost challenger.
+\end{keyidea}
+
+% =====================================================================
+\section{The set-up}\label{sec:research-setup}
+
+This section recalls the symbols of the chapter and adds research.
+\begin{itemize}
+\item The challenger's class is \(j\in\{H,L\}\). In this chapter the prior is fixed: \(\Pr(j=H)=1/2\).
+Proposition~4 and every result on research use this prior.
+\item The preparation cost is \(C\in\{0,c_H\}\), zero with probability \(\rho\in(0,1)\), and \(c_H>0\). A zero-cost
+challenger prepares after every price. Entry after the order \(x\) is \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\), where
+\(\zeta\) is the probability that a high-cost challenger prepares. So \(e(x)\ge\rho\), the entry floor.
+\item A liquidity trader sells, abstains or buys with probabilities \(\beta\), \(1-2\beta\) and \(\beta\). The
+research results take \(0<\beta<1/2\) (Appendix A.5 of the paper). A nonzero order costs the investor \(k>0\).
+\item \(\DT=t_H-t_L\) is the target-payoff spread. \(g_j\) is the gross acquisition profit of class \(j\),
+\(\gamma=g_H-g_L\), and \(\tau=(c_H-g_L)/\gamma\) is the preparation threshold \eqref{eq:beliefs-threshold}. The
+research results take ranked classes, a continuous incumbent law, \(\DT>0\), \(\gamma>0\) and \(\tau>1/2\).
+\end{itemize}
+
+\paragraph{Research.} Before it learns the class, the investor chooses a research intensity
+\(\lambda\in[0,\lb]\), with \(0<\lb<1\), and pays \((a/2)\lambda^2\), with \(a>0\). Research succeeds with probability
+\(\lambda\), independently of the class, the costs and the incumbent's value. A success reveals the class, and the
+investor then fills the slot with an order. After a failure, a liquidity trader fills the slot.
+
+So the slot works as in Chapter~\ref{ch:model}, with presence probability \(\lambda\). A liquidity order in one
+direction has probability \(b=(1-\lambda)\beta\), a liquidity abstention has probability
+\(b_0=(1-\lambda)(1-2\beta)\), and \(u=\lambda/b\). The order \(x\) has probability
+\(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\) in class \(j\), by \eqref{eq:model-orderprob}. Here \(\sigma_j\) is
+the investor's order distribution after a success in class \(j\).
+
+\paragraph{Why a failure passes the slot on.} The paper gives the reason in one sentence: after a failure, the
+investor knows no more than the market, so an order would lose at least its cost \(k\). The guide fills in the step.
+After a failure, the investor's belief is the prior \(1/2\). By \eqref{eq:beliefs-terminal}, a share pays
+\(t_0+e(q)w_j\) in expectation in class \(j\), where \(w_j=t_j-t_0\) and \(w(\mu)=t_L-t_0+\DT\mu\).
+
+\begin{derivation}[an order without information]
+For a purchase:
+\begin{align*}
+&\tfrac12\bigl[t_0+e(1)w_H\bigr]+\tfrac12\bigl[t_0+e(1)w_L\bigr]-P(1)-k\\
+&\quad=t_0+e(1)\,w(1/2)-\bigl[t_0+e(1)\,w(\mu(1))\bigr]-k \why{definition of \(w\); price formula \eqref{eq:beliefs-price}}\\
+&\quad=e(1)\,\DT\,\bigl[\tfrac12-\mu(1)\bigr]-k \why{\(w(\mu)=t_L-t_0+\DT\mu\)}
+\end{align*}
+For a sale, the same steps with the sign reversed give \(e(-1)\,\DT\,[\mu(-1)-\tfrac12]-k\).
+\end{derivation}
+
+In a candidate with no wrong-signed orders, \(\mu(-1)\le1/2\le\mu(1)\) (Lemma A.13(d) below). So both brackets are at
+most zero, and each uninformed order earns at most \(-k\). The investor therefore leaves the slot to a liquidity
+trader.
+
+\paragraph{Why a cap, and why the marginal cost rises.} The cap \(\lb\) is the probability that the investor's work
+can reveal the class at all before the challenger decides. Some facts about the match become visible only through
+the challenger's own diligence. The marginal cost of research is the derivative of the cost,
+\[
+\frac{d}{d\lambda}\Bigl[\frac a2\lambda^2\Bigr]=a\lambda .
+\]
+It rises with \(\lambda\). The paper's reason: the specialist uses cheap sources first, such as its sector coverage,
+and costly ones later, such as expert calls. The quadratic cost is the simplest form whose marginal cost rises.
+
+\paragraph{What the market sees.} Market makers and the challenger do not observe the research choice. They use a
+conjectured intensity \(\hat\lambda\). Bayes' rule, prices and the entry rule all use \(\hat\lambda\). The paper
+defines an equilibrium with research as follows (Appendix A.5 of the paper).
+\begin{itemize}
+\item Conditions (E1) to (E6) of Chapter~\ref{ch:model} hold at the intensity \(\hat\lambda\).
+\item Condition (E5) holds also at \(\hat\lambda=0\). A deviation in research makes a success possible, and the order
+after it must be optimal.
+\item (E7), \emph{research optimality}. Hold the prices \(P\) and the preparation rule \(\zeta\) fixed. Then
+\(\hat\lambda\) is the research choice of a best response among all joint deviations in research and orders.
+\end{itemize}
+So in equilibrium the conjectured intensity is the investor's best research choice at the equilibrium prices and
+entry rule.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,every node/.style={font=\small}]
+\draw[rulegrey,thick,-{Stealth[length=2mm]}] (0,0) -- (15.4,0);
+\foreach \x/\t in {
+  0.9/{The investor chooses research \(\lambda\). No one else sees it.},
+  4.0/{Success with probability \(\lambda\): the investor learns the class.},
+  7.1/{The slot: the investor's order after a success, a liquidity order after a failure.},
+  10.2/{Market makers see the order and set the price.},
+  13.3/{The challenger sees the price and its cost, then prepares or not. The auction follows.}}
+{
+  \draw[ink] (\x,0.15) -- (\x,-0.15);
+  \node[anchor=north,text width=2.8cm,align=center] at (\x,-0.25) {\t};
+}
+\end{tikzpicture}
+\caption{The timing with research. Time runs from left to right. Research ends before the order opportunity, and the
+class is fixed before research starts.}
+\label{fig:research-timeline}
+\end{figure}
+
+\begin{watchout}
+Keep three features of the set-up.
+\begin{itemize}
+\item \emph{The prior is \(1/2\).} Proposition~4, Corollary~3 and the lemmas of this chapter fix it. Do not carry their
+formulas to another prior.
+\item \emph{The domain of \(\beta\).} The research results take \(0<\beta<1/2\). The bound \(\beta\le1/3\) enters only
+the bound on the zero-order posterior in Lemma A.13(a) and the slots of Proposition A.1.
+\item \emph{Conjecture and choice.} A deviation in research faces fixed prices and entry. A comparison across
+incumbents solves the equilibrium again in each economy, research included.
+\end{itemize}
+\end{watchout}
+
+% =====================================================================
+\section{The posteriors at a research level}\label{sec:research-posteriors}
+
+Research raises the top posterior that a purchase can reach. At intensity \(\lambda\), the paper writes \(M_\lambda\)
+for the top posterior and \(m_\lambda\) for the bottom posterior. These are the posterior bounds of
+Chapter~\ref{ch:beliefs} at the prior \(1/2\), with presence probability \(\lambda\).
+
+\begin{derivation}[the bounds at the prior \(1/2\)]
+Start from \eqref{eq:beliefs-bounds}, \(M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]\) and \(m(\pi)=\pi/[\pi+(1-\pi)(1+u)]\).
+\begin{align*}
+M(1/2)&=\frac{\tfrac12(1+u)}{\tfrac12(1+u)+\tfrac12} \why{\(\pi=1-\pi=1/2\)}\\
+&=\frac{1+u}{2+u} \why{multiply numerator and denominator by \(2\)}\\[4pt]
+m(1/2)&=\frac{\tfrac12}{\tfrac12+\tfrac12(1+u)}=\frac{1}{2+u} \why{the same steps}
+\end{align*}
+The two add to one: \((1+u)/(2+u)+1/(2+u)=(2+u)/(2+u)=1\). So \(m(1/2)=1-M(1/2)\).
+\end{derivation}
+
+Next, put in \(u=\lambda/b\) with \(b=(1-\lambda)\beta\).
+
+\begin{derivation}[the bottom posterior at intensity \(\lambda\)]
+\begin{align*}
+m_\lambda&=\frac{1}{2+\lambda/b} \why{\(u=\lambda/b\)}\\
+&=\frac{b}{2b+\lambda} \why{multiply numerator and denominator by \(b>0\)}\\
+&=\frac{(1-\lambda)\beta}{2(1-\lambda)\beta+\lambda} \why{\(b=(1-\lambda)\beta\)}\\
+&=\frac{\beta(1-\lambda)}{2\beta+(1-2\beta)\lambda} \why{expand \(2(1-\lambda)\beta\); collect the terms in \(\lambda\)}
+\end{align*}
+\end{derivation}
+
+This is the paper's formula, with \(M_\lambda=1-m_\lambda\):
+\begin{equation}\label{eq:research-bounds}
+m_\lambda=\frac{\beta(1-\lambda)}{2\beta+(1-2\beta)\lambda},\qquad
+M_\lambda=1-m_\lambda=\frac{b+\lambda}{2b+\lambda}.
+\end{equation}
+The second form of \(M_\lambda\) follows from \(1-b/(2b+\lambda)=(b+\lambda)/(2b+\lambda)\). It is the posterior after a
+purchase when class \(H\) buys after every success and class \(L\) never buys: a purchase has probability \(b+\lambda\)
+in class \(H\) and \(b\) in class \(L\) (Lemma A.1(d)).
+
+\paragraph{The top posterior rises with research.} There are two ways to see it.
+\begin{itemize}
+\item \emph{Through \(u\).} In \(u=\lambda/[(1-\lambda)\beta]\), the numerator rises with \(\lambda\) and the positive
+denominator falls. So \(u\) rises strictly. Then \(m_\lambda=1/(2+u)\) falls strictly, and \(M_\lambda=1-m_\lambda\)
+rises strictly.
+\item \emph{Through the derivative.} The slope formulas of Section~\ref{sec:research-sale} need it.
+\end{itemize}
+
+\begin{derivation}[the slope of \(m_\lambda\)]
+Write \(m_\lambda=N/D\) with \(N=\beta(1-\lambda)\) and \(D=2\beta+(1-2\beta)\lambda\), so \(N'=-\beta\) and
+\(D'=1-2\beta\).
+\begin{align*}
+m_\lambda'&=\frac{N'D-ND'}{D^2} \why{quotient rule}\\
+&=\frac{-\beta\,[2\beta+(1-2\beta)\lambda]-\beta(1-\lambda)(1-2\beta)}{D^2} \why{substitute}\\
+&=\frac{-\beta\,[2\beta+(1-2\beta)\lambda+(1-2\beta)-(1-2\beta)\lambda]}{D^2} \why{factor \(-\beta\); expand}\\
+&=\frac{-\beta\,[2\beta+1-2\beta]}{D^2}=-\frac{\beta}{[2\beta+(1-2\beta)\lambda]^2} \why{the \(\lambda\) terms cancel}
+\end{align*}
+\end{derivation}
+
+The slope is negative at every \(\lambda\), so \(m_\lambda\) falls and \(M_\lambda\) rises. Test the extremes. At
+\(\lambda=0\), the formula gives \(m_0=\beta/(2\beta)=1/2=M_0\): with no research, every order comes from a liquidity
+trader, and a purchase carries no news. As \(\lambda\) moves toward one, \(m_\lambda\) moves toward zero and
+\(M_\lambda\) toward one. The cap \(\lb<1\) keeps \(M_\lambda\) below one.
+
+\begin{intuition}[two reasons in one formula]
+Write \(M_\lambda=(b+\lambda)/(2b+\lambda)\). The likelihood ratio of a purchase is \((b+\lambda)/b=1+u\). Research
+raises the numerator \(b+\lambda\), because it adds informed purchases in class \(H\). It lowers \(b\), because it
+removes liquidity purchases in both classes. The two changes push the ratio up together. This is why more research
+leaves each purchase with less camouflage.
+\end{intuition}
+
+\paragraph{The recruitment intensity.} When \(1/2<\tau<1\), the paper defines the recruitment intensity
+\(\lambda_E(\tau)\) as the research level at which a full purchase just reaches the threshold: \(M_\lambda=\tau\).
+Since \(M_\lambda\) rises strictly, a full purchase reaches the threshold exactly when \(\lambda\ge\lambda_E(\tau)\).
+The algebra is shortest through \(u\).
+
+\begin{derivation}[the recruitment intensity]
+First solve for \(u\):
+\begin{align*}
+\frac{1+u}{2+u}=\tau
+&\iff 1+u=2\tau+\tau u \why{multiply by \(2+u>0\)}\\
+&\iff u(1-\tau)=2\tau-1 \why{collect the terms in \(u\)}\\
+&\iff u=\frac{2\tau-1}{1-\tau} \why{divide by \(1-\tau>0\)}
+\end{align*}
+Next solve \(u=\lambda/[(1-\lambda)\beta]\) for \(\lambda\):
+\begin{align*}
+u\beta(1-\lambda)&=\lambda \why{multiply by \((1-\lambda)\beta>0\)}\\
+u\beta&=\lambda\,(1+u\beta) \why{add \(u\beta\lambda\) to both sides}\\
+\lambda&=\frac{u\beta}{1+u\beta} \why{divide by \(1+u\beta>0\)}
+\end{align*}
+Put in the value of \(u\):
+\begin{align*}
+\lambda_E(\tau)&=\frac{\beta(2\tau-1)/(1-\tau)}{1+\beta(2\tau-1)/(1-\tau)} \why{substitute \(u\)}\\
+&=\frac{\beta(2\tau-1)}{(1-\tau)+\beta(2\tau-1)} \why{multiply numerator and denominator by \(1-\tau\)}\\
+&=\frac{\beta(2\tau-1)}{\beta+(1-2\beta)(1-\tau)} \why{\((1-\tau)+\beta(2\tau-1)=\beta+(1-2\beta)(1-\tau)\)}
+\end{align*}
+\end{derivation}
+
+To check the last identity, expand its right side: \(\beta+(1-\tau)-2\beta(1-\tau)=(1-\tau)+\beta(2\tau-1)\). The result
+is the paper's formula:
+\begin{equation}\label{eq:research-lamE}
+\lambda_E(\tau)=\frac{\beta(2\tau-1)}{\beta+(1-2\beta)(1-\tau)},\qquad m_{\lambda_E(\tau)}=1-\tau .
+\end{equation}
+
+Three facts follow.
+\begin{itemize}
+\item \emph{Domain.} The map \(u\mapsto u\beta/(1+u\beta)\) sends every positive \(u\) into \((0,1)\), and
+\(u=(2\tau-1)/(1-\tau)\) is positive exactly when \(1/2<\tau<1\). So \(0<\lambda_E(\tau)<1\) on this range. If
+\(\tau\ge1\), no research level recruits, because \(M_\lambda<1\).
+\item \emph{Slope.} By the chain rule, \(d\lambda/du=\beta/(1+u\beta)^2\) and \(du/d\tau=[2(1-\tau)+(2\tau-1)]/(1-\tau)^2
+=1/(1-\tau)^2\). Their product is \(\beta/[(1-\tau)(1+u\beta)]^2\), and \((1-\tau)(1+u\beta)=(1-\tau)+\beta(2\tau-1)\). So
+\[
+\frac{d\lambda_E}{d\tau}=\frac{\beta}{[\beta+(1-2\beta)(1-\tau)]^2}>0 .
+\]
+A higher threshold needs more research before a purchase recruits.
+\item \emph{The cap of the example.} The example sets \(\lb=u\beta/(1+u\beta)\) with \(1+u=\eu\). This is the same
+map from \(u\) to \(\lambda\), so research at the cap reproduces the example's slot, with \(M_{\lb}=\eu/(1+\eu)\).
+\end{itemize}
+
+\begin{checkyourself}\label{q:research-lamE}
+Derive \(\lambda_E(\tau)\) a second way: solve \(m_\lambda=1-\tau\) for \(\lambda\) directly from
+\eqref{eq:research-bounds}. Then show that \(\lambda_E\) rises with \(\beta\) at a fixed \(\tau\in(1/2,1)\), and explain
+the direction in words.
+\end{checkyourself}
+
+% =====================================================================
+\section{The value of a success and the research condition}\label{sec:research-value}
+
+\subsection{The research choice at fixed prices}
+
+The investor chooses research before it learns the class, and it trades only after a success. The paper first
+solves its problem at fixed prices and entry.
+
+\begin{paperresult}{Lemma A.12 (Joint deviations)}
+For a candidate satisfying beliefs, competitive pricing, preparation and truthful bidding, let
+\(\Psi=\tfrac12\max_qU_H(q)+\tfrac12\max_qU_L(q)\) be its best trading value after a research success. At its fixed
+prices and preparation rule, the best payoff of a joint deviation to any \(\tilde\lambda\in[0,\lb]\) is
+\(\tilde\lambda\Psi-(a/2)\tilde\lambda^2\). The unique best research choice is \(\min\{\lb,\Psi/a\}\). Thus research
+optimality is exactly \(\hat\lambda=\min\{\lb,\Psi/a\}\), under all four tie rules.
+\end{paperresult}
+
+In plain words: \(U_j(q)\) is the payoff of the order \(q\) in class \(j\) at the candidate's prices and entry, as in
+Chapter~\ref{ch:trading}. \(\Psi\) is what a success is worth: the class is \(H\) or \(L\) with probability \(1/2\)
+each, and the investor then places its best order. The research choice equals this value divided by \(a\), cut at the
+cap.
+
+\paragraph{Proof, step by step.}
+\begin{enumerate}
+\item \emph{Prices do not move.} A joint deviation \((\tilde\lambda,\sigma')\) changes the true order probabilities to
+\((1-\tilde\lambda)\eta+\tilde\lambda\sigma'_j\). It does not change the prices or the preparation rule, because
+market makers and the challenger use the candidate's \(\hat\lambda\) and \(\sigma_j\).
+\item \emph{The expected payoff.} With probability \(1-\tilde\lambda\), research fails, the investor does not trade,
+and it earns zero. With probability \(\tilde\lambda\), it learns the class and places an order. So
+\[
+\Pi(\tilde\lambda,\sigma')=\tilde\lambda\Bigl[\tfrac12\sum_q\sigma'_H(q)U_H(q)+\tfrac12\sum_q\sigma'_L(q)U_L(q)\Bigr]
+-\frac a2\tilde\lambda^2 .
+\]
+\item \emph{The best orders.} Each sum is an average of the payoffs \(U_j(q)\), so it is at most \(\max_qU_j(q)\). The
+bracket is at most \(\Psi\), with equality exactly when each \(\sigma'_j\) puts weight only on best orders. So the best
+payoff at \(\tilde\lambda\) is \(\tilde\lambda\Psi-(a/2)\tilde\lambda^2\).
+\item \emph{The best research.} The derivative in \(\tilde\lambda\) is \(\Psi-a\tilde\lambda\), and the second
+derivative is \(-a<0\), so the function is strictly concave. Also \(\Psi\ge0\), because \(U_j(0)=0\).
+\begin{itemize}
+\item If \(\Psi\ge a\lb\), the derivative is positive on \([0,\lb)\), and the maximizer is \(\lb\).
+\item If \(\Psi<a\lb\), the derivative is zero at \(\Psi/a\in[0,\lb)\), and this is the maximizer.
+\end{itemize}
+Together, the maximizer is \(\min\{\lb,\Psi/a\}\).
+\item \emph{No tie.} Strict concavity makes the maximizer unique. It also excludes a mixture over research levels: a
+mixture puts weight on levels with a strictly lower payoff.
+\end{enumerate}
+The tie rules concern indifferent orders and indifferent preparation. Neither enters this problem, so the lemma holds
+under all four.
+
+\paragraph{Why the investor takes the posterior as given.} In \(\Psi\), the payoffs \(U_j(q)\) contain the posteriors
+\(\mu(q)\) and entry \(e(q)\) of the candidate. Market makers compute these with the conjectured \(\hat\lambda\). So,
+to the investor, \(\Psi\) is a fixed number, and its problem is a simple concave quadratic. Equilibrium then asks that
+the choice equal the conjecture. The research condition below therefore evaluates the posteriors at the chosen
+intensity.
+
+\begin{intuition}[the camouflage that the investor does not count]
+This reading is the guide's own. Because no one sees its research, the investor cannot change the prices by its
+choice. So, at the margin, it does not count the camouflage that one more unit of research removes. The market makers
+count it, through their conjecture: a higher conjectured intensity makes them read each purchase as better
+informed. The loss of camouflage therefore appears in the research condition only through the conjecture.
+\end{intuition}
+
+\subsection{What a success is worth}
+
+Take the equilibrium of Proposition~4: class \(H\) buys after a success, and a purchase recruits a high-cost
+challenger. Its value of a success has one term for each class.
+
+\paragraph{Class \(H\).} Class \(H\) buys for sure, so \(\mu(1)=M_\lambda\). The purchase recruits, so \(e(1)=1\). By
+\eqref{eq:trading-returns},
+\begin{align*}
+U_H(1)&=e(1)\,\DT\,[1-\mu(1)]-k \why{\eqref{eq:trading-returns}}\\
+&=\DT\,(1-M_\lambda)-k \why{\(e(1)=1\), \(\mu(1)=M_\lambda\)}\\
+&=\DT\,m_\lambda-k \why{\(1-M_\lambda=m_\lambda\)}
+\end{align*}
+Abstention earns zero, and a sale earns at most \(-k\) (Lemma A.3(a)). So the best payoff of class \(H\) is
+\(\DT m_\lambda-k\) when this is positive.
+
+\paragraph{Class \(L\).} A sale never recruits: its posterior is at most \(1/2<\tau\). So class \(L\) faces the problem
+of Chapter~\ref{ch:trading} at entry \(\rho\). The paper solves it in a lemma.
+
+\begin{paperresult}{Lemma A.15 (The low class's sale)}
+Let \(0<\lambda\le\lb\), let class \(H\) buy with probability one after a success, and suppose an indifferent investor
+may mix over its best orders. By Lemma A.8 at presence \(\lambda\) and prior \(1/2\), the unique low-class sale rate
+consistent with its best orders is
+\[
+s_-=\lambda\sigma_L(-1)=\min\{\lambda,\ b(\rho\DT/k-2)^+\}.
+\]
+The remaining low-class probability is on abstention, and
+\[
+\mu(-1)=\frac{b}{2b+s_-},\qquad \mu(0)=\frac{b_0}{2b_0+\lambda-s_-},\qquad \mu(1)=M_\lambda.
+\]
+Both nonpurchase orders have entry \(\rho\), under either challenger tie rule. Class \(L\) abstains when
+\(\rho\DT\le2k\); it mixes when \(\rho\DT m_\lambda<k<\rho\DT/2\), with \(\mu(-1)=k/(\rho\DT)\); and it sells with
+probability one when \(\rho\DT m_\lambda\ge k\). At \(\rho\DT=2k\) its sale rate is zero; at \(\rho\DT m_\lambda=k\)
+its sale probability is one. Its best net payoff is \(\max_qU_L(q)=(\rho\DT m_\lambda-k)^+\).
+\end{paperresult}
+
+Lemma A.8 is the low-class lemma of Chapter~\ref{ch:coexistence} at a fixed presence probability. The proof below
+redoes its steps at the prior \(1/2\).
+
+\begin{derivation}[proof of Lemma A.15]
+\emph{Step 1: order probabilities.} Class \(L\) never buys (Lemma A.3(a)). Class \(H\) buys after every success. On
+the orders \((-1,0,1)\),
+\[
+f_H=(b,\;b_0,\;b+\lambda),\qquad f_L=(b+s_-,\;b_0+\lambda-s_-,\;b).
+\]
+\emph{Step 2: posteriors.} At the prior \(1/2\), Bayes' rule reads \(\mu(x)=f_H(x)/[f_H(x)+f_L(x)]\), because the
+factor \(1/2\) cancels. This gives the three displayed posteriors.
+
+\emph{Step 3: entry.} \(\mu(-1)=b/(2b+s_-)\le1/2\), and \(\mu(0)\le1/2\) because \(\lambda-s_-\ge0\). Both are below
+\(\tau\), so entry after a sale and after no order is \(\rho\) under either challenger rule (Lemma A.2(d)).
+
+\emph{Step 4: the sale payoff.}
+\begin{align*}
+U_L(-1)&=e(-1)\,\DT\,\mu(-1)-k \why{\eqref{eq:trading-returns}}\\
+&=\frac{\rho\DT\,b}{2b+s_-}-k \why{\(e(-1)=\rho\); Step 2}
+\end{align*}
+The denominator rises with \(s_-\), so \(U_L(-1)\) falls strictly in \(s_-\). Its two end values are:
+\begin{itemize}
+\item at \(s_-=0\): \(\rho\DT/2-k\), which is at most zero exactly when \(\rho\DT\le2k\);
+\item at \(s_-=\lambda\): \(\rho\DT\,b/(2b+\lambda)-k=\rho\DT m_\lambda-k\), by \eqref{eq:research-bounds}.
+\end{itemize}
+
+\emph{Step 5: the three cases.} Under (E5), class \(L\) sells only if the sale is a best order.
+\begin{itemize}
+\item If \(\rho\DT\le2k\), every positive rate makes the sale lose strictly. So \(s_-=0\), and class \(L\) abstains.
+\item If \(\rho\DT m_\lambda\ge k\), every rate below \(\lambda\) makes the sale strictly profitable. So
+\(s_-=\lambda\), and class \(L\) sells for sure.
+\item Otherwise \(\rho\DT m_\lambda<k<\rho\DT/2\). The sale payoff is positive at \(s_-=0\) and negative at
+\(s_-=\lambda\). By the intermediate value theorem and strict monotonicity, it is zero at exactly one rate in
+between. An indifferent investor may mix, so class \(L\) sells at this rate.
+\end{itemize}
+\emph{Step 6: the mixing rate.} Set the sale payoff to zero:
+\begin{align*}
+\frac{\rho\DT\,b}{2b+s_-}=k
+&\iff 2b+s_-=\frac{\rho\DT\,b}{k} \why{multiply by \((2b+s_-)/k\)}\\
+&\iff s_-=b\Bigl(\frac{\rho\DT}{k}-2\Bigr) \why{subtract \(2b\)}
+\end{align*}
+At this rate, \(\mu(-1)=k/(\rho\DT)\), from the first line. The formula \(\min\{\lambda,b(\rho\DT/k-2)^+\}\) collects the
+three cases: the positive part is zero when \(\rho\DT\le2k\), and \(b(\rho\DT/k-2)\ge\lambda\) is the same as
+\(\rho\DT/k\ge2+u\), that is \(\rho\DT m_\lambda\ge k\).
+
+\emph{Step 7: the best payoff.} When class \(L\) abstains or mixes, its best payoff is zero. When it sells for sure, it
+is \(\rho\DT m_\lambda-k\ge0\). In the first two cases \(\rho\DT m_\lambda<k\), because \(m_\lambda<1/2\). So the best
+payoff is \((\rho\DT m_\lambda-k)^+\) in all three cases.
+\end{derivation}
+
+\subsection{The research condition}
+
+Add the two classes with weight \(1/2\) each:
+\[
+\Psi=\tfrac12\bigl[\DT m_\lambda-k\bigr]+\tfrac12\bigl(\rho\DT m_\lambda-k\bigr)^+ .
+\]
+Lemma A.12 gives research \(\lambda=\min\{\lb,\Psi/a\}\). At an interior intensity, \(\lambda<\lb\):
+
+\begin{derivation}[the research condition]
+\begin{align*}
+\lambda&=\frac{\Psi}{a} \why{Lemma A.12, below the cap}\\
+a\lambda&=\tfrac12\bigl[\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+\bigr] \why{multiply by \(a\); substitute \(\Psi\)}\\
+2a\lambda&=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+ \why{multiply by \(2\)}
+\end{align*}
+\end{derivation}
+
+This is equation (10) of the paper:
+\begin{equation}\label{eq:research-cond}
+2a\lambda=\DT\,m_\lambda-k+\bigl(\rho\DT\,m_\lambda-k\bigr)^+ .
+\end{equation}
+The left side is twice the marginal cost of research. The right side is twice the value of a success. At the cap,
+Lemma A.12 asks instead that the left side be at most the right side at \(\lambda=\lb\).
+
+\begin{intuition}[why a factor of two]
+A success reveals class \(H\) only half the time. Then a recruiting purchase earns \(\DT m_\lambda-k\). The other
+half of the time, class \(L\) earns its best payoff. Each success is worth the average of the two, and the investor
+pushes research until the marginal cost \(a\lambda\) equals this average.
+\end{intuition}
+
+\paragraph{The two sides.} Write the right side minus the left side as the residual
+\[
+\mathcal R(\lambda)=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+-2a\lambda .
+\]
+\begin{itemize}
+\item The left side \(2a\lambda\) rises strictly.
+\item The right side falls strictly. The term \(\DT m_\lambda\) falls strictly, because \(m_\lambda\) does and
+\(\DT>0\). The term \(\rho\DT m_\lambda-k\) also falls, and the positive part never falls when its argument rises
+(Section~\ref{sec:toolkit-monotone}). So the positive part never rises with \(\lambda\).
+\end{itemize}
+So \(\mathcal R\) is continuous and strictly decreasing. In the paper's words, the right side falls because more
+research removes camouflage. The fall is a fall in the conjectured intensity: market makers who expect more research
+read each purchase as better informed.
+
+\paragraph{One root when \(\DT>2k\).} Evaluate \(\mathcal R\) at the two ends of \([0,1]\). The formula
+\eqref{eq:research-bounds} extends to \(\lambda=1\), with \(m_1=0\). The point \(\lambda=1\) lies outside the model; it
+serves only the intermediate value theorem.
+\begin{align*}
+\mathcal R(0)&=\tfrac12\DT-k+(\tfrac12\rho\DT-k)^+\ge\tfrac12\DT-k \why{\(m_0=1/2\); a positive part is \(\ge0\)}\\
+\mathcal R(1)&=-k+(-k)^+-2a=-k-2a<0 \why{\(m_1=0\); \((-k)^+=0\)}
+\end{align*}
+If \(\DT>2k\), then \(\mathcal R(0)>0>\mathcal R(1)\). The intermediate value theorem and strict decrease give
+exactly one root in \((0,1)\). The paper calls it \(\lambda_R(\DT)\).
+
+If \(\DT\le2k\), every positive \(\lambda\) has \(\DT m_\lambda<\DT/2\le k\). The purchase then loses money, and
+class \(H\) would not buy. So this equilibrium needs \(\DT>2k\).
+
+\paragraph{Research is \(\min\{\lambda_R,\lb\}\).} Condition (E7) reads \(\hat\lambda=\min\{\lb,\Psi(\hat\lambda)/a\}\),
+where \(\Psi(\hat\lambda)\) is the value of a success at the conjectured intensity. The guide shows that this is the
+same as \(\hat\lambda=\min\{\lambda_R,\lb\}\). Note that \(\Psi(\lambda)/a\ge\lambda\) exactly when
+\(\mathcal R(\lambda)\ge0\), with equality in both at once.
+\begin{itemize}
+\item \emph{Suppose \(\hat\lambda<\lb\).} Then the minimum is \(\Psi/a\), so \(\hat\lambda=\Psi(\hat\lambda)/a\), and
+\(\mathcal R(\hat\lambda)=0\). So \(\hat\lambda=\lambda_R<\lb\), and \(\hat\lambda=\min\{\lambda_R,\lb\}\).
+\item \emph{Suppose \(\hat\lambda=\lb\).} Then \(\Psi(\lb)/a\ge\lb\), so \(\mathcal R(\lb)\ge0\). Since \(\mathcal R\)
+is strictly decreasing with root \(\lambda_R\), this gives \(\lb\le\lambda_R\). Again \(\hat\lambda=\min\{\lambda_R,\lb\}\).
+\item \emph{Conversely.} If \(\lambda_R<\lb\), then \(\mathcal R(\lambda_R)=0\), so \(\Psi/a=\lambda_R<\lb\), and (E7)
+holds at \(\lambda_R\). If \(\lambda_R\ge\lb\), then \(\mathcal R(\lb)\ge0\), so \(\Psi(\lb)/a\ge\lb\), and (E7) holds
+at \(\lb\).
+\end{itemize}
+Research never has a tie, by the last step of Lemma A.12.
+
+\paragraph{An explicit root.} While the sale term is zero at the root, \eqref{eq:research-cond} reads
+\(2a\lambda=\DT m_\lambda-k\). Multiply by \(D=2\beta+(1-2\beta)\lambda\). The paper does this for the example
+(equation (A.16)).
+\begin{align*}
+2D\Bigl[a\lambda-\tfrac12(\DT m_\lambda-k)\Bigr]
+&=2a\lambda D-\DT\beta(1-\lambda)+kD \why{\(D\,m_\lambda=\beta(1-\lambda)\)}\\
+&=2a(1-2\beta)\lambda^2+\bigl[4a\beta+k(1-2\beta)+\beta\DT\bigr]\lambda+\beta(2k-\DT) \why{expand; collect powers of \(\lambda\)}
+\end{align*}
+Call this quadratic \(\Lambda(\lambda)\), with slope \(B=4a\beta+k(1-2\beta)+\beta\DT\) at zero. Its constant
+\(\beta(2k-\DT)\) is negative when \(\DT>2k\), and its other coefficients are positive, so it has one positive root.
+The quadratic formula, with the numerator and denominator multiplied by \(B+\sqrt{\cdot}\), gives
+\[
+\lambda_R(\DT)=\frac{2\beta(\DT-2k)}{B+\sqrt{B^2+8a\beta(1-2\beta)(\DT-2k)}} .
+\]
+The numerator \(\DT-2k\) shows again that research needs \(\DT>2k\).
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=13cm,y=8.5cm,every node/.style={font=\small}]
+\draw[-{Stealth[length=2mm]}] (0,0) -- (0.86,0) node[right] {\(\lambda\)};
+\draw[-{Stealth[length=2mm]}] (0,-0.06) -- (0,0.6);
+\node[below left] at (0,0) {\(0\)};
+\draw[accent,thick,domain=0:0.8,samples=60] plot (\x,{0.3*(1-\x)/(0.6+0.4*\x)-0.15});
+\draw[ink,thick,domain=0:0.8,samples=60] plot (\x,{1.3*0.3*(1-\x)/(0.6+0.4*\x)-0.15});
+\draw[notegrey,thick,dashed] (0,0) -- (0.8,0.48) node[right,text=ink] {\(2a\lambda\)};
+\node[right,text=accent] at (0.8,{0.3*0.2/(0.6+0.32)-0.15}) {\(\DT m_\lambda-k\)};
+\node[right] at (0.8,{1.3*0.3*0.2/(0.6+0.32)-0.15}) {\(\DT' m_\lambda-k\)};
+\draw[dotted] (0.2857,0) -- (0.2857,0.42);
+\node[above] at (0.2857,0.42) {\(\lambda_E(\tau)\)};
+\draw[dotted] (0.27,0.162) -- (0.27,0) node[below] {\(\lambda_R\)};
+\draw[dotted] (0.338,0.203) -- (0.338,0) node[below] {\(\lambda_R'\)};
+\fill[accent] (0.27,0.162) circle (0.25pt);
+\fill[ink] (0.338,0.203) circle (0.25pt);
+\draw[dotted] (0.62,0) -- (0.62,0.5);
+\node[above] at (0.62,0.5) {\(\lb\)};
+\end{tikzpicture}
+\caption{The research condition while the sale term is zero. The dashed line is twice the marginal cost. Each falling
+curve is twice the value of a success, for the spread \(\DT\) and for a wider spread \(\DT'\). Research is where a
+curve meets the line. With the narrower spread, the meeting point lies left of \(\lambda_E(\tau)\), so a purchase
+falls short of the threshold. With the wider spread it lies right of \(\lambda_E(\tau)\), so a purchase recruits. The
+positions are only a picture.}
+\label{fig:research-condition}
+\end{figure}
+
+\paragraph{What this says.} Research balances twice the marginal cost against twice the value of a success. A wider
+spread lifts the falling curve and moves the meeting point to the right (Figure~\ref{fig:research-condition}). Test
+the extremes.
+\begin{itemize}
+\item \emph{A spread at or below \(2k\).} Even with no research at all, a purchase at the posterior \(1/2\) earns at
+most its cost. No recruiting research exists.
+\item \emph{Cheap research, \(a\) near zero.} The line \(2a\lambda\) lies flat near zero, so the root moves toward the
+point where \(\DT m_\lambda=k\). If that point exceeds the cap, research sits at the cap.
+\item \emph{Costly research, \(a\) large.} The line is steep, and the root moves toward zero. A purchase then carries
+little news.
+\end{itemize}
+
+\subsection{The exact recruitment margin}
+
+The purchase recruits when \(M_{\hat\lambda}\ge\tau\), that is, when research is at least \(\lambda_E(\tau)\).
+Figure~\ref{fig:research-condition} shows how to read this off the residual: compare the curve and the line at
+\(\lambda_E(\tau)\). The paper defines the \emph{exact recruitment margin} as the right side of
+\eqref{eq:research-cond} minus its left side at the recruitment intensity. With \(J=\DT(1-\tau)\) and
+\(m_{\lambda_E}=1-\tau\) from \eqref{eq:research-lamE},
+\begin{equation}\label{eq:research-margin}
+\varphi_a^*=\mathcal R(\lambda_E(\tau))=J-k+(\rho J-k)^+-2a\lambda_E(\tau).
+\end{equation}
+Recall from Section~\ref{sec:trading-path} that \(J\) is the gross return of a purchase that just reaches \(\tau\) and
+recruits. So \(\varphi_a^*\) is positive exactly when, at the research level that just lets a purchase recruit, the
+value of a success exceeds the marginal cost of research.
+
+\begin{derivation}[recruitment and the margin, when \(1/2<\tau<1\)]
+\begin{align*}
+M_{\min\{\lambda_R,\lb\}}\ge\tau
+&\iff \min\{\lambda_R,\lb\}\ge\lambda_E(\tau) \why{\(M_\lambda\) rises strictly; \(M_{\lambda_E}=\tau\)}\\
+&\iff \lambda_R\ge\lambda_E(\tau)\ \text{and}\ \lb\ge\lambda_E(\tau) \why{a minimum is \(\ge x\) iff both terms are}\\
+&\iff \varphi_a^*\ge0\ \text{and}\ \lambda_E(\tau)\le\lb \why{\(\mathcal R\) strictly decreasing, zero at \(\lambda_R\)}
+\end{align*}
+\end{derivation}
+
+A nonnegative margin also forces \(\DT>2k\), so the root exists. Suppose \(\varphi_a^*\ge0\). Then
+\(J-k+(\rho J-k)^+\ge2a\lambda_E>0\). If \(J\le k\), then \(\rho J-k<0\), and the left side equals \(J-k\le0\), a
+contradiction. So \(J>k\). Since \(1-\tau<1/2\), \(\DT/2>\DT(1-\tau)=J>k\), and \(\DT>2k\).
+
+\begin{watchout}
+Read \eqref{eq:research-cond} as research optimality at an \emph{interior} intensity. At the cap the equality becomes
+the weak inequality \(2a\lb\le\DT m_{\lb}-k+(\rho\DT m_{\lb}-k)^+\). Also keep the two roles of \(m_\lambda\). The
+investor takes it as given, because prices use the conjectured intensity. Equilibrium evaluates it at the chosen
+intensity.
+\end{watchout}
+
+% =====================================================================
+\section{Proposition 4: competition creates research}\label{sec:research-prop4}
+
+Here is the result as the paper states it in the main text. The box copies every hypothesis and the tie rules.
+
+\begin{paperresult}{Proposition 4 (Competition creates research)}
+Let the classes satisfy the class ranking and the prior be \(1/2\), and let an indifferent investor mix over its best
+orders and an indifferent high-cost challenger prepare. Take incumbent distributions with a positive spread,
+\(g_H>g_L\) and \(\tau>1/2\), and consider the equilibrium in which class \(H\) buys after a success and a purchase
+recruits a high-cost challenger. The same recruiting outcome is available when an indifferent high-cost challenger
+may prepare with any probability and prepares fully at the purchase.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item The equilibrium exists if and only if \(\DT>2k\) and \(\tau\le M_\lambda\) at \(\lambda=\min\{\lambda_R(\DT),\lb\}\),
+which is then the investor's research.
+\item Research rises strictly with the spread until it reaches the cap and then stays at the cap. Entry,
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]\), and entry in class \(H\) rise with research, and entry in class \(L\) falls.
+\item When class \(H\) outbids the incumbent, high-class ownership equals half the entry in class \(H\). Along a path on
+which class \(H\) outbids every incumbent, ownership does not fall with strength, and it rises strictly where research
+is below the cap and the spread rises strictly.
+\item Along a compact path of such distributions with continuous spread and threshold, let the spread against the
+weakest incumbent lie below the value at which research reaches its cap, let \(r_{\lb}\) be the first strength at
+which the spread reaches that value, and let the threshold stay below one up to \(r_{\lb}\). If the exact recruitment
+margin rises strictly up to \(r_{\lb}\), from a negative value against the weakest incumbent to a positive value at
+\(r_{\lb}\), then the equilibrium exists exactly on an interval of strengths. On it, research rises from the
+recruitment intensity to the cap and then stays at the cap, up to the last strength at which the threshold does not
+exceed the top posterior at the cap.
+\end{enumerate}
+\end{paperresult}
+
+A plain reading:
+\begin{itemize}
+\item \emph{Hypotheses.} Ranked classes, the prior \(1/2\), a positive spread, a positive profit gap and a threshold
+above the prior. The appendix setting adds a continuous incumbent law, \(k,a>0\), \(0<\beta<1/2\) and \(0<\lb<1\).
+\item \emph{Tie rules.} The default tie rules: an indifferent investor may mix, and an indifferent high-cost challenger
+prepares. Under the other challenger rule, the paper selects full preparation after a purchase that reaches the
+threshold, and the same outcome exists.
+\item \emph{The equilibrium.} The paper calls it \emph{recruiting research}: positive research, and full preparation
+after a purchase.
+\item \emph{(a)} It exists exactly when the spread exceeds twice the trading cost and a purchase at the chosen research
+reaches the threshold. \emph{(b)} More spread brings more research, up to the cap, and more entry, tilted toward
+class \(H\). \emph{(c)} Ownership by class \(H\) follows its entry when class \(H\) always wins. \emph{(d)} Along a
+path, the equilibrium holds on one interval of strengths.
+\end{itemize}
+
+\subsection{Two lemmas behind part (a)}
+
+The proof of part (a) uses two lemmas. The first holds for every order profile.
+
+\begin{paperresult}{Lemma A.13 (Bounds under every profile)}
+Let \(0\le\hat\lambda\le\lb<1\). Under all four tie rules:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For every order profile, the nonzero-order posteriors lie in \([m_{\hat\lambda},M_{\hat\lambda}]\), with
+\(M_{\hat\lambda}\le M_{\lb}\). If also \(\beta\le1/3\), the same bound holds for the zero-order posterior under every
+profile.
+\item For every candidate satisfying beliefs, competitive pricing, preparation and truthful bidding, \(P(q)=P(q')\)
+implies \(\mu(q)=\mu(q')\), and \(\bar\mu(P(q))=\mu(q)\).
+\item Wrong-signed orders satisfy \(U_H(-1)\le-k\) and \(U_L(1)\le-k\); every equilibrium has
+\(\sigma_H(-1)=\sigma_L(1)=0\).
+\item With no wrong-signed orders, \(\mu(-1)\le1/2\le\mu(1)\). If also \(\sigma_H(1)=1\), then
+\(\mu(1)=M_{\hat\lambda}\) and \(\mu(0)\le1/2\).
+\end{enumerate}
+\end{paperresult}
+
+Write \(\hat b=(1-\hat\lambda)\beta\) and \(\hat b_0=(1-\hat\lambda)(1-2\beta)\). Each part repeats a step of an earlier
+chapter at the conjectured intensity.
+\begin{enumerate}
+\item \emph{Part (a).} A nonzero order has probability between \(\hat b\) and \(\hat b+\hat\lambda\) in each class
+(Lemma A.1(b)). At the prior \(1/2\), the posterior then lies between \(\hat b/(2\hat b+\hat\lambda)=m_{\hat\lambda}\)
+and \(M_{\hat\lambda}\). The zero order uses \(\hat b_0\) in place of \(\hat b\); its bounds lie inside when
+\(\hat b_0\ge\hat b\), that is \(\beta\le1/3\) (Section~\ref{sec:beliefs-zero}). The top bound rises with research, so
+\(M_{\hat\lambda}\le M_{\lb}\).
+\item \emph{Part (b).} This is Lemma A.2(c): equal prices force equal entry, and with \(e\ge\rho>0\) and \(\DT>0\),
+equal posteriors (Section~\ref{sec:beliefs-reveal}).
+\item \emph{Part (c).} This is Lemma A.3(a): each wrong-signed payoff is at most \(-k<0=U_j(0)\), so neither investor
+rule puts weight on it.
+\item \emph{Part (d).} Without wrong-signed orders, \(f_H(1)=\hat b+\hat\lambda\sigma_H(1)\ge\hat b=f_L(1)\) and
+\(f_H(-1)=\hat b\le\hat b+\hat\lambda\sigma_L(-1)=f_L(-1)\). A likelihood ratio at least one gives a posterior at least
+the prior \(1/2\), and the reverse. With \(\sigma_H(1)=1\), \(f_H(0)=\hat b_0\le\hat b_0+\hat\lambda\sigma_L(0)=f_L(0)\),
+so \(\mu(0)\le1/2\), and \(\mu(1)=(\hat b+\hat\lambda)/(2\hat b+\hat\lambda)=M_{\hat\lambda}\).
+\end{enumerate}
+
+The second lemma says that positive research needs a purchase that pays strictly.
+
+\begin{paperresult}{Lemma A.14 (Positive research needs a strict full purchase)}
+Under either investor tie rule and either challenger tie rule, every equilibrium with \(\hat\lambda>0\) has
+\(U_H(1)>0\) and \(\sigma_H(1)=1\). Its posteriors satisfy \(\mu(1)=M_{\hat\lambda}\), \(\mu(0)\le1/2\) and
+\(\mu(-1)\le1/2\); entry after a sale or no order is \(\rho\). This holds for every \(0<\beta<1/2\).
+\end{paperresult}
+
+\begin{derivation}[proof of Lemma A.14]
+\emph{Step 1: some correct order pays.} By Lemma A.12, \(\hat\lambda=\min\{\lb,\Psi/a\}>0\), so \(\Psi>0\). Wrong-signed
+orders earn at most \(-k\) and abstention earns zero, so \(U_H(1)>0\) or \(U_L(-1)>0\).
+
+\emph{Step 2: a paying sale implies a paying purchase.} Suppose \(U_L(-1)>0\). Then the sale is the unique best order of
+class \(L\), and \(\sigma_L(-1)=1\). With \(\sigma_H(-1)=0\), \(f_H(-1)=\hat b\) and \(f_L(-1)=\hat b+\hat\lambda\), so
+\(\mu(-1)=m_{\hat\lambda}\le1/2<\tau\). Hence \(e(-1)=\rho\) and \(U_L(-1)=\rho\DT m_{\hat\lambda}-k>0\). For the
+purchase,
+\begin{align*}
+U_H(1)&=e(1)\,\DT\,[1-\mu(1)]-k \why{\eqref{eq:trading-returns}}\\
+&\ge\rho\,\DT\,(1-M_{\hat\lambda})-k \why{\(e(1)\ge\rho\); \(\mu(1)\le M_{\hat\lambda}\), Lemma A.13(a)}\\
+&=\rho\DT m_{\hat\lambda}-k>0 \why{\(1-M=m\); the line above}
+\end{align*}
+So \(U_H(1)>0\) in both cases.
+
+\emph{Step 3: the consequences.} The purchase is the unique best order of class \(H\), so \(\sigma_H(1)=1\) under both
+investor rules. Lemma A.13(d) gives the three posteriors. Since \(\tau>1/2\), Lemma A.2(d) gives entry \(\rho\) after a
+sale and after no order, under both challenger rules.
+\end{derivation}
+
+\subsection{Part (a): when recruiting research exists}
+
+The appendix states part (a) in full.
+
+\begin{paperresult}{Proposition 4(a), full statement}
+When an indifferent high-cost challenger may prepare with any probability, select full preparation after a purchase
+that reaches the threshold. Recruiting research, an equilibrium with positive research and full preparation after a
+purchase, exists exactly when
+\[
+\DT>2k,\qquad \tfrac12<\tau\le M_{\min\{\lambda_R(\DT),\lb\}},
+\]
+where \(\lambda_R(\DT)\) is the unique root in \((0,1)\) of \eqref{eq:research-cond}. Its research is
+\(\hat\lambda=\min\{\lambda_R(\DT),\lb\}\). Class \(H\) buys strictly and fully, class \(L\) uses Lemma A.15, and entry
+is \(e(1)=1\), \(e(0)=e(-1)=\rho\). The posteriors are those of that lemma, prices are
+\(P(x)=t_0+e(x)[t_L-t_0+\DT\mu(x)]\), price beliefs are \(\bar\mu(P(x))=\mu(x)\), and bids are truthful. Equal
+nonpurchase posteriors have equal entry and equal prices.
+\end{paperresult}
+
+\paragraph{Proof, step by step.}
+\begin{enumerate}
+\item \emph{A strict full purchase.} Positive research forces \(\sigma_H(1)=1\) and \(U_H(1)>0\) (Lemma A.14). Entry
+after a sale and after no order is \(\rho\).
+\item \emph{The value of a success.} With full preparation after the purchase, \(U_H(1)=\DT m_{\hat\lambda}-k\).
+Lemma A.15 gives class \(L\)'s best payoff. So \(\Psi=\tfrac12[\DT m_{\hat\lambda}-k+(\rho\DT m_{\hat\lambda}-k)^+]\).
+\item \emph{The research level.} Section~\ref{sec:research-value} turns (E7) into \(\hat\lambda=\min\{\lambda_R,\lb\}\),
+and the root needs \(\DT>2k\).
+\item \emph{The purchase is strict at the capped choice.} At \(\hat\lambda\) the residual is nonnegative, so
+\(\DT m-k+(\rho\DT m-k)^+\ge2a\hat\lambda>0\). If \(\DT m-k\le0\), then also \(\rho\DT m-k<0\), the positive part is
+zero, and the left side is at most zero, a contradiction. So \(\DT m_{\hat\lambda}>k\).
+\item \emph{Recruitment.} A purchase recruits exactly when \(M_{\hat\lambda}\ge\tau\). At equality the default rule
+makes the challenger prepare; under the other rule, the selection does. With \(\tau>1/2\) from the setting, this is the
+displayed condition.
+\item \emph{The converse.} Under the displayed condition, build the tuple: research \(\hat\lambda\), \(\sigma_H=\delta_1\),
+the sale rate of Lemma A.15, its posteriors, entry \((\rho,\rho,1)\), the price formula, beliefs equal to posteriors,
+and truthful bids. Check each condition.
+\begin{itemize}
+\item (E1): the posteriors come from Bayes' rule.
+\item (E2) and (E4): entry never falls when the posterior rises. For \(\mu(x)>\mu(y)\), the increment identity
+\eqref{eq:beliefs-increment} gives \(P(x)-P(y)=e(x)\DT[\mu(x)-\mu(y)]+[e(x)-e(y)][t_L-t_0+\DT\mu(y)]>0\), because
+\(t_L\ge t_0\) and \(e(x)\ge\rho>0\). A sale and no order can share a posterior; they then share entry \(\rho\) and a
+price, and the belief at that price is their common posterior (Section~\ref{sec:beliefs-constructed}).
+\item (E3): \(\mu(1)=M_{\hat\lambda}\ge\tau\), and the other posteriors are at most \(1/2<\tau\).
+\item (E5): the purchase is strict for class \(H\) (step 4); class \(L\) follows Lemma A.15.
+\item (E6): truthful bids.
+\item (E7): the research equality, or the cap inequality, gives optimality of every joint deviation by Lemma A.12.
+\end{itemize}
+These conditions also fix every component, so the positive-research tuple is unique.
+\end{enumerate}
+
+\begin{checkyourself}\label{q:research-zero}
+Take zero research, \(\hat\lambda=0\). Show that every posterior is \(1/2\), whatever the orders after a hypothetical
+success, and that entry is \(\rho\). Find \(U_H(1)\) and \(U_L(-1)\), and show that zero research is an equilibrium
+exactly when \(\rho\DT\le2k\). Why must the orders after a hypothetical success be optimal?
+\end{checkyourself}
+
+\subsection{Part (b): research and entry rise with the spread}
+
+The appendix adds detail to part (b).
+
+\begin{paperresult}{Proposition 4(b), full statement}
+Research is continuous and strictly increasing in \(\DT\) below its cap, and constant at the cap. Total entry and class
+entry are
+\[
+\Ent=\rho+(1-\rho)[\beta+(1/2-\beta)\hat\lambda],\qquad
+e_H=\rho+(1-\rho)[\beta+(1-\beta)\hat\lambda],\qquad e_L=\rho+(1-\rho)\beta(1-\hat\lambda).
+\]
+Thus total entry and class-\(H\) entry rise, class-\(L\) entry falls, and the class-\(H\) share of prepared challengers
+rises with the spread, strictly below the cap and weakly throughout the existence set. The prepared-value distribution
+\((e_HG_H+e_LG_L)/(e_H+e_L)\) improves in first-order stochastic dominance; its mean rises strictly when research rises
+strictly. For almost every fixed incumbent value \(x\), the high-class acquisition probability is \(e_H/2\) for
+\(x<p\) and \(e_H[1-G_H(x)]/2\) for \(x\ge p\). It rises strictly with the spread below the cap wherever class \(H\) can
+win.
+\end{paperresult}
+
+The appendix statement also gives the slopes of research, the kink at the sale boundary and the cap spread.
+Section~\ref{sec:research-sale} derives them.
+
+\paragraph{Step 1: research rises with the spread.} Write \(\mathcal R(\lambda;\DT)\) to show the spread. At a fixed
+\(\lambda\in(0,1)\), \(m_\lambda>0\), so \(\DT m_\lambda\) rises strictly with \(\DT\), and the positive part never
+falls. So \(\mathcal R\) rises strictly with \(\DT\). Take \(2k<\DT<\DT'\):
+\begin{align*}
+\mathcal R(\lambda_R(\DT);\DT')&>\mathcal R(\lambda_R(\DT);\DT) \why{\(\mathcal R\) rises strictly in \(\DT\)}\\
+&=0 \why{definition of \(\lambda_R(\DT)\)}
+\end{align*}
+\(\mathcal R(\cdot;\DT')\) is strictly decreasing and zero at \(\lambda_R(\DT')\). It is positive at \(\lambda_R(\DT)\),
+so \(\lambda_R(\DT)<\lambda_R(\DT')\).
+
+\paragraph{Step 2: research moves continuously.} The paper states this; the guide gives the argument. Fix \(\DT>2k\)
+and a small \(\varepsilon>0\). Strict decrease gives
+\(\mathcal R(\lambda_R-\varepsilon;\DT)>0>\mathcal R(\lambda_R+\varepsilon;\DT)\). At each fixed \(\lambda\),
+\(\mathcal R\) is continuous in \(\DT\). So both signs survive for every \(\DT'\) near enough to \(\DT\). Then the root
+\(\lambda_R(\DT')\) lies between \(\lambda_R-\varepsilon\) and \(\lambda_R+\varepsilon\). Cutting at the cap,
+\(\min\{\lambda_R,\lb\}\), keeps continuity and makes research constant at the cap.
+
+\paragraph{Step 3: entry.} Only a purchase raises entry above \(\rho\). First find the probability of a purchase.
+
+\begin{derivation}[entry with research]
+\begin{align*}
+\Pr(X=1)&=\tfrac12 f_H(1)+\tfrac12 f_L(1) \why{total probability over the classes}\\
+&=\tfrac12(b+\hat\lambda)+\tfrac12 b=b+\tfrac12\hat\lambda \why{\(f_H(1)=b+\hat\lambda\), \(f_L(1)=b\)}\\
+&=(1-\hat\lambda)\beta+\tfrac12\hat\lambda=\beta+(\tfrac12-\beta)\hat\lambda \why{\(b=(1-\hat\lambda)\beta\); collect \(\hat\lambda\)}\\[4pt]
+\Ent&=1\cdot\Pr(X=1)+\rho\,[1-\Pr(X=1)] \why{entry \(1\) after a purchase, \(\rho\) otherwise}\\
+&=\rho+(1-\rho)\,[\beta+(\tfrac12-\beta)\hat\lambda] \why{rearrange}
+\end{align*}
+In class \(H\), a purchase has probability \(b+\hat\lambda=\beta+(1-\beta)\hat\lambda\); in class \(L\), it has
+probability \(b=\beta(1-\hat\lambda)\). The same steps give
+\[
+e_H=\rho+(1-\rho)[\beta+(1-\beta)\hat\lambda],\qquad e_L=\rho+(1-\rho)\beta(1-\hat\lambda).
+\]
+\end{derivation}
+
+This is \eqref{eq:ccc-entry} at \(\pi=1/2\), with presence \(\hat\lambda\). The low class's sale rate does not enter.
+It moves probability between a sale and no order, and both have entry \(\rho\).
+
+The slopes in research are
+\[
+\frac{d\Ent}{d\hat\lambda}=(1-\rho)\bigl(\tfrac12-\beta\bigr)>0,\qquad
+\frac{de_H}{d\hat\lambda}=(1-\rho)(1-\beta)>0,\qquad
+\frac{de_L}{d\hat\lambda}=-(1-\rho)\beta<0 .
+\]
+The first is positive because \(\beta<1/2\). Combine with Steps 1 and 2: entry and \(e_H\) rise with the spread and
+\(e_L\) falls, strictly below the cap and weakly over the whole existence set.
+
+\begin{intuition}[one unit of research, two changes in purchases]
+One more unit of research adds an informed purchase whenever the class is \(H\), which happens half the time. It also
+removes a liquidity purchase with probability \(\beta\), in both classes. Since \(\beta<1/2\), the first change is
+larger, and purchases become more frequent. Class \(L\) reaches a purchase only through a liquidity trader, so its
+entry falls. The challengers who prepare are more often of class \(H\).
+\end{intuition}
+
+\paragraph{Step 4: the share of class \(H\).} Write \(S=e_H+e_L\). By the quotient rule,
+\begin{align*}
+\frac{d}{d\hat\lambda}\frac{e_H}{S}
+&=\frac{e_H'\,S-e_H\,(e_H'+e_L')}{S^2}=\frac{e_H'\,e_L-e_H\,e_L'}{S^2} \why{quotient rule; \(e_H'e_H\) cancels}\\
+&=\frac{(1-\rho)\bigl[(1-\beta)e_L+\beta e_H\bigr]}{S^2} \why{\(e_H'=(1-\rho)(1-\beta)\), \(e_L'=-(1-\rho)\beta\)}\\
+&=\frac{(1-\rho)\bigl[\rho+(1-\rho)\beta\bigr]}{S^2}>0 \why{expand; the \(\hat\lambda\) terms cancel}
+\end{align*}
+In the last step, \((1-\beta)e_L+\beta e_H=\rho+(1-\rho)[(1-\beta)\beta(1-\hat\lambda)+\beta^2+\beta(1-\beta)\hat\lambda]
+=\rho+(1-\rho)\beta\).
+
+\paragraph{Step 5: the values of prepared challengers.} Preparation depends only on the order and the cost, so given
+the class it is independent of the challenger's value. A prepared challenger is of class \(j\) with probability
+\(e_j/S\). So its value has the distribution \(sG_H+(1-s)G_L\), with \(s=e_H/S\). The class ranking gives
+\(G_H\le G_L\), so a higher \(s\) lowers this mixture at every point: a first-order improvement. Its mean
+\(s\,\E_H\theta+(1-s)\,\E_L\theta\) rises at the rate \(\E_H\theta-\E_L\theta=\DT+\gamma>0\) per unit of \(s\)
+(Lemma A.5).
+
+\paragraph{Step 6: acquisitions at a fixed incumbent value.} The same independence gives
+\(\Pr(H\text{ acquires}\mid R=x)=\tfrac12\,e_H\,\Pr(\theta>x\mid H)\) for \(x\ge p\), and \(\tfrac12 e_H\) for \(x<p\),
+where the incumbent cannot meet the reserve. The win factor does not depend on research, so the change has the sign of
+the change in \(e_H\) wherever class \(H\) can win.
+
+\begin{checkyourself}\label{q:research-entry}
+Entry in class \(L\) falls with research, although a purchase recruits. Explain why with the formula for \(e_L\). What
+would total entry do as research rises if \(\beta\) were \(1/2\), and why does the model exclude this value?
+\end{checkyourself}
+
+\subsection{Part (c): ownership}
+
+\begin{paperresult}{Proposition 4(c), full statement}
+High-class ownership is \(\Own_H(F)=e_H(F)W_H(F)/2\). For two recruiting economies on a path,
+\[
+\Own_H(F_{r'})\ge\Own_H(F_r)\quad\Longleftrightarrow\quad\frac{W_H(F_{r'})}{W_H(F_r)}\ge\frac{e_H(F_r)}{e_H(F_{r'})},
+\]
+with the corresponding strict equivalence. These win probabilities are positive. If class \(H\) outbids every
+incumbent along the recruiting part of the path, ownership rises weakly with strength, and strictly for a strict
+increase in the spread from a research intensity below the cap. Decisive advantage (Lemma A.6),
+\(g_H(F)>c_H\Rightarrow W_H(F)=1\) throughout the family, supplies this outbidding condition at every recruiting
+economy.
+\end{paperresult}
+
+\paragraph{Proof, step by step.}
+\begin{enumerate}
+\item \emph{The formula.} Given the class, preparation is independent of the values. So
+\(\Own_H=\Pr(H)\cdot\Pr(\text{preparation}\mid H)\cdot W_H(F)=\tfrac12\,e_H\,W_H(F)\).
+\item \emph{Positive win probabilities.} At a recruiting economy, \(\tau\le M_{\hat\lambda}\), so
+\(c_H\le B(M_{\hat\lambda})\). Then
+\begin{align*}
+c_H\le B(M_{\hat\lambda})&=g_H-(1-M_{\hat\lambda})\gamma \why{\(B(\mu)=g_L+\mu\gamma\); rearrange}\\
+&<g_H \why{\(M_{\hat\lambda}<1\), \(\gamma>0\)}
+\end{align*}
+So \(g_H>c_H>0\). A positive gross profit means a positive chance to win (Chapter~\ref{ch:ccc}, Step 4 of part (ii)), so
+\(W_H(F)>0\).
+\item \emph{The equivalence.} \(\Own_H(F_{r'})\ge\Own_H(F_r)\) means \(e_H(F_{r'})W_H(F_{r'})\ge e_H(F_r)W_H(F_r)\). Divide
+by the positive number \(W_H(F_r)\,e_H(F_{r'})\). The strict version has the same steps.
+\item \emph{Outbidding.} If \(W_H=1\) everywhere, then \(\Own_H=e_H/2\): half the entry in class \(H\). Along a path the
+spread never falls (Lemma A.5), so research never falls, and by part (b) \(e_H\) never falls. Where research is below the
+cap and the spread rises strictly, research and \(e_H\) rise strictly.
+\item \emph{Decisive advantage.} Step 2 gives \(g_H>c_H\) at every recruiting economy. In a family with decisive
+advantage this gives \(W_H=1\) (Section~\ref{sec:ccc-decisive}).
+\end{enumerate}
+
+\paragraph{Ownership at the same incumbent.} The appendix compares two equilibria at one incumbent. Where recruiting
+research coexists with zero research, \(\rho\DT\le2k\), zero research has entry \(\rho\) after every order, so
+\(\Own_H^{\rm Z}=\rho W_H(F)/2\). Divide: the win probability cancels, and
+\[
+\frac{\Own_H^{\rm R}}{\Own_H^{\rm Z}}=\frac{e_H}{\rho}>1 .
+\]
+This ratio rises strictly with the spread below the cap and stays constant at the cap.
+
+\begin{watchout}
+``High-class ownership equals half the entry in class \(H\)'' needs class \(H\) to outbid the incumbent,
+\(W_H(F)=1\). Without it, ownership rises only under the ratio condition of the full statement, because a stronger
+incumbent can lower class \(H\)'s chance to win. Decisive advantage is one way to obtain the outbidding.
+\end{watchout}
+
+\subsection{Part (d): one interval of strengths}
+
+A path holds every other primitive fixed and strengthens the incumbent as \(r\) rises. Along it the spread never
+falls, and, where \(\tau>1/2\), the threshold never falls (Lemma A.5, Section~\ref{sec:trading-path}). Call the
+spread at which research reaches its cap the \emph{cap spread}.
+
+\begin{paperresult}{Proposition 4(d), full statement}
+Let \(I=[r_-,r_+]\) be compact and \(\DT,\tau\) continuous along the path. The capped recruiting set is
+\[
+\bigl\{r\in I:\ \DT(r)m_{\lb}-k+(\rho\DT(r)m_{\lb}-k)^+\ge2a\lb,\ \ \tau(r)\le M_{\lb}\bigr\}.
+\]
+It is empty, a singleton, or a nondegenerate closed interval. If nonempty, it ends at \(\max\{r\in I:\tau(r)\le M_{\lb}\}\).
+
+Suppose the path first reaches the cap spread at \(r_{\lb}>r_-\), with a strictly smaller spread at \(r_-\). On
+\([r_-,r_{\lb}]\), suppose \(\tau<1\), and define \(\varphi_a^*=J-k+(\rho J-k)^+-2a\lambda_E(\tau)\). If \(\varphi_a^*\)
+is strictly increasing on \([r_-,r_{\lb}]\) and \(\varphi_a^*(r_-)<0<\varphi_a^*(r_{\lb})\), the full recruiting set is
+\[
+\bigl[r_R,\ \max\{r\in I:\tau(r)\le M_{\lb}\}\bigr],
+\]
+where \(r_R\) is the unique zero of \(\varphi_a^*\) before \(r_{\lb}\). Research is below its cap up to \(r_{\lb}\) and at
+the cap thereafter. A threshold plateau at \(M_{\lb}\) belongs to the recruiting set through its last point. On a path
+with continuously differentiable \(\DT,\tau\) on \([r_-,r_{\lb}]\), the cheap-research condition
+\[
+\text{(CR)}\qquad [1+\rho\1\{\rho J>k\}]\,J'-\frac{2a\beta\,\tau'}{[\beta+(1-2\beta)(1-\tau)]^2}>0
+\quad\text{almost everywhere on }[r_-,r_{\lb}]
+\]
+makes \(\varphi_a^*\) strictly increasing there.
+\end{paperresult}
+
+\paragraph{Step 1: research at the cap.} At the cap, research is optimal exactly when the residual at \(\lb\) is
+nonnegative:
+\[
+\DT m_{\lb}-k+(\rho\DT m_{\lb}-k)^+\ge2a\lb .
+\]
+The left side rises strictly and continuously with \(\DT\), so equality picks out one spread, the cap spread. At or
+above the cap spread, the purchase pays strictly, by the argument of step 4 of part (a). The purchase posterior is
+\(M_{\lb}\), so it recruits exactly when \(\tau\le M_{\lb}\). Bayes' rule, the price formula and truthful bids give the
+other conditions.
+
+\paragraph{Step 2: the capped recruiting set.} Take two kinds of sets of strengths.
+\begin{itemize}
+\item \(\{r:\DT(r)\ \text{is at least the cap spread}\}\). The spread never falls, so this set contains every strength
+above each of its members.
+\item \(\{r:\tau(r)\le M_{\lb}\}\). The threshold never falls, so this set contains every strength below each of its
+members.
+\end{itemize}
+Continuity makes both sets closed. So the first is an interval that runs to \(r_+\), and the second an interval that
+starts at \(r_-\). Their intersection is empty, one point, or a closed interval. If it is not empty, it ends where the
+second set ends, at \(\max\{r:\tau(r)\le M_{\lb}\}\). A stretch with \(\tau=M_{\lb}\) lies in the second set, so it
+belongs to the interval through its last point.
+
+\paragraph{Step 3: the margin decides below the cap.} For \(r\in[r_-,r_{\lb}]\), the derivation after
+\eqref{eq:research-margin} gives: a purchase at the chosen research recruits exactly when \(\varphi_a^*\ge0\) and
+\(\lambda_E(\tau)\le\lb\). The margin is continuous, strictly increasing, negative at \(r_-\) and positive at
+\(r_{\lb}\). So it has exactly one zero \(r_R\), and it is negative before \(r_R\) and positive after.
+
+\paragraph{Step 4: the cap condition holds below \(r_{\lb}\).} At \(r_{\lb}\), continuity makes the spread equal to the
+cap spread, so \(\lambda_R=\lb\). The positive margin there gives \(\mathcal R(\lambda_E)>0\), so
+\(\lambda_E<\lambda_R=\lb\), that is \(\tau(r_{\lb})<M_{\lb}\). The threshold never falls, so \(\tau(r)<M_{\lb}\) on all
+of \([r_-,r_{\lb}]\), and \(\lambda_E(\tau)<\lb\) there. On this stretch, recruitment is therefore the same as
+\(\varphi_a^*\ge0\), that is \(r\ge r_R\). Before \(r_{\lb}\) the spread is below the cap spread, so research is below
+the cap.
+
+\paragraph{Step 5: beyond \(r_{\lb}\).} The spread never falls, so research stays at the cap from \(r_{\lb}\) on. Step 2
+gives recruitment exactly up to \(\max\{r:\tau(r)\le M_{\lb}\}\). Together, the recruiting set is
+\([r_R,\max\{r:\tau(r)\le M_{\lb}\}]\).
+
+\paragraph{Step 6: the cheap-research condition.} Away from \(\rho J=k\), differentiate \eqref{eq:research-margin}
+along the path:
+\begin{align*}
+\frac{d\varphi_a^*}{dr}&=J'+\rho J'\,\1\{\rho J>k\}-2a\,\frac{d\lambda_E}{d\tau}\,\tau' \why{chain rule; \((\rho J-k)^+\) has slope \(\rho J'\) where \(\rho J>k\)}\\
+&=[1+\rho\1\{\rho J>k\}]\,J'-\frac{2a\beta\,\tau'}{[\beta+(1-2\beta)(1-\tau)]^2} \why{slope of \(\lambda_E\), Section~\ref{sec:research-posteriors}}
+\end{align*}
+On a stretch where \(\rho J=k\) holds, \(J\) is constant, so \(J'=0\) almost everywhere there, and the same expression
+is still the derivative. A function whose derivative is positive almost everywhere rises strictly over every stretch,
+because it is the integral of its derivative. So (CR) makes the margin rise strictly.
+
+\begin{watchout}
+Part (d) compares economies along a path. In each economy the equilibrium is solved again: the spread, the threshold,
+research and the prices all change. Inside one economy, a deviation in research faces fixed prices and entry.
+\end{watchout}
+
+% =====================================================================
+\section{The low class's sale}\label{sec:research-sale}
+
+Class \(L\) sells after bad news when a sale at the entry floor pays. The paper explains why this leaves the mechanism
+in place.
+\begin{itemize}
+\item \emph{A sale never recruits.} Its posterior is at most \(1/2<\tau\), so its entry is \(\rho\).
+\item \emph{While class \(L\) mixes, its sale breaks even.} Its best payoff is zero, as when it abstains. So a success
+has the same value, and \eqref{eq:research-cond} has no sale term.
+\item \emph{Once a sure sale pays,} its profit \(\rho\DT m_\lambda-k\) is a second return to research. If research is
+still below its cap at that point, the research schedule kinks upward there.
+\end{itemize}
+
+\paragraph{The two slopes of research.} On each side of the sale boundary, \eqref{eq:research-cond} is smooth.
+\begin{itemize}
+\item While class \(L\) abstains or mixes: \(2a\lambda=\DT m_\lambda-k\).
+\item After a sure sale pays strictly: \(2a\lambda=\DT m_\lambda-k+\rho\DT m_\lambda-k=(1+\rho)\DT m_\lambda-2k\).
+\end{itemize}
+Differentiate each with respect to \(\DT\), with \(\lambda=\lambda_R(\DT)\) and \(m'=dm_\lambda/d\lambda<0\).
+
+\begin{derivation}[the slopes of research in the spread]
+First piece:
+\begin{align*}
+2a\,\lambda_R'&=m_{\lambda_R}+\DT\,m'_{\lambda_R}\,\lambda_R' \why{product rule and chain rule}\\
+\lambda_R'\,\bigl(2a-\DT m'_{\lambda_R}\bigr)&=m_{\lambda_R} \why{collect the terms in \(\lambda_R'\)}\\
+\lambda_R'&=\frac{m_{\lambda_R}}{2a-\DT m'_{\lambda_R}} \why{divide; the bracket exceeds \(2a>0\)}
+\end{align*}
+Second piece, with the factor \(1+\rho\) on \(\DT m_\lambda\):
+\[
+\lambda_R'=\frac{(1+\rho)\,m_{\lambda_R}}{2a-(1+\rho)\DT m'_{\lambda_R}} .
+\]
+\end{derivation}
+
+Both slopes are positive, because \(m>0\) and \(m'<0\). This confirms part (b) on each piece.
+
+\paragraph{Where the pieces meet.} The sale boundary is \(\rho\DT m_{\lambda_R}=k\). Combine it with the first piece:
+\begin{align*}
+\DT m_{\lambda_R}&=k/\rho \why{sale boundary}\\
+2a\lambda_R&=k/\rho-k=\frac{(1-\rho)k}{\rho} \why{first piece}\\
+\lambda_R&=\frac{(1-\rho)k}{2a\rho} \why{divide by \(2a\)}
+\end{align*}
+At this point, write \(A=2a\) and \(G=-\DT m'_{\lambda_R}>0\). Subtract the first slope from the second:
+\begin{align*}
+\frac{(1+\rho)m}{A+(1+\rho)G}-\frac{m}{A+G}
+&=\frac{m\,[(1+\rho)(A+G)-A-(1+\rho)G]}{(A+G)[A+(1+\rho)G]} \why{common denominator}\\
+&=\frac{m\,\rho A}{(A+G)[A+(1+\rho)G]}=\frac{2a\rho\,m_{\lambda_R}}{(2a-\DT m'_{\lambda_R})[2a-(1+\rho)\DT m'_{\lambda_R}]}>0
+\why{expand; \(A+G\) terms cancel}
+\end{align*}
+So, if \((1-\rho)k/(2a\rho)<\lb\), the slope of research jumps up at this intensity. Research itself and entry stay
+continuous, through the first sale, through the onset of a strictly profitable sure sale, and through the cap.
+
+\paragraph{The cap spread.} Set \(\lambda=\lb\) in the research condition on each side of the sale boundary.
+\begin{itemize}
+\item Sale term zero: \(2a\lb=\DT m_{\lb}-k\) gives \(\DT=(2a\lb+k)/m_{\lb}\).
+\item Sure sale pays: \(2a\lb=(1+\rho)\DT m_{\lb}-2k\) gives \(\DT=(2a\lb+2k)/[(1+\rho)m_{\lb}]\).
+\end{itemize}
+The first case applies when the sale term is zero at its own spread: \(\rho(2a\lb+k)\le k\), that is
+\(\lb\le(1-\rho)k/(2a\rho)\). Both pieces agree at the boundary. The cap spread exceeds \(2k\): at \(\DT=2k\), the
+residual at the cap is \(k(2m_{\lb}-1)-2a\lb<0\), because \(m_{\lb}<1/2\) and the sale term is zero there.
+
+\begin{intuition}[a second return, if research still has room]
+While the low class mixes, the market reads a sale as just enough news to make it break even, so a sale adds no value
+to a success. A sure sale that pays is different: a success then earns something in both classes. Research responds
+faster to the spread from that point on. If research already sits at its cap, nothing changes. In the example,
+research reaches the cap before the low class starts to sell, so the sale's profit leaves research unchanged.
+\end{intuition}
+
+\begin{checkyourself}\label{q:research-kink}
+Suppose \((1-\rho)k/(2a\rho)\ge\lb\). Show that research reaches the cap at a spread where a sure sale does not pay
+strictly. Explain in words why the low class's sale then never changes research.
+\end{checkyourself}
+
+% =====================================================================
+\section{The race between the spread and the threshold}\label{sec:research-race}
+
+Section~\ref{sec:trading-race} described a race along a path. A stronger incumbent never narrows the spread, and,
+while \(g_L\le c_H\), it never lowers the threshold. With research, the race reads as follows.
+\begin{itemize}
+\item \emph{The spread.} A wider spread raises what a recruiting purchase earns, \(J=\DT(1-\tau)\) at a fixed
+threshold, and so the value of a success.
+\item \emph{The threshold.} A higher threshold raises the belief that a purchase must reach. So it raises the
+research needed, \(\lambda_E(\tau)\), and the marginal cost \(a\lambda_E\) of that research. It also lowers \(J\) at a
+fixed spread.
+\end{itemize}
+The exact recruitment margin \eqref{eq:research-margin} collects both forces in one number. Part (d) asks that it
+rise strictly up to \(r_{\lb}\). Then, once below the cap, the race tips toward recruitment, and the equilibrium holds
+on one interval of strengths. It lasts through the last strength at which the threshold does not exceed the top
+posterior at the cap.
+
+\paragraph{The cheap-research condition in words.} Halve (CR). Its first term, \(\tfrac12[1+\rho\1\{\rho J>k\}]J'\), is
+the rise in the value of a success at the recruitment intensity. Its second term is the rise in the marginal cost,
+\(a\,\lambda_E'(\tau)\,\tau'\). So (CR) says: the increase in a recruiting purchase's return exceeds the marginal cost
+of the additional research needed to reach the threshold. Where \(\tau'>0\), it is an upper bound on the cost:
+\[
+a<\frac{[1+\rho\1\{\rho J>k\}]\,J'}{2\,\lambda_E'(\tau)\,\tau'} .
+\]
+Where \(\tau'=0\), it says \(J'>0\).
+
+The paper adds two remarks on the margin. Before a sure sale pays, its derivative is \(J'-2a\lambda_E'(\tau)\tau'\);
+once a sure sale pays, it is \((1+\rho)J'-2a\lambda_E'(\tau)\tau'\). The margin is continuous at \(\rho J=k\), and at a
+crossing into \(\rho J>k\) its derivative jumps up by \(\rho J'\).
+
+\paragraph{Extreme cases.} With research cost near zero, the condition holds wherever \(J\) rises. With a large cost,
+it can fail even where \(J\) rises, because each rise in the threshold then needs costly research. Recall from
+Section~\ref{sec:trading-path} that \(J\) itself can rise or fall along a path.
+
+% =====================================================================
+\section{The three research outcomes}\label{sec:research-outcomes}
+
+Proposition~4 covers one equilibrium. The appendix lists every equilibrium under the default tie rules. Two more
+outcomes appear. In \emph{zero research}, the investor does no research. In \emph{floor-entry research}, both classes
+trade after a success, no order recruits, and entry is \(\rho\).
+
+For \(\rho\DT\ge2k\), the paper defines \(\lambda_Q(\DT)\) as the unique root in \([0,1)\) of
+\begin{equation}\label{eq:research-floor}
+a\lambda_Q=\rho\DT\,m_{\lambda_Q}-k .
+\end{equation}
+It equals zero exactly when \(\rho\DT=2k\).
+
+\begin{paperresult}{Lemma A.16 (The three research outcomes)}
+Maintain the setting above. An indifferent investor may mix over its best orders and an indifferent high-cost
+challenger prepares. The following outcomes exhaust the equilibria.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Zero research exists exactly when \(\rho\DT\le2k\). All posteriors are \(1/2\), entry is \(\rho\), and every order
+has price \(t_0+\rho[t_L-t_0+\DT/2]\). If the inequality is strict, both classes abstain after a hypothetical success.
+At equality, each class uses any mixture of its correct order and abstention; all these strategies give the same
+zero-research outcome.
+\item Recruiting research is exactly the outcome of Proposition~4(a).
+\item Floor-entry research exists exactly when \(\rho\DT>2k\) and \(\tau>M_{\min\{\lambda_Q(\DT),\lb\}}\). Research is
+\(\hat\lambda=\min\{\lambda_Q,\lb\}\), both classes trade strictly and fully after a success, the posteriors are
+\((m_{\hat\lambda},1/2,M_{\hat\lambda})\), and entry is \(\rho\) after every order. Prices are
+\(t_0+\rho[t_L-t_0+\DT\mu(x)]\), price beliefs are the corresponding posteriors, and bids are truthful.
+\end{enumerate}
+Each positive-research outcome has a unique tuple. The two positive-research outcomes coexist exactly when
+\[
+\rho\DT>2k,\qquad M_{\min\{\lambda_Q,\lb\}}<\tau\le M_{\min\{\lambda_R,\lb\}}.
+\]
+The uncapped roots satisfy \(\lambda_Q<\lambda_R\); their capped values are strictly ordered when \(\lambda_Q<\lb\) and
+coincide when both roots reach the cap. Thus the coexistence band has positive width in \(\tau\) exactly when
+\(\lambda_Q<\lb\). At least one of the three outcomes exists at every auction in the stated domain, including
+\(\tau\ge1\).
+\end{paperresult}
+
+\paragraph{Proof, step by step.}
+\begin{enumerate}
+\item \emph{Zero research.} Check yourself~\ref{q:research-zero} works this case in full. At \(\hat\lambda=0\) every
+order comes from a liquidity trader in both classes, so every posterior is \(1/2\) and entry is \(\rho\). The correct
+orders earn \(\rho\DT/2-k\), so \(\Psi=(\rho\DT/2-k)^+\). Zero research is the best choice exactly when \(\Psi=0\), that
+is \(\rho\DT\le2k\). At equality both correct orders tie with abstention. They have probability zero, so any mixture
+leaves beliefs, prices and entry unchanged.
+\item \emph{Every positive-research equilibrium.} Lemma A.14 gives a strict full purchase, \(\mu(1)=M_{\hat\lambda}\),
+and entry \(\rho\) after the other orders. Two cases remain.
+\begin{itemize}
+\item If \(M_{\hat\lambda}\ge\tau\), the purchase recruits. This is recruiting research (part (b) of the lemma).
+\item If \(M_{\hat\lambda}<\tau\), the purchase earns \(\rho\DT m_{\hat\lambda}-k>0\). A sale earns at least as much,
+because \(\mu(-1)\ge m_{\hat\lambda}\). So class \(L\) sells strictly and fully, and both classes earn
+\(\rho\DT m_{\hat\lambda}-k\). Then \(\Psi=\rho\DT m_{\hat\lambda}-k\), and Lemma A.12 gives
+\(\hat\lambda=\min\{\lambda_Q,\lb\}\). This is floor-entry research.
+\end{itemize}
+\item \emph{The floor root.} The gap \(\rho\DT m_\lambda-k-a\lambda\) falls strictly in \(\lambda\), from
+\(\rho\DT/2-k\ge0\) at \(\lambda=0\) to \(-k-a\) at \(\lambda=1\). So \(\lambda_Q\) exists and is unique. It is positive
+exactly when \(\rho\DT>2k\). The gap rises strictly with \(\DT\), so \(\lambda_Q\) rises strictly and continuously with
+the spread, by the argument of part (b).
+\item \emph{The order of the roots.} Let \(\rho\DT>2k\). At \(\lambda_Q\), the floor equation gives
+\(\rho\DT m_{\lambda_Q}-k=a\lambda_Q>0\), so the positive part in \(\mathcal R\) is active. Then
+\begin{align*}
+\mathcal R(\lambda_Q)&=\DT m_{\lambda_Q}-k+(\rho\DT m_{\lambda_Q}-k)-2(\rho\DT m_{\lambda_Q}-k) \why{\(2a\lambda_Q=2(\rho\DT m_{\lambda_Q}-k)\)}\\
+&=(1-\rho)\,\DT\,m_{\lambda_Q}>0 \why{the \(k\) terms cancel}
+\end{align*}
+Since \(\mathcal R\) is strictly decreasing with root \(\lambda_R\), \(\lambda_Q<\lambda_R\).
+\item \emph{Coexistence.} Floor-entry research needs \(\tau>M_{\min\{\lambda_Q,\lb\}}\); recruiting research needs
+\(\tau\le M_{\min\{\lambda_R,\lb\}}\). Both hold on the displayed band. If both roots reach the cap, the two bounds
+coincide, and the band is empty.
+\item \emph{Some outcome always exists.} If \(\rho\DT\le2k\), zero research exists. Otherwise, either
+\(\tau\le M_{\min\{\lambda_R,\lb\}}\) and recruiting research exists, or \(\tau>M_{\min\{\lambda_R,\lb\}}\ge
+M_{\min\{\lambda_Q,\lb\}}\) and floor-entry research exists. This covers \(\tau\ge1\) too.
+\end{enumerate}
+The construction of floor-entry research checks (E1) to (E7) as in part (a): full orders give the three posteriors,
+constant entry \(\rho\) makes the three prices distinct, and the strict threshold inequality gives preparation.
+
+\begin{intuition}[two research levels that confirm themselves]
+This reading is the guide's own. If the market expects recruiting research, a purchase brings full entry, so a success
+is worth more and the investor researches more. Its purchase posterior then reaches the threshold. If the market
+expects floor-entry research, a purchase brings only the floor, a success is worth less, and the lower research keeps
+the purchase posterior below the threshold. On the band of Lemma A.16, both expectations are correct.
+\end{intuition}
+
+\begin{checkyourself}\label{q:research-floor}
+In floor-entry research, show that the value of a success is \(\Psi=\rho\DT m_\lambda-k\), and derive
+\eqref{eq:research-floor}. Why does \eqref{eq:research-floor} have the factor \(a\), and \eqref{eq:research-cond} the
+factor \(2a\)?
+\end{checkyourself}
+
+\paragraph{Strong incumbents.} Against a strong enough incumbent, the equilibrium is unique under every tie rule.
+
+\begin{paperresult}{Lemma A.17 (Strong incumbents)}
+Maintain the setting above. If \(M_{\lb}\ne\tau\) and
+\[
+\text{(U)}\qquad \rho\DT m_{\lb}-k>a\lb ,
+\]
+then under all four tie rules the equilibrium is unique. Research is \(\lb\), class \(H\) buys and class \(L\) sells
+strictly after a success, and the posteriors are \((m_{\lb},1/2,M_{\lb})\). Entry after a sale and no order is \(\rho\),
+while \(\zeta(P(1))=\1\{M_{\lb}>\tau\}\). Competitive prices, their posterior beliefs and truthful bids complete the
+tuple. With \(\bar b=(1-\lb)\beta\), total entry is \(\rho+(1-\rho)(\bar b+\lb/2)\) if \(M_{\lb}>\tau\) and \(\rho\)
+otherwise.
+\end{paperresult}
+
+\paragraph{Proof, step by step.} Take any candidate.
+\begin{enumerate}
+\item Lemma A.13(a) puts every nonzero-order posterior in \([m_{\hat\lambda},M_{\hat\lambda}]\subset[m_{\lb},M_{\lb}]\),
+whatever the orders, and entry is at least \(\rho\).
+\item So \(U_H(1)\ge\rho\DT(1-M_{\lb})-k=\rho\DT m_{\lb}-k\) and \(U_L(-1)\ge\rho\DT m_{\lb}-k\). By (U), both exceed
+\(a\lb\ge0\). The purchase and the sale are the strict best orders, under both investor rules.
+\item Then \(\Psi=\tfrac12[U_H(1)+U_L(-1)]>a\lb\), and Lemma A.12 gives \(\hat\lambda=\lb\).
+\item Full orders give the posteriors \((m_{\lb},1/2,M_{\lb})\) (Lemma A.1(d) at the prior \(1/2\)).
+\item Since \(M_{\lb}\ne\tau\), preparation after a purchase is one or zero with no tie, under both challenger rules.
+The purchase has probability \(\bar b+\lb/2\), and it recruits exactly when \(M_{\lb}>\tau\).
+\end{enumerate}
+In words, (U) says that a full order earns more than the marginal cost of research at the cap, even at the entry
+floor and at the least favourable posterior. Then nothing about the other players' behaviour can stop full orders and
+full research.
+
+% =====================================================================
+\section{Corollary 3: research in the example}\label{sec:research-example}
+
+The example has point-mass classes \(h\) and \(\ell\), a reserve \(p\), and an incumbent uniform on \([0,r]\), with
+\(p<\ell<r<h\) on the path \([r_0,r_2]\). Chapter~\ref{ch:example} derives its formulas; on the path
+\[
+\DT(r)=\frac{(r-\ell)^2}{2r},\qquad g_L(r)=\frac{\ell^2-p^2}{2r},\qquad g_H(r)=h-\frac r2-\frac{p^2}{2r}.
+\]
+The spread and the threshold rise strictly on the path, with \(1/2<\tau<1\). The research cap is
+\(\lb=u\beta/(1+u\beta)\) with \(1+u=\eu\), so \(m_{\lb}=1/(1+\eu)\) and \(M_{\lb}=\eu/(1+\eu)\)
+(Section~\ref{sec:research-posteriors}). Chapter~\ref{app:numbers} lists the values of \(a\), \(\lb\) and the marked
+strengths.
+
+\subsection{The marked strengths}
+
+The paper writes \(\lambda_E(r)=\lambda_E(\tau(r))\) and uses two margins along the path:
+\[
+\varphi_a(r)=\DT(r)[1-\tau(r)]-k-2a\lambda_E(r),\qquad \varphi_\rho(r)=\rho\DT(r)[1-\tau(r)]-k-a\lambda_E(r).
+\]
+The first is the exact recruitment margin without its sale term. The second, the \emph{floor margin}, is the gap of
+\eqref{eq:research-floor} at \(\lambda=\lambda_E(r)\): the return to a full order at the entry floor, at the research
+that lets a purchase just reach the threshold, net of the trading cost and the marginal cost of that research. Each
+strength below is the unique root on the path of its equation.
+\begin{itemize}
+\item \(r_R\): \(\varphi_a(r_R)=0\). A researched purchase first recruits here. A purchase that just reaches the
+threshold also pays for its research: \(J=\DT(1-\tau)=k+2a\lambda_E\). The factor \(2\) appears because the purchase
+comes after half of the successes.
+\item \(r_{\lb}\): \(\DT(r_{\lb})=(2a\lb+k)(1+\eu)\), the cap spread with no sale term. Research reaches its cap here.
+\item \(r_N\): \(\rho\DT(r_N)=2k\). Against a quiet market, a unit order at the entry floor earns exactly its cost.
+Zero research stops at \(r_N\), and in recruiting research the low class starts to sell.
+\item \(r_S\): \(\rho\DT(r_S)\,m_{\lb}=k\). A sure sale at the cap just pays. The low class sells for sure from here.
+\item \(r_Q\): \(\varphi_\rho(r_Q)=0\). The research of floor-entry research reaches \(\lambda_E\), so its purchase
+posterior reaches the threshold. Floor-entry research below the cap ends here.
+\item \(r_U\): \(\rho\DT(r_U)\,m_{\lb}-k=a\lb\), the edge of condition (U). The floor root reaches the cap here.
+\item \(r_C\): \(\tau(r_C)=M_{\lb}=\eu/(1+\eu)\), the entry ceiling. Research at the cap lets a purchase just reach
+the threshold.
+\end{itemize}
+The cap equals the example's presence probability, so \(r_N\), \(r_S\) and \(r_C\) are the strengths of the same names
+in Chapter~\ref{ch:coexistence}. The paper shows the order
+\[
+r_0<r_R<r_{\lb}<r_N<r_S<r_Q<r_U<r_1<r_C<r_2 .
+\]
+The three intermediate strengths of the paper's table lie between \(r_R\) and \(r_{\lb}\). There, research satisfies
+\(\lambda_E<\lambda_R<\lb\): it is positive and above the recruitment intensity, and it is below the cap.
+
+\subsection{The statement}
+
+\begin{paperresult}{Corollary 3 (Research equilibria in the example)}
+In the example at the prior \(1/2\), with the paper's research cost \(a\) and cap \(\lb\), let an indifferent investor
+mix over its best orders and an indifferent high-cost challenger prepare. On the path from \(r_0\) to \(r_2\):
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item zero research, with entry \(\rho\), is an equilibrium exactly on \([r_0,r_N]\);
+\item recruiting research is an equilibrium exactly on \([r_R,r_C]\); research is below the cap on \([r_R,r_{\lb})\) and
+at the cap on \([r_{\lb},r_C]\), and entry rises from \(\rho+(1-\rho)[\beta+(1/2-\beta)\lambda_E(r_R)]\) at \(r_R\) to
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lb]\) at \(r_{\lb}\) and keeps that value up to \(r_C\);
+\item floor-entry research, in which both classes trade after a success, no order recruits and entry is \(\rho\), is an
+equilibrium exactly on \((r_N,r_Q)\), below the cap, and on \((r_C,r_2]\), at the cap;
+\item there is no other equilibrium.
+\end{enumerate}
+The unique equilibrium thus has zero research at \(r_0\), recruiting research at the cap at \(r_1\) and floor-entry
+research at the cap at \(r_2\); at \(r_1\) and \(r_2\) it is the equilibrium of Proposition~2 with \(\lambda=\lb\).
+\end{paperresult}
+
+The main text prints values for \(a\), \(\lb\), the strengths and the two entry levels; the box writes them in symbols.
+The appendix version adds the following.
+\begin{itemize}
+\item The equilibrium set is: zero research alone on \([r_0,r_R)\); zero research and recruiting research on
+\([r_R,r_N]\); recruiting research at the cap and floor-entry research on \((r_N,r_Q)\); recruiting research at the cap
+alone on \([r_Q,r_C]\); floor-entry research at the cap alone on \((r_C,r_2]\).
+\item In recruiting research, class \(L\) abstains through \(r_N\), mixes on \((r_N,r_S)\), and sells with probability
+one on \([r_S,r_C]\). Floor-entry research has full orders and entry \(\rho\) throughout.
+\item At \(r_N\), zero research has all the hypothetical-success order mixtures of Lemma A.16(a).
+\item At each of the three intermediate strengths, exactly two equilibria coexist: zero research, and recruiting
+research with \(\lambda_E<\lambda_R<\lb\), in which class \(H\) buys and class \(L\) abstains after a success. At
+\(r_1\) and \(r_2\), the unique equilibrium has full orders and research at the cap, with entry
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lb]\) at \(r_1\) and \(\rho\) at \(r_2\).
+\end{itemize}
+
+A plain reading. Against a weak incumbent, no informed order pays, and the investor does no research. As the
+incumbent grows stronger, the spread widens. From \(r_R\), a purchase can pay for the research that makes it recruit,
+and recruiting research appears beside zero research. Its research and entry rise until the cap. From \(r_N\), an
+informed order pays even at the floor, so zero research disappears and floor-entry research appears. From \(r_Q\),
+recruiting research is the only equilibrium. Beyond \(r_C\), even research at the cap leaves the purchase posterior
+below the threshold, and entry returns to the floor.
+
+\subsection{The proof in outline}
+
+\paragraph{Step 1: recruiting research at the cap.} Substitute \(\lb\) in \(m_\lambda\): \(m_{\lb}=1/(2+u)=1/(1+\eu)\).
+In the example the ratio \((1-\rho)k/(2a\rho)\) exceeds one, so it exceeds the cap, and the cap spread is
+\((2a\lb+k)(1+\eu)\) (Section~\ref{sec:research-sale}). Part (d), Step 2, gives recruiting research at the cap exactly on
+\([r_{\lb},r_C]\), because \(r_{\lb}<r_N<r_1<r_C\). For the same reason the sale term in \eqref{eq:research-cond}
+vanishes at every uncapped root, and the explicit root of Section~\ref{sec:research-value} applies.
+
+\paragraph{Step 2: recruiting research below the cap.} On \([r_0,r_N]\), \(\rho\DT\le2k\) and \(1-\tau<1/2\), so
+\(\rho J<\rho\DT/2\le k\). The sale term is zero, and \(\varphi_a^*=\varphi_a\). The paper bounds the derivatives of
+\(\DT\) and \(\tau\) on a stretch of the path that contains \([r_0,r_N]\), and shows that \(\varphi_a\) rises there. The
+same bound holds for every research cost below a level that the paper computes. Also \(\varphi_a(r_0)<0<\varphi_a(r_{\lb})\).
+Part (d) then gives recruiting research on \([r_R,r_C]\), below the cap until \(r_{\lb}\). Beyond that stretch,
+\(\varphi_a\) stays positive, because \(J\) rises on the whole path and \(\lambda_E\) is at most \(\lambda_E(r_2)\). So
+\(r_R\) is the only zero of \(\varphi_a\) on the path.
+
+\paragraph{Step 3: zero research.} Lemma A.16(a) gives zero research exactly where \(\rho\DT\le2k\), that is on
+\([r_0,r_N]\).
+
+\paragraph{Step 4: floor-entry research (Lemma A.18).} The paper shows that the floor margin \(\varphi_\rho\) rises
+strictly on the path. It bounds the derivative of \(\varphi_\rho\) from below on short pieces of the path, with exact
+arithmetic. Then:
+\begin{itemize}
+\item At \(r_N\), \(\rho\DT=2k\), so \(\varphi_\rho(r_N)=k(1-2\tau)-a\lambda_E<0\).
+\item On \([r_U,r_C]\), write
+\(\varphi_\rho=[\rho\DT m_{\lb}-k-a\lb]+\rho\DT[M_{\lb}-\tau]+a[\lb-\lambda_E]\). The first bracket is nonnegative from
+\(r_U\) on, and the other two terms are nonnegative up to \(r_C\), with not all zero at once. So \(\varphi_\rho>0\)
+there, and its zero \(r_Q\) lies in \((r_N,r_U)\).
+\item On \((r_N,r_C]\), \(\lambda_E\le\lb\). The floor-entry purchase posterior falls short of \(\tau\) exactly when
+\(\min\{\lambda_Q,\lb\}<\lambda_E\), that is \(\lambda_Q<\lambda_E\). The gap of \eqref{eq:research-floor} falls in
+\(\lambda\) and is zero at \(\lambda_Q\), so this is \(\varphi_\rho<0\), that is \(r<r_Q\).
+\item Above \(r_C\), \(r>r_U\), so floor research sits at the cap, and \(\tau>M_{\lb}\). Floor-entry research holds
+there, uniquely by Lemma A.17.
+\end{itemize}
+On \([r_N,r_Q]\) the floor root rises from zero to \(\lambda_E(r_Q)\), which is below the cap.
+
+\paragraph{Step 5: nothing else.} Lemma A.16 lists every equilibrium. Above \(r_N\), every equilibrium has positive
+research, so it is floor-entry research or recruiting research. With Steps 1 to 4, this gives the five intervals.
+
+\paragraph{Step 6: the six strengths.} At \(r_0\), the gross return of any nonzero order is at most \(\DT(r_0)\), which
+is below \(k\). So every such order loses, \(\Psi=0\), research is zero, and \(B(1/2)<c_H\) gives entry \(\rho\). At the
+intermediate strengths, \(1/2<\tau<1\), \(\rho\DT<2k\) and \(\lambda_E<\lambda_R<\lb\), so Lemma A.16 leaves exactly zero
+research and recruiting research below the cap, with strict low-class abstention. At \(r_1\) and \(r_2\), (U) holds and
+\(\tau(r_1)<M_{\lb}<\tau(r_2)\), so Lemma A.17 gives the unique outcome. Class \(H\) outbids every incumbent on the path,
+because \(r\le r_2<h\), so its ownership is \(\tfrac12[\rho+(1-\rho)(\beta+(1-\beta)\hat\lambda)]\).
+
+\begin{watchout}
+Corollary 3 holds in the example, under the default tie rules, with the paper's research cost and cap. Several of its
+steps compare functions at points of the path with exact arithmetic. Proposition~4 holds for every distribution that
+meets its hypotheses. Keep the two kinds of claims apart.
+\end{watchout}
+
+\subsection{The figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{research}
+\caption{Research (panel (a)) and entry (panel (b)) along the example's path, at the prior \(1/2\), under the default
+tie rules. Zero research, recruiting research and floor-entry research are drawn as separate curves. Filled markers
+belong to a curve and open markers do not. Black dots mark \(r_0\), the three intermediate strengths, \(r_1\) and
+\(r_2\). The inset of panel (b) enlarges entry along the recruiting branch.}
+\label{fig:research-path}
+\end{figure}
+
+Read Figure~\ref{fig:research-path} from left to right.
+\begin{itemize}
+\item \emph{Zero research} lies flat at zero in panel (a), and its entry is \(\rho\) in panel (b). It runs from \(r_0\)
+to \(r_N\). The filled marker at \(r_N\) belongs to it.
+\item \emph{Recruiting research} starts at \(r_R\) at a positive level, \(\lambda_E(r_R)\). It does not start at zero,
+because a purchase recruits only at research of at least \(\lambda_E\). It rises to the cap at \(r_{\lb}\) and stays
+there up to \(r_C\), where the filled marker belongs to it. Its entry rises over the same stretch, from a level well
+above \(\rho\), and stays flat at the cap. The inset shows this rise.
+\item \emph{Floor-entry research} starts at zero at \(r_N\) and rises toward \(\lambda_E(r_Q)\), below the cap. The open
+marker at \(r_Q\) shows that \(r_Q\) itself is excluded. Its entry stays at \(\rho\). Above \(r_C\), floor-entry
+research sits at the cap in panel (a) and at \(\rho\) in panel (b); in the figure this last stretch is short.
+\item \emph{The pattern.} Two equilibria coexist on \([r_R,r_N]\) and on \((r_N,r_Q)\). On \([r_Q,r_C]\) only recruiting
+research remains. Entry first rises and later falls along the path, as in Proposition~2.
+\end{itemize}
+
+\paragraph{Comparison with Chapter~\ref{ch:coexistence}.} The recruiting branch starts later than the informative
+branch of Chapter~\ref{ch:coexistence}, which starts at \(r_A\), the root of \(J=k\). With research, a purchase must pay
+for research as well as for trade: \(J=k+2a\lambda_E\). At \(r_A\), \(\varphi_a=-2a\lambda_E<0\), and \(\varphi_a\) rises,
+so \(r_A<r_R\). The two branches also adjust in different ways. With a fixed presence probability, the purchase rate
+adjusts through a mixture of the high class. With research, the intensity adjusts, and the high class buys with
+probability one after a success.
+
+% =====================================================================
+\section{The research cap, the cost and the tie rules}\label{sec:research-ties}
+
+\subsection{Proposition A.1: the research cap and cost}
+
+The paper asks which caps and costs give the pattern of Corollary~3 at its six strengths. It keeps the example's other
+primitives and the example's \(\beta\).
+
+\begin{paperresult}{Proposition A.1 (The research cap and cost), in symbols}
+Keep the example's primitives other than \(a\) and \(\lb\). Under an indifferent investor who may mix and an
+indifferent high-cost challenger who prepares, the six-strength equilibrium pattern of Corollary~3, with
+\(\lambda_E(r)<\lambda_R(r)<\lb\) at each intermediate strength, holds with strict margins exactly when
+\[
+\lambda_E(r_1)<\lb<\lambda_E(r_2),\qquad a_{\rm lo}(\lb)<a<a_{\rm up},
+\]
+where \(a_{\rm lo}(\lb)=[\DT m_{\lb}-k]/(2\lb)\) at the highest intermediate strength, and
+\(a_{\rm up}=[\DT(1-\tau)-k]/(2\lambda_E)\) at the lowest intermediate strength. Entry at \(r_1\) is
+\(\rho+(1-\rho)[\beta+(1/2-\beta)\lb]\). With \(\beta\) varying, \(1+u=\eu\), \(\lb=u\beta/(1+u\beta)\) and the paper's
+\(a\), the pattern holds for \(\beta\in(\beta_{\rm lo},1/3]\), with a lower bound \(\beta_{\rm lo}\) that the paper
+computes.
+\end{paperresult}
+
+Each of the four bounds keeps one feature of the pattern.
+\begin{itemize}
+\item \(\lb>\lambda_E(r_1)\): research at the cap lets a purchase recruit against the strong incumbent,
+\(M_{\lb}>\tau(r_1)\). Otherwise entry above \(\rho\) at \(r_1\) would need a tie.
+\item \(\lb<\lambda_E(r_2)\): even research at the cap leaves a purchase short of the threshold against the very strong
+incumbent, \(M_{\lb}<\tau(r_2)\). Otherwise a purchase would recruit at \(r_2\).
+\item \(a<a_{\rm up}\): research is cheap enough that \(\varphi_a>0\) at the lowest intermediate strength. Since
+\(\varphi_a\) rises there, it is positive at the other two. Otherwise recruiting research below the cap would be absent
+there, or would need a challenger tie.
+\item \(a>a_{\rm lo}(\lb)\): research is costly enough that it stays below the cap at the highest intermediate strength.
+Since \(\lambda_R\) rises with strength, it stays below the cap at the other two.
+\end{itemize}
+The cost window is not empty anywhere on the strip of caps. With \(\lb\) tied to \(\beta\) by \(\lb=u\beta/(1+u\beta)\),
+\(m_{\lb}=1/(1+\eu)\) does not depend on \(\beta\). So the two cap conditions hold for every \(\beta\), and only the cost
+window moves with \(\beta\): a larger \(\beta\) raises \(\lb\) and lowers \(a_{\rm lo}\). Chapter~\ref{app:numbers}
+gives the strip, the window and \(\beta_{\rm lo}\).
+
+\subsection{Remark A.1: tie rules with research}
+
+Proposition~4 and Corollary~3 use the default tie rules. The paper's remark says what the other rules add.
+
+\begin{paperresult}{Remark A.1 (Tie rules with research)}
+Maintain the general setting. When an indifferent investor may mix and an indifferent high-cost challenger may prepare
+with any probability, the outcomes above are supplemented by the following threshold choices. For \(1/2<\tau<1\) and
+\(0<\lambda_E(\tau)<\lb\), the threshold pair has research \(\lambda_E\), full high-class purchasing and the low-class
+sale rule of Lemma A.15. Its purchase entry is
+\[
+e^*=\frac{2a\lambda_E+k-(\rho J-k)^+}{J},
+\]
+and it exists exactly when \(\rho\le e^*\le1\). Entry at a sale and no order is \(\rho\), and the high-cost preparation
+probability at a purchase is \((e^*-\rho)/(1-\rho)\). At \(e^*=1\) it coincides with recruiting research; at
+\(e^*=\rho\) it is floor-entry research with a purchase posterior equal to \(\tau\).
+
+At \(\lambda_E(\tau)=\lb\), the complete threshold family has purchase entry
+\(e(1)\in\bigl[\max\{\rho,\,(2a\lb+k-(\rho J-k)^+)/J\},\,1\bigr]\), provided the lower endpoint is at most one. Each
+choice has its own competitive purchase price, research at the cap, and total entry
+\(\rho+(e(1)-\rho)[\beta+(1/2-\beta)\lb]\).
+
+When an indifferent investor abstains, a positive-research candidate at intensity \(\lambda\), including a threshold
+pair, survives exactly when \(\rho\DT\le2k\) or \(\rho\DT m_\lambda>k\). At zero research the abstention rule selects
+abstention after every hypothetical success. Research itself is a unique best response at fixed prices and
+preparation, because its objective is strictly concave.
+\end{paperresult}
+
+\paragraph{The threshold pair.} Positive research has a strict full purchase (Lemma A.14). Partial preparation can
+occur only at a purchase posterior equal to \(\tau\), so \(\lambda=\lambda_E(\tau)\), and \(1-M_{\lambda_E}=1-\tau\).
+The purchase then earns \(e(1)\DT(1-\tau)-k=e(1)J-k\).
+
+\begin{derivation}[the purchase entry of the threshold pair]
+\begin{align*}
+2a\lambda_E&=e(1)\,J-k+(\rho J-k)^+ \why{research condition, Lemma A.12, interior}\\
+e(1)\,J&=2a\lambda_E+k-(\rho J-k)^+ \why{add \(k-(\rho J-k)^+\) to both sides}\\
+e(1)&=\frac{2a\lambda_E+k-(\rho J-k)^+}{J}=e^* \why{divide by \(J>0\)}
+\end{align*}
+\end{derivation}
+
+Entry \(e^*=\rho+(1-\rho)\zeta\) needs \(\zeta=(e^*-\rho)/(1-\rho)\in[0,1]\), that is \(\rho\le e^*\le1\). At \(e^*=1\) the
+equation is the recruiting equation \eqref{eq:research-cond} at \(\lambda_E\). At \(e^*=\rho\), with \(\rho J>k\), it reads
+\(2a\lambda_E=2(\rho J-k)\), the floor equation \eqref{eq:research-floor} at \(\lambda_E\). At the cap, research optimality
+asks only that the left side be at most the right side, and this gives the interval of purchase entry.
+
+\paragraph{An investor who abstains.} Suppose \(\rho\DT/2>k\ge\rho\DT m_\lambda\). Then Lemma A.15 needs class \(L\) to
+mix with a sale that breaks even. An investor who abstains at a tie cannot mix: with no sales, the sale would pay
+strictly; with any sales, it would break even or lose, and the rule then picks abstention. So no low-class rate
+qualifies, and the candidate fails. This gives the survival condition.
+
+\paragraph{The example.} The paper's version for the example adds three facts.
+\begin{itemize}
+\item At the three intermediate strengths, the alternative challenger rule adds the threshold pair, with entry between
+\(\rho\) and the recruiting level. At \(r_C\), the cap family permits every \(e(1)\in[\rho,1]\), and total entry fills
+the interval from \(\rho\) to the cap level of recruiting research.
+\item When an indifferent investor abstains, recruiting research is absent on \((r_N,r_S]\), where the low class would
+have to mix, and floor-entry research is the unique equilibrium there.
+\item At every strength above \(r_U\) other than \(r_C\), the equilibrium is unique under all four tie rules, by
+Lemma A.17.
+\end{itemize}
+
+\begin{watchout}
+State the tie rule of each result. Lemmas A.12, A.13 and A.17 hold under all four tie rules. Lemma A.14 holds under
+either investor rule and either challenger rule. Lemma A.15, Lemma A.16, Proposition~4 and Corollary~3 use the
+default tie rules. Remark A.1 lists what the other rules add. Research itself never has a tie.
+\end{watchout}
+
+\subsection{Access to prices with research}
+
+The appendix on research also compares two economies under condition (U) with \(\tau<M_{\lb}\): in one the challenger
+sees the price, and in the other it does not. Chapter~\ref{ch:welfare} studies access to prices in general. Under all
+four tie rules, both economies have full orders and research at the cap, uniquely. With access, only a purchase
+recruits. With the price hidden, the challenger keeps its prior \(1/2<\tau\), and entry is \(\rho\) after every order.
+So the order law, the research cost and the trading cost are the same in both.
+
+Access adds high-cost preparation after a purchase. A purchase has probability \(\bar b+\lb/2\), with
+\(\bar b=(1-\lb)\beta\). The added preparation probability is \(1-\rho\). The posterior after a purchase is \(M_{\lb}\),
+so each added entry raises expected proceeds by \(w(M_{\lb})=t_L-t_0+\DT M_{\lb}\). Multiply:
+\[
+\text{proceeds gain}=(1-\rho)\,(\bar b+\lb/2)\,\bigl[t_L-t_0+\DT M_{\lb}\bigr]>0 .
+\]
+For surplus, an added prepared challenger adds \(B(M_{\lb})+pF(p)\) to the expected value of the allocation, and costs
+\(c_H\). Since \(B(M_{\lb})-c_H=\gamma(M_{\lb}-\tau)\), the paper obtains
+\[
+\text{surplus gain}=(1-\rho)\,(\bar b+\lb/2)\,\bigl[\gamma(M_{\lb}-\tau)+pF(p)\bigr]>0 .
+\]
+Both are positive because \(M_{\lb}>\tau\), \(\gamma>0\), \(\DT>0\) and \(t_L\ge t_0\).
+
+\begin{chaptersummary}
+Research is the presence probability chosen at a cost \((a/2)\lambda^2\), up to a cap \(\lb<1\); a success fills the
+slot, and a failure passes it to a liquidity trader. At the prior \(1/2\), the top posterior is
+\(M_\lambda=1-\beta(1-\lambda)/[2\beta+(1-2\beta)\lambda]\); it rises with research, and a full purchase recruits
+exactly when research is at least \(\lambda_E(\tau)\). In recruiting research, the value of a success gives the
+condition \(2a\lambda=\DT m_\lambda-k+(\rho\DT m_\lambda-k)^+\), whose left side rises and right side falls, so research
+is \(\min\{\lambda_R(\DT),\lb\}\) when \(\DT>2k\), with no tie. Under the default tie rules, Proposition~4 says that
+research rises with the spread up to the cap, entry \(\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]\) and class-\(H\) entry
+rise, and class-\(L\) entry falls. High-class ownership is half the entry in class \(H\) when class \(H\) outbids the
+incumbent. When the exact recruitment margin rises, the equilibrium holds on one interval of strengths. In the
+example, zero research, recruiting research and floor-entry research divide the path at \(r_R\), \(r_N\), \(r_Q\) and
+\(r_C\), and entry rises and later falls.
+\end{chaptersummary}
+
+% =====================================================================
+\needspace{10\baselineskip}
+\answersection
+
+\answer{\ref{q:research-lamE}}{\emph{A second derivation.} Set \(m_\lambda=1-\tau\) with \eqref{eq:research-bounds}:
+\begin{align*}
+\beta(1-\lambda)&=(1-\tau)\,[2\beta+(1-2\beta)\lambda] \why{multiply by the positive denominator}\\
+\beta-\beta\lambda&=2\beta(1-\tau)+(1-2\beta)(1-\tau)\lambda \why{expand both sides}\\
+\beta-2\beta(1-\tau)&=\lambda\,[\beta+(1-2\beta)(1-\tau)] \why{move the \(\lambda\) terms to the right}\\
+\beta(2\tau-1)&=\lambda\,[\beta+(1-2\beta)(1-\tau)] \why{\(\beta-2\beta+2\beta\tau=\beta(2\tau-1)\)}\\
+\lambda&=\frac{\beta(2\tau-1)}{\beta+(1-2\beta)(1-\tau)} \why{divide by the positive bracket}
+\end{align*}
+This is \eqref{eq:research-lamE}.
+
+\emph{The effect of \(\beta\).} Write \(c=2\tau-1>0\) and \(d=1-\tau>0\). The denominator is
+\(\beta+(1-2\beta)d=d+\beta(1-2d)=d+\beta c\), since \(1-2d=2\tau-1=c\). So \(\lambda_E=\beta c/(d+\beta c)\), and
+\begin{align*}
+\frac{\partial\lambda_E}{\partial\beta}&=\frac{c\,(d+\beta c)-\beta c\cdot c}{(d+\beta c)^2} \why{quotient rule}\\
+&=\frac{cd}{(d+\beta c)^2}=\frac{(2\tau-1)(1-\tau)}{[\beta+(1-2\beta)(1-\tau)]^2}>0 \why{the \(\beta c^2\) terms cancel}
+\end{align*}
+In words: a larger \(\beta\) means more liquidity orders in each direction, so the investor's orders have more
+camouflage. The same research then moves the posterior after a purchase less, and more research is needed before a
+purchase reaches \(\tau\).}
+
+\answer{\ref{q:research-zero}}{At \(\hat\lambda=0\), the order probabilities are \(f_j(x)=(1-0)\eta(x)+0\cdot\sigma_j(x)
+=\eta(x)\) in both classes, whatever \(\sigma_j\) is. Bayes' rule at the prior \(1/2\) gives
+\[
+\mu(x)=\frac{\tfrac12\eta(x)}{\tfrac12\eta(x)+\tfrac12\eta(x)}=\frac12
+\]
+after every order. A belief at a price averages these posteriors, so it is \(1/2\) too. Since \(\tau>1/2\), a high-cost
+challenger strictly prefers not to prepare, under either challenger rule, and entry is \(\rho\) after every order.
+
+After a hypothetical success, the correct orders earn
+\[
+U_H(1)=\rho\DT\bigl(1-\tfrac12\bigr)-k=\tfrac12\rho\DT-k,\qquad U_L(-1)=\rho\DT\cdot\tfrac12-k=\tfrac12\rho\DT-k,
+\]
+and abstention earns zero. Wrong-signed orders earn \(-\rho\DT/2-k<0\). So
+\(\Psi=\tfrac12(\tfrac12\rho\DT-k)^++\tfrac12(\tfrac12\rho\DT-k)^+=(\tfrac12\rho\DT-k)^+\). Lemma A.12 gives the best
+research \(\min\{\lb,\Psi/a\}\). It is zero exactly when \(\Psi=0\), that is \(\rho\DT\le2k\). If \(\rho\DT>2k\), the
+best research is positive, and zero research fails (E7).
+
+The orders after a hypothetical success must be optimal because they set the value of research. A deviation in research
+makes a success possible. Without the requirement, one could support zero research with poor orders after a success,
+which would make research look worthless. The paper therefore asks (E5) to hold at \(\hat\lambda=0\).}
+
+\answer{\ref{q:research-floor}}{In floor-entry research, no order recruits, so entry is \(\rho\) after every order.
+Full orders give \(\mu(1)=M_\lambda\) and \(\mu(-1)=m_\lambda\). By \eqref{eq:trading-returns},
+\begin{align*}
+U_H(1)&=\rho\DT(1-M_\lambda)-k=\rho\DT m_\lambda-k \why{\(e(1)=\rho\); \(1-M_\lambda=m_\lambda\)}\\
+U_L(-1)&=\rho\DT m_\lambda-k \why{\(e(-1)=\rho\), \(\mu(-1)=m_\lambda\)}
+\end{align*}
+Both are the best orders, so \(\Psi=\tfrac12(\rho\DT m_\lambda-k)+\tfrac12(\rho\DT m_\lambda-k)=\rho\DT m_\lambda-k\).
+Below the cap, Lemma A.12 gives \(a\lambda=\Psi\), which is \eqref{eq:research-floor}.
+
+The factors differ because of what a success earns in each class. In floor-entry research both classes earn the same
+amount after a success, so the average over the two classes is that amount itself. In recruiting research the two
+classes earn different amounts, \(\DT m_\lambda-k\) and \((\rho\DT m_\lambda-k)^+\). Their average carries the factor
+\(\tfrac12\), and multiplying the condition by \(2\) moves it to the left side as \(2a\lambda\).}
+
+\answer{\ref{q:research-entry}}{Entry in class \(L\) is \(e_L=\rho+(1-\rho)\beta(1-\hat\lambda)\). Class \(L\) never buys,
+so it reaches a purchase, the only order that recruits, only through a liquidity trader, with probability
+\(b=(1-\hat\lambda)\beta\). Research takes the slot away from liquidity traders, so this probability falls, and with it
+the chance that the market mistakes class \(L\) for class \(H\). So \(e_L\) falls at the rate \((1-\rho)\beta\).
+
+Total entry has the slope \((1-\rho)(1/2-\beta)\). At \(\beta=1/2\), this slope is zero: each unit of research would add
+an informed purchase half the time and remove a liquidity purchase half the time, and the two changes would cancel. The
+model excludes \(\beta=1/2\), because then a liquidity trader never abstains, \(b_0=(1-\lambda)(1-2\beta)=0\), and the
+zero order would have no liquidity probability. The research results take \(0<\beta<1/2\).}
+
+\answer{\ref{q:research-kink}}{Section~\ref{sec:research-sale} gives the cap spread in the case
+\(\lb\le(1-\rho)k/(2a\rho)\): \(\DT=(2a\lb+k)/m_{\lb}\). At this spread,
+\begin{align*}
+\rho\DT m_{\lb}&=\rho(2a\lb+k) \why{substitute the cap spread}\\
+&\le\rho\Bigl(\frac{(1-\rho)k}{\rho}+k\Bigr)=k \why{\(2a\lb\le(1-\rho)k/\rho\)}
+\end{align*}
+So a sure sale does not pay strictly when research reaches the cap. Below the cap spread, the spread is smaller, so
+\(\rho\DT m_\lambda\) at the research level is at most \(k\) as well (research and the spread move together, and the
+sale boundary meets the first piece only at the intensity \((1-\rho)k/(2a\rho)\ge\lb\)). So the sale term is zero at
+every uncapped root. Beyond the cap spread, research sits at the cap and cannot rise.
+
+In words: by the time a sure sale would add a second return to research, research has no room left to grow. The sale's
+profit then changes what the investor earns, and leaves its research choice unchanged. The example has this case: there
+the ratio \((1-\rho)k/(2a\rho)\) exceeds one.}

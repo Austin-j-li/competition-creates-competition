@@ -1,0 +1,345 @@
+% slides.tex -- talk for the order-slot manuscript
+% "Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders" (Austin Li).
+% Title, 19 main frames, and backups B1 to B16. Frames 5 to 9 keep the model strip: Players,
+% Timing, Information, Actions, Payoffs, Equilibrium. Result frames state each formal result once,
+% with a grey gloss (\Gloss) only where it adds economics, scope, or a tie rule, and one intuition
+% sentence in italics (\Intuition). Proposition 2 proof steps live in backup B2; frame 13 states
+% the proof idea in one line.
+% Locked words: first buyer / second buyer; weak / strong / very strong for $F_0,F_1,F_2$;
+% synergy class $j$; shareholder spread $\Delta_T$; prepares (act), entry (probability), recruits
+% (high-cost entry past the floor); target proceeds; second-buyer gross profit $B(\mu)$;
+% news in prose, signal only for $S$ on the fixed-information frame.
+% Look: a stock classic Beamer theme (Madrid), loaded by ccc-classic.sty. Rule from 28 October 2026:
+% the Overleaf deck always uses a classic Beamer theme; the website keeps the ruled design of
+% DESIGN.md. 16:9, XeLaTeX (see latexmkrc). Result statements are flat: a structure-colour rule,
+% a bold tag, body text on white, a light rule. No fill, rounded corners, or shadow.
+% Every printed value uses \reg{<key>} from numbers.tex (generated; do not edit numbers.tex).
+% \regr{<key>}{<digits>} rounds the registry value of a key to <digits> places and keeps trailing
+% zeros (0.250); \regq does the same for a key that holds a fraction (1/4). No registry number
+% appears before frame 14.
+% This deck is a handout: one page per frame, no click builds. Each frame shows the final state of
+% its slide. The website carries the click builds, in the order of "Builds" in the slide text.
+% Navigation: main frames carry \hypertarget{main:s<n>}; backups carry \hypertarget{app:b<n>}
+% and a \BackButton to their origin frame. Frames 11 and 12 link to B2; frame 13 links to B1
+% and B2; frame 14 to B10; frame 15 to B11; frame 16 to B3 and B12; frame 17 to B4; frame 18 to B13.
+% A result statement is a Beamer block under the flat template below; its title is \ResultTag{...}.
+% slides.tex holds the frames and the few layout macros of this deck; ccc-classic.sty holds the theme.
+\documentclass[10pt,aspectratio=169,handout]{beamer}
+\usepackage{ccc-classic}
+\usepackage{siunitx}
+\graphicspath{{figures/}}
+\input{numbers}
+\newcommand{\regr}[2]{\ifcsname reg@#1\endcsname\num[round-mode=places,round-precision=#2]{\csname reg@#1\endcsname}\else\reg{#1}\fi}
+\newcommand{\regq}[2]{\ifcsname reg@#1\endcsname\pgfmathparse{\csname reg@#1\endcsname}\num[round-mode=places,round-precision=#2]{\pgfmathresult}\else\reg{#1}\fi}
+
+% Frame titles one step smaller than the theme default. Titles are rewritten to fit one line at
+% this size; no frame shrinks its title further.
+\setbeamerfont{frametitle}{size=\large}
+
+% Flat result statement (author request, 28 October 2026): the stock Madrid block -- blue rounded
+% title bar, shaded body, shadow -- duplicates the frame title bar and reads as a card. Every
+% Beamer block in this deck, main and backup alike, instead prints as a theorem statement:
+% structure-colour rule, bold sans tag in the structure colour, body on white, light closing rule.
+\setbeamercolor{block title}{fg=structure.fg,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamertemplate{block begin}{%
+  \par\vskip\medskipamount%
+  {\color{structure.fg}\rule{\linewidth}{0.9pt}}\par
+  \vskip2pt
+  \noindent{\sffamily\bfseries\small\color{structure.fg}\insertblocktitle}\par
+  \vskip2pt
+  \begin{beamercolorbox}[sep=0pt,wd=\linewidth]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-0.1pt}{\vskip-0.1pt\relax}%
+    \usebeamerfont{block body}%
+    \noindent\ignorespaces}
+\setbeamertemplate{block end}{%
+  \end{beamercolorbox}%
+  \par\vspace{2pt}{\color{cLine}\rule{\linewidth}{0.4pt}}\par
+  \vskip\smallskipamount}
+% The takeaway of ccc-classic.sty, flattened to match: a rule, then one bold line. No shaded box.
+\renewcommand{\TakeawayEnd}[1]{\par\vfill{\color{structure.fg}\rule{\linewidth}{0.9pt}}\par\vspace{0.3em}\noindent\raggedright\textbf{#1}\par}
+
+% A gloss under a hypothesis of a result statement: one plain sentence in small grey type.
+% A gloss stays only where it adds economics, scope, or a tie rule that the formal line hides.
+\newcommand{\Gloss}[1]{\par\vspace{0.5pt}{\color{cGrayText}\footnotesize\raggedright\hspace*{0.8em}#1\par}\vspace{1pt}}
+% The intuition sentence under a result statement: one sentence in italics.
+\newcommand{\Intuition}[1]{\par\vspace{0.2em}{\small\itshape\raggedright #1\par}}
+% Tighter display spacing inside a result statement; call it after the font size is set.
+\newcommand{\TightMath}{\setlength{\abovedisplayskip}{2pt plus 1pt}\setlength{\belowdisplayskip}{2pt plus 1pt}%
+  \setlength{\abovedisplayshortskip}{1pt}\setlength{\belowdisplayshortskip}{2pt plus 1pt}}
+
+% The tag of a result statement; the block template sets its size and colour.
+\newcommand{\ResultTag}[1]{#1}
+% The large line of frame 4: one large bold statement between a structure rule and a light rule.
+\newcommand{\LargeLine}[1]{{\color{structure.fg}\rule{\linewidth}{0.9pt}}\par\vspace{0.35em}%
+  \noindent\raggedright\large\textbf{#1}\par\vspace{0.35em}%
+  {\color{cLine}\rule{\linewidth}{0.4pt}}\par}
+
+\makeatletter
+% The model strip under the frame title of frames 5 to 9. The argument lists the current steps,
+% e.g. \ModelStrip{3,4}: those steps print bold in the structure colour, the others grey.
+\newcommand{\ModelStrip}[1]{\edef\ccc@cur{,#1,}%
+  \par\vspace{-0.3em}{\sffamily\small\noindent
+  \ccc@strip{1}{Players}\ccc@stripsep\ccc@strip{2}{Timing}\ccc@stripsep\ccc@strip{3}{Information}\ccc@stripsep
+  \ccc@strip{4}{Actions}\ccc@stripsep\ccc@strip{5}{Payoffs}\ccc@stripsep\ccc@strip{6}{Equilibrium}\par}
+  \vspace{0.15em}{\color{cLine}\rule{\linewidth}{0.4pt}}\par}
+\newcommand{\ccc@strip}[2]{\edef\ccc@test{\noexpand\in@{,#1,}{\ccc@cur}}\ccc@test
+  \ifin@{\usebeamercolor[fg]{structure}\textbf{#2}}\else{\color{cGrayText}#2}\fi}
+\newcommand{\ccc@stripsep}{\hfill{\color{cLine}\textbullet}\hfill}
+
+% The footline of ccc-classic.sty, with one change: a backup page shows its backup number
+% (set by \BackupId{B3}) where a main frame shows its frame number.
+\gdef\ccc@bid{}
+\newcommand{\BackupId}[1]{\gdef\ccc@bid{#1}}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\ccc@nav\hspace*{1.5em}%
+    \ifbeamer@inappendix\ccc@bid\else\insertframenumber{} / \inserttotalframenumber\fi\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+  \global\let\ccc@nav\@empty}
+\makeatother
+
+% The number line of frame 8, at one draw R with p < R < theta.
+% \SplitLine[<earlier x>]{<x of R>}{<label of R>}; x in cm on a 13 cm line.
+% With the optional argument, a faded tick marks the earlier position of R and an arrow shows the move.
+\newcommand{\SplitLine}[3][]{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[cMuted,line width=0.6pt] (0,0) -- (13,0);
+  \if\relax\detokenize{#1}\relax\else
+    \draw[cLine,line width=1.2pt] (#1,-0.18) -- (#1,0.18);
+    \draw[flowarr] (#1+0.1,-0.3) -- (#2-0.1,-0.3);
+  \fi
+  \draw[cInk,line width=1.2pt] (0.3,-0.18) -- (0.3,0.18) node[pos=0,below=3pt] {$0$};
+  \draw[cInk,line width=1.2pt] (2.2,-0.18) -- (2.2,0.18);
+  \draw[cInk,line width=1.2pt] (11.5,-0.18) -- (11.5,0.18);
+  \draw[structure.fg,line width=1.6pt] (#2,-0.18) -- (#2,0.18);
+  \node[below=10pt,anchor=north] at (2.2,0) {reserve $p$};
+  \node[below=10pt,anchor=north] at (11.5,0) {second buyer's value $\theta$};
+  \node[below=24pt,anchor=north,text=structure.fg] at (#2,0) {#3};
+  \draw[cInfo,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (0.35,0.3) -- (#2-0.05,0.3)
+    node[midway,above=7pt,text=cInfo] {target proceeds};
+  \draw[cCost,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (#2+0.05,0.3) -- (11.45,0.3)
+    node[midway,above=7pt,text=cCost] {gross auction profit};
+  \node[anchor=west,font=\scriptsize,text=cGrayText] at (11.9,0.42) {one draw $R$};
+\end{tikzpicture}}
+
+% The number line of frame 10: the synergy value gap between the poor-synergy and the good-synergy
+% value, split at the first buyer's value. \GapLine{<earlier x>}{<x>}; x in cm on a 13 cm line.
+% The part below the first buyer's value goes to shareholders, the part above it to the second buyer.
+\newcommand{\GapLine}[2]{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[cMuted,line width=0.6pt] (0,0) -- (13,0);
+  \draw[cLine,line width=1.2pt] (#1,-0.18) -- (#1,0.18);
+  \draw[flowarr] (#1+0.1,-0.3) -- (#2-0.1,-0.3);
+  \draw[cInk,line width=1.2pt] (1.5,-0.18) -- (1.5,0.18);
+  \draw[cInk,line width=1.2pt] (11.5,-0.18) -- (11.5,0.18);
+  \draw[structure.fg,line width=1.6pt] (#2,-0.18) -- (#2,0.18);
+  \node[below=10pt,anchor=north] at (1.5,0) {poor-synergy value};
+  \node[below=10pt,anchor=north] at (11.5,0) {good-synergy value};
+  \node[below=24pt,anchor=north,text=structure.fg] at (#2,0) {first buyer's value moves right};
+  \draw[cInfo,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (1.55,0.3) -- (#2-0.05,0.3)
+    node[midway,above=7pt,text=cInfo] {shareholders' part};
+  \draw[cCost,line width=0.9pt,decorate,decoration={brace,amplitude=6pt}] (#2+0.05,0.3) -- (11.45,0.3)
+    node[midway,above=7pt,text=cCost] {second buyer's part};
+\end{tikzpicture}}
+
+% A cropped figure with paper-colour patches over its old labels and new labels in the talk's words.
+% \FigCrop{<file>}{<trim l>}{<trim b>}{<trim r>}{<trim t>}{<full width>}{<full height>}{<width>}{<patches>}
+% Trims and sizes are in bp. \FigCover and \FigText take the figure's own coordinates in bp,
+% measured from its top-left corner (as pdftotext -bbox reports them).
+\definecolor{figBg}{RGB}{251,252,252}
+\definecolor{figBand}{RGB}{235,237,238}
+\newcommand{\FigCrop}[9]{\begin{tikzpicture}
+  \node[inner sep=0pt,anchor=south west] (f) at (0,0) {\includegraphics[clip,trim=#2 #3 #4 #5,width=#8]{#1}};
+  \begin{scope}[x={(f.south east)},y={(f.north west)}]
+  \pgfmathsetmacro\fl{#2}\pgfmathsetmacro\fcw{#6-#2-#4}\pgfmathsetmacro\fyb{#7-#3}\pgfmathsetmacro\fch{#7-#3-#5}
+  #9
+  \end{scope}\end{tikzpicture}}
+\newcommand{\FigCover}[5][figBg]{\fill[#1] ({(#2-\fl)/\fcw},{(\fyb-#5)/\fch}) rectangle ({(#4-\fl)/\fcw},{(\fyb-#3)/\fch});}
+\newcommand{\FigText}[4][]{\node[inner sep=0pt,font=\scriptsize\sffamily,text=black!80,#1] at ({(#2-\fl)/\fcw},{(\fyb-#3)/\fch}) {#4};}
+
+% The figures with their new labels.
+% beliefs_talk.pdf, panel (a): top belief, band floor, and the strength axis in the locked names.
+\newcommand{\BeliefsFig}[1]{\FigCrop{beliefs_talk.pdf}{0}{0}{210}{0}{532.8}{223.2}{#1}{%
+  \FigCover{5}{13}{27}{31}
+  \FigCover{50}{41}{196}{59.6}\FigText[anchor=west,text=cInfo]{53}{51}{top belief $M(\pi)$}
+  \FigCover[figBand]{50}{139.5}{211}{157}\FigText[anchor=west,text=cInfo]{53}{148.5}{band floor $m(\pi)$}
+  \FigCover{110}{189}{230}{209}\FigText{170}{198.5}{first buyer's strength, $r$}}}
+% research_talk.pdf, both panels: axis labels in the slide text's words; the strength labels are \tiny,
+% so that the two panels' labels stay apart at the widths of frame 14 and B12.
+\newcommand{\ResearchFig}[1]{\FigCrop{research_talk.pdf}{0}{0}{0}{0}{532.8}{223.2}{#1}{%
+  \FigCover{1}{56}{22}{166}\FigText[rotate=90]{12}{111}{research $\lambda$}
+  \FigCover{273}{84}{291}{133}\FigText[rotate=90]{282}{108}{total entry $\mathsf{E}$}
+  \FigCover{90}{193.5}{208}{213}\FigText[font=\tiny\sffamily]{149}{203}{strength, weak to very strong}
+  \FigCover{361}{193.5}{479}{213}\FigText[font=\tiny\sffamily]{420}{203}{strength, weak to very strong}}}
+% beliefs_talk.pdf, panel (b) alone: the close-up between the strong and the very strong first buyer.
+% The printed values are covered and set again through the registry.
+\definecolor{figShade}{RGB}{245,236,229}
+\newcommand{\BeliefsFigB}[1]{\FigCrop{beliefs_talk.pdf}{324}{0}{0}{0}{532.8}{223.2}{#1}{%
+  \FigCover{326}{13}{347}{30}\FigCover{384}{33}{466}{50}\FigCover[figShade]{384}{54.5}{466}{70}%
+  \FigText[anchor=west,font=\tiny\sffamily]{386}{41}{$\tau(r_2)\approx\reg{tau_r2}$}%
+  \FigText[anchor=west,font=\tiny\sffamily]{386}{62}{$M(1/2)\approx\reg{M_half_B}$}%
+  \FigCover[figShade]{449}{122}{522}{152.5}\FigCover{449}{156}{522}{173}%
+  \FigText[anchor=east,font=\tiny\sffamily]{520}{130}{band for $M(1/2)$}%
+  \FigText[anchor=east,font=\tiny\sffamily]{520}{144}{$\tau(r_1)=\reg{tau_r1}$}%
+  \FigCover{390}{190}{516}{210}\FigText[font=\tiny\sffamily]{450}{200}{first buyer's strength, $r$}}}
+% coexistence_talk.pdf: panel (b) alone; panels (a) and (c). The legend is trimmed off.
+\newcommand{\CoexRegion}[1]{\FigCrop{coexistence_talk.pdf}{224}{22}{310}{0}{734.4}{237.6}{#1}{%
+  \FigCover{419}{25}{425}{43}
+  \FigCover{281}{174.5}{412}{194.5}\FigText{346}{184.5}{shareholder spread, $\Delta_T$}}}
+\newcommand{\CoexPanelA}[1]{\FigCrop{coexistence_talk.pdf}{0}{22}{510}{0}{734.4}{237.6}{#1}{%
+  \FigCover{75}{175}{196}{195}\FigText{134}{184.5}{first buyer's strength, $r$}}}
+\newcommand{\CoexPanelC}[1]{\FigCrop{coexistence_talk.pdf}{424}{22}{0}{0}{734.4}{237.6}{#1}{%
+  \FigCover{539}{175}{661}{195}\FigText{600}{184.5}{first buyer's strength, $r$}}}
+
+\title[Competition Creates Competition]{Competition Creates Competition:\texorpdfstring{\\[2pt]}{ }%
+Stock Prices and the Discovery of Takeover Bidders}
+\author[Austin Li]{Austin Li · Department of Economics, University College London}
+\date{}
+
+% ===== Scratch mock: a fixed frame skeleton. Body starts at a fixed offset; the takeaway zone and the
+% foot zone sit at fixed heights through \vfill. Words are those of slides.tex a3ccc50.
+\newcommand{\MockStatement}[1]{\par{\color{structure.fg}\rule{\linewidth}{0.9pt}}\par\vskip2pt
+  \noindent{\sffamily\bfseries\small\color{structure.fg}#1}\par\vskip3pt}
+\newcommand{\MockIntuition}[1]{\par\vfill{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.15em}{\small\itshape\raggedright #1\par}}
+\newcommand{\MockFoot}[1]{\par\vspace{0.15em}{\color{cGrayText}\scriptsize\raggedright #1\par}}
+\newcommand{\MockGloss}[1]{{\color{cGrayText}\footnotesize\raggedright #1\par}}
+\newcommand{\DefRow}[2]{\textbf{#1} & #2\\[1.5pt]}
+
+\begin{document}
+
+% ---------------------------------------------------------------- Frame 5, before (as in a3ccc50)
+\begin{frame}[t]{Players and the sale rule}
+\ModelStrip{1}
+\vspace{0em}
+{\small
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item A listed target has standalone value $0$. Values and costs are per share. All agents are risk neutral.
+\item \textbf{First buyer --- already prepared:} it knows its value $R$ and faces no preparation choice. $R\sim F$; $F$ is public, continuous on $[0,\bar r]$, and others do not observe the draw before bids. \textbf{Stronger} means a replacement $\widetilde F$ with $\widetilde F(y)\le F(y)$ for each $y$.
+\item \textbf{Second buyer --- synergy class:} $j=H$ (good synergy) or $j=L$ (poor synergy), with prior $\pi=\Pr(j=H)\in(0,1)$. Its value $\theta$ has law $G_j$ in class $j$; each $G_j$ has a finite mean.
+\item \textbf{Class ranking:} $G_H(y)\le G_L(y)$ for each $y$ --- class $H$ draws weakly higher values. Also $\theta\ge p$ almost surely under each $G_j$, where $p>0$ is the auction reserve below. The sale and the second buyer's identity are public; its synergy class is not public.
+\item \textbf{Preparation cost $C$:} $C=0$ with probability $\rho\in(0,1)$; else $C=c_H>0$, the high cost ($H$ in $c_H$ means high, not class $H$). Pay $C$ to learn $\theta$ and to bid; a second buyer who does not pay cannot bid. ($\rho$ is the entry floor on frame 9.)
+\item \textbf{Sale:} the seller commits before trade to a cash second-price auction with reserve $p>0$. Sale proceeds go to target shareholders.
+\item The pair $(j,\theta)$, the value $R$, the cost $C$, and the trading-slot draws are independent. Neither buyer trades target shares. The next frame adds the trading slot: informed investor, liquidity trader, market makers.
+\end{itemize}}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 5, mock: label column
+\begin{frame}[t]{Players and the sale rule}
+\ModelStrip{1}
+\vspace{0.1em}
+{\small\raggedright A listed target has standalone value $0$. Values and costs are per share. All agents are risk neutral.\par}
+\vspace{0.2em}
+{\small\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.9cm}@{\hspace{0.4em}}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2.9cm-0.4em\relax}@{}}
+\DefRow{First buyer}{\textbf{already prepared:} it knows its value $R$ and faces no preparation choice. $R\sim F$; $F$ is public, continuous on $[0,\bar r]$, and others do not observe the draw before bids. \textbf{Stronger} means a replacement $\widetilde F$ with $\widetilde F(y)\le F(y)$ for each $y$.}
+\DefRow{Second buyer}{\textbf{synergy class:} $j=H$ (good synergy) or $j=L$ (poor synergy), with prior $\pi=\Pr(j=H)\in(0,1)$. Its value $\theta$ has law $G_j$ in class $j$; each $G_j$ has a finite mean.}
+\DefRow{Class ranking}{$G_H(y)\le G_L(y)$ for each $y$ --- class $H$ draws weakly higher values. Also $\theta\ge p$ almost surely under each $G_j$, where $p>0$ is the auction reserve below. The sale and the second buyer's identity are public; its synergy class is not public.}
+\DefRow{Preparation cost $C$}{$C=0$ with probability $\rho\in(0,1)$; else $C=c_H>0$, the high cost ($H$ in $c_H$ means high, not class $H$). Pay $C$ to learn $\theta$ and to bid; a second buyer who does not pay cannot bid. ($\rho$ is the entry floor on frame 9.)}
+\DefRow{Sale}{the seller commits before trade to a cash second-price auction with reserve $p>0$. Sale proceeds go to target shareholders.}
+\end{tabular}}
+\par\vfill{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vspace{0.15em}{\footnotesize\raggedright The pair $(j,\theta)$, the value $R$, the cost $C$, and the trading-slot draws are independent. Neither buyer trades target shares. The next frame adds the trading slot: informed investor, liquidity trader, market makers.\par}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 13, before (as in a3ccc50)
+\begin{frame}[t]{Strength can raise entry, then return it to its floor}
+\vspace{-1.3em}
+{\footnotesize
+\begin{block}{\ResultTag{Proposition 2}}\TightMath
+\begin{columns}[T,totalwidth=\linewidth]
+\column{0.43\linewidth}
+Classes have finite means and satisfy $G_H\le G_L$, $G_H(p^-)=G_L(p^-)=0$. Steps $F_2\le F_1\le F_0$: weak, strong, very strong.
+Fix the class laws and $p>0$; $\pi,\rho,\lambda\in(0,1)$; $\beta\in(0,1/2)$ (nonzero-order bounds only); and $c_H,k>0$.
+Write $\Delta_i=\Delta_T(F_i)$ and $B_i=B_{F_i}$.
+Suppose
+\[
+\begin{array}{ll}
+\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\
+\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\
+\mathrm{(H3)}&B_2(M(\pi))<c_H.
+\end{array}
+\]
+\Gloss{(H1) Prior misses $c_H$ at $F_0$; a purchase clears it at $F_1$.}
+\Gloss{(H2) Order cost stops trade at $F_0$, not at $F_1$. (H3) At $F_2$, even a purchase cannot pay $c_H$.}
+\column{0.55\linewidth}
+\begin{center}\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}lll@{}}
+\hline
+Orders $(H,L)$ & Beliefs $(-1,0,1)$ & Entry $(-1,0,1)$\\
+\hline
+$F_0$ weak:\ $(0,0)$ & $(\pi,\pi,\pi)$ & $(\rho,\rho,\rho)$\\
+$F_1$ strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,1)$\\
+$F_2$ very strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,\rho)$\\
+\hline
+\end{tabular}
+\end{center}
+Let $\mathsf E_i$ denote total entry at $F_i$.
+Then
+\[
+\mathsf E_0=\mathsf E_2=\rho
+<\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda).
+\]
+The outcome is unique in each of the three economies,
+under all four pairs of tie rules.
+\end{columns}
+\end{block}}
+\Intuition{A wider shareholder spread pays the informed investor to trade, and a purchase recruits. At $F_2$, profit at the top belief stays below $c_H$.}
+\SmallLine{Proof idea: the frame 11--12 bounds hold for each candidate outcome; strict gaps then fix orders, beliefs, and entry. Steps: \hyperlink{app:b2}{B2}. Open set: frame 14. Exact form: \hyperlink{app:b1}{B1}.}
+\end{frame}
+
+% ---------------------------------------------------------------- Frame 13, mock: rows, glosses beside
+\begin{frame}[t]{Strength can raise entry, then return it to its floor}
+\vspace{0.1em}
+\MockStatement{Proposition 2}
+{\small\TightMath\raggedright
+Classes have finite means and satisfy $G_H\le G_L$, $G_H(p^-)=G_L(p^-)=0$. Steps $F_2\le F_1\le F_0$: weak, strong, very strong.
+Fix the class laws and $p>0$; $\pi,\rho,\lambda\in(0,1)$; $\beta\in(0,1/2)$ (nonzero-order bounds only); and $c_H,k>0$.
+Write $\Delta_i=\Delta_T(F_i)$ and $B_i=B_{F_i}$. Suppose\par
+\vspace{0.15em}
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{0pt}
+$\begin{array}{@{}ll@{}}
+\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\
+\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\
+\mathrm{(H3)}&B_2(M(\pi))<c_H.
+\end{array}$
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\linewidth}
+\vspace{0pt}
+\MockGloss{(H1) Prior misses $c_H$ at $F_0$; a purchase clears it at $F_1$.}
+\MockGloss{(H2) Order cost stops trade at $F_0$, not at $F_1$.}
+\MockGloss{(H3) At $F_2$, even a purchase cannot pay $c_H$.}
+\end{minipage}\par
+\vspace{0.3em}
+\begin{minipage}[t]{0.55\linewidth}
+\vspace{0pt}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Orders $(H,L)$ & Beliefs $(-1,0,1)$ & Entry $(-1,0,1)$\\
+\midrule
+$F_0$ weak:\ $(0,0)$ & $(\pi,\pi,\pi)$ & $(\rho,\rho,\rho)$\\
+$F_1$ strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,1)$\\
+$F_2$ very strong:\ $(1,-1)$ & $(m(\pi),\pi,M(\pi))$ & $(\rho,\rho,\rho)$\\
+\bottomrule
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{0pt}\raggedright
+Let $\mathsf E_i$ denote total entry at $F_i$. Then\par\vspace{1pt}\centerline{$\mathsf E_0=\mathsf E_2=\rho<\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda).$}\par\vspace{1pt}
+The outcome is unique in each of the three economies, under all four pairs of tie rules.
+\end{minipage}\par}
+\MockIntuition{A wider shareholder spread pays the informed investor to trade, and a purchase recruits. At $F_2$, profit at the top belief stays below $c_H$.}
+\MockFoot{Proof idea: the frame 11--12 bounds hold for each candidate outcome; strict gaps then fix orders, beliefs, and entry. Steps: B2. Open set: frame 14. Exact form: B1.}
+\end{frame}
+
+\end{document}

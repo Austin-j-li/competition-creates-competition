@@ -1,0 +1,54 @@
+% Demo C "swiss": black on white, Helvetica-type sans, a heavy rule at the top edge, one orange accent.
+\ProvidesPackage{demo-swiss}
+\usefonttheme{professionalfonts}
+\RequirePackage{fontspec}
+\setsansfont{TeX Gyre Heros}
+\setmainfont{TeX Gyre Heros}
+\definecolor{cNavy}{HTML}{B54B00}
+\definecolor{cInkD}{HTML}{000000}
+\definecolor{cLine}{HTML}{BFBFBF}
+\definecolor{cGrayText}{HTML}{6E6E6E}
+\colorlet{cMuted}{cGrayText}
+\setbeamercolor{normal text}{fg=cInkD,bg=white}
+\setbeamercolor{structure}{fg=cInkD}
+\setbeamercolor{frametitle}{fg=cInkD}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cInkD}
+\setbeamercolor{item}{fg=cInkD}
+\setbeamercolor{button}{bg=black!8,fg=cInkD}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamerfont{framesubtitle}{size=\small}
+\setbeamerfont{title}{series=\bfseries,size=\Huge}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamertemplate{itemize items}{\raise0.15ex\hbox{\rule{0.8ex}{0.8ex}}}
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vskip-0.3cm{\color{cInkD}\rule{\linewidth}{2.4pt}}\par\vskip0.05cm
+  \hbox to \linewidth{\vtop{\hsize=0.86\linewidth
+    {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\raggedright\insertframetitle\par}%
+    \ifx\insertframesubtitle\@empty\else
+      \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi}%
+    \hfil\vtop{\hsize=0.12\linewidth\raggedleft{\Large\color{cLine}\ifbeamer@inappendix\ccc@bid\else\insertframenumber\fi\par}}}%
+  \par\vskip-0.25cm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\scriptsize\color{cGrayText}\insertshortauthor\ \textperiodcentered\ \insertshorttitle}\hfill
+    \ccc@nav%
+  \end{beamercolorbox}}\vskip1pt\global\let\ccc@nav\@empty}
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.1\textheight
+    {\color{cInkD}\rule{\linewidth}{2.4pt}}\par\vskip0.5cm
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vfil
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vskip0.3cm{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vskip0.8cm}}
+\makeatother
+% Statement: tag in letter-spaced capitals, orange; rules black
+\renewcommand{\NavyRule}{\par\noindent\textcolor{cInkD}{\rule{\linewidth}{0.8pt}}\par}
+\renewenvironment{Statement}[1]{\vspace{-2pt}\NavyRule\vskip2pt
+  \noindent{\bfseries\scriptsize\color{cNavy}\MakeUppercase{#1}}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+\renewcommand{\ColHead}[1]{{\bfseries\color{cInkD}#1}\par\vspace{0.2em}{\color{cInkD}\rule{\linewidth}{0.8pt}}\par\vspace{0.35em}}
+\endinput

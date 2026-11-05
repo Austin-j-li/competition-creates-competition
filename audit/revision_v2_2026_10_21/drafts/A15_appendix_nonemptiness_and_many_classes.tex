@@ -1,0 +1,152 @@
+% FRAGMENT A15 (drafter A: class model and main results)
+% REPLACES: main.tex lines 1925–1948 ("\subsubsection{Nonemptiness for every value" to "… not a statement about effect size at every value ratio.")
+%   The blank line 1949 and the heading of Appendix A.5 at line 1950 stay.
+% CONTENT: (1) nonemptiness of the Proposition 2 region for every ranked pair of classes,
+%   every prior, noise scale, and low-cost probability, with part (iii) and the ownership
+%   condition; (2) a short subsection on more than two classes.
+% LABELS KEPT: nonemptiness-for-every-value-gap (title changes), eq:paper-a-25.
+% LABELS REMOVED: none.
+% LABELS ADDED: more-than-two-classes (new subsubsection; nothing references it yet).
+% NEW SYMBOLS: \Gamma(x)=\int_p^x D(u)du and its limit \Gamma=E_H max{θ,p}−E_L max{θ,p};
+%   u_0 (lowest value above which the classes differ); F_r (uniform law on [0,r]);
+%   W_H(r) (as W_H(F) in Proposition 2, at F=F_r). Many-class subsection: \pi_j (class
+%   priors), T_X (posterior mean of class proceeds), \bar e(q) (expected entry rate at order
+%   q), \bar\pi (prior mass of the high group), \mathcal M_\pi (feasible posterior set),
+%   \gamma (separation of the group proceeds from the feasible posterior means).
+%   The source memos use other letters (a reserved Greek letter for the group posterior,
+%   \alpha for the group prior, D_0 and d_1 for the ranges); those letters collide with
+%   \alpha_H, D(u), and the brief's reserved symbol, so this fragment does not use them.
+% NEW CITATIONS: none.  NUM PLACEHOLDERS: none.
+% SOURCES: Q1_N_main.md Claim 11 (nonemptiness); Q1_N_extensions.md Claims 7, 8, 9
+%   (many classes); SYNTHESIS.md A.1 rows 4, 25.
+
+\subsubsection{Nonemptiness for every ranked pair of
+classes}\label{nonemptiness-for-every-value-gap}
+
+The parameter region of \hyperref[result-proposition-2]{Proposition 2}
+requires neither a large gap between the classes nor a particular prior.
+Fix classes that satisfy the restrictions of
+\hyperref[sec-values-preparation-and-the-sale]{Section 2.2}, and let
+\(\Gamma(x)=\int_p^xD(u)\,du\), which is nondecreasing, with limit
+\(\Gamma=\mathbb E_H[\max\{\theta,p\}]-\mathbb E_L[\max\{\theta,p\}]\).
+Suppose the classes differ above the reserve, \(\Gamma>0\), and fix
+\(\pi\in(0,1)\), \(b>1\), and \(\rho\in(0,1)\). Let
+\(u_0=\inf\{x\ge p:\Gamma(x)>0\}\), the lowest value above which the
+classes differ. In the point-mass benchmark \(u_0=\ell\) and
+\(\Gamma=h-\ell\). Let \(F_r\) be the uniform distribution on \([0,r]\)
+with \(r\ge p\). The kernel \(\xi\) in the proof of
+\hyperref[result-proposition-1]{Proposition 1} equals \(\Gamma(R)\) for
+\(R\ge p\) and, under equal admissibility, zero for \(R<p\), so
+\(\Delta_T(r)=r^{-1}\int_p^r\Gamma(u)\,du\). Hence \(\Delta_T(r)=0\) for
+\(p\le r\le u_0\), and for \(r>u_0\) the spread is continuous and
+strictly increasing, with derivative
+\(r^{-2}[r\Gamma(r)-\int_p^r\Gamma(u)\,du]\ge p\Gamma(r)/r^2>0\). Since
+\(\Gamma(x)\le\Gamma\), \(\Delta_T(r)\le(1-p/r)\Gamma\), and the split
+in the proof of Proposition 1 gives
+\(g_H-g_L=\Gamma-\Delta_T(r)\ge\Gamma p/r>0\). Dominated convergence,
+with the finite class means, makes \(r\mapsto g_j(r)\) and
+\(r\mapsto W_H(r)=\mathbb E_H[F_r(\theta)\mathbf1\{\theta\ge p\}]\)
+continuous and gives \(g_j(r)\to0\) as \(r\to\infty\). Also
+\(W_H(u_0)\ge(p/u_0)\Pr_H(\theta\ge p)>0\), because \(\Gamma>0\) gives
+the high class mass above the reserve. At the limit \(r=u_0\),
+
+\[
+g_H-g_L=\Gamma,\qquad
+B_{u_0}(M(\pi))-B_{u_0}(\pi)=[M(\pi)-\pi]\Gamma>0.
+\tag{A.25}\label{eq:paper-a-25}
+\]
+
+Choose \(r_1>u_0\) close enough to \(u_0\) that
+\(B_{r_1}(M(\pi))>B_{u_0}(\pi)\) and
+\((1+\rho)W_H(r_1)>2\rho W_H(u_0)\). Since \(B_r(\pi)\) and \(W_H(r)\)
+decrease in \(r\), every \(r_0\in(u_0,r_1)\) satisfies
+\(B_{r_0}(\pi)<B_{r_1}(M(\pi))\) and
+\((1+\rho)W_H(r_1)>2\rho W_H(r_0)>0\). Choose \(r_0\) close enough to
+\(u_0\) that \(\Delta_T(r_0)<(1-1/b)\rho\kappa(\pi)\Delta_T(r_1)\),
+which is possible because \(\Delta_T(r)\to0\) as \(r\downarrow u_0\).
+Select \(k\) strictly inside the window of \eqref{eq:paper-a3} and
+\(c_H\) strictly inside the window of \eqref{eq:paper-a2}; then
+\(c_H>B_{r_0}(\pi)>0\). Since \(B_r(M(\pi))\to0\) as \(r\to\infty\),
+some \(r_2>r_1\) has \(B_{r_2}(M(\pi))<c_H\), and
+\(\Delta_T(r_2)\ge\Delta_T(r_1)\) gives the trading bound of part
+(iii). All inequalities have strict slack and persist under small
+perturbations of \((r_0,r_1,r_2,c_H,k)\) and of \((\pi,b,\rho)\), with
+the low cost fixed at zero. This is a mathematical nonemptiness
+construction, not a statement about effect size for every pair of
+classes.
+
+\subsubsection{More than two classes}\label{more-than-two-classes}
+
+Price sufficiency does not need two classes, and the main comparison
+extends to two groups of classes. Let the class take finitely many
+values \(j\) with prior probabilities \(\pi_j>0\), class value
+distributions \(G_j\) with finite means, and class objects \(t_j,g_j\)
+as in \hyperref[sec-equilibrium]{Section 2.4}; the investor observes
+the class. The low cost is zero, so entry at every price is at least
+\(\rho\), and competitive pricing gives \(P=t_0+e(P)(T_X-t_0)\), where
+\(T_X\) is the posterior mean of the class proceeds at flow \(X\). The
+price therefore reveals \(T_X\).
+
+\emph{Price sufficiency with many classes (analytical).} In every
+equilibrium the price reveals the whole posterior over classes, with no
+restriction on how the class profits \(g_j\) relate to the class
+proceeds \(t_j\). Fix a candidate schedule, and let
+\(\bar e(q)=\int e(P(x))f(x-q)\,dx\) be the expected entry rate when the
+order is \(q\). A class-\(j\) investor who deviates to \(q\) earns
+\(t_jq\bar e(q)\) minus a term that does not depend on the class. The
+translation bound gives
+\([q\bar e(q)]'\ge(1-|q|/b)\bar e(q)\ge(1-1/b)\rho>0\), so
+\(q\bar e(q)\) is strictly increasing. Adding the optimality conditions
+of two classes with \(t_j<t_l\) gives
+\((t_l-t_j)[q_l\bar e(q_l)-q_j\bar e(q_j)]\ge0\), so the class with
+lower proceeds never chooses a larger order, also within mixtures. For
+flows \(x_1<x_2\) the likelihood ratio \(f(x_2-q)/f(x_1-q)\) is
+nondecreasing in \(q\), and
+
+\[
+T_X(x_2)-T_X(x_1)
+=\frac{\operatorname{Cov}_{x_1}\!\left[t_j,\,f(x_2-q)/f(x_1-q)\right]}
+{\mathbb E_{x_1}\!\left[f(x_2-q)/f(x_1-q)\right]}\ge0,
+\]
+
+where the moments are over class and order under the posterior at
+\(x_1\). The covariance is half the expectation of the product of the
+difference in class proceeds and the difference in likelihood ratios
+over two independent draws, and every such product is nonnegative. If
+the class proceeds are not all equal, equality forces the likelihood
+ratio to be constant on the joint support of class and order, and then
+the whole posterior is the same at \(x_1\) and \(x_2\). The posterior is
+therefore a measurable function of \(T_X\), hence of the price. If all
+class proceeds are equal, no order earns a residual and the posterior
+stays at the prior.
+
+\emph{Two groups of classes (analytical).} Split the classes into a low
+group and a high group, with prior mass \(\bar\pi\) on the high group.
+Let \(\mathcal M_\pi\) be the set of posteriors whose likelihood ratios
+relative to the prior differ by at most the factor \(e^{2/b}\) across
+classes; every flow and price posterior lies in \(\mathcal M_\pi\). In
+the strong economy let \(\gamma\) be the smallest distance between a
+class's proceeds and the range \(\{\mu\cdot t:\mu\in\mathcal M_\pi\}\)
+of feasible posterior means, with the low group below that range and
+the high group above it. Suppose \(\gamma>0\) and
+\(\max_jt_j-\min_jt_j<k<(1-1/b)\rho\gamma\), with the first difference
+taken in the weak economy; gross profit at the prior is below \(c_H\) in
+the weak economy; and in the strong economy the high group has the
+higher mean profit, with gross profit above \(c_H\) at the group
+posterior \(M(\bar\pi)\). Then the weak economy has unique zero orders
+and entry \(\rho\), and the strong economy has unique orders \(-1\) in
+the low group and \(+1\) in the high group, an informative price, and
+entry above \(\rho\). The proof repeats Steps 3 to 6 of the proof of
+\hyperref[result-proposition-2]{Proposition 2}. In the weak economy
+every residual is at most \(\max_jt_j-\min_jt_j\) in absolute value. In
+the strong economy every residual has the sign of its group and
+magnitude at least \(\rho\gamma\). Under the forced orders, flow
+carries information only about the group, so expected proceeds and
+gross profit are increasing affine functions of the group posterior,
+which lies in \([m(\bar\pi),M(\bar\pi)]\). With two classes
+\(\gamma=\kappa(\pi)\Delta_T\), and the conditions reduce to
+\eqref{eq:paper-a2} and \eqref{eq:paper-a3}. Ownership by the high group
+needs a separate comparison, as in part (ii) of Proposition 2. The
+argument does not cover a class whose proceeds lie inside the range of
+feasible posterior means: its residual can change sign with flow, and
+its equilibrium orders remain open.

@@ -1,0 +1,68 @@
+% Demo D "ruled": the website's ruled document brought to Beamer. STIX Two Text and Math, Inter for
+% titles and chrome (a stand-in for Archivo, which is not installed here), ink on paper, a 2 pt progress
+% rule under each title, dash bullets, no fills.
+\ProvidesPackage{demo-ruled}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\RequirePackage{fontspec}
+\setmainfont{STIX Two Text}[BoldFont={STIX Two Text SemiBold},BoldItalicFont={STIX Two Text SemiBold Italic}]
+\setsansfont{Inter}[BoldFont={Inter SemiBold}]
+\RequirePackage{unicode-math}
+\setmathfont{STIX Two Math}
+\definecolor{cPaperD}{HTML}{FBFCFC}
+\definecolor{cInkD}{HTML}{1E2530}
+\colorlet{cNavy}{cInkD}
+\definecolor{cLine}{HTML}{C7CDD5}
+\definecolor{cGrayText}{HTML}{5B6573}
+\colorlet{cMuted}{cGrayText}
+\setbeamercolor{background canvas}{bg=cPaperD}
+\setbeamercolor{normal text}{fg=cInkD,bg=cPaperD}
+\setbeamercolor{structure}{fg=cInkD}
+\setbeamercolor{frametitle}{fg=cInkD}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cInkD}
+\setbeamercolor{item}{fg=cInkD}
+\setbeamercolor{button}{bg=cPaperD,fg=cInkD}
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\large}
+\setbeamerfont{framesubtitle}{family=\rmfamily,size=\small}
+\setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{author}{family=\sffamily,size=\normalsize}
+\setbeamertemplate{itemize items}{\raise0.2ex\hbox{\sffamily\small\textendash}}
+\setbeamertemplate{button}{{\sffamily\scriptsize\color{cInkD}\underline{\insertbuttontext}}}
+\AtBeginEnvironment{tabular}{\sffamily\footnotesize}
+\makeatletter
+\newlength{\ruled@prog}\newlength{\ruled@rest}
+\setbeamertemplate{frametitle}{%
+  \vskip0.1cm
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}%
+  \ifx\insertframesubtitle\@empty\else
+    \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi
+  \vskip0.12cm
+  \ifbeamer@inappendix{\color{cLine}\rule{\linewidth}{0.4pt}}\par\else
+    \setlength{\ruled@prog}{\dimexpr\linewidth*\value{framenumber}/\inserttotalframenumber\relax}%
+    \setlength{\ruled@rest}{\dimexpr\linewidth-\ruled@prog\relax}%
+    {\color{cInkD}\rule{\ruled@prog}{2pt}}{\color{cLine}\rule[0.8pt]{\ruled@rest}{0.4pt}}\par\fi
+  \vskip-0.18cm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\sffamily\tiny\color{cGrayText}\insertshorttitle}\hfill
+    \ccc@nav\hspace*{0.9em}{\sffamily\tiny\color{cGrayText}\ifbeamer@inappendix\ccc@bid\else\insertframenumber\,/\,\inserttotalframenumber\fi}%
+  \end{beamercolorbox}}\vskip1pt\global\let\ccc@nav\@empty}
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.24\textheight
+    {\color{cInkD}\rule{\linewidth}{2pt}}\par\vskip0.5cm
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vskip0.5cm{\color{cLine}\rule{\linewidth}{0.4pt}}\par\vskip0.4cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vfil}}
+\makeatother
+\renewcommand{\NavyRule}{\par\noindent\textcolor{cInkD}{\rule{\linewidth}{1.2pt}}\par}
+\renewenvironment{Statement}[1]{\vspace{-2pt}\NavyRule\vskip2pt
+  \noindent{\sffamily\bfseries\small\color{cInkD}#1}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+\renewcommand{\ColHead}[1]{{\sffamily\bfseries\color{cInkD}#1}\par\vspace{0.2em}{\color{cInkD}\rule{\linewidth}{1.2pt}}\par\vspace{0.35em}}
+\renewcommand{\LargeLine}[1]{\par{\color{cInkD}\rule{\linewidth}{2pt}}\par\vspace{0.35em}%
+  \noindent{\raggedright\large\textbf{#1}\par}\vspace{0.35em}{\color{cLine}\rule{\linewidth}{0.4pt}}\par}
+\endinput

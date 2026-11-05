@@ -1,0 +1,1485 @@
+\chapter{Competition creates competition}\label{ch:ccc}
+
+\begin{chapterplan}
+The question of this chapter: why can a stronger incumbent raise the probability that a challenger prepares,
+when it never raises what preparation earns at any belief? After this chapter you can do five things.
+\begin{itemize}
+\item Tell the story of three economies with a weak, a strong and a very strong incumbent, and say what the
+  price does in each.
+\item State Proposition~2 with every hypothesis, and say what each of the conditions (H1), (H2) and (H3) compares.
+\item Derive when some trading cost satisfies (H2), and say why a prior away from one half makes this harder.
+\item Rebuild the proof economy by economy: orders first, then posteriors, then entry, then prices, with
+  uniqueness under all four tie rules.
+\item Derive entry, high-class ownership and the takeover-share condition against the strong incumbent, and use
+  the decisive-advantage lemma to obtain the case in which class \(H\) outbids the incumbent.
+\end{itemize}
+\end{chapterplan}
+
+\section{Three economies in words}\label{sec:ccc-story}
+
+At fixed information, a stronger incumbent hurts a challenger. Recall from
+Chapter~\ref{ch:auction} that a strengthening of the incumbent never raises the gross profit \(g_H\) of class
+\(H\) or the gross profit \(g_L\) of class \(L\) (Proposition~1(a)). So gross profit \(B(\mu)\) at every fixed
+belief \(\mu\) never rises. The auction-entry literature calls this deterrence; the paper cites Fishman (1988)
+and Hirshleifer and Png (1989) for it. If the challenger's belief stayed the same, a stronger incumbent could not
+raise entry.
+
+The paper adds a second force with the same cause. A stronger incumbent never narrows the target-payoff spread
+\(\DT=t_H-t_L\) (Proposition~1(b)). The spread is what the informed investor trades on. So a stronger incumbent can
+make informed trade pay, and informed trade puts information into the price. The challenger reads the price
+before it decides whether to prepare.
+
+The main result compares three economies. They differ only in the incumbent's value distribution: a weak
+incumbent \(F_0\), a strong incumbent \(F_1\) that strengthens \(F_0\), and a very strong incumbent \(F_2\) that
+strengthens \(F_1\). The classes, the reserve, the prior, the order slot and the costs are the same in all three.
+\begin{itemize}
+\item \emph{The weak incumbent.} The spread is narrow. An informed order earns at most the spread, and the
+  spread is below the trading cost \(k\). So the investor never trades, and the price is silent: after every
+  order the belief stays at the prior \(\pi\). At the prior, gross profit is below the high cost \(c_H\). Only a
+  zero-cost challenger prepares, and entry equals the floor \(\rho\).
+\item \emph{The strong incumbent.} The spread is wide. The investor's residual advantage covers \(k\) under
+  every strategy, so class \(H\) buys and class \(L\) sells. A purchase lifts the belief to the top posterior
+  \(M(\pi)\). At \(M(\pi)\), gross profit exceeds \(c_H\), so a purchase recruits a high-cost challenger. Entry
+  rises above \(\rho\).
+\item \emph{The very strong incumbent.} The spread is at least as wide, so the investor still trades and the
+  price still speaks. But gross profit is so low that it stays below \(c_H\) even at \(M(\pi)\). No price recruits
+  a high-cost challenger, and entry returns to \(\rho\).
+\end{itemize}
+Entry first rises and then falls. Figure~\ref{fig:ccc-sketch} draws this pattern.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+\draw[-{Stealth}] (0,0) -- (10.8,0) node[right]{incumbent strength};
+\draw[-{Stealth}] (0,0) -- (0,4.8) node[above]{entry};
+\draw[dashed,rulegrey] (0,1.2) -- (10.4,1.2);
+\node[left] at (0,1.2) {\(\rho\)};
+\draw[dotted,rulegrey] (0,3.5) -- (5.2,3.5);
+\node[left] at (0,3.5) {\(\Ent_1\)};
+\draw (-0.08,4.3) -- (0.08,4.3);
+\node[left] at (0,4.3) {\(1\)};
+\foreach \x/\lab in {2/F_0, 5.2/F_1, 8.4/F_2} {
+  \draw (\x,-0.08) -- (\x,0.08);
+  \node[below] at (\x,-0.05) {\(\lab\)};
+}
+\fill[accent] (2,1.2) circle (2.6pt);
+\fill[accent] (5.2,3.5) circle (2.6pt);
+\fill[accent] (8.4,1.2) circle (2.6pt);
+\draw[-{Stealth},accent] (2.35,1.5) -- (4.85,3.2) node[midway,above left]{rises};
+\draw[-{Stealth},accent] (5.55,3.2) -- (8.05,1.5) node[midway,above right]{falls};
+\node[below,align=center,text=notegrey] at (2,-0.55) {price silent};
+\node[below,align=center,text=notegrey] at (5.2,-0.55) {price speaks,\\a purchase recruits};
+\node[below,align=center,text=notegrey] at (8.4,-0.55) {price speaks,\\no price recruits};
+\end{tikzpicture}
+\caption{A sketch of Proposition~2. Each dot is the unique equilibrium entry of one economy. The dashed line is
+the entry floor \(\rho\). The proposition compares only these three economies; Chapter~\ref{ch:coexistence}
+describes the strengths between them. The sketch has no scale.}
+\label{fig:ccc-sketch}
+\end{figure}
+
+\begin{intuition}[two forces with one cause]
+A stronger incumbent moves part of the class value gap away from the challenger and toward the target. The
+challenger keeps no more than before, so its gross profit does not rise at any belief. The target's stock receives
+at least as much of the gap, so the stock becomes at least as sensitive to the challenger's class. From \(F_0\) to \(F_1\) the second effect switches information
+on: the belief after a purchase jumps from \(\pi\) to \(M(\pi)\), and this jump outweighs the fall in profit at
+each belief. From \(F_1\) to \(F_2\) information is already on, so only the fall in profit acts.
+\end{intuition}
+
+\begin{analogy}[a loudspeaker with a fee]
+Think of the informed investor as a loudspeaker that costs \(k\) to switch on. It speaks only when its message is
+worth more than the fee. The worth of the message grows with the spread, so a stronger incumbent makes speech
+more likely. The challenger listens, and it acts on good news when good news makes preparation pay.
+
+The analogy breaks in three places. First, the investor does not want to inform anyone; it trades for its own
+profit, and the price carries the message as a side effect. Second, the message is noisy, because a liquidity
+trader can place the same order. Third, the worth of the message depends on how the listener reacts, and market
+makers put that reaction into the price.
+\end{analogy}
+
+\section{The objects of the result}\label{sec:ccc-setup}
+
+The proposition uses objects from four earlier chapters. This section recalls each one in words, with its
+formula. Keep this page open while you read the proof.
+
+\subsection{The auction}
+
+\begin{itemize}
+\item The challenger belongs to class \(H\) or class \(L\). The prior is \(\pi=\Pr(j=H)\), with \(0<\pi<1\). Given
+  its class \(j\), the challenger's value \(\theta\) has the distribution \(G_j\) with a finite mean. Write
+  \(D(y)=G_L(y)-G_H(y)\).
+\item The class ranking (equation (1) of the paper) says \(G_H(y)\le G_L(y)\) for every \(y\), and
+  \(G_H(p^-)=G_L(p^-)=0\). So \(D(y)\ge0\) everywhere, and every value meets the reserve \(p>0\).
+\item The incumbent's value \(R\) has a continuous distribution \(F\). A strengthening of \(F\) is a continuous
+  distribution \(\tilde F\) with \(\tilde F\le F\) at every point (Section~\ref{sec:toolkit-fosd}).
+\item Without entry the target receives \(t_0=p[1-F(p)]\) in expectation. After entry by a class-\(j\) challenger
+  it receives \(t_j\), and the challenger expects the gross profit \(g_j\). The spread is \(\DT=t_H-t_L\).
+\item Write \(w_j=t_j-t_0\) for the gain in expected proceeds that entry brings in class \(j\), and
+  \(w(\mu)=(1-\mu)w_L+\mu w_H=t_L-t_0+\DT\mu\). An admissible challenger raises proceeds to at least the reserve,
+  so \(t_j\ge t_0\) and \(w_H,w_L\ge0\).
+\item Gross profit at the belief \(\mu=\Pr(j=H)\) is \(B(\mu)=g_L+\mu(g_H-g_L)\).
+\item A prepared class-\(j\) challenger beats the incumbent with probability
+  \(W_j(F)=\E_j\bigl[F(\theta)\1\{\theta\ge p\}\bigr]\) (Chapter~\ref{ch:model}). Under the class ranking every value
+  meets the reserve, so \(W_j(F)=\E_j[F(\theta)]\). Class \(H\) \emph{outbids} the incumbent \(F\) when
+  \(W_H(F)=1\).
+\end{itemize}
+
+Proposition~1 (Chapter~\ref{ch:auction}) gives the auction objects as integrals:
+\begin{equation}\label{eq:ccc-prop1}
+\DT(F)=pF(p)D(p^-)+\int_p^\infty[1-F(y)]\,D(y)\,dy,\qquad
+g_j(F)=\int_p^\infty[1-G_j(y)]\,F(y)\,dy.
+\end{equation}
+Part (a): a strengthening weakly lowers \(g_H\) and \(g_L\), and so gross profit at every fixed belief. Part (b):
+under the class ranking, a strengthening weakly raises \(\DT\). Both changes are weak in general; each is strict
+when its integral of the difference \(F-\tilde F\) is positive.
+
+Two facts follow from \eqref{eq:ccc-prop1} under the class ranking. The proof uses both.
+
+\begin{derivation}[the spread is never negative and the profit gap is never negative]
+The class ranking gives \(D(p^-)=0\) and \(D(y)\ge0\). So
+\begin{align*}
+\DT(F)&=0+\int_p^\infty[1-F(y)]\,D(y)\,dy \why{\(D(p^-)=0\)}\\
+&\ge0 \why{\(1-F\ge0\) and \(D\ge0\)}.
+\end{align*}
+For the profit gap, subtract the two lines of \eqref{eq:ccc-prop1}:
+\begin{align*}
+g_H(F)-g_L(F)&=\int_p^\infty[1-G_H(y)]\,F(y)\,dy-\int_p^\infty[1-G_L(y)]\,F(y)\,dy \why{\eqref{eq:ccc-prop1}}\\
+&=\int_p^\infty[G_L(y)-G_H(y)]\,F(y)\,dy \why{one integral}\\
+&=\int_p^\infty D(y)\,F(y)\,dy \why{definition of \(D\)}\\
+&\ge0 \why{\(D\ge0\) and \(F\ge0\)}.
+\end{align*}
+Gross profit is linear in the belief. For two beliefs \(\mu\) and \(\mu'\),
+\begin{align*}
+B(\mu)-B(\mu')&=[g_L+\mu(g_H-g_L)]-[g_L+\mu'(g_H-g_L)] \why{definition of \(B\)}\\
+&=(\mu-\mu')(g_H-g_L) \why{\(g_L\) cancels}.
+\end{align*}
+So \(B\) never falls when the belief rises, and it rises strictly when \(g_H>g_L\).
+\end{derivation}
+
+\subsection{Preparation and the order slot}
+
+\begin{itemize}
+\item After it sees the price, the challenger learns its preparation cost \(C\in\{0,c_H\}\), with
+  \(\Pr(C=0)=\rho\), \(0<\rho<1\), and \(c_H>0\). The cost is independent of the class, the values and the slot.
+  A zero-cost challenger prepares after every price.
+\item Write \(\zeta(\bar P)\) for the probability that a high-cost challenger prepares after the price \(\bar P\).
+  Entry after the order \(x\) is \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\), so \(e(x)\ge\rho\). This is the entry
+  floor.
+\item In the order slot, the informed investor arrives with probability \(\lambda\in(0,1)\). It sees the class and
+  places \(q\in\{-1,0,1\}\); a nonzero order costs \(k>0\). Otherwise a liquidity trader sells, abstains or buys with
+  probabilities \(\beta\), \(1-2\beta\) and \(\beta\).
+\item A liquidity order in one direction has probability \(b=(1-\lambda)\beta\). A liquidity abstention has
+  probability \(b_0=(1-\lambda)(1-2\beta)\). The mass ratio is \(u=\lambda/b>0\).
+\item Write \(\sigma_j(x)\) for the probability that the investor in class \(j\) places the order \(x\). The order
+  \(x\) then has probability \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\) in class \(j\), where \(\eta\) gives
+  the liquidity probabilities \((\beta,1-2\beta,\beta)\) of the orders \((-1,0,1)\). Write \(\delta_q\) for the
+  strategy that places \(q\) for sure.
+\end{itemize}
+
+\subsection{Beliefs, prices and trade}
+
+\begin{itemize}
+\item Bayes' rule in odds form (Section~\ref{sec:toolkit-odds}) gives the posterior \(\mu(x)\) after the order \(x\):
+  \[
+  \frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)}.
+  \]
+\item The posterior bounds \eqref{eq:beliefs-bounds} are
+  \[
+  M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi},\qquad m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)}.
+  \]
+  After a nonzero order, \(m(\pi)\le\mu(x)\le M(\pi)\) under every investor strategy and for every \(\beta<1/2\)
+  (Lemma~A.1(b)). The same bound after the zero order needs \(\beta\le1/3\) (Lemma~A.1(c)). When class \(H\) buys
+  and class \(L\) sells for sure, the posteriors after \((-1,0,1)\) are \((m(\pi),\pi,M(\pi))\) (Lemma~A.1(d)).
+\item The challenger's belief at a price averages the posteriors of the orders that share this price. So it lies
+  between the smallest and the largest of these posteriors.
+\item Write \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\).
+\item When \(g_H>g_L\), the preparation threshold \eqref{eq:beliefs-threshold} is \(\tau=(c_H-g_L)/(g_H-g_L)\), and
+  \(B(\mu)\ge c_H\) exactly when \(\mu\ge\tau\).
+\item The exclusion bound (Section~\ref{sec:beliefs-exclusion}, Corollary~A.1): if \(0<\beta\le1/3\),
+  \(g_H\ge g_L\) and \(B(M(\pi))<c_H\), then no high-cost challenger prepares after any order.
+\item The price formula \eqref{eq:beliefs-price}: in every candidate,
+  \[
+  P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr]=t_0+e(x)\,w(\mu(x)).
+  \]
+  It uses only Bayes' rule, competitive prices, truthful bids and the independence of the cost.
+\item The price reveals the posterior (Section~\ref{sec:beliefs-reveal}): if \(\DT>0\) and \(\rho>0\), two orders
+  with one price have one posterior, and the challenger's belief at \(P(x)\) is \(\mu(x)\). This is Lemma~A.2(c).
+  The lemma also assumes \(g_H>g_L\), but the proof of part (c) uses only the price formula, \(\DT>0\) and
+  \(e\ge\rho>0\).
+\item The trading returns \eqref{eq:trading-returns} of the two correct orders are
+  \(K_H=e(1)\,\DT\,[1-\mu(1)]\) and \(K_L=e(-1)\,\DT\,\mu(-1)\). Class \(H\) earns \(U_H(1)=K_H-k\) from a purchase,
+  class \(L\) earns \(U_L(-1)=K_L-k\) from a sale, and abstention earns \(U_j(0)=0\). A wrong-signed order earns at
+  most \(-k\) (Lemma~A.3).
+\item The trading bound \eqref{eq:trading-bound}: under every candidate profile,
+  \[
+  \rho\,\kappa(\pi)\,\DT\le\rho\,[1-M(\pi)]\,\DT\le K_H\le\DT,\qquad
+  \rho\,\kappa(\pi)\,\DT\le\rho\,m(\pi)\,\DT\le K_L\le\DT.
+  \]
+\end{itemize}
+
+\subsection{Equilibrium, candidates and tie rules}
+
+An equilibrium (Chapter~\ref{ch:model}, Definition~A.1) lists the investor's order distributions, the posteriors,
+the prices, the challenger's belief at each price and the high-cost preparation rule, with truthful bids. It
+meets six conditions: (E1) Bayes' rule after each order; (E2) Bayes' rule at each price; (E3) optimal high-cost
+preparation; (E4) competitive prices; (E5) optimal orders; (E6) truthful bids.
+
+A \emph{candidate} meets (E1) to (E4) and (E6) for some pair of order distributions. An equilibrium is a
+candidate that also meets (E5). The uniqueness proof derives bounds that hold for every candidate. So it never
+assumes the tuple that it wants to find.
+
+Two tie rules apply. An indifferent investor may mix over its best orders, or it abstains. An indifferent
+high-cost challenger prepares, or it may prepare with any probability. The four pairs are the four tie rules.
+The default tie rules are ``may mix'' and ``prepares''.
+
+For the three economies, write \(\Delta_i=\DT(F_i)\), \(B_i=B_{F_i}\), and \(t_{0,i}\), \(t_{L,i}\), \(g_{j,i}\),
+\(w_i(\mu)\) and \(\tau_i\) for the objects against \(F_i\), with \(i\in\{0,1,2\}\). Inside the proof, write
+\(M=M(\pi)\), \(m=m(\pi)\) and \(\kappa=\kappa(\pi)\).
+
+\section{The statement}\label{sec:ccc-statement}
+
+Here is the result as the paper states it. The box copies every hypothesis.
+
+\begin{paperresult}{Proposition 2 (Competition creates competition)}
+Let the classes satisfy the class ranking and have finite means, let \(F_1\) be a continuous first-order
+stochastic strengthening of the continuous incumbent distribution \(F_0\), and let \(F_2\) strengthen \(F_1\) in
+the same sense. Fix \(0<\pi,\rho,\lambda<1\), \(0<\beta<1/2\), \(c_H>0\) and \(k>0\). Write \(\Delta_i=\DT(F_i)\),
+\(B_i=B_{F_i}\), and \(t_{0,i}\) and \(t_{L,i}\) for the proceeds \(t_0\) and \(t_L\) against \(F_i\), with
+\(b=(1-\lambda)\beta\) and \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\). Suppose that
+\[
+\begin{array}{ll}
+\text{(H1), the high-cost window:}& B_0(\pi)<c_H<B_1(M(\pi)),\\
+\text{(H2), the trading-cost window:}& \Delta_0<k<\rho\kappa(\pi)\Delta_1,\\
+\text{(H3), the exclusion condition:}& B_2(M(\pi))<c_H.
+\end{array}
+\]
+Each economy has a unique equilibrium outcome under all four tie rules.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \emph{The weak incumbent \(F_0\).} Both classes abstain, every posterior equals \(\pi\), entry is \(\rho\),
+  and all orders share the price \(t_{0,0}+\rho[t_{L,0}-t_{0,0}+\Delta_0\pi]\). High-class ownership is
+  \(\pi\rho W_H(F_0)\).
+\item \emph{The strong incumbent \(F_1\).} Class \(H\) buys and class \(L\) sells with probability one. The
+  posteriors after \((-1,0,1)\) are \((m(\pi),\pi,M(\pi))\), and entry is \((\rho,\rho,1)\). Prices rise strictly in
+  this order. Class entry and total entry are
+  \[
+  e_H=\rho+(1-\rho)(b+\lambda),\qquad e_L=\rho+(1-\rho)b,\qquad \Ent_1=\rho+(1-\rho)(b+\pi\lambda)>\rho.
+  \]
+  High-class ownership rises exactly when \(e_HW_H(F_1)>\rho W_H(F_0)\). Class \(H\)'s takeover share rises exactly
+  when
+  \begin{equation}\label{eq:ccc-share}
+  e_HW_H(F_1)W_L(F_0)>e_LW_H(F_0)W_L(F_1).
+  \end{equation}
+  If class \(H\) outbids the stronger incumbent, \(W_H(F_1)=1\), it also outbids \(F_0\); high-class ownership rises
+  from \(\pi\rho\) to \(\pi e_H\), and its takeover share is nondecreasing, strictly exactly when \(W_L(F_0)>0\). If
+  \(W_L(F_0)=0\), that share is one against both incumbents.
+\item \emph{The very strong incumbent \(F_2\).} The orders and posteriors are those of part~(ii), entry is \(\rho\)
+  after every order, and the three prices differ. High-class ownership is \(\pi\rho W_H(F_2)\).
+\end{enumerate}
+Against each \(F_i\), with \(\mu_i(x)\) and \(e_i(x)\) the posterior and entry after the order \(x\), prices are
+\(P_i(x)=t_{0,i}+e_i(x)[t_{L,i}-t_{0,i}+\Delta_i\mu_i(x)]\), the price belief is \(\mu_i(x)\), high-cost preparation
+is \([e_i(x)-\rho]/(1-\rho)\), and bids are truthful.
+\end{paperresult}
+
+In the paper, the takeover-share condition \eqref{eq:ccc-share} is equation (6). The hypotheses ask for ranked
+classes, three continuous incumbent distributions with \(F_2\le F_1\le F_0\) at every point, interior
+probabilities, \(0<\beta<1/2\) and positive costs. Section~\ref{sec:ccc-conditions} reads (H1) to (H3). In each
+economy exactly one equilibrium outcome exists, whatever the tie rule. Read the rest one piece at a time.
+\begin{itemize}
+\item \emph{Part (i).} The investor never trades. The price is the same after every order, so it carries no
+  information. Only the zero-cost challenger prepares.
+\item \emph{Part (ii).} The investor always trades in the correct direction. A purchase moves the belief to the
+  top posterior and recruits a high-cost challenger; the other two orders leave entry at the floor. Entry in each
+  class and total entry rise above \(\rho\). The ownership and share statements say when the extra entry turns
+  into more acquisitions by class \(H\).
+\item \emph{Part (iii).} The investor trades as in part (ii), so the price still speaks. No price recruits a
+  high-cost challenger, so entry is back at the floor.
+\item \emph{The last paragraph.} In each economy, prices follow the price formula, the challenger reads the
+  posterior from the price, and the high-cost preparation probability follows from entry.
+\end{itemize}
+
+\begin{watchout}
+Copy the domain of \(\beta\) exactly: Proposition~2 states \(0<\beta<1/2\), while the model section and the
+exclusion bound use \(\beta\le1/3\). The proof fixes orders with the posterior bounds after nonzero orders, which
+hold for every \(\beta<1/2\), and then computes the posteriors exactly. The watchout in
+Section~\ref{sec:ccc-conditions} on (H3) explains why the zero order never needs \(\beta\le1/3\).
+\end{watchout}
+
+\section{The three conditions in words}\label{sec:ccc-conditions}
+
+Each condition is a pair of strict inequalities or a single strict inequality. For each one, this section says
+what it compares, why the proof needs it, and what goes wrong without it. Figure~\ref{fig:ccc-profit} shows (H1) and
+(H3) in one picture.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+\draw[-{Stealth}] (0,0) -- (8.8,0) node[below]{belief \(\mu\)};
+\draw[-{Stealth}] (0,0) -- (0,5.4) node[above]{gross profit};
+\draw (8,-0.08) -- (8,0.08); \node[below] at (8,-0.05) {\(1\)};
+\node[below] at (0,-0.05) {\(0\)};
+\draw[dashed,ink] (0,2.6) -- (8.3,2.6);
+\node[left] at (0,2.6) {\(c_H\)};
+\foreach \x/\lab in {1.9/m, 3.3/\pi, 5.4/M} {
+  \draw[dotted,rulegrey] (\x,0) -- (\x,4.9);
+  \node[below] at (\x,-0.05) {\(\lab\)};
+}
+\draw (4.84,-0.08) -- (4.84,0.08); \node[below,text=notegrey] at (4.84,-0.05) {\(\tau_1\)};
+\draw[thick,accent] (0,0.5) -- (8,5.0) node[right]{\(B_0\)};
+\draw[thick,ink] (0,0.3) -- (8,4.1) node[right]{\(B_1\)};
+\draw[thick,notegrey] (0,0.15) -- (8,3.3) node[right]{\(B_2\)};
+\fill[accent] (3.3,2.356) circle (2.2pt);
+\fill[ink] (5.4,2.865) circle (2.2pt);
+\fill[notegrey] (5.4,2.277) circle (2.2pt);
+\end{tikzpicture}
+\caption{A picture to keep in mind for (H1) and (H3); the lines show one possible case, with no scale. Each
+line is the gross profit \(B_i(\mu)=g_{L,i}+\mu(g_{H,i}-g_{L,i})\) against one incumbent. The dots mark
+\(B_0(\pi)<c_H\), \(B_1(M)>c_H\) and \(B_2(M)<c_H\). Each line lies on or below the one before and is no steeper,
+because a strengthening never raises \(g_L\) and never raises the gap \(g_H-g_L=\int_p^\infty D(y)F(y)\,dy\).}
+\label{fig:ccc-profit}
+\end{figure}
+
+\subsection{(H1), the high-cost window}
+
+\emph{What it compares.} (H1) reads \(B_0(\pi)<c_H<B_1(M(\pi))\). It compares the high cost with gross profit at
+two beliefs in two economies. On the left is gross profit at the prior against the weak incumbent. On the right is
+gross profit at the top posterior against the strong incumbent.
+
+\emph{Why the proof needs it.} The left side gives entry \(\rho\) against \(F_0\): there the price is silent, so the
+challenger's belief is \(\pi\), and gross profit at \(\pi\) does not cover \(c_H\). Through Proposition~1(a),
+\(B_1(\pi)\le B_0(\pi)<c_H\), so the left side also stops recruitment after the zero order against \(F_1\). The right
+side gives recruitment after a purchase against \(F_1\). Together, the two sides force \(g_{H,1}>g_{L,1}\), so the
+threshold \(\tau_1\) exists, and \(\pi<\tau_1<M(\pi)\) (Step~0 of the proof).
+
+\emph{What fails without it.} Suppose the left side asked only \(B_1(\pi)<c_H\). Then gross profit at the prior can
+exceed \(c_H\) against \(F_0\). When it does, the silent price leaves the belief at \(\pi\), both cost types prepare,
+and entry against \(F_0\) is one. Against \(F_1\) entry is \(\Ent_1<1\), so entry falls. Appendix A.3 of the paper
+builds such a case from a variant of the example. Suppose instead the right side fails, \(c_H>B_1(M(\pi))\). Orders are still full,
+so no price lifts the belief above \(M(\pi)\). No price recruits against \(F_1\), and entry stays at \(\rho\).
+Chapter~\ref{ch:example} shows this case in the example.
+
+\begin{checkyourself}
+Show that (H1) implies \(B_0(M(\pi))>c_H\). What does this inequality say about the reason why no high-cost
+challenger prepares against the weak incumbent?
+\label{q:ccc-missing}
+\end{checkyourself}
+
+\subsection{(H2), the trading-cost window}
+
+\emph{What it compares.} (H2) reads \(\Delta_0<k<\rho\kappa(\pi)\Delta_1\). It compares the trading cost with the two
+ends of the trading bound. On the left is the upper end against the weak incumbent: no correct order earns more
+than \(\Delta_0\). On the right is the lower end against the strong incumbent: every correct order earns at least
+\(\rho\kappa(\pi)\Delta_1\).
+
+\emph{Why the proof needs it.} The trading bound holds under every candidate. So (H2) fixes the investor's orders
+before any order profile is known. Against \(F_0\), every correct order earns at most \(\Delta_0-k<0\), so it cannot
+cover the trading cost. Against \(F_1\), every correct order earns at least \(\rho\kappa(\pi)\Delta_1-k>0\), so it
+covers the cost for sure. Proposition~1(b) gives \(\Delta_2\ge\Delta_1\), so the right side also forces trade
+against \(F_2\).
+
+\emph{What fails without it.} Suppose \(\Delta_0>k\). Then the upper bound does not rule out informed orders
+against \(F_0\), and the price can carry information there. Along the example's path the paper shows a strength
+where the spread exceeds \(k\) and two equilibria exist (Proposition~3, Chapter~\ref{ch:coexistence}). Suppose
+instead \(k\ge\rho\kappa(\pi)\Delta_1\). Then the lower bound does not force full orders against \(F_1\). The proof
+cannot exclude candidates in which the investor abstains or mixes, and its uniqueness argument breaks.
+
+\subsection{(H3), the exclusion condition}
+
+\emph{What it compares.} (H3) reads \(B_2(M(\pi))<c_H\). It compares the high cost with gross profit at the top
+posterior against the very strong incumbent.
+
+\emph{Why the proof needs it.} Against \(F_2\) the investor trades fully, so every belief at a price lies between
+\(m(\pi)\) and \(M(\pi)\). Gross profit never falls with the belief, so at every price it is at most
+\(B_2(M(\pi))\), which is below \(c_H\). No price recruits a high-cost challenger, and entry returns to \(\rho\).
+
+\emph{What fails without it.} A purchase could recruit a high-cost challenger against \(F_2\) as well, and entry
+need not fall. The proof uses (H3) only against \(F_2\), so parts (i) and (ii) hold without it.
+
+\begin{watchout}
+The main text of the paper names the exclusion bound when it explains (H3). The exclusion bound of
+Chapter~\ref{ch:beliefs} needs \(\beta\le1/3\), because it must bound the posterior after the zero order under every
+strategy. Proposition~2 allows \(0<\beta<1/2\). The proof of part (iii) avoids the zero-order bound: it first shows
+that orders are full, so the posterior after the zero order is exactly \(\pi\). Then it applies the logic of the
+exclusion bound to three known posteriors. Section~\ref{sec:ccc-proof-iii} gives the details.
+\end{watchout}
+
+\subsection{Each inequality has one job}
+
+Appendix A.3 of the paper lists where the proof uses each of the five inequalities. Table~\ref{tab:ccc-jobs}
+repeats the list.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{11.4cm}@{}}
+\toprule
+Inequality & Where the proof uses it\\
+\midrule
+\(B_0(\pi)<c_H\) & Entry \(\rho\) against \(F_0\). With Proposition~1(a), no recruitment after the zero order against
+\(F_1\).\\
+\(c_H<B_1(M(\pi))\) & Recruitment after a purchase against \(F_1\).\\
+\(\Delta_0<k\) & No informed order pays against \(F_0\), under every candidate.\\
+\(k<\rho\kappa(\pi)\Delta_1\) & Full orders against \(F_1\), and with Proposition~1(b) against \(F_2\), under every
+candidate.\\
+\(B_2(M(\pi))<c_H\) & No recruitment against \(F_2\).\\
+\bottomrule
+\end{tabular}
+\caption{The job of each inequality in (H1) to (H3).}
+\label{tab:ccc-jobs}
+\end{table}
+
+The paper also states that (H1) to (H3) hold together on an open set of parameters. It argues this only for
+uniform incumbents with the example's class values and reserve. There each condition is a strict inequality between
+continuous functions of \((r_0,r_1,r_2,c_H,k,\rho,\pi,\lambda,\beta)\), so small changes of these parameters keep all
+three. The set is nonempty because the example satisfies all three. Do not read the claim as a statement about
+every pair of classes or every incumbent family. Chapter~\ref{ch:example} shows a section of this set.
+
+\section{When the trading-cost window is nonempty}\label{sec:ccc-window}
+
+(H2) asks for a trading cost between two numbers. Such a cost exists only if the left number lies below the right
+one. The paper states the exact condition: the window is nonempty exactly when \(\Delta_0/\Delta_1<\rho\kappa(\pi)\), that is,
+when competition widens the target-payoff spread enough from \(F_0\) to \(F_1\).
+
+\begin{derivation}[the window is nonempty exactly when \(\Delta_0/\Delta_1<\rho\kappa(\pi)\)]
+\emph{Step 1: a fact about intervals.} For two real numbers \(a\) and \(c\), some \(k\) satisfies \(a<k<c\) exactly
+when \(a<c\). If \(a<c\), the midpoint works, because \(a<(a+c)/2<c\). If \(a\ge c\), every \(k>a\) also satisfies
+\(k>c\), so no \(k\) lies below \(c\) and above \(a\).
+
+\emph{Step 2: apply it.} Take \(a=\Delta_0\) and \(c=\rho\kappa(\pi)\Delta_1\). Some trading cost satisfies (H2)
+exactly when
+\begin{equation}\label{eq:ccc-window}
+\Delta_0<\rho\kappa(\pi)\Delta_1 .
+\end{equation}
+
+\emph{Step 3: the signs.} Under the class ranking \(\Delta_0\ge0\) (Section~\ref{sec:ccc-setup}), and
+Proposition~1(b) gives \(\Delta_1\ge\Delta_0\). If \(\Delta_1=0\), then \(\Delta_0=0\), and \eqref{eq:ccc-window} reads
+\(0<0\), which is false. So a nonempty window needs \(\Delta_1>0\).
+
+\emph{Step 4: divide.} With \(\Delta_1>0\),
+\begin{align*}
+\Delta_0<\rho\kappa(\pi)\Delta_1
+&\iff \frac{\Delta_0}{\Delta_1}<\rho\kappa(\pi) \why{divide by \(\Delta_1>0\); direction kept}.
+\end{align*}
+Every cost in the window is positive, because \(k>\Delta_0\ge0\).
+\end{derivation}
+
+\subsection{No unit of money}
+
+The paper notes a scale property of the model. Multiply every value, the reserve and every cost by the same
+positive number \(s\). Then prices and payoffs are multiplied by \(s\), while orders, beliefs, entry and ownership do
+not change. Under this rescale, \(\Delta_0\) and \(\Delta_1\) are both multiplied by \(s\), so their ratio does not
+change. The entry floor \(\rho\) is a probability, and \(\kappa(\pi)\) is built from posteriors. So the condition
+\(\Delta_0/\Delta_1<\rho\kappa(\pi)\) involves the two distributions, the classes, \(\rho\), the order slot and
+\(\pi\), and no unit of money.
+
+In words, the condition asks by what factor competition widens the spread. The size of the spread in money does
+not enter. The trading cost \(k\) is an amount of money, and (H2) then places it inside the window.
+
+\subsection{Why a prior away from one half narrows the window}
+
+The left end \(\Delta_0\) of the window does not depend on the prior. The right end \(\rho\kappa(\pi)\Delta_1\) does,
+through \(\kappa(\pi)\). The derivation below shows that \(\kappa(\pi)\) is largest at \(\pi=1/2\).
+
+\begin{derivation}[\(\kappa(\pi)\) is largest at the prior one half]
+\emph{Step 1: \(1-M(\pi)=m(1-\pi)\).} Start from the top posterior:
+\begin{align*}
+1-M(\pi)&=1-\frac{\pi(1+u)}{\pi(1+u)+1-\pi} \why{definition of \(M\)}\\
+&=\frac{\pi(1+u)+1-\pi-\pi(1+u)}{\pi(1+u)+1-\pi} \why{common denominator}\\
+&=\frac{1-\pi}{\pi(1+u)+1-\pi} \why{\(\pi(1+u)\) cancels}.
+\end{align*}
+Next, evaluate the bottom posterior at \(1-\pi\):
+\begin{align*}
+m(1-\pi)&=\frac{1-\pi}{(1-\pi)+[1-(1-\pi)](1+u)} \why{replace \(\pi\) by \(1-\pi\) in \(m\)}\\
+&=\frac{1-\pi}{(1-\pi)+\pi(1+u)} \why{\(1-(1-\pi)=\pi\)}.
+\end{align*}
+The two results have the same numerator and the same denominator, so \(1-M(\pi)=m(1-\pi)\).
+
+\emph{Step 2: \(m\) rises strictly with the prior.} The complement of \(m(\pi)\) is
+\begin{align*}
+1-m(\pi)&=\frac{\pi+(1-\pi)(1+u)-\pi}{\pi+(1-\pi)(1+u)}=\frac{(1-\pi)(1+u)}{\pi+(1-\pi)(1+u)} \why{common denominator}.
+\end{align*}
+So the odds of \(m(\pi)\) are
+\begin{align*}
+\frac{m(\pi)}{1-m(\pi)}&=\frac{\pi}{(1-\pi)(1+u)} \why{the denominators cancel}\\
+&=\frac{1}{1+u}\cdot\frac{\pi}{1-\pi} \why{rearrange}.
+\end{align*}
+The prior odds \(\pi/(1-\pi)\) rise strictly with \(\pi\). A probability rises strictly with its odds
+(Section~\ref{sec:toolkit-odds}). So \(m(\pi)\) rises strictly with \(\pi\).
+
+\emph{Step 3: \(\kappa\) as one bottom posterior.} By Step 1, \(\kappa(\pi)=\min\{m(\pi),m(1-\pi)\}\). Since \(m\)
+rises, the smaller argument gives the smaller value:
+\[
+\kappa(\pi)=m\bigl(\min\{\pi,1-\pi\}\bigr).
+\]
+
+\emph{Step 4: the largest value.} The number \(\min\{\pi,1-\pi\}\) is at most \(1/2\), with equality only at
+\(\pi=1/2\). Since \(m\) rises strictly, \(\kappa(\pi)\le m(1/2)\), with equality only at \(\pi=1/2\). The value is
+\begin{align*}
+m(1/2)&=\frac{1/2}{1/2+(1/2)(1+u)} \why{definition of \(m\)}\\
+&=\frac{1}{1+(1+u)} \why{multiply above and below by \(2\)}\\
+&=\frac{1}{2+u}.
+\end{align*}
+\end{derivation}
+
+\emph{What this says.} The right end of the window is largest at the prior one half. It shrinks when the prior
+moves away from one half in either direction, while the left end stays where it is. So a prior away from one half
+narrows the window. It follows that, when \(\Delta_0>0\), a prior far enough from one half closes it, because
+\(\kappa(\pi)\) goes to zero as \(\pi\) goes to zero or one.
+
+\begin{intuition}[the favored class binds]
+Suppose the prior is near one. The market already leans toward class \(H\). A purchase moves the belief to the top
+posterior, which is then close to one. Class \(H\)'s return is entry times the spread times \(1-\mu(1)\), and that
+last factor is small. The purchase tells the market little that it does not already believe. The paper puts it
+this way: the price already leans toward the favored class.
+\end{intuition}
+
+Two more extreme cases help.
+\begin{itemize}
+\item \emph{The entry floor near zero.} As \(\rho\) falls toward zero, the right end \(\rho\kappa(\pi)\Delta_1\)
+  falls toward zero, and the window shrinks; when \(\Delta_0>0\), it closes. The floor guarantees the investor a
+  return under every candidate, because zero-cost challengers prepare after every order.
+\item \emph{More informed presence.} The value \(\kappa(1/2)=1/(2+u)\) falls as the mass ratio \(u\) rises: a more
+  informative order leaves less doubt behind. The guide adds that \(M(\pi)\), with odds \((1+u)\pi/(1-\pi)\), rises with
+  \(u\), which helps (H1). So (H1) wants an informative purchase, and (H2) wants some doubt after it.
+  Chapter~\ref{ch:example} shows the band of \(u\) where both hold in the example.
+\end{itemize}
+
+The guide adds one more consequence. Step 4 gives \(\kappa(\pi)\le1/(2+u)<1/2\), and \(\rho<1\), so
+\(\rho\kappa(\pi)<1/2\). A nonempty window then needs \(\Delta_0/\Delta_1<1/2\), that is, \(\Delta_1>2\Delta_0\). When
+the weak incumbent's spread is positive, the strong incumbent's spread must be more than twice as large.
+
+\begin{checkyourself}
+Let \(\pi>1/2\). Which of the two correct orders, the purchase of class \(H\) or the sale of class \(L\), sets
+\(\kappa(\pi)\)? Explain in words why it is the order of the class that the prior favors.
+\label{q:ccc-window}
+\end{checkyourself}
+
+\section{The proof}\label{sec:ccc-proof}
+
+The proof in Appendix A.3 of the paper has seven steps. Step~0 collects inequalities that (H1) to (H3) imply. Step~1
+solves the weak incumbent. Steps~2 to 4 solve the strong incumbent. Step~5 solves the very strong incumbent. Step~6
+explains why the tie rules do not matter.
+
+\begin{keyidea}
+In each economy the proof fixes the investor's orders first, with a bound that holds for every candidate. The
+orders give the posteriors. The posteriors give entry. Entry and the posteriors give the prices. Because the first
+bound holds for every candidate, the tuple that comes out is the only equilibrium.
+\end{keyidea}
+
+At the end of each part the proof checks (E1) to (E6) at the tuple. Uniqueness gives at most one equilibrium, and
+the check gives at least one.
+
+\subsection{Step 0: inequalities that the conditions imply}\label{sec:ccc-proof-0}
+
+Seven facts are used again and again below. Each one comes from a condition and an earlier result.
+
+\begin{derivation}[Step 0]
+\emph{(a) Gross profit at the prior is lower against \(F_1\).} Proposition~1(a) gives \(g_{L,1}\le g_{L,0}\) and
+\(g_{H,1}\le g_{H,0}\). So
+\begin{align*}
+B_1(\pi)&=(1-\pi)\,g_{L,1}+\pi\,g_{H,1} \why{definition of \(B\)}\\
+&\le(1-\pi)\,g_{L,0}+\pi\,g_{H,0} \why{Proposition~1(a); weights \(\ge0\)}\\
+&=B_0(\pi).
+\end{align*}
+The same lines hold at every belief, so \(B_1\le B_0\) at every point. With (H1) this gives
+\begin{equation}\label{eq:ccc-step0a}
+B_1(\pi)\le B_0(\pi)<c_H<B_1(M).
+\end{equation}
+
+\emph{(b) The top posterior lies above the prior, and the bottom posterior below it.} The odds of \(M\) are
+\((1+u)\,\pi/(1-\pi)\), and the odds of \(m\) are \(\pi/[(1-\pi)(1+u)]\). Since \(u=\lambda/b>0\), the first odds are
+larger than the prior odds and the second are smaller. So \(m<\pi<M\).
+
+\emph{(c) Class \(H\) earns more than class \(L\) against \(F_1\).}
+\begin{align*}
+0&<B_1(M)-B_1(\pi) \why{\eqref{eq:ccc-step0a}}\\
+&=(M-\pi)\,(g_{H,1}-g_{L,1}) \why{\(B\) is linear in the belief}.
+\end{align*}
+Since \(M-\pi>0\) by (b), divide by \(M-\pi\) to get \(g_{H,1}-g_{L,1}>0\).
+
+\emph{(d) The threshold against \(F_1\) lies between the prior and the top posterior.} By (c), the threshold
+\(\tau_1=(c_H-g_{L,1})/(g_{H,1}-g_{L,1})\) exists, \(B_1\) rises strictly, and \(B_1(\tau_1)=c_H\). Then
+\eqref{eq:ccc-step0a} reads \(B_1(\pi)<B_1(\tau_1)<B_1(M)\), and a function that rises strictly keeps the order of
+its arguments. So \(\pi<\tau_1<M\).
+
+\emph{(e) The spread is positive and large against \(F_1\) and \(F_2\).} Both \(m\) and \(1-M\) are positive, so
+\(\kappa>0\). From the right side of (H2),
+\begin{align*}
+\Delta_1&>\frac{k}{\rho\kappa} \why{divide \(k<\rho\kappa\Delta_1\) by \(\rho\kappa>0\)}\\
+&>0 \why{\(k>0\)}.
+\end{align*}
+\(F_2\) strengthens \(F_1\), so Proposition~1(b) gives \(\Delta_2\ge\Delta_1\). Hence
+\begin{align*}
+\rho\kappa\Delta_2&\ge\rho\kappa\Delta_1 \why{\(\Delta_2\ge\Delta_1\), \(\rho\kappa>0\)}\\
+&>k \why{(H2)}.
+\end{align*}
+
+\emph{(f) Gross profit against \(F_2\) is below \(c_H\) at every belief up to \(M\).} Under the class ranking,
+\(g_{H,2}\ge g_{L,2}\) (Section~\ref{sec:ccc-setup}). For every \(\mu\le M\),
+\begin{align*}
+B_2(\mu)&=B_2(M)-(M-\mu)(g_{H,2}-g_{L,2}) \why{\(B\) is linear in the belief}\\
+&\le B_2(M) \why{\(M-\mu\ge0\), \(g_{H,2}-g_{L,2}\ge0\)}\\
+&<c_H \why{(H3)}.
+\end{align*}
+
+\emph{(g) The entry floor.} A zero-cost challenger prepares after every price, so in every candidate of every
+economy \(e(x)=\rho+(1-\rho)\zeta(P(x))\ge\rho\).
+\end{derivation}
+
+Notice what (f) does not use. It does not need the threshold \(\tau_2\), which may not exist, because the class
+ranking gives only \(g_{H,2}\ge g_{L,2}\), with equality allowed.
+
+\subsection{Part (i): the weak incumbent}\label{sec:ccc-proof-i}
+
+Fix any candidate against \(F_0\). Nothing about it is assumed beyond (E1) to (E4) and (E6).
+
+\begin{derivation}[Step 1: the orders, beliefs, entry and price against \(F_0\)]
+\emph{1. No correct order pays.} The trading bound gives \(K_H\le\Delta_0\) and \(K_L\le\Delta_0\). For the purchase,
+\begin{align*}
+K_H&=e(1)\,\Delta_0\,[1-\mu(1)] \why{trading return}\\
+&\le1\cdot\Delta_0\cdot1 \why{\(e(1)\le1\), \(0\le1-\mu(1)\le1\), \(\Delta_0\ge0\)}\\
+&=\Delta_0 .
+\end{align*}
+So class \(H\)'s purchase earns
+\begin{align*}
+U_H(1)&=K_H-k \why{trading payoff}\\
+&\le\Delta_0-k \why{\(K_H\le\Delta_0\)}\\
+&<0=U_H(0) \why{left side of (H2)}.
+\end{align*}
+The same lines with \(K_L=e(-1)\Delta_0\mu(-1)\le\Delta_0\) give \(U_L(-1)<0=U_L(0)\).
+
+\emph{2. No wrong-signed order pays.} For class \(H\)'s sale,
+\begin{align*}
+U_H(-1)&=-e(-1)\,\Delta_0\,[1-\mu(-1)]-k \why{trading payoff}\\
+&\le-k<0 \why{the first term is \(\le0\)}.
+\end{align*}
+In the same way \(U_L(1)=-e(1)\Delta_0\mu(1)-k\le-k<0\).
+
+\emph{3. Both classes abstain.} By 1 and 2, abstention is the unique best order of each class. (E5) then gives
+\(\sigma_H=\sigma_L=\delta_0\). No investor is indifferent, so both investor tie rules give this answer.
+
+\emph{4. Every posterior is the prior.} With \(\sigma_H=\sigma_L=\delta_0\), each order has the same probability in
+both classes:
+\[
+f_H(x)=f_L(x)=(1-\lambda)\eta(x)+\lambda\1\{x=0\}.
+\]
+Bayes' rule in odds form gives
+\begin{align*}
+\frac{\mu(x)}{1-\mu(x)}&=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)} \why{(E1), odds form}\\
+&=\frac{\pi}{1-\pi} \why{\(f_H(x)=f_L(x)\)}.
+\end{align*}
+Equal odds mean equal probabilities, so \(\mu(x)=\pi\) after every order.
+
+\emph{5. The belief at every price is the prior.} Take any price \(\bar P\), and let \(X(\bar P)\) be the set of
+orders with this price. (E2) gives
+\begin{align*}
+\frac{\bar\mu(\bar P)}{1-\bar\mu(\bar P)}
+&=\frac{\pi}{1-\pi}\cdot\frac{\sum_{x\in X(\bar P)}f_H(x)}{\sum_{x\in X(\bar P)}f_L(x)} \why{(E2), odds form}\\
+&=\frac{\pi}{1-\pi} \why{the two sums are equal}.
+\end{align*}
+So \(\bar\mu(\bar P)=\pi\) at every price, whatever orders share it.
+
+\emph{6. Only the zero-cost challenger prepares.} At every price the belief is \(\pi\), and \(B_0(\pi)<c_H\) by the left
+side of (H1). (E3) gives \(\zeta(\bar P)=0\), with no tie. So \(e(x)=\rho+(1-\rho)\cdot0=\rho\) after every order.
+
+\emph{7. One price for all orders.} The price formula with \(e(x)=\rho\) and \(\mu(x)=\pi\) gives
+\[
+P(x)=t_{0,0}+\rho\,[t_{L,0}-t_{0,0}+\Delta_0\pi]=:\bar P_0\qquad\text{for every order }x.
+\]
+
+\emph{8. Entry.} Entry is \(\rho\) after every order, so total entry is \(\rho\).
+
+\emph{9. High-class ownership.} Preparation depends only on the order and the cost. Given the class, both are
+independent of the values \((\theta,R)\). So
+\begin{align*}
+\Own_{H,0}&=\Pr(j=H)\cdot\Pr(\text{prepare}\mid H)\cdot\Pr(\theta>R\mid H,\text{prepare}) \why{chain rule}\\
+&=\pi\cdot\rho\cdot\Pr(\theta>R\mid H) \why{entry \(\rho\); independence}\\
+&=\pi\rho\,\E_H[F_0(\theta)] \why{\(\Pr(R<\theta\mid\theta)=F_0(\theta)\)}\\
+&=\pi\rho\,W_H(F_0) \why{class ranking: \(\theta\ge p\)}.
+\end{align*}
+\end{derivation}
+
+Steps 1 to 9 show that every equilibrium against \(F_0\) is the tuple below, with truthful bids. The appendix
+calls it \(\mathcal E_{\rm N}(F_0)\).
+\[
+\sigma_H=\sigma_L=\delta_0,\qquad \mu(x)=\pi,\qquad P(x)=\bar P_0,\qquad \bar\mu(\bar P_0)=\pi,\qquad
+\zeta(\bar P_0)=0.
+\]
+
+\emph{The tuple is an equilibrium.} (E1): \(f_H=f_L\), so every posterior is \(\pi\). (E2): the single price pools
+all orders, and \(\sum_xf_H(x)=\sum_xf_L(x)\), so its belief is \(\pi\). (E3): \(B_0(\pi)<c_H\), strictly, so
+\(\zeta=0\) is optimal. (E4): with \(e\equiv\rho\), the expected terminal payoff after every order is
+\(t_{0,0}+\rho\,w_0(\pi)=\bar P_0\). (E5): \(K_H=\rho\Delta_0(1-\pi)\le\Delta_0<k\) and
+\(K_L=\rho\Delta_0\pi\le\Delta_0<k\), so abstention beats both correct orders, and wrong-signed orders earn at most
+\(-k\). (E6): truthful bids are weakly dominant (Chapter~\ref{ch:auction}).
+
+\begin{intuition}[a silent price]
+No informed order can pay against the weak incumbent, whatever the market makers believe and whatever entry
+follows. The best case for a purchase gives the whole spread, and the spread is below the trading cost. With no
+informed trade, every order is liquidity noise, and the belief stays at the prior. At the prior the high cost is
+not covered.
+\end{intuition}
+
+An extreme case tests the argument. If \(\Delta_0=0\), the argument works unchanged: it never uses that the price
+reveals the posterior, and with a zero spread the price would not move with the posterior anyway.
+
+\begin{checkyourself}
+Suppose that, against the weak incumbent, market makers expected class \(H\) to buy, and set a high price after a
+purchase. Use the trading bound to explain why class \(H\) would still not buy. Why does the argument not depend on
+what the market makers expect?
+\label{q:ccc-silent}
+\end{checkyourself}
+
+\subsection{Part (ii), Step 2: the orders against the strong incumbent}\label{sec:ccc-proof-ii}
+
+Fix any candidate against \(F_1\). The argument mirrors Step~1, with the lower end of the trading bound in place of
+the upper end.
+
+\begin{derivation}[Step 2: class \(H\) buys and class \(L\) sells]
+\emph{1. The purchase covers the trading cost.}
+\begin{align*}
+K_H&=e(1)\,\Delta_1\,[1-\mu(1)] \why{trading return}\\
+&\ge\rho\,\Delta_1\,[1-M] \why{\(e(1)\ge\rho\), \(\mu(1)\le M\), \(\Delta_1>0\)}\\
+&\ge\rho\kappa\Delta_1 \why{\(1-M\ge\kappa\)}\\
+&>k \why{right side of (H2)}.
+\end{align*}
+The bound \(\mu(1)\le M\) is Lemma~A.1(b). It holds under every investor strategy, because it concerns a nonzero
+order.
+
+\emph{2. The sale covers the trading cost.}
+\begin{align*}
+K_L&=e(-1)\,\Delta_1\,\mu(-1) \why{trading return}\\
+&\ge\rho\,\Delta_1\,m \why{\(e(-1)\ge\rho\), \(\mu(-1)\ge m\), \(\Delta_1>0\)}\\
+&\ge\rho\kappa\Delta_1 \why{\(m\ge\kappa\)}\\
+&>k \why{right side of (H2)}.
+\end{align*}
+
+\emph{3. The best orders.} For class \(H\),
+\[
+U_H(1)=K_H-k>0=U_H(0)>-k\ge U_H(-1).
+\]
+So the purchase is class \(H\)'s unique best order. For class \(L\),
+\[
+U_L(-1)=K_L-k>0=U_L(0)>-k\ge U_L(1).
+\]
+So the sale is class \(L\)'s unique best order. (E5) gives \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\). No
+investor is indifferent, so both investor tie rules give this answer.
+\end{derivation}
+
+These bounds use only the posteriors after the two nonzero orders, so Step 2 holds for every \(\beta<1/2\).
+
+\subsection{Part (ii), Step 3: posteriors, entry and prices}
+
+\begin{derivation}[Step 3: the posteriors]
+With \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), a sale comes only from a liquidity trader in class \(H\), and
+from a liquidity trader or the investor in class \(L\). The same argument applies to the other orders:
+\[
+f_H=(b,\;b_0,\;b+\lambda),\qquad f_L=(b+\lambda,\;b_0,\;b)\qquad\text{on the orders }(-1,0,1).
+\]
+The likelihood ratios are
+\begin{align*}
+\frac{f_H(1)}{f_L(1)}&=\frac{b+\lambda}{b}=1+\frac{\lambda}{b}=1+u \why{definition of \(u\)},\\
+\frac{f_H(0)}{f_L(0)}&=\frac{b_0}{b_0}=1,\\
+\frac{f_H(-1)}{f_L(-1)}&=\frac{b}{b+\lambda}=\frac{1}{1+u} \why{divide above and below by \(b\)}.
+\end{align*}
+After a purchase, the odds are \((1+u)\,\pi/(1-\pi)\). A probability with odds \(o\) equals \(o/(1+o)\), so
+\begin{align*}
+\mu(1)&=\frac{(1+u)\pi/(1-\pi)}{1+(1+u)\pi/(1-\pi)} \why{probability from odds}\\
+&=\frac{\pi(1+u)}{(1-\pi)+\pi(1+u)} \why{multiply above and below by \(1-\pi\)}\\
+&=M .
+\end{align*}
+After no order the odds are the prior odds, so \(\mu(0)=\pi\). After a sale the odds are
+\(\pi/[(1-\pi)(1+u)]\), and the same two lines give \(\mu(-1)=\pi/[\pi+(1-\pi)(1+u)]=m\). This is Lemma~A.1(d).
+\end{derivation}
+
+\emph{The challenger reads the posterior from the price.} The three posteriors \(m<\pi<M\) differ (Step~0(b)).
+Suppose two orders \(x\) and \(x'\) had one price. Entry depends on the order only through the price, so
+\(e(x)=e(x')=:\bar e\ge\rho>0\). The price formula then gives
+\[
+0=P(x)-P(x')=\bar e\,\Delta_1\,[\mu(x)-\mu(x')].
+\]
+Since \(\bar e>0\) and \(\Delta_1>0\), this forces \(\mu(x)=\mu(x')\), which is false. So the three orders have three
+different prices. Each price is reached by one order, and (E2) gives \(\bar\mu(P(x))=\mu(x)\).
+
+\begin{derivation}[Step 3: entry after each order]
+At each price the belief is the posterior of its order. (E3) compares gross profit at that belief with \(c_H\).
+\begin{itemize}
+\item After a purchase the belief is \(M\), and \(B_1(M)>c_H\) by (H1). So \(\zeta=1\) and \(e(1)=1\).
+\item After no order the belief is \(\pi\), and \(B_1(\pi)<c_H\) by \eqref{eq:ccc-step0a}. So \(\zeta=0\) and
+  \(e(0)=\rho\).
+\item After a sale the belief is \(m\). Since \(g_{H,1}>g_{L,1}\) and \(m<\pi\),
+  \begin{align*}
+  B_1(m)&=B_1(\pi)-(\pi-m)(g_{H,1}-g_{L,1}) \why{\(B\) is linear}\\
+  &<B_1(\pi)<c_H \why{both factors positive; \eqref{eq:ccc-step0a}}.
+  \end{align*}
+  So \(\zeta=0\) and \(e(-1)=\rho\). The weak inequality \(B_1(m)\le B_1(\pi)\) would already be enough, because
+  \(B_1(\pi)<c_H\) is strict; the paper states the strict one, and the reason is \(g_{H,1}>g_{L,1}\) from Step~0(c).
+\end{itemize}
+Every comparison is strict, so the challenger's tie rule is never used. In terms of the threshold: \(m<\pi<\tau_1<M\)
+by Step~0(d), so only a purchase reaches \(\tau_1\).
+\end{derivation}
+
+Table~\ref{tab:ccc-strong} collects the order probabilities, the posteriors and entry against \(F_1\).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Order \(x\) & sale, \(-1\) & no order, \(0\) & purchase, \(1\)\\
+\midrule
+Probability in class \(H\), \(f_H(x)\) & \(b\) & \(b_0\) & \(b+\lambda\)\\
+Probability in class \(L\), \(f_L(x)\) & \(b+\lambda\) & \(b_0\) & \(b\)\\
+Posterior \(\mu(x)\) & \(m\) & \(\pi\) & \(M\)\\
+Entry \(e(x)\) & \(\rho\) & \(\rho\) & \(1\)\\
+\bottomrule
+\end{tabular}
+\caption{The equilibrium against the strong incumbent, order by order.}
+\label{tab:ccc-strong}
+\end{table}
+
+\begin{derivation}[Step 3: prices rise strictly with the order]
+\emph{An identity for price differences.} For any two orders \(x\) and \(x'\), the price formula gives
+\begin{align*}
+P(x)-P(x')&=e(x)\,w(\mu(x))-e(x')\,w(\mu(x')) \why{price formula}\\
+&=e(x)\,w(\mu(x))-e(x)\,w(\mu(x'))\\
+&\qquad+e(x)\,w(\mu(x'))-e(x')\,w(\mu(x')) \why{add and subtract}\\
+&=e(x)\,[w(\mu(x))-w(\mu(x'))]+[e(x)-e(x')]\,w(\mu(x')) \why{collect terms}\\
+&=e(x)\,\DT\,[\mu(x)-\mu(x')]+[e(x)-e(x')]\,w(\mu(x')) \why{definition of \(w\)}.
+\end{align*}
+In the first line the level \(t_0\) cancels. The second line adds and subtracts \(e(x)\,w(\mu(x'))\). The result is
+the increment identity of Appendix A.2 of the paper.
+
+\emph{From a sale to no order.} Entry is \(\rho\) after both orders, so the second term is zero:
+\begin{align*}
+P(0)-P(-1)&=\rho\,\Delta_1\,(\pi-m) \why{identity with \(e(0)=e(-1)=\rho\)}\\
+&>0 \why{\(\rho,\Delta_1>0\) and \(\pi>m\)}.
+\end{align*}
+
+\emph{From no order to a purchase.} Entry rises from \(\rho\) to \(1\):
+\begin{align*}
+P(1)-P(0)&=1\cdot\Delta_1\,(M-\pi)+(1-\rho)\,w_1(\pi) \why{identity with \(e(1)=1\), \(e(0)=\rho\)}\\
+&>0 \why{first term \(>0\); second \(\ge0\)}.
+\end{align*}
+The second term is nonnegative because \(w_1(\pi)=(1-\pi)w_{L,1}+\pi w_{H,1}\) and \(w_{L,1},w_{H,1}\ge0\). So
+\(P(-1)<P(0)<P(1)\).
+\end{derivation}
+
+Steps 2 and 3 show that every equilibrium against \(F_1\) is the tuple below, with truthful bids. The appendix
+calls it \(\mathcal E_{\rm F}(F_1)\), and the guide reads the letter F as ``full orders''.
+\[
+\begin{aligned}
+&\sigma_H=\delta_1,\quad \sigma_L=\delta_{-1},\quad (\mu(-1),\mu(0),\mu(1))=(m,\pi,M),\quad
+(e(-1),e(0),e(1))=(\rho,\rho,1),\\
+&P(x)=t_{0,1}+e(x)\,w_1(\mu(x)),\quad \bar\mu(P(x))=\mu(x),\quad \zeta(P(x))=\1\{x=1\}.
+\end{aligned}
+\]
+
+\emph{The tuple is an equilibrium.} (E1): the order probabilities above give \((m,\pi,M)\). (E2): entry rises with
+the posterior and lies in \([\rho,1]\), and \(\Delta_1>0\), so by the identity above the three prices rise strictly;
+each price has one order, so \(\bar\mu(P(x))=\mu(x)\). (E3): \(B_1(M)>c_H\), \(B_1(\pi)<c_H\) and \(B_1(m)<c_H\), all
+strict. (E4): the price formula with the stated entry. (E5): \(K_H=1\cdot\Delta_1(1-M)\ge\rho\kappa\Delta_1>k\) and
+\(K_L=\rho\Delta_1m\ge\rho\kappa\Delta_1>k\), so \(U_H(1)>0=U_H(0)>U_H(-1)\) and \(U_L(-1)>0=U_L(0)>U_L(1)\). (E6):
+truthful bids are weakly dominant.
+
+\begin{intuition}[only a purchase recruits]
+The investor's purchase is what lifts the belief to the top posterior. A purchase is still not proof of class
+\(H\), because a liquidity trader buys with probability \(b\) in either class. But it is good enough news: gross
+profit at \(M\) covers the high cost. No order and a sale leave the belief at or below the prior, where it does
+not. So the price speaks after every order, and only one of its messages changes what the challenger does.
+\end{intuition}
+
+\subsection{Part (ii), Step 4: entry, ownership and the takeover share}
+
+\begin{derivation}[Step 4: entry in each class and total entry]
+Entry in class \(j\) adds up, over the three orders, the probability of the order in class \(j\) times the
+probability of preparation after it. Given the order \(x\), preparation depends only on the price \(P(x)\) and the
+cost, and the cost is independent of the class. So the probability of preparation given the class \(j\) and the
+order \(x\) is \(e(x)\), the same in both classes. The three liquidity and informed masses add up to one:
+\begin{align*}
+2b+b_0+\lambda&=2(1-\lambda)\beta+(1-\lambda)(1-2\beta)+\lambda \why{definitions of \(b,b_0\)}\\
+&=(1-\lambda)(2\beta+1-2\beta)+\lambda=1 \why{factor \(1-\lambda\)}.
+\end{align*}
+So \(b+b_0=1-(b+\lambda)\) and \((b+\lambda)+b_0=1-b\). For class \(H\),
+\begin{align*}
+e_H&=f_H(-1)\,e(-1)+f_H(0)\,e(0)+f_H(1)\,e(1) \why{total probability; \(\Pr(\text{prepare}\mid H,x)=e(x)\)}\\
+&=b\rho+b_0\rho+(b+\lambda)\cdot1 \why{Table~\ref{tab:ccc-strong}}\\
+&=\rho\,[1-(b+\lambda)]+(b+\lambda) \why{\(b+b_0=1-(b+\lambda)\)}\\
+&=\rho+(1-\rho)(b+\lambda) \why{rearrange}.
+\end{align*}
+For class \(L\),
+\begin{align*}
+e_L&=(b+\lambda)\rho+b_0\rho+b\cdot1 \why{Table~\ref{tab:ccc-strong}}\\
+&=\rho\,(1-b)+b \why{\((b+\lambda)+b_0=1-b\)}\\
+&=\rho+(1-\rho)\,b \why{rearrange}.
+\end{align*}
+Total entry averages the two with the prior weights:
+\begin{align}
+\Ent_1&=\pi e_H+(1-\pi)e_L \why{total probability over classes}\notag\\
+&=\rho+(1-\rho)\,[\pi(b+\lambda)+(1-\pi)b] \why{substitute; \(\pi+(1-\pi)=1\)}\notag\\
+&=\rho+(1-\rho)(b+\pi\lambda). \whyinline{\(\pi b+(1-\pi)b=b\)}\label{eq:ccc-entry}
+\end{align}
+Since \(b=(1-\lambda)\beta>0\), \((1-\rho)(b+\pi\lambda)>0\), and \(\Ent_1>\rho\). Also
+\(e_H-e_L=(1-\rho)\lambda>0\).
+\end{derivation}
+
+\emph{What this says.} Total entry rises above the floor by \((1-\rho)\) times the probability of a purchase. A
+purchase recruits a high-cost challenger, and the high cost appears with probability \(1-\rho\). Class \(L\)'s entry
+also rises, through liquidity purchases: the price cannot tell a liquidity purchase from an informed one. The extra
+entry favors class \(H\), which reaches a purchase with probability \(b+\lambda\) against \(b\) for class \(L\).
+
+\emph{Extreme cases.} If \(\rho\) is near one, almost every challenger has zero cost, and entry is near one in every
+economy, so recruitment adds little. If the slot has almost no liquidity purchases (\(\beta\) near zero), class \(L\)
+almost never reaches a purchase, and \(e_L\) is near \(\rho\). This case strains (H2), though: \(b\) near zero makes
+\(u=\lambda/b\) large and \(\kappa(\pi)\) small, so the trading cost must then be small.
+
+\emph{Ownership.} Write \(\Own_{j,i}\) for the probability that the challenger is of class \(j\) and acquires the
+target against \(F_i\), and \(\pi_H=\pi\), \(\pi_L=1-\pi\). Preparation depends on the order and the cost, and given
+the class both are independent of \((\theta,R)\). A prepared class-\(j\) challenger acquires the target when
+\(\theta>R\), which has probability \(W_j(F_i)\). As in Step~1,
+\[
+\Own_{j,1}=\pi_j\,e_j\,W_j(F_1),\qquad \Own_{j,0}=\pi_j\,\rho\,W_j(F_0).
+\]
+
+\begin{derivation}[Step 4: when high-class ownership rises]
+\begin{align*}
+\Own_{H,1}>\Own_{H,0}
+&\iff \pi\,e_H\,W_H(F_1)>\pi\,\rho\,W_H(F_0) \why{the two formulas}\\
+&\iff e_H\,W_H(F_1)>\rho\,W_H(F_0) \why{divide by \(\pi>0\)}\\
+&\iff [\rho+(1-\rho)(b+\lambda)]\,W_H(F_1)>\rho\,W_H(F_0) \why{substitute \(e_H\)}.
+\end{align*}
+\end{derivation}
+
+Two effects meet in this condition. Entry in class \(H\) rises from \(\rho\) to \(e_H\). But class \(H\)'s chance to
+beat the incumbent can fall, from \(W_H(F_0)\) to \(W_H(F_1)\), because the incumbent is stronger.
+Section~\ref{sec:ccc-ownership} gives a sufficient condition for the first effect to win.
+
+\emph{The takeover share needs positive acquisitions.} Class \(H\)'s takeover share against \(F_i\) is
+\(\Own_{H,i}/(\Own_{H,i}+\Own_{L,i})\). The denominator must be positive in both economies. The paper argues this in
+three steps, and the guide fills in the middle one.
+
+\begin{derivation}[Step 4: the challenger acquires the target with positive probability]
+\emph{1. Some class earns a positive gross profit against \(F_1\).} By (H1), \(B_1(M)>c_H>0\). Since
+\(B_1(M)=(1-M)g_{L,1}+Mg_{H,1}\) is an average of the two gross profits, at least one of them is positive. Call
+that class \(j\).
+
+\emph{2. A positive gross profit means a positive chance to win.} Recall from Chapter~\ref{ch:auction} that a
+challenger with value \(\theta\ge p\) has the gross profit \(g(\theta)=\int_p^\theta F(y)\,dy\). Suppose
+\(W_j(F)=\E_j[F(\theta)]=0\). Then \(F(\theta)=0\) with probability one under \(G_j\). Since \(F\) never falls,
+\(F(y)=0\) for every \(y\le\theta\), so \(g(\theta)=0\) with probability one, and \(g_j=\E_j[g(\theta)]=0\). Read
+backward: \(g_j>0\) implies \(W_j(F)>0\). So \(W_j(F_1)>0\).
+
+\emph{3. The weaker incumbent is easier to beat.} \(F_1\le F_0\) at every point, so
+\(W_j(F_1)=\E_j[F_1(\theta)]\le\E_j[F_0(\theta)]=W_j(F_0)\), for both classes.
+
+So for the class \(j\) of point 1, \(\Own_{j,1}=\pi_je_jW_j(F_1)>0\) and \(\Own_{j,0}=\pi_j\rho W_j(F_0)>0\). Both
+denominators are positive.
+\end{derivation}
+
+\begin{derivation}[Step 4: when class \(H\)'s takeover share rises]
+\emph{A fact about shares.} Let \(x,y,x',y'\ge0\) with \(x+y>0\) and \(x'+y'>0\). Then
+\begin{align*}
+\frac{x}{x+y}>\frac{x'}{x'+y'}
+&\iff x\,(x'+y')>x'\,(x+y) \why{multiply by \((x+y)(x'+y')>0\)}\\
+&\iff xx'+xy'>x'x+x'y \why{expand}\\
+&\iff xy'>x'y \why{cancel \(xx'\)}.
+\end{align*}
+\emph{Apply it.} Take \(x=\Own_{H,1}\), \(y=\Own_{L,1}\), \(x'=\Own_{H,0}\) and \(y'=\Own_{L,0}\). Then
+\begin{align*}
+xy'&=\pi e_HW_H(F_1)\cdot(1-\pi)\rho W_L(F_0) \why{ownership formulas},\\
+x'y&=\pi\rho W_H(F_0)\cdot(1-\pi)e_LW_L(F_1) \why{ownership formulas}.
+\end{align*}
+Divide both by \(\pi(1-\pi)\rho>0\). The share rises from \(F_0\) to \(F_1\) exactly when
+\[
+e_H\,W_H(F_1)\,W_L(F_0)>e_L\,W_H(F_0)\,W_L(F_1),
+\]
+which is \eqref{eq:ccc-share}.
+\end{derivation}
+
+\begin{derivation}[Step 4: the case where class \(H\) outbids the strong incumbent]
+Let \(W_H(F_1)=1\).
+
+\emph{1. Class \(H\) also outbids \(F_0\).} A probability is at most one, and point 3 above gives
+\(W_H(F_0)\ge W_H(F_1)\). So \(1\ge W_H(F_0)\ge W_H(F_1)=1\), and \(W_H(F_0)=1\).
+
+\emph{2. Ownership rises.} \(\Own_{H,1}=\pi e_H\cdot1>\pi\rho\cdot1=\Own_{H,0}\), because \(e_H-\rho=(1-\rho)(b+\lambda)>0\).
+
+\emph{3. The share condition.} With \(W_H(F_1)=W_H(F_0)=1\), \eqref{eq:ccc-share} reads
+\(e_H\,W_L(F_0)>e_L\,W_L(F_1)\).
+\begin{itemize}
+\item If \(W_L(F_0)>0\):
+  \begin{align*}
+  e_H\,W_L(F_0)&>e_L\,W_L(F_0) \why{\(e_H>e_L\), \(W_L(F_0)>0\)}\\
+  &\ge e_L\,W_L(F_1) \why{\(W_L(F_0)\ge W_L(F_1)\), \(e_L>0\)}.
+  \end{align*}
+  So the share rises strictly.
+\item If \(W_L(F_0)=0\): then \(0\le W_L(F_1)\le W_L(F_0)=0\), so \(\Own_{L,0}=\Own_{L,1}=0\). The share is
+  \(\Own_{H,i}/(\Own_{H,i}+0)=1\) against both incumbents.
+\end{itemize}
+So the share never falls, and it rises strictly exactly when \(W_L(F_0)>0\).
+\end{derivation}
+
+\begin{intuition}[when class \(H\) always wins]
+If a prepared class-\(H\) challenger beats the strong incumbent for sure, it beats the weak one too. Then the
+stronger incumbent takes wins only from class \(L\). Class \(H\)'s acquisitions rise with its entry. Class \(L\)
+gains entry too, but it also loses more auctions. So the takeovers that go to the challenger shift toward class
+\(H\), as long as a low-class challenger can beat the weak incumbent at all.
+\end{intuition}
+
+\begin{watchout}
+The clean rise of high-class ownership needs class \(H\) to outbid the stronger incumbent, \(W_H(F_1)=1\). Without it,
+ownership rises only under the condition \(e_HW_H(F_1)>\rho W_H(F_0)\), and a stronger incumbent can lower class
+\(H\)'s chance to win. Do not state ``high-class ownership rises'' without one of these two conditions.
+\end{watchout}
+
+\subsection{Part (iii): the very strong incumbent}\label{sec:ccc-proof-iii}
+
+Fix any candidate against \(F_2\). The order of the argument matters here: orders first, then posteriors, then
+beliefs at each price, then entry, then prices.
+
+\begin{derivation}[Step 5: the very strong incumbent]
+\emph{1. Full orders.} Step~0(e) gives \(\rho\kappa\Delta_2>k\). The two derivations of Step~2, with \(\Delta_2\) in
+place of \(\Delta_1\), give
+\begin{align*}
+K_H&\ge\rho\,[1-M]\,\Delta_2\ge\rho\kappa\Delta_2>k \why{trading bound; Step~0(e)},\\
+K_L&\ge\rho\,m\,\Delta_2\ge\rho\kappa\Delta_2>k \why{trading bound; Step~0(e)}.
+\end{align*}
+So \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), under both investor tie rules.
+
+\emph{2. The posteriors.} The order probabilities do not depend on the incumbent. So Step~3 applies unchanged, and
+the posteriors after \((-1,0,1)\) are \((m,\pi,M)\).
+
+\emph{3. Beliefs at each price.} The belief at a price averages the posteriors of the orders with this price. So it
+lies between the smallest and the largest of them, and in particular in \([m,M]\).
+
+\emph{4. No high-cost preparation.} Step~0(f) gives \(B_2(\mu)<c_H\) for every \(\mu\le M\). So gross profit at every
+price belief is below \(c_H\). (E3) gives \(\zeta\equiv0\), with no tie, and \(e(x)=\rho\) after every order.
+
+\emph{5. The three prices differ.} Entry is \(\rho\) after every order, so the increment identity of Step~3 loses its
+second term:
+\begin{align*}
+P(x)-P(x')&=\rho\,\Delta_2\,[\mu(x)-\mu(x')] \why{identity with \(e(x)=e(x')=\rho\)}.
+\end{align*}
+Here \(\rho>0\), \(\Delta_2\ge\Delta_1>0\), and the three posteriors differ. So the three prices differ, each price
+has one order, and \(\bar\mu(P(x))=\mu(x)\).
+
+\emph{6. High-class ownership.} Entry is \(\rho\) after every order, so as in Step~1,
+\(\Own_{H,2}=\pi\rho\,W_H(F_2)\).
+\end{derivation}
+
+So every equilibrium against \(F_2\) is the tuple below, with truthful bids. The appendix calls it
+\(\mathcal E_{\rm F}(F_2)\).
+\[
+\begin{aligned}
+&\sigma_H=\delta_1,\quad \sigma_L=\delta_{-1},\quad (\mu(-1),\mu(0),\mu(1))=(m,\pi,M),\\
+&P(x)=t_{0,2}+\rho\,w_2(\mu(x)),\quad \bar\mu(P(x))=\mu(x),\quad \zeta\equiv0.
+\end{aligned}
+\]
+
+\emph{The tuple is an equilibrium.} (E1): the order probabilities give \((m,\pi,M)\). (E2): \(\Delta_2>0\) and
+\(m<\pi<M\), so the three prices differ, and each price has one order. (E3): \(B_2(\mu(x))<c_H\) at each posterior.
+(E4): the price formula with \(e\equiv\rho\). (E5): \(K_H=\rho\Delta_2(1-M)\ge\rho\kappa\Delta_2>k\) and
+\(K_L=\rho\Delta_2m\ge\rho\kappa\Delta_2>k\). (E6): truthful bids are weakly dominant.
+
+\begin{intuition}[a price that speaks, with nothing good enough to say]
+Against the very strong incumbent the investor trades, so the price moves with the order. The best news a price
+can carry is a purchase, which lifts the belief to \(M\). Even at \(M\), gross profit is below the high cost. So the
+price is informative, and entry stays at its floor.
+\end{intuition}
+
+The three prices differ even though entry is the same after every order. The reason is in the price formula:
+\(P(x)=t_{0,2}+\rho\,[t_{L,2}-t_{0,2}+\Delta_2\mu(x)]\) moves with the posterior through the term
+\(\rho\Delta_2\mu(x)\). This term is active because the zero-cost challenger prepares with probability \(\rho>0\) and
+the spread is positive. With a zero spread the three prices would coincide, even with informed trade.
+
+\begin{checkyourself}
+The exclusion bound of Chapter~\ref{ch:beliefs} needs \(\beta\le1/3\), but Proposition~2 allows any \(\beta<1/2\).
+Explain why the proof of part (iii) still works when \(1/3<\beta<1/2\). Which step would fail if you skipped point 1
+of Step~5?
+\label{q:ccc-beta}
+\end{checkyourself}
+
+\subsection{The last paragraph of the statement}
+
+The proposition ends with four claims for each economy. The prices are the price formula at the posterior and
+entry of each tuple. The price belief is the posterior: against \(F_0\) every posterior and the single price belief
+equal \(\pi\), and against \(F_1\) and \(F_2\) each price has one order. Bids are truthful by (E6). For high-cost
+preparation, solve \(e=\rho+(1-\rho)\zeta\) for \(\zeta\):
+\begin{align*}
+e-\rho&=(1-\rho)\,\zeta \why{subtract \(\rho\)}\\
+\zeta&=\frac{e-\rho}{1-\rho} \why{divide by \(1-\rho>0\)}.
+\end{align*}
+So \(\zeta=0\) after every order against \(F_0\) and \(F_2\). Against \(F_1\), \(\zeta=1\) after a purchase and
+\(\zeta=0\) otherwise.
+
+Table~\ref{tab:ccc-tuples} puts the three tuples side by side.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & weak, \(F_0\) & strong, \(F_1\) & very strong, \(F_2\)\\
+\midrule
+Informed orders of classes \(H\) and \(L\) & \((0,0)\) & \((1,-1)\) & \((1,-1)\)\\
+Posteriors after \((-1,0,1)\) & \((\pi,\pi,\pi)\) & \((m,\pi,M)\) & \((m,\pi,M)\)\\
+Entry after \((-1,0,1)\) & \((\rho,\rho,\rho)\) & \((\rho,\rho,1)\) & \((\rho,\rho,\rho)\)\\
+High-cost preparation & none & after a purchase & none\\
+Prices & one price & \(P(-1)<P(0)<P(1)\) & \(P(-1)<P(0)<P(1)\)\\
+Total entry & \(\rho\) & \(\rho+(1-\rho)(b+\pi\lambda)\) & \(\rho\)\\
+High-class ownership & \(\pi\rho W_H(F_0)\) & \(\pi e_HW_H(F_1)\) & \(\pi\rho W_H(F_2)\)\\
+\bottomrule
+\end{tabular}
+\caption{The unique equilibrium in each economy under (H1) to (H3). The prices against \(F_2\) rise with the order
+because they rise with the posterior.}
+\label{tab:ccc-tuples}
+\end{table}
+
+\subsection{Step 6: uniqueness under all four tie rules}\label{sec:ccc-proof-ties}
+
+The four tie rules are the four pairs of an investor rule (may mix, or abstains) and a challenger rule (prepares,
+or may prepare with any probability), as in Section~\ref{sec:ccc-setup}. A tie rule only says what a player does
+when two choices give the same payoff. The investor rule matters only when
+a correct order earns exactly the trading cost, \(K_j=k\) (Lemma~A.3(b)). The challenger rule matters only when gross
+profit at the price belief equals the high cost, \(B(\bar\mu)=c_H\).
+
+\begin{derivation}[Step 6: no player is ever indifferent]
+\emph{The investor.} The comparisons with \(k\) hold for every candidate: \(K_j\le\Delta_0<k\) against \(F_0\)
+(Step~1), \(K_j\ge\rho\kappa\Delta_1>k\) against \(F_1\) (Step~2), and \(K_j\ge\rho\kappa\Delta_2>k\) against \(F_2\)
+(Step~5). Each is strict, so no candidate has an indifferent investor.
+
+\emph{The high-cost challenger.} The investor's comparisons fix the orders in every equilibrium, and the orders
+fix the beliefs. Against \(F_0\) the belief is \(\pi\), and \(B_0(\pi)<c_H\). Against \(F_1\) the beliefs are \(M\),
+\(\pi\) and \(m\), with \(B_1(M)>c_H\), \(B_1(\pi)<c_H\) and \(B_1(m)<c_H\). Against \(F_2\) every belief lies in
+\([m,M]\), where \(B_2<c_H\). Each comparison is strict, so no equilibrium has an indifferent high-cost challenger.
+A candidate with other orders can have other beliefs, but it fails (E5), so its beliefs do not matter.
+\end{derivation}
+
+No tie rule is ever used, so all four pairs give the same unique outcome in each economy. The strict inequalities
+in (H1) to (H3) do this work: they keep every player away from indifference. Propositions~3 and~4, by contrast,
+use the default tie rules (Chapters~\ref{ch:coexistence} and~\ref{ch:research}).
+Chapter~\ref{ch:example} shows an edge of the example where a purchase leaves the high-cost challenger exactly
+indifferent, and the challenger's tie rule then matters.
+
+\section{When high-class ownership rises}\label{sec:ccc-ownership}
+
+High-class ownership multiplies entry in class \(H\), which rises against \(F_1\), by class \(H\)'s chance to beat
+the incumbent, which can fall. The paper gives a sufficient condition for a rise, in two parts:
+\begin{equation}\label{eq:ccc-sufficient}
+(1+\rho)\,W_H(F_1)\ge2\rho\,W_H(F_0)>0\qquad\text{and}\qquad b+\lambda>\tfrac12 .
+\end{equation}
+In words, the stronger incumbent leaves the high class a good chance to win, and the high class places a purchase
+more often than not.
+
+\begin{derivation}[the sufficient condition implies \(e_HW_H(F_1)>\rho W_H(F_0)\)]
+\emph{Step 1: entry in class \(H\) exceeds \((1+\rho)/2\).}
+\begin{align*}
+e_H&=\rho+(1-\rho)(b+\lambda) \why{Step~4}\\
+&>\rho+(1-\rho)\cdot\tfrac12 \why{\(b+\lambda>\tfrac12\), \(1-\rho>0\)}\\
+&=\frac{2\rho+1-\rho}{2}=\frac{1+\rho}{2} \why{common denominator}.
+\end{align*}
+
+\emph{Step 2: class \(H\) can beat the strong incumbent.} The first part of \eqref{eq:ccc-sufficient} gives
+\((1+\rho)W_H(F_1)\ge2\rho W_H(F_0)>0\). Since \(1+\rho>0\), \(W_H(F_1)>0\).
+
+\emph{Step 3: combine.}
+\begin{align*}
+e_H\,W_H(F_1)&>\frac{1+\rho}{2}\,W_H(F_1) \why{Step~1 times \(W_H(F_1)>0\)}\\
+&\ge\frac{2\rho\,W_H(F_0)}{2} \why{first part of \eqref{eq:ccc-sufficient}, halved}\\
+&=\rho\,W_H(F_0).
+\end{align*}
+This is the exact condition of Step~4, so high-class ownership rises.
+\end{derivation}
+
+\emph{What this says.} Divide the first part by \((1+\rho)W_H(F_0)>0\): it reads
+\(W_H(F_1)/W_H(F_0)\ge2\rho/(1+\rho)\). Since \(\rho<1\), the right side is below one. So the strong incumbent may
+lower class \(H\)'s chance to win, but not below the fraction \(2\rho/(1+\rho)\) of its chance against the weak
+incumbent.
+
+\emph{Extreme cases.} When \(\rho\) is near zero, the fraction is near zero: entry against the weak incumbent is
+tiny, so almost any positive chance to win against \(F_1\) is enough. When \(\rho\) is near one, the fraction is near
+one, so the chance to win must barely fall.
+
+When class \(H\) outbids \(F_1\), its chance to win is one against both incumbents, and ownership rises with entry in
+class \(H\) whatever the value of \(b+\lambda\) (Step~4). The stronger incumbent then takes wins only from the low
+class. When a low-class challenger can beat the weak incumbent, the takeovers that go to the challenger shift toward
+class \(H\). Section~\ref{sec:ccc-decisive} gives a condition on values and costs alone that delivers this case.
+
+\begin{checkyourself}
+Suppose \(b+\lambda\le1/2\), and keep the first part of \eqref{eq:ccc-sufficient}. Which step of the derivation
+fails? Show that at the edge \((1+\rho)W_H(F_1)=2\rho W_H(F_0)\) the exact condition \(e_HW_H(F_1)>\rho W_H(F_0)\) then
+fails.
+\label{q:ccc-sufficient}
+\end{checkyourself}
+
+\section{Decisive advantage}\label{sec:ccc-decisive}
+
+The cleanest ownership statements of part (ii) need \(W_H(F_1)=1\). The paper gives a condition on values and costs
+alone that delivers it. A high-cost challenger prepares only when gross profit at its belief covers \(c_H\). When
+\(g_H>g_L\), gross profit at any belief below one is less than class \(H\)'s gross profit \(g_H\). So recruitment
+needs \(g_H>c_H\), and if class \(H\) earns more than \(c_H\) only against incumbents that it always beats,
+recruitment implies that class \(H\) outbids the incumbent.
+
+\begin{paperresult}{Lemma A.6 (Decisive advantage)}
+Fix ranked finite-mean classes, a reserve \(p>0\), a high cost \(c_H>0\), and a family of continuous incumbent laws.
+The family has \emph{decisive advantage} if, for every law \(F\) in it,
+\[
+g_H(F)>c_H\quad\Longrightarrow\quad W_H(F)=1.
+\]
+At every law in this family with \(\DT>0\) and \(g_H>g_L\), any equilibrium that recruits a high-cost challenger after
+some order has \(W_H(F)=1\). This holds at every interior prior, under all four tie rules, both at fixed presence and
+with research at a cap below one. Under (H1)--(H3), decisive advantage at \(F_1\) gives the ownership and
+takeover-share conclusions under outbidding in Proposition~2(ii).
+
+For point classes \(h>\ell\ge p\) and the full family \(F_r=U[0,r]\), \(r>0\), decisive advantage holds exactly when
+\[
+c_H\ge\frac{h^2-p^2}{2h}.
+\]
+\end{paperresult}
+
+In words, a family has decisive advantage when class \(H\)'s gross profit exceeds the high cost only against
+incumbents that class \(H\) beats for sure. Inside such a family, at a law with \(\DT>0\) and \(g_H>g_L\), wherever a
+price recruits a high-cost challenger, class \(H\) outbids the incumbent, whatever the prior and the tie rule. Research is the topic of
+Chapter~\ref{ch:research}; here it enters only through a cap below one on the investor's presence. The last part
+says when the uniform family, with one value in each class, has decisive advantage.
+
+\begin{derivation}[proof of the consequence]
+\emph{Step 1: every belief is interior.} Every order has positive probability in both classes, because a liquidity
+trader can place it: \(f_j(x)\ge(1-\lambda)\eta(x)>0\). With \(0<\pi<1\), Bayes' rule gives \(0<\mu(x)<1\) after every
+order. A price belief averages such posteriors, so it also lies strictly between zero and one. With research the
+same holds, because presence stays below a cap below one, so liquidity orders keep every order possible in both
+classes.
+
+\emph{Step 2: recruitment needs gross profit at least \(c_H\).} Suppose a high-cost challenger prepares with positive
+probability after some order, at a price with belief \(\bar\mu\). If \(B(\bar\mu)<c_H\), (E3) would give \(\zeta=0\). So
+\(B(\bar\mu)\ge c_H\), under either challenger tie rule.
+
+\emph{Step 3: the gross profit of class \(H\) exceeds \(c_H\).}
+\begin{align*}
+c_H&\le B(\bar\mu) \why{Step~2}\\
+&=g_L+\bar\mu\,(g_H-g_L) \why{definition of \(B\)}\\
+&=g_H-(1-\bar\mu)(g_H-g_L) \why{rearrange}\\
+&<g_H \why{\(1-\bar\mu>0\), \(g_H-g_L>0\)}.
+\end{align*}
+
+\emph{Step 4: decisive advantage.} Step~3 gives \(g_H(F)>c_H\). Decisive advantage then gives \(W_H(F)=1\).
+\end{derivation}
+
+The strict inequality in Step~3 turns the weak condition \(c_H\le B(\bar\mu)\) into the strict condition \(g_H>c_H\)
+that the definition needs. The four steps never use \(\DT>0\). The guide keeps this hypothesis in the statement
+because the paper states it.
+
+\begin{derivation}[why decisive advantage at \(F_1\) gives \(W_H(F_1)=1\) under (H1)]
+Step~0 gives \(\Delta_1>0\) and \(g_{H,1}>g_{L,1}\), and part (ii) shows that a purchase recruits a high-cost challenger
+against \(F_1\). So the consequence applies at \(F_1\). You can also see it directly from (H1):
+\begin{align*}
+c_H&<B_1(M) \why{right side of (H1)}\\
+&=g_{H,1}-(1-M)(g_{H,1}-g_{L,1}) \why{rearrange \(B_1\)}\\
+&<g_{H,1} \why{\(M<1\), \(g_{H,1}>g_{L,1}\)}.
+\end{align*}
+If \(F_1\) belongs to a family with decisive advantage, \(g_{H,1}>c_H\) gives \(W_H(F_1)=1\). Step~4 then applies: class
+\(H\) also outbids \(F_0\), high-class ownership rises from \(\pi\rho\) to \(\pi e_H\), and class \(H\)'s takeover share
+does not fall, and rises strictly exactly when \(W_L(F_0)>0\).
+\end{derivation}
+
+\begin{derivation}[the uniform family]
+Let class \(H\) have the single value \(h\), with \(h>\ell\ge p\), and let \(F_r\) be uniform on \([0,r]\):
+\(F_r(y)=y/r\) for \(0\le y\le r\), and \(F_r(y)=1\) for \(y\ge r\).
+
+\emph{The chance to win.} Since \(h\ge p\), \(W_H(F_r)=F_r(h)\). So \(W_H(F_r)=1\) when \(r\le h\), and
+\(W_H(F_r)=h/r<1\) when \(r>h\).
+
+\emph{The gross profit for \(r>h\).} With a single value \(h\), \(1-G_H(y)=1\) for \(y<h\) and \(0\) for \(y\ge h\). So
+\begin{align*}
+g_H(F_r)&=\int_p^\infty[1-G_H(y)]\,F_r(y)\,dy \why{\eqref{eq:ccc-prop1}}\\
+&=\int_p^h F_r(y)\,dy \why{\(1-G_H=\1\{y<h\}\)}\\
+&=\int_p^h\frac yr\,dy \why{\(y\le h<r\)}\\
+&=\frac1r\cdot\frac{h^2-p^2}{2} \why{\(\int y\,dy=y^2/2\)}\\
+&=\frac{h^2-p^2}{2r}.
+\end{align*}
+This falls strictly as \(r\) rises, because \(h>p\). For every \(r>h\) it lies below \((h^2-p^2)/(2h)\), its value at
+\(r=h\), and it comes as close as you like to that value as \(r\) falls toward \(h\).
+
+\emph{If \(c_H\ge(h^2-p^2)/(2h)\), decisive advantage holds.} For \(r>h\),
+\(g_H(F_r)<(h^2-p^2)/(2h)\le c_H\). So \(g_H(F_r)>c_H\) can hold only when \(r\le h\), and there \(W_H(F_r)=1\).
+
+\emph{If \(c_H<(h^2-p^2)/(2h)\), decisive advantage fails.} For \(r>h\),
+\begin{align*}
+g_H(F_r)>c_H&\iff\frac{h^2-p^2}{2r}>c_H \why{formula for \(r>h\)}\\
+&\iff r<\frac{h^2-p^2}{2c_H} \why{multiply by \(r/c_H>0\)}.
+\end{align*}
+The bound \((h^2-p^2)/(2c_H)\) exceeds \(h\), because \(c_H<(h^2-p^2)/(2h)\). So every \(r\) strictly between \(h\) and
+\((h^2-p^2)/(2c_H)\) has \(g_H(F_r)>c_H\) and \(W_H(F_r)=h/r<1\). This law breaks the definition.
+
+The two cases together prove the equivalence.
+\end{derivation}
+
+\emph{What this says.} A high cost screens the incumbents against which a high-cost challenger can be recruited.
+When the high cost is at least \((h^2-p^2)/(2h)\), only incumbents weak enough for class \(H\) to beat for sure leave
+class \(H\) a gross profit above it. A low high cost lets recruitment happen against incumbents that sometimes beat
+class \(H\). Chapter~\ref{ch:example} uses this condition in the example.
+
+\begin{checkyourself}
+The proof of the consequence uses a belief strictly below one. Suppose, against the model, that some price could
+reveal class \(H\) for sure. Explain which step would break, and why decisive advantage might then say nothing.
+\label{q:ccc-decisive}
+\end{checkyourself}
+
+\section{What the result says and what it does not say}\label{sec:ccc-reading}
+
+\subsection{What it says}
+
+Across the three economies, entry first rises and then falls as the incumbent strengthens. The rise comes from
+information: the strong incumbent widens the spread enough for informed trade to pay, and a purchase then lifts the
+belief high enough to recruit a high-cost challenger. The fall comes from profit: against the very strong incumbent,
+no belief that a price can produce covers the high cost. The market makers anticipate the preparation that each
+price induces, so the reversal holds under competitive prices.
+
+The paper's introduction adds a sharper point: entry rises even though acquisition profit falls at the prior and at
+every other fixed belief that gives the high class positive weight. Proposition~1(a) alone gives only a weak fall.
+The guide derives the strict fall from (H2).
+
+\begin{derivation}[gross profit falls strictly at every belief \(\mu>0\) from \(F_0\) to \(F_1\)]
+\emph{Step 1: the spread rises strictly.} Since \(\rho<1\) and \(\kappa<1/2\), \(\rho\kappa<1\). With \(\Delta_1>0\),
+\begin{align*}
+\Delta_0&<k \why{left side of (H2)}\\
+&<\rho\kappa\Delta_1 \why{right side of (H2)}\\
+&<\Delta_1 \why{\(\rho\kappa<1\), \(\Delta_1>0\)}.
+\end{align*}
+
+\emph{Step 2: the spread change as an integral.} Under the class ranking the reserve term in \eqref{eq:ccc-prop1}
+is zero, so
+\begin{align*}
+\Delta_1-\Delta_0&=\int_p^\infty[1-F_1(y)]\,D(y)\,dy-\int_p^\infty[1-F_0(y)]\,D(y)\,dy \why{\eqref{eq:ccc-prop1}}\\
+&=\int_p^\infty[F_0(y)-F_1(y)]\,D(y)\,dy \why{one integral}.
+\end{align*}
+By Step~1 this integral is positive.
+
+\emph{Step 3: compare the weights.} Since \(G_L(y)\le1\), \(D(y)=G_L(y)-G_H(y)\le1-G_H(y)\). Also
+\(F_0(y)-F_1(y)\ge0\). So
+\begin{align*}
+\int_p^\infty[F_0(y)-F_1(y)]\,[1-G_H(y)]\,dy&\ge\int_p^\infty[F_0(y)-F_1(y)]\,D(y)\,dy \why{larger weight}\\
+&>0 \why{Step~2}.
+\end{align*}
+
+\emph{Step 4: class \(H\)'s gross profit falls strictly.}
+\begin{align*}
+g_{H,0}-g_{H,1}&=\int_p^\infty[1-G_H(y)]\,F_0(y)\,dy-\int_p^\infty[1-G_H(y)]\,F_1(y)\,dy \why{\eqref{eq:ccc-prop1}}\\
+&=\int_p^\infty[1-G_H(y)]\,[F_0(y)-F_1(y)]\,dy>0 \why{Step~3}.
+\end{align*}
+
+\emph{Step 5: gross profit at every belief \(\mu>0\).}
+\begin{align*}
+B_0(\mu)-B_1(\mu)&=(1-\mu)(g_{L,0}-g_{L,1})+\mu\,(g_{H,0}-g_{H,1}) \why{definition of \(B\)}\\
+&>0 \why{first term \(\ge0\); second \(>0\)}.
+\end{align*}
+\end{derivation}
+
+So deterrence is at work at every belief that gives class \(H\) positive weight, and entry still rises. If the
+challenger's belief were held fixed, the stronger incumbent could not raise entry. The rise needs the change in
+information.
+
+\subsection{What it does not say}
+
+\begin{itemize}
+\item \emph{It is a comparison across economies.} Each economy is solved again, with its own prices, beliefs and
+  entry. Inside one economy, a deviation by the investor faces that economy's fixed prices and entry. The result does
+  not describe how one market reacts over time when its incumbent becomes stronger.
+\item \emph{It says nothing about the strengths between the three economies.} Between the weak and the strong
+  incumbent, a quiet market and an informative market can both be equilibria. Chapter~\ref{ch:coexistence} describes
+  where they coexist.
+\item \emph{It does not say that entry rises with every strengthening.} The rise from \(F_0\) to \(F_1\) needs (H1)
+  and (H2). The fall from \(F_1\) to \(F_2\) needs (H3) as well. Without (H3), parts (i) and (ii) still hold, but
+  entry need not fall again.
+\item \emph{It does not say that the price reveals the class.} In each of the three equilibria every posterior lies
+  between \(m(\pi)\) and \(M(\pi)\), because a liquidity trader can place every order.
+\item \emph{It does not say that high-class ownership always rises.} Ownership rises exactly when
+  \(e_HW_H(F_1)>\rho W_H(F_0)\), and the clean rise needs \(W_H(F_1)=1\).
+\item \emph{It does not say that a stronger incumbent raises entry at fixed information.} When the investor's orders
+  stay fixed at their informative level, a stronger incumbent cannot raise entry. Chapter~\ref{ch:example} states
+  this fixed-information control with its hypotheses.
+\end{itemize}
+
+In Chapter~\ref{ch:example}, Corollary~1 gives the slots and priors at which (H1) to (H3) hold together in the
+example, with its entry and ownership values.
+
+\begin{chaptersummary}
+\begin{itemize}
+\item Proposition~2 compares three economies that differ only in incumbent strength, and each has a unique
+  equilibrium under all four tie rules.
+\item Against the weak incumbent no informed order covers the trading cost, so the price is silent and only the
+  zero-cost challenger prepares.
+\item Against the strong incumbent a purchase lifts the belief to \(M(\pi)\) and recruits a high-cost challenger,
+  so entry rises to \(\rho+(1-\rho)(b+\pi\lambda)\).
+\item Against the very strong incumbent the price still speaks, but no belief at a price covers the high cost, so
+  entry returns to \(\rho\).
+\item (H1) sets entry through profit, (H2) sets trade through the two ends of the trading bound, and (H3) stops
+  recruitment.
+\item The window in (H2) is nonempty exactly when \(\Delta_0/\Delta_1<\rho\kappa(\pi)\), a condition with no unit of
+  money.
+\item High-class ownership rises exactly when \(e_HW_H(F_1)>\rho W_H(F_0)\), and under decisive advantage (H1) gives
+  \(W_H(F_1)=1\) and the clean rise.
+\end{itemize}
+\end{chaptersummary}
+
+\answersection
+
+\answer{\ref{q:ccc-missing}}{Step~0(a) shows that \(B_1\le B_0\) at every belief, by Proposition~1(a). Apply it at the
+belief \(M=M(\pi)\):
+\begin{align*}
+B_0(M)&\ge B_1(M) \why{Proposition~1(a) at the belief \(M\)}\\
+&>c_H \why{right side of (H1)}.
+\end{align*}
+With the left side of (H1), \(B_0(\pi)<c_H<B_0(M)\). So \(B_0\) rises strictly between \(\pi\) and \(M\), and the
+threshold \(\tau_0\) exists and lies between them. Against the weak incumbent, a price that lifted the belief to
+\(M\) would recruit a high-cost challenger. No price does so, because the investor never trades (\(\Delta_0<k\)), and
+every belief stays at \(\pi\). What the weak incumbent's economy lacks is information. Profit at the top posterior
+would be enough there. The guide adds this observation; it follows from Proposition~1(a) and (H1).}
+
+\answer{\ref{q:ccc-window}}{With \(\pi>1/2\), \(1-\pi<\pi\), so \(\min\{\pi,1-\pi\}=1-\pi\). By Step~1 of the
+derivation in Section~\ref{sec:ccc-window},
+\begin{align*}
+\kappa(\pi)&=m(1-\pi) \why{\(\kappa(\pi)=m(\min\{\pi,1-\pi\})\)}\\
+&=1-M(\pi) \why{\(1-M(\pi)=m(1-\pi)\)}.
+\end{align*}
+Also \(m(\pi)>m(1-\pi)\), because \(m\) rises strictly. The factor \(1-M(\pi)\) is the one in the lower bound
+\(K_H\ge\rho[1-M(\pi)]\DT\), so class \(H\)'s purchase sets \(\kappa(\pi)\). In words, the market already leans toward
+class \(H\). A purchase confirms the lean, so the doubt \(1-M(\pi)\) left after it is small. A sale goes against the
+lean, and the doubt \(m(\pi)\) left after it is larger.}
+
+\answer{\ref{q:ccc-silent}}{Take any candidate against \(F_0\), with any prices and any entry. The return of a purchase
+is
+\begin{align*}
+K_H&=e(1)\,\Delta_0\,[1-\mu(1)] \why{trading return}\\
+&\le\Delta_0 \why{\(e(1)\le1\), \(1-\mu(1)\le1\)}.
+\end{align*}
+So \(U_H(1)=K_H-k\le\Delta_0-k<0=U_H(0)\) by the left side of (H2). Class \(H\) prefers to abstain, and a candidate in
+which it buys fails (E5). The expectations of the market makers act only through \(\mu(1)\), \(P(1)\) and \(e(1)\), and
+the bound covers every value of these. The best case for the purchase gives class \(H\) the whole spread, and even
+that is below \(k\). If market makers expect class \(H\) to buy, \(\mu(1)\) is high and \(1-\mu(1)\) is small. Even
+with \(e(1)=1\), the return is at most \(\Delta_0[1-\mu(1)]\), which lies further below \(\Delta_0\).}
+
+\answer{\ref{q:ccc-beta}}{The exclusion bound must hold under every investor strategy, and under some strategies the
+posterior after the zero order exceeds \(M(\pi)\) unless \(b_0\ge b\), that is \(\beta\le1/3\) (Lemma~A.1(c)). Point 1
+of Step~5 uses only the posteriors after nonzero orders (Lemma~A.1(b), any \(\beta<1/2\)), and it fixes full orders.
+Then \(f_H(0)=f_L(0)=b_0\), so \(\mu(0)=\pi<M\) for every \(\beta\), all beliefs lie in \([m,M]\), and Step~0(f) gives
+\(B_2<c_H\). Without point 1, point 3 would need a bound on \(\mu(0)\) under an arbitrary strategy. For
+\(\beta>1/3\), the strategy in which class \(H\) abstains and class \(L\) never abstains gives \(\mu(0)>M(\pi)\) (the
+proof of Lemma~A.1(c)).}
+
+\answer{\ref{q:ccc-sufficient}}{Step~1 fails. With \(b+\lambda\le1/2\),
+\[
+e_H=\rho+(1-\rho)(b+\lambda)\le\rho+(1-\rho)\cdot\tfrac12=\frac{1+\rho}{2}.
+\]
+At the edge \(W_H(F_1)=2\rho W_H(F_0)/(1+\rho)\), with \(W_H(F_0)>0\),
+\begin{align*}
+e_H\,W_H(F_1)>\rho\,W_H(F_0)
+&\iff e_H\cdot\frac{2\rho\,W_H(F_0)}{1+\rho}>\rho\,W_H(F_0) \why{substitute the edge}\\
+&\iff e_H\cdot\frac{2}{1+\rho}>1 \why{divide by \(\rho W_H(F_0)>0\)}\\
+&\iff e_H>\frac{1+\rho}{2} \why{multiply by \((1+\rho)/2>0\)}.
+\end{align*}
+Since \(e_H\le(1+\rho)/2\), the exact condition fails at the edge. So the first part of \eqref{eq:ccc-sufficient}
+alone does not imply the exact condition, and \(b+\lambda>1/2\) does real work. The exact condition can still hold in
+other cases. For instance, if \(W_H(F_1)=W_H(F_0)>0\), it reads \(e_H>\rho\), which always holds.}
+
+\answer{\ref{q:ccc-decisive}}{Step~3 would break: with \(\bar\mu=1\) it reads \(c_H\le B(1)=g_H\), a weak
+inequality. If \(g_H=c_H\), the high-cost challenger is indifferent, and under the default tie rule it prepares.
+Decisive advantage speaks only when \(g_H>c_H\), so it would say nothing about \(W_H(F)\). In the model a liquidity
+trader can place every order in both classes, so every belief is below one, and Step~3 is strict.}

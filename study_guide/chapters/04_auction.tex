@@ -1,0 +1,1472 @@
+\chapter{The auction: who gets what}\label{ch:auction}
+
+\begin{chapterplan}
+The question of this chapter: when the incumbent is stronger, how does the sale divide the challenger's value
+between the challenger and the target?
+
+After this chapter, you can do these things:
+\begin{itemize}
+\item Explain why each prepared bidder bids its value.
+\item For any incumbent value and any challenger value, write what the target receives and what the challenger
+keeps, and show that the two add up to the challenger's value.
+\item Derive the gross acquisition profit \(g_j\) and the target-payoff spread \(\DT\) as integrals over levels
+of value.
+\item State and prove Proposition~1, with its conditions for a strict change, and explain its part~(c).
+\item Explain the class-gap identity: a stronger incumbent moves the class value gap from the challenger's profit
+to the target's proceeds.
+\end{itemize}
+\end{chapterplan}
+
+% ====================================================================
+\section{The story in words}\label{sec:auction-story}
+
+The sale is a cash second-price auction with a reserve \(p>0\). The highest admissible bid wins. The winner pays
+the larger of the reserve and the highest competing admissible bid. Section~\ref{sec:auction-bids} shows that
+each prepared bidder bids its own value. So, when at least one value meets the reserve, the price is the lower of
+the two values, or the reserve when the reserve is higher.
+
+Take a challenger that prepared and so learned its value \(\theta\), with \(\theta\ge p\). The incumbent has the
+value \(R\). Two outcomes matter:
+\begin{itemize}
+\item If \(R<\theta\), the challenger wins and pays \(\max\{p,R\}\). The target's proceeds then follow the
+incumbent's value.
+\item If \(R>\theta\), the incumbent wins and pays \(\theta\), the challenger's bid. The target's proceeds then
+follow the challenger's value.
+\end{itemize}
+
+First look at the challenger. Suppose that the incumbent's value \(R\) is a little higher. Then no more challenger
+values beat it, and a challenger that still wins pays at least as much. Neither change raises what the challenger
+keeps. A stronger incumbent makes high values of \(R\) more likely, so it weakly lowers the challenger's expected
+profit. The paper calls this the direct deterrence force of a strong rival: it lowers the return to preparation.
+
+Next look at the target. A weak incumbent usually loses, and the target then receives \(\max\{p,R\}\). This
+amount does not depend on the challenger's value at all. A strong incumbent often wins and pays \(\theta\), and
+the target's proceeds then equal the challenger's value. So a stronger incumbent makes the target's proceeds
+depend more on how good the challenger is.
+
+The paper keeps the deterrence force and adds a channel that starts from this second effect. The challenger comes
+from a high class or a low class, and the
+high class tends to have higher values. The expected difference between the values of the two classes is the
+\emph{class value gap}. The auction gives each part of this gap either to the target or to the challenger. The
+incumbent's value decides the division, and a stronger incumbent moves parts of the gap to the target. The paper
+calls these parts \emph{slices}.
+
+\begin{keyidea}
+The incumbent's value works as a boundary line on the challenger's value. Above the reserve, the part of the
+challenger's value below the line goes to the target, and the part above the line stays with the challenger. A
+stronger incumbent raises the line.
+\end{keyidea}
+
+\begin{analogy}[a price clock]
+Picture an auctioneer who raises a price step by step, from the reserve upward. Each bidder stays in while the
+price is below its value, and it leaves when the price reaches its value. The sale stops when one bidder leaves,
+and the other bidder buys at that price. When each bidder knows its own value, this clock gives the same winner
+and the same price as the sealed second-price auction. Each step of the clock, from a level \(y\) to \(y+dy\), is
+a slice. The target collects the slice when both bidders are still in at the level \(y\).
+
+Where the analogy breaks: in the model, the bids are sealed and are made at the same time, so no bidder sees the
+other leave. The clock is only a picture of the outcome.
+\end{analogy}
+
+Two extreme incumbents make the picture sharp. For this paragraph, assume that every challenger value meets the
+reserve.
+\begin{itemize}
+\item An incumbent that never meets the reserve never bids. The challenger always wins and pays \(p\). The target
+receives \(p\) from either class, so the class does not matter to the target. The whole class value gap stays
+with the challenger.
+\item An incumbent whose value is always above every challenger value always wins and pays \(\theta\). The
+challenger keeps nothing, and the target collects the whole challenger value. The whole class value gap goes to
+the target.
+\end{itemize}
+A strengthening of the incumbent moves the sale from the first extreme toward the second.
+Section~\ref{sec:auction-gap} turns this picture into an exact identity.
+
+% ====================================================================
+\section{The set-up}\label{sec:auction-setup}
+
+This section recalls the parts of the model that the auction uses. Chapter~\ref{ch:model} gives the full model.
+
+\subsection*{The sale rule}
+
+Before trade, the seller commits to a cash second-price auction with a reserve \(p>0\). The highest admissible
+bidder acquires the target. It pays the larger of the reserve and the highest competing admissible bid. A bid
+equal to the reserve is admissible, and there is no sale without an admissible bid. A value \emph{meets the
+reserve} when it is at least \(p\). The paper then calls the value, and the bidder, admissible.
+
+\subsection*{The two bidders}
+
+\begin{itemize}
+\item The incumbent prepared before the sale. It knows its value \(R\) before it bids. The value \(R\) has a
+continuous distribution function \(F\) on \([0,\bar r]\), and \(F(y)=1\) for \(y\ge\bar r\).
+\item The challenger belongs to the class \(j\in\{H,L\}\). Given the class, its value \(\theta\) has a
+distribution function \(G_j\) on \([0,\infty)\) with a finite mean. The challenger learns \(\theta\) only when it
+prepares.
+\item The pair \((j,\theta)\) and the incumbent's value \(R\) are independent.
+\end{itemize}
+
+Continuity of \(F\) means that \(\Pr(R=y)=0\) for every \(y\). So the strict and the weak inequality give the
+same probability (Section~\ref{sec:toolkit-cdf}):
+\[
+\Pr(R<y)=\Pr(R\le y)=F(y),\qquad \Pr(R>y)=\Pr(R\ge y)=1-F(y).
+\]
+In particular, a tie \(R=\theta\) has probability zero.
+
+The class distributions \(G_j\) can have atoms. An atom at \(y\) means that the value equals \(y\) with a
+positive probability, so \(G_j\) jumps at \(y\). Write \(G_j(y^-)\) for the left limit: the limit of \(G_j(x)\) as
+\(x\) rises to \(y\). Then the four probabilities about one level are (Section~\ref{sec:toolkit-cdf}):
+\begin{align*}
+\Pr\nolimits_j(\theta\le y)&=G_j(y), & \Pr\nolimits_j(\theta<y)&=G_j(y^-),\\
+\Pr\nolimits_j(\theta>y)&=1-G_j(y), & \Pr\nolimits_j(\theta\ge y)&=1-G_j(y^-).
+\end{align*}
+The two forms differ only at an atom. The probability that a class-\(j\) value falls below the reserve is
+\(G_j(p^-)\), and the probability that it meets the reserve is \(1-G_j(p^-)\).
+
+The paper compares the classes level by level with
+\[
+D(y)=G_L(y)-G_H(y)=\bigl[1-G_H(y)\bigr]-\bigl[1-G_L(y)\bigr]=\Pr\nolimits_H(\theta>y)-\Pr\nolimits_L(\theta>y).
+\]
+So \(D(y)\) says how much more likely a high-class value is than a low-class value to lie above the level \(y\).
+
+\subsection*{The class ranking and equal admissibility}
+
+The paper's main condition on the classes is the \emph{class ranking}:
+\begin{equation}\label{eq:auction-ranking}
+G_H(y)\le G_L(y)\quad\text{for every }y,\qquad G_H(p^-)=G_L(p^-)=0.
+\end{equation}
+The first part is first-order stochastic dominance (Section~\ref{sec:toolkit-fosd}): at every level, a high-class
+value is at least as likely as a low-class value to lie above it. The second part says that both class supports
+lie above the reserve, so every value meets it. In terms of \(D\), the class ranking implies \(D(y)\ge0\) for
+every \(y\) and \(D(p^-)=0\). These two facts are weaker than the class ranking: they do not need both classes to
+meet the reserve with probability one.
+
+A weaker condition appears in Section~\ref{sec:auction-weakest}. The classes have \emph{equal admissibility} when
+\(G_H(p^-)=G_L(p^-)\): the two classes fall below the reserve with the same probability. The class ranking
+implies equal admissibility, with both probabilities equal to zero.
+
+\subsection*{The payoff objects}
+
+\begin{itemize}
+\item \(t_0\) is the expected target proceeds without entry.
+\item For a known challenger value \(\theta\), \(t(\theta)\) is the expected target proceeds after the
+challenger prepares, and \(g(\theta)\) is the challenger's expected gross acquisition profit. Both expectations
+are over the incumbent's value \(R\).
+\item The class objects average over the class distribution: \(t_j=\E_j[t(\theta)]\) and
+\(g_j=\E_j[g(\theta)]\) for \(j\in\{H,L\}\).
+\item The target-payoff spread is \(\DT=t_H-t_L\).
+\item At a belief \(\mu=\Pr(j=H)\), the challenger's expected gross profit is
+\(B(\mu)=g_L+\mu\,(g_H-g_L)=(1-\mu)\,g_L+\mu\,g_H\).
+\end{itemize}
+When the incumbent's distribution matters, write \(g_j(F)\), \(\DT(F)\) and \(B_F\). The positive part of a
+number \(x\) is \((x)_+=\max\{x,0\}\).
+
+Without a challenger, the incumbent is the only possible bidder. It bids when \(R\ge p\), and then it pays
+\(\max\{p,0\}=p\), since there is no competing bid. So:
+\begin{align*}
+t_0&=p\cdot\Pr(R\ge p)+0\cdot\Pr(R<p) \why{the incumbent buys at \(p\), or no sale}\\
+&=p\,\bigl[1-\Pr(R<p)\bigr] \why{complement rule}\\
+&=p\,\bigl[1-F(p)\bigr] \why{\(F\) is continuous}
+\end{align*}
+
+A \emph{strengthening} of the incumbent replaces \(F\) by a continuous \(\tilde F\) with \(\tilde F(y)\le F(y)\)
+for every \(y\). At every level \(y\), the stronger incumbent is at or below \(y\) with at most the same
+probability. This is a first-order stochastic shift (Section~\ref{sec:toolkit-fosd}).
+
+\begin{watchout}
+The probability that a class-\(j\) value fails the reserve is \(G_j(p^-)\), with the left limit. A bid equal to
+the reserve is admissible, so a value exactly at \(p\) meets the reserve. When class \(j\) has an atom at \(p\),
+the number \(G_j(p)\) counts that atom and so overstates the share of values that fail the reserve.
+\end{watchout}
+
+Bids turn out to be truthful (Section~\ref{sec:auction-bids}). So every object above depends on the incumbent's
+distribution, the classes and the reserve, and on no belief. Prices and trade play no role in this chapter.
+
+% ====================================================================
+\section{Bids: why each bidder bids its value}\label{sec:auction-bids}
+
+The paper's equilibrium definition lists truthful bids as one condition, (E6). The appendix then shows that a
+bid equal to the bidder's value is weakly dominant, so the condition holds in every equilibrium tuple. A bid
+is \emph{weakly dominant} when, against every possible competing bid, it gives at least as much as any other bid
+(Section~\ref{sec:toolkit-games}). A bidder needs no belief about its rival to choose such a bid.
+
+Fix one bidder with the value \(\theta\). Let \(Y\ge0\) be the highest competing admissible bid, with \(Y=0\) when
+there is none. The rule gives the bidder a simple choice:
+\begin{itemize}
+\item If it wins with an admissible bid, it pays \(\max\{p,Y\}\). This price does not depend on its own bid.
+\item If it loses, or makes no bid, it pays nothing and gets nothing.
+\end{itemize}
+So every bid yields one of two payoffs: \(\theta-\max\{p,Y\}\) or zero. The bid only decides which of the two
+payoffs the bidder gets.
+
+\subsection*{A value at or above the reserve}
+
+Suppose \(\theta\ge p\), and consider the bid \(\theta\). It is admissible. There are three cases.
+\begin{enumerate}
+\item \(\theta>\max\{p,Y\}\). Then \(\theta>Y\), so the bid \(\theta\) wins. It earns \(\theta-\max\{p,Y\}>0\).
+\item \(\theta<\max\{p,Y\}\). Since \(\theta\ge p\), the larger of \(p\) and \(Y\) must be \(Y\), so
+\(Y>\theta\). The bid \(\theta\) loses and earns zero.
+\item \(\theta=\max\{p,Y\}\). If the bid wins, it pays \(\theta\) and earns zero. If it loses, it also earns
+zero.
+\end{enumerate}
+In every case, the bid \(\theta\) earns
+\[
+\max\bigl\{\theta-\max\{p,Y\},\,0\bigr\}=\bigl(\theta-\max\{p,Y\}\bigr)_+,
+\]
+the larger of the two possible payoffs. No bid can earn more than the larger of the two. So the bid \(\theta\) is
+weakly dominant. A bid below the reserve is not admissible, so it has the same effect as no bid and earns zero.
+Check yourself~\ref{q:auction-overbid} compares the bid \(\theta\) with a bid above the value, range by range.
+
+\subsection*{A value below the reserve}
+
+Suppose \(\theta<p\). Any bid that wins pays \(\max\{p,Y\}\ge p>\theta\). So a win earns
+\(\theta-\max\{p,Y\}<0\). No bid earns more than zero, and the choice of no bid earns zero against every \(Y\).
+So the choice of no bid is weakly dominant. This is the paper's rule: a prepared challenger whose value is below the reserve does
+not bid.
+
+\subsection*{What the bids give the rest of the chapter}
+
+\begin{itemize}
+\item Truthful bids, condition (E6) of the paper's equilibrium definition, hold in every equilibrium tuple. No
+payoff in this chapter rests on a belief.
+\item The challenger faces the incumbent. The incumbent bids \(R\) when \(R\ge p\) and makes no bid when
+\(R<p\). So \(Y=R\) when \(R\ge p\), and \(Y=0\) when \(R<p\). In both cases, a challenger that wins pays
+\(\max\{p,R\}\):
+\begin{align*}
+R\ge p:\quad \max\{p,Y\}&=\max\{p,R\} \why{\(Y=R\)}\\
+R<p:\quad \max\{p,Y\}&=\max\{p,0\}=p \why{\(Y=0\)}\\
+&=\max\{p,R\} \why{\(R<p\)}
+\end{align*}
+\end{itemize}
+
+\begin{intuition}[why the value is the right bid]
+The rule separates the price from the decision to buy. The other bidder sets the price, and your own bid only
+decides whether you buy at that price. You want to buy exactly when your value is above the price. A bid equal to your value buys in
+exactly those cases.
+\end{intuition}
+
+\begin{checkyourself}
+\label{q:auction-overbid}
+A bidder with the value \(\theta\ge p\) considers the bid \(b>\theta\). Go through the competing bids \(Y<\theta\),
+\(\theta\le Y\le b\) and \(Y>b\). In each range, compare the payoff of the bid \(b\) with the payoff of the bid
+\(\theta\). Where is the bid \(b\) strictly worse?
+\end{checkyourself}
+
+% ====================================================================
+\section{What each party receives at fixed values}\label{sec:auction-outcomes}
+
+Fix the incumbent's value \(R\) and the value \(\theta\) of a prepared challenger. This section finds who wins,
+what the target receives and what the challenger keeps. The expectations come in the later sections.
+
+\subsection*{A challenger value at or above the reserve}
+
+Start with \(\theta\ge p\). Table~\ref{tab:auction-cases} lists the three cases.
+
+\begin{table}[htbp]
+\centering\small
+\caption{A prepared challenger with the value \(\theta\ge p\) against an incumbent with the value \(R\).}
+\label{tab:auction-cases}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Case & Incumbent's bid & Winner & Target receives & Challenger keeps\\
+\midrule
+\(R<p\le\theta\) & none & challenger & \(p\) & \(\theta-p\)\\
+\(p\le R<\theta\) & \(R\) & challenger & \(R\) & \(\theta-R\)\\
+\(p\le\theta<R\) & \(R\) & incumbent & \(\theta\) & \(0\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+\item \(R<p\le\theta\). The incumbent's value is below the reserve, so it does not bid. The challenger is the
+only admissible bidder. It wins and pays \(\max\{p,0\}=p\).
+\item \(p\le R<\theta\). Both bidders bid their values. The challenger has the higher bid. It pays the competing
+bid \(R\), which is at least \(p\).
+\item \(p\le\theta<R\). The incumbent has the higher bid. It pays the challenger's bid \(\theta\), which is at
+least \(p\).
+\end{itemize}
+
+Two formulas cover all three rows. For \(\theta\ge p\):
+\[
+\text{the target receives }\max\{p,\min(R,\theta)\},\qquad
+\text{the challenger keeps }\bigl(\theta-\max\{p,R\}\bigr)_+.
+\]
+
+\begin{derivation}[the two formulas reproduce the table]
+\begin{align*}
+R<p\le\theta:\quad \max\{p,\min(R,\theta)\}&=\max\{p,R\}=p \why{\(\min(R,\theta)=R\); \(R<p\)}\\
+\bigl(\theta-\max\{p,R\}\bigr)_+&=(\theta-p)_+=\theta-p \why{\(\max\{p,R\}=p\); \(\theta\ge p\)}\\
+p\le R<\theta:\quad \max\{p,\min(R,\theta)\}&=\max\{p,R\}=R \why{\(R<\theta\); \(R\ge p\)}\\
+\bigl(\theta-\max\{p,R\}\bigr)_+&=(\theta-R)_+=\theta-R \why{\(R\ge p\); \(R<\theta\)}\\
+p\le\theta<R:\quad \max\{p,\min(R,\theta)\}&=\max\{p,\theta\}=\theta \why{\(\theta<R\); \(\theta\ge p\)}\\
+\bigl(\theta-\max\{p,R\}\bigr)_+&=(\theta-R)_+=0 \why{\(R>\theta\ge p\); \(\theta-R<0\)}
+\end{align*}
+\end{derivation}
+
+\emph{Ties.} At \(R=\theta\), whichever bidder wins pays \(\theta\). So the target receives \(\theta\), and the
+winner earns zero. The two formulas give \(\max\{p,\theta\}=\theta\) and \((\theta-\theta)_+=0\). So the
+formulas hold under any tie rule. Since \(F\) is continuous, the tie has probability zero anyway.
+
+\subsection*{A challenger value below the reserve}
+
+Suppose \(\theta<p\). The challenger does not bid (Section~\ref{sec:auction-bids}). If \(R\ge p\), the incumbent
+is the only admissible bidder and buys at \(p\). If \(R<p\), there is no sale. So the target receives
+\(p\,\1\{R\ge p\}\), and the challenger keeps nothing. This is the same outcome as without entry.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,every node/.style={font=\small}]
+  % row (i): R < p <= theta
+  \node[anchor=east] at (-0.4,0) {\(R<p\le\theta\)};
+  \draw[rulegrey] (0,0) -- (10,0);
+  \draw[accent,line width=3pt] (0,0) -- (4,0);
+  \draw[notegrey!45,line width=3pt] (4,0) -- (8.5,0);
+  \foreach \x/\t in {0/0,4/p,8.5/\theta} {\draw (\x,0.18) -- (\x,-0.18) node[below] {\(\t\)};}
+  \draw[notegrey] (2,0.18) -- (2,-0.18) node[below] {\(R\)};
+  % row (ii): p <= R < theta
+  \node[anchor=east] at (-0.4,-1.25) {\(p\le R<\theta\)};
+  \draw[rulegrey] (0,-1.25) -- (10,-1.25);
+  \draw[accent,line width=3pt] (0,-1.25) -- (5.5,-1.25);
+  \draw[notegrey!45,line width=3pt] (5.5,-1.25) -- (8.5,-1.25);
+  \foreach \x/\t in {0/0,2.5/p,5.5/R,8.5/\theta} {\draw (\x,-1.07) -- (\x,-1.43) node[below] {\(\t\)};}
+  % row (iii): p <= theta < R
+  \node[anchor=east] at (-0.4,-2.5) {\(p\le\theta<R\)};
+  \draw[rulegrey] (0,-2.5) -- (10,-2.5);
+  \draw[accent,line width=3pt] (0,-2.5) -- (5.5,-2.5);
+  \foreach \x/\t in {0/0,2.5/p,5.5/\theta,8.5/R} {\draw (\x,-2.32) -- (\x,-2.68) node[below] {\(\t\)};}
+  % legend
+  \draw[accent,line width=3pt] (0,-3.6) -- (0.8,-3.6);
+  \node[anchor=west] at (0.9,-3.6) {target receives};
+  \draw[notegrey!45,line width=3pt] (4.2,-3.6) -- (5.0,-3.6);
+  \node[anchor=west] at (5.1,-3.6) {challenger keeps};
+\end{tikzpicture}
+\caption{The split of an admissible challenger value at a fixed incumbent value. In each row, the dark part of the
+line, from zero to \(\max\{p,\min(R,\theta)\}\), is the price that the target receives. The light part, from
+\(\max\{p,R\}\) to \(\theta\), is what the challenger keeps. Together the two parts cover \([0,\theta]\).}
+\label{fig:auction-bars}
+\end{figure}
+
+\subsection*{The split: target and challenger share the whole value}
+
+Figure~\ref{fig:auction-bars} suggests that the two amounts add up to \(\theta\). This holds at every incumbent
+value.
+
+\begin{derivation}[the split at a fixed incumbent value, for \(\theta\ge p\)]
+Add the two amounts in each row of Table~\ref{tab:auction-cases}:
+\begin{align*}
+R<p\le\theta:\quad \max\{p,\min(R,\theta)\}+\bigl(\theta-\max\{p,R\}\bigr)_+&=p+(\theta-p)=\theta
+\why{first row}\\
+p\le R<\theta:\quad \max\{p,\min(R,\theta)\}+\bigl(\theta-\max\{p,R\}\bigr)_+&=R+(\theta-R)=\theta
+\why{second row}\\
+R\ge\theta:\quad \max\{p,\min(R,\theta)\}+\bigl(\theta-\max\{p,R\}\bigr)_+&=\theta+0=\theta
+\why{third row; the tie}
+\end{align*}
+The sum equals \(\theta\) at every \(R\). Take the expectation over \(R\):
+\begin{align*}
+t(\theta)+g(\theta)&=\E_R\bigl[\max\{p,\min(R,\theta)\}\bigr]+\E_R\bigl[(\theta-\max\{p,R\})_+\bigr]
+\why{definitions of \(t\) and \(g\)}\\
+&=\E_R\bigl[\max\{p,\min(R,\theta)\}+(\theta-\max\{p,R\})_+\bigr] \why{linearity}\\
+&=\E_R[\theta] \why{the sum is \(\theta\) at every \(R\)}\\
+&=\theta \why{\(\theta\) is fixed}
+\end{align*}
+\end{derivation}
+
+So, for every value at or above the reserve,
+\begin{equation}\label{eq:auction-split}
+t(\theta)+g(\theta)=\theta,\qquad \theta\ge p.
+\end{equation}
+
+\begin{intuition}[the split]
+The second-price rule passes the whole value of an admissible challenger to the target and the challenger
+together. The incumbent takes none of it: when the incumbent wins, it pays the full challenger value \(\theta\),
+and its own gain \(R-\theta\) comes from its own value. The incumbent's value only decides how the challenger's
+value is divided.
+\end{intuition}
+
+Below the reserve the split fails. For \(\theta<p\), the target receives \(p\,\1\{R\ge p\}\) and the challenger
+keeps zero, so \(t(\theta)+g(\theta)=t_0\). An inadmissible value goes to no one.
+
+\subsection*{Entry never lowers proceeds}
+
+The paper notes that \(t_j\ge t_0\) for both classes. The reason: an admissible challenger raises the proceeds to
+at least the reserve, and an inadmissible challenger changes nothing. Here is the argument at each fixed \(R\).
+
+\begin{derivation}[\(t_j\ge t_0\)]
+For \(\theta\ge p\) and every \(R\):
+\begin{align*}
+\max\{p,\min(R,\theta)\}&\ge p \why{a maximum is at least each entry}\\
+&\ge p\,\1\{R\ge p\} \why{the indicator is at most one}
+\end{align*}
+For \(\theta<p\), the target receives \(p\,\1\{R\ge p\}\) with or without the challenger. So, at every \(R\),
+the proceeds with the challenger are at least the proceeds without it. Take expectations:
+\begin{align*}
+t(\theta)&\ge\E_R\bigl[p\,\1\{R\ge p\}\bigr]=t_0 \why{expectations keep a weak inequality}\\
+t_j=\E_j[t(\theta)]&\ge\E_j[t_0]=t_0 \why{\(t_0\) does not depend on \(\theta\)}
+\end{align*}
+\end{derivation}
+
+Chapter~\ref{ch:trading} uses this fact: the entry gains \(t_H-t_0\) and \(t_L-t_0\) are never negative.
+
+\begin{checkyourself}
+\label{q:auction-jump}
+Compute \(t(p)\) and \(g(p)\), the payoffs of a challenger whose value equals the reserve. Compare \(t(p)\) with
+\(t_0\), the proceeds for any \(\theta<p\). Explain the difference in words: on which incumbent values do the two
+cases give the target different amounts?
+\end{checkyourself}
+
+% ====================================================================
+\section{The challenger's profit as an integral}\label{sec:auction-profit}
+
+The goal of this section is the formula for \(g_j\). The method has three steps. First, write the challenger's
+profit at a fixed \(R\) as a sum over levels \(y\). Then average over \(R\). Last, average over the class.
+
+\subsection*{Step 1: the profit as a sum over levels}
+
+Think of the challenger's value above the reserve as a stack of thin slices, one at each level \(y\) between \(p\)
+and \(\theta\). At a fixed incumbent value, the challenger keeps the slice at level \(y\) exactly when the
+incumbent's value is below \(y\). So, for \(\theta\ge p\),
+\[
+\bigl(\theta-\max\{p,R\}\bigr)_+=\int_p^\theta\1\{R<y\}\,dy.
+\]
+The integrand is one at the levels \(y\) above \(R\) and zero at the levels below \(R\). So the integral is the
+length of the set of levels in \([p,\theta]\) that lie above \(R\). Check the three cases:
+\begin{itemize}
+\item \(R<p\): every level in \([p,\theta]\) lies above \(R\). The length is \(\theta-p\), and
+\((\theta-\max\{p,R\})_+=\theta-p\).
+\item \(p\le R<\theta\): the levels above \(R\) form \((R,\theta]\). The length is \(\theta-R\), and
+\((\theta-\max\{p,R\})_+=\theta-R\).
+\item \(R\ge\theta\): no level in \([p,\theta]\) lies above \(R\). The length is zero, and
+\((\theta-\max\{p,R\})_+=0\).
+\end{itemize}
+
+\subsection*{Step 2: average over the incumbent}
+
+The expectation of an integral of indicators is the integral of probabilities. The order of the two operations
+can change because the integrand is never negative (Tonelli's theorem; Section~\ref{sec:toolkit-expectation}).
+
+\begin{derivation}[the profit of a known value, \(\theta\ge p\)]
+\begin{align*}
+g(\theta)&=\E_R\bigl[(\theta-\max\{p,R\})_+\bigr] \why{definition of \(g\)}\\
+&=\E_R\Bigl[\int_p^\theta\1\{R<y\}\,dy\Bigr] \why{Step 1}\\
+&=\int_p^\theta\E_R\bigl[\1\{R<y\}\bigr]\,dy \why{change the order; integrand \(\ge0\)}\\
+&=\int_p^\theta\Pr(R<y)\,dy \why{expectation of an indicator}\\
+&=\int_p^\theta F(y)\,dy \why{\(F\) is continuous}
+\end{align*}
+\end{derivation}
+
+This is formula~\eqref{eq:toolkit-fixed} of the tail formula section (Section~\ref{sec:toolkit-tail}).
+
+\begin{intuition}[the profit of a known value]
+The integral adds up, over the levels between the reserve and the challenger's value, the probability that the
+incumbent is below each level. A level \(y\) pays the challenger when the incumbent's value lies under it.
+\begin{itemize}
+\item An incumbent that never meets the reserve has \(F(y)=1\) for \(y\ge p\). Then \(g(\theta)=\theta-p\): the
+challenger always wins at the reserve.
+\item An incumbent that is always above \(\theta\) has \(F(y)=0\) on \([p,\theta]\). Then \(g(\theta)=0\): the
+challenger never wins.
+\end{itemize}
+\end{intuition}
+
+For \(\theta<p\), the challenger does not bid, so \(g(\theta)=0\). One formula covers both cases:
+\[
+g(\theta)=\int_p^\infty\1\{y\le\theta\}\,F(y)\,dy\qquad\text{for every }\theta.
+\]
+For \(\theta\ge p\), the indicator keeps the levels in \([p,\theta]\), which gives \(\int_p^\theta F(y)\,dy\).
+For \(\theta<p\), every level \(y\ge p\) lies above \(\theta\), so the indicator is zero and the integral is zero.
+
+\subsection*{Step 3: average over the class}
+
+The challenger does not know \(\theta\) when it decides to prepare. Its class-\(j\) profit is
+\(g_j=\E_j[g(\theta)]\). This expectation is a double sum: over challenger values \(\theta\), and over levels
+\(y\) with \(p\le y\le\theta\). Figure~\ref{fig:auction-region} shows the region of pairs \((\theta,y)\).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.8cm,y=0.8cm,every node/.style={font=\small}]
+  \fill[accent!10] (1.5,1.5) -- (6,6) -- (7.2,6) -- (7.2,1.5) -- cycle;
+  \draw[->] (0,0) -- (7.6,0) node[right] {\(\theta\)};
+  \draw[->] (0,0) -- (0,6.4) node[above right] {level \(y\)};
+  \draw[rulegrey,dashed] (0,1.5) -- (7.2,1.5);
+  \draw[rulegrey,dashed] (0,0) -- (6,6);
+  \node[anchor=east] at (0,1.5) {\(p\)};
+  \draw (1.5,0.1) -- (1.5,-0.1) node[below] {\(p\)};
+  \node[anchor=south] at (6,6) {\(y=\theta\)};
+  % vertical strip at fixed theta
+  \draw[accent,line width=1.6pt] (4.6,1.5) -- (4.6,4.6);
+  \draw (4.6,0.1) -- (4.6,-0.1) node[below] {\(\theta\)};
+  \node[anchor=west,align=left] at (4.7,3.9) {fix \(\theta\):\\ \(y\) runs from \(p\) to \(\theta\)};
+  % horizontal strip at fixed y
+  \draw[notegrey,line width=1.6pt] (2.8,2.8) -- (7.2,2.8);
+  \node[anchor=east] at (0,2.8) {\(y\)};
+  \draw[rulegrey,dotted] (0,2.8) -- (2.8,2.8);
+  \node[anchor=north west,align=left] at (5.2,2.7) {fix \(y\):\\ \(\theta\) runs from \(y\) up};
+\end{tikzpicture}
+\caption{The region of the double sum in \(g_j\): all pairs of a challenger value \(\theta\) and a level \(y\)
+with \(p\le y\le\theta\). The first order of
+summation fixes \(\theta\) and adds over the levels \(y\) in a vertical strip; this gives \(g(\theta)\). The
+second order fixes a level \(y\) and collects the probability of every challenger value \(\theta\ge y\) in a
+horizontal strip; this gives \(\Pr_j(\theta\ge y)\).}
+\label{fig:auction-region}
+\end{figure}
+
+The two orders give the same total, because every term is nonnegative (Tonelli's theorem again). The second order
+is the useful one: at each level \(y\), it asks how likely the challenger's value is to reach \(y\).
+
+\begin{derivation}[the class-\(j\) gross profit]
+\begin{align*}
+g_j&=\E_j\bigl[g(\theta)\bigr] \why{definition of \(g_j\)}\\
+&=\E_j\Bigl[\int_p^\infty\1\{y\le\theta\}\,F(y)\,dy\Bigr] \why{one formula for every \(\theta\)}\\
+&=\int_p^\infty\E_j\bigl[\1\{y\le\theta\}\bigr]\,F(y)\,dy \why{change the order; terms \(\ge0\)}\\
+&=\int_p^\infty\Pr\nolimits_j(\theta\ge y)\,F(y)\,dy \why{expectation of an indicator}\\
+&=\int_p^\infty\bigl[1-G_j(y^-)\bigr]\,F(y)\,dy \why{\(\Pr_j(\theta\ge y)=1-G_j(y^-)\)}\\
+&=\int_p^\infty\bigl[1-G_j(y)\bigr]\,F(y)\,dy \why{the left limit differs at atoms only}
+\end{align*}
+\end{derivation}
+
+The last step needs a word. The functions \(G_j(y^-)\) and \(G_j(y)\) differ only at the atoms of \(G_j\). A
+distribution function has at most countably many atoms. At most one atom has a mass above \(\tfrac12\), at most
+two have a mass above \(\tfrac13\), and so on, so the atoms can be listed one by one. Each single point has zero
+length. An integral over \(y\) measures area, and a countable list of single points adds no area. So the change at
+the atoms does not change the integral.
+
+The result is the second line of the paper's equation for Proposition~1:
+\begin{equation}\label{eq:auction-gross}
+g_j(F)=\int_p^\infty\bigl[1-G_j(y)\bigr]\,F(y)\,dy,\qquad j\in\{H,L\}.
+\end{equation}
+
+\begin{intuition}[the gross profit formula]
+A level \(y\) above the reserve earns for the challenger when two events happen together. The challenger's value
+lies above \(y\), with probability \(1-G_j(y)\). The incumbent's value lies below \(y\), with probability
+\(F(y)\). The two values are independent, so the probability of both events is the product. The gross profit
+adds these products over all levels above the reserve.
+\end{intuition}
+
+The integral is finite. The factor \(F(y)\) lies between zero and one, so
+\[
+0\le g_j\le\int_p^\infty\bigl[1-G_j(y)\bigr]\,dy\le\int_0^\infty\bigl[1-G_j(y)\bigr]\,dy=\E_j[\theta]<\infty,
+\]
+where the equality is the tail formula for a nonnegative value (Section~\ref{sec:toolkit-tail}).
+
+The incumbent enters \eqref{eq:auction-gross} only through \(F\), and \(F\) carries a nonnegative weight. A
+strengthening lowers \(F\), so it cannot raise \(g_j\). Section~\ref{sec:auction-prop1} makes this exact.
+
+\begin{checkyourself}
+\label{q:auction-pointgross}
+Take point-mass classes: a class-\(H\) value equals \(h\) and a class-\(L\) value equals \(\ell\), with
+\(p<\ell<h\). Use \eqref{eq:auction-gross} to show that \(g_H-g_L=\int_\ell^hF(y)\,dy\). Say in words which
+incumbent values this integral counts, and why \(g_H\ge g_L\).
+\end{checkyourself}
+
+% ====================================================================
+\section{Target proceeds and the spread}\label{sec:auction-spread}
+
+This section follows the paper's proof for target proceeds line by line. The steps mirror the steps for the
+profit, with one extra term from the reserve.
+
+\subsection*{Step 1: the proceeds as a sum over levels}
+
+For \(\theta\ge p\), the target receives the reserve plus every slice between \(p\) and \(\theta\) that lies below
+the incumbent's value:
+\[
+\max\{p,\min(R,\theta)\}=p+\int_p^\theta\1\{R>y\}\,dy.
+\]
+The integral is the length of the set of levels in \([p,\theta]\) that lie below \(R\). Check the three cases:
+\begin{itemize}
+\item \(R<p\): no level in \([p,\theta]\) lies below \(R\). The right side is \(p+0=p\), the first row of
+Table~\ref{tab:auction-cases}.
+\item \(p\le R<\theta\): the levels below \(R\) form \([p,R)\), of length \(R-p\). The right side is
+\(p+(R-p)=R\).
+\item \(R\ge\theta\): every level in \([p,\theta]\) lies below \(R\), except the single point \(y=R\) in the tie.
+The length is \(\theta-p\), and the right side is \(\theta\).
+\end{itemize}
+
+\subsection*{Step 2: average over the incumbent}
+
+\begin{derivation}[the proceeds for a known value]
+For \(\theta\ge p\):
+\begin{align*}
+t(\theta)&=\E_R\bigl[\max\{p,\min(R,\theta)\}\bigr] \why{definition of \(t\)}\\
+&=p+\E_R\Bigl[\int_p^\theta\1\{R>y\}\,dy\Bigr] \why{Step 1; linearity}\\
+&=p+\int_p^\theta\Pr(R>y)\,dy \why{change the order; indicator}\\
+&=p+\int_p^\theta\bigl[1-F(y)\bigr]\,dy \why{\(F\) is continuous}
+\end{align*}
+For \(\theta<p\):
+\begin{align*}
+t(\theta)&=\E_R\bigl[p\,\1\{R\ge p\}\bigr] \why{the challenger does not bid}\\
+&=p\,\Pr(R\ge p)=p\,\bigl[1-F(p)\bigr]=t_0 \why{as in Section~\ref{sec:auction-setup}}
+\end{align*}
+\end{derivation}
+
+As a check, add \(g(\theta)=\int_p^\theta F(y)\,dy\) to \(t(\theta)\) for \(\theta\ge p\). The paper puts the
+same check in words: the indicators \(\1\{R>y\}\) and \(\1\{R<y\}\) add up to one at every level except the single
+point \(y=R\), which has zero length.
+\begin{align*}
+t(\theta)+g(\theta)&=p+\int_p^\theta\bigl[1-F(y)\bigr]\,dy+\int_p^\theta F(y)\,dy \why{the two formulas}\\
+&=p+\int_p^\theta1\,dy \why{add the integrands}\\
+&=\theta \why{the integral is \(\theta-p\)}
+\end{align*}
+This is the split \eqref{eq:auction-split} again.
+
+\subsection*{Step 3: the jump at the reserve}
+
+At \(\theta=p\), the formula for \(\theta\ge p\) gives \(t(p)=p+0=p\). Just below the reserve,
+\(t(\theta)=t_0=p-pF(p)\). So \(t\) jumps up by \(pF(p)\) at \(\theta=p\). The reason: when the incumbent fails
+the reserve, which has probability \(F(p)\), an admissible challenger buys at \(p\), and an inadmissible one
+leaves the target unsold.
+
+With the jump written out, one formula holds for every \(\theta\):
+\[
+t(\theta)=t_0+pF(p)\,\1\{\theta\ge p\}+\int_p^\infty\1\{y\le\theta\}\bigl[1-F(y)\bigr]\,dy.
+\]
+
+\begin{derivation}[the formula for every \(\theta\)]
+For \(\theta\ge p\):
+\begin{align*}
+&t_0+pF(p)+\int_p^\infty\1\{y\le\theta\}\bigl[1-F(y)\bigr]\,dy\\
+&\qquad=p\bigl[1-F(p)\bigr]+pF(p)+\int_p^\theta\bigl[1-F(y)\bigr]\,dy
+\why{\(t_0=p[1-F(p)]\); the indicator}\\
+&\qquad=p+\int_p^\theta\bigl[1-F(y)\bigr]\,dy=t(\theta) \why{Step 2}
+\end{align*}
+For \(\theta<p\), both the indicator \(\1\{\theta\ge p\}\) and every \(\1\{y\le\theta\}\) with \(y\ge p\) are
+zero, so the right side is \(t_0=t(\theta)\).
+\end{derivation}
+
+\subsection*{Step 4: average over the class}
+
+Two facts about the class distribution enter: \(\E_j[\1\{\theta\ge p\}]=\Pr_j(\theta\ge p)=1-G_j(p^-)\) and
+\(\E_j[\1\{y\le\theta\}]=\Pr_j(\theta\ge y)=1-G_j(y^-)\).
+
+\begin{derivation}[the class-\(j\) proceeds]
+\begin{align*}
+t_j&=\E_j\bigl[t(\theta)\bigr] \why{definition of \(t_j\)}\\
+&=t_0+pF(p)\,\E_j\bigl[\1\{\theta\ge p\}\bigr]
++\E_j\Bigl[\int_p^\infty\1\{y\le\theta\}\bigl[1-F(y)\bigr]\,dy\Bigr] \why{Step 3; linearity}\\
+&=t_0+pF(p)\,\E_j\bigl[\1\{\theta\ge p\}\bigr]
++\int_p^\infty\E_j\bigl[\1\{y\le\theta\}\bigr]\bigl[1-F(y)\bigr]\,dy \why{change the order}\\
+&=t_0+pF(p)\bigl[1-G_j(p^-)\bigr]+\int_p^\infty\bigl[1-G_j(y^-)\bigr]\bigl[1-F(y)\bigr]\,dy
+\why{the two facts}\\
+&=t_0+pF(p)\bigl[1-G_j(p^-)\bigr]+\int_p^\infty\bigl[1-G_j(y)\bigr]\bigl[1-F(y)\bigr]\,dy
+\why{atoms add no area}
+\end{align*}
+\end{derivation}
+
+\begin{watchout}
+The last step replaces \(G_j(y^-)\) by \(G_j(y)\) inside the integral over \(y\). The left limit \(G_j(p^-)\) in
+the middle term stays. An atom at \(p\) makes \(G_j(p^-)\) and \(G_j(p)\) differ. The middle term is a single
+number, so it must keep the left limit. The integral does not notice the difference at one point.
+\end{watchout}
+
+\subsection*{Step 5: the difference of the classes}
+
+\begin{derivation}[the spread]
+\begin{align*}
+\DT&=t_H-t_L \why{definition}\\
+&=pF(p)\Bigl\{\bigl[1-G_H(p^-)\bigr]-\bigl[1-G_L(p^-)\bigr]\Bigr\}\\
+&\qquad+\int_p^\infty\Bigl\{\bigl[1-G_H(y)\bigr]-\bigl[1-G_L(y)\bigr]\Bigr\}\bigl[1-F(y)\bigr]\,dy
+\why{Step 4; \(t_0\) cancels}\\
+&=pF(p)\bigl[G_L(p^-)-G_H(p^-)\bigr]+\int_p^\infty\bigl[G_L(y)-G_H(y)\bigr]\bigl[1-F(y)\bigr]\,dy
+\why{the ones cancel}\\
+&=pF(p)\,D(p^-)+\int_p^\infty\bigl[1-F(y)\bigr]\,D(y)\,dy \why{definition of \(D\)}
+\end{align*}
+Here \(D(p^-)=G_L(p^-)-G_H(p^-)\) is the left limit of \(D\) at \(p\).
+\end{derivation}
+
+This is the first line of the paper's equation for Proposition~1:
+\begin{equation}\label{eq:auction-spread}
+\DT(F)=pF(p)\,D(p^-)+\int_p^\infty\bigl[1-F(y)\bigr]\,D(y)\,dy.
+\end{equation}
+
+Each integral is finite: \(0\le\int_p^\infty[1-G_j(y)]\,dy\le\E_j[\theta]<\infty\), as in
+Section~\ref{sec:auction-profit}, and \(0\le F\le1\). So the difference of the two class integrals is a
+difference of two finite numbers.
+
+\subsection*{What the two terms say}
+
+The integral term adds up the levels above the reserve. At the level \(y\), the factor \(1-F(y)\) is the
+probability that the incumbent's value lies above \(y\). On that event, the target collects the slice at \(y\)
+from any challenger whose value passes \(y\). The factor \(D(y)\) says how much more likely a high-class value is
+to pass \(y\). So \([1-F(y)]D(y)\,dy\) is the class difference in the slice that reaches the target.
+
+The reserve term \(pF(p)D(p^-)\) has three factors:
+\begin{itemize}
+\item \(F(p)\) is the probability that the incumbent fails the reserve.
+\item On that event, the target receives \(p\) from an admissible challenger and nothing from an inadmissible one.
+\item The class difference in the chance to be admissible is
+\(\bigl[1-G_H(p^-)\bigr]-\bigl[1-G_L(p^-)\bigr]=G_L(p^-)-G_H(p^-)=D(p^-)\).
+\end{itemize}
+Under the class ranking~\eqref{eq:auction-ranking}, \(G_H(p^-)=G_L(p^-)=0\), so \(D(p^-)=0\) and the reserve term
+is zero. The term is also zero under equal admissibility, and when the incumbent always meets the reserve,
+\(F(p)=0\).
+
+\begin{watchout}
+Without equal admissibility, the reserve term can work against the rest of the formula. Suppose the low class
+fails the reserve more often, so \(D(p^-)>0\). A stronger incumbent fails the reserve less often,
+\(\tilde F(p)\le F(p)\), so the term \(pF(p)D(p^-)\) shrinks. The paper notes that this loss can outweigh the
+slices that the strengthening moves to the target. The class ranking closes this channel. When the classes are
+ranked above the reserve, this term is the only way in which a strengthening can narrow the spread
+(Section~\ref{sec:auction-weakest}).
+\end{watchout}
+
+\subsection*{Two signs under the class ranking}
+
+Under the class ranking, \(D(y)\ge0\) for every \(y\) and \(D(p^-)=0\). Two signs follow.
+\begin{align*}
+\DT&=\int_p^\infty\bigl[1-F(y)\bigr]\,D(y)\,dy\ \ge0 \why{\(D(p^-)=0\); both factors \(\ge0\)}\\
+g_H-g_L&=\int_p^\infty\bigl[1-G_H(y)\bigr]F(y)\,dy-\int_p^\infty\bigl[1-G_L(y)\bigr]F(y)\,dy
+\why{\eqref{eq:auction-gross}}\\
+&=\int_p^\infty\bigl[G_L(y)-G_H(y)\bigr]F(y)\,dy \why{combine the integrands}\\
+&=\int_p^\infty D(y)\,F(y)\,dy\ \ge0 \why{both factors \(\ge0\)}
+\end{align*}
+So the high class gives the target at least as much, and it earns at least as much profit.
+
+\emph{Extremes.} If the incumbent never meets the reserve, \(F(y)=1\) for \(y\ge p\), and the integral term
+vanishes: \(\DT=pD(p^-)\), which is zero under the class ranking. Next, suppose the incumbent is always above the
+reserve and above every challenger value. Then \(F(p)=0\), and \(1-F(y)=1\) wherever \(D(y)\ne0\). So
+\(\DT=\int_p^\infty D(y)\,dy\), the whole class value gap above the reserve.
+
+% ====================================================================
+\section{One incumbent value: the slices}\label{sec:auction-slices}
+
+The formula \eqref{eq:auction-spread} averages over the incumbent. The paper also reads it at one fixed incumbent
+value. This view explains the word \emph{slice}, and it drives part~(c) in Section~\ref{sec:auction-weakest}.
+
+\subsection*{The target's proceeds at one incumbent value}
+
+Fix an incumbent value \(R\ge p\). Then the target receives
+\[
+\min\bigl\{R,\max\{\theta,p\}\bigr\}\qquad\text{for every challenger value }\theta.
+\]
+The reason is that an admissible challenger and the incumbent both bid at least \(p\), and an inadmissible
+challenger leaves the incumbent to pay \(p\). Check the cases:
+\begin{itemize}
+\item \(\theta<p\): the incumbent is the only admissible bidder and pays \(p\). The formula gives
+\(\min\{R,p\}=p\), since \(R\ge p\).
+\item \(p\le\theta\le R\): the incumbent wins, or ties, and the price is \(\theta\). The formula gives
+\(\min\{R,\theta\}=\theta\).
+\item \(\theta>R\): the challenger wins and pays \(\max\{p,R\}=R\). The formula gives \(\min\{R,\theta\}=R\).
+\end{itemize}
+If instead \(R<p\), the incumbent does not bid, and the target receives \(p\,\1\{\theta\ge p\}\).
+
+For \(R\ge p\), write the proceeds as the reserve plus the slices between \(p\) and \(R\) that the challenger's
+value passes:
+\[
+\min\bigl\{R,\max\{\theta,p\}\bigr\}=p+\int_p^R\1\{\theta>y\}\,dy.
+\]
+The integral is the length of the levels in \([p,R]\) below \(\theta\). It is zero when \(\theta\le p\), it is
+\(\theta-p\) when \(p<\theta\le R\), and it is \(R-p\) when \(\theta>R\). In each case the right side matches the
+three cases above.
+
+\begin{derivation}[the expected proceeds of class \(j\) at one incumbent value \(R\ge p\)]
+\begin{align*}
+\E_j\Bigl[\min\bigl\{R,\max\{\theta,p\}\bigr\}\Bigr]&=p+\E_j\Bigl[\int_p^R\1\{\theta>y\}\,dy\Bigr]
+\why{the slice formula; linearity}\\
+&=p+\int_p^R\Pr\nolimits_j(\theta>y)\,dy \why{change the order; indicator}\\
+&=p+\int_p^R\bigl[1-G_j(y)\bigr]\,dy \why{\(\Pr_j(\theta>y)=1-G_j(y)\)}
+\end{align*}
+\end{derivation}
+
+Notice the strict inequality \(\theta>y\) here. Its probability is \(1-G_j(y)\) exactly, so no left limit appears.
+In Section~\ref{sec:auction-profit} the indicator was \(\1\{y\le\theta\}\), with the probability
+\(\Pr_j(\theta\ge y)=1-G_j(y^-)\). Both routes lead to the same integrals, since atoms add no area.
+
+\subsection*{The class difference at one incumbent value}
+
+The paper calls the expected class difference in proceeds at the incumbent value \(R\) the function \(\Gamma\):
+\[
+\Gamma(R)=
+\begin{cases}
+pD(p^-), & R<p,\\[3pt]
+\int_p^RD(y)\,dy, & R\ge p.
+\end{cases}
+\]
+
+\begin{derivation}[the two cases of \(\Gamma\)]
+For \(R\ge p\):
+\begin{align*}
+\Gamma(R)&=\Bigl(p+\int_p^R\bigl[1-G_H(y)\bigr]dy\Bigr)-\Bigl(p+\int_p^R\bigl[1-G_L(y)\bigr]dy\Bigr)
+\why{the last derivation, twice}\\
+&=\int_p^R\bigl[G_L(y)-G_H(y)\bigr]\,dy \why{\(p\) cancels; combine}\\
+&=\int_p^RD(y)\,dy \why{definition of \(D\)}
+\end{align*}
+For \(R<p\), the target receives \(p\,\1\{\theta\ge p\}\):
+\begin{align*}
+\Gamma(R)&=p\,\Pr\nolimits_H(\theta\ge p)-p\,\Pr\nolimits_L(\theta\ge p) \why{expectation of an indicator}\\
+&=p\bigl[1-G_H(p^-)\bigr]-p\bigl[1-G_L(p^-)\bigr] \why{left limits}\\
+&=p\,D(p^-) \why{definition of \(D(p^-)\)}
+\end{align*}
+\end{derivation}
+
+The spread is the average of \(\Gamma\) over the incumbent's value:
+\[
+\DT(F)=\E_F\bigl[\Gamma(R)\bigr].
+\]
+The reason: \(t_j\) averages the proceeds over \(\theta\) and over \(R\). The two values are independent and the
+proceeds are never negative, so the order of the two averages does not matter (Tonelli's theorem). Average over
+\(\theta\) first, at each fixed \(R\), and then over \(R\). The class difference of the inner averages is
+\(\Gamma(R)\).
+
+\begin{derivation}[{\(\E_F[\Gamma(R)]\) gives back \eqref{eq:auction-spread}}]
+For every \(R\), \(\1\{R\ge p\}\int_p^RD(y)\,dy=\int_p^\infty\1\{y<R\}D(y)\,dy\), since both sides are zero for
+\(R<p\). Write \(D=[1-G_H]-[1-G_L]\), a difference of two nonnegative functions, and change the order for each
+part separately.
+\begin{align*}
+\E_F\bigl[\Gamma(R)\bigr]&=\Pr(R<p)\,pD(p^-)+\E_F\Bigl[\int_p^\infty\1\{y<R\}\,D(y)\,dy\Bigr]
+\why{the two cases of \(\Gamma\)}\\
+&=F(p)\,pD(p^-)+\int_p^\infty\Pr(R>y)\,D(y)\,dy \why{change the order, part by part}\\
+&=pF(p)\,D(p^-)+\int_p^\infty\bigl[1-F(y)\bigr]\,D(y)\,dy \why{\(F\) is continuous}
+\end{align*}
+\end{derivation}
+
+\subsection*{The slices}
+
+The class value gap above the reserve is the sum of thin slices:
+\[
+\E_H\bigl[\max\{\theta,p\}\bigr]-\E_L\bigl[\max\{\theta,p\}\bigr]=\int_p^\infty D(y)\,dy.
+\]
+This follows from the tail formula; Section~\ref{sec:auction-gap} derives it step by step.
+
+The slice at level \(y\), of thickness \(dy\), is present in the challenger's value when \(\theta>y\). It is
+present with probability \(1-G_H(y)\) in class \(H\) and with probability \(1-G_L(y)\) in class \(L\). So
+\(D(y)\,dy\) is the class difference in this slice: one slice of the class value gap.
+
+At the incumbent value \(R\ge p\), the gap splits at \(R\):
+\begin{itemize}
+\item The slices below \(R\) reach the target. Their sum is \(\Gamma(R)=\int_p^RD(y)\,dy\).
+\item The slices above \(R\) stay with the challenger. The challenger keeps \((\theta-R)_+=\int_R^\infty\1\{\theta>y\}\,dy\),
+so the class difference in its expected profit is \(\int_R^\infty D(y)\,dy\).
+\end{itemize}
+In the paper's words, each slice \(D(y)\,dy\) at a level \(y>p\) reaches the target when the incumbent outbids the
+challenger at that level and pays its bid. Otherwise the slice stays with the challenger. Use the clock picture of
+Section~\ref{sec:auction-story}. Suppose that the slice is present, \(\theta>y\), and that the incumbent is still
+in at level \(y\), \(R>y\). Then the price passes \(y\): either the incumbent wins and pays \(\theta\), or the
+challenger wins and pays \(R\). Figure~\ref{fig:auction-band}
+draws the split.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.25cm,y=3cm,every node/.style={font=\small}]
+  \def\pp{1}
+  \def\RR{4}
+  \fill[accent!40] plot[domain=\pp:\RR,samples=60] (\x,{exp(-((\x-\pp)/5)^2)})
+     -- plot[domain=\RR:\pp,samples=60] (\x,{exp(-((\x-\pp)/2.6)^2)}) -- cycle;
+  \fill[notegrey!22] plot[domain=\RR:9.5,samples=60] (\x,{exp(-((\x-\pp)/5)^2)})
+     -- plot[domain=9.5:\RR,samples=60] (\x,{exp(-((\x-\pp)/2.6)^2)}) -- cycle;
+  \draw[->] (0,0) -- (10,0) node[below left] {level \(y\)};
+  \draw[->] (0,0) -- (0,1.2);
+  \draw (0.08,1) -- (-0.08,1) node[left] {\(1\)};
+  \draw[ink,thick] plot[domain=\pp:9.5,samples=80] (\x,{exp(-((\x-\pp)/5)^2)});
+  \draw[ink,thick,dashed] plot[domain=\pp:9.5,samples=80] (\x,{exp(-((\x-\pp)/2.6)^2)});
+  \node[anchor=south west] at (6.6,0.36) {\(1-G_H(y)\)};
+  \node[anchor=north east] at (3.0,0.45) {\(1-G_L(y)\)};
+  \draw (\pp,0.03) -- (\pp,-0.03) node[below] {\(p\)};
+  \draw[accent,thick] (\RR,0) -- (\RR,1.05) node[above] {\(R\)};
+  \node[accent,anchor=south] at (2.3,1.02) {to the target};
+  \draw[accent] (2.3,1.02) -- (3.4,0.62);
+  \node[notegrey,anchor=west,align=left] at (7.3,0.9) {kept by the\\ challenger};
+  \draw[notegrey] (7.3,0.85) -- (5.6,0.5);
+\end{tikzpicture}
+\caption{The class value gap as the area between the two curves \(1-G_H(y)\) and \(1-G_L(y)\) above the reserve.
+The height of the band at level \(y\) is \(D(y)\). At an incumbent value \(R\), the band to the left of \(R\)
+reaches the target; its area is \(\Gamma(R)\). The band to the right of \(R\) stays with the challenger. A higher
+\(R\) moves the boundary to the right. The curves are a sketch under the class ranking.}
+\label{fig:auction-band}
+\end{figure}
+
+\begin{intuition}[why a stronger incumbent widens the spread]
+A stronger incumbent makes \(R>y\) more likely at every level \(y\). So, in expectation, more slices reach the
+target. Under the class ranking every slice \(D(y)\,dy\) is nonnegative. A move of nonnegative slices to the
+target cannot lower the class difference in proceeds.
+\end{intuition}
+
+\subsection*{An illustration with point-mass classes}
+
+Take the paper's point-mass classes: a class-\(H\) value equals \(h\), a class-\(L\) value equals \(\ell\), and
+\(p<\ell<h\). Then \(G_H(y)=\1\{y\ge h\}\) and \(G_L(y)=\1\{y\ge\ell\}\), so
+\[
+D(y)=\1\{y\ge\ell\}-\1\{y\ge h\}=\1\{\ell\le y<h\},\qquad D(p^-)=0.
+\]
+For \(R\ge p\), \(\Gamma(R)\) is the length of \([p,R]\cap[\ell,h)\). So \(\Gamma(R)=0\) for \(R\le\ell\),
+\(\Gamma(R)=R-\ell\) for \(\ell\le R<h\), and \(\Gamma(R)=h-\ell\) for \(R\ge h\). The paper writes
+\(\Gamma(R)=(R-\ell)_+\) for \(R<h\). Panel~(a) of Figure~\ref{fig:auction-kernel} draws this shape.
+
+Each case has a direct explanation:
+\begin{itemize}
+\item \(R<\ell\): both classes beat the incumbent and pay the same price \(\max\{p,R\}\). The class makes no
+difference to the target.
+\item \(\ell\le R<h\): the high class wins and pays \(R\). The low class loses, and the incumbent pays \(\ell\).
+The difference is \(R-\ell\).
+\item \(R\ge h\): both classes lose, and the incumbent pays \(h\) or \(\ell\). The difference is the whole gap
+\(h-\ell\).
+\end{itemize}
+Averaged over the incumbent, \eqref{eq:auction-spread} gives \(\DT=\int_\ell^h[1-F(y)]\,dy\). When \(\bar r<h\),
+the factor \(1-F(y)\) is zero above \(\bar r\), so \(\DT=\int_\ell^{\bar r}[1-F(y)]\,dy\). The same classes give
+\(g_j=\int_p^\theta F(y)\,dy\) at \(\theta=h\) and \(\theta=\ell\). Chapter~\ref{ch:example} computes these
+integrals for the uniform incumbent of the example.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.7cm,y=0.85cm,every node/.style={font=\small}]
+  % panel (a): p < ell < h
+  \begin{scope}
+    \draw[->] (0,0) -- (7.6,0) node[below] {\(R\)};
+    \draw[->] (0,0) -- (0,3.2) node[left] {\(\Gamma(R)\)};
+    \draw[accent,very thick] (0,0) -- (3,0) -- (5.5,2.5) -- (7.3,2.5);
+    \foreach \x/\t in {1/p,3/\ell,5.5/h} {\draw (\x,0.08) -- (\x,-0.08) node[below] {\(\t\)};}
+    \draw[rulegrey,dashed] (0,2.5) -- (5.5,2.5);
+    \node[left] at (0,2.5) {\(h-\ell\)};
+    \node at (3.8,-1.2) {(a) \(p<\ell<h\)};
+  \end{scope}
+  % panel (b): ell < p < h
+  \begin{scope}[xshift=7.9cm]
+    \draw[->] (0,0) -- (7.6,0) node[below] {\(R\)};
+    \draw[->] (0,0) -- (0,3.2) node[left] {\(\Gamma(R)\)};
+    \draw[accent,very thick] (0,1.6) -- (2.4,1.6);
+    \draw[accent,very thick] (2.4,0) -- (5.5,1.9) -- (7.3,1.9);
+    \draw[accent,fill=white] (2.4,1.6) circle (2.2pt);
+    \fill[accent] (2.4,0) circle (2.2pt);
+    \foreach \x/\t in {1/\ell,2.4/p,5.5/h} {\draw (\x,0.08) -- (\x,-0.08) node[below] {\(\t\)};}
+    \node[left] at (0,1.6) {\(p\)};
+    \draw[rulegrey,dashed] (2.4,1.9) -- (5.5,1.9);
+    \node[right] at (7.3,1.9) {\(h-p\)};
+    \node at (3.8,-1.2) {(b) \(\ell<p<h\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{The class difference in proceeds \(\Gamma(R)\) at a fixed incumbent value, for point-mass classes. In
+panel~(a) the reserve lies below both values; \(\Gamma\) never falls, so every strengthening widens the spread or
+leaves it unchanged. In panel~(b) the reserve excludes the low class; \(\Gamma\) drops from \(p\) to zero where the
+incumbent starts to meet the reserve. The relative heights in panel~(b) are a sketch.}
+\label{fig:auction-kernel}
+\end{figure}
+
+\begin{checkyourself}
+\label{q:auction-slices}
+In the point-mass case with \(p<\ell<h\), fix an incumbent value \(R\) with \(\ell\le R<h\). Find the
+challenger's profit in each class at this \(R\). Show that \(\Gamma(R)\) plus the class difference in the
+challenger's profit equals \(h-\ell\), and say which slices go where.
+\end{checkyourself}
+
+% ====================================================================
+\section{Proposition 1: competition and the two returns to information}\label{sec:auction-prop1}
+
+All the pieces are in place. Here is the paper's statement.
+
+\needspace{10\baselineskip}
+\begin{paperresult}{Proposition 1 (Competition and the two returns to information)}
+Let the incumbent's value have a continuous distribution \(F\) on \([0,\bar r]\), extended by unity above
+\(\bar r\). For any classes \(G_H,G_L\) with finite means,
+\[
+\begin{aligned}
+\DT(F)&=pF(p)D(p^-)+\int_p^\infty[1-F(y)]\,D(y)\,dy,\\
+g_j(F)&=\int_p^\infty[1-G_j(y)]\,F(y)\,dy,\qquad j\in\{H,L\}.
+\end{aligned}
+\]
+Let \(\tilde F\le F\) be a continuous first-order stochastic strengthening of \(F\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For every pair of classes, the strengthening weakly decreases \(g_H\) and \(g_L\), and hence gross
+acquisition profit at every fixed belief.
+\item Under the class ranking~\eqref{eq:auction-ranking}, the strengthening weakly increases the target-payoff
+spread.
+\end{enumerate}
+The decrease in \(g_j\) is strict when \(\int_p^\infty[1-G_j(y)][F(y)-\tilde F(y)]\,dy>0\). The increase in (b) is
+strict when \(\int_p^\infty[F(y)-\tilde F(y)]\,D(y)\,dy>0\).
+\end{paperresult}
+
+In plain words, line by line:
+\begin{itemize}
+\item \emph{Hypotheses.} \(F\) and \(\tilde F\) are continuous, which makes ties null and gives
+\(\Pr(R<y)=F(y)\). The classes are any two distributions with finite means, atoms included, so every integral is
+finite.
+\item \emph{The two formulas} are \eqref{eq:auction-spread} and \eqref{eq:auction-gross}. Neither needs the class
+ranking.
+\item \emph{Part (a).} Each class profit falls or stays the same, for every pair of classes, and so does
+\(B(\mu)\) at every fixed belief \(\mu\).
+\item \emph{Part (b).} Under the class ranking, the spread rises or stays the same. Each change is strict when the
+stated integral is positive.
+\end{itemize}
+
+\begin{derivation}[proof of Proposition~1]
+The two formulas are \eqref{eq:auction-gross} and \eqref{eq:auction-spread}, derived in
+Sections~\ref{sec:auction-profit} and~\ref{sec:auction-spread} for any classes with finite means.
+\begin{enumerate}[label=\textit{Step \arabic*.},leftmargin=*,itemsep=0.6em]
+\item \emph{The change in \(g_j\).} Apply \eqref{eq:auction-gross} at \(F\) and at \(\tilde F\):
+\begin{align*}
+g_j(F)-g_j(\tilde F)&=\int_p^\infty\bigl[1-G_j(y)\bigr]F(y)\,dy\\
+&\qquad-\int_p^\infty\bigl[1-G_j(y)\bigr]\tilde F(y)\,dy
+\why{\eqref{eq:auction-gross} twice}\\
+&=\int_p^\infty\bigl[1-G_j(y)\bigr]\bigl[F(y)-\tilde F(y)\bigr]\,dy \why{combine the integrands}\\
+&\ge0 \why{\(1-G_j\ge0\) and \(F-\tilde F\ge0\)}
+\end{align*}
+The weight \(1-G_j(y)\) is a probability, so it is nonnegative. The factor \(F(y)-\tilde F(y)\) is nonnegative
+because \(\tilde F\le F\). So \(g_j\) falls weakly. The fall equals the integral, so it is strict exactly when
+the integral is positive. No property of the classes enters this step.
+\item \emph{Gross profit at a fixed belief.} At a fixed \(\mu\in[0,1]\):
+\begin{align*}
+B_F(\mu)-B_{\tilde F}(\mu)&=(1-\mu)\bigl[g_L(F)-g_L(\tilde F)\bigr]+\mu\bigl[g_H(F)-g_H(\tilde F)\bigr]
+\why{\(B=(1-\mu)g_L+\mu g_H\)}\\
+&\ge0 \why{Step 1; weights \(\ge0\)}
+\end{align*}
+The weights \(1-\mu\) and \(\mu\) are fixed and nonnegative, so an average of two weak falls is a weak fall.
+\item \emph{The change in \(\DT\).} Apply \eqref{eq:auction-spread} at \(\tilde F\) and at \(F\):
+\begin{align*}
+\DT(\tilde F)-\DT(F)&=p\tilde F(p)D(p^-)+\int_p^\infty\bigl[1-\tilde F(y)\bigr]D(y)\,dy\\
+&\qquad-pF(p)D(p^-)-\int_p^\infty\bigl[1-F(y)\bigr]D(y)\,dy \why{\eqref{eq:auction-spread} twice}\\
+&=\int_p^\infty\bigl[F(y)-\tilde F(y)\bigr]D(y)\,dy-p\bigl[F(p)-\tilde F(p)\bigr]D(p^-)
+\why{collect terms}
+\end{align*}
+In the integrals, \([1-\tilde F(y)]-[1-F(y)]=F(y)-\tilde F(y)\). In the reserve terms,
+\(\tilde F(p)-F(p)=-[F(p)-\tilde F(p)]\). This difference formula holds for any classes.
+\item \emph{The sign under the class ranking.} The class ranking gives \(D(p^-)=0\), so the second term is zero.
+It also gives \(D(y)\ge0\), and \(F(y)-\tilde F(y)\ge0\) holds for every \(y\). So the integrand is nonnegative:
+\begin{align*}
+\DT(\tilde F)-\DT(F)&=\int_p^\infty\bigl[F(y)-\tilde F(y)\bigr]D(y)\,dy \why{\(D(p^-)=0\)}\\
+&\ge0 \why{both factors \(\ge0\)}
+\end{align*}
+The rise equals the integral, so it is strict exactly when the integral is positive.
+\item \emph{A weaker hypothesis.} Equal admissibility also makes \(D(p^-)=0\). Together with \(D(y)\ge0\) for
+\(y>p\), it gives the same conclusion, since a single point \(y=p\) adds no area.
+\end{enumerate}
+\end{derivation}
+
+\begin{intuition}[Proposition~1]
+Part (a): in \eqref{eq:auction-gross}, each level pays the challenger only when the incumbent is below it. A
+stronger incumbent is below each level less often. Part (b): in \eqref{eq:auction-spread}, each slice of the
+class gap reaches the target only when the incumbent is above its level. A stronger incumbent is above each level
+more often, and under the class ranking every slice is nonnegative. The same change in \(F\) works against the
+challenger in one formula and for the target in the other.
+\end{intuition}
+
+\begin{watchout}
+Proposition~1 gives weak inequalities. A strengthening can leave a payoff unchanged.
+\begin{itemize}
+\item If \(\tilde F\) and \(F\) differ only below the reserve, then \(F(y)=\tilde F(y)\) for \(y\ge p\), and
+neither \(g_j\) nor the integral in (b) changes. An incumbent below the reserve never bids, so a move among such
+values changes nothing for the challenger.
+\item If the strengthening changes \(F\) only at levels above every class-\(j\) value, then \(1-G_j(y)=0\) there,
+and \(g_j\) does not change. The incumbent beats class \(j\) at those levels anyway.
+\item In the point-mass case, \(D(y)=0\) outside \([\ell,h)\). A strengthening that leaves \(F\) unchanged on
+\([\ell,h)\) leaves the spread unchanged.
+\end{itemize}
+A strict change needs the stated integral to be positive.
+\end{watchout}
+
+\begin{watchout}
+Proposition~1 compares payoffs at two incumbent distributions, with the classes and the reserve fixed. It says
+nothing yet about equilibrium entry. A comparison of equilibria across incumbent strengths solves the equilibrium
+again in each economy (Chapter~\ref{ch:ccc}).
+\end{watchout}
+
+\begin{checkyourself}
+\label{q:auction-strict}
+In the point-mass case with \(p<\ell<h\), find a condition on the strengthening \(\tilde F\le F\) under which
+\(g_L\) does not change, \(g_H\) falls strictly, and \(\DT\) rises strictly. Explain the condition in words.
+\end{checkyourself}
+
+% ====================================================================
+\section{Part (c): the weakest restriction}\label{sec:auction-weakest}
+
+Part (b) assumes the class ranking. The appendix of the paper asks how much of the class ranking part (b) really
+needs, and it answers with an exact condition.
+
+\begin{paperresult}{Proposition 1(c) (the weakest restriction)}
+Let \(G_H\) and \(G_L\) have finite means. The spread weakly increases under every first-order stochastic
+strengthening of every continuous \(F\) if and only if \(D(y)\ge0\) for every \(y>p\) and \(D(p^-)\le0\). When
+neither class has an atom at \(p\), this condition is exactly first-order dominance above the reserve together
+with equal admissibility, \(G_H(p^-)=G_L(p^-)\).
+\end{paperresult}
+
+In plain words:
+\begin{itemize}
+\item \(D(y)\ge0\) for every \(y>p\) is \emph{dominance above the reserve}. Above the reserve, at every level, a
+high-class value is at least as likely as a low-class value to lie above it. Below the reserve, this condition
+puts no restriction on the order of the classes.
+\item \(D(p^-)\le0\) means \(G_L(p^-)\le G_H(p^-)\). The low class fails the reserve at most as often as the high
+class.
+\item Without atoms at \(p\), the two conditions together say: dominance above the reserve, and equal
+admissibility.
+\end{itemize}
+So the class ranking is stronger than part (b) needs. The class ranking asks for dominance at every level, and it
+asks that neither class ever fail the reserve, \(G_H(p^-)=G_L(p^-)=0\). Without atoms at \(p\), part (c) asks
+for dominance only above the reserve, and only that the two classes fail the reserve with the same probability.
+
+\subsection*{The idea of the proof}
+
+The proof works with \(\Gamma\), the class difference at one incumbent value (Section~\ref{sec:auction-slices}),
+and with \(\DT(F)=\E_F[\Gamma(R)]\). A first-order strengthening weakly raises the average of a function that
+never falls. Section~\ref{sec:toolkit-fosd} proves this for a differentiable function. The function \(\Gamma\) can jump at
+\(p\), so Step~5 below does the algebra for \(\Gamma\) directly. So the spread weakly rises under every
+strengthening when \(\Gamma\) never falls. Now suppose that \(\Gamma\) falls somewhere: \(\Gamma(R_1)>\Gamma(R_2)\)
+at two values \(R_1<R_2\). A move of the incumbent from near \(R_1\) to near \(R_2\) is a strengthening, and it
+lowers the spread. So the property holds exactly when \(\Gamma\) never falls, and the conditions on \(D\) say
+exactly that.
+
+\begin{derivation}[proof of Proposition~1(c)]
+\begin{enumerate}[label=\textit{Step \arabic*.},leftmargin=*,itemsep=0.6em]
+\item \emph{The kernel.} By Section~\ref{sec:auction-slices}, \(\DT(F)=\E_F[\Gamma(R)]\) with
+\(\Gamma(R)=pD(p^-)\) for \(R<p\) and \(\Gamma(R)=\int_p^RD(y)\,dy\) for \(R\ge p\). The paper calls \(\Gamma\)
+the kernel, and it notes that this kernel belongs to the cash second-price rule with reserve.
+\item \emph{\(\Gamma\) is bounded.} Each \(G\) lies between zero and one, so
+\begin{align*}
+|D(y)|&=\Bigl|\bigl[1-G_H(y)\bigr]-\bigl[1-G_L(y)\bigr]\Bigr| \why{definition of \(D\)}\\
+&\le\bigl[1-G_H(y)\bigr]+\bigl[1-G_L(y)\bigr] \why{\(|a-b|\le a+b\) for \(a,b\ge0\)}
+\end{align*}
+For \(R\ge p\), this gives
+\begin{align*}
+|\Gamma(R)|&\le\int_p^\infty|D(y)|\,dy \why{\(|\textstyle\int D|\le\int|D|\)}\\
+&\le\int_0^\infty\bigl[1-G_H(y)\bigr]dy+\int_0^\infty\bigl[1-G_L(y)\bigr]dy
+\why{the last bound}\\
+&=\E_H[\theta]+\E_L[\theta]<\infty \why{tail formula; finite means}
+\end{align*}
+For \(R<p\), \(|\Gamma(R)|=p\,|D(p^-)|\le p\). So every expectation \(\E_F[\Gamma(R)]\) exists.
+\item \emph{The shape of \(\Gamma\).} Below \(p\), \(\Gamma\) is constant at \(pD(p^-)\). At \(p\) it equals
+\(\Gamma(p)=\int_p^pD\,dy=0\). Above \(p\), for \(p\le R_1<R_2\),
+\begin{align*}
+\Gamma(R_2)-\Gamma(R_1)&=\int_p^{R_2}D(y)\,dy-\int_p^{R_1}D(y)\,dy \why{definition of \(\Gamma\)}\\
+&=\int_{R_1}^{R_2}D(y)\,dy \why{split the first integral at \(R_1\)}
+\end{align*}
+Since \(|D|\le1\), this increment is at most \(R_2-R_1\) in size. So \(\Gamma\) is continuous on \([p,\infty)\).
+The paper also states that \(\Gamma\) has derivative \(D\) almost everywhere above \(p\). This guide works with
+the increments \(\int_{R_1}^{R_2}D\,dy\) instead. They give the same conclusions and need no derivative.
+\item \emph{When \(\Gamma\) never falls.} The paper calls this property \emph{nondecreasing}. The claim:
+\(\Gamma\) is nondecreasing if and only if \(D(y)\ge0\) for every \(y>p\) and \(D(p^-)\le0\).
+\begin{itemize}
+\item Suppose the two conditions hold. On \([0,p)\), \(\Gamma\) is constant. At \(p\), it moves from
+\(pD(p^-)\le0\) up to \(0\). On \([p,\infty)\), every increment \(\int_{R_1}^{R_2}D\,dy\) is nonnegative. So
+\(\Gamma\) never falls.
+\item Suppose \(\Gamma\) never falls. A value just below \(p\) gives \(pD(p^-)\le\Gamma(p)=0\), and \(p>0\), so
+\(D(p^-)\le0\). Next suppose \(D(y_0)<0\) at some \(y_0>p\). Distribution functions are right-continuous, so
+\(D\) is right-continuous. Then \(D(y)<\tfrac12D(y_0)<0\) on some interval \([y_0,y_0+\varepsilon)\), and
+\(\Gamma(y_0+\varepsilon)-\Gamma(y_0)=\int_{y_0}^{y_0+\varepsilon}D\,dy<0\). This contradicts the assumption. So
+\(D(y)\ge0\) for every \(y>p\).
+\end{itemize}
+\item \emph{The ``if'' direction.} Suppose \(D(y)\ge0\) for every \(y>p\) and \(D(p^-)\le0\). Take any continuous
+\(F\) and any continuous \(\tilde F\le F\). The difference formula of Step~3 in the proof of Proposition~1 holds
+for any classes:
+\begin{align*}
+\DT(\tilde F)-\DT(F)&=\int_p^\infty\bigl[F(y)-\tilde F(y)\bigr]D(y)\,dy\\
+&\qquad-p\bigl[F(p)-\tilde F(p)\bigr]D(p^-) \why{difference formula}\\
+&=\int_p^\infty\bigl[F(y)-\tilde F(y)\bigr]D(y)\,dy\\
+&\qquad+p\bigl[F(p)-\tilde F(p)\bigr]\bigl(-D(p^-)\bigr) \why{move the minus sign}\\
+&\ge0 \why{every factor \(\ge0\)}
+\end{align*}
+In the integral, both factors are nonnegative for \(y>p\). In the second term, \(p>0\),
+\(F(p)-\tilde F(p)\ge0\), and \(-D(p^-)\ge0\). This is the algebra behind the general fact that a strengthening
+weakly raises the average of a function that never falls.
+\item \emph{The ``only if'' direction: two points.} Suppose the condition fails. By Step~4, \(\Gamma\) falls
+somewhere: there are \(a<b\) with \(\Gamma(a)>\Gamma(b)\). The proof needs two such points \(0<R_1<R_2\), both
+different from \(p\). They exist:
+\begin{itemize}
+\item \(\Gamma\) is constant on \([0,p)\), so \(b\ge p\). If \(a<p\), replace \(a\) by any point of \((0,p)\);
+\(\Gamma\) keeps the same value there.
+\item If \(a=p\), then \(\Gamma(p)>\Gamma(b)\) with \(b>p\). By continuity on \([p,\infty)\), a point \(a'\)
+slightly above \(p\) still has \(\Gamma(a')>\Gamma(b)\). Use \(a'\).
+\item If \(b=p\), then \(a<p\) and \(pD(p^-)>0=\Gamma(p)\). By continuity on \([p,\infty)\), a point \(b'\)
+slightly above \(p\) still has \(\Gamma(b')<pD(p^-)\). Use \(b'\).
+\item In every other case, \(a\) and \(b\) already work: take \(R_1=a\) and \(R_2=b\).
+\end{itemize}
+\item \emph{The ``only if'' direction: two incumbents.} Let \(F\) be uniform on \([R_1-\delta,R_1+\delta]\), and
+let \(\tilde F\) be the same law shifted to \([R_2-\delta,R_2+\delta]\). Take \(\delta>0\) small, so that both
+intervals lie in \((0,\infty)\) and neither contains \(p\). The shift gives
+\(\tilde F(y)=F\bigl(y-(R_2-R_1)\bigr)\le F(y)\), because \(F\) never falls and \(R_2>R_1\). Both laws are
+continuous. Then
+\begin{align*}
+\DT(\tilde F)-\DT(F)&=\E_{\tilde F}\bigl[\Gamma(R)\bigr]-\E_F\bigl[\Gamma(R)\bigr] \why{Step 1}\\
+&\to\Gamma(R_2)-\Gamma(R_1)<0\quad\text{as }\delta\to0 \why{\(\Gamma\) continuous at \(R_1,R_2\)}
+\end{align*}
+Each expectation is the average of \(\Gamma\) over a short interval around \(R_1\) or \(R_2\). The average
+lies between the smallest and the largest value of \(\Gamma\) on the interval. Since \(R_1,R_2\ne p\), \(\Gamma\)
+is continuous near each point, so both bounds tend to the value at the point, and so does the average.
+For a small enough \(\delta\), the difference is negative: this strengthening lowers the spread.
+\item \emph{A support that starts at zero.} The model places \(F\) on \([0,\bar r]\). If the support must start at
+zero, mix the same small uniform law \(U\) on \([0,\bar r]\) into both laws, with weight \(\varepsilon\in(0,1)\)
+and \(\bar r\ge R_2+\delta\). Both mixtures are continuous, and \((1-\varepsilon)\tilde F+\varepsilon U\le
+(1-\varepsilon)F+\varepsilon U\). The spread is an average of \(\Gamma\), so it is linear in the law:
+\begin{align*}
+&\DT\bigl((1-\varepsilon)\tilde F+\varepsilon U\bigr)-\DT\bigl((1-\varepsilon)F+\varepsilon U\bigr)\\
+&\qquad=(1-\varepsilon)\E_{\tilde F}[\Gamma]+\varepsilon\E_U[\Gamma]-(1-\varepsilon)\E_F[\Gamma]-\varepsilon\E_U[\Gamma]
+\why{linearity}\\
+&\qquad=(1-\varepsilon)\bigl[\DT(\tilde F)-\DT(F)\bigr]<0 \why{Step 7}
+\end{align*}
+The mixture scales the difference by a positive factor and keeps its sign.
+\item \emph{No atom at the reserve.} Right-continuity gives \(D(p)=\lim_{y\downarrow p}D(y)\ge0\) under
+dominance above the reserve. Without atoms at \(p\), \(G_j(p^-)=G_j(p)\), so \(D(p^-)=D(p)\ge0\). Together with
+\(D(p^-)\le0\), this forces \(D(p^-)=0\), which is \(G_H(p^-)=G_L(p^-)\): equal admissibility. In the other
+direction, dominance above the reserve and equal admissibility give \(D(y)\ge0\) for \(y>p\) and \(D(p^-)=0\le0\).
+\end{enumerate}
+\end{derivation}
+
+\begin{intuition}[part (c)]
+The class difference in proceeds must never fall as the incumbent's value rises. Above the reserve, it rises by
+\(D(y)\,dy\) at each level, so dominance above the reserve is needed. The one dangerous place is the reserve. Below
+it, the difference is \(pD(p^-)\); just above it, the difference is zero. An incumbent that meets the reserve
+protects the target against an inadmissible challenger: the incumbent then buys at \(p\). If the low class fails
+the reserve more often, this protection helps the target more in class \(L\), and the class difference falls.
+\end{intuition}
+
+\begin{watchout}
+The phrase ``when neither class has an atom at \(p\)'' matters in an edge case. With an atom at \(p\),
+\(D(p^-)<0\) is possible while \(D(y)\ge0\) above the reserve. Then the reserve term \(pF(p)D(p^-)\) is negative,
+a strengthening shrinks it toward zero, and the condition of part (c) holds without equal admissibility.
+\end{watchout}
+
+\subsection*{A reserve that excludes the low class}
+
+Take point-mass classes with \(\ell<p<h\). The reserve lies between the two values. Then
+\(G_L(p^-)=1\), since \(\ell<p\), and \(G_H(p^-)=0\). So \(D(p^-)=1>0\), and equal admissibility fails. Panel~(b)
+of Figure~\ref{fig:auction-kernel} shows the result: \(\Gamma\) drops from \(p\) to zero at the reserve. An
+incumbent that moves from just below the reserve to just above it lowers the spread. Question~\ref{q:auction-reserve}
+works through the details.
+
+The paper's main results keep the reserve below both classes, as in the class ranking. Chapter~\ref{ch:welfare}
+treats reserves, among them a reserve that excludes the low class, where equal admissibility fails.
+
+\subsection*{Scope of the class ranking}
+
+The paper adds a scope remark. Its proofs use the class ranking only through two facts: \(D(y)\ge0\) for \(y>p\),
+and \(D(p^-)=0\). These two facts give \(g_H\ge g_L\) and \(\DT\ge0\) (Section~\ref{sec:auction-spread}), the
+comparison in part (b), and the class-gap identity of the next section. So the same results hold under dominance
+above the reserve together with equal admissibility.
+
+\begin{checkyourself}
+\label{q:auction-reserve}
+Take point-mass classes with \(\ell<p<h\). Find \(D(y)\) for \(y\ge p\), \(D(p^-)\) and \(\Gamma(R)\) for every
+\(R\). Then let \(F\) be uniform on a short interval below \(p\), and let \(\tilde F\) be uniform on a short
+interval \([R_2-\delta,R_2+\delta]\) with \(p<R_2-\delta\) and \(R_2+\delta<h\). Check that \(\tilde F\le F\). Compute
+\(\DT(F)\) and \(\DT(\tilde F)\). For which \(R_2\) does the strengthening lower the spread? Explain in words.
+\end{checkyourself}
+
+% ====================================================================
+\section{The class-gap identity}\label{sec:auction-gap}
+
+The two formulas of Proposition~1 add up to a simple identity. It makes the story of
+Section~\ref{sec:auction-story} exact.
+
+\begin{derivation}[the sum of the two formulas]
+Section~\ref{sec:auction-spread} found the profit gap \(g_H-g_L=\int_p^\infty D(y)F(y)\,dy\) from
+\eqref{eq:auction-gross}; that step used no class ranking. Add the spread:
+\begin{align*}
+\DT+g_H-g_L&=pF(p)D(p^-)+\int_p^\infty\bigl[1-F(y)\bigr]D(y)\,dy\\
+&\qquad+\int_p^\infty F(y)\,D(y)\,dy
+\why{\eqref{eq:auction-spread}}\\
+&=pF(p)D(p^-)+\int_p^\infty\bigl[1-F(y)+F(y)\bigr]D(y)\,dy \why{both integrals are finite}\\
+&=pF(p)D(p^-)+\int_p^\infty D(y)\,dy \why{\(1-F+F=1\)}
+\end{align*}
+Next, the right side. For any value, \(\max\{\theta,p\}=p+(\theta-p)_+\): both sides equal \(p\) when
+\(\theta\le p\) and \(\theta\) when \(\theta>p\). So
+\begin{align*}
+\E_j\bigl[\max\{\theta,p\}\bigr]&=p+\E_j\bigl[(\theta-p)_+\bigr] \why{linearity}\\
+&=p+\int_p^\infty\Pr\nolimits_j(\theta>y)\,dy \why{tail formula}\\
+&=p+\int_p^\infty\bigl[1-G_j(y)\bigr]\,dy \why{\(\Pr_j(\theta>y)=1-G_j(y)\)}
+\end{align*}
+The tail formula (Section~\ref{sec:toolkit-tail}) writes the mean of the nonnegative variable \((\theta-p)_+\) as
+\(\int_0^\infty\Pr_j((\theta-p)_+>z)\,dz\). For \(z\ge0\), the event \((\theta-p)_+>z\) is the event
+\(\theta>p+z\). Put \(y=p+z\); this is formula~\eqref{eq:toolkit-pospart} with \(c=p\). The difference of the classes:
+\begin{align*}
+\E_H\bigl[\max\{\theta,p\}\bigr]-\E_L\bigl[\max\{\theta,p\}\bigr]
+&=\int_p^\infty\bigl[G_L(y)-G_H(y)\bigr]\,dy \why{\(p\) cancels}\\
+&=\int_p^\infty D(y)\,dy \why{definition of \(D\)}
+\end{align*}
+Put the two results together:
+\[
+\DT(F)+g_H(F)-g_L(F)=pF(p)D(p^-)+\E_H\bigl[\max\{\theta,p\}\bigr]-\E_L\bigl[\max\{\theta,p\}\bigr].
+\]
+\end{derivation}
+
+This is the paper's general form of the split. Under the class ranking, \(D(p^-)=0\), and the reserve term drops:
+\begin{equation}\label{eq:auction-gap}
+\DT(F)+g_H(F)-g_L(F)=\E_H\bigl[\max\{\theta,p\}\bigr]-\E_L\bigl[\max\{\theta,p\}\bigr].
+\end{equation}
+The reserve term also vanishes under equal admissibility, and when the incumbent always meets the reserve,
+\(F(p)=0\). Under the class ranking every value meets the reserve, so \(\max\{\theta,p\}=\theta\) with
+probability one, and the right side is the difference of the class means.
+
+A second route to \eqref{eq:auction-gap} uses the split \eqref{eq:auction-split}. Under the class ranking,
+\(\Pr_j(\theta\ge p)=1\), so \(t(\theta)+g(\theta)=\theta\) with probability one in each class. Take the class
+expectation: \(t_j+g_j=\E_j[\theta]\). Subtract the low class from the high class:
+\(\DT+g_H-g_L=\E_H[\theta]-\E_L[\theta]\).
+
+\subsection*{What the identity says}
+
+The right side of \eqref{eq:auction-gap} does not depend on \(F\). The paper says that the identity holds for
+every incumbent distribution. In the model, every incumbent distribution is continuous, so the derivation above
+covers each of them. (A remark of this guide: the second route does not use continuity, because the split holds
+at every \(R\), ties included.) So a strengthening leaves the right side unchanged. Compare a strengthening
+\(\tilde F\le F\):
+\begin{align*}
+\DT(\tilde F)-\DT(F)&=-\Bigl\{\bigl[g_H(\tilde F)-g_L(\tilde F)\bigr]-\bigl[g_H(F)-g_L(F)\bigr]\Bigr\}
+\why{\eqref{eq:auction-gap} at \(\tilde F\) and at \(F\)}
+\end{align*}
+So the spread rises by exactly as much as the profit gap between the classes falls. A stronger incumbent leaves
+the value gap between the classes unchanged. It moves the gap from the challenger's profit to the target's
+proceeds.
+
+In the slice picture, each slice \(D(y)\,dy\) goes either to the target or to the challenger. The incumbent's
+distribution decides the shares, and the total stays fixed. The two extremes of Section~\ref{sec:auction-story}
+are the two ends:
+\begin{itemize}
+\item An incumbent that never meets the reserve: \(\DT=0\), and \(g_H-g_L\) equals the whole gap.
+\item An incumbent above every challenger value: \(g_H=g_L=0\), and \(\DT\) equals the whole gap.
+\end{itemize}
+
+\begin{watchout}
+The identity concerns the profit gap \(g_H-g_L\). Each class profit \(g_j\) also falls under a strengthening, by
+part (a), but the identity does not give the size of that fall. A strengthening can lower both \(g_H\) and \(g_L\)
+by the same amount and leave \(\DT\) unchanged; the third case in the watch-out box of
+Section~\ref{sec:auction-prop1} is an example.
+\end{watchout}
+
+% ====================================================================
+\section{What the rest of the paper takes from this chapter}\label{sec:auction-uses}
+
+The auction stage gives the rest of the paper the facts in the summary box below, and two more. Entry never
+lowers proceeds, \(t_j\ge t_0\). Under the class ranking, \(g_H\ge g_L\) and \(\DT\ge0\). None of these facts
+depends on a belief or a price.
+
+The paper names Proposition~1 after the two returns to information. Gross profit \(g_j\), and through it \(B(\mu)\),
+is what preparation earns the challenger once it learns its value. The spread \(\DT\) measures how much the
+challenger's class matters to a holder of target shares. A strengthening weakly lowers the first return and, under
+the class ranking, weakly raises the second. The later chapters turn these two returns into the objects that drive
+behavior. This chapter does not prove those steps.
+\begin{itemize}
+\item Chapter~\ref{ch:beliefs} turns gross profit into the preparation threshold \(\tau\), the belief at which
+\(B(\mu)=c_H\). When \(g_H>g_L\), \(\tau=(c_H-g_L)/(g_H-g_L)\). The paper notes that a stronger incumbent never
+lowers the threshold while \(g_L\le c_H\).
+\item Chapter~\ref{ch:trading} turns the spread into the return of the informed investor's trade. The gross return
+of a correctly signed order is entry times the spread times the residual uncertainty about the class.
+\end{itemize}
+When the spread is positive and \(g_H>g_L\), the paper shows that orders, posteriors and entry depend on the
+auction only through \(\DT\) and \(\tau\). Chapter~\ref{ch:ccc} then weighs the lower profit against the more
+informative price.
+
+\begin{chaptersummary}
+\begin{itemize}
+\item Each prepared bidder whose value meets the reserve bids its value. So the winner pays the larger of the
+reserve and the value of the other bidder, when that bidder is admissible.
+\item For a challenger value \(\theta\ge p\), the target receives \(\max\{p,\min(R,\theta)\}\) and the challenger
+keeps \((\theta-\max\{p,R\})_+\); the two add up to \(\theta\), so \(t(\theta)+g(\theta)=\theta\).
+\item Written as sums over levels, \(g_j=\int_p^\infty[1-G_j(y)]F(y)\,dy\) and
+\(\DT=pF(p)D(p^-)+\int_p^\infty[1-F(y)]D(y)\,dy\).
+\item A strengthening lowers \(F\). So it weakly lowers \(g_H\) and \(g_L\) for every pair of classes, and under
+the class ranking it weakly raises \(\DT\). A strict change needs the stated integral to be positive.
+\item When the classes are ranked above the reserve, the reserve term is the only channel through which a
+strengthening can narrow the spread. Part (c) shows that, without atoms at \(p\), dominance above the reserve and
+equal admissibility are exactly what part (b) needs.
+\item Under the class ranking, \(\DT+g_H-g_L\) equals the class value gap, which does not depend on the incumbent:
+a stronger incumbent moves the gap from the challenger's profit to the target's proceeds.
+\end{itemize}
+\end{chaptersummary}
+
+% ====================================================================
+\answersection
+
+\answer{\ref{q:auction-overbid}}{%
+Both bids are admissible, since \(b>\theta\ge p\). Go through the three ranges of \(Y\).
+\begin{itemize}
+\item \(Y<\theta\). Both bids are above \(Y\), so both win. Both pay \(\max\{p,Y\}\), which does not depend on the
+bid. Both earn \(\theta-\max\{p,Y\}\). The payoffs are equal.
+\item \(Y>b\). Both bids are below \(Y\), so both lose and earn zero. The payoffs are equal.
+\item \(\theta\le Y\le b\). The bid \(\theta\) loses, or ties at \(Y=\theta\) and then pays \(\theta\). Either way
+it earns zero. The bid \(b\) wins, or ties at \(Y=b\). If it wins, it pays \(\max\{p,Y\}=Y\), since \(Y\ge\theta\ge
+p\), and it earns \(\theta-Y\le0\). If it loses, it earns zero. So the bid \(b\) earns at most zero.
+\end{itemize}
+The bid \(b\) never earns more than the bid \(\theta\). It is strictly worse when \(\theta<Y<b\): it then wins and
+pays \(Y>\theta\), a loss of \(Y-\theta\). It is also strictly worse at \(Y=b\) when the tie goes to the bid \(b\),
+for the same reason.}
+
+\answer{\ref{q:auction-jump}}{%
+At \(\theta=p\), the target receives \(\max\{p,\min(R,p)\}\) at every \(R\). Since \(\min(R,p)\le p\), this is
+\(p\). The challenger keeps \((p-\max\{p,R\})_+=0\), since \(\max\{p,R\}\ge p\). So
+\begin{align*}
+t(p)&=\E_R[p]=p \why{the proceeds are \(p\) at every \(R\)}\\
+g(p)&=\E_R[0]=0 \why{the profit is zero at every \(R\)}
+\end{align*}
+The split holds: \(t(p)+g(p)=p\). For \(\theta<p\), \(t(\theta)=t_0=p[1-F(p)]\). The difference is
+\begin{align*}
+t(p)-t_0&=p-p\bigl[1-F(p)\bigr] \why{the two values}\\
+&=pF(p) \why{expand}
+\end{align*}
+In words: when \(R\ge p\), the target receives \(p\) in both cases. A challenger at \(p\) loses to the incumbent,
+which pays \(\max\{p,\theta\}=p\), and a challenger below \(p\) leaves the incumbent to pay \(p\). When \(R<p\),
+which has probability \(F(p)\), the two cases differ. A challenger at \(p\) is admissible and buys at \(p\). A
+challenger below \(p\) cannot bid, and the target stays unsold. This difference is the jump \(pF(p)\) in
+Section~\ref{sec:auction-spread}.}
+
+\answer{\ref{q:auction-pointgross}}{%
+With point masses, \(G_H(y)=\1\{y\ge h\}\) and \(G_L(y)=\1\{y\ge\ell\}\). So \(1-G_H(y)=\1\{y<h\}\) and
+\(1-G_L(y)=\1\{y<\ell\}\). Then
+\begin{align*}
+g_H&=\int_p^\infty\1\{y<h\}\,F(y)\,dy=\int_p^hF(y)\,dy \why{\eqref{eq:auction-gross}}\\
+g_L&=\int_p^\infty\1\{y<\ell\}\,F(y)\,dy=\int_p^\ell F(y)\,dy \why{\eqref{eq:auction-gross}}\\
+g_H-g_L&=\int_\ell^hF(y)\,dy \why{\(p<\ell<h\); split \([p,h]\) at \(\ell\)}
+\end{align*}
+In words, the integral counts, at each level \(y\) between \(\ell\) and \(h\), the probability that the incumbent is below
+\(y\). A high-class challenger keeps the slice at such a level when it beats the incumbent there. A low-class
+challenger never reaches these levels. Since \(F\ge0\), the integral is nonnegative, so \(g_H\ge g_L\). It is zero
+only when \(F(y)=0\) on \([\ell,h]\): then the incumbent is always at or above \(h\), and both classes always lose.}
+
+\answer{\ref{q:auction-slices}}{%
+Fix \(R\) with \(\ell\le R<h\). Both class values meet the reserve, since \(p<\ell<h\).
+\begin{itemize}
+\item Class \(H\): \(h>R\), so the challenger wins and pays \(\max\{p,R\}=R\). The target receives \(R\), and the
+challenger keeps \(h-R\).
+\item Class \(L\): \(\ell\le R\), so the incumbent wins, or ties at \(R=\ell\), and the price is \(\ell\). The
+target receives \(\ell\), and the challenger keeps \((\ell-R)_+=0\).
+\end{itemize}
+The class difference in proceeds is \(R-\ell\). The formula agrees:
+\(\Gamma(R)=\int_p^R\1\{\ell\le y<h\}\,dy=R-\ell\), since \(\ell\le R<h\). The class difference in the challenger's
+profit is \((h-R)-0=h-R\). Add the two:
+\begin{align*}
+\Gamma(R)+(h-R)&=(R-\ell)+(h-R) \why{the two differences}\\
+&=h-\ell \why{\(R\) cancels}
+\end{align*}
+This is the class value gap \(\E_H[\max\{\theta,p\}]-\E_L[\max\{\theta,p\}]=h-\ell\). The slices between \(\ell\)
+and \(R\) reach the target: the high-class challenger pays for them, and the low class does not have them. The
+slices between \(R\) and \(h\) stay with the high-class challenger as profit. A higher \(R\) moves the boundary
+line toward \(h\) and sends more slices to the target.}
+
+\answer{\ref{q:auction-strict}}{%
+With point masses, \(1-G_L(y)=\1\{y<\ell\}\), \(1-G_H(y)=\1\{y<h\}\) and \(D(y)=\1\{\ell\le y<h\}\). Proposition~1
+and its proof give the three changes:
+\begin{align*}
+g_L(F)-g_L(\tilde F)&=\int_p^\ell\bigl[F(y)-\tilde F(y)\bigr]dy \why{Step 1, class \(L\)}\\
+g_H(F)-g_H(\tilde F)&=\int_p^h\bigl[F(y)-\tilde F(y)\bigr]dy \why{Step 1, class \(H\)}\\
+\DT(\tilde F)-\DT(F)&=\int_\ell^h\bigl[F(y)-\tilde F(y)\bigr]dy \why{Step 4}
+\end{align*}
+The function \(F-\tilde F\) is continuous and nonnegative. Such a function has a zero integral over an interval
+only when it is zero on the whole interval. So:
+\begin{itemize}
+\item \(g_L\) does not change exactly when \(\tilde F(y)=F(y)\) for every \(y\in[p,\ell]\).
+\item Given that, \(g_H\) falls strictly exactly when \(\int_\ell^h[F-\tilde F]\,dy>0\), that is, when
+\(\tilde F(y)<F(y)\) at some \(y\in(\ell,h)\).
+\item The same condition makes \(\DT\) rise strictly.
+\end{itemize}
+The condition: \(\tilde F=F\) on \([p,\ell]\), and \(\tilde F<F\) somewhere in \((\ell,h)\). In words, the
+strengthening keeps the chance that the incumbent is below each level up to \(\ell\). It moves some incumbent
+values that lie above \(\ell\) to higher values. The low class loses to every incumbent above \(\ell\)
+anyway, so nothing changes for it. The high class meets a higher price or loses more often, so its profit falls.
+In class \(L\) the target still receives \(\ell\) from those incumbents, while in class \(H\) it receives more. So
+the spread rises by exactly the fall in \(g_H\), as the class-gap identity requires.}
+
+\answer{\ref{q:auction-reserve}}{%
+With \(\ell<p<h\): \(G_L(y)=\1\{y\ge\ell\}\) and \(G_H(y)=\1\{y\ge h\}\).
+\begin{itemize}
+\item \(G_L(p^-)=1\), since \(\ell<p\), and \(G_H(p^-)=0\), since \(h>p\). So \(D(p^-)=1\).
+\item For \(y\ge p\): \(G_L(y)=1\), so \(D(y)=1-\1\{y\ge h\}=\1\{y<h\}\).
+\item For \(R<p\): \(\Gamma(R)=pD(p^-)=p\). For \(R\ge p\):
+\(\Gamma(R)=\int_p^R\1\{y<h\}\,dy=\min\{R,h\}-p\).
+\end{itemize}
+First, \(\tilde F\le F\): for \(y\ge p\), \(F(y)=1\ge\tilde F(y)\), and for \(y<p\), \(\tilde F(y)=0\le F(y)\).
+The incumbent \(F\) lies below \(p\), so \(\Gamma(R)=p\) at every value it takes. The incumbent \(\tilde F\) lies in
+\((p,h)\), so \(\Gamma(R)=R-p\) at every value it takes. Then
+\begin{align*}
+\DT(F)&=\E_F[\Gamma(R)]=p \why{\(\Gamma=p\) below \(p\)}\\
+\DT(\tilde F)&=\E_{\tilde F}[R-p]=R_2-p \why{the mean of \(\tilde F\) is \(R_2\)}\\
+\DT(\tilde F)-\DT(F)&=R_2-2p \why{subtract}
+\end{align*}
+So the strengthening lowers the spread when \(R_2<2p\), together with the stated \(p<R_2-\delta\) and
+\(R_2+\delta<h\). Neither law starts at zero; Step~8 of the proof of part (c) mixes in a small uniform law on
+\([0,\bar r]\), and this keeps the sign.
+
+In words: when the incumbent fails the reserve, the high-class challenger buys at \(p\), and the low-class
+challenger cannot bid, so the target stays unsold. The class difference is \(p\). When the incumbent meets the
+reserve, it buys at \(p\) whenever the challenger is in the low class, and the high class pays about \(R_2\). The
+class difference is about \(R_2-p\), which is small when \(R_2\) is near \(p\). The stronger incumbent protects the
+target against the excluded low class, and that protection narrows the class difference. Equal admissibility
+fails here, and part (c) says some strengthening must lower the spread; this is one.}

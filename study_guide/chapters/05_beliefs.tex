@@ -1,0 +1,890 @@
+\chapter{What the price reveals}\label{ch:beliefs}
+
+\begin{chapterplan}
+\textbf{The question.} The challenger sees one stock price: what can it learn about its class from this price, and when does this belief make a high-cost challenger prepare?
+
+After this chapter you can:
+\begin{itemize}
+\item write the probability of each order in each class, for every strategy of the investor, and bound it;
+\item derive the top posterior \(M(\pi)\) and the bottom posterior \(m(\pi)\), and explain why the zero order needs \(\beta\le1/3\);
+\item derive the preparation threshold \(\tau\) and prove the exclusion bound;
+\item derive the price formula from competitive prices, one step at a time;
+\item explain why the price reveals the market makers' posterior when the spread and the entry floor are positive.
+\end{itemize}
+\end{chapterplan}
+
+\section{The question in words}\label{sec:beliefs-words}
+
+The challenger decides whether to prepare after it sees one number: the stock price. It does not see the order behind the price, and it does not see who placed the order. It does not know its own class. Its gross acquisition profit depends on its class, so it wants to read the class from the price. This chapter asks how much one price can tell, and what the answer means for preparation.
+
+Recall how the order arises. With probability \(\lambda\), the informed investor fills the one order slot: it knows the class and chooses to sell, to abstain or to buy. Otherwise a liquidity trader fills the slot, and it sells, abstains or buys for reasons apart from the sale, with the same probabilities in both classes.
+
+The liquidity trader sets the limit on what an order can reveal. Take a purchase. A liquidity purchase arrives with the same probability \(b\) in class \(H\) and in class \(L\). The informed investor can add purchases, but it fills the slot only with probability \(\lambda\). So a purchase can make class \(H\) more likely, and it can never prove class \(H\). The same holds for a sale and class \(L\).
+
+The next question is how far one purchase can move the belief. The best case for class \(H\) is an investor that buys in class \(H\) and never buys in class \(L\). Then a purchase has probability \(b+\lambda\) in class \(H\) and \(b\) in class \(L\). The ratio of the two is \((b+\lambda)/b=1+u\), with \(u=\lambda/b\). No strategy can push this ratio higher, because the liquidity part \(b\) stays in both classes and the informed part adds at most \(\lambda\). So the posterior after a purchase stays at or below a top posterior \(M(\pi)\), and the posterior after a sale stays at or above a bottom posterior \(m(\pi)\).
+
+\begin{analogy}[a thumbs-up from an unknown account]
+You want to know whether a small restaurant is good. Each day one review appears on its page. Some days a food critic writes it, and the critic knows the kitchen. On the other days a random account writes it, and the random account gives a thumbs-up or a thumbs-down by chance, whatever the food. You see one thumbs-up, and you do not see who wrote it.
+
+The thumbs-up makes a good kitchen more likely. But a random account gives a thumbs-up to a bad kitchen as often as to a good one. So one thumbs-up lifts your belief only part of the way to certainty. The cap depends on how often the critic writes, compared with how often a random account gives a thumbs-up.
+
+Where the analogy breaks:
+\begin{itemize}
+\item The investor chooses its order to make money, pays a cost \(k\) for a nonzero order, and can mix or place a wrong-signed order.
+\item The challenger does not see the order. It sees a price that market makers set from the order, and two orders can share one price.
+\item The price also depends on what the challenger will do, because preparation changes target proceeds. A restaurant review does not depend on what you will do.
+\end{itemize}
+\end{analogy}
+
+The chapter follows the information in four steps.
+\begin{enumerate}
+\item From the order to the posterior. Lemma A.1 bounds the posterior after every order, for every strategy of the investor (Section~\ref{sec:beliefs-lemma}).
+\item From the posterior to the belief at a price. Several orders can share one price, and the belief at that price averages their posteriors (Section~\ref{sec:beliefs-price-belief}).
+\item From the belief to preparation. A high-cost challenger prepares when its belief reaches the preparation threshold \(\tau\). If even the top posterior falls short, no price recruits it. This is the exclusion bound (Sections~\ref{sec:beliefs-threshold} and~\ref{sec:beliefs-exclusion}).
+\item From the price back to the posterior. Competitive prices give a formula for the price. With a positive spread and a positive entry floor, the price reveals the market makers' posterior (Sections~\ref{sec:beliefs-priceformula} and~\ref{sec:beliefs-reveal}).
+\end{enumerate}
+
+\section{The set-up}\label{sec:beliefs-setup}
+
+This section recalls every symbol of the chapter. Chapter~\ref{ch:model} defines the model, and Chapter~\ref{ch:auction} derives the auction payoffs.
+
+\subsection{The class and the order slot}
+
+\begin{itemize}
+\item The challenger has a quality class \(j\in\{H,L\}\). The prior is \(\pi=\Pr(j=H)\), with \(0<\pi<1\).
+\item The informed investor fills the slot with probability \(\lambda\in(0,1)\). It sees \(j\) and places an order \(q\in\{-1,0,1\}\): a sale, no order, or a purchase. A nonzero order costs it \(k>0\).
+\item The investor's strategy in class \(j\) is a probability distribution \(\sigma_j=\bigl(\sigma_j(-1),\sigma_j(0),\sigma_j(1)\bigr)\) on the three orders. It can be pure or mixed. Wrong-signed orders are allowed: class \(H\) may sell, and class \(L\) may buy. The paper writes \(\delta_q\) for the point mass at the order \(q\), the strategy that places \(q\) with probability one.
+\item A liquidity trader fills the slot with probability \(1-\lambda\). It sells with probability \(\beta\), abstains with probability \(1-2\beta\), and buys with probability \(\beta\). Write \(\eta(-1)=\eta(1)=\beta\) and \(\eta(0)=1-2\beta\).
+\item A liquidity order in a given direction has probability \(b=(1-\lambda)\beta\), and a liquidity abstention has probability \(b_0=(1-\lambda)(1-2\beta)\). The ratio \(u=\lambda/b\) is the informed mass relative to the liquidity mass in one direction.
+\item The order that market makers see is \(X\in\{-1,0,1\}\). Its probability in class \(j\) is \(f_j(x)=\Pr(X=x\mid j)\). Chapter~\ref{ch:model} derives, in equation~\eqref{eq:model-orderprob},
+\[
+f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x).
+\]
+Figure~\ref{fig:beliefs-tree} recalls where this formula comes from.
+\end{itemize}
+
+The model takes \(0<\beta\le1/3\) (Section 2.3 of the paper). A footnote there says which results use \(\beta\le1/3\): the posterior bound common to all orders, and through it the exclusion bound. The research parameter region and the slot-feasibility statements in identification also range over the slots with \(\beta\le1/3\). The other results hold for every \(0<\beta<1/2\). This chapter marks the domain of \(\beta\) at each step, because the difference matters for the zero order (Section~\ref{sec:beliefs-zero}).
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  every node/.style={font=\small},
+  box/.style={draw=rulegrey,rounded corners=1pt,inner sep=3pt,fill=white}]
+\node[box] (j) at (0,0) {class \(j\)};
+\node[box] (inv) at (3.6,1.5) {informed investor};
+\node[box] (liq) at (3.6,-1.5) {liquidity trader};
+\draw[-{Stealth[length=2mm]},rulegrey] (j) -- node[above left,text=ink]{\(\lambda\)} (inv);
+\draw[-{Stealth[length=2mm]},rulegrey] (j) -- node[below left,text=ink]{\(1-\lambda\)} (liq);
+\node[anchor=west] (i1) at (8.6,2.4) {purchase, \(x=1\)};
+\node[anchor=west] (i0) at (8.6,1.5) {no order, \(x=0\)};
+\node[anchor=west] (im) at (8.6,0.6) {sale, \(x=-1\)};
+\node[anchor=west] (l1) at (8.6,-0.6) {purchase, \(x=1\)};
+\node[anchor=west] (l0) at (8.6,-1.5) {no order, \(x=0\)};
+\node[anchor=west] (lm) at (8.6,-2.4) {sale, \(x=-1\)};
+\draw[-{Stealth[length=2mm]},rulegrey] (inv.east) -- node[above,text=ink,pos=0.72,sloped]{\(\sigma_j(1)\)} (i1.west);
+\draw[-{Stealth[length=2mm]},rulegrey] (inv.east) -- node[above,text=ink,pos=0.72]{\(\sigma_j(0)\)} (i0.west);
+\draw[-{Stealth[length=2mm]},rulegrey] (inv.east) -- node[below,text=ink,pos=0.72,sloped]{\(\sigma_j(-1)\)} (im.west);
+\draw[-{Stealth[length=2mm]},rulegrey] (liq.east) -- node[above,text=ink,pos=0.72,sloped]{\(\beta\)} (l1.west);
+\draw[-{Stealth[length=2mm]},rulegrey] (liq.east) -- node[above,text=ink,pos=0.72]{\(1-2\beta\)} (l0.west);
+\draw[-{Stealth[length=2mm]},rulegrey] (liq.east) -- node[below,text=ink,pos=0.72,sloped]{\(\beta\)} (lm.west);
+\end{tikzpicture}
+\caption{The order slot in class \(j\). The probability \(f_j(x)\) of the order \(x\) adds the two paths that end at \(x\): \(\lambda\sigma_j(x)\) through the investor and \((1-\lambda)\eta(x)\) through the liquidity trader. Only the upper branch depends on the class.}
+\label{fig:beliefs-tree}
+\end{figure}
+
+\subsection{Beliefs, prices, preparation and payoffs}
+
+\begin{itemize}
+\item \(\mu(x)=\Pr(j=H\mid X=x)\) is the market makers' posterior after the order \(x\), and \(P(x)\) is the price after it. The challenger's belief at the price \(\bar P\) is \(\bar\mu(\bar P)\), the probability of class \(H\) given that the price is \(\bar P\).
+\item After the price, the challenger learns its preparation cost \(C\in\{0,c_H\}\), with \(\Pr(C=0)=\rho\), \(0<\rho<1\), and \(c_H>0\). The cost is independent of the class, the values, the incumbent's value and the slot draws.
+\item A zero-cost challenger prepares after every price. A high-cost challenger prepares with probability \(\zeta(\bar P)\in[0,1]\) after the price \(\bar P\). Entry after the order \(x\) is the probability that the challenger prepares: \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\). It includes the zero-cost floor \(\rho\). Section~\ref{sec:beliefs-priceformula} shows that this is the probability of preparation in each class.
+\item \(t_0=p[1-F(p)]\) is expected target proceeds without entry: the incumbent then buys at the reserve \(p\) when its value \(R\) meets it. \(t_j\) is expected target proceeds after entry in class \(j\), and \(\DT=t_H-t_L\) is the target-payoff spread.
+\item \(g_j\) is the gross acquisition profit of a prepared challenger in class \(j\), before its cost. At a belief \(\mu\), gross profit is \(B(\mu)=g_L+\mu(g_H-g_L)\). Bids are truthful, so \(t_0\), \(t_j\) and \(g_j\) depend on no belief.
+\item Under the class ranking, \(g_H\ge g_L\) and \(\DT\ge0\). The reason is in the integrals of Proposition~1 (Chapter~\ref{ch:auction}): \(g_H-g_L=\int_p^\infty F(y)D(y)\,dy\) and \(\DT=\int_p^\infty[1-F(y)]D(y)\,dy\), where \(D=G_L-G_H\ge0\). The reserve term of \(\DT\) is zero under the class ranking. An admissible challenger raises proceeds to at least the reserve, so \(t_H\ge t_0\) and \(t_L\ge t_0\) (Section 3.1 of the paper).
+\end{itemize}
+
+\subsection{The equilibrium conditions and the conventions}
+
+Appendix A.1 of the paper defines an equilibrium as a tuple \((\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)\), with the bids, that meets six conditions:
+\begin{enumerate}[label=(E\arabic*),leftmargin=3em]
+\item Bayes consistency: \(\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]\) for every order \(x\).
+\item Challenger beliefs: at every price \(\bar P\) that occurs, \(\bar\mu(\bar P)\) is the posterior of class \(H\) given the event \(\{x:P(x)=\bar P\}\), computed from \(f_H\) and \(f_L\).
+\item Entry optimality: \(\zeta(\bar P)=1\) if \(B(\bar\mu(\bar P))>c_H\), and \(\zeta(\bar P)=0\) if \(B(\bar\mu(\bar P))<c_H\). At equality, the challenger's tie rule applies.
+\item Competitive prices: \(P(x)=\E[V_T\mid X=x]\), where \(V_T\) is the terminal payoff of a target share.
+\item Investor optimality: each class places only orders that maximize its payoff at the candidate's prices and entry.
+\item Truthful bids: each prepared bidder whose value meets the reserve bids its value.
+\end{enumerate}
+The challenger has two tie rules for (E3), which the appendix calls the two challenger rules. Under the default rule, an indifferent high-cost challenger prepares. Under the alternative rule, it may prepare with any probability.
+
+Before its proofs, Appendix A.2 of the paper fixes some words:
+\begin{itemize}
+\item A \emph{profile} is a pair \((\sigma_H,\sigma_L)\) of order distributions, pure or mixed, with wrong-signed orders allowed.
+\item A \emph{candidate} is a tuple that satisfies (E1) to (E4) and (E6) for some profile. An equilibrium is a candidate that also satisfies (E5). So in a candidate the investor need not choose its best order.
+\item A deviation by the investor keeps the candidate's price function \(P\) and preparation rule \(\zeta\) fixed, and changes only the order that reaches them. A comparison across incumbents solves the equilibrium again in each economy.
+\item A uniqueness proof derives its bounds for every candidate, not from the proposed tuple. A constructed tuple meets each condition by direct substitution, and its proof cites no lemma whose premises include the condition at issue.
+\item The gain in expected proceeds that entry brings in class \(j\) is \(w_j=t_j-t_0\). Its average at the belief \(\mu\) is \(w(\mu)=(1-\mu)w_L+\mu w_H\).
+\end{itemize}
+
+\begin{derivation}[the second form of the average gain]
+\begin{align*}
+w(\mu) &= (1-\mu)\,w_L+\mu\,w_H \why{definition}\\
+&= w_L+\mu\,(w_H-w_L) \why{expand \((1-\mu)w_L\); collect the terms in \(\mu\)}\\
+&= (t_L-t_0)+\mu\,\bigl[(t_H-t_0)-(t_L-t_0)\bigr] \why{\(w_j=t_j-t_0\)}\\
+&= t_L-t_0+\DT\,\mu \why{\(t_0\) cancels in the bracket; \(\DT=t_H-t_L\)}
+\end{align*}
+\end{derivation}
+
+Two signs follow: \(w_L=t_L-t_0\ge0\), and \(w_H-w_L=\DT\ge0\) under the class ranking. So \(w_H\ge w_L\ge0\), as the paper states. For every belief \(\mu\) in \([0,1]\), the last line also gives \(w(\mu)=w_L+\DT\mu\ge w_L\ge0\). Section~\ref{sec:beliefs-reveal} uses this inequality.
+
+The conventions set the reach of the two lemmas of this chapter. Lemma A.1 holds for every profile, and Lemma A.2 holds for every candidate. Chapters~\ref{ch:trading} and~\ref{ch:ccc} apply them to any proposed behavior of the investor, before they know which behavior is an equilibrium.
+
+\section{Order probabilities and posteriors}\label{sec:beliefs-lemma}
+
+\subsection{The statement}
+
+The first result of Appendix A.2 collects what one order can reveal.
+
+\begin{paperresult}{Lemma A.1 (Order probabilities and beliefs)}
+Fix any order distributions \(\sigma_H\) and \(\sigma_L\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{Full support.} \(f_j(x)\ge(1-\lambda)\eta(x)>0\) for every order \(x\) and class \(j\).
+\item \emph{Nonzero orders.} For \(x\in\{-1,1\}\), \(b\le f_j(x)\le b+\lambda\). Hence \(m(\pi)\le\mu(x)\le M(\pi)\).
+\item \emph{The zero order.} \(b_0\le f_j(0)\le b_0+\lambda\). If \(\beta\le1/3\), then \(b_0\ge b\), hence \(m(\pi)\le\mu(0)\le M(\pi)\).
+\item \emph{Full orders.} If \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\), the posteriors after the orders \((-1,0,1)\) are \(\bigl(m(\pi),\pi,M(\pi)\bigr)\).
+\end{enumerate}
+\end{paperresult}
+
+The bounds \(m(\pi)\) and \(M(\pi)\) are the bottom and top posteriors of equation~\eqref{eq:beliefs-bounds} below. The proof ends with a remark: only part (c) uses \(\beta\le1/3\), and parts (a), (b) and (d) hold for every \(\beta<1/2\).
+
+In plain words, line by line:
+\begin{itemize}
+\item \emph{``Fix any order distributions.''} The lemma holds for every behavior of the investor, in or out of equilibrium. It does not use (E5).
+\item \emph{Part (a).} A liquidity trader can place every order, so every order has positive probability in each class. Bayes' rule then gives a posterior after every order, and no belief off the path of play enters the model.
+\item \emph{Part (b).} A purchase or a sale has probability at least \(b\), the liquidity part, and at most \(b+\lambda\). So no purchase and no sale can push the posterior outside \([m(\pi),M(\pi)]\).
+\item \emph{Part (c).} The zero order has the abstention probability \(b_0\) in place of \(b\). The common posterior bound then needs \(b_0\ge b\), which is \(\beta\le1/3\).
+\item \emph{Part (d).} Under full orders, the three posteriors sit at the bottom, at the prior and at the top. So the bounds of part (b) are reached.
+\end{itemize}
+
+The proof has four steps: the order probabilities, the posterior bound, the zero order, and full orders.
+
+\subsection{Step 1: the probability of each order}\label{sec:beliefs-orderprob}
+
+Start from the order probability of Chapter~\ref{ch:model}, equation~\eqref{eq:model-orderprob}:
+\[
+f_j(x)=\underbrace{(1-\lambda)\eta(x)}_{\text{liquidity part}}+\underbrace{\lambda\sigma_j(x)}_{\text{informed part}}.
+\]
+The liquidity part is the same in both classes. Only the informed part depends on the class, through \(\sigma_j\).
+
+\emph{Part (a): full support.} The informed part is never negative, so the order probability is at least the liquidity part.
+
+\begin{derivation}[full support]
+\begin{align*}
+f_j(x) &= (1-\lambda)\eta(x)+\lambda\sigma_j(x) \why{equation~\eqref{eq:model-orderprob}}\\
+&\ge (1-\lambda)\eta(x) \why{\(\lambda>0\) and \(\sigma_j(x)\ge0\)}\\
+&> 0 \why{\(1-\lambda>0\) and \(\eta(x)>0\)}
+\end{align*}
+\end{derivation}
+
+The last line needs \(\eta(x)>0\) at all three orders. For a purchase or a sale, \(\eta(x)=\beta>0\). For no order, \(\eta(0)=1-2\beta\), which is positive because \(\beta<1/2\). So part (a) uses only \(0<\beta<1/2\).
+
+Part (a) has two consequences. First, (E1) defines \(\mu(x)\) at every order, because the denominator \(\pi f_H(x)+(1-\pi)f_L(x)\) is positive. Second, every posterior lies strictly between zero and one:
+\begin{itemize}
+\item the numerator \(\pi f_H(x)\) is positive, because \(\pi>0\) and \(f_H(x)>0\), so \(\mu(x)>0\);
+\item the term \((1-\pi)f_L(x)\) in the denominator is positive, because \(\pi<1\) and \(f_L(x)>0\), so the numerator is smaller than the denominator and \(\mu(x)<1\).
+\end{itemize}
+
+\emph{Part (b), first half: purchases and sales.} Take \(x=1\). The case \(x=-1\) has the same steps, because \(\eta(-1)=\eta(1)=\beta\).
+
+\begin{derivation}[the probability of a purchase]
+\begin{align*}
+f_j(1) &= (1-\lambda)\eta(1)+\lambda\sigma_j(1) \why{equation~\eqref{eq:model-orderprob}}\\
+&= (1-\lambda)\beta+\lambda\sigma_j(1) \why{\(\eta(1)=\beta\)}\\
+&= b+\lambda\sigma_j(1) \why{\(b=(1-\lambda)\beta\)}
+\end{align*}
+The probability \(\sigma_j(1)\) lies in \([0,1]\). Multiply by \(\lambda>0\):
+\[
+0\le\lambda\sigma_j(1)\le\lambda .
+\]
+Add \(b\) to each side:
+\[
+b\le f_j(1)\le b+\lambda .
+\]
+\end{derivation}
+
+\emph{Part (c), first half: no order.} The same steps with \(\eta(0)=1-2\beta\) give
+\begin{align*}
+f_j(0) &= (1-\lambda)(1-2\beta)+\lambda\sigma_j(0) \why{\(\eta(0)=1-2\beta\)}\\
+&= b_0+\lambda\sigma_j(0) \why{\(b_0=(1-\lambda)(1-2\beta)\)}
+\end{align*}
+and, since \(0\le\lambda\sigma_j(0)\le\lambda\), the bounds \(b_0\le f_j(0)\le b_0+\lambda\).
+
+\begin{intuition}[a floor and a ceiling for each order]
+Each order has a floor that comes from the liquidity trader. The floor is the same in both classes. The informed investor can add at most \(\lambda\) on top of it. In the most extreme profile, it adds the whole \(\lambda\) to one class and nothing to the other. Because of the floor, no order can prove a class.
+\end{intuition}
+
+
+\subsection{Step 2: from order probabilities to the posterior}\label{sec:beliefs-odds}
+
+Bayes' rule is easiest to use in odds form (Section~\ref{sec:toolkit-odds}). The odds of a probability \(\mu\) are \(\mu/(1-\mu)\). Divide (E1) by one minus (E1).
+
+\begin{derivation}[the odds form of Bayes' rule]
+\begin{align*}
+\mu(x) &= \frac{\pi f_H(x)}{\pi f_H(x)+(1-\pi)f_L(x)} \why{(E1), Bayes' rule}\\[2pt]
+1-\mu(x) &= \frac{(1-\pi) f_L(x)}{\pi f_H(x)+(1-\pi)f_L(x)} \why{subtract from one}\\[2pt]
+\frac{\mu(x)}{1-\mu(x)} &= \frac{\pi f_H(x)}{(1-\pi) f_L(x)} \why{divide; the denominators cancel}\\[2pt]
+&= \frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)} \why{split the fraction}
+\end{align*}
+\end{derivation}
+
+The result is the paper's equation for the odds:
+\begin{equation}\label{eq:beliefs-odds}
+\frac{\mu(x)}{1-\mu(x)}=\frac{\pi}{1-\pi}\cdot\frac{f_H(x)}{f_L(x)} .
+\end{equation}
+In words: the posterior odds equal the prior odds times the likelihood ratio \(f_H(x)/f_L(x)\). The likelihood ratio says how much more often class \(H\) produces the order \(x\) than class \(L\) does. The odds form holds for every profile, because (E1) does.
+
+\emph{The posterior rises with the odds.} To go back from odds \(O\) to a probability, solve \(O=\mu/(1-\mu)\) for \(\mu\):
+\begin{align*}
+O\,(1-\mu) &= \mu \why{multiply by \(1-\mu>0\)}\\
+O &= \mu+O\mu=\mu\,(1+O) \why{add \(O\mu\) to both sides}\\
+\mu &= \frac{O}{1+O}=1-\frac{1}{1+O} \why{divide by \(1+O>0\)}
+\end{align*}
+When \(O\) rises, \(1/(1+O)\) falls, so \(\mu\) rises. The prior \(\pi\) is fixed, so by \eqref{eq:beliefs-odds} the posterior \(\mu(x)\) rises strictly with the likelihood ratio \(f_H(x)/f_L(x)\). A bound on the likelihood ratio therefore gives a bound on the posterior.
+
+\emph{Part (b), second half: the likelihood ratio of a purchase or a sale.} A fraction of positive numbers rises when its numerator rises or its denominator falls. Step 1 gives each class the range \([b,b+\lambda]\). The largest ratio puts the numerator at its top and the denominator at its bottom. The smallest ratio does the opposite.
+
+\begin{derivation}[the likelihood ratio of a nonzero order, \(x\in\{-1,1\}\)]
+\begin{align*}
+\frac{f_H(x)}{f_L(x)} &\le \frac{b+\lambda}{b} \why{\(f_H(x)\le b+\lambda\) and \(f_L(x)\ge b\)}\\
+&= 1+\frac{\lambda}{b}=1+u \why{\(u=\lambda/b\)}\\[4pt]
+\frac{f_H(x)}{f_L(x)} &\ge \frac{b}{b+\lambda} \why{\(f_H(x)\ge b\) and \(f_L(x)\le b+\lambda\)}\\
+&= \frac{1}{(b+\lambda)/b}=\frac{1}{1+u} \why{divide numerator and denominator by \(b\)}
+\end{align*}
+\end{derivation}
+
+\emph{The top and bottom posteriors.} At the largest likelihood ratio, the odds \eqref{eq:beliefs-odds} are \(\pi(1+u)/(1-\pi)\). Convert these odds to a probability with \(\mu=O/(1+O)\).
+
+\begin{derivation}[the top posterior]
+\begin{align*}
+M(\pi) &= \frac{\pi(1+u)/(1-\pi)}{1+\pi(1+u)/(1-\pi)} \why{\(\mu=O/(1+O)\) at \(O=\pi(1+u)/(1-\pi)\)}\\[2pt]
+&= \frac{\pi(1+u)/(1-\pi)}{\bigl[(1-\pi)+\pi(1+u)\bigr]/(1-\pi)} \why{write \(1\) as \((1-\pi)/(1-\pi)\)}\\[2pt]
+&= \frac{\pi(1+u)}{\pi(1+u)+1-\pi} \why{cancel \(1-\pi\)}
+\end{align*}
+\end{derivation}
+
+At the smallest likelihood ratio, the odds are \(\pi/[(1-\pi)(1+u)]\).
+
+\begin{derivation}[the bottom posterior]
+\begin{align*}
+m(\pi) &= \frac{\pi/[(1-\pi)(1+u)]}{1+\pi/[(1-\pi)(1+u)]} \why{\(\mu=O/(1+O)\)}\\[2pt]
+&= \frac{\pi/[(1-\pi)(1+u)]}{\bigl[(1-\pi)(1+u)+\pi\bigr]/[(1-\pi)(1+u)]} \why{common denominator}\\[2pt]
+&= \frac{\pi}{\pi+(1-\pi)(1+u)} \why{cancel \((1-\pi)(1+u)\)}
+\end{align*}
+\end{derivation}
+
+These are the bounds that Section 2.3 of the paper states:
+\begin{equation}\label{eq:beliefs-bounds}
+M(\pi)=\frac{\pi(1+u)}{\pi(1+u)+1-\pi},\qquad
+m(\pi)=\frac{\pi}{\pi+(1-\pi)(1+u)} .
+\end{equation}
+For \(x\in\{-1,1\}\), the likelihood ratio lies in \([1/(1+u),1+u]\). The posterior rises with the likelihood ratio, so \(m(\pi)\le\mu(x)\le M(\pi)\). This is the generic bound of Section~\ref{sec:toolkit-odds}, applied to the slot. It uses only \(0<\beta<1/2\), which makes \(b\) positive. Part (b) is proved.
+
+\begin{intuition}[the prior sits inside the band]
+Since \(u>0\), the top odds \(\pi(1+u)/(1-\pi)\) exceed the prior odds \(\pi/(1-\pi)\), and the bottom odds fall short of them. So \(m(\pi)<\pi<M(\pi)\). A purchase can lift the belief at most to \(M(\pi)\), and a sale can lower it at most to \(m(\pi)\). Every posterior lies in the band between them.
+\end{intuition}
+
+Test the band at its extremes:
+\begin{itemize}
+\item When \(u\) is near zero (the investor is rare compared with liquidity orders), \(1+u\) is near one. Both bounds in \eqref{eq:beliefs-bounds} are then near \(\pi/(\pi+1-\pi)=\pi\). The band shrinks to the prior, and no order is informative.
+\item When \(u\) is large, \(M(\pi)\) is near one and \(m(\pi)\) is near zero. One order can then move the belief almost to certainty.
+\item When the prior \(\pi\) is near zero, \(M(\pi)\) is also near zero for every fixed \(u\). Strong prior doubt survives one favorable order.
+\end{itemize}
+
+\subsection{Step 3: the zero order and the condition \texorpdfstring{\(\beta\le1/3\)}{beta <= 1/3}}\label{sec:beliefs-zero}
+
+The zero order has a different liquidity floor: \(b_0\) in place of \(b\). Step 1 gives \(b_0\le f_j(0)\le b_0+\lambda\). Repeat the steps of the nonzero orders.
+
+\begin{derivation}[the likelihood ratio of no order]
+\begin{align*}
+\frac{f_H(0)}{f_L(0)} &\le \frac{b_0+\lambda}{b_0}=1+\frac{\lambda}{b_0} \why{top over bottom}\\[2pt]
+\frac{f_H(0)}{f_L(0)} &\ge \frac{b_0}{b_0+\lambda}=\frac{1}{1+\lambda/b_0} \why{bottom over top}
+\end{align*}
+\end{derivation}
+
+So the likelihood ratio of no order lies in \(\bigl[(1+\lambda/b_0)^{-1},\,1+\lambda/b_0\bigr]\). This interval lies inside the interval of the nonzero orders exactly when \(\lambda/b_0\le\lambda/b=u\). A division of \(\lambda\) by a larger positive number gives a smaller result, so this holds exactly when \(b_0\ge b\).
+
+\begin{derivation}[when the abstention floor is at least the one-direction floor]
+\begin{align*}
+b_0\ge b
+&\iff (1-\lambda)(1-2\beta)\ge(1-\lambda)\beta \why{definitions of \(b_0\) and \(b\)}\\
+&\iff 1-2\beta\ge\beta \why{divide by \(1-\lambda>0\)}\\
+&\iff 1\ge3\beta \why{add \(2\beta\) to both sides}\\
+&\iff \beta\le 1/3 \why{divide by \(3\)}
+\end{align*}
+\end{derivation}
+
+Next, let \(\beta\le1/3\). Then \(\lambda/b_0\le u\), so
+\[
+1+\frac{\lambda}{b_0}\le1+u
+\qquad\text{and}\qquad
+\frac{1}{1+\lambda/b_0}\ge\frac{1}{1+u}.
+\]
+The second inequality takes reciprocals of positive numbers, which reverses the direction. So the likelihood ratio of no order lies in \([1/(1+u),1+u]\), and Step 2 gives \(m(\pi)\le\mu(0)\le M(\pi)\). Part (c) is proved.
+
+\emph{What fails when \(\beta>1/3\).} The paper gives a profile that breaks the bound. Let \(\beta>1/3\), so \(b_0<b\). Let class \(H\) always abstain, \(\sigma_H=\delta_0\), and let class \(L\) never abstain, \(\sigma_L(0)=0\). Then
+\begin{align*}
+f_H(0) &= b_0+\lambda\cdot1=b_0+\lambda \why{\(\sigma_H(0)=1\)}\\
+f_L(0) &= b_0+\lambda\cdot0=b_0 \why{\(\sigma_L(0)=0\)}\\
+\frac{f_H(0)}{f_L(0)} &= 1+\frac{\lambda}{b_0}>1+\frac{\lambda}{b}=1+u \why{\(b_0<b\)}
+\end{align*}
+The odds after no order exceed the odds of \(M(\pi)\), so \(\mu(0)>M(\pi)\). The common bound fails at the zero order.
+
+\begin{intuition}[the thinnest cover sets the bound]
+Each order hides the investor behind liquidity orders of the same kind. A purchase hides behind \(b\) liquidity purchases, and the zero order hides behind \(b_0\) liquidity abstentions. The bound \(M(\pi)\) is built from \(u=\lambda/b\), so it assumes a cover of at least \(b\). With \(\beta\le1/3\), liquidity traders abstain at least as often as they buy, so the zero order has the thicker cover. With \(\beta>1/3\), they abstain less often than they buy. A quiet slot can then tell more than any purchase, when the investor abstains in one class only.
+\end{intuition}
+
+\begin{watchout}
+Keep the domain of \(\beta\) of each result exactly as the paper states it.
+\begin{itemize}
+\item Lemma A.1, parts (a), (b) and (d): every \(0<\beta<1/2\).
+\item Lemma A.1, part (c), and with it the posterior bound common to all three orders: \(\beta\le1/3\).
+\item Corollary A.1, the exclusion bound (Section~\ref{sec:beliefs-exclusion}): \(0<\beta\le1/3\).
+\item Proposition 2 (Chapter~\ref{ch:ccc}): \(0<\beta<1/2\).
+\end{itemize}
+The model section takes \(0<\beta\le1/3\), and its footnote explains which results use it. Do not merge these domains into one. Section 2.3 of the paper calls \(1+u\) the largest likelihood ratio that one order can carry. For the zero order, this statement rests on \(\beta\le1/3\).
+\end{watchout}
+
+\subsection{Step 4: full orders}\label{sec:beliefs-full}
+
+Part (d) takes the profile in which class \(H\) always buys and class \(L\) always sells: \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\). So \(\sigma_H(1)=1\), \(\sigma_H(0)=\sigma_H(-1)=0\), and \(\sigma_L(-1)=1\), \(\sigma_L(0)=\sigma_L(1)=0\). Substitute these into \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\).
+
+\begin{derivation}[order probabilities under full orders]
+\begin{align*}
+f_H(-1) &= b+\lambda\cdot0=b, & f_L(-1) &= b+\lambda\cdot1=b+\lambda,\\
+f_H(0) &= b_0+\lambda\cdot0=b_0, & f_L(0) &= b_0+\lambda\cdot0=b_0,\\
+f_H(1) &= b+\lambda\cdot1=b+\lambda, & f_L(1) &= b+\lambda\cdot0=b.
+\end{align*}
+The likelihood ratios are
+\begin{align*}
+\frac{f_H(-1)}{f_L(-1)} &= \frac{b}{b+\lambda}=\frac{1}{1+u} \why{divide numerator and denominator by \(b\)}\\[2pt]
+\frac{f_H(0)}{f_L(0)} &= \frac{b_0}{b_0}=1 \why{\(b_0>0\) because \(\beta<1/2\)}\\[2pt]
+\frac{f_H(1)}{f_L(1)} &= \frac{b+\lambda}{b}=1+u \why{\(u=\lambda/b\)}
+\end{align*}
+\end{derivation}
+
+By the odds form \eqref{eq:beliefs-odds}, the posterior odds are the prior odds divided by \(1+u\), the prior odds themselves, and the prior odds times \(1+u\). Step 2 converted the first and the last into \(m(\pi)\) and \(M(\pi)\). Odds equal to the prior odds give the prior. So
+\[
+\bigl(\mu(-1),\mu(0),\mu(1)\bigr)=\bigl(m(\pi),\pi,M(\pi)\bigr).
+\]
+Part (d) is proved. It uses only \(0<\beta<1/2\), because the zero order has the same probability \(b_0\) in both classes and needs no comparison with \(b\).
+
+\begin{intuition}[the most informative profile]
+Under full orders, the investor puts all its weight on the purchase in class \(H\) and on the sale in class \(L\). A purchase then carries the largest tilt toward class \(H\) that any order can carry, and a sale carries the largest tilt toward class \(L\). The zero order comes only from liquidity abstentions, in both classes alike, so it carries no news and the posterior stays at the prior. Part (d) also shows that the bounds of part (b) are reached, so no narrower band holds for every profile.
+\end{intuition}
+
+\begin{checkyourself}\label{q:beliefs-mixed}
+Let \(\beta\le1/3\). In class \(H\), the investor buys with probability \(s\in(0,1]\) and abstains otherwise. In class \(L\), it always abstains. Write \(f_H(x)\) and \(f_L(x)\) at each order, find the three posteriors, and check that each lies in \([m(\pi),M(\pi)]\). For which \(s\) does the posterior after a purchase reach \(M(\pi)\)?
+\end{checkyourself}
+
+
+\section{The belief at a price}\label{sec:beliefs-price-belief}
+
+The challenger sees the price, not the order. If two orders lead to one price, the challenger cannot tell them apart. Fix a price \(\bar P\) that occurs, and let \(X(\bar P)=\{x:P(x)=\bar P\}\) be the set of orders with this price.
+
+The event ``the price is \(\bar P\)'' is the event ``the order lies in \(X(\bar P)\)''. The orders are disjoint events, so in class \(j\) this event has probability \(\sum_{x\in X(\bar P)}f_j(x)\). Condition (E2) applies Bayes' rule (Section~\ref{sec:toolkit-bayes}) to this event. In the lines below, every sum runs over \(x\in X(\bar P)\).
+
+\begin{derivation}[the belief at a price in odds form]
+\begin{align*}
+\bar\mu(\bar P) &= \frac{\pi\sum f_H(x)}{\pi\sum f_H(x)+(1-\pi)\sum f_L(x)} \why{(E2), Bayes' rule for the event \(X\in X(\bar P)\)}\\[2pt]
+\frac{\bar\mu(\bar P)}{1-\bar\mu(\bar P)} &= \frac{\pi}{1-\pi}\cdot\frac{\sum f_H(x)}{\sum f_L(x)} \why{the steps of the odds form \eqref{eq:beliefs-odds}}
+\end{align*}
+\end{derivation}
+
+The paper then uses one fact: a ratio of two sums of positive terms lies between the smallest and the largest ratio of its terms (Section~\ref{sec:toolkit-odds}). Here is the proof. Let \(\phi_{\min}\) and \(\phi_{\max}\) be the smallest and the largest likelihood ratio \(f_H(x)/f_L(x)\) over \(X(\bar P)\).
+
+\begin{derivation}[a ratio of sums]
+\begin{align*}
+\phi_{\min} &\le \frac{f_H(x)}{f_L(x)}\le\phi_{\max} \why{each \(x\in X(\bar P)\); definition of \(\phi_{\min}\), \(\phi_{\max}\)}\\
+\phi_{\min}\,f_L(x) &\le f_H(x)\le\phi_{\max}\,f_L(x) \why{multiply by \(f_L(x)>0\)}\\
+\phi_{\min}\sum f_L(x) &\le \sum f_H(x)\le\phi_{\max}\sum f_L(x) \why{add over \(x\in X(\bar P)\)}\\
+\phi_{\min} &\le \frac{\sum f_H(x)}{\sum f_L(x)}\le\phi_{\max} \why{divide by \(\sum f_L(x)>0\)}
+\end{align*}
+\end{derivation}
+
+Multiply by the prior odds \(\pi/(1-\pi)>0\). By \eqref{eq:beliefs-odds}, the odds of \(\bar\mu(\bar P)\) then lie between the smallest and the largest posterior odds of the orders in \(X(\bar P)\). The posterior rises with the odds (Step 2 of Section~\ref{sec:beliefs-odds}). Hence \(\bar\mu(\bar P)\) lies between the smallest and the largest posterior \(\mu(x)\) over \(X(\bar P)\).
+
+\emph{A second view: an average of posteriors.} Write \(A=X(\bar P)\). The belief at the price is a weighted average of the posteriors of the orders in \(A\):
+\begin{align*}
+\Pr(j=H\mid X\in A) &= \frac{\Pr(j=H\text{ and }X\in A)}{\Pr(X\in A)} \why{conditional probability}\\[2pt]
+&= \sum_{x\in A}\frac{\Pr(j=H\text{ and }X=x)}{\Pr(X\in A)} \why{the orders are disjoint}\\[2pt]
+&= \sum_{x\in A}\mu(x)\,\frac{\Pr(X=x)}{\Pr(X\in A)} \why{\(\Pr(j=H\text{ and }X=x)=\mu(x)\Pr(X=x)\)}
+\end{align*}
+The weights \(\Pr(X=x)/\Pr(X\in A)\) are nonnegative and add up to one. An average never leaves the range of the numbers that it averages. Both views give the same conclusion.
+
+Every bound of Lemma A.1 therefore holds at every price. In particular, if \(\beta\le1/3\), then
+\begin{equation}\label{eq:beliefs-pricebound}
+m(\pi)\le\bar\mu(\bar P)\le M(\pi)\qquad\text{at every price \(\bar P\) that occurs,}
+\end{equation}
+for every profile and every price function. If the zero order is not among the orders with the price \(\bar P\), part (b) alone gives this bound, for every \(\beta<1/2\). The paper places this step, ``beliefs at a price'', inside the proof of Lemma A.1.
+
+\emph{A price reached by a nonzero order.} The end of Appendix A.2 adds one more fact. A price reached by at least one nonzero order gives a belief in \([m(\pi),M(\pi)]\), for every profile, every price function and every \(0<\beta<1/2\). This holds even when the price pools that order with the zero order, and even when \(\mu(0)\) itself lies above \(M(\pi)\).
+
+\begin{derivation}[the cover of a pooled price]
+Let \(A=X(\bar P)\) contain a nonzero order. Split the probability of the event \(X\in A\) in class \(j\) into its two parts:
+\begin{align*}
+\sum_{x\in A}f_j(x) &= (1-\lambda)\sum_{x\in A}\eta(x)+\lambda\sum_{x\in A}\sigma_j(x) \why{equation~\eqref{eq:model-orderprob}, summed over \(A\)}\\
+&= b_A+\lambda\sum_{x\in A}\sigma_j(x) \why{write \(b_A=(1-\lambda)\sum_{x\in A}\eta(x)\)}
+\end{align*}
+The liquidity mass \(b_A\) is the same in both classes. It is at least \(b\), because the nonzero order in \(A\) alone brings \((1-\lambda)\beta=b\), and the other terms are not negative. The sum \(\sum_{x\in A}\sigma_j(x)\) lies in \([0,1]\), because \(\sigma_j\) is a probability distribution. So each class reaches \(A\) with a probability in \([b_A,\,b_A+\lambda]\), and
+\begin{align*}
+\frac{\sum_{x\in A}f_H(x)}{\sum_{x\in A}f_L(x)} &\le \frac{b_A+\lambda}{b_A}=1+\frac{\lambda}{b_A} \why{top over bottom}\\
+&\le 1+\frac{\lambda}{b}=1+u \why{\(b_A\ge b\)}\\[4pt]
+\frac{\sum_{x\in A}f_H(x)}{\sum_{x\in A}f_L(x)} &\ge \frac{b_A}{b_A+\lambda}=\frac{1}{1+\lambda/b_A} \why{bottom over top}\\
+&\ge \frac{1}{1+u} \why{\(\lambda/b_A\le u\); reciprocals reverse the direction}
+\end{align*}
+\end{derivation}
+The odds form of the belief at a price then gives \(m(\pi)\le\bar\mu(\bar P)\le M(\pi)\), by the steps of Section~\ref{sec:beliefs-odds}. In words: a pooled price hides the investor behind all the liquidity orders that lead to it, and a nonzero order alone brings a cover of \(b\). Only a price that the zero order reaches alone can have the thin cover \(b_0\), so only there does \(\beta\le1/3\) matter.
+
+\begin{intuition}[a shared price blurs]
+When each order has a price of its own, the challenger's belief at the price \(P(x)\) is the posterior \(\mu(x)\). When orders share a price, the challenger knows less than the market makers, and its belief lies between their posteriors. At the extreme, all three orders share one price. The average then runs over every order, and it equals \(\Pr(j=H)=\pi\): the price says nothing.
+\end{intuition}
+
+\begin{checkyourself}\label{q:beliefs-pool}
+Take full orders: \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\). Suppose a price function gives the zero order and a purchase one shared price, and a sale another price. Find the odds of the challenger's belief at the shared price, and show that this belief lies strictly between \(\pi\) and \(M(\pi)\).
+\end{checkyourself}
+
+\section{The preparation threshold}\label{sec:beliefs-threshold}
+
+A high-cost challenger compares its gross profit with its cost \(c_H\), by (E3). Its value depends on the price only through its class (Section 2.4 of the paper). So at a belief \(\mu\), gross profit is the average of the two class profits (Section~\ref{sec:toolkit-expectation}):
+\[
+B(\mu)=\mu\,g_H+(1-\mu)\,g_L=g_L+\mu\,(g_H-g_L).
+\]
+This is a straight line in \(\mu\). It starts at \(g_L\) at \(\mu=0\) and ends at \(g_H\) at \(\mu=1\). When \(g_H>g_L\), the line rises, so it crosses the level \(c_H\) at most once (Section~\ref{sec:toolkit-monotone}).
+
+\begin{derivation}[the preparation threshold, \(g_H>g_L\)]
+\begin{align*}
+B(\mu)\ge c_H
+&\iff g_L+\mu\,(g_H-g_L)\ge c_H \why{definition of \(B\)}\\
+&\iff \mu\,(g_H-g_L)\ge c_H-g_L \why{subtract \(g_L\)}\\
+&\iff \mu\ge\frac{c_H-g_L}{g_H-g_L} \why{divide by \(g_H-g_L>0\); the direction stays}
+\end{align*}
+\end{derivation}
+
+This gives the preparation threshold of Section 3.2 of the paper:
+\begin{equation}\label{eq:beliefs-threshold}
+\tau=\frac{c_H-g_L}{g_H-g_L},\qquad\text{and, when }g_H>g_L,\qquad B(\mu)\ge c_H\iff\mu\ge\tau .
+\end{equation}
+The same three steps with strict inequalities give \(B(\mu)>c_H\) exactly when \(\mu>\tau\), and \(B(\mu)<c_H\) exactly when \(\mu<\tau\). At \(\mu=\tau\), the high-cost challenger is indifferent, and its tie rule decides. Along a path of incumbent strengths, the paper writes \(\tau(r)\).
+
+In words, \(\tau\) is the belief at which gross profit just covers the high cost. A higher cost \(c_H\) raises the numerator and leaves the denominator fixed, so it raises \(\tau\). The threshold need not lie between zero and one; Check yourself~\ref{q:beliefs-tau} works out the cases.
+
+\emph{What changes if \(g_H\le g_L\).} The paper states the threshold only for \(g_H>g_L\). The algebra above shows what changes in the other cases. This view is the guide's own.
+\begin{itemize}
+\item If \(g_H=g_L\), then \(B(\mu)=g_L\) at every belief. The belief does not matter, the formula for \(\tau\) divides by zero, and there is no threshold. Either every belief covers \(c_H\), or none does, or every belief gives a tie.
+\item If \(g_H<g_L\), then \(B\) falls with \(\mu\). The last step divides by a negative number, which reverses the inequality: \(B(\mu)\ge c_H\) exactly when \(\mu\le\tau\). Good news about the class would then discourage preparation.
+\end{itemize}
+Under the class ranking, \(g_H\ge g_L\) (Appendix A.1 of the paper), so the second case does not arise there. The exclusion bound below needs only \(g_H\ge g_L\). Lemma A.2 needs \(g_H>g_L\).
+
+\begin{checkyourself}\label{q:beliefs-tau}
+Let \(g_H>g_L\). Where does \(\tau\) lie when \(c_H\le g_L\), when \(g_L<c_H<g_H\), and when \(c_H\ge g_H\)? For each case, say after which beliefs a high-cost challenger prepares, under the default tie rule.
+\end{checkyourself}
+
+\section{The exclusion bound}\label{sec:beliefs-exclusion}
+
+The bounds on beliefs give a condition under which no price can recruit a high-cost challenger.
+
+\begin{paperresult}{Corollary A.1 (High-cost preparation under every profile)}
+Let \(0<\beta\le1/3\) and \(g_H\ge g_L\). If \(B(M(\pi))<c_H\), then no profile that satisfies (E1)--(E3), in or out of equilibrium, has high-cost preparation after any order.
+\end{paperresult}
+
+In plain words, line by line:
+\begin{itemize}
+\item \emph{``\(0<\beta\le1/3\)''} gives the bound at the zero order (Lemma A.1(c)). \emph{``\(g_H\ge g_L\)''} says that gross profit does not fall with the belief; the class ranking gives this.
+\item \emph{``\(B(M(\pi))<c_H\)''.} Even at the top posterior, gross profit falls short of the high cost.
+\item \emph{``no profile that satisfies (E1)--(E3), in or out of equilibrium''.} The conclusion holds for every behavior of the investor and every price function, a deviation included, as long as beliefs follow Bayes' rule and the challenger chooses its best action. Conditions (E4) to (E6) are not needed.
+\end{itemize}
+
+\emph{Proof, step by step.} Let \(\beta\le1/3\), \(g_H\ge g_L\) and \(B(M(\pi))<c_H\). Fix any profile and any tuple that satisfies (E1) to (E3).
+\begin{enumerate}
+\item \emph{Every posterior is at most \(M(\pi)\).} Lemma A.1(b) gives \(\mu(x)\le M(\pi)\) for \(x=\pm1\). Lemma A.1(c) gives \(\mu(0)\le M(\pi)\), because \(\beta\le1/3\).
+\item \emph{Every belief at a price is at most \(M(\pi)\).} By the step on beliefs at a price, \eqref{eq:beliefs-pricebound}, \(\bar\mu(\bar P)\le M(\pi)\) at every price \(\bar P\).
+\item \emph{Gross profit does not fall with the belief.} For two beliefs \(\mu\le\mu'\),
+\[
+B(\mu')-B(\mu)=(\mu'-\mu)(g_H-g_L)\ge0,
+\]
+because both factors are nonnegative. So \(B\) never falls when the belief rises.
+\item \emph{Gross profit falls short of the cost at every price.} Steps 2 and 3 give \(B(\bar\mu(\bar P))\le B(M(\pi))\), and the hypothesis gives \(B(M(\pi))<c_H\). So \(B(\bar\mu(\bar P))<c_H\) at every price.
+\item \emph{No high-cost preparation.} Condition (E3) gives \(\zeta(\bar P)=0\) at every price. The inequality in Step 4 is strict, so there is no tie, and the conclusion holds under both challenger rules.
+\end{enumerate}
+The bound at the zero order, in Step 1, is the only use of \(\beta\le1/3\) in this proof.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=11cm,y=1cm,every node/.style={font=\small}]
+\begin{scope}
+\node[anchor=east] at (-0.03,0) {(a)};
+\fill[accent!25] (0.22,-0.09) rectangle (0.72,0.09);
+\draw[rulegrey,thick] (0,0) -- (1,0);
+\foreach \x/\l in {0/0,0.22/m(\pi),0.45/\pi,0.72/M(\pi),1/1}
+  \draw (\x,0.12) -- (\x,-0.12) node[below] {\(\l\)};
+\draw[ink,very thick] (0.6,0.28) -- (0.6,-0.28);
+\node[above] at (0.6,0.28) {\(\tau\)};
+\draw[decorate,decoration={brace,amplitude=4pt}] (0.6,0.85) -- (1,0.85) node[midway,above=5pt] {\(B(\mu)\ge c_H\)};
+\end{scope}
+\begin{scope}[yshift=-2.4cm]
+\node[anchor=east] at (-0.03,0) {(b)};
+\fill[accent!25] (0.22,-0.09) rectangle (0.72,0.09);
+\draw[rulegrey,thick] (0,0) -- (1,0);
+\foreach \x/\l in {0/0,0.22/m(\pi),0.45/\pi,0.72/M(\pi),1/1}
+  \draw (\x,0.12) -- (\x,-0.12) node[below] {\(\l\)};
+\draw[ink,very thick] (0.86,0.28) -- (0.86,-0.28);
+\node[above] at (0.86,0.28) {\(\tau\)};
+\draw[decorate,decoration={brace,amplitude=4pt}] (0.86,0.85) -- (1,0.85) node[midway,above=5pt] {\(B(\mu)\ge c_H\)};
+\end{scope}
+\end{tikzpicture}
+\caption{The shaded band \([m(\pi),M(\pi)]\) holds every posterior and every belief at a price, when \(\beta\le1/3\). The positions are only a picture. (a) The threshold \(\tau\) lies inside the band, so an order whose posterior reaches \(\tau\) can recruit a high-cost challenger. (b) The threshold lies above \(M(\pi)\), so \(B(M(\pi))<c_H\), and no belief in the band reaches it: the exclusion bound.}
+\label{fig:beliefs-band}
+\end{figure}
+
+\begin{intuition}[a ceiling that no price can break]
+The top posterior is a ceiling on every belief that any price can create. If gross profit at the ceiling falls short of the high cost, then no belief that a price can create is enough. The investor cannot change this with another strategy, and market makers cannot change it with another price function. Figure~\ref{fig:beliefs-band}(b) shows the case. Chapter~\ref{ch:ccc} uses this bound to stop recruitment against a very strong incumbent: condition (H3) of Proposition 2 is \(B(M(\pi))<c_H\) in that economy.
+\end{intuition}
+
+\begin{watchout}
+The corollary covers every profile, so it needs \(\beta\le1/3\): with \(\beta>1/3\), some profile puts the zero order above \(M(\pi)\) (Section~\ref{sec:beliefs-zero}). One fixed profile can meet the bound without this condition. Under full orders, the zero order has the posterior \(\pi\) for every \(\beta<1/2\), by Lemma A.1(d).
+\end{watchout}
+
+\begin{checkyourself}\label{q:beliefs-break}
+Let \(\beta>1/3\) (with \(\beta<1/2\)). In class \(H\), the investor always abstains. In class \(L\), it always buys. Find the three posteriors. Which of them leaves the band \([m(\pi),M(\pi)]\)? Explain which step of the proof of Corollary A.1 fails, and when a high-cost challenger can then prepare after the zero order.
+\end{checkyourself}
+
+\section{The price formula}\label{sec:beliefs-priceformula}
+
+Market makers set the price equal to the expected terminal payoff of a target share, given the order: \(P(x)=\E[V_T\mid X=x]\), by (E4). The terminal payoff \(V_T\) is what each share receives at the sale. It depends on two unknowns: the class, and whether the challenger prepares. The derivation conditions on each in turn. It is Step 0 and part (b) of the proof of Lemma A.2.
+
+\emph{Step 1: preparation, given the class and the order.} The challenger sees the price \(P(x)\) and its cost \(C\), and nothing else. A zero-cost challenger prepares. A high-cost challenger prepares with probability \(\zeta(P(x))\). The cost is independent of the class and of the slot draws, so given the class \(j\) and the order \(x\), the cost is still zero with probability \(\rho\).
+
+\begin{derivation}[the probability of preparation]
+\begin{align*}
+&\Pr(\text{prepare}\mid j,X=x)\\
+&\quad= \Pr(C=0\mid j,X=x)+\Pr(C=c_H\mid j,X=x)\,\zeta(P(x)) \why{split by the cost}\\
+&\quad= \rho+(1-\rho)\,\zeta(P(x)) \why{\(C\) independent of \(j\) and \(X\)}\\
+&\quad= e(x) \why{definition of entry}
+\end{align*}
+\end{derivation}
+
+In words: preparation depends only on the price and the cost. Given the order, the price is fixed, and the class tells nothing more about the cost. So preparation has the same probability \(e(x)\) in both classes.
+
+\emph{Step 2: proceeds, given the class, the order and preparation.} The order depends only on the class and the slot draws. So given the class, the order carries no information about the challenger's value \(\theta\) or the incumbent's value \(R\). Preparation depends on the price and the cost, which are also independent of \((\theta,R)\) given the class. Bids are truthful, by (E6). So if the challenger prepares, expected proceeds in class \(j\) are \(t_j=\E_j[t(\theta)]\). If it does not, the incumbent buys at the reserve when \(R\ge p\), and expected proceeds are \(t_0\).
+
+\emph{Step 3: combine the two cases.} The law of total expectation (Section~\ref{sec:toolkit-expectation}) averages over preparation.
+
+\begin{derivation}[the terminal payoff given the class and the order]
+\begin{align*}
+\E[V_T\mid j,X=x] &= e(x)\,t_j+[1-e(x)]\,t_0 \why{Steps 1 and 2}\\
+&= t_0+e(x)\,(t_j-t_0) \why{collect \(t_0\)}\\
+&= t_0+e(x)\,w_j \why{\(w_j=t_j-t_0\)}
+\end{align*}
+\end{derivation}
+
+The paper records this line as
+\begin{equation}\label{eq:beliefs-terminal}
+\E[V_T\mid j,X=x]=t_0+e(x)\,w_j .
+\end{equation}
+The investor's payoff in Chapter~\ref{ch:trading} uses the same line, with its own order \(q\) in place of \(x\).
+
+\emph{Step 4: average over the class.} Market makers do not know the class. Their weights are the posteriors \(\mu(x)\) and \(1-\mu(x)\), which (E1) computes by Bayes' rule.
+
+\begin{derivation}[the price formula]
+\begin{align*}
+P(x) &= \E[V_T\mid X=x] \why{(E4)}\\
+&= \mu(x)\,\E[V_T\mid H,X=x]+[1-\mu(x)]\,\E[V_T\mid L,X=x] \why{total expectation, (E1)}\\
+&= \mu(x)\bigl[t_0+e(x)w_H\bigr]+[1-\mu(x)]\bigl[t_0+e(x)w_L\bigr] \why{substitute \eqref{eq:beliefs-terminal}}\\
+&= t_0+e(x)\bigl[(1-\mu(x))\,w_L+\mu(x)\,w_H\bigr] \why{the \(t_0\) terms add to \(t_0\); factor \(e(x)\)}\\
+&= t_0+e(x)\,w(\mu(x)) \why{definition of \(w(\mu)\)}\\
+&= t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr] \why{\(w(\mu)=t_L-t_0+\DT\mu\), Section~\ref{sec:beliefs-setup}}
+\end{align*}
+\end{derivation}
+
+This is the price formula of Section 2.4 of the paper and of Lemma A.2(b):
+\begin{equation}\label{eq:beliefs-price}
+P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr].
+\end{equation}
+The paper notes that this step uses only (E1), (E4), the truthful bids (E6), and the independence of the cost.
+
+\begin{intuition}[what the price is made of]
+The price has two parts. The first, \(t_0\), is what shareholders receive if the challenger stays out. The second is the chance of entry, \(e(x)\), times the expected gain that entry brings at the posterior \(\mu(x)\). That gain is \(t_L-t_0\) in class \(L\), plus \(\DT\) for each unit of belief in class \(H\). The posterior enters the price only through the term \(e(x)\,\DT\,\mu(x)\).
+\end{intuition}
+
+Test the formula at its extremes. When entry is one, the price is \(t_L+\DT\mu(x)\), the expected proceeds of a sure entrant. When entry is at its floor \(\rho\), the posterior term is \(\rho\DT\mu(x)\): small when \(\rho\) is small, but positive when \(\DT>0\). When the spread is zero, the posterior drops out (Section~\ref{sec:beliefs-reveal}).
+
+\begin{watchout}
+The price is affine in the posterior only at a fixed level of entry. Entry itself depends on the price, through the challenger's choice. So equilibrium prices also reflect entry. Under the hypotheses of Lemma A.2 and the default tie rule, entry jumps from \(\rho\) to one where the posterior reaches \(\tau\), and the price jumps with it (Section~\ref{sec:beliefs-entry}).
+\end{watchout}
+
+\section{The price reveals the posterior}\label{sec:beliefs-reveal}
+
+The challenger sees only the price. The second lemma of Appendix A.2 shows that, under two conditions, the price still tells it the market makers' posterior.
+
+\begin{paperresult}{Lemma A.2 (Entry and prices)}
+Let \(\DT>0\) and \(g_H>g_L\). Fix a tuple that satisfies (E1)--(E4) and (E6).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{Floor.} \(e(x)\ge\rho\) for every order \(x\).
+\item \emph{Price.} \(P(x)=t_0+e(x)\bigl[t_L-t_0+\DT\,\mu(x)\bigr]\) for every order \(x\).
+\item \emph{Sufficiency.} If \(P(x)=P(x')\), then \(\mu(x)=\mu(x')\). The challenger's belief at the price \(P(x)\) is \(\mu(x)\).
+\item \emph{Entry.} \(e(x)=\rho\) if \(\mu(x)<\tau\), and \(e(x)=1\) if \(\mu(x)\ge\tau\).
+\item \emph{Monotonicity.} If \(\mu(x)>\mu(x')\), then \(e(x)\ge e(x')\) and \(P(x)-P(x')\ge\rho\DT\,[\mu(x)-\mu(x')]>0\).
+\end{enumerate}
+When an indifferent high-cost challenger may prepare with any probability, part~(d) at \(\mu(x)=\tau\) allows any \(e(x)\in[\rho,1]\); the other parts hold under both challenger rules.
+\end{paperresult}
+
+The last sentence stands just after the lemma in the paper. In plain words:
+\begin{itemize}
+\item \emph{Hypotheses.} \(\DT>0\): the classes differ in target proceeds. \(g_H>g_L\): the threshold \(\tau\) exists. The tuple is a candidate, so the investor need not choose its best order. The model's assumption \(\rho>0\) also enters, through part (a).
+\item \emph{Parts (a) and (b).} The zero-cost challenger always prepares, so entry never falls below \(\rho\). The price follows the formula of Section~\ref{sec:beliefs-priceformula}.
+\item \emph{Part (c).} Equal prices mean equal posteriors, so the challenger reads the market makers' posterior from the price.
+\item \emph{Part (d).} Entry is the floor \(\rho\) below \(\tau\) and one at or above \(\tau\). At \(\tau\) this uses the default tie rule; under the alternative rule, only this case changes.
+\item \emph{Part (e).} A higher posterior brings weakly more entry and a strictly higher price, and the price gap is at least \(\rho\DT\) times the gap in posteriors.
+\end{itemize}
+
+\subsection{The proof}
+
+Fix a candidate, and let \(\DT>0\) and \(g_H>g_L\). Step 0 of the paper's proof is Steps 1 to 3 of Section~\ref{sec:beliefs-priceformula}, which give \eqref{eq:beliefs-terminal}.
+
+\emph{Part (a): the floor.} The zero-cost challenger prepares after every price, and it has probability \(\rho\). In symbols, \(\zeta(P(x))\ge0\) and \(1-\rho>0\), so \(e(x)=\rho+(1-\rho)\zeta(P(x))\ge\rho\).
+
+\emph{Part (b): the price.} This is Step 4 of Section~\ref{sec:beliefs-priceformula}.
+
+\emph{Part (c): sufficiency.} Let \(P(x)=P(x')\). Entry depends on the order only through the price, so entry is the same after both orders.
+
+\begin{derivation}[equal prices force equal posteriors]
+\begin{align*}
+e(x) &= \rho+(1-\rho)\,\zeta(P(x)) \why{entry after \(x\)}\\
+&= \rho+(1-\rho)\,\zeta(P(x')) \why{\(P(x)=P(x')\)}\\
+&= e(x') \why{entry after \(x'\)}
+\end{align*}
+Call the common value \(\bar e\). Part (a) gives \(\bar e\ge\rho>0\). Write \(w_L=t_L-t_0\). Then
+\begin{align*}
+0 &= P(x)-P(x') \why{equal prices}\\
+&= \bigl[t_0+\bar e\,(w_L+\DT\mu(x))\bigr]-\bigl[t_0+\bar e\,(w_L+\DT\mu(x'))\bigr] \why{part (b)}\\
+&= \bar e\,\DT\,\bigl[\mu(x)-\mu(x')\bigr] \why{\(t_0\) and \(\bar e\,w_L\) cancel}
+\end{align*}
+The factor \(\bar e\,\DT\) is positive, because \(\bar e\ge\rho>0\) and \(\DT>0\). Divide by it: \(\mu(x)-\mu(x')=0\).
+\end{derivation}
+
+So all orders with the price \(P(x)\) have the same posterior \(\mu(x)\). By the step on beliefs at a price (Section~\ref{sec:beliefs-price-belief}), the belief \(\bar\mu(P(x))\) lies between the smallest and the largest of these posteriors. They are all equal, so \(\bar\mu(P(x))=\mu(x)\). The price reveals the posterior.
+
+\emph{Part (d): entry.} Since \(g_H>g_L\), the strict forms of \eqref{eq:beliefs-threshold} give \(B(\mu)>c_H\) exactly when \(\mu>\tau\), and \(B(\mu)<c_H\) exactly when \(\mu<\tau\). By part (c), the challenger's belief at \(P(x)\) is \(\mu(x)\), so its gross profit there is \(B(\mu(x))\). Condition (E3) then gives three cases:
+\begin{itemize}
+\item if \(\mu(x)<\tau\), then \(\zeta(P(x))=0\) and \(e(x)=\rho+(1-\rho)\cdot0=\rho\);
+\item if \(\mu(x)>\tau\), then \(\zeta(P(x))=1\) and \(e(x)=\rho+(1-\rho)\cdot1=1\);
+\item if \(\mu(x)=\tau\), the challenger is indifferent. Under the default rule it prepares, so \(e(x)=1\). Under the alternative rule, \(\zeta(P(x))\) can be any number in \([0,1]\), so \(e(x)\) can be any number in \([\rho,1]\).
+\end{itemize}
+
+\emph{Part (e): monotonicity.} Let \(\mu(x)>\mu(x')\). First, entry. If \(\mu(x')<\tau\), then \(e(x')=\rho\), and part (a) gives \(e(x)\ge\rho=e(x')\). If \(\mu(x')\ge\tau\), then \(\mu(x)>\mu(x')\ge\tau\), so \(\mu(x)>\tau\) and \(e(x)=1\ge e(x')\). Both cases use only strict comparisons with \(\tau\) for the order whose entry they fix, so they hold under both challenger rules. Second, the price gap.
+
+\begin{derivation}[the price gap between two orders]
+\begin{align*}
+P(x)-P(x') &= e(x)\,w(\mu(x))-e(x')\,w(\mu(x')) \why{part (b); \(t_0\) cancels}\\
+&= \bigl[e(x)\,w(\mu(x))-e(x)\,w(\mu(x'))\bigr]\\
+&\quad+\bigl[e(x)\,w(\mu(x'))-e(x')\,w(\mu(x'))\bigr] \why{add and subtract}\\
+&= e(x)\bigl[w(\mu(x))-w(\mu(x'))\bigr]+\bigl[e(x)-e(x')\bigr]w(\mu(x')) \why{factor}\\
+&= e(x)\,\DT\,\bigl[\mu(x)-\mu(x')\bigr]+\bigl[e(x)-e(x')\bigr]w(\mu(x')) \why{\(w(\mu)=w_L+\DT\mu\)}
+\end{align*}
+\end{derivation}
+
+The added and subtracted term is \(e(x)\,w(\mu(x'))\). The paper labels the last line as its increment identity:
+\begin{equation}\label{eq:beliefs-increment}
+P(x)-P(x')=e(x)\,\DT\,[\mu(x)-\mu(x')]+[e(x)-e(x')]\,w(\mu(x')).
+\end{equation}
+Next, sign each term.
+\begin{itemize}
+\item The second term is nonnegative. The first factor is \(e(x)-e(x')\ge0\), from the entry step. The second factor is \(w(\mu(x'))\ge w_L\ge0\) (Section~\ref{sec:beliefs-setup}).
+\item The first term is at least \(\rho\DT[\mu(x)-\mu(x')]\), because \(e(x)\ge\rho\) and \(\DT[\mu(x)-\mu(x')]>0\).
+\item The bound \(\rho\DT[\mu(x)-\mu(x')]\) is positive, because \(\rho>0\), \(\DT>0\) and \(\mu(x)>\mu(x')\).
+\end{itemize}
+So \(P(x)-P(x')\ge\rho\DT[\mu(x)-\mu(x')]>0\). Prices rise strictly with the posterior. The proof is complete.
+
+\begin{intuition}[entry and belief push the price the same way]
+A higher posterior raises the price for two reasons. At fixed entry, the posterior term \(e(x)\DT\mu(x)\) rises. And a higher posterior never lowers entry, so the second reason never works against the first. The price therefore rises strictly with the posterior. Different posteriors get different prices, and the challenger can read the posterior from the price.
+\end{intuition}
+
+\begin{watchout}
+The price reveals the posterior only when the spread is positive and the entry floor \(\rho\) is positive.
+\begin{itemize}
+\item \emph{The spread.} With \(\DT=0\), the price formula is \(P(x)=t_0+e(x)(t_L-t_0)\). The price does not move with the posterior. Two orders with different posteriors and equal entry then share one price, and the challenger sees only an average of their posteriors.
+\item \emph{The floor.} The model assumes \(0<\rho<1\) (Section 2.2 of the paper). The lemma uses \(\rho>0\) through part (a). The posterior enters the price through \(e(x)\DT\mu(x)\), and this term carries the posterior only if \(e(x)>0\). If entry could be zero after two orders, both prices would equal \(t_0\), whatever the posteriors. The zero-cost challenger prepares after every price, so \(e(x)\ge\rho>0\), and equal prices force equal posteriors.
+\item \emph{Where each hypothesis acts.} The proof of part (c) uses \(\DT>0\) and part (a). The condition \(g_H>g_L\) enters in parts (d) and (e), through the threshold.
+\end{itemize}
+\end{watchout}
+
+\begin{checkyourself}\label{q:beliefs-flat}
+Suppose \(\DT=0\), with everything else as in the model. Two orders \(x\) and \(x'\) have \(\mu(x)\ne\mu(x')\) and the same entry \(\bar e\). Show that they have the same price. What can the challenger learn about \(\mu(x)\) and \(\mu(x')\) from this price?
+\end{checkyourself}
+
+\subsection{Prices built from a profile}\label{sec:beliefs-constructed}
+
+Lemma A.2 starts from a candidate and derives its properties. To build an equilibrium, the paper needs the reverse direction: start from a profile and an entry rule, set the prices, and check that the result is consistent. Appendix A.2 states this as a short claim with a proof.
+
+\begin{paperresult}{Constructed tuples (Appendix A.2)}
+Let \(\DT>0\). Take a profile, its Bayes posteriors \(\mu(x)\), and entry \(e(x)\in[\rho,1]\) such that \(e(x)\ge e(x')\) whenever \(\mu(x)>\mu(x')\). Set \(P(x)=t_0+e(x)[w_L+\DT\mu(x)]\), where \(w_L=t_L-t_0\ge0\). Then prices rise strictly with the posterior, and
+\[
+P(x)=P(x')\quad\Longleftrightarrow\quad\mu(x)=\mu(x')\ \text{and}\ e(x)=e(x').
+\]
+The preparation rule \(\zeta(P(x))=[e(x)-\rho]/(1-\rho)\) is a function of the price, and the belief at \(P(x)\) is \(\mu(x)\). If also \(g_H>g_L\), threshold-consistent entry is a function of the posterior when an indifferent high-cost challenger prepares. When an indifferent high-cost challenger may prepare with any probability, orders at \(\tau\) with different entry have different prices, each revealing \(\tau\).
+\end{paperresult}
+
+\emph{Proof, step by step.}
+\begin{enumerate}
+\item \emph{Unequal posteriors.} Let \(\mu(x)>\mu(x')\). Then \(e(x)\ge e(x')\) by assumption, and the increment identity \eqref{eq:beliefs-increment} with the signs of Section~\ref{sec:beliefs-reveal} gives \(P(x)-P(x')\ge\rho\DT[\mu(x)-\mu(x')]>0\).
+\item \emph{Equal posteriors.} Let \(\mu(x)=\mu(x')\). The first term of \eqref{eq:beliefs-increment} is zero, so \(P(x)-P(x')=[e(x)-e(x')]\,w(\mu(x))\). Here \(w(\mu(x))=w_L+\DT\mu(x)>0\), because \(w_L\ge0\), \(\DT>0\) and \(\mu(x)>0\) by Lemma A.1(a). So equal prices force equal entry.
+\item \emph{The equivalence and the preparation rule.} Steps 1 and 2 show that equal prices force equal posteriors and equal entry. The price formula gives the converse. Solve \(e=\rho+(1-\rho)\zeta\) for \(\zeta\): \(\zeta=(e-\rho)/(1-\rho)\). Equal prices give equal entry, so \(\zeta\) takes one value at each price. Since \(\rho\le e(x)\le1\), this value lies in \([0,1]\).
+\item \emph{The belief at a price.} All orders with one price \(\bar P\) share one posterior. By \eqref{eq:beliefs-odds}, they share one likelihood ratio \(\phi\). So \(f_H(x)=\phi f_L(x)\) for each of them, and \(\sum f_H(x)=\phi\sum f_L(x)\). The ratio of sums equals \(\phi\), and (E2) gives the common posterior.
+\item \emph{The tie rules.} Under the default rule, threshold-consistent entry is \(\rho\) below \(\tau\) and one at and above \(\tau\), a function of the posterior. Under the alternative rule, two orders at \(\tau\) can have different entry. Step 2 then gives them different prices, and each of these prices has the posterior \(\tau\).
+\end{enumerate}
+
+\section{Entry after each order}\label{sec:beliefs-entry}
+
+Lemma A.2 gives the shape of entry. Entry after an order is always \(e(x)=\rho+(1-\rho)\,\zeta(P(x))\): the floor \(\rho\), plus the high-cost share \(1-\rho\) times the preparation probability of a high-cost challenger. When \(\DT>0\) and \(g_H>g_L\), Lemma A.2(d) says that, under the default tie rule, that probability is zero below \(\tau\) and one at or above \(\tau\):
+\[
+e(x)=\rho+(1-\rho)\,\1\{\mu(x)\ge\tau\}=
+\begin{cases}\rho, & \mu(x)<\tau,\\ 1, & \mu(x)\ge\tau.\end{cases}
+\]
+So high-cost preparation follows exactly the orders whose posterior reaches \(\tau\). Figure~\ref{fig:beliefs-entry} draws this step.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=10cm,y=3.6cm,every node/.style={font=\small}]
+\fill[accent!20] (0.22,-0.025) rectangle (0.72,0.025);
+\draw[->,rulegrey] (0,0) -- (1.07,0) node[right,text=ink] {\(\mu(x)\)};
+\draw[->,rulegrey] (0,0) -- (0,1.15) node[above,text=ink] {entry \(e(x)\)};
+\foreach \x/\l in {0/0,0.22/m(\pi),0.45/\pi,0.60/\tau,0.72/M(\pi),1/1}
+  \draw (\x,0.03) -- (\x,-0.03) node[below] {\(\l\)};
+\draw (0.015,0.3) -- (-0.015,0.3) node[left] {\(\rho\)};
+\draw (0.015,1) -- (-0.015,1) node[left] {\(1\)};
+\draw[dotted,rulegrey] (0.60,0) -- (0.60,1);
+\draw[accent,very thick] (0,0.3) -- (0.60,0.3);
+\draw[accent,very thick] (0.60,1) -- (1,1);
+\draw[accent,fill=white] (0.60,0.3) circle (1.6pt);
+\fill[accent] (0.60,1) circle (1.6pt);
+\node[anchor=west,text=notegrey] at (0.63,0.3) {zero-cost challenger only};
+\node[anchor=south,text=notegrey] at (0.80,1.02) {both cost types prepare};
+\end{tikzpicture}
+\caption{Entry after an order as a function of its posterior, under the default tie rule. Entry stays at the floor \(\rho\) below the threshold \(\tau\) and jumps to one at \(\tau\). When \(\beta\le1/3\), every posterior lies in the shaded band \([m(\pi),M(\pi)]\). The positions are only a picture.}
+\label{fig:beliefs-entry}
+\end{figure}
+
+Section 3.2 of the paper sums up the role of the zero-cost challenger: it gives each step its floor.
+\begin{itemize}
+\item Entry stays at least \(\rho\) after every order. This is why the price reveals the posterior (Lemma A.2(c)).
+\item The gross return of a correctly signed order stays at least a fixed share of the spread. This is the trading bound of Chapter~\ref{ch:trading}: \(\rho\,\kappa(\pi)\,\DT\le K_H,K_L\le\DT\), with \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\). Here \(K_H\) and \(K_L\) are the gross returns of a purchase in class \(H\) and a sale in class \(L\).
+\item The preparation of the zero-cost challenger does not respond to the price. The paper concludes that information ``can only add entry''. The price acts only through \(\zeta\ge0\), so entry is the floor \(\rho\) plus a part that is never negative. No price can push entry below \(\rho\).
+\end{itemize}
+A caution, which is the guide's own: this compares entry with the floor, not with an uninformative price. When \(\pi\ge\tau\), an uninformative price gives entry one under the default tie rule, and a sale that pushes the posterior below \(\tau\) lowers entry to \(\rho\).
+
+A test at the extremes, with \(\beta\le1/3\). If \(\tau\) lies above \(M(\pi)\), no posterior reaches it, and entry is \(\rho\) after every order: this is the exclusion bound again. If \(\tau\) lies at or below \(m(\pi)\), every posterior reaches it, and entry is one after every order. Only a threshold inside the band lets the price matter for entry, as in Figure~\ref{fig:beliefs-band}(a).
+
+\begin{checkyourself}\label{q:beliefs-entry}
+Let \(\DT>0\), \(g_H>g_L\), the default tie rules, and full orders: class \(H\) buys and class \(L\) sells. Suppose \(\pi<\tau\le M(\pi)\). Find entry after each of the orders \((-1,0,1)\), write the three prices, and rank them. Write each of the two price gaps between adjacent orders with the increment identity.
+\end{checkyourself}
+
+\begin{chaptersummary}
+Each order has a liquidity floor that is the same in both classes, and the informed investor adds at most \(\lambda\) to it. So the posterior after a purchase or a sale lies between \(m(\pi)\) and \(M(\pi)\) under every strategy, and the zero order obeys the same bound when \(\beta\le1/3\). The challenger's belief at a price averages the posteriors of the orders with that price, so it obeys the same bounds. When \(g_H>g_L\), a high-cost challenger prepares exactly when its belief reaches \(\tau=(c_H-g_L)/(g_H-g_L)\). With \(g_H\ge g_L\) and \(\beta\le1/3\), if \(B(M(\pi))<c_H\), no price recruits a high-cost challenger, in or out of equilibrium. Competitive prices give \(P(x)=t_0+e(x)[t_L-t_0+\DT\mu(x)]\), so with a positive spread and entry at least \(\rho\), equal prices force equal posteriors, and the price reveals the posterior. Entry is then \(\rho\) below \(\tau\) and one at or above \(\tau\), under the default tie rule.
+\end{chaptersummary}
+
+\needspace{10\baselineskip}
+\answersection
+
+\answer{\ref{q:beliefs-mixed}}{The strategies are \(\sigma_H=(0,\,1-s,\,s)\) and \(\sigma_L=(0,1,0)\) on the orders \((-1,0,1)\). Substitute into \(f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)\):
+\begin{align*}
+f_H(1) &= b+\lambda s, & f_L(1) &= b,\\
+f_H(0) &= b_0+\lambda(1-s), & f_L(0) &= b_0+\lambda,\\
+f_H(-1) &= b, & f_L(-1) &= b.
+\end{align*}
+\emph{A purchase.} The likelihood ratio is
+\begin{align*}
+\frac{f_H(1)}{f_L(1)} &= \frac{b+\lambda s}{b} \why{the table}\\
+&= 1+us \why{\(\lambda/b=u\)}
+\end{align*}
+Since \(0<s\le1\), it lies in \((1,1+u]\). The odds form gives the odds \(\pi(1+us)/(1-\pi)\), and \(\mu=O/(1+O)\) gives
+\[
+\mu(1)=\frac{\pi(1+us)}{\pi(1+us)+1-\pi}.
+\]
+This lies in \((\pi,M(\pi)]\), and it equals \(M(\pi)\) exactly when \(s=1\), the full purchase.
+
+\emph{No order.} The likelihood ratio is \([b_0+\lambda(1-s)]/(b_0+\lambda)\). The numerator is smaller than the denominator, because \(s>0\) gives \(\lambda(1-s)<\lambda\). So the ratio is below one and \(\mu(0)<\pi\). The numerator is at least \(b_0\), so the ratio is at least \(b_0/(b_0+\lambda)=1/(1+\lambda/b_0)\). With \(\beta\le1/3\), \(b_0\ge b\), so \(\lambda/b_0\le u\) and the ratio is at least \(1/(1+u)\). Hence \(m(\pi)\le\mu(0)<\pi\). In words, class \(L\) abstains more often, so the zero order is mild news for class \(L\).
+
+\emph{A sale.} Neither class sells, so a sale comes only from a liquidity trader, with probability \(b\) in each class. The likelihood ratio is one, and \(\mu(-1)=\pi\).
+
+All three posteriors lie in \([m(\pi),M(\pi)]\), as Lemma A.1 says. Only the full purchase, \(s=1\), puts the posterior after a purchase at the top.}
+
+\answer{\ref{q:beliefs-pool}}{Under full orders, Section~\ref{sec:beliefs-full} gives \(f_H(0)=b_0\), \(f_H(1)=b+\lambda\), \(f_L(0)=b_0\) and \(f_L(1)=b\). The shared price has \(X(\bar P)=\{0,1\}\). The ratio of sums is
+\begin{align*}
+\frac{f_H(0)+f_H(1)}{f_L(0)+f_L(1)} &= \frac{b_0+b+\lambda}{b_0+b} \why{the table of Step 4}\\
+&= 1+\frac{\lambda}{b_0+b} \why{split the fraction}
+\end{align*}
+So the odds of the belief are \(\frac{\pi}{1-\pi}\bigl(1+\frac{\lambda}{b_0+b}\bigr)\).
+\begin{itemize}
+\item Since \(\lambda>0\), the ratio exceeds one, so the belief exceeds \(\pi\).
+\item Since \(b_0>0\) (because \(\beta<1/2\)), \(b_0+b>b\), so \(\lambda/(b_0+b)<\lambda/b=u\). The ratio is below \(1+u\), so the belief is below \(M(\pi)\).
+\end{itemize}
+At this shared price the challenger knows less than the market makers. With \(\DT>0\) and \(g_H>g_L\), Lemma A.2(c) rules this price function out in any candidate, because the zero order and a purchase have different posteriors, \(\pi\) and \(M(\pi)\).}
+
+\answer{\ref{q:beliefs-tau}}{The denominator \(g_H-g_L\) is positive, so the sign and size of \(\tau\) follow the numerator \(c_H-g_L\).
+\begin{itemize}
+\item \(c_H\le g_L\): the numerator is at most zero, so \(\tau\le0\). Every posterior is positive (Lemma A.1(a)), so every belief is at least \(\tau\), and \(B(\mu)\ge c_H\) at every belief. Under the default tie rule, a high-cost challenger prepares after every price. Even the low class covers the high cost.
+\item \(g_L<c_H<g_H\): the numerator is positive and smaller than the denominator, so \(0<\tau<1\). A high-cost challenger prepares after a price exactly when its belief there is at least \(\tau\).
+\item \(c_H\ge g_H\): the numerator is at least the denominator, so \(\tau\ge1\). Every posterior is below one (Lemma A.1(a)), so every belief is below \(\tau\), and a high-cost challenger never prepares. This matches a remark in Section 4.1 of the paper. A price recruits a high-cost challenger only where \(g_H\) exceeds \(c_H\), because gross profit at every posterior below one falls short of \(g_H\).
+\end{itemize}}
+
+\answer{\ref{q:beliefs-break}}{The strategies are \(\sigma_H=\delta_0\) and \(\sigma_L=\delta_1\). The order probabilities are
+\begin{align*}
+f_H(-1) &= b, & f_L(-1) &= b,\\
+f_H(0) &= b_0+\lambda, & f_L(0) &= b_0,\\
+f_H(1) &= b, & f_L(1) &= b+\lambda.
+\end{align*}
+The likelihood ratios and posteriors are:
+\begin{itemize}
+\item a sale: ratio \(b/b=1\), so \(\mu(-1)=\pi\);
+\item a purchase: ratio \(b/(b+\lambda)=1/(1+u)\), so \(\mu(1)=m(\pi)\);
+\item no order: ratio \((b_0+\lambda)/b_0=1+\lambda/b_0\).
+\end{itemize}
+With \(\beta>1/3\), the condition \(b_0\ge b\) fails, so \(b_0<b\) and \(\lambda/b_0>\lambda/b=u\). The ratio of no order exceeds \(1+u\). Its odds exceed the odds of \(M(\pi)\), so \(\mu(0)>M(\pi)\). The zero order leaves the band. The other two posteriors stay inside, as part (b) of Lemma A.1 requires for every \(\beta<1/2\).
+
+Step 1 of the proof of Corollary A.1 fails, because it needs \(\mu(0)\le M(\pi)\). Suppose \(g_H>g_L\), \(B(M(\pi))<c_H\), and the zero order has a price of its own, so the belief at that price is \(\mu(0)\). If \(M(\pi)<\tau\le\mu(0)\), then \(B(\mu(0))\ge c_H\), and (E3) with the default tie rule makes a high-cost challenger prepare after the zero order. This is why the corollary keeps \(\beta\le1/3\).}
+
+\answer{\ref{q:beliefs-flat}}{The price formula \eqref{eq:beliefs-price} needs only (E1), (E4), (E6) and the independence of the cost, so it holds at \(\DT=0\). With \(\DT=0\), it reads
+\[
+P(x)=t_0+e(x)\bigl[t_L-t_0+0\cdot\mu(x)\bigr]=t_0+e(x)\,(t_L-t_0).
+\]
+For the two orders, \(e(x)=e(x')=\bar e\), so
+\begin{align*}
+P(x) &= t_0+\bar e\,(t_L-t_0) \why{price formula at \(\DT=0\)}\\
+&= P(x') \why{the same expression for \(x'\)}
+\end{align*}
+The prices agree although \(\mu(x)\ne\mu(x')\). The challenger sees one price for both orders. If no other order has this price, Section~\ref{sec:beliefs-price-belief} makes its belief there a weighted average of the two posteriors, with weights proportional to \(\Pr(X=x)\) and \(\Pr(X=x')\). Both weights are positive, so the belief lies strictly between the two posteriors, and the challenger cannot recover either of them.
+
+The step that fails is the division by \(\bar e\,\DT\) in the proof of Lemma A.2(c): with \(\DT=0\), this factor is zero. In words, both classes then give the target the same expected proceeds. The class does not change what a share is worth, so the price has no reason to move with the posterior.}
+
+\answer{\ref{q:beliefs-entry}}{Lemma A.1(d) gives the posteriors \((\mu(-1),\mu(0),\mu(1))=(m(\pi),\pi,M(\pi))\). Lemma A.2(d), under the default tie rule, gives entry:
+\begin{itemize}
+\item a sale: \(m(\pi)<\pi<\tau\), so \(e(-1)=\rho\);
+\item no order: \(\pi<\tau\), so \(e(0)=\rho\);
+\item a purchase: \(M(\pi)\ge\tau\), so \(e(1)=1\).
+\end{itemize}
+Write \(w_L=t_L-t_0\). The price formula gives
+\begin{align*}
+P(-1) &= t_0+\rho\,\bigl[w_L+\DT\,m(\pi)\bigr],\\
+P(0) &= t_0+\rho\,\bigl[w_L+\DT\,\pi\bigr],\\
+P(1) &= t_0+w_L+\DT\,M(\pi).
+\end{align*}
+The increment identity \eqref{eq:beliefs-increment} gives the two gaps. From a sale to no order, entry is the same, so the second term is zero:
+\begin{align*}
+P(0)-P(-1) &= \rho\,\DT\,[\pi-m(\pi)]+(\rho-\rho)\,w(m(\pi)) \why{\eqref{eq:beliefs-increment} with \(e(0)=e(-1)=\rho\)}\\
+&= \rho\,\DT\,[\pi-m(\pi)] \why{the second term is zero}
+\end{align*}
+From no order to a purchase, entry rises from \(\rho\) to one:
+\begin{align*}
+P(1)-P(0) &= 1\cdot\DT\,[M(\pi)-\pi]+(1-\rho)\,w(\pi) \why{\eqref{eq:beliefs-increment} with \(e(1)=1\), \(e(0)=\rho\)}\\
+&= \DT\,[M(\pi)-\pi]+(1-\rho)\,\bigl[w_L+\DT\pi\bigr] \why{\(w(\pi)=w_L+\DT\pi\)}
+\end{align*}
+Both gaps are positive, because \(m(\pi)<\pi<M(\pi)\), \(\rho>0\), \(\DT>0\) and \(w_L\ge0\). So \(P(-1)<P(0)<P(1)\). In words, the step from a sale to no order carries only class news, scaled by the floor \(\rho\). The step from no order to a purchase carries class news and the extra entry that the purchase brings. This is the pattern of Proposition 2(ii): entry \((\rho,\rho,1)\), and prices that rise strictly in this order.}

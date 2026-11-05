@@ -1,0 +1,148 @@
+% M1_08: Online Appendix, new short subsection "An informed shareholder" (stake extension).
+% INSERT BEFORE: online_appendix.tex line 1611 ("\section{B. Computer-assisted equilibrium certificates}")
+% Placement: last subsection of Section A. Renumber "A.12" below to the next free A number at integration.
+% Equation displays carry no \tag; number them in the OA sequence at integration.
+% NUM placeholders: \NUM{Omega_U} (benchmark value of the full-order bound, in order units),
+%   \NUM{Omega_0} (benchmark value of the no-trade bound, in order units).
+% New \bibitem requested: none. ref-EdmansGoldsteinJiang2015 is already in the bibliography of the main text;
+%   the Online Appendix needs its own \bibitem for that key if it does not have one yet.
+% New symbols: \(\omega\) (initial stake, in order units), \(w_j=t_j-t_0\), \(a(q)\), \(\bar e(q)\),
+%   \(G_H(q)\), \(G_L(q)\), \(\Omega_U\), \(\Omega_0\), all defined in the text.
+%   \(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\) follows the notation sheet of the brief.
+
+\subsection{A.12. An informed shareholder}\label{oa-a-stake}
+
+Give the informed investor an initial stake of \(\omega\ge 0\) target
+shares, in the same unit as the order \(q\). The stake cost is sunk.
+The stake carries no control rights, and the investor still cannot
+acquire the target. Its payoff in class \(j\in\{H,L\}\) becomes
+
+\[
+\omega V_T+q(V_T-P)-k|q|.
+\]
+
+Fix a candidate price and entry schedule. Write \(e(x)\) for entry
+at flow \(x\), averaged over preparation costs, and \(\mu_X(x)\) for
+the market posterior. Write \(w_j=t_j-t_0\) for the entry gain in
+proceeds. Entry raises expected proceeds at each challenger value
+above the reserve and leaves proceeds unchanged at a value with no
+admissible bid. In the ranked cases \(w_H>w_L\ge 0\), with
+\(w_H>0\) when \(\Delta_T>0\). Conditional on
+class and flow,
+
+\[
+\mathbb E[V_T\mid j,x]=t_0+w_j e(x),\qquad
+P(x)=t_0+e(x)[w_L+\Delta_T\mu_X(x)].
+\]
+
+The trading residuals keep the form of equation (11) of the main
+text. The stake adds a second term. Let
+\(D=\{x:\mu_X(x)\ge\tau\}\) be the flow set with high-cost entry,
+where \(\tau\) is the threshold belief with gross profit equal to
+\(c_H\). Let \(a(q)=\int_D f(x-q)\,dx\) and
+\(\bar e(q)=\rho+(1-\rho)a(q)\), the expected entry after order
+\(q\) against the fixed schedule. Let
+
+\[
+G_H(q)=\int f(x-q)e(x)\Delta_T[1-\mu_X(x)]\,dx,\qquad
+G_L(q)=\int f(x-q)e(x)\Delta_T\mu_X(x)\,dx.
+\]
+
+Expected payoffs then split into a trading term and a stake term:
+
+\[
+\begin{aligned}
+U_H(q;\omega)&=\omega[t_0+w_H\bar e(q)]+qG_H(q)-k|q|,\\
+U_L(q;\omega)&=\omega[t_0+w_L\bar e(q)]-qG_L(q)-k|q|.
+\end{aligned}
+\]
+
+For \(q\ne 0\), the derivatives split in the same way:
+
+\[
+\begin{aligned}
+U_H'(q;\omega)&=
+\underbrace{G_H(q)+qG_H'(q)-k\operatorname{sgn}(q)}_{\text{trade and its cost}}
++\underbrace{\omega w_H\bar e'(q)}_{\text{initial stake}},\\
+U_L'(q;\omega)&=
+\underbrace{-G_L(q)-qG_L'(q)-k\operatorname{sgn}(q)}_{\text{trade and its cost}}
++\underbrace{\omega w_L\bar e'(q)}_{\text{initial stake}}.
+\end{aligned}
+\]
+
+The constant \(\omega t_0\) drops from each order comparison. The
+stake term equals \(\omega\) times the change in expected terminal
+proceeds through entry. It does not equal \(\omega\) times a change
+in the interim price. A price change alone moves cash between buyer
+and seller. An entry change moves \(V_T\) itself, by \(w_j\) per
+unit of entry probability.
+
+The entry set stays fixed under a deviation, so the derivative
+falls on the density:
+
+\[
+a'(q)=\frac1b\left[\int_{D\cap(q,\infty)}f(x-q)\,dx
+-\int_{D\cap(-\infty,q)}f(x-q)\,dx\right],
+\qquad
+|a'(q)|\le\frac{\min\{a(q),1-a(q)\}}b\le\frac1{2b}.
+\]
+
+Hence \(|\omega w_j\bar e'(q)|\le\omega(1-\rho)w_j/(2b)\) for each
+candidate schedule, with no monotonicity condition on \(D\). The
+same step gives \(|G_j'(q)|\le G_j(q)/b\). Against an uninformative
+candidate price, \(\mu_X=\pi\) at each flow and entry is constant.
+Then \(\bar e'(q)=0\) at each deviation order. The stake adds a
+constant and leaves each order comparison at its baseline value.
+In particular, the no-trade outcome remains an equilibrium at each
+stake. The same point holds against each constant-entry schedule.
+Against the full-order schedule, \(D=[x^*,\infty)\) and
+\(\bar e'(q)=(1-\rho)f(x^*-q)>0\). A stake then rewards a higher
+order in each class with \(w_j>0\). It reinforces the purchase in
+class \(H\) and opposes the sale in class \(L\).
+
+Two sufficient bounds keep the baseline outcomes. The residuals
+satisfy \(G_H\ge\rho[1-M(\pi)]\Delta_T\) and
+\(G_L\ge\rho m(\pi)\Delta_T\). With
+\(\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}\), each trading part keeps a
+margin of at least \((1-1/b)\rho\kappa(\pi)\Delta_T-k\) in the
+correct direction. Since \(w_H>w_L\), the stake bound with \(w_H\)
+covers each class. Define
+
+\[
+\Omega_U:=
+\frac{2b\{(1-1/b)\rho\kappa(\pi)\Delta_T(r_1)-k\}}
+{(1-\rho)[t_H(r_1)-t_0(r_1)]}.
+\]
+
+For \(0\le\omega<\Omega_U\), the unique trading outcome at \(r_1\)
+remains \((q_H,q_L)=(1,-1)\) (analytical). At the benchmark,
+\(\Omega_U=\NUM{Omega_U}\) order units. At \(r_0\), each residual is
+at most \(\Delta_T(r_0)\), so
+\(U_j(q;\omega)-U_j(0;\omega)\le
+|q|[\Delta_T(r_0)-k+\omega(1-\rho)w_H(r_0)/(2b)]\). Define
+
+\[
+\Omega_0:=
+\frac{2b[k-\Delta_T(r_0)]}
+{(1-\rho)[t_H(r_0)-t_0(r_0)]}.
+\]
+
+For \(0\le\omega<\Omega_0\), no trade at \(r_0\) remains unique
+(analytical). At the benchmark, \(\Omega_0=\NUM{Omega_0}\) order
+units. A stake below \(\min\{\Omega_0,\Omega_U\}\) therefore keeps
+parts (i) and (ii) of Proposition 2 of the main text. Part (iii)
+needs no stake bound, because entry there equals \(\rho\) at each
+belief and the stake term vanishes. Each bound is sufficient, in
+order units. Exact stake cutoffs remain open.
+
+The sign pattern differs from Edmans et al.
+(\citeproc{ref-EdmansGoldsteinJiang2015}{2015}, Section II.E). In
+that model the real action corrects course in each state. Correct
+investment raises the stake value after good news, and correct
+disinvestment raises it after bad news. The stake motive is then
+symmetric across purchases and sales, and it cancels from the
+trading asymmetry. Here entry raises target proceeds in each class,
+but the price recruits high-cost entry only after favorable flow. A
+sale after bad news lowers the entry probability at the margin and
+so lowers the value of the stake. The stake therefore works against
+revelation of bad news, and it does not cancel.

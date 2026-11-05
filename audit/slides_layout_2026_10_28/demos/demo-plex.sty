@@ -1,0 +1,58 @@
+% Demo E "plex": IBM Plex Sans text, Plex Serif titles in a very light tinted band, steel-blue accent.
+\ProvidesPackage{demo-plex}
+\usefonttheme{professionalfonts}
+\RequirePackage{fontspec}
+\setsansfont{IBM Plex Sans}[BoldFont={IBM Plex Sans SmBld}]
+\setmainfont{IBM Plex Sans}[BoldFont={IBM Plex Sans SmBld}]
+\newfontfamily\plexserif{IBM Plex Serif}[BoldFont={IBM Plex Serif SmBld}]
+\definecolor{cNavy}{HTML}{3A5F8A}
+\definecolor{cBand}{HTML}{EEF2F6}
+\definecolor{cInkD}{HTML}{1F2933}
+\definecolor{cSlate}{HTML}{2B3A4A}
+\definecolor{cLine}{HTML}{CBD2DA}
+\definecolor{cGrayText}{HTML}{687786}
+\colorlet{cMuted}{cGrayText}
+\setbeamercolor{normal text}{fg=cInkD,bg=white}
+\setbeamercolor{structure}{fg=cNavy}
+\setbeamercolor{frametitle}{fg=cSlate,bg=cBand}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cSlate}
+\setbeamercolor{item}{fg=cNavy}
+\setbeamercolor{button}{bg=cBand,fg=cSlate}
+\setbeamerfont{frametitle}{size=\Large}
+\setbeamerfont{framesubtitle}{size=\small}
+\setbeamerfont{title}{size=\huge}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamertemplate{itemize items}[circle]
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,sep=0pt]{frametitle}%
+    \vskip0.22cm
+    \hspace*{\beamer@leftmargin}\begin{minipage}{\dimexpr\paperwidth-\beamer@leftmargin-\beamer@rightmargin\relax}
+    {\plexserif\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\raggedright\insertframetitle\par}%
+    \ifx\insertframesubtitle\@empty\else
+      \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\raggedright\insertframesubtitle\par}\fi
+    \end{minipage}\par
+    \vskip0.2cm
+  \end{beamercolorbox}%
+  \vskip0.05cm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\scriptsize\color{cGrayText}\insertshorttitle}\hfill
+    \ccc@nav\hspace*{0.9em}{\scriptsize\color{cGrayText}\ifbeamer@inappendix\ccc@bid\else\insertframenumber{} / \inserttotalframenumber\fi}%
+  \end{beamercolorbox}}\vskip1pt\global\let\ccc@nav\@empty}
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.2\textheight
+    {\plexserif\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vskip0.5cm{\color{cNavy}\rule{0.25\linewidth}{1.2pt}}\par\vskip0.4cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vfil}}
+\makeatother
+\renewenvironment{Statement}[1]{\vspace{-2pt}\NavyRule\vskip1pt
+  \noindent{\plexserif\bfseries\small\color{cNavy}#1}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+\renewcommand{\ColHead}[1]{{\plexserif\bfseries\color{cSlate}#1}\par\vspace{0.2em}{\color{cNavy}\rule{\linewidth}{0.8pt}}\par\vspace{0.35em}}
+\endinput

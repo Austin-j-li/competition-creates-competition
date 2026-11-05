@@ -1,0 +1,52 @@
+% Demo A "journal": serif reading text, sans titles, one oxblood accent. Loaded after ccc-classic.
+\ProvidesPackage{demo-journal}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\RequirePackage{fontspec}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\RequirePackage{unicode-math}
+\setmathfont{Libertinus Math}
+\definecolor{cNavy}{HTML}{7A1F1F}
+\definecolor{cInkD}{HTML}{1C1C1C}
+\definecolor{cLine}{HTML}{C9C9C9}
+\definecolor{cGrayText}{HTML}{666666}
+\colorlet{cMuted}{cGrayText}
+\setbeamercolor{normal text}{fg=cInkD,bg=white}
+\setbeamercolor{structure}{fg=cNavy}
+\setbeamercolor{frametitle}{fg=cInkD}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cInkD}
+\setbeamercolor{item}{fg=cNavy}
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\Large}
+\setbeamerfont{framesubtitle}{family=\rmfamily,shape=\itshape,size=\small}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\huge}
+\setbeamerfont{author}{family=\sffamily,size=\normalsize}
+\setbeamertemplate{itemize items}{\raise0.25ex\hbox{\scriptsize$\blacksquare$}}
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vskip0.08cm
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}%
+  \ifx\insertframesubtitle\@empty\else
+    \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi
+  \vskip0.05cm{\color{cNavy}\rule{\linewidth}{1pt}}\par\vskip-0.18cm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\sffamily\scriptsize\scshape\color{cGrayText}\MakeLowercase{\insertshorttitle}}\hfill
+    \ccc@nav\hspace*{0.9em}{\sffamily\scriptsize\color{cGrayText}\ifbeamer@inappendix\ccc@bid\else\insertframenumber{} / \inserttotalframenumber\fi}%
+  \end{beamercolorbox}}\vskip1pt\global\let\ccc@nav\@empty}
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.2\textheight
+    {\color{cNavy}\rule{0.18\linewidth}{1.4pt}}\par\vskip0.5cm
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vskip0.6cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vfil}}
+\makeatother
+% Statement tag in small caps sans
+\renewenvironment{Statement}[1]{\vspace{-2pt}\NavyRule\vskip1pt
+  \noindent{\sffamily\bfseries\small\color{cNavy}#1}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+\endinput

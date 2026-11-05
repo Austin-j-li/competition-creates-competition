@@ -1,0 +1,293 @@
+% Upgrade flash cards. Build: latexmk -xelatex -interaction=nonstopmode -outdir=build flashcards.tex
+\documentclass[10.5pt]{article}
+\usepackage[a4paper,margin=1.5cm,bottom=1.7cm]{geometry}
+\usepackage{fontspec,unicode-math}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\setmathfont{Libertinus Math}
+\usepackage{xcolor,longtable,array,booktabs,enumitem,fancyhdr,titlesec,microtype}
+\usepackage[hidelinks]{hyperref}
+\definecolor{ox}{HTML}{7A1F1F}
+\definecolor{gr}{HTML}{666666}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\LTpre}{2pt}\setlength{\LTpost}{6pt}
+\titleformat{\section}{\sffamily\Large\bfseries\color{ox}}{\thesection}{0.6em}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\sffamily\footnotesize\color{gr}Upgrade flash cards}
+\fancyfoot[R]{\sffamily\footnotesize\color{gr}\thepage}
+\newcommand{\E}{\mathbb{E}}
+\newcolumntype{I}{>{\raggedright\arraybackslash\leavevmode\sffamily\footnotesize\bfseries\color{ox}}p{0.9cm}}
+\newcolumntype{Q}{>{\raggedright\arraybackslash}p{5.0cm}}
+\newcolumntype{A}{>{\raggedright\arraybackslash}p{11.0cm}}
+\newenvironment{cards}{\begin{longtable}{@{}IQA@{}}}{\end{longtable}}
+\newcommand{\card}[3]{#1 & #2 & #3\\\midrule}
+\newcommand{\src}[1]{\par\vspace{-2pt}{\footnotesize\color{gr}#1}}
+\newcommand{\inpaper}{{\sffamily\footnotesize\color{gr}In the paper.}\ }
+\newcommand{\mine}{{\sffamily\footnotesize\color{ox}My calculation, not in the paper.}\ }
+\newcommand{\inferred}{{\sffamily\footnotesize\color{ox}My reasoning, not in the paper.}\ }
+\newcommand{\scopeline}{{\sffamily\footnotesize\color{ox}No full defence: this is the honest line.}\ }
+\newcommand{\fu}[2]{\par\vspace{1pt}\textit{If asked: #1}\ #2}
+\begin{document}
+
+{\sffamily\LARGE\bfseries\color{ox} Upgrade flash cards}\\
+{\color{gr} Competition Creates Competition, order-slot version. Matches the talk at Overleaf commit 1fa749a.}
+
+\section*{How to use these cards}
+Cover the right column. Read the cue. Say the answer aloud, then check it. Say it in your own words if the meaning stays the same. Fifteen minutes each day:
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{6 minutes:} all 13 daily cards (set A).
+\item \textbf{3 minutes:} the talk skeleton (set B). Say the point of each frame in order.
+\item \textbf{3 minutes:} one weak point (set G). Do W1 twice a week, and rotate the others.
+\item \textbf{2 minutes:} one board derivation (set D), with a pen and no notes.
+\item \textbf{1 minute:} repeat your worst answer of the day.
+\end{enumerate}
+Every few days, do one set from C, E, F or H. Once a week, give the whole talk against a clock; the target is 28 minutes. Set J holds the numbers. Learn the words first.
+
+A grey note gives the place in the paper. A red note marks a line that is not in the paper. Say that fact aloud if you use the line: ``this is my own calculation''.
+
+\section{Daily: the thirteen lines}
+\begin{cards}
+\card{A1}{In 30 seconds, what is the paper?}{A public sale has one prepared bidder, the incumbent. A potential rival must pay to prepare, and it sees the stock price first. A stronger incumbent weakly lowers the rival's profit at every belief, but it can also widen what shareholders gain from good synergy. That can pay an informed trader to trade, and a purchase can then recruit the rival.}
+\card{A2}{What is the question, and what is the received answer?}{Does a stronger incumbent always keep the rival out? The received answer holds when the rival's information stays fixed: the rival earns weakly less from the same work, so entry cannot rise. I keep that effect. I let a stronger incumbent change what the stock price carries.}
+\card{A3}{Give the mechanism with no symbols.}{The sale splits one value between shareholders and the rival. A stronger incumbent can move that split toward shareholders. Shareholder proceeds can then depend more on synergy, so news about synergy can be worth more in the stock. If that pays for the order, the price carries news about synergy, and a purchase can lift the rival's belief far enough for the rival to pay to prepare.}
+\card{A4}{Who knows what, and when?}{The seller commits to the auction and the reserve. If the informed trader gets the one order slot, it knows the class and chooses its order. Market makers see only the order and set the price. The rival then sees the price, learns its cost and decides whether to prepare. Preparation shows the rival its value and lets it bid, and the incumbent bids its own value.}
+\card{A5}{Show the split at one rival value.}{Fix $\theta\ge p$. Shareholders get $\max\{p,\min(R,\theta)\}$. The rival keeps $(\theta-\max\{p,R\})_+$. The two sum to $\theta$ at every $R$, so $t(\theta)+g(\theta)=\theta$. This identity leaves out the incumbent's rent, so it is not total surplus.\src{Paper §3; frame 8}}
+\card{A6}{What are the two auction numbers?}{The spread $\Delta_T=t_H-t_L$ is the gap in shareholder proceeds between good and poor synergy. It sets the gain from trade. The threshold $\tau$ is the belief at which rival profit covers the high cost. It decides whether a purchase can recruit. The spread plus the profit gap $g_H-g_L$ is fixed, so strength only moves the split.\src{Paper §3; frames 10, 11}}
+\card{A7}{Why does informed trade pay at a fair price?}{Market makers set the price from expected entry and average over the two classes. A liquidity trader can place the same order, so no order settles the class. What remains is entry times spread times doubt, less the order cost. No mispricing is needed.\src{Paper §3; frame 12}}
+\card{A8}{Why does the price reveal a belief but not the class?}{A liquidity order can copy any informed order, so every belief stays strictly between zero and one. With a positive spread and the entry floor, equal prices imply equal beliefs. So the rival can read the market's belief from the price, and the class stays unknown.\src{Paper §3, A2; frame 11}}
+\card{A9}{State the main result and its proof in words.}{At the weak strength, even the whole spread is below the order cost, so the informed trader does not trade and entry stays at its floor. At the strong strength, even the lowest gain exceeds the order cost, so the informed trader buys with good synergy and sells with poor synergy, and only a purchase lifts the belief past the threshold. At the very strong strength, the orders stay the same, but rival profit at the top belief does not cover the high cost, so entry returns to its floor. The bounds hold for every order plan, so each of the three strengths has one outcome.\src{Paper §4, A3; frame 13}}
+\card{A10}{What if the information stays fixed?}{At each fixed belief, a stronger incumbent weakly lowers rival profit. Fix the rival's information and the cost law, and entry cannot rise. So the rise must come from a change in the rival's information.\src{Paper §4, A6; frame 15}}
+\card{A11}{Why does the seller not raise the reserve?}{In my example, a reserve near the top value earns more and stops recruitment. That reserve sells only to a ready rival with good synergy, so it earns $\rho\pi h$. Lower the ready share to one fifth, and the best reserves give entry at its floor, then above its floor, then back at its floor. The seller's choice limits this channel without removing it. (Full card: W1. Backup: B17.)}
+\card{A12}{Close, and what comes next?}{Entry can rise against a strong incumbent and return to its floor against a very strong one. With fixed information, entry cannot rise. So a stronger incumbent can induce rival entry through a more informative stock price. Next, I solve the seller's choice of terms, and I measure these public windows.}
+\card{A13}{Does the informed trader know better than the rival?}{It does not know better. It knows something different. The rival knows its own integration plans, and the informed trader knows the target's customers, technology and demand. These are different facts about the same match, so the price can carry a fact the rival lacks. (Full card: W2.)\src{Paper §2, §6}}
+\end{cards}
+
+\section{The talk skeleton}
+The right column gives each frame's point, then the first line of the next frame. The clock is the end time of each frame.
+\begin{cards}
+\card{0}{Title \hfill 0:30}{A public sale, one bidder prepared, one still deciding; the price sits between.\par\textit{Next: ``A listed company announces that it is open to a sale.''}}
+\card{1}{Does a stronger incumbent always keep the rival out? \hfill 2:30}{Seller, rival and market meet in one question.\par\textit{Next: ``The received answer starts with the return to diligence.''}}
+\card{2}{The received answer \hfill 4:00}{With fixed information, strength cannot raise entry.\par\textit{Next: ``Dow, Goldstein and Guembel are the closest antecedent: real decisions feed back into information production.''}}
+\card{3}{Where the paper sits \hfill 5:00}{The new link is the sale: it splits one value.\par\textit{Next: ``A stronger incumbent weakly cuts the rival's profit at each belief.''}}
+\card{4}{This paper \hfill 6:30}{Strength can recruit the rival through the price. Three results.\par\textit{Next: ``Standalone value is zero.''}}
+\card{5}{Players and the sale rule \hfill 7:30}{Actors, costs and the fixed sale rule.\par\textit{Next: ``The sequence puts the stock price before the preparation decision.''}}
+\card{6}{Timing \hfill 9:30}{One slot comes before preparation. A liquidity order can copy an informed one.\par\textit{Next: ``Each player sees a different part of the sale.''}}
+\card{7}{Information and choices \hfill 11:00}{Each player sees a different part.\par\textit{Next: ``Take a prepared rival with value theta at least reserve p.''}}
+\card{8}{Payoffs \hfill 12:30}{One value splits into proceeds and profit.\par\textit{Next: ``This is a perfect Bayesian equilibrium with break-even prices set by competitive market makers.''}}
+\card{9}{Equilibrium \hfill 14:00}{Competitive prices include the entry response. Each strength has a fresh equilibrium.\par\textit{Next: ``Proposition one compares two distributions for incumbent value.''}}
+\card{10}{Strength: profit and spread \hfill 15:30}{Strength cuts rival profit and widens the spread.\par\textit{Next: ``Define liquidity mass b as beta times the quantity one minus lambda.''}}
+\card{11}{Belief band \hfill 16:30}{Beliefs stay in a band. The price shows the belief.\par\textit{Next: ``These are gross gains before order cost k, for any order plan with Bayes beliefs, competitive prices and truthful bids.''}}
+\card{12}{Gain bounds \hfill 18:00}{Entry times spread times doubt, between fixed bounds.\par\textit{Next: ``Proposition two compares three economies with the same class laws, reserve, costs, prior and order opportunity.''}}
+\card{13}{Main result \hfill 21:30}{Entry rises, then returns to its floor, with one outcome at each strength.\par\textit{Next: ``The example fixes good-synergy value at ten and poor-synergy value at one.''}}
+\card{14}{Example \hfill 22:30}{The top belief lies between the two thresholds.\par\textit{Next: ``Now hold the information fixed.''}}
+\card{15}{Fixed information \hfill 24:00}{With fixed information, entry cannot rise. Three comparison rows.\par\textit{Next: ``One change from frame six.''}}
+\card{16}{Costly research \hfill 25:00}{A wider spread pays for private research, up to the cap.\par\textit{Next: ``Use Proposition two at the strong incumbent F one.''}}
+\card{17}{Visible price \hfill 26:00}{Access adds preparation only after a purchase. Proceeds and net surplus rise.\par\textit{Next: ``Keep ranked classes, positive spread and rival gross-profit gap, full informed orders, and prior pi below threshold tau.''}}
+\card{18}{Purchase impact \hfill 27:00}{Weighted purchase impact locates recruitment.\par\textit{Next: ``Let me collect the results.''}}
+\card{19}{Close \hfill 28:00}{Collect the results. End on the one sentence: ``a stronger incumbent can induce rival entry through a more informative stock price.''}
+\end{cards}
+
+\section{Definitions}
+\begin{cards}
+\card{C1}{Incumbent; rival}{The incumbent is already prepared: it approached the target or finished diligence. The rival has not decided whether to prepare. Its name is public. The open fact is its synergy class. ``Discovery'' means that a known rival starts costly preparation.\src{Paper §2}}
+\card{C2}{Stronger}{A first-order stochastic shift in the public distribution of the incumbent's value. The realized value stays private until bids. It is not a bid or a premium.\src{Paper §2; frame 5}}
+\card{C3}{Class and prior}{Class $j$ is $H$ (good synergy) or $L$ (poor synergy), with prior $\pi$ on $H$. A class is a distribution $G_j$ of values. The class ranking has two parts: $G_H\le G_L$ everywhere, and every value meets the reserve.\src{Paper §2}}
+\card{C4}{Entry floor and high cost}{The cost $C$ is zero with probability $\rho$, and $c_H$ otherwise. The zero-cost share models a ready rival: prior familiarity, capacity in place, or a small deal. Entry means paying for preparation. It is not a bid or a win.\src{Paper §2}}
+\card{C5}{The slot; $\lambda,\beta,b,u$}{One order slot before preparation. With chance $\lambda$ the informed trader fills it. Otherwise a liquidity trader sells, abstains or buys with chances $\beta,1-2\beta,\beta$. One-direction liquidity is $b=(1-\lambda)\beta$, and $u=\lambda/b$ caps what one order can say.\src{Paper §2; frame 6}}
+\card{C6}{Informed trader}{An outsider with sector expertise, such as a sector long-short fund. No net position, no control, cannot acquire the target. It sees the class and no further news about value. In the point-value example, the class fixes the value.\src{Paper §2; frame 7, B5}}
+\card{C7}{Liquidity trader; market makers}{The liquidity trader has no private information about synergy, and its motive is outside the model. Competitive market makers see only the order and set $P(x)=\E[V_T\mid X=x]$, which includes the entry response.\src{Paper §2}}
+\card{C8}{Rival gross profit; threshold}{$B(\mu)=g_L+\mu(g_H-g_L)$, before the preparation cost. $\tau=(c_H-g_L)/(g_H-g_L)$ when $g_H>g_L$.\src{Paper §3}}
+\card{C9}{Belief band}{$M=\dfrac{\pi(1+u)}{\pi(1+u)+1-\pi}$, and $m=\dfrac{\pi}{\pi+(1-\pi)(1+u)}$. Every belief after a purchase or a sale lies in $[m,M]$.\src{Paper §2}}
+\card{C10}{Recruits}{A purchase recruits when it lifts the belief to the threshold, so a high-cost rival prepares after that purchase.}
+\card{C11}{Uninformative market}{The informed trader does not trade, every price is the same, and the rival stays at the prior.\src{Paper §4; B3}}
+\card{C12}{Tie rules}{The default: an indifferent high-cost rival prepares, and an indifferent informed trader may mix. The main result has strict gaps, so it holds whichever way ties break. Coexistence and research use the default.\src{Paper §2, §4}}
+\end{cards}
+
+\section{Board derivations}
+Write these with no notes. Say each step aloud.
+\begin{cards}
+\card{D1}{The split}{Three cases. If $R<p$: shareholders get $p$, the rival keeps $\theta-p$. If $p\le R<\theta$: shareholders get $R$, the rival keeps $\theta-R$. If $R\ge\theta$: the incumbent wins and pays $\theta$; the rival keeps zero. Each sum is $\theta$. So $t(\theta)+g(\theta)=\theta$.\src{Paper §3}}
+\card{D2}{Why strength moves it}{$g_j=\int_p^\infty[1-G_j]F\,dy$, so a lower $F$ lowers $g_j$ at each $y$. Under the class ranking, $\Delta_T=\int_p^\infty[1-F](G_L-G_H)\,dy$, so a lower $F$ raises $\Delta_T$. Then $\Delta_T+g_H-g_L$ equals the gap in class means, which strength does not change.\src{Paper §3, A1}}
+\card{D3}{The band}{Each class reaches each nonzero order through liquidity with mass $b$, and the informed trader adds at most $\lambda$. So the likelihood of a purchase lies in $[b,b+\lambda]$ in each class. Its ratio lies in $[1/(1+u),1+u]$. Bayes then gives $m\le\mu\le M$.\src{Paper §2, A2}}
+\card{D4}{Price and gain}{$P(x)=t_0+e(x)[t_L-t_0+\Delta_T\mu(x)]$. Class $H$ expects $t_0+e(x)(t_H-t_0)$. Subtract the price at $x=1$: $t_0$ and $e(1)(t_L-t_0)$ cancel, so $K_H=e(1)\Delta_T[1-\mu(1)]$. In the same way, $K_L=e(-1)\Delta_T\mu(-1)$.\src{Paper §3, A2}}
+\card{D5}{The bounds}{$e\ge\rho$, and each doubt term is at least $\kappa=\min\{m,1-M\}$. Each term is at most one. So $\rho\kappa\Delta_T\le K_j\le\Delta_T$, for every order plan.\src{Paper §3; frame 12}}
+\card{D6}{The three conditions, each used once}{H1: $B_0(\pi)<c_H<B_1(M)$. H2: $\Delta_0<k<\rho\kappa\Delta_1$. H3: $B_2(M)<c_H$.\par $\Delta_0<k$ stops all trade at the weak strength. $B_0(\pi)<c_H$ keeps entry at the floor there. $\rho\kappa\Delta_1>k$ forces full orders at the strong strength, with beliefs $(m,\pi,M)$. $B_1(M)>c_H$ means a purchase recruits. H3 stops recruitment at the very strong strength. Middle entry: $\rho+(1-\rho)(b+\pi\lambda)$.\src{Paper §4, A3; frame 13}}
+\end{cards}
+
+\section{Results: claim, condition, chain}
+\begin{cards}
+\card{E1}{Value split (Proposition 1)}{Strength weakly lowers $g_H$, $g_L$ and $B(\mu)$ at each belief. Under the class ranking, it weakly raises $\Delta_T$. The stronger incumbent wins more often and pays the rival's bid, so slices of value move to shareholders.\src{Paper §3; frame 10}}
+\card{E2}{Informed trading}{A wrong order earns at most $-k$. Each class compares its gain with $k$: trade if above, abstain if below. Needs only $\Delta_T\ge0$.\src{Paper A2; frame 12}}
+\card{E3}{Main result (Proposition 2)}{Under H1 to H3, entry is $\rho$, then above $\rho$, then $\rho$, with one outcome at each of the three strengths. The conditions hold on an open set of inputs. Strength widens the spread, trade starts, a purchase carries news about good synergy, the belief passes $\tau$, a high-cost rival prepares.\src{Paper §4; frame 13}}
+\card{E4}{Ownership}{High-class ownership rises exactly when $e_HW_H(F_1)>\rho W_H(F_0)$. If the high class always outbids the strong incumbent, this holds. More entry alone does not imply more rival wins.\src{Paper §4, A3}}
+\card{E5}{Fixed information}{Fix the joint law of class and signal, the value laws and the cost law. The signal has no further value news within a class. Then entry cannot rise. Strict deterrence needs some cost between the two profits.\src{Paper §4, A6; frame 15}}
+\card{E6}{Two markets at one strength}{If $\pi<\tau\le M$ and $k/(1-\tau)\le\Delta_T\le k/(\rho\max\{\pi,1-\pi\})$, an uninformative market and an informative one coexist. Expect no recruitment, and trade does not pay. Expect recruitment, and a purchase can pay. In the informative market, class $L$ abstains and class $H$ can mix.\src{Paper §4, A4; B3}}
+\card{E7}{Costly research (Proposition 4)}{Assume ranked classes, $\pi=1/2$, $g_H>g_L$, $\tau>1/2$ and the default tie rules. Research is private, costs $a\lambda^2/2$ and has a cap $\bar\lambda<1$. For $\Delta_T>2k$, $\lambda_R$ solves $2a\lambda_R=\Delta_Tm_{\lambda_R}-k+(\rho\Delta_Tm_{\lambda_R}-k)_+$, and $\hat\lambda=\min\{\lambda_R,\bar\lambda\}$. The recruiting equilibrium exists exactly when $\Delta_T>2k$ and $\tau\le M_{\hat\lambda}$. In it, research rises with the spread up to the cap. Total and good-synergy entry rise, and poor-synergy entry falls, because research replaces liquidity orders.\src{Paper §5; frame 16}}
+\card{E8}{Gains for sellers}{At the strong incumbent, under the main conditions, a visible price raises expected proceeds and net surplus against a hidden price. Orders are the same, so access changes only preparation after a purchase. Outside this region, the prior can already justify preparation. If a sale then deters preparation, price access can lower expected proceeds.\src{Paper §7, A7; frame 17}}
+\card{E9}{The price-impact test}{Under full two-sided trade and $\pi<\tau$: $\bar f(1)I_+-\bar f(-1)I_-=\bar f(1)[e(1)-\rho]\,w(M)$. So the weighted purchase impact exceeds the weighted sale impact exactly when a purchase recruits. Bayes makes the belief changes cancel. The entry term remains.\src{Paper §8, A8; frame 18}}
+\end{cards}
+
+\section{Easy to confuse}
+\begin{cards}
+\card{F1}{$\beta\le 1/3$ or $\beta<1/2$?}{$1/3$ extends the band to no order under every plan. The main result needs only the purchase and sale bounds, so it allows $\beta<1/2$. Full orders then put the no-order belief at the prior.}
+\card{F2}{Very strong incumbent: is it an uninformative market?}{No. Entry is at the floor, but the orders stay full and the price stays informative. Nobody can use the news, because even the top belief misses the high cost.}
+\card{F3}{H1: which belief goes with which strength?}{$F_0$ goes with the prior $\pi$. $F_1$ goes with the top belief $M$.}
+\card{F4}{H2: which bound goes with which strength?}{The weak strength uses the cap: $\Delta_0<k$. The strong strength uses the floor: $\rho\kappa\Delta_1>k$.}
+\card{F5}{Actual gains at the strong incumbent}{$K_H=\Delta_1(1-M)$, because entry after a purchase is one. $K_L=\rho\Delta_1m$, because entry after a sale is $\rho$.}
+\card{F6}{Sensitivity or information?}{A wider spread is payoff sensitivity. Once orders are full, a wider spread adds no further information: beliefs stay $(m,\pi,M)$.}
+\card{F7}{Positive spread: does it imply $g_H>g_L$?}{No. H1 supplies that gap at the strong incumbent.}
+\card{F8}{Preparation, sale, win}{Three events. Preparation pays the cost. A sale needs an admissible bid. The rival wins when its value meets the reserve and exceeds the incumbent's value.}
+\card{F9}{Endpoints}{The uninformative market still exists at $r_N$, and recruitment still holds at $r_C$. Say ``past $r_N$'' and ``past $r_C$''.}
+\end{cards}
+
+\section{Weak points and defences}
+Each card has the attack, your answer, and the likely follow-up. Say the answer without apology: state the exact scope, concede what is true, and say why the result still matters.
+\begin{cards}
+\card{W1}{``Your seller commits to a reserve. In your own example a high price earns more. Why would a seller leave this channel open?''}{``Yes, in my example a reserve near the top value earns more at all three strengths and stops recruitment. That reserve sells only to a ready rival with good synergy, so it earns $\rho\pi h$, and the result depends on the ready share. I change that share from one quarter to one fifth and keep the rest the same. The three conditions still hold, and the best reserve at each strength gives entry at its floor, then above its floor, then back at its floor. The seller's choice limits this channel without removing it.''
+\fu{``Is your reserve of one half optimal?''}{No. The result holds at a fixed sale rule. A reserve above the low value earns more.}
+\fu{``What about a board that cannot hold a walk-away price?''}{Then the reserve sits near the standalone value, which is zero here. For $p\le\ell$ the spread does not depend on $p$, and the pattern holds with a very strong incumbent above $r\approx3.69$. I do not solve the commitment game in this paper.}
+\fu{``For which ready shares?''}{For point values, between about $0.104$ and $0.2145$, with the order cost inside the theorem's window. Between about $0.093$ and $0.104$, best-reserve entry is above the floor at both of the first two strengths. Below that, this calculation gives no general conclusion. With narrow bands the pattern holds at $\rho=0.15$, and the exact range is open.}
+\mine\src{Show backup B17. Reserve kernel and table: paper §7, A7. Next step: paper §9}}
+\card{W2}{``Why would an outsider know the rival's synergy better than the rival itself?''}{``It does not know better. It knows something different. The rival knows its own integration plans. The informed trader follows the target's customers, technology and demand. These are different facts about the same match, so a more accurate signal about one can leave the other unknown. The price helps the rival because it carries a fact the rival lacks.''
+\fu{``But in your model the rival knows nothing, and the trader knows the class.''}{That is the sharp case of the main model, which sets the rival's own information aside. Section 6 gives each side an imperfect signal, independent given the class. In the signal example the rival's signal is the more accurate one, and the rise still holds. It needs both sources: a good signal alone does not justify the high cost, and a good signal with a good price does.}
+\fu{``Does that hold at your main example's numbers?''}{No. At those costs and strengths, the rival's signal must be the less accurate one. The more accurate case uses its own costs and strengths.}
+\fu{``Both signals are about one class. Where are the different facts?''}{The model represents two sources with signals that are independent given the class. Given the class, neither signal tells you the other, so each one adds news.}
+\fu{``After preparation?''}{The rival learns its own value. The informed trader gets no further news about that value.}
+\fu{``Customer demand also moves the incumbent's value.''}{It can. The model isolates the part specific to the rival's match. A known common component shifts every outcome by a constant and leaves incentives unchanged. News that moves both bidders' values together is outside the paper.}
+\fu{``Is the trade lawful?''}{The model assumes independent research on the target, with no tip from the sale. It gives no legal opinion on a particular trade. From my notes: the US line turns on a breach at the source, and UK and EU market-abuse rules are wider. (Not in the paper; take legal care with this line.)}
+\inpaper\src{Paper §2, §6, A6, except the legal line. Numbers: J11}}
+\card{W3}{``Why must news travel through a price? A banker can call. The target can certify fit.''}{``It need not travel through a price. A credible direct signal with the same content can support the same decision. In my example the seller gains from preparation in both classes, so I would question an unsupported `good fit' claim from the seller or its banker. The informed trader loses money if its order is wrong. I study how a stronger incumbent changes the return to trade on news about synergy.''
+\fu{``And verifiable certification?''}{A free and credible test can replace the market here. So the channel needs news the rival does not already get.}
+\inferred\fu{``So you have a theory of seller talk?''}{No. I do not solve seller communication or banker incentives.}\src{$t_L-t_0\ge0$, strict at the example's reserve, zero if the reserve excludes the low class: A7. Fixed-signal logic: A6}}
+\card{W4}{``Most contests form in private. How common is your window?''}{``The setting is a disclosed approach, a strategic review or an open contest, with a further bidder still undecided. A fixed private set is outside the paper. The Imprivata proxy shows this kind of stage: an unsolicited approach, outreach, and interest that needs further diligence. I do not have a rate. My first empirical task is to count these public windows.''
+\fu{``Give me a percentage.''}{I do not have a percentage. A count needs dated records of disclosure, readiness, contacts and preparation. Keyword counts of filings do not give it.}
+\scopeline\src{Paper §2, §8}}
+\card{W5}{``You have no empirical test. What fact does this explain?''}{``The paper has no empirical test. I give a mechanism, a control against deterrence, and predictions that data can reject. The paper fixes the measures: the date of the window, a zero for no order, and preparation as the outcome. The next step is to establish the setting and then test the channel.''
+\fu{``What would count against you?''}{No public windows before rival preparation would limit its reach. Price news that comes only after preparation would contradict the timing. A failed entry prediction would matter more than a positive return around a later bid.}
+\fu{``A run-up can mean many things.''}{A raw run-up cannot separate them, so the paper does not use one. The test weights purchase and sale impacts, and it needs a defended design in the data.}
+\scopeline\src{Paper §8, §9. The rejection criteria are my own}}
+\card{W6}{``Drop your entry floor, and no trade is an equilibrium at every strength. Is the result an assumption?''}{``In my example, that silent equilibrium does exist without the floor. With no entry there is no exposure, so there is no trade and the price is silent. An active equilibrium also exists there. From about $r=1.39$ to $r=3.59$, a purchase recruits, and entry rises and then stays flat. So the floor does not create the rise. With the floor and the main conditions, each of the three strengths has one outcome, and the weak one stays uninformative.''
+\fu{``Is zero cost a trick atom?''}{No. A ready rival has prior familiarity, or capacity in place. The result keeps its first two parts under a cost law with no atoms, with a low-cost part that always prepares. The third part needs a stated window.}
+\fu{``What are the numbers?''}{With no floor and the default tie rules, entry rises from about $0.272$ at $r=1.394$ to $0.364$ at $r=1.467$, and stays there through $r=3.593$. Class $L$ abstains throughout.}\mine\src{Floor's work: paper §3. Cost laws: §6, A6. The range matches the paper's $r_A$, $r_F$ and $r_C$}}
+\card{W7}{``Why this slot? Is this only Dow and Gorton, or Edmans, Goldstein and Jiang?''}{``Dow and Gorton give the alternative arrival: the informed trader or the liquidity trader gets the one slot. The unit orders, presence and cost come from the 2015 paper by Edmans, Goldstein and Jiang. Every order has liquidity cover, so no off-path belief enters, and doubt has a fixed floor. My new step is the auction: a stronger incumbent weakly cuts rival profit at each belief and can widen the shareholder spread.''
+\fu{``Why not Kyle?''}{With Gaussian noise, a large flow can nearly prove the class, so the fixed floor on gains goes away. I have not solved that game. (My reasoning.)}
+\fu{``Did you pick this market to force the answer?''}{A separate Laplace version also gives the main comparison, with continuous order sizes. Matching belief bounds does not make the two models equal, so I cite it as a second set-up. I claim the comparison for these two set-ups.}
+\inpaper\src{Paper §1, §2; comparison note}}
+\card{W8}{``Your top belief sits a hair below the last threshold. Is this tuned?''}{``The margin is thin in one place only: the return to the floor at the very strong incumbent. The recruitment margin at the strong incumbent is far larger. A still stronger incumbent widens the thin margin. The conditions are strict, so they hold on an open set. For every ranked pair with a higher high-class mean, and every interior prior, uniform incumbents admit suitable strengths and costs.''
+\fu{``How narrow?''}{In the example, the top belief is about $0.7311$ and the last threshold about $0.7314$. The example shows existence. It is not a calibration.}
+\inpaper\src{Paper §4, §6, A6, A9}}
+\card{W9}{``The trader chooses neither size nor timing. Would repeated trade reveal the class?''}{``The theorem covers one opportunity with a unit order. Both traders use the same unit size. That size gives cover and one bound for every deviation. Continuous size and repeated trade need further work.''
+\fu{``Why does a liquidity trader accept a loss?''}{Its motive is outside the model, and its order chances are exogenous.}
+\inpaper\src{Paper §2; comparison note}}
+\card{W10}{``Your figure has several equilibria. Did you pick the one that makes entry rise?''}{``I do not select an equilibrium to get the rise. At the three comparison strengths the bounds are strict, so each has one outcome, under all mixtures and all tie rules. Between them, an uninformative and an informative market can coexist, and the paper characterises that region exactly. It makes no prediction about which one occurs.''
+\inpaper\src{Paper §4, A3, A4}}
+\card{W11}{``Your test could pick up other news, or the deal mix.''}{``The identity holds within one public state, under full informed orders with the prior below the threshold. Frequency weights remove the class news under those conditions. They do not remove arbitrary news in pooled data, so an empirical design must defend timing, conditioning and the zero outcome.''
+\fu{``What does the algebra remove?''}{Bayes makes the weighted belief changes cancel. What remains is extra preparation after a purchase, times its gain to proceeds.}
+\inpaper\src{Paper §8, A8. The design warning is my own}}
+\card{W12}{``Strength is a distribution. What would I measure?''}{``I would measure what the public can infer from the disclosed record: for example, a strategic bidder with clear synergy against a financial bidder with a leveraged structure. It is not a realized value or a chosen offer. An observed premium also reflects strategy and terms, so I would not use it directly.''
+\fu{``Why does the incumbent not jump-bid, as in Fishman?''}{In the committed second-price auction, the truthful bid is weakly dominant, so a price signal cannot improve it. A preemptive bid is outside this model.}
+\inpaper\src{Paper §2}}
+\card{W13}{``Traders profit at someone's expense. Why call it welfare?''}{``The comparison holds strength fixed and gives the rival access to the price. It adds only preparation that pays, so proceeds and net surplus rise at the strong incumbent. Informed trade occurs in both economies, and its profit is a transfer from liquidity traders. It is not a ranking of strong against weak incumbents, and outside this region a price can deter.''
+\inpaper\src{Paper §7, A7}}
+\card{W14}{``Research needs a prior of one half and a cap. Is it one tuned branch?''}{``The prior of one half is a stated limit. At that prior, one research level solves the recruiting equilibrium, and it rises with the spread to the cap. Zero research can coexist on part of the range. For priors apart from one half, I have no result.''
+\fu{``Why does the first-order condition skip the price response?''}{Research is private, so a deviation faces the same price and entry plan. Public research would need a different analysis.}
+\inpaper\src{Paper §5, A5}}
+\card{W15}{``Negotiate the price and your spread can fall. Is this an auction artefact?''}{``The paper studies one negotiation rule, with verifiable values, a zero reserve, one value in each class, and a fallback at the next bidder's value. With seller weight $\omega$, strength moves the spread weakly with the sign of $1-2\omega$. At $\omega=0$, the rule matches a second-price auction with zero reserve. My claim is for the stated auction, and I do not rank all negotiations.''
+\inpaper\src{Paper §7, A7}}
+\card{W16}{``One rival, two classes, one sunk cost. Real sales are richer.''}{``Under the ranking, classes can be dispersed and can overlap. The paper has a many-class result under separation. One sunk cost isolates the entry margin, and it does not describe staged diligence. Many potential rivals are outside this paper.''
+\fu{``Two values and a prior of one half look odd.''}{That is only the example. The general result takes any ranked pair with a higher high-class mean, and any interior prior.}
+\inpaper\src{Paper §2, §6, A6}}
+\card{W17}{``So what?''}{``The bidder set can depend on information produced outside the sale. A stronger incumbent can raise the value of that information to an informed trader. Informed trade can then draw a rival into preparation.''
+\inpaper\src{Prepared answer in the script}}
+\end{cards}
+
+\section{Literature}
+\begin{cards}
+\card{H1}{Dow, Goldstein, Guembel (2017, JEEA)}{Closest antecedent: real decisions feed back into information production. Here the sale divides the surplus between a traded claim and the rival who decides.}
+\card{H2}{Edmans, Goldstein, Jiang (2015, AER)}{Corrective decisions discourage trade on bad news. I take the unit orders, presence and order cost from this paper. Never call it the anchor.}
+\card{H3}{Dow, Gorton (1997, JF)}{Informed and liquidity orders as alternative arrivals in one slot. Here the payoff depends on the price, through the rival's preparation.}
+\card{H4}{Fishman (1988, RAND)}{Costly entry, and a preemptive bid deters. Here strength is a public distribution, and the claim holds at fixed information.}
+\card{H5}{Edmans, Goldstein, Jiang (2012, JF)}{Target prices affect takeover activity. Keep it apart from their 2015 paper. Here the rival learns about its own value.}
+\card{H6}{Kyle, Vila (1991, RAND)}{An acquirer hides its purchases in liquidity trade. Here the trader is an outsider with no position.}
+\card{H7}{Roberts, Sweeting (2013, AER)}{Selective entry. Here the pre-entry information is the price.}
+\card{H8}{Bulow, Klemperer (1996, AER)}{One extra bidder can carry first-order value. This is the reason a seller cares about entry.}
+\card{H9}{Gorbenko, Malenko (2014, JF)}{Strategic and financial bidders differ in value. This motivates a public strength. State it exactly.}
+\end{cards}
+
+\section{Research map: broad extensions}
+Do not mention the job market. One question ties the map together: \textbf{how news moves between a sale and the stock price.}
+\begin{cards}
+\card{I1}{The seller's choice of terms}{I will solve the seller's choice of reserve, publicity and payment rule, with the whole response of trade in the model. I will ask what the seller can commit to. This is my next theoretical step.}
+\card{I2}{Measuring the channel}{I will count public windows with a prepared incumbent and an undecided rival. I will date the public strength and the rival's preparation. Then I will test the price-impact prediction in data.}
+\card{I3}{Information from the sale to the market}{Prices can carry news about private sale steps before any public bid. I will measure what news prices carry about those steps, and whether the sale then narrows or widens.}
+\card{I4}{Richer trading}{I will allow order size to vary and allow repeated trade. The hard part is how far prices can then move toward proof of the class.}
+\card{I5}{Richer contests}{I will study contests with many potential rivals. I will ask which rivals stay, which rivals leave, and what news prices carry about each rival.}
+\end{cards}
+
+\section{Numbers, for the second pass}
+Point-value example: $h=10,\ \ell=1,\ p=\pi=1/2,\ \rho=1/4,\ c_H=6,\ k=1/50$, $R\sim U[0,r]$, $r=1.2,\ 3,\ 3.6$, $1+u=\mathrm{e}$.
+\begin{cards}
+\card{J1}{Entry}{$0.25\to0.5228\to0.25$.}
+\card{J2}{High-class ownership}{$0.125\to0.3244$ from weak to strong.}
+\card{J3}{Spread; profit at the prior}{The spread goes from $1/60$ to $2/3$. Gross profit at the prior falls from $4.80$ to $4.29$.}
+\card{J4}{The thresholds}{$\tau(r_1)=0.705<M=0.7311<\tau(r_2)=0.7314$.}
+\card{J5}{Margins in cost units}{Recruitment at the strong incumbent: $B_1(M)-c_H=0.2172$. Exclusion at the very strong: $c_H-B_2(M)=0.0027$.}
+\card{J6}{Key strengths, by role}{The active market opens at $r_A=1.394$. The uninformative market ends past $r_N=1.748$. Recruitment ends past $r_C=3.593$.}
+\card{J7}{Reserve, at $\rho=1/4$}{Best is near $h$: proceeds $1.25$ and entry $0.25$ at all three strengths. At $p=1/2$, proceeds are $0.393$, $0.873$ and $0.664$. \mine}
+\card{J8}{Reserve, at $\rho=1/5$, $k=1/50$}{Best reserves: near $h$, $1.325$, $1.906$. Proceeds: $1.00$, $1.069$, $1.038$. Entry: $0.20$, $0.491$, $0.20$. \mine}
+\card{J9}{Reserve cutoffs for $\rho$}{Take $1/60<k<2\rho\kappa/3$. The pattern floor, above floor, floor holds for $0.10406<\rho\le0.21453$, with the top reserve as a limit. Some $k$ meets H2 exactly when $\rho>1/(40\kappa)\approx0.09296$. \mine}
+\card{J10}{Near-zero reserve}{The spread is unchanged for $p\le\ell$. Exclusion needs $r>3.685$ as $p\to0$. \mine}
+\card{J11}{Signal example}{$\alpha_I=0.70$, $\alpha_C=0.75$, with a ready share of $\rho=0.85$. Entry rises from $0.85$ to $0.8798$. Without the rival's signal, entry is $0.85$ at both strengths. The rise is small, and the example shows only that the case can occur.}
+\end{cards}
+
+\section{Do not say}
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item ``Strength raises entry.'' Say ``can raise'', on an open set, at the three comparison strengths.
+\item ``The price reveals the class'' or ``the synergy''. Say ``the price carries news about synergy''. It can reveal the belief.
+\item ``The informed trader knows more than the rival.'' Say ``it knows different facts about the same match''.
+\item ``My reserve is optimal'', or ``the result is the limited-commitment case''.
+\item ``Prices beat a banker's call.'' ``The test is ready to run.'' ``No earlier paper has this.''
+\item ``It holds for any distribution.'' Say ``for each ranked pair with a higher high-class mean and each interior prior, at suitable strengths and costs''.
+\item ``Unique'' without ``at the three strengths''.
+\item ``Alex agrees'', or any other faculty endorsement or credit. The floor question also carries no name.
+\item Laplace-only facts: the rise at $1.55$ to $1.65$, the partial sale, the atom at the ceiling.
+\item Anything about the job market.
+\end{itemize}
+
+\section{Backup lookup}
+\begin{cards}
+\card{}{Why each outcome is unique}{B2}
+\card{}{Who the informed trader is}{B5}
+\card{}{Uniqueness between weak and strong; two markets}{B3}
+\card{}{Exact statement of the main result}{B1}
+\card{}{Does access always help sellers; reserve; payment rule}{B4}
+\card{}{Do bidders already look at the price}{B11, pages 2 and 3}
+\card{}{The seller's best reserve (not in the paper)}{B17}
+\card{}{Other costs, classes, signals}{B6}
+\card{}{Research in full}{B12}
+\card{}{Why record no order; where deterrence shows in data}{B13}
+\card{}{The slot; payoffs in detail; equilibrium and tie rules}{B7; B8; B9}
+\card{}{Example inputs; literature; continuous sizes; notation}{B10; B14; B15; B16}
+\end{cards}
+
+\section*{Two-minute versions (rehearse every few days)}
+\textbf{Opening.} A listed target is open to a sale. One bidder, the incumbent, has done its work. A potential rival must prepare before it can bid. Preparation covers diligence, finance and approvals. The received answer holds the rival's information fixed: a stronger incumbent weakly cuts the return to preparation, so entry cannot rise.
+
+I keep that effect. I add one order slot before the rival pays to prepare. An informed trader with sector knowledge can trade the target's stock. A liquidity trader can place the same order, so the price carries news about the synergy class and never settles it. The rival then decides whether to prepare.
+
+The sale splits one rival value between shareholders and the rival. Good synergy gives shareholders higher proceeds than poor synergy, and I call that gap the shareholder spread. A stronger incumbent can widen it. A wider spread can make informed trade pay its cost. A purchase then lifts the rival's belief past the point where high-cost preparation pays.
+
+So entry can rise against the strong incumbent. Against a very strong incumbent, rival profit does not cover the high cost at any belief, and entry returns to its floor. Each of the three strengths has one outcome. With fixed information, entry cannot rise.
+
+\textbf{Close.} The main result compares three strengths. Weak: the spread cannot pay the order cost, so no informed order occurs. Strong: the informed trader buys with good synergy and sells with poor synergy, and only a purchase recruits a high-cost rival. Very strong: trade stays active, but rival profit stays below the high cost at every belief.
+
+At each fixed belief, a stronger incumbent weakly cuts rival profit. With fixed information, entry cannot rise. So the rise must come from a change in the rival's information.
+
+With costly research, a wider spread pays for more research, up to the cap, and entry sorts toward good synergy. Against the strong incumbent, a visible price raises expected proceeds and net surplus. Weighted by frequency, the test predicts that a purchase moves the price more than a sale exactly when a purchase recruits.
+
+So a stronger incumbent can induce rival entry through a more informative stock price.
+
+\end{document}

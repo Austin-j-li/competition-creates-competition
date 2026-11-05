@@ -1,0 +1,74 @@
+% INSERT AFTER: online_appendix.tex lines 706-707 ("\subsection{A.6. Smooth noise, atomless costs, and primitive" to "nonemptiness}\label{oa-a-extensions}").
+% INSERT BEFORE: "For logistic noise," at line 709. Keep the existing subsection and equation numbers.
+% NEW LABELS: oa-a-laplace-extreme, result-lemma-oa-laplace-extreme.
+% NEW SYMBOLS: mathcal C_L, L, ell_b (Laplace density), S (survival function),
+% beta_f (ROC curve), varphi (statistical decision rule),
+% h_varphi, Phi, v (ODE objects), Y_n (independent Laplace variables),
+% W (extra noise), and chi_log (the logistic characteristic function).
+% Existing pi is the class prior; the pi in the characteristic function is the circle constant.
+% NUMBERS: none. No new bibliography record.
+% SOURCES: Q2_laplace_technical R8-R10; the general-prior weights use Q1_N_main Claim 6.
+
+\subsubsection{Laplace is the extreme member of the class}\label{oa-a-laplace-extreme}
+
+Write \(\mathcal C_L\) for the positive, absolutely continuous densities
+with \(|f'|\le Lf\) almost everywhere.
+Set \(b=1/L\) and \(\ell_b(z)=e^{-|z|/b}/(2b)\).
+The score bound gives \(\int|f'|\le L\), so the convolution argument in A.3 applies.
+The three claims below hold for every \(L>0\).
+The equilibrium result also requires \(L<1\).
+\par
+Write \(\beta_f(\alpha)=\sup_{\varphi:\Pr_L(\varphi)\le\alpha}\Pr_H(\varphi)\)
+for the ROC curve of the flow experiment, where \(\Pr_j(\varphi)=\mathbb E_j\varphi(X)\).
+
+\Needspace{8\baselineskip}
+
+\protect\phantomsection\label{result-lemma-oa-laplace-extreme}{\textbf{Lemma
+(Laplace extremality; analytical).}} \emph{(i) If \(f\in\mathcal C_L\)
+has median zero, then \(\Pr_f(|Z|>t)\ge e^{-Lt}\) for every \(t\ge0\).
+Equality at a positive \(t\) requires \(f=\ell_b\).
+(ii) At every pure order profile, the Laplace flow experiment Blackwell-dominates the experiment from any \(f\in\mathcal C_L\).
+Price sufficiency gives the same comparison for the price experiments.
+(iii) At a common scale, logistic noise equals Laplace noise plus independent noise:
+\(Z_{\mathrm{log}}\overset d=Z_{\mathrm{Lap}}+W\), where
+\(W\overset d=\sum_{n=2}^{\infty}Y_n\) and the \(Y_n\) are independent Laplace variables with scales \(b/n\).
+The logistic comparison holds at mixed order profiles as well.}
+
+\emph{Proof of (i).} Put \(S(t)=\int_t^\infty f(z)\,dz\) for \(t\ge0\).
+The log-density bound gives \(f(z)\ge f(t)e^{-L(z-t)}\) for \(z\ge t\), hence \(S(t)\ge f(t)/L\).
+Thus \(S'(t)=-f(t)\ge-LS(t)\), and \(S(0)=1/2\) gives \(S(t)\ge e^{-Lt}/2\).
+Apply the same argument to \(f(-z)\) and add the two tail bounds.
+\par
+If their sum equals \(e^{-Lt}\) at a positive \(t\), both tail inequalities are equalities.
+Monotonicity of \(e^{Lu}S(u)\) then gives \(S(u)=e^{-Lu}/2\) on \([0,t]\).
+Continuity gives \(f(t)=Le^{-Lt}/2\), so equality in \(S(t)\ge f(t)/L\) fixes the complete right tail.
+Hence \(f(z)=(L/2)e^{-Lz}\) for every \(z\ge0\); reflection fixes the left tail. \(\square\)
+
+\emph{Proof of (ii).} Equal orders give constant information; otherwise relabel the states so that \(q_L<q_H\).
+For a statistical decision rule \(0\le\varphi\le1\), put \(h_\varphi(s)=\int\varphi(x)f(x-s)\,dx\).
+Section A.3 gives \(|h_\varphi'|\le Lh_\varphi\); its application to \(1-\varphi\) also gives \(|h_\varphi'|\le L(1-h_\varphi)\).
+Let \(v'=\Phi(v)=L\min\{v,1-v\}\), with \(v(q_L)=h_\varphi(q_L)=\alpha\).
+Since \(\Phi\) is Lipschitz, \((h_\varphi-v)_+'\le L(h_\varphi-v)_+\) almost everywhere; integration gives \(h_\varphi\le v\).
+For Laplace noise, a half-line rule has \(h'=\Phi(h)\) exactly and can realize every \(\alpha\in(0,1)\).
+\par
+These half-lines are optimal by the monotone likelihood ratio, so the ROC curves obey \(\beta_f(\alpha)\le\beta_{\mathrm{Lap}}(\alpha)\); endpoints follow by continuity.
+For \(0\le t\le1\), Bayes' rule gives \(\mathbb E(\mu-t)_+=\sup_{0\le\alpha\le1}\{\pi(1-t)\beta(\alpha)-(1-\pi)t\alpha\}\).
+The ROC inequality thus orders every posterior call value; both posterior means equal \(\pi\), so it gives convex order.
+For two states, this is Blackwell dominance; price sufficiency makes each price experiment equivalent to its flow experiment. \(\square\)
+
+\emph{Proof of (iii).} The density in the paper has characteristic function
+\(\chi_{\mathrm{log}}(t)=\pi bt/\sinh(\pi bt)\).
+Euler's product gives \(\chi_{\mathrm{log}}(t)=\prod_{n=1}^{\infty}(1+b^2t^2/n^2)^{-1}\).
+Each factor is the characteristic function of a centered Laplace variable with scale \(b/n\).
+Take \(Y_n\), \(n\ge1\), independently with these laws; their total variance is \(2b^2\sum_{n\ge1}n^{-2}<\infty\).
+Their partial sums converge almost surely and in \(L^2\), and their characteristic functions converge to the displayed product.
+\par
+Separate the first term: \(Z_{\mathrm{Lap}}=Y_1\) is independent of \(W=\sum_{n\ge2}Y_n\).
+The product identity gives \(Z_{\mathrm{log}}\overset d=Z_{\mathrm{Lap}}+W\).
+The kernel that adds \(W\) is independent of the class and of the investor's order.
+It therefore gives Blackwell dominance at every pure or mixed order profile; price sufficiency transfers the comparison to prices. \(\square\)
+
+Part (ii) does not assert dominance at mixed profiles for every member of the class.
+Part (iii) supplies that stronger scope for logistic noise.
+Blackwell dominance orders the value of information, but it does not order the probability of expensive preparation.
+

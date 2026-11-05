@@ -1,0 +1,68 @@
+% FRAGMENT I01 (integrator): new Online Appendix subsection C.9.
+% INSERT BEFORE TEXT: online_appendix.tex "\section{D. Institutional pilot and empirical design}"
+% SOURCE: the validated numerical contract, ccc-revision-numerics paper/online_appendix.md,
+%   section C.9 (commit 9faf2d7), transcribed into the manuscript's LaTeX conventions.
+% NOTATION: the contract's Delta R_T is written \Delta\mathcal R_T, the symbol of (A.41) in the
+%   paper for the same object. Displays are unnumbered, as in the contract.
+% NUM PLACEHOLDERS (reconciliation names): Pi_acc, Pi_hid, Delta_R_T, break_even_trade_scale,
+%   Omega_U, Omega_0, sech_entry_strong, student_t3_entry_strong.
+% LABELS ADDED: oa-c-revision (the contract's anchor name).
+\subsection{C.9. Gross trade profits, stake bounds, and additional noise
+laws}\label{oa-c-revision}
+
+This exercise uses the benchmark with zero low cost. The first
+calculation uses \(r_1=3\) and full orders in both price regimes. Write
+\(a_H(x)=f(x-1)\), \(a_L(x)=f(x+1)\), and
+\(\mu(x)=a_H(x)/(a_H(x)+a_L(x))\). The expected gross trade profit is
+
+\[
+\Pi=\Delta_T\int_{\mathbb R}e(x)\frac{a_H(x)a_L(x)}{a_H(x)+a_L(x)}\,dx.
+\]
+
+Price access sets \(e(x)=\rho+(1-\rho)\mathbf1\{B_r(\mu(x))\ge c_H\}\).
+Hidden prices set \(e(x)=\rho\). Gross profit excludes the trade cost
+\(k\). The proceeds gain is the second line of (A.41) in the paper,
+
+\[
+\Delta\mathcal R_T=\frac{1-\rho}{2}\left[(t_H-t_0)\alpha_H+(t_L-t_0)\alpha_L\right].
+\]
+
+The results are \(\Pi_{\mathrm{acc}}\approx\NUM{Pi_acc}\),
+\(\Pi_{\mathrm{hid}}\approx\NUM{Pi_hid}\), and
+\(\Delta\mathcal R_T\approx\NUM{Delta_R_T}\). The break-even trade scale
+is \(\Delta\mathcal R_T/\Pi_{\mathrm{acc}}\approx\NUM{break_even_trade_scale}\)
+order units. These are numerical diagnostics at the stated profile.
+
+The stake calculations use the sufficient bounds of
+\hyperref[oa-a-stake]{Section A.12} at the benchmark, where
+\(\kappa(1/2)=m\):
+
+\[
+\Omega_U=\frac{2b[(1-1/b)\rho m\Delta_T(r_1)-k]}{(1-\rho)(t_H(r_1)-t_0(r_1))},
+\qquad
+\Omega_0=\frac{2b[k-\Delta_T(r_0)]}{(1-\rho)(t_H(r_0)-t_0(r_0))}.
+\]
+
+Their numerical values are \(\Omega_U\approx\NUM{Omega_U}\) and
+\(\Omega_0\approx\NUM{Omega_0}\) order units. Use the unrounded formulas
+for a strict stake comparison. They do not locate an exact equilibrium
+transition.
+
+The additional noise calculations keep full orders fixed at \(r_1\).
+For each density, the code solves \(\mu(x)\ge\tau\) and integrates the
+two state densities over the complete entry set. Hyperbolic secant noise
+gives a half-line. Student noise gives a bounded interval with two
+endpoints. The entry probabilities are approximately
+\NUM{sech_entry_strong} and \NUM{student_t3_entry_strong}, respectively.
+These calculations do not search for equilibria under the additional
+laws.
+
+\textbf{Outputs.} \texttt{numerics/revision\_quantities.csv},
+\texttt{numerics/revision\_diagnostics.json}, and
+\texttt{numerics/manifests/c9\_revision.json}. Each scalar records its
+inputs, profile, independent value, discrepancy, and status. Independent
+fifty-digit formulas and density integrals validate profits and stakes.
+Independent density roots and quadrature validate the noise values. Both
+Laplace regimes also pass the existing continuation validator. C.0
+controls apply. Any failure leaves the result open and stops the
+producer. Feed: Sections 5.1 and 6.1 of the paper and A.12.

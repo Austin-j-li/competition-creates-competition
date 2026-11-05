@@ -1,0 +1,826 @@
+\chapter{Taking the model to data}\label{ch:empirical}
+
+\begin{chapterplan}
+\textbf{The question.} Which comparisons of prices, order counts and outcomes can a researcher compute from public data, and which sign does the model predict for each?
+
+After this chapter you can:
+\begin{itemize}
+\item date the decision interval in a given sale, and name the order, the price and the strength that enter a test;
+\item derive the weighted price-impact test, and the split of the price gap into a class part and an entry part;
+\item derive what order counts and the sale impact identify about the informed investor;
+\item derive the covariance of the order with the winner, and the sign of the announcement return;
+\item say which predictions separate the mechanism from simple deterrence, and what a researcher must hold fixed.
+\end{itemize}
+\end{chapterplan}
+
+\section{What a researcher can see}\label{sec:empirical-observe}
+
+A sale process leaves marks in public data. The record shows when the sale becomes public. Each trading day brings a price and an order flow. Later the record shows whether a second buyer started diligence, who won the sale, and how the price reacted to news. The model gives each mark a name, and each prediction compares two marks. Table~\ref{tab:empirical-observe} lists the marks and the objects that they measure.
+
+\begin{table}[ht]
+\centering\small
+\caption{What a researcher sees, and the object of the model that it measures.}\label{tab:empirical-observe}
+\begin{tabular}{@{}p{0.40\linewidth}p{0.50\linewidth}@{}}
+\toprule
+In the data & In the model\\
+\midrule
+The days from the public sale news to the challenger's decision & the decision interval, dates 1 to 6 of the timeline (Section~\ref{sec:model-timing})\\[2pt]
+The public record on the prepared bidder & the incumbent law \(F\), indexed by its strength \(r\)\\[2pt]
+The stock price after an order opportunity & the price \(P(x)\)\\[2pt]
+The sign of the net order imbalance, or zero & the order \(X\in\{-1,0,1\}\), with frequency \(\bar f(x)\)\\[2pt]
+The start of substantive diligence, or a proposal that needs costly preparation & preparation \(\1_{\rm prep}\), with probability \(e(x)\) after the order \(x\)\\[2pt]
+The winner of the sale & acquisition \(\1_{\rm acq}\), with probability \(e(x)\,W_F(\mu(x))\)\\[2pt]
+The price change on news that reveals only whether the challenger prepared & the changes \(\Delta^1_x\) and \(\Delta^0_x\)\\[2pt]
+Orders from outside traders with a view on the challenger's fit & the informed investor, present with probability \(\lambda\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyidea}
+Every result of this chapter concerns one target in one public state. The prior, the slot and the incumbent law stay fixed, and every frequency, mean and covariance is taken over the order opportunity of that state (Appendix A.8 of the paper).
+\end{keyidea}
+
+So \(\bar f(x)\) is the frequency of the order \(x\) per order opportunity of one state. It is not a frequency across deals that differ in their state. The paper does not say how to pool targets that differ in prior, slot or incumbent. The guide treats this as a task for the researcher (Section~\ref{sec:empirical-deterrence}).
+
+\section{Dating the decision interval}\label{sec:empirical-dating}
+
+The model needs a stretch of time with three features. The sale is public. One buyer has already prepared. The stock still trades while a second buyer decides whether to prepare. Section~\ref{sec:model-interval} names three events that can open such a stretch: a disclosed approach, an announced strategic review, and an open contest. The opportunity must become public before the set of buyers is fixed. Section 8 of the paper turns this into dates with the following rules.
+
+\begin{itemize}
+\item \emph{The start.} The interval starts when the sale becomes public. One bidder is then prepared, and the challenger has not yet committed to diligence.
+\item \emph{The end.} The interval ends with the challenger's decision. The counterpart of preparation in the data is the start of substantive diligence, or a proposal that requires costly preparation. A public offer is a narrower outcome, so do not date the decision by the first public offer.
+\item \emph{The strength and the price.} Measure the incumbent's strength from information that is public before the decision. The price must also come before the decision.
+\item \emph{The order.} The order is the outcome of the first prespecified public order opportunity after the sale becomes public. An opportunity with no order is recorded as a zero.
+\item \emph{An example.} A scheduled call auction, such as the opening auction on the first trading day after the approach is disclosed. Its time is fixed in advance and does not depend on any trader's information. It takes place whether or not an order arrives. The sign of its net order imbalance is the order, and an imbalance below a size fixed in advance records the zero.
+\item \emph{First executed trades.} A sample of first executed trades omits the zero order. The paper states that it cannot identify the volume, the effect of an inactive opportunity, or the informed share.
+\item \emph{Announcements.} The announcement formulas need events that reveal only whether the challenger prepared. Target returns before a bid partly reflect anticipation of that bid (the paper cites Schwert, 1996), so each test dates the price before the challenger's decision.
+\item \emph{The trading counterpart.} The informed investor corresponds to outside trade with a view on the challenger's fit, such as orders from sector specialists.
+\end{itemize}
+
+The guide adds four reasons from the model. They are the guide's reading, and not statements of the paper.
+\begin{itemize}
+\item The timeline puts the price at date 5 and the challenger's decision at date 6. A price after the decision is another object: it is the price after news about the decision (Section~\ref{sec:empirical-announce}).
+\item The strength \(r\) indexes the public law \(F\) of the incumbent's value. The challenger's own move should not enter this law.
+\item In the model the slot always opens. If the time of the opportunity depended on information, or if only executed trades counted, the sample would select on the order. The frequencies \(\bar f(x)\) would then differ from those of the model.
+\item Both price impacts are measured from the price after no order, \(P(0)\), and the volume is \(1-\bar f(0)\). Both need the zero order.
+\end{itemize}
+
+The paper gives no rule for a case in which the record is silent about the date of the decision. Then the researcher must choose a date, and the choice must not use information from after the decision.
+
+\section{Full two-sided trade: counts, posteriors and the informed share}\label{sec:empirical-full}
+
+Most predictions use one pattern of trade. Class \(H\) buys with probability one, and class \(L\) sells with probability one. The paper calls this \emph{full two-sided trade}: \(\sigma_H=\delta_1\) and \(\sigma_L=\delta_{-1}\). This section collects what counts and posteriors look like under it. Every later section uses these facts.
+
+\subsection{The symbols}
+
+Chapters~\ref{ch:model} to~\ref{ch:ccc} define the symbols. This list recalls them.
+\begin{itemize}
+\item The class is \(j\in\{H,L\}\), with prior \(\pi=\Pr(j=H)\in(0,1)\). The informed investor fills the order slot with probability \(\lambda\). A liquidity trader fills it otherwise.
+\item A liquidity order in one direction has probability \(b=(1-\lambda)\beta\), and a liquidity abstention has probability \(b_0=1-\lambda-2b\). The ratio \(u=\lambda/b\) compares the informed mass with the liquidity mass in one direction.
+\item The order is \(X\in\{-1,0,1\}\). Its probability in class \(j\) is \(f_j(x)\). Its frequency per opportunity is \(\bar f(x)=\Pr(X=x)\), and the volume is \(v=\Pr(X\ne0)\).
+\item \(\mu(x)\) is the posterior of class \(H\) after the order \(x\). \(M=M(\pi)\) and \(m=m(\pi)\) are the top and bottom posteriors (equation~\eqref{eq:beliefs-bounds}).
+\item \(\rho\) is the probability of a zero-cost challenger. Entry \(e(x)\ge\rho\) is the probability that the challenger prepares after \(x\). \(\tau\) is the preparation threshold (equation~\eqref{eq:beliefs-threshold}).
+\item \(P(x)\) is the price, \(t_0\) the expected proceeds without entry, and \(\DT\) the target-payoff spread. The entry gain at the belief \(\mu\) is \(w_F(\mu)=t_L-t_0+\DT\,\mu\) (written \(w(\mu)\) in Chapter~\ref{ch:beliefs}). The capital \(W_F\) is another object, the win probability of Section~\ref{sec:empirical-winner}.
+\item \(B_F(\mu)\) is gross acquisition profit at the belief \(\mu\), and \(\chi_F=\1\{B_F(M)\ge c_H\}\).
+\item \(I_+=P(1)-P(0)\) is the purchase impact, \(I_-=P(0)-P(-1)\) is the sale impact, and \(P(1)-P(-1)=I_++I_-\) is the price gap.
+\end{itemize}
+
+The appendix keeps these hypotheses throughout: \(F\) is any continuous law, the classes satisfy the class ranking, \(\pi\) is arbitrary in \((0,1)\), \(\DT>0\), and \(\gamma=g_H-g_L>0\). This section uses Lemma A.1(a), (b) and (d), which hold for every \(0<\beta<1/2\). Two facts from earlier chapters complete the list.
+\begin{itemize}
+\item \(w_F(\mu)=w_L+\DT\mu\) with \(w_L=t_L-t_0\ge0\) (Section~\ref{sec:beliefs-setup}). So \(w_F(\mu)\ge\DT\mu>0\) for every \(\mu>0\).
+\item Entry is \(\rho\) after an order with posterior below \(\tau\), and one after an order with posterior above \(\tau\) (Lemma A.2(d), Section~\ref{sec:beliefs-reveal}). At \(\tau\) the tie rule of the challenger decides.
+\end{itemize}
+
+\subsection{The order frequencies}
+
+Under full two-sided trade, class \(H\) places the orders \((-1,0,1)\) with probabilities \((b,\,b_0,\,b+\lambda)\), and class \(L\) with probabilities \((b+\lambda,\,b_0,\,b)\) (Section~\ref{sec:beliefs-full}). Average over the class.
+
+\begin{derivation}[frequencies, volume and mean order]
+\begin{align*}
+\bar f(1) &= \pi f_H(1)+(1-\pi)f_L(1) \why{total probability (Section~\ref{sec:toolkit-bayes})}\\
+&= \pi(b+\lambda)+(1-\pi)\,b=b+\pi\lambda \why{class laws; collect the terms in \(b\)}\\
+\bar f(-1) &= \pi b+(1-\pi)(b+\lambda)=b+(1-\pi)\lambda \why{the same steps}\\
+\bar f(0) &= \pi b_0+(1-\pi)\,b_0=1-2b-\lambda \why{the zero order has the same law in both classes}\\
+v &= \bar f(1)+\bar f(-1)=2b+\lambda \why{add the two nonzero frequencies}\\
+\E[X] &= \bar f(1)-\bar f(-1)=\lambda(2\pi-1) \why{\(X=\pm1\) or \(0\); subtract}
+\end{align*}
+\end{derivation}
+
+In words: the liquidity floor \(b\) sits under both nonzero frequencies. The informed investor adds \(\lambda\) to the purchase frequency with weight \(\pi\), and to the sale frequency with weight \(1-\pi\).
+
+\subsection{The balance identity}
+
+By Bayes' rule, \(\bar f(1)\,\mu(1)=\pi f_H(1)\) and \(\bar f(-1)\,\mu(-1)=\pi f_H(-1)\). Under full two-sided trade, \(\mu(1)=M\) and \(\mu(-1)=m\) (Lemma A.1(d)).
+
+\begin{derivation}[the balance identity]
+\begin{align*}
+\bar f(1)\,(M-\pi) &= \pi f_H(1)-\pi\bar f(1) \why{\(\bar f(1)M=\pi f_H(1)\)}\\
+&= \pi\,\bigl[b+\lambda-(b+\pi\lambda)\bigr] \why{\(f_H(1)=b+\lambda\); frequency above}\\
+&= \pi(1-\pi)\lambda \why{\(\lambda-\pi\lambda=(1-\pi)\lambda\)}\\[3pt]
+\bar f(-1)\,(\pi-m) &= \pi\bar f(-1)-\pi f_H(-1) \why{\(\bar f(-1)m=\pi f_H(-1)\)}\\
+&= \pi\,\bigl[b+(1-\pi)\lambda-b\bigr]=\pi(1-\pi)\lambda \why{\(f_H(-1)=b\); frequency above}
+\end{align*}
+\end{derivation}
+
+The paper writes this as one line:
+\begin{equation}\label{eq:empirical-balance}
+\bar f(1)\,(M-\pi)=\bar f(-1)\,(\pi-m)=\pi(1-\pi)\lambda .
+\end{equation}
+
+\begin{intuition}[beliefs cannot drift]
+The left side is the probability of a purchase times the rise in belief after it. The middle term is the probability of a sale times the fall in belief after it. A Bayesian belief has no drift: the expected change is zero. Under full two-sided trade the zero order leaves the belief at \(\pi\). So the expected rise equals the expected fall. This is why a weighted comparison of impacts removes the learning about the class (Section~\ref{sec:empirical-weighted}).
+\end{intuition}
+
+Check the claim. Write each posterior as the prior plus its change, and add the three terms \(\bar f(x)\,\mu(x)\).
+\begin{align*}
+\sum_x\bar f(x)\,\mu(x) &= \pi\sum_x\bar f(x)+\bar f(1)(M-\pi)-\bar f(-1)(\pi-m) \why{\(\mu(0)=\pi\)}\\
+&= \pi+0=\pi \why{frequencies add to one; \eqref{eq:empirical-balance}}
+\end{align*}
+Part (i) of Proposition A.10 uses this average for every trading pattern.
+
+\subsection{The informed share and the posterior gap}
+
+The informed share of nonzero orders is \(\vartheta=\lambda/v\). Divide the numerator and the denominator of \(\lambda/(2b+\lambda)\) by \(b\): \(\vartheta=u/(2+u)\). The share depends on the slot only through \(u\), and not on the prior.
+
+The posterior gap follows from the balance identity.
+\begin{align*}
+M-m &= (M-\pi)+(\pi-m) \why{add and subtract \(\pi\)}\\
+&= \pi(1-\pi)\lambda\Bigl[\frac1{\bar f(1)}+\frac1{\bar f(-1)}\Bigr] \why{\eqref{eq:empirical-balance}, divide by each frequency}\\
+&= \frac{\pi(1-\pi)\lambda\,v}{\bar f(1)\,\bar f(-1)} \why{common denominator; \(\bar f(1)+\bar f(-1)=v\)}\\
+&= \vartheta\,\frac{\pi(1-\pi)\,v^2}{\bar f(1)\,\bar f(-1)} \why{\(\lambda\,v=\vartheta\,v^2\)}
+\end{align*}
+
+\begin{derivation}[the last fraction is at most one]
+\begin{align*}
+\bar f(1)\,\bar f(-1) &= (b+\pi\lambda)\,\bigl(b+(1-\pi)\lambda\bigr) \why{frequencies above}\\
+&= b^2+b\lambda+\pi(1-\pi)\lambda^2 \why{expand; \(\pi+(1-\pi)=1\)}\\
+\pi(1-\pi)\,v^2 &= \pi(1-\pi)\,(4b^2+4b\lambda+\lambda^2) \why{\(v=2b+\lambda\); square}\\
+\bar f(1)\,\bar f(-1)-\pi(1-\pi)\,v^2 &= (b^2+b\lambda)\,\bigl[1-4\pi(1-\pi)\bigr] \why{subtract; the \(\lambda^2\) terms cancel}\\
+&= b\,(b+\lambda)\,(1-2\pi)^2 \why{\(1-4\pi+4\pi^2=(1-2\pi)^2\)}
+\end{align*}
+\end{derivation}
+
+Since \(b>0\), the difference is zero exactly at \(\pi=1/2\) and positive elsewhere. So
+\begin{equation}\label{eq:empirical-gap}
+M-m\le\vartheta,\qquad\text{with equality exactly at the prior }1/2 .
+\end{equation}
+At the prior \(1/2\), \(\bar f(1)=\bar f(-1)=b+\lambda/2=v/2\). Bayes' rule gives \(\bar f(1)M=(b+\lambda)/2\), so \(M=(b+\lambda)/v\) and \(m=b/v\). Then \(M+m=1\), \(2M-1=\vartheta\) and \(\E[X]=0\).
+
+\emph{Extreme cases.} When the investor is never present, \(\lambda=0\): the three posteriors equal the prior, \(\vartheta=0\), and both sides of \eqref{eq:empirical-balance} are zero. When \(u\) is large, \(\vartheta\) is near one, and a nonzero order comes almost always from the investor.
+
+One more fact about entry. Let \(\pi<\tau\). Under full two-sided trade the posteriors after a sale and after no order are \(m<\pi<\tau\), both strictly below \(\tau\). So entry after both is \(\rho\), under both challenger rules. The tie rule plays no part.
+
+\section{The price gap and the weighted test (Proposition A.10)}\label{sec:empirical-spread}
+
+Two forces move the price after an order. The order changes the market makers' belief about the class. The order may also change the probability that the challenger prepares. The first force acts in every informative market. Only the second force shows that the price reaches the challenger and changes what the challenger does. The proposition shows how to separate the two with prices and order frequencies.
+
+\begin{paperresult}{Proposition A.10 (The price gap and the weighted test)}
+Standing hypotheses of Appendix A.8: \(F\) is any continuous law, the classes satisfy the class ranking, \(\pi\in(0,1)\) is arbitrary, \(\DT>0\) and \(\gamma=g_H-g_L>0\).
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \emph{Every trading pattern.} In every equilibrium,
+\[
+\bar f(1)I_+-\bar f(-1)I_-=\E[P(X)]-P(0)=e(0)\,\DT\,[\pi-\mu(0)]+\sum_x\bar f(x)\,[e(x)-e(0)]\,w_F(\mu(x)).
+\]
+\item \emph{The weighted test.} Under full two-sided trade,
+\[
+\bar f(1)I_+-\bar f(-1)I_-=\bar f(1)\,[e(1)-e(0)]\,w_F(M)-\bar f(-1)\,[e(0)-e(-1)]\,w_F(m).
+\]
+If also \(\pi<\tau\), then \(I_+-\dfrac{\bar f(-1)}{\bar f(1)}\,I_-=[e(1)-\rho]\,w_F(M)\), which is positive exactly when a purchase recruits, that is, exactly when \(e(1)>\rho\), under both challenger rules.
+\item \emph{Signs.} Let full two-sided trade hold, and let an indifferent high-cost challenger prepare. Entry after the orders \((-1,0,1)\) and the weighted impact difference are:
+\begin{center}\normalfont\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Threshold & Entry after \((-1,0,1)\) & \(\bar f(1)I_+-\bar f(-1)I_-\)\\
+\midrule
+\(\tau\le m\) & \((1,1,1)\) & \(0\)\\
+\(m<\tau\le\pi\) & \((\rho,1,1)\) & \(-(1-\rho)\,\bar f(-1)\,w_F(m)<0\)\\
+\(\pi<\tau\le M\) & \((\rho,\rho,1)\) & \((1-\rho)\,\bar f(1)\,w_F(M)>0\)\\
+\(M<\tau\) & \((\rho,\rho,\rho)\) & \(0\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+When an indifferent high-cost challenger may prepare with any probability, the table holds for \(\tau\notin\{m,\pi,M\}\). At \(\tau=M\) the weighted difference is \([e(1)-\rho]\,\bar f(1)\,w_F(M)\ge0\), positive exactly when \(e(1)>\rho\). At \(\tau=m\) it is \(-[1-e(-1)]\,\bar f(-1)\,w_F(m)\le0\), negative exactly when \(e(-1)<1\). At \(\tau=\pi\), full two-sided trade is an equilibrium with one entry \(e(0)\in[\rho,1]\) exactly when it is an equilibrium with every such entry. As \(e(0)\) runs over \([\rho,1]\), the weighted difference takes every value from \(-(1-\rho)\,\bar f(-1)\,w_F(m)\) to \((1-\rho)\,\bar f(1)\,w_F(M)\).
+\item \emph{The price gap.} Under full two-sided trade with \(\pi<\tau\),
+\[
+P(1)-P(-1)=\rho\DT\,(M-m)+[e(1)-\rho]\,w_F(M),\qquad \rho\DT\,(M-m)=\frac{v}{\bar f(1)}\,I_-,
+\]
+a class component and an entry component. If the trading margin \(\rho\kappa(\pi)\DT-k\) is positive, with \(\kappa(\pi)=\min\{m,1-M\}\), every equilibrium has full two-sided trade, under both investor rules, whether or not the challenger sees the price. If also \(\pi<\tau\) and the challenger does not see the price, its belief stays at \(\pi\), entry is \(\rho\) after every order, the price gap is the class component \(\rho\DT\,(M-m)\), and the weighted impact difference is zero.
+\item \emph{The unweighted comparison.} Under full two-sided trade with \(\pi<\tau\),
+\[
+I_+-I_-=\rho\DT\,\frac{\pi(1-\pi)\lambda^2(1-2\pi)}{\bar f(1)\,\bar f(-1)}+[e(1)-\rho]\,w_F(M).
+\]
+If \(\pi\ge1/2\), \(\rho\le1/2\) and an indifferent high-cost challenger prepares, then under full two-sided trade \(I_+>I_-\) exactly when \(\pi<\tau\le M\), that is, exactly when a purchase raises entry above its level after no order.
+\item \emph{Strength.} Let \(F_r\) be a path along which \(\DT\) rises strictly. Hold the prior and the slot fixed, and write \(w_r=w_{F_r}\) and \(\chi_r=\chi_{F_r}\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For every belief \(\mu\), \(w_r(\mu)=pF_r(p)+\int_p^\infty\bigl[1-(1-\mu)G_L(y)-\mu G_H(y)\bigr]\bigl[1-F_r(y)\bigr]\,dy\). From \(r\) to \(r'>r\), the first term falls by \(p\,[F_r(p)-F_{r'}(p)]\ge0\), and the second rises by \(\int_p^\infty[1-(1-\mu)G_L(y)-\mu G_H(y)]\,[F_r(y)-F_{r'}(y)]\,dy\ge\mu\,[\DT(r')-\DT(r)]\). The entry gain \(w_r(\mu)\) rises exactly when the rise of the second term exceeds the fall of the first.
+\item If \(F_r(p)\) is the same at every strength of the path, \(w_r(\mu)\) rises strictly in \(r\) for every \(\mu\in(0,1]\). If \(F_r\) is uniform on \([0,r]\) with \(r>p\), then \(\dfrac{d}{dr}\,w_r(\mu)=\dfrac{\E_\mu[\min\{\theta,r\}^2]-3p^2}{2r^2}\), where \(\E_\mu\) takes \(\theta\) from \((1-\mu)G_L+\mu G_H\). So \(w_r(\mu)\) rises strictly in \(r\) for every \(\mu\) when \(p<\min\{\underline\theta,\underline r\}/\sqrt3\), where \(\underline\theta\) is the lowest challenger value and \(\underline r\) the lowest strength on the path.
+\item Let an indifferent high-cost challenger prepare, and let full two-sided trade hold at every strength of an interval on which \(\pi<\tau(r)\) and \(w_r(M)\) rises strictly. Where \(\chi_r=1\), both components of the price gap, both impacts, the price gap and the weighted impact difference rise strictly with \(r\). Where \(\chi_r=0\), the entry component and the weighted impact difference are zero, and the class component, both impacts and the price gap rise strictly with \(r\).
+\item The indicator \(\chi_r\) is nonincreasing in \(r\). Let also \(F_r(y)\) be continuous in \(r\) at every \(y\). Then the strengths with \(\chi_r=1\) form a closed subset of the path. Let \(r_C\) be a strength with \(\chi_{r_C}=1\) and \(\chi_r=0\) for every \(r>r_C\), and let full two-sided trade and \(\pi<\tau(r)\) hold on a neighborhood of \(r_C\). When an indifferent high-cost challenger prepares, \(P(1)\), \(I_+\) and the price gap are continuous from the left at \(r_C\), and their right limits lie below their values at \(r_C\) by \((1-\rho)\,w_{r_C}(M)>0\). The weighted impact difference falls by \((1-\rho)\,\bar f(1)\,w_{r_C}(M)\) in the same way. \(P(-1)\), \(P(0)\) and \(I_-\) are continuous at \(r_C\). When an indifferent investor may mix over its best orders and an indifferent high-cost challenger may prepare with any probability, entry after a purchase at \(r_C\) can take any value in \([\rho,1]\), and the price gap at \(r_C\) any value between its two one-sided limits.
+\end{enumerate}
+\end{enumerate}
+\end{paperresult}
+
+A plain reading, part by part:
+\begin{itemize}
+\item \emph{Hypotheses.} \(\DT>0\) and \(\gamma>0\) keep the price formula and the threshold alive. \(\beta<1/2\) enters through Lemma A.1, and the prior is arbitrary.
+\item \emph{(i)} Holds in every equilibrium, for every pattern of trade and both challenger rules. The expected price before the opportunity, minus the price after no order, has two sources: news in the zero order, and entry that differs across orders.
+\item \emph{(ii)} Full two-sided trade, both challenger rules. The weighted difference isolates entry. If the prior is below the threshold, its sign shows whether a purchase recruits.
+\item \emph{(iii)} Default challenger rule (an indifferent high-cost challenger prepares). The sign depends on where the threshold sits among the posteriors. The alternative rule changes only the cases \(\tau\in\{m,\pi,M\}\).
+\item \emph{(iv)} Full trade and \(\pi<\tau\). The price gap is a class part plus an entry part. The condition on the trading margin gives full trade in every equilibrium, whether or not the challenger sees the price. With a hidden price the entry part is zero.
+\item \emph{(v)} Full trade and \(\pi<\tau\) for the formula. The second claim needs the prior \(\pi\ge1/2\), \(\rho\le1/2\) and the default challenger rule. It says when the plain comparison \(I_+>I_-\) is a valid test.
+\item \emph{(vi)} Comparisons across strengths. The prior and the slot are fixed, each strength is a separate economy, and full trade holds at each strength compared. Parts (c) and (d) use the default challenger rule, with an alternative-rule remark at the end of (d).
+\end{itemize}
+
+\subsection{Part (i): the expected price minus the price after no order}\label{sec:empirical-spread-i}
+
+Before the order opportunity, the price is a random variable: it equals \(P(x)\) with probability \(\bar f(x)\). Its mean is \(\E[P(X)]\). The price after no order is \(P(0)\). The proof expresses their difference in two ways.
+
+\paragraph{Step 1: the difference in impacts.} Subtract \(P(0)\) inside the mean. The frequencies add to one, so \(P(0)=\sum_x\bar f(x)P(0)\).
+\begin{align*}
+\E[P(X)]-P(0) &= \sum_x\bar f(x)\,[P(x)-P(0)] \why{\(\sum_x\bar f(x)=1\)}\\
+&= \bar f(1)\,I_+ + \bar f(0)\cdot0 - \bar f(-1)\,I_- \why{\(P(1)-P(0)=I_+\); \(P(-1)-P(0)=-I_-\)}
+\end{align*}
+
+\paragraph{Step 2: the price formula.} The price is \(P(x)=t_0+e(x)\,w_F(\mu(x))\) (equation~\eqref{eq:beliefs-price}). The average posterior is the prior, \(\sum_x\bar f(x)\mu(x)=\pi\), by the law of total probability (Section~\ref{sec:toolkit-bayes}). Every order has positive probability (Lemma A.1(a)). Since \(w_F\) is a straight line in \(\mu\), the average of \(w_F\) is \(w_F\) of the average:
+\[
+\sum_x\bar f(x)\,w_F(\mu(x))=w_L+\DT\sum_x\bar f(x)\mu(x)=w_F(\pi).
+\]
+
+\paragraph{Step 3: separate the entry differences.}
+\begin{align*}
+\E[P(X)]-P(0) &= \sum_x\bar f(x)\,e(x)\,w_F(\mu(x))-e(0)\,w_F(\mu(0)) \why{\(t_0\) cancels}\\
+&= \sum_x\bar f(x)\,[e(x)-e(0)]\,w_F(\mu(x)) \\
+&\quad+e(0)\,\bigl[w_F(\pi)-w_F(\mu(0))\bigr] \why{add and subtract \(e(0)\,w_F(\pi)\)}
+\end{align*}
+The step uses \(e(0)\,w_F(\pi)=e(0)\sum_x\bar f(x)\,w_F(\mu(x))\) from Step 2. Since \(w_F\) has slope \(\DT\), \(w_F(\pi)-w_F(\mu(0))=\DT\,[\pi-\mu(0)]\). This is part (i). The first term is zero when entry does not depend on the order. The second term is zero when the zero order carries no news, \(\mu(0)=\pi\).
+
+\subsection{Part (ii): the weighted test}\label{sec:empirical-weighted}
+
+\paragraph{Step 1: apply part (i).} Under full two-sided trade \(\mu(0)=\pi\), so the second term of (i) is zero. The term \(x=0\) of the sum is zero. The posteriors after \(1\) and \(-1\) are \(M\) and \(m\). This gives the first display of (ii).
+
+\paragraph{Step 2: the prior below the threshold.} Let \(\pi<\tau\). Entry after a sale and after no order is \(\rho\) (end of Section~\ref{sec:empirical-full}). The display becomes \(\bar f(1)\,[e(1)-\rho]\,w_F(M)\). Divide by \(\bar f(1)>0\). The left side is \(I_+-[\bar f(-1)/\bar f(1)]\,I_-\).
+
+\paragraph{Step 3: the sign.} \(w_F(M)\ge\DT M>0\), and \(e(1)\ge\rho\). So \([e(1)-\rho]\,w_F(M)\) is positive exactly when \(e(1)>\rho\). No step uses the challenger's rule at a posterior equal to \(\tau\): only \(m\) and \(\pi\) are compared with \(\tau\), and \(e(1)\in[\rho,1]\) under both rules.
+
+\paragraph{Why the weights cancel the class part.} The same result follows from a direct computation, which shows the role of the balance identity. Let \(\pi<\tau\). The impacts are
+\begin{align*}
+I_+ &= e(1)\,w_F(M)-\rho\,w_F(\pi) \why{\(e(0)=\rho\)}\\
+&= \rho\DT\,(M-\pi)+[e(1)-\rho]\,w_F(M) \why{add and subtract \(\rho\,w_F(M)\)}\\
+I_- &= \rho\,[w_F(\pi)-w_F(m)]=\rho\DT\,(\pi-m) \why{\(e(-1)=e(0)=\rho\)}
+\end{align*}
+Weight them and use the balance identity \eqref{eq:empirical-balance}:
+\begin{align*}
+\bar f(1)I_+-\bar f(-1)I_- &= \rho\DT\,\bigl[\bar f(1)(M-\pi)-\bar f(-1)(\pi-m)\bigr] \why{insert the impacts}\\
+&\quad+\bar f(1)\,[e(1)-\rho]\,w_F(M)\\
+&= \bar f(1)\,[e(1)-\rho]\,w_F(M) \why{the bracket is zero by \eqref{eq:empirical-balance}}
+\end{align*}
+The class part of the purchase impact is \(\rho\DT(M-\pi)\), and that of the sale impact is \(\rho\DT(\pi-m)\). Weighted by frequency, the two class parts are equal. Only the entry part is left.
+
+\begin{intuition}[what a test looks like]
+Compute two numbers from prices and order counts: the purchase impact times the frequency of a purchase, and the sale impact times the frequency of a sale. The prediction concerns their difference. A positive difference says that the price reaches the challenger and a purchase recruits it. A difference of zero says that entry is the same after every order. The test uses no auction object. At the prior \(1/2\), the two frequencies are equal, and the test compares \(I_+\) and \(I_-\) directly. The test needs \(\pi<\tau\), so that the prior itself does not recruit.
+\end{intuition}
+
+\subsection{Part (iii): the signs}\label{sec:empirical-signs}
+
+Under the default rule, entry after an order is one when its posterior reaches \(\tau\), and \(\rho\) otherwise (Lemma A.2(d)). Full two-sided trade gives the posteriors \(m<\pi<M\). The position of \(\tau\) among them fixes the entry. Insert each entry vector in the display of part (ii).
+\begin{itemize}
+\item \(\tau\le m\), \(e=(1,1,1)\). Every bracket is \(1-1=0\), so the display is \(0\).
+\item \(m<\tau\le\pi\), \(e=(\rho,1,1)\). Here \(e(1)-e(0)=0\) and \(e(0)-e(-1)=1-\rho\). The display is \(-(1-\rho)\,\bar f(-1)\,w_F(m)\).
+\item \(\pi<\tau\le M\), \(e=(\rho,\rho,1)\). Here \(e(1)-e(0)=1-\rho\) and \(e(0)-e(-1)=0\). The display is \((1-\rho)\,\bar f(1)\,w_F(M)\).
+\item \(M<\tau\), \(e=(\rho,\rho,\rho)\). Every bracket is \(\rho-\rho=0\), so the display is \(0\).
+\end{itemize}
+The entries \(w_F(m)\) and \(w_F(M)\) are positive and \(\rho<1\), so the second row is negative and the third is positive. These are the rows of the table.
+
+The alternative rule differs from the default rule only after an order whose posterior equals \(\tau\) (Lemma A.2(d)). So the table holds for \(\tau\notin\{m,\pi,M\}\). Three boundary cases remain.
+\begin{itemize}
+\item \(\tau=M\). Then \(e(-1)=e(0)=\rho\) and \(e(1)\in[\rho,1]\). Part (ii) gives \([e(1)-\rho]\,\bar f(1)\,w_F(M)\ge0\).
+\item \(\tau=m\). Then \(e(0)=e(1)=1\) and \(e(-1)\in[\rho,1]\). Part (ii) gives \(-[1-e(-1)]\,\bar f(-1)\,w_F(m)\le0\).
+\item \(\tau=\pi\). Then \(e(-1)=\rho\), \(e(1)=1\), and \(e(0)\in[\rho,1]\) is the challenger's choice at the posterior \(\tau\). The posteriors do not depend on entry. By Lemma A.3(d), entry after the zero order enters no payoff of the investor. So the investor's conditions are the same for every \(e(0)\). Entry is nondecreasing in the posterior for every \(e(0)\in[\rho,1]\), so the constructed tuples of Section~\ref{sec:beliefs-constructed} supply prices, preparation rule and price beliefs, and the entry condition holds at \(\tau\). Hence full trade is an equilibrium with one such \(e(0)\) exactly when it is an equilibrium with every such \(e(0)\).
+\end{itemize}
+For \(\tau=\pi\), part (ii) gives the weighted difference as a function of \(e(0)\):
+\begin{align*}
+D(e(0)) &= \bar f(1)\,[1-e(0)]\,w_F(M)-\bar f(-1)\,[e(0)-\rho]\,w_F(m) \why{part (ii)}\\
+D(\rho) &= (1-\rho)\,\bar f(1)\,w_F(M) \why{insert \(e(0)=\rho\)}\\
+D(1) &= -(1-\rho)\,\bar f(-1)\,w_F(m) \why{insert \(e(0)=1\)}
+\end{align*}
+The function is affine in \(e(0)\), with slope \(-\bar f(1)w_F(M)-\bar f(-1)w_F(m)<0\). So it takes every value between \(D(1)\) and \(D(\rho)\).
+
+\emph{What a test looks like.} The sign of the weighted difference tells where the threshold sits. Positive: the threshold lies between the prior and the top posterior, so a purchase recruits and no other order does. Negative: the threshold lies between the bottom posterior and the prior. Then the prior itself reaches the threshold, and only a sale pushes the belief below it, so a sale lowers entry. Zero: entry is the same after every order. Either all posteriors recruit, or none does.
+
+\subsection{Part (iv): the price gap}\label{sec:empirical-pricegap}
+
+\paragraph{Step 1: the two components.} Let full two-sided trade hold and \(\pi<\tau\). Then \(e(-1)=e(0)=\rho\).
+\begin{align*}
+P(1)-P(-1) &= e(1)\,w_F(M)-\rho\,w_F(m) \why{price formula; \(t_0\) cancels}\\
+&= \rho\,[w_F(M)-w_F(m)]+[e(1)-\rho]\,w_F(M) \why{add and subtract \(\rho\,w_F(M)\)}\\
+&= \rho\DT\,(M-m)+[e(1)-\rho]\,w_F(M) \why{\(w_F(M)-w_F(m)=\DT(M-m)\)}
+\end{align*}
+
+\paragraph{Step 2: the class component from the sale impact.} By the computation of Section~\ref{sec:empirical-weighted}, \(I_-=\rho\DT\,(\pi-m)\). The balance identity gives \(\pi-m=\pi(1-\pi)\lambda/\bar f(-1)\). The posterior gap of Section~\ref{sec:empirical-full} is \(M-m=\pi(1-\pi)\lambda v/[\bar f(1)\bar f(-1)]\). So \(M-m=(\pi-m)\,v/\bar f(1)\), and
+\[
+\rho\DT\,(M-m)=\frac{v}{\bar f(1)}\,\rho\DT\,(\pi-m)=\frac{v}{\bar f(1)}\,I_- .
+\]
+The class component is a multiple of the sale impact, and the multiple \(v/\bar f(1)\) comes from order counts. So the entry component is the price gap minus \((v/\bar f(1))\,I_-\).
+
+\begin{watchout}
+Two facts about the split.
+\begin{itemize}
+\item The price is a straight line in the posterior at a fixed level of entry. The class component is that straight line at entry \(\rho\). Equilibrium prices also reflect entry, and entry depends on the posterior: a purchase recruits because its posterior reaches \(\tau\). The entry component is therefore an accounting term, and not a force that acts apart from the posterior.
+\item The whole entry component sits in the purchase impact, since entry after a sale and after no order is \(\rho\). The sale impact is a pure class term.
+\end{itemize}
+\end{watchout}
+
+\paragraph{Step 3: full trade is the only outcome when the trading margin is positive.} The trading bound (Lemma A.3(c)) gives \(K_H\ge\rho\kappa(\pi)\DT\) and \(K_L\ge\rho\kappa(\pi)\DT\) in every candidate. If \(\rho\kappa(\pi)\DT>k\), then \(K_H>k\) and \(K_L>k\). By Lemma A.3(b), class \(H\) buys and class \(L\) sells with probability one, with no indifference. By Lemma A.3(a), a wrong-signed order earns at most \(-k\), so no class places one. This holds under both investor rules. If the challenger does not see the price, its belief is \(\pi\) after every order. It then prepares with one probability \(e\in[\rho,1]\) after every order. The price formula holds with \(e(x)=e\), by the argument of Section~\ref{sec:beliefs-priceformula}, and so do the payoffs of Lemma A.3. The bounds of Lemma A.3(c) use only \(e\ge\rho\) and the posterior bounds, so they hold as well.
+
+\paragraph{Step 4: the hidden price.} Let \(\pi<\tau\) and let the price be hidden. Gross profit at the belief \(\pi\) is
+\begin{align*}
+B_F(\pi) &= g_L+\pi\gamma=c_H+\gamma\,(\pi-\tau)<c_H \why{\(c_H=g_L+\tau\gamma\); \(\pi<\tau\), \(\gamma>0\)}
+\end{align*}
+So the high-cost challenger abstains, and entry is \(\rho\) after every order. The posteriors are \((m,\pi,M)\) and \(P(x)=t_0+\rho\,w_F(\mu(x))\). The price gap is \(\rho\,[w_F(M)-w_F(m)]=\rho\DT\,(M-m)\), the class component alone. Part (i) with \(e\equiv\rho\) and \(\mu(0)=\pi\) gives a zero weighted difference.
+
+\emph{What a test looks like.} Compute the price gap, and subtract \((v/\bar f(1))\,I_-\). The remainder is the entry component. It is positive where a purchase recruits. If the price does not reach the challenger, the remainder is zero. Under full trade with \(\pi<\tau\), the price gap is at least the class component.
+
+\subsection{Part (v): why the weights}\label{sec:empirical-unweighted}
+
+Why not compare \(I_+\) and \(I_-\) directly? Because the class parts of the two impacts differ when the prior is not \(1/2\).
+
+\paragraph{Step 1: the formula.} Let \(\pi<\tau\). From Section~\ref{sec:empirical-weighted}, \(I_+=\rho\DT(M-\pi)+[e(1)-\rho]\,w_F(M)\) and \(I_-=\rho\DT(\pi-m)\). So
+\begin{align*}
+I_+-I_- &= \rho\DT\,\bigl[(M-\pi)-(\pi-m)\bigr]+[e(1)-\rho]\,w_F(M) \why{subtract}\\
+(M-\pi)-(\pi-m) &= \pi(1-\pi)\lambda\,\frac{\bar f(-1)-\bar f(1)}{\bar f(1)\,\bar f(-1)} \why{\eqref{eq:empirical-balance}; common denominator}\\
+&= \pi(1-\pi)\lambda\,\frac{\lambda\,(1-2\pi)}{\bar f(1)\,\bar f(-1)} \why{\(\bar f(-1)-\bar f(1)=\lambda(1-2\pi)\)}
+\end{align*}
+This gives the formula. When \(\pi<1/2\), the class term is positive: a purchase is rarer than a sale, so it moves the belief more. Then \(I_+>I_-\) can hold with no recruitment, and the plain comparison gives a false positive.
+
+\paragraph{Step 2: the valid case.} Let \(\pi\ge1/2\), \(\rho\le1/2\), and let an indifferent high-cost challenger prepare. Then \(\bar f(1)\ge\bar f(-1)\), and \eqref{eq:empirical-balance} gives \(M-\pi\le\pi-m\). Take the four rows of the table in part (iii).
+\begin{itemize}
+\item \(\pi<\tau\le M\), \(e=(\rho,\rho,1)\). By Step 1 with \(e(1)=1\) and \(w_F(M)=w_L+\DT M\):
+\begin{align*}
+I_+-I_- &= \rho\DT\,(M-2\pi+m)+(1-\rho)\,(w_L+\DT M) \why{Step 1}\\
+&= (1-\rho)\,w_L+\DT\,(M-2\rho\pi+\rho m) \why{collect the terms in \(\DT\)}
+\end{align*}
+Here \(\rho\le1/2\) gives \(2\rho\pi\le\pi\), so \(M-2\rho\pi\ge M-\pi>0\). Also \(w_L\ge0\), \(\rho m\ge0\) and \(\DT>0\). So \(I_+>I_-\).
+\item \(M<\tau\), \(e=(\rho,\rho,\rho)\). Step 1 gives \(I_+-I_-=\rho\DT\,[(M-\pi)-(\pi-m)]\le0\).
+\item \(\tau\le m\), \(e=(1,1,1)\). Then \(I_+=w_F(M)-w_F(\pi)=\DT(M-\pi)\) and \(I_-=\DT(\pi-m)\). So \(I_+\le I_-\).
+\item \(m<\tau\le\pi\), \(e=(\rho,1,1)\). Then \(I_+=\DT(M-\pi)\) and \(I_-=w_F(\pi)-\rho\,w_F(m)=\rho\DT(\pi-m)+(1-\rho)\,w_F(\pi)\). Using \(M-\pi\le\pi-m\),
+\begin{align*}
+I_+-I_- &\le (1-\rho)\,\DT\,(\pi-m)-(1-\rho)\,w_F(\pi) \why{insert; \(M-\pi\le\pi-m\)}\\
+&< 0 \why{\(w_F(\pi)\ge\DT\pi>\DT(\pi-m)\), since \(m>0\)}
+\end{align*}
+\end{itemize}
+So \(I_+>I_-\) exactly in the row \(\pi<\tau\le M\), the only row with \(e(1)>e(0)\).
+
+\emph{What a test looks like.} At the prior \(1/2\), or above it, with \(\rho\le1/2\), a positive difference \(I_+-I_-\) shows that a purchase recruits. Below \(1/2\), use the weighted form.
+
+\begin{checkyourself}\label{q:empirical-weights}
+Let full two-sided trade hold, \(\pi<1/2\) and \(M<\tau\), so that no order recruits. (a)~Show that the weighted impact difference is zero. (b)~Show that \(I_+>I_-\). (c)~Say in words why the plain comparison fails.
+\end{checkyourself}
+
+\subsection{Part (vi): incumbent strength}\label{sec:empirical-strength}
+
+A stronger incumbent changes the entry gain \(w_r(\mu)\) in two opposite ways. It misses the reserve less often, so it leaves less to rescue. It also raises the price that the challenger's bid pays the target when the challenger prepares, since competition above the reserve is stronger. Part (a) names the two terms. The comparisons below solve the equilibrium again at each strength, and a deviation faces the prices and the entry of its own economy (Section~\ref{sec:model-ties}).
+
+\paragraph{Part (a): the two terms.} Under the class ranking \(G_j(p^-)=0\). The proceeds of class \(j\) (Section~\ref{sec:auction-spread}, Step 4) give
+\[
+w_j=t_j-t_0=pF(p)+\int_p^\infty[1-G_j(y)]\,[1-F(y)]\,dy .
+\]
+Average with the weights \(1-\mu\) and \(\mu\), and write \(\bar G_\mu(y)=1-(1-\mu)G_L(y)-\mu G_H(y)\):
+\[
+w_r(\mu)=pF_r(p)+\int_p^\infty\bar G_\mu(y)\,[1-F_r(y)]\,dy .
+\]
+The first term is the value of rescuing the sale when the incumbent misses the reserve. The second is the value of competition above the reserve. Take \(r'>r\). Along the path \(F_{r'}\le F_r\), so
+\begin{align*}
+pF_{r'}(p)-pF_r(p) &= -p\,[F_r(p)-F_{r'}(p)]\le0 \why{first term falls}\\
+\int_p^\infty\bar G_\mu\,\bigl\{[1-F_{r'}]-[1-F_r]\bigr\}\,dy &= \int_p^\infty\bar G_\mu(y)\,[F_r(y)-F_{r'}(y)]\,dy\ge0 \why{second term rises}
+\end{align*}
+For the lower bound, \(\bar G_\mu=1-G_L+\mu D\ge\mu D\), because \(1-G_L\ge0\) and \(D=G_L-G_H\). Also \(F_r-F_{r'}\ge0\). By equation~\eqref{eq:auction-spread}, \(\DT(r')-\DT(r)=\int_p^\infty D\,[F_r-F_{r'}]\,dy\). So the second term rises by at least \(\mu\,[\DT(r')-\DT(r)]\). The entry gain rises exactly when the rise exceeds the fall.
+
+\paragraph{Part (b): when the gain rises.} If \(F_r(p)\) does not depend on \(r\), the first term is constant. The second rises by at least \(\mu\,[\DT(r')-\DT(r)]>0\) for \(\mu>0\). Now let \(F_r\) be uniform on \([0,r]\) with \(r>p\), so \(F_r(y)=y/r\) up to \(r\). Then
+\[
+w_r(\mu)=\frac{p^2}{r}+\frac1r\int_p^r(r-y)\,\bar G_\mu(y)\,dy,
+\]
+because \(F_r(p)=p/r\) and \(1-F_r(y)=(r-y)/r\) for \(y\le r\). Write \(H(r)=\int_p^r(r-y)\bar G_\mu(y)\,dy\). By the Leibniz rule, \(H'(r)=\int_p^r\bar G_\mu(y)\,dy\), since the boundary term has the factor \(r-r=0\). Then
+\begin{align*}
+\frac{d}{dr}\,w_r(\mu) &= -\frac{p^2}{r^2}+\frac{r\,H'(r)-H(r)}{r^2} \why{quotient rule}\\
+&= \frac{-p^2+\int_p^r\bigl[r-(r-y)\bigr]\bar G_\mu(y)\,dy}{r^2}=\frac{\int_p^r y\,\bar G_\mu(y)\,dy-p^2}{r^2} \why{combine the two integrals}
+\end{align*}
+Next, the second moment. For a value \(\theta\ge0\), \(\min\{\theta,r\}^2=\int_0^r2y\,\1\{y<\theta\}\,dy\), by the same slice argument as in the tail formula (Section~\ref{sec:toolkit-tail}). Take the expectation under \((1-\mu)G_L+\mu G_H\):
+\[
+\E_\mu\bigl[\min\{\theta,r\}^2\bigr]=\int_0^r2y\,\bar G_\mu(y)\,dy=p^2+2\int_p^ry\,\bar G_\mu(y)\,dy,
+\]
+because every value is at least \(p\), so \(\bar G_\mu=1\) below \(p\), and \(\int_0^p2y\,dy=p^2\). Solve for the integral and insert: \(\int_p^ry\bar G_\mu\,dy=(\E_\mu[\min\{\theta,r\}^2]-p^2)/2\). Then
+\[
+\frac{d}{dr}\,w_r(\mu)=\frac{(\E_\mu[\min\{\theta,r\}^2]-p^2)/2-p^2}{r^2}=\frac{\E_\mu[\min\{\theta,r\}^2]-3p^2}{2r^2}.
+\]
+On the path, \(r\ge\underline r\), and every value satisfies \(\theta\ge\underline\theta\). So \(\min\{\theta,r\}\ge\min\{\underline\theta,\underline r\}>\sqrt3\,p\), the second moment exceeds \(3p^2\), and the derivative is positive.
+
+\paragraph{Part (c): the components move with strength.} Let an indifferent high-cost challenger prepare, with \(\pi<\tau(r)\). Entry after the orders \((-1,0,1)\) is \((\rho,\rho,\rho+(1-\rho)\chi_r)\), because \(B_r(M)\ge c_H\) exactly when \(M\ge\tau(r)\). The prior and the slot are fixed, so \(M\), \(m\) and \(\bar f(x)\) do not depend on \(r\). Parts (iv) and (ii) give
+\begin{itemize}
+\item class component \(\rho\DT(r)(M-m)\), sale impact \(\rho\DT(r)(\pi-m)\): both rise strictly, since \(\DT\) does;
+\item entry component \((1-\rho)\chi_r\,w_r(M)\), purchase impact \(\rho\DT(r)(M-\pi)+(1-\rho)\chi_r\,w_r(M)\), weighted difference \((1-\rho)\chi_r\,\bar f(1)\,w_r(M)\).
+\end{itemize}
+Where \(\chi_r=1\), every one of these rises strictly, because \(w_r(M)\) does. Where \(\chi_r=0\), the entry component and the weighted difference are zero, and the class component, both impacts and the price gap rise strictly with \(\DT\).
+
+\paragraph{Part (d): the jump at the entry ceiling.}
+\begin{itemize}
+\item \emph{\(\chi_r\) falls.} Each gross profit \(g_j(F)=\int_p^\infty F(y)[1-G_j(y)]\,dy\) (equation~\eqref{eq:auction-gross}) is nonincreasing along the path, since \(F_r(y)\) is. So \(B_r(M)=(1-M)g_L+Mg_H\) is nonincreasing, and so is the indicator \(\chi_r=\1\{B_r(M)\ge c_H\}\).
+\item \emph{The set is closed.} The integrand of \(g_j\) is at most \(1-G_j\), which is integrable because \(G_j\) has a finite mean. If \(F_r(y)\) is continuous in \(r\), dominated convergence makes \(B_r(M)\) continuous in \(r\). The set \(\{r:B_r(M)\ge c_H\}\) is then closed in the path. The same argument makes \(w_r(\mu)\) and \(t_0=p[1-F_r(p)]\) continuous in \(r\).
+\item \emph{The ceiling.} At \(r_C\), \(B_{r_C}(M)\ge c_H\) and \(B_r(M)<c_H\) for \(r>r_C\). Continuity gives \(B_{r_C}(M)=c_H\), which means \(M=\tau(r_C)\), since \(B_F(\mu)-c_H=\gamma(\mu-\tau)\).
+\item \emph{The jump.} Near \(r_C\), \(P(-1)=t_0+\rho\,w_r(m)\) and \(P(0)=t_0+\rho\,w_r(\pi)\) are continuous in \(r\), and so is \(I_-\). Under the default rule, \(e(1)=1\) for \(r\le r_C\) and \(e(1)=\rho\) for \(r>r_C\). So \(P(1)=t_0+e(1)\,w_r(M)\) is continuous from the left at \(r_C\), and its right limit is lower by \((1-\rho)\,w_{r_C}(M)>0\). The purchase impact and the price gap move with \(P(1)\). By part (ii), the weighted difference \(\bar f(1)[e(1)-\rho]\,w_r(M)\) falls by \((1-\rho)\,\bar f(1)\,w_{r_C}(M)\).
+\item \emph{The alternative rules.} At \(r_C\) the posterior after a purchase equals \(\tau(r_C)\), so every \(e(1)\in[\rho,1]\) is allowed. The class \(L\) conditions and the posteriors do not depend on \(e(1)\). To the right of \(r_C\), full trade has entry \(\rho\) after a purchase, so \(\rho\DT(r)(1-M)-k\ge0\) there. The limit \(\rho\DT(r_C)(1-M)-k\ge0\) holds as well, since \(\DT\) is continuous in \(r\) by the same dominated-convergence argument. At \(r_C\) a purchase earns \(e(1)\DT(r_C)(1-M)-k\), which is positive for \(e(1)>\rho\) and nonnegative at \(e(1)=\rho\). There an indifferent investor who may mix buys with probability one. The constructed tuples of Section~\ref{sec:beliefs-constructed} complete each tuple. The price gap at \(r_C\) is \(\rho\DT(r_C)(M-m)+[e(1)-\rho]\,w_{r_C}(M)\), affine in \(e(1)\). It takes every value between its two one-sided limits.
+\end{itemize}
+
+\begin{watchout}
+Part (vi) compares economies. It does not describe one market whose incumbent becomes stronger over time. It needs full two-sided trade at every strength compared, a fixed prior, and a fixed slot. The proof of (d) works with gross profit \(B_r(M)\), and it does not use monotonicity of \(\tau(r)\). The paper states that a stronger incumbent never lowers the threshold while \(g_L\le c_H\) (Section 3 of the paper).
+\end{watchout}
+
+\emph{What a test looks like.} Plot the entry component, or the weighted difference, against strength for a fixed prior and slot. The prediction has three pieces. The weighted difference is positive up to the entry ceiling \(r_C\), and it rises with strength there. It falls by a jump at \(r_C\), and it is zero above. The class component, both impacts and the price gap keep rising with strength, apart from the jump at \(r_C\) in the purchase impact and the price gap.
+
+\section{What order counts and prices identify (Proposition A.11)}\label{sec:empirical-identify}
+
+A researcher sees order counts and prices. The slot has the presence probability \(\lambda\), the liquidity mass \(b\) in one direction, and the liquidity share \(\beta=b/(1-\lambda)\). The question is which of these the data fix. A parameter is \emph{identified} when the observed objects take different values at different values of the parameter. The proposition answers for full two-sided trade.
+
+\begin{paperresult}{Proposition A.11 (What order counts and prices identify)}
+Let full two-sided trade hold.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{A known prior other than \(1/2\).} If \(\pi\ne1/2\) is known, the counts identify the slot:
+\[
+\lambda=\frac{\E[X]}{2\pi-1},\qquad b=\frac{v-\lambda}{2},\qquad \beta=\frac{v-\lambda}{2(1-\lambda)},\qquad \vartheta=\frac{\lambda}{v}.
+\]
+Over independent order opportunities, the mean order divided by \(2\pi-1\) estimates \(\lambda\) without bias, with variance \((v-\E[X]^2)/(2\pi-1)^2\) divided by the number of opportunities. If also \(\pi<\tau\), the sale impact identifies \(\rho\DT=\bar f(-1)\,I_-/[\pi(1-\pi)\lambda]\).
+\item \emph{The prior \(1/2\).} At the prior \(1/2\) the order law is \((v/2,1-v,v/2)\), so the counts identify \(v\) and no other function of the slot. A share \(\vartheta'\in(0,1)\) belongs to exactly one pair \((\lambda',\beta')\) with the volume \(v\), namely \(\lambda'=v\vartheta'\) and \(\beta'=v(1-\vartheta')/[2(1-v\vartheta')]\). This pair is a slot of the model, \(\beta'\le1/3\), exactly when \(\vartheta'\ge3-2/v\). Let \(\tau>1/2\). Under full two-sided trade at this slot, entry is \(\rho+(1-\rho)(v/2)\,\1\{(1+\vartheta')/2\ge\tau\}\) when an indifferent high-cost challenger prepares. Full two-sided trade at this slot is an equilibrium exactly when \(\vartheta'\le1-2k/(\rho\DT)\) if an indifferent investor may mix over its best orders, and exactly when \(\vartheta'<1-2k/(\rho\DT)\) if an indifferent investor abstains.
+\item \emph{The sale price.} If entry after a sale and after no order is \(\rho\) and \(\rho\DT\) is known, the sale impact gives \(\pi(1-\pi)\lambda=\bar f(-1)\,I_-/(\rho\DT)\). With the counts,
+\[
+\lambda=\frac{2\bar f(-1)\,I_-}{\rho\DT}+\sqrt{\Bigl(\frac{2\bar f(-1)\,I_-}{\rho\DT}\Bigr)^2+\E[X]^2},\qquad
+\pi=\frac12\Bigl(1+\frac{\E[X]}{\lambda}\Bigr),
+\]
+and then \(b\) and \(\beta\) as in part (a). At the prior \(1/2\), \(\lambda=4\bar f(-1)\,I_-/(\rho\DT)\) and \(\vartheta=2I_-/(\rho\DT)\).
+\end{enumerate}
+\end{paperresult}
+
+A plain reading:
+\begin{itemize}
+\item \emph{(a)} With a known prior away from \(1/2\), the mean order carries \(\lambda\), and the volume carries \(b\). Nothing else is free.
+\item \emph{(b)} At the prior \(1/2\) the purchases and sales are equally frequent, so only the volume \(v\) is left. Many slots share one volume. They differ in the share \(\vartheta'\), hence in the top posterior \((1+\vartheta')/2\). The statement gives both investor rules and the default challenger rule. It needs \(\tau>1/2\) and \(\beta'\le1/3\) for a slot of the model.
+\item \emph{(c)} The sale impact adds a second equation. It needs entry \(\rho\) after a sale and after no order, and it needs the payoff scale \(\rho\DT\) from outside the order data.
+\end{itemize}
+
+\subsection{Part (a): the counts}
+
+From Section~\ref{sec:empirical-full}, \(v=2b+\lambda\) and \(\E[X]=\lambda(2\pi-1)\). With \(\pi\ne1/2\) known, divide the second equation by \(2\pi-1\) to get \(\lambda\). Then \(b=(v-\lambda)/2\) from the first. Since \(b=(1-\lambda)\beta\), \(\beta=b/(1-\lambda)=(v-\lambda)/[2(1-\lambda)]\). The share is \(\vartheta=\lambda/v\).
+
+\paragraph{The estimator.} The order takes the values \(-1,0,1\), so \(X^2=\1\{X\ne0\}\). Hence \(\E[X^2]=v\) and \(\operatorname{Var}X=v-\E[X]^2\). The mean of \(n\) independent orders has mean \(\E[X]\) and variance \(\operatorname{Var}X/n\). Dividing by \(2\pi-1\) divides the mean by \(2\pi-1\), which gives \(\lambda\), and divides the variance by \((2\pi-1)^2\). So the estimator is unbiased, with the stated variance.
+
+\paragraph{The payoff scale.} Let \(\pi<\tau\). Entry after a sale and after no order is \(\rho\), so \(I_-=\rho\DT(\pi-m)\) (Section~\ref{sec:empirical-weighted}). The balance identity gives \(\pi-m=\pi(1-\pi)\lambda/\bar f(-1)\). Hence \(I_-=\rho\DT\,\pi(1-\pi)\lambda/\bar f(-1)\). Solve for \(\rho\DT\).
+
+\subsection{Part (b): the prior \(1/2\)}
+
+At the prior \(1/2\), \(\bar f(\pm1)=b+\lambda/2=v/2\) and \(\bar f(0)=1-v\). So the order law is a function of \(v\) alone: the counts cannot tell two slots with equal volume apart.
+
+\paragraph{Step 1: the slot with a given share.} Fix \(v\) and \(\vartheta'\). The equations \(\lambda'=v\vartheta'\) and \(2b'+\lambda'=v\) give \(b'=v(1-\vartheta')/2\), and
+\[
+\beta'=\frac{b'}{1-\lambda'}=\frac{v(1-\vartheta')}{2(1-v\vartheta')} .
+\]
+The pair is unique. Since \(v=1-\bar f(0)<1\), \(0<\lambda'<1\), and \(\beta'>0\). Next, \(\beta'\le1/3\) is a chain of equivalent inequalities:
+\begin{align*}
+\frac{v(1-\vartheta')}{2(1-v\vartheta')}\le\frac13 &\iff 3v(1-\vartheta')\le2(1-v\vartheta') \why{multiply by \(6(1-v\vartheta')>0\)}\\
+&\iff 3v-3v\vartheta'\le2-2v\vartheta' \why{expand}\\
+&\iff v\vartheta'\ge3v-2 \why{move terms}\\
+&\iff \vartheta'\ge3-\frac2v \why{divide by \(v>0\)}
+\end{align*}
+
+\paragraph{Step 2: entry.} At this slot and the prior \(1/2\), the posteriors are \(M'=(1+\vartheta')/2\) and \(m'=(1-\vartheta')/2\), since \(2M'-1=\vartheta'\) and \(M'+m'=1\). Let \(\tau>1/2\). The posteriors after a sale and after no order are \(m'<1/2<\tau\), so entry after both is \(\rho\). When an indifferent high-cost challenger prepares, entry after a purchase is one exactly when \(M'\ge\tau\), and \(\rho\) otherwise. Weight by \(\bar f(1)=v/2\):
+\begin{align*}
+\sum_x\bar f(x)\,e(x) &= \rho\,[\bar f(-1)+\bar f(0)]+\bar f(1)\,[\rho+(1-\rho)\1\{M'\ge\tau\}] \why{entry after each order}\\
+&= \rho+(1-\rho)\,\frac v2\,\1\Bigl\{\frac{1+\vartheta'}2\ge\tau\Bigr\} \why{\(\sum_x\bar f(x)=1\)}
+\end{align*}
+
+\paragraph{Step 3: the equilibrium condition.} By Lemma A.3 the correct sale earns \(K_L-k=\rho\DT\,m'-k\), since \(e(-1)=\rho\) and \(\mu(-1)=m'\). The correct purchase earns \(K_H-k=e(1)\DT(1-M')-k\). Because \(1-M'=m'\) and \(e(1)\ge\rho\), \(K_H\ge\rho\DT\,m'\). A wrong-signed order never pays (Lemma A.3(a)). When an indifferent investor may mix, full orders are optimal exactly when \(K_L\ge k\) and \(K_H\ge k\). The second follows from the first, so the condition is
+\begin{align*}
+\rho\DT\,\frac{1-\vartheta'}{2}\ge k &\iff 1-\vartheta'\ge\frac{2k}{\rho\DT} \why{multiply by \(2/(\rho\DT)>0\)}\\
+&\iff \vartheta'\le1-\frac{2k}{\rho\DT} \why{rearrange}
+\end{align*}
+When an indifferent investor abstains, the inequalities are strict, and so is the last one. The constructed tuples of Section~\ref{sec:beliefs-constructed} complete the tuple under either challenger rule. So these are also the conditions for an equilibrium.
+
+\subsection{Part (c): the sale price}
+
+Let entry after a sale and after no order be \(\rho\). Then \(I_-=\rho\DT(\pi-m)\), and the balance identity gives
+\[
+q:=\frac{\bar f(-1)\,I_-}{\rho\DT}=\pi(1-\pi)\lambda .
+\]
+The identity \((2\pi-1)^2=1-4\pi(1-\pi)\) links the mean order to \(q\):
+\begin{align*}
+\E[X]^2 &= \lambda^2(2\pi-1)^2=\lambda^2-4\lambda\cdot\pi(1-\pi)\lambda \why{\(\E[X]=\lambda(2\pi-1)\)}\\
+&= \lambda^2-4q\lambda \why{definition of \(q\)}
+\end{align*}
+So \(\lambda\) solves \(\lambda^2-4q\lambda-\E[X]^2=0\). The product of the two roots is \(-\E[X]^2\le0\), and their sum is \(4q>0\). Hence exactly one root is positive, namely \(\lambda=2q+\sqrt{4q^2+\E[X]^2}\), which is the display. Then \(2\pi-1=\E[X]/\lambda\) gives \(\pi\), and part (a) gives \(b\) and \(\beta\) from \(v\) and \(\lambda\). At the prior \(1/2\), \(\E[X]=0\), so \(\lambda=4q\). With \(\bar f(-1)=v/2\), \(\vartheta=\lambda/v=2I_-/(\rho\DT)\).
+
+\begin{intuition}[what a test looks like]
+At a known prior other than \(1/2\), the counts alone give the presence of the informed investor. At the prior \(1/2\), they give only the volume. A researcher then needs the sale impact, and the payoff scale \(\rho\DT\) from outside the order data. Two slots with the same counts have different top posteriors, so they can differ in recruitment and in the price gap. Prices separate slots that counts cannot.
+\end{intuition}
+
+\begin{checkyourself}\label{q:empirical-sale}
+Let the prior be \(1/2\), full two-sided trade hold, and entry after a sale and after no order be \(\rho\). Derive \(I_-=\rho\DT\,\vartheta/2\) directly from \(m=b/v\). Then write \(\lambda\) in terms of \(I_-\). Say why the counts cannot give \(\lambda\) here.
+\end{checkyourself}
+
+\section{Counts under purchases only (Corollary A.3)}\label{sec:empirical-purchases}
+
+In the informative market that coexists with a quiet market (Chapter~\ref{ch:coexistence}), class \(L\) abstains and class \(H\) buys. Full two-sided trade does not hold there, so Proposition A.11 does not apply. The corollary gives the counterpart.
+
+\begin{paperresult}{Corollary A.3 (Counts under purchases only)}
+Take an equilibrium in which class \(L\) abstains and class \(H\) buys with probability \(\sigma_H(1)>0\). Write \(s_+=\lambda\sigma_H(1)\).
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Then \(\bar f(-1)=b\), \(\bar f(1)=b+\pi s_+\), \(\E[X]=\pi s_+\) and \(v=2b+\pi s_+\). At every prior, the counts identify \(b=(v-\E[X])/2\) and the share \(\E[X]/v\) of nonzero orders that the informed investor places. At a known prior they identify \(s_+=\E[X]/\pi\). If class \(H\) buys with probability one, \(\lambda=\E[X]/\pi\).
+\item Suppose that an indifferent investor may mix over its best orders and that class \(H\) mixes, \(0<\sigma_H(1)<1\). For every \(\lambda'\in[s_+,1-3b]\), the slot \((\lambda',\beta')\) with \(\beta'=b/(1-\lambda')\), with \(\sigma'_H(1)=s_+/\lambda'\) and with class \(L\) abstaining, has an equilibrium with the same class-conditional order laws, and so the same posteriors, prices, entry and acquisition probabilities. The counts therefore identify \(b\) and, at a known prior, \(s_+\). Even with the prices, they do not identify \(\lambda\). On a mixed purchase, the indifference of class \(H\) gives \(s_+=(b/\pi)\bigl[e(1)(1-\pi)\DT/k-1\bigr]\), which is \((b/\pi)\bigl[(1-\pi)\DT/k-1\bigr]\) when every challenger prepares after a purchase.
+\end{enumerate}
+\end{paperresult}
+
+\paragraph{Part (a).} No class places a wrong-signed order (Lemma A.3(a)). So class \(H\) places the order \(0\) with probability \(1-\sigma_H(1)\), and the class laws on \((-1,0,1)\) are
+\[
+f_H=(b,\;1-2b-s_+,\;b+s_+),\qquad f_L=(b,\;1-2b,\;b).
+\]
+Average with the weights \(\pi\) and \(1-\pi\). Then \(\bar f(-1)=b\) and \(\bar f(1)=\pi(b+s_+)+(1-\pi)b=b+\pi s_+\). So \(\E[X]=\pi s_+\) and \(v=2b+\pi s_+\). Subtract: \(v-\E[X]=2b\). The informed investor places a nonzero order only when it fills the slot in class \(H\) and buys, with probability \(\pi\lambda\sigma_H(1)=\pi s_+=\E[X]\). So its share of nonzero orders is \(\E[X]/v\). At a known prior, \(s_+=\E[X]/\pi\), and \(s_+=\lambda\) when \(\sigma_H(1)=1\).
+
+\paragraph{Part (b).} The original slot has \(\beta\le1/3\), which means \(b\le(1-\lambda)/3\), that is, \(\lambda\le1-3b\). Also \(s_+<\lambda\), so the segment \([s_+,1-3b]\) is not a point and contains \(\lambda\). Take \(\lambda'\) in it.
+\begin{itemize}
+\item \(\beta'=b/(1-\lambda')\) lies in \((0,1/3]\), since \(1-\lambda'\ge3b\). The liquidity mass is \((1-\lambda')\beta'=b\).
+\item \(\sigma'_H(1)=s_+/\lambda'\) lies in \((0,1]\), since \(\lambda'\ge s_+\).
+\item The class laws depend only on \(b\) and \(s_+\), so they equal \(f_H\) and \(f_L\) above. By the odds form (equation~\eqref{eq:beliefs-odds}) the posteriors are the same. Keep the entry \(e(x)\) of the original equilibrium. It meets Lemma A.2(d) at these posteriors under either challenger rule. So the prices \(t_0+e(x)\,w_F(\mu(x))\), the preparation rule and the price beliefs are the same.
+\item The payoffs of Lemma A.3 depend on posteriors and entry only. The factor \(\lambda'\) changes no comparison (Lemma A.3(d)). In the original equilibrium class \(H\) mixes, so the purchase and abstention are its two best orders. An indifferent investor who may mix can buy with probability \(\sigma'_H(1)\). Abstention stays optimal for class \(L\).
+\end{itemize}
+So the slot \((\lambda',\beta')\) has an equilibrium with the same order laws, posteriors, prices and entry. By Proposition A.12(i) it has the same acquisition probabilities. Part (a) gives \(b\) and \(s_+\) from the counts, and these are the same for every \(\lambda'\) in the segment.
+
+For the indifference, class \(H\) earns \(K_H=e(1)\DT[1-\mu(1)]=k\) on a mixed purchase. By Bayes' rule, \(1-\mu(1)=(1-\pi)\,b/(b+\pi s_+)\). So
+\begin{align*}
+e(1)\,\DT\,(1-\pi)\,b &= k\,(b+\pi s_+) \why{\(K_H=k\); multiply by \(b+\pi s_+\)}\\
+s_+ &= \frac b\pi\Bigl[\frac{e(1)(1-\pi)\DT}{k}-1\Bigr] \why{divide by \(k\pi\); solve for \(s_+\)}
+\end{align*}
+With \(e(1)=1\), this is the second form.
+
+\emph{What a test looks like.} Counts give the informed share \(\E[X]/v\) and the liquidity mass \(b\). They do not separate a rare investor who always buys from a frequent investor who buys with a small probability, since only the product \(s_+\) enters.
+
+\section{Orders predict the winner (Proposition A.12)}\label{sec:empirical-winner}
+
+A purchase makes class \(H\) more likely. Class \(H\) values the target more, so it wins more often. The order therefore predicts the winner through the class, even when entry does not respond to the order. If a purchase also recruits, the order predicts preparation, and this adds a second channel. The proposition separates the two channels.
+
+For a class \(j\), \(W_j(F)=\Pr(R<\theta)\) with \(\theta\) drawn from \(G_j\) is the probability that a prepared class-\(j\) challenger outbids the incumbent (equation~\eqref{eq:model-W}). Write \(\Omega(F)=W_H(F)-W_L(F)\) and \(W_F(\mu)=W_L(F)+\mu\,\Omega(F)\). Let \(\1_{\rm prep}\) and \(\1_{\rm acq}\) indicate that the challenger prepares and that it acquires the target.
+
+\begin{paperresult}{Proposition A.12 (Orders predict the winner)}
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item In every equilibrium, the probability that the challenger acquires the target after the order \(x\), given preparation, is \(W_F(\mu(x))\), and \(\E[\1_{\rm acq}\mid X=x]=e(x)\,W_F(\mu(x))\). Also \(\Omega(F)=\E_F[D(R)]\ge0\), and \(\Omega(F)>0\) exactly when \(\Pr_F\{D(R)>0\}>0\).
+\item Under full two-sided trade, \(W_F(M)-W_F(m)=(M-m)\,\Omega(F)\ge0\), positive exactly when \(\Pr_F\{D(R)>0\}>0\). The prices rise strictly with the order, so the win probability of a prepared challenger rises with the price, strictly when \(\Pr_F\{D(R)>0\}>0\).
+\item Under full two-sided trade with \(\pi<\tau\),
+\begin{align*}
+\Cov(X,\1_{\rm prep})&=[e(1)-\rho]\,\bar f(1)\,(1-\E[X]),\\
+\Cov(X,\1_{\rm acq})&=2\pi(1-\pi)\rho\lambda\,\Omega(F)+[e(1)-\rho]\,\bar f(1)\,(1-\E[X])\,W_F(M).
+\end{align*}
+If \(B_F(M)<c_H\), entry is \(\rho\) after every order, \(\Cov(X,\1_{\rm prep})=0\), and \(\Cov(X,\1_{\rm acq})=2\pi(1-\pi)\rho\lambda\,\Omega(F)\), which is positive exactly when \(\Pr_F\{D(R)>0\}>0\).
+\item Under full two-sided trade with \(\pi<\tau\),
+\begin{align*}
+&\E[\1_{\rm acq}\mid X=1]-2\,\E[\1_{\rm acq}\mid X=0]+\E[\1_{\rm acq}\mid X=-1]\\
+&\qquad=\rho\,(M+m-2\pi)\,\Omega(F)+[e(1)-\rho]\,W_F(M).
+\end{align*}
+At the prior \(1/2\), \(M+m=1=2\pi\). If also an indifferent high-cost challenger prepares, then \(\Cov(X,\1_{\rm acq})=\rho\lambda\,\Omega(F)/2+(1-\rho)\,\chi_F\,\bar f(1)\,W_F(M)\), and the second difference equals \((1-\rho)\,\chi_F\,W_F(M)\), which is positive exactly when a purchase recruits.
+\item Let \(F_r\) be a path, hold the prior and the slot fixed, and let class \(H\) always outbid the incumbent: \(W_H(F_r)=1\) at every strength. At strengths with full two-sided trade, the winner gap \(W_{F_r}(M)-W_{F_r}(m)=(M-m)\,[1-W_L(F_r)]\) is nondecreasing in \(r\), and it is larger at \(r'\) than at \(r<r'\) exactly when \(W_L(F_{r'})<W_L(F_r)\).
+\item If \(F_r\) is uniform on \([0,r]\) with \(r\ge p\), then \(\Omega(F_r)=\Gamma(r)/r\), and its right derivative in \(r\) is \([D(r)-\Omega(F_r)]/r\). So \(\Omega(F_r)\), and with it the full-trade winner gap \((M-m)\,\Omega(F_r)\) at a fixed prior and slot, is nondecreasing on an interval of strengths exactly when \(D(r)\ge\Omega(F_r)\) at almost every strength of the interval. It rises strictly on an interval where \(D(r)>\Omega(F_r)\) at almost every strength.
+\end{enumerate}
+\end{paperresult}
+
+Here \(\Gamma(x)=\int_p^xD(y)\,dy\) for \(x\ge p\) is the class difference in expected proceeds at the incumbent value \(x\) (Appendix A.1). A plain reading:
+\begin{itemize}
+\item \emph{(i)} Holds in every equilibrium. A prepared challenger wins with the probability that its posterior class mix implies. Preparation does not change the class mix.
+\item \emph{(ii), (iii)} Full trade. The covariance of the order with the win has a class term and a recruitment term. The class term survives where entry stays at its floor. Part (iii) adds \(\pi<\tau\).
+\item \emph{(iv)} The second difference removes the class term. Its second statement needs the prior \(1/2\) and the default challenger rule.
+\item \emph{(v), (vi)} Strength. Part (v) needs the prior and the slot fixed, full trade at each strength compared, and \(W_H(F_r)=1\): class \(H\) outbids every incumbent on the path.
+\end{itemize}
+
+\subsection{Part (i): who wins after an order}
+
+Step 0 of Lemma A.2 (Section~\ref{sec:beliefs-priceformula}) shows that, given the class \(j\) and the order \(x\), the challenger prepares with probability \(e(x)\), independently of \((\theta,R)\). So preparation leaves the class posterior at \(\mu(x)\), and given the class it leaves \((\theta,R)\) at its prior law. Bids are truthful, and every value meets the reserve under the class ranking. A prepared challenger acquires the target exactly when \(R<\theta\). A tie has probability zero, since \(F\) is continuous.
+\begin{align*}
+\Pr(\text{acquire}\mid j,\text{prepared}) &= W_j(F) \why{definition of \(W_j\)}\\
+\Pr(\text{acquire}\mid X=x,\text{prepared}) &= (1-\mu(x))\,W_L(F)+\mu(x)\,W_H(F)=W_F(\mu(x)) \why{total probability over the class}\\
+\E[\1_{\rm acq}\mid X=x] &= e(x)\,W_F(\mu(x)) \why{no acquisition without preparation}
+\end{align*}
+Next, \(W_j(F)=\Pr(R<\theta)=\int\Pr_j(\theta>y)\,dF(y)=\int[1-G_j(y)]\,dF(y)\), by independence of \(R\) and \(\theta\). Hence
+\begin{align*}
+\Omega(F) &= \int\bigl\{[1-G_H(y)]-[1-G_L(y)]\bigr\}\,dF(y) \why{subtract}\\
+&= \int D(y)\,dF(y)=\E_F[D(R)] \why{\(D=G_L-G_H\)}
+\end{align*}
+The class ranking gives \(D\ge0\), so \(\Omega(F)\ge0\). A nonnegative variable has expectation zero only if it is zero with probability one. So \(\Omega(F)>0\) exactly when \(D(R)>0\) with positive probability.
+
+\subsection{Part (ii): the win probability rises with the price}
+
+Under full two-sided trade the posteriors after a purchase and a sale are \(M\) and \(m\). \(W_F\) is a straight line in \(\mu\) with slope \(\Omega(F)\). So \(W_F(M)-W_F(m)=\Omega(F)\,(M-m)\), and \(M>m\). By Lemma A.2(e) prices rise strictly with the posterior, so \(P(-1)<P(0)<P(1)\). The win probability \(W_F(\mu(x))\) is nondecreasing in the posterior, hence nondecreasing in the price. It is strictly increasing when \(\Omega(F)>0\).
+
+\begin{watchout}
+Part (i) holds given preparation. The win probability \(W_F(\mu)\) is a straight line in the posterior at a fixed level of entry. The unconditional probability of acquisition, \(e(x)\,W_F(\mu(x))\), also depends on entry, and entry depends on the posterior. Equilibrium acquisition therefore reflects entry as well as the class.
+\end{watchout}
+
+\subsection{Part (iii): the covariances}
+
+For any indicator \(Y\), \(\Cov(X,Y)=\Cov(X,\E[Y\mid X])\), since \(\E[XY]=\E[X\,\E[Y\mid X]]\) and \(\E[Y]=\E[\E[Y\mid X]]\) (law of iterated expectations, Section~\ref{sec:toolkit-expectation}). Let \(\pi<\tau\), so that entry after \((-1,0,1)\) is \((\rho,\rho,e(1))\).
+
+\paragraph{Step 1: preparation.} \(\E[\1_{\rm prep}\mid X]=\rho+[e(1)-\rho]\,\1\{X=1\}\). For a number \(c\), \(X\,\1\{X=1\}=\1\{X=1\}\), so
+\begin{align*}
+\Cov(X,c\,\1\{X=1\}) &= c\,\bigl[\E[X\,\1\{X=1\}]-\E[X]\,\bar f(1)\bigr] \why{definition of covariance}\\
+&= c\,\bar f(1)\,(1-\E[X]) \why{\(\E[X\,\1\{X=1\}]=\bar f(1)\)}
+\end{align*}
+With \(c=e(1)-\rho\), this is the first line of (iii).
+
+\paragraph{Step 2: acquisition.} By part (i),
+\[
+\E[\1_{\rm acq}\mid X]=e(X)\,W_F(\mu(X))=\rho\,W_F(\mu(X))+[e(1)-\rho]\,W_F(M)\,\1\{X=1\}.
+\] The second term has the form of Step 1 with \(c=[e(1)-\rho]\,W_F(M)\). For the first term, \(W_F\) has slope \(\Omega(F)\), so \(\Cov(X,\rho\,W_F(\mu(X)))=\rho\,\Omega(F)\,\Cov(X,\mu(X))\). Since \(\mu(X)=\Pr(H\mid X)\),
+\begin{align*}
+\E[X\,\mu(X)] &= \E[X\,\1\{j=H\}] \why{iterated expectations}\\
+&= \pi\,\E[X\mid H]=\pi\lambda \why{\(\E[X\mid H]=(b+\lambda)-b\)}\\
+\Cov(X,\mu(X)) &= \pi\lambda-\E[X]\,\pi \why{\(\E[\mu(X)]=\pi\)}\\
+&= \pi\lambda-\lambda(2\pi-1)\pi=2\pi(1-\pi)\lambda \why{\(\E[X]=\lambda(2\pi-1)\)}
+\end{align*}
+Add the two terms to get the second line. If \(B_F(M)<c_H\), then \(M<\tau\), because \(B_F(\mu)-c_H=\gamma(\mu-\tau)\). Every posterior lies below \(\tau\), entry is \(\rho\) after every order, and \(e(1)=\rho\) in both lines. Positivity follows from part (i).
+
+\subsection{Part (iv): the second difference}
+
+By part (i), with entry \((\rho,\rho,e(1))\) and posteriors \((m,\pi,M)\),
+\begin{align*}
+&\E[\1_{\rm acq}\mid X=1]-2\E[\1_{\rm acq}\mid X=0]+\E[\1_{\rm acq}\mid X=-1]\\
+&\quad= e(1)\,W_F(M)-2\rho\,W_F(\pi)+\rho\,W_F(m) \why{part (i)}\\
+&\quad= \rho\,[W_F(M)-2W_F(\pi)+W_F(m)]+[e(1)-\rho]\,W_F(M) \why{add and subtract \(\rho\,W_F(M)\)}\\
+&\quad= \rho\,(M+m-2\pi)\,\Omega(F)+[e(1)-\rho]\,W_F(M) \why{\(W_F\) is affine}
+\end{align*}
+At the prior \(1/2\), \(M+m=1\) (Section~\ref{sec:empirical-full}) and \(\E[X]=0\). An affine function has zero second difference around the midpoint, so the class channel drops out. Under the default rule, \(e(1)=\rho+(1-\rho)\chi_F\), because \(B_F(M)\ge c_H\) exactly when \(M\ge\tau\). Insert this in (iii) with \(2\pi(1-\pi)=1/2\), and in the second difference. This gives the two expressions.
+
+For the sign, let \(\chi_F=1\). Then \(B_F(M)\ge c_H>0\), so some class has \(g_j>0\). Gross profit is \(g_j=\E_j[g(\theta)]\) with \(g(\theta)=\int_p^\theta F(y)\,dy\) (equation~\eqref{eq:toolkit-fixed}). Since \(F\) is nondecreasing, \(g(\theta)\le(\theta-p)F(\theta)\). So \(g_j>0\) requires \(F(\theta)>0\) with positive probability, and \(W_j(F)=\E_j[F(\theta)]>0\). Now \(W_F(M)\) puts positive weight on both classes, so \(W_F(M)>0\). The second difference is positive exactly when \(\chi_F=1\), that is, exactly when a purchase recruits.
+
+\subsection{Parts (v) and (vi): strength}
+
+\paragraph{Part (v).} With \(W_H(F_r)=1\), \(\Omega(F_r)=1-W_L(F_r)\), and part (ii) gives the winner gap. Next, \(W_L(F_r)=\E_L[F_r(\theta)]\), and \(F_{r'}\le F_r\) for \(r'>r\). So \(W_L\) is nonincreasing along the path. The prior and the slot are fixed, so \(M-m>0\) is fixed. The gap at \(r'\) exceeds the gap at \(r\) exactly when \(W_L(F_{r'})<W_L(F_r)\).
+
+\paragraph{Part (vi).} For the uniform law on \([0,r]\), the density is \(1/r\) there. Under the class ranking, both classes lie above \(p\), so \(D=0\) below \(p\).
+\begin{align*}
+\Omega(F_r) &= \E_{F_r}[D(R)]=\frac1r\int_0^rD(y)\,dy \why{uniform law on \([0,r]\)}\\
+&= \frac{\Gamma(r)}{r} \why{\(D=0\) below \(p\); definition of \(\Gamma\)}
+\end{align*}
+\(D\) is right-continuous, so \(\Gamma\) has the right derivative \(D(r)\). The quotient rule gives the right derivative of \(\Gamma(r)/r\): \([rD(r)-\Gamma(r)]/r^2=[D(r)-\Omega(F_r)]/r\). Since \(0\le D\le1\), \(\Gamma\) is Lipschitz, so \(\Omega(F_r)\) is absolutely continuous on every compact interval of positive strengths. Its derivative equals \([D(r)-\Omega(F_r)]/r\) at every continuity point of \(D\), hence almost everywhere, because \(D\) is a difference of two monotone functions. An absolutely continuous function is nondecreasing on an interval exactly when its derivative is nonnegative almost everywhere there. It rises strictly where its derivative is positive almost everywhere, since its increment is the integral of the derivative. The prior and the slot are fixed, so the winner gap \((M-m)\,\Omega(F_r)\) inherits both properties.
+
+\begin{intuition}[a running average]
+A stronger uniform incumbent adds incumbent values near the new top \(r\). The class gap \(\Omega\) is the average of \(D\) over the incumbent's values. A running average rises when the value added exceeds the average. Here the value added is \(D(r)\). So the winner gap widens when the class difference in the chance to beat a top incumbent exceeds its average over lower incumbents.
+\end{intuition}
+
+\emph{What a test looks like.} Sort sales by the order at the first opportunity. A purchase predicts a challenger win with a positive covariance, even for strengths above the entry ceiling, where the covariance with preparation is zero. The second difference \((\text{win after purchase})-2(\text{win after no order})+(\text{win after sale})\) at the prior \(1/2\) is positive exactly when a purchase recruits. With class \(H\) outbidding every incumbent, the winner gap does not narrow as the incumbent strengthens.
+
+\begin{checkyourself}\label{q:empirical-winner}
+Take the example: a class-\(H\) value equals \(h\), a class-\(L\) value equals \(\ell\), with \(p<\ell<h\), and the incumbent is uniform on \([0,r]\) with \(\ell\le r<h\). Find \(W_H\), \(W_L\) and \(\Omega\). Check that \(D(r)-\Omega(F_r)=\ell/r\), and that this agrees with the derivative of \(\Omega\).
+\end{checkyourself}
+
+\section{Announcement returns (Proposition A.13)}\label{sec:empirical-announce}
+
+Add a public event after the price that reveals only whether the challenger prepared, and nothing else. Market makers then price again. Before the event the price averages two outcomes: the target with a challenger, and the target without one. The event removes the average. The price jumps to one outcome.
+
+\begin{paperresult}{Proposition A.13 (Announcement returns)}
+Take any equilibrium, at any prior, under either challenger rule.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item After the order \(x\), the price changes by \(\Delta^1_x=[1-e(x)]\,w_F(\mu(x))\) when the event reports preparation, and by \(\Delta^0_x=-e(x)\,w_F(\mu(x))\) when it reports no preparation. The second report has positive probability exactly when \(e(x)<1\).
+\item After an order \(x\) with \(e(x)<1\), the mean change over both reports, with their probabilities, is zero.
+\item Pool all orders, and take the sample of preparation reports. Its mean price change is
+\[
+\sum_x\Pr(X=x\mid\text{preparation})\,\Delta^1_x=\frac{\sum_x\bar f(x)\,e(x)\,[1-e(x)]\,w_F(\mu(x))}{\sum_x\bar f(x)\,e(x)},
+\]
+which is positive exactly when entry is below one after some order, that is, exactly when preparation is uncertain. If \(B_F(\pi)<c_H\), entry is \(\rho\) after some order, and the mean is positive.
+\item The expected price before the order opportunity minus the price after no order is the weighted impact difference, \(\E[P(X)]-P(0)=\bar f(1)I_+-\bar f(-1)I_-\), which parts (i) to (iii) of Proposition A.10 evaluate. Under full two-sided trade the posterior after no order is the prior.
+\end{enumerate}
+\end{paperresult}
+
+\paragraph{Part (i).} After the order \(x\), the event reveals whether the challenger prepared, and market makers price at the expected value of the target given the order and the report. Preparation leaves the class posterior at \(\mu(x)\) and leaves \((\theta,R)\) at its prior law, given the class (proof of Proposition A.12(i)). With truthful bids, expected proceeds in class \(j\) after preparation are \(t_j\).
+\begin{align*}
+P^{\rm prep}(x) &= (1-\mu(x))\,t_L+\mu(x)\,t_H \why{average over the class}\\
+&= t_L+\DT\,\mu(x)=t_0+w_F(\mu(x)) \why{\(t_H=t_L+\DT\); \(w_F(\mu)=t_L-t_0+\DT\mu\)}
+\end{align*}
+Without preparation the target receives the proceeds without entry, with mean \(t_0\) in both classes. So \(P^{\rm none}(x)=t_0\). Subtract the price before the event, \(P(x)=t_0+e(x)\,w_F(\mu(x))\):
+\begin{align*}
+\Delta^1_x &= w_F(\mu(x))-e(x)\,w_F(\mu(x))=[1-e(x)]\,w_F(\mu(x)) \why{\(P^{\rm prep}(x)-P(x)\)}\\
+\Delta^0_x &= t_0-t_0-e(x)\,w_F(\mu(x))=-e(x)\,w_F(\mu(x)) \why{\(P^{\rm none}(x)-P(x)\)}
+\end{align*}
+Given the order \(x\), the report of no preparation has probability \(1-e(x)\), which is positive exactly when \(e(x)<1\).
+
+\paragraph{Part (ii).} The probabilities of the two reports are \(e(x)\) and \(1-e(x)\).
+\begin{align*}
+e(x)\,\Delta^1_x+[1-e(x)]\,\Delta^0_x &= e(x)[1-e(x)]\,w_F(\mu(x))-[1-e(x)]\,e(x)\,w_F(\mu(x)) \why{insert part (i)}\\
+&= 0 \why{the two terms are equal}
+\end{align*}
+The price before the event is the mean of the prices after it. Market makers cannot expect a change.
+
+\paragraph{Part (iii).} By Bayes' rule, \(\Pr(X=x\mid\text{preparation})=\bar f(x)e(x)/\sum_{x'}\bar f(x')e(x')\). Insert \(\Delta^1_x\) to get the display. Every order has \(\bar f(x)>0\) (Lemma A.1(a)) and \(e(x)\ge\rho>0\). The posterior is interior, so \(w_F(\mu(x))>0\). Every term of the numerator is nonnegative, and the numerator is positive exactly when \(e(x)<1\) after some order.
+
+Now let \(B_F(\pi)<c_H\). Gross profit is affine in the belief, and the average posterior is the prior, so
+\[
+\sum_x\bar f(x)\,B_F(\mu(x))=B_F(\pi)<c_H .
+\]
+Some order therefore has \(B_F(\mu(x))<c_H\), that is, \(\mu(x)<\tau\). Lemma A.2(d) gives \(e(x)=\rho<1\) after it, under both challenger rules, since the inequality is strict.
+
+\paragraph{Part (iv).} The identity is part (i) of Proposition A.10. Under full two-sided trade \(\mu(0)=\pi\) (Lemma A.1(d)).
+
+\begin{watchout}
+After a report of preparation the price is \(t_0+w_F(\mu(x))\): entry is one, and the price is a straight line in the posterior. Before the report the price is a mixture, with weight \(e(x)\) on that line and weight \(1-e(x)\) on \(t_0\). The positive mean in part (iii) comes from the sample, not from the mixture: it keeps only the reports that raise the price.
+\end{watchout}
+
+\emph{What a test looks like.} Take announcements that reveal preparation. The model predicts a positive mean price change whenever preparation was uncertain, which includes every case with a floor \(\rho<1\). The mean over all reports, weighted by the model probabilities, is zero. Part (iv) adds a second prediction. Under full trade with \(\pi<\tau\), an opportunity that passes with no order is no news about the class. When a purchase recruits, it is bad news about entry. The price after no order lies below the expected price before the opportunity, by the weighted impact difference \(\bar f(1)\,[e(1)-\rho]\,w_F(M)\).
+
+\begin{checkyourself}\label{q:empirical-announce}
+Let full two-sided trade hold, with entry \((\rho,\rho,1)\) after \((-1,0,1)\). Write the mean price change over preparation reports. Which order adds nothing to the numerator? Show that the mean is positive.
+\end{checkyourself}
+
+\section{The example in words}\label{sec:empirical-example}
+
+The paper applies the propositions to the example: point-mass classes at \(h\) and \(\ell\), a reserve \(p<\ell\), and an incumbent uniform on \([0,r]\), at the prior \(1/2\). Chapter~\ref{app:numbers} gives the values. The shape of the results is as follows.
+\begin{itemize}
+\item \emph{Full trade.} Against incumbents with strength between \(r_S\) and \(h\), every equilibrium has full two-sided trade, where \(r_S\) solves \(\rho\DT(r)\,m=k\). The marked strengths satisfy \(r_S<r_1<r_C<r_2<h\).
+\item \emph{Recruitment.} Gross profit at the top posterior falls strictly in \(r\) above \(\ell\). A purchase recruits exactly when \(r\le r_C\). Entry after \((-1,0,1)\) is \((\rho,\rho,\rho+(1-\rho)\chi_r)\).
+\item \emph{Impacts.} At the prior \(1/2\), \(I_+-I_-=(1-\rho)\chi_r\,w_r(M)\), positive exactly for \(r\le r_C\). Both terms of \(w_r\) rise with \(r\), because \(\ell^2>3p^2\) is the condition of Proposition A.10(vi)(b) for the example. The price gap rises with \(r\) and falls by a jump at \(r_C\).
+\item \emph{Identification.} Counts give the volume only. Shares between \(3-2/v\) and \(1-2k/(\rho\DT(r_1))\) are consistent with the counts and with full trade at \(r_1\). The sale impact gives the share, \(\vartheta=2I_-/(\rho\DT(r))\).
+\item \emph{Purchases only.} A full purchase with class \(L\) abstaining is an equilibrium exactly on \([r_F,r_N]\), where \(\lambda=2\E[X]\). A mixed purchase that recruits holds on \((r_A,r_F)\), where \(s_+=b\,[\DT(r)/k-2]\) and \(\lambda\) is not identified.
+\item \emph{Winners.} Class \(H\) outbids every incumbent, \(W_H=1\), and \(W_L=\ell/r\). So \(\Omega=1-\ell/r\), and the winner gap \(\vartheta(1-\ell/r)\) rises strictly with \(r\).
+\item \emph{Announcements.} Since \(B_r(1/2)\) falls in \(r\) and stays below \(c_H\), the mean change over preparation reports is positive at every strength from \(r_0\) up. At \(r_2\), the price after no order equals the expected price.
+\item \emph{Two clusters.} For \(r_F<r<r_N\) there are two equilibria: a quiet market, and a full purchase with class \(L\) abstaining. In the second, the mean order is \(\lambda/2\), every challenger prepares after a purchase, and a sale executes above the price after no order.
+\end{itemize}
+
+\section{What separates the mechanism from deterrence}\label{sec:empirical-deterrence}
+
+Simple deterrence says that a stronger incumbent lowers a challenger's return from entry, and that the stock price plays no part. In the model this is the economy in which the price does not reach the challenger. There the challenger decides on its prior, entry is \(\rho\) after every order when \(\pi<\tau\), and a stronger incumbent can only lower it (Section 8 of the paper). The mechanism of the paper adds a price that reaches the challenger. The table below sorts the predictions of this chapter.
+
+\begin{table}[ht]
+\centering\small
+\caption{Predictions of the chapter for \(\pi<\tau\), with and without a price that reaches the challenger.}\label{tab:empirical-separate}
+\begin{tabular}{@{}p{0.34\linewidth}p{0.24\linewidth}p{0.20\linewidth}p{0.13\linewidth}@{}}
+\toprule
+Prediction & Price reaches the challenger & Price hidden & Separates?\\
+\midrule
+Weighted impact difference & positive for \(r\le r_C\) & zero & yes\\[2pt]
+\(I_+-I_-\) at the prior \(1/2\) & positive for \(r\le r_C\) & zero & yes\\[2pt]
+Entry component of the price gap & positive, rising in \(r\), falls at \(r_C\) & zero & yes\\[2pt]
+Covariance of order and preparation & positive for \(r\le r_C\) & zero & yes\\[2pt]
+Price after no order below the mean price & for \(r\le r_C\) & equal & yes\\[2pt]
+Covariance of order and winner & positive & positive & no\\[2pt]
+Win probability rises with price & yes & yes & no\\[2pt]
+Positive mean change on preparation reports & yes & yes & no\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three points qualify the table.
+\begin{itemize}
+\item The first five rows come from Proposition A.10(ii), (iv) and (vi), Proposition A.12(iii) and Proposition A.13(iv). With a hidden price, entry is \(\rho\) after every order, so each entry term is zero (Proposition A.10(iv)).
+\item The last three rows hold in any informative market. The winner results use the class channel, which needs only that the investor knows the class (Proposition A.12(ii), (iii)). The announcement mean is positive whenever entry is below one, and a hidden price has entry \(\rho<1\) (Proposition A.13(iii)). These rows test the information structure, and not the recruitment of the challenger. The guide draws this contrast from the propositions.
+\item A visible price with information held fixed (the fixed-information control of Chapter~\ref{ch:example}) gives the same within-strength signs as the mechanism up to \(r_C\). It differs across strengths: entry stays constant until \(r_C\), while the mechanism lets entry rise from the weak incumbent, against which the market is quiet, to the strong one (Proposition 2, Chapter~\ref{ch:ccc}).
+\end{itemize}
+
+\subsection{What a researcher must hold fixed}
+
+\begin{itemize}
+\item \emph{The state.} The prior, the slot, the reserve, the costs \(\rho\), \(c_H\) and \(k\), and the class laws. The propositions compare economies that differ only in incumbent strength. In data, strong and weak incumbents may come with different liquidity, different informed presence and different priors. Chapter~\ref{ch:research} lets presence respond to strength. The predictions here hold it fixed.
+\item \emph{The pattern of trade.} Full two-sided trade at each strength compared, and \(\pi<\tau(r)\) for the tests that need it. Part (vi) of Proposition A.10 states these as hypotheses.
+\item \emph{The dating.} The price before the decision, the strength from public information before the decision, and a prespecified opportunity with the zero order recorded (Section~\ref{sec:empirical-dating}).
+\item \emph{The comparison.} Compare targets or public states. Each strength is a separate economy that is solved again. The results do not describe one target over time (Chapter~\ref{ch:ccc}, Section~\ref{sec:ccc-statement}).
+\item \emph{The sample.} Do not keep only sales with a public offer. A public offer is a narrower outcome than preparation, so this sample selects on the challenger's decision. This remark is the guide's reading of the dating rule.
+\end{itemize}
+
+\begin{chaptersummary}
+A researcher dates the decision interval from the public sale news to the challenger's decision. The price and the incumbent's strength come before the decision, and the order is the outcome of a prespecified opportunity, with a zero when no order arrives. Under full two-sided trade, the weighted difference of the purchase impact and the sale impact is positive exactly when a purchase recruits, at a prior below the threshold. It removes the class term because the expected rise in belief after a purchase equals the expected fall after a sale. The price gap splits into a class part and an entry part, and the entry part is zero when the price does not reach the challenger. Counts identify the presence of the informed investor at a known prior other than \(1/2\), and only the volume at \(1/2\). The order predicts the winner through the class, even where it does not predict entry. The announcement mean is positive whenever preparation is uncertain. Only the first group of predictions separates the mechanism from simple deterrence.
+\end{chaptersummary}
+
+\needspace{10\baselineskip}
+\answersection
+
+\answer{\ref{q:empirical-weights}}{(a) With entry \(\rho\) after every order, \(e(1)-e(0)=0\) and \(e(0)-e(-1)=0\). Part (ii) gives
+\[
+\bar f(1)I_+-\bar f(-1)I_-=\bar f(1)\cdot0\cdot w_F(M)-\bar f(-1)\cdot0\cdot w_F(m)=0 .
+\]
+(b) Without recruitment, \(I_+=\rho\DT(M-\pi)\) and \(I_-=\rho\DT(\pi-m)\). The balance identity gives \(M-\pi=\pi(1-\pi)\lambda/\bar f(1)\) and \(\pi-m=\pi(1-\pi)\lambda/\bar f(-1)\). Since \(\bar f(-1)-\bar f(1)=\lambda(1-2\pi)>0\) for \(\pi<1/2\), \(\bar f(1)<\bar f(-1)\). Hence
+\begin{align*}
+M-\pi &= \frac{\pi(1-\pi)\lambda}{\bar f(1)} \why{balance identity}\\
+&> \frac{\pi(1-\pi)\lambda}{\bar f(-1)}=\pi-m \why{\(\bar f(1)<\bar f(-1)\); same numerator}\\
+I_+-I_- &= \rho\DT\,[(M-\pi)-(\pi-m)]>0 \why{subtract; \(\rho\DT>0\)}
+\end{align*}
+(c) When the prior favors class \(L\), a purchase is rarer than a sale. A rare order moves the belief more. So the class part of the purchase impact is larger, even though the weighted class parts are equal. The plain comparison reads this as recruitment.}
+
+\answer{\ref{q:empirical-sale}}{At the prior \(1/2\), \(m=b/v\) and \(\pi-m=\tfrac12-\tfrac bv=\dfrac{v-2b}{2v}=\dfrac{\lambda}{2v}=\dfrac\vartheta2\), since \(v-2b=\lambda\). With entry \(\rho\) after a sale and after no order,
+\begin{align*}
+I_- &= \rho\DT\,(\pi-m)=\rho\DT\,\frac\vartheta2 \why{Section~\ref{sec:empirical-weighted}}\\
+\lambda &= \vartheta\,v=\frac{2I_-}{\rho\DT}\,v=\frac{4\bar f(-1)\,I_-}{\rho\DT} \why{\(\vartheta=2I_-/(\rho\DT)\); \(v=2\bar f(-1)\)}
+\end{align*}
+The counts at the prior \(1/2\) are \((v/2,1-v,v/2)\). They contain \(v\) and nothing else, so they cannot separate \(\lambda=\vartheta v\) from \(\vartheta\). The sale impact supplies \(\vartheta\), given the payoff scale \(\rho\DT\).}
+
+\answer{\ref{q:empirical-winner}}{A prepared challenger of class \(j\) beats the incumbent when \(R<\theta_j\), where \(\theta_H=h\) and \(\theta_L=\ell\). So \(W_j=F_r(\theta_j)\), and \(F_r(y)=\min\{y/r,1\}\). Since \(\ell\le r<h\),
+\begin{align*}
+W_H &= F_r(h)=1 \why{\(h>r\)}\\
+W_L &= F_r(\ell)=\frac\ell r \why{\(\ell\le r\)}\\
+\Omega &= W_H-W_L=1-\frac\ell r \why{definition}
+\end{align*}
+For the point masses, \(D(y)=\1\{\ell\le y<h\}\) (Section~\ref{sec:toolkit-fosd}). At \(y=r\) with \(\ell\le r<h\), \(D(r)=1\). So \(D(r)-\Omega=1-(1-\ell/r)=\ell/r>0\). Part (vi) then says that \(\Omega\) rises strictly, with right derivative \((\ell/r)/r=\ell/r^2\). Direct differentiation agrees: \(\frac{d}{dr}(1-\ell/r)=\ell/r^2\). Part (v) gives the same conclusion, since \(W_H=1\) and \(W_L=\ell/r\) falls strictly.}
+
+\answer{\ref{q:empirical-announce}}{With entry \((\rho,\rho,1)\), the terms \(e(x)[1-e(x)]\,w_F(\mu(x))\) are \(\rho(1-\rho)\,w_F(m)\) after a sale, \(\rho(1-\rho)\,w_F(\pi)\) after no order, and \(1\cdot0\cdot w_F(M)=0\) after a purchase. So
+\[
+\text{mean}=\frac{\bar f(-1)\,\rho(1-\rho)\,w_F(m)+\bar f(0)\,\rho(1-\rho)\,w_F(\pi)}{\rho\,\bar f(-1)+\rho\,\bar f(0)+\bar f(1)} .
+\]
+A purchase adds nothing to the numerator, since \(1-e(1)=0\): after a purchase every challenger prepares, so a report of preparation is no surprise. A purchase adds only to the denominator, through \(\bar f(1)\). The numerator is positive because \(0<\rho<1\), \(\bar f>0\) and \(w_F(m),w_F(\pi)>0\). The denominator is positive. So the mean is positive.}

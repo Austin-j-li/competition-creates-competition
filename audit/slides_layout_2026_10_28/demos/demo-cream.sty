@@ -1,0 +1,52 @@
+% Demo B "cream": warm paper, slate text, green accent, Source Sans. Loaded after ccc-classic.
+\ProvidesPackage{demo-cream}
+\usefonttheme{professionalfonts}
+\RequirePackage{fontspec}
+\setsansfont{Source Sans 3}[BoldFont={Source Sans 3 Semibold}]
+\setmainfont{Source Sans 3}[BoldFont={Source Sans 3 Semibold}]
+\definecolor{cPaperD}{HTML}{FBF8F1}
+\definecolor{cNavy}{HTML}{0E5A4E}
+\definecolor{cSlate}{HTML}{243447}
+\definecolor{cInkD}{HTML}{22262B}
+\definecolor{cLine}{HTML}{D8D2C4}
+\definecolor{cGrayText}{HTML}{6B7280}
+\colorlet{cMuted}{cGrayText}
+\setbeamercolor{background canvas}{bg=cPaperD}
+\setbeamercolor{normal text}{fg=cInkD,bg=cPaperD}
+\setbeamercolor{structure}{fg=cNavy}
+\setbeamercolor{frametitle}{fg=cSlate}
+\setbeamercolor{framesubtitle}{fg=cGrayText}
+\setbeamercolor{title}{fg=cSlate}
+\setbeamercolor{item}{fg=cNavy}
+\setbeamercolor{button}{bg=cLine,fg=cSlate}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamerfont{framesubtitle}{size=\small}
+\setbeamerfont{title}{series=\bfseries,size=\huge}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamertemplate{itemize items}{\raise0.3ex\hbox{\tiny$\blacktriangleright$}}
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vskip0.1cm
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}%
+  \ifx\insertframesubtitle\@empty\else
+    \vskip1pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}\fi
+  \vskip0.1cm{\color{cNavy}\rule{2.2cm}{1.6pt}}\par\vskip-0.18cm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{\hspace*{0.4cm}%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-0.8cm\relax,ht=1.9ex,dp=0.9ex]{normal text}%
+    {\scriptsize\color{cGrayText}\insertshorttitle}\hfill
+    \ccc@nav\hspace*{0.9em}{\scriptsize\color{cGrayText}\ifbeamer@inappendix\ccc@bid\else\insertframenumber{} / \inserttotalframenumber\fi}%
+  \end{beamercolorbox}}\vskip1pt\global\let\ccc@nav\@empty}
+\setbeamertemplate{title page}{%
+  \vbox to \textheight{%
+    \vskip0.22\textheight
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\raggedright\inserttitle\par}%
+    \vskip0.45cm{\color{cNavy}\rule{2.2cm}{1.6pt}}\par\vskip0.45cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\raggedright\insertauthor\par}%
+    \vfil}}
+\makeatother
+% Statement: short green rule and a small-caps tag instead of the full-width rule
+\renewenvironment{Statement}[1]{\par\vspace{-1pt}\noindent\textcolor{cNavy}{\rule{2.2cm}{1.2pt}}\par\vskip2pt
+  \noindent{\bfseries\small\color{cNavy}#1}\par\vskip2pt\footnotesize\noindent\ignorespaces}{%
+  \par\vspace{2pt}\LightRule}
+\endinput
