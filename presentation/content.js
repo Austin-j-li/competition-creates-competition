@@ -210,14 +210,15 @@
 
     var timeline = (function () {
       var xs = [0, 295, 590, 885, 1180], off = 138, r = 24, labs = [
-        'Seller commits: auction, reserve ' + m('p'), 'Trading slot: outcome ' + m('X'), 'Market makers set ' + m('P(X)'),
-        'Rival sees ' + m('P') + ', learns ' + m('C') + ', prepares or stays out', 'Rival, if prepared, learns ' + m(T`\theta`) + '; bids; payoffs'];
+        'Seller commits: auction, reserve&nbsp;' + m('p'), 'Trading slot: outcome ' + m('X'), 'Market makers set ' + m('P(X)'),
+        'Rival sees ' + m('P') + ', learns ' + m('C') + ', prepares or stays out', 'Rival, if prepared, learns and bids ' + m(T`\theta`) + '; payoffs'];
       var marks = xs.map(function (x, i) {
         return '<circle class="dg-dot" cx="' + (x + off) + '" cy="26" r="' + r + '"/>' + text(x + off, 35, String(i + 1), { cls: 'dg-dotnum', size: 25 }) +
           (i < 4 ? arrow(x + off + r + 4, 26, xs[i + 1] + off - r - 4, 26) : '');
       }).join('');
       return '<div class="timeline">' + svg(1456, 54, 1, marks, 'Five steps in order, joined by arrows.') +
-        '<div class="tl-labels">' + labs.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div></div>';
+        '<div class="tl-labels">' + labs.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>' +
+        '<div class="tl-lane"><p>Incumbent’s distribution ' + m('F') + ' is public</p><span class="tl-lane-line"></span><p class="tl-lane-end">Incumbent bids ' + m('R') + '</p></div></div>';
     })();
     main({ id: 's6', label: 'S6', num: '6', part: 2, minutes: 2, targets: ['main:s6'],
       title: 'Timing: one trading slot, then preparation',
@@ -285,7 +286,7 @@
               gloss('With ' + m(T`\beta\le1/3`) + ', liquidity trade covers every outcome, including no trade.') + P('The price belief ' + m(T`\bar\mu`) + ' obeys the same bounds.')],
             [0.51, P('Suppose ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ' and ' + m(T`\rho\in(0,1)`) + '. Under Bayes’ rule, optimal preparation, competitive prices and truthful bids,') +
               d(T`\begin{aligned}&P(x)=P(x')\ \Longrightarrow\ \mu(x)=\mu(x'),\\&\Pr(H\mid P(X)=P(x))=\mu(x).\end{aligned}`)]]) +
-          cols([[0.46, P('<b>Preparation rule.</b> Define the threshold ' + m(T`\tau=(c_H-g_L)/(g_H-g_L)`) + '.') + gloss('At the belief ' + m(T`\tau`) + ', rival gross profit equals the high cost.') +
+          cols([[0.46, P('<b>Preparation rule.</b> Define the threshold ' + m(T`\tau=(c_H-g_L)/(g_H-g_L)`) + '.') + gloss(m(T`B(\mu)\ge c_H\iff\mu\ge\tau`) + '.') +
               P('Under the default preparation rule,') + gloss('A rival at the threshold prepares.')],
             [0.51, d(T`\begin{aligned}&C=c_H:\quad\text{prepare exactly when }\mu(x)\ge\tau,\\&e(x)=\begin{cases}\rho,&\mu(x)<\tau,\\1,&\mu(x)\ge\tau.\end{cases}\end{aligned}`)]])) +
         intuition('A liquidity trader can place any order, so an order can move the belief but never settles the synergy class.') +

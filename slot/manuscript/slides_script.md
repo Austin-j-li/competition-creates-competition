@@ -106,7 +106,7 @@ The seller commits before trade to a cash second-price auction with positive res
 
 The sequence puts the stock price before the preparation decision.
 
-The seller first commits to reserve p. Next comes the order X: minus one is a sale, zero is no order, and one is a purchase. Then market makers set stock price P. The rival sees P, learns cost C, and decides whether to prepare. Bids and payoffs follow.
+The seller first commits to reserve p, and the incumbent's distribution F is public. Next comes the order X: minus one is a sale, zero is no order, and one is a purchase. Then market makers set stock price P. The rival sees P, learns cost C, and decides whether to prepare. If it prepares, it learns theta and bids theta. The incumbent bids R, and payoffs follow.
 
 Presence lambda is the chance that the informed trader receives the order opportunity. It observes class j and chooses order q from those same three alternatives. A nonzero order costs k, the order cost.
 
