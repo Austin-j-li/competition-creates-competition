@@ -415,3 +415,20 @@ Other changes:
 - Before (lead line): A stronger incumbent does not always keep the rival out: it can make the stock price more informative, and that price can recruit the rival.
   After: A stronger incumbent can make the stock price more informative. That price can then recruit the rival.
   Reason: the positive claim stands without the negative set-up and colon.
+
+## Rigour corrections after the polish
+
+Each change below follows a check of the merged text against the paper. Where the polish already settled a point, it is noted.
+
+- Frame 2. Before: Some preparation then no longer pays, so entry cannot rise. After: Preparation can stop paying, so entry cannot rise. Reason: the paper proves a weak fall in entry (Proposition A.2); a strict loss of some preparation is not implied.
+- Frame 3. Before: An outside informed trader holds no net target position … After: … starts with no net target position … Reason: an order creates a position; the zero position holds before trade (section 2).
+- Frame 4. Before: Strength can also widen … After: Strength can widen … Reason: the sentence that "also" referred to left in the polish.
+- Frame 8. Before: $g(\theta)=\mathbb E_R[(\theta-\max\{p,R\})_+]$. After: $g(\theta)=\mathbb E_R[\max\{\theta-\max\{p,R\},0\}]$. Reason: the definition of $(z)_+$ left in the merge; the operator is now written out.
+- Frame 8. Before: A winning bidder gets its value minus its payment; a losing bidder gets $0$. After: Gross of preparation cost, a winner gets its value minus its payment; a loser gets $0$. Reason: a prepared rival pays $C$ whether it wins or loses.
+- Frame 11 (intuition). The merged line said "an order moves the belief". Under full informed orders no order leaves the belief at the prior. The polished line ("the class stays uncertain after any order") makes no such claim, so no further change.
+- Frame 16 (intuition). Before: … pays for more research, up to the cap; entry rises under good synergy and falls under poor. After: … raises research up to the cap; where research rises, entry rises under good synergy and falls under poor. Reason: at the cap, class entry does not move (Proposition 4(b)).
+- Frame 18 (intuition). Before: … the price has an entry part. After: … the purchase price has an entry part.
+- Frame 18 (foot). Before: With no recruitment ($e(\cdot)=\rho$), orders can still predict the winner: B13. After: … orders still predict the winner when a prepared class-$H$ rival wins more often than a class-$L$ one: B13. Reason: restores the condition $W_H>W_L$ in words.
+- Frame 19. Before: Prediction. In data, weighted by order frequency, … After: Prediction. Under the conditions of frame 18, weighted by order frequency, … Reason: the equivalence needs full informed orders, $\pi<\tau$ and one public state (appendix A8); without them it can fail.
+
+Checks: `latexmk slides.tex` exit 0, one main-frame overflow (frame 13, 0.65 pt, as before the pass); `presentation/build.py` from an empty `dist/` exit 0; in the browser, `DECK.selfCheck()` reports no errors and no maths errors, and `DECK.audit()` returns `[]`.

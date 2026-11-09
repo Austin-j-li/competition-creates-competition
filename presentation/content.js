@@ -165,7 +165,7 @@
       body: vsp(21) +
         ul(['The rival must pay to prepare before it learns its value and can bid.',
           'A stronger incumbent weakly cuts rival gross profit at each belief about synergy.',
-          'Some preparation then no longer pays, so entry cannot rise.',
+          'Preparation can stop paying, so entry cannot rise.',
           'Fishman (1988): the first bidder chooses a preemptive bid. Here strength is public; the incumbent’s own value stays private.'], 28) +
         takeaway('This answer holds the rival’s news fixed. A stock price can change what the rival learns.') +
         footline('Fishman (1988); Hirshleifer and Png (1989). Auction entry: Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994); Gentry and Stroup (2019).') });
@@ -176,14 +176,14 @@
         table({ widths: [460, 430, 530], cls: 'stretch-135', head: ['Strand', 'Core idea', 'Difference here'], rows: [
           ['<b>Price feedback</b> — Dow, Goldstein and Guembel (2017, closest antecedent); Edmans, Goldstein and Jiang (2015)', 'Price guides a real decision', 'The rival decides whether to prepare'],
           ['<b>Costly entry</b> — Fishman (1988); Roberts and Sweeting (2013)', 'Preparation cost deters entry', 'The price can carry more news as incumbent strength rises'],
-          ['<b>Takeover trade</b> — Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991)', 'Trade moves the target’s share price', 'An outside informed trader holds no net target position and cannot bid for control']] }) +
+          ['<b>Takeover trade</b> — Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991)', 'Trade moves the target’s share price', 'An outside informed trader starts with no net target position and cannot bid for control']] }) +
         takeaway('A stronger incumbent can shift more of the synergy gap from the rival to shareholders, so the informed trader can earn more.') +
         footline('Trading slot: alternative arrival from Dow and Gorton (1997); unit orders, presence and order cost from Edmans, Goldstein and Jiang (2015).') +
         nav(go('app:b14', 'B14')) });
 
     main({ id: 's4', label: 'S4', num: '4', part: 1, minutes: 1.5, targets: ['main:s4'],
       title: 'A stronger incumbent can recruit the rival',
-      body: large('Strength can also widen the shareholder spread, the good-minus-poor gap in target proceeds. The informed trader can then profit, and the price can recruit the high-cost rival.') +
+      body: large('Strength can widen the shareholder spread, the good-minus-poor gap in target proceeds. The informed trader can then profit, and the price can recruit the high-cost rival.') +
         vsp(13) +
         ol(['<b>Non-monotone entry:</b> entry can rise from the weak to the strong incumbent, then return to its floor at the very strong one. Each case has a unique outcome (Proposition 2).',
           '<b>Value split between rival and shareholders:</b> strength weakly cuts rival gross profit and weakly widens the shareholder spread (Proposition 1).',
@@ -247,11 +247,11 @@
     main({ id: 's8', label: 'S8', num: '8', part: 2, minutes: 1.5, targets: ['main:s8'],
       title: 'Payoffs',
       body: strip([5]) + center(dg(splitLine(6.2, 'incumbent’s value _R_'))) +
-        ul(['Prepared rival with value ' + m(T`\theta\ge p`) + ': expected target proceeds ' + m(T`t(\theta)=\mathbb E_R[\max\{p,\min(R,\theta)\}]`) + ' and expected rival gross profit ' + m(T`g(\theta)=\mathbb E_R[(\theta-\max\{p,R\})_+]`) + ', before ' + m('C') + '. Hence ' + m(T`t(\theta)+g(\theta)=\theta`) + '.',
+        ul(['Prepared rival with value ' + m(T`\theta\ge p`) + ': expected target proceeds ' + m(T`t(\theta)=\mathbb E_R[\max\{p,\min(R,\theta)\}]`) + ' and expected rival gross profit ' + m(T`g(\theta)=\mathbb E_R[\max\{\theta-\max\{p,R\},0\}]`) + ', before ' + m('C') + '. Hence ' + m(T`t(\theta)+g(\theta)=\theta`) + '.',
           'Class means: ' + m(T`t_j=\mathbb E_j[t(\theta)]`) + ', ' + m(T`g_j=\mathbb E_j[g(\theta)]`) + ', with ' + m(T`\mathbb E_j`) + ' under ' + m('G_j') + '. With no prepared rival, target proceeds are ' + m(T`p\,\mathbf 1\{R\ge p\}`) + ', so ' + m(T`t_0=p[1-F(p)]`) + '.',
           '<b>Shareholder spread:</b> ' + m(T`\Delta_T=t_H-t_L`) + '. At belief ' + m(T`\mu=\Pr(j=H)`) + ', <b>rival gross profit</b> is ' + m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + '; at price ' + m(T`\bar P`) + ', the net gain from preparation is ' + m(T`B(\bar\mu(\bar P))-C`) + '.',
           'The informed trader who submits ' + m('q') + ' (so ' + m('X=q') + ') earns ' + m(T`q[V_T-P(q)]-k|q|`) + '.',
-          'A winning bidder gets its value minus its payment; a losing bidder gets ' + m('0') + '.'], 7) });
+          'Gross of preparation cost, a winner gets its value minus its payment; a loser gets ' + m('0') + '.'], 7) });
 
     main({ id: 's9', label: 'S9', num: '9', part: 2, minutes: 1.5, targets: ['main:s9'],
       title: 'Equilibrium with competitive prices',
@@ -361,7 +361,7 @@
               d(T`\Delta_T>2k\qquad\text{and}\qquad\tau\le M_{\widehat\lambda}.`) +
               gloss('Why ' + m('2k') + ': a recruiting purchase gains ' + m(T`\Delta_T m_\lambda\le\Delta_T/2`) + ' gross (frame 12), so it beats ' + m('k') + ' only if ' + m(T`\Delta_T>2k`) + '.') +
               P('In it, with ' + m(T`a,k,\rho,\beta,\bar\lambda`) + ' fixed, research ' + m(T`\widehat\lambda`) + ' rises strictly with ' + m(T`\Delta_T`) + ' up to ' + m(T`\bar\lambda`) + ', then stays there; ' + m(T`\tau`) + ' enters only the existence condition. Total entry is ' + m(T`\mathsf E=\rho+(1-\rho)[\beta+(1/2-\beta)\widehat\lambda]`) + '. Where research rises, ' + m(T`\mathsf E`) + ' and class-' + m('H') + ' entry rise strictly; class-' + m('L') + ' entry falls strictly.')]])) +
-        intuition('A wider shareholder spread pays for more research, up to the cap; entry rises under good synergy and falls under poor.') +
+        intuition('A wider shareholder spread raises research up to the cap; where research rises, entry rises under good synergy and falls under poor.') +
         footline('After a class-' + m('L') + ' success, the trader abstains while ' + m(T`\rho\Delta_T\le2k`) + ' and otherwise sells with positive probability. Details: ' + link('app:b12', 'B12') + '. Exogenous ' + m(T`\lambda`) + ': ' + link('app:b3', 'B3') + '.') +
         nav(go('app:b3', 'B3'), go('app:b12', 'B12')) });
 
@@ -394,8 +394,8 @@
             [0.49, P('Then ' + m(T`\bar f(1)=b+\pi\lambda`) + ', ' + m(T`\bar f(-1)=b+(1-\pi)\lambda`) + ', and') +
               d(T`\bar f(1)I_+-\bar f(-1)I_->0\quad\Longleftrightarrow\quad e(1)>\rho.`) +
               P('At ' + m(T`\pi=1/2`) + ', ' + m(T`\bar f(1)=\bar f(-1)`) + ', so') + d(T`I_+>I_-\quad\Longleftrightarrow\quad e(1)>\rho.`)]])) +
-        intuition('When a purchase recruits, the price has an entry part. Weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.') +
-        footline('With no recruitment (' + m(T`e(\cdot)=\rho`) + '), orders can still predict the winner: ' + link('app:b13', 'B13') + '. Empirical moment: within one public state, average the pre-preparation price by order outcome, no order included, over slots fixed in advance; test the sample analogue of ' + m(T`\bar f(1)I_+-\bar f(-1)I_->0`) + '.') +
+        intuition('When a purchase recruits, the purchase price has an entry part. Weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.') +
+        footline('With no recruitment (' + m(T`e(\cdot)=\rho`) + '), orders still predict the winner when a prepared class-' + m('H') + ' rival wins more often than a class-' + m('L') + ' one: ' + link('app:b13', 'B13') + '. Empirical moment: within one public state, average the pre-preparation price by order outcome, no order included, over slots fixed in advance; test the sample analogue of ' + m(T`\bar f(1)I_+-\bar f(-1)I_->0`) + '.') +
         nav(go('app:b13', 'B13')) });
 
     main({ id: 's19', label: 'S19', num: '19', part: 6, minutes: 1, targets: ['main:s19'], cls: 'sz-n',
@@ -404,7 +404,7 @@
         ul(['<b>Main result.</b> Entry can rise against the strong incumbent and return to its floor against the very strong one, with a unique outcome in each case (Proposition 2).',
           '<b>Discipline.</b> Strength weakly cuts rival gross profit and weakly widens the shareholder spread; with the rival’s news fixed, it cannot raise entry.',
           '<b>Extensions.</b> Where the recruiting equilibrium exists, a wider shareholder spread raises costly research by the informed trader, up to its cap. At the strong incumbent, letting the rival see the price raises expected target proceeds and acquisition surplus net of preparation costs.',
-          '<b>Prediction.</b> In data, weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.'], 25) +
+          '<b>Prediction.</b> Under the conditions of frame 18, weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.'], 25) +
         vfill });
 
     /* ================================================================ backups B1 to B16 */
