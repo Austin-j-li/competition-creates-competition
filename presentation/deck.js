@@ -249,10 +249,10 @@
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: t1, y1: t1, line: { color: t.info, width: 1.2 }, layer: 'below' });
     layout.shapes.push({ type: 'line', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: t2, y1: t2, line: { color: t.bg, width: 1.2, dash: 'dash' }, layer: 'below' });
     layout.shapes.push(vline(r2, t.muted));
-    layout.annotations.push(at('τ(<i>r</i><sub>2</sub>) ≈ ' + reg('tau_r2'), r1 + 0.02, t2, t.ink, { yshift: 6, size: 12 }));
-    layout.annotations.push(at('<i>M</i>(1/2) ≈ ' + reg('M_half_B'), r1 + 0.02, M, t.ink, { yanchor: 'top', yshift: -6, size: 12 }));
+    layout.annotations.push(at('τ(<i>r</i><sub>2</sub>) ≈ ' + t2.toFixed(4), r1 + 0.02, t2, t.ink, { yshift: 6, size: 12 }));
+    layout.annotations.push(at('<i>M</i>(1/2) ≈ ' + regNum('M_half_B').toFixed(4), r1 + 0.02, M, t.ink, { yanchor: 'top', yshift: -6, size: 12 }));
     layout.annotations.push(at('values of <i>M</i>(1/2)<br>that satisfy<br>τ(<i>r</i><sub>1</sub>) &lt; <i>M</i> &lt; τ(<i>r</i><sub>2</sub>)', r1 + 0.02, 0.7255, t.info, { yanchor: 'top', yshift: 0, size: 12 }));
-    layout.annotations.push(at('τ(<i>r</i><sub>1</sub>) = ' + reg('tau_r1'), r2 - 0.02, t1, t.ink, { xanchor: 'right', yshift: 4, size: 12 }));
+    layout.annotations.push(at('τ(<i>r</i><sub>1</sub>) = ' + t1.toFixed(3), r2 - 0.02, t1, t.ink, { xanchor: 'right', yshift: 4, size: 12 }));
     traces.push(dot([r1], [t1], t.cost, false, 'x', 'y', 11));
     traces.push(dot([r2], [t2], t.cost, true, 'x', 'y', 11));
     return { traces: traces, layout: layout };

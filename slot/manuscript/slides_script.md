@@ -15,7 +15,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 |---:|---:|---:|---:|
 | 1 | 210 | 11 | 144 |
 | 2 | 136 | 12 | 141 |
-| 3 | 120 | 13 | 337 |
+| 3 | 120 | 13 | 316 |
 | 4 | 139 | 14 | 131 |
 | 5 | 145 | 15 | 157 |
 | 6 | 182 | 16 | 129 |
@@ -24,7 +24,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | 9 | 138 | 19 | 139 |
 | 10 | 149 |  |  |
 
-Main frames: **2,892 words**. Title: **61 words**. Prepared speech including title: **2,953 words**.
+Main frames: **2,871 words**. Title: **61 words**. Prepared speech including title: **2,932 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -112,7 +112,7 @@ Presence lambda is the chance that the informed trader receives the order opport
 
 With probability one minus lambda, a liquidity trader receives the opportunity instead. It sells or buys with probability beta each, and otherwise places no order. Beta is at most one third. No one observes which trader placed the order.
 
-Competitive market makers see only the order X. Price P of X equals expected sale proceeds V sub T given X. That expectation includes the preparation response to the price.
+Competitive market makers see only the order X. Price P of X equals expected target proceeds V sub T given X. That expectation includes the preparation response to the price.
 
 A purchase can carry news, but a liquidity purchase can copy it. This uncertainty will preserve the informed trader's advantage.
 
@@ -140,7 +140,7 @@ Order belief mu of x means the probability of class H, good synergy, given the o
 
 Take a prepared rival with value theta at least reserve p. The number line separates what shareholders receive from what the rival keeps.
 
-Target proceeds t of theta average the larger of p and the smaller of incumbent value R and theta. Gross auction profit g of theta averages the positive part of theta minus the larger of p and R. Both expectations are over R.
+Target proceeds t of theta average the larger of p and the smaller of incumbent value R and theta. Rival gross profit g of theta averages the positive part of theta minus the larger of p and R. Both expectations are over R.
 
 The sum, t of theta plus g of theta, equals theta. The second-price rule divides one value between these two claims.
 
@@ -186,17 +186,17 @@ Define liquidity mass b as beta times the quantity one minus lambda. Define u as
 
 A liquidity order can copy either informed order, so one order can move the odds of good synergy by a factor of at most one plus u. That gives band floor m and top belief M on the slide.
 
-For every order plan, every belief after a purchase or a sale lies in that band. Beta at most one third extends the band to no order.
+For every order strategy, every belief after a purchase or a sale lies in that band. Beta at most one third extends the band to no order.
 
 With positive spread, a positive rival gross-profit gap and positive entry floor rho, equal prices imply equal order beliefs. The price reveals mu, not the synergy class.
 
 Threshold tau is the belief at which rival gross profit equals high cost. Under the default rule, high cost prepares at or above tau. Entry is rho below tau and one otherwise.
 
-## Frame 12 — Gross gain from the correct order lies in $[\rho\kappa(\pi)\Delta_T,\ \Delta_T]$
+## Frame 12 — A correct order gains at least a fixed share of the shareholder spread
 
 *1.5 minutes · ends at 18:00*
 
-These are gross gains before order cost k, for any order plan with Bayes beliefs, competitive prices and truthful bids.
+These are gross gains before order cost k, for any order strategy with Bayes beliefs, competitive prices and truthful bids.
 
 Under good synergy, the purchase gain equals entry after a purchase times spread Delta T times one minus the purchase belief. Under poor synergy, the sale gain equals entry after a sale times Delta T times the sale belief. In words, entry times spread times doubt.
 
@@ -210,7 +210,7 @@ With entry and beliefs fixed, a wider spread raises these gross gains.
 
 *3.5 minutes · ends at 21:30*
 
-Proposition two compares three economies with the same class distributions, reserve, costs, prior and order opportunity. F two lies below F one, which lies below F zero. Each step strengthens the incumbent. Beta here can be anything below one half, because the proof uses only the bounds after a purchase and a sale.
+Proposition two compares three economies with the same class distributions, reserve, costs, prior and order opportunity. F two lies below F one, which lies below F zero. Each step strengthens the incumbent.
 
 Delta sub i is the shareholder spread in economy i; B sub i is rival gross profit there. Three strict conditions do the work.
 
@@ -264,13 +264,13 @@ The last row hides the price and the order. The rival uses the prior. Entry stay
 
 *1.0 minute · ends at 25:00*
 
-One change from frame six. The informed trader now chooses presence lambda privately, at quadratic cost, with a cap below one. Market makers and the rival use its equilibrium level. With chance lambda it learns the synergy class and fills the slot. Otherwise liquidity fills the slot.
+One change from frame six. The informed trader now chooses research lambda privately, at quadratic cost, with a cap below one. Market makers and the rival use its equilibrium level. With chance lambda it learns the synergy class and fills the slot. Otherwise liquidity fills the slot.
 
 Keep ranked classes, prior one half, a positive rival gross-profit gap, and tau above one half. Research equals the smaller of the optimal interior root and the cap. The recruiting equilibrium exists exactly when the spread exceeds twice the order cost and the top belief at that research level reaches tau.
 
 In it, research rises strictly with the spread until the cap, then stays fixed. Total entry and good-synergy entry rise with research. Poor-synergy entry falls. Backup B12 states the first-order condition.
 
-## Frame 17 — At the strong incumbent ($F_1$), a price the rival can see raises expected target proceeds and surplus net of preparation costs
+## Frame 17 — A visible price raises target proceeds and net surplus
 
 *1.0 minute · ends at 26:00*
 
@@ -332,7 +332,7 @@ There is no general uniqueness result for those intermediate strengths. The main
 
 ### Why is each outcome unique? — B2
 
-The bounds hold under every order plan, including mixtures. Against the weak incumbent, even the gain cap falls below the order cost. Against the strong incumbent, even the gain floor exceeds it, so both correct orders must occur. Their beliefs fix preparation. Against the very strong incumbent, full orders persist, but profit at the top belief cannot cover the high cost. These strict comparisons fix the equilibrium outcome under all four tie-rule pairs. Orders reveal a belief about synergy, not the synergy class itself.
+The bounds hold under every order strategy, including mixtures. Against the weak incumbent, even the gain cap falls below the order cost. Against the strong incumbent, even the gain floor exceeds it, so both correct orders must occur. Their beliefs fix preparation. Against the very strong incumbent, full orders persist, but profit at the top belief cannot cover the high cost. These strict comparisons fix the equilibrium outcome under all four tie-rule pairs. Orders reveal a belief about synergy, not the synergy class itself.
 
 ### Does Proposition 4 give a unique equilibrium? — B12
 
