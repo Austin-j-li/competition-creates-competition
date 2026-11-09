@@ -125,9 +125,9 @@
         tick(30) + text(30, 140, '0') + tick(220) + tick(1150) + tick(x, 'dg-tick accent') +
         text(220, 152, 'reserve _p_') + text(1150, 152, 'rival’s value _θ_') + text(x, 200, lab, { cls: 'dg-accent' }) +
         brace(35, x - 5, 60, 'info') + text((35 + x - 5) / 2, 38, 'target proceeds', { cls: 'dg-info' }) +
-        brace(x + 5, 1145, 60, 'cost') + text((x + 5 + 1145) / 2, 38, 'gross auction profit', { cls: 'dg-cost' }) +
+        brace(x + 5, 1145, 60, 'cost') + text((x + 5 + 1145) / 2, 38, 'rival’s gross profit', { cls: 'dg-cost' }) +
         text(1190, 56, 'one draw _R_', { anchor: 'start', cls: 'dg-muted', size: 25 }),
-        'The number line of one draw R between the reserve p and the rival’s value θ: target proceeds below R, gross auction profit above it.');
+        'The number line of one draw R between the reserve p and the rival’s value θ: target proceeds below R, rival’s gross profit above it.');
     };
     /* \GapLine{<earlier x>}{<x>} of frame 10. */
     var gapLine = function (x0, x, scale) {
@@ -152,22 +152,22 @@
         '<p class="cover-author">Austin Li</p><p class="cover-inst">Department of Economics, University College London</p></div>' });
 
     main({ id: 's1', label: 'S1', num: '1', part: 1, minutes: 2, targets: ['main:s1'], cls: 'bigtitle sz-n',
-      title: 'Does a stronger incumbent always keep the rival out?', subtitle: 'Why the answer matters',
+      title: 'Does a stronger incumbent always keep the rival out?', subtitle: 'The incumbent is prepared. The rival must pay to prepare.',
       body: vsp(77) +
-        cols([[0.31, colhead('Seller') + 'A public sale tries to find a rival bidder. A stronger incumbent can help find one, or end the search.'],
-          [0.31, colhead('Rival') + 'Preparation costs money before a bid is possible. The stock price can show whether the cost may pay.'],
-          [0.31, colhead('Price') + 'Stock trade comes before preparation. A price move can cause entry, not only forecast it.']]) +
+        cols([[0.31, colhead('Seller') + 'The seller seeks a rival bidder for a listed target. A stronger incumbent can help find one, or keep it out.'],
+          [0.31, colhead('Rival') + 'The rival cannot bid until it pays to prepare. The target’s stock price can show if preparation is worth its cost.'],
+          [0.31, colhead('Price') + 'Target shares trade before the rival prepares. The price can cause preparation, not only forecast it.']]) +
         vfill +
-        footline('One extra bidder can change sale proceeds at first order (Bulow and Klemperer, 1996). Here the sale rule stays fixed. The object is entry.') });
+        footline('One extra bidder can change target proceeds at first order (Bulow and Klemperer, 1996). Here the sale rule is fixed. The question is entry.') });
 
     main({ id: 's2', label: 'S2', num: '2', part: 1, minutes: 1.5, targets: ['main:s2'], cls: 'sz-n',
       title: 'The received answer: strength cannot raise entry', subtitle: 'When what the rival can learn stays fixed',
       body: vsp(21) +
-        ul(['The rival pays to learn its value before it can bid.',
-          'A stronger incumbent weakly cuts the rival’s expected auction profit at a fixed belief.',
-          'Some preparation costs then fail to pay. Entry cannot rise.',
-          'Fishman (1988): a chosen preemptive bid. Here: a public strength shift. The value itself stays private.'], 28) +
-        takeaway('This holds when pre-preparation information stays fixed.') +
+        ul(['The rival pays to learn its value for the target before it can bid.',
+          'A stronger incumbent weakly cuts rival gross profit at each belief about synergy.',
+          'Some rival preparation then no longer covers its cost. Entry cannot rise.',
+          'Fishman (1988): the first bidder chooses a preemptive bid. Here the strength shift is public. The incumbent’s own value stays private.'], 28) +
+        takeaway('This holds when what the rival can learn before preparation stays fixed.') +
         footline('Fishman (1988); Hirshleifer and Png (1989). Auction entry: Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994); Gentry and Stroup (2019).') });
 
     main({ id: 's3', label: 'S3', num: '3', part: 1, minutes: 1, targets: ['main:s3'],
@@ -175,21 +175,21 @@
       body: vsp(10) +
         table({ widths: [460, 430, 530], cls: 'stretch-135', head: ['Strand', 'Core idea', 'Difference here'], rows: [
           ['<b>Price feedback</b> — Dow, Goldstein and Guembel (2017, closest antecedent); Edmans, Goldstein and Jiang (2015)', 'Price guides a real decision', 'The decision is rival preparation'],
-          ['<b>Costly entry</b> — Fishman (1988); Roberts and Sweeting (2013)', 'Preparation cost deters entry', 'Price news can rise with incumbent strength'],
-          ['<b>Takeover trade</b> — Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991)', 'Trade moves target prices', 'Outside informed trader, no initial position, no target control']] }) +
-        takeaway('An outside informed trader can put synergy news in the price. Incumbent strength can raise the return to that trade.') +
+          ['<b>Costly entry</b> — Fishman (1988); Roberts and Sweeting (2013)', 'Preparation cost deters entry', 'The price can carry more news as incumbent strength rises'],
+          ['<b>Takeover trade</b> — Edmans, Goldstein and Jiang (2012); Kyle and Vila (1991)', 'Trade moves the target’s share price', 'An outside informed trader: no net target position, and it cannot bid for control']] }) +
+        takeaway('An outside informed trader can put news about the rival’s synergy in the price. Incumbent strength can raise the return to that trade.') +
         footline('Trading slot: alternative arrival from Dow and Gorton (1997); unit orders, presence and order cost from Edmans, Goldstein and Jiang (2015).') +
         nav(go('app:b14', 'B14')) });
 
     main({ id: 's4', label: 'S4', num: '4', part: 1, minutes: 1.5, targets: ['main:s4'],
       title: 'This paper: a stronger incumbent can recruit the rival',
-      body: large('A stronger incumbent weakly cuts the rival’s profit at each belief. It can also widen the shareholder spread. Informed trade can then pay, and the price can recruit the rival.') +
+      body: large('A stronger incumbent weakly cuts rival gross profit at each belief about synergy. It can also widen the shareholder spread, the good-minus-poor synergy gap in target proceeds. Informed trade can then pay, and the price can recruit the high-cost rival.') +
         vsp(13) +
-        ol(['<b>Non-monotone entry:</b> entry can rise from the weak to the strong incumbent, then return to its floor. Each case has a unique outcome (Proposition 2).',
-          '<b>Value split:</b> strength weakly cuts rival profit and weakly widens the shareholder spread (Proposition 1).',
-          '<b>Information control:</b> with pre-preparation information fixed, a stronger incumbent cannot raise entry.'], 14) +
+        ol(['<b>Non-monotone entry:</b> entry can rise from the weak to the strong incumbent, then, at the very strong one, return to its floor set by zero-cost preparation. Each case has a unique outcome (Proposition 2).',
+          '<b>Value split between rival and shareholders:</b> strength weakly cuts rival gross profit and weakly widens the shareholder spread (Proposition 1).',
+          '<b>Fixed-information control:</b> when what the rival can learn before preparation is fixed, a stronger incumbent cannot raise entry.'], 14) +
         vsp(16) +
-        P('Extensions: costly research by the informed trader; gains for sellers from a visible price; a purchase-impact prediction.') +
+        P('Extensions: costly research by the informed trader; gains for target shareholders when the rival sees the price; a purchase-impact prediction.') +
         vfill + ruleL +
         P('Roadmap: Model ' + m(T`\rightarrow`) + ' Mechanism and main result ' + m(T`\rightarrow`) + ' Fixed-information control ' + m(T`\rightarrow`) + ' Extensions and prediction.', 'roadline') });
 
@@ -198,20 +198,20 @@
     main({ id: 's5', label: 'S5', num: '5', part: 2, minutes: 1, targets: ['main:s5'],
       title: 'Players and the sale rule',
       body: strip([1]) +
-        P('A listed target has standalone value ' + m('0') + '. Values and costs are per share. All agents are risk neutral.') +
+        P('Values and costs are per share. The target’s standalone value is set to ' + m('0') + '. All agents are risk neutral.') +
         deflist([
-          ['Incumbent', '<b>incumbent bidder, already prepared:</b> it knows its value ' + m('R') + ' and faces no further preparation cost. ' + m(T`R\sim F`) + '; ' + m('F') + ' is public, continuous on ' + m(T`[0,\bar r]`) + ', and others do not observe the draw before bids. <b>Stronger</b> means a replacement ' + m(T`\widetilde F`) + ' with ' + m(T`\widetilde F(y)\le F(y)`) + ' for each ' + m('y') + '.'],
-          ['Rival', '<b>potential rival bidder:</b> sees the price, then decides whether to prepare. <b>Synergy class:</b> ' + m('j=H') + ' (good synergy) or ' + m('j=L') + ' (poor synergy), with prior ' + m(T`\pi=\Pr(j=H)\in(0,1)`) + '. Its value ' + m(T`\theta`) + ' has distribution ' + m('G_j') + ' in class ' + m('j') + '; each ' + m('G_j') + ' has a finite mean.'],
-          ['Class ranking', m(T`G_H(y)\le G_L(y)`) + ' for each ' + m('y') + ' — class ' + m('H') + ' draws weakly higher values. Also ' + m(T`\theta\ge p`) + ' almost surely under each ' + m('G_j') + ', where ' + m('p>0') + ' is the auction reserve below. The sale and the rival’s identity are public; its synergy class is not public.'],
-          ['Preparation cost ' + m('C'), m('C=0') + ' with probability ' + m(T`\rho\in(0,1)`) + '; else ' + m('C=c_H>0') + ', the high cost (' + m('H') + ' in ' + m('c_H') + ' means high, not class ' + m('H') + '). Pay ' + m('C') + ' to learn ' + m(T`\theta`) + ' and to bid; a rival who does not pay cannot bid. (' + m(T`\rho`) + ' is the entry floor on frame 9.)'],
-          ['Sale', 'the seller commits before trade to a cash second-price auction with reserve ' + m('p>0') + '. Sale proceeds go to target shareholders.']]) +
+          ['Incumbent', '<b>incumbent bidder, already prepared:</b> it knows its value ' + m('R') + ' and faces no further preparation cost. All know the distribution ' + m('F') + ' of ' + m('R') + ', continuous on ' + m(T`[0,\bar r]`) + '; no one else sees ' + m('R') + ' before bids. <b>Stronger</b> means a distribution ' + m(T`\widetilde F`) + ' that draws weakly higher values: ' + m(T`\widetilde F(y)\le F(y)`) + ' for each ' + m('y') + '.'],
+          ['Rival', '<b>potential rival bidder:</b> sees the target stock price ' + m('P') + ' (frame 6), then decides whether to prepare. <b>Synergy class:</b> ' + m('j=H') + ' (good synergy) or ' + m('j=L') + ' (poor synergy), with prior ' + m(T`\pi=\Pr(j=H)\in(0,1)`) + '. Its value ' + m(T`\theta`) + ' has distribution ' + m('G_j') + ' in class ' + m('j') + '; each ' + m('G_j') + ' has a finite mean.'],
+          ['Class ranking', m(T`G_H(y)\le G_L(y)`) + ' for each ' + m('y') + ' — class ' + m('H') + ' draws weakly higher values. Also, for the reserve ' + m('p>0') + ' in the Sale row below, ' + m(T`\theta\ge p`) + ' almost surely under each ' + m('G_j') + '. The sale and the rival’s identity are public; the synergy class is not, and the rival does not know it before preparation.'],
+          ['Preparation cost ' + m('C'), m('C=0') + ' with probability ' + m(T`\rho\in(0,1)`) + '; else ' + m('C=c_H>0') + ', the high cost (' + m('H') + ' in ' + m('c_H') + ' means high, not class ' + m('H') + '). To prepare is to pay ' + m('C') + ', learn ' + m(T`\theta`) + ', and be able to bid; an unprepared rival cannot bid. (' + m(T`\rho`) + ' is the entry floor on frame 9.)'],
+          ['Sale', 'the seller commits before trade to a cash second-price auction with reserve ' + m('p>0') + '; frame 8 states the payment. Target proceeds go to target shareholders.']]) +
         vfill + ruleL +
-        P('The pair ' + m(T`(j,\theta)`) + ', the value ' + m('R') + ', the cost ' + m('C') + ', and the trading-slot draws are independent. Neither bidder trades target shares. The next frame adds the trading slot: informed trader, liquidity trader, competitive market makers.', 'fs-f') });
+        P('The pair ' + m(T`(j,\theta)`) + ' is independent of ' + m('R') + ', ' + m('C') + ' and the trading-slot draws. Neither bidder trades target shares. Frame 6 adds the slot.', 'fs-f') });
 
     var timeline = (function () {
       var xs = [0, 295, 590, 885, 1180], off = 138, r = 24, labs = [
         'Seller commits: auction, reserve&nbsp;' + m('p'), 'Trading slot: outcome ' + m('X'), 'Market makers set ' + m('P(X)'),
-        'Rival sees ' + m('P') + ', learns ' + m('C') + ', prepares or stays out', 'Rival, if prepared, learns and bids ' + m(T`\theta`) + '; payoffs'];
+        'Rival sees ' + m('P') + ', learns ' + m('C') + ', prepares or stays out', 'Prepared rival learns ' + m(T`\theta`) + '; both bid; payoffs'];
       var marks = xs.map(function (x, i) {
         return '<circle class="dg-dot" cx="' + (x + off) + '" cy="26" r="' + r + '"/>' + text(x + off, 35, String(i + 1), { cls: 'dg-dotnum', size: 25 }) +
           (i < 4 ? arrow(x + off + r + 4, 26, xs[i + 1] + off - r - 4, 26) : '');
@@ -223,161 +223,160 @@
     main({ id: 's6', label: 'S6', num: '6', part: 2, minutes: 2, targets: ['main:s6'],
       title: 'Timing: one trading slot, then preparation',
       body: strip([2]) + center(dg(timeline)) + ruleL +
-        ul(['One trading slot comes before preparation. Its outcome is ' + m(T`X\in\{-1,0,1\}`) + ': ' + m('-1') + ' stock sale, ' + m('0') + ' no trade, ' + m('1') + ' stock purchase.',
-          'With probability ' + m(T`\lambda\in(0,1)`) + ' — the informed presence — the slot goes to an outside informed trader. It observes the synergy class ' + m('j') + ' and chooses an order ' + m(T`q\in\{-1,0,1\}`) + '; each nonzero order costs ' + m('k>0') + '.',
-          'With probability ' + m(T`1-\lambda`) + ', a liquidity trader fills the slot and submits ' + m('-1') + ', ' + m('0') + ', ' + m('1') + ' with probabilities ' + m(T`\beta`) + ', ' + m(T`1-2\beta`) + ', ' + m(T`\beta`) + ', where ' + m(T`0<\beta\le 1/3`) + '.',
-          'Competitive market makers observe the outcome ' + m('X') + ' only. They set ' + m(T`P(X)=\mathbb{E}[V_T\mid X]`) + ', where ' + m('V_T') + ' is target proceeds per share. In equilibrium that expectation holds the rival’s entry response to the price.'], 4) });
+        ul(['One trading slot comes before preparation. One trader submits one unit order ' + m('q') + '; the realised outcome is ' + m(T`X=q\in\{-1,0,1\}`) + ': ' + m('-1') + ' stock sale order, ' + m('0') + ' no trade, ' + m('1') + ' stock purchase order.',
+          'With probability ' + m(T`\lambda\in(0,1)`) + ' — the informed presence — the slot goes to an informed trader who is not a bidder. It observes the synergy class ' + m('j') + ' and chooses an order ' + m(T`q\in\{-1,0,1\}`) + '; each nonzero order costs ' + m('k>0') + '.',
+          'With probability ' + m(T`1-\lambda`) + ', the slot goes to a liquidity trader. Its order is drawn as ' + m('-1') + ', ' + m('0') + ', ' + m('1') + ' with probabilities ' + m(T`\beta`) + ', ' + m(T`1-2\beta`) + ', ' + m(T`\beta`) + ', where ' + m(T`0<\beta\le 1/3`) + '.',
+          'Competitive market makers observe the outcome ' + m('X') + ' only. They set ' + m(T`P(X)=\mathbb{E}[V_T\mid X]`) + ', where ' + m('V_T') + ' is target proceeds per share. In equilibrium, this expectation already allows for the entry that the price itself causes.'], 4) });
 
     main({ id: 's7', label: 'S7', num: '7', part: 2, minutes: 1.5, targets: ['main:s7'],
       title: 'Information and choices',
       body: strip([3, 4]) +
         table({ widths: [490, 430, 510], cls: 'fs-f stretch-115', head: ['Player', 'Observes', 'Chooses'], rows: [
-          ['Seller', 'public primitives', 'auction and reserve ' + m('p') + ', before trade'],
-          ['Incumbent', 'its value ' + m('R'), 'bid ' + m('R') + ' if ' + m(T`R\ge p`)],
+          ['Seller', '— (no private information)', 'auction and reserve ' + m('p') + ', before trade'],
+          ['Incumbent', 'its value ' + m('R'), 'bid ' + m('R') + ', effective only if ' + m(T`R\ge p`)],
           ['Informed trader (slot with prob. ' + m(T`\lambda`) + ')', 'class ' + m('j') + ' only', 'order ' + m('q') + '; cost ' + m('k') + ' if ' + m(T`q\ne0`)],
-          ['Liquidity trader (slot with prob. ' + m(T`1-\lambda`) + ')', 'no private information', 'order drawn with ' + m(T`(\beta,\,1-2\beta,\,\beta)`)],
+          ['Liquidity trader (slot with prob. ' + m(T`1-\lambda`) + ')', 'no private information', 'order in ' + m(T`\{-1,0,1\}`) + ' drawn with probabilities ' + m(T`(\beta,\,1-2\beta,\,\beta)`) + ', in that order'],
           ['Market makers', 'outcome ' + m('X') + ', not who traded', 'price ' + m(T`P(X)=\mathbb{E}[V_T\mid X]`)],
-          ['Rival', 'price ' + m('P') + ' (not ' + m('X') + ' on its own), then cost ' + m('C') + '; knows neither ' + m('j') + ' nor ' + m(T`\theta`) + ' before it pays', 'prepare or stay out; if it prepares, learn ' + m(T`\theta`) + ', then bid ' + m(T`\theta`)]] }) +
+          ['Rival', 'price ' + m('P') + ' only (not ' + m('X') + ' separately), then cost ' + m('C') + '; before preparation, neither ' + m('j') + ' nor ' + m(T`\theta`), 'prepare or stay out; if it prepares, learn ' + m(T`\theta`) + ', then bid ' + m(T`\theta`)]] }) +
         vsp(10) +
-        P('Public primitives are common knowledge; the table lists each player’s own information.', 'fs-f') +
+        P('Common knowledge: all frame 5–6 parameters and distributions. ‘Observes’ lists private information beyond that.', 'fs-f') +
         vsp(16) +
-        ul(['<b>Order belief:</b> ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + ' — the belief of an observer who sees the realised outcome ' + m('X=x') + '.',
-          '<b>Price belief:</b> ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + ' — the rival’s belief. One price pools all outcomes with that price.'], 10) });
+        ul(['<b>Order belief:</b> for a realised value ' + m('x') + ' of ' + m('X') + ', ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + ' — the market makers’ belief after outcome ' + m('X=x') + '.',
+          '<b>Price belief:</b> for a seen price ' + m(T`\bar P`) + ', ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + ' — the rival’s belief at that price. One price pools all outcomes with that price.'], 10) });
 
     main({ id: 's8', label: 'S8', num: '8', part: 2, minutes: 1.5, targets: ['main:s8'],
       title: 'Payoffs',
       body: strip([5]) + center(dg(splitLine(6.2, 'incumbent’s value _R_'))) +
-        ul(['Fix a prepared rival with value ' + m(T`\theta\ge p`) + ', and average over ' + m('R') + '. Shareholders receive the auction payment ' + m(T`\max\{p,\min(R,\theta)\}`) + '; its mean is ' + m(T`t(\theta)`) + '. With ' + m(T`(z)_+=\max\{z,0\}`) + ', the rival’s gross profit is ' + m(T`g(\theta)=\mathbb E_R[(\theta-\max\{p,R\})_+]`) + ', before cost ' + m('C') + '. In expectation, ' + m(T`t(\theta)+g(\theta)=\theta`) + '.',
-          m(T`\mathbb E_j`) + ' denotes expectation under ' + m('G_j') + '. Class means are ' + m(T`t_j=\mathbb E_j[t(\theta)]`) + ' and ' + m(T`g_j=\mathbb E_j[g(\theta)]`) + '. With no rival entry, the incumbent alone pays ' + m('p') + ' if ' + m(T`R\ge p`) + '; expected proceeds are ' + m(T`t_0=p[1-F(p)]`) + '.',
-          '<b>Shareholder spread:</b> ' + m(T`\Delta_T=t_H-t_L`) + ' — extra expected target proceeds in class ' + m('H') + ' versus class ' + m('L') + ' if the rival prepares. <b>Rival gross profit</b> at belief ' + m(T`\mu`) + ' is ' + m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + ', the ' + m(T`\mu`) + '-weighted mean of class gross profits, before ' + m('C') + '. Net gain from preparation: ' + m(T`B(\text{price belief})-C`) + '.',
-          'The informed trader with order ' + m('q') + ' earns ' + m(T`q[V_T-P(q)]-k|q|`) + ', where ' + m('P(q)') + ' is the price after order ' + m('q') + '.'], 7) });
+        ul(['Fix a prepared rival with value ' + m(T`\theta\ge p`) + '. For one ' + m('R') + ', shareholders receive ' + m(T`\max\{p,\min(R,\theta)\}`) + '. Averaged over ' + m('R') + ', expected target proceeds are ' + m(T`t(\theta)`) + '. With ' + m(T`(z)_+=\max\{z,0\}`) + ', expected rival gross profit is ' + m(T`g(\theta)=\mathbb E_R[(\theta-\max\{p,R\})_+]`) + ', before cost ' + m('C') + '. Hence ' + m(T`t(\theta)+g(\theta)=\theta`) + '.',
+          m(T`\mathbb E_j`) + ' denotes expectation under ' + m('G_j') + '. Class means are ' + m(T`t_j=\mathbb E_j[t(\theta)]`) + ' and ' + m(T`g_j=\mathbb E_j[g(\theta)]`) + '. With no prepared rival, the incumbent pays ' + m('p') + ' if ' + m(T`R\ge p`) + ' and ' + m('0') + ' otherwise, so expected target proceeds are ' + m(T`t_0=p[1-F(p)]`) + '.',
+          '<b>Shareholder spread:</b> ' + m(T`\Delta_T=t_H-t_L`) + ' — extra expected target proceeds in class ' + m('H') + ' versus class ' + m('L') + ' if the rival prepares. For any probability ' + m(T`\mu`) + ' on class ' + m('H') + ', <b>rival gross profit</b> is ' + m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + ', the ' + m(T`\mu`) + '-weighted mean of class gross profits, before ' + m('C') + '. At seen price ' + m(T`\bar P`) + ', net gain from preparation is ' + m(T`B(\bar\mu(\bar P))-C`) + '.',
+          'The informed trader who submits ' + m('q') + ' (so ' + m('X=q') + ') earns ' + m(T`q[V_T-P(q)]-k|q|`) + ', with ' + m('V_T') + ' realised target proceeds per share.',
+          'A bidder who loses gets ' + m('0') + '; the incumbent, if it wins, gets ' + m('R') + ' minus its auction payment.'], 7) });
 
     main({ id: 's9', label: 'S9', num: '9', part: 2, minutes: 1.5, targets: ['main:s9'],
       title: 'Equilibrium with competitive prices',
       body: strip([6]) +
-        P('Solution concept: perfect Bayesian equilibrium with break-even prices from competitive market makers.') + vsp(5) +
+        P('Solution concept: perfect Bayesian equilibrium with break-even prices from competitive market makers. Orders, prices, beliefs, and preparation must all fit the same ' + m(T`P(\cdot)`) + ' and ' + m(T`e(\cdot)`) + '.') + vsp(5) +
         deflist([
-          ['Orders', 'let ' + m('e(x)') + ' be the probability that the rival prepares after realised outcome ' + m('X=x') + ', through the price ' + m('P(x)') + '. An informed trader who sees class ' + m('j') + ' gets expected net payoff ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + ' from chosen order ' + m('q') + '; the term ' + m(T`t_0+e(q)(t_j-t_0)`) + ' is expected target proceeds in class ' + m('j') + '. For each ' + m('j') + ', the informed trader puts positive probability only on orders ' + m('q') + ' that maximize ' + m('U_j(q)') + ', with the schedules ' + m(T`P(\cdot)`) + ' and ' + m(T`e(\cdot)`) + ' at their equilibrium values.'],
-          ['Competitive prices', m(T`P(x)=\mathbb{E}[V_T\mid X=x]=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + '. With entry, expected proceeds are ' + m(T`t_L+\mu(x)\Delta_T`) + '; without entry they are ' + m('t_0') + '. Zero-cost preparation below gives the entry floor ' + m(T`e(x)\ge\rho`) + '.'],
-          ['Beliefs', 'the order belief ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + ' follows Bayes’ rule. The rival’s price belief ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + ' pools all outcomes with that price. It can differ from ' + m(T`\mu(x)`) + ' for any one pooled outcome. Liquidity trade gives each outcome positive probability in each class, so Bayes’ rule pins down order beliefs.'],
-          ['Preparation and bids', 'a rival with ' + m('C=0') + ' prepares at each price. With ' + m('C=c_H') + ', it prepares if and only if ' + m(T`B(\bar\mu)\ge c_H`) + ' at its price belief. A prepared rival bids ' + m(T`\theta`) + '; the incumbent bids ' + m('R') + ' subject to the reserve.']], 300) });
+          ['Orders', 'let entry ' + m('e(x)') + ' be the probability the rival prepares when the realised outcome is ' + m('X=x') + '. The rival acts on price ' + m('P(x)') + ', not on ' + m('x') + ' itself. For an informed trader who sees class ' + m('j') + ' and submits ' + m('q') + ' (so ' + m('X=q') + '), expected net payoff is ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + '; the term ' + m(T`t_0+e(q)(t_j-t_0)`) + ' is expected target proceeds in class ' + m('j') + ' after ' + m('q') + '. For each ' + m('j') + ', positive probability goes only to orders that maximise ' + m('U_j(q)') + ' at the equilibrium ' + m(T`P(\cdot)`) + ' and ' + m(T`e(\cdot)`) + '.'],
+          ['Competitive prices', m(T`P(x)=\mathbb{E}[V_T\mid X=x]=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + '. If the rival prepares, expected target proceeds are ' + m(T`t_L+\mu(x)\Delta_T`) + '; if not, they are ' + m('t_0') + '. Because the ' + m('C=0') + ' rival prepares (last row), ' + m(T`e(x)\ge\rho`) + ': ' + m(T`\rho`) + ' is the entry floor.'],
+          ['Beliefs', 'the order belief ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + ' follows Bayes’ rule. The rival’s price belief ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + ' averages over all outcomes ' + m('x') + ' with ' + m(T`P(x)=\bar P`) + '; it need not equal ' + m(T`\mu(x)`) + ' for one such outcome. Liquidity trade gives each outcome positive probability in each class, so Bayes’ rule pins down order beliefs.'],
+          ['Preparation and bids', 'a rival with ' + m('C=0') + ' prepares at each price. With the high cost ' + m('C=c_H') + ', at seen price ' + m(T`\bar P`) + ' it prepares if and only if ' + m(T`B(\bar\mu(\bar P))\ge c_H`) + '. A prepared rival bids ' + m(T`\theta`) + '. The incumbent bids ' + m('R') + ', effective only if ' + m(T`R\ge p`) + '.']], 300) });
 
     /* ================================================================ mechanism and main result: frames 10 to 14 */
 
     main({ id: 's10', label: 'S10', num: '10', part: 3, minutes: 1.5, targets: ['main:s10'],
-      title: 'Strength lowers rival profit and widens the spread',
+      title: 'A stronger incumbent can shift the split toward shareholders', subtitle: 'Proposition 1: rival gross profit weakly falls; the shareholder spread weakly rises under the class ranking',
       body: st('Proposition 1',
           P('Let ' + m('F') + ' and ' + m(T`\widetilde F`) + ' be continuous incumbent value distributions, with ' + m(T`\widetilde F(y)\le F(y)`) + ' for every ' + m('y') + '.') +
-          gloss('The new incumbent draws high values more often.') +
+          gloss('At each value ' + m('y') + ', the stronger distribution puts weakly more mass above ' + m('y') + '.') +
           P('Hold the reserve and the finite-mean class distributions fixed.') +
           cols([[0.46, P('(a) For ' + m(T`j\in\{H,L\}`) + ' and every ' + m(T`\mu\in[0,1]`) + ',') + d(T`g_j(\widetilde F)\le g_j(F),\qquad B_{\widetilde F}(\mu)\le B_F(\mu).`) +
-              P('Here ' + m(T`B_F(\mu)=g_L(F)+\mu[g_H(F)-g_L(F)]`) + '.')],
+              P('Here ' + m('g_j(F)') + ' is class-' + m('j') + ' mean rival gross profit under ' + m('F') + '. ' + m(T`B_F(\mu)=g_L(F)+\mu[g_H(F)-g_L(F)]`) + '.')],
             [0.51, P('(b) Under the class ranking,') + d(T`G_H(y)\le G_L(y)\quad\text{for every }y,\qquad G_H(p^-)=G_L(p^-)=0,`) +
-              P('the shareholder spread satisfies ' + m(T`\Delta_T(\widetilde F)\ge\Delta_T(F)`) + '.') + gloss('Good-synergy values are higher, and all meet the reserve.')]]) +
+              P('the shareholder spread satisfies ' + m(T`\Delta_T(\widetilde F)\ge\Delta_T(F)`) + '.') + gloss('Good-synergy values weakly dominate in the first-order sense.')]]) +
           P('Since both classes meet the reserve almost surely, ' + m(T`\Delta_T(F)+[g_H(F)-g_L(F)]=\mathbb E_H[\theta]-\mathbb E_L[\theta]`) + '. The right side does not depend on ' + m('F') + '.')) +
         center(dg(gapLine(5.4, 8.2, 0.6))) +
-        intuition('A stronger incumbent can move part of the rival’s gain from good synergy to the target’s shareholders.') });
+        intuition('A stronger incumbent can shift part of the between-class gap in rival gross profit to the target’s shareholders.') });
 
     main({ id: 's11', label: 'S11', num: '11', part: 3, minutes: 1, targets: ['main:s11'],
-      title: 'Beliefs stay in a band, and the price reveals the belief',
+      title: 'Beliefs stay in a band', subtitle: 'With a positive spread, the price reveals the order belief',
       body: st('Belief bounds',
           P('Define' + m(T`\quad b=(1-\lambda)\beta,\qquad u=\dfrac{\lambda}{b},\qquad m(\pi)=\dfrac{\pi}{\pi+(1-\pi)(1+u)},\qquad M(\pi)=\dfrac{\pi(1+u)}{\pi(1+u)+1-\pi}.`)) +
-          cols([[0.46, P('For every pure or mixed order strategy and every ' + m(T`x\in\{-1,0,1\}`) + ',') + d(T`0<\beta\le\frac13\quad\Longrightarrow\quad m(\pi)\le\mu(x)\le M(\pi).`) +
-              gloss('With ' + m(T`\beta\le1/3`) + ', liquidity trade covers every outcome, including no trade.') + P('The price belief ' + m(T`\bar\mu`) + ' obeys the same bounds.')],
+          gloss('Here ' + m('b') + ' is the liquidity mass on one order direction, and ' + m('u') + ' is the mass ratio.') +
+          cols([[0.46, P('For every pure or mixed order strategy of the informed trader, and for every ' + m(T`x\in\{-1,0,1\}`) + ',') + d(T`0<\beta\le\frac13\quad\Longrightarrow\quad m(\pi)\le\mu(x)\le M(\pi).`) +
+              gloss('With ' + m(T`\beta\le1/3`) + ', liquidity trade covers all three outcomes.') + P('The price belief ' + m(T`\bar\mu`) + ' obeys the same bounds.')],
             [0.51, P('Suppose ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ' and ' + m(T`\rho\in(0,1)`) + '. Under Bayes’ rule, optimal preparation, competitive prices and truthful bids,') +
               d(T`\begin{aligned}&P(x)=P(x')\ \Longrightarrow\ \mu(x)=\mu(x'),\\&\Pr(H\mid P(X)=P(x))=\mu(x).\end{aligned}`)]]) +
-          cols([[0.46, P('<b>Preparation rule.</b> Define the threshold ' + m(T`\tau=(c_H-g_L)/(g_H-g_L)`) + '.') + gloss(m(T`B(\mu)\ge c_H\iff\mu\ge\tau`) + '.') +
-              P('Under the default preparation rule,') + gloss('A rival at the threshold prepares.')],
+          cols([[0.46, P('<b>Preparation rule.</b> Define the preparation threshold ' + m(T`\tau=(c_H-g_L)/(g_H-g_L)`) + ', so ' + m(T`B(\mu)\ge c_H\iff\mu\ge\tau`) + '. The price reveals ' + m(T`\mu(x)`) + '. Under the default rule (a rival at the threshold prepares), entry ' + m('e(x)') + ' after order ' + m('x') + ' is')],
             [0.51, d(T`\begin{aligned}&C=c_H:\quad\text{prepare exactly when }\mu(x)\ge\tau,\\&e(x)=\begin{cases}\rho,&\mu(x)<\tau,\\1,&\mu(x)\ge\tau.\end{cases}\end{aligned}`)]])) +
-        intuition('A liquidity trader can place any order, so an order can move the belief but never settles the synergy class.') +
+        intuition('Liquidity trade covers all three outcomes, so an order can move the belief but never to 0 or 1.') +
         nav(go('app:b2', 'B2')) });
 
     main({ id: 's12', label: 'S12', num: '12', part: 3, minutes: 1.5, targets: ['main:s12'],
-      title: 'A correct order earns between a fixed share and all of the spread',
+      title: 'Gross gain from the correct order lies in $[\\rho\\kappa(\\pi)\\Delta_T,\\ \\Delta_T]$',
       body: st('Trading bounds',
-          P('Let ' + m(T`\Delta_T\ge0`) + ' and ' + m('k>0') + '. Take any order profile with Bayes beliefs, competitive prices, truthful bids, and ' + m(T`e(x)\in[\rho,1]`) + '.') +
-          gloss('The bounds hold for every trading plan, optimal or not.') +
-          P('The gross gains from the correct orders are') + d(T`K_H=e(1)\Delta_T[1-\mu(1)],\qquad K_L=e(-1)\Delta_T\mu(-1).`) +
+          P('Let ' + m(T`\Delta_T\ge0`) + ' and ' + m('k>0') + '. Take any order strategy with Bayes beliefs, competitive prices, truthful bids, and ' + m(T`e(x)\in[\rho,1]`) + '.') +
+          gloss('The bounds hold for every order strategy, optimal or not.') +
+          P('Call a purchase (' + m('x=1') + ') in class ' + m('H') + ' and a sale (' + m('x=-1') + ') in class ' + m('L') + ' the correct orders. Their gross gains are') + d(T`K_H=e(1)\Delta_T[1-\mu(1)],\qquad K_L=e(-1)\Delta_T\mu(-1).`) +
           P('Define ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + '.') +
-          gloss('The value ' + m(T`\kappa(\pi)`) + ' is the least doubt any order leaves.') +
+          gloss('The value ' + m(T`\kappa(\pi)`) + ' is the smallest posterior weight left on the far class when an order moves the belief to a band endpoint.') +
           P('For either class ' + m(T`j\in\{H,L\}`) + ',') + d(T`\rho\kappa(\pi)\Delta_T\le K_j\le\Delta_T.`) +
-          P('A wrong-signed order earns at most ' + m('-k<0') + '; abstention earns zero. The informed trader who sees class ' + m('H') + ' buys if ' + m('K_H>k') + ' and abstains if ' + m('K_H<k') + '. The informed trader who sees class ' + m('L') + ' sells if ' + m('K_L>k') + ' and abstains if ' + m('K_L<k') + '. At ' + m('K_j=k') + ', the correct order and abstention are both optimal, and any mixture of the two is optimal.')) +
-        intuition('Gross gain scales with the shareholder spread and with the doubt an order leaves. Net gain subtracts ' + m('k') + ', so doubt alone does not pay.') +
+          P('Net of the order cost ' + m('k') + ', a wrong-signed order earns at most ' + m('-k<0') + '. Abstention earns zero, gross and net. The informed trader who sees class ' + m('H') + ' buys if ' + m('K_H>k') + ' and abstains if ' + m('K_H<k') + '. The informed trader who sees class ' + m('L') + ' sells if ' + m('K_L>k') + ' and abstains if ' + m('K_L<k') + '. At ' + m('K_j=k') + ', the correct order and abstention are both optimal, as is any mixture of the two.')) +
+        intuition('Gross gain equals entry probability times shareholder spread times residual doubt. Net gain subtracts ' + m('k') + ', so doubt alone does not pay.') +
         nav(go('app:b2', 'B2')) });
 
     main({ id: 's13', label: 'S13', num: '13', part: 3, minutes: 3.5, targets: ['main:s13'],
-      title: 'Strength can raise entry, then return it to its floor',
+      title: 'Entry can rise from $F_0$ to $F_1$, then fall back to $\\rho$ at $F_2$',
       body: st('Proposition 2',
-          P('Classes have finite means and satisfy ' + m(T`G_H\le G_L`) + ', ' + m(T`G_H(p^-)=G_L(p^-)=0`) + '. Steps ' + m(T`F_2\le F_1\le F_0`) + ': weak, strong, very strong. Fix the class distributions and ' + m('p>0') + '; ' + m(T`\pi,\rho,\lambda\in(0,1)`) + '; ' + m(T`\beta\in(0,1/2)`) + ' (nonzero-order bounds only); and ' + m('c_H,k>0') + '. Write ' + m(T`\Delta_i=\Delta_T(F_i)`) + ' and ' + m('B_i=B_{F_i}') + '. Suppose') +
-          cols([[0.42, P(m(T`\begin{array}{ll}\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\\mathrm{(H3)}&B_2(M(\pi))<c_H.\end{array}`))],
-            [0.55, gloss('(H1) Prior misses ' + m('c_H') + ' at ' + m('F_0') + '; a purchase clears it at ' + m('F_1') + '.') +
-              gloss('(H2) Order cost stops trade at ' + m('F_0') + ', not at ' + m('F_1') + '.') +
-              gloss('(H3) At ' + m('F_2') + ', even a purchase cannot pay ' + m('c_H') + '.')]], 'mt-6') +
-          cols([[0.55, table({ cls: 'tight', head: ['Orders ' + m('(H,L)'), 'Beliefs ' + m('(-1,0,1)'), 'Entry ' + m('(-1,0,1)')], rows: [
+          P('Classes have finite means and satisfy ' + m(T`G_H\le G_L`) + ', ' + m(T`G_H(p^-)=G_L(p^-)=0`) + '. Let ' + m('F_0') + ' (weak), ' + m('F_1') + ' (strong) and ' + m('F_2') + ' (very strong) satisfy ' + m(T`F_2\le F_1\le F_0`) + '; only ' + m('F') + ' moves, and all other inputs stay fixed. Here ' + m(T`\beta\in(0,1/2)`) + ' suffices: only the bounds at ' + m(T`x=\pm1`) + ' are needed. Write ' + m(T`\Delta_i=\Delta_T(F_i)`) + ' and ' + m('B_i=B_{F_i}') + '. Suppose') +
+          cols([[0.31, P(m(T`\begin{array}{ll}\mathrm{(H1)}&B_0(\pi)<c_H<B_1(M(\pi)),\\\mathrm{(H2)}&\Delta_0<k<\rho\kappa(\pi)\Delta_1,\\\mathrm{(H3)}&B_2(M(\pi))<c_H.\end{array}`))],
+            [0.67, gloss('(H1) Rival gross profit: below ' + m('c_H') + ' at the prior (' + m('F_0') + '), above it at the top belief (' + m('F_1') + ').') +
+              gloss('(H2) Order cost ' + m('k') + ' is above the gross-gain cap at ' + m('F_0') + ', below the gross-gain floor at ' + m('F_1') + '.') +
+              gloss('(H3) At ' + m('F_2') + ', rival gross profit stays below ' + m('c_H') + ' even at the top belief.')]], 'mt-6') +
+          P('Then orders by class ' + m('(H,L)') + ', and beliefs and entry by order outcome ' + m('x=-1,0,1') + ', are:') +
+          cols([[0.50, table({ cls: 'tight', head: ['Orders', 'Beliefs', 'Entry'], rows: [
               [m('F_0') + ' weak: ' + m('(0,0)'), m(T`(\pi,\pi,\pi)`), m(T`(\rho,\rho,\rho)`)],
               [m('F_1') + ' strong: ' + m('(1,-1)'), m(T`(m(\pi),\pi,M(\pi))`), m(T`(\rho,\rho,1)`)],
               [m('F_2') + ' very strong: ' + m('(1,-1)'), m(T`(m(\pi),\pi,M(\pi))`), m(T`(\rho,\rho,\rho)`)]] })],
-            [0.42, P('Let ' + m(T`\mathsf E_i`) + ' denote total entry at ' + m('F_i') + '. Then') + d(T`\mathsf E_0=\mathsf E_2=\rho<\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda).`) +
-              P('The outcome is unique in each of the three economies, under all four pairs of tie rules.')]], 'mt-10')) +
-        intuition('A wider shareholder spread pays the informed trader to trade, and a purchase recruits. At ' + m('F_2') + ', profit at the top belief stays below ' + m('c_H') + '.') +
-        footline('Proof idea: the frame 11–12 bounds hold for each candidate outcome; strict gaps then fix orders, beliefs, and entry. Steps: ' + link('app:b2', 'B2') + '. Open set: frame 14. Exact form: ' + link('app:b1', 'B1') + '.') +
+            [0.48, P('Total entry ' + m(T`\mathsf E_i`) + ' at ' + m('F_i') + ' is ' + m(T`\mathsf E_0=\mathsf E_2=\rho<\mathsf E_1=\rho+(1-\rho)(b+\pi\lambda)`) + ', where ' + m(T`b+\pi\lambda=\Pr(X=1)`) + ' at ' + m('F_1') + '. The outcome in each economy is unique under every tie rule at ' + m(T`\mu=\tau`) + ' and at ' + m('K_j=k') + '.')]], 'mt-10')) +
+        intuition('A wider shareholder spread pays for informed trade, and a purchase recruits; at ' + m('F_2') + ', the top belief misses the threshold.') +
+        footline('Proof idea: (H2) with Proposition 1 gives ' + m('K_j<k') + ' at ' + m('F_0') + ' and ' + m('K_j>k') + ' at ' + m('F_1,F_2') + '; the frame 11–12 bounds then give the beliefs, and (H1), (H3) compare ' + m(T`B_i(M(\pi))`) + ' with ' + m('c_H') + '. Steps: ' + link('app:b2', 'B2') + '. Example: frame 14. Exact form: ' + link('app:b1', 'B1') + '.') +
         nav(go('app:b1', 'B1'), go('app:b2', 'B2')) });
 
     main({ id: 's14', label: 'S14', num: '14', part: 3, minutes: 1, targets: ['main:s14'], widget: 'beliefs',
-      title: 'Example: the top belief lies exactly between two thresholds',
+      title: 'Example: a purchase recruits only against the strong incumbent',
       body: cols([[0.31, vsp(7) + fig('beliefs', 'Figure. The threshold belief τ(r) between the strong incumbent r_1 and the very strong incumbent r_2, with the top belief M(1/2); arrow keys move the cursor.')],
           [0.67, st('Corollary 1',
-            P('The class values are point masses: ' + m(T`\theta=h`) + ' in class ' + m('H') + ' and ' + m(T`\theta=\ell`) + ' in class ' + m('L') + ', with ' + m(T`(h,\ell,p)=({{prim_h}},{{prim_ell}},{{prim_p}})`) + '. The incumbent has ' + m(T`R\sim\mathrm{Unif}[0,r]`) + '; a larger ' + m('r') + ' means a stronger incumbent. The three strengths are ' + m(T`(r_0,r_1,r_2)=({{prim_r0}},{{prim_r1}},{{prim_r2}})`) + '. At ' + m(T`\pi=1/2`) + ', in this family,') +
+            P('Each class has one sure value per share: ' + m(T`\theta=h`) + ' in class ' + m('H') + ' (good synergy) and ' + m(T`\theta=\ell`) + ' in class ' + m('L') + ' (poor synergy), with ' + m(T`(h,\ell,p)=({{prim_h}},{{prim_ell}},{{prim_p}})`) + ' for the reserve ' + m('p') + '. The incumbent has ' + m(T`R\sim\mathrm{Unif}[0,r]`) + ', and a larger ' + m('r') + ' is a stronger incumbent: ' + m(T`(r_0,r_1,r_2)=({{prim_r0}},{{prim_r1}},{{prim_r2}})`) + ' play the roles of ' + m('F_0,F_1,F_2') + ' on frame 13. Write ' + m(T`\tau(r)`) + ' for the frame 11 preparation threshold at strength ' + m('r') + '. Fix ' + m(T`\pi=1/2`) + ' and the inputs below. Let only the frame 11 mass ratio ' + m(T`u=\lambda/b`) + ' vary, and ' + m('M(1/2)') + ' with it; the legs of (H1)–(H2) at ' + m('r_0') + ' do not involve ' + m('u') + '. Then') +
             d(T`\mathrm{(H1)}\text{--}\mathrm{(H3)}\quad\Longleftrightarrow\quad\tau(r_1)<M(1/2)<\tau(r_2),`) +
-            P('where ' + m(T`\tau(r_1)={{tau_r1_frac}}`) + ' and ' + m(T`\tau(r_2)={{tau_r2_frac}}`) + '. The example sets ' + m(T`u=\mathrm e-1`) + ', where ' + m(T`\mathrm e`) + ' is Euler’s number, so the top belief after a purchase is ' + m(T`M(1/2)=\mathrm e/(1+\mathrm e)\simeq{{M_half_B}}`) + '.'))]]) +
-        intuition('Against the strong incumbent, a purchase lifts the belief just above the threshold; against the very strong one, the threshold rises just above that belief.') +
-        footline('Other inputs: ' + m(T`(\pi,\rho,c_H,k)=({{prim_pi}},{{prim_rho}},{{prim_cH}},{{prim_k}})`) + '; liquidity chance ' + m(T`\beta={{beta_B}}`) + ' (exact decimal); presence from ' + m(T`u=\lambda/[(1-\lambda)\beta]`) + '. Inputs and regions in full: ' + link('app:b10', 'B10') + '.') +
+            P('with ' + m(T`\tau(r_1)={{tau_r1}}`) + ' and ' + m(T`\tau(r_2)\approx{{tau_r2}}`) + '. Both inequalities are strict, so small input changes keep them (B10). The example sets ' + m(T`u=\mathrm e-1`) + ', so the top belief after a purchase is ' + m(T`M(1/2)=\mathrm e/(1+\mathrm e)\simeq{{M_half_B}}`) + '. Hence (H1)–(H3) hold, and by Proposition 2 entry is ' + m(T`\rho`) + ', then above ' + m(T`\rho`) + ', then ' + m(T`\rho`) + ' again.'))]]) +
+        intuition('Against the strong incumbent, a purchase lifts the belief above the threshold; against the very strong one, the threshold has risen to just above that same belief.') +
+        footline('Other inputs: ' + m(T`(\pi,\rho,c_H,k)=({{prim_pi}},{{prim_rho}},{{prim_cH}},{{prim_k}})`) + '; liquidity chance ' + m(T`\beta={{beta_B}}`) + ', which with ' + m(T`u=\lambda/[(1-\lambda)\beta]`) + ' gives informed presence ' + m(T`\lambda={{lambda_B}}`) + '. Inputs and regions in full: ' + link('app:b10', 'B10') + '.') +
         nav(go('app:b10', 'B10')) });
 
     /* ================================================================ the control and the extensions: frames 15 to 18 */
 
     main({ id: 's15', label: 'S15', num: '15', part: 4, minutes: 1.5, targets: ['main:s15'],
-      title: 'With fixed information, strength cannot raise entry',
-      body: cols([[0.54, st('Fixed information',
-            P('Fix the joint distribution of the class ' + m('j') + ' and the signal ' + m('S') + ' that the rival observes. Fix the class distributions ' + m('G_j') + ', the reserve, and the preparation-cost distribution. In economy ' + m('i') + ', conditional on ' + m('(j,S)') + ', the values ' + m(T`\theta`) + ' and ' + m('R') + ' are independent, with distributions ' + m('G_j') + ' and ' + m('F_i') + '. The cost ' + m('C') + ' is independent of the class, both values and ' + m('S') + '.') +
-            gloss('What the rival can learn does not change. The signal adds no news about values past the class. The preparation cost carries no news about values.') +
-            P('Let an indifferent rival prepare. If ' + m(T`F_1\le F_0`) + ', entry cannot rise:') + d(T`\mathsf E_1\le\mathsf E_0,`) +
-            P('where ' + m(T`\mathsf E_i`) + ' is the probability of preparation in economy ' + m('i') + '.'))],
+      title: 'If the rival\'s news cannot change, strength cannot raise entry', subtitle: 'The control: freeze what the rival can learn',
+      body: cols([[0.54, st('Proposition A.2 (fixed pre-preparation information)',
+            P('Let ' + m('S') + ' be any signal the rival sees before it prepares; in the main model, ' + m('S') + ' is the news in the stock price. Hold fixed the joint distribution of ' + m('(j,S)') + ', the class value distributions ' + m('G_j') + ', the reserve ' + m('p') + ' and the preparation-cost distribution; only the incumbent’s distribution moves, from ' + m('F_0') + ' to ' + m('F_1') + '. In economy ' + m('i') + ', given ' + m('(j,S)') + ', the values ' + m(T`\theta\sim G_j`) + ' and ' + m(T`R\sim F_i`) + ' are independent, and ' + m('C') + ' is independent of ' + m('j') + ', ' + m(T`\theta`) + ', ' + m('R') + ' and ' + m('S') + '.') +
+            gloss('What the rival can learn stays fixed. Only strength moves.') +
+            P('Let an indifferent rival prepare, and let ' + m(T`F_1\le F_0`) + ' (economy 1 has the stronger incumbent). Then entry cannot rise:') + d(T`\mathsf E_1\le\mathsf E_0,`) +
+            P('where ' + m(T`\mathsf E_i`) + ' is total entry in economy ' + m('i') + '. The fall is exact: with ' + m(T`\mu(S)=\Pr(j=H\mid S)`) + ' and ' + m('B_i') + ' rival gross profit at ' + m('F_i') + ', ' + m(T`\mathsf E_0-\mathsf E_1=\Pr\{B_1(\mu(S))<C\le B_0(\mu(S))\}`) + '.'))],
           [0.44, vsp(10) +
             table({ widths: [260, 155, 155], align: 'lcc', cls: 'fs-f stretch-130', head: ['Entry in the example', 'Weak', 'Strong'], rows: [
               ['Full model, orders solved again', 'At floor ' + m(T`\rho`), '<b>Above floor ' + m(T`\rho`) + '</b>'],
-              ['Full informed orders imposed (control)', 'Above floor ' + m(T`\rho`), 'Above floor ' + m(T`\rho`)],
-              ['Stock price hidden', 'At floor ' + m(T`\rho`), 'At floor ' + m(T`\rho`)]] }) +
+              ['Orders held fixed: buy in ' + m('H') + ', sell in ' + m('L') + ' (control)', 'Above floor ' + m(T`\rho`), 'Above floor ' + m(T`\rho`)],
+              ['Stock price hidden from the rival (prior ' + m(T`\pi`) + ' only)', 'At floor ' + m(T`\rho`), 'At floor ' + m(T`\rho`)]] }) +
             vsp(17) +
-            P('In the middle row, the rival still reads the stock price, and full informed orders are imposed at both strengths; at the weak strength they are not optimal.', 'fs-f')]]) +
-        intuition('With fixed information, a stronger incumbent only lowers the profit at each belief, so it can only remove reasons to prepare.') +
+            P('In row 1 the orders change with strength, so the distribution of ' + m('(j,S)') + ' changes. Row 2 imposes the same orders at both strengths; at the weak strength they lose money, so row 2 is a control, not an equilibrium. Rows 2 and 3 stay flat, as ‘cannot rise’ allows.', 'fs-f')]]) +
+        intuition('At each unchanged belief, strength weakly lowers rival gross profit (Proposition 1(a)): it only removes reasons to prepare.') +
         nav(go('app:b11', 'B11')) });
 
     main({ id: 's16', label: 'S16', num: '16', part: 5, minutes: 1, targets: ['main:s16'],
-      title: 'Costly research rises with the spread, up to the cap',
-      body: P('One change from frame 6. The informed trader now privately chooses presence ' + m(T`\lambda\in[0,\bar\lambda]`) + ' at cost ' + m(T`(a/2)\lambda^2`) + ', with ' + m('a>0') + ' and ' + m(T`0<\bar\lambda<1`) + '. Market makers and the rival use its equilibrium level. With chance ' + m(T`\lambda`) + ' it learns the synergy class and fills the slot. Else liquidity fills the slot.') +
+      title: 'A wider spread raises the chance the trader learns the class, up to $\\bar\\lambda$',
+      body: P('One change from frame 6: before the slot, the informed trader chooses research ' + m(T`\lambda\in[0,\bar\lambda]`) + ' at cost ' + m(T`(a/2)\lambda^2`) + ', with ' + m('a>0') + ' and ' + m(T`0<\bar\lambda<1`) + '. Research is all-or-nothing: with probability ' + m(T`\lambda`) + ' the trader learns the synergy class and fills the slot; otherwise liquidity fills it. Market makers and the rival see neither ' + m(T`\lambda`) + ' nor the result; they use the equilibrium ' + m(T`\widehat\lambda`) + '.') +
         st('Proposition 4',
-          cols([[0.46, P('Assume the class ranking, ' + m(T`\pi=1/2`) + ', ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ' and ' + m(T`\tau>1/2`) + '.') +
-              gloss('The prior alone does not justify the high cost.') +
-              P('An indifferent informed trader may mix; an indifferent high-cost rival prepares. At presence ' + m(T`\lambda`) + ', write ' + m(T`M_\lambda`) + ' for the top belief after a purchase and ' + m(T`m_\lambda=1-M_\lambda`) + ' for the band floor. For ' + m(T`\Delta_T>2k`) + ', interior research ' + m(T`\lambda_R(\Delta_T)\in(0,1)`) + ' is the unique root of the first-order condition in ' + link('app:b12', 'B12') + '. Equilibrium research is ' + m(T`\widehat\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}`) + '.')],
-            [0.51, P('The recruiting equilibrium — the informed trader who learns class ' + m('H') + ' buys after success, and only a purchase recruits — exists exactly when') +
+          cols([[0.48, P('Assume the class ranking, prior ' + m(T`\pi=1/2`) + ', ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ', ' + m(T`\beta\le1/3`) + ' and preparation threshold ' + m(T`\tau>1/2`) + '.') +
+              gloss('At ' + m(T`\tau>1/2=\pi`) + ', the prior alone does not justify the high cost.') +
+              P('An indifferent informed trader may mix; an indifferent high-cost rival prepares. At research ' + m(T`\lambda`) + ', write ' + m(T`M_\lambda`) + ' for the top belief after a purchase and ' + m(T`m_\lambda=1-M_\lambda`) + ' for the band floor. For ' + m(T`\Delta_T>2k`) + ', let ' + m(T`\lambda_R(\Delta_T)\in(0,1)`) + ' be the unique level where marginal cost ' + m(T`a\lambda`) + ' equals the expected trading payoff after a success (' + link('app:b12', 'B12') + '). Equilibrium research is ' + m(T`\widehat\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}`) + '.')],
+            [0.49, P('The recruiting equilibrium, in which a trader whose research shows class ' + m('H') + ' buys and a purchase recruits, exists exactly when') +
               d(T`\Delta_T>2k\qquad\text{and}\qquad\tau\le M_{\widehat\lambda}.`) +
-              gloss('The spread pays for trade, and a purchase clears ' + m(T`\tau`) + '.') +
-              P('Its research ' + m(T`\widehat\lambda`) + ' rises strictly with ' + m(T`\Delta_T`) + ' below the cap and stays constant at the cap. Total entry is') +
-              d(T`\mathsf E=\rho+(1-\rho)[\beta+(1/2-\beta)\widehat\lambda].`) +
-              P('As research rises, ' + m(T`\mathsf E`) + ' and class-' + m('H') + ' entry rise strictly, while class-' + m('L') + ' entry falls strictly.')]])) +
-        intuition('A wider shareholder spread pays for research until the cap. More research sorts entry toward good synergy.') +
-        footline('First-order condition, branches, class entry formulas, and the research figure: ' + link('app:b12', 'B12') + '. Fixed-research coexistence: ' + link('app:b3', 'B3') + '.') +
+              gloss('Why ' + m('2k') + ': a recruiting purchase gains ' + m(T`\Delta_T m_\lambda\le\Delta_T/2`) + ' gross (frame 12), so it beats ' + m('k') + ' only if ' + m(T`\Delta_T>2k`) + '.') +
+              P('In it, with ' + m('a') + ', ' + m('k') + ', ' + m(T`\rho`) + ' and ' + m(T`\beta`) + ' fixed, research ' + m(T`\widehat\lambda`) + ' rises strictly with ' + m(T`\Delta_T`) + ' up to ' + m(T`\bar\lambda`) + ', then stays there; ' + m(T`\tau`) + ' enters only the existence condition. Total entry is ' + m(T`\mathsf E=\rho+(1-\rho)[\beta+(1/2-\beta)\widehat\lambda]`) + '. Where research rises, ' + m(T`\mathsf E`) + ' and class-' + m('H') + ' entry rise strictly; class-' + m('L') + ' entry falls strictly.')]])) +
+        intuition('A wider shareholder spread pays for more research, up to the cap; more research sorts entry toward good synergy.') +
+        footline('After a class-' + m('L') + ' success, the trader abstains while ' + m(T`\rho\Delta_T\le2k`) + ' and otherwise sells with positive probability. Details: ' + link('app:b12', 'B12') + '. Exogenous ' + m(T`\lambda`) + ': ' + link('app:b3', 'B3') + '.') +
         nav(go('app:b3', 'B3'), go('app:b12', 'B12')) });
 
     main({ id: 's17', label: 'S17', num: '17', part: 5, minutes: 1, targets: ['main:s17'],
-      title: 'At $F_1$, a visible price raises expected proceeds and net surplus',
+      title: 'At the strong incumbent ($F_1$), a price the rival can see raises expected target proceeds and surplus net of preparation costs',
       body: st('Price access',
-          P('Hold the incumbent at ' + m('F_1') + ' (strong) under Proposition 2’s hypotheses. Compare price access with an economy where the rival sees neither the price nor the order. Hold all other primitives fixed; prices stay competitive in both economies.') +
-          P('Let ' + m(T`\mathcal R`) + ' denote expected target proceeds and ' + m(T`\mathcal W`) + ' expected acquisition surplus net of preparation costs. Superscripts ' + m('1') + ' and ' + m('0') + ' denote price access and access to neither price nor order. Both economies keep unique full informed orders. Then') +
+          P('Hold the incumbent at ' + m('F_1') + ' (strong) under Proposition 2’s hypotheses. Compare two economies: the rival sees the price before it decides whether to prepare, or sees neither the price nor the order. Hold all other primitives fixed. Market makers still set a competitive price in both economies; only the rival’s access changes.') +
+          P('Let ' + m(T`\mathcal R`) + ' denote expected target proceeds and ' + m(T`\mathcal W`) + ' expected acquisition surplus net of preparation costs. Superscripts ' + m('1') + ' and ' + m('0') + ' denote price access and access to neither price nor order. Both economies keep unique full informed orders (class ' + m('H') + ' buys; class ' + m('L') + ' sells). Then') +
           d(T`\mathcal R^1>\mathcal R^0\qquad\text{and}\qquad\mathcal W^1>\mathcal W^0.`) +
-          P('Access adds preparation after a purchase only, where ' + m(T`B_1(M(\pi))>c_H`) + '.')) +
-        intuition('The visible price reveals the purchase belief ' + m(T`M(\pi)`) + '. The high-cost rival then prepares only where gross profit covers ' + m('c_H') + '.') +
+          P('Access adds preparation after a purchase only, where gross profit at the top belief, ' + m(T`B_1(M(\pi))`) + ', exceeds ' + m('c_H') + '.')) +
+        intuition('The price tells the rival the belief after a purchase. Access then adds high-cost preparation only there, where gross profit covers ' + m('c_H') + '.') +
         footline('Exact differences, example values, and the paper’s separate payment-rule and reserve comparisons: ' + link('app:b4', 'B4') + '.') +
         nav(go('app:b4', 'B4')) });
 
@@ -390,27 +389,27 @@
       brace(465, 1215, 58, 'accent') + text(840, 36, 'purchase impact _I_^+^', { cls: 'dg-accent' }),
       'The three prices after a sale order, no order and a purchase: the sale-order impact, the purchase impact and the entry part of the purchase impact.');
     main({ id: 's18', label: 'S18', num: '18', part: 5, minutes: 1, targets: ['main:s18'],
-      title: 'Purchase impact reveals recruitment',
+      title: 'Frequency-weighted purchase impact reveals recruitment',
       body: center(dg(priceLine)) +
         st('Weighted price impact',
-          cols([[0.48, P('Assume the class ranking, ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ', full two-sided trade (the informed trader who sees class ' + m('H') + ' buys; the informed trader who sees class ' + m('L') + ' sells), and ' + m(T`\pi<\tau`) + '.') +
-              gloss('At the prior, rival gross profit falls short of ' + m('c_H') + '.') +
+          cols([[0.48, P('Assume the class ranking, ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ', full two-sided trade (class ' + m('H') + ' buys; class ' + m('L') + ' sells), and ' + m(T`\pi<\tau`) + '.') +
+              gloss('At the prior ' + m(T`\pi`) + ', rival gross profit falls short of ' + m('c_H') + '.') +
+              P(m('P(x)') + ' is the price after order ' + m('x') + ', and ' + m(T`e(1)>\rho`) + ' means that a purchase recruits.') +
               P('Define order frequencies ' + m(T`\bar f(x)=\Pr(X=x)`) + ' and impacts ' + m('I_+=P(1)-P(0)') + ' and ' + m('I_-=P(0)-P(-1)') + '.')],
             [0.49, P('Then ' + m(T`\bar f(1)=b+\pi\lambda`) + ', ' + m(T`\bar f(-1)=b+(1-\pi)\lambda`) + ', and') +
               d(T`\begin{aligned}&\bar f(1)I_+-\bar f(-1)I_->0\\&\Longleftrightarrow\ e(1)>\rho.\end{aligned}`) +
               P('At ' + m(T`\pi=1/2`) + ', the order frequencies are equal, so') + d(T`I_+>I_-\quad\Longleftrightarrow\quad e(1)>\rho.`)]])) +
-        intuition('Recruitment adds an entry part to the purchase price. Weight by order frequency, and that part makes purchase impact exceed sale-order impact.') +
-        footline('With no recruitment (' + m(T`e(x)=\rho`) + ' after each outcome), orders still predict the winner when ' + m('W_H>W_L') + ': ' + link('app:b13', 'B13') + '. The test needs the price dated before preparation starts, and a record of the no-trade outcome.') +
+        intuition('Recruitment adds an entry part to the purchase price. So frequency-weighted purchase impact exceeds frequency-weighted sale-order impact exactly when a purchase recruits.') +
+        footline('With no recruitment (' + m(T`e(x)=\rho`) + ' after each outcome), orders still predict the winner when ' + m('W_H>W_L') + ': ' + link('app:b13', 'B13') + '. Empirical moment: average the pre-preparation price by order outcome over slots fixed in advance, record no order as an outcome, and test the sample analogue of ' + m(T`\bar f(1)I_+-\bar f(-1)I_->0`) + '.') +
         nav(go('app:b13', 'B13')) });
 
     main({ id: 's19', label: 'S19', num: '19', part: 6, minutes: 1, targets: ['main:s19'], cls: 'sz-n',
       title: 'Competition can create competition',
       body: vsp(7) + large('A stronger incumbent can induce rival entry through a more informative stock price.') + vsp(21) +
-        ul(['<b>Main result.</b> Entry rises against the strong incumbent and returns to its floor against the very strong one (Proposition 2, on an open set).',
-          '<b>Discipline.</b> Strength weakly cuts rival gross profit and weakly widens the shareholder spread. Freeze what the rival can learn, and strength cannot raise entry.',
-          '<b>Implication.</b> At the strong incumbent, a visible price raises expected target proceeds and net surplus. In data, recruitment sits in the frequency-weighted purchase impact.'], 25) +
-        vfill + ruleL +
-        P('With costly research, a wider shareholder spread also raises research until the cap, and sorts entry toward good synergy.', 'fs-s') });
+        ul(['<b>Main result.</b> Entry can rise against the strong incumbent and return to its floor against the very strong one, with a unique outcome in each case (Proposition 2).',
+          '<b>Discipline.</b> Strength weakly cuts rival gross profit and weakly widens the shareholder spread. With pre-preparation information fixed, strength cannot raise entry.',
+          '<b>Implication.</b> At the strong incumbent, letting the rival see the price raises expected target proceeds and acquisition surplus net of preparation costs. In data, frequency-weighted purchase impact exceeds frequency-weighted sale-order impact exactly when a purchase recruits.'], 25) +
+        vfill });
 
     /* ================================================================ backups B1 to B16 */
     /* num is the \BackupId (the label without its page letter); origin is the frame of the first Back button. */
@@ -608,7 +607,7 @@
           '(E2) Beliefs at a price by Bayes’ rule: ' + m(T`\bar\mu(\bar P)=\pi\sum_{x:\,P(x)=\bar P}f_H(x)\big/\sum_{x:\,P(x)=\bar P}[\pi f_H(x)+(1-\pi)f_L(x)]`) + ' at each price ' + m(T`\bar P`) + ' that occurs.',
           '(E3) Preparation: ' + m(T`\zeta(\bar P)=1`) + ' when rival gross profit ' + m(T`B(\bar\mu(\bar P))>c_H`) + ', and ' + m(T`\zeta(\bar P)=0`) + ' when ' + m(T`B(\bar\mu(\bar P))<c_H`) + ', with high cost ' + m('c_H') + '. At equality, the tie rule applies.',
           '(E4) Competitive prices: ' + m(T`P(x)=\mathbb{E}[V_T\mid X=x]`) + ' after each order ' + m('x') + ', with sale proceeds per share ' + m('V_T') + '. In payoff objects, ' + m(T`P(x)=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + ', with shareholder spread ' + m(T`\Delta_T`) + ' and class proceeds ' + m('t_L') + ', ' + m('t_0') + ' from frame 8.',
-          '(E5) Orders: ' + m(T`\sigma_j(q)>0`) + ' only when the order ' + m('q') + ' maximizes the informed trader’s class-' + m('j') + ' payoff ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + ', with order cost ' + m('k') + '. Prices ' + m('P') + ' and entry ' + m('e') + ' stay at the stated functions.',
+          '(E5) Orders: ' + m(T`\sigma_j(q)>0`) + ' only when the order ' + m('q') + ' maximises the informed trader’s class-' + m('j') + ' payoff ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + ', with order cost ' + m('k') + '. Prices ' + m('P') + ' and entry ' + m('e') + ' stay at the stated functions.',
           '(E6) Truthful bids: each prepared bidder with value at or above reserve ' + m('p') + ' bids its value.',
           'Tie rules, default pair: an indifferent informed trader may mix over its best orders, and an indifferent rival at cost ' + m('c_H') + ' prepares. Other rules: an indifferent informed trader abstains, or an indifferent rival at cost ' + m('c_H') + ' prepares with any probability.'], 7) +
         B('main:s9') }, 'main:s9');

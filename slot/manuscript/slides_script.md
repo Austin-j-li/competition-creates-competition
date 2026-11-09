@@ -19,12 +19,12 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | 4 | 139 | 14 | 131 |
 | 5 | 145 | 15 | 157 |
 | 6 | 182 | 16 | 129 |
-| 7 | 159 | 17 | 58 |
+| 7 | 159 | 17 | 61 |
 | 8 | 172 | 18 | 103 |
 | 9 | 138 | 19 | 139 |
 | 10 | 149 |  |  |
 
-Main frames: **2,889 words**. Title: **61 words**. Prepared speech including title: **2,950 words**.
+Main frames: **2,892 words**. Title: **61 words**. Prepared speech including title: **2,953 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -56,7 +56,7 @@ The received answer starts with the return to diligence.
 
 The rival pays before it can bid. A stronger incumbent can make a profitable win less likely and raise the payment when the rival wins. The same work then earns weakly less. Some preparation decisions can cease to pay.
 
-Fishman gives the classic takeover deterrence argument. In Fishman, the first bidder chooses a preemptive bid. Here strength is a public distribution of value, and the realized value stays private until bids.
+Fishman gives the classic takeover deterrence argument. In Fishman, the first bidder chooses a preemptive bid. Here strength is a public distribution of value, and the realised value stays private until bids.
 
 The logic holds when what the rival knows stays fixed. With the information, values and cost distribution fixed, entry cannot rise.
 
@@ -164,7 +164,7 @@ Liquidity trade makes every order possible in each class, so Bayes' rule determi
 
 Zero cost prepares. High cost prepares when rival gross profit covers it, including equality. An indifferent informed trader may mix. Each strength needs a fresh equilibrium.
 
-## Frame 10 — Strength lowers rival profit and widens the spread
+## Frame 10 — A stronger incumbent can shift the split toward shareholders
 
 *1.5 minutes · ends at 15:30*
 
@@ -178,7 +178,7 @@ The last identity splits the class value gap. Delta T plus good-synergy profit m
 
 Read the diagram as a division of that fixed gap. Strength can transfer part of the rival's profit gap to shareholders. The same auction creates the deterrence force and the return to information.
 
-## Frame 11 — Beliefs stay in a band, and the price reveals the belief
+## Frame 11 — Beliefs stay in a band
 
 *1.0 minute · ends at 16:30*
 
@@ -192,7 +192,7 @@ With positive spread, a positive rival gross-profit gap and positive entry floor
 
 Threshold tau is the belief at which rival gross profit equals high cost. Under the default rule, high cost prepares at or above tau. Entry is rho below tau and one otherwise.
 
-## Frame 12 — A correct order earns between a fixed share and all of the spread
+## Frame 12 — Gross gain from the correct order lies in $[\rho\kappa(\pi)\Delta_T,\ \Delta_T]$
 
 *1.5 minutes · ends at 18:00*
 
@@ -206,7 +206,7 @@ A wrong order earns at most minus k. No order earns zero. The informed trader pl
 
 With entry and beliefs fixed, a wider spread raises these gross gains.
 
-## Frame 13 — Strength can raise entry, then return it to its floor
+## Frame 13 — Entry can rise from $F_0$ to $F_1$, then fall back to $\rho$ at $F_2$
 
 *3.5 minutes · ends at 21:30*
 
@@ -234,7 +234,7 @@ Total entry is rho at both ends. In the middle it adds rho to the product of one
 
 The proof idea is short. The bounds from the last two frames hold for every candidate outcome. Strict gaps to the order cost and the high cost then fix orders, beliefs and entry. The four steps sit in backup B2.
 
-## Frame 14 — Example: the top belief lies exactly between two thresholds
+## Frame 14 — Example: a purchase recruits only against the strong incumbent
 
 *1.0 minute · ends at 22:30*
 
@@ -246,7 +246,7 @@ At these inputs, H one through H three hold exactly when the top belief lies str
 
 Set u to Euler's number minus one. Then the top belief is about zero point seven three one, below the upper threshold and above the lower one. Backup B10 lists each input and region.
 
-## Frame 15 — With fixed information, strength cannot raise entry
+## Frame 15 — If the rival's news cannot change, strength cannot raise entry
 
 *1.5 minutes · ends at 24:00*
 
@@ -260,7 +260,7 @@ The middle row imposes full informed orders at both strengths. Entry is above rh
 
 The last row hides the price and the order. The rival uses the prior. Entry stays at rho at both strengths.
 
-## Frame 16 — Costly research rises with the spread, up to the cap
+## Frame 16 — A wider spread raises the chance the trader learns the class, up to $\bar\lambda$
 
 *1.0 minute · ends at 25:00*
 
@@ -270,25 +270,25 @@ Keep ranked classes, prior one half, a positive rival gross-profit gap, and tau 
 
 In it, research rises strictly with the spread until the cap, then stays fixed. Total entry and good-synergy entry rise with research. Poor-synergy entry falls. Backup B12 states the first-order condition.
 
-## Frame 17 — At $F_1$, a visible price raises expected proceeds and net surplus
+## Frame 17 — At the strong incumbent ($F_1$), a price the rival can see raises expected target proceeds and surplus net of preparation costs
 
 *1.0 minute · ends at 26:00*
 
-Use Proposition two at the strong incumbent F one. Compare price access with a hidden price, with other primitives fixed.
+Use Proposition two at the strong incumbent F one. Compare price access with a price the rival cannot see, with other primitives fixed.
 
 Expected target proceeds and expected surplus net of preparation costs both rise strictly.
 
 Access adds high-cost preparation only after a purchase, where gross profit at the top belief covers the high cost. Backup B4 gives the exact differences.
 
-## Frame 18 — Purchase impact reveals recruitment
+## Frame 18 — Frequency-weighted purchase impact reveals recruitment
 
 *1.0 minute · ends at 27:00*
 
 Keep ranked classes, positive spread and rival gross-profit gap, full informed orders, and prior pi below threshold tau.
 
-Purchase impact I plus is purchase price minus no-order price. Sale impact I minus is no-order price minus sale price. Weight each by its order frequency.
+Purchase impact I plus is purchase price minus no-order price. Sale-order impact I minus is no-order price minus sale price. Weight each by its order frequency.
 
-The weighted purchase impact exceeds the weighted sale impact exactly when purchase entry exceeds rho. At a prior of one half the frequencies match, so the raw impacts compare directly.
+The weighted purchase impact exceeds the weighted sale-order impact exactly when purchase entry exceeds rho. At a prior of one half the frequencies match, so the raw impacts compare directly.
 
 With no recruitment, orders can still predict the winner.
 
