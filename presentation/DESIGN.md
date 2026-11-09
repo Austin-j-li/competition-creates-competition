@@ -14,7 +14,7 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk in
 Overleaf (33.5 planned minutes of speech with the title, in a 45-minute slot). All 56 frames stay in
-the Beamer order: the title, 19 numbered frames and 37 backup pages for backups B1 to B17. The look
+the Beamer order: the title, 18 numbered frames and 37 backup pages for backups B1 to B17. The look
 is the journal look of the Beamer deck (`ccc-journal.sty`, chosen by the author on 29 October 2026),
 shared with the research brief page: Libertinus Serif for the body, Libertinus Sans for titles,
 tags, labels and the footline, white paper, one oxblood accent (#7A1F1F) and greys; no bars, fills,
@@ -70,8 +70,8 @@ never from `content.js`.
 { id, label, num, part, title, short, subtitle, targets, minutes, widget, body, backup, origin, cls }
 ```
 
-- `id`: `f0` for the title, `s1` to `s19`, and the lower-case label of a backup page (`b1`, `b2b`,
-  `b11s`). `label`: the `slides.tex` label (`S0` to `S19`, `B1` to `B17` with their page labels
+- `id`: `f0` for the title, `s1` to `s18`, and the lower-case label of a backup page (`b1`, `b2b`,
+  `b11s`). `label`: the `slides.tex` label (`S0` to `S18`, `B1` to `B17` with their page labels
   `B2b`, `B3b`, `B3c`, `B4b`, `B6b`, `B6c`, `B8s`, `B8b`, `B11s`, `B11f`, `B11b`, `B11c`, `B11d`,
   `B12b`, `B12c`, `B12d`, `B13b`, `B13c`, `B14b`, `B16b`).
 - `num`: the Beamer frame number of a main frame (the title is 0) and the `\BackupId` of a backup
@@ -170,11 +170,11 @@ The parts follow the roadmap line of frame 4.
 | Part | Name | Frames |
 |---|---|---|
 | 1 | Question | S0 to S4 |
-| 2 | Model | S5 to S9 |
-| 3 | Mechanism and main result | S10 to S14 |
-| 4 | Fixed-information control | S15 |
-| 5 | Extensions and prediction | S16 to S18 |
-| 6 | Conclusion | S19 |
+| 2 | Model | S5 to S8 |
+| 3 | Mechanism and main result | S9 to S13 |
+| 4 | Fixed-information control | S14 |
+| 5 | Extensions and prediction | S15 to S17 |
+| 6 | Conclusion | S18 |
 | B | Backups | B1 to B17 on 37 pages |
 
 Links, origins and hypertargets are those of `slides.tex`; `check_deck.mjs` compares them in

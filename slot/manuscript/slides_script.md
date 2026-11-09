@@ -1,7 +1,7 @@
-# Competition Creates Competition — spoken script for the 19 main frames
+# Competition Creates Competition — spoken script for the 18 main frames
 
 Prepared speech: 28.0 minutes, including the title. Two minutes stay free within the 30-minute talk for pauses and clarifications.
-Proposition 2 proof steps sit in backup B2 and in the prepared answer below; frame 13 states the proof idea in speech.
+Proposition 2 proof steps sit in backup B2 and in the prepared answer below; frame 12 states the proof idea in speech.
 Headings, time lines, source comments and the word-count table are silent.
 The handout has one face per frame. There are no click cues.
 Headings match the slide frame titles. Speech uses the locked terms on the slides.
@@ -13,18 +13,17 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 
 | Frame | Words | Frame | Words |
 |---:|---:|---:|---:|
-| 1 | 210 | 11 | 144 |
-| 2 | 136 | 12 | 141 |
-| 3 | 120 | 13 | 316 |
-| 4 | 139 | 14 | 150 |
-| 5 | 145 | 15 | 157 |
-| 6 | 182 | 16 | 129 |
-| 7 | 159 | 17 | 61 |
-| 8 | 172 | 18 | 103 |
-| 9 | 138 | 19 | 139 |
-| 10 | 149 |  |  |
+| 1 | 210 | 10 | 144 |
+| 2 | 136 | 11 | 141 |
+| 3 | 120 | 12 | 316 |
+| 4 | 139 | 13 | 150 |
+| 5 | 145 | 14 | 157 |
+| 6 | 246 | 15 | 129 |
+| 7 | 172 | 16 | 61 |
+| 8 | 177 | 17 | 103 |
+| 9 | 149 | 18 | 139 |
 
-Main frames: **2,890 words**. Title: **61 words**. Prepared speech including title: **2,951 words**.
+Main frames: **2,834 words**. Title: **61 words**. Prepared speech including title: **2,895 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -92,51 +91,35 @@ I will set out the model, explain the mechanism and main result, state its fixed
 
 Standalone value is zero. Values and costs are per share. All agents are risk neutral.
 
+The seller commits before trade to a cash second-price auction with positive reserve p.
+
 The incumbent is already prepared. Its value R follows public continuous distribution F, and R stays private until bids. Strength means a first-order stochastic shift toward higher values.
 
 The rival sees the price, then decides whether to prepare. Its class j is H, good synergy, or L, poor synergy. Prior pi is the chance of H. Value theta has distribution G sub j. The class ranking puts G sub H weakly below G sub L at every value level, and every value meets reserve p.
 
 Cost C is zero with probability rho, the entry floor; otherwise it is positive high cost c sub H. Payment reveals theta and permits a bid.
 
-The seller commits before trade to a cash second-price auction with positive reserve p. Neither bidder trades target shares.
+Neither bidder trades target shares.
 
 ## Frame 6 — Timing: one trading slot, then preparation
 
-*2.0 minutes · ends at 9:30*
+*2.5 minutes · ends at 10:00*
 
 The sequence puts the stock price before the preparation decision.
 
 The seller first commits to reserve p, and the incumbent's distribution F is public. Next comes the order X: minus one is a sale, zero is no order, and one is a purchase. Then market makers set stock price P. The rival sees P, learns cost C, and decides whether to prepare. If it prepares, it learns theta and bids theta. The incumbent bids R, and payoffs follow.
 
-Presence lambda is the chance that the informed trader receives the order opportunity. It observes class j and chooses order q from those same three alternatives. A nonzero order costs k, the order cost.
+Presence lambda is the chance that the informed trader receives the order opportunity. It observes only class j, good or poor synergy, and chooses order q from those same three alternatives. A nonzero order costs k, the order cost. It is an outsider with sector expertise, such as a sector-focused long-short fund that researches the target's customers, technology and demand. It holds no initial net position and cannot acquire the target.
 
 With probability one minus lambda, a liquidity trader receives the opportunity instead. It sells or buys with probability beta each, and otherwise places no order. Beta is at most one third. No one observes which trader placed the order.
 
-Competitive market makers see only the order X. Price P of X equals expected target proceeds V sub T given X. That expectation includes the preparation response to the price.
+Competitive market makers see only the order X. Price P of X equals expected target proceeds V sub T given X. That expectation includes the preparation response to the price. The rival sees the price, not the order.
 
 A purchase can carry news, but a liquidity purchase can copy it. This uncertainty will preserve the informed trader's advantage.
 
-## Frame 7 — Information and choices
+## Frame 7 — Payoffs
 
-*1.5 minutes · ends at 11:00*
-
-Each player sees a different part of the sale.
-
-The incumbent knows value R and bids R if it meets reserve p.
-
-The informed trader sees class j, good or poor synergy, and no further news about the rival's value. In the point-value example, the class fixes the value. It holds no initial net position and cannot acquire the target. It is an outsider with sector expertise, such as a sector-focused long-short fund that researches the target's customers, technology and demand.
-
-The liquidity trader has no private information about synergy.
-
-Market makers observe the order X and cannot identify the trader.
-
-The rival sees the price, then its cost C. It learns theta only after preparation, and then bids theta.
-
-Order belief mu of x means the probability of class H, good synergy, given the order x. Market makers use that belief. The rival instead conditions on the price. I keep these beliefs distinct until the price-revelation result applies.
-
-## Frame 8 — Payoffs
-
-*1.5 minutes · ends at 12:30*
+*1.5 minutes · ends at 11:30*
 
 Take a prepared rival with value theta at least reserve p. The number line separates what shareholders receive from what the rival keeps.
 
@@ -150,23 +133,23 @@ Shareholder spread Delta T equals t sub H minus t sub L. Rival gross profit B at
 
 The informed trader earns its signed order times proceeds minus price, less k on a nonzero order.
 
-## Frame 9 — Equilibrium with competitive prices
+## Frame 8 — Equilibrium with competitive prices
 
-*1.5 minutes · ends at 14:00*
+*1.5 minutes · ends at 13:00*
 
 This is a perfect Bayesian equilibrium with break-even prices set by competitive market makers.
 
-The informed trader's payoff multiplies its order by the gap between expected proceeds and price, less the order cost. Expected proceeds are t sub zero plus entry e of q times the difference t sub j minus t sub zero.
+Order belief mu of x means the probability of class H, good synergy, given the order x. Market makers use that belief. The rival instead conditions on the price. I keep these beliefs distinct until the price-revelation result applies. Liquidity trade makes every order possible in each class, so Bayes' rule determines every belief.
 
-Price P of x starts with t sub zero, then adds entry e of x times a bracket. The bracket is t sub L minus t sub zero, plus spread Delta T times belief mu of x. Entry e is at least rho.
+Zero cost prepares. High cost prepares when rival gross profit covers it, including equality. Entry e is at least rho.
 
-Liquidity trade makes every order possible in each class, so Bayes' rule determines every belief.
+Price P of x starts with t sub zero, then adds entry e of x times a bracket. The bracket is t sub L minus t sub zero, plus spread Delta T times belief mu of x.
 
-Zero cost prepares. High cost prepares when rival gross profit covers it, including equality. An indifferent informed trader may mix. Each strength needs a fresh equilibrium.
+The informed trader's payoff multiplies its order by the gap between expected proceeds and price, less the order cost. Expected proceeds are t sub zero plus entry e of q times the difference t sub j minus t sub zero. An indifferent informed trader may mix. Each strength needs a fresh equilibrium.
 
-## Frame 10 — A stronger incumbent can shift the split toward shareholders
+## Frame 9 — A stronger incumbent can shift the split toward shareholders
 
-*1.5 minutes · ends at 15:30*
+*1.5 minutes · ends at 14:30*
 
 Proposition one compares two distributions for incumbent value. F tilde lies weakly below F at every value, which means a stronger incumbent. Hold the reserve and both class value distributions fixed.
 
@@ -178,9 +161,9 @@ The last identity splits the class value gap. Delta T plus good-synergy profit m
 
 Read the diagram as a division of that fixed gap. Strength can transfer part of the rival's profit gap to shareholders. The same auction creates the deterrence force and the return to information.
 
-## Frame 11 — Beliefs stay in a band
+## Frame 10 — Beliefs stay in a band
 
-*1.0 minute · ends at 16:30*
+*1.0 minute · ends at 15:30*
 
 Define liquidity mass b as beta times the quantity one minus lambda. Define u as lambda divided by b.
 
@@ -192,9 +175,9 @@ With positive spread, a positive rival gross-profit gap and positive entry floor
 
 Threshold tau is the belief at which rival gross profit equals high cost. Under the default rule, high cost prepares at or above tau. Entry is rho below tau and one otherwise.
 
-## Frame 12 — A correct order gains at least a fixed share of the shareholder spread
+## Frame 11 — A correct order gains at least a fixed share of the shareholder spread
 
-*1.5 minutes · ends at 18:00*
+*1.5 minutes · ends at 17:00*
 
 These are gross gains before order cost k, for any order strategy with Bayes beliefs, competitive prices and truthful bids.
 
@@ -206,9 +189,9 @@ A wrong order earns at most minus k. No order earns zero. The informed trader pl
 
 With entry and beliefs fixed, a wider spread raises these gross gains.
 
-## Frame 13 — Entry can rise from $F_0$ to $F_1$, then fall back to $\rho$ at $F_2$
+## Frame 12 — Entry can rise from $F_0$ to $F_1$, then fall back to $\rho$ at $F_2$
 
-*3.5 minutes · ends at 21:30*
+*3.5 minutes · ends at 20:30*
 
 Proposition two compares three economies with the same class distributions, reserve, costs, prior and order opportunity. F two lies below F one, which lies below F zero. Each step strengthens the incumbent.
 
@@ -234,9 +217,9 @@ Total entry is rho at both ends. In the middle it adds rho to the product of one
 
 The proof idea is short. The bounds from the last two frames hold for every candidate outcome. Strict gaps to the order cost and the high cost then fix orders, beliefs and entry. The four steps sit in backup B2.
 
-## Frame 14 — Example: a purchase recruits only against the strong incumbent
+## Frame 13 — Example: a purchase recruits only against the strong incumbent
 
-*1.0 minute · ends at 22:30*
+*1.5 minutes · ends at 22:00*
 
 The example fixes good-synergy value at ten and poor-synergy value at one. Reserve and prior are one half. Entry floor rho is one quarter; high cost is six; order cost k is one fiftieth.
 
@@ -246,9 +229,9 @@ At these inputs, H one through H three hold exactly when the top belief lies str
 
 Set u to Euler's number minus one. Then the top belief is about zero point seven three one, below the upper threshold and above the lower one. The upper condition holds at every strength above the entry ceiling, about three point five nine, up to ten. Backup B10 lists each input and region.
 
-## Frame 15 — If the rival's news cannot change, strength cannot raise entry
+## Frame 14 — If the rival's news cannot change, strength cannot raise entry
 
-*1.5 minutes · ends at 24:00*
+*1.5 minutes · ends at 23:30*
 
 Now hold the information fixed. Fix the joint distribution of synergy class j and the rival's signal S. Keep both class value distributions, reserve and cost distribution unchanged. The signal carries no further news about values within a class.
 
@@ -260,9 +243,9 @@ The middle row imposes full informed orders at both strengths. Entry is above rh
 
 The last row hides the price and the order. The rival uses the prior. Entry stays at rho at both strengths.
 
-## Frame 16 — A wider shareholder spread raises research, up to $\bar\lambda$
+## Frame 15 — A wider shareholder spread raises research, up to $\bar\lambda$
 
-*1.0 minute · ends at 25:00*
+*1.5 minutes · ends at 25:00*
 
 One change from frame six. The informed trader now chooses research lambda privately, at quadratic cost, with a cap below one. Market makers and the rival use its equilibrium level. With chance lambda it learns the synergy class and fills the slot. Otherwise liquidity fills the slot.
 
@@ -270,7 +253,7 @@ Keep ranked classes, prior one half, a positive rival gross-profit gap, and tau 
 
 In it, research rises strictly with the spread until the cap, then stays fixed. Total entry and good-synergy entry rise with research. Poor-synergy entry falls. Backup B12 states the first-order condition.
 
-## Frame 17 — A visible price raises target proceeds and net surplus
+## Frame 16 — A visible price raises target proceeds and net surplus
 
 *1.0 minute · ends at 26:00*
 
@@ -280,7 +263,7 @@ Expected target proceeds and expected surplus net of preparation costs both rise
 
 Access adds high-cost preparation only after a purchase, where gross profit at the top belief covers the high cost. Backup B4 gives the exact differences.
 
-## Frame 18 — Frequency-weighted purchase impact reveals recruitment
+## Frame 17 — Frequency-weighted purchase impact reveals recruitment
 
 *1.0 minute · ends at 27:00*
 
@@ -294,7 +277,7 @@ With no recruitment, orders can still predict the winner.
 
 In data, date prices before preparation starts, fix the slot in advance, and record no trade as a zero outcome.
 
-## Frame 19 — Competition can create competition
+## Frame 18 — Competition can create competition
 
 *1.0 minute · ends at 28:00*
 

@@ -1,7 +1,7 @@
 # Seminar slides (the /talk/ page)
 
 The web version of the Beamer talk in `slot/manuscript/slides.tex` (the Overleaf deck), the seminar
-talk for the order-slot version of the paper: 57 frames, the title, 19 numbered frames, then
+talk for the order-slot version of the paper: 56 frames, the title, 18 numbered frames, then
 backups B1 to B17 on 37 pages, with the same words, numbers, titles and links as the Beamer deck.
 The planned speech is 28 minutes with the title, in a 30-minute talk.
 
@@ -20,9 +20,9 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
 - Right arrow, Space, PageDown: the next frame. Left arrow, PageUp: back.
 - Home: title. End: conclusion. The main sequence stops at the conclusion, as the PDF does.
 - A link button, or an inline link such as "B2" in a foot line, jumps to its backup. Back, or
-  Escape, returns to the frame it came from. B2 has one return button for each of frames 11, 12
-  and 13. Arrow keys inside the backups move between backup pages.
-- O: overview of all 57 frames by part. N: speaker notes. G: notation. T: dark or light theme.
+  Escape, returns to the frame it came from. B2 has one return button for each of frames 10, 11
+  and 12. Arrow keys inside the backups move between backup pages.
+- O: overview of all 56 frames by part. N: speaker notes. G: notation. T: dark or light theme.
   F: fullscreen. R: reset the slide. ?: controls. A focused figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
@@ -53,7 +53,7 @@ Beamer, `DESIGN.md` on the web). The Beamer deck has no click builds, and neithe
 - The speaker notes are the spoken script, `slot/manuscript/slides_script.md`: one block for each
   main frame; a prepared answer goes to the first page of the backup it names.
 
-Figures: frame 14 draws the threshold belief between the strong and the very strong incumbent
+Figures: frame 13 draws the threshold belief between the strong and the very strong incumbent
 with the top belief; B3 draws the coexistence region with the example's path; B3, page 2 draws
 entry in each equilibrium along the path; B12, page 2 draws research and total entry. They are
 the figures of the Beamer deck, drawn from the same closed forms, with the same labels. Hover or
@@ -77,7 +77,7 @@ order, labels and numbers (a backup page shows its `\BackupId`), the titles and 
 links, return and Back buttons), the registry keys (each `\reg{key}` as often as `slides.tex`
 prints it on the frame), the rounded numbers (`\regr{key}{digits}` must print the same string),
 and the words outside mathematics and diagrams, in order, after NFKC normalisation. It also checks
-that every number span names a registry key, that no example number appears before frame 14 (the
+that every number span names a registry key, that no example number appears before frame 13 (the
 first frame the `slides.tex` header allows), that no number sits in a headline, that every backup
 page has a Back or return button to a main frame, that the timing of each main frame and the
 33.5-minute total are those of `slides_script.md`, and that every main frame has notes.
