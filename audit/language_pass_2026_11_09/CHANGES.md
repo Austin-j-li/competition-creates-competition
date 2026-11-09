@@ -311,3 +311,107 @@ Other changes:
   Proposed (Extensions): no change to this sentence.
 - Now (Implication): In data, frequency-weighted purchase impact exceeds frequency-weighted sale-order impact exactly when a purchase recruits.
   Proposed (Prediction): In data, weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.
+
+## Final polish
+
+### Frame 1
+
+- Before: The stock price can carry news on whether preparation pays.
+  After: The stock price can show whether preparation pays.
+  Reason: a plainer verb for the same claim.
+
+### Frame 3
+
+- Before (title): Where the paper sits: price feedback meets costly entry
+  After: Price feedback and costly entry
+  Reason: the title names the two strands without a staged pairing.
+- Before (takeaway): The sale splits one synergy gap between the rival and shareholders. A stronger incumbent can give shareholders more of it, so the informed trader can gain more.
+  After: A stronger incumbent can shift more of the synergy gap from the rival to shareholders, so the informed trader can earn more.
+  Reason: one sentence names who gains and who gives up the gap.
+
+### Frame 4
+
+- Before (title): This paper: a stronger incumbent can recruit the rival
+  After: A stronger incumbent can recruit the rival
+  Reason: the label before the colon added no information.
+- Before (lead line): A stronger incumbent weakly cuts rival gross profit at each belief about synergy. It can also widen the shareholder spread, the good-minus-poor gap in target proceeds. The informed trader can then profit, and the price can recruit the high-cost rival.
+  After: Strength can also widen the shareholder spread, the good-minus-poor gap in target proceeds. The informed trader can then profit, and the price can recruit the high-cost rival.
+  Reason: item 2 on the same frame states the first sentence, so the lead no longer repeats it.
+
+### Frame 5
+
+- Before: To prepare is to pay $C$, learn $\theta$ and be able to bid; an unprepared rival cannot bid.
+  After: A rival who prepares pays $C$, learns $\theta$ and can bid; otherwise it cannot bid.
+  Reason: the definition now names the rival as the actor.
+
+### Frame 6
+
+- Before: With probability $\lambda\in(0,1)$ --- the informed presence --- the slot goes to an informed trader who is not a bidder.
+  After: With probability $\lambda\in(0,1)$ (the informed presence), the slot goes to an informed trader who is not a bidder.
+  Reason: parentheses replace the dash aside.
+- Before: The expectation includes the entry that the price itself causes.
+  After: The expectation includes any entry that the price causes.
+  Reason: "itself" added emphasis without information.
+
+### Frame 9
+
+- Before (Beliefs row): Liquidity trade gives each outcome positive probability in each class, so Bayes' rule pins down the order beliefs.
+  After: Each outcome has positive probability in each class under liquidity trade, so the order beliefs are pinned down.
+  Reason: the row already states Bayes' rule in the sentence before.
+
+### Frame 11
+
+- Before (intuition): A liquidity order can match any informed order, so an order moves the belief but leaves doubt about the class.
+  After: Liquidity orders look the same as informed orders, so the class stays uncertain after any order.
+  Reason: the sentence states why the class stays uncertain, in plain words.
+
+### Frame 12
+
+- Before (gloss): The bounds hold for every order strategy, optimal or not.
+  After: (removed)
+  Reason: the line above already fixes "any order strategy".
+- Before (intuition): Gross gain equals entry probability times shareholder spread times the doubt left after the order. Net gain subtracts the order cost, so doubt alone does not pay.
+  After: Gross gain is entry probability times shareholder spread times the doubt left after the order. The informed trader needs that gain to cover the order cost.
+  Reason: the trader and the cost replace a closing aphorism.
+
+### Frame 14
+
+- Before: $(r_0,r_1,r_2)=(\ldots)$ play the roles of $F_0,F_1,F_2$ (frame 13).
+  After: $(r_0,r_1,r_2)=(\ldots)$ give $F_0,F_1,F_2$ (frame 13).
+  Reason: a plain verb replaces the theatrical one.
+- Before (intuition): Against the strong incumbent, a purchase lifts the belief above the threshold; against the very strong one, the threshold has risen above that same belief.
+  After: A purchase lifts the belief past the threshold at the strong incumbent. At the very strong incumbent, the threshold sits above that belief.
+  Reason: two plain sentences replace the mirrored pair.
+
+### Frame 15
+
+- Before (subtitle): The control: freeze what the rival can learn
+  After: The fixed-information control
+  Reason: the subtitle uses the term from frame 4 and drops the imperative.
+- Before (gloss): What the rival can learn stays fixed. Only strength moves.
+  After: (removed)
+  Reason: the sentence before the display already fixes the same objects.
+- Before (table note): Rows 2 and 3 stay flat, as `cannot rise' allows.
+  After: Rows 2 and 3 stay flat.
+  Reason: the quoted aside restated the frame title.
+- Before (intuition): At each unchanged belief, strength weakly lowers rival gross profit (Proposition 1(a)): it only removes reasons to prepare.
+  After: With beliefs fixed, strength weakly lowers rival gross profit (Proposition 1(a)), so no rival gains a reason to prepare.
+  Reason: the consequence follows in the same clause, without a colon.
+
+### Frame 17
+
+- Before (intuition): Access adds a bidder only where the price shows that preparation covers the high cost.
+  After: A high-cost rival prepares after a purchase only if the price shows preparation pays.
+  Reason: the rival is the actor, as in the statement above.
+
+### Frame 18
+
+- Before (intuition): Recruitment adds an entry part to the purchase price. So, weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.
+  After: When a purchase recruits, the price has an entry part. Weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.
+  Reason: the condition comes first and the staged "So" goes.
+
+### Frame 19
+
+- Before (lead line): A stronger incumbent does not always keep the rival out: it can make the stock price more informative, and that price can recruit the rival.
+  After: A stronger incumbent can make the stock price more informative. That price can then recruit the rival.
+  Reason: the positive claim stands without the negative set-up and colon.

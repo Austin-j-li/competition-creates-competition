@@ -62,7 +62,7 @@ The logic holds when what the rival knows stays fixed. With the information, val
 
 I keep that force. I add a target stock price before preparation and let its information respond to competition. The next step is to explain why a stronger incumbent can make that price say more.
 
-## Frame 3 — Where the paper sits: price feedback meets costly entry
+## Frame 3 — Price feedback and costly entry
 
 *1.0 minute · ends at 5:00*
 
@@ -74,7 +74,7 @@ Edmans, Goldstein and Jiang's 2012 paper connects target prices to takeover acti
 
 The new link is the sale. It splits one value between shareholders, whose claim trades, and the rival, who decides whether to enter. Competition changes how much the price tells the rival.
 
-## Frame 4 — This paper: a stronger incumbent can recruit the rival
+## Frame 4 — A stronger incumbent can recruit the rival
 
 *1.5 minutes · ends at 6:30*
 
