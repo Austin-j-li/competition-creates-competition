@@ -432,3 +432,4 @@ Each change below follows a check of the merged text against the paper. Where th
 - Frame 19. Before: Prediction. In data, weighted by order frequency, … After: Prediction. Under the conditions of frame 18, weighted by order frequency, … Reason: the equivalence needs full informed orders, $\pi<\tau$ and one public state (appendix A8); without them it can fail.
 
 Checks: `latexmk slides.tex` exit 0, one main-frame overflow (frame 13, 0.65 pt, as before the pass); `presentation/build.py` from an empty `dist/` exit 0; in the browser, `DECK.selfCheck()` reports no errors and no maths errors, and `DECK.audit()` returns `[]`.
+- Frame 14 (author request). Before: Point-mass classes $G_H=\delta_h$, $G_L=\delta_\ell$ and reserve $p$: … After: Point-mass classes: $\theta=h$ in class $H$, $\theta=\ell$ in class $L$; reserve $p$; … Reason: the same assumption without a symbol used only once.
