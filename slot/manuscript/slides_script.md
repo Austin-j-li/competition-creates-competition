@@ -260,7 +260,7 @@ The middle row imposes full informed orders at both strengths. Entry is above rh
 
 The last row hides the price and the order. The rival uses the prior. Entry stays at rho at both strengths.
 
-## Frame 16 — A wider spread raises the chance the trader learns the class, up to $\bar\lambda$
+## Frame 16 — A wider shareholder spread raises research, up to $\bar\lambda$
 
 *1.0 minute · ends at 25:00*
 
