@@ -13,7 +13,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 
 | Frame | Words | Frame | Words |
 |---:|---:|---:|---:|
-| 1 | 210 | 10 | 144 |
+| 1 | 212 | 10 | 144 |
 | 2 | 136 | 11 | 141 |
 | 3 | 120 | 12 | 316 |
 | 4 | 139 | 13 | 150 |
@@ -23,7 +23,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | 8 | 177 | 17 | 103 |
 | 9 | 149 | 18 | 139 |
 
-Main frames: **2,834 words**. Title: **61 words**. Prepared speech including title: **2,895 words**.
+Main frames: **2,836 words**. Title: **61 words**. Prepared speech including title: **2,897 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -39,13 +39,13 @@ A listed company announces that it is open to a sale. The incumbent has done its
 
 Does a stronger incumbent always keep the rival out?
 
-The seller cares about discovery. A public sale tries to find one more bidder before the bidder set closes. Bulow and Klemperer show why one extra bidder can carry first-order value. Here the sale rule stays fixed. The question is whether a stronger incumbent helps discover the rival or ends the search.
+Start with the board and its shareholders. A second bidder can add more to what shareholders receive than any change in sale terms; Bulow and Klemperer make that point. So the answer matters for a plain decision: close fast with a strong incumbent, or keep the sale open.
 
-The rival cares about the diligence bill. It must check contracts, liabilities and technology, and secure finance and approvals, before an executable offer. A stronger incumbent can reduce the return from that work. But the rival can also learn from the stock price before it pays.
+Take the rival next. Preparation means months of diligence and finance work, and the rival pays before it knows its value. The stock price is a public signal it can read first. The answer tells the rival when that signal is worth following.
 
-The market matters because prices move before bids move. The informed trader's order can put some of its knowledge into the price. The price can then change the decision to prepare.
+Then the market. Trading before a bid is usually read as leakage, or as a forecast of the deal. If that trading can tell the right rival to prepare, it does more. It helps decide who bids, and who ends up owning the target.
 
-The seller's proceeds can depend on rival preparation, the rival needs a reason to pay, and the market can supply news before commitment. The question connects all three.
+The received answer is deterrence: a stronger incumbent keeps the rival out. That answer holds the rival's information fixed. A stock price does not.
 
 ## Frame 2 — The received answer: strength cannot raise entry
 

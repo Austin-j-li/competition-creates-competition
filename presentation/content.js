@@ -160,14 +160,13 @@
 
     main({ id: 's1', label: 'S1', num: '1', part: 1, minutes: 2, targets: ['main:s1'], cls: 'bigtitle sz-n',
       title: 'Does a stronger incumbent always keep the rival out?', subtitle: 'The incumbent is prepared. The rival must pay to prepare.',
-      body: vsp(77) +
-        cols([[0.31, colhead('Seller') + 'The seller seeks one more bidder for a listed target. A stronger incumbent can help find the rival, or keep it out.'],
-          [0.31, colhead('Rival') + 'Preparation is diligence, finance and approvals. The rival pays for it before it can bid.'],
-          [0.31, colhead('Price') + 'Target shares trade before the rival prepares. The price can show whether preparation pays.']]) +
-        vsp(70) + ruleL + vsp(10) +
-        P('Setting: a listed target after a disclosed approach or an announced strategic review. Its shares still trade, and the bidder set is still open.') +
-        vfill +
-        footline('One extra bidder can change target proceeds at first order (Bulow and Klemperer, 1996). Takeover competition develops before public bids (Boone and Mulherin, 2007). With the sale rule fixed, the question is entry.') });
+      body: vsp(4) + colhead('Why the answer matters') +
+        deflist([
+          ['Board and shareholders', 'A second bidder can add more to what shareholders receive than any change in sale terms. The answer tells a board whether to close fast with a strong incumbent or to keep the sale open.'],
+          ['Rival', 'Preparation costs months of diligence and finance work, paid before the rival knows its value. The stock price is a public signal it can read first. The answer tells it when that signal is worth following.'],
+          ['Market', 'Trading before a bid is usually read as leakage or as a forecast of the deal. If it can tell the right rival to prepare, it does more: it helps decide who bids and who ends up owning the target.']], 330) +
+        takeaway('The received answer is deterrence. It holds the rival’s information fixed. A stock price does not.') +
+        footline('Bulow and Klemperer (1996); Boone and Mulherin (2007); Schwert (1996).') });
 
     main({ id: 's2', label: 'S2', num: '2', part: 1, minutes: 1.5, targets: ['main:s2'], cls: 'sz-n',
       title: 'The received answer: strength cannot raise entry', subtitle: 'When what the rival can learn stays fixed',
