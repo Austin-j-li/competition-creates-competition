@@ -16,7 +16,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | 1 | 210 | 11 | 144 |
 | 2 | 136 | 12 | 141 |
 | 3 | 120 | 13 | 316 |
-| 4 | 139 | 14 | 131 |
+| 4 | 139 | 14 | 150 |
 | 5 | 145 | 15 | 157 |
 | 6 | 182 | 16 | 129 |
 | 7 | 159 | 17 | 61 |
@@ -24,7 +24,7 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | 9 | 138 | 19 | 139 |
 | 10 | 149 |  |  |
 
-Main frames: **2,871 words**. Title: **61 words**. Prepared speech including title: **2,932 words**.
+Main frames: **2,890 words**. Title: **61 words**. Prepared speech including title: **2,951 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -244,7 +244,7 @@ Incumbent value is uniform from zero to r. The three strengths are r equal to on
 
 At these inputs, H one through H three hold exactly when the top belief lies strictly between two thresholds. The strong threshold is zero point seven zero five. The very strong threshold is about zero point seven three one four.
 
-Set u to Euler's number minus one. Then the top belief is about zero point seven three one, below the upper threshold and above the lower one. Backup B10 lists each input and region.
+Set u to Euler's number minus one. Then the top belief is about zero point seven three one, below the upper threshold and above the lower one. The upper condition holds at every strength above the entry ceiling, about three point five nine, up to ten. Backup B10 lists each input and region.
 
 ## Frame 15 — If the rival's news cannot change, strength cannot raise entry
 
@@ -341,6 +341,10 @@ It gives one research value for the equilibrium where good synergy buys after su
 ### Does price access always help sellers? — B4
 
 The strict gain uses Proposition two's conditions at the strong incumbent F one. Both economies have the same full informed orders. Access adds high-cost preparation after purchases, which raises expected proceeds and net acquisition surplus. Outside that region, the prior can already justify preparation. Price access can then deter preparation after sales and reduce expected proceeds. The paper does not claim a general proceeds gain.
+
+### Is the example on a knife edge? — B10
+
+No. The lower condition has a wide margin: the top belief is zero point seven three one against a threshold of zero point seven zero five. The upper condition holds at every strength from the entry ceiling, about three point five nine, up to ten. The very strong incumbent sits at three point six, just above that ceiling, so its margin in belief is small. A stronger third incumbent has a wider margin, and entry is at its floor there too.
 
 ### Why record no order? — B13
 
