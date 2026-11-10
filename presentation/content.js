@@ -171,9 +171,9 @@
     main({ id: 's2', label: 'S2', num: '2', part: 1, minutes: 1.5, targets: ['main:s2'], cls: 'sz-n',
       title: 'The received answer: strength cannot raise entry', subtitle: 'When what the rival can learn stays fixed',
       body: vsp(21) +
-        ul(['The rival learns its value only after it pays to prepare.',
-          'A stronger incumbent weakly cuts rival gross profit at each belief about synergy.',
-          'Preparation can stop paying, so entry cannot rise.',
+        ul(['The rival must pay to prepare before it learns its value. It decides on expected profit.',
+          'A stronger incumbent is harder to outbid. Rival gross profit, the expected profit before the preparation cost, falls or stays the same at every belief.',
+          'The cost stays the same. Preparation can stop paying but can never start to pay, so entry cannot rise.',
           'Fishman (1988): the first bidder chooses a preemptive bid. Here strength is public; the incumbent’s own value stays private.'], 28) +
         takeaway('This answer holds the rival’s news fixed. A stock price can change what the rival learns.') +
         footline('Fishman (1988); Hirshleifer and Png (1989). Auction entry: Samuelson (1985); McAfee and McMillan (1987); Levin and Smith (1994); Gentry and Stroup (2019).') });
