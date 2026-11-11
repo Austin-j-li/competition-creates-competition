@@ -67,7 +67,7 @@ I keep that force. I add a target stock price before preparation and let its inf
 
 A stronger incumbent weakly cuts rival gross profit at each belief. It can also widen the shareholder spread, the gap between what target shareholders are paid with a good rival and with a poor one. That wider spread can make informed trade worth its cost. The price can then recruit the rival.
 
-Three results carry the argument. First, on an open set of inputs, entry rises from the weak to the strong incumbent, then returns to its floor, with a unique outcome at each of the three strengths. Between the weak and the strong incumbent, two equilibria can coexist, and none is selected. Second, one shift never raises rival gross profit and never narrows the shareholder spread. Third, freeze the information, and strength cannot raise entry.
+Three results carry the argument. First, on an open set of inputs, entry rises from the weak to the strong incumbent, then returns to its floor, with a unique outcome at each of the three strengths. Between the weak and the strong incumbent, an uninformative and an informative market can coexist. Second, one shift never raises rival gross profit and never narrows the shareholder spread. Third, freeze the information, and strength cannot raise entry.
 
 Extensions follow: costly research, gains for sellers from a visible price, and a price-impact prediction.
 
@@ -257,17 +257,17 @@ The middle row imposes full informed orders at both strengths. Entry is above rh
 
 The last row hides the price and the order. The rival uses the prior. Entry stays at rho at both strengths.
 
-## Frame 16 — Between $F_0$ and $F_1$, two markets can coexist; none is selected
+## Frame 16 — Between $F_0$ and $F_1$, two markets can coexist
 
 *1.5 minutes · ends at 25:00*
 
-Between the weak and the strong incumbent there is no general uniqueness result, and I select no equilibrium.
+Between the weak and the strong incumbent, two markets can coexist at one strength.
 
 Under the default tie rules, an uninformative market with entry at its floor can coexist with an informative market where a purchase recruits. The threshold must exceed the prior but remain reachable, and the shareholder spread must lie within the two bounds on the slide. The informative market is then unique.
 
 In the example at prior one half, the table lists every equilibrium from the weak to the strong incumbent: the uninformative market, the informative market, and mixed orders at the entry floor.
 
-Three facts hold in every equilibrium. Entry is at or above rho at every strength. At the three compared incumbents the outcome is unique, so the comparison uses no selection. Only the strength at which entry first rises depends on the equilibrium. Backup B3 gives the bounds and the figures.
+Three facts hold in every equilibrium. Entry is at or above rho at every strength. At the three compared incumbents the outcome is unique. Only the strength at which entry first rises differs. Backup B3 gives the bounds and the figures.
 
 ## Frame 17 — A wider shareholder spread raises research, up to $\bar\lambda$
 

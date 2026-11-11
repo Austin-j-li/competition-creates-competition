@@ -184,7 +184,7 @@
       title: 'A stronger incumbent can recruit the rival',
       body: large('Strength can widen the shareholder spread: the gap between what target shareholders are paid with a good rival and with a poor one. Informed trade can then pay, and the price can recruit a rival for whom preparation is costly.') +
         vsp(13) +
-        ol(['<b>Non-monotone entry:</b> entry can rise from the weak to the strong incumbent. It returns to its floor at the very strong one, where even the best news cannot cover the cost of preparation. Each of the three cases has a unique outcome (Proposition 2). Between the weak and the strong incumbent, two equilibria can coexist, and none is selected (Proposition 3).',
+        ol(['<b>Non-monotone entry:</b> entry can rise from the weak to the strong incumbent. It returns to its floor at the very strong one, where even the best news cannot cover the cost of preparation. Each of the three cases has a unique outcome (Proposition 2). Between the weak and the strong incumbent, an uninformative and an informative market can coexist (Proposition 3).',
           '<b>Value split between rival and shareholders:</b> strength weakly cuts rival gross profit and weakly widens the shareholder spread (Proposition 1).',
           '<b>Fixed-information control:</b> with the rival’s news fixed, a stronger incumbent cannot raise entry.'], 14) +
         vsp(16) +
@@ -259,7 +259,7 @@
           ['Entry', m(T`e(x)=\Pr(\text{rival prepares}\mid X=x)`) + ' depends on ' + m('x') + ' only through ' + m('P(x)') + '. The ' + m('C=0') + ' rival always prepares, so ' + m(T`e(x)\ge\rho`) + ': ' + m(T`\rho`) + ' is the entry floor. A purchase <b>recruits</b> when ' + m(T`e(1)>\rho`) + ', that is, when it brings in high-cost preparation.'],
           ['Competitive prices', m(T`P(x)=\mathbb{E}[V_T\mid X=x]=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + '.'],
           ['Orders', 'an informed trader who sees class ' + m('j') + ' has expected payoff ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + ' from order ' + m('q') + ', where ' + m(T`t_0+e(q)(t_j-t_0)=\mathbb E[V_T\mid j,X=q]`) + '. In each class ' + m('j') + ', it puts positive probability only on ' + m(T`\arg\max_q U_j(q)`) + ' at the equilibrium ' + m(T`P(\cdot)`) + ', ' + m(T`e(\cdot)`) + '.']], 300) +
-        footline('No refinement: each outcome has positive probability in each class under liquidity trade, so Bayes’ rule gives every belief. The outcome is unique at the three incumbents of Proposition 2; between them, two equilibria can coexist (frame 16).') });
+        footline('Each outcome has positive probability in each class under liquidity trade, so Bayes’ rule gives every belief.') });
 
     /* ================================================================ main results: frames 9 to 14 */
 
@@ -308,7 +308,7 @@
           [sfb('What shareholders are paid'), 'almost the same with a good rival and with a poor one', 'much more with a good rival', 'at least as much more'],
           [sfb('Trade on the rival’s quality'), 'does not pay: the gap cannot cover the cost of an order', 'pays: buy on a good rival, sell on a poor one', 'pays, as against the strong incumbent'],
           [sfb('The stock price'), 'tells the rival nothing', 'rises after a purchase and carries good news', 'rises after a purchase and carries the same news'],
-          [sfb('What a bid is worth to the rival'), 'too little to cover costly diligence', 'enough after a price rise', 'too little even after a price rise'],
+          [sfb('What a bid is worth to the rival'), 'too little without good news', 'enough after a price rise', 'too little even after a price rise'],
           [sfb('Who prepares a bid'), 'only a rival with no diligence cost', 'a rival with costly diligence too, after a price rise', 'only a rival with no diligence cost']] }) +
         takeaway('Strength cuts what the rival can earn, but it makes the rival’s quality matter more to shareholders. That can put the news into the price, until no news is good enough.') });
 
@@ -365,7 +365,7 @@
         nav(go('app:b11', 'B11')) });
 
     main({ id: 's16', label: 'S16', num: '16', part: 4, minutes: 1.5, targets: ['main:s16'], widget: 'coexmain',
-      title: 'Between $F_0$ and $F_1$, two markets can coexist; none is selected',
+      title: 'Between $F_0$ and $F_1$, two markets can coexist',
       body: cols([[0.40, vsp(10) + fig('coexmain', 'Figure. Entry against strength in each equilibrium of the example, from r_A to past r_S, with the coexistence band; arrow keys move the cursor.') + vsp(4) +
             P('Entry ' + m(T`\mathsf E`) + ' against strength ' + m('r') + ' in the example. N: uninformative market. R, F: informative market (mixed, then full purchase). Q: mixed orders at the entry floor. T: threshold pair, under the other tie rule for the rival. Shaded band: ' + nw(m('[r_A,r_N]') + ',') + ' with ' + m(T`r_A\approx{{rA|3}}`) + ', ' + m(T`r_N\approx{{rN|3}}`) + ' and ' + nw(m(T`r_J\approx{{rJ|3}}`) + '.'), 'gloss fs-x')],
           [0.58, st('Proposition 3(a) and Corollary 2', '<div>' +
@@ -380,8 +380,8 @@
               ['Informative market', m('[r_A,r_1]'), q('entry_rA_B', 2) + ' rising to ' + q('entry_r1_B', 2)],
               ['Mixed orders at the entry floor', m('(r_N,r_J)'), q('entry_r0', 2)]] }) + '</div>')]]) +
         vsp(4) +
-        P('<b>The same in every equilibrium.</b> ' + m(T`\mathsf E\ge\rho`) + ' at every strength. At ' + m('r_0') + ', ' + m('r_1') + ' and ' + m('r_2') + ' the outcome is unique (Proposition 2), so the comparison of the three incumbents uses no selection. Only the strength at which entry first rises depends on the equilibrium; it lies in ' + nw(m('[r_A,r_J]') + '.'), 'fs-f') +
-        footline('After no order: ' + m(T`\mu(0)=\pi`) + ' at ' + m('r_0') + ', ' + m('r_1') + ' and ' + nw(m('r_2') + ';') + ' in the informative market below ' + nw(m(T`r_S\approx{{rS_B|3}}`) + ',') + ' ' + nw(m(T`m(\pi)\le\mu(0)<\pi`) + ',') + ' so no order never recruits.') +
+        P('<b>The same in every equilibrium.</b> ' + m(T`\mathsf E\ge\rho`) + ' at every strength. At ' + m('r_0') + ', ' + m('r_1') + ' and ' + m('r_2') + ' the outcome is unique (Proposition 2). Entry first rises at a strength in ' + nw(m('[r_A,r_J]') + '.'), 'fs-f') +
+        footline('After no order: ' + m(T`\mu(0)=\pi`) + ' at ' + m('r_0') + ', ' + m('r_1') + ' and ' + nw(m('r_2') + ';') + ' in the informative market below ' + nw(m(T`r_S\approx{{rS_B|3}}`) + ',') + ' ' + nw(m(T`m(\pi)\le\mu(0)<\pi`) + '.') + ' Entry after no order is ' + m(T`\rho`) + ' in each case.') +
         nav(go('app:b3', 'B3')) });
 
     main({ id: 's17', label: 'S17', num: '17', part: 5, minutes: 1.5, targets: ['main:s17'],
@@ -430,13 +430,13 @@
               P('At ' + m(T`\pi=1/2`) + ', ' + m(T`\bar f(1)=\bar f(-1)`) + ', so') + d(T`I_+>I_-\quad\Longleftrightarrow\quad e(1)>\rho.`)]]) +
           P('Equivalent form: ' + nw(m(T`\bar f(1)I_+-\bar f(-1)I_-=\mathbb E[P(X)]-P(0)`) + '.') + ' The no-order price is below the mean price exactly when a purchase recruits.')) +
         intuition('A purchase is good news about the rival’s quality. If it also brings in a rival with costly diligence, it is good news twice; a sale order is bad news once. Weighted by frequency, a purchase then moves the price more, and only then.') +
-        footline('With no recruitment (' + m(T`e(\cdot)=\rho`) + '), orders still predict the winner when a prepared class-' + m('H') + ' rival wins more often than a class-' + m('L') + ' one: ' + link('app:b13', 'B13') + '. Empirical slot: one fixed in advance, such as the opening auction on the first trading day after the approach is disclosed; record no order as zero.') +
+        footline('With no recruitment (' + m(T`e(\cdot)=\rho`) + '), orders predict the winner when a prepared class-' + m('H') + ' rival wins more often than a class-' + m('L') + ' one: ' + link('app:b13', 'B13') + '. Empirical slot: one fixed in advance, such as the opening auction on the first trading day after the approach is disclosed; record no order as zero.') +
         nav(go('app:b13', 'B13')) });
 
     main({ id: 's20', label: 'S20', num: '20', part: 6, minutes: 1, targets: ['main:s20'], cls: 'sz-n',
       title: 'Competition can create competition',
       body: vsp(7) + large('A stronger incumbent can make the stock price more informative. That price can then recruit the rival.') + vsp(21) +
-        ul(['<b>Main result.</b> Entry can rise against the strong incumbent and return to its floor against the very strong one, with a unique outcome in each case (Proposition 2). Between the weak and the strong incumbent, two markets can coexist; entry stays at or above its floor in both (Proposition 3).',
+        ul(['<b>Main result.</b> Entry can rise against the strong incumbent and return to its floor against the very strong one, with a unique outcome in each case (Proposition 2). Between the weak and the strong incumbent, two markets can coexist, with entry at or above its floor in each (Proposition 3).',
           '<b>Discipline.</b> Strength weakly cuts rival gross profit and weakly widens the shareholder spread. With the rival’s news fixed, it cannot raise entry.',
           '<b>Extensions.</b> Where the recruiting equilibrium exists, a wider shareholder spread raises costly research by the informed trader, up to its cap. At the strong incumbent, letting the rival see the price raises what target shareholders are paid in expectation and acquisition surplus net of preparation costs.',
           '<b>Prediction.</b> Under the conditions of frame 19, weighted by order frequency, a purchase raises the price more than a sale order lowers it exactly when a purchase recruits.'], 14) +
@@ -477,7 +477,7 @@
       body: ul(['<b>Lemma A.3</b> (informed trading): the gain before order cost ' + m('k') + ' from a correct purchase under good synergy is ' + m(T`K_H=e(1)\,\Delta_T\,[1-\mu(1)]`) + '; from a correct sale under poor synergy, ' + m(T`K_L=e(-1)\,\Delta_T\,\mu(-1)`) + '. Under every order plan, ' + m(T`\rho\,\Delta_T[1-M(\pi)]\le K_H\le\Delta_T`) + ' and ' + m(T`\rho\,\Delta_T\,m(\pi)\le K_L\le\Delta_T`) + '. With ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ', each gain lies between ' + m(T`\rho\,\kappa(\pi)\,\Delta_T`) + ' and ' + m(T`\Delta_T`) + '; the purchase bound uses ' + m(T`1-M(\pi)`) + ' and the sale bound uses ' + m(T`m(\pi)`) + '. A wrong-signed order earns at most ' + m('-k') + '. Good synergy buys when ' + m('K_H>k') + ' and stays out when ' + m('K_H<k') + '; poor synergy compares ' + m('K_L') + ' with ' + m('k') + ' in the same way.',
           'Four-step proof: 1. Weak: each gain is at most ' + m(T`\Delta_T`) + ', below ' + m('k') + ', so no informed order; the belief stays at the prior; entry stays at ' + m(T`\rho`) + '. 2. Strong: each gain is at least ' + m(T`\rho\,\kappa(\pi)\,\Delta_T`) + ', above ' + m('k') + ', so full orders hold under every candidate; beliefs are ' + m(T`(m(\pi),\pi,M(\pi))`) + '. 3. A purchase reaches ' + m(T`M(\pi)`) + ', rival gross profit there strictly exceeds the high cost, so entry after a purchase is ' + m('1') + '; after other orders entry stays at ' + m(T`\rho`) + '. 4. Very strong: full orders stay, but rival gross profit at ' + m(T`M(\pi)`) + ' falls short of the high cost, so entry returns to ' + m(T`\rho`) + ' after each order.'], 14) +
         vsp(21) + center(dg(proofFlow)) + vsp(14) +
-        P('Each comparison is strict, so no tie rule changes the outcome.', 'fs-s') +
+        P('Each comparison is strict, so the outcome is the same under every tie rule.', 'fs-s') +
         returns() }, 'main:s10');
 
     bk({ id: 'b3', label: 'B3', targets: ['app:b3'], widget: 'region', title: 'Informative and uninformative markets at one strength', subtitle: 'Proposition 3 · Paper §4.3 · Default tie rules',
