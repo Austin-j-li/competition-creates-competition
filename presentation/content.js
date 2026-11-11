@@ -155,7 +155,7 @@
 
     main({ id: 'f0', label: 'S0', num: '0', part: 1, minutes: 0.5, widget: 'title', short: 'Title',
       title: 'Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders',
-      body: '<div class="cover"><h1>Competition Creates Competition:<br>Stock Prices and the Discovery of Takeover Bidders</h1>' +
+      body: '<div class="cover"><h1>Competition Creates Competition:<br><span class="cover-sub">Stock Prices and the Discovery of Takeover Bidders</span></h1>' +
         '<p class="cover-author">Austin Li</p><p class="cover-inst">Department of Economics, University College London</p></div>' });
 
     main({ id: 's1', label: 'S1', num: '1', part: 1, minutes: 2, targets: ['main:s1'], cls: 'bigtitle sz-n',

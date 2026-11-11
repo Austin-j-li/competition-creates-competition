@@ -77,7 +77,7 @@ and does not copy the layout of a UCL page.
 - One palette, one type family pair and one rule grammar across the brief page, the web slides and the Beamer deck.
 - Two purples, each in one role. Dark purple is coloured text: titles, tags, the active control, links. Bright purple is every rule, bullet and mark.
 - A title is bold sans in dark purple over a rule; a statement is a rule, a bold sans tag in dark purple, the body, a light rule; a takeaway is bold text over a rule; an intuition is italic text over a light rule.
-- The title frame of the deck is a flat dark purple page with a short heritage blue rule. The title block of the brief page stays on white paper.
+- The title frame of the deck is a flat dark purple page with a wide margin. A short heritage blue rule, the title in bold serif and the subtitle in regular serif sit at the head. A hairline, the name in bold sans and the department in mid purple sit at the foot. The title block of the brief page stays on white paper.
 - Figures draw in ink, the information colour and greys; series differ by dash and marker, never by a third colour.
 - Prose and captions stop at the measure; exhibits span the content column.
 
@@ -92,7 +92,7 @@ that: bright purple on white only; heritage blue and mid purple on dark purple o
 - **Dark purple** (#361a54, `--accent`, `--heading`; `cAccent` in the deck): coloured text. Titles and section headings, the tag of a statement, column heads, the active tab, contents entry or control, the current part of the roadmap and of the model strip, links. Also the ground of the title frame and of the dark theme.
 - **Bright purple** (#993bff, `--rule`; `cRule` in the deck): the rule under a title, the rule above a statement, a takeaway or a large line, bullets, the underline of the active control, the slider thumb, the focus ring; in figures the information series (`--c-info`, `--chart-2`). On white only.
 - **Heritage blue** (#30d6ff): the short rule of the title frame; in the dark theme the coloured text and the information series. On dark purple only.
-- **Mid purple** (#ba82ff): in the dark theme the rules, bullets, muted text and the grey series. On dark purple only.
+- **Mid purple** (#ba82ff): in the dark theme the rules, bullets, muted text and the grey series; the department on the title frame. On dark purple only.
 - **Off-white** (#fafafa, UCL's screen white): text on dark purple.
 - **Muted** (#666666): glosses, subtitles, foot lines, tick labels, inactive controls; in figures the grey series (`--chart-3`).
 - **Hairline** (#c9c9c9): light rules, the dotted underline of a registry number, the border of a tooltip. **Grid** (#e6e6e6): chart gridlines and the hairlines inside a table.
@@ -110,7 +110,7 @@ that: bright purple on white only; heritage blue and mid purple on dark purple o
 **Reading face:** Libertinus Serif (regular, italic, bold, bold italic). **Apparatus face:** DM Sans (regular, italic, and the semibold as the bold) for titles, tags, labels, tables' heads, legends, controls and the footline. UCL's own face, UCL Sans, is a cut of DM Sans; UCL does not intend it for academic text, so it sets the apparatus only. It is scaled to 90 per cent to sit beside Libertinus Serif (`Scale=0.9` in the deck, `size-adjust` on the web). DM Sans has no small capitals and no Greek. **Symbols:** Libertinus Math, subset to the symbol blocks, as the fallback for Greek letters, relations and operators in text. **Mathematics:** KaTeX on the web, Libertinus Math in the deck; the seam is accepted. Hashes use the system monospace.
 
 ### Hierarchy
-- **Title** (serif 700): the two lines of the brief's title in dark purple; the title frame of the deck at 60 px in off-white.
+- **Title** (serif 700): the two lines of the brief's title in dark purple; on the title frame of the deck, the title at 81 px (25 pt in Beamer) and the subtitle at 58 px and weight 400 (16.5 pt), in off-white.
 - **Headline** (sans 700, dark purple): a section heading of the brief; a frame title at 50 px (60 px on the question frame). Both sit over the rule; a subtitle is serif italic in grey under the title, above the rule.
 - **Tag** (sans 700, dark purple): the name of a statement ("Proposition 2 · ..."), a column head, the contents heading; 30 px on a slide.
 - **Body** (serif 400): 1.15rem at a 66ch measure on the brief; 32 px at 1.3 on a slide (\Body), 28 px inside a statement, 25 px for the small sizes.

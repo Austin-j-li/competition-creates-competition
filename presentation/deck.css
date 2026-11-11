@@ -23,7 +23,7 @@
   --region-a: rgba(28, 28, 28, 0.07); --region-b: rgba(153, 59, 255, 0.08); --region-c: rgba(102, 102, 102, 0.12);
   --fail: #361a54;
   --selection: rgba(153, 59, 255, 0.16);
-  --cover-bg: #361a54; --cover-ink: #fafafa; --cover-rule: #30d6ff; --cover-muted: #ba82ff;
+  --cover-bg: #361a54; --cover-ink: #fafafa; --cover-rule: #30d6ff; --cover-muted: #ba82ff; --cover-line: #6a4e8a;
   --i-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h13M9 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
   --i-tri: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l9 6-9 6z' fill='%23000'/%3E%3C/svg%3E");
   --font-serif: "Libertinus Serif", "Libertinus Math", Georgia, "Times New Roman", serif;
@@ -221,13 +221,16 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* ---------- components ---------- */
 
-/* The title frame: a flat dark purple page in both themes; a short heritage blue rule, the serif
-   title, the author and the department in off-white. No gradient, no picture. */
-.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 60px; background: var(--cover-bg); color: var(--cover-ink); }
-.cover::before { content: ""; display: block; width: 240px; border-top: 5px solid var(--cover-rule); margin-bottom: 44px; }
-.cover h1 { margin: 0 0 40px; padding: 0; border: 0; font-family: var(--font-serif); font-size: 60px; font-weight: 700; line-height: 1.18; letter-spacing: 0; text-wrap: balance; }
-.cover-author { font-family: var(--font-sans); font-size: 34px; font-weight: 400; margin: 0 0 6px; }
-.cover-inst { font-family: var(--font-sans); font-size: 34px; color: var(--cover-ink); margin: 0; padding: 0; border: 0; line-height: 1.3; }
+/* The title frame: a flat dark purple page in both themes, laid out as the title page of the deck
+   (100 px to its 1 cm). At the head a short heritage blue rule, the title in bold serif and the
+   subtitle in regular serif, in off-white. At the foot a hairline, the name in bold sans and the
+   department in mid purple. No gradient, no picture. */
+.cover { flex: 1; position: relative; background: var(--cover-bg); color: var(--cover-ink); }
+.cover::before { content: ""; position: absolute; left: 130px; top: 138px; width: 220px; border-top: 7px solid var(--cover-rule); }
+.cover h1 { position: absolute; left: 130px; top: 184px; width: 1340px; margin: 0; padding: 0; border: 0; font-family: var(--font-serif); font-size: 81px; font-weight: 700; line-height: 90px; letter-spacing: 0; }
+.cover-sub { font-size: 58px; font-weight: 400; }
+.cover-author { position: absolute; left: 130px; right: 130px; top: 704px; margin: 0; padding: 25px 0 0; border-top: 2px solid var(--cover-line); font-family: var(--font-sans); font-size: 39px; font-weight: 700; line-height: 1; }
+.cover-inst { position: absolute; left: 130px; top: 784px; margin: 0; padding: 0; border: 0; font-family: var(--font-sans); font-size: 32px; line-height: 1; color: var(--cover-muted); }
 .cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--cover-muted); }
 .title-slide { background: var(--cover-bg); }
 

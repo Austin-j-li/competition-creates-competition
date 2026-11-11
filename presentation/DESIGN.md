@@ -20,7 +20,8 @@ colours of UCL, chosen by the author on 11 November 2026), shared with the resea
 Libertinus Serif for the body, DM Sans for titles, tags, labels and the footline, white paper, dark
 purple (#361A54) for coloured text, bright purple (#993BFF) for rules and bullets, and greys; no
 bars, boxes, fills, cards, pills, rounded shapes, shadows or gradients. The title frame is a flat
-dark purple page with a heritage blue rule. A frame is a bold sans title in dark purple over a rule,
+dark purple page: a heritage blue rule, the title and the subtitle at the head; a hairline, the name
+and the department at the foot. A frame is a bold sans title in dark purple over a rule,
 the body, the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline
 with the short title in sans, the text links and the frame number. Words, numbers, frames and
 links stay identical between the two decks. Section 11 names the class for each Beamer macro. The
@@ -147,7 +148,7 @@ so text reads at a distance. The curves come from `window.CCC_DATA.fig`, written
 :root { --bg:#ffffff; --page:#e9e9e9; --ink:#1c1c1c; --muted:#666666; --line:#c9c9c9; --grid:#e6e6e6;
   --rule:#993bff; --accent:#361a54; --heading:#361a54; --c-info:#993bff; --c-cost:#1c1c1c;
   --chart-1:#1c1c1c; --chart-2:#993bff; --chart-3:#666666;
-  --cover-bg:#361a54; --cover-ink:#fafafa; --cover-rule:#30d6ff; --cover-muted:#ba82ff;
+  --cover-bg:#361a54; --cover-ink:#fafafa; --cover-rule:#30d6ff; --cover-muted:#ba82ff; --cover-line:#6a4e8a;
   --font-serif:"Libertinus Serif","Libertinus Math",Georgia,serif;
   --font-sans:"DM Sans","Libertinus Math",system-ui,Arial,sans-serif }
 ```
@@ -165,7 +166,9 @@ is KaTeX at 0.95 em, close to the size of Libertinus Math in the Beamer deck; th
 Type scale at 1600 x 900, where 1 pt of the 16:9 Beamer page is 3.5 px. DM Sans: frame
 title 50 px at weight 700 in dark purple (60 px on S1, `.bigtitle`, the \LARGE of the deck);
 statement tag 30 px in dark purple; links 20 px; the footline 23 px; figure
-text 12.5 to 20 px drawn at a zoom of 1.4. Libertinus Serif: the title frame 60 px at 700; body
+text 12.5 to 20 px drawn at a zoom of 1.4. Libertinus Serif: on the title frame the title 81 px at 700 and the subtitle 58 px at 400
+(the page is laid out at 100 px to 1 cm of the Beamer page; the name is DM Sans 39 px at 700 and the
+department 32 px); body
 32 px at line height 1.22 (\Body, the 11 pt baseline of 9 pt type); \normalsize 35 px; subtitle 27 px italic muted; statement body and gloss 28 px;
 small 28 px, xs 25 px; foot lines 23 px muted; takeaway 32 px at 700 over a 3 px accent rule;
 intuition 32 px italic over a hairline; the large line 42 px at 700. Paragraphs are 6 px apart. Tables are set in the text face at the size of their block. Body padding 12 px 40 px (the 0.4 cm text margin of the deck).
@@ -235,7 +238,7 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 | `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the rule |
 | `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | a text link in the footline: sans text in dark purple after a small triangle; no box |
 | `\BackupId{B1}` and the frame number | `.foot-num` (the build writes the number or the label; `deck.js` adds `data-total` on a main frame) | `n / N` on a main frame, the label on a backup, nothing on the title frame |
-| `\titlepage` | `.cover` with `h1`, `.cover-author`, `.cover-inst` | a dark purple page: a short heritage blue rule, the serif title, the author and the department in sans, in off-white |
+| `\titlepage` | `.cover` with `h1` (its second line in `.cover-sub`), `.cover-author`, `.cover-inst` | a dark purple page with a 130 px margin: at the head a short heritage blue rule, the title in bold serif and the subtitle in regular serif, in off-white; at the foot a hairline, the name in bold sans and the department in mid purple |
 | `columns`, `minipage` | `.jcols > .jcol` with the width of the Beamer column | columns side by side; the rest of the width is the gap |
 | `tabular` with booktabs | `table.tj` (column widths in px: 1 cm of the page is 100 px) | rules above and below the head and at the end, no row rules, the head in the text face |
 | `tikzpicture` | an SVG or HTML diagram inside `.diagram` | the same nodes, labels and arrows in ink, the accent and greys |
