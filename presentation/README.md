@@ -50,7 +50,7 @@ Beamer, `DESIGN.md` on the web). The Beamer deck has no click builds, and neithe
 - `deck.js` is the engine: navigation, the link graph, panels and the figures.
 - `deck.css` is the look of `DESIGN.md`: Libertinus Serif for text, DM Sans for titles, tags and
   controls, white paper (dark purple in the dark theme), dark purple for coloured text, bright
-  purple for rules, a dark purple title frame, and greys.
+  purple for rules, a white title frame with purple type, and greys.
 - The speaker notes are the spoken script, `slot/manuscript/slides_script.md`: one block for each
   main frame; a prepared answer goes to the first page of the backup it names.
 

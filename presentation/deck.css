@@ -23,7 +23,6 @@
   --region-a: rgba(28, 28, 28, 0.07); --region-b: rgba(153, 59, 255, 0.08); --region-c: rgba(102, 102, 102, 0.12);
   --fail: #361a54;
   --selection: rgba(153, 59, 255, 0.16);
-  --cover-bg: #361a54; --cover-ink: #fafafa; --cover-rule: #30d6ff; --cover-muted: #ba82ff; --cover-line: #6a4e8a;
   --i-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h13M9 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
   --i-tri: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l9 6-9 6z' fill='%23000'/%3E%3C/svg%3E");
   --font-serif: "Libertinus Serif", "Libertinus Math", Georgia, "Times New Roman", serif;
@@ -221,18 +220,18 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* ---------- components ---------- */
 
-/* The title frame: a flat dark purple page in both themes, laid out as the title page of the deck
-   (100 px to its 1 cm). At the head a short heritage blue rule, the title in bold serif and the
-   subtitle in regular serif, in off-white. At the foot a hairline, the name in bold sans and the
-   department in mid purple. No gradient, no picture. */
-.cover { flex: 1; position: relative; background: var(--cover-bg); color: var(--cover-ink); }
-.cover::before { content: ""; position: absolute; left: 130px; top: 138px; width: 220px; border-top: 7px solid var(--cover-rule); }
-.cover h1 { position: absolute; left: 130px; top: 184px; width: 1340px; margin: 0; padding: 0; border: 0; font-family: var(--font-serif); font-size: 81px; font-weight: 700; line-height: 90px; letter-spacing: 0; }
+/* The title frame: paper, laid out as the title page of the deck (100 px to its 1 cm). At the head a
+   short rule, the title in bold serif and the subtitle in regular serif, in the heading colour (dark
+   purple on white). At the foot a hairline, the name in bold sans in ink and the department in grey.
+   The frame follows the theme as every other frame; in the dark theme its short rule is heritage
+   blue, as on the brief page. No painted ground, no gradient, no picture. */
+.cover { flex: 1; position: relative; color: var(--ink); }
+.cover::before { content: ""; position: absolute; left: 130px; top: 138px; width: 220px; border-top: 7px solid var(--rule); }
+:root[data-theme="dark"] .cover::before { border-top-color: var(--accent); }
+.cover h1 { position: absolute; left: 130px; top: 184px; width: 1340px; margin: 0; padding: 0; border: 0; font-family: var(--font-serif); font-size: 81px; font-weight: 700; line-height: 90px; letter-spacing: 0; color: var(--heading); }
 .cover-sub { font-size: 58px; font-weight: 400; }
-.cover-author { position: absolute; left: 130px; right: 130px; top: 704px; margin: 0; padding: 25px 0 0; border-top: 2px solid var(--cover-line); font-family: var(--font-sans); font-size: 39px; font-weight: 700; line-height: 1; }
-.cover-inst { position: absolute; left: 130px; top: 784px; margin: 0; padding: 0; border: 0; font-family: var(--font-sans); font-size: 32px; line-height: 1; color: var(--cover-muted); }
-.cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--cover-muted); }
-.title-slide { background: var(--cover-bg); }
+.cover-author { position: absolute; left: 130px; right: 130px; top: 704px; margin: 0; padding: 25px 0 0; border-top: 2px solid var(--line); font-family: var(--font-sans); font-size: 39px; font-weight: 700; line-height: 1; }
+.cover-inst { position: absolute; left: 130px; top: 784px; margin: 0; padding: 0; border: 0; font-family: var(--font-sans); font-size: 32px; line-height: 1; color: var(--gray-text); }
 
 /* Tables: booktabs rules, tabular figures, the head in bold sans. A highlighted row is ruled above and below. */
 .slide table { border-collapse: collapse; font-family: var(--font-serif); font-size: 27px; font-variant-numeric: tabular-nums; margin: 0 0 12px; }
@@ -317,8 +316,6 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
   #deck { position: static; transform: none; width: auto; height: auto; }
   .slide { position: relative; display: flex !important; width: 1600px; height: 900px; break-after: page; outline: none; zoom: 0.96; }
   .slide:last-child { break-after: auto; }
-  /* The title frame is off-white text on a painted ground: a print must keep the ground. */
-  .title-slide, .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   html, body.deck { height: auto; }
   .sr-only, .noscript, noscript { display: none !important; }
   .slide [data-step] { opacity: 1 !important; transform: none !important; }

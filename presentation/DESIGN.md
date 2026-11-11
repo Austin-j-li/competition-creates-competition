@@ -19,8 +19,8 @@ is the look of the Beamer deck (`ccc-journal.sty`: the journal layout of 29 Octo
 colours of UCL, chosen by the author on 11 November 2026), shared with the research brief page:
 Libertinus Serif for the body, DM Sans for titles, tags, labels and the footline, white paper, dark
 purple (#361A54) for coloured text, bright purple (#993BFF) for rules and bullets, and greys; no
-bars, boxes, fills, cards, pills, rounded shapes, shadows or gradients. The title frame is a flat
-dark purple page: a heritage blue rule, the title and the subtitle at the head; a hairline, the name
+bars, boxes, fills, cards, pills, rounded shapes, shadows or gradients. The title frame is white paper
+with purple type: a bright purple rule, the title and the subtitle at the head; a hairline, the name
 and the department at the foot. A frame is a bold sans title in dark purple over a rule,
 the body, the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline
 with the short title in sans, the text links and the frame number. Words, numbers, frames and
@@ -148,14 +148,13 @@ so text reads at a distance. The curves come from `window.CCC_DATA.fig`, written
 :root { --bg:#ffffff; --page:#e9e9e9; --ink:#1c1c1c; --muted:#666666; --line:#c9c9c9; --grid:#e6e6e6;
   --rule:#993bff; --accent:#361a54; --heading:#361a54; --c-info:#993bff; --c-cost:#1c1c1c;
   --chart-1:#1c1c1c; --chart-2:#993bff; --chart-3:#666666;
-  --cover-bg:#361a54; --cover-ink:#fafafa; --cover-rule:#30d6ff; --cover-muted:#ba82ff; --cover-line:#6a4e8a;
   --font-serif:"Libertinus Serif","Libertinus Math",Georgia,serif;
   --font-sans:"DM Sans","Libertinus Math",system-ui,Arial,sans-serif }
 ```
 
 The dark theme is dark purple paper (#361a54, ink #fafafa, muted and rules #ba82ff, hairline
 #6a4e8a) with heritage blue (#30d6ff) for coloured text and the information colour; it has no tint
-and no glow. The title frame is dark purple in both themes (the `--cover-*` tokens). The faces are
+and no glow. The title frame is paper and follows the theme as every other frame; it has no tokens of its own. The faces are
 the deck's locked files (`presentation/fonts.lock.json`, identical to `handout/fonts.lock.json`):
 Libertinus Serif 400 and 700 with italics, DM Sans 400 with its italic and the semibold cut as the
 700 face, scaled to 90 per cent by `size-adjust`, and Libertinus Math subset to the symbol blocks
@@ -238,7 +237,7 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 | `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the rule |
 | `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | a text link in the footline: sans text in dark purple after a small triangle; no box |
 | `\BackupId{B1}` and the frame number | `.foot-num` (the build writes the number or the label; `deck.js` adds `data-total` on a main frame) | `n / N` on a main frame, the label on a backup, nothing on the title frame |
-| `\titlepage` | `.cover` with `h1` (its second line in `.cover-sub`), `.cover-author`, `.cover-inst` | a dark purple page with a 130 px margin: at the head a short heritage blue rule, the title in bold serif and the subtitle in regular serif, in off-white; at the foot a hairline, the name in bold sans and the department in mid purple |
+| `\titlepage` | `.cover` with `h1` (its second line in `.cover-sub`), `.cover-author`, `.cover-inst` | white paper with a 130 px margin: at the head a short bright purple rule, the title in bold serif and the subtitle in regular serif, in dark purple; at the foot a hairline, the name in bold sans in ink and the department in grey |
 | `columns`, `minipage` | `.jcols > .jcol` with the width of the Beamer column | columns side by side; the rest of the width is the gap |
 | `tabular` with booktabs | `table.tj` (column widths in px: 1 cm of the page is 100 px) | rules above and below the head and at the end, no row rules, the head in the text face |
 | `tikzpicture` | an SVG or HTML diagram inside `.diagram` | the same nodes, labels and arrows in ink, the accent and greys |

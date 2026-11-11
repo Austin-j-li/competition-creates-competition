@@ -77,7 +77,7 @@ and does not copy the layout of a UCL page.
 - One palette, one type family pair and one rule grammar across the brief page, the web slides and the Beamer deck.
 - Two purples, each in one role. Dark purple is coloured text: titles, tags, the active control, links. Bright purple is every rule, bullet and mark.
 - A title is bold sans in dark purple over a rule; a statement is a rule, a bold sans tag in dark purple, the body, a light rule; a takeaway is bold text over a rule; an intuition is italic text over a light rule.
-- The title frame of the deck is a flat dark purple page with a wide margin. A short heritage blue rule, the title in bold serif and the subtitle in regular serif sit at the head. A hairline, the name in bold sans and the department in mid purple sit at the foot. The title block of the brief page stays on white paper.
+- The title frame of the deck is white paper with a wide margin, as the title block of the brief page. A short bright purple rule, the title in bold serif and the subtitle in regular serif, in dark purple, sit at the head. A grey hairline, the name in bold sans and the department in grey sit at the foot. The author chose purple type on white over white type on a purple ground (11 November 2026).
 - Figures draw in ink, the information colour and greys; series differ by dash and marker, never by a third colour.
 - Prose and captions stop at the measure; exhibits span the content column.
 
@@ -89,10 +89,10 @@ that: bright purple on white only; heritage blue and mid purple on dark purple o
 
 - **Paper** (#ffffff): the page and the slide. **Stage** (#e9e9e9): the ground behind a slide in the web deck.
 - **Ink** (#1c1c1c): reading text, booktabs rules, the slider track.
-- **Dark purple** (#361a54, `--accent`, `--heading`; `cAccent` in the deck): coloured text. Titles and section headings, the tag of a statement, column heads, the active tab, contents entry or control, the current part of the roadmap and of the model strip, links. Also the ground of the title frame and of the dark theme.
+- **Dark purple** (#361a54, `--accent`, `--heading`; `cAccent` in the deck): coloured text. Titles and section headings, the tag of a statement, column heads, the active tab, contents entry or control, the current part of the roadmap and of the model strip, links. Also the ground of the dark theme.
 - **Bright purple** (#993bff, `--rule`; `cRule` in the deck): the rule under a title, the rule above a statement, a takeaway or a large line, bullets, the underline of the active control, the slider thumb, the focus ring; in figures the information series (`--c-info`, `--chart-2`). On white only.
-- **Heritage blue** (#30d6ff): the short rule of the title frame; in the dark theme the coloured text and the information series. On dark purple only.
-- **Mid purple** (#ba82ff): in the dark theme the rules, bullets, muted text and the grey series; the department on the title frame. On dark purple only.
+- **Heritage blue** (#30d6ff): in the dark theme the coloured text, the information series and the short rule of the title block and of the title frame. On dark purple only.
+- **Mid purple** (#ba82ff): in the dark theme the rules, bullets, muted text and the grey series. On dark purple only.
 - **Off-white** (#fafafa, UCL's screen white): text on dark purple.
 - **Muted** (#666666): glosses, subtitles, foot lines, tick labels, inactive controls; in figures the grey series (`--chart-3`).
 - **Hairline** (#c9c9c9): light rules, the dotted underline of a registry number, the border of a tooltip. **Grid** (#e6e6e6): chart gridlines and the hairlines inside a table.
@@ -110,7 +110,7 @@ that: bright purple on white only; heritage blue and mid purple on dark purple o
 **Reading face:** Libertinus Serif (regular, italic, bold, bold italic). **Apparatus face:** DM Sans (regular, italic, and the semibold as the bold) for titles, tags, labels, tables' heads, legends, controls and the footline. UCL's own face, UCL Sans, is a cut of DM Sans; UCL does not intend it for academic text, so it sets the apparatus only. It is scaled to 90 per cent to sit beside Libertinus Serif (`Scale=0.9` in the deck, `size-adjust` on the web). DM Sans has no small capitals and no Greek. **Symbols:** Libertinus Math, subset to the symbol blocks, as the fallback for Greek letters, relations and operators in text. **Mathematics:** KaTeX on the web, Libertinus Math in the deck; the seam is accepted. Hashes use the system monospace.
 
 ### Hierarchy
-- **Title** (serif 700): the two lines of the brief's title in dark purple; on the title frame of the deck, the title at 81 px (25 pt in Beamer) and the subtitle at 58 px and weight 400 (16.5 pt), in off-white.
+- **Title** (serif 700): the two lines of the brief's title in dark purple; on the title frame of the deck, the title at 81 px (25 pt in Beamer) and the subtitle at 58 px and weight 400 (16.5 pt), in dark purple.
 - **Headline** (sans 700, dark purple): a section heading of the brief; a frame title at 50 px (60 px on the question frame). Both sit over the rule; a subtitle is serif italic in grey under the title, above the rule.
 - **Tag** (sans 700, dark purple): the name of a statement ("Proposition 2 · ..."), a column head, the contents heading; 30 px on a slide.
 - **Body** (serif 400): 1.15rem at a 66ch measure on the brief; 32 px at 1.3 on a slide (\Body), 28 px inside a statement, 25 px for the small sizes.
@@ -130,7 +130,7 @@ The web deck is a fixed 1600 by 900 stage with a 44 px tools bar above and a 52 
 
 ## Elevation & Depth
 
-Flat. No shadows, glows, gradients or layered surfaces. The dark purple title frame is one flat colour. A tooltip and a dialog are paper with a hairline or ink border; a dialog backdrop is ink at 45 per cent.
+Flat. No shadows, glows, gradients or layered surfaces. No frame has a painted ground; the title frame is paper as every other frame. A tooltip and a dialog are paper with a hairline or ink border; a dialog backdrop is ink at 45 per cent.
 
 ## Shapes
 
@@ -138,7 +138,7 @@ Rectilinear, with no exception. A link in the footline of a slide is sans text i
 
 ## Components
 
-- **Title block (brief):** short rule, serif title in dark purple, sans byline, muted record line, tab row; the active tab is dark purple at weight 700 with a 2 px bright purple underline. In the dark theme the short rule is heritage blue. **Title frame (deck):** a dark purple page, a 240 px heritage blue rule, the serif title at 60 px and the author and the department in sans, in off-white.
+- **Title block (brief):** short rule, serif title in dark purple, sans byline, muted record line, tab row; the active tab is dark purple at weight 700 with a 2 px bright purple underline. In the dark theme the short rule is heritage blue. **Title frame (deck):** paper with a 130 px margin; at the head a 220 px bright purple rule, the serif title and the lighter subtitle in dark purple; at the foot a hairline, the name in bold sans in ink and the department in grey. In the dark theme it takes the theme's colours and a heritage blue rule.
 - **Section heading:** sans 700 in dark purple over a 1 px rule; the frame title is the same over a 3 px rule.
 - **Statement:** rule, tag, body one size down, light rule (`.prop` on the brief; `.statement`, `.resultbox`, `.propblock` on a slide).
 - **Takeaway and intuition:** bold over a rule; italic over a light rule; both pinned at the foot of a slide (`.takeaway`, `.intuition`).

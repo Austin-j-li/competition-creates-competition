@@ -316,7 +316,7 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
 /* ---------------------------------------------------------------- the design system */
 /* The deck shares the look of DESIGN.md (repository root) with the research brief: the journal layout
  * in the colours of UCL. Dark purple is coloured text (--accent); bright purple is every rule,
- * bullet and mark (--rule); the title frame is dark purple with a heritage blue rule; the dark theme
+ * bullet and mark (--rule); the title frame is paper as every other frame; the dark theme
  * is dark purple paper. Every hex colour in the deck styles, the renderer, the engine and the built
  * page's styles must be in that palette, and the tokens that both stylesheets declare must agree.
  * A retired look must not come back through any deck source or the built page: the oxblood accent of
@@ -379,14 +379,14 @@ for (const theme of ['light', 'dark']) {
 }
 const lightTokens = rootTokens(deckCss, 'light') || {}, darkTokens = rootTokens(deckCss, 'dark') || {};
 for (const [tokens, theme, name, value] of [[lightTokens, 'light', '--bg', '#ffffff'], [lightTokens, 'light', '--accent', '#361a54'],
-  [lightTokens, 'light', '--rule', '#993bff'], [lightTokens, 'light', '--cover-bg', '#361a54'], [lightTokens, 'light', '--cover-rule', '#30d6ff'],
+  [lightTokens, 'light', '--rule', '#993bff'],
   [darkTokens, 'dark', '--bg', '#361a54'], [darkTokens, 'dark', '--accent', '#30d6ff'], [darkTokens, 'dark', '--rule', '#ba82ff']]) {
   if ((tokens[name] || '').toLowerCase() !== value) fail(`deck.css: ${name} is ${tokens[name]} in the ${theme} theme, not ${value}`);
 }
 /* UCL's pairing rules: bright purple is for white grounds only; heritage blue and mid purple are for
- * dark purple grounds only. The --cover-* tokens sit on the dark purple title frame in both themes. */
+ * dark purple grounds only. The light theme has no dark purple ground, the title frame included. */
 for (const [name, value] of Object.entries(lightTokens)) {
-  if (!name.startsWith('--cover-') && /#(?:30d6ff|ba82ff)/i.test(value)) fail(`deck.css: ${name} puts heritage blue or mid purple on the white ground`);
+  if (/#(?:30d6ff|ba82ff)/i.test(value)) fail(`deck.css: ${name} puts heritage blue or mid purple on the white ground`);
 }
 for (const [name, value] of Object.entries(darkTokens)) {
   if (/#993bff/i.test(value)) fail(`deck.css: ${name} puts bright purple on the dark purple ground`);
