@@ -26,7 +26,7 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
   F: fullscreen. R: reset the slide. ?: controls. A focused figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
-on a laptop and a projector. The light theme is ink on white paper; the dark theme is slate, for a
+on a laptop and a projector. The light theme is ink on white paper; the dark theme is dark purple, for a
 dim room. The choice persists in the browser under the same key as the front page.
 
 The two decks share words, numbers, frames, links and the journal look (`ccc-journal.sty` in
@@ -48,8 +48,9 @@ Beamer, `DESIGN.md` on the web). The Beamer deck has no click builds, and neithe
   the example. Primitives and boundaries come from registry keys.
 - `charts.js` is the SVG renderer of the figures, a trimmed copy of the handout's; it holds no builders.
 - `deck.js` is the engine: navigation, the link graph, panels and the figures.
-- `deck.css` is the journal look of `DESIGN.md`: Libertinus Serif for text, Libertinus Sans for
-  titles, tags and controls, white paper (slate in the dark theme), one oxblood accent and greys.
+- `deck.css` is the look of `DESIGN.md`: Libertinus Serif for text, DM Sans for titles, tags and
+  controls, white paper (dark purple in the dark theme), dark purple for coloured text, bright
+  purple for rules, a dark purple title frame, and greys.
 - The speaker notes are the spoken script, `slot/manuscript/slides_script.md`: one block for each
   main frame; a prepared answer goes to the first page of the backup it names.
 

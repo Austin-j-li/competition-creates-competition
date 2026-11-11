@@ -106,8 +106,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["Libertinus Math", "Libertinus Sans", "Libertinus Serif"],
-              f"faces are Libertinus Serif, Libertinus Sans and Libertinus Math ({', '.join(families)})")
+    rep.check(families == ["DM Sans", "Libertinus Math", "Libertinus Serif"],
+              f"faces are Libertinus Serif, DM Sans and Libertinus Math ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -119,7 +119,9 @@ def font_faces(lock: dict, prefix: str = "fonts/") -> str:
         if v.get("kind") != "face":
             continue
         stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
-        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
+        # size_adjust scales a face to sit beside the reading face, as Scale does in the Beamer deck.
+        adjust = f' size-adjust: {v["size_adjust"]};' if v.get("size_adjust") else ""
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch}{adjust} '
                      f'font-display: swap; src: url("{prefix}{name}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 
@@ -428,7 +430,7 @@ def main() -> int:
             rep.check(bool(scripts[slot]), f"{fname} present")
             rep.check("</script" not in scripts[slot], f"{fname} contains no </script")
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
-                             for n in ("libertinus-serif-400-normal.woff2", "libertinus-sans-700-normal.woff2"))
+                             for n in ("libertinus-serif-400-normal.woff2", "dm-sans-700-normal.woff2"))
         revision = facts["paper.pdf"]["created"] if ok else ""
         build_meta = ('<p class="build-meta">Sources (sha256, first 12 hex): '
                       f'registry {slot_data.sha256(ROOT)[:12] if registry else ""}; '

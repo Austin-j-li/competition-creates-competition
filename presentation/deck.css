@@ -1,43 +1,46 @@
-/* Slides stylesheet: the journal look shared with the research brief (DESIGN.md at the repository
-   root holds the tokens and components; the :root blocks below repeat its values and check_deck.mjs
-   fails when they drift from handout/style.css). A frame is set like a frame of the Beamer deck:
-   a bold sans title in ink over a 1 pt accent rule, the body in Libertinus Serif, a statement as an
-   accent rule, a bold sans tag in the accent, the body and a light rule, the takeaway or the
-   intuition pinned above the foot zone, grey pointer lines in the foot zone, and a footline with
-   the short title in sans small capitals, the link buttons and the frame number. White paper, one
-   oxblood accent, greys; no bars, fills, shadows or gradients. The series of a figure are ink, the
-   accent and greys, told apart by dash and marker. The stage is a fixed 1600 x 900 design surface
+/* Slides stylesheet: the journal look in the colours of UCL, shared with the research brief
+   (DESIGN.md at the repository root holds the tokens and components; the :root blocks below repeat
+   its values and check_deck.mjs fails when they drift from handout/style.css). A frame is set like
+   a frame of the Beamer deck: a bold sans title in dark purple over a 1 pt rule, the body in
+   Libertinus Serif, a statement as a rule, a bold sans tag, the body and a light rule, the takeaway
+   or the intuition pinned above the foot zone, grey pointer lines in the foot zone, and a footline
+   with the short title in sans, the text links and the frame number. --accent (dark purple) is
+   coloured text; --rule (bright purple) is every rule, bullet and mark. The title frame is a flat
+   dark purple page with a heritage blue rule. White paper and greys otherwise; no bars, boxes,
+   fills, rounded shapes, shadows or gradients. The series of a figure are ink, the information
+   colour and greys, told apart by dash and marker. The stage is a fixed 1600 x 900 design surface
    that deck.js scales to the window, so sizes below are design pixels; 1 pt of the 16:9 Beamer page
    is 3.5 px here. The font-face rules come first in the page; build.py generates them from
    fonts.lock.json. presentation/DESIGN.md names the class that stands for each Beamer macro. */
 
 :root, :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #ffffff; --page: #e9e9e9; --surface: #f2f2f2; --surface-2: #ebebeb; --ink: #1c1c1c; --muted: #666666;
-  --gray-text: #666666; --line: #c9c9c9; --grid: #e6e6e6; --rule: #7a1f1f; --heading: #1c1c1c;
-  --accent: #7a1f1f; --accent-ink: #ffffff; --accent-soft: rgba(122, 31, 31, 0.08);
-  --chart-1: #1c1c1c; --chart-2: #7a1f1f; --chart-3: #666666;
-  --c-info: #7a1f1f; --c-cost: #1c1c1c;
-  --region-a: rgba(28, 28, 28, 0.07); --region-b: rgba(122, 31, 31, 0.08); --region-c: rgba(102, 102, 102, 0.12);
-  --fail: #7a1f1f;
-  --selection: rgba(122, 31, 31, 0.14);
+  --bg: #ffffff; --page: #e9e9e9; --surface: #f2f2f2; --ink: #1c1c1c; --muted: #666666;
+  --gray-text: #666666; --line: #c9c9c9; --grid: #e6e6e6; --rule: #993bff; --heading: #361a54;
+  --accent: #361a54; --mark-ink: #ffffff; --accent-soft: rgba(153, 59, 255, 0.08);
+  --chart-1: #1c1c1c; --chart-2: #993bff; --chart-3: #666666;
+  --c-info: #993bff; --c-cost: #1c1c1c;
+  --region-a: rgba(28, 28, 28, 0.07); --region-b: rgba(153, 59, 255, 0.08); --region-c: rgba(102, 102, 102, 0.12);
+  --fail: #361a54;
+  --selection: rgba(153, 59, 255, 0.16);
+  --cover-bg: #361a54; --cover-ink: #fafafa; --cover-rule: #30d6ff; --cover-muted: #ba82ff;
   --i-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h13M9 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
   --i-tri: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l9 6-9 6z' fill='%23000'/%3E%3C/svg%3E");
   --font-serif: "Libertinus Serif", "Libertinus Math", Georgia, "Times New Roman", serif;
-  --font-sans: "Libertinus Sans", "Libertinus Math", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-sans: "DM Sans", "Libertinus Math", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   --font-mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
   --stage-scale: 1;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #171717; --page: #0d0d0d; --surface: #242424; --surface-2: #2a2a2a; --ink: #ebebeb; --muted: #a3a3a3;
-  --gray-text: #a3a3a3; --line: #474747; --grid: #2e2e2e; --rule: #d4908f; --heading: #ebebeb;
-  --accent: #d4908f; --accent-ink: #171717; --accent-soft: rgba(212, 144, 143, 0.12);
-  --chart-1: #ebebeb; --chart-2: #d4908f; --chart-3: #a3a3a3;
-  --c-info: #d4908f; --c-cost: #ebebeb;
-  --region-a: rgba(235, 235, 235, 0.10); --region-b: rgba(212, 144, 143, 0.14); --region-c: rgba(163, 163, 163, 0.14);
-  --fail: #d4908f;
-  --selection: rgba(212, 144, 143, 0.25);
+  --bg: #361a54; --page: #231137; --surface: #422464; --ink: #fafafa; --muted: #ba82ff;
+  --gray-text: #ba82ff; --line: #6a4e8a; --grid: #4a2d6c; --rule: #ba82ff; --heading: #fafafa;
+  --accent: #30d6ff; --mark-ink: #361a54; --accent-soft: rgba(48, 214, 255, 0.12);
+  --chart-1: #fafafa; --chart-2: #30d6ff; --chart-3: #ba82ff;
+  --c-info: #30d6ff; --c-cost: #fafafa;
+  --region-a: rgba(250, 250, 250, 0.10); --region-b: rgba(48, 214, 255, 0.14); --region-c: rgba(186, 130, 255, 0.14);
+  --fail: #30d6ff;
+  --selection: rgba(48, 214, 255, 0.28);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -46,38 +49,38 @@ html, body { margin: 0; height: 100%; }
 body.deck { background: var(--page); color: var(--ink); font-family: var(--font-sans); overflow: hidden; caret-color: var(--ink); }
 ::selection { background: var(--selection); color: var(--ink); }
 button { font: inherit; color: inherit; cursor: pointer; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--rule); outline-offset: 2px; }
 .skip-link { position: absolute; top: -5rem; left: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--bg); color: var(--ink); border: 1px solid var(--ink); border-radius: 0; }
 .skip-link:focus { top: 0.5rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .num { font-variant-numeric: tabular-nums; }
 kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border: 1px solid var(--line); border-radius: 0; padding: 0 0.4rem; background: transparent; }
 
-/* ---------- tools bar and rail: sans text; the active choice in the accent with an underline ---------- */
+/* ---------- tools bar and rail: sans text; the active choice in the accent over an underline in the rule colour ---------- */
 
 .hud { position: fixed; top: 0; left: 0; right: 0; height: 44px; z-index: 10; display: flex; align-items: center; gap: 0.25rem; padding: 0 16px; background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); font-size: 15px; }
 .hud-home { color: var(--ink); text-decoration: none; font-weight: 700; margin-right: 0.9rem; white-space: nowrap; }
-.hud-home::before { content: ""; display: inline-block; width: 0.7em; height: 0.7em; margin-right: 0.35em; background: var(--accent); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
+.hud-home::before { content: ""; display: inline-block; width: 0.7em; height: 0.7em; margin-right: 0.35em; background: var(--rule); -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
 .hud-home:hover { color: var(--accent); }
-.hud-title { margin-right: auto; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-caps: small-caps; text-transform: lowercase; letter-spacing: 0.02em; }
+.hud-title { margin-right: auto; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hud button { border: 0; background: transparent; color: var(--ink); padding: 0.2rem 0.55rem; font-size: 15px; white-space: nowrap; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
-.hud button:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.hud button:hover { color: var(--accent); text-decoration-color: var(--rule); }
 .rail-bar { position: fixed; left: 0; right: 0; bottom: 0; height: 52px; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 16px; background: var(--bg); border-top: 1px solid var(--line); font-size: 14px; font-variant-numeric: tabular-nums; }
 .rail { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; }
 .rail li { padding: 5px 0 3px; border-bottom: 2px solid transparent; color: var(--muted); white-space: nowrap; }
 .rail li button { all: unset; cursor: pointer; }
-.rail li button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rail li button:focus-visible { outline: 2px solid var(--rule); outline-offset: 2px; }
 .rail li:hover { color: var(--ink); }
 .rail li.done { color: var(--ink); }
-.rail li.current { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
+.rail li.current { color: var(--accent); font-weight: 700; border-bottom-color: var(--rule); }
 .pager { display: flex; align-items: center; gap: 0.7rem; white-space: nowrap; }
 .pager button { border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--ink); border-radius: 0; min-width: 2rem; height: 1.9rem; padding: 0 0.4rem; line-height: 1; }
 #previous, #next { font-size: 0; }
 #previous::before, #next::before { content: ""; display: inline-block; width: 15px; height: 15px; vertical-align: middle; background: currentColor; -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
 #previous::before { transform: scaleX(-1); }
-.pager button:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.pager button:hover { color: var(--accent); border-bottom-color: var(--rule); }
 .pager button:disabled { opacity: 0.35; cursor: default; border-bottom-color: transparent; }
-.pager #return { border-bottom-color: var(--accent); color: var(--accent); font-weight: 700; font-size: 14px; }
+.pager #return { border-bottom-color: var(--rule); color: var(--accent); font-weight: 700; font-size: 14px; }
 .pager #return::before { content: ""; display: inline-block; width: 0.8em; height: 0.8em; margin-right: 0.4em; background: currentColor; -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; transform: scaleX(-1); }
 #counter { min-width: 5.5ch; text-align: center; }
 #progress-label { color: var(--muted); min-width: 12ch; }
@@ -91,19 +94,18 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-serif); font-size: 32px; line-height: 1.22; outline: 1px solid var(--line); overflow: hidden; }
 .slide.active { display: flex; }
 
-/* The frame head: the title in bold sans, the subtitle in grey italic under it, then the accent rule;
+/* The frame head: the title in bold sans in dark purple, the subtitle in grey italic under it, then the rule;
    the body starts under that rule. */
 .slide-head { position: relative; flex: none; margin: 0 40px; padding: 22px 0 10px; font-family: var(--font-sans); }
-.slide-head h2 { margin: 0; font-size: 50px; font-weight: 700; line-height: 1.1; letter-spacing: 0; color: var(--ink); text-wrap: balance; }
+.slide-head h2 { margin: 0; font-size: 50px; font-weight: 700; line-height: 1.1; letter-spacing: 0; color: var(--heading); text-wrap: balance; }
 .slide-head .sub { margin: 4px 0 0; font-family: var(--font-serif); font-style: italic; font-size: 27px; color: var(--gray-text); line-height: 1.25; }
-.slide-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent); }
+.slide-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--rule); }
 .slide-head .katex { color: inherit; }
 .slide-head .q { color: inherit; }
 
 .slide-body { flex: 1 1 auto; min-height: 0; padding: 12px 40px 0; display: flex; flex-direction: column; }
-/* The footline: the short title in sans small capitals, the link buttons, the frame number. */
+/* The footline: the short title in sans, the text links, the frame number. */
 .slide-foot { flex: none; display: flex; justify-content: space-between; align-items: baseline; padding: 6px 40px 12px; font-family: var(--font-sans); font-size: 23px; color: var(--gray-text); font-variant-numeric: tabular-nums; }
-.foot-title { font-variant-caps: small-caps; text-transform: lowercase; letter-spacing: 0.02em; }
 .foot-num { padding-left: 170px; }
 .foot-num::after { content: " / " attr(data-total); }
 .backup .foot-num::after, .foot-num:not([data-total])::after { content: none; }
@@ -116,8 +118,8 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide p, .slide li, .grayline, .propitem { text-wrap: pretty; }
 .slide ul, .slide ol { margin: 0 0 12px; padding-left: 1.15em; }
 .slide li { margin: 0 0 10px; }
-/* Bullets: a small accent square, as in the deck; numbered items a bold number. */
-.slide ul > li::marker { color: var(--accent); content: "\25A0\00a0\00a0"; font-size: 0.62em; }
+/* Bullets: a small square in the rule colour, as in the deck; numbered items a bold number. */
+.slide ul > li::marker { color: var(--rule); content: "\25A0\00a0\00a0"; font-size: 0.62em; }
 .slide ol > li::marker { font-weight: 700; color: var(--ink); }
 .slide ul.small, .slide p.small, .slide .small { font-size: 28px; }
 .slide ul.small li { margin-bottom: 6px; }
@@ -138,22 +140,23 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .gloss, .grayline, .slide .small-note { color: var(--gray-text); font-size: 28px; line-height: 1.32; }
 .graycite { color: var(--gray-text); font-size: 0.82em; }
 .center { text-align: center; }
-.bigq { margin: 0 0 40px !important; padding: 20px 0 22px; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); max-width: 1320px; font-family: var(--font-serif); font-size: 44px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+.bigq { margin: 0 0 40px !important; padding: 20px 0 22px; border-top: 3px solid var(--rule); border-bottom: 1px solid var(--line); max-width: 1320px; font-family: var(--font-serif); font-size: 44px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
 .bigq .keyidea { font-weight: 700; }
 .bench-inline { font-variant-numeric: tabular-nums; font-weight: 700; }
-/* \TakeawayEnd: pinned above the foot zone, an accent rule, then the bold line. */
-.takeaway { margin-top: auto !important; padding: 10px 0 0; border-top: 3px solid var(--accent); font-size: 32px; font-weight: 700; text-wrap: pretty; }
+/* \TakeawayEnd: pinned above the foot zone, a rule, then the bold line. */
+.takeaway { margin-top: auto !important; padding: 10px 0 0; border-top: 3px solid var(--rule); font-size: 32px; font-weight: 700; text-wrap: pretty; }
 .takeaway b { font-weight: 700; }
 /* \Intuition: pinned above the foot zone, a light rule, then the italic sentence. */
 .intuition { margin: auto 0 0 !important; padding: 8px 0 0; border-top: 1px solid var(--line); font-size: 32px; font-style: italic; text-wrap: pretty; }
 .takeaway + .intuition, .intuition + .takeaway { margin-top: 10px !important; }
 .slide-body > .takeaway + .nav { margin-top: 10px; }
-.nav { display: flex; justify-content: flex-end; gap: 14px; margin: auto 0 0 !important; padding-top: 12px; font-family: var(--font-sans); }
+.nav { display: flex; justify-content: flex-end; gap: 26px; margin: auto 0 0 !important; padding-top: 12px; font-family: var(--font-sans); }
 .takeaway ~ .nav { margin-top: 10px !important; }
-/* The link buttons of the footline, as Beamer draws them: accent text on a light rounded ground. */
-.goto { border: 0; background: var(--surface-2); color: var(--accent); border-radius: 6px; padding: 1px 12px 2px 9px; font-size: 20px; font-weight: 400; line-height: 1.3; text-decoration: none; white-space: nowrap; }
+/* The links of the footline, as the deck draws them: sans text in the accent after a small triangle.
+   No box, no fill, no rounded corner. */
+.goto { border: 0; background: transparent; color: var(--accent); border-radius: 0; padding: 1px 0 2px; font-size: 20px; font-weight: 400; line-height: 1.3; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: 0.3em; white-space: nowrap; }
 .goto::before { content: ""; display: inline-block; width: 0.55em; height: 0.55em; margin-right: 0.3em; vertical-align: 0.02em; background: currentColor; -webkit-mask: var(--i-tri) center / contain no-repeat; mask: var(--i-tri) center / contain no-repeat; }
-.goto:hover { background: var(--accent); color: var(--accent-ink); }
+.goto:hover { text-decoration-color: var(--rule); }
 .goto.back::before { transform: scaleX(-1); }
 
 /* registry numbers: the provenance is a hover title; the mark is a faint dotted hairline */
@@ -173,12 +176,12 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* ---------- the frame skeleton: the classes that stand for the Beamer macros ---------- */
 
-/* \NavyRule and \LightRule: a rule in the accent or a light hairline, on an hr or a div. */
-.rule-accent { border: 0; border-top: 3px solid var(--accent); margin: 8px 0; height: 0; }
+/* \NavyRule and \LightRule: a rule in the rule colour or a light hairline, on an hr or a div. */
+.rule-accent { border: 0; border-top: 3px solid var(--rule); margin: 8px 0; height: 0; }
 .rule-light { border: 0; border-top: 1px solid var(--line); margin: 5px 0; height: 0; }
-/* Statement: an accent rule, a bold sans tag in the accent, the body one size down, a light rule.
+/* Statement: a rule, a bold sans tag in the accent, the body one size down, a light rule.
    .resultbox and .propblock, the earlier names, print the same way. */
-.statement, .resultbox, .propblock { border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); background: transparent; margin: 4px 0 16px; padding: 6px 0 4px; }
+.statement, .resultbox, .propblock { border-top: 3px solid var(--rule); border-bottom: 1px solid var(--line); background: transparent; margin: 4px 0 16px; padding: 6px 0 4px; }
 .statement-tag, .resultbox-title { margin: 0 0 4px !important; padding: 0; border: 0; color: var(--accent); font-family: var(--font-sans); font-weight: 700; font-size: 30px; line-height: 1.2; }
 .statement > :not(.statement-tag), .resultbox > :not(.resultbox-title), .propblock { font-size: 28px; line-height: 1.3; }
 .statement p, .resultbox p, .propblock p { margin: 0 0 8px; }
@@ -195,17 +198,17 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .deflist dt { font-family: var(--font-sans); font-weight: 700; margin: 0; }
 .deflist dd { margin: 0; }
 .deflist.narrow { grid-template-columns: 220px minmax(0, 1fr); }
-/* \ColHead: a bold sans head in the accent over an accent rule, at the top of a column. */
-.colhead { display: block; font-family: var(--font-sans); font-weight: 700; color: var(--accent); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
-/* \RuledCol: a column that opens with an accent rule. */
-.ruledcol { border-top: 2px solid var(--accent); padding-top: 10px; }
+/* \ColHead: a bold sans head in the accent over a rule, at the top of a column. */
+.colhead { display: block; font-family: var(--font-sans); font-weight: 700; color: var(--accent); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--rule); }
+/* \RuledCol: a column that opens with a rule. */
+.ruledcol { border-top: 2px solid var(--rule); padding-top: 10px; }
 /* \FootLine and \SmallLine: grey pointer lines in small type, in the foot zone. */
 .footzone { margin-top: auto; padding-top: 10px; }
 .takeaway + .footzone, .intuition + .footzone { margin-top: 0 !important; }
 .footline, .slide p.foot { margin: 0 0 4px; color: var(--gray-text); font-size: 23px; line-height: 1.34; }
 .slide p.smallline { margin: 2px 0 10px; color: var(--gray-text); font-size: 23px; line-height: 1.34; }
-/* \LargeLine: one large bold statement between an accent rule and a light rule. */
-.largeline, .slide p.bigline { margin: 14px 0 26px; padding: 16px 0 18px; border-top: 3px solid var(--accent); border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 42px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+/* \LargeLine: one large bold statement between a rule and a light rule. */
+.largeline, .slide p.bigline { margin: 14px 0 26px; padding: 16px 0 18px; border-top: 3px solid var(--rule); border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 42px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
 .slide p.bigline b { font-weight: 700; }
 /* \ModelStrip: the six parts of the model under the title of frames 5 to 9; the current ones in bold
    accent, the others grey, light bullets between them. */
@@ -218,14 +221,15 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 
 /* ---------- components ---------- */
 
-/* The title frame: a short accent rule, the serif title, the author and the department. */
-.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 60px; background: var(--bg); color: var(--ink); }
-.cover::before { content: ""; display: block; width: 240px; border-top: 5px solid var(--accent); margin-bottom: 44px; }
+/* The title frame: a flat dark purple page in both themes; a short heritage blue rule, the serif
+   title, the author and the department in off-white. No gradient, no picture. */
+.cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 60px; background: var(--cover-bg); color: var(--cover-ink); }
+.cover::before { content: ""; display: block; width: 240px; border-top: 5px solid var(--cover-rule); margin-bottom: 44px; }
 .cover h1 { margin: 0 0 40px; padding: 0; border: 0; font-family: var(--font-serif); font-size: 60px; font-weight: 700; line-height: 1.18; letter-spacing: 0; text-wrap: balance; }
 .cover-author { font-family: var(--font-sans); font-size: 34px; font-weight: 400; margin: 0 0 6px; }
-.cover-inst { font-family: var(--font-sans); font-size: 34px; color: var(--ink); margin: 0; padding: 0; border: 0; line-height: 1.3; }
-.cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--muted); }
-.title-slide { background: var(--bg); }
+.cover-inst { font-family: var(--font-sans); font-size: 34px; color: var(--cover-ink); margin: 0; padding: 0; border: 0; line-height: 1.3; }
+.cover .hint { margin: 0; padding-top: 40px; font-family: var(--font-sans); font-size: 20px; color: var(--cover-muted); }
+.title-slide { background: var(--cover-bg); }
 
 /* Tables: booktabs rules, tabular figures, the head in bold sans. A highlighted row is ruled above and below. */
 .slide table { border-collapse: collapse; font-family: var(--font-serif); font-size: 27px; font-variant-numeric: tabular-nums; margin: 0 0 12px; }
@@ -236,7 +240,7 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 .slide tr.panel td { color: var(--muted); padding-top: 10px; }
 .slide tr.total td { font-weight: 700; }
 .slide td .sub, .slide th .sub { display: block; font-size: 0.78em; color: var(--gray-text); font-weight: 400; }
-tr.hl > th, tr.hl > td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+tr.hl > th, tr.hl > td { border-top: 2px solid var(--rule); border-bottom: 2px solid var(--rule); }
 td.hl, th.hl { font-weight: 700; border-bottom-color: var(--ink); }
 
 /* ---------- figures drawn by charts.js: a hairline frame; legend as text with swatches ---------- */
@@ -265,19 +269,19 @@ svg.plot .panel-label { font-weight: 700; }
 
 dialog#panel { width: min(92vw, 1100px); max-height: 86vh; border: 1px solid var(--ink); border-radius: 0; padding: 1.2rem 1.5rem; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
 dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
-.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--rule); }
 .panel-head h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--ink); }
 #close-panel { border: 0; background: transparent; border-radius: 0; padding: 0.2rem 0; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
 #close-panel:hover { color: var(--accent); }
 #panel-body { overflow: auto; max-height: calc(86vh - 5rem); font-size: 16px; scrollbar-width: thin; scrollbar-color: var(--line) var(--bg); }
 #panel-body h3 { font-weight: 700; }
 .overview-part { margin: 0 0 1rem; }
-.overview-part h3 { margin: 0.8rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--accent); font-size: 0.95rem; font-weight: 700; color: var(--accent); }
+.overview-part h3 { margin: 0.8rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--rule); font-size: 0.95rem; font-weight: 700; color: var(--accent); }
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.45rem 1.2rem; }
 .ov { display: flex; flex-direction: column; justify-content: flex-start; text-align: left; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 0; padding: 0.5rem 0 0.4rem; font-size: 0.86rem; line-height: 1.3; }
-.ov:hover { border-top-color: var(--accent); color: var(--accent); }
+.ov:hover { border-top-color: var(--rule); color: var(--accent); }
 .ov small { display: block; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 0.15rem; }
-.ov.current { border-top: 2px solid var(--accent); padding-top: calc(0.5rem - 1px); font-weight: 700; }
+.ov.current { border-top: 2px solid var(--rule); padding-top: calc(0.5rem - 1px); font-weight: 700; }
 .ov.backup { border-top-style: dashed; }
 .notes-meta { color: var(--muted); font-size: 0.9rem; }
 .notes-body { font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.55; }
@@ -310,6 +314,8 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
   #deck { position: static; transform: none; width: auto; height: auto; }
   .slide { position: relative; display: flex !important; width: 1600px; height: 900px; break-after: page; outline: none; zoom: 0.96; }
   .slide:last-child { break-after: auto; }
+  /* The title frame is off-white text on a painted ground: a print must keep the ground. */
+  .title-slide, .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   html, body.deck { height: auto; }
   .sr-only, .noscript, noscript { display: none !important; }
   .slide [data-step] { opacity: 1 !important; transform: none !important; }
@@ -394,25 +400,27 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .coexfig { width: 780px; }
 .researchfig { width: 800px; }
 
-/* Diagrams: the TikZ pictures of slides.tex as SVG and HTML. Ink, the accent and greys only. */
+/* Diagrams: the TikZ pictures of slides.tex as SVG and HTML. Ink, the information colour and greys
+   only. A coloured mark or label takes --c-info, never --accent: dark purple beside ink does not
+   tell two things apart. */
 .diagram { font-family: var(--font-serif); }
 .dg-svg { display: block; overflow: visible; font-family: var(--font-serif); font-size: 32px; }
 .dg-svg text { fill: var(--ink); }
-.dg-svg text.dg-accent, .dg-svg text.dg-info { fill: var(--accent); }
+.dg-svg text.dg-accent, .dg-svg text.dg-info { fill: var(--c-info); }
 .dg-svg text.dg-cost { fill: var(--ink); }
 .dg-svg text.dg-muted { fill: var(--gray-text); }
-.dg-svg text.dg-dotnum { fill: var(--accent-ink); font-family: var(--font-sans); font-weight: 700; }
+.dg-svg text.dg-dotnum { fill: var(--mark-ink); font-family: var(--font-sans); font-weight: 700; }
 .dg-axis { stroke: var(--muted); stroke-width: 2; }
 .dg-tick { stroke: var(--ink); stroke-width: 4; }
-.dg-tick.accent { stroke: var(--accent); stroke-width: 5.5; }
+.dg-tick.accent { stroke: var(--c-info); stroke-width: 5.5; }
 .dg-tick.faded { stroke: var(--line); }
-.dg-entry { stroke: var(--accent); stroke-width: 10; }
+.dg-entry { stroke: var(--c-info); stroke-width: 10; }
 .dg-level { stroke: var(--ink); stroke-width: 3; }
 .dg-arrow { stroke: var(--muted); stroke-width: 2; }
 .dg-tipfill { fill: var(--muted); }
-.dg-dot { fill: var(--accent); }
+.dg-dot { fill: var(--c-info); }
 .dg-brace { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.dg-brace.info, .dg-brace.accent { stroke: var(--accent); }
+.dg-brace.info, .dg-brace.accent { stroke: var(--c-info); }
 .dg-brace.cost { stroke: var(--ink); }
 .dg-brace.muted { stroke: var(--muted); }
 /* Frame 6: five numbered steps; the labels sit under the dots, 2.75 cm wide. */
@@ -424,14 +432,16 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .tl-lane p { flex: none; margin: 0 !important; }
 .tl-lane-line { flex: 1; border-top: 3px dotted var(--muted); }
 .tl-lane .tl-lane-end { width: 275px; text-align: center; }
-/* Boxes of a flow (B2 page 2, B7): a hairline in the accent or in ink; no fill. */
-.fbox { border: 1.5px solid var(--accent); border-radius: 3px; padding: 10px 14px; text-align: left; line-height: 1.26; }
-.fbox.cost { border-color: var(--ink); }
+/* A step of a flow (B2 page 2, B7): text under a rule in the rule colour or in ink. No frame, no
+   fill, no rounded corner. */
+.fbox { border: 0; border-top: 5px solid var(--rule); border-radius: 0; padding: 14px 10px 10px 0; text-align: left; line-height: 1.26; }
+.fbox.cost { border-top-color: var(--ink); }
 .fbox b { font-family: var(--font-sans); font-weight: 700; }
-.pflow { display: flex; align-items: center; font-size: 25px; }
-.pflow .pbox { position: relative; width: 348px; min-height: 110px; }
+/* The arrow of a step sits at the height of its first line and stops short of the next step. */
+.pflow { display: flex; align-items: flex-start; font-size: 25px; }
+.pflow .pbox { position: relative; width: 330px; min-height: 110px; }
 .pflow .ptag { position: absolute; left: 2px; top: -28px; font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--muted); }
-.farrow { flex: none; width: 35px; height: 2px; background: var(--muted); position: relative; }
+.farrow { flex: none; width: 35px; height: 2px; margin: 34px 12px 0 8px; background: var(--muted); position: relative; }
 .farrow::after { content: ""; position: absolute; right: -1px; top: -6px; border-left: 11px solid var(--muted); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
 .sflow { position: relative; display: grid; grid-template-columns: 428px 55px 303px 55px 323px 55px 288px; grid-template-rows: 190px 35px auto; font-size: 28px; }
 .sflow .fbox { align-self: start; }
@@ -440,7 +450,7 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .sflow .sf-slot { grid-column: 3; grid-row: 1 / 4; }
 .sflow .sf-mm { grid-column: 5; grid-row: 1 / 4; }
 .sflow .sf-sb { grid-column: 7; grid-row: 1 / 4; }
-.sf-a { position: absolute; top: 55px; height: 2px; width: 50px; background: var(--muted); }
+.sf-a { position: absolute; top: 55px; height: 2px; width: 40px; background: var(--muted); }
 .sf-a::after { content: ""; position: absolute; right: -1px; top: -6px; border-left: 11px solid var(--muted); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
 .sf-a1 { left: 430px; }
 .sf-a2 { left: 788px; }
@@ -450,4 +460,4 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .figure.plain .chart-canvas { border-bottom: 0; }
 .slide-body > :last-child, .slide-body > :nth-last-child(2):has(+ .nav) { margin-bottom: 0; }
 .xlink { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.18em; }
-.xlink:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.xlink:hover { color: var(--accent); text-decoration-color: var(--rule); }

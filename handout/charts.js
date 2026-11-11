@@ -20,10 +20,10 @@
 
   var FALLBACK = {
     bg: '#ffffff', surface: '#f2f2f2', ink: '#1c1c1c', muted: '#666666', grid: '#e6e6e6', line: '#c9c9c9',
-    accent: '#1c1c1c', accentSoft: 'rgba(122,31,31,0.08)', c2: '#7a1f1f', c3: '#666666',
-    regionA: 'rgba(28,28,28,0.07)', regionB: 'rgba(122,31,31,0.08)', regionC: 'rgba(102,102,102,0.12)',
-    info: '#7a1f1f', cost: '#1c1c1c',
-    fontSans: '"Libertinus Sans", "Libertinus Math", Arial, sans-serif',
+    accent: '#1c1c1c', accentSoft: 'rgba(153,59,255,0.08)', c2: '#993bff', c3: '#666666',
+    regionA: 'rgba(28,28,28,0.07)', regionB: 'rgba(153,59,255,0.08)', regionC: 'rgba(102,102,102,0.12)',
+    info: '#993bff', cost: '#1c1c1c',
+    fontSans: '"DM Sans", "Libertinus Math", Arial, sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {

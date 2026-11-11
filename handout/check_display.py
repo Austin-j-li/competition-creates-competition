@@ -9,12 +9,14 @@ of handout/README.md:
   as read from the files;
 - every displayed number is the display of a slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- the page ships only the locked faces (Libertinus Serif, Libertinus Sans, Libertinus Math) and makes
+- the page ships only the locked faces (Libertinus Serif, DM Sans, Libertinus Math) and makes
   no network request;
-- the page and the handout styles use only the journal palette of DESIGN.md (white paper, ink,
-  greys and the oxblood accent #7A1F1F, with the composed dark theme), and neither the page nor
-  the handout sources carry the rejected purple palette (the UCL hexes #361A54, #993BFF, #BA82FF
-  or the --ucl-* tokens).
+- the page and the handout styles use only the palette of DESIGN.md (white paper, ink, greys,
+  dark purple #361A54 for coloured text and bright purple #993BFF for rules, with the dark
+  theme on dark purple), each UCL colour on the ground that UCL permits;
+- neither the page nor the handout sources carry a retired look: the oxblood accent of the look
+  of 29 October 2026, the --ucl-* tokens of the template of 3 October 2026, or the marks of that
+  template (a gradient, a shadow, a rounded box or pill).
 """
 from __future__ import annotations
 
@@ -75,38 +77,52 @@ print(f"PASS {n} number spans and {k} numbers in formulas print their slot regis
 
 # ------------------------------------------------------------------ faces, network
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Libertinus Serif", "Libertinus Sans", "Libertinus Math"}, families
+assert families == {"Libertinus Serif", "DM Sans", "Libertinus Math"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
-print("PASS only Libertinus Serif, Libertinus Sans and Libertinus Math; no network request")
+print("PASS only Libertinus Serif, DM Sans and Libertinus Math; no network request")
 
-# ------------------------------------------------------------------ the journal palette
-# The journal look (DESIGN.md at the repository root) has one chrome colour, the oxblood accent;
-# everything else is white, ink or grey, with the composed dark theme. Every hex colour in the
-# stylesheet, the template, the renderer and the built page's styles must be in that palette, and
-# the accent token must be the oxblood of the Beamer deck.
-JOURNAL = {
-    "#ffffff", "#f2f2f2", "#1c1c1c", "#666666", "#c9c9c9", "#e6e6e6", "#7a1f1f",  # white paper
-    "#171717", "#242424", "#ebebeb", "#a3a3a3", "#474747", "#2e2e2e", "#d4908f",  # the dark theme
+# ------------------------------------------------------------------ the palette
+# The look of 11 November 2026 (DESIGN.md at the repository root): white paper, ink and greys, with
+# the official UCL colours in fixed roles. Dark purple is coloured text (--accent); bright purple is
+# every rule, bullet and mark (--rule). The dark theme is dark purple paper with heritage blue for
+# coloured text and mid purple for rules; three tones derived from dark purple give its hairlines,
+# grid and tooltip ground. Every hex colour in the stylesheet, the template, the renderer and the
+# built page's styles must be in that palette.
+PALETTE = {
+    "#ffffff", "#f2f2f2", "#1c1c1c", "#666666", "#c9c9c9", "#e6e6e6",  # white paper, ink, greys
+    "#361a54", "#993bff", "#ba82ff", "#30d6ff", "#fafafa",  # UCL: dark, bright and mid purple, heritage blue, screen white
+    "#6a4e8a", "#4a2d6c", "#422464",  # derived from dark purple for the dark theme; not UCL colours
     "#000000",  # print
 }
 HEX = re.compile(r"#[0-9a-f]{6}\b", re.I)
 styled = [HERE / "style.css", HERE / "template.html", HERE / "charts.js"]
 page_styles = "".join(re.findall(r"<style\b[^>]*>(.*?)</style>", page, re.S))
 stray = sorted({f"{f.name}:{m.group(0)}" for f in styled for m in HEX.finditer(f.read_text(encoding="utf-8"))
-                if m.group(0).lower() not in JOURNAL}
-               | {f"index.html:{m.group(0)}" for m in HEX.finditer(page_styles) if m.group(0).lower() not in JOURNAL})
-assert not stray, f"a colour outside the journal palette: {stray[:8]}"
-light = re.search(r":root,\s*:root\[data-theme=\"light\"\]\s*\{([^}]*)\}", (HERE / "style.css").read_text(encoding="utf-8")).group(1)
-assert re.search(r"--accent:\s*#7a1f1f\s*;", light, re.I), "the accent token is not the oxblood #7A1F1F"
-assert re.search(r"--bg:\s*#ffffff\s*;", light, re.I), "the paper is not white"
-print(f"PASS every hex colour in {len(styled)} styled sources and the page styles is in the journal palette; the accent is #7A1F1F on white")
+                if m.group(0).lower() not in PALETTE}
+               | {f"index.html:{m.group(0)}" for m in HEX.finditer(page_styles) if m.group(0).lower() not in PALETTE})
+assert not stray, f"a colour outside the palette: {stray[:8]}"
+css = (HERE / "style.css").read_text(encoding="utf-8")
+light = re.search(r":root,\s*:root\[data-theme=\"light\"\]\s*\{([^}]*)\}", css).group(1)
+dark = re.search(r":root\[data-theme=\"dark\"\]\s*\{([^}]*)\}", css).group(1)
+for block, name, value in ((light, "--bg", "#ffffff"), (light, "--accent", "#361a54"), (light, "--rule", "#993bff"),
+                           (dark, "--bg", "#361a54"), (dark, "--accent", "#30d6ff"), (dark, "--rule", "#ba82ff")):
+    assert re.search(rf"{name}:\s*{value}\s*;", block, re.I), f"the token {name} is not {value}"
+# UCL's pairing rules: bright purple is for white grounds only; heritage blue and mid purple are for
+# dark purple grounds only.
+assert not re.search(r"#993bff", dark, re.I), "bright purple on the dark purple ground"
+assert not re.search(r"#(?:30d6ff|ba82ff)", light, re.I), "heritage blue or mid purple on the white ground"
+print(f"PASS every hex colour in {len(styled)} styled sources and the page styles is in the palette; "
+      "dark purple text and bright purple rules on white, heritage blue and mid purple on dark purple")
 
-# ------------------------------------------------------------------ the rejected palette
-# The purple palette of the earlier "UCL family" design must not come back through any source or
-# the built page.
-PURPLE = re.compile(r"#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b", re.I)
+# ------------------------------------------------------------------ the retired looks
+# Neither retired look may come back through a source or the built page: the oxblood accent of the
+# look of 29 October 2026 (as a hex or inside rgba()), and the template of 3 October 2026, which the
+# author rejected. That template used the same UCL hexes as the present look, so its marks identify
+# it: the --ucl-* tokens, a gradient, a shadow, and a rounded box or pill (a radius above 2 px).
+RETIRED = re.compile(r"#(?:7A1F1F|D4908F)\b|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143)\b|--ucl-(?:dark|bright|mid)\b"
+                     r"|\b(?:linear|radial|conic)-gradient\b|\bbox-shadow\b|\bborder-radius:\s*(?!\s|0\s*[;}]|2px\b)", re.I)
 sources = [out / "index.html"] + sorted(HERE.glob("*.html")) + sorted(HERE.glob("*.css")) + sorted(HERE.glob("*.js")) \
     + sorted((HERE / "sections").glob("*.html"))
-hits = [f"{f.relative_to(ROOT)}:{m.group(0)}" for f in sources for m in PURPLE.finditer(f.read_text(encoding="utf-8"))]
-assert not hits, f"the rejected purple palette appears: {hits[:6]}"
-print(f"PASS no UCL purple hex or token in the page or in {len(sources) - 1} handout source files")
+hits = [f"{f.relative_to(ROOT)}:{m.group(0)}" for f in sources for m in RETIRED.finditer(f.read_text(encoding="utf-8"))]
+assert not hits, f"a mark of a retired look appears: {hits[:6]}"
+print(f"PASS no oxblood, no --ucl-* token, no gradient, shadow or rounded box in the page or in {len(sources) - 1} handout source files")

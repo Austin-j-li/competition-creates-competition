@@ -14,7 +14,7 @@
  * Contract: every number span names a key of the slot registry; no number sits in a slide headline;
  * no example number before the first example frame that the slides.tex header names; every backup
  * page carries a Back or return button to a main frame; every link names a hypertarget; every main
- * frame has speaker notes; the journal palette only.
+ * frame has speaker notes; the palette of DESIGN.md only.
  * Run after build.py (it reads dist/ for the notes); build.py runs it on every build.
  */
 import { createRequire } from 'node:module';
@@ -314,22 +314,32 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
 } else fail('dist/index.html is missing; run python3 presentation/build.py');
 
 /* ---------------------------------------------------------------- the design system */
-/* The deck shares the journal look of DESIGN.md (repository root) with the research brief: white
- * paper, ink, greys and one oxblood accent, with a composed dark theme. Every hex colour in the deck
- * styles, the renderer, the engine and the built page's styles must be in that palette; the tokens
- * that both stylesheets declare must agree; and the rejected purple palette of the earlier "UCL
- * family" design must not come back through any deck source or the built page. */
-const PURPLE = /#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b/gi;
-const deckFiles = ['deck.css', 'charts.js', 'deck.js', 'template.html', 'content.js'].map((n) => path.join(HERE, n));
+/* The deck shares the look of DESIGN.md (repository root) with the research brief: the journal layout
+ * in the colours of UCL. Dark purple is coloured text (--accent); bright purple is every rule,
+ * bullet and mark (--rule); the title frame is dark purple with a heritage blue rule; the dark theme
+ * is dark purple paper. Every hex colour in the deck styles, the renderer, the engine and the built
+ * page's styles must be in that palette, and the tokens that both stylesheets declare must agree.
+ * A retired look must not come back through any deck source or the built page: the oxblood accent of
+ * the look of 29 October 2026 (as a hex or inside rgba()), or the template of 3 October 2026 that
+ * the author rejected. That template used the same UCL hexes, so its marks identify it: the --ucl-*
+ * tokens in any file, and in the deck sources a gradient, a shadow, or a rounded box or pill (a
+ * radius above 2 px). */
+const RETIRED = /#(?:7A1F1F|D4908F)\b|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143)\b|--ucl-(?:dark|bright|mid)\b/gi;
+const BOXES = /\b(?:linear|radial|conic)-gradient\b|\bbox-shadow\b|\bborder-radius:\s*(?!\s|0\s*[;}]|2px\b)[^;}]*/gi;
+const deckSources = ['deck.css', 'charts.js', 'deck.js', 'template.html', 'content.js'].map((n) => path.join(HERE, n));
+const deckFiles = [...deckSources];
 if (fs.existsSync(path.join(dist, 'index.html'))) deckFiles.push(path.join(dist, 'index.html'));
 for (const file of deckFiles) {
   const text = fs.readFileSync(file, 'utf8');
-  const found = text.match(PURPLE);
-  if (found) fail(`${path.relative(ROOT, file)}: the rejected purple palette appears (${[...new Set(found)].join(', ')})`);
+  const found = text.match(RETIRED);
+  if (found) fail(`${path.relative(ROOT, file)}: a retired look appears (${[...new Set(found)].join(', ')})`);
+  const boxes = deckSources.includes(file) ? text.match(BOXES) : null;
+  if (boxes) fail(`${path.relative(ROOT, file)}: a gradient, a shadow or a rounded box appears (${[...new Set(boxes)].join(', ')})`);
 }
-const JOURNAL = new Set([
-  '#ffffff', '#f2f2f2', '#ebebeb', '#e9e9e9', '#1c1c1c', '#666666', '#c9c9c9', '#e6e6e6', '#7a1f1f',
-  '#171717', '#0d0d0d', '#242424', '#2a2a2a', '#a3a3a3', '#474747', '#2e2e2e', '#d4908f',
+const PALETTE = new Set([
+  '#ffffff', '#f2f2f2', '#e9e9e9', '#1c1c1c', '#666666', '#c9c9c9', '#e6e6e6', // white paper, the stage, ink, greys
+  '#361a54', '#993bff', '#ba82ff', '#30d6ff', '#fafafa', // UCL: dark, bright and mid purple, heritage blue, screen white
+  '#6a4e8a', '#4a2d6c', '#422464', '#231137', // derived from dark purple for the dark theme; not UCL colours
   '#000000']);
 const HEX = /#[0-9a-f]{6}\b/gi;
 const styledFiles = ['deck.css', 'charts.js', 'deck.js', 'template.html', 'content.js'].map((n) => path.join(HERE, n));
@@ -339,8 +349,8 @@ if (fs.existsSync(path.join(dist, 'index.html'))) {
   styledTexts.push(['presentation/dist/index.html (styles)', [...page.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n')]);
 }
 for (const [name, text] of styledTexts) {
-  const stray = [...new Set((text.match(HEX) || []).map((h) => h.toLowerCase()).filter((h) => !JOURNAL.has(h)))];
-  if (stray.length) fail(`${name}: colour outside the journal palette (${stray.join(', ')})`);
+  const stray = [...new Set((text.match(HEX) || []).map((h) => h.toLowerCase()).filter((h) => !PALETTE.has(h)))];
+  if (stray.length) fail(`${name}: colour outside the palette (${stray.join(', ')})`);
 }
 function rootTokens(css, theme) {
   const re = theme === 'dark' ? /:root\[data-theme="dark"\]\s*\{([^}]*)\}/ : /:root(?:,\s*:root\[data-theme="light"\])?\s*\{([^}]*)\}/;
@@ -367,14 +377,25 @@ for (const theme of ['light', 'dark']) {
     if (a[name] !== b[name]) fail(`${theme} theme: token ${name} is ${a[name]} in deck.css and ${b[name]} in handout/style.css`);
   }
 }
-const lightTokens = rootTokens(deckCss, 'light') || {};
-if ((lightTokens['--accent'] || '').toLowerCase() !== '#7a1f1f') fail(`deck.css: --accent is ${lightTokens['--accent']}, not the oxblood #7a1f1f`);
-if ((lightTokens['--bg'] || '').toLowerCase() !== '#ffffff') fail(`deck.css: --bg is ${lightTokens['--bg']}, not white paper`);
+const lightTokens = rootTokens(deckCss, 'light') || {}, darkTokens = rootTokens(deckCss, 'dark') || {};
+for (const [tokens, theme, name, value] of [[lightTokens, 'light', '--bg', '#ffffff'], [lightTokens, 'light', '--accent', '#361a54'],
+  [lightTokens, 'light', '--rule', '#993bff'], [lightTokens, 'light', '--cover-bg', '#361a54'], [lightTokens, 'light', '--cover-rule', '#30d6ff'],
+  [darkTokens, 'dark', '--bg', '#361a54'], [darkTokens, 'dark', '--accent', '#30d6ff'], [darkTokens, 'dark', '--rule', '#ba82ff']]) {
+  if ((tokens[name] || '').toLowerCase() !== value) fail(`deck.css: ${name} is ${tokens[name]} in the ${theme} theme, not ${value}`);
+}
+/* UCL's pairing rules: bright purple is for white grounds only; heritage blue and mid purple are for
+ * dark purple grounds only. The --cover-* tokens sit on the dark purple title frame in both themes. */
+for (const [name, value] of Object.entries(lightTokens)) {
+  if (!name.startsWith('--cover-') && /#(?:30d6ff|ba82ff)/i.test(value)) fail(`deck.css: ${name} puts heritage blue or mid purple on the white ground`);
+}
+for (const [name, value] of Object.entries(darkTokens)) {
+  if (/#993bff/i.test(value)) fail(`deck.css: ${name} puts bright purple on the dark purple ground`);
+}
 
 const mains = frames.filter((f) => !f.backup).length;
 console.log(`Compared ${frames.length} frames (${mains} main with the title, ${frames.length - mains} backup pages) with slides.tex: order, labels, numbers, titles, subtitles, targets, ` +
   `${linkCount} links, ${numberPairs} printed registry keys and ${wordCount} words; ${mainMinutes} planned minutes as in slides_script.md; ` +
-  `${sharedTokens} design tokens shared with handout/style.css agree; only the journal palette in ${styledTexts.length} styled files and no purple palette in ${deckFiles.length} deck files; ` +
+  `${sharedTokens} design tokens shared with handout/style.css agree; only the palette of DESIGN.md in ${styledTexts.length} styled files and no retired look in ${deckFiles.length} deck files; ` +
   `no example number on the ${earlyFrames} frames before frame ${FIRST_EXAMPLE}.`);
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 console.log('Deck matches slides.tex, slides_script.md and the deck contract.');

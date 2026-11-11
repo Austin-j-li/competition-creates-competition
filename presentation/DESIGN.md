@@ -15,12 +15,14 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk in
 Overleaf (33.5 planned minutes of speech with the title, in a 45-minute slot). All 56 frames stay in
 the Beamer order: the title, 18 numbered frames and 37 backup pages for backups B1 to B17. The look
-is the journal look of the Beamer deck (`ccc-journal.sty`, chosen by the author on 29 October 2026),
-shared with the research brief page: Libertinus Serif for the body, Libertinus Sans for titles,
-tags, labels and the footline, white paper, one oxblood accent (#7A1F1F) and greys; no bars, fills,
-cards, pills, shadows or gradients. A frame is a bold sans title over an accent rule, the body,
-the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline with the
-short title in small capitals, the link buttons and the frame number. Words, numbers, frames and
+is the look of the Beamer deck (`ccc-journal.sty`: the journal layout of 29 October 2026 in the
+colours of UCL, chosen by the author on 11 November 2026), shared with the research brief page:
+Libertinus Serif for the body, DM Sans for titles, tags, labels and the footline, white paper, dark
+purple (#361A54) for coloured text, bright purple (#993BFF) for rules and bullets, and greys; no
+bars, boxes, fills, cards, pills, rounded shapes, shadows or gradients. The title frame is a flat
+dark purple page with a heritage blue rule. A frame is a bold sans title in dark purple over a rule,
+the body, the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline
+with the short title in sans, the text links and the frame number. Words, numbers, frames and
 links stay identical between the two decks. Section 11 names the class for each Beamer macro. The
 Beamer deck has no click builds; the web frames have none either.
 
@@ -35,16 +37,18 @@ Invariants:
   decks print the same string. The build stops on a key the registry does not hold. No decimal is
   typed into a slide. No registry number appears before frame 14, as the `slides.tex` header states.
 - No status labels. The registry's status column is never read, shown or embedded.
-- The accent is the only chrome colour: the rule under a title, the rule above a statement or a
-  takeaway, tags, bullets, the active rail entry or control, the link buttons and the focus ring.
-  Figures and diagrams draw in ink (`--chart-1`, `--c-cost`), the accent (`--chart-2`, `--c-info`)
-  and greys (`--chart-3`), told apart by dash and marker; the orange and teal of the Beamer
-  figures map to the accent and ink. Nothing else is coloured, and `check_deck.mjs` fails on a hex
-  outside the journal palette.
-- Controls share one grammar: sans text with an underline. The active choice is accent at weight
-  700 with a 2 px accent underline (the rail, the pager). A link button on a slide is the Beamer
-  button: accent text on a light grey rounded ground with a triangle. An inline link is the text
-  with a faint underline.
+- Two purples, each in one role. `--accent` (dark purple) is coloured text: titles, tags, the
+  active rail entry or control, links. `--rule` (bright purple) is every rule, bullet and mark:
+  the rule under a title, the rule above a statement or a takeaway, bullets, underlines and the
+  focus ring. Figures and diagrams draw in ink (`--chart-1`, `--c-cost`), the information colour
+  (`--chart-2`, `--c-info`, bright purple) and greys (`--chart-3`), told apart by dash and marker;
+  the orange and teal of the Beamer figures map to the information colour and ink. A coloured
+  mark or label of a diagram takes `--c-info`, never `--accent`. Nothing else is coloured, and
+  `check_deck.mjs` fails on a hex outside the palette of `DESIGN.md`.
+- Controls share one grammar: sans text with an underline. The active choice is dark purple at
+  weight 700 with a 2 px bright purple underline (the rail, the pager). A link on a slide is sans
+  text in dark purple after a small triangle, with no box, fill or radius. An inline link is the
+  text with a faint underline.
 - Registry numbers keep their provenance hover, marked by a faint dotted hairline.
 - The curves of the figures are closed forms of the paper in the example, computed at build time
   from registry primitives; no widget solves an equilibrium.
@@ -141,23 +145,26 @@ so text reads at a distance. The curves come from `window.CCC_DATA.fig`, written
 
 ```css
 :root { --bg:#ffffff; --page:#e9e9e9; --ink:#1c1c1c; --muted:#666666; --line:#c9c9c9; --grid:#e6e6e6;
-  --rule:#7a1f1f; --accent:#7a1f1f; --c-info:#7a1f1f; --c-cost:#1c1c1c;
-  --chart-1:#1c1c1c; --chart-2:#7a1f1f; --chart-3:#666666;
+  --rule:#993bff; --accent:#361a54; --heading:#361a54; --c-info:#993bff; --c-cost:#1c1c1c;
+  --chart-1:#1c1c1c; --chart-2:#993bff; --chart-3:#666666;
+  --cover-bg:#361a54; --cover-ink:#fafafa; --cover-rule:#30d6ff; --cover-muted:#ba82ff;
   --font-serif:"Libertinus Serif","Libertinus Math",Georgia,serif;
-  --font-sans:"Libertinus Sans","Libertinus Math",system-ui,Arial,sans-serif }
+  --font-sans:"DM Sans","Libertinus Math",system-ui,Arial,sans-serif }
 ```
 
-The dark theme is slate paper (#171717, ink #ebebeb, muted #a3a3a3, hairline #474747) with the
-accent lightened to #d4908f; it has no tint and no glow. The faces are the deck's locked files
-(`presentation/fonts.lock.json`, identical to `handout/fonts.lock.json`): Libertinus Serif 400 and
-700 with italics, Libertinus Sans 400 and 700 with the regular italic, and Libertinus Math subset
-to the symbol blocks as the fallback for arrows, relations and operators. `build.py` writes the
+The dark theme is dark purple paper (#361a54, ink #fafafa, muted and rules #ba82ff, hairline
+#6a4e8a) with heritage blue (#30d6ff) for coloured text and the information colour; it has no tint
+and no glow. The title frame is dark purple in both themes (the `--cover-*` tokens). The faces are
+the deck's locked files (`presentation/fonts.lock.json`, identical to `handout/fonts.lock.json`):
+Libertinus Serif 400 and 700 with italics, DM Sans 400 with its italic and the semibold cut as the
+700 face, scaled to 90 per cent by `size-adjust`, and Libertinus Math subset to the symbol blocks
+as the fallback for Greek letters, relations and operators. `build.py` writes the
 `@font-face` rules and embeds the font data so the staged deck carries its own faces. Mathematics
 is KaTeX at 0.95 em, close to the size of Libertinus Math in the Beamer deck; the seam with Libertinus is accepted.
 
-Type scale at 1600 x 900, where 1 pt of the 16:9 Beamer page is 3.5 px. Libertinus Sans: frame
-title 50 px at weight 700 (60 px on S1, `.bigtitle`, the \LARGE of the deck); statement tag 30 px
-in the accent; link buttons 20 px; the footline 23 px in small capitals; figure
+Type scale at 1600 x 900, where 1 pt of the 16:9 Beamer page is 3.5 px. DM Sans: frame
+title 50 px at weight 700 in dark purple (60 px on S1, `.bigtitle`, the \LARGE of the deck);
+statement tag 30 px in dark purple; links 20 px; the footline 23 px; figure
 text 12.5 to 20 px drawn at a zoom of 1.4. Libertinus Serif: the title frame 60 px at 700; body
 32 px at line height 1.22 (\Body, the 11 pt baseline of 9 pt type); \normalsize 35 px; subtitle 27 px italic muted; statement body and gloss 28 px;
 small 28 px, xs 25 px; foot lines 23 px muted; takeaway 32 px at 700 over a 3 px accent rule;
@@ -224,11 +231,11 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 | `\LargeLine{text}` | `<p class="largeline">text</p>` (`p.bigline` prints the same way) | one large bold statement between an accent rule and a light rule |
 | `\NavyRule` | `<hr class="rule-accent">` | a rule in the accent |
 | `\LightRule` | `<hr class="rule-light">` | a light hairline |
-| `\ModelStrip{3,4}` | `<ul class="model-strip"><li>Players</li>...<li class="current">Information</li>...</ul>` under the head | the six parts of the model; the current ones bold accent, the others grey |
-| `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the accent rule |
-| `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | the Beamer button in the footline: accent text on a light rounded ground with a triangle |
+| `\ModelStrip{3,4}` | `<ul class="model-strip"><li>Players</li>...<li class="current">Information</li>...</ul>` under the head | the six parts of the model; the current ones bold dark purple, the others grey |
+| `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the rule |
+| `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | a text link in the footline: sans text in dark purple after a small triangle; no box |
 | `\BackupId{B1}` and the frame number | `.foot-num` (the build writes the number or the label; `deck.js` adds `data-total` on a main frame) | `n / N` on a main frame, the label on a backup, nothing on the title frame |
-| `\titlepage` | `.cover` with `h1`, `.cover-author`, `.cover-inst` | a short accent rule, the serif title, the author and the department in sans |
+| `\titlepage` | `.cover` with `h1`, `.cover-author`, `.cover-inst` | a dark purple page: a short heritage blue rule, the serif title, the author and the department in sans, in off-white |
 | `columns`, `minipage` | `.jcols > .jcol` with the width of the Beamer column | columns side by side; the rest of the width is the gap |
 | `tabular` with booktabs | `table.tj` (column widths in px: 1 cm of the page is 100 px) | rules above and below the head and at the end, no row rules, the head in the text face |
 | `tikzpicture` | an SVG or HTML diagram inside `.diagram` | the same nodes, labels and arrows in ink, the accent and greys |

@@ -59,7 +59,9 @@ def font_faces(lock: dict) -> str:
             continue
         data = base64.b64encode((HERE / "fonts" / name).read_bytes()).decode("ascii")
         stretch = f' font-stretch: {v["stretch"]};' if v.get("stretch") else ""
-        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch} '
+        # size_adjust scales a face to sit beside the reading face, as Scale does in the Beamer deck.
+        adjust = f' size-adjust: {v["size_adjust"]};' if v.get("size_adjust") else ""
+        rules.append(f'@font-face {{ font-family: "{v["family"]}"; font-style: {v["style"]}; font-weight: {v["weight"]};{stretch}{adjust} '
                      f'font-display: swap; src: url("data:font/woff2;base64,{data}") format("woff2"); unicode-range: {v["unicode_range"]}; }}')
     return "\n".join(rules) + "\n"
 

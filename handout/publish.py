@@ -50,25 +50,28 @@ def run(*cmd: str, cwd: Path = ROOT) -> None:
     subprocess.run(list(cmd), cwd=cwd, check=True)
 
 
-# The ruled document (DESIGN.md) has no chrome colour; the purple palette of the earlier "UCL family"
-# design must never be published again. Every staged HTML, CSS and JS file of the current site (the
-# root and /talk/) is scanned. The archive under /laplace/ is the committed page of the pinned
-# Laplace commit and keeps its own design, so it is outside the scan.
-PURPLE = re.compile(r"#(?:361A54|993BFF|BA82FF)\b|--ucl-(?:dark|bright|mid)\b", re.I)
+# The site wears the look of 11 November 2026 (DESIGN.md): the journal layout in the colours of UCL.
+# A retired look must never be published again: the oxblood accent of the look of 29 October 2026
+# (as a hex or inside rgba()), or the template of 3 October 2026 that the author rejected. That
+# template used the same UCL hexes as the present look, so its --ucl-* tokens identify it. Every
+# staged HTML, CSS and JS file of the current site (the root and /talk/) is scanned. The archive
+# under /laplace/ is the committed page of the pinned Laplace commit and keeps its own design, so
+# it is outside the scan.
+RETIRED = re.compile(r"#(?:7A1F1F|D4908F)\b|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143)\b|--ucl-(?:dark|bright|mid)\b", re.I)
 
 
 def check_palette(stage: Path) -> int:
     files = [p for p in stage.rglob("*") if p.is_file() and p.suffix in (".html", ".css", ".js", ".mjs")
              and not p.relative_to(stage).as_posix().startswith("laplace/")]
-    hits = [f"{p.relative_to(stage)}: {m.group(0)}" for p in files for m in PURPLE.finditer(p.read_text(encoding="utf-8"))]
+    hits = [f"{p.relative_to(stage)}: {m.group(0)}" for p in files for m in RETIRED.finditer(p.read_text(encoding="utf-8"))]
     if hits:
-        raise SystemExit("The rejected purple palette appears in the staged site:\n  " + "\n  ".join(hits[:10]))
+        raise SystemExit("A retired look appears in the staged site:\n  " + "\n  ".join(hits[:10]))
     return len(files)
 
 
 def require_main_merged() -> None:
     """Publishing needs a checkout that contains origin/main: the author's local checkout can sit on an
-    older branch whose committed site is the purple one."""
+    older branch whose committed site wears a retired look."""
     fetched = subprocess.run(["git", "fetch", "--quiet", "origin", "main"], cwd=ROOT, capture_output=True, text=True)
     if fetched.returncode != 0:
         raise SystemExit("Could not fetch origin/main to confirm that this checkout is current:\n" + fetched.stderr.strip()
@@ -147,7 +150,7 @@ def main() -> None:
         (stage / "laplace/index.html").write_text(page.replace("<body>", "<body>\n" + ARCHIVE_NOTE, 1), encoding="utf-8")
         expected = sorted(plan)
         assert sorted(p.relative_to(stage).as_posix() for p in stage.rglob("*") if p.is_file()) == expected
-        print(f"No purple palette in the {check_palette(stage)} HTML, CSS and JS files of the current site", flush=True)
+        print(f"No retired look in the {check_palette(stage)} HTML, CSS and JS files of the current site", flush=True)
         return expected
 
     def report(expected: list[str]) -> str:

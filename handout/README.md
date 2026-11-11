@@ -16,14 +16,16 @@ mechanism, the four propositions and three corollaries of the main text (the cor
 the example) and the tests are visible; formal statements, derivations and long tables stay in
 native `details` controls.
 
-The design is the journal look of `DESIGN.md` at the repository root, shared with the web slides
-and matched to the Beamer deck (`slot/manuscript/ccc-journal.sty`): Libertinus Serif for reading
-text and the title, Libertinus Sans for headings, tags, labels and controls, Libertinus Math as the
-symbol fallback, white paper (slate in the dark theme), one oxblood accent (#7A1F1F) and greys, a
-short accent rule above the title, an accent rule under each section heading, hairlines elsewhere, and no fills,
-cards, pills, gradients or shadows. Figures draw in ink, the accent and greys, told apart by dash
-and marker. The purple palette of the earlier "UCL family" design is rejected; `check_display.py`
-and `publish.py` fail on any of its hexes or tokens.
+The design is the look of `DESIGN.md` at the repository root: the journal layout in the colours
+of UCL, shared with the web slides and matched to the Beamer deck (`ccc-journal.sty` in the
+Overleaf working copy). Libertinus Serif sets the reading text and the title, DM Sans the headings,
+tags, labels and controls, and Libertinus Math is the symbol fallback. The paper is white (dark
+purple in the dark theme). Dark purple (#361A54) is coloured text; bright purple (#993BFF) is the
+short rule above the title, the rule under each section heading, and the bullets; hairlines
+elsewhere. There are no fills, cards, pills, rounded boxes, gradients or shadows, and the title
+block stays on the paper. Figures draw in ink, the information colour and greys, told apart by
+dash and marker. Two earlier looks are retired: the oxblood accent of 29 October 2026 and the
+boxed template of 3 October 2026; `check_display.py` and `publish.py` fail on their marks.
 
 ## Build and checks
 
@@ -52,7 +54,10 @@ The two PDFs are built from `slot/manuscript/main.tex` and `slot/manuscript/comp
 - every number span prints the display of its slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
 - only the locked faces load, and the page makes no network request;
-- neither the page nor the handout sources carry the rejected purple palette.
+- every colour is in the palette of `DESIGN.md`, and each UCL colour sits on the ground that UCL
+  permits;
+- neither the page nor the handout sources carry a mark of a retired look (the oxblood accent, a
+  `--ucl-*` token, a gradient, a shadow, a rounded box).
 
 `check_browser.js` is the browser check of the Laplace page of 2 October 2026. It still encodes
 that page's expectations (five figures, legacy anchors, 47 slides), which `/laplace/` now serves;
@@ -88,9 +93,9 @@ Requires Python, latexmk, Node.js and npm. The publisher rebuilds the page, runs
   directory), with their two PDFs, provenance record, fonts and KaTeX files.
 
 Speaker notes in Markdown and QA output are never staged. A failed check stops publication. The
-staged HTML, CSS and JS of the current site (the root and `talk/`) are scanned for the rejected
-purple palette; the archive under `laplace/` keeps its own committed design and is outside the
-scan. Publishing (not `--stage-only` or `--dry-run`) also requires the checkout to contain
+staged HTML, CSS and JS of the current site (the root and `talk/`) are scanned for the retired
+looks (the oxblood accent and the `--ucl-*` tokens); the archive under `laplace/` keeps its own
+committed design and is outside the scan. Publishing (not `--stage-only` or `--dry-run`) also requires the checkout to contain
 `origin/main` after a fetch, so that a checkout on an older branch cannot republish an older site.
 Wrangler is version-pinned; credentials stay in its machine-local login store, never in this
 repository. Publishing is explicit; pushing research changes to GitHub does not update the website.
