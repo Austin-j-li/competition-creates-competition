@@ -4,9 +4,9 @@
    a frame of the Beamer deck: a bold sans title in dark purple over a 1 pt rule, the body in
    Libertinus Serif, a statement as a rule, a bold sans tag, the body and a light rule, the takeaway
    or the intuition pinned above the foot zone, grey pointer lines in the foot zone, and a footline
-   with the short title in sans, the text links and the frame number. --accent (dark purple) is
-   coloured text; --rule (bright purple) is every rule, bullet and mark. The title frame is a flat
-   dark purple page with a heritage blue rule. White paper and greys otherwise; no bars, boxes,
+   with the roadmap of the talk in sans (the short title on a backup), the text links and the frame number. --accent (dark purple) is
+   coloured text; --rule (bright purple) is every rule, bullet and mark. The title frame is white
+   paper with purple type under a bright purple rule. White paper and greys otherwise; no bars, boxes,
    fills, rounded shapes, shadows or gradients. The series of a figure are ink, the information
    colour and greys, told apart by dash and marker. The stage is a fixed 1600 x 900 design surface
    that deck.js scales to the window, so sizes below are design pixels; 1 pt of the 16:9 Beamer page
@@ -106,6 +106,12 @@ kbd { font-family: var(--font-sans); font-variant-numeric: tabular-nums; border:
 /* The footline: the short title in sans, the text links, the frame number. */
 .slide-foot { flex: none; display: flex; justify-content: space-between; align-items: baseline; padding: 6px 40px 12px; font-family: var(--font-sans); font-size: 23px; color: var(--gray-text); font-variant-numeric: tabular-nums; }
 .foot-num { padding-left: 170px; }
+/* The roadmap of a main frame (\RoadItems): the six parts of the talk in the left slot of the footline;
+   the current part in bold dark purple, the others grey, light bullets between them. */
+.foot-title.roadmap { white-space: nowrap; }
+.roadmap .road { color: var(--gray-text); }
+.roadmap .road.current { color: var(--accent); font-weight: 700; }
+.roadmap .road-sep { color: var(--line); margin: 0 0.55em; }
 .foot-num::after { content: " / " attr(data-total); }
 .backup .foot-num::after, .foot-num:not([data-total])::after { content: none; }
 .title-slide .slide-foot { display: none; }
@@ -344,6 +350,8 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .slide .fs-x { font-size: 25px; }
 .slide.sz-x .statement > :not(.statement-tag) { font-size: 25px; }
 .slide .mt-n { margin-top: -12px; }
+/* \textsf{\textbf{...}} and a table column in \sffamily\bfseries: bold sans in the text colour. */
+.slide .sf { font-family: var(--font-sans); font-weight: 700; }
 .slide .mt-6 { margin-top: 6px; }
 .slide .mt-10 { margin-top: 10px; }
 /* Lists: \itemsep in design pixels through --gap; Beamer squares and bold accent numbers. */
@@ -383,6 +391,7 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .slide table.tj.stretch-135 td, .slide table.tj.stretch-135 th { padding-top: 9px; padding-bottom: 9px; }
 .slide table.tj.stretch-130 td, .slide table.tj.stretch-130 th { padding-top: 8px; padding-bottom: 8px; }
 .slide table.tj.stretch-120 td, .slide table.tj.stretch-120 th { padding-top: 6px; padding-bottom: 6px; }
+.slide table.tj.stretch-118 td, .slide table.tj.stretch-118 th,
 .slide table.tj.stretch-115 td, .slide table.tj.stretch-115 th { padding-top: 5px; padding-bottom: 5px; }
 .slide table.tj.stretch-110 td, .slide table.tj.stretch-110 th,
 .slide table.tj.stretch-108 td, .slide table.tj.stretch-108 th,
@@ -392,12 +401,18 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .slide table.tj.tight td, .slide table.tj.tight th { padding-right: 14px; }
 .slide table.tj.econ td, .slide table.tj.econ th { padding-right: 14px; }
 .slide table.notation-table td { padding-top: 2px; padding-bottom: 2px; }
+/* Frame 12 (\tabcolsep 5 pt) and frame 6 (\tabcolsep 4 pt): the gap between columns of the Beamer table. */
+.slide table.tj.mech td, .slide table.tj.mech th { padding-right: 34px; }
+.slide table.tj.slot6 td, .slide table.tj.slot6 th { padding-right: 28px; }
+.slide table.tj.mech td:last-child, .slide table.tj.mech th:last-child,
+.slide table.tj.slot6 td:last-child, .slide table.tj.slot6 th:last-child { padding-right: 0; }
 .refs2 p { margin: 0 0 6px; }
 /* Figures drawn by charts.js on a frame of the Overleaf deck: no frame line, as the Beamer figures. */
 .figure.plain { border-top: 0; padding-top: 0; margin-bottom: 6px; }
 #beliefs { width: 100%; }
 #region { width: 100%; }
 .coexfig { width: 780px; }
+#coexmain { width: 100%; }
 .researchfig { width: 800px; }
 
 /* Diagrams: the TikZ pictures of slides.tex as SVG and HTML. Ink, the information colour and greys
@@ -423,7 +438,9 @@ dialog::backdrop { background: rgba(28, 28, 28, 0.45); }
 .dg-brace.info, .dg-brace.accent { stroke: var(--c-info); }
 .dg-brace.cost { stroke: var(--ink); }
 .dg-brace.muted { stroke: var(--muted); }
-/* Frame 6: five numbered steps; the labels sit under the dots, 2.75 cm wide. */
+/* Frame 6: five numbered steps; the labels sit under the dots, 2.75 cm wide. The picture is scaled
+   to 0.86, as \scalebox{0.86} in slides.tex. */
+.jcenter.s86 > .diagram { zoom: 0.86; }
 .timeline { width: 1456px; margin: 6px 0 0; }
 .tl-labels { display: flex; gap: 20px; }
 .tl-labels p { flex: none; width: 275px; margin: 8px 0 0 !important; text-align: center; font-size: 32px; line-height: 1.22; }

@@ -126,7 +126,7 @@ that: bright purple on white only; heritage blue and mid purple on dark purple o
 
 The brief page: at 1024 px and above, a 12.5rem contents rail on the left and a 54rem reading column inside a 72rem page. The title block sits on the paper: a short rule (7.5rem), the serif title on two lines, the sans byline and record line, then the tab row between hairlines. It is not a cover and has no band. The opening question is the large line of the deck: a rule above, bold serif, a light rule below. Each section opens with its sans heading over the rule. Sections are 4.25rem apart. Below 1024 px the rail stacks above the column; at 600 px the body is 1.0625rem.
 
-The web deck is a fixed 1600 by 900 stage with a 44 px tools bar above and a 52 px rail below. A frame has 40 px side padding; the head holds the title, the optional subtitle and the 3 px rule; the body starts under the rule; the takeaway or the intuition is pinned above the foot zone; the footline carries the short title in sans on the left and the text links and the frame number (`n / N`, or the backup label) on the right. The title frame has no footline.
+The web deck is a fixed 1600 by 900 stage with a 44 px tools bar above and a 52 px rail below. A frame has 40 px side padding; the head holds the title, the optional subtitle and the 3 px rule; the body starts under the rule; the takeaway or the intuition is pinned above the foot zone; the footline of a main frame carries the roadmap of the talk in sans on the left, with the current part in bold dark purple, and the text links and the frame number (`n / N`) on the right; a backup page carries the short title and its backup label. The title frame has no footline.
 
 ## Elevation & Depth
 
@@ -150,7 +150,7 @@ Rectilinear, with no exception. A link in the footline of a slide is sans text i
 - **Links of a slide:** sans text in dark purple after a small triangle (`.goto`); a bright purple underline on hover.
 - **Flow step:** text under a 5 px rule, bright purple or ink (`.fbox`; `flowbox` and `flowcost` in the deck); arrows in grey between the steps.
 - **Model strip:** the six parts of the model in sans under the title of the model frames; the current ones bold dark purple, the others grey, light bullets between (`.model-strip`).
-- **Footline:** sans, 23 px, grey; in the Beamer deck a main frame shows the roadmap of the talk there, with the current part in bold dark purple.
+- **Footline:** sans, 23 px, grey; in the Beamer deck and on the web a main frame shows the roadmap of the talk there, with the current part in bold dark purple.
 
 ## Do's and Don'ts
 

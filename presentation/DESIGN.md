@@ -13,8 +13,8 @@ rendering and the registry keys), `figdata.py` (the figure curves), `deck.js` an
 ## 1. Brief
 
 The web version of `slot/manuscript/slides.tex`, the Beamer deck of the order-slot seminar talk in
-Overleaf (33.5 planned minutes of speech with the title, in a 45-minute slot). All 56 frames stay in
-the Beamer order: the title, 18 numbered frames and 37 backup pages for backups B1 to B17. The look
+Overleaf (29.5 planned minutes of speech with the title, in a 30-minute talk). All 58 frames stay in
+the Beamer order: the title, 20 numbered frames and 37 backup pages for backups B1 to B17. The look
 is the look of the Beamer deck (`ccc-journal.sty`: the journal layout of 29 October 2026 in the
 colours of UCL, chosen by the author on 11 November 2026), shared with the research brief page:
 Libertinus Serif for the body, DM Sans for titles, tags, labels and the footline, white paper, dark
@@ -23,7 +23,7 @@ bars, boxes, fills, cards, pills, rounded shapes, shadows or gradients. The titl
 with purple type: a bright purple rule, the title and the subtitle at the head; a hairline, the name
 and the department at the foot. A frame is a bold sans title in dark purple over a rule,
 the body, the takeaway or intuition pinned above the foot zone, grey pointer lines, and a footline
-with the short title in sans, the text links and the frame number. Words, numbers, frames and
+with the roadmap of the talk in sans (the short title on a backup), the text links and the frame number. Words, numbers, frames and
 links stay identical between the two decks. Section 11 names the class for each Beamer macro. The
 Beamer deck has no click builds; the web frames have none either.
 
@@ -75,8 +75,8 @@ never from `content.js`.
 { id, label, num, part, title, short, subtitle, targets, minutes, widget, body, backup, origin, cls }
 ```
 
-- `id`: `f0` for the title, `s1` to `s18`, and the lower-case label of a backup page (`b1`, `b2b`,
-  `b11s`). `label`: the `slides.tex` label (`S0` to `S18`, `B1` to `B17` with their page labels
+- `id`: `f0` for the title, `s1` to `s20`, and the lower-case label of a backup page (`b1`, `b2b`,
+  `b11s`). `label`: the `slides.tex` label (`S0` to `S20`, `B1` to `B17` with their page labels
   `B2b`, `B3b`, `B3c`, `B4b`, `B6b`, `B6c`, `B8s`, `B8b`, `B11s`, `B11f`, `B11b`, `B11c`, `B11d`,
   `B12b`, `B12c`, `B12d`, `B13b`, `B13c`, `B14b`, `B16b`).
 - `num`: the Beamer frame number of a main frame (the title is 0) and the `\BackupId` of a backup
@@ -110,8 +110,11 @@ The build writes one section per frame:
 </section>
 ```
 
-The title frame adds the class `title-slide` and holds only its body (`.cover`). Backups add the class
-`backup`, `data-backup="true"` and `data-origin`. The `cls` of a frame is added to its classes. The
+The title frame adds the class `title-slide` and holds only its body (`.cover`). On a main frame,
+`deck.js` fills `.foot-title` with the roadmap (`.foot-title.roadmap`: one `span.road` for each part,
+`span.road.current` for the part of the frame, `span.road-sep` between them) from the parts of
+section 7 and the `data-part` of the frame. Backups add the class
+`backup`, `data-backup="true"` and `data-origin`, and keep the short title in `.foot-title`. The `cls` of a frame is added to its classes. The
 build gives a frame without a title the class `nohead` and no header; no frame uses it now.
 The engine still supports reveals (`data-step="n"`: an element is shown from step n on); no frame
 uses them, because the Beamer deck has no click builds. Number
@@ -132,6 +135,7 @@ size classes `.fs-s`, `.fs-f`, `.fs-x` and the `\arraystretch` classes `.stretch
 | `widget` | Frame | Elements | Behaviour |
 |---|---|---|---|
 | `title` | S0 | `.cover` | static title page |
+| `coexmain` | S16 | `#coexmain` | panel (c) of the coexistence figure alone, without its panel letter (`\CoexPanelCMain`): entry in each equilibrium from r_A to past r_S, with the band [r_A, r_N] and the marked strengths r_A, r_F, r_N, r_J, r_S; `specCoex` of B3b with one panel |
 | `beliefs` | S14 | `#beliefs` | the threshold belief τ(r) from r_1 to r_2, the top belief M(1/2), the band from τ(r_1) up to it, and the values τ(r_2), M(1/2), τ(r_1) from the registry: panel (b) of the belief figure of `slides.tex` |
 | `region` | B3 | `#region` | panel (b) of the coexistence figure: the region of Proposition 3 at the prior in the plane of Δ_T and τ, with the example's path through r_0, r_A, r_F, r_N |
 | `coex` | B3b | `#coex` | panels (a) and (c) of the coexistence figure: entry in each equilibrium against strength, the whole path and the marked strengths r_A, r_F, r_N, r_J, r_S, with the band [r_A, r_N] |
@@ -174,16 +178,16 @@ intuition 32 px italic over a hairline; the large line 42 px at 700. Paragraphs 
 
 ## 7. Parts
 
-The parts follow the roadmap line of frame 4.
+The parts follow the roadmap of the footline, `\RoadItems` in `slides.tex`.
 
 | Part | Name | Frames |
 |---|---|---|
 | 1 | Question | S0 to S4 |
 | 2 | Model | S5 to S8 |
-| 3 | Mechanism and main result | S9 to S13 |
-| 4 | Fixed-information control | S14 |
-| 5 | Extensions and prediction | S15 to S17 |
-| 6 | Conclusion | S18 |
+| 3 | Main results | S9 to S14 |
+| 4 | Checks | S15 and S16 |
+| 5 | Extensions | S17 to S19 |
+| 6 | Summary | S20 |
 | B | Backups | B1 to B17 on 37 pages |
 
 Links, origins and hypertargets are those of `slides.tex`; `check_deck.mjs` compares them in
@@ -209,9 +213,9 @@ speaker notes by label, from `slot/manuscript/slides_script.md`.
 ## 10. Timing plan
 
 The timing line of each frame in `slot/manuscript/slides_script.md`: the title 0.5; frames 1 to 4:
-2.5, 1.5, 1.0, 1.5; frames 5 to 9: 1.5, 2.0, 2.0, 2.0, 1.5; frames 10 to 13: 2.0, 1.5, 1.5, 3.0;
-frames 14 and 15: 1.5, 2.0; frames 16 to 19: 1.5, 1.5, 1.5, 1.5. Prepared speech 33.5 minutes;
-questions 11.5 minutes within the 45-minute slot. `check_deck.mjs` reads the script, so this list
+1.5, 1.5, 1.5, 1.0; frames 5 to 8: 1.5, 2.5, 1.5, 1.5; frames 9 to 14: 1.5, 1.0, 1.5, 2.0, 1.5, 1.5;
+frames 15 and 16: 1.5, 1.5; frames 17 to 20: 1.5, 1.0, 1.0, 1.0. Prepared speech 29.5 minutes; half a
+minute stays free within the 30-minute talk. `check_deck.mjs` reads the script, so this list
 only restates it.
 
 ## 11. The class for each Beamer macro
@@ -233,6 +237,8 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 | `\LargeLine{text}` | `<p class="largeline">text</p>` (`p.bigline` prints the same way) | one large bold statement between an accent rule and a light rule |
 | `\NavyRule` | `<hr class="rule-accent">` | a rule in the accent |
 | `\LightRule` | `<hr class="rule-light">` | a light hairline |
+| `\RoadItems` (`\RoadItem`, `\RoadSep`) | `.foot-title.roadmap` with `span.road`, `span.road.current` and `span.road-sep`, filled by `deck.js` on a main frame | the six parts of the talk in the left slot of the footline; the current part bold dark purple, the others grey, light bullets between them; a backup shows the short title |
+| `\textsf{\textbf{...}}`, a column in `\sffamily\bfseries` | `<b class="sf">` | bold sans in the text colour (frames 5, 6 and 12) |
 | `\ModelStrip{3,4}` | `<ul class="model-strip"><li>Players</li>...<li class="current">Information</li>...</ul>` under the head | the six parts of the model; the current ones bold dark purple, the others grey |
 | `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the rule |
 | `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | a text link in the footline: sans text in dark purple after a small triangle; no box |

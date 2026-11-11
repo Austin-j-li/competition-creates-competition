@@ -32,10 +32,10 @@ import figdata  # noqa: E402
 REGISTRY = ROOT / "audit/slot_manuscript_2026_10_23/registry/registry.csv"
 SLIDES_TEX = ROOT / "slot/manuscript/slides.tex"
 SCRIPT = ROOT / "slot/manuscript/slides_script.md"
-# The parts follow the roadmap line of frame 4: Model, Mechanism and main result, Fixed-information
-# control, Extensions and prediction.
-PARTS = [(1, "Question"), (2, "Model"), (3, "Mechanism and main result"), (4, "Fixed-information control"),
-         (5, "Extensions and prediction"), (6, "Conclusion"), ("B", "Backups")]
+# The parts follow the roadmap of the footline (\RoadItems in slides.tex): Question 1 to 4, Model 5 to 8,
+# Main results 9 to 14, Checks 15 and 16, Extensions 17 to 19, Summary 20.
+PARTS = [(1, "Question"), (2, "Model"), (3, "Main results"), (4, "Checks"),
+         (5, "Extensions"), (6, "Summary"), ("B", "Backups")]
 
 
 def digest(body: bytes) -> str:
@@ -201,7 +201,7 @@ def build() -> None:
     notes = read_notes(frames)
     figures = figdata.build(registry)
     used = {k: registry[k] for k in rendered["used"]}
-    # Keys the figures print or place at runtime (frame 14, B3, B12).
+    # Keys the figures print or place at runtime (frames 14 and 16, B3, B12).
     for key in ("rA", "rF_B", "rN", "rJ", "rS_B", "rC_B", "res_rR", "res_rcap", "res_rN", "res_rQ", "res_rC",
                 "res_lambda_floor_rQ", "prim_r0", "prim_r1", "prim_r2", "prim_pi", "res_cap", "tau_r1", "tau_r2", "M_half_B",
                 "str_r155", "str_r160", "str_r165", "res_lambda_r155", "res_lambda_r160", "res_lambda_r165",

@@ -1,9 +1,9 @@
 # Seminar slides (the /talk/ page)
 
 The web version of the Beamer talk in `slot/manuscript/slides.tex` (the Overleaf deck), the seminar
-talk for the order-slot version of the paper: 56 frames, the title, 18 numbered frames, then
+talk for the order-slot version of the paper: 58 frames, the title, 20 numbered frames, then
 backups B1 to B17 on 37 pages, with the same words, numbers, titles and links as the Beamer deck.
-The planned speech is 28 minutes with the title, in a 30-minute talk.
+The planned speech is 29.5 minutes with the title, in a 30-minute talk.
 
 ## Open and present
 
@@ -21,8 +21,8 @@ Open `http://127.0.0.1:8766/`. Press F for fullscreen when presenting.
 - Home: title. End: conclusion. The main sequence stops at the conclusion, as the PDF does.
 - A link button, or an inline link such as "B2" in a foot line, jumps to its backup. Back, or
   Escape, returns to the frame it came from. B2 has one return button for each of frames 10, 11
-  and 12. Arrow keys inside the backups move between backup pages.
-- O: overview of all 56 frames by part. N: speaker notes. G: notation. T: dark or light theme.
+  and 13. Arrow keys inside the backups move between backup pages.
+- O: overview of all 58 frames by part. N: speaker notes. G: notation. T: dark or light theme.
   F: fullscreen. R: reset the slide. ?: controls. A focused figure keeps its arrows.
 
 The stage is a fixed 1600 x 900 design surface scaled to the window, so layouts are the same
@@ -44,19 +44,22 @@ Beamer, `DESIGN.md` on the web). The Beamer deck has no click builds, and neithe
   order slot, the price levels) are SVG and HTML diagrams.
 - `render.mjs` renders the slide records at build time: KaTeX for the mathematics, and a stop
   on any registry key the registry does not hold.
-- `figdata.py` computes the curves of the four figures from the closed forms of the paper in
+- `figdata.py` computes the curves of the figures from the closed forms of the paper in
   the example. Primitives and boundaries come from registry keys.
 - `charts.js` is the SVG renderer of the figures, a trimmed copy of the handout's; it holds no builders.
-- `deck.js` is the engine: navigation, the link graph, panels and the figures.
+- `deck.js` is the engine: navigation, the link graph, panels, the figures and the roadmap in the
+  footline of each main frame (`\RoadItems` of `slides.tex`).
 - `deck.css` is the look of `DESIGN.md`: Libertinus Serif for text, DM Sans for titles, tags and
   controls, white paper (dark purple in the dark theme), dark purple for coloured text, bright
   purple for rules, a white title frame with purple type, and greys.
 - The speaker notes are the spoken script, `slot/manuscript/slides_script.md`: one block for each
   main frame; a prepared answer goes to the first page of the backup it names.
 
-Figures: frame 13 draws the threshold belief between the strong and the very strong incumbent
-with the top belief; B3 draws the coexistence region with the example's path; B3, page 2 draws
-entry in each equilibrium along the path; B12, page 2 draws research and total entry. They are
+Figures: frame 14 draws the threshold belief between the strong and the very strong incumbent
+with the top belief; frame 16 draws entry in each equilibrium of the example from r_A to past r_S
+(panel (c) of the coexistence figure, alone and without its panel letter); B3 draws the
+coexistence region with the example's path; B3, page 2 draws entry in each equilibrium along the
+path; B12, page 2 draws research and total entry. They are
 the figures of the Beamer deck, drawn from the same closed forms, with the same labels. Hover or
 arrow keys over a figure give its values. No figure solves an equilibrium.
 
@@ -78,10 +81,10 @@ order, labels and numbers (a backup page shows its `\BackupId`), the titles and 
 links, return and Back buttons), the registry keys (each `\reg{key}` as often as `slides.tex`
 prints it on the frame), the rounded numbers (`\regr{key}{digits}` must print the same string),
 and the words outside mathematics and diagrams, in order, after NFKC normalisation. It also checks
-that every number span names a registry key, that no example number appears before frame 13 (the
+that every number span names a registry key, that no example number appears before frame 14 (the
 first frame the `slides.tex` header allows), that no number sits in a headline, that every backup
 page has a Back or return button to a main frame, that the timing of each main frame and the
-33.5-minute total are those of `slides_script.md`, and that every main frame has notes.
+29.5-minute total are those of `slides_script.md`, and that every main frame has notes.
 
 In the browser, `DECK.selfCheck()` reports runtime errors, mathematics errors and the number of
 number spans, and `DECK.audit()` walks every slide with all reveals shown and lists any body that
@@ -98,7 +101,7 @@ With the preview server running:
 presentation/export_pdf.sh
 ```
 
-Headless Chrome prints all 56 frames to `dist/presentation.pdf` at
+Headless Chrome prints all 58 frames to `dist/presentation.pdf` at
 16 by 9 inches. The script opens the page with `?print=1`, which draws every figure and table
 first. Headless Chrome can hang on some machines; the Beamer PDF of `slides.tex` is the printable
 alternative. Inspect the rendered PDF after any edit.

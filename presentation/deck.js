@@ -34,6 +34,19 @@
   var mainCount = slides.filter(function (s) { return s.dataset.backup !== 'true'; }).length;
   /* The footline prints "n / total" on a main frame; a backup prints its label alone. */
   slides.forEach(function (s) { var n = s.querySelector('.foot-num'); if (n && s.dataset.backup !== 'true') n.dataset.total = String(TOTAL); });
+  /* The roadmap of the footline (\RoadItems of slides.tex): on a main frame the six parts of the talk
+     replace the short title, the current part in bold dark purple, the others grey. A backup keeps the
+     short title. */
+  var roadParts = (META.parts || []).filter(function (p) { return String(p.n) !== 'B'; });
+  slides.forEach(function (s) {
+    var t = s.querySelector('.foot-title');
+    if (!t || s.dataset.backup === 'true' || !roadParts.length) return;
+    t.classList.add('roadmap');
+    t.setAttribute('aria-label', 'Parts of the talk');
+    t.innerHTML = roadParts.map(function (p) {
+      return '<span class="road' + (String(p.n) === s.dataset.part ? ' current' : '') + '">' + esc(p.name) + '</span>';
+    }).join('<span class="road-sep" aria-hidden="true">\u2022</span>');
+  });
   var index = 0, step = 0, steps = {}, returns = [];
   var widgets = {};
 
@@ -119,7 +132,7 @@
     go(id, { step: 0 });
   }
   /* Back returns to the place the link was followed from when that is the button's target (B2 has one
-     return button for each of frames 11, 12 and 13); otherwise to the button's target. */
+     return button for each of frames 10, 11 and 13); otherwise to the button's target. */
   function back(target) {
     var want = target ? targetOf[target] : null;
     if (returns.length && (!want || slides[returns[returns.length - 1].index].id === want)) { var r = returns.pop(); go(r.index, { step: r.step }); return; }
@@ -290,17 +303,20 @@
     return { traces: traces, layout: layout };
   }
 
-  /* B3, page 2: entry in each equilibrium at the prior, the whole path (a) and the marked strengths (c). */
-  function specCoex(t) {
+  /* B3, page 2: entry in each equilibrium at the prior, the whole path (a) and the marked strengths (c).
+     Frame 16 (single) draws panel (c) alone, without its panel letter, as \CoexPanelCMain of slides.tex. */
+  function specCoex(t, single) {
     var E = D.fig.entry, I = D.fig.inputs, B = D.fig.bounds;
-    var brick = t.info, grey = t.c3, traces = [], layout = { height: 215, margin: { l: 52, r: 10, t: 40, b: 46 }, shapes: [], annotations: [] };
-    var panels = [{ x: 'x', y: 'y', dom: [0, 0.39], range: [1.2, 3.6], tickvals: [1.2, 2.0, 2.8, 3.6], tag: '(a)' },
-      { x: 'x2', y: 'y2', dom: [0.49, 1], range: [1.26, 2.4], tickvals: [1.4, 1.8, 2.2], tag: '(c)' }];
+    var brick = t.info, grey = t.c3, traces = [];
+    var layout = { height: single ? 270 : 215, margin: { l: single ? 40 : 52, r: 10, t: 40, b: 46 }, shapes: [], annotations: [] };
+    var panelC = { x: single ? 'x' : 'x2', y: single ? 'y' : 'y2', dom: single ? [0, 1] : [0.49, 1], range: [1.26, 2.4], tickvals: [1.4, 1.8, 2.2], tag: single ? '' : '(c)', c: true };
+    var panels = single ? [panelC] : [{ x: 'x', y: 'y', dom: [0, 0.39], range: [1.2, 3.6], tickvals: [1.2, 2.0, 2.8, 3.6], tag: '(a)' }, panelC];
+    var cx = panelC.x, cy = panelC.y;
     panels.forEach(function (P, j) {
       layout['xaxis' + (j ? '2' : '')] = { domain: P.dom, anchor: P.y, range: P.range, tickvals: P.tickvals, ticktext: P.tickvals.map(function (v) { return v.toFixed(1); }), title: { text: 'incumbent strength, <i>r</i>' } };
-      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: [0.17, 0.62], dtick: 0.1, tick0: 0.2, title: { text: j ? '' : 'entry, <i>E</i>' } };
+      layout['yaxis' + (j ? '2' : '')] = { domain: [0, 1], anchor: P.x, range: [0.17, 0.62], dtick: 0.1, tick0: 0.2, title: { text: P.c ? '' : 'entry, <i>E</i>' } };
       layout.shapes.push(band(B.rA, B.rN, t.regionB, P.x));
-      var tag = panelTag(P.tag, P.x, P.y, t); tag.xshift = j ? -40 : -50; layout.annotations.push(tag);
+      if (P.tag) { var tag = panelTag(P.tag, P.x, P.y, t); tag.xshift = j ? -40 : -50; layout.annotations.push(tag); }
       function add(name, br, color, dash, w, grp) {
         traces.push({ mode: 'lines', name: name, legendgroup: grp || name, showlegend: false, x: br.r, y: br.y, customdata: pts(br.r, br.y), xaxis: P.x, yaxis: P.y,
           line: line(t, color, dash, w), hovertemplate: 'entry = %{customdata[0]}<extra>' + name + '</extra>' });
@@ -317,20 +333,22 @@
       traces.push(dot([E.F_floor.r[E.F_floor.r.length - 1]], [E.F_floor.y[0]], brick, true, P.x, P.y, 9));
     });
     var lab = function (txt, x, ax) { layout.annotations.push({ text: txt, xref: ax, x: x, yref: (ax === 'x2' ? 'y2' : 'y') + ' domain', y: 1, yanchor: 'bottom', yshift: 4, xanchor: 'center', font: { size: 12, color: t.muted } }); layout.shapes.push(vline(x, t.muted, 'dot', ax)); };
-    lab('<i>r</i><sub>C</sub>', B.rC_B, 'x');
-    layout.shapes.push(vline(B.rA, t.muted, 'dot', 'x'), vline(B.rN, t.muted, 'dot', 'x'));
-    lab('<i>r</i><sub>A</sub>', B.rA, 'x2'); lab('<i>r</i><sub>F</sub>', B.rF_B, 'x2'); lab('<i>r</i><sub>N</sub>', B.rN, 'x2'); lab('<i>r</i><sub>J</sub>', B.rJ, 'x2'); lab('<i>r</i><sub>S</sub>', B.rS_B, 'x2');
-    layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 1.3, x1: 2.4, y0: 0.585, y1: 0.585, line: { color: t.muted, width: 1.4 }, layer: 'above' });
-    layout.annotations.push(at('(c)', 2.45, 0.585, t.muted, { yanchor: 'middle', yshift: 0, size: 12 }));
-    layout.annotations.push(at('F', 3.1, E.F.y[0], brick, { xanchor: 'center', yshift: 5, size: 13 }));
-    layout.annotations.push(at('F', I.r2, I.rho, brick, { xanchor: 'right', xshift: -6, yshift: 8, size: 13 }));
-    layout.annotations.push(at('N', 1.3, I.rho, t.ink, { xanchor: 'center', yshift: 5, size: 13 }));
-    layout.annotations.push(at('R', B.rA, E.R.y[0], brick, { xref: 'x2', yref: 'y2', xanchor: 'right', xshift: -6, yshift: 2, size: 13 }));
-    layout.annotations.push(at('F', 2.33, E.F.y[0], brick, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 5, size: 13 }));
-    layout.annotations.push(at('T', 1.86, 0.31, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 0, size: 13 }));
-    layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, I.rho, grey, { xref: 'x2', yref: 'y2', xanchor: 'center', yanchor: 'top', yshift: -6, size: 13 }));
-    layout.annotations.push(at('N', 1.28, I.rho, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'left', yanchor: 'top', yshift: -6, size: 13 }));
-    layout.annotations.push(at('coexistence', (B.rA + B.rN) / 2, 0.18, t.ink, { xref: 'x2', yref: 'y2', xanchor: 'center', yshift: 2, size: 12 }));
+    if (!single) {
+      lab('<i>r</i><sub>C</sub>', B.rC_B, 'x');
+      layout.shapes.push(vline(B.rA, t.muted, 'dot', 'x'), vline(B.rN, t.muted, 'dot', 'x'));
+      layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: 1.3, x1: 2.4, y0: 0.585, y1: 0.585, line: { color: t.muted, width: 1.4 }, layer: 'above' });
+      layout.annotations.push(at('(c)', 2.45, 0.585, t.muted, { yanchor: 'middle', yshift: 0, size: 12 }));
+      layout.annotations.push(at('F', 3.1, E.F.y[0], brick, { xanchor: 'center', yshift: 5, size: 13 }));
+      layout.annotations.push(at('F', I.r2, I.rho, brick, { xanchor: 'right', xshift: -6, yshift: 8, size: 13 }));
+      layout.annotations.push(at('N', 1.3, I.rho, t.ink, { xanchor: 'center', yshift: 5, size: 13 }));
+    }
+    lab('<i>r</i><sub>A</sub>', B.rA, cx); lab('<i>r</i><sub>F</sub>', B.rF_B, cx); lab('<i>r</i><sub>N</sub>', B.rN, cx); lab('<i>r</i><sub>J</sub>', B.rJ, cx); lab('<i>r</i><sub>S</sub>', B.rS_B, cx);
+    layout.annotations.push(at('R', B.rA, E.R.y[0], brick, { xref: cx, yref: cy, xanchor: 'right', xshift: -6, yshift: 2, size: 13 }));
+    layout.annotations.push(at('F', 2.33, E.F.y[0], brick, { xref: cx, yref: cy, xanchor: 'center', yshift: 5, size: 13 }));
+    layout.annotations.push(at('T', 1.86, 0.31, t.ink, { xref: cx, yref: cy, xanchor: 'center', yshift: 0, size: 13 }));
+    layout.annotations.push(at('Q', (B.rN + B.rJ) / 2, I.rho, grey, { xref: cx, yref: cy, xanchor: 'center', yanchor: 'top', yshift: -6, size: 13 }));
+    layout.annotations.push(at('N', 1.28, I.rho, t.ink, { xref: cx, yref: cy, xanchor: 'left', yanchor: 'top', yshift: -6, size: 13 }));
+    layout.annotations.push(at('coexistence', (B.rA + B.rN) / 2, 0.18, t.ink, { xref: cx, yref: cy, xanchor: 'center', yshift: 2, size: 12 }));
     return { traces: traces, layout: layout };
   }
 
@@ -391,16 +409,17 @@
     return st;
   }
 
-  /* ---------- widgets: the four figures ---------- */
+  /* ---------- widgets: the five figures ---------- */
   widgets.beliefs = { render: function (s) { drawChart($('#beliefs', s), specBeliefs(tokens()), 'beliefs'); } };
   widgets.region = { render: function (s) { drawChart($('#region', s), specRegion(tokens()), 'region'); } };
   widgets.coex = { render: function (s) { drawChart($('#coex', s), specCoex(tokens()), 'coex'); } };
+  widgets.coexmain = { render: function (s) { drawChart($('#coexmain', s), specCoex(tokens(), true), 'coexmain'); } };
   widgets.research = { render: function (s) { drawChart($('#research', s), specResearch(tokens()), 'research'); } };
 
   function renderWidget(force) {
     var s = slides[index], w = widgets[s.dataset.widget];
     if (!w || !w.render) return;
-    if (!force && s.dataset.rendered === '1' && !/^(beliefs|region|coex|research)$/.test(s.dataset.widget)) return;
+    if (!force && s.dataset.rendered === '1' && !/^(beliefs|region|coex|coexmain|research)$/.test(s.dataset.widget)) return;
     try { w.render(s); s.dataset.rendered = '1'; } catch (e) { errors.push(s.id + ': ' + e.message); }
   }
 
