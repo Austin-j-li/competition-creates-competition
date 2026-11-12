@@ -3,7 +3,7 @@
 Prepared speech: 29.5 minutes, including the title. Half a minute stays free within the 30-minute talk for pauses and clarifications.
 Script of 12 November 2026, after the readability review of the deck. The title and frames 1 and 2 are in the author's own opening; frames 3 to 20 follow the reviewed slides. Frames 1 to 4 use plain deal words; frames 5 to 8 join each one to its theory word.
 Frames 17, 18 and 19 are the frames to skip when time runs out. The short path at the end of frame 16 replaces its last sentence in that case, and frame 20 works without them.
-The prepared answers at the end are those of the earlier script and wait for their revision.
+Sixteen prepared answers follow the script. The first three answer the questions of 10 November 2026 on the equilibria, the random cost and no order; they are for question time and are not part of the talk.
 Headings, time lines, cue lines in italics and the word-count table are silent.
 The handout has one face per frame. There are no click cues.
 Headings match the slide frame titles. Word counts cover speech only, without the short path.
@@ -253,42 +253,66 @@ So a stronger incumbent can bring the rival in: good news in the stock price can
 
 ## Prepared answers
 
+### Is the result about one good equilibrium? — B3
+
+No. I do not pick an equilibrium anywhere. At the three incumbents that I compare, weak, strong and very strong, the equilibrium outcome is unique, so there is nothing to pick. Between the weak and the strong incumbent, two markets can coexist, and frame 16 shows both. For the example, I list every equilibrium in that range, at a prior of one half and under the default tie rules. And one thing holds in all of them: entry is never below its floor. What depends on the equilibrium is only the strength at which entry first rises.
+
+### Why is the preparation cost random? — B3
+
+Because some rivals prepare at no cost, the rival's class always matters a little for what shareholders are paid, even when the price carries no news. That gives a bound. Against an uninformative price, an order earns at most rho, times the larger of the prior and one minus the prior, times the shareholder spread. Once the spread is wide enough, that gain exceeds the order cost, and the uninformative market cannot survive. It follows from the same bound that with one positive cost, rho is zero, an order earns nothing, and the uninformative market would exist at every strength. And the zero-cost rival is not the entry that rises: the rise comes from the high-cost rival.
+
+### Does no order break the construction? — B2
+
+No. The liquidity trader can produce each outcome in each class. So each outcome, no order included, has positive probability, and Bayes' rule gives every belief. I assume no belief anywhere. When the informed trader always trades, no order shows only that the liquidity trader had the slot, and that says nothing about the class. So at the three incumbents that I compare, the belief after no order is the prior. In the informative market between them, below a strength of about two point one, the poor class does not always sell, so no order is mild bad news. The belief is then below the prior, but not below the band floor, so it never recruits.
+
+### Is the no-order price on frame 19 a statement about the class? — B13
+
+No. Frame 19 says that the no-order price is below the mean price exactly when a purchase recruits. That is a statement about the price. The belief about the class after no order is the prior at the three incumbents that I compare.
+
+### Is a bid not worth more against the weak incumbent?
+
+Yes, at an equal belief: a weaker incumbent is easier to outbid. But against the weak incumbent the stock price carries no good news, and at the prior a bid is worth too little to justify costly diligence. That is what the first column of frame 12 says.
+
 ### Who is the informed trader? — B5
 
-It is an outsider with sector expertise, such as a sector-focused long-short fund. It holds no net position before trade, has no control rights and cannot acquire the target. Its own research concerns the target's customers, technology and demand. It learns the rival's synergy class, good or poor, and no further news about its value. In the point-value example, the class fixes the value. It earns only its trading payoff. Neither bidder trades target shares.
+It is an outside investor with sector expertise, such as a fund that follows the industry. It holds no net position in the target before trade, has no control rights and cannot bid for control. Its own research concerns the target's customers, technology and demand. In the model it knows the rival's synergy class, good or poor, and not the rival's value. In the example with one value in each class, the class fixes the value. It earns only its trading payoff. Neither bidder trades target shares.
 
 ### Don't bidders already look at the price?
 
-Yes. The rival reads the stock price before preparation throughout the main model. Strength changes the shareholder spread and whether informed trade pays. That changes what the price reveals about synergy. The fixed-information control keeps price access and freezes the news the rival can recover. The comparison concerns price content at unchanged access.
+Yes. The rival reads the stock price before it prepares throughout the main model. Strength changes the shareholder spread and whether an informed order pays. That changes what the price carries about the synergy class. The fixed-information control keeps price access and fixes the news that the rival can recover. So the comparison concerns the content of the price at unchanged access.
 
 ### So what?
 
-The bidder set can depend on information produced outside the sale. A stronger incumbent can make that information worth more to an informed trader and draw a rival into preparation. Under the main result's conditions, price access also raises the expected payoff of the target shareholders and acquisition surplus net of preparation costs against the strong incumbent. Thus the information before diligence helps explain who contests the sale.
+The bidder set can depend on information produced outside the sale. A stronger incumbent can make that information worth more to an informed trader and bring a rival in. Under the main result's conditions, price access also raises the expected payoff of the target shareholders and acquisition surplus net of preparation costs against the strong incumbent. Thus the information before diligence helps explain who contests the sale.
 
 ### Where would deterrence show up in data?
 
 Look where no target stock price reaches the rival before diligence, or where the information before preparation stays fixed. Hold other information, synergy values and costs fixed. Strength then cannot raise entry. Strict deterrence occurs when some costs fall above rival gross profit against the stronger incumbent but at or below it against the weaker incumbent. Date public strength before diligence and measure preparation; public bids capture less.
 
-### Is the equilibrium unique between the weak and the strong incumbent? — B3
-
-There is no general uniqueness result for those intermediate strengths. The main result gives unique outcomes at three economies under strict conditions. Under the default tie rules, an uninformative market with entry at its floor can coexist with an informative market where a purchase recruits the high-cost rival. The threshold must exceed the prior but remain reachable, and the spread must lie within the coexistence bounds. B3 states those bounds.
-
 ### Why is each outcome unique? — B2
 
-The bounds hold under every order strategy, including mixtures. Against the weak incumbent, even the gain cap falls below the order cost. Against the strong incumbent, even the gain floor exceeds it, so both correct orders must occur. Their beliefs fix preparation. Against the very strong incumbent, full orders persist, but rival gross profit at the top belief cannot cover the high cost. These strict comparisons fix the equilibrium outcome under all four tie-rule pairs. Orders reveal a belief about synergy, not the synergy class itself.
+The bounds hold under every order strategy, including mixtures. Against the weak incumbent, even the upper bound on the gain falls below the order cost. Against the strong incumbent, even the lower bound exceeds it, so both correct orders must occur. Their beliefs fix preparation. Against the very strong incumbent, the same orders persist, but rival gross profit at the top belief cannot cover the high cost. These strict comparisons fix the equilibrium outcome under every tie rule. Orders reveal a belief about the synergy class, not the class itself.
+
+### What do Q and the dashed curve show on frame 16? — B3
+
+Q is an equilibrium with informed orders in which entry stays at its floor. The dashed curve needs a different tie rule for the rival. Both are in backup B3.
 
 ### Does Proposition 4 give a unique equilibrium? — B12
 
-It gives one research value for the equilibrium where good synergy buys after success and only a purchase recruits the high-cost rival. The spread must exceed twice the order cost, and the purchase belief must reach the threshold at that research value. The root is unique; the whole equilibrium set need not be. Other equilibria can coexist. Research rises strictly with the spread below the cap and stays fixed at the cap. A single interval of strengths needs the paper's extra continuity and recruitment-margin conditions.
+It gives one research value for the equilibrium where the informed trader buys after it learns that the rival is good, and only a purchase recruits the high-cost rival. The spread must exceed twice the order cost, and the top belief must reach the threshold at that research value. The root is unique; the whole equilibrium set need not be. Other equilibria can coexist. Research rises strictly with the spread below the cap and stays fixed at the cap. A single interval of strengths needs the paper's extra continuity and recruitment-margin conditions.
 
 ### Does price access always help sellers? — B4
 
-The strict gain uses Proposition two's conditions at the strong incumbent F one. Both economies have the same full informed orders. Access adds high-cost preparation after purchases, which raises the expected payoff of the target shareholders and net acquisition surplus. Outside that region, the prior can already justify preparation. Price access can then deter preparation after sales and reduce that expected payoff. The paper does not claim a general gain for target shareholders.
+The strict gain uses the conditions of Proposition 2 at the strong incumbent. Both economies have the same full informed orders. Access adds high-cost preparation after purchases, which raises the expected payoff of the target shareholders and net acquisition surplus. Outside that region, the prior can already justify preparation. Price access can then deter preparation after sale orders and reduce that expected payoff. The paper does not claim a general gain for target shareholders.
 
 ### Is the example on a knife edge? — B10
 
 No. The lower condition has a wide margin: the top belief is zero point seven three one against a threshold of zero point seven zero five. The upper condition holds at every strength from the entry ceiling, about three point five nine, up to ten. The very strong incumbent sits at three point six, just above that ceiling, so its margin in belief is small. A stronger third incumbent has a wider margin, and entry is at its floor there too.
 
+### What is e on frame 14? — B10
+
+It is Euler's number. The example sets u to e minus one, so that one plus u equals e.
+
 ### Why record no order? — B13
 
-The order opportunity must exist before we observe its outcome. A purchase, a sale and no order all count as outcomes. No order supplies the reference price for both impacts. A sample of executed trades omits that reference and changes the order frequencies. Fix the opportunity in advance, date it before substantive diligence, and record no order as zero. Public offers measure a narrower outcome than preparation.
+The order opportunity must exist before we observe its outcome. A purchase, a sale order and no order all count as outcomes. No order supplies the reference price for both impacts. A sample of executed trades omits that reference and changes the order frequencies. Fix the opportunity in advance, date it before substantive diligence, and record no order as zero. Public offers measure a narrower outcome than preparation.
