@@ -144,10 +144,10 @@
       x0 *= 100; x *= 100;
       return svg(1320, 215, scale, '<line class="dg-axis" x1="0" y1="90" x2="1300" y2="90"/>' +
         tick(x0, 'dg-tick faded') + arrow(x0 + 10, 120, x - 10, 120) + tick(150) + tick(1150) + tick(x, 'dg-tick accent') +
-        text(150, 152, 'poor-synergy value') + text(1150, 152, 'good-synergy value') + text(x, 200, 'incumbent’s value moves right', { cls: 'dg-accent' }) +
+        text(150, 152, 'low-synergy value') + text(1150, 152, 'high-synergy value') + text(x, 200, 'incumbent’s value moves right', { cls: 'dg-accent' }) +
         brace(155, x - 5, 60, 'info') + text((155 + x - 5) / 2, 38, 'shareholders’ part', { cls: 'dg-info' }) +
         brace(x + 5, 1145, 60, 'cost') + text((x + 5 + 1145) / 2, 38, 'rival’s part', { cls: 'dg-cost' }),
-        'The synergy value gap between the poor-synergy and the good-synergy value, split at the incumbent’s value: the shareholders’ part below it, the rival’s part above it.');
+        'The synergy value gap between the low-synergy and the high-synergy value, split at the incumbent’s value: the shareholders’ part below it, the rival’s part above it.');
     };
 
     var F = [];
@@ -184,10 +184,10 @@
     main({ id: 's3', label: 'S3', num: '3', part: 1, minutes: 2, targets: ['main:s3'], cls: 'sz-n',
       title: 'A stronger incumbent can bring the rival in',
       body: vsp(10) +
-        P('The rival is a good match for the target or a poor one, and it does not know which before diligence. An outside investor knows which, and the target’s stock trades before the rival decides.') +
+        P('The rival has high synergy with the target or low synergy: it is a high rival or a low one. It does not know which before diligence. An outside investor knows which, and the target’s stock trades before the rival decides.') +
         vsp(4) +
-        ol(['<b>The sale.</b> Against a weak incumbent, shareholders are paid almost the same with a good rival and with a poor one. Against a strong incumbent, they can be paid much more with a good rival.',
-          '<b>The trade.</b> The investor’s knowledge can then be worth a trade: a purchase of the target’s stock can&nbsp;pay when the rival is good, even after the cost of the trade.',
+        ol(['<b>The sale.</b> Against a weak incumbent, shareholders are paid almost the same with a high rival and with a low one. Against a strong incumbent, they can be paid much more with a high rival.',
+          '<b>The trade.</b> The investor’s knowledge can then be worth a trade: a purchase of the target’s stock can&nbsp;pay when the rival has high synergy, even after the cost of the trade.',
           '<b>The stock price.</b> A purchase can raise the stock price, so a price rise is good news about the rival.',
           '<b>The rival.</b> It sees the stock price before it pays for diligence. Good news can make costly diligence worthwhile.'], 10, 'steps') +
         takeaway('Against a very strong incumbent, a bid is worth too little to the rival: even the best news in the stock&nbsp;price cannot justify costly diligence.') +
@@ -213,9 +213,9 @@
         deflist([
           ['Sale', 'the seller commits before trade to a cash second-price auction with reserve ' + nw(m('p>0') + '.') + ' The winner pays the larger of the other bid and the reserve. What shareholders are paid is the payoff of the target shareholders.'],
           ['Incumbent', '<b>incumbent bidder, already prepared:</b> no further cost. It knows its value ' + nw(m(T`R\sim F`) + ',') + ' private until bids. ' + m('F') + ' is public and continuous on ' + nw(m(T`[0,\bar r]`) + '.') + ' <b>Stronger</b> ' + m(T`\widetilde F`) + ' (higher values): ' + m(T`\widetilde F(y)\le F(y)`) + ' for all ' + nw(m('y') + '.')],
-          ['Rival', '<b>potential rival bidder:</b> sees the target stock price ' + m('P') + ' (frame 6), then decides whether to prepare. <b>Synergy class</b> ' + nw(m(T`j\in\{H,L\}`) + ':') + ' a good rival is class ' + nw(m('H') + ',') + ' a poor one class ' + nw(m('L') + ';') + ' prior ' + nw(m(T`\pi=\Pr(j=H)\in(0,1)`) + '.') + ' Its value is ' + nw(m(T`\theta\mid j\sim G_j`) + ',') + ' with finite mean. Before it prepares, the rival knows neither ' + m('j') + ' nor ' + nw(m(T`\theta`) + '.')],
-          ['Class ranking', 'good synergy (' + m('H') + ') tends to mean a higher value than poor synergy (' + m('L') + '): ' + m(T`G_H(y)\le G_L(y)`) + ' for all ' + nw(m('y') + '.') + ' Every value meets the reserve ' + nw(m('p') + ':') + ' ' + nw(m(T`G_H(p^-)=G_L(p^-)=0`) + '.') + ' The rival’s identity is public; ' + m('j') + ' is not.'],
-          ['Preparation cost ' + m('C'), 'preparation is diligence: the rival pays ' + nw(m('C') + ',') + ' learns ' + m(T`\theta`) + ' and can bid; otherwise it cannot bid. ' + nw(m(T`\Pr(C=0)=\rho\in(0,1)`) + ':') + ' no diligence cost. Else ' + nw(m('C=c_H>0') + ':') + ' costly diligence, the <b>high-cost rival</b> (' + m('H') + ' for high, not class ' + nw(m('H') + ').') + ' <b>Entry</b> is the probability that the rival prepares; ' + m(T`\rho`) + ' is its floor (frame 8).']], 270, 'small') +
+          ['Rival', '<b>potential rival bidder:</b> sees the target stock price ' + m('P') + ' (frame 6), then decides whether to prepare. <b>Synergy class</b> ' + nw(m(T`j\in\{H,L\}`) + ':') + ' a high rival is class ' + nw(m('H') + ',') + ' a low one class ' + nw(m('L') + ';') + ' prior ' + nw(m(T`\pi=\Pr(j=H)\in(0,1)`) + '.') + ' Its value is ' + nw(m(T`\theta\mid j\sim G_j`) + ',') + ' with finite mean. Before it prepares, the rival knows neither ' + m('j') + ' nor ' + nw(m(T`\theta`) + '.')],
+          ['Class ranking', 'high synergy (' + m('H') + ') tends to mean a higher value than low synergy (' + m('L') + '): ' + m(T`G_H(y)\le G_L(y)`) + ' for all ' + nw(m('y') + '.') + ' Every value meets the reserve ' + nw(m('p') + ':') + ' ' + nw(m(T`G_H(p^-)=G_L(p^-)=0`) + '.') + ' The rival’s identity is public; ' + m('j') + ' is not.'],
+          ['Preparation cost ' + m('C'), 'preparation is diligence: the rival pays ' + nw(m('C') + ',') + ' learns ' + m(T`\theta`) + ' and can bid; otherwise it cannot bid. ' + nw(m(T`\Pr(C=0)=\rho\in(0,1)`) + ':') + ' no diligence cost. Else ' + nw(m('C=c_H>0') + ':') + ' costly diligence, the <b>costly rival</b>. <b>Entry</b> is the probability that the rival prepares; ' + m(T`\rho`) + ' is its floor (frame 8).']], 270, 'small') +
         vfill + ruleL +
         P(m(T`(j,\theta)`) + ', ' + m('R') + ', ' + m('C') + ' and the trading-slot draws (frame 6) are mutually independent. Neither bidder trades target shares. All parameters and distributions on frames 5 and 6 are common knowledge and exogenous; the comparative statics move only ' + nw(m('F') + '.'), 'fs-f') + vsp(4) +
         P(sfb('Endogenous (frame 8):') + ' orders, beliefs, the price, preparation and entry; through entry, the payoffs and who owns the target.', 'fs-f') });
@@ -249,7 +249,7 @@
         ul(['Bids equal values (truthful bids, frame 8). Gross of preparation cost, a winner gets its value minus its payment; a loser gets ' + nw(m('0') + '.') + ' In the draw above, the rival wins and pays ' + nw(m('R') + '.'),
           'Prepared rival with value ' + m(T`\theta\ge p`) + ': expected payoff of the target shareholders ' + m(T`t(\theta)=\mathbb E_R[\max\{p,\min(R,\theta)\}]`) + ' and expected rival gross profit ' + m(T`g(\theta)=\mathbb E_R[\max\{\theta-\max\{p,R\},0\}]`) + ', before ' + m('C') + '. Hence ' + m(T`t(\theta)+g(\theta)=\theta`) + '.',
           'Class means: ' + m(T`t_j=\mathbb E_j[t(\theta)]`) + ', ' + m(T`g_j=\mathbb E_j[g(\theta)]`) + ', with ' + m(T`\mathbb E_j`) + ' under ' + nw(m('G_j') + '.') + ' With no prepared rival, the incumbent pays ' + m('p') + ' if ' + nw(m(T`R\ge p`) + ':') + ' the payoff of the target shareholders is ' + nw(m(T`p\,\mathbf 1\{R\ge p\}`) + ',') + ' with expectation ' + nw(m(T`t_0=p[1-F(p)]`) + '.'),
-          '<b>Shareholder spread:</b> ' + nw(m(T`\Delta_T=t_H-t_L`) + ',') + ' the gap in what shareholders are paid, in expectation, between a prepared good rival and a prepared poor one. <b>Rival gross profit</b> at belief ' + m(T`\mu=\Pr(j=H)`) + ' is ' + nw(m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + ':') + ' what a bid is worth to the rival, before ' + nw(m('C') + '.') + ' The net gain from preparation is ' + nw(m(T`B(\mu)-C`) + '.'),
+          '<b>Shareholder spread:</b> ' + nw(m(T`\Delta_T=t_H-t_L`) + ',') + ' the gap in what shareholders are paid, in expectation, between a prepared high rival and a prepared low one. <b>Rival gross profit</b> at belief ' + m(T`\mu=\Pr(j=H)`) + ' is ' + nw(m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + ':') + ' what a bid is worth to the rival, before ' + nw(m('C') + '.') + ' The net gain from preparation is ' + nw(m(T`B(\mu)-C`) + '.'),
           'The informed trader who submits ' + m('q') + ' (so ' + m('X=q') + ') earns ' + m(T`q[V_T-P(q)]-k|q|`) + '.'], 7) });
 
     main({ id: 's8', label: 'S8', num: '8', part: 2, minutes: 1.5, targets: ['main:s8'],
@@ -258,8 +258,8 @@
         P('Perfect Bayesian equilibrium with competitive (break-even) prices: orders, beliefs, prices and preparation are consistent with each other. An <b>order strategy</b> is the informed trader’s probability of each order in each class.') + vsp(5) +
         deflist([
           ['Beliefs', '<b>order belief</b> (market makers): ' + nw(m(T`\mu(x)=\Pr(j=H\mid X=x)`) + '.') + ' <b>Price belief</b> (rival, at the price ' + m(T`\bar P`) + ' that it sees): ' + nw(m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + ';') + ' it pools all ' + m('x') + ' with ' + nw(m(T`P(x)=\bar P`) + '.') + ' Both follow Bayes’ rule given the order strategy. Good news is a higher belief.'],
-          ['Preparation and bids', 'a rival with ' + nw(m('C=0')) + ' prepares at each price, since rival gross profit is never negative; the high-cost rival prepares at price ' + m(T`\bar P`) + ' if and only if ' + nw(m(T`B(\bar\mu(\bar P))\ge c_H`) + ',') + ' so it prepares when indifferent. Bids are <b>truthful</b>: a prepared rival bids ' + nw(m(T`\theta`) + ',') + ' the incumbent ' + nw(m('R') + '.')],
-          ['Entry', m(T`e(x)=\Pr(\text{rival prepares}\mid X=x)`) + ' depends on ' + m('x') + ' only through ' + nw(m('P(x)') + ':') + ' the rival sees the price, not ' + nw(m('x') + '.') + ' The ' + nw(m('C=0')) + ' rival always prepares, so ' + nw(m(T`e(x)\ge\rho`) + ':') + ' ' + m(T`\rho`) + ' is the entry floor. A purchase <b>recruits</b> when its price brings in the high-cost rival, the rival with costly diligence: ' + nw(m(T`e(1)>\rho`) + '.')],
+          ['Preparation and bids', 'a rival with ' + nw(m('C=0')) + ' prepares at each price, since rival gross profit is never negative; the costly rival prepares at price ' + m(T`\bar P`) + ' if and only if ' + nw(m(T`B(\bar\mu(\bar P))\ge c_H`) + ',') + ' so it prepares when indifferent. Bids are <b>truthful</b>: a prepared rival bids ' + nw(m(T`\theta`) + ',') + ' the incumbent ' + nw(m('R') + '.')],
+          ['Entry', m(T`e(x)=\Pr(\text{rival prepares}\mid X=x)`) + ' depends on ' + m('x') + ' only through ' + nw(m('P(x)') + ':') + ' the rival sees the price, not ' + nw(m('x') + '.') + ' The ' + nw(m('C=0')) + ' rival always prepares, so ' + nw(m(T`e(x)\ge\rho`) + ':') + ' ' + m(T`\rho`) + ' is the entry floor. A purchase <b>recruits</b> when its price brings in the costly rival, the rival with costly diligence: ' + nw(m(T`e(1)>\rho`) + '.')],
           ['Competitive prices', nw(m(T`P(x)=\mathbb{E}[V_T\mid X=x]=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + ':') + ' ' + m('t_0') + ' with no prepared rival, else ' + nw(m(T`t_L+\Delta_T\,\mu(x)`) + '.')],
           ['Orders', 'the informed trader in class ' + m('j') + ' has expected payoff ' + m(T`U_j(q)=q[t_0+e(q)(t_j-t_0)-P(q)]-k|q|`) + ' from order ' + nw(m('q') + ',') + ' where ' + nw(m(T`t_0+e(q)(t_j-t_0)=\mathbb E[V_T\mid j,X=q]`) + ':') + ' at order ' + m('q') + ' it faces the equilibrium price ' + m('P(q)') + ' and entry ' + nw(m('e(q)') + '.') + ' It puts positive probability only on ' + nw(m(T`\arg\max_q U_j(q)`) + ';') + ' it may mix when indifferent.']], 270, 'small') +
         footline('Each slot outcome ' + m('x') + ' has positive probability in each class under liquidity trade, so Bayes’ rule gives ' + m(T`\mu(x)`) + ' at each ' + m('x') + ' and ' + m(T`\bar\mu`) + ' at each price ' + nw(m('P(x)') + '.')) });
@@ -276,10 +276,10 @@
           P('Since both classes meet the reserve almost surely, ' + m(T`\Delta_T(F)+[g_H(F)-g_L(F)]=\mathbb E_H[\theta]-\mathbb E_L[\theta]`) + ', which does not depend on ' + m('F') + '.')) +
         center(dg(gapLine(5.4, 8.2, 0.8))) +
         '<p class="gloss" style="text-align:center">Here each class has one fixed value. The shareholders’ part is the spread ' + nw(m(T`\Delta_T`) + ';') + ' the rival’s part is ' + nw(m('g_H-g_L') + '.') + '</p>' +
-        intuition('A stronger incumbent can send more of what a good rival adds over a poor one to shareholders, and less to the rival.') });
+        intuition('A stronger incumbent can send more of what a high rival adds over a low one to shareholders, and less to the rival.') });
 
     main({ id: 's10', label: 'S10', num: '10', part: 3, minutes: 1, targets: ['main:s10'],
-      title: 'Beliefs stay in a band', subtitle: 'First tool for Proposition 2: how high a belief can go, and how high it must go for high-cost preparation',
+      title: 'Beliefs stay in a band', subtitle: 'First tool for Proposition 2: how high a belief can go, and how high it must go for the costly rival to prepare',
       body: st('Belief bounds',
           P('Define' + m(T`\quad b=(1-\lambda)\beta,\qquad u=\dfrac{\lambda}{b},\qquad m(\pi)=\dfrac{\pi}{\pi+(1-\pi)(1+u)},\qquad M(\pi)=\dfrac{\pi(1+u)}{\pi(1+u)+1-\pi}.`)) +
           gloss('Here ' + m('b') + ' is the probability of a liquidity order in one direction, ' + m('u') + ' the informed presence relative to ' + nw(m('b') + ',') + ' ' + m('m') + ' the band floor, ' + m('M') + ' the top belief.') +
@@ -289,7 +289,7 @@
               d(T`\begin{aligned}&P(x)=P(x')\ \Longrightarrow\ \mu(x)=\mu(x'),\\&\bar\mu(P(x))=\mu(x).\end{aligned}`)]]) +
           cols([[0.46, P('<b>Preparation rule.</b> Define the preparation threshold ' + m(T`\tau=(c_H-g_L)/(g_H-g_L)`) + ', so ' + m(T`B(\mu)\ge c_H\iff\mu\ge\tau`) + '. If an indifferent rival prepares, entry ' + m('e(x)') + ' after order ' + m('x') + ' is')],
             [0.51, d(T`e(x)=\begin{cases}\rho,&\mu(x)<\tau,\\1,&\mu(x)\ge\tau.\end{cases}`)]])) +
-        intuition('An informed order looks like an order of the liquidity trader, so no outcome settles whether the rival is good or poor. With a positive shareholder spread, the price reveals the order belief, never the class.') +
+        intuition('An informed order looks like an order of the liquidity trader, so no outcome settles whether the rival has high or low synergy. With a positive shareholder spread, the price reveals the order belief, never the class.') +
         nav(go('app:b2', 'B2')) });
 
     main({ id: 's11', label: 'S11', num: '11', part: 3, minutes: 1.5, targets: ['main:s11'],
@@ -301,7 +301,7 @@
           gloss('The doubt is the probability that the order belief still puts on the other class after a correct order; ' + m(T`\kappa(\pi)`) + ' is a lower bound on it.') +
           d(T`\rho\kappa(\pi)\Delta_T\le K_j\le\Delta_T\qquad(j\in\{H,L\}).`) +
           P('Net of the order cost, wrong-signed orders give ' + m(T`U_H(-1),U_L(1)\le-k<0`) + '; no order earns zero, gross and net. The informed trader in class ' + m('j') + ' sends the correct order if ' + m('K_j>k') + ' and no order if ' + m('K_j<k') + '. At ' + m('K_j=k') + ', the correct order, no order and every mixture of the two are optimal.')) +
-        intuition('A purchase on a good rival, or a sale order on a poor one, gains entry times spread times doubt, before the cost of the order. The trade pays only if that gain exceeds the cost.') +
+        intuition('A purchase on a high rival, or a sale order on a low one, gains entry times spread times doubt, before the cost of the order. The trade pays only if that gain exceeds the cost.') +
         nav(go('app:b2', 'B2')) });
 
     /* The first column of frame 12 is \sffamily: the step name in bold, its second line in regular sans. */
@@ -310,12 +310,12 @@
       title: 'The mechanism: strength can put good news into the stock price', subtitle: 'The four steps of frame 3 at the three incumbents of Proposition 2 (conditions on frame 13)',
       body: vsp(4) +
         table({ widths: [365, 390, 390, 355], cls: 'stretch-112 mech', head: ['', sfb('Weak incumbent'), sfb('Strong incumbent'), sfb('Very strong incumbent')], rows: [
-          [stepcell('1. The sale', 'what shareholders are paid'), 'almost the same with a good rival and with a poor one', 'much more with a good rival than with a poor one', 'at least as much more with a good rival'],
-          [stepcell('2. The trade', 'by the informed trader'), 'does not pay: that gap is below the cost of the trade', 'pays: buy on a good rival, sell on a poor one', 'still pays, with the same orders'],
+          [stepcell('1. The sale', 'what shareholders are paid'), 'almost the same with a high rival and with a low one', 'much more with a high rival than with a low one', 'at least as much more with a high rival'],
+          [stepcell('2. The trade', 'by the informed trader'), 'does not pay: that gap is below the cost of the trade', 'pays: buy on a high rival, sell on a low one', 'still pays, with the same orders'],
           [stepcell('3. The stock price'), 'carries no news about the rival', 'rises after a purchase: good news about the rival', 'rises after a purchase, with the same good news'],
           [stepcell('4. The rival', 'what a bid is worth to it'), 'too little to justify costly diligence', 'after a price rise, enough to justify costly diligence', 'too little, even after a price rise'],
           { cls: 'sub', cells: ['<span class="sfr step-sub">who prepares a bid</span>', 'only a rival with no diligence cost', 'a rival with costly diligence too, after a price rise', 'only a rival with no diligence cost'] }] }) +
-        takeaway('Strength can make a good rival matter more to shareholders and so put good news into the stock price. At fixed news, it can only lower what a bid is worth to the rival, until even the best news cannot justify costly diligence.') });
+        takeaway('Strength can make a high rival matter more to shareholders and so put good news into the stock price. At fixed news, it can only lower what a bid is worth to the rival, until even the best news cannot justify costly diligence.') });
 
     main({ id: 's13', label: 'S13', num: '13', part: 3, minutes: 1.5, targets: ['main:s13'],
       title: 'Entry can rise from $F_0$ to $F_1$, then fall back to $\\rho$ at $F_2$',
@@ -346,8 +346,8 @@
               ['Rival gross profit at the prior, ' + m('B_r(1/2)'), q('Bprior_r0', 2), q('Bprior_r1_B', 2), q('Bprior_r2', 2)],
               ['Shareholder spread, ' + m(T`\Delta_T(r)`), q('Delta_r0', 3), q('Delta_r1', 3), q('Delta_r2', 3)],
               ['Entry ' + m(T`\mathsf E`), q('entry_r0', 2), '<b>' + q('entry_r1_B', 2) + '</b>', q('entry_r2', 2)],
-              ['Good-synergy ownership', q('own_r0', 3), '<b>' + q('own_r1_B', 3) + '</b>', q('own_r2_B', 3)]] }))]]) +
-        intuition('At each step, a bid is worth less to the rival, and a good rival matters more to shareholders. Entry rises, then falls.') +
+              ['High-synergy ownership', q('own_r0', 3), '<b>' + q('own_r1_B', 3) + '</b>', q('own_r2_B', 3)]] }))]]) +
+        intuition('At each step, a bid is worth less to the rival, and a high rival matters more to shareholders. Entry rises, then falls.') +
         footline('Other inputs: ' + m(T`(\pi,\rho,c_H,k)=({{prim_pi}},{{prim_rho}},{{prim_cH}},{{prim_k}})`) + '; ' + m(T`\beta={{beta_B}}`) + ', which with ' + m(T`u=\lambda/[(1-\lambda)\beta]`) + ' gives informed presence ' + m(T`\lambda={{lambda_B}}`) + '. Ownership: the probability that the rival is in class ' + m('H') + ' and acquires the target. Inputs and regions in full: ' + link('app:b10', 'B10') + '.') +
         nav(go('app:b10', 'B10')) });
 
@@ -386,7 +386,7 @@
               ['Mixed orders at the entry floor', m('(r_N,r_J)'), q('entry_r0', 2)]] }) + '</div>')]]) +
         vsp(4) +
         P('<b>The same in every equilibrium.</b> ' + m(T`\mathsf E\ge\rho`) + ' at every strength. At ' + m('r_0') + ', ' + m('r_1') + ' and ' + m('r_2') + ' the outcome is unique (Proposition 2). <b>In between.</b> Entry exceeds ' + m(T`\rho`) + ' in the informative market from ' + nw(m('r_A') + ',') + ' and in every equilibrium on ' + nw(m('[r_J,r_1]') + '.'), 'fs-f') +
-        footline('Default tie rules: an indifferent informed trader may mix; an indifferent high-cost rival prepares. After no order, entry is ' + m(T`\rho`) + ' in each equilibrium listed.') +
+        footline('Default tie rules: an indifferent informed trader may mix; an indifferent costly rival prepares. After no order, entry is ' + m(T`\rho`) + ' in each equilibrium listed.') +
         nav(go('app:b3', 'B3')) });
 
     main({ id: 's17', label: 'S17', num: '17', part: 5, minutes: 1.5, targets: ['main:s17'],
@@ -399,7 +399,7 @@
             [0.49, P('In it, with ' + m(T`a,k,\rho,\beta,\bar\lambda`) + ' fixed, research ' + m(T`\widehat\lambda`) + ' rises strictly with ' + m(T`\Delta_T`) + ' up to ' + nw(m(T`\bar\lambda`) + ',') + ' then stays there. Total entry is') +
               d(T`\mathsf E=\rho+(1-\rho)[\beta+(1/2-\beta)\widehat\lambda].`) +
               P('Where research rises, ' + m(T`\mathsf E`) + ' and class-' + m('H') + ' entry rise strictly; class-' + m('L') + ' entry falls strictly.')]])) +
-        intuition('A stronger incumbent can raise the reward for finding out whether the rival is good or poor (Proposition 1). Where a purchase brings in a rival with costly diligence, a higher reward means more research before the trade, up to the cap. Where research rises, more of the rivals who prepare a bid are good ones.') +
+        intuition('A stronger incumbent can raise the reward for finding out whether the rival has high or low synergy (Proposition 1). Where a purchase brings in a rival with costly diligence, a higher reward means more research before the trade, up to the cap. Where research rises, more of the rivals who prepare a bid are high rivals.') +
         footline('A trader who learns class ' + m('L') + ' places no order while ' + m(T`\rho\Delta_T\le2k`) + ' and otherwise sells with positive probability (' + link('app:b12', 'B12') + '). Default tie rules and fixed ' + nw(m(T`\lambda`) + ':') + ' ' + link('main:s16', 'frame\u00a016') + '.') +
         nav(go('app:b12', 'B12')) });
 
@@ -409,7 +409,7 @@
           P('Under Proposition 2’s hypotheses, hold the incumbent at ' + m('F_1') + ' (strong) and all other primitives fixed. Compare two economies. With access, the rival sees the price before it decides whether to prepare. With no access, it sees neither the price nor the order. Market makers set a competitive price in both.') +
           P('Let ' + m(T`\mathcal R`) + ' denote the expected payoff of the target shareholders and ' + m(T`\mathcal W`) + ' expected acquisition surplus net of preparation costs (net surplus); superscript ' + m(T`\mathrm a`) + ' is access, ' + m(T`\mathrm n`) + ' is no access. Both economies keep unique <b>full informed orders</b>: class ' + m('H') + ' buys; class ' + m('L') + ' sells. Then') +
           d(T`\mathcal R^{\mathrm a}>\mathcal R^{\mathrm n}\qquad\text{and}\qquad\mathcal W^{\mathrm a}>\mathcal W^{\mathrm n}.`) +
-          P('Access adds high-cost preparation only after a purchase, where rival gross profit at the top belief, ' + m(T`B_1(M(\pi))`) + ', exceeds ' + nw(m('c_H') + '.')) +
+          P('Access adds preparation by the costly rival only after a purchase, where rival gross profit at the top belief, ' + m(T`B_1(M(\pi))`) + ', exceeds ' + nw(m('c_H') + '.')) +
           P('In the example, ' + m(T`\mathcal R`) + ' rises from ' + q('p2_base_hidden_proceeds', 2) + ' to ' + q('p2_base_r1_proceeds', 2) + ' and ' + m(T`\mathcal W`) + ' from ' + q('p2_base_hidden_surplus', 2) + ' to ' + q('p2_base_r1_surplus', 2) + '. The informed trader’s expected gross profit, ' + q('p2_access_gross_transfer', 3) + ', is a transfer from liquidity traders.')) +
         intuition('At the strong incumbent, a rival with costly diligence prepares a bid only after a price rise: only then is a bid worth the cost. So shareholders are paid more in expectation when the rival can see the stock price before it commits.') +
         footline('Exact differences, example values, and the paper’s separate payment-rule and reserve comparisons: ' + link('app:b4', 'B4') + '.') +
@@ -434,7 +434,7 @@
               d(T`\bar f(1)I_+-\bar f(-1)I_->0\quad\Longleftrightarrow\quad e(1)>\rho.`) +
               P('At ' + m(T`\pi=1/2`) + ', ' + m(T`\bar f(1)=\bar f(-1)`) + ', so') + d(T`I_+>I_-\quad\Longleftrightarrow\quad e(1)>\rho.`)]]) +
           P('Equivalent form: ' + nw(m(T`\bar f(1)I_+-\bar f(-1)I_-=\mathbb E[P(X)]-P(0)`) + '.') + ' The no-order price is below the mean price exactly when a purchase recruits.')) +
-        intuition('A purchase is good news about the rival’s quality; a sale order is bad news. If a purchase also brings in a rival with costly diligence, it adds the entry part. Weighted by frequency, it then moves the price more than a sale order, and only then.') +
+        intuition('A purchase is good news about the rival’s synergy; a sale order is bad news. If a purchase also brings in a rival with costly diligence, it adds the entry part. Weighted by frequency, it then moves the price more than a sale order, and only then.') +
         footline('Without recruitment, orders predict the winner when a prepared class-' + m('H') + ' rival wins more often than a class-' + m('L') + ' one: ' + link('app:b13', 'B13') + '. Empirical slot: fixed in advance, such as the opening auction on the first trading day after the sale is public; record no order as ' + nw(m('x=0') + '.')) +
         nav(go('app:b13', 'B13')) });
 
@@ -458,17 +458,17 @@
     var B = function (t) { return nav(back(t)); };
 
     bk({ id: 'b1', label: 'B1', targets: ['app:b1'], cls: 'sz-f', title: 'Proposition 2 in exact form',
-      body: ul(['Setup: the synergy distributions satisfy the class ranking (good synergy first-order dominates poor synergy; each value meets the reserve ' + m('p') + ') and have finite means. The incumbent’s value distribution ' + m('F') + ' is continuous on ' + m(T`[0,\bar r]`) + ', with finite upper bound ' + m(T`\bar r`) + '. Distributions ' + m('F_0') + ', ' + m('F_1') + ', ' + m('F_2') + ' satisfy ' + m(T`F_2\le F_1\le F_0`) + ', so each step is a first-order stochastic strengthening. Fixed: prior ' + m(T`\pi`) + ', entry floor ' + m(T`\rho`) + ' and presence ' + m(T`\lambda`) + ', each in ' + m('(0,1)') + '; liquidity chance ' + m(T`\beta\in(0,1/2)`) + '; high cost ' + m('c_H>0') + '; order cost ' + m('k>0') + '. Write ' + m(T`b=(1-\lambda)\beta`) + ' for the probability of a liquidity order in one direction, and ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ' for the common lower bound on the doubt, with band floor ' + m(T`m(\pi)`) + ' and top belief ' + m(T`M(\pi)`) + '.',
+      body: ul(['Setup: the synergy distributions satisfy the class ranking (high synergy first-order dominates low synergy; each value meets the reserve ' + m('p') + ') and have finite means. The incumbent’s value distribution ' + m('F') + ' is continuous on ' + m(T`[0,\bar r]`) + ', with finite upper bound ' + m(T`\bar r`) + '. Distributions ' + m('F_0') + ', ' + m('F_1') + ', ' + m('F_2') + ' satisfy ' + m(T`F_2\le F_1\le F_0`) + ', so each step is a first-order stochastic strengthening. Fixed: prior ' + m(T`\pi`) + ', entry floor ' + m(T`\rho`) + ' and presence ' + m(T`\lambda`) + ', each in ' + m('(0,1)') + '; liquidity chance ' + m(T`\beta\in(0,1/2)`) + '; high cost ' + m('c_H>0') + '; order cost ' + m('k>0') + '. Write ' + m(T`b=(1-\lambda)\beta`) + ' for the probability of a liquidity order in one direction, and ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ' for the common lower bound on the doubt, with band floor ' + m(T`m(\pi)`) + ' and top belief ' + m(T`M(\pi)`) + '.',
           'With ' + m('B_i') + ' rival gross profit and ' + m(T`\Delta_i`) + ' shareholder spread ' + m(T`\Delta_T`) + ' against ' + m('F_i') + ': (H1) ' + m(T`B_0(\pi)<c_H<B_1(M(\pi))`) + '. (H2) ' + m(T`\Delta_0<k<\rho\,\kappa(\pi)\,\Delta_1`) + '. (H3) ' + m(T`B_2(M(\pi))<c_H`) + '.',
-          'Weak ' + m('F_0') + ': informed orders ' + m('(0,0)') + ' by synergy class (good, poor); belief ' + m(T`\mu(x)=\pi`) + ' after each order ' + m('x') + '; entry ' + m(T`e(x)=\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; one stock price. Strong ' + m('F_1') + ': orders ' + m('(1,-1)') + '; beliefs after a sale, no order, a purchase are ' + m(T`(m(\pi),\pi,M(\pi))`) + '; entry is ' + m(T`(\rho,\rho,1)`) + '; prices rise strictly; total entry is ' + m(T`\rho+(1-\rho)(b+\pi\lambda)>\rho`) + '; entry under good synergy is ' + m(T`\rho+(1-\rho)(b+\lambda)`) + ', and under poor synergy ' + m(T`\rho+(1-\rho)b`) + '. Very strong ' + m('F_2') + ': orders and beliefs as at ' + m('F_1') + '; entry ' + m(T`\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; three distinct prices.',
-          'Ownership: ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ' is the win chance of a prepared rival in case ' + m('j') + ', where ' + m(T`\theta`) + ' is its value and the indicator ' + m(T`\mathbf{1}\{\theta\ge p\}`) + ' equals one when the value meets the reserve ' + m('p') + ', and zero otherwise. Good-synergy ownership rises from ' + m('F_0') + ' to ' + m('F_1') + ' exactly when ' + m(T`e_H W_H(F_1)>\rho\,W_H(F_0)`) + ', with ' + m('e_H') + ' entry under good synergy at ' + m('F_1') + '. If ' + m('W_H(F_1)=1') + ', good-synergy ownership rises from ' + m(T`\pi\rho`) + ' to ' + m(T`\pi e_H`) + ', and the good-synergy share of rival wins rises strictly exactly when ' + m('W_L(F_0)>0') + '.',
+          'Weak ' + m('F_0') + ': informed orders ' + m('(0,0)') + ' by synergy class (high, low); belief ' + m(T`\mu(x)=\pi`) + ' after each order ' + m('x') + '; entry ' + m(T`e(x)=\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; one stock price. Strong ' + m('F_1') + ': orders ' + m('(1,-1)') + '; beliefs after a sale, no order, a purchase are ' + m(T`(m(\pi),\pi,M(\pi))`) + '; entry is ' + m(T`(\rho,\rho,1)`) + '; prices rise strictly; total entry is ' + m(T`\rho+(1-\rho)(b+\pi\lambda)>\rho`) + '; entry under high synergy is ' + m(T`\rho+(1-\rho)(b+\lambda)`) + ', and under low synergy ' + m(T`\rho+(1-\rho)b`) + '. Very strong ' + m('F_2') + ': orders and beliefs as at ' + m('F_1') + '; entry ' + m(T`\rho`) + ' after each order; total entry ' + m(T`\rho`) + '; three distinct prices.',
+          'Ownership: ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ' is the win chance of a prepared rival in case ' + m('j') + ', where ' + m(T`\theta`) + ' is its value and the indicator ' + m(T`\mathbf{1}\{\theta\ge p\}`) + ' equals one when the value meets the reserve ' + m('p') + ', and zero otherwise. High-synergy ownership rises from ' + m('F_0') + ' to ' + m('F_1') + ' exactly when ' + m(T`e_H W_H(F_1)>\rho\,W_H(F_0)`) + ', with ' + m('e_H') + ' entry under high synergy at ' + m('F_1') + '. If ' + m('W_H(F_1)=1') + ', high-synergy ownership rises from ' + m(T`\pi\rho`) + ' to ' + m(T`\pi e_H`) + ', and the high-synergy share of rival wins rises strictly exactly when ' + m('W_L(F_0)>0') + '.',
           'The outcome in each economy is unique under each of the four tie-rule pairs. With the example synergy values and reserve of ' + link('main:s14', 'frame 14') + ', (H1) to (H3) hold together on an open set of inputs.'], 0) +
         B('main:s13') }, 'main:s13');
 
     var returns = function () { return nav(back('main:s10', '10'), back('main:s11', '11'), back('main:s13', '13')); };
     bk({ id: 'b2', label: 'B2', targets: ['app:b2'], title: 'Why each outcome is unique', subtitle: 'Posterior bounds, entry and prices',
-      body: ul(['<b>Lemma A.1</b> (order probabilities and beliefs), for any order strategy: each order has positive probability in each synergy class. For a sale or a purchase, the chance of that order in class ' + m('j') + ' lies between ' + m('b') + ' and ' + m(T`b+\lambda`) + ', where ' + m(T`b=(1-\lambda)\beta`) + ' is the probability of a liquidity order in one direction and ' + m(T`\lambda`) + ' is presence. With ' + m(T`u=\lambda/b`) + ', each nonzero order has likelihood ratio between ' + m('1/(1+u)') + ' and ' + m('1+u') + ', so the belief ' + m(T`\mu`) + ' after that order lies in ' + m(T`[m(\pi),M(\pi)]`) + ', where ' + m(T`M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]`) + ' and ' + m(T`m(\pi)=\pi/[\pi+(1-\pi)(1+u)]`) + '. The no-order case lies in the same band when ' + m(T`\beta\le1/3`) + '. Under full orders, good synergy buys and poor synergy sells, the beliefs after a sale, no order, a purchase are ' + m(T`(m(\pi),\pi,M(\pi))`) + '. A belief at a price lies between the smallest and largest beliefs of the orders with that price.',
-          '<b>Lemma A.2</b> (entry and prices): entry ' + m(T`e(x)\ge\rho`) + ' after each order ' + m('x') + ', with entry floor ' + m(T`\rho\in(0,1)`) + '. The price after order ' + m('x') + ' is ' + m(T`P(x)=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + ', with payoff ' + m('t_0') + ' without entry and ' + m('t_L') + ' under poor synergy. When ' + m(T`\Delta_T>0`) + ' and rival gross profit rises with the belief ' + m(T`\mu`) + ', equal prices give equal beliefs, so the price reveals ' + m(T`\mu(x)`) + '; entry is ' + m(T`\rho`) + ' when ' + m(T`\mu(x)<\tau`) + ' and ' + m('1') + ' when ' + m(T`\mu(x)\ge\tau`) + ', with threshold ' + m(T`\tau`) + ' (at ' + m(T`\mu(x)=\tau`) + ', any entry in ' + m(T`[\rho,1]`) + ' can hold when an indifferent high-cost rival may prepare with any probability); prices rise strictly with ' + m(T`\mu`) + '.'], 21) +
+      body: ul(['<b>Lemma A.1</b> (order probabilities and beliefs), for any order strategy: each order has positive probability in each synergy class. For a sale or a purchase, the chance of that order in class ' + m('j') + ' lies between ' + m('b') + ' and ' + m(T`b+\lambda`) + ', where ' + m(T`b=(1-\lambda)\beta`) + ' is the probability of a liquidity order in one direction and ' + m(T`\lambda`) + ' is presence. With ' + m(T`u=\lambda/b`) + ', each nonzero order has likelihood ratio between ' + m('1/(1+u)') + ' and ' + m('1+u') + ', so the belief ' + m(T`\mu`) + ' after that order lies in ' + m(T`[m(\pi),M(\pi)]`) + ', where ' + m(T`M(\pi)=\pi(1+u)/[\pi(1+u)+1-\pi]`) + ' and ' + m(T`m(\pi)=\pi/[\pi+(1-\pi)(1+u)]`) + '. The no-order case lies in the same band when ' + m(T`\beta\le1/3`) + '. Under full orders, high synergy buys and low synergy sells, the beliefs after a sale, no order, a purchase are ' + m(T`(m(\pi),\pi,M(\pi))`) + '. A belief at a price lies between the smallest and largest beliefs of the orders with that price.',
+          '<b>Lemma A.2</b> (entry and prices): entry ' + m(T`e(x)\ge\rho`) + ' after each order ' + m('x') + ', with entry floor ' + m(T`\rho\in(0,1)`) + '. The price after order ' + m('x') + ' is ' + m(T`P(x)=t_0+e(x)[t_L-t_0+\Delta_T\,\mu(x)]`) + ', with payoff ' + m('t_0') + ' without entry and ' + m('t_L') + ' under low synergy. When ' + m(T`\Delta_T>0`) + ' and rival gross profit rises with the belief ' + m(T`\mu`) + ', equal prices give equal beliefs, so the price reveals ' + m(T`\mu(x)`) + '; entry is ' + m(T`\rho`) + ' when ' + m(T`\mu(x)<\tau`) + ' and ' + m('1') + ' when ' + m(T`\mu(x)\ge\tau`) + ', with threshold ' + m(T`\tau`) + ' (at ' + m(T`\mu(x)=\tau`) + ', any entry in ' + m(T`[\rho,1]`) + ' can hold when an indifferent costly rival may prepare with any probability); prices rise strictly with ' + m(T`\mu`) + '.'], 21) +
         returns() }, 'main:s10');
 
     var proofFlow = '<div class="pflow">' + [
@@ -479,7 +479,7 @@
         return (i ? '<span class="farrow" aria-hidden="true"></span>' : '') + '<div class="fbox pbox' + (i === 3 ? ' cost' : '') + '"><span class="ptag">' + (i + 1) + '</span>' + b[0] + '<br>' + b[1] + '</div>';
       }).join('') + '</div>';
     bk({ id: 'b2b', label: 'B2b', cls: 'sz-f', title: 'Why each outcome is unique', subtitle: 'Trading bounds and the four-step proof',
-      body: ul(['<b>Lemma A.3</b> (informed trading): the gain before order cost ' + m('k') + ' from a correct purchase under good synergy is ' + m(T`K_H=e(1)\,\Delta_T\,[1-\mu(1)]`) + '; from a correct sale under poor synergy, ' + m(T`K_L=e(-1)\,\Delta_T\,\mu(-1)`) + '. Under every order strategy, ' + m(T`\rho\,\Delta_T[1-M(\pi)]\le K_H\le\Delta_T`) + ' and ' + m(T`\rho\,\Delta_T\,m(\pi)\le K_L\le\Delta_T`) + '. With ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ', each gain lies between ' + m(T`\rho\,\kappa(\pi)\,\Delta_T`) + ' and ' + m(T`\Delta_T`) + '; the purchase bound uses ' + m(T`1-M(\pi)`) + ' and the sale bound uses ' + m(T`m(\pi)`) + '. A wrong-signed order earns at most ' + m('-k') + '. Good synergy buys when ' + m('K_H>k') + ' and stays out when ' + m('K_H<k') + '; poor synergy compares ' + m('K_L') + ' with ' + m('k') + ' in the same way.',
+      body: ul(['<b>Lemma A.3</b> (informed trading): the gain before order cost ' + m('k') + ' from a correct purchase under high synergy is ' + m(T`K_H=e(1)\,\Delta_T\,[1-\mu(1)]`) + '; from a correct sale under low synergy, ' + m(T`K_L=e(-1)\,\Delta_T\,\mu(-1)`) + '. Under every order strategy, ' + m(T`\rho\,\Delta_T[1-M(\pi)]\le K_H\le\Delta_T`) + ' and ' + m(T`\rho\,\Delta_T\,m(\pi)\le K_L\le\Delta_T`) + '. With ' + m(T`\kappa(\pi)=\min\{m(\pi),1-M(\pi)\}`) + ', each gain lies between ' + m(T`\rho\,\kappa(\pi)\,\Delta_T`) + ' and ' + m(T`\Delta_T`) + '; the purchase bound uses ' + m(T`1-M(\pi)`) + ' and the sale bound uses ' + m(T`m(\pi)`) + '. A wrong-signed order earns at most ' + m('-k') + '. High synergy buys when ' + m('K_H>k') + ' and stays out when ' + m('K_H<k') + '; low synergy compares ' + m('K_L') + ' with ' + m('k') + ' in the same way.',
           'Four-step proof: 1. Weak: each gain is at most ' + m(T`\Delta_T`) + ', below ' + m('k') + ', so no informed order; the belief stays at the prior; entry stays at ' + m(T`\rho`) + '. 2. Strong: each gain is at least ' + m(T`\rho\,\kappa(\pi)\,\Delta_T`) + ', above ' + m('k') + ', so full orders hold under every candidate; beliefs are ' + m(T`(m(\pi),\pi,M(\pi))`) + '. 3. A purchase reaches ' + m(T`M(\pi)`) + ', rival gross profit there strictly exceeds the high cost, so entry after a purchase is ' + m('1') + '; after other orders entry stays at ' + m(T`\rho`) + '. 4. Very strong: full orders stay, but rival gross profit at ' + m(T`M(\pi)`) + ' falls short of the high cost, so entry returns to ' + m(T`\rho`) + ' after each order.'], 14) +
         vsp(21) + center(dg(proofFlow)) + vsp(14) +
         P('Each comparison is strict, so the outcome is the same under every tie rule.', 'fs-s') +
@@ -489,7 +489,7 @@
       body: cols([[0.29, vsp(7) + fig('region', 'Figure. The coexistence region at the prior in the plane of the shareholder spread and the threshold, with the path of the example; arrow keys move the cursor.')],
           [0.69, '<div class="fs-f">' + d(T`\pi<\tau\le M(\pi),\qquad \frac{k}{1-\tau}\ \le\ \Delta_T\ \le\ \frac{k}{\rho\max\{\pi,1-\pi\}}`) +
             ul(['Inside this region, two markets coexist. Uninformative market: no informed trade, one price, entry ' + m(T`\rho`) + '. Informative market: only a purchase recruits, and entry is' + d(T`\rho+(1-\rho)\min\Bigl\{\frac{(1-\pi)\,b\,\Delta_T}{k},\ b+\pi\lambda\Bigr\}`),
-              'Entry in the informative market rises strictly with ' + m(T`\Delta_T`) + ' while the informed trader mixes on good synergy. Entry stays flat once the informed trader buys for sure on good synergy. The informative market is unique inside the region.',
+              'Entry in the informative market rises strictly with ' + m(T`\Delta_T`) + ' while the informed trader mixes on high synergy. Entry stays flat once the informed trader buys for sure on high synergy. The informative market is unique inside the region.',
               'Self-confirming logic, market by market. Expect no recruitment: one order earns at most the floor return, so silence pays. Expect recruitment: a purchase lifts entry, so trade pays.'], 4) + '</div>']]) +
         smallline('Scope: synergy ranking, ' + m(T`\Delta_T>0`) + ', ' + m('g_H>g_L') + ', default tie rules. In general, strengths with coexistence need not form one interval. Interval results: Backup B3, page 3.') +
         takeaway('Between the Proposition 2 economies, an uninformative and an informative equilibrium can coexist at one strength.') +
@@ -499,7 +499,7 @@
       body: center(fig('coex', 'Figure. Entry against strength in each equilibrium of the example: the whole path (a) and the strengths from r_A to past r_S (c), with the coexistence band; arrow keys move the cursor.', 'coexfig')) +
         P('Entry against strength ' + m('r') + '. Shaded band: coexistence interval ' + m('[r_A,r_N]') + '.', 'fs-f') +
         ul(['Informative entry starts at ' + m(T`{{entry_rA_B}}`) + ' when ' + m(T`r_A\approx{{rA|3}}`) + ' opens the band. Uninformative entry stays at ' + m(T`{{entry_r0}}`) + '.',
-          'Informative entry rises to ' + m(T`{{entry_plateau_B}}`) + ' at ' + m(T`r_F\approx{{rF_B|3}}`) + ', where the informed trader buys for sure on good synergy. Informative entry then stays flat.',
+          'Informative entry rises to ' + m(T`{{entry_plateau_B}}`) + ' at ' + m(T`r_F\approx{{rF_B|3}}`) + ', where the informed trader buys for sure on high synergy. Informative entry then stays flat.',
           'The uninformative market holds through ' + m(T`r_N\approx{{rN|3}}`) + '. Informative entry holds through ' + m('r_C') + ', then drops to its floor.'], 0, 'fs-f') +
         takeaway('Along one path, entry can climb, sit flat, then fall, with a jump when the informative market opens.') +
         footline('Full equilibrium list and marked strengths ' + m('r_J') + ', ' + m('r_S') + ': Backup B3, page 3.') +
@@ -511,7 +511,7 @@
           [m('r_F'), m(T`{{rF_B}}`), 'first strength with a certain purchase in it'],
           [m('r_N'), m(T`{{rN}}`), 'last strength with an uninformative market'],
           [m('r_J'), m(T`{{rJ}}`), 'the full purchase is alone from here'],
-          [m('r_S'), m(T`{{rS_B}}`), 'the informed trader sells for certain on poor synergy from here'],
+          [m('r_S'), m(T`{{rS_B}}`), 'the informed trader sells for certain on low synergy from here'],
           [m('r_C'), m(T`{{rC_B}}`), 'entry ceiling: the top belief stops short of ' + m('c_H') + ' above ' + m('r_C')]] })) +
         ul(['Before ' + m('r_A') + ', a purchase cannot pay at any mix rate, so no informative market exists',
           'On ' + m('[r_A,r_F)') + ', the mix rate adjusts with strength and entry rises with it',
@@ -529,15 +529,15 @@
         smallline('Scope: inside the recruitment region, where the high cost does not pay at the prior. Outside that region, an informative price can deter preparation after a sale. Detail: Backup B4, page 2.') +
         ruleL +
         P('<b>Payment rule (separate bargaining set-up: zero reserve, point-mass classes, ' + m('R<h') + ').</b> Competition moves the spread with the sign of ' + m(T`1-2\omega`) + ', where ' + m(T`\omega`) + ' is seller bargaining weight. Second price is ' + m(T`\omega=0`) + ': full weight on the runner-up bid.') +
-        P('<b>Reserve.</b> A reserve that excludes poor synergy can make the price informative at both strengths. Entry then sits flat in strength. Strict deterrence needs still more.') +
+        P('<b>Reserve.</b> A reserve that excludes low synergy can make the price informative at both strengths. Entry then sits flat in strength. Strict deterrence needs still more.') +
         takeaway('Sale terms set the payment to win and the information in the stock price before entry.') +
         B('main:s18') }, 'main:s18');
 
     bk({ id: 'b4b', label: 'B4b', title: 'Price access and sale terms', subtitle: 'Sale terms in full: access, payment rule, reserves',
       body: ul(['<b>Price access (A.7):</b> at ' + m('r_1') + ', the payoff gain equals ' + m(T`{{p2_access_proceeds_gain}}`) + ' and net surplus gain equals ' + m(T`{{p2_access_surplus_gain}}`),
           'Orders and trade costs are the same in the two access cases at ' + m('r_1') + '. Access adds preparation only after a purchase',
-          '<b>Reserve (A.9):</b> at the reserve ' + m(T`{{rsv_points_excl}}`) + ', which excludes poor synergy, full orders hold at both strengths and entry is flat',
-          'Strict deterrence needs reserve ' + m(T`{{rsv_deter}}`) + ', a level that excludes poor synergy and the weak incumbent',
+          '<b>Reserve (A.9):</b> at the reserve ' + m(T`{{rsv_points_excl}}`) + ', which excludes low synergy, full orders hold at both strengths and entry is flat',
+          'Strict deterrence needs reserve ' + m(T`{{rsv_deter}}`) + ', a level that excludes low synergy and the weak incumbent',
           '<b>Payment rule (A.8):</b> zero reserve, point-mass classes, ' + m('R<h') + '. With seller share ' + m(T`\omega`) + ', the spread is ' + m(T`\Delta_\omega=\omega(h-\ell)+(1-2\omega)\mathbb{E}[(R-\ell)_+]`) + ', so its response weakly has the sign of ' + m(T`1-2\omega`) + '; strictly when ' + m(T`\omega\ne1/2`) + ' and ' + m(T`\mathbb{E}[(R-\ell)_+]`) + ' changes strictly'], 14) +
         vsp(7) +
         P('Exact differences at ' + m('F_1') + ', with ' + m(T`\mathcal R`) + ' the expected payoff of the target shareholders and ' + m(T`\mathcal W`) + ' expected surplus net of preparation costs; superscripts ' + m(T`\mathrm a`) + ' price access, ' + m(T`\mathrm n`) + ' neither price nor order:', 'fs-f') +
@@ -549,7 +549,7 @@
       body: vsp(35) +
         ul(['The informed trader is an outside investor with sector expertise. It holds no net position in the target before trade. It has no control rights, and it cannot acquire the target.',
           'Its information concerns the rival’s synergy class. It forms that view from its own research on the target’s customers, technology, and demand.',
-          'It observes the synergy class, good synergy (' + m('H') + ') or poor synergy (' + m('L') + '). It gets no further news about the rival’s value. In the point-value example, the class fixes the value.',
+          'It observes the synergy class, high synergy (' + m('H') + ') or low synergy (' + m('L') + '). It gets no further news about the rival’s value. In the point-value example, the class fixes the value.',
           'Neither bidder trades target shares. The informed trader stands outside the sale and earns only its trading payoff: the target shareholders’ payoff per share minus the stock price on a purchase, the reverse on a sale, less order cost ' + m('k') + ' on a nonzero order.'], 42) +
         B('main:s6') }, 'main:s6');
 
@@ -583,11 +583,11 @@
     var row = function (cells, cls) { return '<tr' + (cls ? ' class="' + cls + '"' : '') + '>' + cells.map(function (c, i) { return '<td' + (i > 2 ? ' class="c"' : '') + '>' + c + '</td>'; }).join('') + '</tr>'; };
     bk({ id: 'b6c', label: 'B6c', title: 'Scope',
       body: center('<table class="tj fs-x stretch-100 econ"><thead><tr class="panel"><th colspan="9"><em>Panel A. Primitives</em></th></tr>' +
-          '<tr><th>Economy</th><th>Poor synergy</th><th>Good synergy</th><th class="c">' + m(T`\pi`) + '</th><th class="c">' + m('c_H') + '</th><th class="c">' + m('k') + '</th><th class="c">' + m('r_0') + '</th><th class="c">' + m('r_1') + '</th><th class="c">' + m('r_2') + '</th></tr></thead><tbody>' +
+          '<tr><th>Economy</th><th>Low synergy</th><th>High synergy</th><th class="c">' + m(T`\pi`) + '</th><th class="c">' + m('c_H') + '</th><th class="c">' + m('k') + '</th><th class="c">' + m('r_0') + '</th><th class="c">' + m('r_1') + '</th><th class="c">' + m('r_2') + '</th></tr></thead><tbody>' +
           row(econ('Moderate gap', 'moderate', false, false, true)) + row(econ('Narrow bands', 'bands', true, true)) + row(econ('Low prior', 'ex_a')) +
           row(econ('High prior', 'ex_b')) + row(econ('Wide classes', 'ex_c', true, true)) + row(econ('Same means, points', 'ex_d')) +
           '<tr class="mid"><td colspan="9"><em>Panel B. Outcomes</em></td></tr>' +
-          '<tr><td>Economy</td><td class="c">Entry ' + m(T`\mathsf{E}_0`) + '</td><td class="c">Entry ' + m(T`\mathsf{E}_1`) + '</td><td colspan="6">Good-synergy ownership ' + m(T`\mathsf{O}_{H,1}`) + '</td></tr>' +
+          '<tr><td>Economy</td><td class="c">Entry ' + m(T`\mathsf{E}_0`) + '</td><td class="c">Entry ' + m(T`\mathsf{E}_1`) + '</td><td colspan="6">High-synergy ownership ' + m(T`\mathsf{O}_{H,1}`) + '</td></tr>' +
           out('Moderate gap', 'moderate').replace('<tr>', '<tr class="mid">') + out('Narrow bands', 'bands') + out('Low prior', 'ex_a') + out('High prior', 'ex_b') + out('Wide classes', 'ex_c') + out('Same means, points', 'ex_d') +
           '</tbody></table>') +
         B('main:s13') }, 'main:s13');
@@ -612,9 +612,9 @@
         d(T`t(\theta)=\mathbb{E}_R\bigl[\max\{p,\min(R,\theta)\}\bigr],\qquad g(\theta)=\mathbb{E}_R\bigl[(\theta-\max\{p,R\})_+\bigr],\qquad t(\theta)+g(\theta)=\theta`) +
         P(m(T`\mathbb{E}_R`) + ' averages over the incumbent’s value ' + m(T`R\sim F`) + '.', 'fs-s') +
         ul(['Synergy means: ' + m(T`t_j=\mathbb{E}_j[t(\theta)]`) + ' and ' + m(T`g_j=\mathbb{E}_j[g(\theta)]`) + ' for ' + m(T`j\in\{H,L\}`) + '. Without entry, ' + m(T`t_0=p[1-F(p)]`) + '.',
-          'Shareholder spread: ' + m(T`\Delta_T=t_H-t_L`) + '. Read it as: how much more shareholders get with good synergy than with poor synergy.',
+          'Shareholder spread: ' + m(T`\Delta_T=t_H-t_L`) + '. Read it as: how much more shareholders get with high synergy than with low synergy.',
           'At belief ' + m(T`\mu=\Pr(H)`) + ', expected rival gross profit is ' + m(T`B(\mu)=g_L+\mu(g_H-g_L)`) + '.',
-          'Win chance: ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf 1\{\theta\ge p\}]`) + '. A good-synergy rival outbids ' + m('F') + ' when ' + m('W_H(F)=1') + '.'], 10) +
+          'Win chance: ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf 1\{\theta\ge p\}]`) + '. A high-synergy rival outbids ' + m('F') + ' when ' + m('W_H(F)=1') + '.'], 10) +
         takeaway('The traded claim and the rival’s claim sum to the same value. Strength moves the split.') +
         B('main:s9') }, 'main:s9');
 
@@ -637,7 +637,7 @@
         B('main:s9') }, 'main:s9');
 
     bk({ id: 'b9', label: 'B9', targets: ['app:b9'], cls: 'sz-f', title: 'Equilibrium in full',
-      body: ul(['Tuple: ' + m(T`\mathcal{E}=(\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)`) + ', with truthful bids. Order distribution in class ' + m('j') + ': ' + m(T`\sigma_j`) + ' on ' + m(T`\{-1,0,1\}`) + '. Order belief: ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + '. Stock price after order ' + m('x') + ': ' + m('P(x)') + '. Belief at a price: ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + '. High-cost preparation probability at price ' + m(T`\bar P`) + ': ' + m(T`\zeta(\bar P)`) + '. Cost ' + m('C=0') + ' prepares at each price.',
+      body: ul(['Tuple: ' + m(T`\mathcal{E}=(\sigma_H,\sigma_L,\mu,P,\bar\mu,\zeta)`) + ', with truthful bids. Order distribution in class ' + m('j') + ': ' + m(T`\sigma_j`) + ' on ' + m(T`\{-1,0,1\}`) + '. Order belief: ' + m(T`\mu(x)=\Pr(j=H\mid X=x)`) + '. Stock price after order ' + m('x') + ': ' + m('P(x)') + '. Belief at a price: ' + m(T`\bar\mu(\bar P)=\Pr(j=H\mid P(X)=\bar P)`) + '. Preparation probability of the costly rival at price ' + m(T`\bar P`) + ': ' + m(T`\zeta(\bar P)`) + '. Cost ' + m('C=0') + ' prepares at each price.',
           'Liquidity probabilities: ' + m(T`\eta(-1)=\eta(1)=\beta`) + ' and ' + m(T`\eta(0)=1-2\beta`) + '. Order probability in class ' + m('j') + ': ' + m(T`f_j(x)=(1-\lambda)\eta(x)+\lambda\sigma_j(x)`) + ', with presence ' + m(T`\lambda`) + '. Entry after order ' + m('x') + ': ' + m(T`e(x)=\rho+(1-\rho)\zeta(P(x))`) + ', with entry floor ' + m(T`\rho`) + '.',
           '(E1) Order beliefs by Bayes’ rule: ' + m(T`\mu(x)=\pi f_H(x)/[\pi f_H(x)+(1-\pi)f_L(x)]`) + ' after each order ' + m('x') + ', with prior ' + m(T`\pi`) + '.',
           '(E2) Beliefs at a price by Bayes’ rule: ' + m(T`\bar\mu(\bar P)=\pi\sum_{x:\,P(x)=\bar P}f_H(x)\big/\sum_{x:\,P(x)=\bar P}[\pi f_H(x)+(1-\pi)f_L(x)]`) + ' at each price ' + m(T`\bar P`) + ' that occurs.',
@@ -650,9 +650,9 @@
 
     bk({ id: 'b10', label: 'B10', targets: ['app:b10'], title: 'The example in full',
       body: cols([[0.43, table({ widths: [null, 175, 255], cls: 'fs-x stretch-110', head: ['Input', 'Value', 'Meaning'], rows: [
-            [m('h') + ', ' + m(T`\ell`), m(T`{{prim_h}}`) + ', ' + m(T`{{prim_ell}}`), 'good-synergy and poor-synergy values'],
+            [m('h') + ', ' + m(T`\ell`), m(T`{{prim_h}}`) + ', ' + m(T`{{prim_ell}}`), 'high-synergy and low-synergy values'],
             [m('p'), m(T`{{prim_p}}`), 'reserve price'],
-            [m(T`\pi`) + ', ' + m(T`\rho`), m(T`{{prim_pi}}`) + ', ' + m(T`{{prim_rho}}`), 'prior on good synergy; probability of zero cost'],
+            [m(T`\pi`) + ', ' + m(T`\rho`), m(T`{{prim_pi}}`) + ', ' + m(T`{{prim_rho}}`), 'prior on high synergy; probability of zero cost'],
             ['Costs ' + m('0') + ', ' + m('c_H') + ', ' + m('k'), m('0') + ', ' + m(T`{{prim_cH}}`) + ', ' + m(T`{{prim_k}}`), 'preparation costs; cost of a nonzero order'],
             [m(T`\beta`) + ', ' + m(T`\lambda`), m(T`{{beta_B}}`) + ', ' + m(T`{{lambda_B}}`), 'liquidity order chance; informed presence chance'],
             [m('u') + ', ' + m('b'), m(T`{{u_B}}`) + ', ' + m(T`{{b_B}}`), 'informed presence relative to ' + nw(m('b') + ',') + ' ' + m(T`u=\lambda/b`) + '; here ' + m(T`1+u=\mathrm{e}`)],
@@ -675,10 +675,10 @@
         center(table({ widths: [560, 260, 260, 290], align: 'lccc', cls: 'stretch-115', head: ['', 'Weak ' + m(T`r_0={{prim_r0}}`), 'Strong ' + m(T`r_1={{prim_r1}}`), 'Very strong ' + m(T`r_2={{prim_r2}}`)], rows: [
           ['Rival profit at the prior, ' + m(T`B_r({{prim_pi}})`), q('Bprior_r0'), q('Bprior_r1_B'), q('Bprior_r2')],
           ['Shareholder spread, ' + m(T`\Delta_T(r)`), q('Delta_r0'), q('Delta_r1'), q('Delta_r2')],
-          ['Informed trader orders (good synergy, poor synergy)', m(T`(0,\ 0)`), m(T`(1,\ {-1})`), m(T`(1,\ {-1})`)],
+          ['Informed trader orders (high synergy, low synergy)', m(T`(0,\ 0)`), m(T`(1,\ {-1})`), m(T`(1,\ {-1})`)],
           ['Price', 'Uninformative', 'Informative', 'Informative'],
           R3('Entry', 'entry_r0', 'entry_r1_B', 'entry_r2', true),
-          R3('Good-synergy ownership', 'own_r0', 'own_r1_B', 'own_r2_B', true)] })) +
+          R3('High-synergy ownership', 'own_r0', 'own_r1_B', 'own_r2_B', true)] })) +
         takeaway('At each step, rival gross profit falls and the shareholder spread rises. Entry rises against the strong incumbent and returns to its floor against the very strong one.') +
         footline('In the example at prior ' + m(T`{{prim_pi}}`) + ', (H1)–(H3) hold exactly when the top belief sits between the two thresholds: ' + m(T`\tau(r_1)<M({{prim_pi}})<\tau(r_2)`) + '. Region and margins: Backup B10. Fixed-information control: Backup B11, pages 2 and 3. Full payoff and outcome tables: Backup B11, pages 4 to 6.') +
         B('main:s15') }, 'main:s15');
@@ -710,23 +710,23 @@
           '<b>Entry at ' + m('r_1') + ':</b> a buy order gives belief ' + m('M') + ' with ' + m(T`B_{r_1}(M)>c_H`) + ', so cost ' + m('c_H') + ' prepares after a buy order. Entry exceeds ' + m(T`\rho`),
           '<b>Return at ' + m('r_2') + ':</b> trade still pays, but ' + m(T`B_{r_2}(M)<c_H`) + ' keeps cost ' + m('c_H') + ' out at every price. Entry is ' + m(T`\rho`)], 10) +
         vsp(7) +
-        P('Ownership: with ' + m(T`W_H(F)=\mathbb{E}_H[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ', good-synergy ownership rises exactly if ' + m(T`[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)`) + '.') + vsp(14) +
+        P('Ownership: with ' + m(T`W_H(F)=\mathbb{E}_H[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ', high-synergy ownership rises exactly if ' + m(T`[\rho+(1-\rho)(b+\lambda)]W_H(F_1)>\rho W_H(F_0)`) + '.') + vsp(14) +
         P('Share rises exactly when ' + m(T`e_HW_H(F_1)W_L(F_0)>e_LW_H(F_0)W_L(F_1)`) + '; in the example, share rises from ' + m(T`{{share_H_r0}}`) + ' to ' + m(T`{{share_H_r1_B}}`) + '.') +
         B('main:s15') }, 'main:s15');
 
     var T3 = function (label, k) { return [label, q('p2_base_r0_' + k), q('p2_base_r1_' + k), q('p2_base_r2_' + k)]; };
     bk({ id: 'b11c', label: 'B11c', cls: 'sz-x', title: 'Outcomes and controls in full',
-      body: P('Under full orders, a good-synergy rival faces a buy order with chance ' + m(T`\lambda+b`) + ', and a poor-synergy rival with chance ' + m('b') + '.', 'mt-n') +
+      body: P('Under full orders, a high-synergy rival faces a buy order with chance ' + m(T`\lambda+b`) + ', and a low-synergy rival with chance ' + m('b') + '.', 'mt-n') +
         d(T`e_H=\rho+(1-\rho)(\lambda+b),\qquad e_L=\rho+(1-\rho)b,\qquad \text{entry}=\pi e_H+(1-\pi)e_L`) +
         cols([[0.49, ul(['At ' + m('r_1') + ', cost ' + m('c_H') + ' prepares after a buy order and only after a buy order. Synergy entry rates are ' + m('e_H') + ' and ' + m('e_L'),
-            'At the example’s prior, entry is ' + m(T`{{entry_r1_B}}`) + ' and good-synergy ownership is ' + m(T`{{own_r1_B}}`),
+            'At the example’s prior, entry is ' + m(T`{{entry_r1_B}}`) + ' and high-synergy ownership is ' + m(T`{{own_r1_B}}`),
             'At ' + m('r_0') + ', an uninformative market gives an uninformative price, so entry is ' + m(T`{{entry_r0}}`) + ' and ownership is ' + m(T`{{own_r0}}`)], 3)],
           [0.49, ul(['At ' + m('r_2') + ', no price covers ' + m('c_H') + ', so entry is ' + m(T`{{entry_r2}}`) + ' and ownership is ' + m(T`{{own_r2_B}}`) + ', with full orders',
             m(T`B_r(\pi)`) + ' equals ' + m(T`{{Bprior_r0}}`) + ', ' + m(T`{{Bprior_r1_B}}`) + ', ' + m(T`{{Bprior_r2}}`) + ' at ' + m('r_0') + ', ' + m('r_1') + ', ' + m('r_2')], 3)]]) +
         center(table({ widths: [640, null, null, null], align: 'lccc', cls: 'stretch-100', head: ['', m(T`r_0={{prim_r0}}`), m(T`r_1={{prim_r1}}`), m(T`r_2={{prim_r2}}`)], rows: [
-          T3('Payoff without entry, ' + m('t_0'), 't0'), T3('Payoff with a good-synergy rival, ' + m('t_H'), 'th'), T3('Payoff with a poor-synergy rival, ' + m('t_L'), 'tl'),
+          T3('Payoff without entry, ' + m('t_0'), 't0'), T3('Payoff with a high-synergy rival, ' + m('t_H'), 'th'), T3('Payoff with a low-synergy rival, ' + m('t_L'), 'tl'),
           ['Shareholder spread, ' + m(T`\Delta_T`), q('Delta_r0'), q('Delta_r1'), q('Delta_r2')],
-          T3('Rival profit, good synergy, ' + m('g_H'), 'gh'), T3('Rival profit, poor synergy, ' + m('g_L'), 'gl'),
+          T3('Rival profit, high synergy, ' + m('g_H'), 'gh'), T3('Rival profit, low synergy, ' + m('g_L'), 'gl'),
           ['Rival profit at the prior, ' + m(T`B_r({{prim_pi}})`), q('Bprior_r0'), q('Bprior_r1_B'), q('Bprior_r2')],
           ['Preparation threshold, ' + m(T`\tau(r)`), q('tau_r0'), q('tau_r1'), q('tau_r2')]] })) +
         B('main:s15') }, 'main:s15');
@@ -735,25 +735,25 @@
     bk({ id: 'b11d', label: 'B11d', cls: 'sz-x', title: 'Outcomes and controls in full',
       body: center(table({ align: 'lccc', cls: 'stretch-098 mt-n', head: ['', m(T`r_0={{prim_r0}}`), m(T`r_1={{prim_r1}}`), m(T`r_2={{prim_r2}}`)], rows: [
           { panel: '<em>Panel A. Equilibrium (Proposition 2)</em>' },
-          ['Informed orders, good synergy and poor synergy', m('(0,0)'), m('(1,-1)'), m('(1,-1)')],
+          ['Informed orders, high synergy and low synergy', m('(0,0)'), m('(1,-1)'), m('(1,-1)')],
           Q3('Belief after a sale', 'p2_base_r0_mu_minus', 'p2_base_r1_mu_minus', 'p2_base_r2_mu_minus'),
           Q3('Belief after no order', 'p2_base_r0_mu_zero', 'p2_base_r1_mu_zero', 'p2_base_r2_mu_zero'),
           Q3('Belief after a purchase', 'p2_base_r0_mu_plus', 'p2_base_r1_mu_plus', 'p2_base_r2_mu_plus'),
-          ['High-cost preparation', 'none', 'after a purchase', 'none'],
+          ['Preparation by the costly rival', 'none', 'after a purchase', 'none'],
           Q3('Price after a sale', 'price_r0', 'price_r1_m1_B', 'price_r2_m1_B'),
           Q3('Price after no order', 'price_r0', 'price_r1_0_B', 'price_r2_0_B'),
           Q3('Price after a purchase', 'price_r0', 'price_r1_p1_B', 'price_r2_p1_B'),
           Q3('Entry ' + m(T`\mathsf{E}`), 'entry_r0', 'entry_r1_B', 'entry_r2'),
-          Q3('Good-synergy ownership ' + m(T`\mathsf{O}_H`), 'own_r0', 'own_r1_B', 'own_r2_B'),
+          Q3('High-synergy ownership ' + m(T`\mathsf{O}_H`), 'own_r0', 'own_r1_B', 'own_r2_B'),
           Q3('Expected shareholders’ payoff', 'p4_base_r0_proceeds', 'p4_base_r1_proceeds', 'p4_base_r2_proceeds'),
           'mid', { panel: '<em>Panel B. Full orders held fixed (Proposition A.2)</em>' },
           Q3('Entry ' + m(T`\mathsf{E}`), 'p4_frozen_r0_entry', 'p4_frozen_r1_entry'),
-          Q3('Good-synergy ownership ' + m(T`\mathsf{O}_H`), 'p4_frozen_r0_own', 'p4_frozen_r1_own'),
+          Q3('High-synergy ownership ' + m(T`\mathsf{O}_H`), 'p4_frozen_r0_own', 'p4_frozen_r1_own'),
           Q3('Expected shareholders’ payoff', 'p4_frozen_r0_proceeds', 'p4_frozen_r1_proceeds'),
           'mid', { panel: '<em>Panel C. The rival does not see the price</em>' },
-          ['Informed orders, good synergy and poor synergy', m('(0,0)'), m('(1,-1)'), ''],
+          ['Informed orders, high synergy and low synergy', m('(0,0)'), m('(1,-1)'), ''],
           Q3('Entry ' + m(T`\mathsf{E}`), 'p4_hidden_r0_entry', 'p4_hidden_r1_entry'),
-          Q3('Good-synergy ownership ' + m(T`\mathsf{O}_H`), 'p4_hidden_r0_own', 'p4_hidden_r1_own'),
+          Q3('High-synergy ownership ' + m(T`\mathsf{O}_H`), 'p4_hidden_r0_own', 'p4_hidden_r1_own'),
           Q3('Expected shareholders’ payoff', 'p4_hidden_r0_proceeds', 'p4_hidden_r1_proceeds')] })) +
         B('main:s15') }, 'main:s15');
 
@@ -764,10 +764,10 @@
         vsp(10) + ruleL + vsp(10) +
         P('At research ' + m(T`\lambda`) + ', write ' + m(T`M_\lambda`) + ' for the top belief after a purchase. Recruitment intensity ' + m(T`\lambda_E(\tau)`) + ' solves ' + m(T`M_\lambda=\tau`) + ': a full purchase recruits exactly at or past this research level.', 'fs-s') +
         ul(['In the recruiting equilibrium, research ' + m(T`\min\{\lambda_R(\Delta_T),\bar\lambda\}`) + ' rises strictly with ' + m(T`\Delta_T`) + ' until the cap, then stays at the cap.',
-          'Entry ' + m(T`\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]`) + ' rises with research. Good-synergy entry rises with research. Poor-synergy entry falls.',
+          'Entry ' + m(T`\rho+(1-\rho)[\beta+(1/2-\beta)\lambda]`) + ' rises with research. High-synergy entry rises with research. Low-synergy entry falls.',
           'The recruiting equilibrium exists exactly when ' + m(T`\Delta_T>2k`) + ' and ' + m(T`\tau\le M_\lambda`) + ' at ' + m(T`\lambda=\min\{\lambda_R(\Delta_T),\bar\lambda\}`) + '. Why ' + m('2k') + ': a recruiting purchase gains ' + m(T`\Delta_T m_\lambda\le\Delta_T/2`) + ' gross, so it beats ' + m('k') + ' only if ' + m(T`\Delta_T>2k`) + '.'], 5, 'fs-s') +
         smallline('Interior research ' + m(T`\lambda_R(\Delta_T)`) + ' solves ' + m(T`2a\lambda=\Delta_T m_\lambda-k+(\rho\Delta_T m_\lambda-k)_+`) + ', with band floor ' + m(T`m_\lambda=1-M_\lambda`) + '. Branches: Backup B12, page 3. Scope: default tie rules, ' + m(T`\tau>1/2`) + '.') +
-        takeaway('A wider spread pays for more research. More research brings in a good-synergy rival more often.') +
+        takeaway('A wider spread pays for more research. More research brings in a high-synergy rival more often.') +
         B('main:s17') }, 'main:s17');
 
     bk({ id: 'b12b', label: 'B12b', widget: 'research', title: 'Research in full', subtitle: 'Research corollary · Paper §5',
@@ -793,7 +793,7 @@
     bk({ id: 'b12d', label: 'B12d', title: 'Research in full',
       body: vsp(14) +
         ul(['Floor-entry research, in which the informed trader trades in both synergy classes after a success, no order recruits and entry is ' + m(T`\rho`) + ', is an equilibrium exactly on ' + m('(r_N,r_Q)') + ' and on ' + m('(r_C,r_2]') + '; there is no other equilibrium',
-          'At ' + m(T`{{str_r155}}`) + ', ' + m(T`{{str_r160}}`) + ' and ' + m(T`{{str_r165}}`) + ' there are exactly two equilibria: zero research, and recruiting research below the cap (the informed trader buys on good synergy after a success and abstains on poor synergy). Research is ' + m(T`{{res_lambda_r155}}`) + ', ' + m(T`{{res_lambda_r160}}`) + ', ' + m(T`{{res_lambda_r165}}`) + '. Entry is ' + m(T`{{res_entry_r155}}`) + ', ' + m(T`{{res_entry_r160}}`) + ', ' + m(T`{{res_entry_r165}}`),
+          'At ' + m(T`{{str_r155}}`) + ', ' + m(T`{{str_r160}}`) + ' and ' + m(T`{{str_r165}}`) + ' there are exactly two equilibria: zero research, and recruiting research below the cap (the informed trader buys on high synergy after a success and abstains on low synergy). Research is ' + m(T`{{res_lambda_r155}}`) + ', ' + m(T`{{res_lambda_r160}}`) + ', ' + m(T`{{res_lambda_r165}}`) + '. Entry is ' + m(T`{{res_entry_r155}}`) + ', ' + m(T`{{res_entry_r160}}`) + ', ' + m(T`{{res_entry_r165}}`),
           'The unique equilibrium has zero research at ' + m('r_0') + ', recruiting research at the cap at ' + m('r_1') + ' and floor-entry research at the cap at ' + m('r_2') + ', where entry is ' + m(T`\rho`)], 10, 'fs-s') +
         gray('Costly research with an alternative arrival follows Dow and Gorton 1997.') +
         B('main:s17') }, 'main:s17');
@@ -892,7 +892,7 @@
         [m('S') + ', ' + m(T`\mu(S)`), 'fixed signal ' + m('S') + '; signal belief ' + m(T`\mu(S)=\Pr(j=H\mid S)`), 'frame 15, B11'],
         [m('a') + ', ' + m(T`\bar\lambda`) + ', ' + m(T`\lambda_R`) + ', ' + m(T`M_\lambda`) + ', ' + m(T`m_\lambda`), 'research cost coefficient ' + m('a>0') + ' in ' + m(T`(a/2)\lambda^2`) + '; research cap ' + m(T`\bar\lambda\in(0,1)`) + '; interior research ' + m(T`\lambda_R(\Delta_T)`) + '; top belief ' + m(T`M_\lambda`) + ' and band floor ' + m(T`m_\lambda`) + ' at presence ' + m(T`\lambda`), 'frame 17, B12'],
         [m(T`\bar f(x)`) + ', ' + m('I_+') + ', ' + m('I_-') + ', ' + m('W_j'), 'order frequency ' + m(T`\bar f(x)=\Pr(X=x)`) + '; purchase impact ' + m('I_+=P(1)-P(0)') + '; sale-order impact ' + m('I_-=P(0)-P(-1)') + '; win chance ' + m('W_j') + ' of a prepared class-' + m('j') + ' rival', 'frame 19, B13'],
-        [m(T`\sigma_j`) + ', ' + m(T`\eta`) + ', ' + m('f_j(x)') + ', ' + m(T`\zeta`), 'order distribution ' + m(T`\sigma_j`) + '; liquidity probabilities ' + m(T`\eta`) + '; order probability ' + m('f_j(x)') + ' in class ' + m('j') + '; high-cost preparation probability ' + m(T`\zeta`) + ' at a price', 'B9'],
+        [m(T`\sigma_j`) + ', ' + m(T`\eta`) + ', ' + m('f_j(x)') + ', ' + m(T`\zeta`), 'order distribution ' + m(T`\sigma_j`) + '; liquidity probabilities ' + m(T`\eta`) + '; order probability ' + m('f_j(x)') + ' in class ' + m('j') + '; preparation probability ' + m(T`\zeta`) + ' of the costly rival at a price', 'B9'],
         [m('e_H') + ', ' + m('e_L') + ', ' + m('W_j(F)'), 'entry in class ' + m('H') + ', class ' + m('L') + '; win chance ' + m(T`W_j(F)=\mathbb{E}_j[F(\theta)\mathbf{1}\{\theta\ge p\}]`) + ' against distribution ' + m('F'), 'frame 17, B1, B13']]
     ];
     var notationTable = function (rows) { return table({ widths: [270, 960, 200], cls: 'fs-f notation-table', head: ['Symbol', 'Gloss', 'First defined'], rows: rows }); };
@@ -900,7 +900,7 @@
     bk({ id: 'b16b', label: 'B16b', title: 'Notation', body: notationTable(NOTATION[1]) + B('main:s5') }, 'main:s5');
 
     bk({ id: 'b17', label: 'B17', targets: ['app:b17'], title: 'The seller\'s choice of reserve in the example', subtitle: 'Each strength at its own best reserve',
-      body: P('A reserve near ' + m('h') + ' sells only to a ready rival with good synergy, so it earns ' + m(T`\rho\pi h`) + '. That gain depends on the ready share ' + m(T`\rho`) + '.') +
+      body: P('A reserve near ' + m('h') + ' sells only to a ready rival with high synergy, so it earns ' + m(T`\rho\pi h`) + '. That gain depends on the ready share ' + m(T`\rho`) + '.') +
         vsp(7) +
         table({ widths: [70, 70, 90, 110, 80, 90, 110, 80, 90, 110, 80], align: 'lllllllllll', cls: 'fs-f', head: ['', '', 'Weak', '', '', 'Strong', '', '', 'Very strong', '', ''], rows: [
           [m(T`\rho`), m('k'), m('p'), 'Payoff', 'Entry', m('p'), 'Payoff', 'Entry', m('p'), 'Payoff', 'Entry'],

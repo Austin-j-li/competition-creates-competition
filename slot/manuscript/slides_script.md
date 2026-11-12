@@ -15,17 +15,17 @@ Count one whitespace-delimited token as one word. Hyphenated words count as one.
 | Frame | Words | Frame | Words |
 |---:|---:|---:|---:|
 | 1 | 199 | 11 | 173 |
-| 2 | 164 | 12 | 173 |
-| 3 | 232 | 13 | 173 |
-| 4 | 115 | 14 | 174 |
+| 2 | 164 | 12 | 172 |
+| 3 | 232 | 13 | 174 |
+| 4 | 115 | 14 | 172 |
 | 5 | 173 | 15 | 174 |
 | 6 | 290 | 16 | 163 |
-| 7 | 174 | 17 | 174 |
-| 8 | 174 | 18 | 111 |
+| 7 | 174 | 17 | 173 |
+| 8 | 173 | 18 | 114 |
 | 9 | 174 | 19 | 116 |
 | 10 | 116 | 20 | 116 |
 
-Main frames: **3,358 words**. Title: **68 words**. Prepared speech including title: **3,426 words**.
+Main frames: **3,357 words**. Title: **68 words**. Prepared speech including title: **3,425 words**.
 
 ## Title — Competition Creates Competition: Stock Prices and the Discovery of Takeover Bidders
 
@@ -61,9 +61,9 @@ Now go back to the words "at every belief". The argument holds the rival's news 
 
 Let me give you the whole argument in plain words: a stronger incumbent can bring the rival in, and it works through the stock price.
 
-First, who knows what. The rival may be a good match for the target or a poor one, and it does not know which before diligence. I assume that an outside investor does know, think of a fund that follows the industry, and the target's stock trades before the rival decides.
+First, who knows what. The rival may have high synergy with the target or low synergy, and I call it a high rival or a low one. It does not know which before diligence. I assume that an outside investor does know, and the target's stock trades before the rival decides.
 
-Now the chain. In the sale, the winner pays the other bid. A poor rival tends to bid low, so it holds the payment down, however strong the incumbent is. A good rival tends to bid high, so a stronger incumbent can push the payment up. So against a strong incumbent, what shareholders are paid can depend much more on the rival's quality, and the investor's knowledge can become worth a trade. When the investor buys, the stock price can rise, and a price rise is good news about the rival. The rival sees that price before it pays for diligence. That good news makes it more optimistic about its own value, and can make costly diligence worthwhile.
+Now the chain. In the sale, the winner pays the other bid. A low rival tends to bid low, so it holds the payment down, however strong the incumbent is. A high rival tends to bid high, so a stronger incumbent can push the payment up. So against a strong incumbent, what shareholders are paid can depend much more on the rival's synergy, and the investor's knowledge can become worth a trade. When the investor buys, the stock price can rise, and a price rise is good news about the rival. The rival sees that price before it pays for diligence. That good news makes it more optimistic about its own value, and can make costly diligence worthwhile.
 
 The usual force is still there. Against a very strong incumbent a bid is worth too little, and even the best news in the price is not enough. Before the model, let me place this in the literature.
 
@@ -81,9 +81,9 @@ The new link is that the sale splits the rival's value between shareholders, who
 
 This slide sets out the sale and the two bidders. The seller commits before trade to a cash second-price auction with a reserve, p: the winner pays the other bid or the reserve, whichever is higher. What shareholders are paid is the payoff of the target shareholders.
 
-The incumbent is already prepared and knows its value, R. Only its distribution, F, is public, and a stronger incumbent shifts F toward higher values. A good rival has synergy class H, and a poor one has class L, with prior pi on H. The rival's value, theta, tends to be higher in class H, but before it prepares, it knows neither its class nor its value.
+The incumbent is already prepared and knows its value, R. Only its distribution, F, is public, and a stronger incumbent shifts F toward higher values. A high rival has synergy class H, and a low one has class L, with prior pi on H. The rival's value, theta, tends to be higher in class H, but before it prepares, it knows neither its class nor its value.
 
-Preparation is the diligence of the story: it shows the rival its value and lets it bid. It costs nothing with probability rho, and otherwise the high cost, c H: a rival with costly diligence is the high-cost rival. Entry, the probability that the rival prepares, is at least rho, the entry floor. Next comes the order of events.
+Preparation is the diligence of the story: it shows the rival its value and lets it bid. It costs nothing with probability rho, and otherwise the high cost, c H: a rival with costly diligence is the costly rival. Entry, the probability that the rival prepares, is at least rho, the entry floor. Next comes the order of events.
 
 ## Frame 6 — Timing: one trading slot, then preparation
 
@@ -105,15 +105,15 @@ The payoffs come from one split of the rival's value. The line shows one draw, w
 
 Averaged over R, that gives t of theta, the expected payoff of the target shareholders, and g of theta, expected rival gross profit before the cost. They add up to theta. With no prepared rival, the incumbent pays the reserve if its value meets it, and t zero is that expected payoff.
 
-The shareholder spread, Delta T, is the expected gap in what shareholders are paid between a prepared good rival and a prepared poor one. Rival gross profit, B of mu, is what a bid is worth to the rival at belief mu. The informed trader gains the payoff minus the price on a purchase, and the reverse on a sale order, less the order cost. The equilibrium joins these pieces.
+The shareholder spread, Delta T, is the expected gap in what shareholders are paid between a prepared high rival and a prepared low one. Rival gross profit, B of mu, is what a bid is worth to the rival at belief mu. The informed trader gains the payoff minus the price on a purchase, and the reverse on a sale order, less the order cost. The equilibrium joins these pieces.
 
 ## Frame 8 — Equilibrium with competitive prices
 
 *1.5 minutes · ends at 13:30*
 
-In equilibrium, the orders, the beliefs, the price and the rival's decision must fit together. Market makers see the outcome; their order belief, mu of x, is the probability that the rival is good. The rival sees only the price, so its price belief cannot separate outcomes with the same price. Good news means a higher belief.
+In equilibrium, the orders, the beliefs, the price and the rival's decision must fit together. Market makers see the outcome; their order belief, mu of x, is the probability of a high rival. The rival sees only the price, so its price belief cannot separate outcomes with the same price. Good news means a higher belief.
 
-A rival with no cost always prepares, because rival gross profit is never negative. The high-cost rival prepares when rival gross profit at its price belief covers its cost. So entry is at least rho, the entry floor, and a purchase recruits when its price brings the high-cost rival in.
+A rival with no cost always prepares, because rival gross profit is never negative. The costly rival prepares when rival gross profit at its price belief covers its cost. So entry is at least rho, the entry floor, and a purchase recruits when its price brings the costly rival in.
 
 The price weighs two cases by entry: with no prepared rival, shareholders expect t zero, and with one, they expect t L plus the shareholder spread times the order belief. The informed trader compares its three orders, each at its own price and entry, and sends a best one. I start with Proposition 1: a stronger incumbent can shift the split of the rival's value toward shareholders.
 
@@ -125,7 +125,7 @@ Proposition 1 compares two incumbents, with all else fixed. A stronger incumbent
 
 The first effect is deterrence. Against a stronger incumbent, the rival can win less often, and it can pay more when it wins. So rival gross profit falls or stays the same in each class, and at every fixed belief.
 
-The number line shows the second effect in a simple case, with one fixed value in each class. The incumbent's value splits the gap between those two values: the lower part is the shareholder spread, and the upper part is the extra gross profit of a good rival. Strength moves the dividing point to the right, so the spread can grow and the rival's part can shrink, but their sum stays fixed. That is the identity in the statement.
+The number line shows the second effect in a simple case, with one fixed value in each class. The incumbent's value splits the gap between those two values: the lower part is the shareholder spread, and the upper part is the extra gross profit of a high rival. Strength moves the dividing point to the right, so the spread can grow and the rival's part can shrink, but their sum stays fixed. That is the identity in the statement.
 
 A wider spread can make an informed order pay, and the next two slides say when. First, I bound how far any order can move a belief.
 
@@ -137,13 +137,13 @@ The first tool for Proposition 2 is a band for beliefs. A liquidity trader can p
 
 With a positive shareholder spread, the price reveals the order belief, never the class.
 
-The preparation threshold, tau, is the belief where rival gross profit equals the high cost. Below tau, entry stays at rho, and at or above it the high-cost rival prepares. So Proposition 2 will ask whether the top belief reaches tau. Next, I bound what an informed order gains before its cost.
+The preparation threshold, tau, is the belief where rival gross profit equals the high cost. Below tau, entry stays at rho, and at or above it the costly rival prepares. So Proposition 2 will ask whether the top belief reaches tau. Next, I bound what an informed order gains before its cost.
 
 ## Frame 11 — A correct order gains at least a fixed share of the shareholder spread
 
 *1.5 minutes · ends at 17:30*
 
-The second tool for Proposition 2 bounds what an informed order gains before its cost, under every order strategy. A correct order is a purchase in the good class or a sale order in the poor class. Its gross gain is entry times the shareholder spread times doubt. The class changes what shareholders are paid only if the rival prepares, and then by the spread. Doubt is the probability that market makers still put on the other class after the order; the price already counts the rest.
+The second tool for Proposition 2 bounds what an informed order gains before its cost, under every order strategy. A correct order is a purchase on a high rival or a sale order on a low one. Its gross gain is entry times the shareholder spread times doubt. The class changes what shareholders are paid only if the rival prepares, and then by the spread. Doubt is the probability that market makers still put on the other class after the order; the price already counts the rest.
 
 From the band, doubt is at least kappa, and entry is at least rho. So each gross gain lies between rho times kappa times the spread, and the spread itself. A wrong-signed order always loses, and no order earns zero.
 
@@ -155,9 +155,9 @@ Proposition 2 uses both ends. If the whole spread is below the order cost, the i
 
 You have seen this chain at the start. Here it is at the three incumbents of Proposition 2.
 
-Against the weak incumbent, shareholders are paid almost the same with a good rival and with a poor one. That gap is below the cost of the trade, so the informed trader sends no order, and the stock price carries no news. A bid is worth too little to justify costly diligence, and only a rival with no diligence cost prepares.
+Against the weak incumbent, shareholders are paid almost the same with a high rival and with a low one. That gap is below the cost of the trade, so the informed trader sends no order, and the stock price carries no news. A bid is worth too little to justify costly diligence, and only a rival with no diligence cost prepares.
 
-Against the strong incumbent, they are paid much more with a good rival, so the trade pays. The informed trader buys when the rival is good, the stock price rises, and that rise is good news about the rival. Then a bid is worth enough, and a rival with costly diligence prepares too.
+Against the strong incumbent, they are paid much more with a high rival, so the trade pays. The informed trader buys on a high rival, the stock price rises, and that rise is good news about the rival. Then a bid is worth enough, and a rival with costly diligence prepares too.
 
 Against the very strong incumbent, the trade still pays, and a price rise is the same good news. But even then a bid is worth too little, so again only a rival with no diligence cost prepares. Next, the exact conditions.
 
@@ -169,17 +169,17 @@ Proposition 2 compares three incumbents, weak, strong and very strong, and only 
 
 Condition H two is about the trade. Against the weak incumbent, the whole shareholder spread is below the order cost, so no order can pay. Against the strong incumbent, and by Proposition 1 against the very strong one, even the lower bound on the gain exceeds that cost. H one is about the rival: rival gross profit is below the high cost at the prior against the weak incumbent, and above it at the top belief against the strong one. H three keeps it below the high cost against the very strong incumbent, even at the top belief.
 
-The table lists orders for the good and the poor class, then beliefs and entry after a sale order, no order and a purchase. So total entry is rho, strictly above rho, then rho again, and each equilibrium outcome is unique under every tie rule. Next, a numerical example.
+The table lists orders on a high rival and a low one, then beliefs and entry after a sale order, no order and a purchase. So total entry is rho, strictly above rho, then rho again, and each equilibrium outcome is unique under every tie rule. Next, a numerical example.
 
 ## Frame 14 — Example: a purchase recruits only against the strong incumbent
 
 *1.5 minutes · ends at 22:00*
 
-This example puts numbers on Proposition 2. The good-synergy value is ten, the poor-synergy value is one, and the incumbent's value is uniform up to one point two, then three, then three point six, from weak to very strong.
+This example puts numbers on Proposition 2. The high-synergy value is ten, the low-synergy value is one, and the incumbent's value is uniform up to one point two, then three, then three point six, from weak to very strong.
 
 The figure runs from the strong to the very strong incumbent, and its rising line is the threshold. With the prior at a half, the conditions hold exactly when the top belief lies between the thresholds zero point seven zero five and about zero point seven three one four. The example puts it at about zero point seven three one one.
 
-Rival gross profit at the prior falls: about four point eight, four point three, four point one. The shareholder spread rises: zero point zero one seven, about zero point six seven, zero point nine four. Entry rises, then falls: a quarter, about zero point five two, a quarter again. The last row, the probability that the rival is good and acquires the target, moves with entry. Next, the control, with the rival's news fixed.
+Rival gross profit at the prior falls: about four point eight, four point three, four point one. The shareholder spread rises: zero point zero one seven, about zero point six seven, zero point nine four. Entry rises, then falls: a quarter, about zero point five two, a quarter again. The last row, the probability that a high rival acquires the target, moves with entry. Next, the control, with the rival's news fixed.
 
 ## Frame 15 — If the rival's news cannot change, strength cannot raise entry
 
@@ -189,7 +189,7 @@ This is the control: if the rival's news cannot change, strength cannot raise en
 
 At each belief, strength weakly cuts rival gross profit, by Proposition 1. So preparation can stop paying, but it never starts to pay. The slide gives the fall exactly.
 
-The table shows this. In row one, the orders change and entry rises. In row two, I hold the orders fixed: the informed trader buys in the good class and sells in the poor class. Entry is about zero point five two in both columns. Against the weak incumbent, the trader loses money, so row two is a control, not an equilibrium. In row three, the rival sees no price, and entry stays at a quarter. So that rise needs a change in the rival's news.
+The table shows this. In row one, the orders change and entry rises. In row two, I hold the orders fixed: the informed trader buys on a high rival and sells on a low one. Entry is about zero point five two in both columns. Against the weak incumbent, the trader loses money, so row two is a control, not an equilibrium. In row three, the rival sees no price, and entry stays at a quarter. So that rise needs a change in the rival's news.
 
 Next, what happens between the weak and the strong incumbent.
 
@@ -215,9 +215,9 @@ Next, I let the informed trader choose its research.
 
 In this extension, the informed trader chooses its research before the slot, at a cost, up to a cap. Research succeeds with the chosen probability. Then the trader learns the synergy class and fills the slot; otherwise, a liquidity trader fills it. Nobody else sees the choice.
 
-I look at the recruiting equilibrium: a trader who learns that the rival is good buys, and a purchase recruits. Under the conditions on the slide, it exists exactly when two things hold. The shareholder spread exceeds twice the order cost, and the top belief at the chosen research is at or above the threshold.
+I look at the recruiting equilibrium: a trader who learns that synergy is high buys, and a purchase recruits. Under the conditions on the slide, it exists exactly when two things hold. The shareholder spread exceeds twice the order cost, and the top belief at the chosen research is at or above the threshold.
 
-In that equilibrium, research rises strictly with the spread until it reaches the cap, and then it stays there. Where research rises, total entry rises too: a good rival prepares more often, and a poor one less often. By Proposition 1, a stronger incumbent can widen the spread, so more of the rivals who prepare a bid can then be good ones.
+In that equilibrium, research rises strictly with the spread until it reaches the cap, and then it stays there. Where research rises, total entry rises too: a high rival prepares more often, and a low one less often. By Proposition 1, a stronger incumbent can widen the spread, so more of the rivals who prepare a bid can then be high rivals.
 
 Next, what a visible price does for the target shareholders.
 
@@ -227,7 +227,7 @@ Next, what a visible price does for the target shareholders.
 
 Does a visible price help the target shareholders? At the strong incumbent, under the conditions of Proposition 2, I compare two economies in expectation. With access, the rival sees the price before it decides whether to prepare; with no access, it sees neither price nor order.
 
-In both, the informed trader buys in the good class and sells in the poor class. Access adds high-cost preparation only after a purchase, at the top belief, where rival gross profit already exceeds the high cost. With access, the expected payoff of the target shareholders and expected acquisition surplus net of preparation costs are both strictly higher.
+In both, the informed trader buys on a high rival and sells on a low one. Access adds preparation by the costly rival only after a purchase, at the top belief, where rival gross profit already exceeds the high cost. With access, the expected payoff of the target shareholders and expected acquisition surplus net of preparation costs are both strictly higher.
 
 The last extension reads recruitment from prices.
 
@@ -235,9 +235,9 @@ The last extension reads recruitment from prices.
 
 *1.0 minute · ends at 28:30*
 
-For a fixed target, prior, slot and incumbent, prices and orders can reveal recruitment. The line at the top measures each impact from the no-order price, and I weight each by its frequency. Suppose the informed trader buys on a good rival and sells on a poor one, and the prior is below the threshold. Then the weighted purchase impact exceeds the weighted sale-order impact exactly when a purchase recruits.
+For a fixed target, prior, slot and incumbent, prices and orders can reveal recruitment. The line at the top measures each impact from the no-order price, and I weight each by its frequency. Suppose the informed trader buys on a high rival and sells on a low one, and the prior is below the threshold. Then the weighted purchase impact exceeds the weighted sale-order impact exactly when a purchase recruits.
 
-A purchase is good news about the rival's quality, and a sale order is bad news. Weighted by frequency, the two cancel. If a purchase brings in a rival with costly diligence, it adds the entry part the figure marks.
+A purchase is good news about the rival's synergy, and a sale order is bad news. Weighted by frequency, the two cancel. If a purchase brings in a rival with costly diligence, it adds the entry part the figure marks.
 
 My last slide collects the results.
 
@@ -259,11 +259,11 @@ No. I do not pick an equilibrium anywhere. At the three incumbents that I compar
 
 ### Why is the preparation cost random? — B3
 
-Because some rivals prepare at no cost, the rival's class always matters a little for what shareholders are paid, even when the price carries no news. That gives a bound. Against an uninformative price, an order earns at most rho, times the larger of the prior and one minus the prior, times the shareholder spread. Once the spread is wide enough, that gain exceeds the order cost, and the uninformative market cannot survive. It follows from the same bound that with one positive cost, rho is zero, an order earns nothing, and the uninformative market would exist at every strength. And the zero-cost rival is not the entry that rises: the rise comes from the high-cost rival.
+Because some rivals prepare at no cost, the rival's class always matters a little for what shareholders are paid, even when the price carries no news. That gives a bound. Against an uninformative price, an order earns at most rho, times the larger of the prior and one minus the prior, times the shareholder spread. Once the spread is wide enough, that gain exceeds the order cost, and the uninformative market cannot survive. It follows from the same bound that with one positive cost, rho is zero, an order earns nothing, and the uninformative market would exist at every strength. And the zero-cost rival is not the entry that rises: the rise comes from the costly rival.
 
 ### Does no order break the construction? — B2
 
-No. The liquidity trader can produce each outcome in each class. So each outcome, no order included, has positive probability, and Bayes' rule gives every belief. I assume no belief anywhere. When the informed trader always trades, no order shows only that the liquidity trader had the slot, and that says nothing about the class. So at the three incumbents that I compare, the belief after no order is the prior. In the informative market between them, below a strength of about two point one, the poor class does not always sell, so no order is mild bad news. The belief is then below the prior, but not below the band floor, so it never recruits.
+No. The liquidity trader can produce each outcome in each class. So each outcome, no order included, has positive probability, and Bayes' rule gives every belief. I assume no belief anywhere. When the informed trader always trades, no order shows only that the liquidity trader had the slot, and that says nothing about the class. So at the three incumbents that I compare, the belief after no order is the prior. In the informative market between them, below a strength of about two point one, the informed trader does not always sell on a low rival, so no order is mild bad news. The belief is then below the prior, but not below the band floor, so it never recruits.
 
 ### Is the no-order price on frame 19 a statement about the class? — B13
 
@@ -275,7 +275,7 @@ Yes, at an equal belief: a weaker incumbent is easier to outbid. But against the
 
 ### Who is the informed trader? — B5
 
-It is an outside investor with sector expertise, such as a fund that follows the industry. It holds no net position in the target before trade, has no control rights and cannot bid for control. Its own research concerns the target's customers, technology and demand. In the model it knows the rival's synergy class, good or poor, and not the rival's value. In the example with one value in each class, the class fixes the value. It earns only its trading payoff. Neither bidder trades target shares.
+It is an outside investor with sector expertise, such as a fund that follows the industry. It holds no net position in the target before trade, has no control rights and cannot bid for control. Its own research concerns the target's customers, technology and demand. In the model it knows the rival's synergy class, high or low, and not the rival's value. In the example with one value in each class, the class fixes the value. It earns only its trading payoff. Neither bidder trades target shares.
 
 ### Don't bidders already look at the price?
 
@@ -299,11 +299,11 @@ Q is an equilibrium with informed orders in which entry stays at its floor. The 
 
 ### Does Proposition 4 give a unique equilibrium? — B12
 
-It gives one research value for the equilibrium where the informed trader buys after it learns that the rival is good, and only a purchase recruits the high-cost rival. The spread must exceed twice the order cost, and the top belief must reach the threshold at that research value. The root is unique; the whole equilibrium set need not be. Other equilibria can coexist. Research rises strictly with the spread below the cap and stays fixed at the cap. A single interval of strengths needs the paper's extra continuity and recruitment-margin conditions.
+It gives one research value for the equilibrium where the informed trader buys after it learns that the rival has high synergy, and only a purchase recruits the costly rival. The spread must exceed twice the order cost, and the top belief must reach the threshold at that research value. The root is unique; the whole equilibrium set need not be. Other equilibria can coexist. Research rises strictly with the spread below the cap and stays fixed at the cap. A single interval of strengths needs the paper's extra continuity and recruitment-margin conditions.
 
 ### Does price access always help sellers? — B4
 
-The strict gain uses the conditions of Proposition 2 at the strong incumbent. Both economies have the same full informed orders. Access adds high-cost preparation after purchases, which raises the expected payoff of the target shareholders and net acquisition surplus. Outside that region, the prior can already justify preparation. Price access can then deter preparation after sale orders and reduce that expected payoff. The paper does not claim a general gain for target shareholders.
+The strict gain uses the conditions of Proposition 2 at the strong incumbent. Both economies have the same full informed orders. Access adds preparation by the costly rival after purchases, which raises the expected payoff of the target shareholders and net acquisition surplus. Outside that region, the prior can already justify preparation. Price access can then deter preparation after sale orders and reduce that expected payoff. The paper does not claim a general gain for target shareholders.
 
 ### Is the example on a knife edge? — B10
 
