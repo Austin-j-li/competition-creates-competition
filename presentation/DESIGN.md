@@ -213,7 +213,7 @@ speaker notes by label, from `slot/manuscript/slides_script.md`.
 ## 10. Timing plan
 
 The timing line of each frame in `slot/manuscript/slides_script.md`: the title 0.5; frames 1 to 4:
-1.5, 1.5, 1.5, 1.0; frames 5 to 8: 1.5, 2.5, 1.5, 1.5; frames 9 to 14: 1.5, 1.0, 1.5, 2.0, 1.5, 1.5;
+1.5, 1.5, 2.0, 1.0; frames 5 to 8: 1.5, 2.5, 1.5, 1.5; frames 9 to 14: 1.5, 1.0, 1.5, 1.5, 1.5, 1.5;
 frames 15 and 16: 1.5, 1.5; frames 17 to 20: 1.5, 1.0, 1.0, 1.0. Prepared speech 29.5 minutes; half a
 minute stays free within the 30-minute talk. `check_deck.mjs` reads the script, so this list
 only restates it.
@@ -227,7 +227,7 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 |---|---|---|
 | `\Body` | the default size of `.slide-body` (32 px); `.small` is \footnotesize, `.xs` is \scriptsize | the body of a main frame |
 | `\begin{Statement}{tag}` | `<div class="statement"><p class="statement-tag">tag</p> ... </div>` (`.resultbox` with `.resultbox-title`, and `.propblock`, print the same way) | an accent rule, a bold sans tag in the accent, the body one size down, a light rule |
-| `\begin{DefList}` and `\DefRow{label}{text}` | `<dl class="deflist"><dt>label</dt><dd>text</dd> ... </dl>` (`.deflist.narrow` for a 220 px label column) | a label column: bold sans labels on the left, text on the right |
+| `\begin{DefList}` and `\DefRow{label}{text}` | `<dl class="deflist"><dt>label</dt><dd>text</dd> ... </dl>` (`.deflist.narrow` for a 220 px label column; the third argument of `deflist()` sets the label width, 270 px for `DefList[2.7cm]`; `.deflist.small` on frames 5 and 8, where the web sets the rows wider than Beamer and \Body would overflow) | a label column: bold sans labels on the left, text on the right |
 | `\ColHead{head}` | `<b class="colhead">head</b>` at the top of a column (`.rcol > b:first-child` and `.rpanel > b` print the same way) | a bold sans head in the accent over an accent rule |
 | `\RuledCol{text}` | `<div class="ruledcol">text</div>` | a column that opens with an accent rule |
 | `\Intuition{text}` | `<p class="intuition">text</p>` as a late child of `.slide-body` | pinned above the foot zone: a light rule, then the italic sentence |
@@ -239,6 +239,7 @@ The macros of `ccc-journal.sty` and the class that prints the same thing on a we
 | `\LightRule` | `<hr class="rule-light">` | a light hairline |
 | `\RoadItems` (`\RoadItem`, `\RoadSep`) | `.foot-title.roadmap` with `span.road`, `span.road.current` and `span.road-sep`, filled by `deck.js` on a main frame | the six parts of the talk in the left slot of the footline; the current part bold dark purple, the others grey, light bullets between them; a backup shows the short title |
 | `\textsf{\textbf{...}}`, a column in `\sffamily\bfseries` | `<b class="sf">` | bold sans in the text colour (frames 5, 6 and 12) |
+| a column in `\sffamily` with `\textbf` step names, `\newline`, `\hspace` and `\addlinespace` (frame 12) | `<span class="sfr">` around `<b class="sf">` and a second line; `.step-sub` for the indented sub-row, `tr.sub` for a row without the added space | regular sans with the step name in bold sans |
 | `\ModelStrip{3,4}` | `<ul class="model-strip"><li>Players</li>...<li class="current">Information</li>...</ul>` under the head | the six parts of the model; the current ones bold dark purple, the others grey |
 | `\framesubtitle` | `subtitle` of the frame record (`p.sub`) | serif italic in grey between the title and the rule |
 | `\PlaceNav`, `\beamergotobutton`, `\BackButton` | `H.go(target, text)` and `H.back(target)` inside `.nav` (`.goto`, `.goto.back`) | a text link in the footline: sans text in dark purple after a small triangle; no box |

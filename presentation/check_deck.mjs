@@ -99,6 +99,7 @@ function texWords(body) {
   s = dropMacro(s, 'hyperlink', 2, true);
   s = s.replace(/\\\[[\s\S]*?\\\]/g, ' ').replace(/\$[^$]*\$/g, ' ');
   s = s.replace(/\\regr?\{[^}]*\}(\{\d\})?/g, ' ');
+  s = s.replace(/\\addlinespace(\[[^\]]*\])?/g, ' ');
   s = s.replace(/\\'\{?e\}?/g, 'é');
   for (const [name, n, keep] of [['vspace\\*?', 1], ['hspace\\*?', 1], ['setlength', 2], ['renewcommand', 2], ['setbeamerfont', 2], ['column', 1],
     ['scalebox', 2, true], ['multicolumn', 3, true], ['textcolor', 2, true], ['color', 1], ['rule', 2], ['includegraphics', 1]]) s = dropMacro(s, name, n, keep);
@@ -134,7 +135,7 @@ const talk = [];
     let l;
     while ((l = lre.exec(body))) {
       if (l[4]) links.push(['back', l[4], 'Back']);
-      else if (l[5]) links.push(['link', l[5], l[6]]);
+      else if (l[5]) links.push(['link', l[5], flat(l[6])]);
       else links.push([l[2] === 'return' ? 'back' : 'go', l[1], l[3]]);
     }
     const bid = /\\BackupId\{([^}]+)\}/.exec(body);
@@ -225,7 +226,7 @@ talk.forEach((t, i) => {
   if (nfkc(sub) !== nfkc(t.subtitle)) fail(`${where}: subtitle differs\n   web:  ${sub}\n   tex:  ${t.subtitle}`);
   if (JSON.stringify(f.targets || []) !== JSON.stringify(t.targets)) fail(`${where}: hypertargets ${JSON.stringify(f.targets)} differ from ${JSON.stringify(t.targets)}`);
   const links = [...(f.body || '').matchAll(/<button data-(target|back)="([^"]*)">([^<]*)<\/button>|<a data-link="([^"]*)">([^<]*)<\/a>/g)]
-    .map((m) => (m[4] !== undefined ? ['link', m[4], m[5]] : [m[1] === 'back' ? 'back' : 'go', m[2], m[3]]));
+    .map((m) => (m[4] !== undefined ? ['link', m[4], nfkc(decode(m[5]))] : [m[1] === 'back' ? 'back' : 'go', m[2], m[3]]));
   linkCount += links.length;
   if (JSON.stringify(links) !== JSON.stringify(t.links)) fail(`${where}: links ${JSON.stringify(links)} differ from slides.tex ${JSON.stringify(t.links)}`);
   // numbers: the same registry keys, each as often as slides.tex prints it
