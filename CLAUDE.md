@@ -51,12 +51,12 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Slide decks
 
-- The Beamer deck (`slot/manuscript/slides.tex`, copied from the Overleaf project) is the master
-  of the talk. It uses the journal look of `slot/manuscript/ccc-journal.sty`; the website, the
-  research brief page and the web slides, uses the same look through `DESIGN.md`. The web slides
-  (`presentation/`) copy the master frame by frame: words, numbers, frames and links stay identical,
-  and `presentation/check_deck.mjs` fails on any drift. The speaker notes are
-  `slot/manuscript/slides_script.md`. Edit the deck in Overleaf first, then the web slides.
+- From 14 November 2026, the PowerPoint deck `presentation.pptx` in the repository root is the
+  master of the talk: its words, numbers, page order and speaker notes are the talk. Never write
+  to it while the lock file `~$presentation.pptx` exists; work on a copy, validate, back up, then
+  copy into place. Pages are drafted as web pages first and built into PowerPoint from them; the
+  build tools and design records are under `audit/pptx_look_2026_11_12/`.
+- `DESIGN.md` sets the look of the website. The PowerPoint deck has its own look.
 
 ## Working rules
 

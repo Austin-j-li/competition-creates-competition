@@ -1,5 +1,8 @@
 # Seminar slides (the /talk/ page)
 
+> From 14 November 2026 this deck and the Beamer deck it copies are a record of the talk of early
+> November 2026. The master of the talk is `presentation.pptx` in the repository root.
+
 The web version of the Beamer talk in `slot/manuscript/slides.tex` (the Overleaf deck), the seminar
 talk for the order-slot version of the paper: 58 frames, the title, 20 numbered frames, then
 backups B1 to B17 on 37 pages, with the same words, numbers, titles and links as the Beamer deck.

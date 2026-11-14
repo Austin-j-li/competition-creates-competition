@@ -61,7 +61,6 @@ spacing:
 
 ## Overview
 
-The website is set like the Beamer deck of the talk (`overleaf` working copy, `ccc-journal.sty`).
 The layout is the journal look that the author chose on 29 October 2026. The colours and the sans
 face are the ones he chose on 11 November 2026 from four demos (`audit/look_ucl200_2026_11_11/`):
 the purples of UCL in its bicentenary year, on a flat, ruled, typographic page. Libertinus Serif
@@ -74,7 +73,7 @@ This is the research site of a PhD student in the colours of the university. It 
 and does not copy the layout of a UCL page.
 
 **Key Characteristics:**
-- One palette, one type family pair and one rule grammar across the brief page, the web slides and the Beamer deck.
+- One palette, one type family pair and one rule grammar across the brief page and the web slides.
 - Two purples, each in one role. Dark purple is coloured text: titles, tags, the active control, links. Bright purple is every rule, bullet and mark.
 - A title is bold sans in dark purple over a rule; a statement is a rule, a bold sans tag in dark purple, the body, a light rule; a takeaway is bold text over a rule; an intuition is italic text over a light rule.
 - The title frame of the deck is white paper with a wide margin, as the title block of the brief page. A short bright purple rule, the title in bold serif and the subtitle in regular serif, in dark purple, sit at the head. A grey hairline, the name in bold sans and the department in grey sit at the foot. The author chose purple type on white over white type on a purple ground (11 November 2026).
@@ -174,4 +173,3 @@ Rectilinear, with no exception. A link in the footline of a slide is sans text i
 
 - **Research brief page** (`handout/`): `style.css` (tokens, type, layout, components), `template.html`, `charts.js` (the SVG renderer; its fallback tokens repeat the palette), `figures.js` and `explorer.js` (figures through the renderer's tokens), `fonts/` with `fonts.lock.json` (Libertinus Serif and Math from the 7.051 release and DM Sans from the google/fonts repository, all SIL OFL, subset to woff2, pinned by sha256), `build.py` (font faces and preload from the lock), `check_display.py` (the locked faces, the registry numbers, the palette and its grounds, the retired looks), `publish.py` (the retired looks in the staged site).
 - **Web slides** (`presentation/`): `deck.css` (the same `:root` tokens; `check_deck.mjs` fails when a shared token differs from `handout/style.css`), `charts.js`, `deck.js`, `template.html`, `fonts/` with `fonts.lock.json` (identical to the brief's), `build.py`, `check_deck.mjs` (the drift check against the Beamer deck, the palette and its grounds, the retired looks and the token check), `DESIGN.md` (the contract between the slide files and the class for each Beamer macro).
-- **Beamer deck** (`ccc-journal.sty`, `fonts/dmsans/` and `slides.tex` in the Overleaf working copy): the same look in XeLaTeX; the website follows it, never the other way round.
