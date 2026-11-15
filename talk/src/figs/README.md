@@ -1,9 +1,9 @@
 # Figure hooks a look can style
 
 Every rule below sits in `figs.css` (common part and the entry chart) or `bars.css` (page 10's
-split bars, written by its own builder). A look overrides any of them under
-`body[data-look="…"]`. Colours reach the figures only through the tokens of the contract
-(section 6); the custom properties listed here are the only other hooks.
+split bars, in its own file). A look overrides any of them under
+`body[data-look="…"]`. Colours reach the figures only through the shared tokens
+(`design/tokens.css`); the custom properties listed here are the only other hooks.
 
 ## Custom properties
 

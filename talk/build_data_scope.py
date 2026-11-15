@@ -143,7 +143,7 @@ def main() -> None:
                           "where": f"slide{slide:02d}.txt"}
         flag = "" if not mismatch else f"   MISMATCH computed {text}, master in dump: {in_dump}"
         print(f"{ident:18s} {key:28s} {digits} {text:>9s}  master {master:>9s}{flag}")
-    OUT.write_text(json.dumps({"meta": {"owner": "scope", "source": str(REGISTRY.relative_to(ROOT))},
+    OUT.write_text(json.dumps({"meta": {"pages": "B4, B6, B7, B13, B17", "source": str(REGISTRY.relative_to(ROOT))},
                                "numbers": numbers}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(numbers)} numbers, {bad} mismatches")
 

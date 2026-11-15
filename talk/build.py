@@ -385,7 +385,7 @@ def main() -> None:
             tex = m.group(1) if m.group(1) is not None else m.group(2)
             items.append({'tex': unescape_tex(tex), 'display': m.group(2) is not None,
                           'where': f'pages/{key}.html'})
-    # figure labels: figs/labels.json and one file per owner, figs/labels_<name>.json
+    # figure labels: figs/labels.json and one file per group of pages, figs/labels_<name>.json
     labels = {}
     for labels_path in sorted((src / 'figs').glob('labels*.json')):
         for k, v in json.loads(labels_path.read_text()).items():
@@ -426,7 +426,7 @@ def main() -> None:
     css_files = sorted((src / 'figs').glob('*.css'), key=lambda f: (f.name != 'figs.css', f.name)) \
         if (src / 'figs').exists() else []
     figs_css = '\n'.join(f'<style data-src="figs/{f.name}">\n{f.read_text()}\n</style>' for f in css_files)
-    # page stylesheets, one per owner, in src/css
+    # page stylesheets, one per group of pages, in src/css
     own_css = sorted((src / 'css').glob('*.css')) if (src / 'css').exists() else []
     figs_css += '\n' + '\n'.join(f'<style data-src="css/{f.name}">\n{f.read_text()}\n</style>' for f in own_css)
     report.append('figures: ' + (' '.join(f.name for f in figs) or 'none')

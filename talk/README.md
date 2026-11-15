@@ -36,6 +36,11 @@ Numbers are bound through `data-num` to `src/data.json` and `src/data_*.json`, w
 when its registry inputs change, then rebuild the talk. Figures read those data files and the
 paper's closed forms.
 
-Page owners keep their pages, figure modules, page styles and data scripts together. The engine
-owns navigation, stage layout and the shell. The build, shared tokens, font lock and publisher
-join those files; the look styles presentation-specific type sizes and reveal behaviour.
+Each group of pages keeps its page files, figure modules, page styles (`src/css/`) and data script
+together. `src/engine.js`, `src/stage.css` and `src/template.html` hold navigation, the stage and
+the shell. `build.py` joins them with the shared tokens (`design/tokens.css`) and the locked
+fonts; `src/looks/plate.css` holds the type sizes of the stage and the reveal behaviour.
+
+This folder also holds an earlier LaTeX talk of the paper (`talk.tex`, `script.tex`,
+`structure-plan.md`, `paper-sync.md`, `econ-slides-compat.sty`, `figures/`, `notes/`). Those files
+are not part of the web talk and its build does not read them.

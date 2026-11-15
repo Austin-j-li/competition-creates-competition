@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Numbers and curves of the charts owner: page 18 (research), backups B3 (b24 to b26) and B12
+"""Numbers and curves of the chart pages: page 18 (research), backups B3 (b24 to b26) and B12
 (b46 to b49), and the b25 variant of the entry chart. Writes src/data_charts.json.
 
     python3 build_data_charts.py

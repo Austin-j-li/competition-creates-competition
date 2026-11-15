@@ -42,7 +42,7 @@
   TALK.reduced = () => reduced;
 
   const T_FADE = 200;          // the rest of a page on a forward page change
-  const T_CARRY = 450;         // carry (contract 4.6)
+  const T_CARRY = 450;         // carry between adjacent pages
   const EASE_OUT = 'cubic-bezier(.16,1,.3,1)';
   const EASE_CARRY = 'cubic-bezier(.33,1,.68,1)';
 

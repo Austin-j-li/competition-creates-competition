@@ -145,7 +145,7 @@ NUMBERS = [
     ("p14.table.bprior.r1", "p14", 76, 0, "Bprior_r1_B", 2, "value", ["B_r1_half"], ""),
     ("p14.table.bprior.r2", "p14", 78, 0, "Bprior_r2", 2, "value", ["p2_base_r2_low_profit_zero"], ""),
     ("p14.table.bpurchase.r0", "p14", 82, 0, "p2_base_r0_low_profit_plus", 2, "value", ["Bprior_r0"],
-     "the master's builder (build_results.js line 303) uses Bprior_r0: no informed order, so the belief after a "
+     "the PowerPoint's build script (build_results.js line 303) uses Bprior_r0: no informed order, so the belief after a "
      "purchase is the prior; p2_base_r0_low_profit_plus is the same value 1153/240 as a decimal enclosure"),
     ("p14.table.bpurchase.r1", "p14", 85, 0, "p2_base_r1_low_profit_plus", 2, "value", [], "B_{r1}(M(1/2))"),
     ("p14.table.bpurchase.r2", "p14", 87, 0, "p2_base_r2_low_profit_plus", 3, "value", [],
@@ -237,7 +237,7 @@ def build_numbers() -> tuple[dict, list]:
         mismatch = master is not None and text != master or (page is not None and master is None) \
             or entry.get("missing_key", False) or text is None
         if mismatch and master is not None:
-            entry["text"] = master  # the contract: never force; print the master's string and flag it
+            entry["text"] = master  # never force a key; print the master's string and flag it
         entry.update(master=master, mismatch=bool(mismatch))
         if key in REG:
             entry["value"] = REG[key]["value"]
@@ -535,7 +535,7 @@ def build_marks(numbers: dict) -> list[dict]:
     return marks
 
 
-# ------------------------------------------------------------------ notes for the lead
+# ------------------------------------------------------------------ notes
 def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
     log = []
     # the ramp is a curve; the master draws its chord
@@ -582,7 +582,7 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
         "not numbers, and are not listed.",
         "The weak post-purchase cell uses p2_base_r0_low_profit_plus with Bprior_r0 in alt_keys. The chart label 'rho = 0.25' is prim_rho (build_results.js used entry_r0, same 1/4). The tick and text "
         "1.97 is rJ: build_results.js (13 Nov) printed and shaded to rN = 1.75, and the master was changed to 1.97 since; "
-        "that builder is stale on this point. All other contract keys are confirmed.",
+        "that script is stale on this point. All other keys are confirmed.",
         "The dashed grey stretch on pages 14 and 17 runs from rN = 1.75 (registry rN, printed nowhere) to rJ = 1.97. It is "
         "not the equilibrium with no informed order: it is the mixed-order equilibrium at the entry floor (form Q of "
         "handout/figures.js): class H buys and class L sells, each at rate s = t = b(rho Delta_T/k - 2) > 0, no order "
