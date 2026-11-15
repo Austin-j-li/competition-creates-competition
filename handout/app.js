@@ -1,4 +1,4 @@
-/* Page shell: theme, tabs, progress, table of contents, collapsibles, stepper, math, self-check.
+/* Page shell: tabs, progress, table of contents, collapsibles, stepper, math, self-check.
    Plain ES2019, no modules. KaTeX is a local copy loaded before this script. Runs on
    DOMContentLoaded. */
 (function () {
@@ -27,66 +27,6 @@
   CCC.openAll = params.get("eager") === "1";              // ?eager=1 also opens every <details>
   CCC.debug = params.get("debug") === "1";
   CCC.errors = errors;
-
-  var mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-  var STORAGE_KEY = "ccc-theme";
-
-  /* ---------- theme ---------- */
-  function readStored() {
-    try { return window.localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-  }
-  /* The slides once stored their theme under "ccc-deck-theme"; one key now serves both. */
-  try {
-    var oldDeck = window.localStorage.getItem("ccc-deck-theme");
-    if (oldDeck !== null) {
-      if (readStored() === null && (oldDeck === "light" || oldDeck === "dark")) window.localStorage.setItem(STORAGE_KEY, oldDeck);
-      window.localStorage.removeItem("ccc-deck-theme");
-    }
-  } catch (e) { /* private mode */ }
-  function writeStored(v) {
-    try { window.localStorage.setItem(STORAGE_KEY, v); } catch (e) { /* private mode */ }
-  }
-  function currentTheme() {
-    var t = document.documentElement.getAttribute("data-theme");
-    return t === "dark" ? "dark" : "light";
-  }
-  function updateToggle() {
-    var btn = document.getElementById("theme-toggle");
-    if (!btn) return;
-    var t = currentTheme();
-    btn.textContent = t === "dark" ? "Light" : "Dark";
-    btn.setAttribute("aria-label", "Switch to " + (t === "dark" ? "light" : "dark") + " theme");
-  }
-  function applyTheme(name, persist) {
-    var t = name === "dark" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", t);
-    if (persist) writeStored(t);
-    updateToggle();
-    try {
-      document.dispatchEvent(new CustomEvent("ccc:themechange", { detail: { theme: t } }));
-    } catch (e) { recordError("themechange dispatch: " + e.message); }
-  }
-  CCC.theme = {
-    get: currentTheme,
-    set: function (name) { applyTheme(name, true); },
-    toggle: function () { applyTheme(currentTheme() === "dark" ? "light" : "dark", true); }
-  };
-  function initTheme() {
-    var q = params.get("theme");
-    if (q === "light" || q === "dark") applyTheme(q, false);
-    var btn = document.getElementById("theme-toggle");
-    if (btn) btn.addEventListener("click", CCC.theme.toggle);
-    updateToggle();
-    if (mql) {
-      var onChange = function (ev) {
-        if (readStored() === null && !(params.get("theme") === "light" || params.get("theme") === "dark")) {
-          applyTheme(ev.matches ? "dark" : "light", false);
-        }
-      };
-      if (typeof mql.addEventListener === "function") mql.addEventListener("change", onChange);
-      else if (typeof mql.addListener === "function") mql.addListener(onChange);
-    }
-  }
 
   /* ---------- tabs: research brief, read the paper, seminar talk ---------- */
   var TABS = ["brief", "paper", "talk"];
@@ -464,7 +404,6 @@
       explorer: (CCC.explorer && typeof CCC.explorer.status === "function") ? CCC.explorer.status() : null,
       consoleErrors: errors.slice(),
       details: { total: details.length, open: open },
-      theme: currentTheme(),
       tab: document.documentElement.getAttribute("data-tab"),
       fonts: document.fonts ? Array.prototype.filter.call(document.fonts, function (f) { return f.status === "loaded"; }).map(function (f) { return f.family + " " + f.weight + " " + f.style; }) : []
     };
@@ -475,7 +414,6 @@
   CCC.ready = new Promise(function (res) { readyResolve = res; });
 
   function boot() {
-    try { initTheme(); } catch (e) { recordError("theme: " + e.message); }
     try { initTabs(); } catch (e) { recordError("tabs: " + e.message); }
     try { initProgress(); } catch (e) { recordError("progress: " + e.message); }
     try { initTocDrawer(); } catch (e) { recordError("toc drawer: " + e.message); }

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <link rel="icon" href="data:,">
 <title>Competition Creates Competition</title>
 <meta name="description" content="When can a stronger takeover bidder draw a rival bidder into the sale? A research brief on one order in the target's stock, costly preparation and the discovery of takeover bidders, with interactive figures, the paper and the talk.">
@@ -12,101 +12,114 @@
 <meta property="og:title" content="Competition Creates Competition">
 <meta property="og:description" content="When can a stronger takeover bidder draw a rival bidder into the sale? A research brief on stock prices, costly preparation and the discovery of takeover bidders.">
 <meta name="twitter:card" content="summary">
-<link rel="preload" href="fonts/libertinus-serif-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/dm-sans-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/stix-two-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/katex.min.css">
-<script>
-(function () {
-  try {
-    var q = new URLSearchParams(window.location.search).get("theme");
-    var stored = null;
-    try { stored = window.localStorage.getItem("ccc-theme"); } catch (e) { stored = null; }
-    var theme = (q === "light" || q === "dark") ? q
-      : (stored === "light" || stored === "dark") ? stored
-      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  } catch (e) {
-    document.documentElement.setAttribute("data-theme", "light");
-  }
-})();
-</script>
 <style>
-@font-face { font-family: "Libertinus Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/libertinus-serif-400-normal.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+0370-03FF, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+27C0-27FF, U+2980-29FF, U+2A00-2AFF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "Libertinus Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/libertinus-serif-400-italic.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+0370-03FF, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+27C0-27FF, U+2980-29FF, U+2A00-2AFF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "Libertinus Serif"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/libertinus-serif-700-normal.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+0370-03FF, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+27C0-27FF, U+2980-29FF, U+2A00-2AFF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "Libertinus Serif"; font-style: italic; font-weight: 700; font-display: swap; src: url("fonts/libertinus-serif-700-italic.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+0370-03FF, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+27C0-27FF, U+2980-29FF, U+2A00-2AFF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "DM Sans"; font-style: normal; font-weight: 400; size-adjust: 90%; font-display: swap; src: url("fonts/dm-sans-400-normal.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+25A0-25FF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "DM Sans"; font-style: italic; font-weight: 400; size-adjust: 90%; font-display: swap; src: url("fonts/dm-sans-400-italic.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+25A0-25FF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "DM Sans"; font-style: normal; font-weight: 700; size-adjust: 90%; font-display: swap; src: url("fonts/dm-sans-700-normal.woff2") format("woff2"); unicode-range: U+0000-024F, U+02B0-036F, U+1E00-1EFF, U+2000-206F, U+2070-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+25A0-25FF, U+FB00-FB06, U+FEFF, U+FFFD; }
-@font-face { font-family: "Libertinus Math"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/libertinus-math-400-normal.woff2") format("woff2"); unicode-range: U+0370-03FF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+27C0-27FF, U+2980-29FF, U+2A00-2AFF, U+1D400-1D7FF; }
-/* Website stylesheet: the journal look in the colours of UCL. Tokens first, then type, layout,
-   components. The page is set like the Beamer deck of the talk: Libertinus Serif for the reading
-   text, DM Sans for headings, tags, labels and controls, white paper. Two purples carry the
-   colour, each in one role: --accent (dark purple) is coloured text, that is headings, the tags of
-   statements and the active control; --rule (bright purple) is every rule, bullet and mark. Greys
-   for glosses and hairlines. No bars, fills, cards, pills, shadows or gradients. A section
-   heading is bold sans over a 1 px rule, as a frame title is; a statement is a rule, a bold sans
-   tag, the body, a light rule; a takeaway is bold text over a rule. The dark theme is dark purple
-   paper with heritage blue for coloured text and mid purple for rules. The figure tokens map the
-   renderer's series to ink, the information colour and greys; the series differ by dash and
-   marker. The font-face rules are generated by build.py from fonts.lock.json. The two :root
-   blocks are repeated in presentation/deck.css; check_deck.mjs fails when a shared token differs. */
-
-:root,
-:root[data-theme="light"] {
-  color-scheme: light;
-  --bg: #ffffff;
-  --surface: #f2f2f2;
-  --ink: #1c1c1c;
-  --muted: #666666;
-  --line: #c9c9c9;
-  --grid: #e6e6e6;
-  --rule: #993bff;
-  --accent: #361a54;
-  --accent-soft: rgba(153, 59, 255, 0.08);
-  --heading: #361a54;
-  --chart-1: #1c1c1c;
-  --chart-2: #993bff;
-  --chart-3: #666666;
-  --c-info: #993bff;
-  --c-cost: #1c1c1c;
-  --region-a: rgba(28, 28, 28, 0.07);
-  --region-b: rgba(153, 59, 255, 0.08);
-  --region-c: rgba(102, 102, 102, 0.12);
-  --fail: #361a54;
-  --selection: rgba(153, 59, 255, 0.16);
-  --font-serif: "Libertinus Serif", "Libertinus Math", Georgia, "Times New Roman", serif;
-  --font-sans: "DM Sans", "Libertinus Math", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --font-mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
-  --measure: 66ch;
-  --toc: 12.5rem;
-  --gutter: 3.5rem;
-  --page-width: 72rem;
-  --column: 54rem;
+@font-face { font-family: "Jost"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/jost-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Jost"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/jost-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-latin-400-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-latin-600-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-latin-ext-400-italic.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-latin-ext-600-italic.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-greek-400-normal.woff2") format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/stix-two-text-greek-400-italic.woff2") format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-greek-600-normal.woff2") format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 600; font-display: swap; src: url("fonts/stix-two-text-greek-600-italic.woff2") format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+/* Shared plate design tokens, consumed by the talk and research brief.
+   --ground: paper; --ink: primary text; --ink-2: secondary text.
+   --rule / --rule-strong: keyline inks; --rule-w / --rule-strong-w: their weights.
+   --accent: price-induced entry; --accent-ink: text on that ink.
+   --band-bg / --band-ink: statement band; --tint / --tint-fill: strong-column screen.
+   --font-title / --font-text / --font-label / --font-num: title, prose, label, numeral faces.
+   --fig-ink: axes and labels; --fig-muted: no-informed-order branch;
+   --fig-share / --fig-rival: shareholder and rival payoffs; --fig-accent: informed branch;
+   --fig-shade: coexistence; --fig-line / --fig-line-heavy / --fig-dot: mark dimensions.
+   --dash-mixed / --dash-hidden / --dash-drop: branch patterns; --trace-grey: comparison trace.
+   --scr-ink / --scr-w / --scr-pitch: line screen ink, weight, pitch.
+   --fig-*-fill: solid or SVG screen fills. Screen IDs are defined by each figure.
+   --focus-ring / --focus-w: visible keyboard focus. Stage font sizes stay in the look. */
+/* The plate body also receives these tokens so figure defaults cannot override inherited values. */
+:root, body[data-look="plate"] {
+  --ground: oklch(0.985 0.002 250);
+  --ink: oklch(0.20 0.01 260);
+  --ink-2: oklch(0.40 0.012 260);
+  --rule: oklch(0.20 0.01 260);            /* every keyline is black ink */
+  --rule-strong: oklch(0.20 0.01 260);
+  --accent: oklch(0.50 0.15 150);          /* press green: the price brings the costly rival in */
+  --accent-ink: #ffffff;
+  --band-bg: oklch(0.20 0.01 260);
+  --band-ink: #ffffff;
+  --tint: oklch(0.985 0.002 250);          /* never a flat tint: --tint-fill is a line screen */
+  --font-title: "Jost", "Futura", "Century Gothic", sans-serif;
+  --font-text: "STIX Two Text", "Times New Roman", serif;
+  --font-label: "Jost", "Futura", "Century Gothic", sans-serif;
+  --font-num: "Jost", "Futura", sans-serif;
+  --rule-w: 1.5px;
+  --rule-strong-w: 3px;
+  --fig-ink: oklch(0.20 0.01 260);
+  --fig-muted: oklch(0.20 0.01 260);        /* the branch with no informed order: solid black */
+  --fig-share: oklch(0.20 0.01 260);        /* what shareholders are paid: solid black */
+  --fig-rival: oklch(0.20 0.01 260);        /* what the rival keeps: black, but as a line screen (below) */
+  --fig-accent: oklch(0.50 0.15 150);
+  --fig-shade: oklch(0.20 0.01 260);
+  --fig-line: 3px;
+  --fig-line-heavy: 6px;
+  --fig-dot: 8px;
+  --dash-mixed: 14 9;
+  --dash-hidden: 16 10;
+  --dash-drop: 2 9;
+  --trace-grey: oklch(0.70 0.008 260);      /* page 16's pale trace of the full model */
+  --scr-ink: oklch(0.20 0.01 260);
+  --scr-w: 1.5px;
+  --scr-pitch: 9px;
+  --fig-share-fill: var(--fig-share);
+  --fig-rival-fill: url(#scr-a-bars);
+  --fig-shade-fill: url(#scr-b-entry);
+  --tint-fill: repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--accent) 30%, var(--ground)) 0,
+      color-mix(in srgb, var(--accent) 30%, var(--ground)) 1px,
+      transparent 1px, transparent 12px);
+  --focus-ring: var(--ink);                 /* focus is black; green keeps its one meaning */
+  --focus-w: 3px;
 }
 
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #361a54;
-  --surface: #422464;
-  --ink: #fafafa;
-  --muted: #ba82ff;
-  --line: #6a4e8a;
-  --grid: #4a2d6c;
-  --rule: #ba82ff;
-  --accent: #30d6ff;
-  --accent-soft: rgba(48, 214, 255, 0.12);
-  --heading: #fafafa;
-  --chart-1: #fafafa;
-  --chart-2: #30d6ff;
-  --chart-3: #ba82ff;
-  --c-info: #30d6ff;
-  --c-cost: #fafafa;
-  --region-a: rgba(250, 250, 250, 0.10);
-  --region-b: rgba(48, 214, 255, 0.14);
-  --region-c: rgba(186, 130, 255, 0.14);
-  --fail: #30d6ff;
-  --selection: rgba(48, 214, 255, 0.28);
+/* Website stylesheet: the two-colour plate, set for reading.
+   The look's tokens (ground, ink, the press green, keyline weights, line screens, the families)
+   come from design/tokens.css, which build.py inlines before this file. This file only adds what
+   a reading page needs and overrides the reading sizes and heading stacks (below).
+
+   Bright white stock, black ink, a dark grey for secondary text. Green means one thing on the
+   whole site: the price brings the costly rival in. On this page it marks only the figure branches
+   and points where entry is above its floor because a purchase recruits the high-cost rival, and
+   the matching readouts of the explorer. Links, tabs, the current contents entry and focus are
+   black: weight, an underline or a keyline. Rules are black keylines in two weights, one per role:
+   heavy under a section heading and the title, thin for tables, disclosures and the contents.
+   Pale fills are line screens drawn as SVG patterns by the figures. No tints, gradients,
+   shadows, rounded boxes or cards. Jost for headings, labels and controls; STIX Two Text for
+   running text. One theme. The font-face rules are generated by build.py from fonts.lock.json. */
+
+/* ---------- page tokens (after design/tokens.css) ---------- */
+
+:root {
+  color-scheme: light;
+  /* The reading page uses a thinner focus outline than the stage. */
+  --focus-w: 2px;
+  /* Jost has no Greek: figure labels and headings fall back to STIX Two Text for Δ, τ, λ, μ. */
+  --font-title: "Jost", "STIX Two Text", "Futura", sans-serif;
+  --font-label: "Jost", "STIX Two Text", "Futura", sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  /* the screen of an area in a figure: thin lines in a light ink, so marks read over it */
+  --scr-page: oklch(0.62 0.008 260);
+  --measure: 29.5em;
+  --toc: 12rem;
+  --gutter: 3.5rem;
+  --page-width: 73rem;
+  --column: 53rem;
 }
 
 /* ---------- base ---------- */
@@ -118,37 +131,40 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 1.5rem;
-  scrollbar-color: var(--line) var(--bg);
+  scrollbar-color: var(--ink) var(--ground);
   scrollbar-width: thin;
+  background: var(--ground);
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--ground);
   color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-family: var(--font-text);
+  font-size: 1.25rem;
   line-height: 1.55;
   font-feature-settings: "kern" 1, "liga" 1;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums;
   overflow-wrap: break-word;
   caret-color: var(--ink);
+  accent-color: var(--ink);
 }
 
-::selection { background: var(--selection); color: var(--ink); }
+::selection { background: var(--ink); color: var(--ground); }
 
 img, svg, video { max-width: 100%; height: auto; }
 
-a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.16em; text-decoration-color: var(--line); }
-a:hover { color: var(--accent); text-decoration-color: currentColor; }
+a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.17em; }
+a:hover { text-decoration-thickness: 2px; }
 
-:focus-visible { outline: 2px solid var(--rule); outline-offset: 2px; }
-.skip-link { position: absolute; top: -5rem; left: 1rem; padding: 0.5rem 0.9rem; background: var(--bg); color: var(--ink); border: 1px solid var(--ink); z-index: 100; font-family: var(--font-sans); font-size: 0.9rem; }
+:focus { outline: none; }
+:focus-visible { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 3px; }
+.skip-link { position: absolute; top: -5rem; left: 1rem; padding: 0.5rem 0.9rem; background: var(--ground); color: var(--ink); border: var(--rule-w) solid var(--ink); z-index: 100; font-family: var(--font-label); font-weight: 500; font-size: 0.9rem; }
 .skip-link:focus { top: 0.5rem; }
 
-h1, h2, h3 { font-family: var(--font-sans); line-height: 1.15; text-wrap: balance; color: var(--heading); }
-h2 { font-size: clamp(1.55rem, 2.2vw, 1.8rem); font-weight: 700; margin: 0; letter-spacing: -0.015em; }
-h3 { font-size: 1.1rem; font-weight: 700; margin: 2.3rem 0 0.5rem; line-height: 1.25; }
+h1, h2, h3 { font-family: var(--font-title); font-weight: 600; line-height: 1.15; text-wrap: balance; color: var(--ink); }
+h2 { font-size: clamp(1.6rem, 2.4vw, 2rem); margin: 0; letter-spacing: -0.012em; }
+h3 { font-size: 1.2rem; margin: 2.6rem 0 0.6rem; line-height: 1.25; letter-spacing: -0.004em; }
 h3 + p { margin-top: 0; }
 
 p { margin: 0 0 1rem; text-wrap: pretty; }
@@ -156,95 +172,82 @@ li, dd, figcaption { text-wrap: pretty; }
 p, li, dd, dt, figcaption { max-width: var(--measure); }
 ul, ol { padding-left: 1.4rem; }
 li { margin-bottom: 0.3rem; }
-/* The bullets of the deck: a small square in the rule colour; numbered items a bold number. */
-ul > li::marker { content: "\25A0\00a0\00a0"; color: var(--rule); font-size: 0.62em; }
-ol > li::marker { font-family: var(--font-sans); font-weight: 700; }
-strong, b { font-weight: 700; }
+/* a bullet is a small solid square of ink, drawn rather than set, so no symbol face is needed */
+ul { list-style: none; }
+ul > li { position: relative; }
+ul > li::before { content: ""; position: absolute; left: -1.05rem; top: 0.62em; width: 0.36em; height: 0.36em; background: var(--ink); }
+ol > li::marker { font-family: var(--font-label); font-weight: 600; }
+strong, b { font-weight: 600; }
 sub, sup { line-height: 0; }
 em { font-style: italic; }
 
 code, kbd { font-family: var(--font-mono); font-size: 0.86em; }
-kbd { font-family: var(--font-sans); font-size: 0.8em; border: 1px solid var(--line); border-radius: 2px; padding: 0 0.35rem; }
-small { color: var(--muted); }
-.dot { color: inherit; opacity: 0.6; margin: 0 0.35em; }
-.num, .live { font-variant-numeric: tabular-nums; }
+kbd { font-family: var(--font-label); font-weight: 500; font-size: 0.82em; border: 1px solid var(--ink); border-radius: 0; padding: 0.05rem 0.4rem; white-space: nowrap; }
+small { color: var(--ink-2); }
+.dot { color: var(--ink-2); margin: 0 0.4em; }
+.num, .live { font-variant-numeric: tabular-nums lining-nums; }
 
-button { font-family: var(--font-sans); color: inherit; }
+button { font-family: var(--font-label); color: inherit; }
 
-/* A bold sans run-in word at the start of its paragraph: "Answer.", "In short.", a scenario's
-   name, the two paths of the mechanism map. A tag on its own line is a statement's name. */
-.run-in { font-family: var(--font-sans); font-style: normal; font-weight: 700; font-size: 0.9em; color: var(--ink); }
+/* A run-in word at the start of its paragraph: "Answer.", "In short.", a scenario's name. */
+.run-in { font-family: var(--font-label); font-style: normal; font-weight: 600; font-size: 0.9em; color: var(--ink); }
 
-/* Links styled as actions: sans text with an underline, never a box; the primary one in the accent. */
+/* Links styled as actions: Jost with an underline, never a box. */
 a.button, .button {
   display: inline-block;
   padding: 0.15rem 0;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 400;
+  font-family: var(--font-label);
+  font-size: 0.98rem;
+  font-weight: 500;
   line-height: 1.35;
   color: var(--ink);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.25em;
-  text-decoration-color: var(--line);
+  text-underline-offset: 0.28em;
 }
-a.button:hover { color: var(--accent); text-decoration-color: currentColor; }
-a.button.primary { font-weight: 700; color: var(--accent); text-decoration-thickness: 2px; text-decoration-color: var(--rule); }
+a.button:hover { text-decoration-thickness: 2px; }
+a.button.primary { font-weight: 600; text-decoration-thickness: 3px; }
 
-/* ---------- title block: a short rule and the serif title, on paper (no cover, no band) ---------- */
+/* ---------- the masthead: the plate's own face ---------- */
 
-.masthead { position: relative; font-family: var(--font-sans); }
-.masthead-inner { position: relative; max-width: var(--page-width); margin: 2.4rem auto 0; padding: 0 2rem; }
-.masthead-inner::before { content: ""; display: block; width: 7.5rem; border-top: 2px solid var(--rule); margin-bottom: 1.5rem; }
-/* On dark purple the short rule is heritage blue, as on the title page of the deck. */
-:root[data-theme="dark"] .masthead-inner::before { border-top-color: var(--accent); }
-.masthead h1 { font-family: var(--font-serif); font-size: clamp(1.9rem, 3.4vw, 2.5rem); font-weight: 700; line-height: 1.12; letter-spacing: 0; margin: 0; max-width: none; }
-.subtitle { font-family: var(--font-serif); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 2.5rem); line-height: 1.12; margin: 0 0 1.4rem; max-width: none; color: var(--heading); text-wrap: balance; }
-.byline { font-size: 1rem; color: var(--ink); margin: 0 0 0.3rem; max-width: none; }
-.masthead .record { font-size: 0.9rem; color: var(--muted); margin: 0 0 1.8rem; display: flex; flex-wrap: wrap; gap: 0 0.1rem; max-width: none; }
+.masthead { position: relative; }
+.masthead-inner { position: relative; max-width: var(--page-width); margin: 0 auto; padding: 4.25rem 2rem 0; }
+/* registration crosses, as on the face of a plate */
+.masthead .reg { position: absolute; top: 1.4rem; width: 1.5rem; height: 1.5rem; fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.masthead .reg-l { left: 0.6rem; }
+.masthead .reg-r { right: 0.6rem; }
+.masthead h1 { font-size: clamp(2.3rem, 5.4vw, 4rem); font-weight: 600; line-height: 1.04; letter-spacing: -0.022em; margin: 0; max-width: 18ch; }
+.subtitle { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.25rem, 2.2vw, 1.65rem); line-height: 1.25; margin: 0.7rem 0 0; padding-bottom: 1.4rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); max-width: none; }
+.byline { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.2rem 1.5rem; margin: 0; padding: 1rem 0 0.2rem; max-width: none; }
+.byline .author { font-family: var(--font-label); font-weight: 600; font-size: 1.15rem; }
+.byline .affiliation { font-family: var(--font-text); color: var(--ink-2); font-size: 1.05rem; }
+.byline .dot { display: none; }
+.masthead .record { font-family: var(--font-label); font-weight: 500; font-size: 0.9rem; color: var(--ink-2); margin: 0 0 2.2rem; display: flex; flex-wrap: wrap; max-width: none; }
 .masthead .record > span { white-space: nowrap; }
 
-.tabs { display: flex; gap: 2rem; margin: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabs { display: flex; gap: 2.2rem; margin: 0; border-bottom: var(--rule-w) solid var(--rule); overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs [role="tab"] {
   display: block;
-  color: var(--muted);
-  padding: 0.7rem 0 0.65rem;
-  margin-bottom: -1px;
-  font-weight: 400;
-  font-size: 0.98rem;
+  font-family: var(--font-label);
+  color: var(--ink-2);
+  padding: 0.7rem 0 0.6rem;
+  font-weight: 500;
+  font-size: 1rem;
   text-decoration: none;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 140ms ease, border-color 140ms ease;
+  border-bottom: var(--rule-strong-w) solid transparent;
+  margin-bottom: calc(-1 * var(--rule-w));
 }
 .tabs [role="tab"]:hover { color: var(--ink); }
-.tabs [role="tab"][aria-selected="true"] { color: var(--accent); font-weight: 700; border-bottom-color: var(--rule); }
+.tabs [role="tab"][aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
 .tabs [role="tab"]:focus-visible { outline-offset: -2px; }
-
-#theme-toggle {
-  position: absolute;
-  top: 0;
-  right: 2rem;
-  font: inherit;
-  font-size: 0.88rem;
-  font-weight: 400;
-  padding: 0.15rem 0;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  transition: border-color 140ms ease, color 140ms ease;
-}
-#theme-toggle:hover { color: var(--accent); border-bottom-color: var(--rule); }
 
 /* ---------- layout ---------- */
 
 main { min-width: 0; display: block; }
 main:focus { outline: none; }
-.layout { max-width: var(--page-width); margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+.layout { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
 .brief { min-width: 0; max-width: var(--column); }
 
 @media (min-width: 1024px) {
@@ -252,179 +255,169 @@ main:focus { outline: none; }
   nav.toc { position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
 }
 
-/* ---------- contents ---------- */
+/* ---------- contents: plain labels on keylines ---------- */
 
-nav.toc { font-family: var(--font-sans); font-size: 0.9rem; margin-bottom: 2rem; scrollbar-width: thin; }
-.toc-kicker { font-size: 0.88rem; font-weight: 700; color: var(--accent); margin: 0 0 0.3rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--rule); }
-nav.toc ol { list-style: none; margin: 0 0 1.25rem; padding: 0; counter-reset: toc; }
-nav.toc li { margin: 0; max-width: none; counter-increment: toc; }
+nav.toc { font-family: var(--font-label); font-weight: 500; font-size: 0.92rem; margin-bottom: 2rem; scrollbar-width: thin; }
+.toc-kicker { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin: 0; padding-bottom: 0.45rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); }
+nav.toc ol { list-style: none; margin: 0 0 1.25rem; padding: 0; }
+nav.toc li { margin: 0; max-width: none; }
 nav.toc a {
-  display: flex;
-  gap: 0.6rem;
-  align-items: baseline;
-  padding: 0.45rem 0;
-  border-bottom: 1px solid var(--grid);
-  color: var(--muted);
+  display: block;
+  padding: 0.5rem 0 0.45rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-2);
   text-decoration: none;
-  line-height: 1.35;
-  transition: color 140ms ease;
+  line-height: 1.3;
 }
-nav.toc a::before { content: counter(toc); flex: none; min-width: 1ch; font-variant-numeric: tabular-nums; }
 nav.toc a:hover { color: var(--ink); }
-nav.toc a[aria-current="location"] { color: var(--accent); font-weight: 700; }
-nav.toc details.toc-drawer { border-bottom: 1px solid var(--line); margin-bottom: 0.75rem; }
-nav.toc details.toc-drawer ol { counter-reset: toc; border-top: 0; margin: 0 0 0.4rem; }
-nav.toc details.toc-drawer summary { cursor: pointer; font-weight: 700; padding: 0.7rem 0; color: var(--ink); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+nav.toc a[aria-current="location"] { color: var(--ink); font-weight: 600; }
+nav.toc details.toc-drawer { border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); margin-bottom: 0.5rem; }
+nav.toc details.toc-drawer ol { margin: 0 0 0.6rem; }
+nav.toc details.toc-drawer li:last-child a { border-bottom: 0; }
+nav.toc details.toc-drawer summary { cursor: pointer; font-weight: 600; padding: 0.7rem 0; color: var(--ink); list-style: none; display: flex; justify-content: space-between; align-items: center; }
 nav.toc details.toc-drawer summary::-webkit-details-marker { display: none; }
-nav.toc details.toc-drawer summary::after { content: "+"; color: var(--muted); font-size: 1.1em; line-height: 1; }
+nav.toc details.toc-drawer summary::after { content: "+"; font-weight: 500; font-size: 1.15em; line-height: 1; }
 nav.toc details.toc-drawer[open] summary::after { content: "\2212"; }
 
-/* ---------- the opening question: the large line between a rule and a light rule ---------- */
+/* ---------- the opening question: bold type between two thin keylines ---------- */
 
-.opening-question { margin: 0 0 3.25rem; max-width: none; }
-.opening-question .question { font-family: var(--font-serif); font-size: clamp(1.35rem, 2vw, 1.55rem); line-height: 1.25; font-weight: 700; margin: 0 0 1.1rem; padding: 0.8rem 0 0.75rem; border-top: 1.5px solid var(--rule); border-bottom: 1px solid var(--line); color: var(--heading); text-wrap: balance; max-width: none; }
-.opening-question > p:not(.question):not(.opening-answer) { font-size: 1.18rem; line-height: 1.5; }
-.opening-question .opening-answer::before { content: "Answer. "; font-family: var(--font-sans); font-weight: 700; font-size: 0.9em; }
+.opening-question { margin: 0 0 4rem; max-width: none; }
+.opening-question .question { font-family: var(--font-title); font-weight: 600; font-size: clamp(1.4rem, 2.3vw, 1.75rem); line-height: 1.22; letter-spacing: -0.01em; margin: 0 0 1.3rem; padding: 0.9rem 0 1rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); text-wrap: balance; max-width: none; }
+.opening-question > p:not(.question) { font-size: 1.25rem; line-height: 1.5; }
+.opening-question .opening-answer::before { content: "Answer. "; font-family: var(--font-label); font-weight: 600; font-size: 0.9em; }
 
-/* ---------- sections: bold sans over the rule, as a frame title ---------- */
+/* ---------- sections: Jost over the heavy keyline, which runs the full measure ---------- */
 
-.sec { margin: 0 0 4.25rem; }
+.sec { margin: 0 0 5rem; }
 .sec:last-child { margin-bottom: 0; }
-.sec > h2 { border-bottom: 1px solid var(--rule); padding-bottom: 0.4rem; margin: 0 0 1.3rem; }
-/* The section fragments still carry a numbered line with a reading time under each heading; the
-   journal look has no reading-time or section-number elements, so the line is not displayed. */
+.sec > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin: 0 0 1.5rem; }
+/* The fragments still carry a line with a section number and a reading time under each heading;
+   the plate has neither, so the line is not displayed. */
 .section-time { display: none; }
-.lead { font-size: 1.18rem; line-height: 1.5; }
-/* The takeaway of a frame: bold text over a rule. */
-.takeaway { margin-top: 2.25rem; padding-top: 0.75rem; border-top: 1.5px solid var(--rule); font-size: 1.12rem; line-height: 1.45; font-weight: 700; color: var(--ink); }
-.takeaway::before { content: "In short. "; font-family: var(--font-sans); font-weight: 700; font-size: 0.9em; }
-.interaction-hint { font-family: var(--font-sans); font-size: 0.85rem; color: var(--muted); }
+.lead { font-size: 1.25rem; line-height: 1.5; }
+/* The takeaway: bold text between two thin keylines. */
+.takeaway { margin-top: 2.5rem; padding: 0.85rem 0 0.95rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); font-size: 1.2rem; line-height: 1.45; font-weight: 600; color: var(--ink); max-width: var(--measure); }
+.takeaway::before { content: "In short. "; font-family: var(--font-label); font-weight: 600; font-size: 0.9em; }
+.interaction-hint { font-family: var(--font-label); font-weight: 500; font-size: 0.88rem; color: var(--ink-2); }
 
-.scenario { margin: 0 0 1.1rem; max-width: none; }
+.scenario { margin: 0 0 1.2rem; max-width: var(--measure); }
 .scenario p { font-style: italic; }
 .scenario p em { font-style: normal; }
-/* The label of the scenario runs into its paragraph as a bold sans word. */
-.scenario .scenario-label { display: inline; font-family: var(--font-sans); font-style: normal; font-weight: 700; font-size: 0.9em; color: var(--ink); margin: 0; }
+.scenario .scenario-label { display: inline; font-family: var(--font-label); font-style: normal; font-weight: 600; font-size: 0.9em; color: var(--ink); margin: 0; }
 .scenario-label::after { content: ". "; }
 .scenario-label + p { display: inline; }
 
-/* ---------- propositions: the statement of the deck (rule, tag, body, light rule) ---------- */
+/* ---------- propositions: a Jost tag and the statement, between thin keylines ---------- */
 
-.prop { margin: 2rem 0; padding: 0.55rem 0 0.15rem; border-top: 1.5px solid var(--rule); border-bottom: 1px solid var(--line); max-width: none; }
-.prop-title { display: block; font-family: var(--font-sans); font-weight: 700; font-size: 0.98rem; line-height: 1.3; color: var(--accent); margin: 0 0 0.4rem; max-width: none; }
-.prop-body { font-size: 0.97em; }
+.prop { margin: 2.25rem 0; padding: 0.7rem 0 0.2rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); max-width: none; }
+.prop-title { display: block; font-family: var(--font-label); font-weight: 600; font-size: 1rem; line-height: 1.3; color: var(--ink); margin: 0 0 0.5rem; max-width: none; }
 .prop-body > :last-child { margin-bottom: 0.8rem; }
 .prop-body .run-in { font-size: 0.95em; }
 .prop .prop-name { font-style: normal; }
 .prop details.fold { margin-bottom: 0.8rem; }
 
-/* ---------- collapsibles ---------- */
+/* ---------- disclosures: a Jost summary between thin keylines ---------- */
 
-details.fold, details.proof { margin: 1.25rem 0 1.5rem; max-width: none; }
-details.fold { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-details.fold details.fold, .prop details.fold, figcaption details.fold { border: 0; border-left: 1px solid var(--line); padding-left: 1rem; }
+details.fold, details.proof { margin: 1.4rem 0 1.6rem; max-width: none; }
+details.fold { border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+details.fold details.fold, .prop details.fold, figcaption details.fold { border-bottom: 0; border-top: 1px solid var(--rule); }
 details.fold > summary, details.proof > summary {
   cursor: pointer;
-  padding: 0.65rem 0;
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 0.95rem;
+  padding: 0.7rem 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 1rem;
   line-height: 1.35;
   list-style: none;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   align-items: baseline;
-  color: var(--heading);
+  color: var(--ink);
 }
 details.fold > summary::-webkit-details-marker, details.proof > summary::-webkit-details-marker { display: none; }
-details.fold > summary::after, details.proof > summary::after { content: "+"; flex: none; color: var(--muted); font-weight: 400; font-size: 1.1em; line-height: 1; }
+details.fold > summary::after, details.proof > summary::after { content: "+"; flex: none; font-weight: 500; font-size: 1.2em; line-height: 1; }
 details.fold[open] > summary::after, details.proof[open] > summary::after { content: "\2212"; }
-details.fold > summary:hover, details.proof > summary:hover { color: var(--accent); }
-details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.1rem; }
-.sec > details.fold { margin-top: 2rem; }
+details.fold > summary:hover span, details.fold > summary:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.2rem; }
+.sec > details.fold { margin-top: 2.25rem; }
 
-/* ---------- stepper: six tabs, the current one in the accent over the rule colour ---------- */
+/* ---------- stepper: six stages, the current one in weight over a heavy keyline ---------- */
 
-.stepper { list-style: none; padding: 0; margin: 1.5rem 0 0; counter-reset: step; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1rem; max-width: none; border-top: 1px solid var(--line); }
+.stepper { list-style: none; padding: 0; margin: 1.75rem 0 0; counter-reset: step; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1rem; max-width: none; border-bottom: var(--rule-w) solid var(--rule); }
 .stepper li { margin: 0; max-width: none; counter-increment: step; display: flex; }
+.stepper li::before { content: none; }
 .step-btn {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-width: 0;
-  align-items: baseline;
-  gap: 0.45rem;
+  gap: 0.3rem;
   text-align: left;
   font: inherit;
-  font-family: var(--font-sans);
+  font-family: var(--font-label);
   font-size: 0.9rem;
-  font-weight: 400;
-  line-height: 1.3;
-  padding: 0.65rem 0 0.55rem;
-  margin-bottom: -1px;
+  font-weight: 500;
+  line-height: 1.25;
+  padding: 0 0 0.6rem;
+  margin-bottom: calc(-1 * var(--rule-w));
   border: 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: var(--rule-strong-w) solid transparent;
   background: transparent;
-  color: var(--muted);
+  color: var(--ink-2);
   cursor: pointer;
-  transition: color 140ms ease, border-color 140ms ease;
 }
-.step-btn::before { content: counter(step); font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+.step-btn::before { content: counter(step); font-weight: 600; font-size: 1.35rem; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums lining-nums; }
 .step-btn:hover { color: var(--ink); }
-.stepper li[aria-current="step"] .step-btn { color: var(--accent); font-weight: 700; border-bottom-color: var(--rule); }
+.stepper li[aria-current="step"] .step-btn { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
 .step-note { display: none; }
-.stepper-panel { margin: 0 0 0.6rem; padding: 0.9rem 0 0.2rem; border-top: 1px solid var(--line); min-height: 3.2rem; max-width: none; }
+.stepper-panel { margin: 0 0 0.6rem; padding: 1rem 0 0.2rem; min-height: 3.2rem; max-width: none; }
 .stepper-panel > :last-child { margin-bottom: 0; }
 .stepper-panel > * { max-width: var(--measure); }
 
-/* ---------- mechanism map: two columns with a bold sans head over a rule (the column head) ---------- */
+/* ---------- mechanism map: two columns, each with a Jost head over a keyline ---------- */
 
-.mechanism-map { margin: 1.75rem 0 2.25rem; max-width: none; }
-.mechanism-start { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-weight: 700; font-size: 1rem; margin-bottom: 0.8rem; color: var(--heading); }
-.mechanism-start::after { content: "\2193"; font-family: var(--font-sans); font-weight: 400; color: var(--muted); }
-.mechanism-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; }
-.mechanism-path { display: flex; flex-direction: column; padding: 0 0 0.2rem; }
-.mechanism-path p { font-size: 1rem; line-height: 1.5; max-width: none; margin-bottom: 0.7rem; }
-.mechanism-path .path-end { margin-top: auto; border-top: 1px solid var(--line); padding-top: 0.6rem; font-family: var(--font-sans); font-weight: 700; font-size: 0.95rem; }
-/* The name of each path is its column head: bold sans over a rule in the same colour. */
-.mechanism-path .path-label { display: block; font-family: var(--font-sans); font-weight: 700; font-size: 0.98rem; color: var(--ink); margin: 0 0 0.6rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--ink); }
-.mechanism-path .path-label::after { content: none; }
-.mechanism-path .path-label + p + p { margin-top: 0.7rem; }
+.mechanism-map { margin: 2rem 0 2.5rem; max-width: none; }
+.mechanism-start { display: inline-flex; align-items: baseline; gap: 0.5rem; font-family: var(--font-label); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.9rem; color: var(--ink); }
+.mechanism-start::after { content: "\2193"; font-family: var(--font-text); font-weight: 400; }
+.mechanism-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: stretch; }
+.mechanism-path { display: flex; flex-direction: column; padding: 0 0 0.2rem; height: 100%; }
+.mechanism-path p { font-size: 1.02rem; line-height: 1.5; max-width: none; margin-bottom: 0.7rem; }
+.mechanism-path .path-end { margin-top: auto; border-top: var(--rule-w) solid var(--rule); padding-top: 0.6rem; font-family: var(--font-label); font-weight: 600; font-size: 0.98rem; }
+.mechanism-path .path-label { display: block; font-family: var(--font-label); font-weight: 600; font-size: 1rem; color: var(--ink); margin: 0 0 0.7rem; padding-bottom: 0.4rem; border-bottom: var(--rule-w) solid var(--rule); }
+.mechanism-path .path-label + p + p:not(.path-end) { margin-top: 0.7rem; }
 .mechanism-path p > strong::after { content: ". "; }
-.mechanism-path p > span { color: inherit; }
-.information-path .path-label { color: var(--c-info); border-bottom-color: var(--c-info); }
-.information-path .path-end { color: var(--c-info); }
-.information-path .run-in { color: var(--c-info); }
-.mechanism-map figcaption { font-size: 0.95rem; color: var(--muted); margin-top: 0.8rem; max-width: var(--measure); }
+.mechanism-map figcaption { font-size: 0.98rem; color: var(--ink-2); margin-top: 0.9rem; max-width: var(--measure); }
 
 /* ---------- number ledger and parameter ledger ---------- */
 
-.strip { margin: 1.75rem 0 0.75rem; max-width: 40rem; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-.stat { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; padding: 0.55rem 0; min-width: 0; border-top: 1px solid var(--grid); }
-.stat:first-child { border-top: 0; }
-.stat-value { order: 2; font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--heading); line-height: 1.1; white-space: nowrap; }
-.stat-label { order: 1; font-family: var(--font-sans); font-size: 0.9rem; color: var(--muted); line-height: 1.4; max-width: none; }
-.strip-note { font-size: 0.95rem; color: var(--muted); margin: 0 0 2rem; }
+.strip { margin: 1.9rem 0 0.8rem; max-width: 42rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+.stat { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; padding: 0.6rem 0; min-width: 0; }
+.stat + .stat { border-top: 1px solid var(--rule); }
+.stat-value { order: 2; font-family: var(--font-text); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; color: var(--ink); line-height: 1.1; white-space: nowrap; }
+.stat-label { order: 1; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; color: var(--ink); line-height: 1.4; max-width: none; }
+.strip-note { font-size: 1rem; color: var(--ink-2); margin: 0 0 2rem; }
 
-dl.params { display: flex; flex-wrap: wrap; gap: 0.35rem 1.6rem; margin: 1.25rem 0 1.5rem; padding: 0.55rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); max-width: none; }
+dl.params { display: flex; flex-wrap: wrap; gap: 0.35rem 1.7rem; margin: 1.3rem 0 1.6rem; padding: 0.6rem 0; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); max-width: none; }
 dl.params > div { display: flex; gap: 0.5rem; align-items: baseline; min-width: 0; }
-dl.params dt { font-size: 0.95rem; color: var(--muted); margin: 0; }
-dl.params dd { margin: 0; font-size: 1rem; font-variant-numeric: tabular-nums; }
+dl.params dt { color: var(--ink-2); margin: 0; }
+dl.params dd { margin: 0; font-variant-numeric: tabular-nums lining-nums; }
 
-/* ---------- figures: legend as text and swatches, hairlines, caption at the measure ---------- */
+/* ---------- figures: the full column, a legend of Jost labels, keylines ---------- */
 
-figure.chart { margin: 2.25rem 0 2.5rem; min-height: 360px; max-width: none; }
+figure.chart { margin: 2.5rem 0 2.75rem; min-height: 360px; max-width: none; }
 figure.chart:focus-visible { outline-offset: 6px; }
-figure.chart .chart-canvas { padding: 0.5rem 0 0.25rem; border-bottom: 1px solid var(--line); }
+figure.chart .chart-canvas { padding: 0.75rem 0 0.4rem; border-bottom: var(--rule-w) solid var(--rule); }
 .chart-mount { width: 100%; min-width: 0; }
-.chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.4rem; margin: 0; padding: 0.55rem 0 0.45rem; border-top: 1px solid var(--line); font-family: var(--font-sans); }
-.legend-title { font-size: 0.88rem; font-weight: 700; color: var(--muted); }
+.chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.5rem; margin: 0; padding: 0.55rem 0 0.45rem; border-top: var(--rule-w) solid var(--rule); font-family: var(--font-label); }
+.legend-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
 .legend-item {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   font: inherit;
-  font-family: var(--font-sans);
+  font-family: var(--font-label);
+  font-weight: 500;
   font-size: 0.88rem;
   line-height: 1.3;
   padding: 0.2rem 0;
@@ -433,17 +426,20 @@ figure.chart .chart-canvas { padding: 0.5rem 0 0.25rem; border-bottom: 1px solid
   color: var(--ink);
   cursor: pointer;
 }
-.legend-item[aria-pressed="false"] { color: var(--muted); text-decoration: line-through; }
-.legend-item[aria-pressed="false"] .swatch { opacity: 0.35; }
-.legend-item:hover span { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.2em; }
+.legend-item[aria-pressed="false"] { color: var(--ink-2); text-decoration: line-through; }
+.legend-item[aria-pressed="false"] .swatch { opacity: 0.3; }
+.legend-item:hover span { text-decoration: underline; text-underline-offset: 0.2em; }
 .legend-item .swatch { flex: none; }
+.legend-item i, .chart-tip i { font-family: var(--font-text); }
 .chart-canvas { position: relative; }
 .chart-canvas svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
-svg.plot text { font-family: var(--font-sans); }
-svg.plot .grid { stroke-dasharray: 2 4; }
-svg.plot .tick { font-size: 12.5px; font-variant-numeric: tabular-nums; }
+svg.plot text { font-family: var(--font-label); font-weight: 500; }
+svg.plot .it { font-family: var(--font-text); font-weight: 400; }
+svg.plot .ann { font-size: 12.5px; }
+svg.plot .ann.panel-label { font-size: 14px; }
+svg.plot .tick { font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
 svg.plot .axis-title { font-size: 13.5px; }
-svg.plot .panel-label { font-weight: 700; }
+svg.plot .panel-label { font-weight: 600; }
 .chart-tip {
   position: absolute;
   z-index: 5;
@@ -451,144 +447,149 @@ svg.plot .panel-label { font-weight: 700; }
   min-width: 11rem;
   max-width: 19rem;
   padding: 0.5rem 0.7rem;
-  background: var(--bg);
+  background: var(--ground);
   color: var(--ink);
-  border: 1px solid var(--line);
-  font-family: var(--font-sans);
+  border: var(--rule-w) solid var(--rule);
+  font-family: var(--font-label);
+  font-weight: 500;
   font-size: 0.82rem;
   line-height: 1.35;
 }
-.tip-head { color: var(--muted); margin-bottom: 0.3rem; font-variant-numeric: tabular-nums; }
+.tip-head { color: var(--ink-2); margin-bottom: 0.3rem; font-variant-numeric: tabular-nums; }
 .tip-row { display: flex; gap: 0.45rem; align-items: baseline; margin-top: 0.3rem; font-variant-numeric: tabular-nums; }
 .tip-key { flex: none; width: 0.6rem; height: 0.6rem; }
-.chart-notice { color: var(--muted); text-align: center; padding: 3rem 1rem; font-size: 0.95rem; }
-figure.chart figcaption, figure.table figcaption { font-size: 0.95rem; color: var(--muted); padding: 0.7rem 0 0.2rem; line-height: 1.5; max-width: var(--measure); }
-figure.chart figcaption > strong:first-child, figure.table figcaption > strong:first-child { font-family: var(--font-sans); font-size: 0.92em; color: var(--heading); }
+.chart-notice { color: var(--ink-2); text-align: center; padding: 3rem 1rem; font-size: 0.95rem; }
+figure.chart figcaption, figure.table figcaption { font-size: 0.98rem; color: var(--ink-2); padding: 0.75rem 0 0.2rem; line-height: 1.5; max-width: var(--measure); }
+figure.chart figcaption > strong:first-child, figure.table figcaption > strong:first-child { font-family: var(--font-label); font-weight: 600; font-size: 0.92em; color: var(--ink); }
 
-/* ---------- tables: booktabs ---------- */
+/* ---------- tables: thin keylines above and below, one under the head ---------- */
 
-figure.table { margin: 2rem 0 2.5rem; max-width: none; }
-.table-wrap { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; -webkit-overflow-scrolling: touch; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-table { border-collapse: collapse; width: 100%; font-size: 1rem; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
+figure.table { margin: 2.25rem 0 2.75rem; max-width: none; }
+.table-wrap { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--ink) transparent; -webkit-overflow-scrolling: touch; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: 1rem; font-variant-numeric: tabular-nums lining-nums; overflow-wrap: normal; }
 th, td { padding: 0.45rem 0.9rem 0.45rem 0; text-align: left; vertical-align: top; line-height: 1.4; }
 th:last-child, td:last-child { padding-right: 0; }
-thead th { font-family: var(--font-sans); font-weight: 700; font-size: 0.88rem; color: var(--heading); line-height: 1.35; border-bottom: 1px solid var(--line); vertical-align: bottom; padding-top: 0.55rem; }
+thead th { font-family: var(--font-label); font-weight: 600; font-size: 0.9rem; color: var(--ink); line-height: 1.3; border-bottom: 1px solid var(--rule); vertical-align: bottom; padding-top: 0.6rem; }
 tbody tr:first-child td, tbody tr:first-child th { padding-top: 0.6rem; }
 tbody tr:last-child td, tbody tr:last-child th { padding-bottom: 0.6rem; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
 thead th.num { white-space: normal; }
 th[scope="row"] { font-weight: 400; color: var(--ink); }
 
-/* ---------- explorer: an instrument row between hairlines ---------- */
+/* ---------- explorer: an instrument between thin keylines ---------- */
 
-.explorer { margin: 2rem 0 2.5rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); max-width: none; font-family: var(--font-sans); }
-.explorer-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.7rem 0 0.3rem; }
-.explorer-title { font-weight: 700; font-size: 0.98rem; }
-.explorer-controls { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.4rem 1.25rem; padding: 0.4rem 0 0.2rem; }
-.explorer-controls label { font-weight: 400; font-size: 0.92rem; white-space: nowrap; }
-.explorer-controls label i, .explorer-controls output i { font-family: var(--font-serif); font-style: italic; }
-.explorer-controls output { font-family: var(--font-serif); font-size: 1.05rem; font-weight: 700; color: var(--heading); min-width: 6ch; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.explorer { margin: 2.25rem 0 2.75rem; border-top: var(--rule-strong-w) solid var(--rule-strong); border-bottom: var(--rule-w) solid var(--rule); max-width: none; font-family: var(--font-label); }
+.explorer-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 0 0.3rem; }
+.explorer-title { font-weight: 600; font-size: 1.05rem; }
+.explorer-controls { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.4rem 1.25rem; padding: 0.4rem 0 0.3rem; }
+.explorer-controls label { font-weight: 500; font-size: 0.95rem; white-space: nowrap; }
+.explorer-controls label i, .explorer-controls output i, .explorer-presets i { font-family: var(--font-text); font-style: italic; font-weight: 400; }
+.explorer-controls output { font-family: var(--font-text); font-size: 1.1rem; font-weight: 600; color: var(--ink); min-width: 6ch; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums lining-nums; }
 .explorer-controls .explorer-presets { grid-column: 1 / -1; }
 .explorer-presets { display: flex; flex-wrap: wrap; gap: 0 1.4rem; }
-.explorer-presets button { font: inherit; font-family: var(--font-serif); font-size: 1rem; padding: 0.3rem 0 0.25rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; transition: color 140ms ease, border-color 140ms ease; }
+.explorer-presets button { font: inherit; font-family: var(--font-text); font-size: 1.05rem; padding: 0.3rem 0 0.2rem; border: 0; border-bottom: var(--rule-strong-w) solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; }
 .explorer-presets button:hover { color: var(--ink); }
-.explorer-presets button[aria-pressed="true"] { color: var(--accent); border-bottom-color: var(--rule); }
-.explorer input[type="range"] { width: 100%; margin: 0; height: 24px; -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
-.explorer input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--ink); }
-.explorer input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 22px; margin-top: -10.5px; background: var(--rule); border: 0; border-radius: 0; }
-.explorer input[type="range"]::-moz-range-track { height: 1px; background: var(--ink); }
-.explorer input[type="range"]::-moz-range-thumb { width: 4px; height: 22px; background: var(--rule); border: 0; border-radius: 0; }
-.explorer-readouts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1.25rem; margin: 0.45rem 0 0; padding: 0.4rem 0 0.8rem; border-top: 1px solid var(--grid); max-width: none; }
+.explorer-presets button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.explorer input[type="range"] { width: 100%; margin: 0; height: 26px; -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
+.explorer input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--ink); }
+.explorer input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 5px; height: 24px; margin-top: -11px; background: var(--ink); border: 0; border-radius: 0; }
+.explorer input[type="range"]::-moz-range-track { height: 2px; background: var(--ink); }
+.explorer input[type="range"]::-moz-range-thumb { width: 5px; height: 24px; background: var(--ink); border: 0; border-radius: 0; }
+.explorer-readouts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1.25rem; margin: 0.5rem 0 0; padding: 0.55rem 0 0.8rem; border-top: 1px solid var(--rule); max-width: none; }
 .readout { min-width: 0; }
-.readout-label { display: block; font-family: var(--font-serif); font-style: italic; font-size: 0.92rem; color: var(--muted); }
+.readout-label { display: block; font-family: var(--font-text); font-style: italic; font-size: 0.95rem; color: var(--ink-2); }
 .readout-label sub { font-style: normal; }
-.readout .live { display: block; font-family: var(--font-serif); font-size: 1.02rem; }
-.eq-picker { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; padding: 0.25rem 0 0.7rem; border-top: 1px solid var(--grid); max-width: none; }
-.eq-picker-label { font-size: 0.9rem; color: var(--muted); }
-.eq-picker button { font: inherit; font-size: 0.92rem; font-weight: 400; padding: 0.35rem 0 0.3rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; transition: color 140ms ease, border-color 140ms ease; }
-.eq-picker button b { font-weight: 700; color: var(--ink); margin-right: 0.3em; }
+.readout .live { display: block; font-family: var(--font-text); font-size: 1.05rem; }
+.eq-picker { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; padding: 0.35rem 0 0.7rem; border-top: 1px solid var(--rule); max-width: none; }
+.eq-picker-label { font-size: 0.92rem; font-weight: 500; color: var(--ink-2); }
+.eq-picker button { font: inherit; font-size: 0.95rem; font-weight: 500; padding: 0.35rem 0 0.25rem; border: 0; border-bottom: var(--rule-strong-w) solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; }
+.eq-picker button b { font-weight: 600; color: var(--ink); margin-right: 0.3em; }
 .eq-picker button:hover { color: var(--ink); }
-.eq-picker button[aria-pressed="true"] { color: var(--accent); border-bottom-color: var(--rule); }
-.eq-picker button[aria-pressed="true"] b { color: var(--accent); }
-.eq-detail { max-width: none; font-family: var(--font-serif); }
-.eq-summary { font-size: 1rem; margin: 0.2rem 0 0.4rem; }
-svg.belief-line { display: block; width: 100%; max-width: 46rem; height: auto; margin: 0 0 0.4rem; font-family: var(--font-sans); }
-.belief-line .bl-band { fill: var(--region-c); }
-.belief-line .bl-axis, .belief-line .bl-tick { stroke: var(--line); stroke-width: 1; }
-.belief-line .bl-tick-label, .belief-line .bl-band-label { fill: var(--muted); font-size: 11px; }
-.belief-line .bl-band-label { font-family: var(--font-serif); font-style: italic; font-size: 13px; }
-.belief-line .bl-tau { stroke: var(--c-cost); stroke-width: 2; }
-.belief-line .bl-tau-label { fill: var(--c-cost); font-size: 11px; font-weight: 700; }
-.belief-line .bl-mark { stroke-width: 1.6; }
-.belief-line .bl-recruit { fill: var(--c-info); stroke: var(--c-info); }
-.belief-line .bl-buy { fill: var(--bg); stroke: var(--c-info); }
-.belief-line .bl-sell { fill: var(--bg); stroke: var(--ink); }
-.belief-line .bl-none { fill: var(--muted); stroke: var(--muted); }
-.belief-line .bl-mark-label { fill: var(--ink); font-size: 11px; }
+.eq-picker button[aria-pressed="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+.eq-detail { max-width: none; font-family: var(--font-text); }
+.eq-summary { font-size: 1.02rem; margin: 0.3rem 0 0.4rem; }
+svg.belief-line { display: block; width: 100%; max-width: 46rem; height: auto; margin: 0 0 0.4rem; font-family: var(--font-label); }
+.belief-line .bl-band-edge { fill: none; stroke: var(--ink); stroke-width: 1; }
+.belief-line .bl-axis { stroke: var(--ink); stroke-width: 1.5; }
+.belief-line .bl-tick { stroke: var(--ink); stroke-width: 1; }
+.belief-line .bl-tick-label { fill: var(--ink-2); font-size: 11px; font-weight: 500; }
+/* labels over the screen carry a halo of paper, so the lines give way to the letters */
+.belief-line .bl-tick-label, .belief-line .bl-mark-label, .belief-line .bl-tau-label, .belief-line .bl-band-label { paint-order: stroke fill; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round; }
+.belief-line .bl-band-label { fill: var(--ink); font-family: var(--font-text); font-style: italic; font-size: 13px; }
+.belief-line .bl-tau { stroke: var(--ink); stroke-width: 2.5; }
+.belief-line .bl-tau-label { fill: var(--ink); font-size: 11.5px; font-weight: 600; }
+.belief-line .bl-mark { stroke-width: 1.8; }
+/* a purchase that recruits the high-cost rival: the one green mark of the belief line */
+.belief-line .bl-recruit { fill: var(--fig-accent); stroke: var(--fig-accent); }
+.belief-line .bl-buy { fill: var(--ground); stroke: var(--ink); }
+.belief-line .bl-sell { fill: var(--ground); stroke: var(--ink); }
+.belief-line .bl-none { fill: var(--ink); stroke: var(--ink); }
+.belief-line .bl-mark-label { fill: var(--ink); font-size: 11.5px; font-weight: 500; }
 .explorer .table-wrap { margin: 0.3rem 0 0.5rem; }
-table.eq-table { font-size: 0.95rem; }
-.eq-totals { display: flex; flex-wrap: wrap; gap: 0.2rem 1.6rem; font-family: var(--font-sans); font-size: 0.9rem; color: var(--muted); margin: 0 0 1rem; max-width: none; }
-.eq-totals b { font-family: var(--font-serif); font-size: 1.05em; color: var(--ink); font-weight: 700; }
+table.eq-table { font-size: 0.98rem; }
+/* the entry that a recruiting purchase brings, and the total it raises: green */
+table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent); font-weight: 600; }
+.eq-totals { display: flex; flex-wrap: wrap; gap: 0.2rem 1.6rem; font-family: var(--font-label); font-weight: 500; font-size: 0.92rem; color: var(--ink-2); margin: 0 0 1rem; max-width: none; }
+.eq-totals b { font-family: var(--font-text); font-size: 1.08em; color: var(--ink); font-weight: 600; }
 .explorer figure.explorer-figure { margin: 0.6rem 0 0.4rem; min-height: 0; }
-.explorer .chart-legend { border-top: 1px solid var(--grid); }
-.explorer figure.chart .chart-canvas { border-bottom: 1px solid var(--grid); }
+.explorer figure.explorer-figure figcaption { font-family: var(--font-text); font-weight: 400; }
+.explorer figure.chart .chart-canvas { border-bottom: 1px solid var(--rule); }
 
 /* ---------- mathematics and provenance ---------- */
 
-.math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.8rem 0 1.1rem; max-width: var(--measure); }
-.katex { font-size: 1.04em; }
+.math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.9rem 0 1.2rem; max-width: var(--measure); }
+.katex { font-size: 1.02em; }
 
-/* A registry number: the text face with tabular figures, a faint dotted underline, provenance on hover. */
-.q { text-decoration: underline dotted; text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 0.22em; cursor: help; font-variant-numeric: tabular-nums; }
-.q:hover { text-decoration-color: var(--muted); }
+/* A registry number: tabular figures, a dotted underline, provenance on hover. */
+.q { text-decoration: underline dotted; text-decoration-color: var(--ink-2); text-decoration-thickness: 1px; text-underline-offset: 0.22em; cursor: help; font-variant-numeric: tabular-nums lining-nums; }
+.q:hover { text-decoration-color: var(--ink); }
 .q-math { cursor: help; }
 
 /* ---------- paper and talk tabs ---------- */
 
-.panel-inner { max-width: var(--page-width); margin: 0 auto; padding: 2.5rem 2rem 4rem; }
-.panel-inner > h2 { border-bottom: 1px solid var(--rule); padding-bottom: 0.4rem; margin-bottom: 1rem; max-width: var(--column); }
-.stamp { font-size: 1rem; max-width: var(--measure); color: var(--muted); margin-bottom: 1.5rem; }
+.panel-inner { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
+.panel-inner > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin-bottom: 1.2rem; max-width: var(--column); }
+.stamp { font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: var(--measure); color: var(--ink-2); margin-bottom: 1.5rem; }
 .pdf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0 2.5rem; max-width: var(--column); }
-.pdf-card { border-top: 1px solid var(--line); padding: 0.9rem 0 0.4rem; }
-.pdf-card h3 { margin-top: 0; font-size: 1.15rem; }
-.pdf-card > p:not(.meta):not(.hash):not(.actions) { font-size: 1rem; }
-.pdf-card .meta { font-family: var(--font-sans); font-size: 0.9rem; color: var(--muted); }
-.pdf-card .hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); word-break: break-all; }
-.pdf-card .hash span { font-family: var(--font-sans); font-weight: 700; margin-right: 0.3rem; }
+.pdf-card { border-top: var(--rule-w) solid var(--rule); padding: 0.9rem 0 0.4rem; min-width: 0; }
+.pdf-card h3 { margin-top: 0; font-size: 1.2rem; }
+.pdf-card > p:not(.meta):not(.hash):not(.actions) { font-size: 1.02rem; }
+.pdf-card .meta { font-family: var(--font-label); font-weight: 500; font-size: 0.92rem; color: var(--ink-2); }
+.pdf-card .hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); word-break: break-all; }
+.pdf-card .hash span { font-family: var(--font-label); font-weight: 600; margin-right: 0.3rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; }
-.viewer { margin: 0 0 1.5rem; font-family: var(--font-sans); max-width: var(--column); }
-.viewer-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; margin: 0 0 0.6rem; border-top: 1px solid var(--line); }
-.viewer-label { font-weight: 700; font-size: 0.95rem; }
-.viewer-bar button { font: inherit; font-size: 0.92rem; font-weight: 400; padding: 0.6rem 0 0.5rem; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; }
+.viewer { margin: 0 0 1.5rem; font-family: var(--font-label); max-width: var(--column); }
+.viewer-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; margin: 0 0 0.6rem; border-top: var(--rule-w) solid var(--rule); }
+.viewer-label { font-weight: 600; font-size: 0.95rem; }
+.viewer-bar button { font: inherit; font-size: 0.95rem; font-weight: 500; padding: 0.6rem 0 0.45rem; border: 0; border-bottom: var(--rule-strong-w) solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; }
 .viewer-bar button:hover { color: var(--ink); }
-.viewer-bar button[aria-pressed="true"] { color: var(--accent); border-bottom-color: var(--rule); }
-.viewer-frame iframe { display: block; width: 100%; height: 78vh; min-height: 30rem; border: 1px solid var(--line); background: #ffffff; }
-.viewer-note, .note { font-size: 0.95rem; color: var(--muted); }
-.earlier { margin: 1.5rem 0 0; font-family: var(--font-sans); font-size: 0.95rem; }
+.viewer-bar button[aria-pressed="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+.viewer-frame iframe { display: block; width: 100%; height: 78vh; min-height: 30rem; border: var(--rule-w) solid var(--rule); background: var(--ground); }
+.viewer-note, .note { font-size: 0.98rem; color: var(--ink-2); font-family: var(--font-text); }
+.earlier { margin: 1.5rem 0 0; font-family: var(--font-label); font-weight: 500; font-size: 0.98rem; }
 .panel-inner .lead { max-width: var(--measure); }
-ol.parts { list-style: none; counter-reset: part; padding: 0; margin: 1.75rem 0 2.5rem; max-width: 46rem; border-top: 1px solid var(--line); }
-ol.parts li { counter-increment: part; display: grid; grid-template-columns: 2rem 7.5rem minmax(0, 1fr); gap: 0 1rem; align-items: baseline; padding: 0.55rem 0; margin: 0; border-bottom: 1px solid var(--grid); font-size: 1rem; color: var(--muted); max-width: none; }
-ol.parts li::before { content: counter(part); font-family: var(--font-sans); font-size: 0.9rem; font-variant-numeric: tabular-nums; color: var(--muted); }
-ol.parts li b { font-family: var(--font-sans); font-size: 0.95rem; color: var(--heading); font-weight: 700; }
-dl.keys { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem 1.2rem; font-family: var(--font-sans); font-size: 0.9rem; max-width: 36rem; }
-dl.keys dt { white-space: nowrap; }
-dl.keys dd { margin: 0; color: var(--muted); }
+#panel-talk .actions { margin: 1.4rem 0 2rem; }
+dl.keys { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: 34rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+dl.keys dt, dl.keys dd { padding: 0.55rem 0; border-top: 1px solid var(--rule); margin: 0; }
+dl.keys dt { white-space: nowrap; padding-right: 1.6rem; color: var(--ink-2); }
+dl.keys dt:first-of-type, dl.keys dt:first-of-type + dd { border-top: 0; }
+dl.keys dd { color: var(--ink); }
+dl.keys kbd { color: var(--ink); }
 
 /* ---------- colophon, debug banner, noscript ---------- */
 
-.colophon { max-width: var(--page-width); margin: 0 auto; padding: 0 2rem 3.5rem; font-family: var(--font-sans); font-size: 0.88rem; color: var(--muted); }
-.colophon::before { content: ""; display: block; border-top: 1px solid var(--line); margin-bottom: 1.75rem; }
-.colophon > p:first-child { font-weight: 400; }
-.colophon > p:first-child a { text-decoration: none; color: var(--ink); }
-.colophon > p:first-child a:hover { text-decoration: underline; color: var(--accent); }
+.colophon { max-width: var(--page-width); margin: 0 auto; padding: 0 2rem 3.5rem; font-family: var(--font-label); font-weight: 500; font-size: 0.9rem; color: var(--ink-2); }
+.colophon::before { content: ""; display: block; border-top: var(--rule-w) solid var(--rule); margin-bottom: 1.6rem; }
+.colophon > p:first-child a { text-decoration: none; color: var(--ink); font-weight: 600; }
+.colophon > p:first-child a:hover { text-decoration: underline; }
 .colophon p { max-width: none; margin-bottom: 0.5rem; }
 .colophon a { color: var(--ink); }
 .colophon .build-meta { font-family: var(--font-mono); font-size: 0.74rem; word-break: break-word; }
-.colophon details.fold { max-width: 70ch; }
-.colophon details.fold p { max-width: 70ch; }
+.colophon details.fold { max-width: 70ch; margin-top: 1rem; }
+.colophon details.fold p { max-width: 70ch; font-family: var(--font-text); font-weight: 400; font-size: 0.98rem; }
 
-#debug-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 0.6rem 1rem; background: var(--bg); color: var(--fail); border-top: 1px solid var(--fail); font-family: var(--font-mono); font-size: 0.875rem; max-height: 40vh; overflow: auto; white-space: pre-wrap; }
-.noscript-note { max-width: var(--page-width); margin: 0 auto; padding: 1rem 2rem; color: var(--muted); }
+#debug-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 0.6rem 1rem; background: var(--ground); color: var(--ink); border-top: var(--rule-strong-w) solid var(--rule-strong); font-family: var(--font-mono); font-size: 0.875rem; max-height: 40vh; overflow: auto; white-space: pre-wrap; }
+.noscript-note { max-width: var(--page-width); margin: 0 auto; padding: 1rem 2rem; color: var(--ink-2); }
 
 /* ---------- motion ---------- */
 
@@ -600,53 +601,51 @@ dl.keys dd { margin: 0; color: var(--muted); }
 /* ---------- narrower screens ---------- */
 
 @media (max-width: 1023px) {
-  .layout { padding: 1.5rem 1.5rem 3rem; }
+  .layout { padding: 1.75rem 1.5rem 3rem; }
   .brief { max-width: none; }
-  .masthead-inner { padding: 0 1.5rem; }
-  #theme-toggle { right: 1.5rem; }
+  .masthead-inner { padding: 3.75rem 1.5rem 0; }
   .panel-inner { padding: 2rem 1.5rem 3rem; }
-  nav.toc { margin-bottom: 1.25rem; }
+  nav.toc { margin-bottom: 2rem; }
   .toc-kicker { display: none; }
-  .sec { margin-bottom: 3rem; }
+  .sec { margin-bottom: 4rem; }
 }
 
 @media (max-width: 900px) {
-  .explorer-readouts { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 0.4rem; }
+  .explorer-readouts { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 0.45rem; }
 }
 
 @media (max-width: 760px) {
-  .masthead-inner { margin-top: 1.6rem; padding: 0 1.25rem; }
-  .masthead-inner::before { margin-top: 1.2rem; }
+  .masthead-inner { padding: 2.25rem 1.25rem 0; }
+  .masthead .reg { display: none; }
   .tabs { gap: 1.4rem; }
   .layout, .panel-inner { padding-left: 1.25rem; padding-right: 1.25rem; }
   .colophon, .noscript-note { padding-left: 1.25rem; padding-right: 1.25rem; }
   .mechanism-paths, .pdf-cards { grid-template-columns: 1fr; }
-  ol.parts li { grid-template-columns: 1.6rem minmax(0, 1fr); }
-  ol.parts li b { display: block; }
-  .stepper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .stepper li { border-bottom: 1px solid var(--line); }
-  .stepper-panel { border-top: 0; padding-top: 1rem; }
+  .stepper { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 0.9rem; border-bottom: 0; }
+  .stepper li { border-bottom: var(--rule-w) solid var(--rule); }
+  .stepper-panel { padding-top: 1rem; }
 }
 
 @media (max-width: 600px) {
   body { font-size: 1.0625rem; }
-  .masthead-inner { padding: 0 1rem; }
-  .masthead-inner::before { margin-bottom: 1rem; }
-  #theme-toggle { top: 0; right: 1rem; }
-  .layout, .panel-inner { padding: 1.25rem 1rem 3rem; }
+  .masthead-inner { padding: 1.75rem 1rem 0; }
+  .byline { flex-direction: column; gap: 0.15rem; }
+  .masthead .record { margin-bottom: 1.6rem; }
+  .layout, .panel-inner { padding: 1.4rem 1rem 3rem; }
   .colophon, .noscript-note { padding-left: 1rem; padding-right: 1rem; }
   .explorer-controls { grid-template-columns: minmax(0, 1fr) auto; }
   .explorer-controls input[type="range"] { grid-column: 1 / -1; grid-row: 2; }
   .explorer-controls label { white-space: normal; }
   .explorer-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { flex-direction: column; gap: 0.2rem; }
-  .stat-value { order: 2; }
   .viewer-frame iframe { height: 70vh; }
+  dl.keys { grid-template-columns: 1fr; }
+  dl.keys dd { border-top: 0; padding-top: 0; }
 }
 
 @media (max-width: 480px) {
   .tabs { gap: 1.1rem; }
-  .tabs [role="tab"] { font-size: 0.92rem; }
+  .tabs [role="tab"] { font-size: 0.94rem; }
   .math-block .katex-display .katex-tag { position: static; display: block; text-align: right; line-height: 1.2; }
   .math-block .katex-display .katex-tag > .katex-strut { display: none; }
   .chart-tip { max-width: 15rem; }
@@ -654,8 +653,7 @@ dl.keys dd { margin: 0; color: var(--muted); }
 }
 
 @media print {
-  #theme-toggle, .tabs, nav.toc, .chart-legend, .skip-link { display: none !important; }
-  .masthead, .masthead h1, .subtitle { color: #000000; }
+  .tabs, nav.toc, .chart-legend, .skip-link, .masthead .reg { display: none !important; }
 }
 
 </style>
@@ -665,20 +663,21 @@ dl.keys dd { margin: 0; color: var(--muted); }
 
 <header class="masthead">
   <div class="masthead-inner">
+    <svg class="reg reg-l" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 0V24M0 12H24"/></svg>
+    <svg class="reg reg-r" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 0V24M0 12H24"/></svg>
     <h1>Competition creates competition</h1>
     <p class="subtitle">Stock prices and the discovery of takeover bidders</p>
-    <p class="byline">Austin Li · Department of Economics, University College London</p>
+    <p class="byline"><span class="author">Austin Li</span><span class="dot" aria-hidden="true">·</span><span class="affiliation">Department of Economics, University College London</span></p>
     <p class="record">
       <span>Theory working paper</span>
       <span class="dot" aria-hidden="true">·</span>
-      <span>Text revised 9 November 2026</span>
+      <span>Text revised 12 November 2026</span>
     </p>
     <div class="tabs" role="tablist" aria-label="Site sections">
       <a role="tab" id="tablink-brief" data-tab="brief" href="#" aria-controls="panel-brief" aria-selected="true">Research brief</a>
       <a role="tab" id="tablink-paper" data-tab="paper" href="#tab-paper" aria-controls="panel-paper" aria-selected="false" tabindex="-1">Read the paper</a>
       <a role="tab" id="tablink-talk" data-tab="talk" href="#tab-talk" aria-controls="panel-talk" aria-selected="false" tabindex="-1">Seminar talk</a>
     </div>
-    <button id="theme-toggle" type="button" aria-label="Toggle colour theme">Dark</button>
   </div>
 </header>
 
@@ -1095,8 +1094,8 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <div class="tab-panel" id="panel-paper" role="tabpanel" aria-labelledby="tablink-paper" data-panel="paper" hidden>
   <div class="panel-inner">
     <h2>Read the paper</h2>
-<p class="stamp" data-version-stamp>Text revision of 9 November 2026. Manuscript with appendix 151 pages; comparison note 8 pages.</p>
-<div class="pdf-cards"><article class="pdf-card"><h3>Manuscript</h3><p>The paper with its appendix: every result in full, with proofs.</p><p class="meta"><span class="num">151 pages</span> · <span class="num">942 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>a063c2ee40b8b70813852d10374190a9f36a1c3f0e8300a952c7b879eac773ca</code></p><p class="actions"><a class="button primary" href="paper.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="paper.pdf" download>Download</a></p></article><article class="pdf-card"><h3>Comparison note</h3><p>The order slot of this version beside the Laplace order flow of the earlier version.</p><p class="meta"><span class="num">8 pages</span> · <span class="num">203 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>912b3434bd159656df09d581d90fecbdd4ca16bf731c55edd8630480ef962718</code></p><p class="actions"><a class="button primary" href="comparison.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="comparison.pdf" download>Download</a></p></article></div>
+<p class="stamp" data-version-stamp>Text revision of 12 November 2026. Manuscript with appendix 151 pages; comparison note 8 pages.</p>
+<div class="pdf-cards"><article class="pdf-card"><h3>Manuscript</h3><p>The paper with its appendix: every result in full, with proofs.</p><p class="meta"><span class="num">151 pages</span> · <span class="num">942 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>041d2737f2d5fb3938655cfb39db21e624aba807eaea2ab2e0c6e61ba6b40560</code></p><p class="actions"><a class="button primary" href="paper.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="paper.pdf" download>Download</a></p></article><article class="pdf-card"><h3>Comparison note</h3><p>The order slot of this version beside the Laplace order flow of the earlier version.</p><p class="meta"><span class="num">8 pages</span> · <span class="num">203 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>36691b2a5203eb9092221cbbcae9a50d023c92940c3f5f541375ae96dcc837a1</code></p><p class="actions"><a class="button primary" href="comparison.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="comparison.pdf" download>Download</a></p></article></div>
 <section class="viewer" data-viewer aria-label="Inline PDF viewer"><div class="viewer-bar" role="group" aria-label="Choose a document"><span class="viewer-label">Inline viewer</span><button type="button" data-viewer-src="paper.pdf" data-viewer-title="Manuscript" aria-pressed="true">Manuscript</button><button type="button" data-viewer-src="comparison.pdf" data-viewer-title="Comparison note" aria-pressed="false">Comparison note</button></div><div class="viewer-frame"></div><p class="viewer-note">Some phone browsers do not show a PDF inside a page. Use “Open the PDF” instead.</p></section>
 <p class="earlier"><a href="laplace/">Earlier version: Laplace order flow</a></p>
   </div>
@@ -1105,21 +1104,15 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <div class="tab-panel" id="panel-talk" role="tabpanel" aria-labelledby="tablink-talk" data-panel="talk" hidden>
   <div class="panel-inner">
     <h2>Seminar talk</h2>
-    <p class="lead">The web slides follow the Beamer talk of the paper frame by frame, with the same titles, numbers and backup slides. Every number on a slide is the registry value that the paper prints, and the speaker notes come with the deck.</p>
-    <p class="actions"><a class="button primary" href="talk/">Open the slides</a></p>
-    <ol class="parts" aria-label="Parts of the talk">
-      <li><b>Question</b> Does a stronger incumbent always keep the rival out?</li>
-      <li><b>Model</b> Players and the sale rule, one trading slot, information, payoffs and equilibrium</li>
-      <li><b>Mechanism and main result</b> Rival profit and the spread, the belief band, and entry that rises and then returns to its floor</li>
-      <li><b>Fixed-information control</b> With fixed information, strength cannot raise entry</li>
-      <li><b>Extensions and prediction</b> Costly research, a visible price, and purchase impact</li>
-      <li><b>Conclusion</b> Competition can create competition</li>
-    </ol>
-    <dl class="keys">
-      <dt><kbd>→</kbd> <kbd>Space</kbd></dt><dd>Next step, then the next slide</dd>
-      <dt><kbd>←</kbd></dt><dd>Previous step or slide</dd>
-      <dt><kbd>O</kbd> <kbd>N</kbd> <kbd>G</kbd></dt><dd>Overview, speaker notes, notation</dd>
-      <dt><kbd>Esc</kbd></dt><dd>Back from a backup slide</dd>
+    <p class="lead">The seminar talk of the paper, as a web page: a title and 19 pages in six parts (Question, Model setup, Main results, Discussion, Extension, Conclusion), with backup pages. Every number on a page is the registry value that the paper prints.</p>
+    <p class="actions"><a class="button primary" href="talk/">Open the talk</a></p>
+    <dl class="keys" aria-label="Keys">
+      <dt><kbd>Right</kbd> or <kbd>Space</kbd></dt><dd>Next step</dd>
+      <dt><kbd>Left</kbd></dt><dd>Previous step</dd>
+      <dt><kbd>O</kbd></dt><dd>Overview</dd>
+      <dt><kbd>V</kbd></dt><dd>Reading view</dd>
+      <dt><kbd>S</kbd></dt><dd>Strength control, on the entry chart</dd>
+      <dt><kbd>Backspace</kbd></dt><dd>Return from a backup page</dd>
     </dl>
   </div>
 </div>
@@ -1133,11 +1126,11 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     <span class="dot" aria-hidden="true">·</span>
     <a href="talk/">Seminar talk (slides)</a>
   </p>
-  <p>Theory working paper · Text revision of 9 November 2026.</p>
+  <p>Theory working paper · Text revision of 12 November 2026.</p>
   <details class="fold"><summary>Sources and reproducibility</summary>
   <p>Every number on this page is a row of the registry of the manuscript, printed exactly as the PDF prints it; hover over a number for its registry key. The figures draw the closed forms of the paper at the example’s primitives, and their marked points are registry rows. The explorer evaluates the same formulas at the strength you choose.</p>
-  <p>Type: Libertinus Serif, DM Sans and Libertinus Math (SIL Open Font License), self-hosted. Mathematics: KaTeX 0.18.5 (MIT License), local copy. Figures are drawn as SVG by the page itself. The page makes no network request.</p>
-  <p class="build-meta">Sources (sha256, first 12 hex): registry 9148b69da44c; comparison.pdf 912b3434bd15; paper.pdf a063c2ee40b8.</p>
+  <p>Type: Jost and STIX Two Text (SIL Open Font License), self-hosted. Mathematics: KaTeX 0.18.5 (MIT License), local copy. Figures are drawn as SVG by the page itself. The page makes no network request.</p>
+  <p class="build-meta">Sources (sha256, first 12 hex): registry 9148b69da44c; comparison.pdf 36691b2a5203; paper.pdf 041d2737f2d5.</p>
   </details>
 </footer>
 
@@ -1147,7 +1140,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <script>window.CCC_DATA = {"derived":{"Bprior_r0":{"display":"4.804167","key":"Bprior_r0","value":"1153/240","x":4.804166666666666},"Bprior_r1":{"display":"4.291667","key":"Bprior_r1_B","value":"103/24","x":4.291666666666667},"Bprior_r2":{"display":"4.134722","key":"Bprior_r2","value":"2977/720","x":4.134722222222222},"Delta_r0":{"display":"0.016667","key":"Delta_r0","value":"1/60","x":0.016666666666666666},"Delta_r1":{"display":"0.666667","key":"Delta_r1","value":"2/3","x":0.6666666666666666},"Delta_r2":{"display":"0.938889","key":"Delta_r2","value":"169/180","x":0.9388888888888889},"M":{"display":"0.731059","key":"M_half_B","value":"0.7310585786300049","x":0.7310585786300049},"b":{"display":"0.195615","key":"b_B","value":"0.1956150401803150","x":0.195615040180315},"b0":{"display":"0.272648","key":"b0_B","value":"0.2726481507242489","x":0.2726481507242489},"cap":{"display":"0.336122","key":"res_cap","value":"0.336121768915121","x":0.336121768915121},"entry_cap":{"display":"0.522757","key":"res_entry_cap","value":"0.522756943478407","x":0.522756943478407},"entry_floor":{"display":"0.250000","key":"entry_r0","value":"1/4","x":0.25},"entry_plateau":{"display":"0.522757","key":"entry_r1_B","value":"0.5227569434784067","x":0.5227569434784067},"entry_rA":{"display":"0.454185","key":"entry_rA_B","value":"0.4541848559296133","x":0.4541848559296133},"entry_rR":{"display":"0.500846","key":"res_entry_rR","value":"0.500846367031333","x":0.500846367031333},"lambda":{"display":"0.336122","key":"lambda_B","value":"0.3361217689151212","x":0.3361217689151212},"lambda_floor_rQ":{"display":"0.234257","key":"res_lambda_floor_rQ","value":"0.234257256065633848636913423056","x":0.23425725606563386},"lambda_rR":{"display":"0.193853","key":"res_lambda_rR","value":"0.193853381910659","x":0.193853381910659},"m":{"display":"0.268941","key":"m_half_B","value":"0.2689414213699951","x":0.2689414213699951},"r140":{"display":"1.40","key":"str_r140","value":"7/5","x":1.4},"r160":{"display":"1.60","key":"str_r160","value":"8/5","x":1.6},"rA":{"display":"1.393958","key":"rA","value":"1.393957920279251","x":1.393957920279251},"rC":{"display":"3.592659","key":"rC_B","value":"3.592658518794662","x":3.592658518794662},"rF":{"display":"1.467127","key":"rF_B","value":"1.467127041293094","x":1.467127041293094},"rJ":{"display":"1.966097","key":"rJ","value":"1.966097064963999","x":1.966097064963999},"rN":{"display":"1.747878","key":"rN","value":"1.747877538267963","x":1.747877538267963},"rQ":{"display":"2.166995","key":"res_rQ","value":"2.166995158219285882282487244930","x":2.1669951582192857},"rR":{"display":"1.501023","key":"res_rR","value":"1.50102296626257","x":1.50102296626257},"rRbar":{"display":"1.677633","key":"res_rcap","value":"1.67763283438508","x":1.67763283438508},"rS":{"display":"2.124148","key":"rS_B","value":"2.124148132815451","x":2.124148132815451},"rU":{"display":"2.434046","key":"res_rUR","value":"2.434045526712","x":2.434045526712},"tau_r0":{"display":"0.633117","key":"tau_r0","value":"195/308","x":0.6331168831168831},"tau_r1":{"display":"0.705000","key":"tau_r1","value":"141/200","x":0.705},"tau_r2":{"display":"0.731392","key":"tau_r2","value":"4245/5804","x":0.7313921433494142},"u":{"display":"1.718282","key":"u_B","value":"1.718281828459045","x":1.718281828459045}},"inputs":{"a":{"display":"1/40","key":"res_a","value":"1/40","x":0.025},"beta":{"display":"0.294655","key":"beta_B","value":"294655/1000000","x":0.294655},"c_H":{"display":"6","key":"prim_cH","value":"6","x":6.0},"ell":{"display":"1","key":"prim_ell","value":"1","x":1.0},"h":{"display":"10","key":"prim_h","value":"10","x":10.0},"k":{"display":"1/50","key":"prim_k","value":"1/50","x":0.02},"p":{"display":"1/2","key":"prim_p","value":"1/2","x":0.5},"pi":{"display":"1/2","key":"prim_pi","value":"1/2","x":0.5},"r0":{"display":"6/5","key":"prim_r0","value":"6/5","x":1.2},"r1":{"display":"3","key":"prim_r1","value":"3","x":3.0},"r2":{"display":"18/5","key":"prim_r2","value":"18/5","x":3.6},"rho":{"display":"1/4","key":"prim_rho","value":"1/4","x":0.25}},"nodes":[{"entry":{"display":"0.507630","key":"res_entry_r155","value":"0.507630115664746","x":0.507630115664746},"lambda":{"display":"0.237901","key":"res_lambda_r155","value":"0.237901194995391","x":0.237901194995391},"r":{"display":"1.55","key":"str_r155","value":"31/20","x":1.55}},{"entry":{"display":"0.513965","key":"res_entry_r160","value":"0.513965405209112","x":0.513965405209112},"lambda":{"display":"0.279037","key":"res_lambda_r160","value":"0.279037101522556","x":0.279037101522556},"r":{"display":"1.60","key":"str_r160","value":"8/5","x":1.6}},{"entry":{"display":"0.519763","key":"res_entry_r165","value":"0.519763230367584","x":0.519763230367584},"lambda":{"display":"0.316683","key":"res_lambda_r165","value":"0.316683177855701","x":0.316683177855701},"r":{"display":"1.65","key":"str_r165","value":"33/20","x":1.65}}],"registry":{"path":"audit/slot_manuscript_2026_10_23/registry/registry.csv","sha256":"9148b69da44c035fe0391b8c3031f9b6e778c590ea167909069023d80e9e377e"}};</script>
 <script src="vendor/katex.min.js"></script>
 <script>
-/* Page shell: theme, tabs, progress, table of contents, collapsibles, stepper, math, self-check.
+/* Page shell: tabs, progress, table of contents, collapsibles, stepper, math, self-check.
    Plain ES2019, no modules. KaTeX is a local copy loaded before this script. Runs on
    DOMContentLoaded. */
 (function () {
@@ -1176,66 +1169,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   CCC.openAll = params.get("eager") === "1";              // ?eager=1 also opens every <details>
   CCC.debug = params.get("debug") === "1";
   CCC.errors = errors;
-
-  var mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-  var STORAGE_KEY = "ccc-theme";
-
-  /* ---------- theme ---------- */
-  function readStored() {
-    try { return window.localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-  }
-  /* The slides once stored their theme under "ccc-deck-theme"; one key now serves both. */
-  try {
-    var oldDeck = window.localStorage.getItem("ccc-deck-theme");
-    if (oldDeck !== null) {
-      if (readStored() === null && (oldDeck === "light" || oldDeck === "dark")) window.localStorage.setItem(STORAGE_KEY, oldDeck);
-      window.localStorage.removeItem("ccc-deck-theme");
-    }
-  } catch (e) { /* private mode */ }
-  function writeStored(v) {
-    try { window.localStorage.setItem(STORAGE_KEY, v); } catch (e) { /* private mode */ }
-  }
-  function currentTheme() {
-    var t = document.documentElement.getAttribute("data-theme");
-    return t === "dark" ? "dark" : "light";
-  }
-  function updateToggle() {
-    var btn = document.getElementById("theme-toggle");
-    if (!btn) return;
-    var t = currentTheme();
-    btn.textContent = t === "dark" ? "Light" : "Dark";
-    btn.setAttribute("aria-label", "Switch to " + (t === "dark" ? "light" : "dark") + " theme");
-  }
-  function applyTheme(name, persist) {
-    var t = name === "dark" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", t);
-    if (persist) writeStored(t);
-    updateToggle();
-    try {
-      document.dispatchEvent(new CustomEvent("ccc:themechange", { detail: { theme: t } }));
-    } catch (e) { recordError("themechange dispatch: " + e.message); }
-  }
-  CCC.theme = {
-    get: currentTheme,
-    set: function (name) { applyTheme(name, true); },
-    toggle: function () { applyTheme(currentTheme() === "dark" ? "light" : "dark", true); }
-  };
-  function initTheme() {
-    var q = params.get("theme");
-    if (q === "light" || q === "dark") applyTheme(q, false);
-    var btn = document.getElementById("theme-toggle");
-    if (btn) btn.addEventListener("click", CCC.theme.toggle);
-    updateToggle();
-    if (mql) {
-      var onChange = function (ev) {
-        if (readStored() === null && !(params.get("theme") === "light" || params.get("theme") === "dark")) {
-          applyTheme(ev.matches ? "dark" : "light", false);
-        }
-      };
-      if (typeof mql.addEventListener === "function") mql.addEventListener("change", onChange);
-      else if (typeof mql.addListener === "function") mql.addListener(onChange);
-    }
-  }
 
   /* ---------- tabs: research brief, read the paper, seminar talk ---------- */
   var TABS = ["brief", "paper", "talk"];
@@ -1613,7 +1546,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       explorer: (CCC.explorer && typeof CCC.explorer.status === "function") ? CCC.explorer.status() : null,
       consoleErrors: errors.slice(),
       details: { total: details.length, open: open },
-      theme: currentTheme(),
       tab: document.documentElement.getAttribute("data-tab"),
       fonts: document.fonts ? Array.prototype.filter.call(document.fonts, function (f) { return f.status === "loaded"; }).map(function (f) { return f.family + " " + f.weight + " " + f.style; }) : []
     };
@@ -1624,7 +1556,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   CCC.ready = new Promise(function (res) { readyResolve = res; });
 
   function boot() {
-    try { initTheme(); } catch (e) { recordError("theme: " + e.message); }
     try { initTabs(); } catch (e) { recordError("tabs: " + e.message); }
     try { initProgress(); } catch (e) { recordError("progress: " + e.message); }
     try { initTocDrawer(); } catch (e) { recordError("toc drawer: " + e.message); }
@@ -1671,27 +1602,30 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   var HEIGHT = { wide: 380, stacked: 600, fig2: 540 };
   var NARROW = 640;
 
+  /* The plate: black ink on white stock, one green for the one meaning (recruit), areas as line
+     screens (screen), no grid. The older keys (accent, c2, c3, info, cost, region*) are kept for the
+     builders of the earlier figures, which this page does not mount; they map to ink and to no fill. */
+  var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', GREEN = 'oklch(0.50 0.15 150)';
   var FALLBACK = {
-    bg: '#ffffff', surface: '#f2f2f2', ink: '#1c1c1c', muted: '#666666', grid: '#e6e6e6', line: '#c9c9c9',
-    accent: '#1c1c1c', accentSoft: 'rgba(153,59,255,0.08)', c2: '#993bff', c3: '#666666',
-    regionA: 'rgba(28,28,28,0.07)', regionB: 'rgba(153,59,255,0.08)', regionC: 'rgba(102,102,102,0.12)',
-    info: '#993bff', cost: '#1c1c1c',
-    fontSans: '"DM Sans", "Libertinus Math", Arial, sans-serif',
+    bg: 'oklch(0.985 0.002 250)', surface: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
+    accent: INK, accentSoft: 'none', c2: INK, c3: INK, recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
+    regionA: 'none', regionB: 'none', regionC: 'none',
+    info: INK, cost: INK,
+    fontSans: '"Jost", "STIX Two Text", sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {
-    bg: '--bg', surface: '--surface', ink: '--ink', muted: '--muted', grid: '--grid', line: '--line',
-    accent: '--chart-1', accentSoft: '--accent-soft', c2: '--chart-2', c3: '--chart-3',
-    regionA: '--region-a', regionB: '--region-b', regionC: '--region-c',
-    info: '--c-info', cost: '--c-cost',
-    fontSans: '--font-sans', fontMono: '--font-mono'
+    bg: '--ground', surface: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
+    accent: '--ink', c2: '--ink', c3: '--ink', recruit: '--fig-accent', screen: '--scr-page',
+    info: '--ink', cost: '--ink',
+    fontSans: '--font-label', fontMono: '--font-mono'
   };
 
   function tokens() {
     var cs = getComputedStyle(document.documentElement);
     var out = {};
-    Object.keys(VARS).forEach(function (k) {
-      var v = cs.getPropertyValue(VARS[k]);
+    Object.keys(FALLBACK).forEach(function (k) {
+      var v = VARS[k] ? cs.getPropertyValue(VARS[k]) : '';
       v = v ? v.trim() : '';
       out[k] = v || FALLBACK[k];
     });
@@ -2164,7 +2098,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         } else {
           out += flush();
           stack.push(m[2]);
-          if (m[2] === 'i') out += '<tspan font-style="italic">';
+          if (m[2] === 'i') out += '<tspan class="it" font-style="italic">';
           else if (m[2] === 'b') out += '<tspan font-weight="600">';
           else if (m[2] === 'sub') out += '<tspan dy="0.3em" font-size="75%">';
           else out += '<tspan dy="-0.35em" font-size="75%">';
@@ -2332,11 +2266,12 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     if (![x0, x1, y0, y1].every(isFinite)) return '';
     var ln = s.line || {};
     if (s.type === 'rect') {
-      return '<rect class="shape-rect" x="' + px(Math.min(x0, x1)) + '" y="' + px(Math.min(y0, y1)) + '" width="' + px(Math.abs(x1 - x0)) + '" height="' + px(Math.abs(y1 - y0)) + '" fill="' + s.fillcolor + '"' +
+      var fill = s.screen ? 'url(#' + G.screenId + s.screen + ')' : (s.fillcolor || 'none');
+      return '<rect class="shape-rect' + (s.screen ? ' screen' : '') + '" x="' + px(Math.min(x0, x1)) + '" y="' + px(Math.min(y0, y1)) + '" width="' + px(Math.abs(x1 - x0)) + '" height="' + px(Math.abs(y1 - y0)) + '" fill="' + fill + '"' +
         (ln.width ? ' stroke="' + ln.color + '" stroke-width="' + ln.width + '"' : '') + '/>';
     }
     var da = dashArray(ln.dash, ln.width || 1);
-    return '<line class="shape-line" x1="' + px(x0) + '" y1="' + px(y0) + '" x2="' + px(x1) + '" y2="' + px(y1) + '" stroke="' + (ln.color || '#888') + '" stroke-width="' + (ln.width || 1) + '"' + (da ? ' stroke-dasharray="' + da + '"' : '') + '/>';
+    return '<line class="shape-line" x1="' + px(x0) + '" y1="' + px(y0) + '" x2="' + px(x1) + '" y2="' + px(y1) + '" stroke="' + (ln.color || 'currentColor') + '" stroke-width="' + (ln.width || 1) + '"' + (da ? ' stroke-dasharray="' + da + '"' : '') + '/>';
   }
 
   function annotationSvg(G, a, bg) {
@@ -2366,11 +2301,11 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         ax.ticks.forEach(function (tk) {
           var y = ax.map(tk.v);
           if (!isFinite(y) || y < ax.p0 - 0.5 || y > ax.p1 + 0.5) return;
-          out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
+          if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
           if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 4) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
-          out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.line + '"/>';
+          out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         });
-        out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + t.line + '"/>';
+        out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         if (a.title && a.title.text) {
           var cy = (ax.p0 + ax.p1) / 2, tx = xl - (G.m.l - 14);
           out += '<text class="axis-title" transform="translate(' + px(tx) + ',' + px(cy) + ') rotate(-90)" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
@@ -2380,11 +2315,11 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         ax.ticks.forEach(function (tk) {
           var x = ax.map(tk.v);
           if (!isFinite(x) || x < ax.p0 - 0.5 || x > ax.p1 + 0.5) return;
-          out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
-          out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + t.line + '"/>';
+          if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
+          out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
           if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 17) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
         });
-        out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + t.line + '"/>';
+        out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 36) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
       }
     });
@@ -2444,6 +2379,13 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var hidden = opts.hidden || {};
     var G = geometry(spec, W);
     var bg = t.bg;
+    // Line screens for areas, as a two-colour press prints them: screen a at 45 degrees, screen b at
+    // 135 degrees. The ids carry the chart id, so a chart in a closed disclosure never lends its own.
+    G.screenId = 'scr-' + (opts.id || 'chart') + '-';
+    var screens = [['a', 45], ['b', 135]].map(function (sc) {
+      return '<pattern id="' + G.screenId + sc[0] + '" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(' + sc[1] + ')">' +
+        '<line x1="0" y1="0" x2="0" y2="7" stroke="' + (t.screen || t.muted) + '" stroke-width="1.1"/></pattern>';
+    }).join('');
     var below = '', above = '', body = '';
     (spec.layout.shapes || []).forEach(function (s) { if (s.layer === 'below') below += shapeSvg(G, s); else above += shapeSvg(G, s); });
     var anns = '';
@@ -2465,7 +2407,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     });
     Object.keys(bySub).forEach(function (k) { body += '<g clip-path="url(#' + clipId + k + ')">' + bySub[k] + '</g>'; });
     var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '"' +
-      ' font-family="' + esc(t.fontSans) + '"><defs>' + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
+      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
     return { svg: svg, G: G };
   }
 
@@ -2649,7 +2591,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     return records[id];
   }
 
-  /* Rebuild and redraw a mounted chart (theme change, resize, explorer marker). */
+  /* Rebuild and redraw a mounted chart (resize, explorer marker). */
   function update(id) {
     var st = mounted[id];
     if (!st || st.el.closest('details:not([open])') || !st.el.getClientRects().length || !st.el.clientWidth) return;
@@ -2698,7 +2640,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       window.requestAnimationFrame(function () { mountAll(); rerender(); });
     }
   }, true);
-  document.addEventListener('ccc:themechange', function () { rerender(); });
   document.addEventListener('ccc:tabchange', function () { window.requestAnimationFrame(function () { mountAll(); rerender(); }); });
 
   CCC.charts = {
@@ -2877,10 +2818,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var P = inputs(D), narrow = !!(opts && opts.narrow);
     var xs = grid(1, 3.8, 280), traces = [];
     traces.push({ type: 'scatter', mode: 'lines', name: 'spread Δ<sub>T</sub>(r)', x: xs, y: xs.map(function (r) { return auction(P, r).Delta; }),
-      line: { color: t.info, width: 2.6 }, xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
+      line: { color: t.ink, width: 2.6 }, xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
       customdata: xs.map(function (r) { return [d6(auction(P, r).Delta)]; }),
       hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<extra>spread</extra>' });
-    [['M', 'top posterior M', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior m', t.c3, 'dot', 2.6]].forEach(function (s) {
+    [['M', 'top posterior M', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior m', t.ink, 'dot', 2.6]].forEach(function (s) {
       var mu = s[0] === 'half' ? 0.5 : P[s[0]];
       traces.push({ type: 'scatter', mode: 'lines', name: 'B<sub>r</sub> at the ' + s[1], x: xs, y: xs.map(function (r) { return auction(P, r).B(mu); }),
         line: { color: s[2], width: s[4], dash: s[3] }, xaxis: 'x2', yaxis: 'y2', legendgroup: 'B' + s[0],
@@ -2888,7 +2829,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         hovertemplate: 'B<sub>r</sub> = %{customdata[0]}<extra>' + s[1] + '</extra>' });
     });
     var rs = ['r0', 'r1', 'r2'];
-    traces.push(points('spread in the example', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Delta_r' + i]; }), t.info,
+    traces.push(points('spread in the example', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Delta_r' + i]; }), t.ink,
       rs.map(function (k, i) { return ['Delta_r' + i, P.display['Delta_r' + i]]; }), { extra: { xaxis: 'x', yaxis: 'y' } }));
     traces.push(points('gross profit at the prior', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Bprior_r' + i]; }), t.ink,
       rs.map(function (k, i) { return [i === 1 ? 'Bprior_r1_B' : 'Bprior_r' + i, P.display['Bprior_r' + i]]; }), { extra: { xaxis: 'x2', yaxis: 'y2' } }));
@@ -2900,10 +2841,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     layout.yaxis2 = C.axis(t, { title: { text: 'gross profit <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
     layout.margin.l = narrow ? 72 : 64;
     C.twoPanels(layout, narrow);
-    hline(layout, 'x', 'y', P.k, t.info);
-    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.info, { xanchor: 'right' });
-    hline(layout, 'x2', 'y2', P.c_H, t.cost);
-    label(layout, 'x2 domain', 'y2', 0.02, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.cost);
+    hline(layout, 'x', 'y', P.k, t.ink, '1.5 3.5', 1.5);
+    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.ink, { xanchor: 'right' });
+    hline(layout, 'x2', 'y2', P.c_H, t.ink, '1.5 3.5', 1.5);
+    label(layout, 'x2 domain', 'y2', 0.02, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.ink);
     rs.forEach(function (k, i) { ['x', 'x2'].forEach(function (ax) { vline(layout, ax, P[k], t.line); topLabel(layout, ax, P[k], '<i>r</i><sub>' + i + '</sub>', t.muted); }); });
     C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
@@ -2915,23 +2856,23 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var xa = grid(P.r0, P.r2, 240), xb = grid(P.r1, P.r2, 120);
     function tauTrace(xs, ax, ay, show) {
       return { type: 'scatter', mode: 'lines', name: 'threshold τ(r)', x: xs, y: xs.map(function (r) { return auction(P, r).tau; }),
-        line: { color: t.cost, width: 2.6 }, xaxis: ax, yaxis: ay, legendgroup: 'tau', showlegend: show,
+        line: { color: t.ink, width: 2.6 }, xaxis: ax, yaxis: ay, legendgroup: 'tau', showlegend: show,
         customdata: xs.map(function (r) { return [d6(auction(P, r).tau)]; }), hovertemplate: 'τ = %{customdata[0]}<extra>threshold</extra>' };
     }
     traces.push(tauTrace(xa, 'x', 'y', true));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.info, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'M', customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
-    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior m', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.info, width: 2, dash: 'dot' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior m', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.ink, width: 2.4, dash: 'dot' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'm', customdata: [[P.display.m], [P.display.m]], hovertemplate: 'm(1/2) = %{customdata[0]}<extra>bottom posterior</extra>' });
-    traces.push(points('thresholds in the example', [P.r0, P.r1, P.r2], [P.tau_r0, P.tau_r1, P.tau_r2], t.cost,
+    traces.push(points('thresholds in the example', [P.r0, P.r1, P.r2], [P.tau_r0, P.tau_r1, P.tau_r2], t.ink,
       [['tau_r0', P.display.tau_r0], ['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x', yaxis: 'y' } }));
     traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
       hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x', yaxis: 'y' } }));
     // (b) the strengths from r_1 to r_2: the band of top posteriors that put r_C between them
     traces.push(tauTrace(xb, 'x2', 'y2', false));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.info, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x2', yaxis: 'y2', legendgroup: 'M', showlegend: false, customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
-    traces.push(points('band ends', [P.r1, P.r2], [P.tau_r1, P.tau_r2], t.cost, [['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x2', yaxis: 'y2' } }));
+    traces.push(points('band ends', [P.r1, P.r2], [P.tau_r1, P.tau_r2], t.ink, [['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x2', yaxis: 'y2' } }));
     traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
       hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x2', yaxis: 'y2' } }));
     var C = CCC.charts, layout = C.baseLayout(t);
@@ -2943,11 +2884,11 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     layout.margin.l = 64;
     C.twoPanels(layout, narrow);
     if (!narrow) { layout.xaxis.domain = [0, 0.58]; layout.xaxis2.domain = [0.68, 1]; }
-    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: P.m, y1: P.M, fillcolor: t.regionC, line: { width: 0 }, layer: 'below' });
-    layout.shapes.push({ type: 'rect', xref: 'x2 domain', yref: 'y2', x0: 0, x1: 1, y0: P.tau_r1, y1: P.tau_r2, fillcolor: t.regionB, line: { width: 0 }, layer: 'below' });
+    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: P.m, y1: P.M, screen: 'a', line: { width: 0 }, layer: 'below' });
+    layout.shapes.push({ type: 'rect', xref: 'x2 domain', yref: 'y2', x0: 0, x1: 1, y0: P.tau_r1, y1: P.tau_r2, screen: 'b', line: { width: 0 }, layer: 'below' });
     hline(layout, 'x', 'y', 0.5, t.muted, '2 3', 1);
     label(layout, 'x domain', 'y', 0.02, 0.5, 'prior 1/2', t.muted);
-    label(layout, 'x domain', 'y', 0.02, P.M, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.info);
+    label(layout, 'x domain', 'y', 0.02, P.M, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.ink);
     label(layout, 'x2 domain', 'y2', 0.97, P.tau_r1, 'band for <i>M</i>: τ(<i>r</i><sub>1</sub>) to τ(<i>r</i><sub>2</sub>)', t.muted, { xanchor: 'right' });
     [['x', P.r0, 'r</i><sub>0</sub>'], ['x', P.r1, 'r</i><sub>1</sub>'], ['x', P.r2, 'r</i><sub>2</sub>']].forEach(function (m) {
       vline(layout, m[0], m[1], t.line); topLabel(layout, m[0], m[1], '<i>' + m[2], t.muted);
@@ -2964,10 +2905,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var xb = grid(P.rR, P.rRbar, 160), lam = xb.map(function (r) { return lambdaR(P, r); });
     var xq = grid(P.rN, P.rQ, 160), lamq = xq.map(function (r) { return Math.max(lambdaQ(P, r), 0); });
     var nodes = (D.nodes || []).map(function (n) { return { r: Number(n.r.x), lam: Number(n.lambda.x), E: Number(n.entry.x), n: n }; });
-    var navy = t.ink, brick = t.info, grey = t.c3;
+    var navy = t.ink, brick = t.recruit, grey = t.ink;
     function curve(name, group, xs, ys, color, dash, ax, ay, show, what) {
       return { type: 'scatter', mode: 'lines', name: name, legendgroup: group, showlegend: show, x: xs, y: ys,
-        line: { color: color, width: 2.6, dash: dash || 'solid' }, xaxis: ax, yaxis: ay,
+        line: { color: color, width: color === t.recruit ? 3.2 : 2.4, dash: dash || 'solid' }, xaxis: ax, yaxis: ay,
         customdata: ys.map(function (y) { return [d6(y)]; }), hovertemplate: what + ' = %{customdata[0]}<extra>' + name + '</extra>' };
     }
     function flat(name, group, x0, x1, y, color, dash, ax, ay, show, what) {
@@ -2998,13 +2939,16 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       traces.push(mark('recruiting research at the entry ceiling', P.rC, capY, brick, false, ax, ay,
         j ? ['res_entry_cap', P.display.entry_cap] : ['res_cap', P.display.cap]));
       traces.push(points(j ? 'entry at the three strengths' : 'research at the three strengths', nodes.map(function (n) { return n.r; }),
-        nodes.map(function (n) { return j ? n.E : n.lam; }), t.ink,
+        nodes.map(function (n) { return j ? n.E : n.lam; }), t.recruit,
         nodes.map(function (n) { return j ? [n.n.entry.key, n.n.entry.display] : [n.n.lambda.key, n.n.lambda.display]; }), { extra: { xaxis: ax, yaxis: ay } }));
       traces.push(points('zero research at the three strengths', nodes.map(function (n) { return n.r; }), nodes.map(function () { return zero; }), t.ink,
         nodes.map(function (n) { return [n.n.r.key, n.n.r.display]; }), { hover: 'strength %{customdata[1]}', extra: { xaxis: ax, yaxis: ay } }));
-      traces.push(points('the three economies', [P.r0, P.r1, P.r2], [zero, capY, floorCap], t.ink,
-        j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
-          : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]], { extra: { xaxis: ax, yaxis: ay } }));
+      // the three economies: r_0 on zero research, r_1 on recruiting research at the cap (green), r_2 on floor-entry research
+      var econ = j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
+        : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]];
+      [[P.r0, zero, navy], [P.r1, capY, brick], [P.r2, floorCap, grey]].forEach(function (e, i) {
+        traces.push(points('the three economies', [e[0]], [e[1]], e[2], [econ[i]], { extra: { xaxis: ax, yaxis: ay } }));
+      });
     });
     var C = CCC.charts, layout = C.baseLayout(t);
     layout.height = narrow ? 660 : 420;
@@ -3093,22 +3037,30 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       : 'Above the entry ceiling the top posterior falls short of the threshold, so no order recruits a high-cost rival and entry is at its floor.');
   }
 
+  function screenInk() {
+    return (CCC.charts && CCC.charts.tokens ? CCC.charts.tokens().screen : '') || 'currentColor';
+  }
+
   /* ---------- the posterior after each order, on a belief line ---------- */
   function beliefLine(f, P) {
     var wide = !state.el.root || state.el.root.clientWidth > 560;
-    var W = wide ? 640 : 380, H = 118, lo = 0.2, hi = 0.8, L = 16, R = 16, y = 70, gap = wide ? 52 : 40;
+    var W = wide ? 640 : 380, H = 132, lo = 0.2, hi = 0.8, L = 16, R = 16, y = 70, gap = wide ? 52 : 40;
     function X(v) { return L + (v - lo) / (hi - lo) * (W - L - R); }
     var tau = f.A.tau, out = '';
-    out += '<rect class="bl-band" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32"/>';
+    // the band of reachable beliefs is a line screen with a keyline round it, never a tint
+    out += '<defs><pattern id="bl-screen" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">' +
+      '<line x1="0" y1="0" x2="0" y2="7" stroke="' + screenInk() + '" stroke-width="1.1"/></pattern></defs>';
+    out += '<rect class="bl-band" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32" fill="url(#bl-screen)"/>' +
+      '<rect class="bl-band-edge" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32"/>';
     out += '<line class="bl-axis" x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '"/>';
     for (var v = lo; v <= hi + 1e-9; v += (wide ? 0.1 : 0.2)) {
-      out += '<line class="bl-tick" x1="' + X(v).toFixed(1) + '" x2="' + X(v).toFixed(1) + '" y1="' + y + '" y2="' + (y + 5) + '"/>' +
-        '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 19) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
+      out += '<line class="bl-tick" x1="' + X(v).toFixed(1) + '" x2="' + X(v).toFixed(1) + '" y1="' + y + '" y2="' + (y + 20) + '"/>' +
+        '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 30) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
     }
     out += '<line class="bl-tau" x1="' + X(tau).toFixed(1) + '" x2="' + X(tau).toFixed(1) + '" y1="' + (y - 30) + '" y2="' + (y + 8) + '"/>' +
       '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold τ(r)</text>';
-    out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="start">m</text>' +
-      '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="end">M</text>';
+    out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="start">m</text>' +
+      '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="end">M</text>';
     var used = [];
     ORDERS.forEach(function (o, i) {
       var mu = f.mu[o[0]], x = X(mu), lift = 0;
@@ -3137,21 +3089,22 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     }
     [['x', 'y', true], ['x2', 'y2', false]].forEach(function (p) {
       var ax = p[0], ay = p[1], show = p[2];
-      traces.push(seg('N: uninformative market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
-      traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.info, 'dash', 2.6, show, ax, ay));
-      traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
-      traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
-      traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
-      traces.push(seg('T: threshold pair (if an indifferent rival may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
-      traces.push(dot(P.rA, P.entry_rA, t.info, false, ax, ay, 'R'));
-      traces.push(dot(P.rF, ENT, t.info, false, ax, ay, 'F'));
-      traces.push(dot(P.rC, ENT, t.info, false, ax, ay, 'F'));
-      traces.push(dot(P.rC, P.rho, t.info, true, ax, ay, 'F'));
+      traces.push(seg('N: uninformative market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.4, show, ax, ay));
+      traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.recruit, 'dash', 3.2, show, ax, ay));
+      traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.recruit, 'solid', 3.4, show, ax, ay, 160));
+      // above the entry ceiling the full purchase no longer recruits: entry is at its floor, in black
+      traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.ink, 'solid', 3.4, false, ax, ay, 20));
+      traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.ink, 'dashdot', 2.4, show, ax, ay));
+      traces.push(seg('T: threshold pair (if an indifferent rival may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.recruit, 'dash', 1.4, show, ax, ay));
+      traces.push(dot(P.rA, P.entry_rA, t.recruit, false, ax, ay, 'R'));
+      traces.push(dot(P.rF, ENT, t.recruit, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, ENT, t.recruit, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, P.rho, t.ink, true, ax, ay, 'F'));
       // Q excludes both endpoints (large open circles); T, under challenger mixing, includes r_J;
       // N includes r_N, so its filled marker is drawn last, inside Q's open circle.
-      traces.push(dot(P.rN, P.rho, t.c3, true, ax, ay, 'Q', 12));
-      traces.push(dot(P.rJ, P.rho, t.c3, true, ax, ay, 'Q', 12));
-      traces.push(dot(P.rJ, P.rho, t.muted, false, ax, ay, 'T', 7, 'diamond'));
+      traces.push(dot(P.rN, P.rho, t.ink, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.ink, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.ink, false, ax, ay, 'T', 7, 'diamond'));
       traces.push(dot(P.rN, P.rho, t.ink, false, ax, ay, 'N', 6));
     });
     var r = isFinite(state.r) ? state.r : P.r0;
@@ -3168,10 +3121,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     if (!narrow) { layout.xaxis.domain = [0, 0.36]; layout.xaxis2.domain = [0.46, 1]; }
     ['x', 'x2'].forEach(function (ax) {
       var ay = ax === 'x2' ? 'y2' : 'y';
-      layout.shapes.push({ type: 'rect', xref: ax, yref: ay + ' domain', x0: P.rA, x1: P.rN, y0: 0, y1: 1, fillcolor: t.regionB, line: { width: 0 }, layer: 'below' });
+      layout.shapes.push({ type: 'rect', xref: ax, yref: ay + ' domain', x0: P.rA, x1: P.rN, y0: 0, y1: 1, screen: 'a', line: { width: 0 }, layer: 'below' });
       var marks = ax === 'x' ? [['rA', 'A', 0], ['rN', 'N', 1], ['rC', 'C', 0]] : [['rA', 'A', 0], ['rF', 'F', 1], ['rN', 'N', 0], ['rJ', 'J', 1], ['rS', 'S', 0]];
       marks.forEach(function (m) {
-        layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.line, width: 1, dash: '2 3' }, layer: 'below' });
+        layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.muted, width: 1, dash: '2 3' }, layer: 'below' });
         layout.annotations.push({ text: '<i>r</i><sub>' + m[1] + '</sub>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
           xanchor: 'center', yanchor: 'bottom', yshift: 2 + 15 * m[2], font: { size: 11, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
       });
@@ -3181,7 +3134,8 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
     layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
     eqs.forEach(function (f) {
-      var color = f.id === 'N' ? t.ink : (f.id === 'Q' ? t.c3 : t.info);
+      // green only where a purchase recruits the high-cost rival at the chosen strength
+      var color = f.e['1'] === 1 ? t.recruit : t.ink;
       ['x', 'x2'].forEach(function (ax) {
         traces.push({ type: 'scatter', mode: 'markers', name: 'at r: ' + f.id, showlegend: false, x: [r], y: [f.E], xaxis: ax, yaxis: ax === 'x2' ? 'y2' : 'y',
           marker: { symbol: 'diamond', size: 11, color: color, line: { color: t.bg, width: 1.5 } }, customdata: [[f.E.toFixed(6)]],
@@ -3307,12 +3261,12 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var rows = ORDERS.map(function (o) {
       var x = o[0];
       return '<tr><th scope="row">' + o[1] + '</th><td class="num">' + d6(f.fH[x]) + '</td><td class="num">' + d6(f.fL[x]) + '</td><td class="num">' + d6(f.mu[x]) +
-        '</td><td class="num">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
+        '</td><td class="num' + (f.e[x] === 1 ? ' is-recruit' : '') + '">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
     }).join('');
     E.detail.innerHTML = '<p class="eq-summary">' + describe(f, P) + '</p>' + beliefLine(f, P) +
       '<div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
       '<th class="num">Posterior μ</th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<p class="eq-totals"><span>Entry <b class="live">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
+      '<p class="eq-totals"><span>Entry <b class="live' + (f.e['1'] === 1 ? ' is-recruit' : '') + '">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
       '<span>Gross profit at the top posterior <b class="live">' + d6(A.B(P.M)) + '</b> against the high cost <b>' + P.display.c_H + '</b></span></p>';
     moveMarker();
   }

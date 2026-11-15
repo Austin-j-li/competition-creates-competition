@@ -1,0 +1,435 @@
+/* Structure of the talk's stage. No typeface and no colour here except through the tokens of
+   the build contract (section 6); a look sets the tokens on body[data-look="…"].
+   Optional hooks a look may set (with these defaults):
+     --rule-w 1.5px (thin rules)   --rule-strong-w 3px (heavy rules)
+     --reveal-name talk-rise   --reveal-dur 240ms   --reveal-ease cubic-bezier(.16,1,.3,1)
+     --reveal-rise 10px   --fs-cover calc(var(--fs-title) * 1.7)                              */
+
+html, body { margin: 0; height: 100%; }
+html { background: var(--ground); }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+#viewport { position: fixed; inset: 0; overflow: hidden; }
+
+#stage {
+  position: absolute;
+  left: 0; top: 0;
+  width: 1600px; height: 900px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: var(--ground);
+  visibility: hidden;                       /* shown once the engine has placed it */
+}
+html.is-ready #stage { visibility: visible; }
+
+#deck { position: absolute; inset: 0; }
+
+/* ------------------------------------------------------------------ pages */
+
+.page {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 40px 80px 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: 1.32;
+  visibility: hidden;
+  z-index: 0;
+}
+.page.is-current { visibility: visible; z-index: 2; }
+.page.is-leaving { visibility: visible; z-index: 1; }
+
+.page-head {
+  border-bottom: var(--rule-strong-w, 3px) solid var(--rule-strong);
+  padding-bottom: 16px;
+}
+.page-title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: var(--fs-title);
+  line-height: 1.12;
+  font-weight: 700;
+  color: var(--ink);
+}
+.page-sub {
+  margin: 10px 0 0;
+  font-family: var(--font-text);
+  font-size: var(--fs-sub);
+  line-height: 1.3;
+  height: 1.3em;            /* one line, whatever math it holds: the body (and a chart in it) */
+  white-space: nowrap;      /* starts at the same height on every page that has a sub line  */
+  color: var(--ink-2);
+}
+.page-sub .tag { font-weight: 700; color: var(--ink); }
+
+.page-body {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 24px;
+}
+.page .katex { font-size: 1.1em; }
+
+.page-foot {
+  box-sizing: border-box;
+  height: 66px;
+  display: flex;
+  align-items: baseline;
+  gap: 0 32px;
+  padding-top: 14px;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  font-family: var(--font-label);
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.roadmap { display: flex; align-items: baseline; }
+.road-sep { padding: 0 .62em; }
+.road.is-current { color: var(--ink); font-weight: 700; }
+.foot-links { margin-left: auto; }
+.foot-link { margin-right: .9em; }
+.foot-link:last-child { margin-right: 0; }
+.page-num { font-variant-numeric: tabular-nums; }
+.foot-links + .page-num { margin-left: 0; }
+.page-foot > .roadmap + .page-num { margin-left: auto; }
+
+/* ------------------------------------------------------------------ body vocabulary */
+
+.lead { margin: 0; max-width: 1240px; }
+.note { margin: 0; font-size: var(--fs-small); color: var(--ink-2); }
+.claim { margin: 0; font-weight: 700; }
+.claim.is-band {
+  background: var(--band-bg);
+  color: var(--band-ink);
+  padding: 20px 22% 22px 32px;
+}
+.cols { display: flex; gap: 48px; }
+.col { flex: 1 1 0; min-width: 0; }
+.eq { margin: 0; }
+.gloss { margin: 0; color: var(--ink-2); }
+.fig { position: relative; }
+
+/* the five numbered steps of page 3 */
+.steps5 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) .82fr;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stepcell { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.stepnum {
+  display: block;
+  padding-bottom: 8px;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule-strong);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.steparrow {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 16px);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+  color: var(--ink-2);
+}
+.steptext { display: block; padding: 22px 30px 0 0; }
+.stepcell:last-child .steptext { padding-right: 0; }
+
+/* a row with a bold run-in label */
+.runin {
+  display: flex;
+  gap: 0 32px;
+  margin: 0;
+  padding-top: 18px;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+}
+.runin-label { flex: 0 0 auto; min-width: 210px; font-weight: 700; }
+.runin-text { flex: 1 1 auto; min-width: 0; }
+
+/* the matrix of page 13 */
+table.matrix {
+  width: 100%;
+  border-collapse: separate;          /* each cell paints its own rules, so a hidden column hides its rules */
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: var(--fs-label);
+  line-height: 1.28;
+}
+table.matrix th,
+table.matrix td {
+  padding: 8px 18px 9px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+}
+table.matrix thead th {
+  padding-top: 12px;
+  padding-bottom: 10px;
+  vertical-align: bottom;
+  border-bottom: var(--rule-strong-w, 3px) solid var(--rule-strong);
+  font-family: var(--font-label);
+  font-weight: 700;
+}
+table.matrix tbody th {
+  padding-left: 0;
+  font-family: var(--font-label);
+  font-weight: 700;
+}
+table.matrix tbody th .rownum { float: left; width: 1.2em; }
+table.matrix tbody th .rowlabel { display: block; margin-left: 1.2em; }
+table.matrix thead th.corner { padding-left: 0; }
+table.matrix .rownum { font-variant-numeric: tabular-nums; }
+table.matrix .w-label { width: 18%; }
+table.matrix .w-weak { width: 24%; }
+table.matrix .w-strong { width: 30.5%; }
+table.matrix .w-vstrong { width: 27.5%; }
+table.matrix .col-strong { background: var(--tint-fill); }
+table.matrix + .claim { margin-top: auto; }
+.claim + .note { margin-top: 18px; }
+
+/* page 3: lead, the five steps, then the closing rows at the foot of the body */
+.lead + .steps5 { margin-top: 70px; }
+.steps5 + .lead { margin-top: auto; }
+.lead + .runin { margin-top: 34px; }
+table.matrix .cell-text,
+table.matrix .cell-eq { display: block; }
+
+/* the title page */
+.page.is-cover { display: block; padding: 0; }
+.cover {
+  position: absolute;
+  left: 80px; right: 80px; top: 280px;
+  padding-bottom: 26px;
+  border-bottom: var(--rule-strong-w, 3px) solid var(--rule-strong);
+}
+.cover-title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: var(--fs-cover, calc(var(--fs-title) * 1.7));
+  line-height: 1.08;
+  font-weight: 700;
+  color: var(--ink);
+}
+.cover-sub {
+  margin: 14px 0 0;
+  font-family: var(--font-title);
+  font-size: calc(var(--fs-sub) * 1.15);
+  line-height: 1.25;
+  color: var(--ink);
+}
+.cover-foot {
+  position: absolute;
+  left: 80px; right: 80px; top: 750px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 18px;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  font-family: var(--font-label);
+}
+.cover-name { font-size: var(--fs-body); font-weight: 700; color: var(--ink); }
+.cover-aff { font-size: var(--fs-small); color: var(--ink-2); }
+
+/* ------------------------------------------------------------------ steps */
+
+/* hidden until its step; an element that is on simply inherits, so a hidden page hides it */
+[data-step]:not(.is-on) { visibility: hidden; opacity: 0; }
+
+body[data-motion="on"] [data-step].is-new {
+  animation-name: var(--reveal-name, talk-rise);
+  animation-duration: var(--reveal-dur, 240ms);
+  animation-timing-function: var(--reveal-ease, cubic-bezier(.16, 1, .3, 1));
+  animation-fill-mode: both;
+}
+/* table cells and SVG marks fade in place: a rise would detach their rules or their transform */
+table [data-step], svg [data-step] { --reveal-rise: 0px; }
+body[data-motion="on"] svg [data-step].is-new { animation-name: var(--reveal-name-svg, talk-fade); }
+
+@keyframes talk-rise { from { opacity: 0; transform: translateY(var(--reveal-rise, 10px)); } }
+@keyframes talk-fade { from { opacity: 0; } }
+
+/* ------------------------------------------------------------------ carries, blank */
+
+#carry { position: absolute; inset: 0; z-index: 10; pointer-events: none; overflow: visible; }
+.carry-layer { position: absolute; margin: 0; transform-origin: 50% 50%; will-change: transform, opacity; }
+.carry-layer, .carry-layer * { visibility: visible !important; }
+.is-carrying { visibility: hidden !important; }
+
+#blank { position: absolute; inset: 0; z-index: 20; background: var(--ground); display: none; }
+body.is-blank #blank { display: block; }
+
+/* ------------------------------------------------------------------ the quiet control strip */
+
+#hud {
+  position: fixed;
+  top: 10px; right: 10px;
+  z-index: 50;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease-out;
+}
+body.is-awake #hud, body.is-reading #hud, #hud:focus-within { opacity: .72; pointer-events: auto; }
+#hud button {
+  width: 32px; height: 32px;
+  padding: 6px;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: 0;
+}
+#hud button:hover, #hud button:focus-visible { color: var(--ink); }
+#hud button:focus-visible { outline: 1.5px solid var(--ink-2); outline-offset: -2px; }
+#hud svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#hud svg .fill { fill: currentColor; stroke: none; }
+body.is-reading #hud [data-act="prev"], body.is-reading #hud [data-act="next"] { display: none; }
+
+#keys {
+  position: fixed;
+  top: 14px; right: 150px;
+  z-index: 50;
+  font-family: var(--font-label);
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+#keys:empty { display: none; }
+body.is-blank #keys { display: none; }       /* a blank screen is blank: no typed-key echo on it */
+
+body:not(.is-awake):not(.is-reading) { cursor: none; }
+
+/* ------------------------------------------------------------------ reading view */
+
+html.is-reading, html.is-reading body { overflow: auto; height: auto; }
+html.is-reading #viewport { position: static; overflow: visible; }
+html.is-reading #stage {
+  position: relative;
+  left: auto; top: auto;
+  height: auto;
+  transform: none;
+  overflow: visible;
+  zoom: var(--read-zoom, 1);
+}
+html.is-reading #deck { position: relative; inset: auto; }
+html.is-reading .page {
+  position: relative;
+  inset: auto;
+  height: 900px;
+  visibility: visible;
+}
+html.is-reading .page + .page { border-top: var(--rule-w, 1.5px) solid var(--rule); margin-top: 56px; }
+html.is-reading #carry, html.is-reading #blank { display: none; }
+
+/* ------------------------------------------------------------------ no motion */
+
+body[data-motion="off"] *, body[data-motion="off"] *::before, body[data-motion="off"] *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+body[data-motion="off"] #hud { transition: none; }
+
+/* Links are the stage's only pointer response. Hidden pages cannot receive focus. */
+a.foot-link, a.back-link { color: inherit; cursor: pointer; text-decoration: none; text-underline-offset: .18em; }
+a.foot-link:hover, a.back-link:hover { text-decoration: underline; }
+a.foot-link:focus-visible, a.back-link:focus-visible, #hud button:focus-visible {
+  outline: var(--focus-w) solid var(--focus-ring); outline-offset: 4px;
+}
+#blank { position: fixed; inset: 0; z-index: 100; }
+html.is-reading body.is-blank #blank { display: block; }
+#keys { right: 16px; top: 48px; z-index: 110; }
+.reading-label { display: none; }
+html.is-reading .reading-label {
+  display: block; margin: 72px 80px 24px; padding-top: 24px;
+  border-top: var(--rule-w) solid var(--rule);
+  color: var(--ink); font: 500 var(--fs-title)/1.2 var(--font-label);
+}
+html.is-reading .page { content-visibility: auto; contain-intrinsic-size: 1600px 900px; }
+
+/* Overview: real finished pages, thin keylines, no surface behind a thumbnail. */
+#overview[hidden] { display: none; }
+#overview {
+  box-sizing: border-box;
+  position: fixed; inset: 0; z-index: 60; overflow: auto;
+  padding: 32px; background: var(--ground); color: var(--ink);
+  font-family: var(--font-label); overscroll-behavior: contain;
+}
+#overview > section { margin: 0 0 36px; }
+#overview > section > h2 { margin: 0 0 16px; font: 500 24px/1.25 var(--font-label); }
+.overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 20px; }
+.overview-item {
+  display: block; min-width: 0; padding: 0; border: var(--rule-w) solid var(--rule);
+  border-radius: 0; box-shadow: none; background: var(--ground); cursor: pointer;
+  color: inherit; text-align: left; position: relative;
+}
+.overview-item.is-current { border: var(--rule-strong-w) solid var(--rule-strong); }
+.overview-item:focus-visible { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 5px; }
+.overview-viewport { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; pointer-events: none; }
+#overview .page {
+  position: absolute; inset: 0 auto auto 0; width: 1600px; height: 900px;
+  visibility: visible; transform: scale(var(--thumb-scale, .2)); transform-origin: 0 0;
+  content-visibility: visible;
+}
+#overview .page [data-step] { visibility: visible; opacity: 1; }
+body.is-overview { overflow: hidden; cursor: auto; }
+body.is-overview #hud { visibility: hidden; }
+@media (max-width: 699px) {
+  #overview { padding: 20px; }
+  #hud button { width: 44px; height: 44px; padding: 12px; }
+}
+
+/* Chrome print fallback: exact 16:9 sheets, all click builds finished. */
+@page { size: 1600px 900px; margin: 0; }
+html.is-print, html.is-print body { width: 1600px; height: auto; overflow: visible; }
+html.is-print #viewport { position: static; overflow: visible; }
+html.is-print #stage { position: static; width: 1600px; height: auto; transform: none !important; visibility: visible; overflow: visible; }
+html.is-print #deck { position: static; }
+html.is-print .page {
+  position: relative; inset: auto; width: 1600px; height: 900px; visibility: visible;
+  break-after: page; break-inside: avoid; content-visibility: visible;
+  overflow: hidden; max-height: 900px; min-height: 900px;
+  margin: 0; border-top: 0; print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+html.is-print .page:last-child { break-after: auto; }
+html.is-print [data-step] { visibility: visible; opacity: 1; }
+html.is-print #hud, html.is-print #keys, html.is-print #carry, html.is-print #blank,
+html.is-print #overview, html.is-print .reading-label, html.print-main .page.is-backup { display: none; }
+@media print {
+  html.is-print .page { animation: none !important; }
+}
+
+#overview > section, .overview-grid { min-width: 0; }
+html.is-reading #hud { top: auto; bottom: 8px; background: var(--ground); }
+
+body[data-look="plate"] #deck a.foot-link:focus-visible,
+body[data-look="plate"] #deck a.back-link:focus-visible,
+body[data-look="plate"] #hud button:focus-visible {
+  outline: var(--focus-w) solid var(--focus-ring); outline-offset: 4px;
+}
+
+body[data-look="plate"] #overview .overview-item:focus-visible {
+  outline: var(--focus-w) solid var(--focus-ring); outline-offset: 5px;
+}

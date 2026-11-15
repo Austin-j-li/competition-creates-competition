@@ -1,0 +1,57 @@
+/* Shared plate design tokens, consumed by the talk and research brief.
+   --ground: paper; --ink: primary text; --ink-2: secondary text.
+   --rule / --rule-strong: keyline inks; --rule-w / --rule-strong-w: their weights.
+   --accent: price-induced entry; --accent-ink: text on that ink.
+   --band-bg / --band-ink: statement band; --tint / --tint-fill: strong-column screen.
+   --font-title / --font-text / --font-label / --font-num: title, prose, label, numeral faces.
+   --fig-ink: axes and labels; --fig-muted: no-informed-order branch;
+   --fig-share / --fig-rival: shareholder and rival payoffs; --fig-accent: informed branch;
+   --fig-shade: coexistence; --fig-line / --fig-line-heavy / --fig-dot: mark dimensions.
+   --dash-mixed / --dash-hidden / --dash-drop: branch patterns; --trace-grey: comparison trace.
+   --scr-ink / --scr-w / --scr-pitch: line screen ink, weight, pitch.
+   --fig-*-fill: solid or SVG screen fills. Screen IDs are defined by each figure.
+   --focus-ring / --focus-w: visible keyboard focus. Stage font sizes stay in the look. */
+/* The plate body also receives these tokens so figure defaults cannot override inherited values. */
+:root, body[data-look="plate"] {
+  --ground: oklch(0.985 0.002 250);
+  --ink: oklch(0.20 0.01 260);
+  --ink-2: oklch(0.40 0.012 260);
+  --rule: oklch(0.20 0.01 260);            /* every keyline is black ink */
+  --rule-strong: oklch(0.20 0.01 260);
+  --accent: oklch(0.50 0.15 150);          /* press green: the price brings the costly rival in */
+  --accent-ink: #ffffff;
+  --band-bg: oklch(0.20 0.01 260);
+  --band-ink: #ffffff;
+  --tint: oklch(0.985 0.002 250);          /* never a flat tint: --tint-fill is a line screen */
+  --font-title: "Jost", "Futura", "Century Gothic", sans-serif;
+  --font-text: "STIX Two Text", "Times New Roman", serif;
+  --font-label: "Jost", "Futura", "Century Gothic", sans-serif;
+  --font-num: "Jost", "Futura", sans-serif;
+  --rule-w: 1.5px;
+  --rule-strong-w: 3px;
+  --fig-ink: oklch(0.20 0.01 260);
+  --fig-muted: oklch(0.20 0.01 260);        /* the branch with no informed order: solid black */
+  --fig-share: oklch(0.20 0.01 260);        /* what shareholders are paid: solid black */
+  --fig-rival: oklch(0.20 0.01 260);        /* what the rival keeps: black, but as a line screen (below) */
+  --fig-accent: oklch(0.50 0.15 150);
+  --fig-shade: oklch(0.20 0.01 260);
+  --fig-line: 3px;
+  --fig-line-heavy: 6px;
+  --fig-dot: 8px;
+  --dash-mixed: 14 9;
+  --dash-hidden: 16 10;
+  --dash-drop: 2 9;
+  --trace-grey: oklch(0.70 0.008 260);      /* page 16's pale trace of the full model */
+  --scr-ink: oklch(0.20 0.01 260);
+  --scr-w: 1.5px;
+  --scr-pitch: 9px;
+  --fig-share-fill: var(--fig-share);
+  --fig-rival-fill: url(#scr-a-bars);
+  --fig-shade-fill: url(#scr-b-entry);
+  --tint-fill: repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--accent) 30%, var(--ground)) 0,
+      color-mix(in srgb, var(--accent) 30%, var(--ground)) 1px,
+      transparent 1px, transparent 12px);
+  --focus-ring: var(--ink);                 /* focus is black; green keeps its one meaning */
+  --focus-w: 3px;
+}

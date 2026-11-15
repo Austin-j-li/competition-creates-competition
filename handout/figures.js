@@ -164,10 +164,10 @@
     var P = inputs(D), narrow = !!(opts && opts.narrow);
     var xs = grid(1, 3.8, 280), traces = [];
     traces.push({ type: 'scatter', mode: 'lines', name: 'spread Δ<sub>T</sub>(r)', x: xs, y: xs.map(function (r) { return auction(P, r).Delta; }),
-      line: { color: t.info, width: 2.6 }, xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
+      line: { color: t.ink, width: 2.6 }, xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
       customdata: xs.map(function (r) { return [d6(auction(P, r).Delta)]; }),
       hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<extra>spread</extra>' });
-    [['M', 'top posterior M', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior m', t.c3, 'dot', 2.6]].forEach(function (s) {
+    [['M', 'top posterior M', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior m', t.ink, 'dot', 2.6]].forEach(function (s) {
       var mu = s[0] === 'half' ? 0.5 : P[s[0]];
       traces.push({ type: 'scatter', mode: 'lines', name: 'B<sub>r</sub> at the ' + s[1], x: xs, y: xs.map(function (r) { return auction(P, r).B(mu); }),
         line: { color: s[2], width: s[4], dash: s[3] }, xaxis: 'x2', yaxis: 'y2', legendgroup: 'B' + s[0],
@@ -175,7 +175,7 @@
         hovertemplate: 'B<sub>r</sub> = %{customdata[0]}<extra>' + s[1] + '</extra>' });
     });
     var rs = ['r0', 'r1', 'r2'];
-    traces.push(points('spread in the example', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Delta_r' + i]; }), t.info,
+    traces.push(points('spread in the example', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Delta_r' + i]; }), t.ink,
       rs.map(function (k, i) { return ['Delta_r' + i, P.display['Delta_r' + i]]; }), { extra: { xaxis: 'x', yaxis: 'y' } }));
     traces.push(points('gross profit at the prior', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Bprior_r' + i]; }), t.ink,
       rs.map(function (k, i) { return [i === 1 ? 'Bprior_r1_B' : 'Bprior_r' + i, P.display['Bprior_r' + i]]; }), { extra: { xaxis: 'x2', yaxis: 'y2' } }));
@@ -187,10 +187,10 @@
     layout.yaxis2 = C.axis(t, { title: { text: 'gross profit <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
     layout.margin.l = narrow ? 72 : 64;
     C.twoPanels(layout, narrow);
-    hline(layout, 'x', 'y', P.k, t.info);
-    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.info, { xanchor: 'right' });
-    hline(layout, 'x2', 'y2', P.c_H, t.cost);
-    label(layout, 'x2 domain', 'y2', 0.02, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.cost);
+    hline(layout, 'x', 'y', P.k, t.ink, '1.5 3.5', 1.5);
+    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.ink, { xanchor: 'right' });
+    hline(layout, 'x2', 'y2', P.c_H, t.ink, '1.5 3.5', 1.5);
+    label(layout, 'x2 domain', 'y2', 0.02, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.ink);
     rs.forEach(function (k, i) { ['x', 'x2'].forEach(function (ax) { vline(layout, ax, P[k], t.line); topLabel(layout, ax, P[k], '<i>r</i><sub>' + i + '</sub>', t.muted); }); });
     C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
@@ -202,23 +202,23 @@
     var xa = grid(P.r0, P.r2, 240), xb = grid(P.r1, P.r2, 120);
     function tauTrace(xs, ax, ay, show) {
       return { type: 'scatter', mode: 'lines', name: 'threshold τ(r)', x: xs, y: xs.map(function (r) { return auction(P, r).tau; }),
-        line: { color: t.cost, width: 2.6 }, xaxis: ax, yaxis: ay, legendgroup: 'tau', showlegend: show,
+        line: { color: t.ink, width: 2.6 }, xaxis: ax, yaxis: ay, legendgroup: 'tau', showlegend: show,
         customdata: xs.map(function (r) { return [d6(auction(P, r).tau)]; }), hovertemplate: 'τ = %{customdata[0]}<extra>threshold</extra>' };
     }
     traces.push(tauTrace(xa, 'x', 'y', true));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.info, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'M', customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
-    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior m', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.info, width: 2, dash: 'dot' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior m', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.ink, width: 2.4, dash: 'dot' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'm', customdata: [[P.display.m], [P.display.m]], hovertemplate: 'm(1/2) = %{customdata[0]}<extra>bottom posterior</extra>' });
-    traces.push(points('thresholds in the example', [P.r0, P.r1, P.r2], [P.tau_r0, P.tau_r1, P.tau_r2], t.cost,
+    traces.push(points('thresholds in the example', [P.r0, P.r1, P.r2], [P.tau_r0, P.tau_r1, P.tau_r2], t.ink,
       [['tau_r0', P.display.tau_r0], ['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x', yaxis: 'y' } }));
     traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
       hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x', yaxis: 'y' } }));
     // (b) the strengths from r_1 to r_2: the band of top posteriors that put r_C between them
     traces.push(tauTrace(xb, 'x2', 'y2', false));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.info, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x2', yaxis: 'y2', legendgroup: 'M', showlegend: false, customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
-    traces.push(points('band ends', [P.r1, P.r2], [P.tau_r1, P.tau_r2], t.cost, [['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x2', yaxis: 'y2' } }));
+    traces.push(points('band ends', [P.r1, P.r2], [P.tau_r1, P.tau_r2], t.ink, [['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x2', yaxis: 'y2' } }));
     traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
       hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x2', yaxis: 'y2' } }));
     var C = CCC.charts, layout = C.baseLayout(t);
@@ -230,11 +230,11 @@
     layout.margin.l = 64;
     C.twoPanels(layout, narrow);
     if (!narrow) { layout.xaxis.domain = [0, 0.58]; layout.xaxis2.domain = [0.68, 1]; }
-    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: P.m, y1: P.M, fillcolor: t.regionC, line: { width: 0 }, layer: 'below' });
-    layout.shapes.push({ type: 'rect', xref: 'x2 domain', yref: 'y2', x0: 0, x1: 1, y0: P.tau_r1, y1: P.tau_r2, fillcolor: t.regionB, line: { width: 0 }, layer: 'below' });
+    layout.shapes.push({ type: 'rect', xref: 'x domain', yref: 'y', x0: 0, x1: 1, y0: P.m, y1: P.M, screen: 'a', line: { width: 0 }, layer: 'below' });
+    layout.shapes.push({ type: 'rect', xref: 'x2 domain', yref: 'y2', x0: 0, x1: 1, y0: P.tau_r1, y1: P.tau_r2, screen: 'b', line: { width: 0 }, layer: 'below' });
     hline(layout, 'x', 'y', 0.5, t.muted, '2 3', 1);
     label(layout, 'x domain', 'y', 0.02, 0.5, 'prior 1/2', t.muted);
-    label(layout, 'x domain', 'y', 0.02, P.M, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.info);
+    label(layout, 'x domain', 'y', 0.02, P.M, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.ink);
     label(layout, 'x2 domain', 'y2', 0.97, P.tau_r1, 'band for <i>M</i>: τ(<i>r</i><sub>1</sub>) to τ(<i>r</i><sub>2</sub>)', t.muted, { xanchor: 'right' });
     [['x', P.r0, 'r</i><sub>0</sub>'], ['x', P.r1, 'r</i><sub>1</sub>'], ['x', P.r2, 'r</i><sub>2</sub>']].forEach(function (m) {
       vline(layout, m[0], m[1], t.line); topLabel(layout, m[0], m[1], '<i>' + m[2], t.muted);
@@ -251,10 +251,10 @@
     var xb = grid(P.rR, P.rRbar, 160), lam = xb.map(function (r) { return lambdaR(P, r); });
     var xq = grid(P.rN, P.rQ, 160), lamq = xq.map(function (r) { return Math.max(lambdaQ(P, r), 0); });
     var nodes = (D.nodes || []).map(function (n) { return { r: Number(n.r.x), lam: Number(n.lambda.x), E: Number(n.entry.x), n: n }; });
-    var navy = t.ink, brick = t.info, grey = t.c3;
+    var navy = t.ink, brick = t.recruit, grey = t.ink;
     function curve(name, group, xs, ys, color, dash, ax, ay, show, what) {
       return { type: 'scatter', mode: 'lines', name: name, legendgroup: group, showlegend: show, x: xs, y: ys,
-        line: { color: color, width: 2.6, dash: dash || 'solid' }, xaxis: ax, yaxis: ay,
+        line: { color: color, width: color === t.recruit ? 3.2 : 2.4, dash: dash || 'solid' }, xaxis: ax, yaxis: ay,
         customdata: ys.map(function (y) { return [d6(y)]; }), hovertemplate: what + ' = %{customdata[0]}<extra>' + name + '</extra>' };
     }
     function flat(name, group, x0, x1, y, color, dash, ax, ay, show, what) {
@@ -285,13 +285,16 @@
       traces.push(mark('recruiting research at the entry ceiling', P.rC, capY, brick, false, ax, ay,
         j ? ['res_entry_cap', P.display.entry_cap] : ['res_cap', P.display.cap]));
       traces.push(points(j ? 'entry at the three strengths' : 'research at the three strengths', nodes.map(function (n) { return n.r; }),
-        nodes.map(function (n) { return j ? n.E : n.lam; }), t.ink,
+        nodes.map(function (n) { return j ? n.E : n.lam; }), t.recruit,
         nodes.map(function (n) { return j ? [n.n.entry.key, n.n.entry.display] : [n.n.lambda.key, n.n.lambda.display]; }), { extra: { xaxis: ax, yaxis: ay } }));
       traces.push(points('zero research at the three strengths', nodes.map(function (n) { return n.r; }), nodes.map(function () { return zero; }), t.ink,
         nodes.map(function (n) { return [n.n.r.key, n.n.r.display]; }), { hover: 'strength %{customdata[1]}', extra: { xaxis: ax, yaxis: ay } }));
-      traces.push(points('the three economies', [P.r0, P.r1, P.r2], [zero, capY, floorCap], t.ink,
-        j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
-          : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]], { extra: { xaxis: ax, yaxis: ay } }));
+      // the three economies: r_0 on zero research, r_1 on recruiting research at the cap (green), r_2 on floor-entry research
+      var econ = j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
+        : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]];
+      [[P.r0, zero, navy], [P.r1, capY, brick], [P.r2, floorCap, grey]].forEach(function (e, i) {
+        traces.push(points('the three economies', [e[0]], [e[1]], e[2], [econ[i]], { extra: { xaxis: ax, yaxis: ay } }));
+      });
     });
     var C = CCC.charts, layout = C.baseLayout(t);
     layout.height = narrow ? 660 : 420;

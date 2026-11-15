@@ -1,0 +1,129 @@
+/* Layout of the charts owner's pages: page 18 (research) and backups B3 (b24 to b26) and B12
+   (b46 to b49). Structure only, through the tokens. */
+
+/* ------------------------------------------------------------------ page 18 */
+.research-page .research-body {
+  display: grid;
+  grid-template-columns: 850px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: 40px;
+}
+.research-page .research-body > .fig { grid-column: 1; grid-row: 1; }
+.research-page .research-side {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+  font-size: max(26px, calc(var(--fs-body) * .9));
+  line-height: 1.28;
+}
+.research-page .research-side > p { margin: 0; }
+.research-page .research-side > p + p { margin-top: 14px; }
+.research-page .research-side > .eq { margin-top: 8px; }
+.research-page .research-side > .eq + p { margin-top: 18px; }
+.research-page .research-claim { grid-column: 1; grid-row: 2; align-self: end; margin: 0; }
+
+/* ------------------------------------------------------------------ backups B3 and B12 */
+.chart-backup { font-size: 25px; line-height: 1.34; }
+.chart-backup .page-body { gap: 16px; }
+.chart-backup p { margin: 0; }
+.chart-backup .page-foot .cb-back { margin-left: auto; display: flex; gap: 24px; }
+.chart-backup .page-foot .back-link { color: var(--ink); font-weight: 600; }
+.chart-backup .claim { font-size: 27px; line-height: 1.3; }
+.chart-backup .note { font-size: 21px; line-height: 1.3; }
+.chart-backup .claim + .note { margin-top: 0; }
+
+/* a list of statements: a short ink rule for a bullet, no marker glyph */
+.cb-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.cb-list > li { position: relative; padding-left: 28px; }
+.cb-list > li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .68em;
+  width: 12px;
+  border-top: var(--rule-w, 1.5px) solid var(--ink);
+}
+.cb-list .cb-eq { display: block; }
+.cb-list .cb-eq .katex-display { margin: 8px 0 0; text-align: left; }
+.cb-list .cb-eq .katex-display > .katex { text-align: left; }
+
+/* b24: the region's figure at left, as the master places it; the inequality and the markets to its
+   right; the claim and the scope note below */
+.chart-backup .page-body.cb-b24 {
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  column-gap: 60px;
+  row-gap: 10px;
+}
+.cb-b24 > .fig { grid-column: 1; grid-row: 1; }
+.cb-b24 > .cb-region { grid-column: 2; grid-row: 1 / span 2; font-size: 23px; line-height: 1.32; min-width: 0; }
+.cb-b24 > .cb-region > .eq .katex-display { margin: 0 0 10px; text-align: left; }
+.cb-b24 > .cb-region > .eq .katex-display > .katex { text-align: left; }
+.cb-b24 > .cb-region > .cb-list { gap: 12px; }
+.cb-b24 > .claim { grid-column: 1 / -1; grid-row: 3; max-width: 900px; align-self: end; }
+.cb-b24 > .note { grid-column: 1 / -1; grid-row: 4; }
+
+/* a figure page (b25, b47): the figure and its caption at left, the list at right */
+.chart-backup .page-body.cb-figpage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  column-gap: 34px;
+  row-gap: 10px;
+}
+.cb-figpage > .cb-figcol { grid-column: 1; grid-row: 1 / span 2; }
+.cb-figpage > .cb-side { grid-column: 2; grid-row: 1 / span 2; font-size: 23px; line-height: 1.32; gap: 14px; padding-top: 4px; }
+.cb-figpage > .cb-wide { grid-column: 1 / -1; }
+.cb-figpage > .claim { grid-row: 3; align-self: end; }
+.cb-figpage > .note { grid-row: 4; }
+.cb-cap { margin-top: 8px; font-size: 23px; }
+
+/* b26: the table of marked strengths beside the interval parts, the general statement below */
+.chart-backup .page-body.cb-b26 {
+  display: grid;
+  grid-template-columns: 860px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: 40px;
+  row-gap: 22px;
+  font-size: 22px;
+  line-height: 1.32;
+}
+.cb-b26 > table { grid-column: 1; grid-row: 1; align-self: start; }
+.cb-b26 > .cb-parts { grid-column: 2; grid-row: 1 / span 2; gap: 12px; }
+.cb-b26 > .cb-general { grid-column: 1; grid-row: 2; }
+.cb-strengths { width: 100%; font-size: 22px; line-height: 1.28; }
+.cb-strengths col.cb-c0 { width: 13%; }
+.cb-strengths col.cb-c1 { width: 26%; }
+.cb-strengths th, .cb-strengths td { padding-top: 9px; padding-bottom: 9px; }
+table.matrix.nums.cb-strengths thead th { text-align: right; }
+table.matrix.nums.cb-strengths .cb-sym { text-align: center; }
+table.matrix.nums.cb-strengths .cb-role { text-align: left; padding-left: 22px; }
+table.matrix.nums.cb-strengths td.cb-role { font-family: var(--font-text); font-variant-numeric: normal; }
+table.matrix.nums.cb-strengths td { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+/* b46: two columns of statements */
+.chart-backup .page-body.cb-b46 {
+  display: grid;
+  grid-template-columns: 540px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  column-gap: 60px;
+  row-gap: 14px;
+  font-size: 25px;
+}
+.cb-b46 > .cb-left { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 16px; }
+.cb-b46 > .cb-right { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 14px; }
+.cb-b46 > .cb-wide { grid-column: 1 / -1; }
+.cb-b46 > .claim { grid-row: 3; }
+.cb-b46 > .note { grid-row: 4; }
+
+/* b48, b49: statements in ruled rows, as the master rules them */
+.chart-backup .page-body.cb-rows { gap: 0; font-size: 25px; }
+.cb-rows > .cb-row { padding: 14px 0; border-top: var(--rule-w, 1.5px) solid var(--rule); }
+.cb-rows > .cb-row:first-child { border-top: 0; }
+.cb-rows > .cb-row.is-strong { border-top-color: var(--rule-strong); }
+.cb-rows > .cb-row.is-last { border-bottom: var(--rule-w, 1.5px) solid var(--rule); }
+.cb-rows > .eq.cb-row .katex-display { margin: 0; }
+.cb-rows > .cb-foot { margin-top: auto; }
+.cb-b49 { font-size: 26px; }
+.chart-backup .cb-nw { white-space: nowrap; }
+.chart-backup .page-body .katex { white-space: nowrap; }

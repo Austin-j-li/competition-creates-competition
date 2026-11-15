@@ -51,12 +51,12 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Slide decks
 
-- From 14 November 2026, the PowerPoint deck `presentation.pptx` in the repository root is the
-  master of the talk: its words, numbers, page order and speaker notes are the talk. Never write
-  to it while the lock file `~$presentation.pptx` exists; work on a copy, validate, back up, then
-  copy into place. Pages are drafted as web pages first and built into PowerPoint from them; the
-  build tools and design records are under `audit/pptx_look_2026_11_12/`.
-- `DESIGN.md` sets the look of the website. The PowerPoint deck has its own look.
+- From 15 November 2026, the talk is presented from the web page built from `talk/`, published
+  at `/talk/`. The PowerPoint `presentation.pptx` in the repository root is the source of the
+  talk's words, numbers and page order and the fallback in the room. The author keeps and edits
+  it. Never write to it, and never while the lock file `~$presentation.pptx` exists. A change of
+  wording is made in the PowerPoint first and then copied into `talk/src/pages`.
+- `DESIGN.md` sets the look of the whole website, the front page and the talk.
 
 ## Working rules
 

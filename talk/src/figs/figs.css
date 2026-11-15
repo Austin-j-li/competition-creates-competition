@@ -1,0 +1,246 @@
+/* Figures: structure and default marks, through the tokens of the build contract only.
+   A look restyles any class listed in src/figs/README.md. Shared with bars.css (page 10).
+
+   Defaults a look may override (on body[data-look="…"]):
+     --dash-mixed   the dashed stretch from 1.75 to 1.97 (no informed order, mixed orders)
+     --dash-hidden  page 16's "price hidden from the rival"
+     --dash-drop    the dotted connectors at 3.59
+     --fig-axis-w   axes, ticks, brackets (they carry no data)                                 */
+
+body {
+  --dash-mixed: 14px 9px;
+  --dash-hidden: 18px 11px;
+  --dash-drop: 0.1px 9px;
+}
+
+/* the line screens of every figure (#scr-a-<fig>, #scr-b-<fig>): drawn even when the page that
+   defines them is not the current one */
+.fig pattern, .fig pattern * { visibility: visible; }
+.fig .screen-line { fill: none; stroke: var(--scr-ink, var(--fig-ink)); stroke-width: var(--scr-w, 1.5px); }
+
+/* ------------------------------------------------------------------ chart pages 14, 16, 17 */
+
+.page-body.chart-body {
+  display: grid;
+  grid-template-columns: 850px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  column-gap: 17px;
+}
+.chart-body > .fig[data-fig="entry"] { grid-column: 1; grid-row: 1; width: 850px; height: 570px; }
+.chart-side {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: max(26px, calc(var(--fs-body) * .9));   /* the master sets this column at 16 pt, its body at 18 */
+  line-height: 1.28;
+}
+.chart-body > .chart-note { grid-column: 1 / -1; grid-row: 2; align-self: end; }
+
+.chart-side > p { margin: 0; }
+.chart-side > p + p { margin-top: 12px; }
+.chart-side > .eq { margin-top: 6px; }
+.chart-side > .eq + p { margin-top: 6px; }
+.chart-side > .gloss { margin-top: 18px; font-size: var(--fs-small); }
+.chart-side > .claim { margin-top: 24px; }
+.chart-side > .claim.is-tint { background: var(--tint-fill); padding: 14px 26px 16px; }
+
+/* page 14's table of the three incumbents (numbers right-aligned, the strong column tinted) */
+table.matrix.nums col.w-rl { width: 39.5%; }
+table.matrix.nums col.w-n0 { width: 16%; }
+table.matrix.nums col.w-n1 { width: 18%; }
+table.matrix.nums col.w-n2 { width: 26.5%; }
+table.matrix.nums th, table.matrix.nums td { padding-left: 10px; padding-right: 12px; }
+table.matrix.nums thead th { text-align: right; line-height: 1.2; }
+table.matrix.nums thead th.corner { padding-left: 0; }
+table.matrix.nums tbody th { padding-left: 0; font-weight: 400; font-family: var(--font-text); white-space: nowrap; }
+table.matrix.nums td { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------ the entry chart */
+
+.fig[data-fig="entry"] { position: relative; }
+.fig[data-fig="entry"] > svg.fig-svg {
+  position: absolute;
+  left: 0; top: 0;
+  width: 850px; height: 570px;
+  overflow: visible;
+}
+.fig[data-fig="entry"] > .fig-label {
+  position: absolute;
+  left: 0; top: 0;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-small);
+  line-height: 1.25;
+  color: var(--fig-ink);
+  white-space: nowrap;
+}
+.fig[data-fig="entry"] > .fig-label .katex { font-size: 1.08em; }
+.fig[data-fig="entry"] > .ax-title { color: var(--ink-2); }
+.fig[data-fig="entry"] > .ax-label { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+.fig[data-fig="entry"] > .inplot { white-space: normal; font-family: var(--font-text); }
+.fig[data-fig="entry"] > .model-label { color: var(--ink-2); }
+.fig[data-fig="entry"] > .cmp-label { font-weight: 600; }
+.fig[data-fig="entry"] > .shade-label { color: var(--ink-2); }
+/* an incumbent's label is placed by its symbol; the word runs to the left of it */
+.fig[data-fig="entry"] > .inc-label { padding: 0 3px; background: var(--ground); }   /* knocked out of a screen */
+.fig[data-fig="entry"] > .inc-label .inc-word { position: absolute; right: 100%; top: 0; white-space: pre; }
+
+/* motion of the chart's marks is the figure's own (drawn along x), not the engine's fade */
+.fig[data-fig="entry"] svg [data-step].is-new { animation-name: none; }
+.fig:is([data-fig="entry"], [data-fig="research"]) .draw-clip { transform-box: fill-box; transform-origin: 0 0; }
+
+.fig[data-fig="entry"] .ax,
+.fig[data-fig="entry"] .ax-tick { fill: none; stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="entry"] .inc-tick { stroke: var(--fig-ink); stroke-width: var(--fig-line); }
+.fig[data-fig="entry"] .bracket { fill: none; stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="entry"] .shade { fill: var(--fig-shade-fill); stroke: none; }
+.fig[data-fig="entry"] .shade-edge { stroke: var(--rule); stroke-width: var(--fig-axis-w, 2px); }
+
+.fig[data-fig="entry"] .br { fill: none; stroke-width: var(--fig-line-heavy); stroke-linejoin: round; stroke-linecap: butt; }
+.fig[data-fig="entry"] .br-none { stroke: var(--fig-muted); stroke-width: var(--fig-line); }
+.fig[data-fig="entry"] .br-mixed { stroke: var(--fig-muted); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-mixed); }
+.fig[data-fig="entry"] .br-up { stroke: var(--fig-accent); }
+.fig[data-fig="entry"] .br-floor { stroke: var(--fig-ink); }
+.fig[data-fig="entry"] .br-drop { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-drop); stroke-linecap: round; }
+.fig[data-fig="entry"] .br-trace { stroke: var(--fig-muted); stroke-opacity: .3; stroke-width: calc(var(--fig-line-heavy) * 3); }
+.fig[data-fig="entry"] .cmp-fixed { stroke: var(--fig-ink); }
+.fig[data-fig="entry"] .cmp-drop { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-drop); stroke-linecap: round; }
+.fig[data-fig="entry"] .cmp-hidden { stroke: var(--fig-muted); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-hidden); }
+
+.fig[data-fig="entry"] .dot { fill: var(--fig-ink); stroke: var(--ground); stroke-width: 3px; r: calc(var(--fig-dot) + 2px); transform-box: fill-box; transform-origin: center; }
+.fig[data-fig="entry"] .dot-end { fill: var(--fig-accent); stroke: none; r: var(--fig-dot); }
+.fig[data-fig="entry"] .dot-open { fill: var(--ground); stroke: var(--fig-muted); stroke-width: 3px; r: var(--fig-dot); }
+
+/* the strength control (key S) */
+.fig[data-fig="entry"] .ctl-stop { stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="entry"] .ctl-marker { stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="entry"] .ctl-dot { fill: none; stroke: var(--fig-ink); stroke-width: 3px; r: calc(var(--fig-dot) + 5px); }
+.fig[data-fig="entry"] > .ctl-readout {
+  padding: 0 5px;
+  background: var(--ground);
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* page 16: the control names the line each dot belongs to, under its value */
+.fig[data-fig="entry"] > .ctl-readout .ctl-who { display: block; font-weight: 400; font-size: 20px; line-height: 1.2; white-space: nowrap; }
+
+/* marked strengths (b25, b47) and the levels M(1/2), pi (b24): a dotted keyline, no data */
+.fig:is([data-fig="entry"], [data-fig="research"], [data-fig="region"]) .guide { stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); stroke-dasharray: 2px 6px; stroke-linecap: round; }
+/* the end of a branch that is not the accent's: a plain ink dot */
+.fig:is([data-fig="entry"], [data-fig="research"], [data-fig="region"]) .dot.dot-stop { fill: var(--fig-ink); stroke: none; r: var(--fig-dot); }
+.fig[data-fig="entry"] > .guide-label { padding: 0 2px; }
+.fig[data-fig="entry"] > .line-label { color: var(--fig-ink); }
+.fig[data-fig="entry"] > .line-label[data-place="line:uninformative"] { padding: 0 4px; background: var(--ground); }
+
+/* ------------------------------------------------------------------ the research chart (research.js)
+   Page 18 and backup B12's second page (data-variant="p18|b47"). It shares the entry chart's
+   classes (.ax, .br-none, .br-up, .br-floor, .br-drop, .dot, .shade, .bracket, .fig-label …) and
+   their rules above; what follows is its own box and label furniture.                           */
+
+.fig[data-fig="research"] { position: relative; }
+.fig[data-fig="research"][data-variant="p18"] { width: 850px; height: 482px; }
+.fig[data-fig="research"][data-variant="b47"] { width: 980px; height: 450px; }
+.fig[data-fig="research"] > svg.fig-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.fig[data-fig="research"] > .fig-label {
+  position: absolute;
+  left: 0; top: 0;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-small);
+  line-height: 1.25;
+  color: var(--fig-ink);
+  white-space: nowrap;
+}
+.fig[data-fig="research"] > .fig-label .katex { font-size: 1.08em; }
+.fig[data-fig="research"] > .ax-title { color: var(--ink-2); }
+.fig[data-fig="research"] > .ax-label { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+.fig[data-fig="research"] > .fig-label.is-bold { font-weight: 600; }
+.fig[data-fig="research"] > .fig-label.is-quiet { color: var(--ink-2); }
+/* a label set inside the shaded region is knocked out of its screen */
+.fig[data-fig="research"] > .is-knock { padding: 0 4px; background: var(--ground); }
+.fig[data-fig="research"] svg [data-step].is-new { animation-name: none; }
+
+.fig[data-fig="research"] .ax,
+.fig[data-fig="research"] .ax-tick { fill: none; stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="research"] .bracket { fill: none; stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="research"] .shade { stroke: none; }
+.fig[data-fig="research"] .shade-edge { stroke: var(--rule); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="research"] .br { fill: none; stroke-width: var(--fig-line-heavy); stroke-linejoin: round; stroke-linecap: butt; }
+.fig[data-fig="research"] .br-none { stroke: var(--fig-muted); stroke-width: var(--fig-line); }
+.fig[data-fig="research"] .br-up { stroke: var(--fig-accent); }
+.fig[data-fig="research"] .br-floor { stroke: var(--fig-ink); }
+.fig[data-fig="research"] .br-drop { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-drop); stroke-linecap: round; }
+.fig[data-fig="research"] .arrow { fill: var(--fig-accent); stroke: none; }
+body[data-look] .fig[data-fig="research"] .arrow { fill: var(--accent, var(--fig-accent)); }
+.fig[data-fig="research"] .dot { fill: var(--fig-ink); stroke: var(--ground); stroke-width: 3px; r: calc(var(--fig-dot) + 2px); transform-box: fill-box; transform-origin: center; }
+.fig[data-fig="research"] .dot-end { fill: var(--fig-accent); stroke: none; r: var(--fig-dot); }
+.fig[data-fig="research"] .dot-open { fill: var(--ground); stroke: var(--fig-ink); stroke-width: 3px; r: var(--fig-dot); }
+
+/* ------------------------------------------------------------------ branches of the backups (b25, b47)
+   Each branch is told apart by its stroke as well as by ink, so the figures read in greyscale:
+     .br-none    N, zero research          solid ink
+     .br-up      F above the floor, recruiting research   heavy solid green
+     .br-mix     R, the mixed purchase      heavy dashed green
+     .br-thresh  T, the threshold pair      thin dashed green (its entry is above the floor)
+     .br-q       Q, floor-entry research    dash-dot ink
+     .br-floor   F at the floor after r_C   heavy solid ink                                     */
+.fig:is([data-fig="research"], [data-fig="region"]) .br.br-q {
+  stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: 16 6 3 6; fill: none;
+}
+.fig[data-fig="region"] .br.br-mix { stroke: var(--fig-accent); stroke-width: var(--fig-line-heavy); stroke-dasharray: 13 8; fill: none; }
+.fig[data-fig="region"] .br.br-thresh { stroke: var(--fig-accent); stroke-width: 2.5px; stroke-dasharray: 7 6; fill: none; }
+
+/* ------------------------------------------------------------------ the region figure (region.js)
+   b24 (the coexistence region and the example's path) and b25 (entry, panels (a) and (c)).
+   It shares the entry chart's classes (.ax, .ax-tick, .br-none, .br-up, .br-floor, .dot, .dot-end,
+   .dot-open, .guide, .fig-label) and adds: .region-fill (a screened area, filled with the look's
+   shade screen), .bound and .bound-split (the region's bounds; the split where the informed trader
+   starts to buy for sure), .path (the example's path: .path-ink, .path-up where the informative
+   market exists, .path-head), .zoom and .zoom-head (panel (a)'s arrow over the stretch (c)
+   enlarges).                                                                                      */
+.fig[data-fig="region"] { position: relative; }
+.fig[data-fig="region"][data-variant="b24"] { width: 420px; height: 450px; }
+.fig[data-fig="region"][data-variant="b25"] { width: 980px; height: 396px; }
+.fig[data-fig="region"] > svg.fig-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.fig:is([data-fig="region"], [data-fig="research"]) > .fig-label {
+  position: absolute;
+  left: 0; top: 0;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-small);
+  line-height: 1.25;
+  color: var(--fig-ink);
+  white-space: nowrap;
+}
+.fig[data-fig="region"] > .fig-label .katex { font-size: 1.08em; }
+.fig[data-fig="region"] > .ax-title { color: var(--ink-2); }
+.fig[data-fig="region"] > .ax-label { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+.fig[data-fig="region"] > .fig-label.is-quiet { color: var(--ink-2); }
+.fig[data-fig="region"] > .is-knock { padding: 0 4px; background: var(--ground); }
+/* an axis title that runs up its axis, as in the master's pictures */
+.fig:is([data-fig="region"], [data-fig="research"]) > .ax-title-v { transform: rotate(-90deg); }
+.fig:is([data-fig="region"], [data-fig="research"]) > .panel-label { font-weight: 500; }
+
+.fig[data-fig="region"] .ax,
+.fig[data-fig="region"] .ax-tick { fill: none; stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="region"] .region-fill { stroke: none; }
+.fig[data-fig="region"] .bound { fill: none; stroke: var(--fig-ink); stroke-width: 3px; stroke-linejoin: round; stroke-linecap: butt; }
+.fig[data-fig="region"] .bound-split { fill: none; stroke: var(--fig-ink); stroke-width: 3px; stroke-dasharray: 10 7; }
+/* the path's two parts differ in weight as well as ink, so they part in greyscale */
+.fig[data-fig="region"] .path { fill: none; stroke-linejoin: round; stroke-linecap: butt; }
+.fig[data-fig="region"] .path-ink { stroke: var(--fig-ink); stroke-width: var(--fig-line); }
+.fig[data-fig="region"] .path-up { stroke: var(--fig-accent); stroke-width: var(--fig-line-heavy); }
+.fig[data-fig="region"] .path-up-head { fill: var(--fig-accent); stroke: none; }
+.fig[data-fig="region"] .zoom { stroke: var(--fig-ink); stroke-width: var(--fig-axis-w, 2px); }
+.fig[data-fig="region"] .zoom-head { fill: var(--fig-ink); stroke: none; }
+.fig[data-fig="region"] .br { fill: none; stroke-width: var(--fig-line-heavy); stroke-linejoin: round; stroke-linecap: butt; }
+.fig[data-fig="region"] .br-none { stroke: var(--fig-ink); stroke-width: var(--fig-line); }
+.fig[data-fig="region"] .br-up { stroke: var(--fig-accent); }
+.fig[data-fig="region"] .br-floor { stroke: var(--fig-ink); }
+.fig[data-fig="region"] .dot { fill: var(--fig-ink); stroke: none; }
+.fig[data-fig="region"] .dot-end { fill: var(--fig-accent); }
+.fig[data-fig="region"] .dot-open { fill: var(--ground); stroke: var(--fig-ink); stroke-width: 3px; }

@@ -1,3 +1,6 @@
+From 15 November 2026 the site’s talk is built from `talk/`.
+This folder records the earlier web copy of the Beamer talk and is no longer built or published.
+
 # Seminar slides (the /talk/ page)
 
 > From 14 November 2026 this deck and the Beamer deck it copies are a record of the talk of early

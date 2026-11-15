@@ -1,0 +1,304 @@
+/* Look 2: the two-colour plate.
+   The diagram plate of an economics textbook, printed in two inks on bright white stock:
+   black, and one spot colour, press green. Green means one thing in the whole talk: the price
+   brings the costly rival in. Areas are told apart by line screens, never by a tint; lines are
+   continuous keylines, one weight per role; type is Jost for titles and labels, STIX Two Text for
+   running text. Every rule is scoped to body[data-look="plate"]. */
+
+/* Shared colours, families, rules and figure tokens come from design/tokens.css. */
+
+body[data-look="plate"] {
+  /* Pixel sizes belong to the fixed 1600 by 900 presentation stage. */
+  --fs-title: 56px;
+  --fs-sub: 28px;
+  --fs-body: 30px;
+  --fs-small: 22px;
+  --fs-label: 24px;
+  --fs-cover: 100px;
+
+
+  /* ink is laid down: plate.js does the wiping; the stylesheet only holds the defaults */
+  --reveal-name: plate-hold;
+  --reveal-name-svg: plate-hold;
+  --reveal-dur: 240ms;
+  --reveal-rise: 0px;
+
+  color-scheme: light;
+  caret-color: var(--ink);
+  accent-color: var(--ink);
+  scrollbar-color: var(--ink) var(--ground);
+  scrollbar-width: thin;
+  font-variant-numeric: lining-nums;
+}
+@keyframes plate-hold { from { opacity: 1; } to { opacity: 1; } }
+
+/* ------------------------------------------------------------------ browser surfaces */
+
+body[data-look="plate"] ::selection { background: var(--ink); color: var(--ground); }
+body[data-look="plate"] *:focus { outline: none; }
+body[data-look="plate"] *:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+body[data-look="plate"] #hud button { color: var(--ink-2); }
+body[data-look="plate"] #hud button:hover,
+body[data-look="plate"] #hud button:focus-visible { color: var(--ink); }
+body[data-look="plate"] #hud button:focus-visible { outline: 2px solid var(--ink); outline-offset: -3px; }
+body[data-look="plate"] #keys { font-family: var(--font-label); font-weight: 500; color: var(--ink); }
+
+/* ------------------------------------------------------------------ the page: title, rules, foot */
+
+body[data-look="plate"] .page-title {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+body[data-look="plate"] .page-head { padding-bottom: 14px; }
+body[data-look="plate"] .page-sub { margin-top: 12px; color: var(--ink-2); }
+body[data-look="plate"] .page-sub .tag { font-family: var(--font-label); font-weight: 600; color: var(--ink); letter-spacing: .005em; }
+
+body[data-look="plate"] .page { font-feature-settings: "kern", "liga"; }
+body[data-look="plate"] .page-body { padding-top: 26px; }
+body[data-look="plate"] .lead { text-wrap: balance; max-width: 1280px; }
+body[data-look="plate"] .note { font-style: italic; color: var(--ink-2); }
+body[data-look="plate"] .gloss { color: var(--ink-2); }
+
+/* the foot: one thin black keyline over the full measure; the folio sits on it */
+body[data-look="plate"] .page-foot {
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 21px;
+  gap: 0 26px;
+  color: var(--ink-2);
+}
+body[data-look="plate"] .road { font-weight: 500; }
+body[data-look="plate"] .road.is-current { font-weight: 600; color: var(--ink); }
+body[data-look="plate"] .road-sep { padding: 0 .5em; }
+body[data-look="plate"] .foot-links { font-weight: 500; color: var(--ink-2); }
+body[data-look="plate"] .foot-link { font-weight: 600; color: var(--ink); white-space: nowrap; }
+body[data-look="plate"] .page-num { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+body[data-look="plate"] .foot-links + .page-num { margin-left: 0; }
+
+/* ------------------------------------------------------------------ page 3: the five steps */
+
+body[data-look="plate"] .stepnum {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 46px;
+  line-height: 1;
+  padding-bottom: 10px;
+  border-bottom: var(--rule-w) solid var(--rule);
+  color: var(--ink);
+}
+body[data-look="plate"] .steparrow {
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 34px;
+  right: calc(100% + 18px);
+  top: 8px;
+  color: var(--ink);
+}
+body[data-look="plate"] .steptext { padding-top: 20px; text-wrap: pretty; }
+body[data-look="plate"] .runin-label { font-family: var(--font-label); font-weight: 600; letter-spacing: .005em; }
+body[data-look="plate"] .runin { border-top: var(--rule-w) solid var(--rule); }
+
+/* ------------------------------------------------------------------ page 13 (and any page with the matrix) */
+
+body[data-look="plate"] table.matrix { font-size: var(--fs-label); }
+body[data-look="plate"] table.matrix th,
+body[data-look="plate"] table.matrix td { border-bottom: var(--rule-w) solid var(--rule); }
+body[data-look="plate"] table.matrix thead th {
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: calc(var(--fs-label) * 1.04);
+  border-bottom: var(--rule-w) solid var(--rule);   /* the table's own keyline is thin: only the title carries the heavy one */
+}
+body[data-look="plate"] table.matrix tbody th { font-family: var(--font-label); font-weight: 500; }
+body[data-look="plate"] table.matrix tbody th .rownum { font-weight: 600; }
+body[data-look="plate"] table.matrix .cell-eq { margin-top: 2px; }
+body[data-look="plate"] table.matrix td { font-variant-numeric: tabular-nums lining-nums; }
+body[data-look="plate"] table.matrix td b { font-weight: 600; }
+
+/* the strong column: a fine green diagonal screen; its head and its entry cell carry the green ink */
+body[data-look="plate"] table.matrix .col-strong { background: var(--tint-fill); }
+body[data-look="plate"] table.matrix thead th.col-strong,
+body[data-look="plate"] table.matrix thead th[data-inc="1"] {
+  color: var(--accent);
+  font-weight: 600;
+  background: none;                                  /* the head sits on paper; the screen starts under its keyline */
+}
+body[data-look="plate"] table.matrix tr[data-row="5"] td[data-inc="1"] { font-weight: 600; }
+/* type over a screen carries a keyline halo of paper, so the lines give way to the letters */
+body[data-look="plate"] table.matrix tr:not([data-row="5"]) td.col-strong {
+    text-shadow: 0 0 0 var(--ground), 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground), 2px 2px var(--ground), -2px -2px var(--ground), 2px -2px var(--ground), -2px 2px var(--ground), 4px 0 var(--ground), -4px 0 var(--ground), 0 3px var(--ground), 0 -3px var(--ground);
+}
+body[data-look="plate"] table.matrix tr:not([data-row="5"]) td.col-strong .katex * { text-shadow: 0 0 0 var(--ground), 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground), 2px 2px var(--ground), -2px -2px var(--ground), 2px -2px var(--ground), -2px 2px var(--ground), 4px 0 var(--ground), -4px 0 var(--ground), 0 3px var(--ground), 0 -3px var(--ground); }
+
+/* the entry cell takes the spot ink solid, set out in paper white */
+body[data-look="plate"] table.matrix tr[data-row="5"] td.col-strong {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* the claim */
+body[data-look="plate"] .claim { font-weight: 600; text-wrap: pretty; }
+body[data-look="plate"] .claim.is-band {
+  background: var(--band-bg);
+  color: var(--band-ink);
+  padding: 20px 9% 22px 36px;
+  font-size: 28px;
+  line-height: 1.3;
+}
+body[data-look="plate"] .claim.is-band * { color: inherit; }
+/* a pale-tint claim in the master: bold black between two thin keylines */
+body[data-look="plate"] #stage .claim.is-tint {
+  background: none;
+  padding: 18px 0 20px;
+  border-top: var(--rule-w) solid var(--rule);
+  border-bottom: var(--rule-w) solid var(--rule);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ the title page: a plate's own face */
+
+body[data-look="plate"] .page.is-cover {
+  --reg: 34px;       /* length of a registration cross */
+  --regw: 1.5px;
+}
+body[data-look="plate"] .cover { top: 300px; padding-bottom: 30px; }
+body[data-look="plate"] .cover-title {
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+  max-width: 1300px;
+  text-wrap: balance;
+}
+body[data-look="plate"] .cover-sub {
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: 40px;
+  margin-top: 22px;
+  letter-spacing: 0;
+}
+body[data-look="plate"] .cover-name { font-family: var(--font-label); font-weight: 600; font-size: 30px; }
+body[data-look="plate"] .cover-aff { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
+body[data-look="plate"] .cover-foot { top: 770px; }
+
+/* printer's furniture on the face: four registration crosses, drawn as plain ink bars */
+body[data-look="plate"] .page.is-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --c: var(--ink);
+  background:
+    linear-gradient(var(--c), var(--c)) left 40px top 57px / var(--reg) var(--regw) no-repeat,
+    linear-gradient(var(--c), var(--c)) left 57px top 40px / var(--regw) var(--reg) no-repeat,
+    linear-gradient(var(--c), var(--c)) right 40px top 57px / var(--reg) var(--regw) no-repeat,
+    linear-gradient(var(--c), var(--c)) right 57px top 40px / var(--regw) var(--reg) no-repeat,
+    linear-gradient(var(--c), var(--c)) left 40px bottom 57px / var(--reg) var(--regw) no-repeat,
+    linear-gradient(var(--c), var(--c)) left 57px bottom 40px / var(--regw) var(--reg) no-repeat,
+    linear-gradient(var(--c), var(--c)) right 40px bottom 57px / var(--reg) var(--regw) no-repeat,
+    linear-gradient(var(--c), var(--c)) right 57px bottom 40px / var(--regw) var(--reg) no-repeat;
+}
+
+/* ------------------------------------------------------------------ figures: the plate's grammar */
+
+body[data-look="plate"] .fig { color: var(--fig-ink); }
+body[data-look="plate"] .fig .fig-label,
+body[data-look="plate"] .fig .ax-label,
+body[data-look="plate"] .fig .ax-tick,
+body[data-look="plate"] .fig .ax-title,
+body[data-look="plate"] .fig .inc-label,
+body[data-look="plate"] .fig .bracket-label,
+body[data-look="plate"] .fig .row-label,
+body[data-look="plate"] .fig .pair-label,
+body[data-look="plate"] .fig .bar-label,
+body[data-look="plate"] .fig .spread-label {
+  font-family: var(--font-label);
+  font-weight: 500;
+  color: var(--fig-ink);
+  fill: var(--fig-ink);
+}
+body[data-look="plate"] .fig .pair-label,
+body[data-look="plate"] .fig .row-label { font-weight: 600; }
+body[data-look="plate"] .fig .inplot,
+body[data-look="plate"] .fig .inplot p {
+  font-family: var(--font-text);
+  font-weight: 400;
+  color: var(--ink);
+}
+body[data-look="plate"] .fig .inplot b { font-weight: 600; }
+
+/* axes and ticks: keylines */
+body[data-look="plate"] .fig .ax { stroke: var(--fig-ink); stroke-width: 2px; fill: none; }
+body[data-look="plate"] .fig .ax-tick { stroke: var(--fig-ink); stroke-width: 2px; }
+
+/* the branches of the entry chart. Weight and pattern carry the distinction; green marks only
+   the branch with informed orders where entry is above rho */
+body[data-look="plate"] .fig .br { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
+body[data-look="plate"] .fig .br-none { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: none; }
+body[data-look="plate"] .fig .br-mixed { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-mixed); }
+body[data-look="plate"] .fig .br-up { stroke: var(--accent); stroke-width: var(--fig-line-heavy); stroke-dasharray: none; }
+body[data-look="plate"] .fig .br-drop { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-drop); stroke-linecap: round; }
+body[data-look="plate"] .fig .br-floor { stroke: var(--fig-ink); stroke-width: var(--fig-line-heavy); stroke-dasharray: none; }
+body[data-look="plate"] .fig .br-trace { stroke: var(--trace-grey); stroke-width: var(--fig-line); stroke-dasharray: none; }
+body[data-look="plate"] .fig .cmp-fixed { stroke: var(--fig-ink); stroke-width: var(--fig-line-heavy); stroke-dasharray: none; fill: none; }
+body[data-look="plate"] .fig .cmp-hidden { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: var(--dash-hidden); fill: none; }
+
+/* points: solid dots; the open circle is a ring on paper */
+body[data-look="plate"] .fig .dot { fill: var(--fig-ink); stroke: none; }
+body[data-look="plate"] .fig .dot[data-inc="1"] { fill: var(--accent); }
+body[data-look="plate"] .fig .dot-open { fill: var(--ground); stroke: var(--fig-ink); stroke-width: 3px; }
+body[data-look="plate"] .fig .inc-tick { stroke: var(--fig-ink); stroke-width: 2.5px; }
+body[data-look="plate"] .fig .inc-tick[data-inc="1"] { stroke: var(--accent); }
+body[data-look="plate"] .fig .inc-label[data-inc="1"] { color: var(--accent); fill: var(--accent); font-weight: 600; }
+
+/* the region where two equilibria coexist: a black line screen at another angle, ruled round */
+body[data-look="plate"] .fig .shade { fill: var(--fig-shade-fill); stroke: var(--fig-ink); stroke-width: var(--rule-w); }
+
+/* brackets and leader lines */
+body[data-look="plate"] .fig .bracket,
+body[data-look="plate"] .fig .spread-bracket { stroke: var(--fig-ink); stroke-width: 2.5px; fill: none; }
+body[data-look="plate"] .fig .bracket-label { font-weight: 600; }
+body[data-look="plate"] .fig .leader { stroke: var(--fig-ink); stroke-width: var(--rule-w); fill: none; }
+
+/* the strength control: a vertical keyline with its readout set on paper */
+body[data-look="plate"] .fig .ctl-marker { stroke: var(--fig-ink); stroke-width: 2.5px; }
+body[data-look="plate"] .fig .ctl-stop { stroke: var(--fig-ink); fill: var(--ground); stroke-width: 2px; }
+body[data-look="plate"] .fig .ctl-dot { fill: var(--fig-ink); stroke: var(--ground); stroke-width: 3px; }
+body[data-look="plate"] .fig .ctl-readout {
+  font-family: var(--font-label);
+  font-weight: 500;
+  color: var(--fig-ink);
+  background: var(--ground);
+}
+
+/* split bars (page 10): shareholders solid black, the rival a black line screen, all ruled */
+body[data-look="plate"] .fig .bar-t { fill: var(--fig-share-fill); }
+body[data-look="plate"] .fig .bar-g { fill: var(--fig-rival-fill); }
+body[data-look="plate"] .fig .bar-outline { fill: none; stroke: var(--fig-ink); stroke-width: 3px; }
+body[data-look="plate"] .fig .spread-bracket { stroke-width: 3px; }
+body[data-look="plate"] #p10 .bars-legends { font-weight: 500; }
+body[data-look="plate"] #p10 .bars-legends > span { font-weight: 500; }
+body[data-look="plate"] #p10 .bars-right .runin-label { font-weight: 600; }
+body[data-look="plate"] #p10 .bars-identity { color: var(--ink); }
+
+body[data-look="plate"] #stage .runin + .claim.is-tint { border-top: 0; padding-top: 0; }
+/* the rival's label sits on its screen: a halo of paper lets the lines give way to the letter */
+body[data-look="plate"] .fig .bar-label[data-payoff="g"] {
+    text-shadow: 0 0 0 var(--ground), 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground), 2px 2px var(--ground), -2px -2px var(--ground), 2px -2px var(--ground), -2px 2px var(--ground), 4px 0 var(--ground), -4px 0 var(--ground), 0 3px var(--ground), 0 -3px var(--ground);
+}
+body[data-look="plate"] .fig .bar-label[data-payoff="g"] * { text-shadow: 0 0 0 var(--ground), 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground), 2px 2px var(--ground), -2px -2px var(--ground), 2px -2px var(--ground), -2px 2px var(--ground), 4px 0 var(--ground), -4px 0 var(--ground), 0 3px var(--ground), 0 -3px var(--ground); }
+
+/* ------------------------------------------------------------------ the reading view
+   Pages stack as the base look sets them: one thin black keyline between pages, as the foot keyline. */
+html.is-reading body[data-look="plate"] .page + .page { border-top: var(--rule-w) solid var(--rule); }
+
+
+/* lead's pass: the screen behind the chart's coexistence region is a light tone, so the branches
+   and the two paragraphs of page 17 read over it; the ends of the green branch are green */
+body[data-look="plate"] .fig[data-fig="entry"] { --scr-ink: oklch(0.62 0.008 260); --scr-w: 1px; --scr-pitch: 8; }
+body[data-look="plate"] .fig .dot.dot-end { fill: var(--accent); }
+/* lead's pass: the control's dot is a ring, so the mark under it stays visible; page 16's trace of
+   the full model is a broad pale stroke that still shows beside the heavy comparison lines */
+body[data-look="plate"] .fig .ctl-dot { fill: none; stroke: var(--fig-ink); stroke-width: 3px; }
+body[data-look="plate"] .fig .br-trace { stroke: oklch(0.80 0.006 260); stroke-width: calc(var(--fig-line-heavy) * 3); }

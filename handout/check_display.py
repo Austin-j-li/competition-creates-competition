@@ -9,14 +9,17 @@ of handout/README.md:
   as read from the files;
 - every displayed number is the display of a slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- the page ships only the locked faces (Libertinus Serif, DM Sans, Libertinus Math) and makes
-  no network request;
-- the page and the handout styles use only the palette of DESIGN.md (white paper, ink, greys,
-  dark purple #361A54 for coloured text and bright purple #993BFF for rules, with the dark
-  theme on dark purple), each UCL colour on the ground that UCL permits;
-- neither the page nor the handout sources carry a retired look: the oxblood accent of the look
+- the page ships only the locked faces (Jost and STIX Two Text) and makes no network request;
+- every colour literal in the page's styles, the look's tokens (design/tokens.css), the handout
+  stylesheet, the template and the figure scripts is in the palette of the two-colour plate:
+  white stock, black ink, a dark grey for secondary text, the press green, white type on a band,
+  and three light greys for line screens and a comparison trace; the green is spent on one meaning
+  only, the price bringing in the costly rival; there is one theme and no dark-theme hook;
+- neither the page nor the handout sources carry a retired look: the purple look of 11 November
+  2026 that the plate replaces (its UCL hexes and its dark-theme derivatives), the oxblood accent
   of 29 October 2026, the --ucl-* tokens of the template of 3 October 2026, or the marks of that
-  template (a gradient, a shadow, a rounded box or pill).
+  template (a gradient, a shadow, a rounded box or pill). The one gradient allowed is the line
+  screen that design/tokens.css declares as --tint-fill.
 """
 from __future__ import annotations
 
@@ -77,52 +80,94 @@ print(f"PASS {n} number spans and {k} numbers in formulas print their slot regis
 
 # ------------------------------------------------------------------ faces, network
 families = set(re.findall(r'@font-face \{ font-family: "([^"]+)"', page))
-assert families == {"Libertinus Serif", "DM Sans", "Libertinus Math"}, families
+assert families == {"Jost", "STIX Two Text"}, families
 assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?:)?//', page), "a network request"
-print("PASS only Libertinus Serif, DM Sans and Libertinus Math; no network request")
+print("PASS only Jost and STIX Two Text; no network request")
 
 # ------------------------------------------------------------------ the palette
-# The look of 11 November 2026 (DESIGN.md at the repository root): white paper, ink and greys, with
-# the official UCL colours in fixed roles. Dark purple is coloured text (--accent); bright purple is
-# every rule, bullet and mark (--rule). The dark theme is dark purple paper with heritage blue for
-# coloured text and mid purple for rules; three tones derived from dark purple give its hairlines,
-# grid and tooltip ground. Every hex colour in the stylesheet, the template, the renderer and the
-# built page's styles must be in that palette.
+# The two-colour plate (talk/LOOK_plate.md; tokens in design/tokens.css): bright white stock, black
+# ink, a dark grey for secondary text at 7:1 or better, one press green, white type on the black
+# band or the green, and light greys that only draw line screens and the talk's comparison trace.
+# Every colour literal (hex, oklch(), rgb(), hsl()) in these sources must be one of them.
 PALETTE = {
-    "#ffffff", "#f2f2f2", "#1c1c1c", "#666666", "#c9c9c9", "#e6e6e6",  # white paper, ink, greys
-    "#361a54", "#993bff", "#ba82ff", "#30d6ff", "#fafafa",  # UCL: dark, bright and mid purple, heritage blue, screen white
-    "#6a4e8a", "#4a2d6c", "#422464",  # derived from dark purple for the dark theme; not UCL colours
-    "#000000",  # print
+    "oklch(0.985 0.002 250)",  # --ground: white stock
+    "oklch(0.20 0.01 260)",    # --ink: black ink, every keyline
+    "oklch(0.40 0.012 260)",   # --ink-2: secondary text (8.8:1 on the ground)
+    "oklch(0.50 0.15 150)",    # --accent / --fig-accent: press green, the one meaning
+    "#ffffff",                 # --accent-ink / --band-ink: white type on the band or the green
+    "oklch(0.62 0.008 260)",   # --scr-page: the lines of a screen in a figure
+    "oklch(0.70 0.008 260)",   # --trace-grey: the talk's trace of the full model
+    "oklch(0.80 0.006 260)",   # the talk's broad trace stroke
 }
-HEX = re.compile(r"#[0-9a-f]{6}\b", re.I)
-styled = [HERE / "style.css", HERE / "template.html", HERE / "charts.js"]
+COLOUR = re.compile(r"#[0-9a-f]{8}\b|#[0-9a-f]{6}\b|#[0-9a-f]{3}\b(?![-\w])|\b(?:oklch|oklab|rgba?|hsla?|lab|lch)\([^)]*\)", re.I)
+TOKENS = ROOT / "design" / "tokens.css"
+styled = [TOKENS, HERE / "style.css", HERE / "template.html", HERE / "charts.js", HERE / "figures.js", HERE / "explorer.js"]
 page_styles = "".join(re.findall(r"<style\b[^>]*>(.*?)</style>", page, re.S))
-stray = sorted({f"{f.name}:{m.group(0)}" for f in styled for m in HEX.finditer(f.read_text(encoding="utf-8"))
-                if m.group(0).lower() not in PALETTE}
-               | {f"index.html:{m.group(0)}" for m in HEX.finditer(page_styles) if m.group(0).lower() not in PALETTE})
+
+
+def colours(text: str) -> set[str]:
+    # an id reference such as url(#scr-a) or href="#tab-paper" is not a colour
+    text = re.sub(r"url\(#[^)]*\)|href=\"#[^\"]*\"|\bid=\"[^\"]*\"", " ", text)
+    return {re.sub(r"\s+", " ", m.group(0).lower()) for m in COLOUR.finditer(text)}
+
+
+stray = sorted({f"{f.name}:{c}" for f in styled for c in colours(f.read_text(encoding="utf-8")) if c not in PALETTE}
+               | {f"index.html:{c}" for c in colours(page_styles) if c not in PALETTE})
 assert not stray, f"a colour outside the palette: {stray[:8]}"
+tokens = TOKENS.read_text(encoding="utf-8")
+for name, value in (("--ground", "oklch(0.985 0.002 250)"), ("--ink", "oklch(0.20 0.01 260)"),
+                    ("--ink-2", "oklch(0.40 0.012 260)"), ("--accent", "oklch(0.50 0.15 150)"),
+                    ("--fig-accent", "oklch(0.50 0.15 150)")):
+    assert re.search(rf"{name}:\s*{re.escape(value)}\s*;", tokens), f"the token {name} is not {value}"
 css = (HERE / "style.css").read_text(encoding="utf-8")
-light = re.search(r":root,\s*:root\[data-theme=\"light\"\]\s*\{([^}]*)\}", css).group(1)
-dark = re.search(r":root\[data-theme=\"dark\"\]\s*\{([^}]*)\}", css).group(1)
-for block, name, value in ((light, "--bg", "#ffffff"), (light, "--accent", "#361a54"), (light, "--rule", "#993bff"),
-                           (dark, "--bg", "#361a54"), (dark, "--accent", "#30d6ff"), (dark, "--rule", "#ba82ff")):
-    assert re.search(rf"{name}:\s*{value}\s*;", block, re.I), f"the token {name} is not {value}"
-# UCL's pairing rules: bright purple is for white grounds only; heritage blue and mid purple are for
-# dark purple grounds only.
-assert not re.search(r"#993bff", dark, re.I), "bright purple on the dark purple ground"
-assert not re.search(r"#(?:30d6ff|ba82ff)", light, re.I), "heritage blue or mid purple on the white ground"
-print(f"PASS every hex colour in {len(styled)} styled sources and the page styles is in the palette; "
-      "dark purple text and bright purple rules on white, heritage blue and mid purple on dark purple")
+# Green means one thing: every rule of the stylesheet that spends it names that meaning (a recruit
+# class); focus, links, tabs and the current contents entry are black.
+for sel, body_ in re.findall(r"([^{}]+)\{([^{}]*)\}", css):
+    if re.search(r"var\(--(?:accent|fig-accent)\)", body_):
+        assert all("recruit" in part for part in sel.split(",")), f"green outside its meaning: {sel.strip()}"
+assert re.search(r"--focus-ring:\s*var\(--ink\)", tokens) and not re.search(r"--focus-ring:", css), "the focus ring is not black"
+for f in (HERE / "figures.js", HERE / "explorer.js"):
+    # the figure scripts reach the green only through the renderer's recruit token
+    assert not re.search(r"--(?:fig-)?accent|oklch\(0\.50 0\.15 150\)", f.read_text(encoding="utf-8")), f"{f.name} names the green directly"
+# One theme: no dark theme, no theme toggle, no stored theme.
+theme = [f"{f.name}" for f in [HERE / "style.css", HERE / "template.html", HERE / "app.js", HERE / "charts.js"]
+         if re.search(r"data-theme|theme-toggle|ccc-theme|themechange|prefers-color-scheme", f.read_text(encoding="utf-8"))]
+assert not theme and "data-theme" not in page and "theme-toggle" not in page, f"a theme hook remains: {theme}"
+print(f"PASS every colour in {len(styled)} styled sources and the page styles is in the plate's palette; "
+      "green only on the recruit marks; black focus; one theme")
 
 # ------------------------------------------------------------------ the retired looks
-# Neither retired look may come back through a source or the built page: the oxblood accent of the
-# look of 29 October 2026 (as a hex or inside rgba()), and the template of 3 October 2026, which the
-# author rejected. That template used the same UCL hexes as the present look, so its marks identify
-# it: the --ucl-* tokens, a gradient, a shadow, and a rounded box or pill (a radius above 2 px).
-RETIRED = re.compile(r"#(?:7A1F1F|D4908F)\b|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143)\b|--ucl-(?:dark|bright|mid)\b"
+# No retired look may come back through a source or the built page: the purple look of 11 November
+# 2026 (the UCL hexes #361A54, #993BFF, #BA82FF, #30D6FF and its dark-theme tones #6A4E8A, #4A2D6C,
+# #422464, and the rgba() forms of the purples and the blue), the oxblood accent of 29 October 2026
+# (as a hex or inside rgba()), and the template of 3 October 2026, whose marks identify it: the
+# --ucl-* tokens, a gradient, a shadow, and a rounded box or pill (a radius above 2 px). The one
+# gradient allowed is the line screen declared as --tint-fill in design/tokens.css (repeating thin
+# lines with hard stops); it is removed before the scan and nothing else is.
+RETIRED = re.compile(r"#(?:7A1F1F|D4908F|361A54|993BFF|BA82FF|30D6FF|6A4E8A|4A2D6C|422464)\b"
+                     r"|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143|153,\s*59,\s*255|48,\s*214,\s*255|54,\s*26,\s*84|186,\s*130,\s*255)\b"
+                     r"|--ucl-(?:dark|bright|mid)\b"
                      r"|\b(?:linear|radial|conic)-gradient\b|\bbox-shadow\b|\bborder-radius:\s*(?!\s|0\s*[;}]|2px\b)", re.I)
-sources = [out / "index.html"] + sorted(HERE.glob("*.html")) + sorted(HERE.glob("*.css")) + sorted(HERE.glob("*.js")) \
+
+
+def without_screen(text: str) -> tuple[str, int]:
+    """Remove each `--tint-fill: repeating-linear-gradient(...)` declaration (balanced parentheses)."""
+    n = 0
+    while (m := re.search(r"--tint-fill:\s*repeating-linear-gradient\(", text)):
+        depth, i = 1, m.end()
+        while depth and i < len(text):
+            depth += {"(": 1, ")": -1}.get(text[i], 0)
+            i += 1
+        text = text[:m.start()] + "--tint-fill: screen" + text[i:]
+        n += 1
+    return text, n
+
+
+assert without_screen(tokens)[1] == 1, "design/tokens.css no longer declares the one line-screen gradient"
+sources = [out / "index.html", TOKENS] + sorted(HERE.glob("*.html")) + sorted(HERE.glob("*.css")) + sorted(HERE.glob("*.js")) \
     + sorted((HERE / "sections").glob("*.html"))
-hits = [f"{f.relative_to(ROOT)}:{m.group(0)}" for f in sources for m in RETIRED.finditer(f.read_text(encoding="utf-8"))]
+hits = [f"{f.relative_to(ROOT)}:{m.group(0)}" for f in sources
+        for m in RETIRED.finditer(without_screen(f.read_text(encoding="utf-8"))[0])]
 assert not hits, f"a mark of a retired look appears: {hits[:6]}"
-print(f"PASS no oxblood, no --ucl-* token, no gradient, shadow or rounded box in the page or in {len(sources) - 1} handout source files")
+print(f"PASS no purple, no oxblood, no --ucl-* token, no gradient other than the tokens' line screen, "
+      f"no shadow or rounded box in the page or in {len(sources) - 1} source files")

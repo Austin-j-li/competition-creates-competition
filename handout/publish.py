@@ -50,15 +50,12 @@ def run(*cmd: str, cwd: Path = ROOT) -> None:
     subprocess.run(list(cmd), cwd=cwd, check=True)
 
 
-# The site wears the look of 11 November 2026 (DESIGN.md): the journal layout in the colours of UCL.
-# A retired look must never be published again: the oxblood accent of the look of 29 October 2026
-# (as a hex or inside rgba()), or the template of 3 October 2026 that the author rejected. That
-# template used the same UCL hexes as the present look, so its --ucl-* tokens identify it. Every
-# staged HTML, CSS and JS file of the current site (the root and /talk/) is scanned. The archive
-# under /laplace/ is the committed page of the pinned Laplace commit and keeps its own design, so
-# it is outside the scan.
-RETIRED = re.compile(r"#(?:7A1F1F|D4908F)\b|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143)\b|--ucl-(?:dark|bright|mid)\b", re.I)
-
+# Current root and talk use the plate. The pinned Laplace archive keeps its own look.
+# These are the retired colour and token marks in check_display.py. Registration crosses
+# and the plate's line screens are part of the current talk, so gradients are not a colour mark.
+RETIRED = re.compile(r"#(?:7A1F1F|D4908F|361A54|993BFF|BA82FF|30D6FF|6A4E8A|4A2D6C|422464)\b"
+                     r"|rgba\(\s*(?:122,\s*31,\s*31|212,\s*144,\s*143|153,\s*59,\s*255|48,\s*214,\s*255|54,\s*26,\s*84|186,\s*130,\s*255)\b"
+                     r"|--ucl-(?:dark|bright|mid)\b", re.I)
 
 def check_palette(stage: Path) -> int:
     files = [p for p in stage.rglob("*") if p.is_file() and p.suffix in (".html", ".css", ".js", ".mjs")
@@ -113,8 +110,7 @@ def main() -> None:
         require_main_merged()
     run(sys.executable, "handout/build.py", "--quiet")
     run(sys.executable, "handout/check_display.py")
-    run(sys.executable, "presentation/build.py")
-    run("node", "presentation/check_deck.mjs")
+    run(sys.executable, "talk/build.py")
     lap = laplace_archive()
 
     # Stage an explicit file list so drafts, notes and stray files stay private.
@@ -125,11 +121,12 @@ def main() -> None:
     # The site root: the research brief, the manuscript and the comparison note.
     for name in ["index.html", "paper.pdf", "comparison.pdf", *locked]:
         plan[name] = ROOT / "docs" / name
-    # The talk: the built slides, the locked fonts and KaTeX files, the provenance record, and the
-    # print export when it has been produced. Speaker notes in Markdown and QA output stay private.
-    dist = ROOT / "presentation/dist"
-    for name in ["index.html", "provenance.json", *locked] + (["presentation.pdf"] if (dist / "presentation.pdf").exists() else []):
-        plan[f"talk/{name}"] = dist / name
+    # The talk is self-contained. An older print export must not accompany a newer page.
+    dist = ROOT / "talk/dist"
+    plan["talk/index.html"] = dist / "index.html"
+    pdf = dist / "talk.pdf"
+    if pdf.is_file() and pdf.stat().st_mtime_ns > (dist / "index.html").stat().st_mtime_ns:
+        plan["talk/talk.pdf"] = pdf
     # The Laplace archive, from the pinned commit: its committed handout build and its slides.
     lap_fonts = json.loads((lap / "handout/fonts.lock.json").read_text())
     lap_vendor = json.loads((lap / "handout/vendor.lock.json").read_text())["katex"]["files"]

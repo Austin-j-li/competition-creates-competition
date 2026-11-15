@@ -18,27 +18,30 @@
   var HEIGHT = { wide: 380, stacked: 600, fig2: 540 };
   var NARROW = 640;
 
+  /* The plate: black ink on white stock, one green for the one meaning (recruit), areas as line
+     screens (screen), no grid. The older keys (accent, c2, c3, info, cost, region*) are kept for the
+     builders of the earlier figures, which this page does not mount; they map to ink and to no fill. */
+  var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', GREEN = 'oklch(0.50 0.15 150)';
   var FALLBACK = {
-    bg: '#ffffff', surface: '#f2f2f2', ink: '#1c1c1c', muted: '#666666', grid: '#e6e6e6', line: '#c9c9c9',
-    accent: '#1c1c1c', accentSoft: 'rgba(153,59,255,0.08)', c2: '#993bff', c3: '#666666',
-    regionA: 'rgba(28,28,28,0.07)', regionB: 'rgba(153,59,255,0.08)', regionC: 'rgba(102,102,102,0.12)',
-    info: '#993bff', cost: '#1c1c1c',
-    fontSans: '"DM Sans", "Libertinus Math", Arial, sans-serif',
+    bg: 'oklch(0.985 0.002 250)', surface: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
+    accent: INK, accentSoft: 'none', c2: INK, c3: INK, recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
+    regionA: 'none', regionB: 'none', regionC: 'none',
+    info: INK, cost: INK,
+    fontSans: '"Jost", "STIX Two Text", sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {
-    bg: '--bg', surface: '--surface', ink: '--ink', muted: '--muted', grid: '--grid', line: '--line',
-    accent: '--chart-1', accentSoft: '--accent-soft', c2: '--chart-2', c3: '--chart-3',
-    regionA: '--region-a', regionB: '--region-b', regionC: '--region-c',
-    info: '--c-info', cost: '--c-cost',
-    fontSans: '--font-sans', fontMono: '--font-mono'
+    bg: '--ground', surface: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
+    accent: '--ink', c2: '--ink', c3: '--ink', recruit: '--fig-accent', screen: '--scr-page',
+    info: '--ink', cost: '--ink',
+    fontSans: '--font-label', fontMono: '--font-mono'
   };
 
   function tokens() {
     var cs = getComputedStyle(document.documentElement);
     var out = {};
-    Object.keys(VARS).forEach(function (k) {
-      var v = cs.getPropertyValue(VARS[k]);
+    Object.keys(FALLBACK).forEach(function (k) {
+      var v = VARS[k] ? cs.getPropertyValue(VARS[k]) : '';
       v = v ? v.trim() : '';
       out[k] = v || FALLBACK[k];
     });
@@ -511,7 +514,7 @@
         } else {
           out += flush();
           stack.push(m[2]);
-          if (m[2] === 'i') out += '<tspan font-style="italic">';
+          if (m[2] === 'i') out += '<tspan class="it" font-style="italic">';
           else if (m[2] === 'b') out += '<tspan font-weight="600">';
           else if (m[2] === 'sub') out += '<tspan dy="0.3em" font-size="75%">';
           else out += '<tspan dy="-0.35em" font-size="75%">';
@@ -679,11 +682,12 @@
     if (![x0, x1, y0, y1].every(isFinite)) return '';
     var ln = s.line || {};
     if (s.type === 'rect') {
-      return '<rect class="shape-rect" x="' + px(Math.min(x0, x1)) + '" y="' + px(Math.min(y0, y1)) + '" width="' + px(Math.abs(x1 - x0)) + '" height="' + px(Math.abs(y1 - y0)) + '" fill="' + s.fillcolor + '"' +
+      var fill = s.screen ? 'url(#' + G.screenId + s.screen + ')' : (s.fillcolor || 'none');
+      return '<rect class="shape-rect' + (s.screen ? ' screen' : '') + '" x="' + px(Math.min(x0, x1)) + '" y="' + px(Math.min(y0, y1)) + '" width="' + px(Math.abs(x1 - x0)) + '" height="' + px(Math.abs(y1 - y0)) + '" fill="' + fill + '"' +
         (ln.width ? ' stroke="' + ln.color + '" stroke-width="' + ln.width + '"' : '') + '/>';
     }
     var da = dashArray(ln.dash, ln.width || 1);
-    return '<line class="shape-line" x1="' + px(x0) + '" y1="' + px(y0) + '" x2="' + px(x1) + '" y2="' + px(y1) + '" stroke="' + (ln.color || '#888') + '" stroke-width="' + (ln.width || 1) + '"' + (da ? ' stroke-dasharray="' + da + '"' : '') + '/>';
+    return '<line class="shape-line" x1="' + px(x0) + '" y1="' + px(y0) + '" x2="' + px(x1) + '" y2="' + px(y1) + '" stroke="' + (ln.color || 'currentColor') + '" stroke-width="' + (ln.width || 1) + '"' + (da ? ' stroke-dasharray="' + da + '"' : '') + '/>';
   }
 
   function annotationSvg(G, a, bg) {
@@ -713,11 +717,11 @@
         ax.ticks.forEach(function (tk) {
           var y = ax.map(tk.v);
           if (!isFinite(y) || y < ax.p0 - 0.5 || y > ax.p1 + 0.5) return;
-          out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
+          if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
           if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 4) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
-          out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.line + '"/>';
+          out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         });
-        out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + t.line + '"/>';
+        out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         if (a.title && a.title.text) {
           var cy = (ax.p0 + ax.p1) / 2, tx = xl - (G.m.l - 14);
           out += '<text class="axis-title" transform="translate(' + px(tx) + ',' + px(cy) + ') rotate(-90)" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
@@ -727,11 +731,11 @@
         ax.ticks.forEach(function (tk) {
           var x = ax.map(tk.v);
           if (!isFinite(x) || x < ax.p0 - 0.5 || x > ax.p1 + 0.5) return;
-          out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
-          out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + t.line + '"/>';
+          if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
+          out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
           if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 17) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
         });
-        out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + t.line + '"/>';
+        out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 36) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
       }
     });
@@ -791,6 +795,13 @@
     var hidden = opts.hidden || {};
     var G = geometry(spec, W);
     var bg = t.bg;
+    // Line screens for areas, as a two-colour press prints them: screen a at 45 degrees, screen b at
+    // 135 degrees. The ids carry the chart id, so a chart in a closed disclosure never lends its own.
+    G.screenId = 'scr-' + (opts.id || 'chart') + '-';
+    var screens = [['a', 45], ['b', 135]].map(function (sc) {
+      return '<pattern id="' + G.screenId + sc[0] + '" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(' + sc[1] + ')">' +
+        '<line x1="0" y1="0" x2="0" y2="7" stroke="' + (t.screen || t.muted) + '" stroke-width="1.1"/></pattern>';
+    }).join('');
     var below = '', above = '', body = '';
     (spec.layout.shapes || []).forEach(function (s) { if (s.layer === 'below') below += shapeSvg(G, s); else above += shapeSvg(G, s); });
     var anns = '';
@@ -812,7 +823,7 @@
     });
     Object.keys(bySub).forEach(function (k) { body += '<g clip-path="url(#' + clipId + k + ')">' + bySub[k] + '</g>'; });
     var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '"' +
-      ' font-family="' + esc(t.fontSans) + '"><defs>' + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
+      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
     return { svg: svg, G: G };
   }
 
@@ -996,7 +1007,7 @@
     return records[id];
   }
 
-  /* Rebuild and redraw a mounted chart (theme change, resize, explorer marker). */
+  /* Rebuild and redraw a mounted chart (resize, explorer marker). */
   function update(id) {
     var st = mounted[id];
     if (!st || st.el.closest('details:not([open])') || !st.el.getClientRects().length || !st.el.clientWidth) return;
@@ -1045,7 +1056,6 @@
       window.requestAnimationFrame(function () { mountAll(); rerender(); });
     }
   }, true);
-  document.addEventListener('ccc:themechange', function () { rerender(); });
   document.addEventListener('ccc:tabchange', function () { window.requestAnimationFrame(function () { mountAll(); rerender(); }); });
 
   CCC.charts = {

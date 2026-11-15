@@ -50,22 +50,30 @@
       : 'Above the entry ceiling the top posterior falls short of the threshold, so no order recruits a high-cost rival and entry is at its floor.');
   }
 
+  function screenInk() {
+    return (CCC.charts && CCC.charts.tokens ? CCC.charts.tokens().screen : '') || 'currentColor';
+  }
+
   /* ---------- the posterior after each order, on a belief line ---------- */
   function beliefLine(f, P) {
     var wide = !state.el.root || state.el.root.clientWidth > 560;
-    var W = wide ? 640 : 380, H = 118, lo = 0.2, hi = 0.8, L = 16, R = 16, y = 70, gap = wide ? 52 : 40;
+    var W = wide ? 640 : 380, H = 132, lo = 0.2, hi = 0.8, L = 16, R = 16, y = 70, gap = wide ? 52 : 40;
     function X(v) { return L + (v - lo) / (hi - lo) * (W - L - R); }
     var tau = f.A.tau, out = '';
-    out += '<rect class="bl-band" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32"/>';
+    // the band of reachable beliefs is a line screen with a keyline round it, never a tint
+    out += '<defs><pattern id="bl-screen" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">' +
+      '<line x1="0" y1="0" x2="0" y2="7" stroke="' + screenInk() + '" stroke-width="1.1"/></pattern></defs>';
+    out += '<rect class="bl-band" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32" fill="url(#bl-screen)"/>' +
+      '<rect class="bl-band-edge" x="' + X(P.m).toFixed(1) + '" y="' + (y - 16) + '" width="' + (X(P.M) - X(P.m)).toFixed(1) + '" height="32"/>';
     out += '<line class="bl-axis" x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '"/>';
     for (var v = lo; v <= hi + 1e-9; v += (wide ? 0.1 : 0.2)) {
-      out += '<line class="bl-tick" x1="' + X(v).toFixed(1) + '" x2="' + X(v).toFixed(1) + '" y1="' + y + '" y2="' + (y + 5) + '"/>' +
-        '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 19) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
+      out += '<line class="bl-tick" x1="' + X(v).toFixed(1) + '" x2="' + X(v).toFixed(1) + '" y1="' + y + '" y2="' + (y + 20) + '"/>' +
+        '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 30) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
     }
     out += '<line class="bl-tau" x1="' + X(tau).toFixed(1) + '" x2="' + X(tau).toFixed(1) + '" y1="' + (y - 30) + '" y2="' + (y + 8) + '"/>' +
       '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold τ(r)</text>';
-    out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="start">m</text>' +
-      '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 34) + '" text-anchor="end">M</text>';
+    out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="start">m</text>' +
+      '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="end">M</text>';
     var used = [];
     ORDERS.forEach(function (o, i) {
       var mu = f.mu[o[0]], x = X(mu), lift = 0;
@@ -94,21 +102,22 @@
     }
     [['x', 'y', true], ['x2', 'y2', false]].forEach(function (p) {
       var ax = p[0], ay = p[1], show = p[2];
-      traces.push(seg('N: uninformative market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.6, show, ax, ay));
-      traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.info, 'dash', 2.6, show, ax, ay));
-      traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.info, 'solid', 2.6, show, ax, ay, 160));
-      traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.info, 'solid', 2.6, false, ax, ay, 20));
-      traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.c3, 'dashdot', 2.6, show, ax, ay));
-      traces.push(seg('T: threshold pair (if an indifferent rival may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.muted, 'dash', 1.2, show, ax, ay));
-      traces.push(dot(P.rA, P.entry_rA, t.info, false, ax, ay, 'R'));
-      traces.push(dot(P.rF, ENT, t.info, false, ax, ay, 'F'));
-      traces.push(dot(P.rC, ENT, t.info, false, ax, ay, 'F'));
-      traces.push(dot(P.rC, P.rho, t.info, true, ax, ay, 'F'));
+      traces.push(seg('N: uninformative market', 'N', P.r0, P.rN, function () { return P.rho; }, t.ink, 'solid', 2.4, show, ax, ay));
+      traces.push(seg('R: mixed purchase that recruits', 'R', P.rA, P.rF, function (r) { return S.entryR(P, r); }, t.recruit, 'dash', 3.2, show, ax, ay));
+      traces.push(seg('F: full purchase', 'F', P.rF, P.rC, function () { return ENT; }, t.recruit, 'solid', 3.4, show, ax, ay, 160));
+      // above the entry ceiling the full purchase no longer recruits: entry is at its floor, in black
+      traces.push(seg('F: full purchase', 'F', P.rC, P.r2, function () { return P.rho; }, t.ink, 'solid', 3.4, false, ax, ay, 20));
+      traces.push(seg('Q: mixed orders at the entry floor', 'Q', P.rN, P.rJ, function () { return P.rho; }, t.ink, 'dashdot', 2.4, show, ax, ay));
+      traces.push(seg('T: threshold pair (if an indifferent rival may mix)', 'T', P.rA, P.rJ, function (r) { return S.entryT(P, r); }, t.recruit, 'dash', 1.4, show, ax, ay));
+      traces.push(dot(P.rA, P.entry_rA, t.recruit, false, ax, ay, 'R'));
+      traces.push(dot(P.rF, ENT, t.recruit, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, ENT, t.recruit, false, ax, ay, 'F'));
+      traces.push(dot(P.rC, P.rho, t.ink, true, ax, ay, 'F'));
       // Q excludes both endpoints (large open circles); T, under challenger mixing, includes r_J;
       // N includes r_N, so its filled marker is drawn last, inside Q's open circle.
-      traces.push(dot(P.rN, P.rho, t.c3, true, ax, ay, 'Q', 12));
-      traces.push(dot(P.rJ, P.rho, t.c3, true, ax, ay, 'Q', 12));
-      traces.push(dot(P.rJ, P.rho, t.muted, false, ax, ay, 'T', 7, 'diamond'));
+      traces.push(dot(P.rN, P.rho, t.ink, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.ink, true, ax, ay, 'Q', 12));
+      traces.push(dot(P.rJ, P.rho, t.ink, false, ax, ay, 'T', 7, 'diamond'));
       traces.push(dot(P.rN, P.rho, t.ink, false, ax, ay, 'N', 6));
     });
     var r = isFinite(state.r) ? state.r : P.r0;
@@ -125,10 +134,10 @@
     if (!narrow) { layout.xaxis.domain = [0, 0.36]; layout.xaxis2.domain = [0.46, 1]; }
     ['x', 'x2'].forEach(function (ax) {
       var ay = ax === 'x2' ? 'y2' : 'y';
-      layout.shapes.push({ type: 'rect', xref: ax, yref: ay + ' domain', x0: P.rA, x1: P.rN, y0: 0, y1: 1, fillcolor: t.regionB, line: { width: 0 }, layer: 'below' });
+      layout.shapes.push({ type: 'rect', xref: ax, yref: ay + ' domain', x0: P.rA, x1: P.rN, y0: 0, y1: 1, screen: 'a', line: { width: 0 }, layer: 'below' });
       var marks = ax === 'x' ? [['rA', 'A', 0], ['rN', 'N', 1], ['rC', 'C', 0]] : [['rA', 'A', 0], ['rF', 'F', 1], ['rN', 'N', 0], ['rJ', 'J', 1], ['rS', 'S', 0]];
       marks.forEach(function (m) {
-        layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.line, width: 1, dash: '2 3' }, layer: 'below' });
+        layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.muted, width: 1, dash: '2 3' }, layer: 'below' });
         layout.annotations.push({ text: '<i>r</i><sub>' + m[1] + '</sub>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
           xanchor: 'center', yanchor: 'bottom', yshift: 2 + 15 * m[2], font: { size: 11, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
       });
@@ -138,7 +147,8 @@
       xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
     layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
     eqs.forEach(function (f) {
-      var color = f.id === 'N' ? t.ink : (f.id === 'Q' ? t.c3 : t.info);
+      // green only where a purchase recruits the high-cost rival at the chosen strength
+      var color = f.e['1'] === 1 ? t.recruit : t.ink;
       ['x', 'x2'].forEach(function (ax) {
         traces.push({ type: 'scatter', mode: 'markers', name: 'at r: ' + f.id, showlegend: false, x: [r], y: [f.E], xaxis: ax, yaxis: ax === 'x2' ? 'y2' : 'y',
           marker: { symbol: 'diamond', size: 11, color: color, line: { color: t.bg, width: 1.5 } }, customdata: [[f.E.toFixed(6)]],
@@ -264,12 +274,12 @@
     var rows = ORDERS.map(function (o) {
       var x = o[0];
       return '<tr><th scope="row">' + o[1] + '</th><td class="num">' + d6(f.fH[x]) + '</td><td class="num">' + d6(f.fL[x]) + '</td><td class="num">' + d6(f.mu[x]) +
-        '</td><td class="num">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
+        '</td><td class="num' + (f.e[x] === 1 ? ' is-recruit' : '') + '">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
     }).join('');
     E.detail.innerHTML = '<p class="eq-summary">' + describe(f, P) + '</p>' + beliefLine(f, P) +
       '<div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
       '<th class="num">Posterior μ</th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<p class="eq-totals"><span>Entry <b class="live">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
+      '<p class="eq-totals"><span>Entry <b class="live' + (f.e['1'] === 1 ? ' is-recruit' : '') + '">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
       '<span>Gross profit at the top posterior <b class="live">' + d6(A.B(P.M)) + '</b> against the high cost <b>' + P.display.c_H + '</b></span></p>';
     moveMarker();
   }

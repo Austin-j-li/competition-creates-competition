@@ -42,6 +42,9 @@ SCRIPTS = (("APP", "app.js"), ("CHARTS", "charts.js"), ("FIGURES", "figures.js")
 MANUSCRIPT = ROOT / "slot" / "manuscript"
 # Published name -> LaTeX source in slot/manuscript/ (both pdfLaTeX, set in its latexmkrc).
 PAPERS = {"paper.pdf": "main.tex", "comparison.pdf": "comparison.tex"}
+# The look's shared tokens (colours, families, rule weights, screens) on :root, written for the talk
+# and this page alike. The page's stylesheet is built on them and is inlined after them.
+TOKENS = ROOT / "design" / "tokens.css"
 
 
 class Report:
@@ -106,8 +109,8 @@ def load_fonts(rep: Report) -> dict:
     rep.check(not extra, f"no unlocked files under handout/fonts ({len(extra)})")
     faces = {k: v for k, v in lock.items() if v.get("kind") == "face"}
     families = sorted({v["family"] for v in faces.values()})
-    rep.check(families == ["DM Sans", "Libertinus Math", "Libertinus Serif"],
-              f"faces are Libertinus Serif, DM Sans and Libertinus Math ({', '.join(families)})")
+    rep.check(families == ["Jost", "STIX Two Text"],
+              f"faces are Jost and STIX Two Text ({', '.join(families)})")
     rep.check(all(v.get("license_file") in lock for v in faces.values()), "every face names a locked licence file")
     return lock
 
@@ -419,6 +422,10 @@ def main() -> int:
         rep.check(bool(css), "style.css present")
         rep.check("@font-face" not in css and "url(" not in css,
                   "style.css declares no font file; the faces come from fonts.lock.json")
+        tokens = TOKENS.read_text(encoding="utf-8") if TOKENS.is_file() else ""
+        rep.check(bool(tokens) and ":root" in tokens, "design/tokens.css present with a :root block")
+        rep.check("@font-face" not in tokens and not re.search(r"url\((?!#)", tokens),
+                  "design/tokens.css declares no font file (its only url() references are SVG screens by id)")
         faces = font_faces(fonts)
         face_files = set(re.findall(r'url\("fonts/([^"]+)"\)', faces))
         rep.check(face_files == {k for k, v in fonts.items() if v.get("kind") == "face"},
@@ -430,7 +437,7 @@ def main() -> int:
             rep.check(bool(scripts[slot]), f"{fname} present")
             rep.check("</script" not in scripts[slot], f"{fname} contains no </script")
         preload = "\n".join(f'<link rel="preload" href="fonts/{n}" as="font" type="font/woff2" crossorigin>'
-                             for n in ("libertinus-serif-400-normal.woff2", "dm-sans-700-normal.woff2"))
+                             for n in ("stix-two-text-latin-400-normal.woff2", "jost-latin-600-normal.woff2"))
         revision = facts["paper.pdf"]["created"] if ok else ""
         build_meta = ('<p class="build-meta">Sources (sha256, first 12 hex): '
                       f'registry {slot_data.sha256(ROOT)[:12] if registry else ""}; '
@@ -438,7 +445,7 @@ def main() -> int:
         fills = {
             "VENDOR_HEAD": '<link rel="stylesheet" href="vendor/katex.min.css">',
             "FONT_PRELOAD": preload,
-            "STYLE": "<style>\n" + faces + css + "\n</style>",
+            "STYLE": "<style>\n" + faces + tokens + "\n" + css + "\n</style>",
             "PAPER": paper_panel(facts) if ok else "",
             "TEXT_REVISION": revision,
             "TOC": build_toc(sections),
@@ -512,6 +519,7 @@ def main() -> int:
         "exercise": "handout",
         "timestamp_utc": None,  # omitted on purpose: the manifest is committed and must not churn
         "inputs": {slot_data.REGISTRY: slot_data.sha256(ROOT) if registry else None,
+                   "design/tokens.css": hashlib.sha256(TOKENS.read_bytes()).hexdigest() if TOKENS.is_file() else None,
                    **{f"slot/manuscript/{PAPERS[k]} -> {k}": v["sha256"] for k, v in facts.items()}},
         "method": "handout build: slot registry placeholders, closed-form figure inputs, latexmk PDFs, template assembly",
         "tolerances": {},

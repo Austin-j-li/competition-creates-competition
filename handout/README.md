@@ -16,22 +16,44 @@ mechanism, the four propositions and three corollaries of the main text (the cor
 the example) and the tests are visible; formal statements, derivations and long tables stay in
 native `details` controls.
 
-The design is the look of `DESIGN.md` at the repository root: the journal layout in the colours
-of UCL, shared with the web slides and matched to the Beamer deck (`ccc-journal.sty` in the
-Overleaf working copy). Libertinus Serif sets the reading text and the title, DM Sans the headings,
-tags, labels and controls, and Libertinus Math is the symbol fallback. The paper is white (dark
-purple in the dark theme). Dark purple (#361A54) is coloured text; bright purple (#993BFF) is the
-short rule above the title, the rule under each section heading, and the bullets; hairlines
-elsewhere. There are no fills, cards, pills, rounded boxes, gradients or shadows, and the title
-block stays on the paper. Figures draw in ink, the information colour and greys, told apart by
-dash and marker. Two earlier looks are retired: the oxblood accent of 29 October 2026 and the
-boxed template of 3 October 2026; `check_display.py` and `publish.py` fail on their marks.
+The design is the two-colour plate, the look of the whole site (`DESIGN.md` at the repository root): the
+diagram plate of an economics textbook printed in black and one spot colour on white stock. Its
+tokens (colours, families, keyline weights, line screens) are custom properties in
+`design/tokens.css`, shared with the talk; `build.py` inlines that file before `style.css`, which
+adds the reading layout and overrides three tokens for the page (a black focus ring, and title and
+label stacks that fall back to STIX Two Text for Greek).
+
+- Type: Jost (500 and 600) for the title, headings, labels, figure text and controls; STIX Two Text
+  (400 and 600, with italics) for running text, at about 65 to 70 characters a line. Greek letters
+  in figure labels come from STIX Two Text, since Jost has no Greek; no symbol face is needed.
+- Colour: the ground is white stock (`--ground`), text and every keyline black ink (`--ink`),
+  secondary text a dark grey (`--ink-2`, 8.8:1 on the ground). The press green (`--accent`,
+  `--fig-accent`) means one thing on the whole site: the price brings the costly rival in. On this
+  page it marks only the figure branches and points where entry is above its floor because a
+  purchase recruits the high-cost rival (Figures 3 and 4), the recruiting purchase on the
+  explorer's belief line, and the explorer's entry readouts when a purchase recruits. Links, the
+  active tab, the current contents entry and focus are black, shown by weight, an underline or a
+  keyline.
+- Rules: black keylines in two weights, one per role: heavy (3 px) under the title block, each
+  section heading and the explorer's head, and under the active tab or control; thin (1.5 px, or
+  1 px inside a table or list) for tables, disclosures, statements and the contents.
+- Areas: line screens instead of tints. The figures draw a pattern of thin grey lines (45 or 135
+  degrees) for a shaded region; nothing on the page is a transparent fill. Every other
+  distinction in a figure is stroke pattern, weight or marker shape, so each figure reads in
+  greyscale.
+- One theme, light. There are no fills, cards, pills, rounded boxes, gradients or shadows. The
+  title block carries two registration crosses, as the talk's title page has.
+
+Retired looks: the purple look of 11 November 2026 (UCL colours, Libertinus and DM Sans, a dark
+theme), the oxblood accent of 29 October 2026 and the boxed template of 3 October 2026;
+`check_display.py` fails on their marks.
 
 ## Build and checks
 
 ```sh
 python3 handout/build.py
 python3 handout/check_display.py
+python3 talk/build.py
 ```
 
 The build uses Python's standard library and latexmk. It writes `docs/index.html`, `.nojekyll`,
@@ -53,11 +75,22 @@ The two PDFs are built from `slot/manuscript/main.tex` and `slot/manuscript/comp
 - the paper tab states the page counts, hashes and text date read from the two PDFs it ships;
 - every number span prints the display of its slot registry row and carries its key and exact
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
-- only the locked faces load, and the page makes no network request;
-- every colour is in the palette of `DESIGN.md`, and each UCL colour sits on the ground that UCL
-  permits;
-- neither the page nor the handout sources carry a mark of a retired look (the oxblood accent, a
-  `--ucl-*` token, a gradient, a shadow, a rounded box).
+- only the locked faces load (Jost and STIX Two Text), and the page makes no network request;
+- every colour literal in the page styles, `design/tokens.css`, `style.css`, the template and the
+  figure scripts is in the plate's palette; the stylesheet spends the green only in rules for the
+  recruit marks, the figure scripts reach it only through the renderer's recruit token, the focus
+  ring is black, and no theme hook remains;
+- neither the page nor the handout sources carry a mark of a retired look (the purple look's hexes
+  and their dark-theme tones, the oxblood accent, a `--ucl-*` token, a gradient, a shadow, a
+  rounded box). The one gradient allowed is the `--tint-fill` line screen of `design/tokens.css`.
+
+`talk/build.py` writes `talk/dist/index.html`, one self-contained file. It verifies the same
+font lock and embeds the faces, licences and the KaTeX fonts used by the rendered equations.
+Before replacing the output it refuses missing or duplicate page keys, unfilled `data-num`
+spans, external resources, imports or fetches, notes markup or data, known master note text,
+colours outside the shared palette, or faces outside the lock. All 59 pages are required;
+`--allow-missing` permits an incomplete working copy and is never used by the publisher.
+See [`talk/README.md`](../talk/README.md) for presenting and the PDF fallback.
 
 `check_browser.js` is the browser check of the Laplace page of 2 October 2026. It still encodes
 that page's expectations (five figures, legacy anchors, 47 slides), which `/laplace/` now serves;
@@ -77,13 +110,14 @@ python3 handout/publish.py
 ```
 
 Requires Python, latexmk, Node.js and npm. The publisher rebuilds the page, runs
-`check_display.py`, rebuilds the talk (`presentation/build.py` and
-`presentation/check_deck.mjs`), builds the Laplace archive, and stages an explicit file list:
+`check_display.py`, builds the talk with `talk/build.py` and its shipping guards, builds the
+Laplace archive, and stages an explicit file list:
 
 - at the root: `index.html`, `paper.pdf`, `comparison.pdf`, the locked fonts and licences
   (`fonts.lock.json`) and the KaTeX files (`vendor.lock.json`);
-- under `talk/`: the slides, `provenance.json`, the same fonts and KaTeX files, and
-  `presentation.pdf` when it has been exported;
+- under `talk/`: `index.html` from `talk/dist/index.html`, with all fonts and KaTeX embedded;
+  `talk.pdf` is included only when `talk/dist/talk.pdf` exists and is newer than that HTML file.
+  No separate fonts, KaTeX files, provenance record or notes are staged there;
 - under `laplace/`: the committed handout build of the pinned commit (`LAPLACE_COMMIT` in
   `publish.py`, the last commit of the Laplace website sources, on the main and laplace branches):
   its `index.html` with one added line that names it the earlier version and links the current
@@ -94,7 +128,7 @@ Requires Python, latexmk, Node.js and npm. The publisher rebuilds the page, runs
 
 Speaker notes in Markdown and QA output are never staged. A failed check stops publication. The
 staged HTML, CSS and JS of the current site (the root and `talk/`) are scanned for the retired
-looks (the oxblood accent and the `--ucl-*` tokens); the archive under `laplace/` keeps its own
+looks (the retired purple hexes, the oxblood accent and the `--ucl-*` tokens); the archive under `laplace/` keeps its own
 committed design and is outside the scan. Publishing (not `--stage-only` or `--dry-run`) also requires the checkout to contain
 `origin/main` after a fetch, so that a checkout on an older branch cannot republish an older site.
 Wrangler is version-pinned; credentials stay in its machine-local login store, never in this
@@ -120,8 +154,8 @@ as a historical record only.
 ## Content and data boundaries
 
 - Each `sections/*.html` fragment has one `section.sec`, one `h2`, and unique IDs on `h3`. The
-  template owns the masthead, the tabs, the opening question, the theme control, the paper and
-  talk tabs, and the colophon.
+  template owns the masthead, the tabs, the opening question, the paper and talk tabs, and the
+  colophon.
 - Numbers use `[[key]]`, where `key` is a row of the slot registry
   `audit/slot_manuscript_2026_10_23/registry/registry.csv` (columns key, value, display, status,
   source_script, run_log, note). The manuscript prints the same rows through `\reg{key}`. The page
@@ -138,12 +172,11 @@ as a historical record only.
   (`lambda_B`, `b_B`, `b0_B`, `M_half_B`, `m_half_B`), the marked strengths (`rA`, `rF_B`, `rN`,
   `rJ`, `rS_B`, `rC_B`, `res_rR`, `res_rcap`, `res_rUR`), the points that the figures label, and
   the registry hash.
-- Typefaces are Libertinus Serif (reading text and the title; 400 and 700 with italics), Libertinus
-  Sans (headings, tags, labels and controls) and Libertinus Math, subset to the symbol blocks, as
-  the fallback for arrows, relations and operators, all SIL OFL. The web slides use the same files.
-  All are pinned by sha256 in `fonts.lock.json` with their licence. The build generates the
-  font-face rules from the lock and fails if a file is missing, altered or unlocked, or if
-  `style.css` declares a font itself.
+- Typefaces are Jost (latin subset, 500 and 600) and STIX Two Text (latin, latin-ext and greek
+  subsets, 400 and 600 with italics), both SIL OFL, each file pinned by sha256 in
+  `fonts.lock.json` with its subset, unicode range, source and licence file. The build generates
+  the font-face rules from the lock and fails if a file is missing, altered or unlocked, or if
+  `style.css` or `design/tokens.css` declares a font itself.
 - KaTeX 0.18.5 is a local copy under `handout/vendor/`, pinned by sha256 and by the upstream
   sha512 integrity in `vendor.lock.json`. The slides use the same copy.
 
@@ -168,9 +201,9 @@ on the page searches for an equilibrium.
 
 Each figure has exactly one `#chart-<id>.chart-mount` with an accessible description and a
 caption; the explorer has one `#explorer[data-explorer]` mount and draws Figure 3 itself. Charts
-inside closed disclosures wait until opened. Theme changes and resizes redraw. Panels stack below
+inside closed disclosures wait until opened. Resizes redraw. Panels stack below
 640 pixels of chart width. The six-stage timeline supports arrow keys; disclosures, tabs (arrow
-keys), the theme toggle and the explorer controls support the keyboard. Hash navigation selects
+keys) and the explorer controls support the keyboard. Hash navigation selects
 the brief tab and opens enclosing disclosures; `#tab-paper` and `#tab-talk` select those tabs.
 
 For browser QA, `CCC.ready` resolves after initial rendering and `CCC.selfCheck()` reports chart
