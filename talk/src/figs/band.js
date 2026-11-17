@@ -1,4 +1,4 @@
-/* Schematic coordinates follow the shape boxes of master_dump/slide13.txt, scaled by 5/3. */
+/* Schematic coordinates follow the shape boxes of master_dump/slide16.txt, scaled by 5/3. */
 (function () {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';

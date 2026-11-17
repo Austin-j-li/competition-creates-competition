@@ -5,11 +5,12 @@
 
 Sources (all read, none written):
   - the number registry, audit/slot_manuscript_2026_10_23/registry/registry.csv (key, value, display, ...);
-  - the master's page dumps, numbered by show position: master_dump/slide19.txt (main page 18, the numerical
-    example), slide20.txt (page 19, the entry chart), slide21.txt (page 20), slide23.txt (page 22), from which
-    every master string is read by shape id, never typed here. The data names p14, p16 and p17 (number ids,
-    curves.pages, the entry chart's variants) are the names the chart pages 19, 20 and 22 had in an earlier
-    deck; "example" is page 18. They are names, not page numbers.
+  - the master's page dumps, numbered by show position (the master as saved at 20:21 on 17 November):
+    master_dump/slide76.txt (backup B19, the numerical-example table), slide19.txt (main page 18, the entry
+    chart), slide20.txt (page 19), slide21.txt (page 20), from which every master string is read by shape id,
+    never typed here. The data names p14, p16 and p17 (number ids, curves.pages, the entry chart's variants)
+    are the names the chart pages 18, 19 and 20 had in an earlier deck; "example" is backup B19. They are
+    names, not page numbers.
 
 Every printed number is a registry row rounded half-up on its exact value (a Fraction parsed from the
 registry's decimal or fraction string; never a binary float). The curves evaluate the closed forms of the
@@ -116,8 +117,8 @@ def read_dump(name: str) -> dict[int, dict]:
     return shapes
 
 
-DUMP = {"p14": ("slide20.txt", read_dump("slide20.txt")), "p16": ("slide21.txt", read_dump("slide21.txt")),
-        "p17": ("slide23.txt", read_dump("slide23.txt")), "example": ("slide19.txt", read_dump("slide19.txt"))}
+DUMP = {"p14": ("slide19.txt", read_dump("slide19.txt")), "p16": ("slide20.txt", read_dump("slide20.txt")),
+        "p17": ("slide21.txt", read_dump("slide21.txt")), "example": ("slide76.txt", read_dump("slide76.txt"))}
 
 
 def master_string(page: str, shape: int, occ: int | str) -> str | None:
@@ -149,13 +150,15 @@ NUMBERS = [
      "build_results.js (13 Nov) printed rN here; the master now prints 1.97 = rJ"),
     ("p14.chart.x.3", "p14", 26, 0, None, 0, "axis", [], ""),
     ("p14.chart.x.4", "p14", 27, 0, None, 0, "axis", [], ""),
-    # main page 16 (data name p14), the two run-ins beside the chart
-    ("p14.rhs.plateau.1", "p14", 109, 0, "entry_r1_B", 2, "value", ["entry_plateau_B"], ""),
-    ("p14.rhs.rF", "p14", 109, "m0", "rF_B", 2, "value", [], "the ramp reaches the plateau at rF; the old text said rA"),
-    ("p14.rhs.plateau.2", "p14", 109, 1, "entry_r1_B", 2, "value", [], ""),
-    ("p14.rhs.rC.1", "p14", 109, "m1", "rC_B", 2, "value", [], ""),
-    ("p14.rhs.rC.2", "p14", 110, 0, "rC_B", 2, "value", [], ""),
-    ("p14.rhs.rho", "p14", 111, "m0", "prim_rho", 2, "value", ["entry_r0"], ""),
+    # main page 18 (data name p14), the side blocks of the 20:21 master: block 2 (shape 111) and block 3
+    # (shape 113). The master no longer prints rF or a second plateau or rC beside the chart; those rows are
+    # retired (page None) and kept until no page asks for them.
+    ("p14.rhs.plateau.1", "p14", 111, 0, "entry_r1_B", 2, "value", ["entry_plateau_B"], ""),
+    ("p14.rhs.rF", None, None, None, "rF_B", 2, "value", [], "retired: the 20:21 master no longer prints rF beside the chart"),
+    ("p14.rhs.plateau.2", None, None, None, "entry_r1_B", 2, "value", [], "retired: no second plateau in the 20:21 master"),
+    ("p14.rhs.rC.1", "p14", 113, "m0", "rC_B", 2, "value", [], ""),
+    ("p14.rhs.rC.2", None, None, None, "rC_B", 2, "value", [], "retired: no second rC in the 20:21 master"),
+    ("p14.rhs.rho", "p14", 113, "m3", "prim_rho", 2, "value", ["entry_r0"], ""),
     # page 14, the note
     ("p14.note.h", "p14", 101, 0, "prim_h", 0, "value", [], ""),
     ("p14.note.ell", "p14", 101, 1, "prim_ell", 0, "value", [], ""),
@@ -469,7 +472,7 @@ def page_chart(page: str) -> dict:
                       {"from": "rC", "to": "hi", "words_shape": 50}],
             dump_clicks={"none.a": 1, "incumbent 0": 1, "informed.ramp": 2, "informed.flat": 2, "incumbent 1": 2,
                          "informed.drop": 3, "informed.floor": 3, "incumbent 2": 3, "none.b": 4, "none.dashed": 4,
-                         "shade": 4, "p14.chart.x.rJ": 4, "p14.chart.x.rA": 2, "the two run-ins beside the chart": 5})
+                         "shade": 4, "p14.chart.x.rJ": 4, "p14.chart.x.rA": 2, "side block 1": 1, "side block 2": 2, "side block 3": 3})
     elif page == "p17":
         base.update(
             x_ticks=ticks(page, X14),

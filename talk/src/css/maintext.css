@@ -1,39 +1,39 @@
-/* Layout of the word-and-table pages: main pages 3, 4, 5, 6, 8, 10, 18 (pages 1 and 2 in opening.css), and backups B14 (literature) and B18.
-   Pages 3 to 6 and 10 fill the shared patterns of patterns.css (Columns, Rows, Axis).
+/* Layout of the word-and-table pages: main pages 3, 4, 5, 6, 8, 10, 12, 13, 21 (pages 1, 2 and 7 in opening.css), and backups B14 (literature) and B18.
+   Pages 3 to 8, 12 and 13 fill the shared patterns of patterns.css (Columns, Rows, Axis).
    Structure and geometry only; type families, colours, rule weights and sizes come from the
    tokens (and from the plate look for the shared vocabulary). Every rule is scoped by page id so
    that it beats the look's class rules where it must and touches no other page. */
 
-/* ------------------------------------------------------------------ pages 3, 4 and backup B14 (the literature): no sub line, its height reserved
+/* ------------------------------------------------------------------ pages 3, 4, 6 and backup B14 (the literature): no sub line, its height reserved
    so the heavy keyline and the body sit where they sit on every other main page */
-:is(#p03, #p04, #b53) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
+:is(#p03, #p04, #p06, #b56) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
 
 /* ------------------------------------------------------------------ rows with a run-in label
-   (page 8 and backup B18): every row ends in one continuous keyline, the first row has none above. */
+   (page 10 and backup B18): every row ends in one continuous keyline, the first row has none above. */
 
-#p08 .runin, #b60 .runin {
+#p10 .runin, #b75 .runin {
   align-items: baseline;
   padding-top: 0;
   border-top: 0;
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
 }
-#p08 .runin, #b60 .runin { padding-top: 14px; padding-bottom: 15px; }
-#p08 .runin:first-child, #b60 .statement > .runin:first-child { padding-top: 0; }
-#p08 .runin-text, #b60 .runin-text { margin: 0; }
+#p10 .runin, #b75 .runin { padding-top: 14px; padding-bottom: 15px; }
+#p10 .runin:first-child, #b75 .statement > .runin:first-child { padding-top: 0; }
+#p10 .runin-text, #b75 .runin-text { margin: 0; }
 /* one label column on every main page with run-in rows: a 206px label, a 28px gutter, so the text
    starts at x = 314; the label in Jost 600 at 24px */
-:is(#p08, #b60) .runin { gap: 0 28px; }
-:is(#p08, #b60) .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
-#b60 .runin-text p { margin: 0; }
+:is(#p10, #b75) .runin { gap: 0 28px; }
+:is(#p10, #b75) .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
+#b75 .runin-text p { margin: 0; }
 
-/* ------------------------------------------------------------------ the stage strip (pages 8 and 10) */
+/* ------------------------------------------------------------------ the stage strip (pages 10, 12 and 13) */
 
-:is(#p08, #p10) .page-sub.strip-sub {
+:is(#p10, #p12, #p13) .page-sub.strip-sub {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
 }
-:is(#p08, #p10) .stage-strip {
+:is(#p10, #p12, #p13) .stage-strip {
   display: flex;
   align-items: baseline;
   flex: 0 0 auto;
@@ -42,10 +42,10 @@
   font-size: 21px;
   color: var(--ink-2);
 }
-:is(#p08, #p10) .stage { white-space: nowrap; }
-:is(#p08, #p10) .stage.is-current { font-weight: 600; color: var(--ink); }
-:is(#p08, #p10) .stage-sep { padding: 0 .62em; }
-#p10 .strip-note { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
+:is(#p10, #p12, #p13) .stage { white-space: nowrap; }
+:is(#p10, #p12, #p13) .stage.is-current { font-weight: 600; color: var(--ink); }
+:is(#p10, #p12, #p13) .stage-sep { padding: 0 .62em; }
+#p13 .strip-note { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
 
 /* ------------------------------------------------------------------ page 3: Columns with a label column (patterns.css)
    The label, then the heads Rival, Incumbent, Target at x = 314, 732, 1150 on one keyline at
@@ -62,95 +62,183 @@
 
 #p05 .pat-col-text { padding-right: 24px; }
 
-/* ------------------------------------------------------------------ page 6: the timeline, on the Axis pattern
-   Four stops of unequal width, 40px apart: 80 to 370, 410 to 860, 900 to 1190, 1230 to 1520.
-   The heads carry into the stage strip of page 7 (data-carry stage-0 to stage-3). */
+/* ------------------------------------------------------------------ page 6: Columns on the thirds, with a line of citations
+   Heads at 30px, the citations in Jost 500 22px from y = 301 (room for two lines), the text at
+   30px from y = 377. */
 
-#p06 .timeline { grid-template-columns: 290px 450px 290px 290px; column-gap: 40px; }
-#p06 .stageno { margin-right: .12em; font-variant-numeric: tabular-nums lining-nums; }
-#p06 .tl-arrow { display: block; margin: 16px 0 0 0; overflow: visible; }
-#p06 .tl-arrow-stem { fill: none; stroke: var(--ink); stroke-width: 2.5px; }
-#p06 .tl-arrow-head { fill: var(--ink); stroke: none; }
-#p06 .tl-then { margin-top: 18px; }
-#p06 .nobr { white-space: nowrap; }   /* a formula in parentheses stays on one line with them */
+#p06 .pat-head { font-size: 30px; line-height: 1.2; }
+#p06 .lit-cite {
+  min-height: calc(2 * 1.3 * 22px);
+  margin: 10px 0 0;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+#p06 .pat-col-text { margin-top: 19px; padding-right: 12px; font-size: 30px; line-height: 1.32; }
+
+/* ------------------------------------------------------------------ page 8: the timeline, on the Axis pattern
+   Four stops of unequal width, 40px apart: 80 to 370, 410 to 860, 900 to 1190, 1230 to 1520.
+   The heads carry into the stage strip of page 9 (data-carry stage-0 to stage-3). */
+
+#p08 .timeline { grid-template-columns: 290px 450px 290px 290px; column-gap: 40px; }
+#p08 .stageno { margin-right: .12em; font-variant-numeric: tabular-nums lining-nums; }
+#p08 .tl-arrow { display: block; margin: 16px 0 0 0; overflow: visible; }
+#p08 .tl-arrow-stem { fill: none; stroke: var(--ink); stroke-width: 2.5px; }
+#p08 .tl-arrow-head { fill: var(--ink); stroke: none; }
+#p08 .tl-then { margin-top: 18px; }
+:is(#p07, #p08) .nobr { white-space: nowrap; }   /* a formula in parentheses stays on one line with them */
 
 /* ------------------------------------------------------------------ backup B14, first page: the literature (main page 4 until 17 Nov) */
 
-#b53 table.lit { font-size: 24px; line-height: 1.27; margin-bottom: 24px; }
-#b53 .w-strand { width: 33%; }
-#b53 .w-shows { width: 31%; }
-#b53 .w-here { width: 36%; }
-#b53 table.lit th, #b53 table.lit td { padding: 10px 28px 11px 0; }
-#b53 table.lit thead th { padding-top: 0; padding-bottom: 11px; font-size: 26px; }
-#b53 table.lit + .claim { margin-top: auto; }
-#b53 .claim.is-band { padding: 22px 40px 24px; font-size: 28px; line-height: 1.32; }
+#b56 table.lit { font-size: 24px; line-height: 1.27; margin-bottom: 24px; }
+#b56 .w-strand { width: 33%; }
+#b56 .w-shows { width: 31%; }
+#b56 .w-here { width: 36%; }
+#b56 table.lit th, #b56 table.lit td { padding: 10px 28px 11px 0; }
+#b56 table.lit thead th { padding-top: 0; padding-bottom: 11px; font-size: 26px; }
+#b56 table.lit + .claim { margin-top: auto; }
+#b56 .claim.is-band { padding: 22px 40px 24px; font-size: 28px; line-height: 1.32; }
 
-/* ------------------------------------------------------------------ page 8 */
+/* ------------------------------------------------------------------ page 10 */
 
-#p08 .runin { font-size: 27px; line-height: 1.3; }
-#p08 .runin, #p08 .runin:first-child { padding-bottom: 12px; }
-#p08 .runin + .runin { padding-top: 12px; }
-#p08 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 27px; line-height: 1.26; }
-#p08 .w-rowlab { width: 234px; }
-#p08 .w-costless { width: 594px; }
-#p08 .w-costly { width: 612px; }
-#p08 table.entry2 th, #p08 table.entry2 td { padding: 9px 24px 10px 0; }
-#p08 table.entry2 thead th { padding-top: 0; padding-bottom: 10px; font-size: 28px; }
-#p08 table.entry2 .col-strong { padding-left: 22px; padding-right: 22px; }
-#p08 table.entry2 tbody th { font-size: 24px; font-weight: 600; }
-#p08 table.entry2 + .claim { margin-top: auto; }
-#p08 .claim { font-size: 30px; line-height: 1.3; max-width: 1440px; text-wrap: balance; }
+#p10 .runin { font-size: 27px; line-height: 1.3; }
+#p10 .runin, #p10 .runin:first-child { padding-bottom: 12px; }
+#p10 .runin + .runin { padding-top: 12px; }
+#p10 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 27px; line-height: 1.26; }
+#p10 .w-rowlab { width: 234px; }
+#p10 .w-costless { width: 594px; }
+#p10 .w-costly { width: 612px; }
+#p10 table.entry2 th, #p10 table.entry2 td { padding: 9px 24px 10px 0; }
+#p10 table.entry2 thead th { padding-top: 0; padding-bottom: 10px; font-size: 28px; }
+#p10 table.entry2 .col-strong { padding-left: 22px; padding-right: 22px; }
+#p10 table.entry2 tbody th { font-size: 24px; font-weight: 600; }
+#p10 table.entry2 + .claim { margin-top: auto; }
+#p10 .claim { font-size: 30px; line-height: 1.3; max-width: 1440px; text-wrap: balance; }
 /* the look's paper halo is a text stroke, which eats thin glyphs (the minus, the inequality signs);
    a crisp paper-coloured text shadow does the same job without cutting the letters */
-#p08 table.entry2 td.col-strong, #p08 table.entry2 td.col-strong .katex * {
+#p10 table.entry2 td.col-strong, #p10 table.entry2 td.col-strong .katex * {
   -webkit-text-stroke: 0;
   text-shadow: 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground),
                1.5px 1.5px var(--ground), -1.5px 1.5px var(--ground), 1.5px -1.5px var(--ground), -1.5px -1.5px var(--ground);
 }
 
-/* ------------------------------------------------------------------ page 10: three rows at the opening tier */
+/* ------------------------------------------------------------------ page 12: the informed trader's payoff
+   Row 1 from y = 193 (label column, text at 27px), the equation from y = 300 at x = 314 in KaTeX
+   at 46px; a full-measure keyline at y = 438; the label and three columns 314 to 644, 692 to 1022,
+   1070 to 1520 (the third wider for its head), heads Jost 600 26px, text 27px from y = 500; the
+   statement plain on the last two lines of the body.
+   Each factor of the equation takes a black underline (2.5px, the bracket weight) on the click
+   that brings its column. The marks hang on the class fac-marks: remove it from the page and the
+   page is the PowerPoint's, with the same clicks. */
 
-#p10 .pat-row { padding: 46px 0; font-size: 34px; line-height: 1.3; }   /* three rows fill the body: the last keyline near y = 700 */
-#p10 .pat-row:first-child { padding-top: 14px; }
+#p12 .payoff-top {
+  display: grid;
+  grid-template-columns: var(--pat-label);
+  column-gap: var(--pat-lab-gut);
+  align-items: first baseline;
+  align-content: start;
+  height: calc(438px - var(--pat-y-body));
+  flex: 0 0 auto;
+}
+#p12 .payoff-lead { grid-column: 2; margin: 0; font-size: 27px; line-height: 1.3; text-wrap: pretty; }
+#p12 .payoff-eq { grid-column: 2; margin: 32px 0 0; font-size: calc(46px / 1.1); line-height: 1.3; white-space: nowrap; }
+#p12 .payoff-ch {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--pat-lab-w) var(--pat-lab-gut) 330px var(--pat-gut) 330px var(--pat-gut) minmax(0, 1fr);
+  align-items: start;
+  padding-top: 12.5px;
+  flex: 0 0 auto;
+}
+#p12 .payoff-ch > .pat-label { grid-column: 1; margin-top: 1px; }
+#p12 .ch-e { grid-column: 3; }
+#p12 .ch-d { grid-column: 5; }
+#p12 .ch-m { grid-column: 7; }
+#p12 .ch-head { margin: 0; font-family: var(--font-label); font-weight: 600; font-size: 26px; line-height: 1.2; white-space: nowrap; color: var(--ink); }
+#p12 .ch-text { margin: 17px 0 0; font-size: 27px; line-height: 1.3; text-wrap: pretty; }
+/* the keyline at y = 438 arrives with the group's label */
+#p12 .payoff-ch::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+#p12 .payoff-ch:not(:has(> .pat-label.is-on))::before { visibility: hidden; }
+body[data-motion="on"] #p12 .payoff-ch:has(> .pat-label.is-new)::before { animation: pat-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+#p12 .pat-plain { text-wrap: nowrap; }
+
+/* the factor underlines: 6px under the factor's box, wiped in from the left in 240ms */
+@keyframes fac-in { from { clip-path: inset(-2px 100% -2px 0); } to { clip-path: inset(-2px 0 -2px 0); } }
+#p12 .fac-marks .fac { position: relative; display: inline-block; }
+#p12 .fac-marks .fac::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-6px - 2.5px);
+  border-top: 2.5px solid var(--ink);
+  visibility: hidden;
+  pointer-events: none;
+}
+/* the spread's box ends 3px higher than the other two (its subscript sits above the parentheses'
+   depth), so its rule is set 3px lower: the three underlines share one line */
+#p12 .fac-marks .fac-d::after { bottom: calc(-6px - 2.5px - 3px); }
+#p12:has(.ch-e.is-on) .fac-marks .fac-e::after,
+#p12:has(.ch-d.is-on) .fac-marks .fac-d::after,
+#p12:has(.ch-m.is-on) .fac-marks .fac-m::after { visibility: visible; }
+body[data-motion="on"] #p12:has(.ch-e.is-new) .fac-marks .fac-e::after,
+body[data-motion="on"] #p12:has(.ch-d.is-new) .fac-marks .fac-d::after,
+body[data-motion="on"] #p12:has(.ch-m.is-new) .fac-marks .fac-m::after { animation: fac-in 240ms cubic-bezier(.16, 1, .3, 1) both; }
+
+/* ------------------------------------------------------------------ page 13: three rows at the opening tier */
+
+#p13 .pat-row { padding: 46px 0; font-size: 34px; line-height: 1.3; }   /* three rows fill the body: the last keyline near y = 700 */
+#p13 .pat-row:first-child { padding-top: 14px; }
 
 /* ------------------------------------------------------------------ backup B18: Proposition 2 (main page 17 until 17 Nov) */
 
-#b60 .page-body { padding-bottom: 14px; }
-#b60 .statement { font-size: 24px; line-height: 1.32; }
-#b60 .conds { display: grid; grid-template-columns: 64px max-content 1fr; column-gap: 24px; row-gap: 4px; align-items: baseline; }
-#b60 .cond { display: contents; }
-#b60 .hno, #b60 .cond .eq { margin: 0; }
-#b60 .cond .gloss { font-size: 21px; line-height: 1.25; }
-#b60 .conds { row-gap: 6px; }
-#b60 .runin-text .then-lead { margin: 0 0 10px; }
-#b60 .runin-text .then-close { margin: 10px 0 0; }
-#b60 table.outcome { font-size: 24px; line-height: 1.25; }
-#b60 .w-econ { width: 25%; }
-#b60 .w-ord { width: 21%; }
-#b60 .w-bel { width: 31%; }
-#b60 .w-ent { width: 23%; }
-#b60 table.outcome th, #b60 table.outcome td { padding: 6px 20px 7px 0; }
-#b60 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 24px; }
-#b60 table.outcome tr.is-strong td:first-child { font-weight: 600; color: var(--accent); }
+#b75 .page-body { padding-bottom: 14px; }
+#b75 .statement { font-size: 24px; line-height: 1.32; }
+#b75 .conds { display: grid; grid-template-columns: 64px max-content 1fr; column-gap: 24px; row-gap: 4px; align-items: baseline; }
+#b75 .cond { display: contents; }
+#b75 .hno, #b75 .cond .eq { margin: 0; }
+#b75 .cond .gloss { font-size: 21px; line-height: 1.25; }
+#b75 .conds { row-gap: 6px; }
+#b75 .runin-text .then-lead { margin: 0 0 10px; }
+#b75 .runin-text .then-close { margin: 10px 0 0; }
+#b75 table.outcome { font-size: 24px; line-height: 1.25; }
+#b75 .w-econ { width: 25%; }
+#b75 .w-ord { width: 21%; }
+#b75 .w-bel { width: 31%; }
+#b75 .w-ent { width: 23%; }
+#b75 table.outcome th, #b75 table.outcome td { padding: 6px 20px 7px 0; }
+#b75 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 24px; }
+#b75 table.outcome tr.is-strong td:first-child { font-weight: 600; color: var(--accent); }
 
-/* ------------------------------------------------------------------ page 18 */
+/* ------------------------------------------------------------------ page 21 */
 
-#p18 .page-body { padding-bottom: 18px; }
+#p21 .page-body { padding-bottom: 18px; }
 
 /* a formula stays whole on its line: no break at a relation or an operator */
-#p06 .katex, #p08 .katex, #p10 .katex, #b60 .katex, #p18 .katex { display: inline-block; }
-#b60 .katex-display > .katex { display: block; }
+#p07 .katex, #p08 .katex, #p10 .katex, #p12 .katex, #p13 .katex, #b75 .katex, #p21 .katex { display: inline-block; }
+#b75 .katex-display > .katex { display: block; }
 
 /* ------------------------------------------------------------------ keylines that run ahead of their cells
-   (pages 8, 14). A table's row rules and the rule under a row of heads belong to the row,
+   (pages 10, 17). A table's row rules and the rule under a row of heads belong to the row,
    not to a cell that a click reveals: the full rule is there with the row's first visible cell, and
    only the contents of the later cells are laid in. Each rule sits exactly where the cells drew it. */
 
 @keyframes main-rule-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
-:is(#p08, #p14) table.matrix tr { position: relative; }
-:is(#p08, #p14) table.matrix tr > * { border-bottom-color: transparent; }
-:is(#p08, #p14) table.matrix tr::after {
+:is(#p10, #p17) table.matrix tr { position: relative; }
+:is(#p10, #p17) table.matrix tr > * { border-bottom-color: transparent; }
+:is(#p10, #p17) table.matrix tr::after {
   content: "";
   position: absolute;
   left: 0;
@@ -159,16 +247,16 @@
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
   pointer-events: none;
 }
-/* page 8: the table arrives on click 2 */
-#p08 table.entry2:not(:has(th.corner.is-on)) tr::after { visibility: hidden; }
-body[data-motion="on"] #p08 table.entry2:has(th.corner.is-new) tr::after { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+/* page 10: the table arrives on click 2 */
+#p10 table.entry2:not(:has(th.corner.is-on)) tr::after { visibility: hidden; }
+body[data-motion="on"] #p10 table.entry2:has(th.corner.is-new) tr::after { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
 
 /* ------------------------------------------------------------------ the last rule of a page clears the foot
    keyline by at least 48px, so the two thin rules never read as one doubled foot */
-#b60 .runin, #b60 .runin:first-child { padding-bottom: 12px; }
-#b60 .runin + .runin { padding-top: 11px; }
-:is(#b60, #p18) .nobr { white-space: nowrap; }
+#b75 .runin, #b75 .runin:first-child { padding-bottom: 12px; }
+#b75 .runin + .runin { padding-top: 11px; }
+:is(#b75, #p21) .nobr { white-space: nowrap; }
 
-/* page 10: the stage strip shares its line with a larger note; set on their common baseline, the
-   strip would sit 3px below where pages 7 to 9 set it, so the line is lifted (the head keeps its height) */
-#p10 .page-sub.strip-sub { position: relative; top: -3px; }
+/* page 13: the stage strip shares its line with a larger note; set on their common baseline, the
+   strip would sit 3px below where pages 9 to 11 set it, so the line is lifted (the head keeps its height) */
+#p13 .page-sub.strip-sub { position: relative; top: -3px; }

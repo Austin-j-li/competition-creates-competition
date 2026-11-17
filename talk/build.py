@@ -30,8 +30,9 @@ from pathlib import Path
 DEMO = Path(__file__).resolve().parent
 REPO = DEMO.parents[0]
 VENDOR = REPO / 'handout' / 'vendor'
-PAGE_ORDER = (['p%02d' % i for i in range(0, 19)]          # the title and main pages 1 to 18
-              + ['b%02d' % i for i in range(20, 62)])       # backups B1 to B19, keyed by PowerPoint show position
+PAGE_ORDER = (['p%02d' % i for i in range(0, 22)]          # the title and main pages 1 to 21
+              + ['b%02d' % i for i in range(23, 63)]        # backups B1 to B17, keyed by PowerPoint show position
+              + ['b%02d' % i for i in range(75, 79)])       # B18 (the formal Proposition 2 page only), B19, B20, B21
 # Import the site's face generator and hash checks without running its build.
 _spec = importlib.util.spec_from_file_location('site_handout_build', REPO / 'handout/build.py')
 site_build = importlib.util.module_from_spec(_spec)
