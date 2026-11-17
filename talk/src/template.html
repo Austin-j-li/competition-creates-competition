@@ -11,6 +11,7 @@
 {{LOOKS_CSS}}
 </head>
 <body data-look="plate" data-motion="on">
+<p class="read-hint">Turn the phone sideways for larger pages.</p>
 <div id="viewport">
   <div id="stage">
     <div id="deck">
@@ -21,13 +22,27 @@
 </div>
 <div id="blank" aria-hidden="true"></div>
 <div id="overview" role="dialog" aria-modal="true" aria-label="Overview" hidden></div>
-<div id="hud" role="toolbar" aria-label="Talk controls">
-  <button type="button" data-act="prev" aria-label="Previous"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg></button>
-  <button type="button" data-act="next" aria-label="Next"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5"/></svg></button>
-  <button type="button" data-act="overview" aria-label="Overview (O)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h5v5H3zM12 3h5v5h-5zM3 12h5v5H3zM12 12h5v5h-5z"/></svg></button>
-  <button type="button" data-act="read" aria-label="Reading view (V)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 6h11M4.5 10h11M4.5 14h7"/></svg></button>
+<header id="hud" aria-label="Talk controls">
+  <a class="hud-home" href="../">Competition Creates Competition</a>
+  <div class="hud-acts" role="toolbar" aria-label="Talk controls">
+    <span class="hud-pos"></span>
+    <button type="button" class="hud-return" data-act="return" hidden><span class="tri tri-l" aria-hidden="true"></span><span class="hud-return-label">Back</span></button>
+    <button type="button" class="hud-strength" data-act="strength" aria-pressed="false" aria-keyshortcuts="S" hidden><span>Strength</span><kbd>S</kbd></button>
+    <button type="button" class="hud-step" data-act="prev" aria-label="Previous" title="Previous (Left)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg></button>
+    <button type="button" class="hud-step" data-act="next" aria-label="Next" title="Next (Right or Space)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5"/></svg></button>
+    <button type="button" data-act="overview" aria-keyshortcuts="O"><span>Overview</span><kbd>O</kbd></button>
+    <button type="button" data-act="notation" aria-keyshortcuts="G"><span>Notation</span><kbd>G</kbd></button>
+    <button type="button" data-act="read" aria-keyshortcuts="V"><span class="hud-read">Reading view</span><kbd>V</kbd></button>
+    <button type="button" data-act="full" aria-keyshortcuts="F"><span class="hud-full">Full screen</span><kbd>F</kbd></button>
+    <button type="button" data-act="keys" aria-keyshortcuts="?"><span>Keys</span><kbd>?</kbd></button>
+  </div>
+</header>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-head"><h2 id="sheet-title"></h2><button type="button" class="sheet-close">Close <kbd>Esc</kbd></button></div>
+  <div class="sheet-body"></div>
 </div>
 <div id="keys" aria-live="polite"></div>
+<noscript><p class="noscript">The talk needs JavaScript to step through its pages. The slides are also <a href="talk.pdf">a PDF</a>.</p></noscript>
 {{DATA}}
 {{MATH}}
 {{BOOT}}

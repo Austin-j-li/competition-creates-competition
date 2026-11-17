@@ -3,6 +3,10 @@
    tokens (and from the plate look for the shared vocabulary). Every rule is scoped by page id so
    that it beats the look's class rules where it must and touches no other page. */
 
+/* ------------------------------------------------------------------ pages 2 to 4: no sub line, its height reserved
+   so the heavy keyline and the body sit where they sit on every other main page */
+:is(#p02, #p03, #p04) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
+
 /* ------------------------------------------------------------------ rows with a run-in label
    (pages 2, 7, 9, 15, 19): every row ends in one continuous keyline, the first row has none above. */
 
@@ -15,6 +19,10 @@
 #p07 .runin, #p09 .runin, #p15 .runin, #p19 .runin { padding-top: 14px; padding-bottom: 15px; }
 #p07 .runin:first-child, #p09 .runin:first-child, #p15 .statement > .runin:first-child, #p19 .runin:first-child { padding-top: 0; }
 #p07 .runin-text, #p09 .runin-text, #p15 .runin-text, #p19 .runin-text { margin: 0; }
+/* one label column on every main page with run-in rows: a 206px label, a 28px gutter, so the text
+   starts at x = 314; the label in Jost 600 at 24px */
+:is(#p02, #p03, #p07, #p09, #p15, #p19) .runin { gap: 0 28px; }
+:is(#p02, #p03, #p07, #p09, #p15, #p19) .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
 #p09 .runin-text p, #p15 .runin-text p, #p19 .runin-text p:not(.q) { margin: 0; }
 
 /* ------------------------------------------------------------------ the stage strip (pages 7 and 9) */
@@ -55,7 +63,7 @@
 #p01 .why-grid > :nth-child(5) { grid-column: 2; }
 #p01 .why-grid > :nth-child(6) { grid-column: 3; }
 #p01 .why-grid > :nth-child(7) { grid-column: 4; }
-#p01 .claim { margin-top: auto; max-width: 1300px; font-size: 34px; line-height: 1.28; text-wrap: balance; }
+#p01 .claim { margin-top: auto; max-width: 1300px; font-size: 30px; line-height: 1.3; text-wrap: balance; }
 
 /* ------------------------------------------------------------------ page 2 */
 
@@ -66,8 +74,8 @@
   display: flex;
   flex-direction: column;
   gap: 26px;
-  font-size: 34px;
-  line-height: 1.3;
+  font-size: 30px;
+  line-height: 1.32;
 }
 #p02 .bullets li { position: relative; max-width: 1300px; padding-left: 46px; text-wrap: pretty; }
 #p02 .bullets li::before {
@@ -79,9 +87,14 @@
   height: 12px;
   background: var(--ink);
 }
-#p02 .runin { margin-top: 54px; padding-top: 24px; padding-bottom: 24px; border-top: var(--rule-w, 1.5px) solid var(--rule); font-size: 34px; line-height: 1.3; }
-#p02 .runin-label { min-width: 0; flex: 0 0 200px; font-size: 30px; }
-#p02 .note { margin-top: auto; }
+/* p02's Plot twist and p03's Where it stops: one device, a run-in row between two thin keylines */
+:is(#p02, #p03) .runin { align-items: baseline; padding-top: 20px; padding-bottom: 22px; border-top: var(--rule-w, 1.5px) solid var(--rule); border-bottom: var(--rule-w, 1.5px) solid var(--rule); font-size: 30px; line-height: 1.32; }
+#p02 .runin { margin-top: 54px; }
+#p02 .note { margin-top: auto; text-wrap: pretty; }
+#p03 .steps5 + .lead { margin-top: auto; }
+#p03 .lead + .runin { margin-top: 28px; }
+#p03 .lead + .steps5 { margin-top: 44px; }
+#p03 .runin { margin-bottom: auto; }
 
 /* ------------------------------------------------------------------ page 4 */
 
@@ -97,34 +110,34 @@
 /* ------------------------------------------------------------------ page 5: five players by four stages */
 
 #p05 table.grid5 { font-size: 22px; line-height: 1.26; height: 100%; }
-#p05 .w-player { width: 172px; }
+#p05 .w-player { width: 186px; }
 #p05 .w-s0 { width: 292px; }
-#p05 .w-s1 { width: 436px; }
+#p05 .w-s1 { width: 396px; }
 #p05 .w-s2 { width: 292px; }
-#p05 .w-s3 { width: 248px; }
+#p05 .w-s3 { width: 274px; }
 #p05 table.grid5 th, #p05 table.grid5 td { padding: 9px 22px 10px 0; }
 #p05 table.grid5 thead th { padding-top: 0; padding-bottom: 12px; font-size: 25px; white-space: nowrap; }
-#p05 table.grid5 tbody th { font-size: 22px; font-weight: 600; }
+#p05 table.grid5 tbody th { font-size: 24px; font-weight: 600; }
+#p05 table.grid5 td { text-wrap: pretty; }
 #p05 .stageno { display: inline-block; margin-right: .3em; font-variant-numeric: tabular-nums; }
 #p05 .katex { font-size: 1.05em; display: inline-block; }
 #p05 table.grid5 tbody tr:last-child th, #p05 table.grid5 tbody tr:last-child td { vertical-align: top; }
 
 /* ------------------------------------------------------------------ page 7 */
 
-#p07 .runin { font-size: 28px; line-height: 1.3; }
+#p07 .runin { font-size: 27px; line-height: 1.3; }
 #p07 .runin, #p07 .runin:first-child { padding-bottom: 12px; }
 #p07 .runin + .runin { padding-top: 12px; }
-#p07 .runin-label { flex: 0 0 200px; min-width: 0; font-size: 24px; }
-#p07 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 25px; line-height: 1.26; }
-#p07 .w-rowlab { width: 15.5%; }
-#p07 .w-costless { width: 42%; }
-#p07 .w-costly { width: 42.5%; }
+#p07 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 27px; line-height: 1.26; }
+#p07 .w-rowlab { width: 234px; }
+#p07 .w-costless { width: 594px; }
+#p07 .w-costly { width: 612px; }
 #p07 table.entry2 th, #p07 table.entry2 td { padding: 9px 24px 10px 0; }
 #p07 table.entry2 thead th { padding-top: 0; padding-bottom: 10px; font-size: 28px; }
 #p07 table.entry2 .col-strong { padding-left: 22px; padding-right: 22px; }
 #p07 table.entry2 tbody th { font-size: 24px; font-weight: 600; }
 #p07 table.entry2 + .claim { margin-top: auto; }
-#p07 .claim { font-size: 32px; line-height: 1.26; max-width: 1440px; text-wrap: balance; }
+#p07 .claim { font-size: 30px; line-height: 1.3; max-width: 1440px; text-wrap: balance; }
 /* the look's paper halo is a text stroke, which eats thin glyphs (the minus, the inequality signs);
    a crisp paper-coloured text shadow does the same job without cutting the letters */
 #p07 table.entry2 td.col-strong, #p07 table.entry2 td.col-strong .katex * {
@@ -136,8 +149,9 @@
 /* ------------------------------------------------------------------ page 9 */
 
 #p09 .page-body { padding-bottom: 16px; }
-#p09 .runin { gap: 0 28px; font-size: 27px; line-height: 1.3; }
-#p09 .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; }
+#p09 .runin { font-size: 27px; line-height: 1.3; }
+#p09 .runin, #p09 .runin:first-child { padding-bottom: 13px; }
+#p09 .runin + .runin { padding-top: 13px; }
 #p09 .eq { margin: 2px 0 4px; font-size: 27px; }
 #p09 .katex-display { margin: 0; text-align: left; }
 #p09 .katex-display > .katex { text-align: left; }
@@ -146,33 +160,31 @@
 /* ------------------------------------------------------------------ page 15: Proposition 2 */
 
 #p15 .page-body { padding-bottom: 14px; }
-#p15 .statement { font-size: 25px; line-height: 1.32; }
-#p15 .runin { gap: 0 28px; }
-#p15 .runin-label { flex: 0 0 168px; min-width: 0; font-size: 24px; }
+#p15 .statement { font-size: 24px; line-height: 1.32; }
 #p15 .conds { display: grid; grid-template-columns: 64px max-content 1fr; column-gap: 24px; row-gap: 4px; align-items: baseline; }
 #p15 .cond { display: contents; }
 #p15 .hno, #p15 .cond .eq { margin: 0; }
 #p15 .cond .gloss { font-size: 21px; line-height: 1.25; }
 #p15 .conds { row-gap: 6px; }
-#p15 .runin-text .then-lead { margin: 0 0 14px; }
-#p15 .runin-text .then-close { margin: 14px 0 0; }
-#p15 table.outcome { font-size: 25px; line-height: 1.25; }
+#p15 .runin-text .then-lead { margin: 0 0 10px; }
+#p15 .runin-text .then-close { margin: 10px 0 0; }
+#p15 table.outcome { font-size: 24px; line-height: 1.25; }
 #p15 .w-econ { width: 25%; }
 #p15 .w-ord { width: 21%; }
 #p15 .w-bel { width: 31%; }
 #p15 .w-ent { width: 23%; }
 #p15 table.outcome th, #p15 table.outcome td { padding: 6px 20px 7px 0; }
-#p15 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 25px; }
+#p15 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 24px; }
 #p15 table.outcome tr.is-strong td:first-child { font-weight: 600; color: var(--accent); }
 
 /* ------------------------------------------------------------------ page 19 */
 
 #p19 .page-body { padding-bottom: 18px; }
-#p19 .runin { gap: 0 28px; font-size: 23px; line-height: 1.3; }
-#p19 .runin, #p19 .runin:first-child { padding-top: 9px; padding-bottom: 10px; }
+#p19 .runin { font-size: 24px; line-height: 1.27; }
+#p19 .runin, #p19 .runin:first-child { padding-top: 7px; padding-bottom: 8px; }
 #p19 .runin:first-child { padding-top: 0; }
-#p19 .runin-label { flex: 0 0 196px; min-width: 0; font-size: 23px; line-height: 1.25; }
-#p19 .q { position: relative; margin: 0 0 6px; padding-left: 1.6em; }
+#p19 .runin-text .katex { white-space: nowrap; }
+#p19 .q { position: relative; margin: 0 0 3px; padding-left: 1.6em; }
 #p19 .q:last-child { margin-bottom: 0; }
 #p19 .qn { position: absolute; left: 0; font-variant-numeric: tabular-nums; }
 #p19 .claim.is-band { margin-top: auto; padding: 16px 40px 18px; font-size: 28px; line-height: 1.3; }
@@ -181,3 +193,67 @@
 /* a formula stays whole on its line: no break at a relation or an operator */
 #p07 .katex, #p09 .katex, #p15 .katex, #p19 .katex { display: inline-block; }
 #p09 .katex-display > .katex, #p15 .katex-display > .katex { display: block; }
+
+/* ------------------------------------------------------------------ keylines that run ahead of their cells
+   (pages 1, 3, 5, 7, 13). A table's row rules and the rule under a row of heads belong to the row,
+   not to a cell that a click reveals: the full rule is there with the row's first visible cell, and
+   only the contents of the later cells are laid in. Each rule sits exactly where the cells drew it. */
+
+@keyframes main-rule-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+:is(#p05, #p07, #p13) table.matrix tr { position: relative; }
+:is(#p05, #p07, #p13) table.matrix tr > * { border-bottom-color: transparent; }
+:is(#p05, #p07, #p13) table.matrix tr::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+/* page 7: the table arrives on click 2 */
+#p07 table.entry2:not(:has(th.corner.is-on)) tr::after { visibility: hidden; }
+body[data-motion="on"] #p07 table.entry2:has(th.corner.is-new) tr::after { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+
+/* page 1: the rule under the label and the three heads arrives with the label */
+#p01 .why-label { grid-column: 1; }
+#p01 .why-head:nth-child(2) { grid-column: 2; }
+#p01 .why-head:nth-child(3) { grid-column: 3; }
+#p01 .why-head:nth-child(4) { grid-column: 4; }
+#p01 .why-label, #p01 .why-head { border-bottom-color: transparent; }
+#p01 .why-grid::before {
+  content: "";
+  grid-row: 1;
+  grid-column: 1 / -1;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+#p01 .why-grid:not(:has(.why-label.is-on))::before { visibility: hidden; }
+body[data-motion="on"] #p01 .why-grid:has(.why-label.is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+
+/* page 3: the rule under the five step numbers arrives with the first step */
+#p03 .steps5 { position: relative; }
+#p03 .stepnum { border-bottom-color: transparent; }
+#p03 .steps5::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 56px;                       /* the numeral's 46px line and its 10px padding */
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+#p03 .steps5:not(:has(.stepcell.is-on))::before { visibility: hidden; }
+body[data-motion="on"] #p03 .steps5:has(.stepcell[data-step="1"].is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+
+/* ------------------------------------------------------------------ the last rule of a page clears the foot
+   keyline by at least 48px, so the two thin rules never read as one doubled foot */
+#p05 .page-body { padding-bottom: 48px; }
+#p15 .runin, #p15 .runin:first-child { padding-bottom: 12px; }
+#p15 .runin + .runin { padding-top: 11px; }
+:is(#p15, #p19) .nobr { white-space: nowrap; }
+
+/* page 9: the stage strip shares its line with a larger note; set on their common baseline, the
+   strip would sit 3px below where pages 6 to 8 set it, so the line is lifted (the head keeps its height) */
+#p09 .page-sub.strip-sub { position: relative; top: -3px; }

@@ -277,33 +277,70 @@ body[data-motion="on"] svg [data-step].is-new { animation-name: var(--reveal-nam
 #blank { position: absolute; inset: 0; z-index: 20; background: var(--ground); display: none; }
 body.is-blank #blank { display: block; }
 
-/* ------------------------------------------------------------------ the quiet control strip */
+/* ------------------------------------------------------------------ the control row */
 
+/* Outside full screen the row is docked above the stage, which fits below it. In full screen it
+   leaves the stage alone and shows only while the mouse moves. */
 #hud {
   position: fixed;
-  top: 10px; right: 10px;
+  top: 0; left: 0; right: 0;
   z-index: 50;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 0 12px 0 20px;
   display: flex;
-  gap: 2px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease-out;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--ground);
+  border-bottom: var(--rule-w) solid var(--rule);
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink-2);
 }
-body.is-awake #hud, body.is-reading #hud, #hud:focus-within { opacity: .72; pointer-events: auto; }
+.hud-home { color: var(--ink); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.hud-home:hover { text-decoration: underline; text-underline-offset: .2em; }
+.hud-acts { display: flex; align-items: center; gap: 4px; flex: none; }
 #hud button {
-  width: 32px; height: 32px;
-  padding: 6px;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 32px;
+  padding: 0 10px;
   border: 0;
+  border-radius: 0;
   background: none;
   color: var(--ink-2);
+  font: inherit;
   cursor: pointer;
-  border-radius: 0;
+  white-space: nowrap;
 }
-#hud button:hover, #hud button:focus-visible { color: var(--ink); }
-#hud button:focus-visible { outline: 1.5px solid var(--ink-2); outline-offset: -2px; }
+#hud [hidden] { display: none; }
+#hud button.hud-step { width: 32px; padding: 6px; justify-content: center; }
+#hud button.hud-step + button:not(.hud-step) { margin-left: 10px; }
+#hud button:hover { color: var(--ink); }
+#hud button:hover span { text-decoration: underline; text-underline-offset: .2em; }
 #hud svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-#hud svg .fill { fill: currentColor; stroke: none; }
-body.is-reading #hud [data-act="prev"], body.is-reading #hud [data-act="next"] { display: none; }
+#hud kbd, #sheet kbd, #overview kbd {
+  display: inline-block; min-width: 1.35em;
+  padding: 2px 4px 1px;
+  border: 1px solid currentColor;
+  font: 500 12px/1.1 var(--font-label);
+  text-align: center;
+  color: inherit;
+}
+body.is-reading #hud .hud-step { display: none; }
+
+body.is-full #hud {
+  left: auto; right: 10px; top: 10px;
+  height: 40px; padding: 0 4px;
+  border: var(--rule-w) solid var(--rule);
+  opacity: 0; pointer-events: none;
+  transition: opacity 180ms ease-out;
+}
+body.is-full #hud .hud-home { display: none; }
+body.is-full.is-awake #hud, body.is-full #hud:focus-within { opacity: 1; pointer-events: auto; }
+body.is-full:not(.is-awake):not(.is-reading):not(.is-overview):not(.is-sheet) { cursor: none; }
 
 #keys {
   position: fixed;
@@ -319,7 +356,6 @@ body.is-reading #hud [data-act="prev"], body.is-reading #hud [data-act="next"] {
 #keys:empty { display: none; }
 body.is-blank #keys { display: none; }       /* a blank screen is blank: no typed-key echo on it */
 
-body:not(.is-awake):not(.is-reading) { cursor: none; }
 
 /* ------------------------------------------------------------------ reading view */
 
@@ -374,11 +410,14 @@ html.is-reading .page { content-visibility: auto; contain-intrinsic-size: 1600px
 #overview {
   box-sizing: border-box;
   position: fixed; inset: 0; z-index: 60; overflow: auto;
-  padding: 32px; background: var(--ground); color: var(--ink);
+  padding: 0; background: var(--ground); color: var(--ink);
+  scroll-padding: 88px 0 32px;
   font-family: var(--font-label); overscroll-behavior: contain;
 }
-#overview > section { margin: 0 0 36px; }
-#overview > section > h2 { margin: 0 0 16px; font: 500 24px/1.25 var(--font-label); }
+#overview .overview-head { padding-left: 32px; }
+.overview-list { padding: 32px 32px 64px; }
+.overview-list > section { margin: 0 0 36px; }
+.overview-list > section > h2 { margin: 0 0 16px; font: 500 24px/1.25 var(--font-label); white-space: pre-wrap; }
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 20px; }
 .overview-item {
   display: block; min-width: 0; padding: 0; border: var(--rule-w) solid var(--rule);
@@ -395,10 +434,14 @@ html.is-reading .page { content-visibility: auto; contain-intrinsic-size: 1600px
 }
 #overview .page [data-step] { visibility: visible; opacity: 1; }
 body.is-overview { overflow: hidden; cursor: auto; }
-body.is-overview #hud { visibility: hidden; }
+body.is-overview #hud, body.is-sheet #hud { visibility: hidden; }
 @media (max-width: 699px) {
-  #overview { padding: 20px; }
-  #hud button { width: 44px; height: 44px; padding: 12px; }
+  .overview-list { padding: 20px 20px 48px; }
+  #overview .overview-head { padding-left: 16px; }
+  #hud { padding: 0 4px 0 12px; justify-content: flex-end; }
+  #hud .hud-home { display: none; }
+  #hud kbd, #hud [data-act="full"], #hud [data-act="read"] { display: none; }
+  #hud button { padding: 0 8px; height: 44px; }
 }
 
 /* Chrome print fallback: exact 16:9 sheets, all click builds finished. */
@@ -421,8 +464,8 @@ html.is-print #overview, html.is-print .reading-label, html.print-main .page.is-
   html.is-print .page { animation: none !important; }
 }
 
-#overview > section, .overview-grid { min-width: 0; }
-html.is-reading #hud { top: auto; bottom: 8px; background: var(--ground); }
+.overview-list > section, .overview-grid { min-width: 0; }
+html.is-reading #stage { margin-top: 44px; }
 
 body[data-look="plate"] #deck a.foot-link:focus-visible,
 body[data-look="plate"] #deck a.back-link:focus-visible,
@@ -433,3 +476,94 @@ body[data-look="plate"] #hud button:focus-visible {
 body[data-look="plate"] #overview .overview-item:focus-visible {
   outline: var(--focus-w) solid var(--focus-ring); outline-offset: 5px;
 }
+
+/* ------------------------------------------------------------------ sheets: notation and keys */
+
+#sheet[hidden] { display: none; }
+#sheet {
+  box-sizing: border-box;
+  position: fixed; inset: 0; z-index: 70; overflow: auto;
+  background: var(--ground); color: var(--ink);
+  overscroll-behavior: contain;
+}
+.sheet-head {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  box-sizing: border-box; height: 56px; padding: 0 12px 0 32px;
+  background: var(--ground);
+  border-bottom: var(--rule-w) solid var(--rule);
+}
+/* The notation pages carry their own title; the sheet's stays for screen readers only. */
+#sheet[data-sheet="notation"] .sheet-head h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+#sheet[data-sheet="notation"] .sheet-head { justify-content: flex-end; }
+.sheet-head h2 { margin: 0; font: 600 24px/1 var(--font-label); color: var(--ink); }
+.sheet-close {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px;
+  border: 0; border-radius: 0; background: none; cursor: pointer;
+  font: 500 15px/1 var(--font-label); color: var(--ink-2);
+}
+.sheet-close:hover { color: var(--ink); }
+.sheet-body { box-sizing: border-box; max-width: 1280px; margin: 0 auto; padding: 32px; }
+.sheet-page { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+.sheet-page + .sheet-page { margin-top: 32px; border-top: var(--rule-w) solid var(--rule); }
+#sheet .page {
+  position: absolute; inset: 0 auto auto 0; width: 1600px; height: 900px;
+  visibility: visible; transform: scale(var(--sheet-scale, .7)); transform-origin: 0 0;
+  content-visibility: visible;
+}
+#sheet .page [data-step] { visibility: visible; opacity: 1; }
+#sheet .page .page-foot, #sheet .page .back-link { display: none; }
+.sheet-keys {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin: 0; max-width: 820px;
+  font: 400 20px/1.35 var(--font-text);
+}
+.sheet-keys dt, .sheet-keys dd { margin: 0; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.sheet-keys dt { padding-right: 24px; }
+.sheet-keys dd { font: 500 18px/1.5 var(--font-label); }
+.sheet-note { max-width: 820px; margin: 24px 0 0; font: 400 18px/1.45 var(--font-text); color: var(--ink-2); }
+body.is-sheet { overflow: hidden; }
+html.is-print #sheet { display: none; }
+@media (max-width: 699px) {
+  .sheet-head { padding: 0 4px 0 16px; }
+  .sheet-body { padding: 16px; }
+  .sheet-keys { grid-template-columns: 1fr; }
+  .sheet-keys dt { border-bottom: 0; padding-bottom: 0; }
+}
+
+/* ------------------------------------------------------------------ control row: position, return, strength */
+
+.hud-pos { margin-right: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+#hud .hud-return { color: var(--ink); }
+#hud .hud-return .tri { margin-right: -2px; }
+#hud .hud-strength[aria-pressed="true"] { color: var(--ink); box-shadow: inset 0 -3px 0 var(--ink); }
+body.is-full #hud .hud-pos { margin-left: 10px; }
+@media (max-width: 1100px) { .hud-pos { display: none; } }
+@media (max-width: 699px) { #hud .hud-strength { display: none; } }
+
+/* Pointing triangles of links, drawn so that every machine and the PDF show the same mark. */
+.tri {
+  display: inline-block;
+  width: .5em; height: .62em;
+  margin-right: .18em;
+  vertical-align: .02em;
+  background: currentColor;
+}
+.tri-r { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.tri-l { clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+
+/* Print and PDF: white paper, not the screen's ground. */
+html.is-print { --ground: var(--band-ink); }
+html.is-print body, html.is-print .page { background: var(--band-ink); }
+
+.read-hint { display: none; }
+@media (max-width: 699px) and (orientation: portrait) {
+  html.is-reading .read-hint {
+    display: block; margin: 56px 16px 0; padding-bottom: 12px;
+    border-bottom: var(--rule-w) solid var(--rule);
+    font: 500 15px/1.35 var(--font-label); color: var(--ink-2);
+  }
+  html.is-reading .read-hint + #viewport #stage { margin-top: 12px; }
+}
+
+.noscript { position: fixed; left: 0; right: 0; top: 44px; z-index: 80; margin: 0; padding: 12px 20px; background: var(--ground); border-bottom: var(--rule-w) solid var(--rule); font: 500 16px/1.4 var(--font-label); color: var(--ink); }

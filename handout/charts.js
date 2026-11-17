@@ -1,12 +1,10 @@
-/* charts.js: Figures 1 to 4 of the handout, drawn as SVG without a chart library.
+/* charts.js: the SVG renderer of the front page's figures, without a chart library.
  *
- * Two layers. The builders (fig1 to fig4) read window.CCC_DATA (emitted by handout/data.py) and
- * the CSS tokens, and return a plain spec: traces (x, y with null at every break, marker
- * symbols, error bars) and a layout (axes, shapes, annotations). They mirror the drawing
- * conventions of numerics/render/figures.py: no in-figure titles, panel labels outside the axes,
- * broken lines at unresolved nodes, interval bars on the certified points at true scale.
- * The renderer turns a spec into SVG with a legend, a hover readout and a keyboard cursor.
- * Neither layer solves, changes a parameter or drops a branch; the spec is never written back.
+ * The builders live in figures.js (Figures 1, 2 and 4) and explorer.js (Figure 3) and register
+ * here. A builder reads window.CCC_DATA and the CSS tokens and returns a plain spec: traces (x, y,
+ * marker symbols, error bars) and a layout (axes, shapes, annotations), with no in-figure titles
+ * and panel labels outside the axes. The renderer turns a spec into SVG with a legend, a hover
+ * readout and a keyboard cursor. It never solves, changes a parameter or drops a branch.
  * ES2019, no modules. Exposes window.CCC.charts.
  */
 (function () {
@@ -14,26 +12,20 @@
 
   var CCC = (window.CCC = window.CCC || {});
   var SVGNS = 'http://www.w3.org/2000/svg';
-  var GAP = 0.005; // base mesh of the r grid; breaks appear at gaps wider than 1.5 * GAP
-  var HEIGHT = { wide: 380, stacked: 600, fig2: 540 };
   var NARROW = 640;
 
   /* The plate: black ink on white stock, one green for the one meaning (recruit), areas as line
-     screens (screen), no grid. The older keys (accent, c2, c3, info, cost, region*) are kept for the
-     builders of the earlier figures, which this page does not mount; they map to ink and to no fill. */
+     screens (screen), no grid. */
   var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', GREEN = 'oklch(0.50 0.15 150)';
   var FALLBACK = {
-    bg: 'oklch(0.985 0.002 250)', surface: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
-    accent: INK, accentSoft: 'none', c2: INK, c3: INK, recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
-    regionA: 'none', regionB: 'none', regionC: 'none',
-    info: INK, cost: INK,
+    bg: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
+    recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
     fontSans: '"Jost", "STIX Two Text", sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {
-    bg: '--ground', surface: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
-    accent: '--ink', c2: '--ink', c3: '--ink', recruit: '--fig-accent', screen: '--scr-page',
-    info: '--ink', cost: '--ink',
+    bg: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
+    recruit: '--fig-accent', screen: '--scr-page',
     fontSans: '--font-label', fontMono: '--font-mono'
   };
 
@@ -48,54 +40,6 @@
     return out;
   }
 
-  function formatNumber(x) {
-    if (x === null || x === undefined) return 'n/a';
-    return String(x);
-  }
-
-  /* Split a long digit string into readable chunks for a hover label. */
-  function chunk(s, n) {
-    s = String(s);
-    if (s.length <= n) return s;
-    var parts = [];
-    for (var i = 0; i < s.length; i += n) parts.push(s.slice(i, i + n));
-    return parts.join('<br>&nbsp;&nbsp;');
-  }
-
-  /* Sort by x and insert null where consecutive nodes are farther apart than gap*1.5 or |dy| > jump.
-   * Returns {x, y, idx}; idx maps each output position to the input index (null at breaks) so the
-   * caller can align customdata. Mirrors _broken_series in numerics/render/figures.py. */
-  function brokenSeries(xs, ys, gap, jump, nodes) {
-    gap = gap === undefined ? GAP : gap;
-    jump = jump === undefined ? 0.02 : jump;
-    var groups = {};
-    xs.forEach(function (x, i) { (groups[String(x)] || (groups[String(x)] = [])).push(i); });
-    var grid = nodes || Object.keys(groups).map(Number).sort(function (a, b) { return a - b; });
-    var x = [], y = [], idx = [];
-    function point(i) {
-      var xx = i === null ? null : xs[i], yy = i === null ? null : ys[i];
-      var last = x.length - 1;
-      if (i !== null && last >= 0 && x[last] !== null &&
-          (xx - x[last] > gap * 1.5 || Math.abs(yy - y[last]) > jump)) {
-        x.push(null); y.push(null); idx.push(null);
-      }
-      x.push(xx); y.push(yy); idx.push(i);
-    }
-    grid.forEach(function (r) {
-      var sub = groups[String(r)] || [];
-      if (sub.length === 1) point(sub[0]);
-      else {
-        point(null);
-        sub.forEach(function (i) { point(i); point(null); });
-      }
-    });
-    return { x: x, y: y, idx: idx };
-  }
-
-  function pick(arr, idx) {
-    return idx.map(function (i) { return i === null ? null : arr[i]; });
-  }
-
   function axis(t, extra) {
     var a = { showline: true, ticks: 'outside', title: { text: '' } };
     if (extra) Object.keys(extra).forEach(function (k) { a[k] = extra[k]; });
@@ -104,7 +48,7 @@
 
   function baseLayout(t) {
     return {
-      margin: { l: 56, r: 16, t: 30, b: 52 },
+      margin: { l: 56, r: 16, t: 34, b: 58 },
       legend: { orientation: 'h' },
       hovermode: 'x unified',
       annotations: [],
@@ -118,7 +62,7 @@
       text: text, showarrow: false, panel: true,
       xref: xaxisKey + ' domain', yref: yaxisKey + ' domain',
       x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 4,
-      font: { size: 13, color: t.ink }
+      font: { size: 15, color: t.ink }
     };
   }
 
@@ -129,7 +73,7 @@
     return layout;
   }
 
-  /* Axis domains for two panels: side by side (wide) or stacked (narrow / fig2). */
+  /* Axis domains for two panels: side by side (wide) or stacked (narrow). */
   function twoPanels(layout, stacked) {
     if (stacked) {
       layout.xaxis.domain = [0, 1]; layout.xaxis.anchor = 'y';
@@ -143,341 +87,6 @@
       layout.yaxis2.domain = [0, 1]; layout.yaxis2.anchor = 'x2';
     }
     return layout;
-  }
-
-  function line(color, dash, width) {
-    return { color: color, dash: dash || 'solid', width: width || 2 };
-  }
-
-  /* ------------------------------------------------------------------ Figure 1 */
-  function fig1(D, t, opts) {
-    var F = D.fig1;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var cdA = F.r.map(function (_, i) { return [formatNumber(F.Delta_T[i]), formatNumber(F.d_Delta_T_dr[i])]; });
-    traces.push({
-      type: 'scatter', mode: 'lines', name: 'Δ<sub>T</sub>(r)',
-      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.info, 'solid', 2.4),
-      xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
-      hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<br>dΔ<sub>T</sub>/dr = %{customdata[1]}<extra>Δ<sub>T</sub></extra>'
-    });
-    var mus = F.mu.slice().sort(function (a, b) { return Number(b) - Number(a); }); // M, 1/2, m
-    var style = {};
-    style[mus[0]] = { color: t.ink, dash: 'solid', width: 2.2 };
-    style[mus[1]] = { color: t.ink, dash: 'dash', width: 2.2 };
-    style[mus[2]] = { color: t.c3, dash: 'dot', width: 2.6 };
-    mus.forEach(function (mu) {
-      var B = F.B[mu], dB = F.dB[mu];
-      var label = F.mu_label[mu] || mu;
-      var cd = F.r.map(function (_, i) { return [formatNumber(B[i]), formatNumber(dB[i])]; });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'μ = ' + label,
-        x: F.r, y: B, customdata: cd, line: line(style[mu].color, style[mu].dash, style[mu].width),
-        xaxis: 'x2', yaxis: 'y2', legendgroup: 'B' + label,
-        hovertemplate: 'B<sub>r</sub>(' + label + ') = %{customdata[0]}<br>dB/dr = %{customdata[1]}<extra>μ = ' + label + '</extra>'
-      });
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis = axis(t, { title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>(<i>r</i>)' }, range: [0, 1.1] });
-    layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis2 = axis(t, { title: { text: (narrow ? 'challenger profit' : 'challenger gross profit') + ' <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
-    layout.margin.l = narrow ? 72 : 64;
-    twoPanels(layout, narrow);
-    // Reference levels from the declared inputs: trading cost k against the spread (A3),
-    // high preparation cost c_H against gross profit (A2). Drawn as shapes, not data.
-    var refs = [
-      { v: D.inputs && D.inputs.k, x: 'x', y: 'y', side: 1, above: true, color: t.info, text: 'trading cost <i>k</i> = ' + (D.inputs && D.inputs.k) },
-      { v: D.inputs && D.inputs.c_H, x: 'x2', y: 'y2', side: 0, above: false, color: t.cost, text: 'high preparation cost <i>c<sub>H</sub></i> = ' + (D.inputs && D.inputs.c_H) }
-    ];
-    refs.forEach(function (ref) {
-      if (ref.v === undefined || ref.v === null || !isFinite(Number(ref.v))) return;
-      var v = Number(ref.v);
-      layout.shapes.push({ type: 'line', xref: ref.x + ' domain', yref: ref.y, x0: 0, x1: 1, y0: v, y1: v,
-        line: { color: ref.color, width: 1.2, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: ref.text, showarrow: false, xref: ref.x + ' domain', x: ref.side,
-        xanchor: ref.side ? 'right' : 'left', xshift: ref.side ? -2 : 4, yref: ref.y, y: v, yanchor: ref.above ? 'bottom' : 'top', yshift: ref.above ? 2 : -2,
-        bgcolor: t.bg, font: { size: 11, color: ref.color } });
-    });
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 2 */
-  var BRANCH_STYLE = [
-    { key: 'pooling', name: 'no trade', color: 'accent', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'full_orders', name: 'full orders', color: 'c2', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'ink', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
-    { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 },
-    { key: 'mixed', name: 'mixed diagnostic', color: 'c3', dash: 'dash', width: 1.2, ycol: 'q_H', jumpB: 0.2 }
-  ];
-
-  function fig2(D, t, opts) {
-    var F = D.fig2;
-    var traces = [];
-    var th = F.thresholds || {};
-    var regions = F.regions || {};
-    var xr = F.x_range || [1.0, 3.8];
-
-    BRANCH_STYLE.forEach(function (s) {
-      var br = F.branches[s.key];
-      if (!br || !br.r || !br.r.length) return;
-      var col = t[s.color];
-      var cd = br.r.map(function (_, i) {
-        return [formatNumber(br.E[i]), formatNumber(br.q_H[i]), formatNumber(br.q_L[i]),
-          formatNumber(br.O_H ? br.O_H[i] : null), br.uniqueness_status ? br.uniqueness_status[i] : '', br.result_status[i]];
-      });
-      var a = brokenSeries(br.r, br.E, GAP, 0.02, F.nodes);
-      traces.push({
-        type: 'scatter', mode: s.key === 'mixed' ? 'markers' : 'lines+markers', name: s.name, legendgroup: s.key,
-        marker: { size: s.key === 'mixed' ? 9 : 2, symbol: s.key === 'mixed' ? 'diamond-open' : 'circle', color: col },
-        x: a.x, y: a.y, customdata: pick(cd, a.idx), connectgaps: false,
-        line: line(col, s.dash, s.width), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'E = %{customdata[0]}<br>O<sub>H</sub> = %{customdata[3]}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<br>evidence: %{customdata[5]}<br>uniqueness: %{customdata[4]}<extra>' + s.name + '</extra>'
-      });
-      if (s.key === 'mixed') return;
-      var yb = br[s.ycol];
-      var b = brokenSeries(br.r, yb, GAP, s.jumpB, F.nodes);
-      var what = s.ycol === 'v' ? 'v' : (s.key === 'symmetric_interior' ? 'u' : 'q<sub>H</sub>');
-      traces.push({
-        type: 'scatter', mode: 'lines+markers', name: s.name, legendgroup: s.key, showlegend: false,
-        marker: { size: 2, color: col },
-        x: b.x, y: b.y, customdata: pick(cd, b.idx), connectgaps: false,
-        line: line(col, s.dash, s.width), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: what + ' = %{y}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<extra>' + s.name + '</extra>'
-      });
-    });
-
-    ['H', 'L'].forEach(function (state) {
-      var support = F.mixed_supports.filter(function (row) { return row.state === state; });
-      traces.push({ type: 'scatter', mode: 'markers', name: 'mixed supports ' + state,
-        legendgroup: 'mixed', showlegend: false, xaxis: 'x2', yaxis: 'y2',
-        x: support.map(function (row) { return row.r; }), y: support.map(function (row) { return Math.abs(row.q); }),
-        customdata: support.map(function (row) { return [row.q, row.weight]; }),
-        marker: { color: t.c3, symbol: state === 'H' ? 'triangle-up' : 'triangle-down',
-          size: support.map(function (row) { return 4 + 5 * row.weight; }) },
-        hovertemplate: 'order = %{customdata[0]}<br>weight = %{customdata[1]}<extra>mixed diagnostic ' + state + '</extra>' });
-    });
-    var full = F.branches.full_orders;
-    var ceiling = Number(th.high_cost_ceiling.value);
-    var atCeiling = full.r.findIndex(function (r) { return Math.abs(r - ceiling) < 1e-12; });
-    if (atCeiling < 0) throw new Error('missing validated ceiling outcome');
-    traces.push({ type: 'scatter', mode: 'markers', name: 'preparation ceiling', showlegend: false,
-      x: [ceiling, ceiling], y: [full.E[atCeiling], Number(D.inputs.rho)], xaxis: 'x', yaxis: 'y',
-      marker: { symbol: ['circle', 'circle-open'], size: 7, color: t.c2 },
-      text: ['At equality: plateau prepares', 'Right-hand limit, strictly above ceiling'],
-      hovertemplate: '%{text}<br>E = %{y:.6f}<extra></extra>' });
-    traces.push({ type: 'scatter', mode: 'markers', name: 'open search coverage',
-      x: F.unresolved_nodes, y: F.unresolved_nodes.map(function () { return 0.135; }),
-      marker: { symbol: 'line-ns', size: 5, color: t.muted }, xaxis: 'x', yaxis: 'y',
-      hovertemplate: 'r = %{x}<extra>unresolved search; not nonexistence</extra>' });
-    var certs = (F.certificates || []).filter(function (c) { return c.accepted === 'true'; });
-    if (certs.length) {
-      var cx = certs.map(function (c) { return Number(c.r); });
-      var eMid = certs.map(function (c) { return Number(c.E_mid); });
-      var vMid = certs.map(function (c) { return Number(c.v_mid); });
-      var cdC = certs.map(function (c) {
-        return [c.r, chunk(c.E_lower, opts && opts.narrow ? 18 : 32), chunk(c.E_upper, opts && opts.narrow ? 18 : 32), c.E_halfwidth, c.v_lower, c.v_upper, c.v_halfwidth];
-      });
-      var marker = { symbol: 'diamond', size: 9, color: t.ink, line: { width: 1, color: t.surface } };
-      traces.push({
-        type: 'scatter', mode: 'markers', name: 'certified equilibria (Proposition 3)', legendgroup: 'certified',
-        x: cx, y: eMid, customdata: cdC, marker: marker, xaxis: 'x', yaxis: 'y',
-        error_y: { type: 'data', symmetric: false, visible: true, color: t.ink, thickness: 1.2, width: 8,
-          array: certs.map(function (c, i) { return Number(c.E_upper) - eMid[i]; }),
-          arrayminus: certs.map(function (c, i) { return eMid[i] - Number(c.E_lower); }) },
-        hovertemplate: 'r = %{customdata[0]}<br>E ∈ [%{customdata[1]},<br>&nbsp;&nbsp;%{customdata[2]}]<br>half-width %{customdata[3]}<extra>certified</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'markers', name: 'certified equilibria (Proposition 3)', legendgroup: 'certified', showlegend: false,
-        x: cx, y: vMid, customdata: cdC, marker: marker, xaxis: 'x2', yaxis: 'y2',
-        error_y: { type: 'data', symmetric: false, visible: true, color: t.ink, thickness: 1.2, width: 8,
-          array: certs.map(function (c, i) { return Number(c.v_upper) - vMid[i]; }),
-          arrayminus: certs.map(function (c, i) { return vMid[i] - Number(c.v_lower); }) },
-        hovertemplate: 'r = %{customdata[0]}<br>v ∈ [%{customdata[4]}, %{customdata[5]}]<br>half-width %{customdata[6]}<extra>certified</extra>'
-      });
-    }
-
-    var layout = baseLayout(t);
-    layout.height = opts && opts.narrow ? 620 : 560;
-    layout.margin = { l: 56, r: 16, t: 34, b: 52 };
-    layout.xaxis = axis(t, { range: xr.slice(), tick0: 1, dtick: 0.5, showticklabels: false, domain: [0, 1], anchor: 'y' });
-    layout.yaxis = axis(t, { title: { text: 'total entry <i>E</i>' }, range: [0.12, 0.62],
-      tickvals: [0.25, 0.35, 0.45, 0.55], domain: [0.56, 1], anchor: 'x' });
-    layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: xr.slice(), tick0: 1, dtick: 0.5,
-      matches: 'x', domain: [0, 1], anchor: 'y2' });
-    layout.yaxis2 = axis(t, { title: { text: 'order magnitude' }, range: [-0.05, 1.12],
-      tickvals: [0, 0.25, 0.5, 0.75, 1], domain: [0, 0.44], anchor: 'x2' });
-
-    function regionShape(range, color) {
-      if (!range || range.length !== 2) return null;
-      return { type: 'rect', xref: 'x', yref: 'paper', x0: range[0], x1: range[1], y0: 0, y1: 1,
-        fillcolor: color, line: { width: 0 }, layer: 'below' };
-    }
-    [regionShape(regions.no_trade_unique, t.regionA), regionShape(regions.full_orders_unique, t.regionB)]
-      .forEach(function (s) { if (s) layout.shapes.push(s); });
-    F.multiplicity_nodes.forEach(function (r) {
-      ['y', 'y2'].forEach(function (ax) {
-        layout.shapes.push({ type: 'line', xref: 'x', yref: ax + ' domain', x0: r, x1: r, y0: 0, y1: 0.025,
-          line: { color: t.c3, width: 1 }, layer: 'above' });
-      });
-    });
-
-    var thKeys = [['pooling_existence', 'r<sub>N</sub>'], ['full_orders_unique_sufficient', 'r<sub>U</sub>'], ['high_cost_ceiling', 'r<sub>C</sub>']];
-    thKeys.forEach(function (k) {
-      var row = th[k[0]];
-      if (!row) return;
-      var v = Number(row.value);
-      layout.shapes.push({ type: 'line', xref: 'x', yref: 'paper', x0: v, x1: v, y0: 0, y1: 1,
-        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: k[1], showarrow: false, xref: 'x', x: v, yref: 'y domain', y: 1,
-        yanchor: 'bottom', yshift: 3, font: { size: 12, color: t.muted },
-        hovertext: k[1].replace(/<[^>]+>/g, '') + ' = ' + (row.value_str || formatNumber(row.value)) + (row.interpretation ? '; ' + row.interpretation : '') });
-    });
-
-    function caption(range, text) {
-      if (!range || range.length !== 2) return;
-      layout.annotations.push({ text: text, showarrow: false, xref: 'x', x: (range[0] + range[1]) / 2,
-        yref: 'y domain', y: 0.03, yanchor: 'bottom', font: { size: 11, color: t.muted }, align: 'center' });
-    }
-    caption(regions.no_trade_unique, 'no trade<br>unique');
-
-    // keep the label between r_U and r_C so neither threshold guide crosses it at phone width
-    var fo = regions.full_orders_unique, rC = th.high_cost_ceiling ? Number(th.high_cost_ceiling.value) : null;
-    caption(fo && rC !== null && rC > fo[0] && rC < fo[1] ? [fo[0], rC] : fo, 'full orders<br>unique');
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 3 */
-  function fig3(D, t, opts) {
-    var F = D.fig3;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var styles = [
-      { key: 'Laplace', color: t.accent, dash: 'solid', endName: 'Laplace, plateau (tie rule)', open: false },
-      { key: 'logistic', color: t.c2, dash: 'dash', endName: 'logistic, zero tail at bound', open: false }
-    ];
-    styles.forEach(function (s) {
-      var S = F[s.key];
-      if (!S) return;
-      var xs = [], mass = [], E = [], cd = [];
-      var end = null;
-      for (var i = 0; i < S.M_minus_tau.length; i++) {
-        var row = [formatNumber(S.posterior_upper_tail_mass[i]), formatNumber(S.E[i]), formatNumber(S.x_star ? S.x_star[i] : null)];
-        if (S.M_minus_tau[i] > 0) { xs.push(S.M_minus_tau[i]); mass.push(S.posterior_upper_tail_mass[i]); E.push(S.E[i]); cd.push(row); }
-        else if (S.M_minus_tau[i] === 0) end = { x: 0, mass: S.posterior_upper_tail_mass[i], E: S.E[i], cd: row };
-      }
-      traces.push({
-        type: 'scatter', mode: 'lines', name: s.key, legendgroup: s.key,
-        x: xs, y: mass, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'Pr(μ<sub>X</sub> ≥ τ) = %{customdata[0]}<br>x* = %{customdata[2]}<extra>' + s.key + '</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: s.key, legendgroup: s.key, showlegend: false,
-        x: xs, y: E, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'E = %{customdata[1]}<br>x* = %{customdata[2]}<extra>' + s.key + '</extra>'
-      });
-      if (end) {
-        var marker = s.open
-          ? { symbol: 'circle-open', size: 9, color: s.color, line: { width: 1.6, color: s.color } }
-          : { symbol: 'circle', size: 9, color: s.color, line: { width: 1, color: s.color } };
-        traces.push({
-          type: 'scatter', mode: 'markers', name: s.endName, legendgroup: s.key + '-end',
-          x: [end.x], y: [end.mass], customdata: [end.cd], marker: marker, xaxis: 'x', yaxis: 'y',
-          hovertemplate: 'M − τ = 0<br>Pr(μ<sub>X</sub> ≥ τ) = %{customdata[0]}<br>x* = %{customdata[2]}<extra>' + s.endName + '</extra>'
-        });
-        traces.push({
-          type: 'scatter', mode: 'markers', name: s.endName, legendgroup: s.key + '-end', showlegend: false,
-          x: [end.x], y: [end.E], customdata: [end.cd], marker: marker, xaxis: 'x2', yaxis: 'y2',
-          hovertemplate: 'M − τ = 0<br>E = %{customdata[1]}<br>x* = %{customdata[2]}<extra>' + s.endName + '</extra>'
-        });
-      }
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'threshold distance <i>M</i> − τ' }, range: [-0.01, 0.24], tick0: 0, dtick: 0.05 });
-    layout.yaxis = axis(t, { title: { text: 'Pr(μ<sub><i>X</i></sub> ≥ τ) under full orders' }, range: [-0.02, 0.55] });
-    layout.xaxis2 = axis(t, { title: { text: 'threshold distance <i>M</i> − τ' }, range: [-0.01, 0.24], tick0: 0, dtick: 0.05 });
-    layout.yaxis2 = axis(t, { title: { text: 'total entry <i>E</i>' }, range: [0.22, 0.66] });
-    twoPanels(layout, narrow);
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 4 */
-  function fig4(D, t, opts) {
-    var F = D.fig4;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var keys = Object.keys(F).sort(function (a, b) { return Number(a) - Number(b); });
-    var styles = [
-      { key: keys[0], color: t.accent, dash: 'solid', word: 'weak' },
-      { key: keys[1], color: t.c2, dash: 'dash', word: 'strong' }
-    ];
-    styles.forEach(function (s) {
-      var S = F[s.key];
-      if (!S) return;
-      var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
-      var who = s.word + ' incumbent, r = ' + s.key;
-      traces.push({
-        type: 'scatter', mode: 'lines', name: who, legendgroup: 'panelA-' + s.word,
-        legendgrouptitle: { text: '(a) Δ<sub>η</sub>' },
-        x: S.eta, y: S.Delta_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'Δ<sub>η</sub> = %{customdata[0]}<extra>' + who + '</extra>'
-      });
-    });
-    styles.forEach(function (s) {
-      var raw = F[s.key];
-      if (!raw) return;
-      var S = {};
-      Object.keys(raw).forEach(function (key) { S[key] = raw[key].filter(function (_, i) { return raw.eta[i] < 1; }); });
-      var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'panelB-H-' + s.word,
-        legendgrouptitle: { text: '(b) G<sub>θ,η</sub>' },
-        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'G<sub>H,η</sub> = %{customdata[1]}<extra>G<sub>H</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'panelB-L-' + s.word,
-        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dot', 2.6), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'G<sub>L,η</sub> = %{customdata[2]}<extra>G<sub>L</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
-      });
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
-    layout.yaxis = axis(t, { title: { text: 'target-payoff spread Δ<sub>η</sub>' }, range: [0, 10.5] });
-    layout.xaxis2 = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
-    layout.yaxis2 = axis(t, { title: { text: 'challenger profit <i>G</i><sub>θ,η</sub>' }, type: 'log',
-      range: [Math.log10(3e-3), Math.log10(60)], tickvals: [0.01, 0.1, 1, 10], ticktext: ['0.01', '0.1', '1', '10'] });
-    twoPanels(layout, narrow);
-    [['x', 'y'], ['x2', 'y2']].forEach(function (k) {
-      layout.shapes.push({ type: 'line', xref: k[0], yref: k[1] + ' domain', x0: 0.5, x1: 0.5, y0: 0, y1: 1,
-        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, xanchor: 'left', xshift: 3,
-        yref: k[1] + ' domain', y: 1, yanchor: 'top', yshift: -2, bgcolor: t.bg,
-        font: { size: 11, color: t.muted } });
-    });
-    // direct labels: weak sits above strong at low η in both G pairs, so label weak above, strong below
-    var LX = 0.12;
-    function at(xs, ys) {
-      for (var i = 1; i < xs.length; i++) if (xs[i] >= LX) return ys[i - 1] + (ys[i] - ys[i - 1]) * (LX - xs[i - 1]) / (xs[i] - xs[i - 1]);
-      return null;
-    }
-    ['G_H_eta', 'G_L_eta'].forEach(function (col) {
-      styles.forEach(function (s, j) {
-        var S = F[s.key];
-        var y = S && at(S.eta, S[col]);
-        if (!(y > 0)) return;
-        layout.annotations.push({ text: s.word, showarrow: false, xref: 'x2', x: LX, yref: 'y2', y: Math.log10(y),
-          yanchor: j === 0 ? 'bottom' : 'top', yshift: j === 0 ? 3 : -3, font: { size: 11, color: s.color } });
-      });
-    });
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
   }
 
   /* ================================================================== SVG renderer */
@@ -623,11 +232,13 @@
   }
 
   function markerSvg(sym, x, y, size, color, lineSpec, bg, opacity) {
-    var open = /-open$/.test(sym) || sym === 'line-ns';
+    // circle-ring: an open ring with no fill, drawn round a filled mark at (nearly) the same point
+    var ring = sym === 'circle-ring';
+    var open = /-open$/.test(sym) || sym === 'line-ns' || ring;
     var d = symbolPath(sym, x, y, size);
     var sw = lineSpec && lineSpec.width !== undefined ? lineSpec.width : (open ? 1.6 : 0);
     var stroke = open ? color : (lineSpec && lineSpec.color ? lineSpec.color : color);
-    return '<path class="mk mk-' + esc(sym) + '" d="' + d + '" fill="' + (open ? (sym === 'line-ns' ? 'none' : bg) : color) + '"' +
+    return '<path class="mk mk-' + esc(sym) + '" d="' + d + '" fill="' + (open ? (sym === 'line-ns' || ring ? 'none' : bg) : color) + '"' +
       ' stroke="' + stroke + '" stroke-width="' + (open ? Math.max(1.4, sw) : sw) + '"' + (opacity !== undefined ? ' opacity="' + opacity + '"' : '') + '/>';
   }
 
@@ -699,7 +310,7 @@
     var anchor = a.xanchor === 'left' ? 'start' : (a.xanchor === 'right' ? 'end' : 'middle');
     var lh = size * 1.2, total = lh * lines.length;
     var top = a.yanchor === 'bottom' ? y - total : (a.yanchor === 'top' ? y : y - total / 2);
-    var out = '<text class="ann' + (a.panel ? ' panel-label' : '') + '" x="' + px(x) + '" font-size="' + size + '" fill="' + color + '" text-anchor="' + anchor + '"' +
+    var out = '<text class="ann' + (a.panel ? ' panel-label' : '') + (a.knockout ? ' knock' : '') + '" x="' + px(x) + '" font-size="' + size + '" fill="' + color + '" text-anchor="' + anchor + '"' +
       (a.bgcolor ? ' stroke="' + bg + '" stroke-width="4" paint-order="stroke" stroke-linejoin="round"' : '') + '>';
     lines.forEach(function (l, i) { out += '<tspan x="' + px(x) + '" y="' + px(top + lh * (i + 0.8)) + '">' + rich(l) + '</tspan>'; });
     out += (a.hovertext ? '<title>' + esc(a.hovertext) + '</title>' : '') + '</text>';
@@ -718,7 +329,7 @@
           var y = ax.map(tk.v);
           if (!isFinite(y) || y < ax.p0 - 0.5 || y > ax.p1 + 0.5) return;
           if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
-          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 4) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
+          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 5) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
           out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         });
         out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
@@ -733,10 +344,10 @@
           if (!isFinite(x) || x < ax.p0 - 0.5 || x > ax.p1 + 0.5) return;
           if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
           out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
-          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 17) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
+          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 19) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
         });
         out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
-        if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 36) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
+        if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 41) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
       }
     });
     return out;
@@ -777,10 +388,10 @@
   }
 
   /* ------------------------------------------------------------------ chart objects */
-  var builders = { fig1: fig1, fig2: fig2, fig3: fig3, fig4: fig4 };
+  var builders = {};  // registered by figures.js and explorer.js
   var records = {};
   var mounted = {};   // id -> {el, narrow, ro, spec, G, hidden}
-  var FIGURE_NUMBER = { fig1: 1, fig2: 2, fig3: 3, fig4: 4 };
+  var FIGURE_NUMBER = {};
 
   /* Charts mount eagerly by default; `?lazy=1` mounts them as they near the viewport. */
   function isEager() {
@@ -823,7 +434,7 @@
     });
     Object.keys(bySub).forEach(function (k) { body += '<g clip-path="url(#' + clipId + k + ')">' + bySub[k] + '</g>'; });
     var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '"' +
-      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
+      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + '<g class="knock-layer"></g>' + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
     return { svg: svg, G: G };
   }
 
@@ -838,7 +449,8 @@
     var G = out.G, svg = out.svg;
 
     // legend: one button per legend entry; a button toggles its legend group
-    var legend = '', seenGroup = {}, seenTitle = {};
+    // a legend title and its entries form one group, so a title never wraps away from its entries
+    var legend = '', seenGroup = {}, seenTitle = {}, inTitled = false;
     spec.traces.forEach(function (tr, i) {
       if (tr.showlegend === false || !tr.name) return;
       var key = legendKey(tr, i);
@@ -846,12 +458,29 @@
       seenGroup[key] = true;
       if (tr.legendgrouptitle && !seenTitle[tr.legendgrouptitle.text]) {
         seenTitle[tr.legendgrouptitle.text] = true;
-        legend += '<span class="legend-title">' + tr.legendgrouptitle.text + '</span>';
+        legend += (inTitled ? '</span>' : '') + '<span class="legend-group"><span class="legend-title">' + tr.legendgrouptitle.text + '</span>';
+        inTitled = true;
       }
       legend += '<button type="button" class="legend-item" data-key="' + esc(key) + '" aria-pressed="' + (hidden[key] ? 'false' : 'true') + '">' + swatch(tr, bg) + '<span>' + tr.name + '</span></button>';
     });
+    if (inTitled) legend += '</span>';
     el.innerHTML = (legend ? '<div class="chart-legend" role="group" aria-label="Show or hide a series">' + legend + '</div>' : '') +
       '<div class="chart-canvas">' + svg + '<div class="chart-tip" hidden></div></div>';
+    // A label that sits across guide lines (not on a screen) is knocked out on paper: a rectangle of
+    // the ground behind its letters, sized to the drawn text. It lies in a layer just above the guide
+    // shapes and under the axes and the data, so only guides give way to the label.
+    var knockLayer = el.querySelector('svg.plot .knock-layer');
+    Array.prototype.forEach.call(el.querySelectorAll('svg.plot text.knock'), function (tx) {
+      var b;
+      try { b = tx.getBBox(); } catch (e) { return; }
+      if (!b || !b.width) return;
+      var r = document.createElementNS(SVGNS, 'rect');
+      r.setAttribute('class', 'knockout');
+      r.setAttribute('x', px(b.x - 3)); r.setAttribute('y', px(b.y + b.height * 0.12));
+      r.setAttribute('width', px(b.width + 6)); r.setAttribute('height', px(b.height * 0.8));
+      r.setAttribute('fill', bg);
+      if (knockLayer) knockLayer.appendChild(r);
+    });
     el.setAttribute('data-mounted', 'true');
     state.G = G; state.spec = spec; state.t = t;
     wire(el, state);
@@ -1060,8 +689,8 @@
 
   CCC.charts = {
     mount: mount, mountAll: mountAll, rerender: rerender, update: update, status: status, register: register,
-    tokens: tokens, baseLayout: baseLayout, brokenSeries: brokenSeries, panelLabels: panelLabels,
-    twoPanels: twoPanels, axis: axis, formatNumber: formatNumber, builders: builders,
+    tokens: tokens, baseLayout: baseLayout, panelLabels: panelLabels,
+    twoPanels: twoPanels, axis: axis, builders: builders,
     draw: draw, svgMarkup: svgMarkup, hoverText: hoverText, geometry: geometry
   };
 })();

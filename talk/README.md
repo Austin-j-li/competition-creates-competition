@@ -17,11 +17,11 @@ the shared palette and unlocked faces. `--allow-missing` is for an incomplete wo
 Open `talk/dist/index.html` to present. Right, Space, PageDown or Enter advances a step; Left or
 PageUp goes back. Home and End go to the ends of the current main or backup sequence.
 Type a main page number then Enter to jump; type `b8` then Enter for backup B8. A backup link
-remembers the page and step it came from; Backspace returns there from any backup, and so does a backup's Back link. Where a backup names the pages it belongs to instead (B2 shows "◂ 11", "◂ 12", "◂ 15"), a named link returns to the exact step if that is the page it was opened from, and otherwise to that page finished. The two lead pages of B4 and B13 carry no return link of their own: Backspace returns from them.
+remembers the page and step it came from; Backspace returns there from any backup, and so does a backup's Back link. Where a backup names the pages it belongs to instead (B2 shows "◂ 11", "◂ 12", "◂ 15"), a named link returns to the exact step if that is the page it was opened from, and otherwise to that page finished. A backup opened directly, with nothing remembered, returns to the main page that links to it. The control row above the stage shows the position, a Back button on every backup, and buttons for every key below; in full screen it appears only while the pointer moves.
 O opens the overview; arrows and Enter choose a page. V toggles the finished reading view,
 which also opens with `?view=read` and is the default on a narrow screen. S opens the strength
 control on the entry charts; Left and Right move between marked strengths. Escape closes the
-control, overview or blank screen. F toggles full screen. B or a full stop blanks the screen.
+control, overview, sheet or blank screen. F (or a clicker's F5) toggles full screen. B or a full stop blanks the screen; a click also returns. G shows the notation (B16), ? lists the keys, R restarts the current page.
 `?static=1` turns motion off.
 
 For a PDF fallback, run `talk/export_pdf.sh` after building. It prints every finished page to

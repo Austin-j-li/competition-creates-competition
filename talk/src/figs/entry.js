@@ -314,12 +314,17 @@
           case 'ytitle': this.put(s, F.x0 - 14, F.y1 + 4, 1, 0.5); break;
           case 'xtitle': this.put(s, (F.x0 + F.x1) / 2, F.y0 + (this.spec.noIncumbents ? 34 : 64), 0.5, 0.5); break;
           case 'inc': {
-            // the symbol sits at the same place on pages 14, 16 and 17; a word runs to its left
+            // the symbol sits at the same place on pages 14, 16 and 17; a word runs to its left.
+            // Until the click that draws its point (page 14), a label stands over its tick on the
+            // strength axis: that is where page 13's column heads land, and it rises on that click.
             const r = inc(i);
             const x = sx(r.r) + [28, 25, 102][i];
-            const y = i === 1 ? sy(this.yTop) - 14 - s.offsetHeight : sy(this.yRho) + 16;
+            const yPoint = i === 1 ? sy(this.yTop) - 14 - s.offsetHeight : sy(this.yRho) + 16;
+            const yTick = F.y0 - 18 - s.offsetHeight;
+            s.dataset.rise = (yTick - yPoint).toFixed(1);
+            const atPoint = this.step >= ((this.spec.dots || [])[i] || 0);
             s.style.left = x.toFixed(1) + 'px';
-            s.style.top = y.toFixed(1) + 'px';
+            s.style.top = (atPoint ? yPoint : yTick).toFixed(1) + 'px';
             break;
           }
           case 'bracket': {
@@ -335,7 +340,7 @@
           case 'cmp-fixed': this.put(s, F.x0 + 167, sy(this.yTop) - 16, 0, 1); break;
           case 'cmp-hidden': this.put(s, F.x0 + 167, sy(this.yRho) + 18, 0, 0); break;
           case 'inplot': {
-            s.style.width = (i === 0 ? 288 : 285) + 'px';
+            s.style.width = '250px';           // both notes end before the incumbents' labels
             const y = i === 0 ? sy(this.yTop) + 19 : sy(this.yRho) + 16;
             this.put(s, sx(br.rJ.r) + 20, y, 0, 0);
             break;
@@ -378,6 +383,8 @@
       if (!this.spec) return;
       this.stopMotion();
       this.step = step;
+      this.draw = null;
+      this.place();                       // the incumbents' labels stand where this step has them
       if (this.fullG) this.fullG.style.visibility = step >= this.spec.traceStep ? 'hidden' : '';
       if (this.ctlOpen) {
         if (step < this.spec.ctlFrom) this.control.close();
@@ -397,10 +404,32 @@
     guard(step) {
       const groups = this.stepGroups.get(step) || [];
       if (!groups.length) return;
-      queueMicrotask(() => groups.forEach((g) => g.getAnimations({ subtree: true }).forEach((a) => {
-        // finish (not cancel): the look then clears its clip itself and its text wipes run on
-        if (!this.anims.includes(a)) { try { a.finish(); } catch (err) { /* gone */ } }
-      })));
+      queueMicrotask(() => {
+        groups.forEach((g) => g.getAnimations({ subtree: true }).forEach((a) => {
+          // finish (not cancel): the look then clears its clip itself and its text wipes run on
+          if (!this.anims.includes(a)) { try { a.finish(); } catch (err) { /* gone */ } }
+        }));
+        this.timeLabels(step);
+      });
+    },
+
+    /* The look wipes this click's HTML labels at once, so a number such as 1.39 would read "1.3"
+       for a moment, and a label would be set before its line reaches it. Each label is set when
+       the drawing clip reaches its left edge: a number appears whole, words keep the look's wipe. */
+    timeLabels(step) {
+      const d = this.draw;
+      if (!d) return;
+      this.el.querySelectorAll(':scope > .fig-label[data-step="' + step + '"]').forEach((s) => {
+        const left = parseFloat(s.style.left) || 0;
+        const p = Math.max(0, Math.min(1, (left - d.x0) / d.span));
+        const at = d.lead + Math.round(d.dur * bezierTimeAt(p, DRAW_EASE));
+        const whole = s.classList.contains('ax-label');
+        s.getAnimations().forEach((a) => {
+          const kf = a.effect && a.effect.getKeyframes ? a.effect.getKeyframes() : [];
+          if (!kf.some((f) => 'clipPath' in f)) return;
+          try { a.effect.updateTiming(whole ? { delay: at, duration: 1 } : { delay: at }); } catch (err) { /* gone */ }
+        });
+      });
     },
 
     play(step) {
@@ -429,6 +458,7 @@
       const leads = dropX.length > 0 && dropX.every((x) => x <= xa + pad);
       const lead = leads ? DROP : 0;
       const dur = Math.round(Math.min(450, 300 + span / 3));
+      this.draw = xb > xa ? { x0, span, dur, lead } : null;
       if (xb > xa) {
         this.clipRect.setAttribute('x', x0.toFixed(1));
         this.clipRect.setAttribute('width', span.toFixed(1));
@@ -468,6 +498,13 @@
         const delay = lead + Math.round(dur * bezierTimeAt(p, DRAW_EASE));
         this.anims.push(c.animate([{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }],
           { duration: 160, delay, easing: EASE, fill: 'backwards' }));
+        // the incumbent's label rises from its tick to its point as the point arrives
+        const lab = c.dataset.inc != null && this.el.querySelector(`:scope > .inc-label[data-inc="${c.dataset.inc}"]`);
+        const rise = lab ? parseFloat(lab.dataset.rise) || 0 : 0;
+        if (rise) {
+          this.anims.push(lab.animate([{ transform: `translateY(${rise}px)` }, { transform: 'none' }],
+            { duration: 320, delay, easing: EASE, fill: 'backwards' }));
+        }
       }));
       // page 16: the full model fades to its trace as the comparison lines are drawn
       if (this.fullG && step === this.spec.traceStep) {

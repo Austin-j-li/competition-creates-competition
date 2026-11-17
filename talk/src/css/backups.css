@@ -1,0 +1,67 @@
+/* The backups B1 to B17 (b21 to b59): what every backup page shares, whatever its family.
+   One head: the main pages' title size, one title line and one subtitle line, always reserved,
+   so the heavy rule sits at y = 167 on every backup as on a main page with a subtitle.
+   Scoped by .page.is-backup; nothing here reaches the title or main pages. */
+
+body[data-look="plate"] .page.is-backup .page-head { box-sizing: content-box; height: 110px; padding-bottom: 14px; }
+body[data-look="plate"] .page.is-backup .page-title { font-size: var(--fs-title); line-height: 1.1; white-space: nowrap; }
+body[data-look="plate"] .page.is-backup .page-sub { margin: 12px 0 0; height: 1.3em; font-size: var(--fs-sub); line-height: 1.3; white-space: nowrap; }
+
+/* ------------------------------------------------------------------ one list marker
+   Every unnumbered backup list takes the same short ink dash, set inside the measure: the marker
+   stands at the text's left edge (x = 80 on a full-width list) and the text hangs 28px in.
+   Numbered steps (B11 page 4, B13) keep their numbers. */
+body[data-look="plate"] .page.is-backup ul.dash,
+body[data-look="plate"] .page.is-backup ul.cb-list,
+body[data-look="plate"] .page.is-backup .tables-payoffs ul,
+body[data-look="plate"] .page.is-backup ul.tables-statement-note { list-style: none; padding-left: 0; }
+body[data-look="plate"] .page.is-backup ul.dash > li,
+body[data-look="plate"] .page.is-backup ul.cb-list > li,
+body[data-look="plate"] .page.is-backup .tables-payoffs ul > li,
+body[data-look="plate"] .page.is-backup ul.tables-statement-note > li { position: relative; padding-left: 28px; }
+body[data-look="plate"] .page.is-backup ul.dash > li::before,
+body[data-look="plate"] .page.is-backup ul.cb-list > li::before,
+body[data-look="plate"] .page.is-backup .tables-payoffs ul > li::before,
+body[data-look="plate"] .page.is-backup ul.tables-statement-note > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .66em;
+  width: 14px;
+  height: 0;
+  background: none;
+  border-top: var(--rule-w) solid var(--ink);
+}
+body[data-look="plate"] #b51 .pred-text ul.dash { padding-left: 0; }
+body[data-look="plate"] #b51 .pred-text ul.dash > li { padding-left: 33px; }   /* the counted list's text edge */
+body[data-look="plate"] #b52 ul.dash.ruled > li::before { top: calc(17px + .66em); }
+
+/* ------------------------------------------------------------------ formulas stay whole
+   A formula never breaks at a relation or an operator. Where punctuation follows a formula, the
+   page source glues the two with span.nobr. */
+body[data-look="plate"] .page.is-backup .katex { white-space: nowrap; }
+body[data-look="plate"] .page.is-backup .nobr { white-space: nowrap; }
+
+/* ------------------------------------------------------------------ numbers in tables
+   Decimals and integers in a table cell are set in Jost with tabular figures; a number that sits
+   inside a formula (B6's U[1, 19]) keeps the formula face; fractions stay as the source sets them. */
+body[data-look="plate"] .page.is-backup td [data-num]:not(.mnum),
+body[data-look="plate"] .page.is-backup td > .mnum:only-child,
+body[data-look="plate"] .page.is-backup td .tnum {
+  font-family: var(--font-num);
+  font-size: 1em;
+  font-style: normal;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ table ends
+   No thin rule straight under the heavy head rule (B4 lead, B6 page 2, B13 page 3: css/scope.css),
+   and where a table runs down to the foot, the foot's keyline closes it instead of a second rule
+   a few pixels above it. */
+body[data-look="plate"] #b32 .scope-row:last-child,
+body[data-look="plate"] #b33 .panel-b tr:last-child > *,
+body[data-look="plate"] #b45 table.matrix tbody:last-child tr:last-child > *,
+body[data-look="plate"] #b54 table.matrix tbody tr:last-child > *,
+body[data-look="plate"] #b58 table.matrix tbody tr:last-child > * { border-bottom: 0; }
+body[data-look="plate"] #b52 ul.dash.ruled > li { padding-left: 28px; }

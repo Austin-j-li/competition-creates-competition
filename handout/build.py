@@ -210,7 +210,7 @@ def paper_panel(facts: dict) -> str:
                 f'<p class="actions"><a class="button primary" href="{name}" target="_blank" rel="noopener">Open the PDF</a> '
                 f'<a class="button" href="{name}" download>Download</a></p></article>')
     return (f'<h2>Read the paper</h2>\n'
-            f'<p class="stamp" data-version-stamp>Text revision of {main["created"]}. '
+            f'<p class="stamp" data-version-stamp>'
             f'Manuscript with appendix {main["pages"]} pages; comparison note {note["pages"]} pages.</p>\n'
             '<div class="pdf-cards">'
             + card("paper.pdf", "Manuscript", "The paper with its appendix: every result in full, with proofs.", main)

@@ -96,6 +96,7 @@ body[data-look="plate"] .steparrow {
   top: 8px;
   color: var(--ink);
 }
+body[data-look="plate"] .steparrow svg { display: block; width: 26px; height: 14px; margin-top: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: square; }
 body[data-look="plate"] .steptext { padding-top: 20px; text-wrap: pretty; }
 body[data-look="plate"] .runin-label { font-family: var(--font-label); font-weight: 600; letter-spacing: .005em; }
 body[data-look="plate"] .runin { border-top: var(--rule-w) solid var(--rule); }
@@ -301,4 +302,7 @@ body[data-look="plate"] .fig .dot.dot-end { fill: var(--accent); }
 /* the control's dot is a ring, so the mark under it stays visible; page 16's trace of
    the full model is a broad pale stroke that still shows beside the heavy comparison lines */
 body[data-look="plate"] .fig .ctl-dot { fill: none; stroke: var(--fig-ink); stroke-width: 3px; }
-body[data-look="plate"] .fig .br-trace { stroke: oklch(0.80 0.006 260); stroke-width: calc(var(--fig-line-heavy) * 3); }
+body[data-look="plate"] .fig .br-trace { stroke: oklch(0.80 0.006 260); stroke-width: calc(var(--fig-line-heavy) * 3); stroke-linecap: round; stroke-linejoin: round; }
+/* the mixed stretch (1.75 to 1.97) is short: its dashes start on a gap, so the stretch parts
+   from the solid line before it and shows two dashes, not one break */
+body[data-look="plate"] .fig[data-fig="entry"] .br-mixed { stroke-dashoffset: 18px; }

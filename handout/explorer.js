@@ -71,7 +71,7 @@
         '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 30) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
     }
     out += '<line class="bl-tau" x1="' + X(tau).toFixed(1) + '" x2="' + X(tau).toFixed(1) + '" y1="' + (y - 30) + '" y2="' + (y + 8) + '"/>' +
-      '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold τ(r)</text>';
+      '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold <tspan class="bl-it">τ</tspan>(<tspan class="bl-it">r</tspan>)</text>';
     out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="start">m</text>' +
       '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="end">M</text>';
     var used = [];
@@ -123,12 +123,12 @@
     var r = isFinite(state.r) ? state.r : P.r0;
     var eqs = S.equilibria(P, r);
     var layout = C.baseLayout(t);
-    layout.height = narrow ? 640 : 400;
-    layout.margin.t = 46;
-    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6] });
-    layout.yaxis = C.axis(t, { title: { text: 'entry' }, range: [0.15, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.height = narrow ? 660 : 420;
+    layout.margin.t = 54;
+    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 2, 2.8, 3.6] });
+    layout.yaxis = C.axis(t, { title: { text: 'entry' }, range: [0.15, 0.62], tickvals: [0.2, 0.4, 0.6] });
     layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.25, 2.35], tickvals: [1.4, 1.6, 1.8, 2, 2.2] });
-    layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.12, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.12, 0.62], tickvals: [0.2, 0.4, 0.6] });
     layout.margin.l = 64;
     C.twoPanels(layout, narrow);
     if (!narrow) { layout.xaxis.domain = [0, 0.36]; layout.xaxis2.domain = [0.46, 1]; }
@@ -138,14 +138,16 @@
       var marks = ax === 'x' ? [['rA', 'A', 0], ['rN', 'N', 1], ['rC', 'C', 0]] : [['rA', 'A', 0], ['rF', 'F', 1], ['rN', 'N', 0], ['rJ', 'J', 1], ['rS', 'S', 0]];
       marks.forEach(function (m) {
         layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.muted, width: 1, dash: '2 3' }, layer: 'below' });
-        layout.annotations.push({ text: '<i>r</i><sub>' + m[1] + '</sub>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
-          xanchor: 'center', yanchor: 'bottom', yshift: 2 + 15 * m[2], font: { size: 11, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
+        layout.annotations.push({ text: '<i>r<sub>' + m[1] + '</sub></i>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
+          xanchor: 'center', yanchor: 'bottom', yshift: 3 + 17 * m[2], bgcolor: true, font: { size: 14, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
       });
       layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.ink, width: 1.4 } });
     });
-    layout.annotations.push({ text: 'T endpoint (rival mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
-      xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
-    layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
+    // labels clear of the guides where the scale allows, and knocked out on paper where a line crosses them
+    layout.annotations.push({ text: 'T endpoint<br>(rival mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
+      xanchor: 'right', xshift: -9, yanchor: 'top', yshift: -8, bgcolor: true, font: { size: 13, color: t.muted } });
+    layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rF + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom',
+      bgcolor: true, font: { size: 14, color: t.muted } });
     eqs.forEach(function (f) {
       // green only where a purchase recruits the high-cost rival at the chosen strength
       var color = f.e['1'] === 1 ? t.recruit : t.ink;
@@ -173,7 +175,7 @@
     });
   }
   function presetLabel(p, html) {
-    var sym = p.sub ? (html ? '<i>r</i><sub>' + p.sub + '</sub>' : 'r_' + p.sub) : '';
+    var sym = p.sub ? (html ? '<i>r<sub>' + p.sub + '</sub></i>' : 'r_' + p.sub) : '';
     var r = html ? '<i>r</i>' : 'r', rel = p.exact ? ' = ' : ' ≈ ';
     return sym ? r + ' = ' + sym + rel + p.display : r + ' = ' + p.display;
   }
@@ -187,7 +189,7 @@
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
-    var lab = el('label', 'explorer-label', 'Incumbent strength r');
+    var lab = markup('label', 'explorer-label', 'Incumbent strength <i>r</i>');
     lab.setAttribute('for', 'explorer-r');
     controls.appendChild(lab);
     var range = document.createElement('input');
@@ -199,9 +201,13 @@
     out.setAttribute('for', 'explorer-r');
     controls.appendChild(out);
     var pre = el('div', 'explorer-presets');
+    var presetButtons = [];
     presets(P).forEach(function (p) {
-      var b = markup('button', 'preset', p.sub ? '<i>r</i><sub>' + p.sub + '</sub>' : '<i>r</i> = ' + p.display);
+      var b = markup('button', 'preset', p.sub ? '<i>r<sub>' + p.sub + '</sub></i>' : '<i>r</i> = ' + p.display);
       b.type = 'button';
+      b.setAttribute('data-key', p.key);
+      b.setAttribute('aria-pressed', 'false');
+      presetButtons.push(b);
       b.title = presetLabel(p, false);
       b.addEventListener('click', function () { setR(p.value, p); });
       pre.appendChild(b);
@@ -210,7 +216,7 @@
     root.appendChild(controls);
 
     var readouts = el('div', 'explorer-readouts'), cells = {};
-    [['Delta', 'Δ<sub>T</sub>(r)'], ['gH', 'g<sub>H</sub>'], ['gL', 'g<sub>L</sub>'], ['Bhalf', 'B<sub>r</sub>(1/2)'], ['BM', 'B<sub>r</sub>(M)'], ['tau', 'τ(r)']].forEach(function (c) {
+    [['Delta', '<span class="up">Δ</span><sub>T</sub>(r)'], ['gH', 'g<sub>H</sub>'], ['gL', 'g<sub>L</sub>'], ['Bhalf', 'B<sub>r</sub>(<span class="up">1/2</span>)'], ['BM', 'B<sub>r</sub>(M)'], ['tau', 'τ(r)']].forEach(function (c) {
       var cell = el('div', 'readout');
       cell.appendChild(markup('span', 'readout-label', c[1]));
       var v = el('span', 'live readout-value', '');
@@ -237,7 +243,7 @@
     fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the uninformative market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost rival may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. When the rival mixes, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
-    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };
+    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount, presets: presetButtons };
     range.addEventListener('input', function () { schedule(snap(Number(range.value))); });
     range.addEventListener('change', function () { schedule(snap(Number(range.value))); });
     picker.addEventListener('click', function (ev) {
@@ -258,6 +264,9 @@
     E.out.title = shown;
     if (E.range.value !== String(r)) E.range.value = String(r);
     E.range.setAttribute('aria-valuetext', shown);
+    E.presets.forEach(function (b) {
+      b.setAttribute('aria-pressed', state.preset && state.preset.key === b.getAttribute('data-key') ? 'true' : 'false');
+    });
     E.cells.Delta.textContent = d6(A.Delta);
     E.cells.gH.textContent = d6(A.gH);
     E.cells.gL.textContent = d6(A.gL);
@@ -277,10 +286,11 @@
         '</td><td class="num' + (f.e[x] === 1 ? ' is-recruit' : '') + '">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
     }).join('');
     E.detail.innerHTML = '<p class="eq-summary">' + describe(f, P) + '</p>' + beliefLine(f, P) +
-      '<div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
-      '<th class="num">Posterior μ</th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="interaction-hint scroll-hint" hidden>Scroll the table sideways</p><div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
+      '<th class="num">Posterior <i>μ</i></th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
       '<p class="eq-totals"><span>Entry <b class="live' + (f.e['1'] === 1 ? ' is-recruit' : '') + '">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
       '<span>Gross profit at the top posterior <b class="live">' + d6(A.B(P.M)) + '</b> against the high cost <b>' + P.display.c_H + '</b></span></p>';
+    if (CCC.updateScrollHints) CCC.updateScrollHints(E.detail);
     moveMarker();
   }
 

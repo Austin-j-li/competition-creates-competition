@@ -182,10 +182,11 @@ as a historical record only.
 
 ## Figures and interaction
 
-`charts.js` is the SVG renderer shared with the slides: a spec of traces and layout becomes SVG
-with a legend of toggle buttons, a hover readout and a keyboard cursor. The slides call
-`CCC.charts.tokens()` and `CCC.charts.draw()`. It still carries the builders of the Laplace
-figures, which the deck used; `figures.js` removes them from this page's registry of figures.
+`charts.js` is the SVG renderer of this page: a spec of traces and layout becomes SVG with a legend
+of toggle buttons, a hover readout and a keyboard cursor. It holds no figure of its own;
+`figures.js` and `explorer.js` register theirs. (The retired slides keep their own trimmed copy in
+`presentation/charts.js`, and the Laplace archive under `/laplace/` is built from its pinned
+commit, so neither reads this file.)
 
 `figures.js` holds `CCC.slot`, the closed forms of the manuscript at the registry declarations:
 the auction payoffs of the example, the order distributions, posteriors, entry and prices of each

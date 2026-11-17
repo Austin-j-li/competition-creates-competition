@@ -61,6 +61,22 @@ def render_tex(items: list[dict]) -> list[str]:
     return json.loads(proc.stdout)['html']
 
 
+TRIANGLE = {'\u25b8': 'tri tri-r', '\u25c2': 'tri tri-l'}
+SVG_RE = re.compile(r'<svg\b.*?</svg>', re.S)
+
+
+def triangles(html: str) -> str:
+    """The small pointing triangles of the links are not in the locked faces; outside SVG they are
+    drawn by CSS, so they look the same on every machine and in the PDF."""
+    out, last = [], 0
+    for m in SVG_RE.finditer(html):
+        out.append(re.sub('[\u25b8\u25c2]', lambda t: f'<span class="{TRIANGLE[t.group(0)]}" aria-hidden="true"></span>', html[last:m.start()]))
+        out.append(m.group(0))
+        last = m.end()
+    out.append(re.sub('[\u25b8\u25c2]', lambda t: f'<span class="{TRIANGLE[t.group(0)]}" aria-hidden="true"></span>', html[last:]))
+    return ''.join(out)
+
+
 def script_safe(text: str) -> str:
     """Make text safe to sit inside a <script> element."""
     return text.replace('</script', '<\\/script').replace('<!--', '<\\!--')
@@ -399,7 +415,7 @@ def main() -> None:
     it = iter(rendered)
     page_html = []
     for key, html in pages:
-        page_html.append(MATH_RE.sub(lambda m: next(it), html))
+        page_html.append(triangles(MATH_RE.sub(lambda m: next(it), html)))
     math = {k: next(it) for k in label_keys}
     n_page_math = len(items) - len(label_keys)
     report.append(f'math: {n_page_math} in pages, {len(label_keys)} figure labels')
@@ -469,7 +485,7 @@ def main() -> None:
     # Thumbnails keep page-specific layout without duplicating page IDs.
     html = re.sub(r'(<style\b[^>]*>)(.*?)(</style>)',
                   lambda m: m[1] + re.sub(r'#([pb]\d{2})\b',
-                      lambda n: f':is(#{n[1]}, [data-thumb-page="{n[1]}"])', m[2].replace('#stage ', ':is(#stage, #overview) ')) + m[3],
+                      lambda n: f':is(#{n[1]}, [data-thumb-page="{n[1]}"])', re.sub(r'#stage (?=[^\s{,])', ':is(#stage, #overview, #sheet) ', m[2])) + m[3],
                   html, flags=re.S)
     shipping_guards(html, args.allow_missing, face_css)
     out.parent.mkdir(parents=True, exist_ok=True)

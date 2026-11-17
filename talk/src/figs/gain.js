@@ -27,15 +27,16 @@
       svg('path', { class: 'blocks-line cost-line', d: 'M619.17 35V218' }, axis);
       const axisLabels = document.createElement('div'); axisLabels.dataset.step = 3; el.append(axisLabels);
       this.label(axisLabels, 'center word-strong', 619.17, 0, 'order cost ', 'cost');
-      this.label(axisLabels, 'center', O, 237, '', 'zero');
+      this.label(axisLabels, 'center ax-label', O, 237, '', 'zero', true);   // the axis end: a Jost tick number
       const title = this.label(axisLabels, 'center', 687, 237, 'gain ', 'gain');
       title.append(document.createTextNode(' before order cost'));
       this.rows = [this.row(root, 0, 1, 3), this.row(root, 1, SCALE, 4)];
     },
-    label(parent, cls, x, y, word, key) {
+    label(parent, cls, x, y, word, key, plain) {
       const span = document.createElement('span'); span.className = 'fig-label ' + cls;
       span.style.left = x + 'px'; span.style.top = y + 'px';
       if (key) span.innerHTML = word + this.ctx.math['blocks.' + key]; else span.textContent = word;
+      if (plain) span.textContent = (span.querySelector('.katex-html') || span).textContent;   // a number, set as text
       parent.append(span); return span;
     },
     row(root, i, scale, step) {

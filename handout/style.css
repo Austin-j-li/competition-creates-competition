@@ -124,8 +124,9 @@ a.button.primary { font-weight: 600; text-decoration-thickness: 3px; }
 .masthead-inner { position: relative; max-width: var(--page-width); margin: 0 auto; padding: 4.25rem 2rem 0; }
 /* registration crosses, as on the face of a plate */
 .masthead .reg { position: absolute; top: 1.4rem; width: 1.5rem; height: 1.5rem; fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.masthead .reg-l { left: 0.6rem; }
-.masthead .reg-r { right: 0.6rem; }
+/* centred on the column edges: the vertical stroke continues the edge of the title block */
+.masthead .reg-l { left: calc(2rem - 0.75rem); }
+.masthead .reg-r { right: calc(2rem - 0.75rem); }
 .masthead h1 { font-size: clamp(2.3rem, 5.4vw, 4rem); font-weight: 600; line-height: 1.04; letter-spacing: -0.022em; margin: 0; max-width: 18ch; }
 .subtitle { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.25rem, 2.2vw, 1.65rem); line-height: 1.25; margin: 0.7rem 0 0; padding-bottom: 1.4rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); max-width: none; }
 .byline { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.2rem 1.5rem; margin: 0; padding: 1rem 0 0.2rem; max-width: none; }
@@ -158,17 +159,19 @@ a.button.primary { font-weight: 600; text-decoration-thickness: 3px; }
 main { min-width: 0; display: block; }
 main:focus { outline: none; }
 .layout { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
-.brief { min-width: 0; max-width: var(--column); }
+.brief { min-width: 0; max-width: none; }
 
 @media (min-width: 1024px) {
   .layout { display: grid; grid-template-columns: var(--toc) minmax(0, 1fr); gap: var(--gutter); align-items: start; }
   nav.toc { position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
+  /* the question's top keyline sits level with the rail's heavy keyline under "Contents" */
+  .opening-question { padding-top: calc(0.92rem * 1.3 + 0.45rem); }
 }
 
 /* ---------- contents: plain labels on keylines ---------- */
 
 nav.toc { font-family: var(--font-label); font-weight: 500; font-size: 0.92rem; margin-bottom: 2rem; scrollbar-width: thin; }
-.toc-kicker { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin: 0; padding-bottom: 0.45rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); }
+.toc-kicker { font-size: 0.92rem; line-height: 1.3; font-weight: 600; color: var(--ink); margin: 0; padding-bottom: 0.45rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); }
 nav.toc ol { list-style: none; margin: 0 0 1.25rem; padding: 0; }
 nav.toc li { margin: 0; max-width: none; }
 nav.toc a {
@@ -201,14 +204,16 @@ nav.toc details.toc-drawer[open] summary::after { content: "\2212"; }
 .sec { margin: 0 0 5rem; }
 .sec:last-child { margin-bottom: 0; }
 .sec > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin: 0 0 1.5rem; }
-/* The fragments still carry a line with a section number and a reading time under each heading;
-   the plate has neither, so the line is not displayed. */
-.section-time { display: none; }
 .lead { font-size: 1.25rem; line-height: 1.5; }
 /* The takeaway: bold text between two thin keylines. */
-.takeaway { margin-top: 2.5rem; padding: 0.85rem 0 0.95rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); font-size: 1.2rem; line-height: 1.45; font-weight: 600; color: var(--ink); max-width: var(--measure); }
+.takeaway { margin-top: 2.5rem; padding: 0.85rem 0 0.95rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); font-size: 1.2rem; line-height: 1.45; font-weight: 600; color: var(--ink); max-width: none; padding-right: max(0px, calc(100% - 29.5 * 1.25rem)); }
+/* the last disclosure of a section and the takeaway after it share one keyline */
+.sec > details.fold:last-of-type + .takeaway { margin-top: 0; border-top: 0; }
+.sec > details.fold:last-of-type:has(+ .takeaway) { margin-bottom: 0; }
 .takeaway::before { content: "In short. "; font-family: var(--font-label); font-weight: 600; font-size: 0.9em; }
 .interaction-hint { font-family: var(--font-label); font-weight: 500; font-size: 0.88rem; color: var(--ink-2); }
+.interaction-hint + .stepper { margin-top: 0.6rem; }
+.scroll-hint { margin: 0 0 0.4rem; }
 
 .scenario { margin: 0 0 1.2rem; max-width: var(--measure); }
 .scenario p { font-style: italic; }
@@ -281,7 +286,7 @@ details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.2rem;
 .step-btn:hover { color: var(--ink); }
 .stepper li[aria-current="step"] .step-btn { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
 .step-note { display: none; }
-.stepper-panel { margin: 0 0 0.6rem; padding: 1rem 0 0.2rem; min-height: 3.2rem; max-width: none; }
+.stepper-panel { margin: 0 0 0.6rem; padding: 1rem 0 0.2rem; min-height: 3.2rem; max-width: var(--measure); }
 .stepper-panel > :last-child { margin-bottom: 0; }
 .stepper-panel > * { max-width: var(--measure); }
 
@@ -301,7 +306,7 @@ details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.2rem;
 
 /* ---------- number ledger and parameter ledger ---------- */
 
-.strip { margin: 1.9rem 0 0.8rem; max-width: 42rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+.strip { margin: 1.9rem 0 0.8rem; max-width: none; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
 .stat { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; padding: 0.6rem 0; min-width: 0; }
 .stat + .stat { border-top: 1px solid var(--rule); }
 .stat-value { order: 2; font-family: var(--font-text); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; color: var(--ink); line-height: 1.1; white-space: nowrap; }
@@ -321,6 +326,7 @@ figure.chart .chart-canvas { padding: 0.75rem 0 0.4rem; border-bottom: var(--rul
 .chart-mount { width: 100%; min-width: 0; }
 .chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.5rem; margin: 0; padding: 0.55rem 0 0.45rem; border-top: var(--rule-w) solid var(--rule); font-family: var(--font-label); }
 .legend-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
+.legend-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.5rem; }
 .legend-item {
   display: inline-flex;
   align-items: center;
@@ -345,10 +351,10 @@ figure.chart .chart-canvas { padding: 0.75rem 0 0.4rem; border-bottom: var(--rul
 .chart-canvas svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
 svg.plot text { font-family: var(--font-label); font-weight: 500; }
 svg.plot .it { font-family: var(--font-text); font-weight: 400; }
-svg.plot .ann { font-size: 12.5px; }
-svg.plot .ann.panel-label { font-size: 14px; }
-svg.plot .tick { font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
-svg.plot .axis-title { font-size: 13.5px; }
+/* figure type at about three quarters of the body size, as on the talk; a label's size is set by
+   its spec, which also places it */
+svg.plot .tick { font-size: 14px; font-variant-numeric: tabular-nums lining-nums; }
+svg.plot .axis-title { font-size: 15px; }
 svg.plot .panel-label { font-weight: 600; }
 .chart-tip {
   position: absolute;
@@ -385,6 +391,7 @@ tbody tr:last-child td, tbody tr:last-child th { padding-bottom: 0.6rem; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
 thead th.num { white-space: normal; }
 th[scope="row"] { font-weight: 400; color: var(--ink); }
+.table-wrap thead th:first-child, .table-wrap tbody > tr > :first-child { position: sticky; left: 0; z-index: 1; background: var(--ground); }
 
 /* ---------- explorer: an instrument between thin keylines ---------- */
 
@@ -405,10 +412,13 @@ th[scope="row"] { font-weight: 400; color: var(--ink); }
 .explorer input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 5px; height: 24px; margin-top: -11px; background: var(--ink); border: 0; border-radius: 0; }
 .explorer input[type="range"]::-moz-range-track { height: 2px; background: var(--ink); }
 .explorer input[type="range"]::-moz-range-thumb { width: 5px; height: 24px; background: var(--ink); border: 0; border-radius: 0; }
+.explorer input[type="range"]:focus-visible { outline: none; }
+.explorer input[type="range"]:focus-visible::-webkit-slider-thumb { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 3px; }
+.explorer input[type="range"]:focus-visible::-moz-range-thumb { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 3px; }
 .explorer-readouts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1.25rem; margin: 0.5rem 0 0; padding: 0.55rem 0 0.8rem; border-top: 1px solid var(--rule); max-width: none; }
 .readout { min-width: 0; }
 .readout-label { display: block; font-family: var(--font-text); font-style: italic; font-size: 0.95rem; color: var(--ink-2); }
-.readout-label sub { font-style: normal; }
+.readout-label .up { font-style: normal; }
 .readout .live { display: block; font-family: var(--font-text); font-size: 1.05rem; }
 .eq-picker { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; padding: 0.35rem 0 0.7rem; border-top: 1px solid var(--rule); max-width: none; }
 .eq-picker-label { font-size: 0.92rem; font-weight: 500; color: var(--ink-2); }
@@ -428,6 +438,7 @@ svg.belief-line { display: block; width: 100%; max-width: 46rem; height: auto; m
 .belief-line .bl-band-label { fill: var(--ink); font-family: var(--font-text); font-style: italic; font-size: 13px; }
 .belief-line .bl-tau { stroke: var(--ink); stroke-width: 2.5; }
 .belief-line .bl-tau-label { fill: var(--ink); font-size: 11.5px; font-weight: 600; }
+.belief-line .bl-it { font-family: var(--font-text); font-style: italic; font-weight: 400; }
 .belief-line .bl-mark { stroke-width: 1.8; }
 /* a purchase that recruits the high-cost rival: the one green mark of the belief line */
 .belief-line .bl-recruit { fill: var(--fig-accent); stroke: var(--fig-accent); }
@@ -449,6 +460,10 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.9rem 0 1.2rem; max-width: var(--measure); }
 .katex { font-size: 1.02em; }
+/* a formula and the punctuation after it: no break between them, the formula still wraps inside */
+.math-punct { white-space: nowrap; }
+.math-punct .katex { white-space: normal; }
+.math-punct .math-tail { white-space: nowrap; }
 
 /* A registry number: tabular figures, a dotted underline, provenance on hover. */
 .q { text-decoration: underline dotted; text-decoration-color: var(--ink-2); text-decoration-thickness: 1px; text-underline-offset: 0.22em; cursor: help; font-variant-numeric: tabular-nums lining-nums; }
@@ -458,9 +473,9 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 /* ---------- paper and talk tabs ---------- */
 
 .panel-inner { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
-.panel-inner > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin-bottom: 1.2rem; max-width: var(--column); }
+.panel-inner > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin-bottom: 1.2rem; max-width: none; }
 .stamp { font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: var(--measure); color: var(--ink-2); margin-bottom: 1.5rem; }
-.pdf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0 2.5rem; max-width: var(--column); }
+.pdf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0 2.5rem; max-width: none; }
 .pdf-card { border-top: var(--rule-w) solid var(--rule); padding: 0.9rem 0 0.4rem; min-width: 0; }
 .pdf-card h3 { margin-top: 0; font-size: 1.2rem; }
 .pdf-card > p:not(.meta):not(.hash):not(.actions) { font-size: 1.02rem; }
@@ -468,7 +483,7 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 .pdf-card .hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); word-break: break-all; }
 .pdf-card .hash span { font-family: var(--font-label); font-weight: 600; margin-right: 0.3rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; }
-.viewer { margin: 0 0 1.5rem; font-family: var(--font-label); max-width: var(--column); }
+.viewer { margin: 0 0 1.5rem; font-family: var(--font-label); max-width: none; }
 .viewer-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; margin: 0 0 0.6rem; border-top: var(--rule-w) solid var(--rule); }
 .viewer-label { font-weight: 600; font-size: 0.95rem; }
 .viewer-bar button { font: inherit; font-size: 0.95rem; font-weight: 500; padding: 0.6rem 0 0.45rem; border: 0; border-bottom: var(--rule-strong-w) solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; }
@@ -478,9 +493,13 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 .viewer-note, .note { font-size: 0.98rem; color: var(--ink-2); font-family: var(--font-text); }
 .earlier { margin: 1.5rem 0 0; font-family: var(--font-label); font-weight: 500; font-size: 0.98rem; }
 .panel-inner .lead { max-width: var(--measure); }
-#panel-talk .actions { margin: 1.4rem 0 2rem; }
-dl.keys { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: 34rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
-dl.keys dt, dl.keys dd { padding: 0.55rem 0; border-top: 1px solid var(--rule); margin: 0; }
+#panel-talk .actions { margin: 1.4rem 0 1.6rem; align-items: baseline; }
+/* the talk tab's one primary action, set larger than the page's other action links */
+#panel-talk .button.primary { font-size: 1.2rem; }
+.talk-present { font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; color: var(--ink-2); margin: 0 0 1rem; }
+.talk-phone { display: none; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; color: var(--ink-2); }
+dl.keys { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: none; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+dl.keys dt, dl.keys dd { padding: 0.55rem 0; border-top: 1px solid var(--rule); margin: 0; max-width: none; }
 dl.keys dt { white-space: nowrap; padding-right: 1.6rem; color: var(--ink-2); }
 dl.keys dt:first-of-type, dl.keys dt:first-of-type + dd { border-top: 0; }
 dl.keys dd { color: var(--ink); }
@@ -495,8 +514,8 @@ dl.keys kbd { color: var(--ink); }
 .colophon p { max-width: none; margin-bottom: 0.5rem; }
 .colophon a { color: var(--ink); }
 .colophon .build-meta { font-family: var(--font-mono); font-size: 0.74rem; word-break: break-word; }
-.colophon details.fold { max-width: 70ch; margin-top: 1rem; }
-.colophon details.fold p { max-width: 70ch; font-family: var(--font-text); font-weight: 400; font-size: 0.98rem; }
+.colophon details.fold { max-width: none; margin-top: 1rem; }
+.colophon details.fold p { max-width: var(--measure); font-family: var(--font-text); font-weight: 400; font-size: 0.98rem; }
 
 #debug-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 0.6rem 1rem; background: var(--ground); color: var(--ink); border-top: var(--rule-strong-w) solid var(--rule-strong); font-family: var(--font-mono); font-size: 0.875rem; max-height: 40vh; overflow: auto; white-space: pre-wrap; }
 .noscript-note { max-width: var(--page-width); margin: 0 auto; padding: 1rem 2rem; color: var(--ink-2); }
@@ -518,6 +537,26 @@ dl.keys kbd { color: var(--ink); }
   nav.toc { margin-bottom: 2rem; }
   .toc-kicker { display: none; }
   .sec { margin-bottom: 4rem; }
+  .masthead .reg-l { left: calc(1.5rem - 0.75rem); }
+  .masthead .reg-r { right: calc(1.5rem - 0.75rem); }
+  /* the tab keyline above and the drawer's own bottom keyline frame the contents drawer;
+     the question below then needs no second rule over it */
+  nav.toc details.toc-drawer { border-top: 0; }
+  .opening-question .question { border-top: 0; padding-top: 0; }
+}
+
+/* a short desktop window: a tighter title block, so the brief starts on the first screen */
+@media (max-height: 800px) and (min-width: 1024px) {
+  .masthead-inner { padding-top: 3rem; }
+  .masthead .record { margin-bottom: 1.4rem; }
+  .layout { padding-top: 2rem; }
+  .masthead .reg { top: 0.9rem; }
+}
+
+/* below 700 px the talk opens as its reading view: no keys to list */
+@media (max-width: 700px) {
+  .talk-present, dl.keys { display: none; }
+  .talk-phone { display: block; }
 }
 
 @media (max-width: 900px) {
@@ -540,7 +579,12 @@ dl.keys kbd { color: var(--ink); }
   body { font-size: 1.0625rem; }
   .masthead-inner { padding: 1.75rem 1rem 0; }
   .byline { flex-direction: column; gap: 0.15rem; }
-  .masthead .record { margin-bottom: 1.6rem; }
+  .masthead .record { margin-bottom: 1.6rem; flex-direction: column; }
+  .masthead .record .dot, .colophon > p:first-child .dot { display: none; }
+  .colophon > p:first-child { display: flex; flex-direction: column; gap: 0.35rem; }
+  /* a worded row label wraps to two lines, not three; a symbol label keeps its own width */
+  th[scope="row"]:not(:has(.katex)) { min-width: 9rem; }
+  .takeaway { padding-right: max(0px, calc(100% - 29.5 * 1.0625rem)); }
   .layout, .panel-inner { padding: 1.4rem 1rem 3rem; }
   .colophon, .noscript-note { padding-left: 1rem; padding-right: 1rem; }
   .explorer-controls { grid-template-columns: minmax(0, 1fr) auto; }
@@ -549,8 +593,6 @@ dl.keys kbd { color: var(--ink); }
   .explorer-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { flex-direction: column; gap: 0.2rem; }
   .viewer-frame iframe { height: 70vh; }
-  dl.keys { grid-template-columns: 1fr; }
-  dl.keys dd { border-top: 0; padding-top: 0; }
 }
 
 @media (max-width: 480px) {

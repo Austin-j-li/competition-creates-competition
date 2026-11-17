@@ -96,7 +96,7 @@ spacing:
   stage-top: "40px"
   stage-foot: "66px"
   page-width: "73rem"
-  page-column: "53rem"
+  page-column: "53.5rem"
   page-contents: "12rem"
   page-gutter: "3.5rem"
   page-measure: "29.5em"
@@ -189,8 +189,8 @@ On the stage (pixels at 1600 by 900):
 - **Cover title** (Jost 600, 100 px, line height 1.04, tracking -0.022em): the title page. The subtitle is STIX 400 at 40 px, the name Jost 600 at 30 px, the affiliation STIX at 26 px in secondary ink.
 - **Page title** (Jost 600, 56 px, 1.1, -0.012em): one per page, over the heavy keyline. The formal backup pages set it at 52 px.
 - **Sub line** (STIX 400, 28 px, 1.3, secondary ink): one line under the title. Its opening tag ("Result 2", "Discussion") is Jost 600 in ink.
-- **Body** (STIX 400, 30 px, 1.32). Dense pages step down to 26 px, and to 22 px on the fullest backup pages.
-- **Statement** (STIX 600, 28 px, 1.3): the band and the keyline statements.
+- **Body** (STIX 400, 30 px, 1.32). Dense pages step down to 26 px, and to 22 px on the fullest backup pages. Rows of run-in and matrix tables on the main pages are set in two tiers: 27 px (main pages 7, 8, 9) and 24 px (main pages 4, 13, 15, 19); main page 5, the fullest, stays at 22 px.
+- **Statement** (STIX 600): 28 px (1.3) in the band; 30 px (1.3) for the closing statement of a main page set plain or between keylines.
 - **Label** (Jost 500, 24 px): table heads and row labels, figure labels, run-in labels (600). Row numbers and the step numbers of main page 3 (46 px) are Jost 600.
 - **Small** (22 px): notes in STIX italic, figure labels in Jost 500.
 - **Foot** (Jost 500, 21 px, secondary ink): roadmap and links; the current part, the links and the page number are 600 in ink.
@@ -215,7 +215,7 @@ On the front page (root 20 px text, 17 px at 600 px wide and below):
 
 **The stage.** 1600 by 900 px, scaled to fit the window and centred. A page is a grid of three rows: head, body, foot. Side margins are 80 px and the top margin is 40 px. The head holds the title, an optional one-line sub line or stage strip of fixed height, and the heavy keyline, so the body starts at the same height on every page. The body starts 26 px below the keyline. The foot is 66 px high under a thin keyline. The title page has no foot: the title block starts at 300 px from the top over a heavy keyline, and the name and affiliation sit on a thin keyline at 770 px.
 
-**The front page.** A page of 73rem holds, from 1024 px up, a sticky contents rail of 12rem, a gutter of 3.5rem and a column of 53rem. Prose, lists and captions stop at the measure of 29.5em; figures, tables, statements and the explorer span the column. Sections are 5rem apart. Below 1024 px the contents become a drawer above the column. At 760 px the two-column blocks stack and the stepper wraps to three columns; at 600 px the body text is 1.0625rem; at 480 px the stepper wraps to two columns.
+**The front page.** A page of 73rem holds, from 1024 px up, a sticky contents rail of 12rem, a gutter of 3.5rem and a column of 53.5rem. Prose, lists and captions stop at the measure of 29.5em; figures, tables, statements and the explorer span the column. Sections are 5rem apart. Below 1024 px the contents become a drawer above the column. At 760 px the two-column blocks stack and the stepper wraps to three columns; at 600 px the body text is 1.0625rem; at 480 px the stepper wraps to two columns.
 
 **The reading view of the talk** stacks the finished pages in one scrolling column, each at 1600 by 900 scaled to the window width, 56 px apart with a thin keyline between. It opens by itself when the window is narrower than 700 px.
 
@@ -252,7 +252,7 @@ Rectilinear. Every box has square corners (radius 0): the band, table cells, too
 - **Formal statement (talk backups):** a Jost 600 run-in label ("Proposition 1") and its text.
 
 ### Run-in rows
-A row with a Jost 600 label column (at least 210 px) and text beside it, with a thin keyline above or below. The five numbered steps of main page 3 are the same idea in columns: a Jost 600 numeral at 46 px over a thin keyline, text beneath.
+A row with a Jost 600 label column (at least 210 px) and text beside it, with a thin keyline above or below. On the main pages the label is 24 px in a column of 206 px with a 28 px gutter, so the text starts at x = 314 on every page with run-in rows. The five numbered steps of main page 3 are the same idea in columns: a Jost 600 numeral at 46 px over a thin keyline, text beneath.
 
 ### Matrix tables
 Continuous horizontal thin keylines under every row and under the head, no vertical rules, no zebra. Heads and row labels in Jost 500, cells in STIX, numbers right-aligned in tabular figures. The column a table singles out takes the green line screen: the strong incumbent on main pages 13 and 14 and on the backup tables, the costly rival on main page 7. The Strong head is green Jost 600 on paper, and its Entry cell is solid green with reverse white type. On the front page a table sits between two thin keylines with an inner keyline under a Jost 600 head.
@@ -276,7 +276,9 @@ A vertical black marker on the entry chart (main pages 14, 16, 17), called and h
 ### Overview and reading view
 - **Overview (`O`):** the finished pages as thumbnails on paper, grouped under Jost 500 headings at 24 px, in a grid with columns of at least 280 px and gaps of 20 px. Each thumbnail has a thin keyline; the current one has the heavy keyline. No surface sits behind a thumbnail.
 - **Reading view (`V`, or `?view=read`):** described under Layout. Every click step is shown finished. Each group of backup pages opens with its label ("B8") in Jost 500 at the size of a page title, under a thin keyline.
-- **Control strip:** icon buttons of 32 px (44 px on narrow windows) at the top right for previous, next, overview and reading view. It is invisible until the pointer moves and it never shows on a still stage.
+- **Control row:** outside full screen, a row 44 px high on paper above the stage, closed by a thin keyline; the stage fits below it. Left: the site name, a link to the front page. Right, in Jost 500 at 15 px in secondary ink: the position ("Page 14 of 19 · click 3 of 6", or the backup label), "◂ Back to 14" on a backup, "Strength" on the entry-chart pages, previous and next arrows, then Overview, Notation, Reading view, Full screen and Keys, each with its key in a key cap (a thin keyline box). In full screen the stage is clean: the row floats in a thin keyline box at the top right only while the pointer moves or rests on it, and the cursor hides. On a phone the row keeps Overview, Notation and Keys.
+- **Notation (`G`) and Keys (`?`):** a sheet of paper over the stage with a sticky head (title, "Close Esc") on a thin keyline. Notation shows the two B16 pages finished; Keys lists every key in a two-column ruled list. Escape or a forward press closes a sheet on the same click.
+- **Blank (`B` or `.`):** plain paper; a click, Escape or any forward or back press returns to the same click.
 
 ### Front page controls
 - **Tabs:** Jost 500 in secondary ink on a thin keyline; the selected tab is Jost 600 ink over a heavy keyline.

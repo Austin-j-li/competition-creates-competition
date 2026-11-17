@@ -58,6 +58,7 @@
   let blank = false;
   let digits = '';
   let digitTimer = 0;
+  let blankTimer = 0;
   let returnStack = [];
   let overviewOpen = false;
   let overviewBuilt = false;
@@ -66,6 +67,8 @@
   let thumbObserver = null;
   let readChoice = params.has('view');
   let control = null;          // the figure handler whose strength control is open
+  let sheetOpen = '';            // '' or the name of the open sheet: 'notation' or 'keys'
+  let sheetOrigin = null;
   let stage, deck, carryLayer, hud, keysEl;
 
   /* ------------------------------------------------------------ figure registry */
@@ -132,10 +135,16 @@
       scale = W / 1600;
       return;
     }
-    scale = Math.min(W / 1600, H / 900);
+    // Outside full screen the control row is docked above the stage and the stage fits below it.
+    const docked = !isFull();
+    body.classList.toggle('is-full', !docked);
+    const bar = docked && hud ? hud.offsetHeight : 0;
+    scale = Math.min(W / 1600, (H - bar) / 900);
     stage.style.transform = 'scale(' + scale + ')';
     stage.style.left = (W - 1600 * scale) / 2 + 'px';
-    stage.style.top = (H - 900 * scale) / 2 + 'px';
+    stage.style.top = bar + (H - bar - 900 * scale) / 2 + 'px';
+    const label = hud && hud.querySelector('.hud-full');
+    if (label) label.textContent = docked ? 'Full screen' : 'Leave full screen';
   }
 
   // a screen rectangle in stage coordinates
@@ -197,6 +206,7 @@
     const animate = !!o.animate && !reduced;
     P.figs.forEach((f) => call(f.h, 'setStep', reading ? P.steps : s, figOpts(f, P, animate && !reading, o.dir || 0, from)));
     writeHash(o.history || 'replace');
+    updateHud();
     doc.dispatchEvent(new CustomEvent('talk:state', {
       detail: { page: P.key, step: s, from, dir: o.dir || 0, animate, newEls, pageEl: P.el },
     }));
@@ -235,10 +245,54 @@
     if (reading) pages[i].el.scrollIntoView({ block: 'start' });
   }
 
+  function pageName(P) {
+    return P.backup ? P.label : (P.num ? String(P.num) : 'the title');
+  }
+
+  // The control row names where you are, offers the way back from a backup and the strength control.
+  function updateHud() {
+    if (!hud || !shown) return;
+    const P = pages[cur];
+    const pos = hud.querySelector('.hud-pos');
+    pos.textContent = (P.backup ? P.label : P.num ? 'Page ' + P.num + ' of ' + MAIN_COUNT() : 'Title') +
+      (P.steps ? ' · click ' + step + ' of ' + P.steps : '');
+    const ret = hud.querySelector('.hud-return');
+    if (P.backup) {
+      const saved = returnStack[returnStack.length - 1];
+      const link = P.el.querySelector('.back-link[data-go]');
+      const target = saved ? pages.find((p) => p.key === saved.page) : link ? pages.find((p) => p.key === link.dataset.go) : linkingPage(P) || pages[0];
+      ret.querySelector('.hud-return-label').textContent = 'Back to ' + (target ? pageName(target) : 'the title');
+      ret.hidden = false;
+    } else ret.hidden = true;
+    const str = hud.querySelector('.hud-strength');
+    const has = P.figs.some((f) => f.h && f.h.control && typeof f.h.control.open === 'function');
+    str.hidden = !has || reading || P.backup;
+    str.setAttribute('aria-pressed', control ? 'true' : 'false');
+  }
+
+  let mainCount = 0;
+  function MAIN_COUNT() {
+    if (!mainCount) mainCount = pages.filter((p) => !p.backup && p.num).length;
+    return mainCount;
+  }
+
+  function flashNote(text) {
+    keysEl.textContent = text;
+    clearTimeout(digitTimer);
+    digitTimer = setTimeout(() => { if (!digits) keysEl.textContent = ''; }, 2600);
+  }
+
+  // Without a remembered origin, a backup returns to its named page, else to the main page that links to it.
+  function linkingPage(P) {
+    const group = pages.filter((p) => p.backup && p.label === P.label).map((p) => p.key);
+    return pages.find((p) => !p.backup && [...p.el.querySelectorAll('[data-go]')].some((a) => group.includes(a.dataset.go)));
+  }
+
   function returnTo(link) {
     finishMotion();
     const saved = returnStack.pop();
-    const fallback = link && link.dataset.go;
+    const linker = !saved && !(link && link.dataset.go) && pages[cur].backup ? linkingPage(pages[cur]) : null;
+    const fallback = link && link.dataset.go || (linker && linker.key);
     const i = pages.findIndex((p) => p.key === (saved ? saved.page : fallback || 'p00'));
     jump(i >= 0 ? i : 0, saved ? saved.step : (fallback && i >= 0 ? pages[i].steps : 0));
   }
@@ -509,6 +563,9 @@
 
   /* ------------------------------------------------------------ blank, reading, control */
 
+  // A phone, either way up, reads the pages as a column rather than presenting them.
+  function small() { return root.clientWidth < 700 || root.clientHeight < 500; }
+
   function setBlank(on) {
     blank = on;
     body.classList.toggle('is-blank', on);
@@ -549,6 +606,7 @@
     const c = control;
     control = null;
     if (c && c.control && typeof c.control.close === 'function') callControl(c, 'close');
+    updateHud();
   }
 
   function callControl(h, name, ...args) {
@@ -560,8 +618,9 @@
     const f = pages[cur].figs.find((x) => x.h && x.h.control && typeof x.h.control.open === 'function');
     if (!f) return;
     finishMotion();
-    if (callControl(f.h, 'open') === false) return;
+    if (callControl(f.h, 'open') === false) { flashNote('The strength control opens once the chart is complete'); return; }
     control = f.h;
+    updateHud();
   }
 
   /* ------------------------------------------------------------ reading, print, overview */
@@ -600,6 +659,17 @@
     const P = pages[i];
     // Figures supply their own finished appearance, including comparison traces.
     P.figs.forEach((f) => call(f.h, 'setStep', P.steps, figOpts(f, P, false, 0, { page: P.key, step: P.steps })));
+    slot.appendChild(clonePage(i, 'overview-' + i + '-'));
+    const button = slot.parentElement;
+    button.style.setProperty('--thumb-scale', String(slot.clientWidth / 1600));
+    if (i === cur && !reading) {
+      P.figs.forEach((f) => call(f.h, 'setStep', step, figOpts(f, P, false, 0, { page: P.key, step })));
+    }
+  }
+
+  // A finished, inert copy of a page whose IDs (and the references to them) carry a prefix.
+  function clonePage(i, prefix) {
+    const P = pages[i];
     const clone = P.el.cloneNode(true);
     clone.dataset.thumbPage = P.key;
     clone.classList.remove('is-current', 'is-leaving');
@@ -612,7 +682,7 @@
     [clone, ...clone.querySelectorAll('[id]')].forEach((el) => {
       if (!el.id) return;
       const id = el.id;
-      el.id = 'overview-' + i + '-' + id;
+      el.id = prefix + id;
       ids.set(id, el.id);
     });
     // Local SVG patterns and HTML references must not share IDs with the stage.
@@ -627,12 +697,7 @@
         if (value !== a.value) el.setAttribute(a.name, value);
       });
     });
-    slot.appendChild(clone);
-    const button = slot.parentElement;
-    button.style.setProperty('--thumb-scale', String(slot.clientWidth / 1600));
-    if (i === cur && !reading) {
-      P.figs.forEach((f) => call(f.h, 'setStep', step, figOpts(f, P, false, 0, { page: P.key, step })));
-    }
+    return clone;
   }
 
   function buildOverview() {
@@ -648,7 +713,9 @@
         group = key;
         const section = doc.createElement('section');
         const heading = doc.createElement('h2');
-        heading.textContent = p.backup ? p.label : roads[(+p.el.dataset.part || 1) - 1] || roads[0] || '';
+        heading.textContent = p.backup
+          ? p.label + '  ' + (p.el.querySelector('.page-title')?.textContent || '').trim()
+          : roads[(+p.el.dataset.part || 1) - 1] || roads[0] || '';
         section.appendChild(heading);
         grid = doc.createElement('div');
         grid.className = 'overview-grid';
@@ -669,7 +736,15 @@
       button.addEventListener('focus', () => { overviewFocus = i; });
       grid.appendChild(button);
     });
-    overview.appendChild(fragment);
+    const head = doc.createElement('div');
+    head.className = 'sheet-head overview-head';
+    head.innerHTML = '<h2>Overview</h2><button type="button" class="sheet-close">Close <kbd>Esc</kbd></button>';
+    head.querySelector('button').addEventListener('click', closeOverview);
+    overview.appendChild(head);
+    const list = doc.createElement('div');
+    list.className = 'overview-list';
+    list.appendChild(fragment);
+    overview.appendChild(list);
     thumbObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       renderThumbnail(+entry.target.dataset.overviewPage);
@@ -696,6 +771,7 @@
     if (printing) return;
     finishMotion();
     if (control) closeControl();
+    if (sheetOpen) closeSheet();
     overviewOrigin = doc.activeElement;
     overviewOpen = true;
     body.classList.add('is-overview');
@@ -721,8 +797,90 @@
     if (overviewOrigin && overviewOrigin.isConnected) overviewOrigin.focus({ preventScroll: true });
   }
 
+  /* ------------------------------------------------------------ sheets: notation and keys */
+
+  const KEYS = [
+    ['Next click', 'Right, Space, Page Down, Enter'],
+    ['Previous click', 'Left, Page Up'],
+    ['Go to main page 14', '1 4 Enter'],
+    ['Go to backup B8', 'b 8 Enter'],
+    ['Return from a backup', 'Backspace, or Back in the control row'],
+    ['Restart this page', 'R'],
+    ['First and last main page', 'Home, End'],
+    ['Overview of all pages', 'O'],
+    ['Notation', 'G'],
+    ['Strength control (pages 14, 16, 17)', 'S'],
+    ['Blank screen', 'B or . (a clicker’s blank key); click to return'],
+    ['Reading view', 'V'],
+    ['Full screen', 'F (or a clicker’s start key, F5)'],
+    ['These keys', '?'],
+    ['Close a panel, leave blank', 'Esc'],
+  ];
+
+  function openSheet(name) {
+    if (printing) return;
+    if (sheetOpen === name) { closeSheet(); return; }
+    if (overviewOpen) closeOverview();
+    finishMotion();
+    if (control) closeControl();
+    const sheet = doc.getElementById('sheet');
+    const bodyEl = sheet.querySelector('.sheet-body');
+    if (!sheetOpen) sheetOrigin = doc.activeElement;
+    sheetOpen = name;
+    bodyEl.textContent = '';
+    sheet.dataset.sheet = name;
+    if (name === 'notation') {
+      doc.getElementById('sheet-title').textContent = 'Notation';
+      pages.forEach((p, i) => {
+        if (!p.backup || p.label !== 'B16') return;
+        p.figs.forEach((f) => call(f.h, 'setStep', p.steps, figOpts(f, p, false, 0, { page: p.key, step: p.steps })));
+        const frame = doc.createElement('div');
+        frame.className = 'sheet-page';
+        frame.appendChild(clonePage(i, 'sheet-' + i + '-'));
+        bodyEl.appendChild(frame);
+      });
+    } else {
+      doc.getElementById('sheet-title').textContent = 'Keys';
+      const list = doc.createElement('dl');
+      list.className = 'sheet-keys';
+      KEYS.forEach(([what, how]) => {
+        const dt = doc.createElement('dt'); dt.textContent = what;
+        const dd = doc.createElement('dd'); dd.textContent = how;
+        list.append(dt, dd);
+      });
+      bodyEl.appendChild(list);
+      const note = doc.createElement('p');
+      note.className = 'sheet-note';
+      note.textContent = 'A press during a movement finishes it. Back, reload and the return from a backup land on the same click.';
+      bodyEl.appendChild(note);
+    }
+    sheet.hidden = false;
+    body.classList.add('is-sheet');
+    doc.getElementById('viewport').inert = true;
+    sizeSheet();
+    sheet.querySelector('.sheet-close').focus({ preventScroll: true });
+    sheet.scrollTop = 0;
+  }
+
+  function sizeSheet() {
+    const sheet = doc.getElementById('sheet');
+    sheet.querySelectorAll('.sheet-page').forEach((f) => f.style.setProperty('--sheet-scale', String(f.clientWidth / 1600)));
+  }
+
+  function closeSheet() {
+    if (!sheetOpen) return;
+    sheetOpen = '';
+    const sheet = doc.getElementById('sheet');
+    sheet.hidden = true;
+    sheet.querySelector('.sheet-body').textContent = '';
+    body.classList.remove('is-sheet');
+    doc.getElementById('viewport').inert = false;
+    if (sheetOrigin && sheetOrigin.isConnected) sheetOrigin.focus({ preventScroll: true });
+  }
+
   function chooseOverview(i) {
     closeOverview();
+    if (i === cur) return;                       // the current page resumes at its click
     jump(i, pages[i].backup ? pages[i].steps : 0, pages[i].backup);
   }
 
@@ -763,7 +921,8 @@
     const k = e.key, lower = k.length === 1 ? k.toLowerCase() : k;
     if (k === 'Escape') {
       e.preventDefault();
-      if (overviewOpen) closeOverview();
+      if (sheetOpen) closeSheet();
+      else if (overviewOpen) closeOverview();
       else if (control) closeControl();
       else if (blank) setBlank(false);
       else if (digits) { digits = ''; showDigits(); }
@@ -771,14 +930,18 @@
     }
     if (lower === 'b' || k === '.') {
       e.preventDefault();
-      setBlank(!blank);
-      digits = k === 'b' && blank ? 'b' : '';
+      clearTimeout(blankTimer);
+      if (blank || k === '.') { setBlank(!blank); digits = k === 'b' && blank ? 'b' : ''; showDigits(); return; }
+      // b may start a backup number (b8 Enter): blank only if no digit follows at once.
+      digits = 'b';
       showDigits();
+      blankTimer = setTimeout(() => { if (digits === 'b') { setBlank(true); } }, 450);
       return;
     }
     // Lower-case b serves both the clicker's blank and a backup-number prefix.
     if (/^[0-9]$/.test(k) && (!blank || digits === 'b')) {
       e.preventDefault();
+      clearTimeout(blankTimer);
       if (blank) setBlank(false);
       digits = (digits + k).slice(0, 4);
       showDigits();
@@ -791,6 +954,12 @@
       return;
     }
     if (lower === 'o') { e.preventDefault(); if (overviewOpen) closeOverview(); else openOverview(); return; }
+    if (lower === 'g' || k === '?') { e.preventDefault(); openSheet(k === '?' ? 'keys' : 'notation'); return; }
+    if (sheetOpen) {
+      if (FORWARD.has(k) || BACK.has(k)) { e.preventDefault(); closeSheet(); }
+      else if (lower === 'f') { e.preventDefault(); toggleFullscreen(); }
+      return;
+    }
     if (overviewOpen) {
       if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(k)) {
         e.preventDefault(); moveOverview(k); return;
@@ -802,7 +971,13 @@
       return;
     }
     if (lower === 'v') { e.preventDefault(); readChoice = true; setReading(!reading); return; }
-    if (lower === 'f') { e.preventDefault(); toggleFullscreen(); return; }
+    if (lower === 'f' || k === 'F5') {
+      e.preventDefault();
+      if (k === 'F5' && doc.fullscreenElement) return;   // a clicker's start key: enter, never leave
+      toggleFullscreen();
+      return;
+    }
+    if (lower === 'r' && !reading) { e.preventDefault(); nav(() => { if (control) closeControl(); setState(cur, 0, { animate: false, dir: 0 }); }); return; }
     if (k === 'Backspace') {
       e.preventDefault();
       if (digits) { digits = digits.slice(0, -1); showDigits(); }
@@ -837,10 +1012,16 @@
     if (!isMoving()) clearNew();
   }
 
+  // Full screen by the button, the F key or the browser's own command (F11, Ctrl-Cmd-F).
+  function isFull() {
+    if (doc.fullscreenElement) return true;
+    return window.innerWidth >= screen.width - 1 && window.innerHeight >= screen.height - 1;
+  }
+
   function toggleFullscreen() {
     try {
       if (doc.fullscreenElement) doc.exitFullscreen();
-      else root.requestFullscreen();
+      else if (root.requestFullscreen) root.requestFullscreen().catch(() => {});
     } catch (err) { /* not allowed here */ }
   }
 
@@ -848,16 +1029,24 @@
   function wake() {
     body.classList.add('is-awake');
     clearTimeout(awakeTimer);
-    awakeTimer = setTimeout(() => body.classList.remove('is-awake'), 2200);
+    awakeTimer = setTimeout(function sleep() {
+      if (hud.matches(':hover') || control) { awakeTimer = setTimeout(sleep, 800); return; }
+      body.classList.remove('is-awake');
+    }, 2200);
   }
 
   function onHud(e) {
     const b = e.target.closest('button[data-act]');
     if (!b) return;
     const act = b.dataset.act;
-    if (act === 'prev') { if (blank) setBlank(false); else nav(back); }
-    else if (act === 'next') { if (blank) setBlank(false); else { clearNewOnInput(); nav(forward); } }
+    if (act === 'prev') { if (blank) setBlank(false); else if (control) callControl(control, 'move', -1); else nav(back); }
+    else if (act === 'next') { if (blank) setBlank(false); else if (control) callControl(control, 'move', 1); else { clearNewOnInput(); nav(forward); } }
+    else if (act === 'return') nav(() => returnTo(pages[cur].el.querySelector('.back-link[data-go]')));
+    else if (act === 'strength') nav(toggleControl);
     else if (act === 'overview') openOverview();
+    else if (act === 'notation') openSheet('notation');
+    else if (act === 'keys') openSheet('keys');
+    else if (act === 'full') toggleFullscreen();
     else if (act === 'read') { readChoice = true; setReading(!reading); }
   }
 
@@ -896,12 +1085,12 @@
       const st = parseHash();
       setState(st.i, st.s, { animate: false, dir: 0, history: 'replace' });
       if (printing) preparePrint();
-      else if (params.get('view') === 'read' || (!params.has('view') && root.clientWidth < 700)) setReading(true);
+      else if (params.get('view') === 'read' || (!params.has('view') && small())) setReading(true);
       root.classList.add('is-ready');
 
       window.addEventListener('keydown', onKey);
       window.addEventListener('resize', () => {
-        if (!readChoice && !printing) setReading(root.clientWidth < 700);
+        if (!readChoice && !printing) setReading(small());
         fit();
       });
       doc.addEventListener('fullscreenchange', fit);
@@ -911,6 +1100,10 @@
       deck.addEventListener('click', onDeckLink);
       hud.addEventListener('mousedown', (e) => e.preventDefault());
       hud.addEventListener('click', onHud);
+      doc.querySelector('#sheet .sheet-close').addEventListener('click', closeSheet);
+      doc.getElementById('blank').addEventListener('click', (e) => { e.preventDefault(); setBlank(false); });
+      doc.getElementById('sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
+      window.addEventListener('resize', sizeSheet);
       if (mq && !STATIC && params.get('motion') !== '0') {
         const onMq = () => { reduced = mq.matches; if (reduced) finishMotion(); body.dataset.motion = reduced ? 'off' : 'on'; };
         if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);

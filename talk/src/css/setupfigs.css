@@ -51,6 +51,8 @@
 #p08 .pf-formula .katex-display { margin: 0; text-align: left; }
 #p08 .pf-formula .katex-display > .katex { text-align: left; }
 #p08 .sf-row p.gloss { font-size: var(--fs-small); line-height: 1.36; }
+#p08 .sf-row p:not(.gloss) { font-size: 27px; }
+#p08 .sf-row .runin-label { text-wrap: balance; }
 
 /* ------------------------------------------------------------------ figures: common */
 .fig:is([data-fig="payoff"], [data-fig="tree"]) { flex: none; }
@@ -90,7 +92,7 @@
 .fig[data-fig="payoff"] .fig-label.area-label-share { color: var(--ground); }
 /* type on the screen carries a paper halo, so the lines give way to the letters */
 /* type on the screen sits on one paper patch (in place of the look's text halo) */
-.fig[data-fig="payoff"] .fig-label.area-label-rival { padding: 2px 8px 4px; margin: -2px 0 0 -8px; background: var(--ground); }
+.fig[data-fig="payoff"] .fig-label.area-label-rival { padding: 0 4px 2px; margin: 0 0 0 -4px; background: var(--ground); }   /* cut to the type plus 4px */
 .fig[data-fig="payoff"] .fig-label.ax-title { color: var(--ink-2); }
 
 /* the reading view's probe: thin, never on the stage */
@@ -123,16 +125,16 @@ body.is-reading .fig[data-fig="payoff"] { cursor: crosshair; }
   line-height: 1.2;
   color: var(--ink-2);
 }
-.fig[data-fig="tree"] .tree-leaf { padding: 2px 8px; margin-left: -8px; }
+.fig[data-fig="tree"] .tree-leaf { padding: 2px 8px; margin-left: -8px; min-width: 62px; box-sizing: border-box; }   /* one box width for the three leaves */
 .fig[data-fig="tree"] .tree-leaf .katex { font-size: 1.35em; }
 
 /* the marking: the formula's step is the newest (stage), or a leaf is pointed at (reading view).
    Weight on the path, a keyline round the leaf; no colour. */
-#p08:has(.pf-price.is-on):not(:has([data-step="4"].is-on)) .fig[data-fig="tree"] .tree-path,
+html:not(.is-reading) .page[data-page="8"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-path,
 .fig[data-fig="tree"] .tree-path.is-marked {
   stroke-width: max(6px, var(--fig-line-heavy));
 }
-#p08:has(.pf-price.is-on):not(:has([data-step="4"].is-on)) .fig[data-fig="tree"] .tree-leaf,
+html:not(.is-reading) .page[data-page="8"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-leaf,
 .fig[data-fig="tree"] .tree-leaf.is-marked {
   outline: 2.5px solid var(--fig-ink);
   outline-offset: 0;
@@ -141,7 +143,7 @@ body.is-reading .fig[data-fig="payoff"] { cursor: crosshair; }
 .fig[data-fig="tree"] .tree-box.is-pointing .tree-path:not(.is-marked) { stroke-width: max(3px, var(--fig-line)); }
 body.is-reading .fig[data-fig="tree"] .tree-leaf { pointer-events: auto; cursor: default; }
 /* the formula's terms, once the page can tag them (KaTeX \htmlClass needs trust in render_math.mjs) */
-#p08:has(.pf-price.is-on):not(:has([data-step="4"].is-on)) :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE),
+html:not(.is-reading) .page[data-page="8"]:has(.pf-price.is-on) :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE),
 #p08 :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE).is-marked {
   -webkit-text-stroke: .6px currentColor;
   border-bottom: 3px solid var(--ink);          /* a keyline under the term; no shadow in this look */

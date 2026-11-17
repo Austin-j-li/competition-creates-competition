@@ -112,7 +112,8 @@
       host.querySelector(".viewer-frame").appendChild(frame);
     }
     frame.title = title + ", inline viewer";
-    frame.src = src + "#view=FitH";
+    // no toolbar or thumbnail sidebar: the frame shows the pages; "Open the PDF" gives the full viewer
+    frame.src = src + "#view=FitH&pagemode=none&toolbar=0";
     Array.prototype.forEach.call(host.querySelectorAll("[data-viewer-src]"), function (b) {
       b.setAttribute("aria-pressed", b.getAttribute("data-viewer-src") === src ? "true" : "false");
     });
@@ -364,9 +365,70 @@
         return;
       }
       try { renderMathIn(document.body); } catch (e) { recordError("KaTeX render: " + e.message); }
+      try { gluePunctuation(document.body); } catch (e) { recordError("punctuation: " + e.message); }
       katexErrors = document.querySelectorAll(".katex-error").length;
       resolve(true);
     });
+  }
+
+  /* Punctuation after inline mathematics stays on the line of the formula. KaTeX sets a formula as
+     inline boxes, and a browser may break after such a box, so a full stop could open the next line.
+     The formula and its punctuation go into one span.math-punct that does not wrap, and the
+     formula's last box into a span.math-tail that does not wrap either; the formula still wraps
+     between its other boxes (style.css), so only the break before the punctuation is removed.
+     Display mathematics is left alone. */
+  var PUNCT = /^[.,;:!?)\]\u2019\u201D]+/;
+  function gluePunctuation(root) {
+    Array.prototype.forEach.call(root.querySelectorAll(".katex"), function (k) {
+      if (k.closest(".katex-display") || k.closest(".math-punct")) return;
+      var host = k.parentNode;
+      // a formula with registry numbers is wrapped whole in span.q-math; the text follows that wrapper
+      var outer = host.parentNode;
+      if (outer && outer.classList && outer.classList.contains("q-math") && outer.childNodes.length === 1) host = outer;
+      var next = host.nextSibling;
+      var m = next && next.nodeType === 3 ? PUNCT.exec(next.nodeValue) : null;
+      if (!m) return;
+      var wrap = document.createElement("span");
+      wrap.className = "math-punct";
+      host.parentNode.insertBefore(wrap, host);
+      wrap.appendChild(host);
+      wrap.appendChild(document.createTextNode(m[0]));
+      next.nodeValue = next.nodeValue.slice(m[0].length);
+      // The browser decides a break after an inline box by the box's parent, so the formula's last
+      // box goes into a span that does not wrap; breaks between the earlier boxes stay allowed.
+      var boxes = k.querySelectorAll(".katex-html > .katex-base, .katex-html > .base");
+      var tail = boxes[boxes.length - 1];
+      if (tail) {
+        var keep = document.createElement("span");
+        keep.className = "math-tail";
+        tail.parentNode.insertBefore(keep, tail);
+        keep.appendChild(tail);
+      }
+    });
+  }
+
+  /* A table wider than its column scrolls sideways; a Jost line above it says so, only then. */
+  var SCROLL_HINT = "Scroll the table sideways";
+  function updateScrollHints(root) {
+    Array.prototype.forEach.call((root || document).querySelectorAll(".table-wrap"), function (wrap) {
+      var hint = wrap.previousElementSibling;
+      if (!hint || !hint.classList.contains("scroll-hint")) {
+        hint = document.createElement("p");
+        hint.className = "interaction-hint scroll-hint";
+        hint.textContent = SCROLL_HINT;
+        wrap.parentNode.insertBefore(hint, wrap);
+      }
+      hint.hidden = !(wrap.clientWidth > 0 && wrap.scrollWidth > wrap.clientWidth + 1);
+    });
+  }
+  CCC.updateScrollHints = updateScrollHints;
+  function initScrollHints() {
+    var timer = null;
+    function later() { clearTimeout(timer); timer = setTimeout(function () { updateScrollHints(document); }, 150); }
+    window.addEventListener("resize", later);
+    document.addEventListener("toggle", function (ev) { if (ev.target.tagName === "DETAILS" && ev.target.open) later(); }, true);
+    document.addEventListener("ccc:tabchange", later);
+    updateScrollHints(document);
   }
 
   /* ---------- debug banner ---------- */
@@ -429,6 +491,7 @@
       try {
         if (CCC.explorer && typeof CCC.explorer.init === "function") CCC.explorer.init();
       } catch (e) { recordError("explorer.init: " + e.message); }
+      try { initScrollHints(); } catch (e) { recordError("scroll hints: " + e.message); }
       // give lazy mounts and the explorer's first draw a tick before resolving
       window.setTimeout(function () { revealHash(); readyResolve(CCC.selfCheck()); }, 0);
     });

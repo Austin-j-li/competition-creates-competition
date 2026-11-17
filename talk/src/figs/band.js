@@ -21,8 +21,9 @@
       });
       const root = svg('svg', { viewBox: '0 0 1440 268', 'aria-hidden': 'true' }, el);
       svg('path', { class: 'blocks-line', d: 'M158 122H1282M158 122v9M1282 122v9' }, root);
-      this.label(el, 'center', 158, 139, '', 'zero');
-      this.label(el, 'center', 1282, 139, '', 'one');
+      // the axis ends are tick numbers: Jost, on the baseline of the words under the axis
+      this.label(el, 'center ax-label', 158, 153, '', 'zero', true);
+      this.label(el, 'center ax-label', 1282, 153, '', 'one', true);
       const band = svg('g', { 'data-step': 1 }, root);
       this.left = svg('path', { class: 'blocks-line blocks-heavy', d: 'M720 122H462' }, band);
       this.right = svg('path', { class: 'blocks-line blocks-heavy', d: 'M720 122H978' }, band);
@@ -43,10 +44,11 @@
       this.label(this.prepLabels, 'center preparation', 877, 0, '', 'threshold');
       this.label(this.prepLabels, 'preparation word-strong', 924, 3, 'costly rival prepares');
     },
-    label(parent, cls, x, y, word, key) {
+    label(parent, cls, x, y, word, key, plain) {
       const span = document.createElement('span'); span.className = 'fig-label ' + cls;
       span.style.left = x + 'px'; span.style.top = y + 'px';
       if (key) span.innerHTML = word + this.ctx.math['blocks.' + key]; else span.textContent = word;
+      if (plain) span.textContent = (span.querySelector('.katex-html') || span).textContent;   // a number, set as text
       parent.append(span); return span;
     },
     animate(el, frames, timing) {

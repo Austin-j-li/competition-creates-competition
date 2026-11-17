@@ -214,8 +214,9 @@ a.button.primary { font-weight: 600; text-decoration-thickness: 3px; }
 .masthead-inner { position: relative; max-width: var(--page-width); margin: 0 auto; padding: 4.25rem 2rem 0; }
 /* registration crosses, as on the face of a plate */
 .masthead .reg { position: absolute; top: 1.4rem; width: 1.5rem; height: 1.5rem; fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.masthead .reg-l { left: 0.6rem; }
-.masthead .reg-r { right: 0.6rem; }
+/* centred on the column edges: the vertical stroke continues the edge of the title block */
+.masthead .reg-l { left: calc(2rem - 0.75rem); }
+.masthead .reg-r { right: calc(2rem - 0.75rem); }
 .masthead h1 { font-size: clamp(2.3rem, 5.4vw, 4rem); font-weight: 600; line-height: 1.04; letter-spacing: -0.022em; margin: 0; max-width: 18ch; }
 .subtitle { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.25rem, 2.2vw, 1.65rem); line-height: 1.25; margin: 0.7rem 0 0; padding-bottom: 1.4rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); max-width: none; }
 .byline { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.2rem 1.5rem; margin: 0; padding: 1rem 0 0.2rem; max-width: none; }
@@ -248,17 +249,19 @@ a.button.primary { font-weight: 600; text-decoration-thickness: 3px; }
 main { min-width: 0; display: block; }
 main:focus { outline: none; }
 .layout { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
-.brief { min-width: 0; max-width: var(--column); }
+.brief { min-width: 0; max-width: none; }
 
 @media (min-width: 1024px) {
   .layout { display: grid; grid-template-columns: var(--toc) minmax(0, 1fr); gap: var(--gutter); align-items: start; }
   nav.toc { position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
+  /* the question's top keyline sits level with the rail's heavy keyline under "Contents" */
+  .opening-question { padding-top: calc(0.92rem * 1.3 + 0.45rem); }
 }
 
 /* ---------- contents: plain labels on keylines ---------- */
 
 nav.toc { font-family: var(--font-label); font-weight: 500; font-size: 0.92rem; margin-bottom: 2rem; scrollbar-width: thin; }
-.toc-kicker { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin: 0; padding-bottom: 0.45rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); }
+.toc-kicker { font-size: 0.92rem; line-height: 1.3; font-weight: 600; color: var(--ink); margin: 0; padding-bottom: 0.45rem; border-bottom: var(--rule-strong-w) solid var(--rule-strong); }
 nav.toc ol { list-style: none; margin: 0 0 1.25rem; padding: 0; }
 nav.toc li { margin: 0; max-width: none; }
 nav.toc a {
@@ -291,14 +294,16 @@ nav.toc details.toc-drawer[open] summary::after { content: "\2212"; }
 .sec { margin: 0 0 5rem; }
 .sec:last-child { margin-bottom: 0; }
 .sec > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin: 0 0 1.5rem; }
-/* The fragments still carry a line with a section number and a reading time under each heading;
-   the plate has neither, so the line is not displayed. */
-.section-time { display: none; }
 .lead { font-size: 1.25rem; line-height: 1.5; }
 /* The takeaway: bold text between two thin keylines. */
-.takeaway { margin-top: 2.5rem; padding: 0.85rem 0 0.95rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); font-size: 1.2rem; line-height: 1.45; font-weight: 600; color: var(--ink); max-width: var(--measure); }
+.takeaway { margin-top: 2.5rem; padding: 0.85rem 0 0.95rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); font-size: 1.2rem; line-height: 1.45; font-weight: 600; color: var(--ink); max-width: none; padding-right: max(0px, calc(100% - 29.5 * 1.25rem)); }
+/* the last disclosure of a section and the takeaway after it share one keyline */
+.sec > details.fold:last-of-type + .takeaway { margin-top: 0; border-top: 0; }
+.sec > details.fold:last-of-type:has(+ .takeaway) { margin-bottom: 0; }
 .takeaway::before { content: "In short. "; font-family: var(--font-label); font-weight: 600; font-size: 0.9em; }
 .interaction-hint { font-family: var(--font-label); font-weight: 500; font-size: 0.88rem; color: var(--ink-2); }
+.interaction-hint + .stepper { margin-top: 0.6rem; }
+.scroll-hint { margin: 0 0 0.4rem; }
 
 .scenario { margin: 0 0 1.2rem; max-width: var(--measure); }
 .scenario p { font-style: italic; }
@@ -371,7 +376,7 @@ details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.2rem;
 .step-btn:hover { color: var(--ink); }
 .stepper li[aria-current="step"] .step-btn { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
 .step-note { display: none; }
-.stepper-panel { margin: 0 0 0.6rem; padding: 1rem 0 0.2rem; min-height: 3.2rem; max-width: none; }
+.stepper-panel { margin: 0 0 0.6rem; padding: 1rem 0 0.2rem; min-height: 3.2rem; max-width: var(--measure); }
 .stepper-panel > :last-child { margin-bottom: 0; }
 .stepper-panel > * { max-width: var(--measure); }
 
@@ -391,7 +396,7 @@ details.fold > :last-child, details.proof > :last-child { margin-bottom: 1.2rem;
 
 /* ---------- number ledger and parameter ledger ---------- */
 
-.strip { margin: 1.9rem 0 0.8rem; max-width: 42rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+.strip { margin: 1.9rem 0 0.8rem; max-width: none; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
 .stat { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; padding: 0.6rem 0; min-width: 0; }
 .stat + .stat { border-top: 1px solid var(--rule); }
 .stat-value { order: 2; font-family: var(--font-text); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; color: var(--ink); line-height: 1.1; white-space: nowrap; }
@@ -411,6 +416,7 @@ figure.chart .chart-canvas { padding: 0.75rem 0 0.4rem; border-bottom: var(--rul
 .chart-mount { width: 100%; min-width: 0; }
 .chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.5rem; margin: 0; padding: 0.55rem 0 0.45rem; border-top: var(--rule-w) solid var(--rule); font-family: var(--font-label); }
 .legend-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
+.legend-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.5rem; }
 .legend-item {
   display: inline-flex;
   align-items: center;
@@ -435,10 +441,10 @@ figure.chart .chart-canvas { padding: 0.75rem 0 0.4rem; border-bottom: var(--rul
 .chart-canvas svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
 svg.plot text { font-family: var(--font-label); font-weight: 500; }
 svg.plot .it { font-family: var(--font-text); font-weight: 400; }
-svg.plot .ann { font-size: 12.5px; }
-svg.plot .ann.panel-label { font-size: 14px; }
-svg.plot .tick { font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
-svg.plot .axis-title { font-size: 13.5px; }
+/* figure type at about three quarters of the body size, as on the talk; a label's size is set by
+   its spec, which also places it */
+svg.plot .tick { font-size: 14px; font-variant-numeric: tabular-nums lining-nums; }
+svg.plot .axis-title { font-size: 15px; }
 svg.plot .panel-label { font-weight: 600; }
 .chart-tip {
   position: absolute;
@@ -475,6 +481,7 @@ tbody tr:last-child td, tbody tr:last-child th { padding-bottom: 0.6rem; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
 thead th.num { white-space: normal; }
 th[scope="row"] { font-weight: 400; color: var(--ink); }
+.table-wrap thead th:first-child, .table-wrap tbody > tr > :first-child { position: sticky; left: 0; z-index: 1; background: var(--ground); }
 
 /* ---------- explorer: an instrument between thin keylines ---------- */
 
@@ -495,10 +502,13 @@ th[scope="row"] { font-weight: 400; color: var(--ink); }
 .explorer input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 5px; height: 24px; margin-top: -11px; background: var(--ink); border: 0; border-radius: 0; }
 .explorer input[type="range"]::-moz-range-track { height: 2px; background: var(--ink); }
 .explorer input[type="range"]::-moz-range-thumb { width: 5px; height: 24px; background: var(--ink); border: 0; border-radius: 0; }
+.explorer input[type="range"]:focus-visible { outline: none; }
+.explorer input[type="range"]:focus-visible::-webkit-slider-thumb { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 3px; }
+.explorer input[type="range"]:focus-visible::-moz-range-thumb { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 3px; }
 .explorer-readouts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1.25rem; margin: 0.5rem 0 0; padding: 0.55rem 0 0.8rem; border-top: 1px solid var(--rule); max-width: none; }
 .readout { min-width: 0; }
 .readout-label { display: block; font-family: var(--font-text); font-style: italic; font-size: 0.95rem; color: var(--ink-2); }
-.readout-label sub { font-style: normal; }
+.readout-label .up { font-style: normal; }
 .readout .live { display: block; font-family: var(--font-text); font-size: 1.05rem; }
 .eq-picker { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; padding: 0.35rem 0 0.7rem; border-top: 1px solid var(--rule); max-width: none; }
 .eq-picker-label { font-size: 0.92rem; font-weight: 500; color: var(--ink-2); }
@@ -518,6 +528,7 @@ svg.belief-line { display: block; width: 100%; max-width: 46rem; height: auto; m
 .belief-line .bl-band-label { fill: var(--ink); font-family: var(--font-text); font-style: italic; font-size: 13px; }
 .belief-line .bl-tau { stroke: var(--ink); stroke-width: 2.5; }
 .belief-line .bl-tau-label { fill: var(--ink); font-size: 11.5px; font-weight: 600; }
+.belief-line .bl-it { font-family: var(--font-text); font-style: italic; font-weight: 400; }
 .belief-line .bl-mark { stroke-width: 1.8; }
 /* a purchase that recruits the high-cost rival: the one green mark of the belief line */
 .belief-line .bl-recruit { fill: var(--fig-accent); stroke: var(--fig-accent); }
@@ -539,6 +550,10 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; margin: 0.9rem 0 1.2rem; max-width: var(--measure); }
 .katex { font-size: 1.02em; }
+/* a formula and the punctuation after it: no break between them, the formula still wraps inside */
+.math-punct { white-space: nowrap; }
+.math-punct .katex { white-space: normal; }
+.math-punct .math-tail { white-space: nowrap; }
 
 /* A registry number: tabular figures, a dotted underline, provenance on hover. */
 .q { text-decoration: underline dotted; text-decoration-color: var(--ink-2); text-decoration-thickness: 1px; text-underline-offset: 0.22em; cursor: help; font-variant-numeric: tabular-nums lining-nums; }
@@ -548,9 +563,9 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 /* ---------- paper and talk tabs ---------- */
 
 .panel-inner { max-width: var(--page-width); margin: 0 auto; padding: 3rem 2rem 4rem; }
-.panel-inner > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin-bottom: 1.2rem; max-width: var(--column); }
+.panel-inner > h2 { border-bottom: var(--rule-strong-w) solid var(--rule-strong); padding-bottom: 0.55rem; margin-bottom: 1.2rem; max-width: none; }
 .stamp { font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: var(--measure); color: var(--ink-2); margin-bottom: 1.5rem; }
-.pdf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0 2.5rem; max-width: var(--column); }
+.pdf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0 2.5rem; max-width: none; }
 .pdf-card { border-top: var(--rule-w) solid var(--rule); padding: 0.9rem 0 0.4rem; min-width: 0; }
 .pdf-card h3 { margin-top: 0; font-size: 1.2rem; }
 .pdf-card > p:not(.meta):not(.hash):not(.actions) { font-size: 1.02rem; }
@@ -558,7 +573,7 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 .pdf-card .hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); word-break: break-all; }
 .pdf-card .hash span { font-family: var(--font-label); font-weight: 600; margin-right: 0.3rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; }
-.viewer { margin: 0 0 1.5rem; font-family: var(--font-label); max-width: var(--column); }
+.viewer { margin: 0 0 1.5rem; font-family: var(--font-label); max-width: none; }
 .viewer-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.4rem; margin: 0 0 0.6rem; border-top: var(--rule-w) solid var(--rule); }
 .viewer-label { font-weight: 600; font-size: 0.95rem; }
 .viewer-bar button { font: inherit; font-size: 0.95rem; font-weight: 500; padding: 0.6rem 0 0.45rem; border: 0; border-bottom: var(--rule-strong-w) solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; }
@@ -568,9 +583,13 @@ table.eq-table td.is-recruit, .eq-totals b.is-recruit { color: var(--fig-accent)
 .viewer-note, .note { font-size: 0.98rem; color: var(--ink-2); font-family: var(--font-text); }
 .earlier { margin: 1.5rem 0 0; font-family: var(--font-label); font-weight: 500; font-size: 0.98rem; }
 .panel-inner .lead { max-width: var(--measure); }
-#panel-talk .actions { margin: 1.4rem 0 2rem; }
-dl.keys { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: 34rem; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
-dl.keys dt, dl.keys dd { padding: 0.55rem 0; border-top: 1px solid var(--rule); margin: 0; }
+#panel-talk .actions { margin: 1.4rem 0 1.6rem; align-items: baseline; }
+/* the talk tab's one primary action, set larger than the page's other action links */
+#panel-talk .button.primary { font-size: 1.2rem; }
+.talk-present { font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; color: var(--ink-2); margin: 0 0 1rem; }
+.talk-phone { display: none; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; color: var(--ink-2); }
+dl.keys { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-family: var(--font-label); font-weight: 500; font-size: 0.95rem; max-width: none; border-top: var(--rule-w) solid var(--rule); border-bottom: var(--rule-w) solid var(--rule); }
+dl.keys dt, dl.keys dd { padding: 0.55rem 0; border-top: 1px solid var(--rule); margin: 0; max-width: none; }
 dl.keys dt { white-space: nowrap; padding-right: 1.6rem; color: var(--ink-2); }
 dl.keys dt:first-of-type, dl.keys dt:first-of-type + dd { border-top: 0; }
 dl.keys dd { color: var(--ink); }
@@ -585,8 +604,8 @@ dl.keys kbd { color: var(--ink); }
 .colophon p { max-width: none; margin-bottom: 0.5rem; }
 .colophon a { color: var(--ink); }
 .colophon .build-meta { font-family: var(--font-mono); font-size: 0.74rem; word-break: break-word; }
-.colophon details.fold { max-width: 70ch; margin-top: 1rem; }
-.colophon details.fold p { max-width: 70ch; font-family: var(--font-text); font-weight: 400; font-size: 0.98rem; }
+.colophon details.fold { max-width: none; margin-top: 1rem; }
+.colophon details.fold p { max-width: var(--measure); font-family: var(--font-text); font-weight: 400; font-size: 0.98rem; }
 
 #debug-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 0.6rem 1rem; background: var(--ground); color: var(--ink); border-top: var(--rule-strong-w) solid var(--rule-strong); font-family: var(--font-mono); font-size: 0.875rem; max-height: 40vh; overflow: auto; white-space: pre-wrap; }
 .noscript-note { max-width: var(--page-width); margin: 0 auto; padding: 1rem 2rem; color: var(--ink-2); }
@@ -608,6 +627,26 @@ dl.keys kbd { color: var(--ink); }
   nav.toc { margin-bottom: 2rem; }
   .toc-kicker { display: none; }
   .sec { margin-bottom: 4rem; }
+  .masthead .reg-l { left: calc(1.5rem - 0.75rem); }
+  .masthead .reg-r { right: calc(1.5rem - 0.75rem); }
+  /* the tab keyline above and the drawer's own bottom keyline frame the contents drawer;
+     the question below then needs no second rule over it */
+  nav.toc details.toc-drawer { border-top: 0; }
+  .opening-question .question { border-top: 0; padding-top: 0; }
+}
+
+/* a short desktop window: a tighter title block, so the brief starts on the first screen */
+@media (max-height: 800px) and (min-width: 1024px) {
+  .masthead-inner { padding-top: 3rem; }
+  .masthead .record { margin-bottom: 1.4rem; }
+  .layout { padding-top: 2rem; }
+  .masthead .reg { top: 0.9rem; }
+}
+
+/* below 700 px the talk opens as its reading view: no keys to list */
+@media (max-width: 700px) {
+  .talk-present, dl.keys { display: none; }
+  .talk-phone { display: block; }
 }
 
 @media (max-width: 900px) {
@@ -630,7 +669,12 @@ dl.keys kbd { color: var(--ink); }
   body { font-size: 1.0625rem; }
   .masthead-inner { padding: 1.75rem 1rem 0; }
   .byline { flex-direction: column; gap: 0.15rem; }
-  .masthead .record { margin-bottom: 1.6rem; }
+  .masthead .record { margin-bottom: 1.6rem; flex-direction: column; }
+  .masthead .record .dot, .colophon > p:first-child .dot { display: none; }
+  .colophon > p:first-child { display: flex; flex-direction: column; gap: 0.35rem; }
+  /* a worded row label wraps to two lines, not three; a symbol label keeps its own width */
+  th[scope="row"]:not(:has(.katex)) { min-width: 9rem; }
+  .takeaway { padding-right: max(0px, calc(100% - 29.5 * 1.0625rem)); }
   .layout, .panel-inner { padding: 1.4rem 1rem 3rem; }
   .colophon, .noscript-note { padding-left: 1rem; padding-right: 1rem; }
   .explorer-controls { grid-template-columns: minmax(0, 1fr) auto; }
@@ -639,8 +683,6 @@ dl.keys kbd { color: var(--ink); }
   .explorer-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { flex-direction: column; gap: 0.2rem; }
   .viewer-frame iframe { height: 70vh; }
-  dl.keys { grid-template-columns: 1fr; }
-  dl.keys dd { border-top: 0; padding-top: 0; }
 }
 
 @media (max-width: 480px) {
@@ -665,8 +707,8 @@ dl.keys kbd { color: var(--ink); }
   <div class="masthead-inner">
     <svg class="reg reg-l" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 0V24M0 12H24"/></svg>
     <svg class="reg reg-r" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 0V24M0 12H24"/></svg>
-    <h1>Competition creates competition</h1>
-    <p class="subtitle">Stock prices and the discovery of takeover bidders</p>
+    <h1>Competition Creates Competition</h1>
+    <p class="subtitle">Stock Prices and the Discovery of Takeover Bidders</p>
     <p class="byline"><span class="author">Austin Li</span><span class="dot" aria-hidden="true">·</span><span class="affiliation">Department of Economics, University College London</span></p>
     <p class="record">
       <span>Theory working paper</span>
@@ -697,7 +739,6 @@ dl.keys kbd { color: var(--ink); }
       <section class="sec" id="sec-setting">
 
 <h2>Inside a takeover process</h2>
-<p class="section-time">1 · The setting · 2 minutes</p>
 
 <div class="scenario">
 <p class="scenario-label">An illustrative sale process</p>
@@ -722,6 +763,7 @@ C=\begin{cases}0&amp;\text{w.p. }\rho,\\c_H&amp;\text{w.p. }1-\rho.\end{cases}
 \]</div>
 <p>No one sees who filled the slot. Competitive market makers see the order and set the price at the expected terminal value of a share. The rival sees the price and its own cost, and nothing else.</p>
 </div>
+<p class="interaction-hint">Select a stage to see who knows what at that point.</p>
 <ol class="stepper" data-stepper>
 <li data-step><button type="button" class="step-btn">Sale terms</button><div class="step-note">The sale opportunity is public. The seller commits to a cash second-price auction with reserve \(p\). One bidder is prepared; the rival has not decided.</div></li>
 <li data-step><button type="button" class="step-btn">The informed trader learns</button><div class="step-note">The informed trader learns the rival's class \(j\). The rival, the market makers and the incumbent do not.</div></li>
@@ -730,7 +772,6 @@ C=\begin{cases}0&amp;\text{w.p. }\rho,\\c_H&amp;\text{w.p. }1-\rho.\end{cases}
 <li data-step><button type="button" class="step-btn">The rival decides</button><div class="step-note">The rival reads a belief about its class from the price, learns its cost, and prepares when expected acquisition profit covers that cost.</div></li>
 <li data-step><button type="button" class="step-btn">Bids and sale</button><div class="step-note">The incumbent bids its value. A prepared rival learns its value and bids it. The highest admissible bidder wins and pays the larger of the reserve and the other admissible bid.</div></li>
 </ol>
-<p class="interaction-hint">Select a stage to see who knows what at that point.</p>
 <p>The sale must become public before the set of bidders is fixed; only then can a potential rival watch the price while it decides. A disclosed approach, an announced review or an open contest can create that window. Imprivata's 2016 definitive proxy shows the stage the model describes: an unsolicited approach, outreach to other buyers, and indications of interest that still depend on diligence.</p>
 
 <details class="fold" id="setting-detail"><summary>The model in full, the example and related literature</summary>
@@ -780,7 +821,6 @@ C=\begin{cases}0&amp;\text{w.p. }\rho,\\c_H&amp;\text{w.p. }1-\rho.\end{cases}
 <section class="sec" id="sec-mechanism">
 
 <h2>Two returns to information</h2>
-<p class="section-time">2 · The mechanism · 3 minutes</p>
 
 <p>The rival uses information to assess its acquisition profit. The informed trader uses the same class information to value the target's shares. The auction connects these two returns: a stronger incumbent reduces the rival's profit and makes target proceeds more sensitive to its class.</p>
 <figure class="mechanism-map" aria-labelledby="mechanism-caption">
@@ -860,7 +900,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <section class="sec" id="sec-result">
 
 <h2>Competition creates competition</h2>
-<p class="section-time">3 · The main result · 3 minutes</p>
 
 <p>A stronger incumbent can induce rival entry through a more informative stock price. I compare three economies that differ only in incumbent strength: \(F_0\), a stronger \(F_1\), and a stronger still \(F_2\). At \(F_0\), informed trade cannot cover its cost, so the price carries no class information. At \(F_1\), informed trade pays and a purchase recruits a high-cost rival. At \(F_2\), informed trade still pays, while acquisition profit falls too far for a purchase to recruit.</p>
 
@@ -941,7 +980,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <section class="sec" id="sec-path">
 
 <h2>Between the three economies</h2>
-<p class="section-time">4 · Coexistence and research · 3 minutes</p>
 
 <p>Between the weak and the strong incumbent of Proposition 2, two equilibria can hold against the same incumbent. In an <em>uninformative market</em> the informed trader does not trade, the price carries no information, and entry stays at its floor. In the <em>informative market</em> that coexists with it, a purchase recruits a high-cost rival. Propositions 3 and 4 use the default tie rules: an indifferent informed trader may mix over its best orders, and an indifferent high-cost rival prepares.</p>
 
@@ -1018,7 +1056,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <section class="sec" id="sec-robustness">
 
 <h2>Robustness, welfare and sale terms</h2>
-<p class="section-time">5 · Extensions · 2 minutes</p>
 
 <h3 id="sec-robustness-model">The reversal survives changes to the model</h3>
 <p>The rise in entry survives other distributions of preparation costs, with or without atoms. Let the cost mix a low component with weight \(\rho\) and a high component. Retain the trading-cost window (H2), place every low cost strictly below \(B_{F_1}(m(\pi))\), and place every high cost strictly between \(B_{F_0}(\pi)\) and \(B_{F_1}(M(\pi))\). Parts (i) and (ii) of Proposition 2 then hold. The low component prepares at every feasible belief, so entry stays at least \(\rho\) and the trading bound applies unchanged. With an atomless high component, the drop at the entry ceiling becomes a ramp: full-order entry is continuous and nonincreasing in strength.</p>
@@ -1061,7 +1098,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <section class="sec" id="sec-tests">
 
 <h2>What the data should show</h2>
-<p class="section-time">6 · Empirical implications · 2 minutes</p>
 
 <p>The predictions concern publicly visible sale processes in which one bidder is prepared and a rival has not yet committed to diligence. Each applies to one target in one public state and states its conditions. Under full two-sided trade, class \(H\) buys and class \(L\) sells, each with probability one, and the informed share of nonzero orders is \(u/(2+u)\) at every prior. In the example at the prior one half, full two-sided trade is the unique outcome at every strength between \(r_S\), where a full sale earns the trading cost, and \(h\), a range that contains \(r_1\), the entry ceiling and \(r_2\).</p>
 
@@ -1094,7 +1130,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 <div class="tab-panel" id="panel-paper" role="tabpanel" aria-labelledby="tablink-paper" data-panel="paper" hidden>
   <div class="panel-inner">
     <h2>Read the paper</h2>
-<p class="stamp" data-version-stamp>Text revision of 12 November 2026. Manuscript with appendix 151 pages; comparison note 8 pages.</p>
+<p class="stamp" data-version-stamp>Manuscript with appendix 151 pages; comparison note 8 pages.</p>
 <div class="pdf-cards"><article class="pdf-card"><h3>Manuscript</h3><p>The paper with its appendix: every result in full, with proofs.</p><p class="meta"><span class="num">151 pages</span> · <span class="num">942 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>041d2737f2d5fb3938655cfb39db21e624aba807eaea2ab2e0c6e61ba6b40560</code></p><p class="actions"><a class="button primary" href="paper.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="paper.pdf" download>Download</a></p></article><article class="pdf-card"><h3>Comparison note</h3><p>The order slot of this version beside the Laplace order flow of the earlier version.</p><p class="meta"><span class="num">8 pages</span> · <span class="num">203 KB</span> · PDF</p><p class="hash"><span>sha256</span> <code>36691b2a5203eb9092221cbbcae9a50d023c92940c3f5f541375ae96dcc837a1</code></p><p class="actions"><a class="button primary" href="comparison.pdf" target="_blank" rel="noopener">Open the PDF</a> <a class="button" href="comparison.pdf" download>Download</a></p></article></div>
 <section class="viewer" data-viewer aria-label="Inline PDF viewer"><div class="viewer-bar" role="group" aria-label="Choose a document"><span class="viewer-label">Inline viewer</span><button type="button" data-viewer-src="paper.pdf" data-viewer-title="Manuscript" aria-pressed="true">Manuscript</button><button type="button" data-viewer-src="comparison.pdf" data-viewer-title="Comparison note" aria-pressed="false">Comparison note</button></div><div class="viewer-frame"></div><p class="viewer-note">Some phone browsers do not show a PDF inside a page. Use “Open the PDF” instead.</p></section>
 <p class="earlier"><a href="laplace/">Earlier version: Laplace order flow</a></p>
@@ -1105,15 +1141,20 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   <div class="panel-inner">
     <h2>Seminar talk</h2>
     <p class="lead">The seminar talk of the paper, as a web page: a title and 19 pages in six parts (Question, Model setup, Main results, Discussion, Extension, Conclusion), with backup pages. Every number on a page is the registry value that the paper prints.</p>
-    <p class="actions"><a class="button primary" href="talk/">Open the talk</a></p>
+    <p class="actions talk-actions"><a class="button primary" href="talk/">Open the talk</a><a class="button" href="talk/talk.pdf">Slides as PDF</a></p>
+    <p class="talk-present">To present: open the talk, press F for full screen. A clicker's forward and back keys step through each page; its blank key blanks the screen.</p>
     <dl class="keys" aria-label="Keys">
-      <dt><kbd>Right</kbd> or <kbd>Space</kbd></dt><dd>Next step</dd>
-      <dt><kbd>Left</kbd></dt><dd>Previous step</dd>
-      <dt><kbd>O</kbd></dt><dd>Overview</dd>
-      <dt><kbd>V</kbd></dt><dd>Reading view</dd>
-      <dt><kbd>S</kbd></dt><dd>Strength control, on the entry chart</dd>
+      <dt><kbd>Right</kbd>, <kbd>Space</kbd> or <kbd>Page Down</kbd></dt><dd>Next step</dd>
+      <dt><kbd>Left</kbd> or <kbd>Page Up</kbd></dt><dd>Previous step</dd>
+      <dt><kbd>F</kbd></dt><dd>Full screen</dd>
+      <dt><kbd>O</kbd></dt><dd>Overview of all pages</dd>
+      <dt><kbd>G</kbd></dt><dd>Notation</dd>
+      <dt><kbd>S</kbd></dt><dd>Strength control on the entry chart</dd>
+      <dt><kbd>B</kbd> or <kbd>.</kbd></dt><dd>Blank the screen</dd>
       <dt><kbd>Backspace</kbd></dt><dd>Return from a backup page</dd>
+      <dt><kbd>?</kbd></dt><dd>All keys</dd>
     </dl>
+    <p class="talk-phone">On a phone the talk opens as a scrolling column of pages.</p>
   </div>
 </div>
 </main>
@@ -1124,7 +1165,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     <span class="dot" aria-hidden="true">·</span>
     <a href="comparison.pdf">Comparison note (PDF)</a>
     <span class="dot" aria-hidden="true">·</span>
-    <a href="talk/">Seminar talk (slides)</a>
+    <a href="talk/">Seminar talk</a>
   </p>
   <p>Theory working paper · Text revision of 12 November 2026.</p>
   <details class="fold"><summary>Sources and reproducibility</summary>
@@ -1254,7 +1295,8 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       host.querySelector(".viewer-frame").appendChild(frame);
     }
     frame.title = title + ", inline viewer";
-    frame.src = src + "#view=FitH";
+    // no toolbar or thumbnail sidebar: the frame shows the pages; "Open the PDF" gives the full viewer
+    frame.src = src + "#view=FitH&pagemode=none&toolbar=0";
     Array.prototype.forEach.call(host.querySelectorAll("[data-viewer-src]"), function (b) {
       b.setAttribute("aria-pressed", b.getAttribute("data-viewer-src") === src ? "true" : "false");
     });
@@ -1506,9 +1548,70 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         return;
       }
       try { renderMathIn(document.body); } catch (e) { recordError("KaTeX render: " + e.message); }
+      try { gluePunctuation(document.body); } catch (e) { recordError("punctuation: " + e.message); }
       katexErrors = document.querySelectorAll(".katex-error").length;
       resolve(true);
     });
+  }
+
+  /* Punctuation after inline mathematics stays on the line of the formula. KaTeX sets a formula as
+     inline boxes, and a browser may break after such a box, so a full stop could open the next line.
+     The formula and its punctuation go into one span.math-punct that does not wrap, and the
+     formula's last box into a span.math-tail that does not wrap either; the formula still wraps
+     between its other boxes (style.css), so only the break before the punctuation is removed.
+     Display mathematics is left alone. */
+  var PUNCT = /^[.,;:!?)\]\u2019\u201D]+/;
+  function gluePunctuation(root) {
+    Array.prototype.forEach.call(root.querySelectorAll(".katex"), function (k) {
+      if (k.closest(".katex-display") || k.closest(".math-punct")) return;
+      var host = k.parentNode;
+      // a formula with registry numbers is wrapped whole in span.q-math; the text follows that wrapper
+      var outer = host.parentNode;
+      if (outer && outer.classList && outer.classList.contains("q-math") && outer.childNodes.length === 1) host = outer;
+      var next = host.nextSibling;
+      var m = next && next.nodeType === 3 ? PUNCT.exec(next.nodeValue) : null;
+      if (!m) return;
+      var wrap = document.createElement("span");
+      wrap.className = "math-punct";
+      host.parentNode.insertBefore(wrap, host);
+      wrap.appendChild(host);
+      wrap.appendChild(document.createTextNode(m[0]));
+      next.nodeValue = next.nodeValue.slice(m[0].length);
+      // The browser decides a break after an inline box by the box's parent, so the formula's last
+      // box goes into a span that does not wrap; breaks between the earlier boxes stay allowed.
+      var boxes = k.querySelectorAll(".katex-html > .katex-base, .katex-html > .base");
+      var tail = boxes[boxes.length - 1];
+      if (tail) {
+        var keep = document.createElement("span");
+        keep.className = "math-tail";
+        tail.parentNode.insertBefore(keep, tail);
+        keep.appendChild(tail);
+      }
+    });
+  }
+
+  /* A table wider than its column scrolls sideways; a Jost line above it says so, only then. */
+  var SCROLL_HINT = "Scroll the table sideways";
+  function updateScrollHints(root) {
+    Array.prototype.forEach.call((root || document).querySelectorAll(".table-wrap"), function (wrap) {
+      var hint = wrap.previousElementSibling;
+      if (!hint || !hint.classList.contains("scroll-hint")) {
+        hint = document.createElement("p");
+        hint.className = "interaction-hint scroll-hint";
+        hint.textContent = SCROLL_HINT;
+        wrap.parentNode.insertBefore(hint, wrap);
+      }
+      hint.hidden = !(wrap.clientWidth > 0 && wrap.scrollWidth > wrap.clientWidth + 1);
+    });
+  }
+  CCC.updateScrollHints = updateScrollHints;
+  function initScrollHints() {
+    var timer = null;
+    function later() { clearTimeout(timer); timer = setTimeout(function () { updateScrollHints(document); }, 150); }
+    window.addEventListener("resize", later);
+    document.addEventListener("toggle", function (ev) { if (ev.target.tagName === "DETAILS" && ev.target.open) later(); }, true);
+    document.addEventListener("ccc:tabchange", later);
+    updateScrollHints(document);
   }
 
   /* ---------- debug banner ---------- */
@@ -1571,6 +1674,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       try {
         if (CCC.explorer && typeof CCC.explorer.init === "function") CCC.explorer.init();
       } catch (e) { recordError("explorer.init: " + e.message); }
+      try { initScrollHints(); } catch (e) { recordError("scroll hints: " + e.message); }
       // give lazy mounts and the explorer's first draw a tick before resolving
       window.setTimeout(function () { revealHash(); readyResolve(CCC.selfCheck()); }, 0);
     });
@@ -1582,15 +1686,13 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 
 </script>
 <script>
-/* charts.js: Figures 1 to 4 of the handout, drawn as SVG without a chart library.
+/* charts.js: the SVG renderer of the front page's figures, without a chart library.
  *
- * Two layers. The builders (fig1 to fig4) read window.CCC_DATA (emitted by handout/data.py) and
- * the CSS tokens, and return a plain spec: traces (x, y with null at every break, marker
- * symbols, error bars) and a layout (axes, shapes, annotations). They mirror the drawing
- * conventions of numerics/render/figures.py: no in-figure titles, panel labels outside the axes,
- * broken lines at unresolved nodes, interval bars on the certified points at true scale.
- * The renderer turns a spec into SVG with a legend, a hover readout and a keyboard cursor.
- * Neither layer solves, changes a parameter or drops a branch; the spec is never written back.
+ * The builders live in figures.js (Figures 1, 2 and 4) and explorer.js (Figure 3) and register
+ * here. A builder reads window.CCC_DATA and the CSS tokens and returns a plain spec: traces (x, y,
+ * marker symbols, error bars) and a layout (axes, shapes, annotations), with no in-figure titles
+ * and panel labels outside the axes. The renderer turns a spec into SVG with a legend, a hover
+ * readout and a keyboard cursor. It never solves, changes a parameter or drops a branch.
  * ES2019, no modules. Exposes window.CCC.charts.
  */
 (function () {
@@ -1598,26 +1700,20 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 
   var CCC = (window.CCC = window.CCC || {});
   var SVGNS = 'http://www.w3.org/2000/svg';
-  var GAP = 0.005; // base mesh of the r grid; breaks appear at gaps wider than 1.5 * GAP
-  var HEIGHT = { wide: 380, stacked: 600, fig2: 540 };
   var NARROW = 640;
 
   /* The plate: black ink on white stock, one green for the one meaning (recruit), areas as line
-     screens (screen), no grid. The older keys (accent, c2, c3, info, cost, region*) are kept for the
-     builders of the earlier figures, which this page does not mount; they map to ink and to no fill. */
+     screens (screen), no grid. */
   var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', GREEN = 'oklch(0.50 0.15 150)';
   var FALLBACK = {
-    bg: 'oklch(0.985 0.002 250)', surface: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
-    accent: INK, accentSoft: 'none', c2: INK, c3: INK, recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
-    regionA: 'none', regionB: 'none', regionC: 'none',
-    info: INK, cost: INK,
+    bg: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
+    recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
     fontSans: '"Jost", "STIX Two Text", sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };
   var VARS = {
-    bg: '--ground', surface: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
-    accent: '--ink', c2: '--ink', c3: '--ink', recruit: '--fig-accent', screen: '--scr-page',
-    info: '--ink', cost: '--ink',
+    bg: '--ground', ink: '--ink', muted: '--ink-2', line: '--ink-2', axis: '--fig-ink',
+    recruit: '--fig-accent', screen: '--scr-page',
     fontSans: '--font-label', fontMono: '--font-mono'
   };
 
@@ -1632,54 +1728,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     return out;
   }
 
-  function formatNumber(x) {
-    if (x === null || x === undefined) return 'n/a';
-    return String(x);
-  }
-
-  /* Split a long digit string into readable chunks for a hover label. */
-  function chunk(s, n) {
-    s = String(s);
-    if (s.length <= n) return s;
-    var parts = [];
-    for (var i = 0; i < s.length; i += n) parts.push(s.slice(i, i + n));
-    return parts.join('<br>&nbsp;&nbsp;');
-  }
-
-  /* Sort by x and insert null where consecutive nodes are farther apart than gap*1.5 or |dy| > jump.
-   * Returns {x, y, idx}; idx maps each output position to the input index (null at breaks) so the
-   * caller can align customdata. Mirrors _broken_series in numerics/render/figures.py. */
-  function brokenSeries(xs, ys, gap, jump, nodes) {
-    gap = gap === undefined ? GAP : gap;
-    jump = jump === undefined ? 0.02 : jump;
-    var groups = {};
-    xs.forEach(function (x, i) { (groups[String(x)] || (groups[String(x)] = [])).push(i); });
-    var grid = nodes || Object.keys(groups).map(Number).sort(function (a, b) { return a - b; });
-    var x = [], y = [], idx = [];
-    function point(i) {
-      var xx = i === null ? null : xs[i], yy = i === null ? null : ys[i];
-      var last = x.length - 1;
-      if (i !== null && last >= 0 && x[last] !== null &&
-          (xx - x[last] > gap * 1.5 || Math.abs(yy - y[last]) > jump)) {
-        x.push(null); y.push(null); idx.push(null);
-      }
-      x.push(xx); y.push(yy); idx.push(i);
-    }
-    grid.forEach(function (r) {
-      var sub = groups[String(r)] || [];
-      if (sub.length === 1) point(sub[0]);
-      else {
-        point(null);
-        sub.forEach(function (i) { point(i); point(null); });
-      }
-    });
-    return { x: x, y: y, idx: idx };
-  }
-
-  function pick(arr, idx) {
-    return idx.map(function (i) { return i === null ? null : arr[i]; });
-  }
-
   function axis(t, extra) {
     var a = { showline: true, ticks: 'outside', title: { text: '' } };
     if (extra) Object.keys(extra).forEach(function (k) { a[k] = extra[k]; });
@@ -1688,7 +1736,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 
   function baseLayout(t) {
     return {
-      margin: { l: 56, r: 16, t: 30, b: 52 },
+      margin: { l: 56, r: 16, t: 34, b: 58 },
       legend: { orientation: 'h' },
       hovermode: 'x unified',
       annotations: [],
@@ -1702,7 +1750,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       text: text, showarrow: false, panel: true,
       xref: xaxisKey + ' domain', yref: yaxisKey + ' domain',
       x: 0, y: 1, xanchor: 'left', yanchor: 'bottom', xshift: -52, yshift: 4,
-      font: { size: 13, color: t.ink }
+      font: { size: 15, color: t.ink }
     };
   }
 
@@ -1713,7 +1761,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     return layout;
   }
 
-  /* Axis domains for two panels: side by side (wide) or stacked (narrow / fig2). */
+  /* Axis domains for two panels: side by side (wide) or stacked (narrow). */
   function twoPanels(layout, stacked) {
     if (stacked) {
       layout.xaxis.domain = [0, 1]; layout.xaxis.anchor = 'y';
@@ -1727,341 +1775,6 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       layout.yaxis2.domain = [0, 1]; layout.yaxis2.anchor = 'x2';
     }
     return layout;
-  }
-
-  function line(color, dash, width) {
-    return { color: color, dash: dash || 'solid', width: width || 2 };
-  }
-
-  /* ------------------------------------------------------------------ Figure 1 */
-  function fig1(D, t, opts) {
-    var F = D.fig1;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var cdA = F.r.map(function (_, i) { return [formatNumber(F.Delta_T[i]), formatNumber(F.d_Delta_T_dr[i])]; });
-    traces.push({
-      type: 'scatter', mode: 'lines', name: 'Δ<sub>T</sub>(r)',
-      x: F.r, y: F.Delta_T, customdata: cdA, line: line(t.info, 'solid', 2.4),
-      xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
-      hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<br>dΔ<sub>T</sub>/dr = %{customdata[1]}<extra>Δ<sub>T</sub></extra>'
-    });
-    var mus = F.mu.slice().sort(function (a, b) { return Number(b) - Number(a); }); // M, 1/2, m
-    var style = {};
-    style[mus[0]] = { color: t.ink, dash: 'solid', width: 2.2 };
-    style[mus[1]] = { color: t.ink, dash: 'dash', width: 2.2 };
-    style[mus[2]] = { color: t.c3, dash: 'dot', width: 2.6 };
-    mus.forEach(function (mu) {
-      var B = F.B[mu], dB = F.dB[mu];
-      var label = F.mu_label[mu] || mu;
-      var cd = F.r.map(function (_, i) { return [formatNumber(B[i]), formatNumber(dB[i])]; });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'μ = ' + label,
-        x: F.r, y: B, customdata: cd, line: line(style[mu].color, style[mu].dash, style[mu].width),
-        xaxis: 'x2', yaxis: 'y2', legendgroup: 'B' + label,
-        hovertemplate: 'B<sub>r</sub>(' + label + ') = %{customdata[0]}<br>dB/dr = %{customdata[1]}<extra>μ = ' + label + '</extra>'
-      });
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis = axis(t, { title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>(<i>r</i>)' }, range: [0, 1.1] });
-    layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.0, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis2 = axis(t, { title: { text: (narrow ? 'challenger profit' : 'challenger gross profit') + ' <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
-    layout.margin.l = narrow ? 72 : 64;
-    twoPanels(layout, narrow);
-    // Reference levels from the declared inputs: trading cost k against the spread (A3),
-    // high preparation cost c_H against gross profit (A2). Drawn as shapes, not data.
-    var refs = [
-      { v: D.inputs && D.inputs.k, x: 'x', y: 'y', side: 1, above: true, color: t.info, text: 'trading cost <i>k</i> = ' + (D.inputs && D.inputs.k) },
-      { v: D.inputs && D.inputs.c_H, x: 'x2', y: 'y2', side: 0, above: false, color: t.cost, text: 'high preparation cost <i>c<sub>H</sub></i> = ' + (D.inputs && D.inputs.c_H) }
-    ];
-    refs.forEach(function (ref) {
-      if (ref.v === undefined || ref.v === null || !isFinite(Number(ref.v))) return;
-      var v = Number(ref.v);
-      layout.shapes.push({ type: 'line', xref: ref.x + ' domain', yref: ref.y, x0: 0, x1: 1, y0: v, y1: v,
-        line: { color: ref.color, width: 1.2, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: ref.text, showarrow: false, xref: ref.x + ' domain', x: ref.side,
-        xanchor: ref.side ? 'right' : 'left', xshift: ref.side ? -2 : 4, yref: ref.y, y: v, yanchor: ref.above ? 'bottom' : 'top', yshift: ref.above ? 2 : -2,
-        bgcolor: t.bg, font: { size: 11, color: ref.color } });
-    });
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 2 */
-  var BRANCH_STYLE = [
-    { key: 'pooling', name: 'no trade', color: 'accent', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'full_orders', name: 'full orders', color: 'c2', dash: 'solid', width: 2.2, ycol: 'q_H', jumpB: 0.02 },
-    { key: 'asymmetric', name: 'asymmetric orders (1, −v)', color: 'ink', dash: 'dash', width: 2.2, ycol: 'v', jumpB: 0.2 },
-    { key: 'symmetric_interior', name: 'symmetric interior orders (u, −u)', color: 'c3', dash: 'dot', width: 2.6, ycol: 'q_H', jumpB: 0.2 },
-    { key: 'mixed', name: 'mixed diagnostic', color: 'c3', dash: 'dash', width: 1.2, ycol: 'q_H', jumpB: 0.2 }
-  ];
-
-  function fig2(D, t, opts) {
-    var F = D.fig2;
-    var traces = [];
-    var th = F.thresholds || {};
-    var regions = F.regions || {};
-    var xr = F.x_range || [1.0, 3.8];
-
-    BRANCH_STYLE.forEach(function (s) {
-      var br = F.branches[s.key];
-      if (!br || !br.r || !br.r.length) return;
-      var col = t[s.color];
-      var cd = br.r.map(function (_, i) {
-        return [formatNumber(br.E[i]), formatNumber(br.q_H[i]), formatNumber(br.q_L[i]),
-          formatNumber(br.O_H ? br.O_H[i] : null), br.uniqueness_status ? br.uniqueness_status[i] : '', br.result_status[i]];
-      });
-      var a = brokenSeries(br.r, br.E, GAP, 0.02, F.nodes);
-      traces.push({
-        type: 'scatter', mode: s.key === 'mixed' ? 'markers' : 'lines+markers', name: s.name, legendgroup: s.key,
-        marker: { size: s.key === 'mixed' ? 9 : 2, symbol: s.key === 'mixed' ? 'diamond-open' : 'circle', color: col },
-        x: a.x, y: a.y, customdata: pick(cd, a.idx), connectgaps: false,
-        line: line(col, s.dash, s.width), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'E = %{customdata[0]}<br>O<sub>H</sub> = %{customdata[3]}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<br>evidence: %{customdata[5]}<br>uniqueness: %{customdata[4]}<extra>' + s.name + '</extra>'
-      });
-      if (s.key === 'mixed') return;
-      var yb = br[s.ycol];
-      var b = brokenSeries(br.r, yb, GAP, s.jumpB, F.nodes);
-      var what = s.ycol === 'v' ? 'v' : (s.key === 'symmetric_interior' ? 'u' : 'q<sub>H</sub>');
-      traces.push({
-        type: 'scatter', mode: 'lines+markers', name: s.name, legendgroup: s.key, showlegend: false,
-        marker: { size: 2, color: col },
-        x: b.x, y: b.y, customdata: pick(cd, b.idx), connectgaps: false,
-        line: line(col, s.dash, s.width), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: what + ' = %{y}<br>(q<sub>H</sub>, q<sub>L</sub>) = (%{customdata[1]}, %{customdata[2]})<extra>' + s.name + '</extra>'
-      });
-    });
-
-    ['H', 'L'].forEach(function (state) {
-      var support = F.mixed_supports.filter(function (row) { return row.state === state; });
-      traces.push({ type: 'scatter', mode: 'markers', name: 'mixed supports ' + state,
-        legendgroup: 'mixed', showlegend: false, xaxis: 'x2', yaxis: 'y2',
-        x: support.map(function (row) { return row.r; }), y: support.map(function (row) { return Math.abs(row.q); }),
-        customdata: support.map(function (row) { return [row.q, row.weight]; }),
-        marker: { color: t.c3, symbol: state === 'H' ? 'triangle-up' : 'triangle-down',
-          size: support.map(function (row) { return 4 + 5 * row.weight; }) },
-        hovertemplate: 'order = %{customdata[0]}<br>weight = %{customdata[1]}<extra>mixed diagnostic ' + state + '</extra>' });
-    });
-    var full = F.branches.full_orders;
-    var ceiling = Number(th.high_cost_ceiling.value);
-    var atCeiling = full.r.findIndex(function (r) { return Math.abs(r - ceiling) < 1e-12; });
-    if (atCeiling < 0) throw new Error('missing validated ceiling outcome');
-    traces.push({ type: 'scatter', mode: 'markers', name: 'preparation ceiling', showlegend: false,
-      x: [ceiling, ceiling], y: [full.E[atCeiling], Number(D.inputs.rho)], xaxis: 'x', yaxis: 'y',
-      marker: { symbol: ['circle', 'circle-open'], size: 7, color: t.c2 },
-      text: ['At equality: plateau prepares', 'Right-hand limit, strictly above ceiling'],
-      hovertemplate: '%{text}<br>E = %{y:.6f}<extra></extra>' });
-    traces.push({ type: 'scatter', mode: 'markers', name: 'open search coverage',
-      x: F.unresolved_nodes, y: F.unresolved_nodes.map(function () { return 0.135; }),
-      marker: { symbol: 'line-ns', size: 5, color: t.muted }, xaxis: 'x', yaxis: 'y',
-      hovertemplate: 'r = %{x}<extra>unresolved search; not nonexistence</extra>' });
-    var certs = (F.certificates || []).filter(function (c) { return c.accepted === 'true'; });
-    if (certs.length) {
-      var cx = certs.map(function (c) { return Number(c.r); });
-      var eMid = certs.map(function (c) { return Number(c.E_mid); });
-      var vMid = certs.map(function (c) { return Number(c.v_mid); });
-      var cdC = certs.map(function (c) {
-        return [c.r, chunk(c.E_lower, opts && opts.narrow ? 18 : 32), chunk(c.E_upper, opts && opts.narrow ? 18 : 32), c.E_halfwidth, c.v_lower, c.v_upper, c.v_halfwidth];
-      });
-      var marker = { symbol: 'diamond', size: 9, color: t.ink, line: { width: 1, color: t.surface } };
-      traces.push({
-        type: 'scatter', mode: 'markers', name: 'certified equilibria (Proposition 3)', legendgroup: 'certified',
-        x: cx, y: eMid, customdata: cdC, marker: marker, xaxis: 'x', yaxis: 'y',
-        error_y: { type: 'data', symmetric: false, visible: true, color: t.ink, thickness: 1.2, width: 8,
-          array: certs.map(function (c, i) { return Number(c.E_upper) - eMid[i]; }),
-          arrayminus: certs.map(function (c, i) { return eMid[i] - Number(c.E_lower); }) },
-        hovertemplate: 'r = %{customdata[0]}<br>E ∈ [%{customdata[1]},<br>&nbsp;&nbsp;%{customdata[2]}]<br>half-width %{customdata[3]}<extra>certified</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'markers', name: 'certified equilibria (Proposition 3)', legendgroup: 'certified', showlegend: false,
-        x: cx, y: vMid, customdata: cdC, marker: marker, xaxis: 'x2', yaxis: 'y2',
-        error_y: { type: 'data', symmetric: false, visible: true, color: t.ink, thickness: 1.2, width: 8,
-          array: certs.map(function (c, i) { return Number(c.v_upper) - vMid[i]; }),
-          arrayminus: certs.map(function (c, i) { return vMid[i] - Number(c.v_lower); }) },
-        hovertemplate: 'r = %{customdata[0]}<br>v ∈ [%{customdata[4]}, %{customdata[5]}]<br>half-width %{customdata[6]}<extra>certified</extra>'
-      });
-    }
-
-    var layout = baseLayout(t);
-    layout.height = opts && opts.narrow ? 620 : 560;
-    layout.margin = { l: 56, r: 16, t: 34, b: 52 };
-    layout.xaxis = axis(t, { range: xr.slice(), tick0: 1, dtick: 0.5, showticklabels: false, domain: [0, 1], anchor: 'y' });
-    layout.yaxis = axis(t, { title: { text: 'total entry <i>E</i>' }, range: [0.12, 0.62],
-      tickvals: [0.25, 0.35, 0.45, 0.55], domain: [0.56, 1], anchor: 'x' });
-    layout.xaxis2 = axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: xr.slice(), tick0: 1, dtick: 0.5,
-      matches: 'x', domain: [0, 1], anchor: 'y2' });
-    layout.yaxis2 = axis(t, { title: { text: 'order magnitude' }, range: [-0.05, 1.12],
-      tickvals: [0, 0.25, 0.5, 0.75, 1], domain: [0, 0.44], anchor: 'x2' });
-
-    function regionShape(range, color) {
-      if (!range || range.length !== 2) return null;
-      return { type: 'rect', xref: 'x', yref: 'paper', x0: range[0], x1: range[1], y0: 0, y1: 1,
-        fillcolor: color, line: { width: 0 }, layer: 'below' };
-    }
-    [regionShape(regions.no_trade_unique, t.regionA), regionShape(regions.full_orders_unique, t.regionB)]
-      .forEach(function (s) { if (s) layout.shapes.push(s); });
-    F.multiplicity_nodes.forEach(function (r) {
-      ['y', 'y2'].forEach(function (ax) {
-        layout.shapes.push({ type: 'line', xref: 'x', yref: ax + ' domain', x0: r, x1: r, y0: 0, y1: 0.025,
-          line: { color: t.c3, width: 1 }, layer: 'above' });
-      });
-    });
-
-    var thKeys = [['pooling_existence', 'r<sub>N</sub>'], ['full_orders_unique_sufficient', 'r<sub>U</sub>'], ['high_cost_ceiling', 'r<sub>C</sub>']];
-    thKeys.forEach(function (k) {
-      var row = th[k[0]];
-      if (!row) return;
-      var v = Number(row.value);
-      layout.shapes.push({ type: 'line', xref: 'x', yref: 'paper', x0: v, x1: v, y0: 0, y1: 1,
-        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: k[1], showarrow: false, xref: 'x', x: v, yref: 'y domain', y: 1,
-        yanchor: 'bottom', yshift: 3, font: { size: 12, color: t.muted },
-        hovertext: k[1].replace(/<[^>]+>/g, '') + ' = ' + (row.value_str || formatNumber(row.value)) + (row.interpretation ? '; ' + row.interpretation : '') });
-    });
-
-    function caption(range, text) {
-      if (!range || range.length !== 2) return;
-      layout.annotations.push({ text: text, showarrow: false, xref: 'x', x: (range[0] + range[1]) / 2,
-        yref: 'y domain', y: 0.03, yanchor: 'bottom', font: { size: 11, color: t.muted }, align: 'center' });
-    }
-    caption(regions.no_trade_unique, 'no trade<br>unique');
-
-    // keep the label between r_U and r_C so neither threshold guide crosses it at phone width
-    var fo = regions.full_orders_unique, rC = th.high_cost_ceiling ? Number(th.high_cost_ceiling.value) : null;
-    caption(fo && rC !== null && rC > fo[0] && rC < fo[1] ? [fo[0], rC] : fo, 'full orders<br>unique');
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 3 */
-  function fig3(D, t, opts) {
-    var F = D.fig3;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var styles = [
-      { key: 'Laplace', color: t.accent, dash: 'solid', endName: 'Laplace, plateau (tie rule)', open: false },
-      { key: 'logistic', color: t.c2, dash: 'dash', endName: 'logistic, zero tail at bound', open: false }
-    ];
-    styles.forEach(function (s) {
-      var S = F[s.key];
-      if (!S) return;
-      var xs = [], mass = [], E = [], cd = [];
-      var end = null;
-      for (var i = 0; i < S.M_minus_tau.length; i++) {
-        var row = [formatNumber(S.posterior_upper_tail_mass[i]), formatNumber(S.E[i]), formatNumber(S.x_star ? S.x_star[i] : null)];
-        if (S.M_minus_tau[i] > 0) { xs.push(S.M_minus_tau[i]); mass.push(S.posterior_upper_tail_mass[i]); E.push(S.E[i]); cd.push(row); }
-        else if (S.M_minus_tau[i] === 0) end = { x: 0, mass: S.posterior_upper_tail_mass[i], E: S.E[i], cd: row };
-      }
-      traces.push({
-        type: 'scatter', mode: 'lines', name: s.key, legendgroup: s.key,
-        x: xs, y: mass, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'Pr(μ<sub>X</sub> ≥ τ) = %{customdata[0]}<br>x* = %{customdata[2]}<extra>' + s.key + '</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: s.key, legendgroup: s.key, showlegend: false,
-        x: xs, y: E, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'E = %{customdata[1]}<br>x* = %{customdata[2]}<extra>' + s.key + '</extra>'
-      });
-      if (end) {
-        var marker = s.open
-          ? { symbol: 'circle-open', size: 9, color: s.color, line: { width: 1.6, color: s.color } }
-          : { symbol: 'circle', size: 9, color: s.color, line: { width: 1, color: s.color } };
-        traces.push({
-          type: 'scatter', mode: 'markers', name: s.endName, legendgroup: s.key + '-end',
-          x: [end.x], y: [end.mass], customdata: [end.cd], marker: marker, xaxis: 'x', yaxis: 'y',
-          hovertemplate: 'M − τ = 0<br>Pr(μ<sub>X</sub> ≥ τ) = %{customdata[0]}<br>x* = %{customdata[2]}<extra>' + s.endName + '</extra>'
-        });
-        traces.push({
-          type: 'scatter', mode: 'markers', name: s.endName, legendgroup: s.key + '-end', showlegend: false,
-          x: [end.x], y: [end.E], customdata: [end.cd], marker: marker, xaxis: 'x2', yaxis: 'y2',
-          hovertemplate: 'M − τ = 0<br>E = %{customdata[1]}<br>x* = %{customdata[2]}<extra>' + s.endName + '</extra>'
-        });
-      }
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'threshold distance <i>M</i> − τ' }, range: [-0.01, 0.24], tick0: 0, dtick: 0.05 });
-    layout.yaxis = axis(t, { title: { text: 'Pr(μ<sub><i>X</i></sub> ≥ τ) under full orders' }, range: [-0.02, 0.55] });
-    layout.xaxis2 = axis(t, { title: { text: 'threshold distance <i>M</i> − τ' }, range: [-0.01, 0.24], tick0: 0, dtick: 0.05 });
-    layout.yaxis2 = axis(t, { title: { text: 'total entry <i>E</i>' }, range: [0.22, 0.66] });
-    twoPanels(layout, narrow);
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
-  }
-
-  /* ------------------------------------------------------------------ Figure 4 */
-  function fig4(D, t, opts) {
-    var F = D.fig4;
-    var narrow = !!(opts && opts.narrow);
-    var traces = [];
-    var keys = Object.keys(F).sort(function (a, b) { return Number(a) - Number(b); });
-    var styles = [
-      { key: keys[0], color: t.accent, dash: 'solid', word: 'weak' },
-      { key: keys[1], color: t.c2, dash: 'dash', word: 'strong' }
-    ];
-    styles.forEach(function (s) {
-      var S = F[s.key];
-      if (!S) return;
-      var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
-      var who = s.word + ' incumbent, r = ' + s.key;
-      traces.push({
-        type: 'scatter', mode: 'lines', name: who, legendgroup: 'panelA-' + s.word,
-        legendgrouptitle: { text: '(a) Δ<sub>η</sub>' },
-        x: S.eta, y: S.Delta_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x', yaxis: 'y',
-        hovertemplate: 'Δ<sub>η</sub> = %{customdata[0]}<extra>' + who + '</extra>'
-      });
-    });
-    styles.forEach(function (s) {
-      var raw = F[s.key];
-      if (!raw) return;
-      var S = {};
-      Object.keys(raw).forEach(function (key) { S[key] = raw[key].filter(function (_, i) { return raw.eta[i] < 1; }); });
-      var cd = S.eta.map(function (_, i) { return [formatNumber(S.Delta_eta[i]), formatNumber(S.G_H_eta[i]), formatNumber(S.G_L_eta[i])]; });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>H</sub>, ' + s.word, legendgroup: 'panelB-H-' + s.word,
-        legendgrouptitle: { text: '(b) G<sub>θ,η</sub>' },
-        x: S.eta, y: S.G_H_eta, customdata: cd, line: line(s.color, s.dash, 2.2), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'G<sub>H,η</sub> = %{customdata[1]}<extra>G<sub>H</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
-      });
-      traces.push({
-        type: 'scatter', mode: 'lines', name: 'G<sub>L</sub>, ' + s.word, legendgroup: 'panelB-L-' + s.word,
-        x: S.eta, y: S.G_L_eta, customdata: cd, line: line(s.color, 'dot', 2.6), xaxis: 'x2', yaxis: 'y2',
-        hovertemplate: 'G<sub>L,η</sub> = %{customdata[2]}<extra>G<sub>L</sub>, ' + s.word + ' (r = ' + s.key + ')</extra>'
-      });
-    });
-    var layout = baseLayout(t);
-    layout.height = narrow ? HEIGHT.stacked : HEIGHT.wide;
-    layout.xaxis = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
-    layout.yaxis = axis(t, { title: { text: 'target-payoff spread Δ<sub>η</sub>' }, range: [0, 10.5] });
-    layout.xaxis2 = axis(t, { title: { text: 'seller bargaining weight η' }, range: [0, 1], tick0: 0, dtick: 0.25 });
-    layout.yaxis2 = axis(t, { title: { text: 'challenger profit <i>G</i><sub>θ,η</sub>' }, type: 'log',
-      range: [Math.log10(3e-3), Math.log10(60)], tickvals: [0.01, 0.1, 1, 10], ticktext: ['0.01', '0.1', '1', '10'] });
-    twoPanels(layout, narrow);
-    [['x', 'y'], ['x2', 'y2']].forEach(function (k) {
-      layout.shapes.push({ type: 'line', xref: k[0], yref: k[1] + ' domain', x0: 0.5, x1: 0.5, y0: 0, y1: 1,
-        line: { color: t.muted, width: 1, dash: 'dot' }, layer: 'below' });
-      layout.annotations.push({ text: 'η = 1/2', showarrow: false, xref: k[0], x: 0.5, xanchor: 'left', xshift: 3,
-        yref: k[1] + ' domain', y: 1, yanchor: 'top', yshift: -2, bgcolor: t.bg,
-        font: { size: 11, color: t.muted } });
-    });
-    // direct labels: weak sits above strong at low η in both G pairs, so label weak above, strong below
-    var LX = 0.12;
-    function at(xs, ys) {
-      for (var i = 1; i < xs.length; i++) if (xs[i] >= LX) return ys[i - 1] + (ys[i] - ys[i - 1]) * (LX - xs[i - 1]) / (xs[i] - xs[i - 1]);
-      return null;
-    }
-    ['G_H_eta', 'G_L_eta'].forEach(function (col) {
-      styles.forEach(function (s, j) {
-        var S = F[s.key];
-        var y = S && at(S.eta, S[col]);
-        if (!(y > 0)) return;
-        layout.annotations.push({ text: s.word, showarrow: false, xref: 'x2', x: LX, yref: 'y2', y: Math.log10(y),
-          yanchor: j === 0 ? 'bottom' : 'top', yshift: j === 0 ? 3 : -3, font: { size: 11, color: s.color } });
-      });
-    });
-    panelLabels(layout, t);
-    return { traces: traces, layout: layout };
   }
 
   /* ================================================================== SVG renderer */
@@ -2207,11 +1920,13 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   }
 
   function markerSvg(sym, x, y, size, color, lineSpec, bg, opacity) {
-    var open = /-open$/.test(sym) || sym === 'line-ns';
+    // circle-ring: an open ring with no fill, drawn round a filled mark at (nearly) the same point
+    var ring = sym === 'circle-ring';
+    var open = /-open$/.test(sym) || sym === 'line-ns' || ring;
     var d = symbolPath(sym, x, y, size);
     var sw = lineSpec && lineSpec.width !== undefined ? lineSpec.width : (open ? 1.6 : 0);
     var stroke = open ? color : (lineSpec && lineSpec.color ? lineSpec.color : color);
-    return '<path class="mk mk-' + esc(sym) + '" d="' + d + '" fill="' + (open ? (sym === 'line-ns' ? 'none' : bg) : color) + '"' +
+    return '<path class="mk mk-' + esc(sym) + '" d="' + d + '" fill="' + (open ? (sym === 'line-ns' || ring ? 'none' : bg) : color) + '"' +
       ' stroke="' + stroke + '" stroke-width="' + (open ? Math.max(1.4, sw) : sw) + '"' + (opacity !== undefined ? ' opacity="' + opacity + '"' : '') + '/>';
   }
 
@@ -2283,7 +1998,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var anchor = a.xanchor === 'left' ? 'start' : (a.xanchor === 'right' ? 'end' : 'middle');
     var lh = size * 1.2, total = lh * lines.length;
     var top = a.yanchor === 'bottom' ? y - total : (a.yanchor === 'top' ? y : y - total / 2);
-    var out = '<text class="ann' + (a.panel ? ' panel-label' : '') + '" x="' + px(x) + '" font-size="' + size + '" fill="' + color + '" text-anchor="' + anchor + '"' +
+    var out = '<text class="ann' + (a.panel ? ' panel-label' : '') + (a.knockout ? ' knock' : '') + '" x="' + px(x) + '" font-size="' + size + '" fill="' + color + '" text-anchor="' + anchor + '"' +
       (a.bgcolor ? ' stroke="' + bg + '" stroke-width="4" paint-order="stroke" stroke-linejoin="round"' : '') + '>';
     lines.forEach(function (l, i) { out += '<tspan x="' + px(x) + '" y="' + px(top + lh * (i + 0.8)) + '">' + rich(l) + '</tspan>'; });
     out += (a.hovertext ? '<title>' + esc(a.hovertext) + '</title>' : '') + '</text>';
@@ -2302,7 +2017,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
           var y = ax.map(tk.v);
           if (!isFinite(y) || y < ax.p0 - 0.5 || y > ax.p1 + 0.5) return;
           if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(xl) + '" x2="' + px(xr) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + t.grid + '"/>';
-          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 4) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
+          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(xl - 7) + '" y="' + px(y + 5) + '" text-anchor="end" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
           out += '<line x1="' + px(xl - 4) + '" x2="' + px(xl) + '" y1="' + px(y) + '" y2="' + px(y) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
         });
         out += '<line class="axis-line" x1="' + px(xl) + '" x2="' + px(xl) + '" y1="' + px(ax.p0) + '" y2="' + px(ax.p1) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
@@ -2317,10 +2032,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
           if (!isFinite(x) || x < ax.p0 - 0.5 || x > ax.p1 + 0.5) return;
           if (t.grid && t.grid !== 'none') out += '<line class="grid" x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(other.p0) + '" y2="' + px(yb) + '" stroke="' + t.grid + '"/>';
           out += '<line x1="' + px(x) + '" x2="' + px(x) + '" y1="' + px(yb) + '" y2="' + px(yb + 4) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
-          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 17) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
+          if (a.showticklabels !== false) out += '<text class="tick" x="' + px(x) + '" y="' + px(yb + 19) + '" text-anchor="middle" fill="' + t.ink + '">' + esc(tk.label) + '</text>';
         });
         out += '<line class="axis-line" x1="' + px(ax.p0) + '" x2="' + px(ax.p1) + '" y1="' + px(yb) + '" y2="' + px(yb) + '" stroke="' + (t.axis || t.line) + '" stroke-width="1.5"/>';
-        if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 36) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
+        if (a.title && a.title.text) out += '<text class="axis-title" x="' + px((ax.p0 + ax.p1) / 2) + '" y="' + px(yb + 41) + '" text-anchor="middle" fill="' + t.ink + '">' + rich(a.title.text) + '</text>';
       }
     });
     return out;
@@ -2361,10 +2076,10 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   }
 
   /* ------------------------------------------------------------------ chart objects */
-  var builders = { fig1: fig1, fig2: fig2, fig3: fig3, fig4: fig4 };
+  var builders = {};  // registered by figures.js and explorer.js
   var records = {};
   var mounted = {};   // id -> {el, narrow, ro, spec, G, hidden}
-  var FIGURE_NUMBER = { fig1: 1, fig2: 2, fig3: 3, fig4: 4 };
+  var FIGURE_NUMBER = {};
 
   /* Charts mount eagerly by default; `?lazy=1` mounts them as they near the viewport. */
   function isEager() {
@@ -2407,7 +2122,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     });
     Object.keys(bySub).forEach(function (k) { body += '<g clip-path="url(#' + clipId + k + ')">' + bySub[k] + '</g>'; });
     var svg = '<svg class="plot" xmlns="' + SVGNS + '" viewBox="0 0 ' + G.W + ' ' + G.H + '" width="' + G.W + '" height="' + G.H + '" role="img" aria-label="' + esc(opts.label || 'Chart') + '"' +
-      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
+      ' font-family="' + esc(t.fontSans) + '"><defs>' + screens + clips + '</defs>' + below + '<g class="knock-layer"></g>' + axesSvg(G, t) + body + above + anns + '<g class="cursor"></g></svg>';
     return { svg: svg, G: G };
   }
 
@@ -2422,7 +2137,8 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var G = out.G, svg = out.svg;
 
     // legend: one button per legend entry; a button toggles its legend group
-    var legend = '', seenGroup = {}, seenTitle = {};
+    // a legend title and its entries form one group, so a title never wraps away from its entries
+    var legend = '', seenGroup = {}, seenTitle = {}, inTitled = false;
     spec.traces.forEach(function (tr, i) {
       if (tr.showlegend === false || !tr.name) return;
       var key = legendKey(tr, i);
@@ -2430,12 +2146,29 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       seenGroup[key] = true;
       if (tr.legendgrouptitle && !seenTitle[tr.legendgrouptitle.text]) {
         seenTitle[tr.legendgrouptitle.text] = true;
-        legend += '<span class="legend-title">' + tr.legendgrouptitle.text + '</span>';
+        legend += (inTitled ? '</span>' : '') + '<span class="legend-group"><span class="legend-title">' + tr.legendgrouptitle.text + '</span>';
+        inTitled = true;
       }
       legend += '<button type="button" class="legend-item" data-key="' + esc(key) + '" aria-pressed="' + (hidden[key] ? 'false' : 'true') + '">' + swatch(tr, bg) + '<span>' + tr.name + '</span></button>';
     });
+    if (inTitled) legend += '</span>';
     el.innerHTML = (legend ? '<div class="chart-legend" role="group" aria-label="Show or hide a series">' + legend + '</div>' : '') +
       '<div class="chart-canvas">' + svg + '<div class="chart-tip" hidden></div></div>';
+    // A label that sits across guide lines (not on a screen) is knocked out on paper: a rectangle of
+    // the ground behind its letters, sized to the drawn text. It lies in a layer just above the guide
+    // shapes and under the axes and the data, so only guides give way to the label.
+    var knockLayer = el.querySelector('svg.plot .knock-layer');
+    Array.prototype.forEach.call(el.querySelectorAll('svg.plot text.knock'), function (tx) {
+      var b;
+      try { b = tx.getBBox(); } catch (e) { return; }
+      if (!b || !b.width) return;
+      var r = document.createElementNS(SVGNS, 'rect');
+      r.setAttribute('class', 'knockout');
+      r.setAttribute('x', px(b.x - 3)); r.setAttribute('y', px(b.y + b.height * 0.12));
+      r.setAttribute('width', px(b.width + 6)); r.setAttribute('height', px(b.height * 0.8));
+      r.setAttribute('fill', bg);
+      if (knockLayer) knockLayer.appendChild(r);
+    });
     el.setAttribute('data-mounted', 'true');
     state.G = G; state.spec = spec; state.t = t;
     wire(el, state);
@@ -2644,8 +2377,8 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
 
   CCC.charts = {
     mount: mount, mountAll: mountAll, rerender: rerender, update: update, status: status, register: register,
-    tokens: tokens, baseLayout: baseLayout, brokenSeries: brokenSeries, panelLabels: panelLabels,
-    twoPanels: twoPanels, axis: axis, formatNumber: formatNumber, builders: builders,
+    tokens: tokens, baseLayout: baseLayout, panelLabels: panelLabels,
+    twoPanels: twoPanels, axis: axis, builders: builders,
     draw: draw, svgMarkup: svgMarkup, hoverText: hoverText, geometry: geometry
   };
 })();
@@ -2800,16 +2533,16 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   function label(layout, xref, yref, x, y, text, color, opts) {
     opts = opts || {};
     layout.annotations.push(Object.assign({ text: text, showarrow: false, xref: xref, yref: yref, x: x, y: y,
-      xanchor: 'left', yanchor: 'bottom', bgcolor: true, font: { size: 11, color: color } }, opts));
+      xanchor: 'left', yanchor: 'bottom', yshift: 4, bgcolor: true, font: { size: 14, color: color } }, opts));
   }
   function topLabel(layout, xref, x, text, color, level) {
     layout.annotations.push({ text: text, showarrow: false, xref: xref, yref: (xref === 'x2' ? 'y2' : 'y') + ' domain',
-      x: x, y: 1, xanchor: 'center', yanchor: 'bottom', yshift: 2 + 14 * (level || 0), font: { size: 11, color: color } });
+      x: x, y: 1, xanchor: 'center', yanchor: 'bottom', yshift: 3 + 17 * (level || 0), bgcolor: true, font: { size: 14, color: color } });
   }
   function points(name, xs, ys, color, keys, opts) {
     opts = opts || {};
     return Object.assign({ type: 'scatter', mode: 'markers', name: name, x: xs, y: ys, showlegend: false,
-      marker: { symbol: opts.symbol || 'circle', size: opts.size || 8, color: color, line: { color: color, width: 1.4 } },
+      marker: { symbol: opts.symbol || 'circle', size: opts.size || 8, color: color, line: { color: color, width: opts.lineWidth || 1.4 } },
       customdata: keys, hovertemplate: (opts.hover || 'registry %{customdata[0]} = %{customdata[1]}') + '<extra>' + name + '</extra>' }, opts.extra || {});
   }
 
@@ -2817,16 +2550,16 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
   function payoffs(D, t, opts) {
     var P = inputs(D), narrow = !!(opts && opts.narrow);
     var xs = grid(1, 3.8, 280), traces = [];
-    traces.push({ type: 'scatter', mode: 'lines', name: 'spread Δ<sub>T</sub>(r)', x: xs, y: xs.map(function (r) { return auction(P, r).Delta; }),
+    traces.push({ type: 'scatter', mode: 'lines', name: 'spread Δ<sub><i>T</i></sub>(<i>r</i>)', legendgrouptitle: { text: '(a)' }, x: xs, y: xs.map(function (r) { return auction(P, r).Delta; }),
       line: { color: t.ink, width: 2.6 }, xaxis: 'x', yaxis: 'y', legendgroup: 'DT',
       customdata: xs.map(function (r) { return [d6(auction(P, r).Delta)]; }),
-      hovertemplate: 'Δ<sub>T</sub> = %{customdata[0]}<extra>spread</extra>' });
-    [['M', 'top posterior M', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior m', t.ink, 'dot', 2.6]].forEach(function (s) {
+      hovertemplate: 'Δ<sub><i>T</i></sub> = %{customdata[0]}<extra>spread</extra>' });
+    [['M', 'top posterior <i>M</i>', t.ink, 'solid', 2.2], ['half', 'prior 1/2', t.ink, 'dash', 2.2], ['m', 'bottom posterior <i>m</i>', t.ink, 'dot', 2.6]].forEach(function (s) {
       var mu = s[0] === 'half' ? 0.5 : P[s[0]];
-      traces.push({ type: 'scatter', mode: 'lines', name: 'B<sub>r</sub> at the ' + s[1], x: xs, y: xs.map(function (r) { return auction(P, r).B(mu); }),
+      traces.push({ type: 'scatter', mode: 'lines', name: '<i>B<sub>r</sub></i> at the ' + s[1], legendgrouptitle: { text: '(b)' }, x: xs, y: xs.map(function (r) { return auction(P, r).B(mu); }),
         line: { color: s[2], width: s[4], dash: s[3] }, xaxis: 'x2', yaxis: 'y2', legendgroup: 'B' + s[0],
         customdata: xs.map(function (r) { return [d6(auction(P, r).B(mu))]; }),
-        hovertemplate: 'B<sub>r</sub> = %{customdata[0]}<extra>' + s[1] + '</extra>' });
+        hovertemplate: '<i>B<sub>r</sub></i> = %{customdata[0]}<extra>' + s[1] + '</extra>' });
     });
     var rs = ['r0', 'r1', 'r2'];
     traces.push(points('spread in the example', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Delta_r' + i]; }), t.ink,
@@ -2834,18 +2567,18 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     traces.push(points('gross profit at the prior', rs.map(function (k) { return P[k]; }), rs.map(function (k, i) { return P['Bprior_r' + i]; }), t.ink,
       rs.map(function (k, i) { return [i === 1 ? 'Bprior_r1_B' : 'Bprior_r' + i, P.display['Bprior_r' + i]]; }), { extra: { xaxis: 'x2', yaxis: 'y2' } }));
     var C = CCC.charts, layout = C.baseLayout(t);
-    layout.height = narrow ? 600 : 380;
-    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis = C.axis(t, { title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' }, range: [0, 1.15] });
-    layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1, 3.8], tick0: 1, dtick: 0.5 });
-    layout.yaxis2 = C.axis(t, { title: { text: 'gross profit <i>B<sub>r</sub></i>(μ)' }, range: [1.5, 7.5] });
+    layout.height = narrow ? 620 : 400;
+    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1, 3.8], tickvals: [1, 2, 3] });
+    layout.yaxis = C.axis(t, { title: { text: 'target-payoff spread Δ<sub><i>T</i></sub>' }, range: [0, 1.15], tickvals: [0, 0.5, 1] });
+    layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1, 3.8], tickvals: [1, 2, 3] });
+    layout.yaxis2 = C.axis(t, { title: { text: 'gross profit <i>B<sub>r</sub></i>(<i>μ</i>)' }, range: [1.5, 7.5], tickvals: [2, 4, 6] });
     layout.margin.l = narrow ? 72 : 64;
     C.twoPanels(layout, narrow);
     hline(layout, 'x', 'y', P.k, t.ink, '1.5 3.5', 1.5);
-    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.ink, { xanchor: 'right' });
+    label(layout, 'x domain', 'y', 0.98, P.k, 'trading cost <i>k</i> = ' + P.display.k, t.ink, { xanchor: 'right', knockout: true });
     hline(layout, 'x2', 'y2', P.c_H, t.ink, '1.5 3.5', 1.5);
-    label(layout, 'x2 domain', 'y2', 0.02, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.ink);
-    rs.forEach(function (k, i) { ['x', 'x2'].forEach(function (ax) { vline(layout, ax, P[k], t.line); topLabel(layout, ax, P[k], '<i>r</i><sub>' + i + '</sub>', t.muted); }); });
+    label(layout, 'x2 domain', 'y2', 0.11, P.c_H, 'high cost <i>c<sub>H</sub></i> = ' + P.display.c_H, t.ink, { yanchor: 'top', yshift: -4, knockout: true });
+    rs.forEach(function (k, i) { ['x', 'x2'].forEach(function (ax) { vline(layout, ax, P[k], t.line); topLabel(layout, ax, P[k], '<i>r<sub>' + i + '</sub></i>', t.muted); }); });
     C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
@@ -2855,30 +2588,30 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var P = inputs(D), narrow = !!(opts && opts.narrow), traces = [];
     var xa = grid(P.r0, P.r2, 240), xb = grid(P.r1, P.r2, 120);
     function tauTrace(xs, ax, ay, show) {
-      return { type: 'scatter', mode: 'lines', name: 'threshold τ(r)', x: xs, y: xs.map(function (r) { return auction(P, r).tau; }),
+      return { type: 'scatter', mode: 'lines', name: 'threshold <i>τ</i>(<i>r</i>)', x: xs, y: xs.map(function (r) { return auction(P, r).tau; }),
         line: { color: t.ink, width: 2.6 }, xaxis: ax, yaxis: ay, legendgroup: 'tau', showlegend: show,
-        customdata: xs.map(function (r) { return [d6(auction(P, r).tau)]; }), hovertemplate: 'τ = %{customdata[0]}<extra>threshold</extra>' };
+        customdata: xs.map(function (r) { return [d6(auction(P, r).tau)]; }), hovertemplate: '<i>τ</i> = %{customdata[0]}<extra>threshold</extra>' };
     }
     traces.push(tauTrace(xa, 'x', 'y', true));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior <i>M</i>', x: [P.r0, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'M', customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
-    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior m', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.ink, width: 2.4, dash: 'dot' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'bottom posterior <i>m</i>', x: [P.r0, P.r2], y: [P.m, P.m], line: { color: t.ink, width: 2.4, dash: 'dot' },
       xaxis: 'x', yaxis: 'y', legendgroup: 'm', customdata: [[P.display.m], [P.display.m]], hovertemplate: 'm(1/2) = %{customdata[0]}<extra>bottom posterior</extra>' });
     traces.push(points('thresholds in the example', [P.r0, P.r1, P.r2], [P.tau_r0, P.tau_r1, P.tau_r2], t.ink,
       [['tau_r0', P.display.tau_r0], ['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x', yaxis: 'y' } }));
-    traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
-      hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x', yaxis: 'y' } }));
+    traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-ring', size: 15, lineWidth: 1.8,
+      hover: '<i>r<sub>C</sub></i> = %{customdata[1]}', extra: { xaxis: 'x', yaxis: 'y' } }));
     // (b) the strengths from r_1 to r_2: the band of top posteriors that put r_C between them
     traces.push(tauTrace(xb, 'x2', 'y2', false));
-    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior M', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
+    traces.push({ type: 'scatter', mode: 'lines', name: 'top posterior <i>M</i>', x: [P.r1, P.r2], y: [P.M, P.M], line: { color: t.ink, width: 2, dash: 'dash' },
       xaxis: 'x2', yaxis: 'y2', legendgroup: 'M', showlegend: false, customdata: [[P.display.M], [P.display.M]], hovertemplate: 'M(1/2) = %{customdata[0]}<extra>top posterior</extra>' });
     traces.push(points('band ends', [P.r1, P.r2], [P.tau_r1, P.tau_r2], t.ink, [['tau_r1', P.display.tau_r1], ['tau_r2', P.display.tau_r2]], { extra: { xaxis: 'x2', yaxis: 'y2' } }));
-    traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-open', size: 10,
-      hover: 'r<sub>C</sub> = %{customdata[1]}', extra: { xaxis: 'x2', yaxis: 'y2' } }));
+    traces.push(points('entry ceiling', [P.rC], [P.M], t.ink, [['rC_B', P.display.rC]], { symbol: 'circle-ring', size: 15, lineWidth: 1.8,
+      hover: '<i>r<sub>C</sub></i> = %{customdata[1]}', extra: { xaxis: 'x2', yaxis: 'y2' } }));
     var C = CCC.charts, layout = C.baseLayout(t);
-    layout.height = narrow ? 620 : 390;
-    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6] });
-    layout.yaxis = C.axis(t, { title: { text: 'belief' }, range: [0.2, 0.84], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] });
+    layout.height = narrow ? 640 : 410;
+    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 2, 2.8, 3.6] });
+    layout.yaxis = C.axis(t, { title: { text: 'belief' }, range: [0.2, 0.84], tickvals: [0.2, 0.4, 0.6, 0.8] });
     layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r1, P.r2], tickvals: [3, 3.2, 3.4, 3.6] });
     layout.yaxis2 = C.axis(t, { title: { text: 'belief' }, range: [0.7, 0.735], tickvals: [0.7, 0.71, 0.72, 0.73] });
     layout.margin.l = 64;
@@ -2888,12 +2621,13 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     layout.shapes.push({ type: 'rect', xref: 'x2 domain', yref: 'y2', x0: 0, x1: 1, y0: P.tau_r1, y1: P.tau_r2, screen: 'b', line: { width: 0 }, layer: 'below' });
     hline(layout, 'x', 'y', 0.5, t.muted, '2 3', 1);
     label(layout, 'x domain', 'y', 0.02, 0.5, 'prior 1/2', t.muted);
-    label(layout, 'x domain', 'y', 0.02, P.M, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.ink);
-    label(layout, 'x2 domain', 'y2', 0.97, P.tau_r1, 'band for <i>M</i>: τ(<i>r</i><sub>1</sub>) to τ(<i>r</i><sub>2</sub>)', t.muted, { xanchor: 'right' });
-    [['x', P.r0, 'r</i><sub>0</sub>'], ['x', P.r1, 'r</i><sub>1</sub>'], ['x', P.r2, 'r</i><sub>2</sub>']].forEach(function (m) {
+    // inside the band, just above its floor m, clear of the threshold and of the prior's label
+    label(layout, 'x domain', 'y', 0.02, P.m, 'reachable beliefs: from <i>m</i> to <i>M</i>', t.ink, { yshift: 6 });
+    label(layout, 'x2 domain', 'y2', 0.97, P.tau_r1, 'band for <i>M</i>: <i>τ</i>(<i>r<sub>1</sub></i>) to <i>τ</i>(<i>r<sub>2</sub></i>)', t.muted, { xanchor: 'right' });
+    [['x', P.r0, 'r<sub>0</sub></i>'], ['x', P.r1, 'r<sub>1</sub></i>'], ['x', P.r2, 'r<sub>2</sub></i>']].forEach(function (m) {
       vline(layout, m[0], m[1], t.line); topLabel(layout, m[0], m[1], '<i>' + m[2], t.muted);
     });
-    vline(layout, 'x2', P.rC, t.muted); topLabel(layout, 'x2', P.rC, '<i>r</i><sub>C</sub>', t.ink);
+    vline(layout, 'x2', P.rC, t.muted); topLabel(layout, 'x2', P.rC, '<i>r<sub>C</sub></i>', t.ink);
     vline(layout, 'x', P.rC, t.muted);
     C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
@@ -2905,7 +2639,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var xb = grid(P.rR, P.rRbar, 160), lam = xb.map(function (r) { return lambdaR(P, r); });
     var xq = grid(P.rN, P.rQ, 160), lamq = xq.map(function (r) { return Math.max(lambdaQ(P, r), 0); });
     var nodes = (D.nodes || []).map(function (n) { return { r: Number(n.r.x), lam: Number(n.lambda.x), E: Number(n.entry.x), n: n }; });
-    var navy = t.ink, brick = t.recruit, grey = t.ink;
+    var ink = t.ink, recruit = t.recruit;
     function curve(name, group, xs, ys, color, dash, ax, ay, show, what) {
       return { type: 'scatter', mode: 'lines', name: name, legendgroup: group, showlegend: show, x: xs, y: ys,
         line: { color: color, width: color === t.recruit ? 3.2 : 2.4, dash: dash || 'solid' }, xaxis: ax, yaxis: ay,
@@ -2922,21 +2656,27 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       var zero = j ? P.rho : 0, capY = j ? ENT : P.cap, floorCap = j ? P.rho : P.cap;
       var recY = j ? lam.map(function (l) { return entryResearch(P, l); }) : lam;
       var floorY = j ? lamq.map(function () { return P.rho; }) : lamq;
-      traces.push(flat('zero research', 'zero', P.r0, P.rN, zero, navy, 'solid', ax, ay, show, what));
-      traces.push(curve('recruiting research', 'recruit', xb, recY, brick, 'dash', ax, ay, show, what));
-      traces.push(flat('recruiting research at the cap', 'recruit', P.rRbar, P.rC, capY, brick, 'solid', ax, ay, false, what));
-      traces.push(curve('floor-entry research', 'floor', xq, floorY, grey, 'dashdot', ax, ay, show, what));
-      traces.push(flat('floor-entry research at the cap', 'floor', P.rC, P.r2, floorCap, grey, 'dashdot', ax, ay, false, what));
+      traces.push(flat('zero research', 'zero', P.r0, P.rN, zero, ink, 'solid', ax, ay, show, what));
+      traces.push(curve('recruiting research', 'recruit', xb, recY, recruit, 'dash', ax, ay, show, what));
+      traces.push(flat('recruiting research at the cap', 'recruit-cap', P.rRbar, P.rC, capY, recruit, 'solid', ax, ay, show, what));
+      traces.push(curve('floor-entry research', 'floor', xq, floorY, ink, 'dashdot', ax, ay, show, what));
+      traces.push(flat('floor-entry research at the cap', 'floor', P.rC, P.r2, floorCap, ink, 'dashdot', ax, ay, false, what));
       // filled markers belong to a curve, open markers do not
-      traces.push(mark('zero research', P.rN, zero, navy, false, ax, ay, j ? ['prim_rho', P.display.rho] : ['rN', P.display.rN]));
-      traces.push(mark('start of recruiting research', P.rR, j ? P.entry_rR : P.lambda_rR, brick, false, ax, ay,
+      traces.push(mark('zero research', P.rN, zero, ink, false, ax, ay, j ? ['prim_rho', P.display.rho] : ['rN', P.display.rN]));
+      traces.push(mark('start of recruiting research', P.rR, j ? P.entry_rR : P.lambda_rR, recruit, false, ax, ay,
         j ? ['res_entry_rR', P.display.entry_rR] : ['res_lambda_rR', P.display.lambda_rR]));
-      traces.push(mark('recruiting research reaches the cap', P.rRbar, capY, brick, false, ax, ay,
+      traces.push(mark('recruiting research reaches the cap', P.rRbar, capY, recruit, false, ax, ay,
         j ? ['res_entry_cap', P.display.entry_cap] : ['res_cap', P.display.cap]));
-      traces.push(mark('floor-entry research near r_Q', P.rQ, j ? P.rho : P.lambda_floor_rQ, grey, true, ax, ay,
+      traces.push(mark('floor-entry research near r_Q', P.rQ, j ? P.rho : P.lambda_floor_rQ, ink, true, ax, ay,
         j ? ['prim_rho', P.display.rho] : ['res_lambda_floor_rQ', P.display.lambda_floor_rQ]));
-      if (j) traces.push(mark('floor-entry research above r_C', P.rC, P.rho, grey, true, ax, ay, ['prim_rho', P.display.rho]));
-      traces.push(mark('recruiting research at the entry ceiling', P.rC, capY, brick, false, ax, ay,
+      // r_C and r_2 lie less than a marker apart at this scale. In (a) the dot of r_2 (on floor-entry
+      // research at the cap) is drawn larger and first, so the green end of recruiting research at r_C
+      // sits inside it; in (b) the open mark of floor-entry research above r_C is a ring round r_2's dot.
+      traces.push(points('the three economies', [P.r2], [floorCap], ink, [j ? ['prim_rho', P.display.rho] : ['res_cap', P.display.cap]],
+        { size: j ? 8 : 13, extra: { xaxis: ax, yaxis: ay } }));
+      if (j) traces.push(points('floor-entry research above r_C', [P.rC], [P.rho], ink, [['prim_rho', P.display.rho]],
+        { symbol: 'circle-ring', size: 15, lineWidth: 1.8, extra: { xaxis: ax, yaxis: ay } }));
+      traces.push(mark('recruiting research at the entry ceiling', P.rC, capY, recruit, false, ax, ay,
         j ? ['res_entry_cap', P.display.entry_cap] : ['res_cap', P.display.cap]));
       traces.push(points(j ? 'entry at the three strengths' : 'research at the three strengths', nodes.map(function (n) { return n.r; }),
         nodes.map(function (n) { return j ? n.E : n.lam; }), t.recruit,
@@ -2946,36 +2686,36 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       // the three economies: r_0 on zero research, r_1 on recruiting research at the cap (green), r_2 on floor-entry research
       var econ = j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
         : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]];
-      [[P.r0, zero, navy], [P.r1, capY, brick], [P.r2, floorCap, grey]].forEach(function (e, i) {
+      [[P.r0, zero, ink], [P.r1, capY, recruit]].forEach(function (e, i) {
         traces.push(points('the three economies', [e[0]], [e[1]], e[2], [econ[i]], { extra: { xaxis: ax, yaxis: ay } }));
       });
     });
     var C = CCC.charts, layout = C.baseLayout(t);
-    layout.height = narrow ? 660 : 420;
-    layout.margin.t = 62;
-    var ticks = [1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6];
+    layout.height = narrow ? 680 : 440;
+    layout.margin.t = 58;
+    var ticks = [1.2, 2, 2.8, 3.6];
     layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: ticks });
-    layout.yaxis = C.axis(t, { title: { text: 'research λ' }, range: [-0.02, 0.4], tickvals: [0, 0.1, 0.2, 0.3, 0.4] });
+    layout.yaxis = C.axis(t, { title: { text: 'research <i>λ</i>' }, range: [-0.02, 0.4], tickvals: [0, 0.2, 0.4] });
     layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: ticks });
     layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.2, 0.58], tickvals: [0.2, 0.3, 0.4, 0.5] });
     layout.margin.l = 64;
     C.twoPanels(layout, narrow);
     ['x', 'x2'].forEach(function (ax) {
-      [[P.rR, '<i>r</i><sub>R</sub>', 0], [P.rRbar, '<i>r</i><sub>λ̄</sub>', 1], [P.rN, '<i>r</i><sub>N</sub>', 2],
-        [P.rQ, '<i>r</i><sub>Q</sub>', 0], [P.rC, '<i>r</i><sub>C</sub>', 0]].forEach(function (m) {
-        vline(layout, ax, m[0], t.line); topLabel(layout, ax, m[0], m[1], t.muted, m[2]);
+      // every marked strength keeps its guide; r_lambda-bar and r_N, a hair apart, share one label
+      [P.rR, P.rRbar, P.rN, P.rQ, P.rC].forEach(function (x) { vline(layout, ax, x, t.line); });
+      [[P.rR, '<i>r<sub>R</sub></i>', 0], [(P.rRbar + P.rN) / 2, '<i>r<sub>λ̄</sub></i>, <i>r<sub>N</sub></i>', 1],
+        [P.rQ, '<i>r<sub>Q</sub></i>', 0], [P.rC, '<i>r<sub>C</sub></i>', 0]].forEach(function (m) {
+        topLabel(layout, ax, m[0], m[1], t.muted, m[2]);
       });
     });
     layout.shapes.push({ type: 'line', xref: 'x', yref: 'y', x0: P.r0, x1: P.rRbar, y0: P.cap, y1: P.cap,
       line: { color: t.muted, width: 1, dash: '2 3' }, layer: 'below' });
-    label(layout, 'x', 'y', P.r0 + 0.02, P.cap, 'cap λ̄ = ' + P.display.cap, t.muted);
+    label(layout, 'x', 'y', P.r0 + 0.02, P.cap, 'cap <i>λ̄</i> = ' + P.display.cap, t.muted, { yshift: 5, knockout: true });
     C.panelLabels(layout, t);
     return { traces: traces, layout: layout };
   }
 
   if (CCC.charts && typeof CCC.charts.register === 'function') {
-    // charts.js also carries the builders of the earlier (Laplace) figures; this page has no mounts for them.
-    ['fig1', 'fig2', 'fig3', 'fig4'].forEach(function (id) { delete CCC.charts.builders[id]; });
     CCC.charts.register('payoffs', payoffs, 1);
     CCC.charts.register('beliefs', beliefs, 2);
     CCC.charts.register('research', research, 4);
@@ -3058,7 +2798,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         '<text class="bl-tick-label" x="' + X(v).toFixed(1) + '" y="' + (y + 30) + '" text-anchor="middle">' + v.toFixed(1) + '</text>';
     }
     out += '<line class="bl-tau" x1="' + X(tau).toFixed(1) + '" x2="' + X(tau).toFixed(1) + '" y1="' + (y - 30) + '" y2="' + (y + 8) + '"/>' +
-      '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold τ(r)</text>';
+      '<text class="bl-tau-label" x="' + X(tau).toFixed(1) + '" y="' + (y - 34) + '" text-anchor="middle">threshold <tspan class="bl-it">τ</tspan>(<tspan class="bl-it">r</tspan>)</text>';
     out += '<text class="bl-band-label" x="' + X(P.m).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="start">m</text>' +
       '<text class="bl-band-label" x="' + X(P.M).toFixed(1) + '" y="' + (y + 47) + '" text-anchor="end">M</text>';
     var used = [];
@@ -3110,12 +2850,12 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     var r = isFinite(state.r) ? state.r : P.r0;
     var eqs = S.equilibria(P, r);
     var layout = C.baseLayout(t);
-    layout.height = narrow ? 640 : 400;
-    layout.margin.t = 46;
-    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6] });
-    layout.yaxis = C.axis(t, { title: { text: 'entry' }, range: [0.15, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.height = narrow ? 660 : 420;
+    layout.margin.t = 54;
+    layout.xaxis = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [P.r0, P.r2], tickvals: [1.2, 2, 2.8, 3.6] });
+    layout.yaxis = C.axis(t, { title: { text: 'entry' }, range: [0.15, 0.62], tickvals: [0.2, 0.4, 0.6] });
     layout.xaxis2 = C.axis(t, { title: { text: 'incumbent strength <i>r</i>' }, range: [1.25, 2.35], tickvals: [1.4, 1.6, 1.8, 2, 2.2] });
-    layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.12, 0.62], tickvals: [0.2, 0.3, 0.4, 0.5, 0.6] });
+    layout.yaxis2 = C.axis(t, { title: { text: 'entry' }, range: [0.12, 0.62], tickvals: [0.2, 0.4, 0.6] });
     layout.margin.l = 64;
     C.twoPanels(layout, narrow);
     if (!narrow) { layout.xaxis.domain = [0, 0.36]; layout.xaxis2.domain = [0.46, 1]; }
@@ -3125,14 +2865,16 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
       var marks = ax === 'x' ? [['rA', 'A', 0], ['rN', 'N', 1], ['rC', 'C', 0]] : [['rA', 'A', 0], ['rF', 'F', 1], ['rN', 'N', 0], ['rJ', 'J', 1], ['rS', 'S', 0]];
       marks.forEach(function (m) {
         layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: P[m[0]], x1: P[m[0]], y0: 0, y1: 1, line: { color: t.muted, width: 1, dash: '2 3' }, layer: 'below' });
-        layout.annotations.push({ text: '<i>r</i><sub>' + m[1] + '</sub>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
-          xanchor: 'center', yanchor: 'bottom', yshift: 2 + 15 * m[2], font: { size: 11, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
+        layout.annotations.push({ text: '<i>r<sub>' + m[1] + '</sub></i>', showarrow: false, xref: ax, yref: ay + ' domain', x: P[m[0]], y: 1,
+          xanchor: 'center', yanchor: 'bottom', yshift: 3 + 17 * m[2], bgcolor: true, font: { size: 14, color: t.muted }, hovertext: 'r_' + m[1] + ' = ' + P.display[m[0]] });
       });
       layout.shapes.push({ type: 'line', xref: ax, yref: ay + ' domain', x0: r, x1: r, y0: 0, y1: 1, line: { color: t.ink, width: 1.4 } });
     });
-    layout.annotations.push({ text: 'T endpoint (rival mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
-      xanchor: 'center', yanchor: 'top', yshift: -9, font: { size: 10, color: t.muted } });
-    layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rA + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom', font: { size: 11, color: t.muted } });
+    // labels clear of the guides where the scale allows, and knocked out on paper where a line crosses them
+    layout.annotations.push({ text: 'T endpoint<br>(rival mixing)', showarrow: false, xref: 'x2', yref: 'y2', x: P.rJ, y: P.rho,
+      xanchor: 'right', xshift: -9, yanchor: 'top', yshift: -8, bgcolor: true, font: { size: 13, color: t.muted } });
+    layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rF + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom',
+      bgcolor: true, font: { size: 14, color: t.muted } });
     eqs.forEach(function (f) {
       // green only where a purchase recruits the high-cost rival at the chosen strength
       var color = f.e['1'] === 1 ? t.recruit : t.ink;
@@ -3160,7 +2902,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     });
   }
   function presetLabel(p, html) {
-    var sym = p.sub ? (html ? '<i>r</i><sub>' + p.sub + '</sub>' : 'r_' + p.sub) : '';
+    var sym = p.sub ? (html ? '<i>r<sub>' + p.sub + '</sub></i>' : 'r_' + p.sub) : '';
     var r = html ? '<i>r</i>' : 'r', rel = p.exact ? ' = ' : ' ≈ ';
     return sym ? r + ' = ' + sym + rel + p.display : r + ' = ' + p.display;
   }
@@ -3174,7 +2916,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     root.appendChild(head);
 
     var controls = el('div', 'explorer-controls');
-    var lab = el('label', 'explorer-label', 'Incumbent strength r');
+    var lab = markup('label', 'explorer-label', 'Incumbent strength <i>r</i>');
     lab.setAttribute('for', 'explorer-r');
     controls.appendChild(lab);
     var range = document.createElement('input');
@@ -3186,9 +2928,13 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     out.setAttribute('for', 'explorer-r');
     controls.appendChild(out);
     var pre = el('div', 'explorer-presets');
+    var presetButtons = [];
     presets(P).forEach(function (p) {
-      var b = markup('button', 'preset', p.sub ? '<i>r</i><sub>' + p.sub + '</sub>' : '<i>r</i> = ' + p.display);
+      var b = markup('button', 'preset', p.sub ? '<i>r<sub>' + p.sub + '</sub></i>' : '<i>r</i> = ' + p.display);
       b.type = 'button';
+      b.setAttribute('data-key', p.key);
+      b.setAttribute('aria-pressed', 'false');
+      presetButtons.push(b);
       b.title = presetLabel(p, false);
       b.addEventListener('click', function () { setR(p.value, p); });
       pre.appendChild(b);
@@ -3197,7 +2943,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     root.appendChild(controls);
 
     var readouts = el('div', 'explorer-readouts'), cells = {};
-    [['Delta', 'Δ<sub>T</sub>(r)'], ['gH', 'g<sub>H</sub>'], ['gL', 'g<sub>L</sub>'], ['Bhalf', 'B<sub>r</sub>(1/2)'], ['BM', 'B<sub>r</sub>(M)'], ['tau', 'τ(r)']].forEach(function (c) {
+    [['Delta', '<span class="up">Δ</span><sub>T</sub>(r)'], ['gH', 'g<sub>H</sub>'], ['gL', 'g<sub>L</sub>'], ['Bhalf', 'B<sub>r</sub>(<span class="up">1/2</span>)'], ['BM', 'B<sub>r</sub>(M)'], ['tau', 'τ(r)']].forEach(function (c) {
       var cell = el('div', 'readout');
       cell.appendChild(markup('span', 'readout-label', c[1]));
       var v = el('span', 'live readout-value', '');
@@ -3224,7 +2970,7 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     fig.appendChild(markup('figcaption', '', '<strong>Figure 3.</strong> Entry along the example’s path at the prior 1/2, in every equilibrium. Panel (a) covers the path from <i>r</i><sub>0</sub> to <i>r</i><sub>2</sub>; panel (b) enlarges the strengths around the shaded coexistence interval from <i>r</i><sub>A</sub> to <i>r</i><sub>N</sub>. N is the uninformative market, R a mixed purchase that recruits, F a full high-class purchase (the low class abstains up to <i>r</i><sub>N</sub>, mixes up to <i>r</i><sub>S</sub>, then sells), Q mixed orders at the entry floor. The thin dashed threshold pair T exists only when an indifferent high-cost rival may prepare with any probability. Filled markers belong to a curve and open markers do not: N includes its endpoint at <i>r</i><sub>N</sub>; Q excludes both endpoints. When the rival mixes, T includes its endpoint at <i>r</i><sub>J</sub>. The vertical line and the diamonds at the chosen strength follow the slider.'));
     root.appendChild(fig);
 
-    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount };
+    state.el = { root: root, range: range, out: out, cells: cells, picker: picker, detail: detail, mount: mount, presets: presetButtons };
     range.addEventListener('input', function () { schedule(snap(Number(range.value))); });
     range.addEventListener('change', function () { schedule(snap(Number(range.value))); });
     picker.addEventListener('click', function (ev) {
@@ -3245,6 +2991,9 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
     E.out.title = shown;
     if (E.range.value !== String(r)) E.range.value = String(r);
     E.range.setAttribute('aria-valuetext', shown);
+    E.presets.forEach(function (b) {
+      b.setAttribute('aria-pressed', state.preset && state.preset.key === b.getAttribute('data-key') ? 'true' : 'false');
+    });
     E.cells.Delta.textContent = d6(A.Delta);
     E.cells.gH.textContent = d6(A.gH);
     E.cells.gL.textContent = d6(A.gL);
@@ -3264,10 +3013,11 @@ g_j(F)=\int_p^\infty[1-G_j(y)]F(y)\,dy .
         '</td><td class="num' + (f.e[x] === 1 ? ' is-recruit' : '') + '">' + (f.e[x] === 1 ? '1' : d6(f.e[x])) + '</td><td class="num">' + d6(f.price[x]) + '</td></tr>';
     }).join('');
     E.detail.innerHTML = '<p class="eq-summary">' + describe(f, P) + '</p>' + beliefLine(f, P) +
-      '<div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
-      '<th class="num">Posterior μ</th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="interaction-hint scroll-hint" hidden>Scroll the table sideways</p><div class="table-wrap"><table class="eq-table"><thead><tr><th>Order</th><th class="num">Probability, class <i>H</i></th><th class="num">Probability, class <i>L</i></th>' +
+      '<th class="num">Posterior <i>μ</i></th><th class="num">Entry</th><th class="num">Price</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
       '<p class="eq-totals"><span>Entry <b class="live' + (f.e['1'] === 1 ? ' is-recruit' : '') + '">' + d6(f.E) + '</b></span><span>High-class ownership <b class="live">' + d6(f.O_H) + '</b></span>' +
       '<span>Gross profit at the top posterior <b class="live">' + d6(A.B(P.M)) + '</b> against the high cost <b>' + P.display.c_H + '</b></span></p>';
+    if (CCC.updateScrollHints) CCC.updateScrollHints(E.detail);
     moveMarker();
   }
 

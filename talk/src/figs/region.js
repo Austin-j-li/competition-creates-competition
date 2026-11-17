@@ -18,7 +18,7 @@
     b25: {
       W: 980, H: 396,
       panels: {
-        a: { x0: 80, x1: 352, y0: 306, y1: 70, ox: 0 },
+        a: { x0: 80, x1: 352, y0: 306, y1: 100, ox: 0 },   // one plot box with (c): same top, same bottom
         c: { x0: 512, x1: 966, y0: 306, y1: 100, ox: 428 },
       },
     },
@@ -225,7 +225,7 @@
           el('circle', { class: 'dot dot-end', cx: sx(S.rC), cy: yTop, r: R_DOT }, dots);
           el('circle', { class: 'dot dot-open', cx: sx(S.rC), cy: yRho, r: R_OPEN }, dots);
           // the stretch panel (c) enlarges
-          const yz = sy(spec.zoom_y);
+          const yz = F.y1 - 20;     // above the plot, clear of the screened band it points along
           const x0 = sx(spec.zoom[0]);
           const x1 = sx(spec.zoom[1]);
           const e0 = this.arrowHead([x0, yz], [x1, yz], 'zoom-head', L.marks, 14, 7);
@@ -237,7 +237,9 @@
             'ytitle:a': [18, (F.y0 + F.y1) / 2, 0.5, 0.5],
             'xtitle:a': [(F.x0 + F.x1) / 2, F.y0 + 46, 0.5, 0],
             'zoom:a': [x1 + 10, yz, 0, 0.5],
-            'N:a': [F.x0 + 3, yRho - 12, 0, 1],
+            // N under its line, centred in the band (where the line runs) and knocked out of its
+            // screen: clear of the axis and of both guides
+            'N:a': [(sx(S.rA) + sx(S.rN)) / 2, yRho + 10, 0.5, 0],
             'F:a': [Math.max(midF, x1 + 70), yTop - 12, 0.5, 1],
             'Ffloor:a': [sx(S.rC) - 16, yRho - 12, 1, 1],
           });

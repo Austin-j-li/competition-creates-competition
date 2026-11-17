@@ -12,6 +12,11 @@
   const DY = 145 * K;
   const BY = 110.5 * K;
   const EASE = 'cubic-bezier(.16,1,.3,1)';
+  // a spread narrower than two full caps is drawn with short caps and its label set further
+  // out, so caps and bar never read as a letter H beside the label
+  const CAP = (split) => (split[0] - split[1] < 24 ? 10 : 18);
+  const LABEL_DX = (split) => (split[0] - split[1] < 24 ? 26 : 14);
+  const capPath = (h) => `M0 ${BY - h / 2}v${h}`;
 
   function svg(tag, attrs, parent) {
     const el = document.createElementNS(NS, tag);
@@ -54,7 +59,8 @@
       const window = svg('g', {}, root);
       const outer = svg('g', { class: 'pair', 'data-pair': name, 'data-step': step, transform: `translate(0 ${dy})` }, window);
       const drawing = svg('g', { class: 'pair-drawing' }, outer);
-      svg('path', { class: 'pair-rule', d: 'M0 0H808' }, drawing);
+      // the rule between the pairs stays in place while the copy travels (outer is not moved)
+      svg('path', { class: 'pair-rule', d: 'M0 0H808' }, name === 'F' ? drawing : outer);
       const labels = document.createElement('div');
       labels.className = 'pair pair-labels'; labels.dataset.pair = name; labels.dataset.step = step;
       labels.style.top = dy + 'px';
@@ -80,8 +86,8 @@
         transform: `translate(${X + t} 0)`,
       }, drawing));
       const bracket = svg('path', { class: 'spread-bracket', d: 'M0 0H1', transform: `translate(${X + split[1]} ${BY}) scale(${split[0] - split[1]} 1)` }, drawing);
-      const caps = split.map(t => svg('path', { class: 'spread-bracket', d: `M0 ${BY - 9}v18`, transform: `translate(${X + t} 0)` }, drawing));
-      const spread = this.label(labels, 'spread-label', X + split[0] + 14, BY - 15, null, 'spread');
+      const caps = split.map(t => svg('path', { class: 'spread-bracket', d: capPath(CAP(split)), transform: `translate(${X + t} 0)` }, drawing));
+      const spread = this.label(labels, 'spread-label', X + split[0] + LABEL_DX(split), BY - 15, null, 'spread');
       return { window, labelWindow, outer, drawing, labels, title, rows, guides, bracket, caps, spread, split };
     },
 
@@ -130,6 +136,8 @@
             { transform: `translateX(${X + OLD[i]}px)` },
             { transform: `translateX(${X + NEW[i]}px)` },
           ], morph));
+          // the copy leaves with the first pair's short caps and grows them as the spread widens
+          this.animate(p.caps[i], [{ d: `path("${capPath(CAP(OLD))}")` }, { d: `path("${capPath(CAP(NEW))}")` }], morph);
           // the class-L label sits outside its bar in both pairs, so only the class-H label moves
           if (i === 0) this.animate(row.gLabel, [
             { left: (X + OLD[i] + 12) + 'px' },
@@ -140,9 +148,21 @@
           { transform: `translate(${X + OLD[1]}px, ${BY}px) scaleX(${OLD[0] - OLD[1]})` },
           { transform: `translate(${X + NEW[1]}px, ${BY}px) scaleX(${NEW[0] - NEW[1]})` },
         ], morph);
-        this.animate(p.spread, [{ left: (X + OLD[0] + 14) + 'px' }, { left: (X + NEW[0] + 14) + 'px' }], morph);
-        // the second pair's title and the note arrive while the boundaries slide: the click ends at 550 ms
-        [p.title, this.note].forEach(label => this.animate(label, [{ opacity: 0 }, { opacity: 1 }], { delay: 300, duration: 240 }));
+        this.animate(p.spread, [{ left: (X + OLD[0] + LABEL_DX(OLD)) + 'px' }, { left: (X + NEW[0] + LABEL_DX(NEW)) + 'px' }], morph);
+        // the copy's spread label stays out of sight while it passes the first pair's own label
+        this.animate(p.spread, [{ opacity: 0 }, { offset: 0.999, opacity: 0 }, { opacity: 1 }], { duration: 250, easing: 'linear', fill: 'none' });
+        // the second pair's title stands in its own place from the start (it holds still against
+        // the travelling labels: the inverse of their move) and is set once the copy's rows have
+        // passed its line, as the copy lands, before the boundaries slide
+        this.animate(p.title, [
+          { offset: 0, transform: `translateY(${DY}px)`, opacity: 0 },
+          { offset: 240 / 550, opacity: 0 },
+          { offset: 250 / 550, transform: 'translateY(0px)' },
+          { offset: 340 / 550, opacity: 1 },
+          { offset: 1, transform: 'translateY(0px)', opacity: 1 },
+        ], { duration: 550, easing: 'linear' });
+        // the note arrives while the boundaries slide: the click ends at 550 ms
+        this.animate(this.note, [{ opacity: 0 }, { opacity: 1 }], { delay: 300, duration: 240 });
       }
       if (!this.anims.length) return;
       this.moving = true;
