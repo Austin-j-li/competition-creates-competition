@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Numbers and curves of the chart pages: main page 19 (research), backups B3 and B12, and the b25
+"""Numbers and curves of the chart pages: main page 23 (research), backups B3 and B12, and the b25
 variant of the entry chart. Writes src/data_charts.json.
 
-Number ids and figure variants keep the names these pages had before the 17 November deck (p18 is
-main page 19; b24 to b26 are B3, now show positions 25 to 27; b46 to b49 are B12, now 47 to 50).
-The dumps are numbered by show position.
+Number ids and figure variants keep the names these pages had in an earlier deck (p18 is main page 23;
+b24 to b26 are B3, now show positions 29 to 31; b46 to b49 are B12, now 51 to 54). The dumps are
+numbered by show position.
 
     python3 build_data_charts.py
 
@@ -90,62 +90,57 @@ def shape_text(slide: str, shape: int) -> str:
 P18 = "research marks of handout/figures.js (rR, entry_rR, rRbar, entry_cap, rQ, cap) and the r_C of frame b12c"
 NUMBERS = [
     # page 18
-    ("p18.cap", "slide20.txt", 20, "0.34", "res_cap", 2, P18),
-    ("p18.shade.rR", "slide20.txt", 9, "1.50", "res_rR", 2, P18),
-    ("p18.shade.rQ", "slide20.txt", 9, "2.17", "res_rQ", 2, P18),
-    ("p18.entry.rR", "slide20.txt", 56, "0.50", "res_entry_rR", 2, P18),
-    ("p18.entry.rR.r", "slide20.txt", 56, "1.50", "res_rR", 2, P18),
-    ("p18.entry.cap", "slide20.txt", 56, "0.52", "res_entry_cap", 2, P18),
-    ("p18.entry.rcap", "slide20.txt", 56, "1.68", "res_rcap", 2, P18),
-    ("p18.entry.rC", "slide20.txt", 56, "3.59", "res_rC", 2, P18),
-    ("p18.sub.pi", "slide20.txt", 4, "½", "prim_pi", "fraction", "the declared prior of slot_data.py (the sub line)"),
+    ("p18.cap", "slide24.txt", 20, "0.34", "res_cap", 2, P18),
+    ("p18.shade.rR", "slide24.txt", 9, "1.50", "res_rR", 2, P18),
+    ("p18.shade.rQ", "slide24.txt", 9, "2.17", "res_rQ", 2, P18),
+    ("p18.sub.pi", "slide24.txt", 4, "½", "prim_pi", "fraction", "the declared prior of slot_data.py (the sub line)"),
     # B3, second page (content.js frame b3b)
-    ("b25.entry_rA", "slide26.txt", 9, "0.454185", "entry_rA_B", 6, "content.js b3b {{entry_rA_B}}"),
-    ("b25.rA", "slide26.txt", 9, "1.394", "rA", 3, "content.js b3b {{rA|3}}"),
-    ("b25.entry_r0", "slide26.txt", 9, "0.250000", "entry_r0", 6, "content.js b3b {{entry_r0}}"),
-    ("b25.plateau", "slide26.txt", 9, "0.522757", "entry_plateau_B", 6, "content.js b3b {{entry_plateau_B}}"),
-    ("b25.rF", "slide26.txt", 9, "1.467", "rF_B", 3, "content.js b3b {{rF_B|3}}"),
-    ("b25.rN", "slide26.txt", 9, "1.748", "rN", 3, "content.js b3b {{rN|3}}"),
+    ("b25.entry_rA", "slide30.txt", 9, "0.454185", "entry_rA_B", 6, "content.js b3b {{entry_rA_B}}"),
+    ("b25.rA", "slide30.txt", 9, "1.394", "rA", 3, "content.js b3b {{rA|3}}"),
+    ("b25.entry_r0", "slide30.txt", 9, "0.250000", "entry_r0", 6, "content.js b3b {{entry_r0}}"),
+    ("b25.plateau", "slide30.txt", 9, "0.522757", "entry_plateau_B", 6, "content.js b3b {{entry_plateau_B}}"),
+    ("b25.rF", "slide30.txt", 9, "1.467", "rF_B", 3, "content.js b3b {{rF_B|3}}"),
+    ("b25.rN", "slide30.txt", 9, "1.748", "rN", 3, "content.js b3b {{rN|3}}"),
     # B3, third page (content.js frame b3c)
-    ("b26.rA", "slide27.txt", 28, "1.393958", "rA", 6, "content.js b3c {{rA}}"),
-    ("b26.rF", "slide27.txt", 28, "1.467127", "rF_B", 6, "content.js b3c {{rF_B}}"),
-    ("b26.rN", "slide27.txt", 28, "1.747878", "rN", 6, "content.js b3c {{rN}}"),
-    ("b26.rJ", "slide27.txt", 28, "1.966097", "rJ", 6, "content.js b3c {{rJ}}"),
-    ("b26.rS", "slide27.txt", 28, "2.124148", "rS_B", 6, "content.js b3c {{rS_B}}"),
-    ("b26.rC", "slide27.txt", 28, "3.592659", "rC_B", 6, "content.js b3c {{rC_B}}"),
+    ("b26.rA", "slide31.txt", 28, "1.393958", "rA", 6, "content.js b3c {{rA}}"),
+    ("b26.rF", "slide31.txt", 28, "1.467127", "rF_B", 6, "content.js b3c {{rF_B}}"),
+    ("b26.rN", "slide31.txt", 28, "1.747878", "rN", 6, "content.js b3c {{rN}}"),
+    ("b26.rJ", "slide31.txt", 28, "1.966097", "rJ", 6, "content.js b3c {{rJ}}"),
+    ("b26.rS", "slide31.txt", 28, "2.124148", "rS_B", 6, "content.js b3c {{rS_B}}"),
+    ("b26.rC", "slide31.txt", 28, "3.592659", "rC_B", 6, "content.js b3c {{rC_B}}"),
     # B12, second page (content.js frame b12b)
-    ("b47.cap", "slide48.txt", 7, "0.336122", "res_cap", 6, "content.js b12b {{res_cap}}"),
-    ("b47.rR", "slide48.txt", 8, "1.501", "res_rR", 3, "content.js b12b {{res_rR|3}}"),
-    ("b47.entry_rR", "slide48.txt", 8, "0.500846", "res_entry_rR", 6, "content.js b12b {{res_entry_rR}}"),
-    ("b47.rcap", "slide48.txt", 8, "1.678", "res_rcap", 3, "content.js b12b {{res_rcap|3}}"),
-    ("b47.entry_cap", "slide48.txt", 8, "0.522757", "res_entry_cap", 6, "content.js b12b {{res_entry_cap}}"),
+    ("b47.cap", "slide52.txt", 7, "0.336122", "res_cap", 6, "content.js b12b {{res_cap}}"),
+    ("b47.rR", "slide52.txt", 8, "1.501", "res_rR", 3, "content.js b12b {{res_rR|3}}"),
+    ("b47.entry_rR", "slide52.txt", 8, "0.500846", "res_entry_rR", 6, "content.js b12b {{res_entry_rR}}"),
+    ("b47.rcap", "slide52.txt", 8, "1.678", "res_rcap", 3, "content.js b12b {{res_rcap|3}}"),
+    ("b47.entry_cap", "slide52.txt", 8, "0.522757", "res_entry_cap", 6, "content.js b12b {{res_entry_cap}}"),
     # B12, third page (content.js frame b12c)
-    ("b48.cap", "slide49.txt", 14, "0.336122", "res_cap", 6, "content.js b12c {{res_cap}}"),
-    ("b48.rR", "slide49.txt", 14, "1.501023", "res_rR", 6, "content.js b12c {{res_rR}}"),
-    ("b48.rcap", "slide49.txt", 14, "1.677633", "res_rcap", 6, "content.js b12c {{res_rcap}}"),
-    ("b48.rN", "slide49.txt", 14, "1.747878", "res_rN", 6, "content.js b12c {{res_rN}}"),
-    ("b48.rQ", "slide49.txt", 14, "2.166995", "res_rQ", 6, "content.js b12c {{res_rQ}}"),
-    ("b48.rC", "slide49.txt", 14, "3.592659", "res_rC", 6, "content.js b12c {{res_rC}}"),
-    ("b48.lambda_rR", "slide49.txt", 16, "0.193853", "res_lambda_rR", 6, "content.js b12c {{res_lambda_rR}}"),
-    ("b48.entry_rR", "slide49.txt", 16, "0.500846", "res_entry_rR", 6, "content.js b12c {{res_entry_rR}}"),
-    ("b48.entry_cap", "slide49.txt", 16, "0.522757", "res_entry_cap", 6, "content.js b12c {{res_entry_cap}}"),
-    ("b48.rQ.3", "slide49.txt", 21, "2.167", "res_rQ", 3, "content.js b12c {{res_rQ|3}}"),
+    ("b48.cap", "slide53.txt", 14, "0.336122", "res_cap", 6, "content.js b12c {{res_cap}}"),
+    ("b48.rR", "slide53.txt", 14, "1.501023", "res_rR", 6, "content.js b12c {{res_rR}}"),
+    ("b48.rcap", "slide53.txt", 14, "1.677633", "res_rcap", 6, "content.js b12c {{res_rcap}}"),
+    ("b48.rN", "slide53.txt", 14, "1.747878", "res_rN", 6, "content.js b12c {{res_rN}}"),
+    ("b48.rQ", "slide53.txt", 14, "2.166995", "res_rQ", 6, "content.js b12c {{res_rQ}}"),
+    ("b48.rC", "slide53.txt", 14, "3.592659", "res_rC", 6, "content.js b12c {{res_rC}}"),
+    ("b48.lambda_rR", "slide53.txt", 16, "0.193853", "res_lambda_rR", 6, "content.js b12c {{res_lambda_rR}}"),
+    ("b48.entry_rR", "slide53.txt", 16, "0.500846", "res_entry_rR", 6, "content.js b12c {{res_entry_rR}}"),
+    ("b48.entry_cap", "slide53.txt", 16, "0.522757", "res_entry_cap", 6, "content.js b12c {{res_entry_cap}}"),
+    ("b48.rQ.3", "slide53.txt", 21, "2.167", "res_rQ", 3, "content.js b12c {{res_rQ|3}}"),
     # B12, fourth page (content.js frame b12d)
-    ("b49.r155", "slide50.txt", 12, "1.55", "str_r155", 2, "content.js b12d {{str_r155}}"),
-    ("b49.r160", "slide50.txt", 12, "1.60", "str_r160", 2, "content.js b12d {{str_r160}}"),
-    ("b49.r165", "slide50.txt", 12, "1.65", "str_r165", 2, "content.js b12d {{str_r165}}"),
-    ("b49.lambda_r155", "slide50.txt", 12, "0.237901", "res_lambda_r155", 6, "content.js b12d {{res_lambda_r155}}"),
-    ("b49.lambda_r160", "slide50.txt", 12, "0.279037", "res_lambda_r160", 6, "content.js b12d {{res_lambda_r160}}"),
-    ("b49.lambda_r165", "slide50.txt", 12, "0.316683", "res_lambda_r165", 6, "content.js b12d {{res_lambda_r165}}"),
-    ("b49.entry_r155", "slide50.txt", 12, "0.507630", "res_entry_r155", 6, "content.js b12d {{res_entry_r155}}"),
-    ("b49.entry_r160", "slide50.txt", 12, "0.513965", "res_entry_r160", 6, "content.js b12d {{res_entry_r160}}"),
-    ("b49.entry_r165", "slide50.txt", 12, "0.519763", "res_entry_r165", 6, "content.js b12d {{res_entry_r165}}"),
+    ("b49.r155", "slide54.txt", 12, "1.55", "str_r155", 2, "content.js b12d {{str_r155}}"),
+    ("b49.r160", "slide54.txt", 12, "1.60", "str_r160", 2, "content.js b12d {{str_r160}}"),
+    ("b49.r165", "slide54.txt", 12, "1.65", "str_r165", 2, "content.js b12d {{str_r165}}"),
+    ("b49.lambda_r155", "slide54.txt", 12, "0.237901", "res_lambda_r155", 6, "content.js b12d {{res_lambda_r155}}"),
+    ("b49.lambda_r160", "slide54.txt", 12, "0.279037", "res_lambda_r160", 6, "content.js b12d {{res_lambda_r160}}"),
+    ("b49.lambda_r165", "slide54.txt", 12, "0.316683", "res_lambda_r165", 6, "content.js b12d {{res_lambda_r165}}"),
+    ("b49.entry_r155", "slide54.txt", 12, "0.507630", "res_entry_r155", 6, "content.js b12d {{res_entry_r155}}"),
+    ("b49.entry_r160", "slide54.txt", 12, "0.513965", "res_entry_r160", 6, "content.js b12d {{res_entry_r160}}"),
+    ("b49.entry_r165", "slide54.txt", 12, "0.519763", "res_entry_r165", 6, "content.js b12d {{res_entry_r165}}"),
 ]
 
 # axis coordinates of page 18's chart (the master's tick labels; no registry row by nature)
-AXIS = [("p18.chart.x.1", "slide20.txt", 22, "1"), ("p18.chart.x.125", "slide20.txt", 23, "1.25"),
-        ("p18.chart.x.15", "slide20.txt", 24, "1.5"), ("p18.chart.x.175", "slide20.txt", 25, "1.75"),
-        ("p18.chart.x.2", "slide20.txt", 26, "2"), ("p18.chart.y.zero", "slide20.txt", 21, "0")]
+AXIS = [("p18.chart.x.1", "slide24.txt", 22, "1"), ("p18.chart.x.125", "slide24.txt", 23, "1.25"),
+        ("p18.chart.x.15", "slide24.txt", 24, "1.5"), ("p18.chart.x.175", "slide24.txt", 25, "1.75"),
+        ("p18.chart.x.2", "slide24.txt", 26, "2"), ("p18.chart.y.zero", "slide24.txt", 21, "0")]
 
 
 # tick labels of the three pictures redrawn on b24, b25 and b47 (axis coordinates, no registry row by
@@ -158,14 +153,15 @@ PIC_AXIS = [
     ("b25.ax.y.2", "0.2"), ("b25.ax.y.3", "0.3"), ("b25.ax.y.4", "0.4"), ("b25.ax.y.5", "0.5"),
     ("b25.ax.y.6", "0.6"),
 ]
-PIC_WHERE = {"b24": "master picture 'Figure CoexRegion' (slide 25)",
-             "b25": "master pictures 'Figure CoexPanelA', 'Figure CoexPanelC' (slide 26)"}
+PIC_WHERE = {"b24": "master picture 'Figure CoexRegion' (slide 29)",
+             "b25": "master pictures 'Figure CoexPanelA', 'Figure CoexPanelC' (slide 30)"}
 
 
 def build_numbers() -> tuple[dict, list]:
     numbers, log = {}, []
     for nid, slide, shape, master, key, digits, source in NUMBERS:
-        in_dump = master in shape_text(slide, shape)
+        # slide None: a retired row whose words left the master; kept until its page drops the span
+        in_dump = master in shape_text(slide, shape) if slide else True
         row: dict = {"key": key, "kind": "value", "digits": digits}
         if digits == "fraction":
             row.update(digits=None, format="fraction")

@@ -280,7 +280,7 @@
     look() {
       if (!this.el) return;
       // the look's line screen and its ink are set on the entry chart's mount: copy them, so the
-      // region is screened as page 18's is
+      // region is screened as page 22's is
       const entry = document.querySelector('.fig[data-fig="entry"]');
       const src = entry ? getComputedStyle(entry) : getComputedStyle(this.el);
       ['--scr-ink', '--scr-w', '--scr-pitch'].forEach((k) => {

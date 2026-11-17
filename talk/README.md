@@ -1,7 +1,7 @@
 # Seminar talk
 
 The seminar talk is a web page, published at `/talk/` beside the research brief and the paper.
-It has a title, 20 main pages and 41 backup pages (B1 to B18) in the plate look.
+It has a title, 24 main pages and 41 backup pages (B1 to B18) in the plate look.
 
 ```sh
 python3 talk/build.py
@@ -17,7 +17,7 @@ the shared palette and unlocked faces. `--allow-missing` is for an incomplete wo
 Open `talk/dist/index.html` to present. Right, Space, PageDown or Enter advances a step; Left or
 PageUp goes back. Home and End go to the ends of the current main or backup sequence.
 Type a main page number then Enter to jump; type `b8` then Enter for backup B8. A backup link
-remembers the page and step it came from; Backspace returns there from any backup, and so does a backup's Back link. Where a backup names the pages it belongs to instead (B2 shows "◂ 13", "◂ 14", "◂ 15"), a named link returns to the exact step if that is the page it was opened from, and otherwise to that page finished. A backup opened directly, with nothing remembered, returns to the main page that links to it. The control row above the stage shows the position, a Back button on every backup, and buttons for every key below; in full screen it appears only while the pointer moves.
+remembers the page and step it came from; Backspace returns there from any backup, and so does a backup's Back link. Where a backup names the pages it belongs to instead (B2 shows "◂ 15", "◂ 16", "◂ 17"), a named link returns to the exact step if that is the page it was opened from, and otherwise to that page finished. A backup opened directly, with nothing remembered, returns to the main page that links to it. The control row above the stage shows the position, a Back button on every backup, and buttons for every key below; in full screen it appears only while the pointer moves.
 O opens the overview; arrows and Enter choose a page. V toggles the finished reading view,
 which also opens with `?view=read` and is the default on a narrow screen. S opens the strength
 control on the entry charts; Left and Right move between marked strengths. Escape closes the
@@ -32,11 +32,12 @@ The words, numbers and page order come from the root PowerPoint, copied by hand,
 into `talk/src/pages/`. The author changes wording in the PowerPoint first. The text dumps under
 `audit/` are working records and are not needed to build. Never write to the PowerPoint.
 Page files are named by position in the PowerPoint's show order: `pNN` is main page NN (`p00` the
-title), `bNN` the backup at show position NN (B1 to B17 are `b22` to `b61`; B18 is only the formal
-Proposition 2 page, `b74`; the twelve earlier versions of main pages that the PowerPoint keeps in B18
+title), `bNN` the backup at show position NN (B1 to B17 are `b26` to `b65`; B18 is only the formal
+Proposition 2 page, `b78`; the twelve earlier versions of main pages that the PowerPoint keeps in B18
 are not built). `master_dump/slideNN.txt` is the text dump of the slide at show position NN.
 Number ids and figure variants keep the names their pages had before the 17 November deck (for
-example `p14.*` and the entry chart's variant `p14` are main page 16); they are names, not page numbers.
+example `p14.*` and the entry chart's variant `p14` are main page 19; `example.*` is main page 18); they are
+names, not page numbers.
 Numbers are bound through `data-num` to `src/data.json` and `src/data_*.json`, written by
 `build_data.py` and the `build_data_*.py` scripts from the registry. Rebuild the relevant data file
 when its registry inputs change, then rebuild the talk. Figures read those data files and the

@@ -1,0 +1,193 @@
+/* The shared arrangements of the main pages: A Columns, B Rows, C Axis.
+   One set of column lines and one set of horizontal lines for the whole talk, held as custom
+   properties on every page. A page takes its vertical lines from this set; the page stylesheets
+   (opening.css, maintext.css, setupfigs.css) only choose a pattern and fill it.
+   The page body starts at y = 193 on every main page and ends at y = 810, so a distance in the
+   body is a stage y less 193. Families, colours and rule weights come from the tokens. */
+
+.page {
+  /* vertical lines, in stage px */
+  --pat-measure: 1440px;            /* x 80 to 1520 */
+  --pat-gut: 48px;                  /* gutter between columns */
+  --pat-lab-w: 206px;               /* label column, x 80 to 286 */
+  --pat-lab-gut: 28px;              /* text after a label column from x = 314 */
+  --pat-thirds: repeat(3, minmax(0, 1fr));                                   /* 448 each */
+  --pat-halves: repeat(2, minmax(0, 1fr));                                   /* 696 each */
+  --pat-label: var(--pat-lab-w) minmax(0, 1fr);                              /* with column-gap var(--pat-lab-gut) */
+  --pat-label-thirds: var(--pat-lab-w) var(--pat-lab-gut) minmax(0, 1fr) var(--pat-gut) minmax(0, 1fr) var(--pat-gut) minmax(0, 1fr);   /* 370 each: 314, 732, 1150 */
+  --pat-label-halves: var(--pat-lab-w) var(--pat-lab-gut) minmax(0, 1fr) var(--pat-gut) minmax(0, 1fr);                                 /* 579 each: 314, 941 */
+  --pat-fig-w: 850px;               /* figure mount, x 80 to 930 */
+  --pat-side-gap: 17px;             /* side from x = 947, 573 wide */
+
+  /* horizontal lines, in stage px */
+  --pat-y-body: 193px;              /* body top */
+  --pat-y-cols: 241px;              /* top keyline of the columns on a Columns page */
+  --pat-y-axis: 270px;              /* the rule of an Axis page */
+  --pat-y-concl: 590px;             /* keyline over the conclusion row of a Columns page */
+  --pat-y-end: 810px;               /* body bottom */
+  --pat-head-h: 52px;               /* heads on a keyline (label column variant): head line, then 15px to the keyline */
+}
+
+@keyframes pat-rule-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ------------------------------------------------------------------ B. Rows on the label column
+   A label 206 wide, the text from x = 314, a thin keyline under each row over the full measure.
+   The label's last line shares its baseline with the text's first line. */
+
+.pat-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0 var(--pat-lab-gut);
+  margin: 0;
+  padding: 18px 0 20px;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+}
+.pat-row:first-child { padding-top: 0; }
+.pat-label {
+  flex: 0 0 var(--pat-lab-w);
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: .005em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.pat-text { flex: 1 1 0; min-width: 0; margin: 0; text-wrap: pretty; }
+.pat-text b { font-weight: 600; }
+
+/* a closing row between two thin keylines (the conclusion row of a Columns page, the closing
+   row of pages 1 and 2): standard tier, 20px above the text, 22px under its last line */
+.pat-row.pat-close {
+  padding: 20px 0 22px;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  font-size: 30px;
+  line-height: 1.32;
+}
+/* a statement between keylines with no label, over the full measure */
+.pat-stmt {
+  margin: 0;
+  padding: 20px 0 22px;
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.3;
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* a statement set plain on the last line of the body */
+.pat-plain {
+  margin: auto 0 0;
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+/* a note under a closing row or statement: its last line ends at y = 810, the row above ends at 757 */
+.pat-note { margin: 24px 0 0; text-wrap: pretty; }
+.pat-bottom { margin-top: auto; }
+
+/* ------------------------------------------------------------------ A. Columns over one conclusion row
+   Columns from the keyline at y = 241, each with its own keyline across its own width; the
+   conclusion row's keyline at y = 590 whatever the columns hold. A column is one click with its
+   keyline. */
+
+.pat-cols {
+  display: grid;
+  align-content: start;
+  column-gap: var(--pat-gut);
+  margin-top: calc(var(--pat-y-cols) - var(--pat-y-body));
+  height: calc(var(--pat-y-concl) - var(--pat-y-cols));
+  flex: 0 0 auto;
+}
+.pat-cols.is-thirds { grid-template-columns: var(--pat-thirds); }
+.pat-cols.is-halves { grid-template-columns: var(--pat-halves); }
+.pat-col {
+  min-width: 0;
+  padding-top: 12.5px;                         /* keyline 241 to 242.5, the head from 255 */
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+}
+.pat-head {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.pat-col-text { margin: 18px 0 0; font-size: 34px; line-height: 1.3; text-wrap: pretty; }   /* from y = 310 */
+
+/* the variant with a label column: the label in 80 to 286, the heads on one full-measure keyline,
+   the text 22px under it. The grid starts at the top of the head line. */
+.pat-lgrid {
+  position: relative;
+  display: grid;
+  grid-template-rows: var(--pat-head-h) auto;
+  align-content: start;
+  flex: 0 0 auto;
+}
+.pat-lgrid.is-thirds { grid-template-columns: var(--pat-label-thirds); }
+.pat-lgrid.is-halves { grid-template-columns: var(--pat-label-halves); }
+.pat-lgrid > .pat-label { grid-row: 1; grid-column: 1; align-self: end; padding-bottom: 14px; }
+.pat-lgrid > .pat-head { grid-row: 1; align-self: end; padding-bottom: 14px; white-space: nowrap; }
+.pat-lgrid > .pat-col-text { grid-row: 2; margin: 0; padding-top: 22px; }
+.pat-lgrid > .is-c1 { grid-column: 3; }
+.pat-lgrid > .is-c2 { grid-column: 5; }
+.pat-lgrid > .is-c3 { grid-column: 7; }
+/* the one keyline under the heads arrives with the label */
+.pat-lgrid::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--pat-head-h) - var(--rule-w, 1.5px));
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+.pat-lgrid:not(:has(> .pat-label.is-on))::before { visibility: hidden; }
+body[data-motion="on"] .pat-lgrid:has(> .pat-label.is-new)::before { animation: pat-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+
+/* ------------------------------------------------------------------ C. Axis
+   One thin rule at y = 270 over the full measure, a solid dot of 18px at the start of each stop,
+   the heads above the rule (line 215 to 251), the text hanging under it from y = 304. */
+
+.pat-axis {
+  position: relative;
+  display: grid;
+  column-gap: var(--pat-gut);
+  margin-top: calc(var(--pat-y-axis) - 55px - var(--pat-y-body));   /* head line 215 */
+  flex: 0 0 auto;
+}
+.pat-axis-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(55px - var(--rule-w, 1.5px) / 2);
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+.pat-stop { position: relative; min-width: 0; }
+.pat-stop-head {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.pat-dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 10px 0 0;                             /* 261 to 279, centred on the rule */
+  border-radius: 50%;
+  background: var(--ink);
+}
+.pat-stop-text { margin: 25px 0 0; font-size: 30px; line-height: 1.3; text-wrap: pretty; }   /* from y = 304 */
+.pat-stop-text b { font-weight: 600; }

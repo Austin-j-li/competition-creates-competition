@@ -5,10 +5,11 @@
 
 Sources (all read, none written):
   - the number registry, audit/slot_manuscript_2026_10_23/registry/registry.csv (key, value, display, ...);
-  - the master's page dumps, master_dump/slide17.txt (main page 16), slide18.txt (page 17), slide19.txt (page 18),
-    numbered by show position, from which every master string is read by shape id, never typed here.
-    The data names p14, p16 and p17 (number ids, curves.pages, the entry chart's variants) are the names
-    these three pages had before the 17 November deck; they are names, not page numbers.
+  - the master's page dumps, numbered by show position: master_dump/slide19.txt (main page 18, the numerical
+    example), slide20.txt (page 19, the entry chart), slide21.txt (page 20), slide23.txt (page 22), from which
+    every master string is read by shape id, never typed here. The data names p14, p16 and p17 (number ids,
+    curves.pages, the entry chart's variants) are the names the chart pages 19, 20 and 22 had in an earlier
+    deck; "example" is page 18. They are names, not page numbers.
 
 Every printed number is a registry row rounded half-up on its exact value (a Fraction parsed from the
 registry's decimal or fraction string; never a binary float). The curves evaluate the closed forms of the
@@ -115,8 +116,8 @@ def read_dump(name: str) -> dict[int, dict]:
     return shapes
 
 
-DUMP = {"p14": ("slide17.txt", read_dump("slide17.txt")), "p16": ("slide18.txt", read_dump("slide18.txt")),
-        "p17": ("slide19.txt", read_dump("slide19.txt"))}
+DUMP = {"p14": ("slide20.txt", read_dump("slide20.txt")), "p16": ("slide21.txt", read_dump("slide21.txt")),
+        "p17": ("slide23.txt", read_dump("slide23.txt")), "example": ("slide19.txt", read_dump("slide19.txt"))}
 
 
 def master_string(page: str, shape: int, occ: int | str) -> str | None:
@@ -183,12 +184,35 @@ NUMBERS = [
     ("p16.text.frozen", "p16", 64, "m0", "p4_frozen_entry_below_ceiling", 2, "value", ["entry_r1_B"],
      "orders held fixed: flat at 0.52 from r0 to r1"),
     ("p16.text.rho", "p16", 65, "m0", "prim_rho", 2, "value", ["p2_base_hidden_entry"], "price hidden: flat at rho"),
-    # main page 18 (data name p17), "Coexistence (1.39 to 1.97)" and "Unique outside"
-    ("p17.text.rA", "p17", 67, 0, "rA", 2, "value", [], ""),
-    ("p17.text.rJ", "p17", 67, 1, "rJ", 2, "value", [], ""),
-    ("p17.text.r0", "p17", 71, "m0", "prim_r0", 1, "value", [], ""),
-    ("p17.text.r1", "p17", 71, "m1", "prim_r1", 0, "value", [], ""),
-    ("p17.text.r2", "p17", 71, "m2", "prim_r2", 1, "value", [], ""),
+    # main page 18, the numerical example (data name example): kicker, table, band, note
+    ("example.r0", "example", 106, "m0", "prim_r0", 1, "value", [], "also printed in the head of the weak column"),
+    ("example.r1", "example", 106, "m1", "prim_r1", 0, "value", [], "also printed in the head of the strong column"),
+    ("example.r2", "example", 106, "m2", "prim_r2", 1, "value", [], "also printed in the head of the very strong column"),
+    ("example.spread.r0", "example", 114, 0, "Delta_r0", 3, "value", ["p2_base_r0_delta"], ""),
+    ("example.spread.r1", "example", 115, 0, "Delta_r1", 3, "value", ["p2_base_r1_delta"], ""),
+    ("example.spread.r2", "example", 116, 0, "Delta_r2", 3, "value", ["p2_base_r2_delta"], ""),
+    ("example.k", "example", 117, "m0", "prim_k", 2, "value", [], "order cost k = 0.02"),
+    ("example.bprior.r0", "example", 120, 0, "Bprior_r0", 2, "value", ["B_r0_half"], ""),
+    ("example.bprior.r1", "example", 121, 0, "Bprior_r1_B", 2, "value", ["B_r1_half"], ""),
+    ("example.bprior.r2", "example", 122, 0, "Bprior_r2", 2, "value", ["p2_base_r2_low_profit_zero"], ""),
+    ("example.cH.1", "example", 123, "m0", "prim_cH", 0, "value", [], "diligence cost c_H = 6"),
+    ("example.bpurchase.r0", "example", 126, 0, "p2_base_r0_low_profit_plus", 2, "value", ["Bprior_r0"],
+     "no informed order at r0, so the belief after a purchase is the prior"),
+    ("example.bpurchase.r1", "example", 127, 0, "p2_base_r1_low_profit_plus", 2, "value", [], "B_{r1}(M(1/2))"),
+    ("example.bpurchase.r2", "example", 128, 0, "p2_base_r2_low_profit_plus", 3, "value", [],
+     "B_{r2}(M(1/2)); 3 digits, so that it does not print as 6.00 beside c_H = 6"),
+    ("example.cH.2", "example", 129, "m0", "prim_cH", 0, "value", [], ""),
+    ("example.entry.r0", "example", 132, 0, "entry_r0", 2, "value", ["p2_base_r0_entry"], ""),
+    ("example.entry.r1", "example", 133, 0, "entry_r1_B", 2, "value", ["p2_base_r1_entry"], ""),
+    ("example.entry.r2", "example", 134, 0, "entry_r2", 2, "value", ["p2_base_r2_entry"], ""),
+    ("example.rho", "example", 135, "m0", "prim_rho", 2, "value", ["entry_r0"], "entry floor rho = 0.25"),
+    ("example.band.bpurchase.r1", "example", 138, "m0", "p2_base_r1_low_profit_plus", 2, "value", [], "6.22 > c_H"),
+    ("example.band.bpurchase.r2", "example", 138, "m1", "p2_base_r2_low_profit_plus", 3, "value", [], "5.997 < c_H"),
+    ("example.note.h", "example", 101, 0, "prim_h", 0, "value", [], ""),
+    ("example.note.ell", "example", 101, 1, "prim_ell", 0, "value", [], ""),
+    ("example.note.p", "example", 101, 2, "prim_p", "fraction", "value", [], ""),
+    ("example.note.pi", "example", 101, 3, "prim_pi", "fraction", "value", [], ""),
+    ("example.note.rho", "example", 101, 4, "prim_rho", "fraction", "value", [], ""),
     # page 17, the note
     ("p17.note.rA", "p17", 59, 0, "rA", 2, "value", [], ""),
     ("p17.note.rJ", "p17", 59, 1, "rJ", 2, "value", [], ""),

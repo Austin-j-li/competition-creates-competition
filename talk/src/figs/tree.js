@@ -1,4 +1,4 @@
-/* Page 10: the tree of what shareholders are paid after order x. Shapes from the boxes of master_dump/slide11.txt.
+/* Page 11: the tree of what shareholders are paid after order x. Shapes from the boxes of master_dump/slide11.txt.
    From "Order x" the branch "rival prepares", e(x), splits into class H, mu(x), ending at t_H,
    and class L, 1 - mu(x), ending at t_L; the branch "no prepared rival", 1 - e(x), ends at t_0.
    The tree is three root-to-leaf paths drawn on top of one another. On its click (step 2) each
@@ -10,8 +10,10 @@
 (function () {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
-  const W = 596, H = 452;
-  const XS = 86, X1 = 104, X2 = 294, XE = 452, XL = 468;
+  // 573 wide, the side of the Figure and side pattern (x 947 to 1520): "Order x" starts at the
+  // figure's left edge and "shareholders are paid" ends at its right edge
+  const W = 573, H = 452;
+  const XS = 96, X1 = 114, X2 = 282, XE = 429, XL = 445;
   const YH = 128, YU = 194, YL = 260, YR = 298, YD = 402;
   const DRAW = 360;              // the longest path, drawn at constant speed
   const LABEL = 150;

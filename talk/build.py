@@ -30,9 +30,9 @@ from pathlib import Path
 DEMO = Path(__file__).resolve().parent
 REPO = DEMO.parents[0]
 VENDOR = REPO / 'handout' / 'vendor'
-PAGE_ORDER = (['p%02d' % i for i in range(0, 21)]          # the title and main pages 1 to 20
-              + ['b%02d' % i for i in range(22, 62)]        # backups B1 to B17, keyed by PowerPoint show position
-              + ['b74'])                                    # B18: the formal Proposition 2 page only
+PAGE_ORDER = (['p%02d' % i for i in range(0, 25)]          # the title and main pages 1 to 24
+              + ['b%02d' % i for i in range(26, 66)]        # backups B1 to B17, keyed by PowerPoint show position
+              + ['b78'])                                    # B18: the formal Proposition 2 page only
 # Import the site's face generator and hash checks without running its build.
 _spec = importlib.util.spec_from_file_location('site_handout_build', REPO / 'handout/build.py')
 site_build = importlib.util.module_from_spec(_spec)
@@ -193,7 +193,7 @@ def locked_fonts() -> tuple[str, str, dict]:
 
 # SHA256 fingerprints of sentences of at least 12 words in the master's five note blocks,
 # from the 15 November text dumps, excluding sentences also printed on the pages. The 17 November
-# master's notes (show positions 8 to 12) give the same set.
+# master (16:52; notes at show positions 9 to 12 and 14) gives the same set.
 # Only fingerprints are retained, so audit/ is not a build input.
 NOTE_SENTENCES = {12: ['416c38ca084781169ce1d0329a859f66a43d497f2614674fafe51754bec1e93c'],
  13: ['9906c658318324534e51661829973cff4e21fdcbb3a4676015c871652876d9c0'],

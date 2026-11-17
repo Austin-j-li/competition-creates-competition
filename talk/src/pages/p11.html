@@ -1,23 +1,39 @@
-<section class="page" data-page="11" data-part="2" data-steps="4" id="p11">
+<section class="page sf-page" data-page="11" data-part="2" data-steps="5" id="p11">
   <header class="page-head">
-    <h2 class="page-title">Equilibrium</h2>
-    <div class="page-sub strip-sub"><nav class="stage-strip"><span class="stage">0 Sale rule</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">1 One order trades</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">2 Rival decides</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">3 Auction</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage is-current">Equilibrium</span></nav><span class="strip-note">Perfect Bayesian equilibrium with competitive prices.</span></div>
+    <h2 class="page-title">Price formation</h2>
+    <nav class="stage-strip"><span class="stage">0 Auction rule</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage is-current">1 One order trades</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">2 Rival decides</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">3 Auction</span><span class="stage-sep" aria-hidden="true">·</span><span class="stage">Equilibrium</span></nav>
   </header>
   <div class="page-body">
-<div class="runin" data-step="1">
-      <b class="runin-label">Informed trader</b>
-      <div class="runin-text">
-        <p>In class \(j\), expected profit \(E_{j}[q(V_{T}-P(q))]-k|q|\) simplifies to</p>
-        <div class="eq">\[U_{j}(q)=q\cdot e(q)\cdot \Delta_{T}\cdot [\mathbf{1}\{j=H\}-\mu (q)]-k|q|\]</div>
-        <p class="gloss">Entry × shareholder spread × how far the market’s belief is from the truth, minus order cost \(k\). Mixes only when indifferent.</p>
+    <div class="cols sf-cols">
+      <div class="col sf-rows">
+        <div class="runin sf-row" data-step="1">
+          <b class="runin-label">Market makers</b>
+          <div class="runin-text">
+            <p>See the order \(x\), not who sent it. They are competitive, so \(P(x)=\mathbb{E}[V_{T}\mid X=x]\).</p>
+          </div>
+        </div>
+        <div class="runin sf-row pf-price" data-step="3">
+          <b class="runin-label">The price</b>
+          <div class="runin-text">
+            <div class="eq pf-formula">\[\begin{aligned}P(x)&amp;=\htmlClass{pf-t0}{[1-e(x)]\,t_{0}}+\htmlClass{pf-tE}{e(x)}[\htmlClass{pf-tH}{\mu (x)\,t_{H}}+\htmlClass{pf-tL}{(1-\mu (x))\,t_{L}}]\\&amp;=t_{0}+e(x)[t_{L}-t_{0}+\Delta_{T}\,\mu (x)]\end{aligned}\]</div>
+            <p class="gloss">\(\mu (x)=\mathrm{Pr}(j=H\mid X=x)\), updated by Bayes’ rule.<br>\(e(x)\): entry after order \(x\), decided after the price is set.<br>\(t_{0}\): expected shareholder payoff when the rival does not prepare.</p>
+          </div>
+        </div>
+        <div class="runin sf-row" data-step="4">
+          <b class="runin-label">What the rival learns from the price</b>
+          <div class="runin-text">
+            <p>With a positive shareholder spread \(\Delta_{T}\), the price rises with the belief, so the rival reads \(\mu (x)\) off the price: \(\mu (x)=\mu (P)\).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col sf-figcol">
+        <div class="fig" data-fig="tree" data-variant="p08" role="img" aria-label="After order x, the rival prepares with probability e(x) and is of class H with probability mu(x), paying shareholders t_H, or of class L with probability 1 minus mu(x), paying t_L; with probability 1 minus e(x) there is no prepared rival and shareholders are paid t_0."></div>
       </div>
     </div>
-    <p class="runin" data-step="2"><b class="runin-label">Equilibrium</b><span class="runin-text">Informed orders maximise \(U_{j}(q)\), market makers set \(P(x)=E[V_{T}\mid X=x]\), and the rival prepares iff \(B(\mu )\ge C\).</span></p>
-    <p class="runin" data-step="3"><b class="runin-label">Beliefs</b><span class="runin-text">Liquidity orders give every \(x\in \{-1,\,0,\,1\}\) positive probability, so Bayes’ rule pins down every belief \(\mu (x)\).</span></p>
-    <p class="runin" data-step="4"><b class="runin-label">Environment</b><span class="runin-text">Per-share payoffs, standalone value \(0\), finite means with \(\theta \ge p\), independent draws, and neither bidder trades target shares.</span></p>
+    <p class="claim sf-claim" data-step="5">A high price attracts the rival, and the rival’s entry is part of what makes the price high.</p>
   </div>
   <footer class="page-foot">
     <nav class="roadmap"><span class="road">Question</span><span class="road-sep" aria-hidden="true">·</span><span class="road is-current">Model setup</span><span class="road-sep" aria-hidden="true">·</span><span class="road">Main results</span><span class="road-sep" aria-hidden="true">·</span><span class="road">Discussion</span><span class="road-sep" aria-hidden="true">·</span><span class="road">Extension</span><span class="road-sep" aria-hidden="true">·</span><span class="road">Conclusion</span></nav>
-    <span class="page-num">11 / 20</span>
+    <span class="page-num">11 / 24</span>
   </footer>
 </section>

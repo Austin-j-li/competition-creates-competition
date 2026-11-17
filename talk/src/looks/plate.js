@@ -4,7 +4,7 @@
    brings both black and green marks, the black goes down first and the green 120 ms later.
    Text is set in 240 ms, lines and areas take 380 ms. Web Animations inside #stage, so a key press
    finishes them; nothing runs under ?static=1, ?motion=0 or reduced motion (the engine marks no
-   new elements then). The bars on page 10 animate themselves, so they are left alone. */
+   new elements then). The bars on page 11 animate themselves, so they are left alone. */
 (function () {
   'use strict';
   var doc = document;

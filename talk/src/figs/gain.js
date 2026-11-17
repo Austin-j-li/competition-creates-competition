@@ -1,4 +1,4 @@
-/* Main page 14 (master_dump/slide15.txt): both endpoints are proportional to shareholder spread, about the gain-axis origin. */
+/* Main page 16 (master_dump/slide15.txt): both endpoints are proportional to shareholder spread, about the gain-axis origin. */
 (function () {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
