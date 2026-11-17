@@ -1,0 +1,139 @@
+/* The opening pages that open the talk on the sale itself: main page 1 (U.S. Steel, a timeline),
+   main page 2 (how a listed company is sold) and main page 6 (the players). Structure and geometry
+   only; families, colours and rule weights come from the tokens. These pages carry no green.
+   The closing run-in row of pages 1 and 2 and the label column are shared with pages 4 and 5
+   (maintext.css). Every rule is scoped by page id. */
+
+/* no sub line: its height is reserved so the heavy keyline and the body sit where they sit on
+   every other main page */
+:is(#p01, #p02, #p06) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
+
+/* ------------------------------------------------------------------ page 1: four dated stops on one rule */
+
+#p01 .ust {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 48px;
+  margin-top: 22px;
+}
+/* the rule runs the full measure through the four dots; it arrives with the first stop */
+#p01 .ust-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 54px;                                   /* the date's 36px line, 10px, then half the dot */
+  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+#p01 .ust-stop { position: relative; min-width: 0; }
+#p01 .ust-date {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
+  white-space: nowrap;
+  color: var(--ink);
+}
+#p01 .ust-dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 10px 0 0;
+  border-radius: 50%;
+  background: var(--ink);
+}
+#p01 .ust-fig {
+  margin: 22px 0 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 68px;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  font-variant-numeric: lining-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+#p01 .ust-cap {
+  margin: 12px 0 0;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+#p01 .ust-beat {
+  margin: 22px 0 0;
+  padding-right: 8px;
+  font-size: 28px;
+  line-height: 1.32;
+  text-wrap: pretty;
+}
+#p01 .runin { margin-top: auto; }
+#p01 .note { margin-top: 30px; text-wrap: pretty; }
+
+/* ------------------------------------------------------------------ page 2: three stages of the sale, then the stock market */
+
+#p02 .runin:not(.sale-close) {
+  align-items: baseline;
+  padding: 18px 0 20px;
+  border-top: 0;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+  font-size: 30px;
+  line-height: 1.32;
+}
+#p02 .runin:first-child { padding-top: 6px; }
+#p02 .runin:nth-child(3) { border-bottom: 0; }   /* the closing row brings its own keyline */
+#p02 .runin-text { text-wrap: pretty; }
+#p02 .runin-text b { font-weight: 600; }
+#p02 .sale-close { margin-top: auto; }
+#p02 .note { margin-top: 30px; text-wrap: pretty; }
+
+/* ------------------------------------------------------------------ page 6: the players, in two groups
+   As on page 3: the group's label in the first column, the heads over one keyline, the text beneath. */
+
+#p06 .players-grid {
+  display: grid;
+  grid-template-columns: 296px repeat(3, 1fr);
+  grid-template-rows: auto auto 76px auto auto;   /* the two groups, 76px apart */
+  column-gap: 0;
+  margin-top: 10px;
+}
+#p06 .pl-label, #p06 .pl-head {
+  align-self: end;
+  margin: 0;
+  padding: 0 36px 12px 0;
+  font-family: var(--font-label);
+  font-weight: 600;
+  color: var(--ink);
+}
+#p06 .pl-label { grid-column: 1; padding-right: 16px; white-space: nowrap; font-size: 24px; line-height: 1.2; }
+#p06 .pl-head { font-size: 34px; line-height: 1.1; }
+#p06 .pl-text { margin: 0; padding: 22px 36px 0 0; font-size: 28px; line-height: 1.34; text-wrap: pretty; }
+#p06 .pl-text b { font-weight: 600; }
+#p06 .pl-r1:is(.pl-label, .pl-head) { grid-row: 1; }
+#p06 .pl-r1.pl-text { grid-row: 2; }
+#p06 .pl-r2:is(.pl-label, .pl-head) { grid-row: 4; }
+#p06 .pl-r2.pl-text { grid-row: 5; }
+#p06 .pl-c2 { grid-column: 2; }
+#p06 .pl-c3 { grid-column: 3; }
+#p06 .pl-c4 { grid-column: 4; }
+#p06 .pl-c23 { grid-column: 2 / 4; }
+#p06 .pl-c4.pl-text { padding-right: 0; }
+
+/* each group's keyline runs under its label and heads; it arrives with the group's label */
+@keyframes opening-rule-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+#p06 .players-grid::before,
+#p06 .players-grid::after {
+  content: "";
+  grid-column: 1 / -1;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
+  pointer-events: none;
+}
+#p06 .players-grid::before { grid-row: 1; }
+#p06 .players-grid::after { grid-row: 4; }
+#p06 .players-grid:not(:has(.pl-label.pl-r1.is-on))::before { visibility: hidden; }
+#p06 .players-grid:not(:has(.pl-label.pl-r2.is-on))::after { visibility: hidden; }
+body[data-motion="on"] #p06 .players-grid:has(.pl-label.pl-r1.is-new)::before,
+body[data-motion="on"] #p06 .players-grid:has(.pl-label.pl-r2.is-new)::after { animation: opening-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }

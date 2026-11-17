@@ -259,7 +259,7 @@
     const ret = hud.querySelector('.hud-return');
     if (P.backup) {
       const saved = returnStack[returnStack.length - 1];
-      const link = P.el.querySelector('.back-link[data-go]');
+      const link = P.el.querySelector('.page-foot .back-link[data-go]') || P.el.querySelector('.back-link[data-go]');
       const target = saved ? pages.find((p) => p.key === saved.page) : link ? pages.find((p) => p.key === link.dataset.go) : linkingPage(P) || pages[0];
       ret.querySelector('.hud-return-label').textContent = 'Back to ' + (target ? pageName(target) : 'the title');
       ret.hidden = false;
@@ -304,7 +304,7 @@
     if (a.matches('.back-link')) {
       if (a.hasAttribute('data-back')) returnTo(a);
       else {
-        // a named return ("◂ 11"): if that is the page the speaker came from, land on the exact
+        // a named return ("◂ 13"): if that is the page the speaker came from, land on the exact
         // step left; otherwise on that page's finished state
         const i = pages.findIndex((p) => p.key === a.dataset.go);
         const saved = i >= 0 ? returnStack.pop() : null;
@@ -802,14 +802,14 @@
   const KEYS = [
     ['Next click', 'Right, Space, Page Down, Enter'],
     ['Previous click', 'Left, Page Up'],
-    ['Go to main page 14', '1 4 Enter'],
+    ['Go to main page 16', '1 6 Enter'],
     ['Go to backup B8', 'b 8 Enter'],
     ['Return from a backup', 'Backspace, or Back in the control row'],
     ['Restart this page', 'R'],
     ['First and last main page', 'Home, End'],
     ['Overview of all pages', 'O'],
     ['Notation', 'G'],
-    ['Strength control (pages 14, 16, 17)', 'S'],
+    ['Strength control (pages 16, 17, 18)', 'S'],
     ['Blank screen', 'B or . (a clicker’s blank key); click to return'],
     ['Reading view', 'V'],
     ['Full screen', 'F (or a clicker’s start key, F5)'],

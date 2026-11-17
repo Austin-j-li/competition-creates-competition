@@ -1,38 +1,38 @@
-/* Layout of the word-and-table main pages: 1, 2, 4, 5, 7, 9, 15, 19.
+/* Layout of the word-and-table pages: main pages 3, 4, 5, 7, 9, 11, 20 (pages 1, 2 and 6 in opening.css), and backups B14 (literature) and B18.
    Structure and geometry only; type families, colours, rule weights and sizes come from the
    tokens (and from the plate look for the shared vocabulary). Every rule is scoped by page id so
    that it beats the look's class rules where it must and touches no other page. */
 
-/* ------------------------------------------------------------------ pages 2 to 4: no sub line, its height reserved
+/* ------------------------------------------------------------------ pages 3 and 4 and backup B14 (the literature): no sub line, its height reserved
    so the heavy keyline and the body sit where they sit on every other main page */
-:is(#p02, #p03, #p04) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
+:is(#p03, #p04, #b55) .page-head::after { content: ""; display: block; height: calc(12px + 1.3 * var(--fs-sub)); }
 
 /* ------------------------------------------------------------------ rows with a run-in label
-   (pages 2, 7, 9, 15, 19): every row ends in one continuous keyline, the first row has none above. */
+   (pages 4, 9, 11 and backup B18): every row ends in one continuous keyline, the first row has none above. */
 
-#p02 .runin, #p07 .runin, #p09 .runin, #p15 .runin, #p19 .runin {
+#p04 .runin, #p09 .runin, #p11 .runin, #b74 .runin {
   align-items: baseline;
   padding-top: 0;
   border-top: 0;
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
 }
-#p07 .runin, #p09 .runin, #p15 .runin, #p19 .runin { padding-top: 14px; padding-bottom: 15px; }
-#p07 .runin:first-child, #p09 .runin:first-child, #p15 .statement > .runin:first-child, #p19 .runin:first-child { padding-top: 0; }
-#p07 .runin-text, #p09 .runin-text, #p15 .runin-text, #p19 .runin-text { margin: 0; }
+#p09 .runin, #p11 .runin, #b74 .runin { padding-top: 14px; padding-bottom: 15px; }
+#p09 .runin:first-child, #p11 .runin:first-child, #b74 .statement > .runin:first-child { padding-top: 0; }
+#p09 .runin-text, #p11 .runin-text, #b74 .runin-text { margin: 0; }
 /* one label column on every main page with run-in rows: a 206px label, a 28px gutter, so the text
    starts at x = 314; the label in Jost 600 at 24px */
-:is(#p02, #p03, #p07, #p09, #p15, #p19) .runin { gap: 0 28px; }
-:is(#p02, #p03, #p07, #p09, #p15, #p19) .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
-#p09 .runin-text p, #p15 .runin-text p, #p19 .runin-text p:not(.q) { margin: 0; }
+:is(#p01, #p02, #p04, #p05, #p09, #p11, #b74) .runin { gap: 0 28px; }
+:is(#p01, #p02, #p04, #p05, #p09, #p11, #b74) .runin-label { flex: 0 0 206px; min-width: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
+#p11 .runin-text p, #b74 .runin-text p { margin: 0; }
 
-/* ------------------------------------------------------------------ the stage strip (pages 7 and 9) */
+/* ------------------------------------------------------------------ the stage strip (pages 9 and 11) */
 
-#p07 .page-sub.strip-sub, #p09 .page-sub.strip-sub {
+#p09 .page-sub.strip-sub, #p11 .page-sub.strip-sub {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
 }
-#p07 .stage-strip, #p09 .stage-strip {
+#p09 .stage-strip, #p11 .stage-strip {
   display: flex;
   align-items: baseline;
   flex: 0 0 auto;
@@ -41,15 +41,27 @@
   font-size: 21px;
   color: var(--ink-2);
 }
-#p07 .stage, #p09 .stage { white-space: nowrap; }
-#p07 .stage.is-current, #p09 .stage.is-current { font-weight: 600; color: var(--ink); }
-#p07 .stage-sep, #p09 .stage-sep { padding: 0 .62em; }
-#p09 .strip-note { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
+#p09 .stage, #p11 .stage { white-space: nowrap; }
+#p09 .stage.is-current, #p11 .stage.is-current { font-weight: 600; color: var(--ink); }
+#p09 .stage-sep, #p11 .stage-sep { padding: 0 .62em; }
+#p11 .strip-note { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
 
-/* ------------------------------------------------------------------ page 1 */
+/* ------------------------------------------------------------------ pages 3, 4 and 5: one group at the optical centre
+   The page's content is one group with a fixed rhythm; the free height of the body (between the
+   head keyline and the foot keyline, less the note) is split 45 above the group, 55 below. Steps
+   not yet shown keep their space (visibility only), so the group never moves as clicks reveal it.
+   The note stays at the foot. */
+:is(#p03, #p04, #p05) .page-body { padding-top: 0; }              /* the split is measured from the keyline */
+#p03 .page-body { padding-bottom: 0; }                              /* ... to the foot keyline, or to the note */
+:is(#p03, #p04, #p05) .page-body::before { content: ""; flex: 45 1 0; }
+:is(#p03, #p04, #p05) .group { flex: 0 0 auto; display: flex; flex-direction: column; }
+#p03 .page-body::after { content: ""; flex: 55 1 0; }
+:is(#p04, #p05) .note { flex: 55 1 auto; display: flex; flex-direction: column; justify-content: flex-end; margin: 0; text-wrap: pretty; }
 
-#p01 .why-grid { display: grid; grid-template-columns: 296px repeat(3, 1fr); }
-#p01 .why-label, #p01 .why-head {
+/* ------------------------------------------------------------------ page 3 */
+
+#p03 .why-grid { display: grid; grid-template-columns: 296px repeat(3, 1fr); }
+#p03 .why-label, #p03 .why-head {
   grid-row: 1;
   align-self: end;
   margin: 0;
@@ -57,28 +69,28 @@
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
   font-family: var(--font-label);
 }
-#p01 .why-label { padding-right: 16px; white-space: nowrap; font-weight: 600; font-size: 24px; line-height: 1.2; color: var(--ink); }
-#p01 .why-head { font-weight: 600; font-size: 34px; line-height: 1.1; color: var(--ink); }
-#p01 .why-text { grid-row: 2; margin: 0; padding: 26px 36px 0 0; font-size: 30px; line-height: 1.34; text-wrap: pretty; }
-#p01 .why-grid > :nth-child(5) { grid-column: 2; }
-#p01 .why-grid > :nth-child(6) { grid-column: 3; }
-#p01 .why-grid > :nth-child(7) { grid-column: 4; }
-#p01 .claim { margin-top: auto; max-width: 1300px; font-size: 30px; line-height: 1.3; text-wrap: balance; }
+#p03 .why-label { padding-right: 16px; white-space: nowrap; font-weight: 600; font-size: 24px; line-height: 1.2; color: var(--ink); }
+#p03 .why-head { font-weight: 600; font-size: 34px; line-height: 1.1; color: var(--ink); }
+#p03 .why-text { grid-row: 2; margin: 0; padding: 26px 36px 0 0; font-size: 34px; line-height: 1.3; text-wrap: pretty; }   /* the opening tier */
+#p03 .why-grid > :nth-child(5) { grid-column: 2; }
+#p03 .why-grid > :nth-child(6) { grid-column: 3; }
+#p03 .why-grid > :nth-child(7) { grid-column: 4; }
+#p03 .claim { margin-top: 72px; max-width: 1300px; font-size: 30px; line-height: 1.3; text-wrap: balance; }
 
-/* ------------------------------------------------------------------ page 2 */
+/* ------------------------------------------------------------------ page 4 */
 
-#p02 .bullets {
+#p04 .bullets {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 40px;
   font-size: 30px;
   line-height: 1.32;
 }
-#p02 .bullets li { position: relative; max-width: 1300px; padding-left: 46px; text-wrap: pretty; }
-#p02 .bullets li::before {
+#p04 .bullets li { position: relative; max-width: 1300px; padding-left: 46px; text-wrap: pretty; }
+#p04 .bullets li::before {
   content: "";
   position: absolute;
   left: 4px;
@@ -87,123 +99,130 @@
   height: 12px;
   background: var(--ink);
 }
-/* p02's Plot twist and p03's Where it stops: one device, a run-in row between two thin keylines */
-:is(#p02, #p03) .runin { align-items: baseline; padding-top: 20px; padding-bottom: 22px; border-top: var(--rule-w, 1.5px) solid var(--rule); border-bottom: var(--rule-w, 1.5px) solid var(--rule); font-size: 30px; line-height: 1.32; }
-#p02 .runin { margin-top: 54px; }
-#p02 .note { margin-top: auto; text-wrap: pretty; }
-#p03 .steps5 + .lead { margin-top: auto; }
-#p03 .lead + .runin { margin-top: 28px; }
-#p03 .lead + .steps5 { margin-top: 44px; }
-#p03 .runin { margin-bottom: auto; }
+/* the closing row of the opening pages (p01's In this sale, p02's Stock market, p04's This paper,
+   p05's Main result): one device, a run-in row between two thin keylines */
+:is(#p01, #p04, #p05) .runin, #p02 .runin.sale-close { align-items: baseline; padding-top: 20px; padding-bottom: 22px; border-top: var(--rule-w, 1.5px) solid var(--rule); border-bottom: var(--rule-w, 1.5px) solid var(--rule); font-size: 30px; line-height: 1.32; }
+#p04 .runin { margin-top: 64px; }
 
-/* ------------------------------------------------------------------ page 4 */
+/* ------------------------------------------------------------------ page 5: two effects in two columns, the main result, the note */
 
-#p04 table.lit { font-size: 24px; line-height: 1.27; margin-bottom: 24px; }
-#p04 .w-strand { width: 33%; }
-#p04 .w-shows { width: 31%; }
-#p04 .w-here { width: 36%; }
-#p04 table.lit th, #p04 table.lit td { padding: 10px 28px 11px 0; }
-#p04 table.lit thead th { padding-top: 0; padding-bottom: 11px; font-size: 26px; }
-#p04 table.lit + .claim { margin-top: auto; }
-#p04 .claim.is-band { padding: 22px 40px 24px; font-size: 28px; line-height: 1.32; }
+#p05 .two-effects { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+#p05 .fx-head {
+  grid-row: 1;
+  margin: 0;
+  padding: 0 0 12px;
+  border-bottom: var(--rule-w, 1.5px) solid transparent;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+#p05 .fx-text { grid-row: 2; margin: 0; padding: 26px 0 0; font-size: 34px; line-height: 1.3; text-wrap: pretty; }   /* the opening tier */
+#p05 .two-effects > :nth-child(odd) { grid-column: 1; }
+#p05 .two-effects > :nth-child(even) { grid-column: 2; }
+#p05 .runin { margin-top: 72px; }
 
-/* ------------------------------------------------------------------ page 5: five players by four stages */
+/* ------------------------------------------------------------------ backup B14, first page: the literature (main page 4 until 17 Nov) */
 
-#p05 table.grid5 { font-size: 22px; line-height: 1.26; height: 100%; }
-#p05 .w-player { width: 186px; }
-#p05 .w-s0 { width: 292px; }
-#p05 .w-s1 { width: 396px; }
-#p05 .w-s2 { width: 292px; }
-#p05 .w-s3 { width: 274px; }
-#p05 table.grid5 th, #p05 table.grid5 td { padding: 9px 22px 10px 0; }
-#p05 table.grid5 thead th { padding-top: 0; padding-bottom: 12px; font-size: 25px; white-space: nowrap; }
-#p05 table.grid5 tbody th { font-size: 24px; font-weight: 600; }
-#p05 table.grid5 td { text-wrap: pretty; }
-#p05 .stageno { display: inline-block; margin-right: .3em; font-variant-numeric: tabular-nums; }
-#p05 .katex { font-size: 1.05em; display: inline-block; }
-#p05 table.grid5 tbody tr:last-child th, #p05 table.grid5 tbody tr:last-child td { vertical-align: top; }
+#b55 table.lit { font-size: 24px; line-height: 1.27; margin-bottom: 24px; }
+#b55 .w-strand { width: 33%; }
+#b55 .w-shows { width: 31%; }
+#b55 .w-here { width: 36%; }
+#b55 table.lit th, #b55 table.lit td { padding: 10px 28px 11px 0; }
+#b55 table.lit thead th { padding-top: 0; padding-bottom: 11px; font-size: 26px; }
+#b55 table.lit + .claim { margin-top: auto; }
+#b55 .claim.is-band { padding: 22px 40px 24px; font-size: 28px; line-height: 1.32; }
 
-/* ------------------------------------------------------------------ page 7 */
+/* ------------------------------------------------------------------ page 7: five players by four stages */
 
-#p07 .runin { font-size: 27px; line-height: 1.3; }
-#p07 .runin, #p07 .runin:first-child { padding-bottom: 12px; }
-#p07 .runin + .runin { padding-top: 12px; }
-#p07 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 27px; line-height: 1.26; }
-#p07 .w-rowlab { width: 234px; }
-#p07 .w-costless { width: 594px; }
-#p07 .w-costly { width: 612px; }
-#p07 table.entry2 th, #p07 table.entry2 td { padding: 9px 24px 10px 0; }
-#p07 table.entry2 thead th { padding-top: 0; padding-bottom: 10px; font-size: 28px; }
-#p07 table.entry2 .col-strong { padding-left: 22px; padding-right: 22px; }
-#p07 table.entry2 tbody th { font-size: 24px; font-weight: 600; }
-#p07 table.entry2 + .claim { margin-top: auto; }
-#p07 .claim { font-size: 30px; line-height: 1.3; max-width: 1440px; text-wrap: balance; }
+#p07 table.grid5 { font-size: 22px; line-height: 1.26; height: 100%; }
+#p07 .w-player { width: 186px; }
+#p07 .w-s0 { width: 292px; }
+#p07 .w-s1 { width: 396px; }
+#p07 .w-s2 { width: 292px; }
+#p07 .w-s3 { width: 274px; }
+#p07 table.grid5 th, #p07 table.grid5 td { padding: 9px 22px 10px 0; }
+#p07 table.grid5 thead th { padding-top: 0; padding-bottom: 12px; font-size: 25px; white-space: nowrap; }
+#p07 table.grid5 tbody th { font-size: 24px; font-weight: 600; }
+#p07 table.grid5 td { text-wrap: pretty; }
+#p07 .stageno { display: inline-block; margin-right: .3em; font-variant-numeric: tabular-nums; }
+#p07 .katex { font-size: 1.05em; display: inline-block; }
+#p07 table.grid5 tbody tr:last-child th, #p07 table.grid5 tbody tr:last-child td { vertical-align: top; }
+
+/* ------------------------------------------------------------------ page 9 */
+
+#p09 .runin { font-size: 27px; line-height: 1.3; }
+#p09 .runin, #p09 .runin:first-child { padding-bottom: 12px; }
+#p09 .runin + .runin { padding-top: 12px; }
+#p09 table.entry2 { margin-top: 30px; margin-bottom: 22px; font-size: 27px; line-height: 1.26; }
+#p09 .w-rowlab { width: 234px; }
+#p09 .w-costless { width: 594px; }
+#p09 .w-costly { width: 612px; }
+#p09 table.entry2 th, #p09 table.entry2 td { padding: 9px 24px 10px 0; }
+#p09 table.entry2 thead th { padding-top: 0; padding-bottom: 10px; font-size: 28px; }
+#p09 table.entry2 .col-strong { padding-left: 22px; padding-right: 22px; }
+#p09 table.entry2 tbody th { font-size: 24px; font-weight: 600; }
+#p09 table.entry2 + .claim { margin-top: auto; }
+#p09 .claim { font-size: 30px; line-height: 1.3; max-width: 1440px; text-wrap: balance; }
 /* the look's paper halo is a text stroke, which eats thin glyphs (the minus, the inequality signs);
    a crisp paper-coloured text shadow does the same job without cutting the letters */
-#p07 table.entry2 td.col-strong, #p07 table.entry2 td.col-strong .katex * {
+#p09 table.entry2 td.col-strong, #p09 table.entry2 td.col-strong .katex * {
   -webkit-text-stroke: 0;
   text-shadow: 2px 0 var(--ground), -2px 0 var(--ground), 0 2px var(--ground), 0 -2px var(--ground),
                1.5px 1.5px var(--ground), -1.5px 1.5px var(--ground), 1.5px -1.5px var(--ground), -1.5px -1.5px var(--ground);
 }
 
-/* ------------------------------------------------------------------ page 9 */
+/* ------------------------------------------------------------------ page 11 */
 
-#p09 .page-body { padding-bottom: 16px; }
-#p09 .runin { font-size: 27px; line-height: 1.3; }
-#p09 .runin, #p09 .runin:first-child { padding-bottom: 13px; }
-#p09 .runin + .runin { padding-top: 13px; }
-#p09 .eq { margin: 2px 0 4px; font-size: 27px; }
-#p09 .katex-display { margin: 0; text-align: left; }
-#p09 .katex-display > .katex { text-align: left; }
-#p09 .gloss { font-size: 21px; line-height: 1.3; }
+#p11 .page-body { padding-bottom: 16px; }
+#p11 .runin { font-size: 27px; line-height: 1.3; }
+#p11 .runin, #p11 .runin:first-child { padding-bottom: 13px; }
+#p11 .runin + .runin { padding-top: 13px; }
+#p11 .eq { margin: 2px 0 4px; font-size: 27px; }
+#p11 .katex-display { margin: 0; text-align: left; }
+#p11 .katex-display > .katex { text-align: left; }
+#p11 .gloss { font-size: 21px; line-height: 1.3; }
 
-/* ------------------------------------------------------------------ page 15: Proposition 2 */
+/* ------------------------------------------------------------------ backup B18: Proposition 2 (main page 15 until 17 Nov) */
 
-#p15 .page-body { padding-bottom: 14px; }
-#p15 .statement { font-size: 24px; line-height: 1.32; }
-#p15 .conds { display: grid; grid-template-columns: 64px max-content 1fr; column-gap: 24px; row-gap: 4px; align-items: baseline; }
-#p15 .cond { display: contents; }
-#p15 .hno, #p15 .cond .eq { margin: 0; }
-#p15 .cond .gloss { font-size: 21px; line-height: 1.25; }
-#p15 .conds { row-gap: 6px; }
-#p15 .runin-text .then-lead { margin: 0 0 10px; }
-#p15 .runin-text .then-close { margin: 10px 0 0; }
-#p15 table.outcome { font-size: 24px; line-height: 1.25; }
-#p15 .w-econ { width: 25%; }
-#p15 .w-ord { width: 21%; }
-#p15 .w-bel { width: 31%; }
-#p15 .w-ent { width: 23%; }
-#p15 table.outcome th, #p15 table.outcome td { padding: 6px 20px 7px 0; }
-#p15 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 24px; }
-#p15 table.outcome tr.is-strong td:first-child { font-weight: 600; color: var(--accent); }
+#b74 .page-body { padding-bottom: 14px; }
+#b74 .statement { font-size: 24px; line-height: 1.32; }
+#b74 .conds { display: grid; grid-template-columns: 64px max-content 1fr; column-gap: 24px; row-gap: 4px; align-items: baseline; }
+#b74 .cond { display: contents; }
+#b74 .hno, #b74 .cond .eq { margin: 0; }
+#b74 .cond .gloss { font-size: 21px; line-height: 1.25; }
+#b74 .conds { row-gap: 6px; }
+#b74 .runin-text .then-lead { margin: 0 0 10px; }
+#b74 .runin-text .then-close { margin: 10px 0 0; }
+#b74 table.outcome { font-size: 24px; line-height: 1.25; }
+#b74 .w-econ { width: 25%; }
+#b74 .w-ord { width: 21%; }
+#b74 .w-bel { width: 31%; }
+#b74 .w-ent { width: 23%; }
+#b74 table.outcome th, #b74 table.outcome td { padding: 6px 20px 7px 0; }
+#b74 table.outcome thead th { padding-top: 2px; padding-bottom: 8px; font-size: 24px; }
+#b74 table.outcome tr.is-strong td:first-child { font-weight: 600; color: var(--accent); }
 
-/* ------------------------------------------------------------------ page 19 */
+/* ------------------------------------------------------------------ page 20 */
 
-#p19 .page-body { padding-bottom: 18px; }
-#p19 .runin { font-size: 24px; line-height: 1.27; }
-#p19 .runin, #p19 .runin:first-child { padding-top: 7px; padding-bottom: 8px; }
-#p19 .runin:first-child { padding-top: 0; }
-#p19 .runin-text .katex { white-space: nowrap; }
-#p19 .q { position: relative; margin: 0 0 3px; padding-left: 1.6em; }
-#p19 .q:last-child { margin-bottom: 0; }
-#p19 .qn { position: absolute; left: 0; font-variant-numeric: tabular-nums; }
-#p19 .claim.is-band { margin-top: auto; padding: 16px 40px 18px; font-size: 28px; line-height: 1.3; }
-#p19 .runin + .claim { margin-top: auto; }
+#p20 .page-body { padding-bottom: 18px; }
+#p20 .claim.is-band { margin-top: auto; padding: 16px 40px 18px; font-size: 28px; line-height: 1.3; }
 
 /* a formula stays whole on its line: no break at a relation or an operator */
-#p07 .katex, #p09 .katex, #p15 .katex, #p19 .katex { display: inline-block; }
-#p09 .katex-display > .katex, #p15 .katex-display > .katex { display: block; }
+#p09 .katex, #p11 .katex, #b74 .katex, #p20 .katex { display: inline-block; }
+#p11 .katex-display > .katex, #b74 .katex-display > .katex { display: block; }
 
 /* ------------------------------------------------------------------ keylines that run ahead of their cells
-   (pages 1, 3, 5, 7, 13). A table's row rules and the rule under a row of heads belong to the row,
+   (pages 3, 5, 7, 9, 15). A table's row rules and the rule under a row of heads belong to the row,
    not to a cell that a click reveals: the full rule is there with the row's first visible cell, and
    only the contents of the later cells are laid in. Each rule sits exactly where the cells drew it. */
 
 @keyframes main-rule-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
-:is(#p05, #p07, #p13) table.matrix tr { position: relative; }
-:is(#p05, #p07, #p13) table.matrix tr > * { border-bottom-color: transparent; }
-:is(#p05, #p07, #p13) table.matrix tr::after {
+:is(#p07, #p09, #p15) table.matrix tr { position: relative; }
+:is(#p07, #p09, #p15) table.matrix tr > * { border-bottom-color: transparent; }
+:is(#p07, #p09, #p15) table.matrix tr::after {
   content: "";
   position: absolute;
   left: 0;
@@ -212,48 +231,44 @@
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
   pointer-events: none;
 }
-/* page 7: the table arrives on click 2 */
-#p07 table.entry2:not(:has(th.corner.is-on)) tr::after { visibility: hidden; }
-body[data-motion="on"] #p07 table.entry2:has(th.corner.is-new) tr::after { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+/* page 9: the table arrives on click 2 */
+#p09 table.entry2:not(:has(th.corner.is-on)) tr::after { visibility: hidden; }
+body[data-motion="on"] #p09 table.entry2:has(th.corner.is-new) tr::after { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
 
-/* page 1: the rule under the label and the three heads arrives with the label */
-#p01 .why-label { grid-column: 1; }
-#p01 .why-head:nth-child(2) { grid-column: 2; }
-#p01 .why-head:nth-child(3) { grid-column: 3; }
-#p01 .why-head:nth-child(4) { grid-column: 4; }
-#p01 .why-label, #p01 .why-head { border-bottom-color: transparent; }
-#p01 .why-grid::before {
+/* page 3: the rule under the label and the three heads arrives with the label */
+#p03 .why-label { grid-column: 1; }
+#p03 .why-head:nth-child(2) { grid-column: 2; }
+#p03 .why-head:nth-child(3) { grid-column: 3; }
+#p03 .why-head:nth-child(4) { grid-column: 4; }
+#p03 .why-label, #p03 .why-head { border-bottom-color: transparent; }
+#p03 .why-grid::before {
   content: "";
   grid-row: 1;
   grid-column: 1 / -1;
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
   pointer-events: none;
 }
-#p01 .why-grid:not(:has(.why-label.is-on))::before { visibility: hidden; }
-body[data-motion="on"] #p01 .why-grid:has(.why-label.is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+#p03 .why-grid:not(:has(.why-label.is-on))::before { visibility: hidden; }
+body[data-motion="on"] #p03 .why-grid:has(.why-label.is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
 
-/* page 3: the rule under the five step numbers arrives with the first step */
-#p03 .steps5 { position: relative; }
-#p03 .stepnum { border-bottom-color: transparent; }
-#p03 .steps5::before {
+/* page 5: one rule under the two heads, arriving with the first */
+#p05 .two-effects::before {
   content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 56px;                       /* the numeral's 46px line and its 10px padding */
-  border-top: var(--rule-w, 1.5px) solid var(--rule);
+  grid-row: 1;
+  grid-column: 1 / -1;
+  border-bottom: var(--rule-w, 1.5px) solid var(--rule);
   pointer-events: none;
 }
-#p03 .steps5:not(:has(.stepcell.is-on))::before { visibility: hidden; }
-body[data-motion="on"] #p03 .steps5:has(.stepcell[data-step="1"].is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
+#p05 .two-effects:not(:has(.fx-head.is-on))::before { visibility: hidden; }
+body[data-motion="on"] #p05 .two-effects:has(.fx-head[data-step="1"].is-new)::before { animation: main-rule-in 380ms cubic-bezier(.16, 1, .3, 1) both; }
 
 /* ------------------------------------------------------------------ the last rule of a page clears the foot
    keyline by at least 48px, so the two thin rules never read as one doubled foot */
-#p05 .page-body { padding-bottom: 48px; }
-#p15 .runin, #p15 .runin:first-child { padding-bottom: 12px; }
-#p15 .runin + .runin { padding-top: 11px; }
-:is(#p15, #p19) .nobr { white-space: nowrap; }
+#p07 .page-body { padding-bottom: 48px; }
+#b74 .runin, #b74 .runin:first-child { padding-bottom: 12px; }
+#b74 .runin + .runin { padding-top: 11px; }
+:is(#b74, #p20) .nobr { white-space: nowrap; }
 
-/* page 9: the stage strip shares its line with a larger note; set on their common baseline, the
-   strip would sit 3px below where pages 6 to 8 set it, so the line is lifted (the head keeps its height) */
-#p09 .page-sub.strip-sub { position: relative; top: -3px; }
+/* page 11: the stage strip shares its line with a larger note; set on their common baseline, the
+   strip would sit 3px below where pages 8 to 10 set it, so the line is lifted (the head keeps its height) */
+#p11 .page-sub.strip-sub { position: relative; top: -3px; }

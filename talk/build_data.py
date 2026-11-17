@@ -5,8 +5,10 @@
 
 Sources (all read, none written):
   - the number registry, audit/slot_manuscript_2026_10_23/registry/registry.csv (key, value, display, ...);
-  - the master's page dumps, ../master_dump/slide15.txt (page 14), slide17.txt (page 16), slide18.txt (page 17),
-    from which every master string is read by shape id, never typed here.
+  - the master's page dumps, master_dump/slide17.txt (main page 16), slide18.txt (page 17), slide19.txt (page 18),
+    numbered by show position, from which every master string is read by shape id, never typed here.
+    The data names p14, p16 and p17 (number ids, curves.pages, the entry chart's variants) are the names
+    these three pages had before the 17 November deck; they are names, not page numbers.
 
 Every printed number is a registry row rounded half-up on its exact value (a Fraction parsed from the
 registry's decimal or fraction string; never a binary float). The curves evaluate the closed forms of the
@@ -88,6 +90,8 @@ def sci(x: Fraction) -> str:
 SHAPE_RE = re.compile(r"^SHAPE id=(\d+) '([^']*)' box=x=([\d.]+) y=([\d.]+) w=([\d.]+) h=([\d.]+)")
 RUN_RE = re.compile(r"\[[^\]]*\]\{([^}]*)\}")       # a text run [attrs]{text}; math ($...$) is left out
 NUM_RE = re.compile(r"\d+(?:\.\d+)?|[½¼¾]")
+MATH_RE = re.compile(r"\$([^$]*)\$")
+SCRIPT_RE = re.compile(r"[_^](?:\{[^{}]*\}|\w)")   # sub- and superscripts (r_{0}, c_{H}) are not numbers
 
 
 def read_dump(name: str) -> dict[int, dict]:
@@ -104,20 +108,27 @@ def read_dump(name: str) -> dict[int, dict]:
             continue
         if cur is not None and line.strip().startswith(("|", "<br>")):
             shapes[cur]["lines"].append("".join(RUN_RE.findall(line)))
+            shapes[cur].setdefault("math", []).extend(SCRIPT_RE.sub("", m) for m in MATH_RE.findall(line))
     for s in shapes.values():
         s["text"] = " ".join(s["lines"])
+        s["math"] = s.get("math", [])
     return shapes
 
 
-DUMP = {"p14": ("slide15.txt", read_dump("slide15.txt")), "p16": ("slide17.txt", read_dump("slide17.txt")),
-        "p17": ("slide18.txt", read_dump("slide18.txt"))}
+DUMP = {"p14": ("slide17.txt", read_dump("slide17.txt")), "p16": ("slide18.txt", read_dump("slide18.txt")),
+        "p17": ("slide19.txt", read_dump("slide19.txt"))}
 
 
-def master_string(page: str, shape: int, occ: int) -> str | None:
+def master_string(page: str, shape: int, occ: int | str) -> str | None:
+    """The occ-th numeral of a shape's words, or with occ = "mN" the N-th numeral of its mathematics."""
     shapes = DUMP[page][1]
     if shape not in shapes:
         return None
-    found = NUM_RE.findall(shapes[shape]["text"])
+    if isinstance(occ, str):
+        found = NUM_RE.findall(" ".join(shapes[shape]["math"]))
+        occ = int(occ[1:])
+    else:
+        found = NUM_RE.findall(shapes[shape]["text"])
     return found[occ] if occ < len(found) else None
 
 
@@ -137,30 +148,13 @@ NUMBERS = [
      "build_results.js (13 Nov) printed rN here; the master now prints 1.97 = rJ"),
     ("p14.chart.x.3", "p14", 26, 0, None, 0, "axis", [], ""),
     ("p14.chart.x.4", "p14", 27, 0, None, 0, "axis", [], ""),
-    # page 14, table
-    ("p14.table.spread.r0", "p14", 64, 0, "Delta_r0", 3, "value", ["p2_base_r0_delta"], ""),
-    ("p14.table.spread.r1", "p14", 67, 0, "Delta_r1", 3, "value", ["p2_base_r1_delta"], ""),
-    ("p14.table.spread.r2", "p14", 69, 0, "Delta_r2", 3, "value", ["p2_base_r2_delta"], ""),
-    ("p14.table.bprior.r0", "p14", 73, 0, "Bprior_r0", 2, "value", ["B_r0_half"], ""),
-    ("p14.table.bprior.r1", "p14", 76, 0, "Bprior_r1_B", 2, "value", ["B_r1_half"], ""),
-    ("p14.table.bprior.r2", "p14", 78, 0, "Bprior_r2", 2, "value", ["p2_base_r2_low_profit_zero"], ""),
-    ("p14.table.bpurchase.r0", "p14", 82, 0, "p2_base_r0_low_profit_plus", 2, "value", ["Bprior_r0"],
-     "the PowerPoint's build script (build_results.js line 303) uses Bprior_r0: no informed order, so the belief after a "
-     "purchase is the prior; p2_base_r0_low_profit_plus is the same value 1153/240 as a decimal enclosure"),
-    ("p14.table.bpurchase.r1", "p14", 85, 0, "p2_base_r1_low_profit_plus", 2, "value", [], "B_{r1}(M(1/2))"),
-    ("p14.table.bpurchase.r2", "p14", 87, 0, "p2_base_r2_low_profit_plus", 3, "value", [],
-     "B_{r2}(M(1/2)); 3 digits, so that it does not print as 6.00 beside c_H = 6"),
-    ("p14.table.entry.r0", "p14", 91, 0, "entry_r0", 2, "value", ["p2_base_r0_entry"], ""),
-    ("p14.table.entry.r1", "p14", 94, 0, "entry_r1_B", 2, "value", ["p2_base_r1_entry"], ""),
-    ("p14.table.entry.r2", "p14", 96, 0, "entry_r2", 2, "value", ["p2_base_r2_entry"], ""),
-    # page 14, the line under the table ("Compare row 1 ... rows 2 and 3 ..."; the row ordinals are words)
-    ("p14.gloss.k", "p14", 97, 1, "prim_k", 2, "value", [], ""),
-    ("p14.gloss.cH", "p14", 97, 4, "prim_cH", 0, "value", [], ""),
-    # page 14, the claim
-    ("p14.claim.plateau", "p14", 100, 0, "entry_r1_B", 2, "value", [], ""),
-    ("p14.claim.rA", "p14", 100, 1, "rA", 2, "value", [], ""),
-    ("p14.claim.rC.1", "p14", 100, 2, "rC_B", 2, "value", ["rC_check_B", "res_rC"], ""),
-    ("p14.claim.rC.2", "p14", 100, 3, "rC_B", 2, "value", [], ""),
+    # main page 16 (data name p14), the two run-ins beside the chart
+    ("p14.rhs.plateau.1", "p14", 109, 0, "entry_r1_B", 2, "value", ["entry_plateau_B"], ""),
+    ("p14.rhs.rF", "p14", 109, "m0", "rF_B", 2, "value", [], "the ramp reaches the plateau at rF; the old text said rA"),
+    ("p14.rhs.plateau.2", "p14", 109, 1, "entry_r1_B", 2, "value", [], ""),
+    ("p14.rhs.rC.1", "p14", 109, "m1", "rC_B", 2, "value", [], ""),
+    ("p14.rhs.rC.2", "p14", 110, 0, "rC_B", 2, "value", [], ""),
+    ("p14.rhs.rho", "p14", 111, "m0", "prim_rho", 2, "value", ["entry_r0"], ""),
     # page 14, the note
     ("p14.note.h", "p14", 101, 0, "prim_h", 0, "value", [], ""),
     ("p14.note.ell", "p14", 101, 1, "prim_ell", 0, "value", [], ""),
@@ -185,12 +179,16 @@ NUMBERS = [
     ("p17.chart.x.rJ", "p17", 50, 0, "rJ", 2, "value", [], ""),
     ("p17.chart.x.3", "p17", 26, 0, None, 0, "axis", [], ""),
     ("p17.chart.x.4", "p17", 27, 0, None, 0, "axis", [], ""),
-    # page 17, the second row of text
-    ("p17.text.rA", "p17", 54, 0, "rA", 2, "value", [], ""),
-    ("p17.text.rJ", "p17", 54, 1, "rJ", 2, "value", [], ""),
-    ("p17.text.r0", "p17", 54, 2, "prim_r0", 1, "value", [], ""),
-    ("p17.text.r1", "p17", 54, 3, "prim_r1", 0, "value", [], ""),
-    ("p17.text.r2", "p17", 54, 4, "prim_r2", 1, "value", [], ""),
+    # main page 17 (data name p16), "In the example"
+    ("p16.text.frozen", "p16", 64, "m0", "p4_frozen_entry_below_ceiling", 2, "value", ["entry_r1_B"],
+     "orders held fixed: flat at 0.52 from r0 to r1"),
+    ("p16.text.rho", "p16", 65, "m0", "prim_rho", 2, "value", ["p2_base_hidden_entry"], "price hidden: flat at rho"),
+    # main page 18 (data name p17), "Coexistence (1.39 to 1.97)" and "Unique outside"
+    ("p17.text.rA", "p17", 67, 0, "rA", 2, "value", [], ""),
+    ("p17.text.rJ", "p17", 67, 1, "rJ", 2, "value", [], ""),
+    ("p17.text.r0", "p17", 71, "m0", "prim_r0", 1, "value", [], ""),
+    ("p17.text.r1", "p17", 71, "m1", "prim_r1", 0, "value", [], ""),
+    ("p17.text.r2", "p17", 71, "m2", "prim_r2", 1, "value", [], ""),
     # page 17, the note
     ("p17.note.rA", "p17", 59, 0, "rA", 2, "value", [], ""),
     ("p17.note.rJ", "p17", 59, 1, "rJ", 2, "value", [], ""),
@@ -333,7 +331,7 @@ BREAKS = {
     "rF": {"key": "rF_B", "r": rF, "printed": None},
     "rN": {"key": "rN", "r": rN, "printed": None},
     "rJ": {"key": "rJ", "r": rJ, "printed": "p14.chart.x.rJ"},
-    "rC": {"key": "rC_B", "r": rC, "printed": "p14.claim.rC.1"},
+    "rC": {"key": "rC_B", "r": rC, "printed": "p14.rhs.rC.1"},
     "hi": {"key": None, "r": HI, "printed": None},
 }
 
@@ -447,32 +445,32 @@ def page_chart(page: str) -> dict:
                       {"from": "rC", "to": "hi", "words_shape": 50}],
             dump_clicks={"none.a": 1, "incumbent 0": 1, "informed.ramp": 2, "informed.flat": 2, "incumbent 1": 2,
                          "informed.drop": 3, "informed.floor": 3, "incumbent 2": 3, "none.b": 4, "none.dashed": 4,
-                         "shade": 4, "p14.chart.x.rJ": 4, "p14.chart.x.rA": 2})
+                         "shade": 4, "p14.chart.x.rJ": 4, "p14.chart.x.rA": 2, "the two run-ins beside the chart": 5})
     elif page == "p17":
         base.update(
             x_ticks=ticks(page, X14),
             segments=["none.a", "none.b", "none.dashed", "informed.ramp", "informed.flat", "informed.drop", "informed.floor"],
             markers=MARKERS, shade={"from": "rA", "to": "rJ", "r": [coord(rA), coord(rJ)]},
-            brackets=[{"from": "lo", "to": "rA", "words_shape": 46}, {"from": "rA", "to": "rJ", "words_shape": 47},
+            brackets=[{"from": "lo", "to": "rA", "words_shape": 46}, {"from": "rA", "to": "rJ", "words_shape": 64},
                       {"from": "rJ", "to": "hi", "words_shape": 48}],
-            dump_clicks={"all curves, markers and incumbents": 1, "shade": 2, "brackets": 2, "p17.chart.x.rA": 2,
-                         "p17.chart.x.rJ": 2})
+            dump_clicks={"all curves, markers and incumbents": 0, "shade": 1, "brackets": 1, "p17.chart.x.rA": 1,
+                         "p17.chart.x.rJ": 1, "branch words": 2})
     else:
         base.update(
             x_ticks=ticks(page, X16),
             trace=["none.a", "none.b", "informed.ramp", "informed.flat", "informed.floor"],
             segments=["fixed.flat", "fixed.drop", "fixed.floor", "hidden"],
             markers=[],
-            dump_clicks={"trace, incumbents, 'full model'": 1, "fixed.flat": 3, "fixed.drop": 3, "fixed.floor": 3,
-                         "hidden": 3, "p16.chart.x.rC (and its tick)": 3})
+            dump_clicks={"trace, incumbents, 'full model'": 0, "fixed.flat": 2, "fixed.drop": 2, "fixed.floor": 2,
+                         "hidden": 2, "p16.chart.x.rC (and its tick)": 2})
     return base
 
 
 # ------------------------------------------------------------------ marks (the stops of the strength control)
 WORDS = {  # exact phrases of each page's dump; None where the page has no word for the branch
     "none": {"p14": "no informed order", "p16": None, "p17": "no informed order"},
-    "informed": {"p14": "the equilibrium with informed orders", "p16": None,
-                 "p17": "purchases in class H are expected"},
+    "informed": {"p14": "Informed-order equilibrium", "p16": None,
+                 "p17": "purchases in class H expected"},
     "model": {"p16": "full model"},
 }
 
@@ -578,9 +576,9 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
     notes = [
         "No printed number is a mismatch: every string the master prints on pages 14, 16 and 17 is the half-up rounding "
         "of the registry row given as its key. Axis labels 0, 1, 2, 3, 4 are coordinates and carry key null; ordinals "
-        "(row 1, rows 2 and 3, step numbers, Result 1 and 2, page counters) and the citation years on page 16 are words, "
+        "(step numbers, Result 1 and 2, page counters) and the citation years on page 16 are words, "
         "not numbers, and are not listed.",
-        "The weak post-purchase cell uses p2_base_r0_low_profit_plus with Bprior_r0 in alt_keys. The chart label 'rho = 0.25' is prim_rho (build_results.js used entry_r0, same 1/4). The tick and text "
+        "The chart label 'rho = 0.25' is prim_rho (build_results.js used entry_r0, same 1/4). The tick and text "
         "1.97 is rJ: build_results.js (13 Nov) printed and shaded to rN = 1.75, and the master was changed to 1.97 since; "
         "that script is stale on this point. All other keys are confirmed.",
         "The dashed grey stretch on pages 14 and 17 runs from rN = 1.75 (registry rN, printed nowhere) to rJ = 1.97. It is "
@@ -589,7 +587,7 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
         "attracts the costly rival, entry is rho. The solid grey part from 1 to 1.75 is form N (no informed order), "
         "closed at 1.75. The master marks neither end at 1.75 and puts an open circle at 1.97 (Q excludes it). "
         "Page 14's bracket 'no informed order' covers only 1 to 1.39, so the master's words are not wrong, but page 17's "
-        "'If no informed order is expected, entry stays at rho ...' sits beside a branch that, from 1.75 to 1.97, has "
+        "'No order expected: entry stays at rho ...' sits beside a branch that, from 1.75 to 1.97, has "
         "informed orders (page 17's note 'may mix over its best orders' covers it). No stop of the control falls in "
         "1.75 to 1.97, so the control never lands on the dashed stretch.",
         "The ramp from 1.39 to rF = 1.47 (registry rF_B, printed nowhere) is form R, entry rho + (1 - rho) b Delta_T(r)/(2k): "
@@ -597,9 +595,8 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
         "straight solid segment (the manuscript and the handout draw R dashed). The curve lies below its chord by at most "
         f"{half_up(gap, 5)} in entry, {half_up(gap_px, 2)} px on the 1600 x 900 stage at the master's scale: the sampled "
         "curve and the master's chord are the same picture.",
-        "The claim on page 14 says 'entry is about 0.52 from 1.39 to 3.59'; the closed form gives 0.45 at 1.39 and reaches "
-        "0.52 only at 1.47. A control stop at 1.39 that prints entry at each dot would show 0.45 (entry_rA_B, printed "
-        "nowhere in the master) beside that claim. Decide whether the control prints entry at 1.39 or shows the dot only.",
+        "Page 14's text says 'Entry reaches 0.52 at r = 1.47' (rF_B), as the closed form has it: entry is 0.45 at 1.39 and "
+        "reaches 0.52 only at 1.47. The control's stop at 1.39 prints 0.45 there (entry_rA_B, printed nowhere in the master).",
         "Control numbers with no registry row at that strength: entry 0.25 at 1.39 (prim_rho; the branch with no "
         "informed order has entry rho at every strength, but no row states it at rA), and entry 0.52 at 1.97 and at 3.59 "
         "(entry_r1_B, a row stated at r1; the closed form rho + (1 - rho)(b + lambda/2) is the same on the whole flat "

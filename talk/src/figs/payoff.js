@@ -1,5 +1,5 @@
-/* Page 6: payoffs in the auction, for a prepared rival with value theta, as the incumbent's
-   value R rises. Shapes and proportions from slide07's boxes: p sits at 0.377 theta on both
+/* Page 8: payoffs in the auction, for a prepared rival with value theta, as the incumbent's
+   value R rises. Shapes and proportions from the boxes of master_dump/slide09.txt: p sits at 0.377 theta on both
    axes and the R axis runs to 2.045 theta. Below R = p the rival wins and pays p; between p and
    theta it pays R; above theta the incumbent wins and pays theta. The solid area is what
    shareholders are paid, max{p, min(R, theta)}; the screened area above it is what the rival

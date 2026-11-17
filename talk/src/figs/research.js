@@ -1,4 +1,4 @@
-/* The research chart: research λ against incumbent strength r (page 18, data-variant="p18"), and
+/* The research chart: research λ against incumbent strength r (page 19, data-variant="p18"), and
    research and entry against strength in two small panels (backup B12, second page,
    data-variant="b47"). Curves and printed numbers come from TALK.data: the closed forms of
    handout/figures.js (lambdaR, entryResearch) as written by build_data_charts.py into
@@ -16,7 +16,7 @@
   const DRAW_EASE = [0.33, 1, 0.68, 1];
   const EASE = 'cubic-bezier(.16,1,.3,1)';
 
-  /* page 18: the master's boxes (960 x 540 pt) times 5/3, the mount's origin at (42, 105) pt */
+  /* page 19: the master's boxes (960 x 540 pt) times 5/3, the mount's origin at (42, 105) pt */
   const P18 = {
     W: 850, H: 482,
     F: { x0: 126.67, x1: 843.33, y0: 412, y1: 96.67 },
@@ -123,7 +123,7 @@
       s.style.top = (y - ay * s.offsetHeight).toFixed(1) + 'px';
     },
 
-    /* ------------------------------------------------------------ page 18 */
+    /* ------------------------------------------------------------ page 19 */
     drawP18() {
       const R = this.R;
       const spec = R.pages.p18;
@@ -137,23 +137,24 @@
       this.sy = sy;
       const L = this.L;
       const g = this.group;
-      const CHART = 2;          // the chart arrives with the second click (the dump's order)
+      const AXES = 0;           // the axes stand from arrival; the curves arrive with the second click
+      const CHART = 2;
       const ENTRY = 3;
       const SHADE = 4;
 
       // axes: the strength axis at the foot; research 0 stands a little above it, as in the master
-      el('path', { class: 'ax', d: `M${F.x0} ${F.y1}V${F.y0}H${F.x1}` }, g('axes', CHART));
+      el('path', { class: 'ax', d: `M${F.x0} ${F.y1}V${F.y0}H${F.x1}` }, g('axes', AXES));
       spec.y_ticks.forEach((t) => {
         const y = sy(t.y);
-        el('line', { class: 'ax-tick', x1: F.x0 - 8, x2: F.x0, y1: y, y2: y }, g('axes', CHART));
+        el('line', { class: 'ax-tick', x1: F.x0 - 8, x2: F.x0, y1: y, y2: y }, g('axes', AXES));
         let html = this.numText(t.num);
         if (t.prefix_label) html = (TALK.math[t.prefix_label] || '?') + (t.prefix_join || ' ') + html;
-        this.label('ax-label', html, { x: F.x0 - 14, y, ax: 1, ay: 0.5, step: CHART });
+        this.label('ax-label', html, { x: F.x0 - 14, y, ax: 1, ay: 0.5, step: AXES });
       });
       spec.x_ticks.forEach((t) => {
         const x = sx(t.r);
-        el('line', { class: 'ax-tick', x1: x, x2: x, y1: F.y0, y2: F.y0 + 8 }, g('axes', CHART));
-        this.label('ax-label', this.numText(t.num), { x, y: F.y0 + 14, ax: 0.5, ay: 0, step: CHART });
+        el('line', { class: 'ax-tick', x1: x, x2: x, y1: F.y0, y2: F.y0 + 8 }, g('axes', AXES));
+        this.label('ax-label', this.numText(t.num), { x, y: F.y0 + 14, ax: 0.5, ay: 0, step: AXES });
       });
 
       // shading over the strengths with more than one equilibrium, with its bracket
@@ -262,7 +263,7 @@
       if (this.v === 'b47') return this.placeB47();
       const A = this.anchors.p18;
       if (!A) return;
-      const { sx, F, S, y0, yCap, rise } = A;
+      const { sx, F, S, y0, yCap } = A;
       this.el.querySelectorAll(':scope > .fig-label[data-place]').forEach((s) => {
         switch (s.dataset.place) {
           case 'ytitle': this.put(s, F.x0 - 14, F.y1 - 4, 1, 0.5); break;
@@ -270,10 +271,7 @@
           case 'bracket': s.style.textAlign = 'center'; this.put(s, this.anchors.bracket.x, this.anchors.bracket.y, 0.5, 1); break;
           case 'r0': this.put(s, sx(S.r0), y0 - 16, 0.5, 1); break;
           case 'none': this.put(s, sx(S.rR) + 14, y0 - 16, 0, 1); break;
-          case 'cap': this.put(s, sx(S.rcap) + 24, yCap - 16, 0, 1); break;
           case 'attracts': this.put(s, sx(S.rcap) + 24, yCap + 14, 0, 0); break;
-          case 'entry-cap': this.put(s, sx(S.rcap) + 24, yCap + 14 + 80, 0, 0); break;
-          case 'entry-rR': this.put(s, rise[0][0] - 18, rise[0][1], 1, 0.5); break;
           default: console.error('research: unknown label place ' + s.dataset.place);
         }
       });
@@ -323,8 +321,8 @@
 
     look() {
       if (!this.el) return;
-      // the look's line screen and its ink: the entry chart's, which the look sets (on page 18 the
-      // region is screened as page 17's is)
+      // the look's line screen and its ink: the entry chart's, which the look sets (on page 19 the
+      // region is screened as page 18's is)
       const entry = document.querySelector('.fig[data-fig="entry"]');
       const src = entry ? getComputedStyle(entry) : getComputedStyle(this.el);
       ['--scr-ink', '--scr-w', '--scr-pitch'].forEach((k) => {

@@ -1,4 +1,4 @@
-/* The entry chart: entry against incumbent strength, one module for pages 14, 16 and 17
+/* The entry chart: entry against incumbent strength, one module for pages 16, 17 and 18
    (data-variant="p14|p16|p17"). Every curve, mark and printed number comes from TALK.data
    (src/data.json); the page file holds the words (HTML .fig-label spans inside the mount), and
    this module only places them. The plot frame has the same box on every page: the master's
@@ -6,13 +6,13 @@
 
    Steps are the engine's: every SVG group and label with data-step is shown by the engine.
    This module adds the motion of a forward click (lines drawn left to right behind a clip that
-   grows along x, each dot arriving when the line reaches it), page 16's turn of the full model
+   grows along x, each dot arriving when the line reaches it), page 17's turn of the full model
    into a pale trace, and the strength control (key S).                                       */
 (function () {
   'use strict';
 
   const NS = 'http://www.w3.org/2000/svg';
-  const W = 850;                      // the mount, in stage px (pages 14, 16, 17)
+  const W = 850;                      // the mount, in stage px (pages 16, 17, 18)
   const H = 570;
   const F = { x0: 116.67, x1: 825, y0: 483.33, y1: 91.67 };   // plot frame: left, right, bottom, top
   const BOX = { W, H, F };            // a variant may bring a box of its own (spec.box)
@@ -36,7 +36,7 @@
       dots: [1, 2, 3],
       brackets: [1, 2, 3],
       shade: 4,
-      xlabelSteps: { 'p14.chart.x.rA': 4, 'p14.chart.x.rJ': 4 },
+      xlabelSteps: { 'p14.chart.x.rA': 2, 'p14.chart.x.rJ': 4 },
       ctlFrom: 4,
     },
     p16: {
@@ -45,19 +45,19 @@
         { segs: ['informed.ramp', 'informed.flat'], cls: 'br-up' },
         { segs: ['informed.floor'], cls: 'br-floor' },
       ],
-      traceStep: 3,
+      traceStep: 2,
       strokes: [
-        { segs: ['fixed.flat'], cls: 'cmp-fixed', step: 3, line: 'fixed' },
-        { segs: ['fixed.drop'], cls: 'cmp-drop', step: 3 },
-        { segs: ['fixed.floor'], cls: 'cmp-fixed', step: 3, line: 'fixed' },
-        { segs: ['hidden'], cls: 'cmp-hidden', step: 3, line: 'hidden' },
+        { segs: ['fixed.flat'], cls: 'cmp-fixed', step: 2, line: 'fixed' },
+        { segs: ['fixed.drop'], cls: 'cmp-drop', step: 2 },
+        { segs: ['fixed.floor'], cls: 'cmp-fixed', step: 2, line: 'fixed' },
+        { segs: ['hidden'], cls: 'cmp-hidden', step: 2, line: 'hidden' },
       ],
       markers: {},
       dots: [0, 0, 0],
       brackets: [],
       shade: null,
-      xtickSteps: { 'p16.chart.x.rC': 3 },
-      xlabelSteps: { 'p16.chart.x.rC': 3 },
+      xtickSteps: { 'p16.chart.x.rC': 2 },
+      xlabelSteps: { 'p16.chart.x.rC': 2 },
       ctlFrom: 0,
     },
     p17: {
@@ -70,9 +70,9 @@
       ],
       markers: { rA: 0, rC: 0, rJ: 0 },
       dots: [0, 0, 0],
-      brackets: [2, 2, 2],
-      shade: 2,
-      xlabelSteps: { 'p17.chart.x.rA': 2, 'p17.chart.x.rJ': 2 },
+      brackets: [1, 1, 1],
+      shade: 1,
+      xlabelSteps: { 'p17.chart.x.rA': 1, 'p17.chart.x.rJ': 1 },
       ctlFrom: 0,
     },
   };
@@ -161,7 +161,7 @@
         return this._g[key];
       };
 
-      // the plot frame: an unpainted box that carries between pages 14, 16 and 17
+      // the plot frame: an unpainted box that carries between pages 16, 17 and 18
       el('rect', { class: 'plot-frame', ...(spec.noCarry ? {} : { 'data-carry': 'frame' }), x: F.x0, y: F.y1, width: F.x1 - F.x0, height: F.y0 - F.y1, fill: 'none', stroke: 'none' }, L.axes);
 
       // axes and ticks
@@ -221,7 +221,7 @@
         this.brackets.push({ xa, xb });
       });
 
-      // strokes: the full model's branches, page 16's comparison lines
+      // strokes: the full model's branches, page 17's comparison lines
       const pts = (names) => {
         const out = [];
         names.forEach((n) => {
@@ -243,7 +243,7 @@
         return node;
       };
       if (spec.full) {
-        // page 16: the full model, which becomes a pale trace when the comparison lines arrive
+        // page 17: the full model, which becomes a pale trace when the comparison lines arrive
         this.fullG = el('g', { class: 'full-model' }, L.full);
         spec.full.forEach((s) => stroke(s, this.fullG, s.cls));
         const tg = group('trace', spec.traceStep);
@@ -314,9 +314,9 @@
           case 'ytitle': this.put(s, F.x0 - 14, F.y1 + 4, 1, 0.5); break;
           case 'xtitle': this.put(s, (F.x0 + F.x1) / 2, F.y0 + (this.spec.noIncumbents ? 34 : 64), 0.5, 0.5); break;
           case 'inc': {
-            // the symbol sits at the same place on pages 14, 16 and 17; a word runs to its left.
-            // Until the click that draws its point (page 14), a label stands over its tick on the
-            // strength axis: that is where page 13's column heads land, and it rises on that click.
+            // the symbol sits at the same place on pages 16, 17 and 18; a word runs to its left.
+            // Until the click that draws its point (page 16), a label stands over its tick on the
+            // strength axis: that is where page 15's column heads land, and it rises on that click.
             const r = inc(i);
             const x = sx(r.r) + [28, 25, 102][i];
             const yPoint = i === 1 ? sy(this.yTop) - 14 - s.offsetHeight : sy(this.yRho) + 16;
@@ -339,10 +339,11 @@
           case 'model': this.put(s, sx(br.rF.r) + 17, sy(this.yTop) + 20, 0, 0); break;
           case 'cmp-fixed': this.put(s, F.x0 + 167, sy(this.yTop) - 16, 0, 1); break;
           case 'cmp-hidden': this.put(s, F.x0 + 167, sy(this.yRho) + 18, 0, 0); break;
-          case 'inplot': {
-            s.style.width = '250px';           // both notes end before the incumbents' labels
-            const y = i === 0 ? sy(this.yTop) + 19 : sy(this.yRho) + 16;
-            this.put(s, sx(br.rJ.r) + 20, y, 0, 0);
+          case 'branch': {
+            // page 18: each branch named beside it, right of the region with two equilibria:
+            // the informed branch under its flat stretch, the other over the floor
+            if (i === 0) this.put(s, sx(br.rJ.r) + 20, sy(this.yTop) + 16, 0, 0);
+            else this.put(s, sx(br.rJ.r) + 20, sy(this.yRho) - 14, 0, 1);
             break;
           }
           case 'guide': {
@@ -450,8 +451,8 @@
       const easing = `cubic-bezier(${DRAW_EASE.join(',')})`;
       const DROP = 200;
       const dropX = drops.map((n) => n.getBBox().x);
-      // a click that begins with a drop (page 14, click 3) draws the drop first, downward, and then
-      // the line that leaves its foot; a drop met later (page 16) is drawn when the line reaches it
+      // a click that begins with a drop (page 16, click 3) draws the drop first, downward, and then
+      // the line that leaves its foot; a drop met later (page 17) is drawn when the line reaches it
       const pad = 14;
       const x0 = xa - pad;
       const span = xb - xa + 2 * pad;
@@ -506,7 +507,7 @@
             { duration: 320, delay, easing: EASE, fill: 'backwards' }));
         }
       }));
-      // page 16: the full model fades to its trace as the comparison lines are drawn
+      // page 17: the full model fades to its trace as the comparison lines are drawn
       if (this.fullG && step === this.spec.traceStep) {
         this.anims.push(this.fullG.animate([{ opacity: 1, visibility: 'visible' }, { opacity: 0, visibility: 'visible' }],
           { duration: 320, easing: EASE }));
@@ -572,7 +573,7 @@
       this.svg.classList.remove('has-ctl');
     },
 
-    // the equilibria shown at stop m: the full model's (data.marks), and on page 16 the
+    // the equilibria shown at stop m: the full model's (data.marks), and on page 17 the
     // comparison lines once they are on the page
     ctlPoints(m) {
       const out = [];
@@ -662,7 +663,7 @@
       if (!placed) this.put(foot, x, F.y0 - 18, 0.5, 1);
       made.push(foot);
       obstacles.push(this.box(foot));
-      // on page 16 a dot may belong to the full model or to a comparison line: say which, in the
+      // on page 17 a dot may belong to the full model or to a comparison line: say which, in the
       // page's own words
       const who = (line) => {
         const n = line === 'model' ? this.el.querySelector(':scope > .model-label')

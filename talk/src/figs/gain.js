@@ -1,4 +1,4 @@
-/* Slide13: both endpoints are proportional to shareholder spread, about the gain-axis origin. */
+/* Main page 14 (master_dump/slide15.txt): both endpoints are proportional to shareholder spread, about the gain-axis origin. */
 (function () {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
@@ -22,15 +22,15 @@
         });
       });
       const root = svg('svg', { viewBox: '0 0 1440 275', 'aria-hidden': 'true' }, el);
-      const axis = svg('g', { 'data-step': 3 }, root);
+      const axis = svg('g', { 'data-step': 2 }, root);
       svg('path', { class: 'blocks-line', d: `M${O} 218H1083M${O} 218v9` }, axis);
       svg('path', { class: 'blocks-line cost-line', d: 'M619.17 35V218' }, axis);
-      const axisLabels = document.createElement('div'); axisLabels.dataset.step = 3; el.append(axisLabels);
+      const axisLabels = document.createElement('div'); axisLabels.dataset.step = 2; el.append(axisLabels);
       this.label(axisLabels, 'center word-strong', 619.17, 0, 'order cost ', 'cost');
       this.label(axisLabels, 'center ax-label', O, 237, '', 'zero', true);   // the axis end: a Jost tick number
       const title = this.label(axisLabels, 'center', 687, 237, 'gain ', 'gain');
       title.append(document.createTextNode(' before order cost'));
-      this.rows = [this.row(root, 0, 1, 3), this.row(root, 1, SCALE, 4)];
+      this.rows = [this.row(root, 0, 1, 2), this.row(root, 1, SCALE, 3)];
     },
     label(parent, cls, x, y, word, key, plain) {
       const span = document.createElement('span'); span.className = 'fig-label ' + cls;
@@ -57,9 +57,9 @@
     setStep(step, opts) {
       this.finish();
       if (!opts.animate || opts.dir !== 1 || opts.from.page !== opts.page) return;
-      if (step === 3) {
+      if (step === 2) {
         this.animate(this.rows[0].line, [{ clipPath: 'inset(-20px 100% -20px 0)' }, { clipPath: 'inset(-20px 0 -20px 0)' }], { duration: 350 });
-      } else if (step === 4 && opts.from.step === 3) {
+      } else if (step === 3 && opts.from.step === 2) {
         const r = this.rows[1], dy = Y[0] - Y[1];
         // Copy the small interval, drop it intact, then scale both endpoints about gain zero.
         this.animate(r.line, [

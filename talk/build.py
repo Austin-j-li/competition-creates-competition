@@ -30,8 +30,9 @@ from pathlib import Path
 DEMO = Path(__file__).resolve().parent
 REPO = DEMO.parents[0]
 VENDOR = REPO / 'handout' / 'vendor'
-PAGE_ORDER = (['p%02d' % i for i in range(0, 20)]          # the title and main pages 1 to 19
-              + ['b%02d' % i for i in range(21, 60)])       # backups, keyed by PowerPoint slide number
+PAGE_ORDER = (['p%02d' % i for i in range(0, 21)]          # the title and main pages 1 to 20
+              + ['b%02d' % i for i in range(22, 62)]        # backups B1 to B17, keyed by PowerPoint show position
+              + ['b74'])                                    # B18: the formal Proposition 2 page only
 # Import the site's face generator and hash checks without running its build.
 _spec = importlib.util.spec_from_file_location('site_handout_build', REPO / 'handout/build.py')
 site_build = importlib.util.module_from_spec(_spec)
@@ -191,7 +192,8 @@ def locked_fonts() -> tuple[str, str, dict]:
 
 
 # SHA256 fingerprints of sentences of at least 12 words in the master's five note blocks,
-# from the 15 November text dumps, excluding sentences also printed on the pages.
+# from the 15 November text dumps, excluding sentences also printed on the pages. The 17 November
+# master's notes (show positions 8 to 12) give the same set.
 # Only fingerprints are retained, so audit/ is not a build input.
 NOTE_SENTENCES = {12: ['416c38ca084781169ce1d0329a859f66a43d497f2614674fafe51754bec1e93c'],
  13: ['9906c658318324534e51661829973cff4e21fdcbb3a4676015c871652876d9c0'],
@@ -310,7 +312,7 @@ def shipping_guards(html: str, allow_missing: bool, face_css: str) -> None:
     site_faces = [f for f in faces if not re.search(r'font-family:\s*["\']?KaTeX_', f)]
     if site_faces != re.findall(r'@font-face\s*\{[^}]*\}', face_css):
         sys.exit('build stopped: faces differ from fonts.lock.json')
-    print(f'PASS shipping guards: {len(parsed.pages)}/59 pages; every data-num filled; no network reference; '
+    print(f'PASS shipping guards: {len(parsed.pages)}/{len(PAGE_ORDER)} pages; every data-num filled; no network reference; '
           'no notes markup, data or master note sentences; shared palette; locked faces')
 
 
