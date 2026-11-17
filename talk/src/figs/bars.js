@@ -1,4 +1,4 @@
-/* Schematic split bars from the shape boxes of master_dump/slide13.txt (960 × 540 pt).
+/* Schematic split bars from the shape boxes of master_dump/slide12.txt (960 × 540 pt).
    Every class has the same total against F and Ft; only the split moves. */
 (function () {
   'use strict';

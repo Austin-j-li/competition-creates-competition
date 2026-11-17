@@ -1,4 +1,4 @@
-/* The order slot in full (backup B7), drawn in code from the shape boxes of slide34.txt
+/* The order slot in full (backup B7), drawn in code from the shape boxes of slide33.txt
    (960 x 540 pt page; 1 pt = 5/3 px on the stage; x measured from the page margin at 48 pt,
    y from the top of the first row of boxes at 115 pt).
    The boxes are in the page file (div.slot-box[data-box]); this module places them, draws their

@@ -1,9 +1,9 @@
 /* Small figures of the predictions backups (B13), drawn in code from the shape boxes of the master
    (960 x 540 pt pages; 1 pt = 5/3 px on the stage).
    variant "b50": the price line with the three prices, the two impacts as spans above it, and the
-                  entry part of the purchase impact (slide50.txt, shapes 5 to 17);
+                  entry part of the purchase impact (slide49.txt, shapes 5 to 17);
    variant "b51": the three price levels P(1), P(0), P(-1) with a brace for each impact
-                  (slide51.txt, shapes 7 to 14).
+                  (slide50.txt, shapes 7 to 14).
    Marks carry their meaning by position and by weight; the one green mark is the entry part,
    where the price brings the costly rival in. Nothing moves. */
 (function () {
@@ -37,7 +37,7 @@
   }
 
   function priceLine(el, M) {
-    // slide50.txt: x px = (x pt - 48) 5/3, y px = (y pt - 83) 5/3
+    // slide49.txt: x px = (x pt - 48) 5/3, y px = (y pt - 83) 5/3
     const X = (x) => (x - 48) * K, Y = (y) => (y - 83) * K;
     const root = svg('svg', { class: 'fig-svg', viewBox: '0 0 1440 150', 'aria-hidden': 'true' }, el);
     const y = Y(123.3);
@@ -60,7 +60,7 @@
   }
 
   function levels(el, M) {
-    // slide51.txt: x px = (x pt - 756.8) 5/3, y px = (y pt - 107) 5/3
+    // slide50.txt: x px = (x pt - 756.8) 5/3, y px = (y pt - 107) 5/3
     const X = (x) => (x - 756.8) * K, Y = (y) => (y - 107) * K;
     const root = svg('svg', { class: 'fig-svg', viewBox: '0 0 260 460', 'aria-hidden': 'true' }, el);
     [[120.8, 'scope.P1'], [285.2, 'scope.P0'], [365.2, 'scope.Pm1']].forEach(([y, key]) => {

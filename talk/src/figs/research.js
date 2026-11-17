@@ -1,4 +1,4 @@
-/* The research chart: research λ against incumbent strength r (page 23, data-variant="p18"), and
+/* The research chart: research λ against incumbent strength r (backup B19, data-variant="p18"), and
    research and entry against strength in two small panels (backup B12, second page,
    data-variant="b47"). Curves and printed numbers come from TALK.data: the closed forms of
    handout/figures.js (lambdaR, entryResearch) as written by build_data_charts.py into
@@ -16,7 +16,7 @@
   const DRAW_EASE = [0.33, 1, 0.68, 1];
   const EASE = 'cubic-bezier(.16,1,.3,1)';
 
-  /* page 23: the master's boxes (960 x 540 pt) times 5/3, the mount's origin at (42, 105) pt */
+  /* backup B19: the master's boxes (960 x 540 pt) times 5/3, the mount's origin at (42, 105) pt */
   const P18 = {
     W: 850, H: 482,
     F: { x0: 126.67, x1: 843.33, y0: 412, y1: 96.67 },
@@ -86,8 +86,10 @@
       ['shade', 'grid', 'axes', 'lines', 'markers', 'dots'].forEach((k) => { L[k] = el('g', { class: 'layer-' + k }, svg); });
       this.L = L;
       this._g = {};
+      // as a backup (B19) the chart is shown finished, without clicks: every group stands from arrival
+      const finished = !!mountEl.closest('.is-backup');
       this.group = (layer, step) => {
-        if (!step) return L[layer];
+        if (!step || finished) return L[layer];
         const key = layer + ':' + step;
         if (!this._g[key]) {
           const g = el('g', { 'data-step': step, class: 'step-g' }, L[layer]);
@@ -123,7 +125,7 @@
       s.style.top = (y - ay * s.offsetHeight).toFixed(1) + 'px';
     },
 
-    /* ------------------------------------------------------------ page 23 */
+    /* ------------------------------------------------------------ backup B19 */
     drawP18() {
       const R = this.R;
       const spec = R.pages.p18;
@@ -321,8 +323,8 @@
 
     look() {
       if (!this.el) return;
-      // the look's line screen and its ink: the entry chart's, which the look sets (on page 23 the
-      // region is screened as page 22's is)
+      // the look's line screen and its ink: the entry chart's, which the look sets (on backup B19 the
+      // region is screened as page 17's is)
       const entry = document.querySelector('.fig[data-fig="entry"]');
       const src = entry ? getComputedStyle(entry) : getComputedStyle(this.el);
       ['--scr-ink', '--scr-w', '--scr-pitch'].forEach((k) => {

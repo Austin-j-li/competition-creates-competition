@@ -1,4 +1,4 @@
-/* Page 11: the tree of what shareholders are paid after order x. Shapes from the boxes of master_dump/slide11.txt.
+/* Page 9: the tree of what shareholders are paid after order x. Shapes from the boxes of master_dump/slide10.txt.
    From "Order x" the branch "rival prepares", e(x), splits into class H, mu(x), ending at t_H,
    and class L, 1 - mu(x), ending at t_L; the branch "no prepared rival", 1 - e(x), ends at t_0.
    The tree is three root-to-leaf paths drawn on top of one another. On its click (step 2) each

@@ -1,6 +1,6 @@
 # Figure hooks a look can style
 
-Every rule below sits in `figs.css` (common part and the entry chart) or `bars.css` (page 14's
+Every rule below sits in `figs.css` (common part and the entry chart) or `bars.css` (page 11's
 split bars, in its own file). A look overrides any of them under
 `body[data-look="…"]`. Colours reach the figures only through the shared tokens
 (`design/tokens.css`); the custom properties listed here are the only other hooks.
@@ -12,7 +12,7 @@ split bars, in its own file). A look overrides any of them under
 | `--fig-share-fill`, `--fig-rival-fill`, `--fig-shade-fill`, `--tint-fill` | the flat tokens | filled areas; point one at a screen: `url(#scr-a-entry)` |
 | `--scr-ink`, `--scr-w`, `--scr-pitch` | `--fig-ink`, 1.5px, 9 (px) | the line screens' line colour, weight, pitch |
 | `--dash-mixed` | `14px 9px` | `.br-mixed`, the dashed stretch from 1.75 to 1.97 |
-| `--dash-hidden` | `18px 11px` | `.cmp-hidden`, page 20's "price hidden from the rival" |
+| `--dash-hidden` | `18px 11px` | `.cmp-hidden`, page 16's "price hidden from the rival" |
 | `--dash-drop` | `0.1px 9px` (round caps: dots) | `.br-drop`, `.cmp-drop`, the connectors at 3.59 |
 | `--fig-axis-w` | `2px` | axes, ticks, brackets, shade edges, the control's marker (no data) |
 | `--fig-line` | the look's token | `.br-none`, `.br-mixed`, `.cmp-hidden`, the connectors, `.inc-tick` |
@@ -26,9 +26,9 @@ line is `.screen-line`. The entry chart's are `#scr-a-entry` and `#scr-b-entry` 
 page, identical; the first in the document is the one `url()` finds, and it draws even when its
 page is hidden). Its only filled area is `.shade`.
 
-## The entry chart (pages 19, 20, 22)
+## The entry chart (pages 15, 16, 17)
 
-Mount `.fig[data-fig="entry"][data-variant="p14|p16|p17"]` (variant names from before the 17 November deck: main pages 19, 20, 22) > `svg.fig-svg` plus HTML `.fig-label`
+Mount `.fig[data-fig="entry"][data-variant="p14|p16|p17"]` (variant names from earlier decks: main pages 15, 16, 17) > `svg.fig-svg` plus HTML `.fig-label`
 spans. The figure draws its own motion (lines drawn along x behind a clip, dots arriving when the
 line reaches them); the engine's fade is switched off for its SVG steps.
 
@@ -38,7 +38,7 @@ line reaches them); the engine's fade is switched off for its SVG steps.
   `.br-none` (no informed order, solid), `.br-mixed` (dashed, 1.75 to 1.97),
   `.br-up` (informed orders where entry is above ρ: the ramp and the stretch at 0.52; the accent),
   `.br-drop` (dotted connector at 3.59, carries no data), `.br-floor` (the stretch at ρ after
-  3.59; not accent), `.br-trace` (page 20's pale trace of the full model),
+  3.59; not accent), `.br-trace` (page 16's pale trace of the full model),
   `.cmp-fixed` ("orders held fixed"), `.cmp-drop` (its dotted connector at 3.59),
   `.cmp-hidden` ("price hidden from the rival", dashed).
 - Marks: `.dot[data-inc="0|1|2"]` (the incumbents), `.dot.dot-end` (filled end of a branch at
@@ -56,11 +56,11 @@ shade's screen where they cross it).
 
 Page layout of these pages (in `figs.css`): `.chart-page`, `.chart-body`, `.chart-side`,
 `.chart-note`, `.rowtxt` (a paragraph of the text column; the column is set at
-`max(26px, 0.9 × --fs-body)`, as the master sets it at 16 pt against an 18 pt body), `.claim.is-tint` (page 20's claim:
-a default plain tint). Page 19 has no table.
+`max(26px, 0.9 × --fs-body)`, as the master sets it at 16 pt against an 18 pt body), `.claim.is-tint` (page 16's claim:
+a default plain tint). Page 15 has no table.
 
 Carry keys: `frame` (the plot frame), `dot-0|1|2`, `sym-0|1|2` (the incumbent's symbol, at the
-same box on pages 19, 20, 22), and on page 19 `inc-0|1|2` (the whole label, which page 17's
+same box on pages 15, 16, 17), and on page 15 `inc-0|1|2` (the whole label, which page 14's
 column heads travel onto).
 
 ## The region figure (`region.js`: backup B3, pages 1 and 2)
@@ -88,14 +88,14 @@ steps, no motion).
 Data: `TALK.data.extra.charts.region.b24|b25` (`build_data_charts.py`); tick labels are `kind: "axis"`
 rows of the numbers table (`b24.ax.*`, `b25.ax.*`).
 
-## The research chart (`research.js`: page 23 and backup B12's second page)
+## The research chart (`research.js`: backup B19 and backup B12's second page)
 
 Mount `.fig[data-fig="research"][data-variant="p18|b47"]` > `svg.fig-svg` plus HTML `.fig-label`
 spans placed by `data-place`. It uses the entry chart's classes: `.ax`, `.ax-tick`, `.ax-label`,
 `.ax-title`, `.br-none` ("no research" / zero research), `.br-up` (research where a purchase
 attracts the costly rival: the rise and the stretch at the cap; the accent), `.br-q` (b47:
 floor-entry research on (r_N, r_Q) and past r_C, dash-dot), `.dot[data-inc]`, `.dot-end` (accent ends), `.dot-open` (b47: r_Q, and entry at r_C), `.dot-stop` (the plain end
-of "no research" at r_N), `.shade` (page 23: the strengths with more than one equilibrium),
+of "no research" at r_N), `.shade` (B19: the strengths with more than one equilibrium),
 `.shade-edge`, `.bracket`, `.bracket-label`, `.guide`; and its own `.arrow` (the arrowhead where
 the stretch at the cap leaves the plot). Label modifiers: `.is-bold`, `.is-quiet` (secondary
 ink), `.is-knock` (a ground-coloured knockout for a label set inside the shaded region).
@@ -113,7 +113,7 @@ row).
 
 A forward click draws its lines left to right behind a clip that grows along x; each dot arrives
 when the line reaches it; a dotted drop sits in its own layer (`.layer-drops`) and is drawn
-downward by a second clip that grows along y (on page 19, click 3, the drop first and then the
-floor from its foot; on page 20, when the comparison line reaches it). The look's own wipe
+downward by a second clip that grows along y (on page 15, click 3, the drop first and then the
+floor from its foot; on page 16, when the comparison line reaches it). The look's own wipe
 (`plate.js`) is cancelled on these figures' SVG step groups, so the figure's drawing is not
 replaced; the look's wipe of HTML labels stays.
