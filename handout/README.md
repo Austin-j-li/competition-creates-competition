@@ -109,14 +109,15 @@ python3 handout/publish.py --dry-run
 python3 handout/publish.py
 ```
 
-Requires Python, latexmk, Node.js and npm. The publisher rebuilds the page, runs
-`check_display.py`, builds the talk with `talk/build.py` and its shipping guards, builds the
-Laplace archive, and stages an explicit file list:
+Requires Python, latexmk, Node.js, npm and Google Chrome. The publisher rebuilds the page, runs
+`check_display.py`, builds the talk with `talk/build.py` and its shipping guards, prints the talk
+with `talk/export_pdf.sh`, builds the Laplace archive, and stages an explicit file list:
 
 - at the root: `index.html`, `paper.pdf`, `comparison.pdf`, the locked fonts and licences
   (`fonts.lock.json`) and the KaTeX files (`vendor.lock.json`);
 - under `talk/`: `index.html` from `talk/dist/index.html`, with all fonts and KaTeX embedded;
-  `talk.pdf` is included only when `talk/dist/talk.pdf` exists and is newer than that HTML file.
+  `talk.pdf`, printed afresh from that page; the publisher stops if the print is missing or older
+  than the page, because the front page links it.
   No separate fonts, KaTeX files, provenance record or notes are staged there;
 - under `laplace/`: the committed handout build of the pinned commit (`LAPLACE_COMMIT` in
   `publish.py`, the last commit of the Laplace website sources, on the main and laplace branches):

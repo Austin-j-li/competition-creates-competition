@@ -111,6 +111,8 @@ def main() -> None:
     run(sys.executable, "handout/build.py", "--quiet")
     run(sys.executable, "handout/check_display.py")
     run(sys.executable, "talk/build.py")
+    # The front page links the talk's print export, so print it afresh from the page just built.
+    run("sh", "talk/export_pdf.sh")
     lap = laplace_archive()
 
     # Stage an explicit file list so drafts, notes and stray files stay private.
@@ -125,8 +127,9 @@ def main() -> None:
     dist = ROOT / "talk/dist"
     plan["talk/index.html"] = dist / "index.html"
     pdf = dist / "talk.pdf"
-    if pdf.is_file() and pdf.stat().st_mtime_ns > (dist / "index.html").stat().st_mtime_ns:
-        plan["talk/talk.pdf"] = pdf
+    if not (pdf.is_file() and pdf.stat().st_mtime_ns > (dist / "index.html").stat().st_mtime_ns):
+        sys.exit("publish stopped: talk/dist/talk.pdf is missing or older than the talk page")
+    plan["talk/talk.pdf"] = pdf
     # The Laplace archive, from the pinned commit: its committed handout build and its slides.
     lap_fonts = json.loads((lap / "handout/fonts.lock.json").read_text())
     lap_vendor = json.loads((lap / "handout/vendor.lock.json").read_text())["katex"]["files"]
