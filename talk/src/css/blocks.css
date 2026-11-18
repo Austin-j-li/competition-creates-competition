@@ -1,25 +1,28 @@
-/* Pages 15 and 16: geometry belongs here; the plate supplies all ink and type. */
+/* Pages 14 and 15: geometry belongs here; the plate supplies all ink and type. */
 .blocks-page .page-body { padding-top: 10px; }
 .blocks-page .claim { margin-top: auto; font-size: 30px; line-height: 1.3; }
 body[data-look="plate"] .blocks-page .claim { text-wrap: balance; }
 .blocks-page .katex-display { margin: 0; text-align: left; }
 .blocks-page .katex-display > .katex { text-align: left; }
 
-/* page 15: the band, then two columns under one thin keyline each, as the master sets them */
-#p15 .fig { width: 1440px; height: 268px; flex: none; }
-#p15 .blocks-cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; margin-top: 20px; }   /* the halves: 80 to 776, 824 to 1520 */
-#p15 .blocks-col { padding-top: 14px; border-top: var(--rule-w, 1.5px) solid var(--rule); }
-#p15 .blocks-col .runin-label { display: block; font-size: 24px; line-height: 1.3; }
-#p15 .blocks-col p { margin: 10px 0 0; font-size: max(26px, calc(var(--fs-body) * .9)); line-height: 1.32; text-wrap: pretty; }
+/* page 14: the band, then three ruled rows over the full measure, as the master sets them. Each thin
+   keyline is the top edge of its row and arrives with it. The rows keep the 30 px body tier; each
+   row, the formula row among them, stays on one line. */
+#p14 .fig { width: 1440px; height: 268px; flex: none; }
+#p14 .blocks-rows { margin-top: 14px; }
+#p14 .blocks-row { padding: 11px 0 12px; border-top: var(--rule-w, 1.5px) solid var(--rule); }
+#p14 .blocks-row p { margin: 0; font-size: 30px; line-height: 1.32; white-space: nowrap; }
+#p14 .blocks-row p.note { margin-top: 2px; font-size: var(--fs-small); line-height: 1.3; }
+#p14 .blocks-row .katex { white-space: nowrap; }
 
-/* page 16: two labelled rows, the run-in label in the 206px column, text from x = 314 */
-#p16 .gain-rows { display: flex; flex-direction: column; gap: 22px; padding: 4px 0 20px; border-bottom: var(--rule-w, 1.5px) solid var(--rule); }
-#p16 .gain-row { display: grid; grid-template-columns: 206px 1fr; column-gap: 28px; align-items: baseline; }
-#p16 .gain-row .runin-label { font-size: 24px; line-height: 1.3; }
-#p16 .gain-pair { display: grid; grid-template-columns: 540px 1fr; column-gap: 40px; }
-#p16 .gain-row .eq { font-size: 28px; line-height: 1.3; white-space: nowrap; }
-#p16 .gain-row .gloss { margin: 4px 0 0; font-size: var(--fs-small); color: var(--ink-2); }
-#p16 .fig { width: 1440px; height: 275px; flex: none; margin-top: 18px; }
+/* page 15: two labelled rows, the run-in label in the 206px column, text from x = 314 */
+#p15 .gain-rows { display: flex; flex-direction: column; gap: 22px; padding: 4px 0 20px; border-bottom: var(--rule-w, 1.5px) solid var(--rule); }
+#p15 .gain-row { display: grid; grid-template-columns: 206px 1fr; column-gap: 28px; align-items: baseline; }
+#p15 .gain-row .runin-label { font-size: 24px; line-height: 1.3; }
+#p15 .gain-pair { display: grid; grid-template-columns: 540px 1fr; column-gap: 40px; }
+#p15 .gain-row .eq { font-size: 28px; line-height: 1.3; white-space: nowrap; }
+#p15 .gain-row .gloss { margin: 4px 0 0; font-size: var(--fs-small); color: var(--ink-2); }
+#p15 .fig { width: 1440px; height: 275px; flex: none; margin-top: 18px; }
 
 .blocks-page .fig > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .blocks-page .fig .fig-label { position: absolute; white-space: nowrap; font-family: var(--font-label); font-size: var(--fs-small); line-height: 1.25; color: var(--fig-ink); }
@@ -30,9 +33,9 @@ body[data-look="plate"] .blocks-page .claim { text-wrap: balance; }
 .blocks-page .fig .blocks-heavy { stroke-width: max(6px, var(--fig-line-heavy)); }
 .blocks-page .fig .blocks-dot { fill: var(--fig-ink); r: var(--fig-dot); }
 .blocks-page .fig [data-step].is-new { animation-name: none; }
-#p15 .fig .preparation { stroke: var(--fig-accent); }
-body[data-look="plate"] #p15 .fig .fig-label.preparation { color: var(--fig-accent); }
-#p16 .fig .cost-line { stroke-dasharray: 9 7; }
-#p16 .fig .gain-large-line { stroke-width: max(6px, var(--fig-line-heavy)); }
+#p14 .fig .preparation { stroke: var(--fig-accent); }
+body[data-look="plate"] #p14 .fig .fig-label.preparation { color: var(--fig-accent); }
+#p15 .fig .cost-line { stroke-dasharray: 9 7; }
+#p15 .fig .gain-large-line { stroke-width: max(6px, var(--fig-line-heavy)); }
 /* the ends of the belief and gain axes are tick numbers: Jost, lining tabular figures */
 .blocks-page .fig .fig-label.ax-label { font-family: var(--font-num, var(--font-label)); font-weight: 500; font-variant-numeric: tabular-nums lining-nums; }

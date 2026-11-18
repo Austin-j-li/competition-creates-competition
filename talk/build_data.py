@@ -5,9 +5,9 @@
 
 Sources (all read, none written):
   - the number registry, audit/slot_manuscript_2026_10_23/registry/registry.csv (key, value, display, ...);
-  - the master's page dumps, numbered by show position (the master as saved at 20:21 on 17 November):
-    master_dump/slide76.txt (backup B19, the numerical-example table), slide19.txt (main page 18, the entry
-    chart), slide20.txt (page 19), slide21.txt (page 20), from which every master string is read by shape id,
+  - the master's page dumps, numbered by show position (the 20-page master):
+    master_dump/slide75.txt (backup B19, the numerical-example table), slide18.txt (main page 17, the entry
+    chart), slide19.txt (page 18), slide20.txt (page 19), from which every master string is read by shape id,
     never typed here. The data names p14, p16 and p17 (number ids, curves.pages, the entry chart's variants)
     are the names the chart pages 18, 19 and 20 had in an earlier deck; "example" is backup B19. They are
     names, not page numbers.
@@ -117,8 +117,8 @@ def read_dump(name: str) -> dict[int, dict]:
     return shapes
 
 
-DUMP = {"p14": ("slide19.txt", read_dump("slide19.txt")), "p16": ("slide20.txt", read_dump("slide20.txt")),
-        "p17": ("slide21.txt", read_dump("slide21.txt")), "example": ("slide76.txt", read_dump("slide76.txt"))}
+DUMP = {"p14": ("slide18.txt", read_dump("slide18.txt")), "p16": ("slide19.txt", read_dump("slide19.txt")),
+        "p17": ("slide20.txt", read_dump("slide20.txt")), "example": ("slide75.txt", read_dump("slide75.txt"))}
 
 
 def master_string(page: str, shape: int, occ: int | str) -> str | None:
@@ -150,7 +150,7 @@ NUMBERS = [
      "build_results.js (13 Nov) printed rN here; the master now prints 1.97 = rJ"),
     ("p14.chart.x.3", "p14", 26, 0, None, 0, "axis", [], ""),
     ("p14.chart.x.4", "p14", 27, 0, None, 0, "axis", [], ""),
-    # main page 18 (data name p14), the side blocks of the 20:21 master: block 2 (shape 111) and block 3
+    # main page 17 (data name p14), the side blocks of the 20:21 master: block 2 (shape 111) and block 3
     # (shape 113). The master no longer prints rF or a second plateau or rC beside the chart; those rows are
     # retired (page None) and kept until no page asks for them.
     ("p14.rhs.plateau.1", "p14", 111, 0, "entry_r1_B", 2, "value", ["entry_plateau_B"], ""),
@@ -185,8 +185,8 @@ NUMBERS = [
     ("p17.chart.x.4", "p17", 27, 0, None, 0, "axis", [], ""),
     # main page 17 (data name p16), "In the example"
     ("p16.text.frozen", "p16", 64, "m0", "p4_frozen_entry_below_ceiling", 2, "value", ["entry_r1_B"],
-     "orders held fixed: flat at 0.52 from r0 to r1"),
-    ("p16.text.rho", "p16", 65, "m0", "prim_rho", 2, "value", ["p2_base_hidden_entry"], "price hidden: flat at rho"),
+     "fixed informative trading: entry starts at 0.52"),
+    ("p16.text.rho", "p16", 65, "m0", "prim_rho", 2, "value", ["p2_base_hidden_entry"], "rival cannot see price: entry stays at rho"),
     # main page 18, the numerical example (data name example): kicker, table, band, note
     ("example.r0", "example", 106, "m0", "prim_r0", 1, "value", [], "also printed in the head of the weak column"),
     ("example.r1", "example", 106, "m1", "prim_r1", 0, "value", [], "also printed in the head of the strong column"),
@@ -401,21 +401,21 @@ SEGMENTS = {
                            start={"included": False, "marker": None}, end={"included": True, "axis_end": True},
                            dump_shapes={"p14": [48], "p16": [7], "p17": [36]},
                            master="p14 shape 48 (click 3); p17 shape 36; p16 pale trace shape 7"),
-    "fixed.flat": dict(branch="orders held fixed", form="F at every r", style="solid", style_confirmed=True,
+    "fixed.flat": dict(branch="fixed informative trading", form="F at every r", style="solid", style_confirmed=True,
                        y_key="p4_frozen_entry_below_ceiling", ends=("lo", "rC"),
                        points=pts((LO, FROZEN_LO), (rC, FROZEN_LO)),
                        start={"included": False, "axis_end": True}, end={"included": True},
                        dump_shapes={"p16": [33]}, master="p16 shape 33, #1B3A6B 3.5 pt (click 3)"),
-    "fixed.drop": dict(branch="orders held fixed", form=None, style="dotted", style_confirmed=True, connector=True,
+    "fixed.drop": dict(branch="fixed informative trading", form=None, style="dotted", style_confirmed=True, connector=True,
                        y_key=None, ends=("rC", "rC"), points=pts((rC, FROZEN_LO), (rC, FROZEN_HI)),
                        dump_shapes={"p16": [34]}, master="p16 shape 34, 1.25 pt (click 3); dotted in the older render"),
-    "fixed.floor": dict(branch="orders held fixed", form="F at every r", style="dashed", style_confirmed=False,
+    "fixed.floor": dict(branch="fixed informative trading", form="F at every r", style="dashed", style_confirmed=False,
                         style_note="dashed only in the older render, whose colour (orange) the dump contradicts (#1B3A6B)",
                         y_key="p4_frozen_entry_above_ceiling", ends=("rC", "hi"),
                         points=pts((rC, FROZEN_HI), (HI, FROZEN_HI)),
                         start={"included": False}, end={"included": True, "axis_end": True},
                         dump_shapes={"p16": [35]}, master="p16 shape 35, #1B3A6B 3.5 pt (click 3)"),
-    "hidden": dict(branch="price hidden from the rival", form="rho at every r", style="solid", style_confirmed=True,
+    "hidden": dict(branch="rival cannot see price", form="rho at every r", style="solid", style_confirmed=True,
                    y_key="prim_rho", ends=("lo", "hi"), points=pts((LO, rho), (HI, rho)),
                    dump_shapes={"p16": [30]}, master="p16 shape 30, #8C8C8C 3.5 pt (click 3)"),
 }
@@ -435,8 +435,8 @@ Y_TICKS = [{"y": 0.0, "num": "{p}.chart.y.zero"},
            {"y": coord(PLATEAU), "num": "{p}.chart.y.plateau"}]
 PATHS = {"none": ["none.a", "none.b", "none.dashed"],
          "informed": ["informed.ramp", "informed.flat", "informed.drop", "informed.floor"],
-         "orders held fixed": ["fixed.flat", "fixed.drop", "fixed.floor"],
-         "price hidden from the rival": ["hidden"]}
+         "fixed informative trading": ["fixed.flat", "fixed.drop", "fixed.floor"],
+         "rival cannot see price": ["hidden"]}
 
 
 def ticks(page: str, spec: list) -> list[dict]:
@@ -627,7 +627,7 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
         "Control numbers with no registry row at that strength: entry 0.25 at 1.39 (prim_rho; the branch with no "
         "informed order has entry rho at every strength, but no row states it at rA), and entry 0.52 at 1.97 and at 3.59 "
         "(entry_r1_B, a row stated at r1; the closed form rho + (1 - rho)(b + lambda/2) is the same on the whole flat "
-        "stretch from rF to rC, and p4_frozen_entry_below_ceiling states it for 1 < r <= rC, but with orders held fixed). "
+        "stretch from rF to rC, and p4_frozen_entry_below_ceiling states it for 1 < r <= rC, but under fixed informative trading). "
         "They are right by the closed form; they are not certain registry rows. The other control numbers are rows at "
         "their own strength (entry_r0, entry_rA_B, entry_r2, prim_r0, rA, rJ, prim_r1, rC_B, prim_r2).",
         "Page 14's middle bracket ('a purchase raises the belief and attracts the costly rival', shape 41 over path 36) "
@@ -643,12 +643,12 @@ def build_notes(numbers: dict) -> tuple[list[str], list[str]]:
         "The vertical drop at 3.59 (pages 14, 16, 17) is a connector, not an equilibrium: no strength has an entry between "
         "rho and 0.52 there. The master draws it 1.25 pt and dotted; it carries no data, so the 3 px floor for data "
         "lines does not bind it. data.json marks it connector: true.",
-        "Page 16, 'orders held fixed': full orders at every strength (form F with s = lambda); entry is "
+        "Page 16, 'fixed informative trading': full orders at every strength (form F with s = lambda); entry is "
         "p4_frozen_entry_below_ceiling (= entry_r1_B, 0.52) for 1 < r <= rC and p4_frozen_entry_above_ceiling (rho) "
         "after. Its stretch after 3.59 is dashed only in the older render (whose colour, orange, the dump contradicts: "
         "#1B3A6B); the dump records no dash pattern, so that style is unconfirmed. Three lines lie on rho from 3.59 to "
-        "4.5: it, 'price hidden from the rival' and the pale full-model trace; a dash lets all three show there.",
-        "Page 16, 'price hidden from the rival': entry rho at every strength, because the rival prepares on the prior and "
+        "4.5: it, 'rival cannot see price' and the pale full-model trace; a dash lets all three show there.",
+        "Page 16, 'rival cannot see price': entry rho at every strength, because the rival prepares on the prior and "
         f"B_r(1/2) <= B_1(1/2) = {half_up(b1, 3)} < c_H = 6 on the whole axis (B falls in r). Registry rows exist only at "
         "the incumbents (p4_hidden_r0_entry, p4_hidden_r1_entry, p2_base_hidden_entry: 0.25); beyond r1 the line is the "
         "closed form alone.",

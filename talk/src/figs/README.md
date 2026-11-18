@@ -12,7 +12,7 @@ split bars, in its own file). A look overrides any of them under
 | `--fig-share-fill`, `--fig-rival-fill`, `--fig-shade-fill`, `--tint-fill` | the flat tokens | filled areas; point one at a screen: `url(#scr-a-entry)` |
 | `--scr-ink`, `--scr-w`, `--scr-pitch` | `--fig-ink`, 1.5px, 9 (px) | the line screens' line colour, weight, pitch |
 | `--dash-mixed` | `14px 9px` | `.br-mixed`, the dashed stretch from 1.75 to 1.97 |
-| `--dash-hidden` | `18px 11px` | `.cmp-hidden`, page 19's "price hidden from the rival" |
+| `--dash-hidden` | `18px 11px` | `.cmp-hidden`, page 18's "rival cannot see price" |
 | `--dash-drop` | `0.1px 9px` (round caps: dots) | `.br-drop`, `.cmp-drop`, the connectors at 3.59 |
 | `--fig-axis-w` | `2px` | axes, ticks, brackets, shade edges, the control's marker (no data) |
 | `--fig-line` | the look's token | `.br-none`, `.br-mixed`, `.cmp-hidden`, the connectors, `.inc-tick` |
@@ -26,9 +26,9 @@ line is `.screen-line`. The entry chart's are `#scr-a-entry` and `#scr-b-entry` 
 page, identical; the first in the document is the one `url()` finds, and it draws even when its
 page is hidden). Its only filled area is `.shade`.
 
-## The entry chart (pages 18, 19, 20)
+## The entry chart (main pages 17, 18, 19)
 
-Mount `.fig[data-fig="entry"][data-variant="p14|p16|p17"]` (variant names from earlier decks: main pages 18, 19, 20) > `svg.fig-svg` plus HTML `.fig-label`
+Mount `.fig[data-fig="entry"][data-variant="p14|p16|p17"]` (variant names from earlier decks: main pages 17, 18, 19) > `svg.fig-svg` plus HTML `.fig-label`
 spans. The figure draws its own motion (lines drawn along x behind a clip, dots arriving when the
 line reaches them); the engine's fade is switched off for its SVG steps.
 
@@ -38,9 +38,9 @@ line reaches them); the engine's fade is switched off for its SVG steps.
   `.br-none` (no informed order, solid), `.br-mixed` (dashed, 1.75 to 1.97),
   `.br-up` (informed orders where entry is above ρ: the ramp and the stretch at 0.52; the accent),
   `.br-drop` (dotted connector at 3.59, carries no data), `.br-floor` (the stretch at ρ after
-  3.59; not accent), `.br-trace` (page 19's pale trace of the full model),
-  `.cmp-fixed` ("orders held fixed"), `.cmp-drop` (its dotted connector at 3.59),
-  `.cmp-hidden` ("price hidden from the rival", dashed).
+  3.59; not accent), `.br-trace` (page 18's pale trace of the full model),
+  `.cmp-fixed` ("fixed informative trading"), `.cmp-drop` (its dotted connector at 3.59),
+  `.cmp-hidden` ("rival cannot see price", dashed; arrives one click after `.cmp-fixed`).
 - Marks: `.dot[data-inc="0|1|2"]` (the incumbents), `.dot.dot-end` (filled end of a branch at
   1.39 and 3.59), `.dot.dot-open` (open circle at 1.97), `.inc-tick[data-inc]` (a short tick on
   the strength axis for each incumbent).
@@ -56,11 +56,13 @@ shade's screen where they cross it).
 
 Page layout of these pages (in `figs.css`): `.chart-page`, `.chart-body`, `.chart-side`,
 `.chart-note`, `.rowtxt` (a paragraph of the text column; the column is set at
-`max(26px, 0.9 × --fs-body)`, as the master sets it at 16 pt against an 18 pt body), `.claim.is-tint` (page 19's claim:
-a default plain tint). Page 18 has no table.
+`max(26px, 0.9 × --fs-body)`, as the master sets it at 16 pt against an 18 pt body), `.claim.is-tint` (page 18's closing
+statement: a default plain tint; the plate sets it between thin keylines). In `src/css/charts.css`,
+`.side-ruled` (pages 17, 18, 19) rules the side blocks apart with a thin keyline on the arriving
+block, and `.side-block.is-quiet` heads page 18's grey comparison in secondary ink. Page 17 has no table.
 
 Carry keys: `frame` (the plot frame), `dot-0|1|2`, `sym-0|1|2` (the incumbent's symbol, at the
-same box on pages 18, 19, 20), and on page 18 `inc-0|1|2` (the whole label, which page 17's
+same box on pages 17, 18, 19), and on page 17 `inc-0|1|2` (the whole label, which page 16's
 column heads travel onto).
 
 ## The region figure (`region.js`: backup B3, pages 1 and 2)
@@ -113,7 +115,7 @@ row).
 
 A forward click draws its lines left to right behind a clip that grows along x; each dot arrives
 when the line reaches it; a dotted drop sits in its own layer (`.layer-drops`) and is drawn
-downward by a second clip that grows along y (on page 18, click 3, the drop first and then the
-floor from its foot; on page 19, when the comparison line reaches it). The look's own wipe
+downward by a second clip that grows along y (on page 17, click 3, the drop first and then the
+floor from its foot; on page 18, when the comparison line reaches it). The look's own wipe
 (`plate.js`) is cancelled on these figures' SVG step groups, so the figure's drawing is not
 replaced; the look's wipe of HTML labels stays.

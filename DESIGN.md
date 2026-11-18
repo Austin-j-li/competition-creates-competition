@@ -140,7 +140,7 @@ components:
 
 The site is set as the diagram plate of an economics textbook printed in two inks: black and one spot colour, press green, on bright white stock. The grammar is printing grammar. Ink is flat. Structure is drawn with black keylines. An area that a screen design would tint is filled with a screen of fine parallel lines. Titles and labels are set in Jost, running text in STIX Two Text, mathematics in KaTeX.
 
-The look covers two surfaces. The front page is a reading page: a title face, three tabs (research brief, the paper, the seminar talk), a contents rail and one reading column. The seminar talk is a fixed stage of 1600 by 900 px with 66 pages (a title, 21 main pages, 44 backup pages), scaled to the window and driven by the keys a clicker sends. Both surfaces take their colours, families, keyline weights and figure tokens from `design/tokens.css`. Sizes are set per surface: pixels on the stage, rem on the reading page.
+The look covers two surfaces. The front page is a reading page: a title face, three tabs (research brief, the paper, the seminar talk), a contents rail and one reading column. The seminar talk is a fixed stage of 1600 by 900 px with 65 pages (a title, 20 main pages, 44 backup pages), scaled to the window and driven by the keys a clicker sends. Both surfaces take their colours, families, keyline weights and figure tokens from `design/tokens.css`. Sizes are set per surface: pixels on the stage, rem on the reading page.
 
 The site has one light theme. It has no dark theme and no theme switch.
 
@@ -157,7 +157,7 @@ The site has one light theme. It has no dark theme and no theme switch.
 Two inks on white stock, with light greys that draw only line screens and one comparison trace.
 
 ### Primary
-- **Press green** (`press-green`; `--accent`, `--fig-accent`): the price brings the costly rival in. On the talk it marks the Strong column head and its Entry cell, the Strong head of the example table (backup B19), the branch of the entry chart where entry is above its floor together with the ends of that branch and the mark of the strong incumbent, the label "purchases in class H expected" on that branch (main page 20), the costly rival's preparation on main page 15, the strong row of the outcome table on backup B18, the branch with informed orders, its ends and its arrowhead on the research chart (backup B21 and the second page of B12), and the entry part of the price-impact figure on the backup pages. On the front page it marks the figure branches and points where a purchase brings in the high-cost rival, that mark on the belief line, and the matching cells and totals of the explorer.
+- **Press green** (`press-green`; `--accent`, `--fig-accent`): the price brings the costly rival in. On the talk it marks the Strong column head and its Entry cell, the Strong head of the example table (backup B19), the branch of the entry chart where entry is above its floor together with the ends of that branch and the mark of the strong incumbent, the label "purchases in class H expected" on that branch (main page 19), the costly rival's preparation on main page 14, the strong row of the outcome table on backup B18, the branch with informed orders, its ends and its arrowhead on the research chart (backup B21 and the second page of B12), and the entry part of the price-impact figure on the backup pages. On the front page it marks the figure branches and points where a purchase brings in the high-cost rival, that mark on the belief line, and the matching cells and totals of the explorer.
 
 ### Neutral
 - **White stock** (`ground`; `--ground`): the page, the stage, the ground of tooltips, the overview and the blank screen. It has no warmth.
@@ -165,10 +165,10 @@ Two inks on white stock, with light greys that draw only line screens and one co
 - **Secondary ink** (`ink-2`; `--ink-2`): subtitles, glosses, notes, the foot and the roadmap's other parts, axis titles, unselected tabs and contents entries. Apart from text it draws only guide lines that carry no data, such as the dotted underline of a registry number.
 - **Reverse white** (`reverse`; `--band-ink`, `--accent-ink`): type set on the black band or on the solid green cell.
 - **Screen grey** (`screen-grey`; `--scr-page`, and `--scr-ink` on the entry chart): the lines of a screen that lies behind other marks in a chart. It never fills an area flat and never sets text.
-- **Trace greys** (`trace-grey`, `trace-pale`): the trace of the full model on main page 19 of the talk. The token `--trace-grey` is declared in `design/tokens.css`; the shipped trace is the paler value, drawn as a broad stroke.
+- **Trace greys** (`trace-grey`, `trace-pale`): the trace of the full model on main page 18 of the talk. The token `--trace-grey` is declared in `design/tokens.css`; the shipped trace is the paler value, drawn as a broad stroke.
 
 ### Named Rules
-**The One Meaning Rule.** Green means only that the price brings the costly rival in. It is never used for a link, a focus outline, a tab, a selected control, a bullet or decoration. Those are black, and they differ by weight, an underline or a keyline. Main pages 1 to 7 of the talk carry no green: the opening example, the sale process, the question, the received answer, the preview, the related literature and the players.
+**The One Meaning Rule.** Green means only that the price brings the costly rival in. It is never used for a link, a focus outline, a tab, a selected control, a bullet or decoration. Those are black, and they differ by weight, an underline or a keyline. Main pages 1 to 6 of the talk carry no green: the sale process, the question, the received answer, the preview, the related literature and the players.
 
 **The Greyscale Rule.** Every distinction in a figure other than the one green carries a second code: solid against dashed against dotted, a filled dot against an open ring, a heavy line (6 px on the stage) against a normal one (3 px), a solid fill against a line screen. A figure printed in grey loses nothing.
 
@@ -189,8 +189,7 @@ On the stage (pixels at 1600 by 900):
 - **Cover title** (Jost 600, 100 px, line height 1.04, tracking -0.022em): the title page. The subtitle is STIX 400 at 40 px, the name Jost 600 at 30 px, the affiliation STIX at 26 px in secondary ink.
 - **Page title** (Jost 600, 56 px, 1.1, -0.012em): one per page, over the heavy keyline. The formal backup pages set it at 52 px.
 - **Sub line** (STIX 400, 28 px, 1.3, secondary ink): one line under the title. Its opening tag ("Result 2", "Discussion") is Jost 600 in ink.
-- **Body** (STIX 400, 30 px, 1.32). Dense pages step down to 26 px, and to 22 px on the fullest backup pages. Rows of run-in and matrix tables on the main pages are set in two tiers: 27 px (main pages 10, 11, 12) and 24 px (main page 17, backups B14 and B18). The side column of main page 20, the fullest side, is set at 24 px. Where an opening page has little text the body steps up one tier, to 34 px (1.3): the columns of main pages 3, 4 and 5 and the rows of main page 13.
-- **Opening example** (main page 1): dates in Jost 600 at 28 px, each stop's figure in Jost 600 at 68 px, its caption in Jost 500 at 22 px in secondary ink, its sentence in STIX at 28 px.
+- **Body** (STIX 400, 30 px, 1.32). Dense pages step down to 26 px, and to 22 px on the fullest backup pages. Rows of run-in and matrix tables on the main pages are set in two tiers: 27 px (main pages 9, 10, 11) and 24 px (main page 16, backups B14 and B18). The side columns of main pages 18 and 19, the fullest sides, are set at 24 px. Where an opening page has little text the body steps up one tier, to 34 px (1.3): the columns of main pages 2 and 4 (with page 4's lead line) and the rows of main pages 3 and 12.
 - **Statement** (STIX 600): 28 px (1.3) in the band; 30 px (1.3) for the closing statement of a main page set plain or between keylines.
 - **Label** (Jost 500, 24 px): table heads and row labels, figure labels, run-in labels (600). Row numbers are Jost 600.
 - **Small** (22 px): notes in STIX italic, figure labels in Jost 500.
@@ -219,21 +218,21 @@ On the front page (root 20 px text, 17 px at 600 px wide and below):
 **Column lines of the stage.** The body of a main page is x 80 to 1520, y 193 to 810. Every main page takes its vertical lines from one set:
 - **Thirds:** 80, 576, 1072 (columns of 448 px, gutters of 48).
 - **Halves:** 80, 824 (columns of 696 px, gutter of 48).
-- **Label column:** the label in 80 to 286, text from x = 314. Columns after a label column start at 314 and set their own widths: thirds of 370 px (main page 3), halves of 579 px (main page 21), and the unequal columns of main pages 7 and 12, where one column holds more text or a longer head.
-- **Figure and side:** the figure mount in 80 to 930, the side column from 947 to 1520. On main pages 18, 19 and 20 the plot frame of the entry chart is x 197 to 905, y 285 to 677 and does not move between them.
+- **Label column:** the label in 80 to 286, text from x = 314. Columns after a label column start at 314 and set their own widths: thirds of 370 px (main page 2), halves of 579 px (main page 20), and the unequal columns of main pages 6 and 11, where one column holds more text or a longer head.
+- **Figure and side:** the figure mount in 80 to 930, the side column from 947 to 1520. On main pages 17, 18 and 19 the plot frame of the entry chart is x 197 to 905, y 285 to 677 and does not move between them; the blocks of their side columns are separated by thin keylines.
 
-**Arrangements of the main pages.** Six arrangements cover the 21 pages; backups B19 to B21 keep the arrangement they had as main pages.
-- **Columns** (3, 4, 5, 6, 12, 21 and backup B20): two or three headed columns from a thin keyline at y = 241, over one conclusion row whose keyline is at y = 590 on every such page, so the answer appears on the same line from page to page. Page 3 and page 21 name their columns in the label column; page 21 sets its statement row first; page 12 sets its columns under the equation.
-- **Rows** (2, 7, 13): run-in rows on the label column, a thin keyline under each. Page 7 has two tiers of heads on a keyline.
-- **Axis** (1, 8): one thin rule at y = 270 with a solid dot at each stop, heads above the rule and text hanging under it. The rule arrives whole with the first stop. The four stage heads of page 8 travel into the stage strip of page 9.
-- **Figure and side** (9, 14, 18, 19, 20 and backup B21; mirrored on 11): the element the first click reveals sits on the left. A claim closes the side between thin keylines.
-- **Figure over text** (15, 16): a figure strip over the full measure, text in halves under it.
-- **Table** (10, 17 and backup B19): a matrix table over the full measure, then the statement, then the note. The column heads of page 17 travel to their labels on the chart of page 18.
+**Arrangements of the main pages.** Six arrangements cover the 20 pages; backups B19 to B21 keep the arrangement they had as main pages.
+- **Columns** (2, 4, 5, 11, 20 and backup B20): two or three headed columns from a thin keyline at y = 241 (y = 278 on page 4, which sets a lead line above them), over one conclusion row whose keyline is at y = 590 on every such page, so the answer appears on the same line from page to page. Page 2 and page 20 name their columns in the label column; page 20 sets its statement row first; page 11 sets its columns under the equation.
+- **Rows** (1, 3, 6, 12): run-in rows on the label column, a thin keyline under each. Page 6 has two tiers of heads on a keyline. Page 3 closes with a labelled row ("This paper") whose keyline is at y = 590, the line of the Columns conclusion.
+- **Axis** (7): one thin rule at y = 270 with a solid dot at each stop, heads above the rule and text hanging under it. The rule arrives whole with the first stop. The four stage heads of page 7 travel into the stage strip of page 8.
+- **Figure and side** (8, 13, 17, 18, 19 and backup B21; mirrored on 10): the element the first click reveals sits on the left. A claim closes the side between thin keylines.
+- **Figure over text** (14, 15): a figure strip over the full measure, ruled rows under it (page 14 unlabelled, page 15 on the label column).
+- **Table** (9, 16 and backup B19): a matrix table over the full measure, then the statement, then the note. The column heads of page 16 travel to their labels on the chart of page 17.
 
 **Holes and cramming.**
 - Content is anchored to the top of the body, a closing statement or note to the bottom. Free space lies between them and never above the content.
 - A page that leaves much of the body free steps its text up one tier or opens its rows before anything else moves; a page that overflows steps down one tier. No page invents a size.
-- A closing statement set plain sits on the last line of the body (main pages 9 to 12, 15, 16).
+- A closing statement set plain sits on the last line of the body (main pages 8 to 11, 14, 15).
 - Every page is complete in its own markup when finished. A figure held between pages is mounted on each of them, because the reading view, the overview, the PDF, a jump and a backward move all cut.
 
 **The front page.** A page of 73rem holds, from 1024 px up, a sticky contents rail of 12rem, a gutter of 3.5rem and a column of 53.5rem. Prose, lists and captions stop at the measure of 29.5em; figures, tables, statements and the explorer span the column. Sections are 5rem apart. Below 1024 px the contents become a drawer above the column. At 760 px the two-column blocks stack and the stepper wraps to three columns; at 600 px the body text is 1.0625rem; at 480 px the stepper wraps to two columns.
@@ -257,7 +256,7 @@ Rectilinear. Every box has square corners (radius 0): the band, table cells, too
 - In figures: axes and ticks 2 px, brackets and the control marker 2.5 px, bar outlines 3 px, leader lines 1.5 px. Lines that carry data are at least 3 px on the stage.
 
 **Line screens.** Parallel lines at 45 degrees, with a second screen at 135 degrees when two areas meet.
-- Stage, bars of main page 14: black lines, 1.5 px at a pitch of 9 px, for what the rival keeps, beside solid black for what shareholders are paid.
+- Stage, bars of main page 13: black lines, 1.5 px at a pitch of 9 px, for what the rival keeps, beside solid black for what shareholders are paid.
 - Stage, coexistence region of the entry chart: screen grey, 1 px at a pitch of 8, ruled round in ink, so branches and text read over it.
 - Strong column of a table: a green line of 1 px every 12 px, the green mixed at 30 per cent with the ground, so that it reads as a light tone and text sits over it cleanly. The column head sits on paper; the screen starts under its keyline.
 - Front page figures and the belief line: screen grey, 1.1 px at a pitch of 7 px.
@@ -267,8 +266,8 @@ Rectilinear. Every box has square corners (radius 0): the band, table cells, too
 ## Components
 
 ### Statements
-- **Band:** solid black, reverse white STIX 600 at 28 px, full measure, square, padding 20 px 9% 22 px 36 px. It holds the main statement of a talk page and is used on main page 17, the main result, and on the literature page (backup B14). The front page has no band.
-- **Keyline statement:** bold ink text between two thin keylines. On the talk it is the conclusion row of a Columns page (main pages 3, 4, 5, 6, 21 and backup B20), the statement under the table of backup B19, and the claim that closes a side column (main pages 14 and 19, backup B21). On the front page it is the takeaway ("In short."), the opening question and a proposition (a Jost 600 tag line, then the statement).
+- **Band:** solid black, reverse white STIX 600 at 28 px, full measure, square, padding 20 px 9% 22 px 36 px. It holds the main statement of a talk page and is used on main page 16, the main result, and on the literature page (backup B14). The front page has no band.
+- **Keyline statement:** bold ink text between two thin keylines. On the talk it is the conclusion row of a Columns page (main pages 2, 4, 5, 20 and backup B20) and the closing row of main page 3, the statement under the table of backup B19, and the claim that closes a side column (main pages 13 and 18, backup B21). On the front page it is the takeaway ("In short."), the opening question and a proposition (a Jost 600 tag line, then the statement).
 - **Plain statement:** bold ink text with no rule.
 - **Formal statement (talk backups):** a Jost 600 run-in label ("Proposition 1") and its text.
 
@@ -276,29 +275,29 @@ Rectilinear. Every box has square corners (radius 0): the band, table cells, too
 A row with a Jost 600 label column (206 px on the main pages) and text beside it, with a thin keyline above or below. On the main pages the label is 24 px in a column of 206 px with a 28 px gutter, so the text starts at x = 314 on every page with run-in rows.
 
 ### Matrix tables
-Continuous horizontal thin keylines under every row and under the head, no vertical rules, no zebra. Heads and row labels in Jost 500, cells in STIX, numbers right-aligned in tabular figures. The column a table singles out takes the green line screen: the strong incumbent on main page 17 and on the backup tables (B19 among them), the costly rival on main page 10. The Strong head is green Jost 600 on paper, and its Entry cell is solid green with reverse white type. On the front page a table sits between two thin keylines with an inner keyline under a Jost 600 head.
+Continuous horizontal thin keylines under every row and under the head, no vertical rules, no zebra. Heads and row labels in Jost 500, cells in STIX, numbers right-aligned in tabular figures. The column a table singles out takes the green line screen: the strong incumbent on main page 16 and on the backup tables (B19 among them), the costly rival on main page 9. The Strong head is green Jost 600 on paper, and its Entry cell is solid green with reverse white type. On the front page a table sits between two thin keylines with an inner keyline under a Jost 600 head.
 
 ### Stage strip
-On main pages 9 to 13, the stages of the model sit in the place of the sub line: Jost 500 at 21 px in secondary ink with dot separators, the current stage in Jost 600 ink. The current stage is never green.
+On main pages 8 to 12, the stages of the model sit in the place of the sub line: Jost 500 at 21 px in secondary ink with dot separators, the current stage in Jost 600 ink. The current stage is never green.
 
 ### Foot of a talk page
-A thin keyline over the full measure. On the left the roadmap of five parts (Question, Model setup, Main results, Discussion, Conclusion) with the current part in Jost 600 ink. On the right the links to backup pages in Jost 600 ink, underlined on hover, and the page number as "13 / 21". A backup page carries its label and a return link. Links are the stage's only pointer response.
+A thin keyline over the full measure. On the left the roadmap of five parts (Question, Model setup, Main results, Discussion, Conclusion) with the current part in Jost 600 ink. On the right the links to backup pages in Jost 600 ink, underlined on hover, and the page number as "12 / 20". A backup page carries its label and a return link. Links are the stage's only pointer response.
 
 ### Figures
-- **Branches of the entry chart:** no informed order, solid black 3 px; its mixed stretch, dashed 14 9; informed orders above the floor, solid green 6 px; the floor after the drop, solid black 6 px; the drop, dotted 2 9 with round caps; "orders held fixed", solid black 6 px; "price hidden", dashed 16 10; the full model's trace on main page 19, a broad pale grey stroke of 18 px behind the comparison lines.
+- **Branches of the entry chart:** no informed order, solid black 3 px; its mixed stretch, dashed 14 9; informed orders above the floor, solid green 6 px; the floor after the drop, solid black 6 px; the drop, dotted 2 9 with round caps; "fixed informative trading", solid black 6 px; "rival cannot see price", dashed 16 10, one click after it; the full model's trace on main page 18, a broad pale grey stroke of 18 px behind the comparison lines.
 - **Points:** solid dots (radius 8 px on the stage, the three incumbents 10 px); an open ring where a branch excludes its end; the strong incumbent's dot, tick and label in green.
 - **Labels:** Jost 500 at 22 to 24 px set beside their marks, with short black leader lines or brackets where needed; a label inside a screened region is knocked out on paper. No figure numbers, no in-figure titles, no legend box on the stage.
-- **Factor underline (main page 12):** a black rule of 2.5 px, the bracket weight, under each of the three factors of the profit equation. Each is laid down on the click that brings the column explaining that factor.
-- **Split bars (main page 14):** solid black for shareholders, black line screen for the rival, outlined at 3 px, with a bracket for the shareholder spread.
+- **Factor underline (main page 11):** a black rule of 2.5 px, the bracket weight, under each of the three factors of the profit equation. Each is laid down on the click that brings the column explaining that factor.
+- **Split bars (main page 13):** solid black for shareholders, black line screen for the rival, outlined at 3 px, with a bracket for the shareholder spread.
 - **Front page charts:** every series in ink, told apart by solid, dashed, dotted and dash-dotted strokes and by filled or open markers; the one green series is also the heaviest. A legend of Jost labels sits between thin keylines above the plot; a caption opens with a Jost 600 run-in. A legend entry switched off is struck through.
 
 ### Strength control
-A vertical black marker on the entry chart (main pages 18, 19, 20), called and hidden with `S`. It snaps to the strengths the paper marks and never rests between them. At each stop a ring marks each equilibrium, with a Jost readout on paper beside it. It is hidden until called.
+A vertical black marker on the entry chart (main pages 17, 18, 19), called and hidden with `S`. It snaps to the strengths the paper marks and never rests between them. At each stop a ring marks each equilibrium, with a Jost readout on paper beside it. It is hidden until called.
 
 ### Overview and reading view
 - **Overview (`O`):** the finished pages as thumbnails on paper, grouped under Jost 500 headings at 24 px, in a grid with columns of at least 280 px and gaps of 20 px. Each thumbnail has a thin keyline; the current one has the heavy keyline. No surface sits behind a thumbnail.
 - **Reading view (`V`, or `?view=read`):** described under Layout. Every click step is shown finished. Each group of backup pages opens with its label ("B8") in Jost 500 at the size of a page title, under a thin keyline.
-- **Control row:** outside full screen, a row 44 px high on paper above the stage, closed by a thin keyline; the stage fits below it. Left: the site name, a link to the front page. Right, in Jost 500 at 15 px in secondary ink: the position ("Page 18 of 21 · click 3 of 4", or the backup label), "◂ Back to 18" on a backup, "Strength" on the entry-chart pages, previous and next arrows, then Overview, Notation, Reading view, Full screen and Keys, each with its key in a key cap (a thin keyline box). In full screen the stage is clean: the row floats in a thin keyline box at the top right only while the pointer moves or rests on it, and the cursor hides. On a phone the row keeps Overview, Notation and Keys.
+- **Control row:** outside full screen, a row 44 px high on paper above the stage, closed by a thin keyline; the stage fits below it. Left: the site name, a link to the front page. Right, in Jost 500 at 15 px in secondary ink: the position ("Page 17 of 20 · click 3 of 4", or the backup label), "◂ Back to 17" on a backup, "Strength" on the entry-chart pages, previous and next arrows, then Overview, Notation, Reading view, Full screen and Keys, each with its key in a key cap (a thin keyline box). In full screen the stage is clean: the row floats in a thin keyline box at the top right only while the pointer moves or rests on it, and the cursor hides. On a phone the row keeps Overview, Notation and Keys.
 - **Notation (`G`) and Keys (`?`):** a sheet of paper over the stage with a sticky head (title, "Close Esc") on a thin keyline. Notation shows the two B16 pages finished; Keys lists every key in a two-column ruled list. Escape or a forward press closes a sheet on the same click.
 - **Blank (`B` or `.`):** plain paper; a click, Escape or any forward or back press returns to the same click.
 
@@ -316,9 +315,9 @@ A vertical black marker on the entry chart (main pages 18, 19, 20), called and h
 As built:
 - **A click is a stored state.** The screen is a function of page and step, held in the address (`#p18.3`). Reload, back and a jump land on that state. A key pressed during motion finishes that motion and does nothing else. Going back cuts.
 - **Reveal.** New ink is wiped in behind a hard edge along the mark's own long direction: text in 240 ms, lines, areas, table cells and the band in 380 ms, easing `cubic-bezier(.16,1,.3,1)`. When one click brings black and green, the green follows 120 ms after the black. Areas never fade in. The entry chart draws its branches from left to right in 300 to 450 ms, with a drop of 200 ms.
-- **Shift.** On main page 14 the bars are copied, the copy travels down and its boundaries slide while the bracket widens, in 550 ms. Both pictures remain.
+- **Shift.** On main page 13 the bars are copied, the copy travels down and its boundaries slide while the bracket widens, in 550 ms. Both pictures remain.
 - **Carry.** Going forward between adjacent pages, an element both pages mark travels from its old box to its new one in 450 ms (`cubic-bezier(.33,1,.68,1)`), while the rest of the page fades in over 200 ms. A jump and a backward move cut.
-- **Limits.** The rule is that nothing runs longer than about half a second, and no single movement does: the longest is the shift at 550 ms. One click of the entry chart chains a drop of 200 ms, a draw of up to 450 ms and dots of 160 ms, and can last about 0.8 s. Nothing dims or disappears within a page, except the full model's curve on main page 19, which becomes the pale trace. Nothing idles, pulses or loops. Nothing reacts to hover except links.
+- **Limits.** The rule is that nothing runs longer than about half a second, and no single movement does: the longest is the shift at 550 ms. One click of the entry chart chains a drop of 200 ms, a draw of up to 450 ms and dots of 160 ms, and can last about 0.8 s. Nothing dims or disappears within a page, except the full model's curve on main page 18, which becomes the pale trace. Nothing idles, pulses or loops. Nothing reacts to hover except links.
 - **Reduced motion.** With the operating system's setting, `?motion=0` or `?static=1`, every state appears whole with no movement.
 
 The front page has no animation of its own. Its smooth scrolling is switched off under reduced motion.

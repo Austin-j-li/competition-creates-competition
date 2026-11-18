@@ -1,62 +1,68 @@
-/* Pages 9 and 11, the Figure and side pattern: the figure mount 80 to 930 and the side 947 to 1520
-   on page 9; mirrored on page 11, whose rows (text first) take 80 to 915 and the tree 947 to 1520.
+/* Pages 8 and 10, the Figure and side pattern: the figure mount 80 to 930 and the side 947 to 1520
+   on page 8; mirrored on page 10, whose rows (text first) take 80 to 915 and the tree 947 to 1520.
    The column lines are the custom properties of patterns.css. Structure and layout through the
    tokens only. */
 
 /* ------------------------------------------------------------------ the stage strip
    Sits where .page-sub sits, at the same fixed height, so the body starts at the same y. The
    current stage is set in ink and weight, not in the accent. */
-:is(#p09, #p11) .stage-strip {
+:is(#p08, #p10) .stage-strip {
   display: flex;
   align-items: baseline;
   margin: 12px 0 0;
   height: calc(var(--fs-sub) * 1.3);
   line-height: 1.3;
   font-family: var(--font-label);
-  font-size: 21px;                       /* as pages 10 and 13 set it, the size of the foot */
+  font-size: 21px;                       /* as pages 9 and 12 set it, the size of the foot */
   font-weight: 500;
   white-space: nowrap;
   color: var(--ink-2);
 }
-:is(#p09, #p11) .stage-strip .stage-sep { padding: 0 .55em; }
-:is(#p09, #p11) .stage-strip .stage.is-current { font-weight: 600; color: var(--ink); }
+:is(#p08, #p10) .stage-strip .stage-sep { padding: 0 .55em; }
+:is(#p08, #p10) .stage-strip .stage.is-current { font-weight: 600; color: var(--ink); }
 
 /* ------------------------------------------------------------------ rows with a run-in label */
-:is(#p09, #p11) .sf-cols { min-height: 0; }
-:is(#p09, #p11) .sf-row {
+:is(#p08, #p10) .sf-cols { min-height: 0; }
+:is(#p08, #p10) .sf-row {
   border-top: 0;
   border-bottom: var(--rule-w, 1.5px) solid var(--rule);
 }
-:is(#p09, #p11) .sf-row .runin-label {
+:is(#p08, #p10) .sf-row .runin-label {
   font-family: var(--font-label);
   font-size: var(--fs-label);
   font-weight: 600;
   line-height: 1.25;
 }
-:is(#p09, #p11) .sf-row p { margin: 0; font-size: 27px; line-height: 1.3; }
-:is(#p09, #p11) .sf-row .eq { font-size: 26px; line-height: 1.45; white-space: nowrap; }
-:is(#p09, #p11) .sf-row .katex { font-size: 1.04em; }
-:is(#p09, #p11) .sf-claim { margin-top: auto; font-size: 30px; line-height: 1.3; }
+:is(#p08, #p10) .sf-row p { margin: 0; font-size: 27px; line-height: 1.3; }
+:is(#p08, #p10) .sf-row .eq { font-size: 26px; line-height: 1.45; white-space: nowrap; }
+:is(#p08, #p10) .sf-row .katex { font-size: 1.04em; }
+:is(#p08, #p10) .sf-claim { margin-top: auto; font-size: 30px; line-height: 1.3; }
 
-/* page 9: the figure on the left, two stacked rows on the right */
-#p09 .sf-cols { gap: var(--pat-side-gap); }
-#p09 .sf-figcol { flex: 0 0 var(--pat-fig-w); }
-#p09 .sf-rows { flex: 1 1 0; }
-#p09 .sf-row { display: block; padding: 0 0 22px; margin: 0 0 24px; }
-#p09 .sf-row .runin-label { display: block; margin-bottom: 10px; }
+/* page 8: the figure on the left, three labelled groups stacked on the right (the split, the
+   spread, gross profit). A thin keyline separates the groups; it is the top edge of the second and
+   third group and arrives with it, so no state shows a rule with nothing under it. */
+#p08 .sf-cols { gap: var(--pat-side-gap); }
+#p08 .sf-figcol { flex: 0 0 var(--pat-fig-w); }
+#p08 .sf-rows { flex: 1 1 0; }
+#p08 .sf-group + .sf-group { margin-top: 22px; padding-top: 20px; border-top: var(--rule-w, 1.5px) solid var(--rule); }
+#p08 .sf-group .runin-label { display: block; margin-bottom: 8px; font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; line-height: 1.25; }
+#p08 .sf-group p { margin: 0; font-size: 27px; line-height: 1.3; text-wrap: pretty; }
+#p08 .sf-group p.eq { margin-bottom: 4px; white-space: nowrap; }
+#p08 .sf-group p.eq .katex { font-size: 1.04em; }
+#p08 .sf-group p .katex { display: inline-block; }   /* a formula in a gloss stays whole on its line */
 
-/* page 11: three rows on the left with side labels, the tree on the right */
-#p11 .sf-cols { gap: 32px; }
-#p11 .sf-rows { flex: 1 1 0; }
-#p11 .sf-figcol { flex: 0 0 calc(var(--pat-measure) - var(--pat-fig-w) - var(--pat-side-gap)); }   /* 947 to 1520 */
-#p11 .sf-row { padding: 0 0 18px; margin: 0 0 20px; gap: 0 24px; }
-#p11 .sf-row .runin-label { flex: 0 0 168px; min-width: 0; }
-#p11 .pf-formula { margin: -4px 0 6px; }
-#p11 .pf-formula .katex-display { margin: 0; text-align: left; }
-#p11 .pf-formula .katex-display > .katex { text-align: left; }
-#p11 .sf-row p.gloss { font-size: var(--fs-small); line-height: 1.36; }
-#p11 .sf-row p:not(.gloss) { font-size: 27px; }
-#p11 .sf-row .runin-label { text-wrap: balance; }
+/* page 10: three rows on the left with side labels, the tree on the right */
+#p10 .sf-cols { gap: 32px; }
+#p10 .sf-rows { flex: 1 1 0; }
+#p10 .sf-figcol { flex: 0 0 calc(var(--pat-measure) - var(--pat-fig-w) - var(--pat-side-gap)); }   /* 947 to 1520 */
+#p10 .sf-row { padding: 0 0 18px; margin: 0 0 20px; gap: 0 24px; }
+#p10 .sf-row .runin-label { flex: 0 0 168px; min-width: 0; }
+#p10 .pf-formula { margin: -4px 0 6px; }
+#p10 .pf-formula .katex-display { margin: 0; text-align: left; }
+#p10 .pf-formula .katex-display > .katex { text-align: left; }
+#p10 .sf-row p.gloss { font-size: var(--fs-small); line-height: 1.36; }
+#p10 .sf-row p:not(.gloss) { font-size: 27px; }
+#p10 .sf-row .runin-label { text-wrap: balance; }
 
 /* ------------------------------------------------------------------ figures: common */
 .fig:is([data-fig="payoff"], [data-fig="tree"]) { flex: none; }
@@ -73,9 +79,9 @@
 .fig:is([data-fig="payoff"], [data-fig="tree"]) .fig-label .katex { font-size: 1.1em; }
 .fig:is([data-fig="payoff"], [data-fig="tree"]) .screen-line { stroke: var(--scr-ink, var(--fig-ink)); stroke-width: var(--scr-w, 1.5px); }
 
-/* ------------------------------------------------------------------ page 9: payoffs */
+/* ------------------------------------------------------------------ page 8: payoffs */
 .fig[data-fig="payoff"] {
-  /* the look's rival screen lives in page 14's figure; this figure carries its own */
+  /* the look's rival screen lives in page 13's figure; this figure carries its own */
   --fig-rival-fill: url(#scr-a-payoff);
 }
 .fig[data-fig="payoff"] .payoff-wipe,
@@ -96,7 +102,13 @@
 .fig[data-fig="payoff"] .fig-label.area-label-share { color: var(--ground); }
 /* type on the screen carries a paper halo, so the lines give way to the letters */
 /* type on the screen sits on one paper patch (in place of the look's text halo) */
-.fig[data-fig="payoff"] .fig-label.area-label-rival { padding: 0 4px 2px; margin: 0 0 0 -4px; background: var(--ground); }   /* cut to the type plus 4px */
+.fig[data-fig="payoff"] .fig-label.area-label-rival {
+  padding: 0 4px 2px;
+  margin: 0 0 0 -4px;
+  line-height: 1.05;
+  background: var(--ground);
+}
+.fig[data-fig="payoff"] .area-label-rival .area-head { margin-bottom: 2px; }
 .fig[data-fig="payoff"] .fig-label.ax-title { color: var(--ink-2); }
 
 /* the reading view's probe: thin, never on the stage */
@@ -108,7 +120,7 @@ body.is-reading .fig[data-fig="payoff"] .payoff-probe.is-on { display: inline; }
 .fig[data-fig="payoff"] .probe-rival { fill: none; }
 body.is-reading .fig[data-fig="payoff"] { cursor: crosshair; }
 
-/* ------------------------------------------------------------------ page 11: the tree */
+/* ------------------------------------------------------------------ page 10: the tree */
 .fig[data-fig="tree"] { margin-top: 0; }
 .fig[data-fig="tree"] .tree-box { position: absolute; inset: 0; }
 .fig[data-fig="tree"] .tree-box:not(.is-on) { visibility: hidden; }
@@ -134,11 +146,11 @@ body.is-reading .fig[data-fig="payoff"] { cursor: crosshair; }
 
 /* the marking: the formula's step is the newest (stage), or a leaf is pointed at (reading view).
    Weight on the path, a keyline round the leaf; no colour. */
-html:not(.is-reading) .page[data-page="11"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-path,
+html:not(.is-reading) .page[data-page="10"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-path,
 .fig[data-fig="tree"] .tree-path.is-marked {
   stroke-width: max(6px, var(--fig-line-heavy));
 }
-html:not(.is-reading) .page[data-page="11"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-leaf,
+html:not(.is-reading) .page[data-page="10"]:has(.pf-price.is-on) .fig[data-fig="tree"] .tree-leaf,
 .fig[data-fig="tree"] .tree-leaf.is-marked {
   outline: 2.5px solid var(--fig-ink);
   outline-offset: 0;
@@ -147,8 +159,8 @@ html:not(.is-reading) .page[data-page="11"]:has(.pf-price.is-on) .fig[data-fig="
 .fig[data-fig="tree"] .tree-box.is-pointing .tree-path:not(.is-marked) { stroke-width: max(3px, var(--fig-line)); }
 body.is-reading .fig[data-fig="tree"] .tree-leaf { pointer-events: auto; cursor: default; }
 /* the formula's terms, once the page can tag them (KaTeX \htmlClass needs trust in render_math.mjs) */
-html:not(.is-reading) .page[data-page="11"]:has(.pf-price.is-on) :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE),
-#p11 :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE).is-marked {
+html:not(.is-reading) .page[data-page="10"]:has(.pf-price.is-on) :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE),
+#p10 :is(.pf-t0, .pf-tH, .pf-tL, .pf-tE).is-marked {
   -webkit-text-stroke: .6px currentColor;
   border-bottom: 3px solid var(--ink);          /* a keyline under the term; no shadow in this look */
 }

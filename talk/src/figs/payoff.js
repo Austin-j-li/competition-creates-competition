@@ -1,10 +1,11 @@
-/* Page 9: payoffs in the auction, for a prepared rival with value theta, as the incumbent's
-   value R rises. Shapes and proportions from the boxes of master_dump/slide10.txt: p sits at 0.377 theta on both
+/* Page 8: payoffs in the auction, for a prepared rival with value theta, as the incumbent's
+   value R rises. Shapes and proportions from the boxes of master_dump/slide09.txt: p sits at 0.377 theta on both
    axes and the R axis runs to 2.045 theta. Below R = p the rival wins and pays p; between p and
    theta it pays R; above theta the incumbent wins and pays theta. The solid area is what
    shareholders are paid, max{p, min(R, theta)}; the screened area above it is what the rival
    keeps, theta - max{p, R}. Axes are on from arrival; click 1 wipes the two areas in from left to
-   right as R rises, and the brackets and labels arrive as the edge passes them.
+   right as R rises, and the brackets and labels arrive as the edge passes them. The split, the
+   spread and gross profit follow in the side column on clicks 2 to 4.
    In the reading view only, a pointer over the plot shows a thin vertical line at that R with
    the two heights outlined. */
 (function () {
@@ -66,9 +67,9 @@
       svg('path', { class: 'bracket', d: `M${XT + 5} ${YBR + 10}V${YBR}H${XR}V${YBR + 10}` }, a);
       this.label(wipe, 'bracket-label', (X0 + XT) / 2, 0, 'rival wins', null, 'center');
       this.label(wipe, 'bracket-label', (XT + XR) / 2, 0, 'incumbent wins', null, 'center');
-      // each area's label is one block: its words, then its height
-      this.label(wipe, 'area-label area-label-rival', X0 + 16, YT + 12, 'to the rival', 'rivalH', 'block');
-      this.label(wipe, 'area-label area-label-share', XT + 40, YT + 0.40 * U, 'to shareholders', 'shareH', 'block');
+      // Each area label is the recipient over its payoff; the two parts carry their formulas only.
+      this.label(wipe, 'area-label area-label-rival', X0 + 8, YT + 8, 'to the rival', 'rivalH', 'block');
+      this.label(wipe, 'area-label area-label-share', XT + 40, YT + 0.33 * U, 'to shareholders', 'shareH', 'block');
 
       // layer 2: axes, ticks and their labels, on from arrival
       const b = this.axes = svg('svg', { class: 'fig-svg payoff-axes', viewBox: `0 0 ${W} ${H}`, width: W, height: H, 'aria-hidden': 'true' }, el);
