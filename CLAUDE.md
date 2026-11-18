@@ -52,15 +52,19 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 ## Slide decks
 
 - From 18 November 2026, the talk is presented from the Beamer slides in the Overleaf working copy
-  `overleaf/slot` (`slides.tex`, with the handout `slides_handout.tex`; read its `START_HERE.txt`
-  first). They are the master of the talk's words, numbers and page order: a change of wording is
-  made in `overleaf/slot/talk/frames/` first. Compiled copies are kept untracked in the repository
-  root as `presentation_beamer.pdf` and `handout_beamer.pdf`.
-- The PowerPoint `presentation.pptx` and the web talk built from `talk/` (published at `/talk/`) are
-  earlier forms of the talk and are behind the Beamer slides from that date. Never write to the
-  PowerPoint. Bring the web talk up to the Beamer slides only when asked.
+  `overleaf/slot`. They are the master of the talk's words, numbers and page order. The whole talk
+  is one file, `overleaf/slot/slides.tex`: the look, the macros and all frames in order, each under
+  a banner such as `===== PAGE 8 / 20`; `slides_handout.tex` opens the same file in handout mode.
+  A change of wording is made in `slides.tex` first. Read `overleaf/slot/START_HERE.txt`. Compiled
+  copies are kept untracked in the repository root as `presentation_beamer.pdf` and
+  `handout_beamer.pdf`.
+- Every earlier PowerPoint of the talk was deleted on 18 November 2026. A new `presentation.pptx`
+  is generated from the Beamer slides by `audit/pptx_rebuild_2026_11_18/` (read its
+  `REBUILD_SPEC.md`); it follows the Beamer slides and is never their source.
+- The web talk built from `talk/` (published at `/talk/`) is an earlier form of the talk and is
+  behind the Beamer slides. Bring it up to them only when asked.
 - `DESIGN.md` sets the look of the website: the front page and the web talk. The look of the Beamer
-  slides is set in `overleaf/slot/talk/preamble.tex`.
+  slides is set at the head of `overleaf/slot/slides.tex`.
 
 ## Working rules
 
