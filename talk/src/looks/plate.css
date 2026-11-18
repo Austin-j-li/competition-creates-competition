@@ -1,9 +1,12 @@
-/* Look 2: the two-colour plate.
-   The diagram plate of an economics textbook, printed in two inks on bright white stock:
-   black, and one spot colour, press green. Green means one thing in the whole talk: the price
-   brings the costly rival in. Areas are told apart by line screens, never by a tint; lines are
-   continuous keylines, one weight per role; type is Jost for titles and labels, STIX Two Text for
-   running text. Every rule is scoped to body[data-look="plate"]. */
+/* Look 2: the plate.
+   The diagram plate of an economics textbook on bright white stock. Black carries text, every thin
+   keyline and every figure mark. Navy (--frame) is the frame: titles, Jost 600 labels, the band,
+   solid figure areas with their outlines and screens, closing statements. Teal (--mark) marks
+   position and passage: the heavy keyline, the current part and stage, links, the strength marker.
+   Orange (--accent) means one thing in the whole talk: the price brings the costly rival in.
+   Areas are told apart by line screens, never by a tint; lines are continuous keylines, one weight
+   per role; type is Jost for titles and labels, STIX Two Text for running text. Every rule is
+   scoped to body[data-look="plate"]. */
 
 /* Shared colours, families, rules and figure tokens come from design/tokens.css. */
 
@@ -53,7 +56,7 @@ body[data-look="plate"] .page-title {
 }
 body[data-look="plate"] .page-head { padding-bottom: 14px; }
 body[data-look="plate"] .page-sub { margin-top: 12px; color: var(--ink-2); }
-body[data-look="plate"] .page-sub .tag { font-family: var(--font-label); font-weight: 600; color: var(--ink); letter-spacing: .005em; }
+body[data-look="plate"] .page-sub .tag { font-family: var(--font-label); font-weight: 600; color: var(--frame); letter-spacing: .005em; }
 
 body[data-look="plate"] .page { font-feature-settings: "kern", "liga"; }
 body[data-look="plate"] .page-body { padding-top: 26px; }
@@ -70,16 +73,16 @@ body[data-look="plate"] .page-foot {
   color: var(--ink-2);
 }
 body[data-look="plate"] .road { font-weight: 500; }
-body[data-look="plate"] .road.is-current { font-weight: 600; color: var(--ink); }
+body[data-look="plate"] .road.is-current { font-weight: 600; color: var(--mark); }   /* teal, and 600 against 500 */
 body[data-look="plate"] .road-sep { padding: 0 .5em; }
 body[data-look="plate"] .foot-links { font-weight: 500; color: var(--ink-2); }
-body[data-look="plate"] .foot-link { font-weight: 600; color: var(--ink); white-space: nowrap; }
+body[data-look="plate"] .foot-link { font-weight: 600; color: var(--link); white-space: nowrap; }
 body[data-look="plate"] .page-num { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
 body[data-look="plate"] .foot-links + .page-num { margin-left: 0; }
 
 /* ------------------------------------------------------------------ run-in rows */
 
-body[data-look="plate"] .runin-label { font-family: var(--font-label); font-weight: 600; letter-spacing: .005em; }
+body[data-look="plate"] .runin-label { font-family: var(--font-label); font-weight: 600; letter-spacing: .005em; color: var(--frame); }
 body[data-look="plate"] .runin { border-top: var(--rule-w) solid var(--rule); }
 
 /* ------------------------------------------------------------------ page 17 (and any page with the matrix) */
@@ -91,15 +94,16 @@ body[data-look="plate"] table.matrix thead th {
   font-family: var(--font-label);
   font-weight: 500;
   font-size: calc(var(--fs-label) * 1.04);
+  color: var(--frame);
   border-bottom: var(--rule-w) solid var(--rule);   /* the table's own keyline is thin: only the title carries the heavy one */
 }
-body[data-look="plate"] table.matrix tbody th { font-family: var(--font-label); font-weight: 500; }
+body[data-look="plate"] table.matrix tbody th { font-family: var(--font-label); font-weight: 500; color: var(--frame); }
 body[data-look="plate"] table.matrix tbody th .rownum { font-weight: 600; }
 body[data-look="plate"] table.matrix .cell-eq { margin-top: 2px; }
 body[data-look="plate"] table.matrix td { font-variant-numeric: tabular-nums lining-nums; }
 body[data-look="plate"] table.matrix td b { font-weight: 600; }
 
-/* the strong column: a fine green diagonal screen; its head and its entry cell carry the green ink */
+/* the strong column: a fine orange diagonal screen; its head and its entry cell carry the orange ink */
 body[data-look="plate"] table.matrix .col-strong { background: var(--tint-fill); }
 body[data-look="plate"] table.matrix thead th.col-strong,
 body[data-look="plate"] table.matrix thead th[data-inc="1"] {
@@ -120,8 +124,8 @@ body[data-look="plate"] table.matrix tr[data-row="5"] td.col-strong {
   color: var(--accent-ink);
 }
 
-/* the claim */
-body[data-look="plate"] .claim { font-weight: 600; text-wrap: pretty; }
+/* the claim: a closing statement, plain or between keylines, in the frame's navy */
+body[data-look="plate"] .claim { font-weight: 600; text-wrap: pretty; color: var(--frame); }
 body[data-look="plate"] .claim.is-band {
   background: var(--band-bg);
   color: var(--band-ink);
@@ -130,13 +134,13 @@ body[data-look="plate"] .claim.is-band {
   line-height: 1.3;
 }
 body[data-look="plate"] .claim.is-band * { color: inherit; }
-/* a pale-tint claim in the master: bold black between two thin keylines */
+/* a pale-tint claim in the master: bold navy between two thin black keylines */
 body[data-look="plate"] #stage .claim.is-tint {
   background: none;
   padding: 18px 0 20px;
   border-top: var(--rule-w) solid var(--rule);
   border-bottom: var(--rule-w) solid var(--rule);
-  color: var(--ink);
+  color: var(--frame);
 }
 
 /* ------------------------------------------------------------------ the title page: a plate's own face */
@@ -160,17 +164,17 @@ body[data-look="plate"] .cover-sub {
   margin-top: 22px;
   letter-spacing: 0;
 }
-body[data-look="plate"] .cover-name { font-family: var(--font-label); font-weight: 600; font-size: 30px; }
+body[data-look="plate"] .cover-name { font-family: var(--font-label); font-weight: 600; font-size: 30px; color: var(--frame); }
 body[data-look="plate"] .cover-aff { font-family: var(--font-text); font-size: 26px; color: var(--ink-2); }
 body[data-look="plate"] .cover-foot { top: 770px; }
 
-/* printer's furniture on the face: four registration crosses, drawn as plain ink bars */
+/* printer's furniture on the face: four registration crosses, drawn as plain bars in the frame's navy */
 body[data-look="plate"] .page.is-cover::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  --c: var(--ink);
+  --c: var(--frame);
   background:
     linear-gradient(var(--c), var(--c)) left 40px top 57px / var(--reg) var(--regw) no-repeat,
     linear-gradient(var(--c), var(--c)) left 57px top 40px / var(--regw) var(--reg) no-repeat,
@@ -207,7 +211,7 @@ body[data-look="plate"] .fig .row-label { font-weight: 600; }
 body[data-look="plate"] .fig .ax { stroke: var(--fig-ink); stroke-width: 2px; fill: none; }
 body[data-look="plate"] .fig .ax-tick { stroke: var(--fig-ink); stroke-width: 2px; }
 
-/* the branches of the entry chart. Weight and pattern carry the distinction; green marks only
+/* the branches of the entry chart. Weight and pattern carry the distinction; orange marks only
    the branch with informed orders where entry is above rho */
 body[data-look="plate"] .fig .br { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
 body[data-look="plate"] .fig .br-none { stroke: var(--fig-ink); stroke-width: var(--fig-line); stroke-dasharray: none; }
@@ -236,8 +240,9 @@ body[data-look="plate"] .fig .spread-bracket { stroke: var(--fig-ink); stroke-wi
 body[data-look="plate"] .fig .bracket-label { font-weight: 600; }
 body[data-look="plate"] .fig .leader { stroke: var(--fig-ink); stroke-width: var(--rule-w); fill: none; }
 
-/* the strength control: a vertical keyline with its readout set on paper */
-body[data-look="plate"] .fig .ctl-marker { stroke: var(--fig-ink); stroke-width: 2.5px; }
+/* the strength control: a vertical teal keyline (it marks where the control stands); the rings round
+   the equilibria and the readouts on paper stay in ink */
+body[data-look="plate"] .fig .ctl-marker { stroke: var(--mark); stroke-width: 2.5px; }
 body[data-look="plate"] .fig .ctl-stop { stroke: var(--fig-ink); fill: var(--ground); stroke-width: 2px; }
 body[data-look="plate"] .fig .ctl-dot { fill: var(--fig-ink); stroke: var(--ground); stroke-width: 3px; }
 body[data-look="plate"] .fig .ctl-readout {
@@ -247,10 +252,12 @@ body[data-look="plate"] .fig .ctl-readout {
   background: var(--ground);
 }
 
-/* split bars (page 14): shareholders solid black, the rival a black line screen, all ruled */
+/* split bars (page 13): shareholders solid navy, the rival a navy line screen, each bar ruled round
+   in navy, so the figure's areas are one ink; the bracket of the spread stays black */
+body[data-look="plate"] .fig[data-fig="bars"] { --scr-ink: var(--frame); }
 body[data-look="plate"] .fig .bar-t { fill: var(--fig-share-fill); }
 body[data-look="plate"] .fig .bar-g { fill: var(--fig-rival-fill); }
-body[data-look="plate"] .fig .bar-outline { fill: none; stroke: var(--fig-ink); stroke-width: 3px; }
+body[data-look="plate"] .fig .bar-outline { fill: none; stroke: var(--frame); stroke-width: 3px; }
 body[data-look="plate"] .fig .spread-bracket { stroke-width: 3px; }
 body[data-look="plate"] #p13 .bars-legends { font-weight: 500; }
 body[data-look="plate"] #p13 .bars-legends > span { font-weight: 500; }
@@ -269,7 +276,7 @@ html.is-reading body[data-look="plate"] .page + .page { border-top: var(--rule-w
 
 
 /* the screen behind the chart's coexistence region is a light tone, so the branches
-   and the two paragraphs of page 20 read over it; the ends of the green branch are green */
+   and the two paragraphs of page 20 read over it; the ends of the orange branch are orange */
 body[data-look="plate"] .fig[data-fig="entry"] { --scr-ink: oklch(0.62 0.008 260); --scr-w: 1px; --scr-pitch: 8; }
 body[data-look="plate"] .fig .dot.dot-end { fill: var(--accent); }
 /* the control's dot is a ring, so the mark under it stays visible; page 19's trace of

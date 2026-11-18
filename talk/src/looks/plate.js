@@ -1,7 +1,8 @@
 /* plate.js: ink is laid down.
    On each click of the plate look, the step's new elements are wiped in behind a hard edge
    (clip-path, as a press pass lays an area; a line is drawn along its direction). When a click
-   brings both black and green marks, the black goes down first and the green 120 ms later.
+   brings marks in the orange accent and other marks, the others go down first and the orange
+   120 ms later. (The names isGreen and green below test for the accent.)
    Text is set in 240 ms, lines and areas take 380 ms. Web Animations inside #stage, so a key press
    finishes them; nothing runs under ?static=1, ?motion=0 or reduced motion (the engine marks no
    new elements then). The bars on page 11 animate themselves, so they are left alone. */

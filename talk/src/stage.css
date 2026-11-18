@@ -62,7 +62,7 @@ html.is-ready #stage { visibility: visible; }
   font-size: var(--fs-title);
   line-height: 1.12;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--frame);
 }
 .page-sub {
   margin: 10px 0 0;
@@ -194,7 +194,7 @@ table.matrix .cell-eq { display: block; }
   font-size: var(--fs-cover, calc(var(--fs-title) * 1.7));
   line-height: 1.08;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--frame);
 }
 .cover-sub {
   margin: 14px 0 0;
@@ -355,9 +355,25 @@ body[data-motion="off"] *, body[data-motion="off"] *::before, body[data-motion="
 }
 body[data-motion="off"] #hud { transition: none; }
 
-/* Links are the stage's only pointer response. Hidden pages cannot receive focus. */
-a.foot-link, a.back-link { color: inherit; cursor: pointer; text-decoration: none; text-underline-offset: .18em; }
-a.foot-link:hover, a.back-link:hover { text-decoration: underline; }
+/* Links are the stage's only pointer response. Hidden pages cannot receive focus.
+   A link is teal with a quiet underline (1px, teal toward the paper) that turns full teal on hover;
+   a visited link looks the same. */
+a.foot-link, a.back-link {
+  color: var(--link);
+  cursor: pointer;
+  text-decoration: underline 1px var(--link-rule);
+  text-underline-offset: .18em;
+  text-decoration-skip-ink: auto;
+  transition: text-decoration-color 120ms ease-out;
+}
+a.foot-link:visited, a.back-link:visited { color: var(--link); }
+a.foot-link:hover, a.back-link:hover { text-decoration-color: var(--link); }
+@media (prefers-reduced-motion: reduce) { a.foot-link, a.back-link { transition: none; } }
+/* the underline runs under the words only: the space after a link's triangle is closed up and the
+   triangle's own margin keeps the gap, so no underline hangs in front of the label. Every link
+   label is one word after its triangle; a label of two words would need its own rule here */
+a.foot-link:has(> .tri), a.back-link:has(> .tri) { word-spacing: -.3em; }
+a.foot-link > .tri, a.back-link > .tri { margin-right: .42em; }
 a.foot-link:focus-visible, a.back-link:focus-visible, #hud button:focus-visible {
   outline: var(--focus-w) solid var(--focus-ring); outline-offset: 4px;
 }
@@ -384,14 +400,14 @@ html.is-reading .page { content-visibility: auto; contain-intrinsic-size: 1600px
 #overview .overview-head { padding-left: 32px; }
 .overview-list { padding: 32px 32px 64px; }
 .overview-list > section { margin: 0 0 36px; }
-.overview-list > section > h2 { margin: 0 0 16px; font: 500 24px/1.25 var(--font-label); white-space: pre-wrap; }
+.overview-list > section > h2 { margin: 0 0 16px; font: 500 24px/1.25 var(--font-label); white-space: pre-wrap; color: var(--frame); }
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 20px; }
 .overview-item {
   display: block; min-width: 0; padding: 0; border: var(--rule-w) solid var(--rule);
   border-radius: 0; box-shadow: none; background: var(--ground); cursor: pointer;
   color: inherit; text-align: left; position: relative;
 }
-.overview-item.is-current { border: var(--rule-strong-w) solid var(--rule-strong); }
+.overview-item.is-current { border-bottom: var(--rule-strong-w) solid var(--mark); outline-offset: 8px; }
 .overview-item:focus-visible { outline: var(--focus-w) solid var(--focus-ring); outline-offset: 5px; }
 .overview-viewport { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; pointer-events: none; }
 #overview .page {
@@ -463,7 +479,7 @@ body[data-look="plate"] #overview .overview-item:focus-visible {
 /* The notation pages carry their own title; the sheet's stays for screen readers only. */
 #sheet[data-sheet="notation"] .sheet-head h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 #sheet[data-sheet="notation"] .sheet-head { justify-content: flex-end; }
-.sheet-head h2 { margin: 0; font: 600 24px/1 var(--font-label); color: var(--ink); }
+.sheet-head h2 { margin: 0; font: 600 24px/1 var(--font-label); color: var(--frame); }
 .sheet-close {
   display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px;
   border: 0; border-radius: 0; background: none; cursor: pointer;
@@ -503,7 +519,7 @@ html.is-print #sheet { display: none; }
 .hud-pos { margin-right: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
 #hud .hud-return { color: var(--ink); }
 #hud .hud-return .tri { margin-right: -2px; }
-#hud .hud-strength[aria-pressed="true"] { color: var(--ink); box-shadow: inset 0 -3px 0 var(--ink); }
+#hud .hud-strength[aria-pressed="true"] { color: var(--frame); box-shadow: inset 0 -3px 0 var(--mark); }   /* the open control: navy, over a teal line, as the front page's selected controls */
 body.is-full #hud .hud-pos { margin-left: 10px; }
 @media (max-width: 1100px) { .hud-pos { display: none; } }
 @media (max-width: 699px) { #hud .hud-strength { display: none; } }
@@ -534,3 +550,6 @@ html.is-print body, html.is-print .page { background: var(--band-ink); }
 }
 
 .noscript { position: fixed; left: 0; right: 0; top: 44px; z-index: 80; margin: 0; padding: 12px 20px; background: var(--ground); border-bottom: var(--rule-w) solid var(--rule); font: 500 16px/1.4 var(--font-label); color: var(--ink); }
+
+/* a link inside a sentence takes the weight of the sentence */
+body[data-look="plate"] :is(p, li) > a:is(.foot-link, .back-link) { font-weight: inherit; }

@@ -147,7 +147,7 @@
       el('line', { class: 'guide', x1: sx(D.x_lo), x2: P(D.top[0])[0], y1: yM, y2: yM }, L.grid);
       el('line', { class: 'guide', x1: sx(D.x_lo), x2: sx(D.x_hi), y1: yPi, y2: yPi }, L.grid);
 
-      // the example's path: ink from r0 to r_A, then (where the informative market exists) green to
+      // the example's path: ink from r0 to r_A, then (where the informative market exists) orange to
       // the arrowhead at the plot's edge
       const ink = D.path_ink.map(P);
       const up = D.path_up.map(P);

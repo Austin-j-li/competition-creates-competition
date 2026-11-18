@@ -5,7 +5,7 @@
 
 /* ------------------------------------------------------------------ the stage strip
    Sits where .page-sub sits, at the same fixed height, so the body starts at the same y. The
-   current stage is set in ink and weight, not in the accent. */
+   current stage is set in teal and weight, never in the accent. */
 :is(#p08, #p10) .stage-strip {
   display: flex;
   align-items: baseline;
@@ -19,7 +19,7 @@
   color: var(--ink-2);
 }
 :is(#p08, #p10) .stage-strip .stage-sep { padding: 0 .55em; }
-:is(#p08, #p10) .stage-strip .stage.is-current { font-weight: 600; color: var(--ink); }
+:is(#p08, #p10) .stage-strip .stage.is-current { font-weight: 600; color: var(--mark); }
 
 /* ------------------------------------------------------------------ rows with a run-in label */
 :is(#p08, #p10) .sf-cols { min-height: 0; }
@@ -81,15 +81,17 @@
 
 /* ------------------------------------------------------------------ page 8: payoffs */
 .fig[data-fig="payoff"] {
-  /* the look's rival screen lives in page 13's figure; this figure carries its own */
+  /* the look's rival screen lives in page 13's figure; this figure carries its own, drawn in the
+     navy of the shareholders' area, so the figure's areas are one ink */
   --fig-rival-fill: url(#scr-a-payoff);
+  --scr-ink: var(--frame);
 }
 .fig[data-fig="payoff"] .payoff-wipe,
 .fig[data-fig="payoff"] .payoff-ticks { position: absolute; inset: 0; pointer-events: none; }
 .fig[data-fig="payoff"] .payoff-wipe:not(.is-on) { visibility: hidden; }
 .fig[data-fig="payoff"] .area-share { fill: var(--fig-share-fill, var(--fig-share)); }
 .fig[data-fig="payoff"] .area-rival { fill: var(--fig-rival-fill, var(--fig-rival)); }
-.fig[data-fig="payoff"] .payoff-edge { fill: none; stroke: var(--fig-ink); stroke-width: max(3px, var(--fig-line)); stroke-linejoin: miter; }
+.fig[data-fig="payoff"] .payoff-edge { fill: none; stroke: var(--frame); stroke-width: max(3px, var(--fig-line)); stroke-linejoin: miter; }
 /* the line at R = theta runs over the solid area: a paper-coloured keyline, dashed */
 .fig[data-fig="payoff"] .payoff-theta { fill: none; stroke: var(--ground); stroke-width: 3px; stroke-dasharray: 9 7; }
 .fig[data-fig="payoff"] .bracket { fill: none; stroke: var(--fig-ink); stroke-width: 2.5px; }
@@ -115,7 +117,7 @@
 .fig[data-fig="payoff"] .payoff-probe { display: none; pointer-events: none; }
 body.is-reading .fig[data-fig="payoff"] .payoff-probe.is-on { display: inline; }
 .fig[data-fig="payoff"] .probe-line { stroke: var(--fig-ink); stroke-width: 1.5px; stroke-dasharray: 4 4; }
-.fig[data-fig="payoff"] .probe-box { stroke: var(--fig-ink); stroke-width: 3px; paint-order: stroke; }
+.fig[data-fig="payoff"] .probe-box { stroke: var(--frame); stroke-width: 3px; paint-order: stroke; }   /* the probe's swatches are ruled in navy, as the areas are */
 .fig[data-fig="payoff"] .probe-share { fill: var(--fig-share-fill, var(--fig-share)); stroke: var(--ground); stroke-width: 6px; }
 .fig[data-fig="payoff"] .probe-rival { fill: none; }
 body.is-reading .fig[data-fig="payoff"] { cursor: crosshair; }

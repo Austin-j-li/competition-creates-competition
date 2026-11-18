@@ -283,7 +283,7 @@
       traces.push(mark('floor-entry research near r_Q', P.rQ, j ? P.rho : P.lambda_floor_rQ, ink, true, ax, ay,
         j ? ['prim_rho', P.display.rho] : ['res_lambda_floor_rQ', P.display.lambda_floor_rQ]));
       // r_C and r_2 lie less than a marker apart at this scale. In (a) the dot of r_2 (on floor-entry
-      // research at the cap) is drawn larger and first, so the green end of recruiting research at r_C
+      // research at the cap) is drawn larger and first, so the orange end of recruiting research at r_C
       // sits inside it; in (b) the open mark of floor-entry research above r_C is a ring round r_2's dot.
       traces.push(points('the three economies', [P.r2], [floorCap], ink, [j ? ['prim_rho', P.display.rho] : ['res_cap', P.display.cap]],
         { size: j ? 8 : 13, extra: { xaxis: ax, yaxis: ay } }));
@@ -296,7 +296,7 @@
         nodes.map(function (n) { return j ? [n.n.entry.key, n.n.entry.display] : [n.n.lambda.key, n.n.lambda.display]; }), { extra: { xaxis: ax, yaxis: ay } }));
       traces.push(points('zero research at the three strengths', nodes.map(function (n) { return n.r; }), nodes.map(function () { return zero; }), t.ink,
         nodes.map(function (n) { return [n.n.r.key, n.n.r.display]; }), { hover: 'strength %{customdata[1]}', extra: { xaxis: ax, yaxis: ay } }));
-      // the three economies: r_0 on zero research, r_1 on recruiting research at the cap (green), r_2 on floor-entry research
+      // the three economies: r_0 on zero research, r_1 on recruiting research at the cap (orange), r_2 on floor-entry research
       var econ = j ? [['prim_rho', P.display.rho], ['res_entry_cap', P.display.entry_cap], ['prim_rho', P.display.rho]]
         : [['prim_r0', P.display.r0], ['res_cap', P.display.cap], ['res_cap', P.display.cap]];
       [[P.r0, zero, ink], [P.r1, capY, recruit]].forEach(function (e, i) {

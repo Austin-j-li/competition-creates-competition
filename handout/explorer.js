@@ -149,7 +149,7 @@
     layout.annotations.push({ text: 'coexistence', showarrow: false, xref: 'x2', yref: 'y2', x: (P.rF + P.rN) / 2, y: 0.135, xanchor: 'center', yanchor: 'bottom',
       bgcolor: true, font: { size: 14, color: t.muted } });
     eqs.forEach(function (f) {
-      // green only where a purchase recruits the high-cost rival at the chosen strength
+      // orange only where a purchase recruits the high-cost rival at the chosen strength
       var color = f.e['1'] === 1 ? t.recruit : t.ink;
       ['x', 'x2'].forEach(function (ax) {
         traces.push({ type: 'scatter', mode: 'markers', name: 'at r: ' + f.id, showlegend: false, x: [r], y: [f.E], xaxis: ax, yaxis: ax === 'x2' ? 'y2' : 'y',

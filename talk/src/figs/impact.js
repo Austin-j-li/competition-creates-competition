@@ -4,7 +4,7 @@
                   entry part of the purchase impact (slide52.txt, shapes 5 to 17);
    variant "b51": the three price levels P(1), P(0), P(-1) with a brace for each impact
                   (slide53.txt, shapes 7 to 14).
-   Marks carry their meaning by position and by weight; the one green mark is the entry part,
+   Marks carry their meaning by position and by weight; the one orange mark is the entry part,
    where the price brings the costly rival in. Nothing moves. */
 (function () {
   'use strict';

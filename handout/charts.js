@@ -14,12 +14,12 @@
   var SVGNS = 'http://www.w3.org/2000/svg';
   var NARROW = 640;
 
-  /* The plate: black ink on white stock, one green for the one meaning (recruit), areas as line
-     screens (screen), no grid. */
-  var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', GREEN = 'oklch(0.50 0.15 150)';
+  /* The plate: black ink on white stock, one orange for the one meaning (recruit), areas as line
+     screens (screen), no grid. The values are read from the tokens; these are the fallbacks. */
+  var INK = 'oklch(0.20 0.01 260)', INK2 = 'oklch(0.40 0.012 260)', ORANGE = 'oklch(0.54 0.154 46)';
   var FALLBACK = {
     bg: 'oklch(0.985 0.002 250)', ink: INK, muted: INK2, grid: 'none', line: INK2, axis: INK,
-    recruit: GREEN, screen: 'oklch(0.62 0.008 260)',
+    recruit: ORANGE, screen: 'oklch(0.62 0.008 260)',
     fontSans: '"Jost", "STIX Two Text", sans-serif',
     fontMono: 'ui-monospace, Menlo, monospace'
   };

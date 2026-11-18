@@ -11,10 +11,11 @@ of handout/README.md:
   value; numbers inside formulas carry the same; no decimal is typed into the prose;
 - the page ships only the locked faces (Jost and STIX Two Text) and makes no network request;
 - every colour literal in the page's styles, the look's tokens (design/tokens.css), the handout
-  stylesheet, the template and the figure scripts is in the palette of the two-colour plate:
-  white stock, black ink, a dark grey for secondary text, the press green, white type on a band,
-  and three light greys for line screens and a comparison trace; the green is spent on one meaning
-  only, the price bringing in the costly rival; there is one theme and no dark-theme hook;
+  stylesheet, the template and the figure scripts is in the palette of the plate: white stock,
+  black ink, a dark grey for secondary text, the navy of the frame, the teal of position and links,
+  the orange accent, white type on a band, and three light greys for line screens and a comparison
+  trace; the orange is spent on one meaning only, the price bringing in the costly rival; focus
+  is black; there is one theme and no dark-theme hook;
 - neither the page nor the handout sources carry a retired look: the purple look of 11 November
   2026 that the plate replaces (its UCL hexes and its dark-theme derivatives), the oxblood accent
   of 29 October 2026, the --ucl-* tokens of the template of 3 October 2026, or the marks of that
@@ -85,16 +86,19 @@ assert not re.search(r'<(?:script|link|img|iframe)\b[^>]*(?:src|href)="(?:https?
 print("PASS only Jost and STIX Two Text; no network request")
 
 # ------------------------------------------------------------------ the palette
-# The two-colour plate (talk/LOOK_plate.md; tokens in design/tokens.css): bright white stock, black
-# ink, a dark grey for secondary text at 7:1 or better, one press green, white type on the black
-# band or the green, and light greys that only draw line screens and the talk's comparison trace.
+# The plate (tokens in design/tokens.css): bright white stock, black ink, a dark grey for secondary
+# text at 7:1 or better, navy for the frame, teal for position and links, one orange accent, white
+# type on the navy band or the orange, and light greys that only draw line screens and the talk's
+# comparison trace.
 # Every colour literal (hex, oklch(), rgb(), hsl()) in these sources must be one of them.
 PALETTE = {
     "oklch(0.985 0.002 250)",  # --ground: white stock
-    "oklch(0.20 0.01 260)",    # --ink: black ink, every keyline
+    "oklch(0.20 0.01 260)",    # --ink: black ink, text and every thin keyline
     "oklch(0.40 0.012 260)",   # --ink-2: secondary text (8.8:1 on the ground)
-    "oklch(0.50 0.15 150)",    # --accent / --fig-accent: press green, the one meaning
-    "#ffffff",                 # --accent-ink / --band-ink: white type on the band or the green
+    "oklch(0.35 0.093 259)",   # --frame: navy, the frame of every page (titles, labels, band)
+    "oklch(0.52 0.088 190)",   # --mark: teal, the heavy keyline, current marks and links
+    "oklch(0.54 0.154 46)",    # --accent / --fig-accent: orange, the one meaning
+    "#ffffff",                 # --accent-ink / --band-ink: white type on the band or the orange
     "oklch(0.62 0.008 260)",   # --scr-page: the lines of a screen in a figure
     "oklch(0.70 0.008 260)",   # --trace-grey: the talk's trace of the full model
     "oklch(0.80 0.006 260)",   # the talk's broad trace stroke
@@ -116,25 +120,27 @@ stray = sorted({f"{f.name}:{c}" for f in styled for c in colours(f.read_text(enc
 assert not stray, f"a colour outside the palette: {stray[:8]}"
 tokens = TOKENS.read_text(encoding="utf-8")
 for name, value in (("--ground", "oklch(0.985 0.002 250)"), ("--ink", "oklch(0.20 0.01 260)"),
-                    ("--ink-2", "oklch(0.40 0.012 260)"), ("--accent", "oklch(0.50 0.15 150)"),
-                    ("--fig-accent", "oklch(0.50 0.15 150)")):
+                    ("--ink-2", "oklch(0.40 0.012 260)"), ("--accent", "oklch(0.54 0.154 46)"),
+                    ("--fig-accent", "oklch(0.54 0.154 46)"), ("--frame", "oklch(0.35 0.093 259)"),
+                    ("--mark", "oklch(0.52 0.088 190)")):
     assert re.search(rf"{name}:\s*{re.escape(value)}\s*;", tokens), f"the token {name} is not {value}"
 css = (HERE / "style.css").read_text(encoding="utf-8")
-# Green means one thing: every rule of the stylesheet that spends it names that meaning (a recruit
-# class); focus, links, tabs and the current contents entry are black.
+# Orange means one thing: every rule of the stylesheet that spends it names that meaning (a recruit
+# class); focus, links, tabs and the current contents entry never take it (focus is black; links,
+# the selected tab and the current entry are navy and teal).
 for sel, body_ in re.findall(r"([^{}]+)\{([^{}]*)\}", css):
     if re.search(r"var\(--(?:accent|fig-accent)\)", body_):
-        assert all("recruit" in part for part in sel.split(",")), f"green outside its meaning: {sel.strip()}"
+        assert all("recruit" in part for part in sel.split(",")), f"the accent outside its meaning: {sel.strip()}"
 assert re.search(r"--focus-ring:\s*var\(--ink\)", tokens) and not re.search(r"--focus-ring:", css), "the focus ring is not black"
 for f in (HERE / "figures.js", HERE / "explorer.js"):
-    # the figure scripts reach the green only through the renderer's recruit token
-    assert not re.search(r"--(?:fig-)?accent|oklch\(0\.50 0\.15 150\)", f.read_text(encoding="utf-8")), f"{f.name} names the green directly"
+    # the figure scripts reach the accent only through the renderer's recruit token
+    assert not re.search(r"--(?:fig-)?accent|oklch\(0\.54 0\.154 46\)|#b54b00\b", f.read_text(encoding="utf-8"), re.I), f"{f.name} names the accent directly"
 # One theme: no dark theme, no theme toggle, no stored theme.
 theme = [f"{f.name}" for f in [HERE / "style.css", HERE / "template.html", HERE / "app.js", HERE / "charts.js"]
          if re.search(r"data-theme|theme-toggle|ccc-theme|themechange|prefers-color-scheme", f.read_text(encoding="utf-8"))]
 assert not theme and "data-theme" not in page and "theme-toggle" not in page, f"a theme hook remains: {theme}"
 print(f"PASS every colour in {len(styled)} styled sources and the page styles is in the plate's palette; "
-      "green only on the recruit marks; black focus; one theme")
+      "the orange accent only on the recruit marks; black focus; one theme")
 
 # ------------------------------------------------------------------ the retired looks
 # No retired look may come back through a source or the built page: the purple look of 11 November

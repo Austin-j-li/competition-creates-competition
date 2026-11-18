@@ -75,13 +75,13 @@ steps, no motion).
   look's shade screen, redrawn in the figure's own pattern `#scr-a|b-region-<page>`), `.bound` (the
   lower bound k/(1 − τ), the upper bound k/(ρ max{π, 1 − π}), the top at M(1/2)), `.bound-split`
   (dashed, k/(1 − M(1/2)): mixing to its left, buying for sure to its right), `.guide` (the dotted
-  levels M(1/2) and π). The example's path: `.path.path-ink` from r0 to r_A, `.path.path-up` (green)
+  levels M(1/2) and π). The example's path: `.path.path-ink` from r0 to r_A, `.path.path-up` (orange)
   from r_A to the arrowhead `.path-head` at the plot's edge, where the informative market exists
   (the build checks τ ≤ M(1/2) up to the edge and stops otherwise). Points: `.dot` (r0), `.dot.dot-end`
   (r_A, r_F, r_N). Places: `panel`, `ytitle`, `xtitle`, `M`, `pi`, `coex`, `r0`, `rA`, `rF`, `rN`.
 - **b25** (980 x 396): panels (a) and (c), entry against strength. Branches: `.br-none` (N),
-  `.br-q` (Q, dash-dot), `.br-mix` (R, heavy dashed green), `.br-up` (F above the floor),
-  `.br-floor` (F at the floor after r_C), `.br-thresh` (T, thin dashed green). The band [r_A, r_N]
+  `.br-q` (Q, dash-dot), `.br-mix` (R, heavy dashed orange), `.br-up` (F above the floor),
+  `.br-floor` (F at the floor after r_C), `.br-thresh` (T, thin dashed orange). The band [r_A, r_N]
   (this page's text) is a `.region-fill`; `.guide` keylines at r_A, r_N, r_C in (a) and r_A, r_F,
   r_N, r_J, r_S in (c); `.zoom` and `.zoom-head` (the double arrow over the stretch (c) enlarges).
   Places: `panel:a|c`, `ytitle:a`, `xtitle:a|c`, `guide:<at>:a|c`, `zoom:a`, `N:a`, `F:a`,

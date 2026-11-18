@@ -1,7 +1,9 @@
 /* Shared plate design tokens, consumed by the talk and research brief.
    --ground: paper; --ink: primary text; --ink-2: secondary text.
    --rule / --rule-strong: keyline inks; --rule-w / --rule-strong-w: their weights.
-   --accent: price-induced entry; --accent-ink: text on that ink.
+   --frame: navy, the ink of the frame (titles, Jost labels, the band, solid figure areas, closings).
+   --mark: teal, the ink of position and links (the heavy keyline, current marks, links).
+   --accent: orange, price-induced entry, the one meaning; --accent-ink: text on that ink.
    --band-bg / --band-ink: statement band; --tint / --tint-fill: strong-column screen.
    --font-title / --font-text / --font-label / --font-num: title, prose, label, numeral faces.
    --fig-ink: axes and labels; --fig-muted: no-informed-order branch;
@@ -16,11 +18,15 @@
   --ground: oklch(0.985 0.002 250);
   --ink: oklch(0.20 0.01 260);
   --ink-2: oklch(0.40 0.012 260);
-  --rule: oklch(0.20 0.01 260);            /* every keyline is black ink */
-  --rule-strong: oklch(0.20 0.01 260);
-  --accent: oklch(0.50 0.15 150);          /* press green: the price brings the costly rival in */
+  --rule: oklch(0.20 0.01 260);            /* every thin keyline is black ink; the heavy one is teal */
+  --frame: oklch(0.35 0.093 259);          /* navy (hex 1B3A6B, the PowerPoint's): the frame of every page */
+  --mark: oklch(0.52 0.088 190);           /* teal (hex 0B7A75): the heavy keyline, current marks, links */
+  --link: var(--mark);
+  --link-rule: color-mix(in oklab, var(--link) 50%, var(--ground));   /* the resting underline of a link */
+  --rule-strong: var(--mark);
+  --accent: oklch(0.54 0.154 46);          /* orange (hex B54B00): the price brings the costly rival in */
   --accent-ink: #ffffff;
-  --band-bg: oklch(0.20 0.01 260);
+  --band-bg: var(--frame);
   --band-ink: #ffffff;
   --tint: oklch(0.985 0.002 250);          /* never a flat tint: --tint-fill is a line screen */
   --font-title: "Jost", "Futura", "Century Gothic", sans-serif;
@@ -31,9 +37,9 @@
   --rule-strong-w: 3px;
   --fig-ink: oklch(0.20 0.01 260);
   --fig-muted: oklch(0.20 0.01 260);        /* the branch with no informed order: solid black */
-  --fig-share: oklch(0.20 0.01 260);        /* what shareholders are paid: solid black */
+  --fig-share: var(--frame);                /* what shareholders are paid: solid navy */
   --fig-rival: oklch(0.20 0.01 260);        /* what the rival keeps: black, but as a line screen (below) */
-  --fig-accent: oklch(0.50 0.15 150);
+  --fig-accent: oklch(0.54 0.154 46);
   --fig-shade: oklch(0.20 0.01 260);
   --fig-line: 3px;
   --fig-line-heavy: 6px;
@@ -52,6 +58,6 @@
       color-mix(in srgb, var(--accent) 30%, var(--ground)) 0,
       color-mix(in srgb, var(--accent) 30%, var(--ground)) 1px,
       transparent 1px, transparent 12px);
-  --focus-ring: var(--ink);                 /* focus is black; green keeps its one meaning */
+  --focus-ring: var(--ink);                 /* focus is black; orange keeps its one meaning */
   --focus-w: 3px;
 }
