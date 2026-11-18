@@ -51,12 +51,16 @@ and the figure and table layer (`figures/`, `tables/`, `figures_data/`, generate
 
 ## Slide decks
 
-- From 15 November 2026, the talk is presented from the web page built from `talk/`, published
-  at `/talk/`. The PowerPoint `presentation.pptx` in the repository root is the source of the
-  talk's words, numbers and page order and the fallback in the room. The author keeps and edits
-  it. Never write to it, and never while the lock file `~$presentation.pptx` exists. A change of
-  wording is made in the PowerPoint first and then copied into `talk/src/pages`.
-- `DESIGN.md` sets the look of the whole website, the front page and the talk.
+- From 18 November 2026, the talk is presented from the Beamer slides in the Overleaf working copy
+  `overleaf/slot` (`slides.tex`, with the handout `slides_handout.tex`; read its `START_HERE.txt`
+  first). They are the master of the talk's words, numbers and page order: a change of wording is
+  made in `overleaf/slot/talk/frames/` first. Compiled copies are kept untracked in the repository
+  root as `presentation_beamer.pdf` and `handout_beamer.pdf`.
+- The PowerPoint `presentation.pptx` and the web talk built from `talk/` (published at `/talk/`) are
+  earlier forms of the talk and are behind the Beamer slides from that date. Never write to the
+  PowerPoint. Bring the web talk up to the Beamer slides only when asked.
+- `DESIGN.md` sets the look of the website: the front page and the web talk. The look of the Beamer
+  slides is set in `overleaf/slot/talk/preamble.tex`.
 
 ## Working rules
 
